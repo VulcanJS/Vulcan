@@ -46,14 +46,14 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       // console.log('wrapper hook');
 
       // configure apollo
-      req.client = new ApolloClient(meteorClientConfig({ cookieLoginToken: loginToken }));
-      const reducers = { ...getReducers(), apollo: req.client.reducer() };
-      const middleware = [...getMiddleware(), req.client.middleware()];
+      req.apolloClient = new ApolloClient(meteorClientConfig({ cookieLoginToken: loginToken }));
+      const reducers = { ...getReducers(), apollo: req.apolloClient.reducer() };
+      const middleware = [...getMiddleware(), req.apolloClient.middleware()];
 
       // configure the redux store
       req.store = configureStore(reducers, {}, middleware);
 
-      return <ApolloProvider store={req.store} client={req.client}>{app}</ApolloProvider>
+      return <ApolloProvider store={req.store} client={req.apolloClient}>{app}</ApolloProvider>
     },
     preRender(req, res, app) {
       Cookie.plugToRequest(req, res);
@@ -63,7 +63,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     dehydrateHook(req, res) {
       // console.log(client.store.getState());
-      return req.client.store.getState();
+      return req.apolloClient.store.getState();
     },
     postRender(req, res) {
       // console.log('postrender hook');
