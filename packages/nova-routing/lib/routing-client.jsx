@@ -61,9 +61,9 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     props: {
       onUpdate: () => {
-        runCallbacks('router.onUpdate');
-        // clear all previous messages
-        store.dispatch(getActions().messages.clearSeen());
+        // the first argument is an item to iterate on, needed by nova:lib/callbacks
+        // note: this item is not used in this specific callback: router.onUpdate
+        runCallbacks('router.onUpdate', {}, store, client);
       },
       render: applyRouterMiddleware(useScroll())
     },

@@ -1,6 +1,8 @@
 // import and re-export
 export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp, createCollection, Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute, getRoute, populateRoutesApp, Utils, getSetting, Strings, addStrings, configureStore, getActions, addAction, getReducers, addReducer, getMiddleware, addMiddleware, Headtags } from 'meteor/nova:lib';
 
+import './callbacks.js';
+
 export { default as App } from "./components/App.jsx";
 export { default as Layout } from "./components/Layout.jsx";
 export { default as Icon } from "./components/Icon.jsx";

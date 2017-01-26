@@ -8,7 +8,12 @@ import { getActions, addAction, addReducer } from 'meteor/nova:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// register messages actions
+/*
+  
+  Messages actions
+
+*/
+
 addAction({
   messages: {
     flash(content, flashType) {
@@ -38,7 +43,13 @@ addAction({
   }
 });
 
-// register messages reducer
+
+/*
+  
+  Messages reducers
+
+*/
+
 addReducer({
   messages: (state = [], action) => {
     // default values
@@ -70,6 +81,12 @@ addReducer({
     }
   },
 });
+
+/*
+
+  withMessages HOC
+
+*/
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(getActions().messages, dispatch);
