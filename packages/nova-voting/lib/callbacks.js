@@ -1,4 +1,4 @@
-import { addCallback, runCallbacksAsync } from 'meteor/nova:core';
+import { addCallback, runCallbacksAsync, Utils } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 import Posts from 'meteor/nova:posts';
 import Comments from 'meteor/nova:comments';
@@ -99,19 +99,21 @@ function updateUser(item, user, collection, operation, context) {
     votedAt: new Date(),
     power: votePower
   };
+  
+  const collectionName = Utils.capitalize(collection._name);
 
   switch (operation) {
     case "upvote":
-      update.$addToSet = {'upvotedPosts': vote};
+      update.$addToSet = {[`upvoted${collectionName}`]: vote};
       break;
     case "downvote":
-      update.$addToSet = {'downvotedPosts': vote};
+      update.$addToSet = {[`downvoted${collectionName}`]: vote};
       break;
     case "cancelUpvote":
-      update.$pull = {'upvotedPosts': {itemId: item._id}};
+      update.$pull = {[`upvoted${collectionName}`]: {itemId: item._id}};
       break;
     case "cancelDownvote":
-      update.$pull = {'downvotedPosts': {itemId: item._id}};
+      update.$pull = {[`downvoted${collectionName}`]: {itemId: item._id}};
       break;
   }
 
