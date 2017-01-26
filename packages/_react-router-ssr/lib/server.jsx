@@ -79,7 +79,7 @@ ReactRouterSSR.Run = function(routes, clientOptions, serverOptions) {
         let history = createMemoryHistory(req.url);
 
         if (typeof serverOptions.historyHook === 'function') {
-          history = serverOptions.historyHook(history);
+          history = serverOptions.historyHook(req, res, history);
         }
 
         ReactRouterMatch({ history, routes, location: req.url }, Meteor.bindEnvironment((err, redirectLocation, renderProps) => {
@@ -203,9 +203,9 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       // fetchComponentData(serverOptions, renderProps);
       let app = <RouterContext {...renderProps} />;
 
-      if (typeof clientOptions.wrapperHook === 'function') {
+      if (typeof serverOptions.wrapperHook === 'function') {
         const loginToken = req.cookies['meteor_login_token'];
-        app = clientOptions.wrapperHook(app, loginToken);
+        app = serverOptions.wrapperHook(req, res, app, loginToken);
       }
 
       if (serverOptions.preRender) {
@@ -221,7 +221,7 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       css = global.__STYLE_COLLECTOR__;
 
       if (typeof serverOptions.dehydrateHook === 'function') {
-        const data = serverOptions.dehydrateHook();
+        const data = serverOptions.dehydrateHook(req, res);
         InjectData.pushData(res, 'dehydrated-initial-data', JSON.stringify(data));
       }
 

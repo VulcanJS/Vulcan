@@ -15,6 +15,7 @@ Package.onUse(function (api) {
     'nova:apollo@1.0.0',
   ]);
 
-  api.mainModule('lib/routing.jsx', ['client', 'server']);
+  api.mainModule('lib/routing-server.jsx', 'server');
+  api.mainModule('lib/routing-client.jsx', 'client');
 
 });

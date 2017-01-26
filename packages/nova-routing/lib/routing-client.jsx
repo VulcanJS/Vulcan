@@ -1,14 +1,13 @@
 import React from 'react';
-import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
-import Helmet from 'react-helmet';
-import Cookie from 'react-cookie';
-import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
-import { getDataFromTree, ApolloProvider } from 'react-apollo';
-import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, populateComponentsApp, getActions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { ApolloProvider } from 'react-apollo';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
+
+import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
+
+import { meteorClientConfig } from 'meteor/nova:apollo';
+import { Components, populateComponentsApp, getActions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -34,35 +33,31 @@ Meteor.startup(function initNovaRoutesAndApollo() {
   };
 
   /*
-    Hooks client side and server side definition
+    Hooks client side definition
   */
-
 
   let history;
   let initialState;
   let store;
   let client;
 
-  // Use history hook to get a reference to the history object
-  const historyHook = newHistory => history = newHistory;
-
   const clientOptions = {
-    historyHook,
     rehydrateHook: state => {
       // console.log('rehydrated state', state);
       initialState = state
-    },
-    wrapperHook(app, loginToken) {
-      // console.log('wrapper hook initial state', initialState);
+
       // configure apollo
-      client = new ApolloClient(meteorClientConfig({cookieLoginToken: loginToken}));
+      client = new ApolloClient(meteorClientConfig());
       const reducers = addReducer({apollo: client.reducer()});
       const middleware = addMiddleware(client.middleware());
 
       // configure the redux store
       store = configureStore(reducers, initialState, middleware);
-
-      return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
+    },
+    historyHook(newHistory) {
+      // Use history hook to get a reference to the history object
+      history = newHistory
+      return history;
     },
     props: {
       onUpdate: () => {
@@ -72,26 +67,11 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       },
       render: applyRouterMiddleware(useScroll())
     },
+    wrapperHook(app, loginToken) {
+      // console.log('wrapper hook initial state', initialState);
+      return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
+    },
   };
 
-  const serverOptions = {
-    historyHook,
-    htmlHook: (html) => {
-      const head = Helmet.rewind();
-      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);
-    },
-    preRender: (req, res, app) => {
-      Cookie.plugToRequest(req, res);
-      //console.log('preRender hook', app);
-      // console.log(req.cookies);
-      return Promise.await(getDataFromTree(app));
-    },
-    dehydrateHook: () => {
-      // console.log(client.store.getState());
-      return client.store.getState();
-    },
-    // fetchDataHook: (components) => components,
-  };
-
-  ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
+  ReactRouterSSR.Run(AppRoutes, clientOptions, {});
 });
