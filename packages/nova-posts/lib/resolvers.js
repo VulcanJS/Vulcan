@@ -32,7 +32,7 @@ const resolvers = {
 
     resolver(root, {documentId, slug}, context) {
       const selector = documentId ? {_id: documentId} : {'slug': slug};
-      const post = context.Posts.findOne({selector});
+      const post = context.Posts.findOne(selector);
       return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
   
