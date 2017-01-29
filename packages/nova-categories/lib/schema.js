@@ -9,18 +9,19 @@ export function getCategories (apolloClient) {
     return object.__typename === 'Category'
   });
 
+  return categories;
+}
+
+export function getCategoriesAsOptions (apolloClient) {
   // give the form component (here: checkboxgroup) exploitable data
-  const categoriesOptions = categories.map(function (category) {
+  return getCategories(apolloClient).map(function (category) {
     return {
       value: category._id,
       label: category.name,
       // slug: category.slug, // note: it may be used to look up from prefilled props
     };
   });
-
-  return categoriesOptions;
 }
-
 
 // category schema
 const schema = {
@@ -82,7 +83,7 @@ const schema = {
     publish: true,
     resolveAs: 'parent: Category',
     form: {
-      options: formProps => getCategories(formProps.client)
+      options: formProps => getCategoriesAsOptions(formProps.client)
     }
   }
 };

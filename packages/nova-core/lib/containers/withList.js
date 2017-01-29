@@ -39,6 +39,7 @@ import update from 'immutability-helper';
 import { getSetting, Utils } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
+import { withApollo } from 'react-apollo';
 
 const withList = (options) => {
 
@@ -48,6 +49,9 @@ const withList = (options) => {
         totalResolverName = collection.options.resolvers.total.name;
 
   return compose(
+
+    // wrap component with Apollo HoC to give it access to the store
+    withApollo, 
 
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
@@ -79,7 +83,7 @@ const withList = (options) => {
         alias: 'withList',
         
         // graphql query options
-        options({terms, paginationTerms}) {
+        options({terms, paginationTerms, apolloClient}) {
           const mergedTerms = {...terms, ...paginationTerms};
           return {
             variables: {
@@ -90,7 +94,7 @@ const withList = (options) => {
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName);
+              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
             
             },
           };
@@ -157,7 +161,7 @@ const withList = (options) => {
 
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName) => {
+const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
 
   const newMutationName = `${collection._name}New`;
   const editMutationName = `${collection._name}Edit`;
@@ -166,7 +170,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   let newResults = previousResults;
 
   // get mongo selector and options objects based on current terms
-  const { selector, options } = collection.getParameters(mergedTerms);
+  const { selector, options } = collection.getParameters(mergedTerms, apolloClient);
   const mingoQuery = Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below
