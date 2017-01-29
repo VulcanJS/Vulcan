@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
 export const configureStore = (reducers, initialState = {}, middleware) => createStore(
-  // reducers 
+  // reducers
   combineReducers(reducers),
   // initial state
   initialState,
@@ -12,25 +12,28 @@ export const configureStore = (reducers, initialState = {}, middleware) => creat
   )
 );
 
-export let Actions = {};
+let actions = {};
 export const addAction = addedAction => {
-  Actions = {...Actions, ...addedAction};
-  
-  return Actions;
-};
+  actions = {...actions, ...addedAction};
 
-export let Reducers = {};
+  return actions;
+};
+export const getActions = () => actions;
+
+let reducers = {};
 export const addReducer = addedReducer => {
-  Reducers = {...Reducers, ...addedReducer};
-  
-  return Reducers;
-};
+  reducers = {...reducers, ...addedReducer};
 
-export let Middleware = [];
+  return reducers;
+};
+export const getReducers = () => reducers;
+
+let middleware = [];
 export const addMiddleware = middlewareOrMiddlewareArray => {
   const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
-  
-  Middleware = [...Middleware, ...addedMiddleware];
-  
-  return Middleware;
+
+  middleware = [...middleware, ...addedMiddleware];
+
+  return middleware;
 };
+export const getMiddleware = () => middleware;

@@ -50,8 +50,9 @@ const resolvers = {
     
     name: 'usersTotal',
     
-    resolver(root, args, context) {
-      return context.Users.find().count();
+    resolver(root, {terms}, context) {
+      const {selector} = context.Users.getParameters(terms);
+      return context.Users.find(selector).count();
     },
   
   }
