@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
-import { withCurrentUser, withMessages } from 'meteor/nova:core';
+import { withMessages } from 'meteor/nova:core';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 class Vote extends Component {

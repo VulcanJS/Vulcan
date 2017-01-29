@@ -72,6 +72,16 @@ PostsCommentsThread.fragment = gql`
       }
     }
     userId
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes # should be asked only for admins?
+    downvotes # should be asked only for admins?
+    baseScore # should be asked only for admins?
+    score # should be asked only for admins?
   }
 `;
 

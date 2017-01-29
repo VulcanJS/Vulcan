@@ -31,28 +31,30 @@ export const operateOnItem = function (collection, originalItem, user, operation
   const votePower = getVotePower(user);
   const hasUpvotedItem = hasUpvoted(user, item);
   const hasDownvotedItem = hasDownvoted(user, item);
-  const modifier = {};
+  const collectionName = collection._name;
+  const canDo = Users.canDo(user, `${collectionName}.${operation}`);
 
   // console.log('// operateOnItem')
-  // console.log('isClient: ',isClient)
-  // console.log('collection: ',collection._name)
-  // console.log('operation: ',operation)
-  // console.log('item: ',item)
-  // console.log('user: ',user)
-
-  const collectionName = collection._name;
+  // console.log('isClient: ', isClient)
+  // console.log('collection: ', collectionName)
+  // console.log('operation: ', operation)
+  // console.log('item: ', item)
+  // console.log('user: ', user)
+  // console.log('hasUpvotedItem: ', hasUpvotedItem)
+  // console.log('hasDownvotedItem: ', hasDownvotedItem)
+  // console.log('canDo: ', canDo)
 
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
     !user || 
-    !Users.canDo(user, `${collectionName}.${operation}`) || 
+    !canDo || 
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem ||
     operation === "cancelUpvote" && !hasUpvotedItem ||
     operation === "cancelDownvote" && !hasDownvotedItem
   ) {
-    return false; 
+    throw new Meteor.Error(`Cannot perform operation "${collectionName}.${operation}"`);
   }
 
   // ------------------------------ Sync Callbacks ------------------------------ //
@@ -131,6 +133,7 @@ Call operateOnItem, update the db with the result, run callbacks.
 export const mutateItem = function (collection, originalItem, user, operation) {
   const newItem = operateOnItem(collection, originalItem, user, operation, false);
   newItem.inactive = false;
+
   collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
 
   // --------------------- Server-Side Async Callbacks --------------------- //

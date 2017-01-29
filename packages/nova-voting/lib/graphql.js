@@ -1,5 +1,5 @@
 import { GraphQLSchema, Utils } from 'meteor/nova:core';
-import { mutateItem, operateOnItem } from './vote.js';
+import { mutateItem } from './vote.js';
 
 const voteSchema = `
   type Vote {
@@ -7,28 +7,31 @@ const voteSchema = `
     power: Float
     votedAt: String
   }
-  type VoteResult {
-    _id: String
-    upvoters: [User]
-    upvotes: Float
-    downvoters: [User]
-    downvotes: Float
-    baseScore: Float
-  }
+  
+  union Votable = Post | Comment
 `;
 
 GraphQLSchema.addSchema(voteSchema);
 
-/*
+const resolverMap = {
+  Votable: {
+    __resolveType(obj, context, info){
+      if(obj.title){
+        return 'Post';
+      }
 
-Note: although returning a VoteResult object should in theory work, 
-this currently messes the automatic store update on the client. 
-So return a Post for now. 
+      if(obj.postId){
+        return 'Comment';
+      }
 
-*/
+      return null;
+    },
+  },
+};
 
-// GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : VoteResult');
-GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : Post');
+GraphQLSchema.addResolvers(resolverMap);
+
+GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : Votable');
 
 const voteResolver = {
   Mutation: {
