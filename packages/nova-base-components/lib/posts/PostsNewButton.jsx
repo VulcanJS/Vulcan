@@ -11,9 +11,9 @@ const PostsNewButton = (props, context) => {
   const size = props.currentUser ? "large" : "small";
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
-    <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
+    <Components.ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
       <Components.PostsNewForm />
-    </ModalTrigger>
+    </Components.ModalTrigger>
   )
 }
 

@@ -8,6 +8,7 @@ import "./emails.js"
 import "./custom_fields.js"
 import "./i18n.js"
 import "./groups.js"
+import "./fragments.js"
 
 // custom components
 import "./components/CustomLogo.jsx";

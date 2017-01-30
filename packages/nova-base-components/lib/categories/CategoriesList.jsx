@@ -5,7 +5,6 @@ import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Categories from 'meteor/nova:categories';
-import gql from 'graphql-tag';
 
 class CategoriesList extends Component {
 
@@ -64,27 +63,13 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
-CategoriesList.fragment = gql`
-  fragment categoriesListFragment on Category {
-    _id
-    name
-    description
-    order
-    slug
-    image
-    parentId
-    parent {
-      _id
-    }
-  }
-`;
 
-const categoriesListOptions = {
+const options = {
   collection: Categories,
   queryName: 'categoriesListQuery',
-  fragment: CategoriesList.fragment,
+  fragmentName: 'CategoriesList',
   limit: 0,
   pollInterval: 0,
 };
 
-registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));
+registerComponent('CategoriesList', CategoriesList, withRouter, [withList, options]);

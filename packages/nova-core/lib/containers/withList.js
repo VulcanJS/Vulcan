@@ -9,6 +9,7 @@ Options:
   - queryName: an arbitrary name for the query
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
+  - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   
@@ -36,17 +37,19 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, Utils } from 'meteor/nova:core';
+import { getSetting, getFragment, getFragmentName } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
 import { withApollo } from 'react-apollo';
 
 const withList = (options) => {
 
-  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
-        fragmentName = fragment.definitions[0].name.value,
+  const { queryName, collection, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
+        fragment = options.fragment || getFragment(options.fragmentName),
+        fragmentName = getFragmentName(fragment),
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
+
 
   return compose(
 

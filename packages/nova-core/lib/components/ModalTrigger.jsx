@@ -58,4 +58,6 @@ ModalTrigger.defaultProps = {
   size: "large"
 }
 
-export default registerComponent('ModalTrigger', ModalTrigger);
+registerComponent('ModalTrigger', ModalTrigger);
+
+export default ModalTrigger;

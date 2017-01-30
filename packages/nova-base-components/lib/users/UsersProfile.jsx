@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 import { ShowIf, withDocument, withCurrentUser } from 'meteor/nova:core';
-import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
   if (props.loading) {
@@ -42,53 +41,10 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-UsersProfile.fragment = gql`
-  fragment usersProfileFragment on User {
-    _id
-    username
-    createdAt
-    isAdmin
-    bio
-    commentCount
-    displayName
-    downvotedComments {
-      itemId
-      power
-      votedAt
-    }
-    downvotedPosts {
-      itemId
-      power
-      votedAt
-    }
-    emailHash
-    groups
-    htmlBio
-    karma
-    newsletter_subscribeToNewsletter
-    notifications_users
-    notifications_posts
-    postCount
-    slug
-    twitterUsername
-    upvotedComments {
-      itemId
-      power
-      votedAt
-    }
-    upvotedPosts {
-      itemId
-      power
-      votedAt
-    }
-    website
-  }
-`;
-
 const options = {
   collection: Users,
   queryName: 'usersSingleQuery',
-  fragment: UsersProfile.fragment,
+  fragmentName: 'UsersProfile',
 };
 
-registerComponent('UsersProfile', UsersProfile, withCurrentUser, withDocument(options));
+registerComponent('UsersProfile', UsersProfile, withCurrentUser, [withDocument, options]);
