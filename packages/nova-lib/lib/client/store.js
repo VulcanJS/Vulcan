@@ -17,7 +17,7 @@ export const store = createStore(s => s, {}, compose(
   typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 
-store.reload = function reload(initialState = {}) {
+store.reload = function reload(/* initialState = {} */) {
   // this.replaceReducer(() => initialState);
   const rootReducer = combineReducers(getReducers());
   this.replaceReducer(rootReducer);

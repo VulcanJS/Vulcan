@@ -54,7 +54,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       addMiddleware(client.middleware());
 
       // configure the redux store
-      store.reload(initialState);
+      store.reload();
     },
     historyHook(newHistory) {
       // Use history hook to get a reference to the history object
