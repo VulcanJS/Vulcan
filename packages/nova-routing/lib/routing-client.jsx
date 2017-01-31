@@ -7,7 +7,7 @@ import { useScroll } from 'react-router-scroll';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, populateComponentsApp, getActions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { Components, populateComponentsApp, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
