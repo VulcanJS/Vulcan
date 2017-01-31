@@ -107,6 +107,7 @@ const PostsFragment = gql`
     status
     body
     htmlBody
+    excerpt
     viewCount
     clickCount
     # nova:users

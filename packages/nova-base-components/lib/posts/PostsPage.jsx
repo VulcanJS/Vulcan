@@ -16,13 +16,11 @@ const PostsPage = (props) => {
 
     return (
       <div className="posts-page">
-        <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
+        <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} description={post.excerpt} />
         
         <Components.PostsItem post={post} currentUser={props.currentUser} />
 
         {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
-
-        {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
         <Components.PostsCommentsThread terms={{postId: post._id}} />
 
