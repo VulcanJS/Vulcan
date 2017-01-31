@@ -41,7 +41,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
     });
 
-    parameters.selector.categories = {$in: categoriesIds};
+    parameters.selector = Meteor.isClient ? {'categories._id': {$in: categoriesIds}} : {categories: {$in: categoriesIds}};
   }
   
   return parameters;
