@@ -1,102 +1,155 @@
 import gql from 'graphql-tag';
-import { registerFragment } from 'meteor/nova:core';
+import { registerFragment, getFragment } from 'meteor/nova:core';
 
+// ------------------------------ Vote ------------------------------ //
+
+// note: fragment used by default on the UsersProfile fragment
 registerFragment(gql`
-  fragment UsersProfile on User {
-    _id
-    username
-    createdAt
-    isAdmin
-    bio
-    commentCount
-    displayName
-    downvotedComments {
-      itemId
-      power
-      votedAt
-    }
-    downvotedPosts {
-      itemId
-      power
-      votedAt
-    }
-    emailHash
-    groups
-    htmlBio
-    karma
-    newsletter_subscribeToNewsletter
-    notifications_users
-    notifications_posts
-    postCount
-    slug
-    twitterUsername
-    upvotedComments {
-      itemId
-      power
-      votedAt
-    }
-    upvotedPosts {
-      itemId
-      power
-      votedAt
-    }
-    website
+  fragment VotedItem on Vote {
+    # nova:voting
+    itemId
+    power
+    votedAt
   }
 `);
 
+// ------------------------------ Users ------------------------------ //
+
+// note: fragment used by default on UsersProfile, PostsList & CommentsList fragments
+registerFragment(gql`
+  fragment UsersMinimumInfo on User {
+    # nova:users
+    _id
+    slug
+    username
+    displayName
+    emailHash
+  }
+`);
+
+registerFragment(gql`
+  fragment UsersProfile on User {
+    # nova:users
+    ...UsersMinimumInfo
+    createdAt
+    isAdmin
+    bio
+    htmlBio
+    twitterUsername
+    website
+    groups
+    karma
+    # nova:posts
+    postCount
+    # nova:comments
+    commentCount
+    # nova:newsletter
+    newsletter_subscribeToNewsletter
+    # nova:notifications
+    notifications_users
+    notifications_posts
+    # nova:voting
+    downvotedComments {
+      ...VotedItem
+    }
+    downvotedPosts {
+      ...VotedItem
+    }
+    upvotedComments {
+      ...VotedItem
+    }
+    upvotedPosts {
+      ...VotedItem
+    }
+  }
+  ${getFragment('UsersMinimumInfo')}
+  ${getFragment('VotedItem')}
+`);
+
+// ------------------------------ Categories ------------------------------ //
+
+// note: fragment used by default on CategoriesList & PostsList fragments
+registerFragment(gql`
+  fragment CategoriesMinimumInfo on Category {
+    # nova:categories
+    _id
+    name
+    slug
+  }
+`);
+
+registerFragment(gql`
+  fragment CategoriesList on Category {
+    # nova:categories
+    ...CategoriesMinimumInfo
+    description
+    order
+    image
+    parentId
+    parent {
+      ...CategoriesMinimumInfo
+    }
+  }
+  ${getFragment('CategoriesMinimumInfo')}
+`);
+
+// ------------------------------ Posts ------------------------------ //
+
 const PostsFragment = gql`
   fragment PostsList on Post {
+    # nova:posts
     _id
     title
     url
     slug
-    thumbnailUrl
     postedAt
     sticky
     status
-    categories {
-      # ...minimumCategoryInfo
-      _id
-      name
-      slug
+    body
+    htmlBody
+    viewCount
+    clickCount
+    # nova:users
+    userId
+    user {
+      ...UsersMinimumInfo
     }
+    # nova:embedly
+    thumbnailUrl
+    # nova:categories
+    categories {
+      ...CategoriesMinimumInfo
+    }
+    # nova:comments
     commentCount
     commenters {
-      # ...avatarUserInfo
-      _id
-      displayName
-      emailHash
-      slug
+      ...UsersMinimumInfo
     }
+    # nova:voting
     upvoters {
       _id
     }
     downvoters {
       _id
     }
-    upvotes # should be asked only for admins?
-    downvotes # should be asked only for admins?
-    baseScore # should be asked only for admins?
-    score # should be asked only for admins?
-    viewCount # should be asked only for admins?
-    clickCount # should be asked only for admins?
-    user {
-      # ...avatarUserInfo
-      _id
-      displayName
-      emailHash
-      slug
-    }
-    userId
+    upvotes
+    downvotes
+    baseScore
+    score
   }
+  ${getFragment('UsersMinimumInfo')}
+  ${getFragment('CategoriesMinimumInfo')}
 `;
 
 registerFragment(PostsFragment);
-// also register the same fragment as "PostsPage"
+// note: also register the same fragment as "PostsPage"
 registerFragment(PostsFragment, 'PostsPage');
+
+// ----------------------------- Comments ------------------------------ //
 
 registerFragment(gql`
   fragment CommentsList on Comment {
+    # nova:comments
     _id
     postId
     parentCommentId
@@ -104,47 +157,30 @@ registerFragment(gql`
     body
     htmlBody
     postedAt
+    # nova:users
+    userId
     user {
-      _id
-      displayName
-      emailHash
-      slug
+      ...UsersMinimumInfo
     }
+    # nova:posts
     post {
       _id
       commentCount
       commenters {
-        _id
-        displayName
-        emailHash
-        slug
+        ...UsersMinimumInfo
       }
     }
-    userId
+    # nova:voting
     upvoters {
       _id
     }
     downvoters {
       _id
     }
-    upvotes # should be asked only for admins?
-    downvotes # should be asked only for admins?
-    baseScore # should be asked only for admins?
-    score # should be asked only for admins?
+    upvotes
+    downvotes
+    baseScore
+    score
   }
-`);
-
-registerFragment(gql`
-  fragment CategoriesList on Category {
-    _id
-    name
-    description
-    order
-    slug
-    image
-    parentId
-    parent {
-      _id
-    }
-  }
+  ${getFragment('UsersMinimumInfo')}
 `);
