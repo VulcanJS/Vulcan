@@ -3,6 +3,7 @@ import { addStrings } from 'meteor/nova:core';
 addStrings('en', {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
+  "forms.select_option": "-- select option --",
 
   "posts.new_post": "New Post",
   "posts.edit": "Edit",

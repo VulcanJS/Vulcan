@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
-
+import { intlShape } from 'react-intl';
 import DateTime from './DateTime.jsx';
 
 // import Utils from './utils.js';
@@ -60,6 +60,7 @@ class FormComponent extends Component {
         case "radiogroup":
           return <RadioGroup    {...properties} />;
         case "select":
+          properties.options = [{label: this.context.intl.formatMessage({id: "forms.select_option"}), disabled: true}, ...properties.options];
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
@@ -95,6 +96,10 @@ FormComponent.propTypes = {
   disabled: React.PropTypes.bool,
   updateCurrentValues: React.PropTypes.func
 }
+
+FormComponent.contextTypes = {
+  intl: intlShape
+};
 
 export default FormComponent;
 
