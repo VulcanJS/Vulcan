@@ -86,7 +86,7 @@ const withList = (options) => {
         alias: 'withList',
         
         // graphql query options
-        options({terms, paginationTerms, apolloClient}) {
+        options({terms, paginationTerms, client: apolloClient}) {
           const mergedTerms = {...terms, ...paginationTerms};
           return {
             variables: {
