@@ -7,7 +7,7 @@ import { useScroll } from 'react-router-scroll';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, populateComponentsApp, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { Components, populateComponentsApp, runCallbacks, addRoute, Routes, populateRoutesApp, store, addReducer, addMiddleware } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -38,7 +38,6 @@ Meteor.startup(function initNovaRoutesAndApollo() {
 
   let history;
   let initialState;
-  let store;
   let client;
 
   const clientOptions = {
@@ -48,11 +47,14 @@ Meteor.startup(function initNovaRoutesAndApollo() {
 
       // configure apollo
       client = new ApolloClient(meteorClientConfig());
-      const reducers = addReducer({apollo: client.reducer()});
-      const middleware = addMiddleware(client.middleware());
+      var apolloClientReducer = (state = initialState.apollo, action) => {
+        return client.reducer()(state, action);
+      };
+      addReducer({apollo: apolloClientReducer});
+      addMiddleware(client.middleware());
 
       // configure the redux store
-      store = configureStore(reducers, initialState, middleware);
+      store.reload(initialState);
     },
     historyHook(newHistory) {
       // Use history hook to get a reference to the history object
