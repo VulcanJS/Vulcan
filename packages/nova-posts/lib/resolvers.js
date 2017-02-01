@@ -6,6 +6,11 @@ const specificResolvers = {
       return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
   },
+  Mutation: {
+    increasePostViewCount(root, { postId }, context) {
+      return context.Posts.update({_id: postId}, { $inc: { viewCount: 1 }});
+    }
+  }
 };
 
 GraphQLSchema.addResolvers(specificResolvers);
