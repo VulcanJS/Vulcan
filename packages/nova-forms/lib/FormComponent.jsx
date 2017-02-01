@@ -30,7 +30,7 @@ class FormComponent extends Component {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, ...rest } = this.props; // eslint-disable-line
 
     const base = this.props.control === "function" ? this.props : rest;
 
