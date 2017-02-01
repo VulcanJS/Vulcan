@@ -1,4 +1,5 @@
 export const Headtags = {
   meta: [],
-  link: []
+  link: [],
+  script: [],
 }

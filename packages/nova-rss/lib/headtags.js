@@ -1,7 +1,8 @@
-import { getSetting, Headtags } from 'meteor/nova:core';
+import { Headtags, Utils } from 'meteor/nova:core';
 
+// add permanent <link /> markup
 Headtags.link.push({
   rel: "alternate", 
   type: "application/rss+xml",
-  href: `${getSetting("siteUrl")}feed.xml`
+  href: `${Utils.getSiteUrl()}feed.xml`
 });
