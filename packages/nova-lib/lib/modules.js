@@ -18,7 +18,7 @@ export { Routes, addRoute, getRoute, populateRoutesApp } from './routes.js';
 export { Utils } from './utils.js';
 export { getSetting } from './settings.js';
 export { Strings, addStrings } from './strings.js';
-export { configureStore, getActions, addAction, getReducers, addReducer, getMiddleware, addMiddleware } from './redux.js';
+export { configureStore, getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware } from './redux.js';
 export { Headtags } from './headtags.js';
 export { Fragments, registerFragment, getFragment, getFragmentName } from './fragments.js';
 

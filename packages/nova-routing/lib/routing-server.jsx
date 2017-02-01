@@ -7,7 +7,7 @@ import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, populateComponentsApp, addRoute, Routes, populateRoutesApp, configureStore, getReducers, getMiddleware } from 'meteor/nova:core';
+import { Components, populateComponentsApp, addRoute, Routes, populateRoutesApp, configureStore, getReducers, getMiddlewares } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -48,7 +48,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       // configure apollo
       req.apolloClient = new ApolloClient(meteorClientConfig({ cookieLoginToken: loginToken }));
       const reducers = { ...getReducers(), apollo: req.apolloClient.reducer() };
-      const middleware = [...getMiddleware(), req.apolloClient.middleware()];
+      const middleware = [...getMiddlewares(), req.apolloClient.middleware()];
 
       // configure the redux store
       req.store = configureStore(reducers, {}, middleware);

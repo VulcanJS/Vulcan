@@ -1,13 +1,13 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-export const configureStore = (reducers, initialState = {}, middleware) => createStore(
+export const configureStore = (reducers, initialState = {}, middlewares) => createStore(
   // reducers
   combineReducers(reducers),
   // initial state
   initialState,
   // middleware
   compose(
-    applyMiddleware(...middleware),
+    applyMiddleware(...middlewares),
     typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
@@ -28,12 +28,12 @@ export const addReducer = addedReducer => {
 };
 export const getReducers = () => reducers;
 
-let middleware = [];
+let middlewares = [];
 export const addMiddleware = middlewareOrMiddlewareArray => {
   const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
 
-  middleware = [...middleware, ...addedMiddleware];
+  middlewares = [...middlewares, ...addedMiddleware];
 
-  return middleware;
+  return middlewares;
 };
-export const getMiddleware = () => middleware;
+export const getMiddlewares = () => middlewares;
