@@ -433,3 +433,26 @@ Utils.convertDates = (collection, listOrDocument) => {
 
   return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
 }
+
+Utils.encodeIntlError = error => typeof error !== "object" ? error : JSON.stringify(error);
+
+Utils.decodeIntlError = error => {
+  try {
+    // the error is an object internationalizable
+    const parsedError = JSON.parse(error);
+    
+    // check if the error has at least an 'id' expected by react-intl
+    if (!parsedError.id) {
+      console.error('[Undecodable error]', error); // eslint-disable-line
+      return {id: 'app.something_bad_happened', value: '[undecodable error]'}
+    } 
+    
+    console.log(parsedError);
+    
+    // return the parsed error
+    return parsedError; 
+  } catch(__) { 
+    // the error is not internationalizable
+    return error;
+  }
+};

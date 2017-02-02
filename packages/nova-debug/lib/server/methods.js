@@ -1,6 +1,6 @@
 import NovaEmail from 'meteor/nova:email';
 import Users from 'meteor/nova:users';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting, Utils } from 'meteor/nova:core';
 
 Meteor.methods({
   "email.test": function (emailName) {
@@ -37,7 +37,7 @@ Meteor.methods({
       return subject;
 
     } else {
-      throw new Meteor.Error("must_be_admin", "You must be an admin to send test emails");
+      throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
     }
   }
 });

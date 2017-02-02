@@ -7,83 +7,22 @@ import { addCallback, Utils, getSetting } from 'meteor/nova:core';
 
 // ------------------------------------- comments.new.validate -------------------------------- //
 
-// function CommentsNewUserCheck (comment, user) {
-//   // check that user can post
-//   if (!user || !Users.canDo(user, "comments.new"))
-//     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_comments');
-//   return comment;
-// }
-// addCallback("comments.new.sync", CommentsNewUserCheck);
-
 function CommentsNewRateLimit (comment, user) {
   if (!Users.isAdmin(user)) {
     const timeSinceLastComment = Users.timeSinceLast(user, Comments);
     const commentInterval = Math.abs(parseInt(getSetting('commentInterval',15)));
+    console.log(timeSinceLastComment);
+    console.log(commentInterval);
     // check that user waits more than 15 seconds between comments
     if((timeSinceLastComment < commentInterval)) {
-      throw new Meteor.Error("CommentsNewRateLimit", "comments.rate_limit_error", commentInterval-timeSinceLastComment);
+      throw new Error(Utils.encodeIntlError({id: "comments.rate_limit_error", value: commentInterval-timeSinceLastComment}));
     }
   }
   return comment;
 }
 addCallback("comments.new.validate", CommentsNewRateLimit);
 
-// function CommentsNewSubmittedPropertiesCheck (comment, user) {
-//   // admin-only properties
-//   // userId
-//   const schema = Comments.simpleSchema()._schema;
-
-//   // clear restricted properties
-//   _.keys(comment).forEach(function (fieldName) {
-
-//     // make an exception for postId, which should be setable but not modifiable
-//     if (fieldName === "postId") {
-//       // ok
-//     } else {
-//       var field = schema[fieldName];
-//       if (!Users.canInsertField (user, field)) {
-//         throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
-//       }
-//     }
-
-//   });
-
-//   // if no userId has been set, default to current user id
-//   if (!comment.userId) {
-//     comment.userId = user._id;
-//   }
-//   return comment;
-// }
-// addCallback("comments.new.validate", CommentsNewSubmittedPropertiesCheck);
-
 // ------------------------------------- comments.new.sync -------------------------------- //
-
-/**
- * @summary Check for required properties
- */
-// function CommentsNewRequiredPropertiesCheck (comment, user) {
-
-//   var userId = comment.userId; // at this stage, a userId is expected
-
-//   // Don't allow empty comments
-//   if (!comment.body)
-//     throw new Meteor.Error(704, 'your_comment_is_empty');
-
-//   var defaultProperties = {
-//     createdAt: new Date(),
-//     postedAt: new Date(),
-//     upvotes: 0,
-//     downvotes: 0,
-//     baseScore: 0,
-//     score: 0,
-//     author: Users.getDisplayNameById(userId)
-//   };
-
-//   comment = _.extend(defaultProperties, comment);
-
-//   return comment;
-// }
-// addCallback("comments.new.sync", CommentsNewRequiredPropertiesCheck);
 
 function CommentsNewGenerateHTMLBody (comment, user) {
   comment.htmlBody = Utils.sanitize(marked(comment.body));

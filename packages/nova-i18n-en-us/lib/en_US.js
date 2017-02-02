@@ -34,7 +34,7 @@ addStrings('en', {
   "posts.clear_thumbnail": "Clear Thumbnail",
   "posts.enter_thumbnail_url": "Enter URL",
   "posts.created_message": "Post created.",
-  "posts.rate_limit_error": "Please wait {details} seconds before posting again.",
+  "posts.rate_limit_error": "Please wait {value} seconds before posting again.",
   "posts.postedAt": "Posted at",
   "posts.dateNotDefined": "Date not defined",
   "posts.subscribe": "Subscribe",
@@ -57,7 +57,7 @@ addStrings('en', {
   "comments.parentCommentId": "Parent Comment ID",
   "comments.topLevelCommentId": "Top Level Comment ID",
   "comments.body": "Body",
-  "comments.rate_limit_error": "Please wait {details} seconds before commenting again.",
+  "comments.rate_limit_error": "Please wait {value} seconds before commenting again.",
 
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
@@ -89,6 +89,7 @@ addStrings('en', {
   "users.subscribers": "Subscribers",
   "users.delete": "Delete user",
   "users.delete_confirm": "Delete this user?",
+  "users.email_already_taken": "This email is already taken: {value}",
 
   "categories": "Categories",
   "categories.all": "All Categories",
@@ -110,6 +111,7 @@ addStrings('en', {
   "categories.subscribed_categories" : "Categories subscribed to",
   "categories.delete_confirm": "Delete category “{title}”?",
   "categories.delete_success": "Category “{name}” deleted.",
+  "categories.invalid": "Invalid category",
 
   "settings": "Settings",
   "settings.json_message": "Note: settings already provided in your <code>settings.json</code> file will be disabled.",
@@ -147,7 +149,10 @@ addStrings('en', {
   "app.powered_by": "Powered by Telescope",
   "app.or": "Or",
   "app.noPermission": "Sorry, you do not have the permission to do this at this time.",
-
+  "app.mutation_not_allowed": "Sorry, you don't have the rights to perform this mutation on this document (details: {value})",
+  "app.disallowed_property_detected": "Disallowed property detected: {value}",
+  "app.something_bad_happened": "Something bad happened...",
+  
   "newsletter": "Newsletter",
   "newsletter.subscribe": "Subscribe",
   "newsletter.unsubscribe": "Unsubscribe",

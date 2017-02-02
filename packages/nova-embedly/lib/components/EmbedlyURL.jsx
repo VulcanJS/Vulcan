@@ -24,37 +24,53 @@ class EmbedlyURL extends Component {
         await this.context.updateCurrentValues({media: {}});
       }
     } catch(error) {
-      console.error('Error cleaning "media" property', error)
+      console.error('Error cleaning "media" property', error); // eslint-disable-line
     }
   }
 
   // called whenever the URL input field loses focus
   async handleBlur() {
     try {
-      await this.setState({loading: true});
-
       // value from formsy input ref
       const url = this.input.getValue();
-
+      
+      // start the mutation only if the input has a value
       if (url.length) {
+        
+        // notify the user that something happens
+        await this.setState({loading: true});
+
         // the URL has changed, get new title, body, thumbnail & media for this url
         const result = await this.props.getEmbedlyData({url});
         
         // uncomment for debug
         // console.log('Embedly Data', result);
         
+        // extract the relevant data, for easier consumption
+        const { data: { getEmbedlyData: { title, description, thumbnailUrl } } } = result;
+        
+        // update the form
         await this.context.updateCurrentValues({
-          title: result.data.getEmbedlyData.title || "",
-          body: result.data.getEmbedlyData.description || "",
-          thumbnailUrl: result.data.getEmbedlyData.thumbnailUrl || "",
+          title: title || "",
+          body: description || "",
+          thumbnailUrl: thumbnailUrl || "",
         });
         
+        // embedly component is done
         await this.setState({loading: false});
+        
+        // remove errors & keep the current values 
+        await this.context.clearForm({clearErrors: true}); 
       }
     } catch(error) {
+      
+      console.error(error); // eslint-disable-line
+      
+      // embedly component is done
       await this.setState({loading: false});
-      console.log(error); // eslint-disable-line no-console
-      this.context.throwError({content: error.message, type: "error"});
+      
+      // something bad happened
+      await this.context.throwError(error.message);
     }
   }
 
@@ -74,7 +90,7 @@ class EmbedlyURL extends Component {
     loadingStyle.display = this.state.loading ? "block" : "none";
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const {document, control, getEmbedlyData, ...rest} = this.props; // eslint-disable-line no-unused-vars
+    const {document, control, getEmbedlyData, ...rest} = this.props; // eslint-disable-line
 
     return (
       <div className="embedly-url-field" style={wrapperStyle}>
@@ -93,16 +109,15 @@ class EmbedlyURL extends Component {
 }
 
 EmbedlyURL.propTypes = {
-  name: React.PropTypes.string,
-  value: React.PropTypes.any,
-  label: React.PropTypes.string
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.string
 }
 
 EmbedlyURL.contextTypes = {
-  addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValues: React.PropTypes.func,
-  throwError: React.PropTypes.func,
-  actions: React.PropTypes.object,
+  updateCurrentValues: PropTypes.func,
+  throwError: PropTypes.func,
+  clearForm: PropTypes.func,
 }
 
 export default withMutation({

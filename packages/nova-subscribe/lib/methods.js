@@ -146,7 +146,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
        const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
 
        if (!Users.canDo(currentUser, `${col._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${col._name}.${action}.all`)) {
-         throw new Meteor.Error(601, "You don't have the permission to do this");
+         throw new Error(601, "You don't have the permission to do this");
        }
 
        return performSubscriptionAction(action, col, docId, user);

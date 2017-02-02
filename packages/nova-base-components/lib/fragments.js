@@ -1,4 +1,4 @@
-import { registerFragment, getFragment } from 'meteor/nova:core';
+import { registerFragment } from 'meteor/nova:core';
 
 // ------------------------------ Vote ------------------------------ //
 

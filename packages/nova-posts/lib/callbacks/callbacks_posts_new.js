@@ -2,23 +2,12 @@ import Telescope from 'meteor/nova:lib'; // TODO move Telescope.notifications to
 import Posts from '../collection.js'
 import marked from 'marked';
 import Users from 'meteor/nova:users';
-import { runCallbacks, runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
+import { addCallback, getSetting, Utils } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
 //////////////////////////////////////////////////////
 
-
-/**
- * @summary Check that the current user can post
- */
-// function PostsNewUserCheck (post, user) {
-//   // check that user can post
-//   if (!user || !Users.canDo(user, "posts.new"))
-//     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
-//   return post;
-// }
-// addCallback("posts.new.validate", PostsNewUserCheck);
 
 /**
  * @summary Rate limiting
@@ -34,55 +23,17 @@ function PostsNewRateLimit (post, user) {
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval)
-      throw new Meteor.Error(604, 'please_wait'+(postInterval-timeSinceLastPost)+'seconds_before_posting_again');
+      throw new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
 
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-      throw new Meteor.Error(605, 'sorry_you_cannot_submit_more_than'+maxPostsPer24Hours+'posts_per_day');
+      throw new Error(605, 'sorry_you_cannot_submit_more_than'+maxPostsPer24Hours+'posts_per_day');
 
   }
 
   return post;
 }
 addCallback("posts.new.validate", PostsNewRateLimit);
-
-/**
- * @summary Properties
- */
-// function PostsNewSubmittedPropertiesCheck (post, user) {
-
-//   // admin-only properties
-//   // status
-//   // postedAt
-//   // userId
-//   // sticky (default to false)
-
-//   const schema = Posts.simpleSchema()._schema;
-
-//   // go over each schema field and throw an error if it's not editable
-//   _.keys(post).forEach(function (fieldName) {
-
-//     var field = schema[fieldName];
-//     if (!Users.canInsertField (user, field)) {
-//       throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
-//     }
-
-//   });
-//   // note: not needed there anymore, this is already set in the next callback 'posts.new.sync' with other related properties (status, createdAt)
-//   // if no post status has been set, set it now
-//   // if (!post.status) {
-//   //   post.status = Posts.getDefaultStatus(user);
-//   // }
-
-//   // if no userId has been set, default to current user id
-//   if (!post.userId) {
-//     post.userId = user._id;
-//   }
-
-//   return post;
-// }
-// addCallback("posts.new.validate", PostsNewSubmittedPropertiesCheck);
-
 
 //////////////////////////////////////////////////////
 // posts.new.sync                                   //
