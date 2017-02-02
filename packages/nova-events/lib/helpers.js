@@ -1,6 +1,6 @@
+import Analytics from 'analytics-node';
 import { getSetting } from 'meteor/nova:core';
 import Events from './collection.js';
-
 /*
 
   We provide a special support for Google Analytics.
@@ -48,49 +48,63 @@ export const initGoogleAnalytics = () => {
   
 */
 
-export const requestAnalyticsAsync = (analytics, hook, document, user) => {
+export const requestAnalyticsAsync = (hook, document, user) => {
   
-  if (hook.includes('users')) {
-    // if the mutation is related to users, use analytics.identify
-    // see https://segment.com/docs/sources/server/node/#identify
+  // get the segment write key from the settings
+  const useSegment = getSetting('useSegment');
+  const writeKey = getSetting('segmentWriteKey');
+
+  // the settings obviously tells to use segment
+  // and segment write key is defined & isn't the placeholder from sample_settings.json
+  if (useSegment && writeKey && writeKey !== '456bar') {
     
-    // note: on users.new.async, user is undefined
-    const userId = user ? user._id : document._id;
+    const analytics = new Analytics(writeKey);
     
-    if (document.services.password) {
-      delete document.services.password;
+    if (hook.includes('users')) {
+      // if the mutation is related to users, use analytics.identify
+      // see https://segment.com/docs/sources/server/node/#identify
+      
+      // note: on users.new.async, user is undefined
+      const userId = user ? user._id : document._id;
+      
+      if (document.services) {
+        if(document.services.password) {
+          delete document.services.password;
+        }
+        
+        if (document.services.resume) {
+          delete document.services.resume;
+        }
+      }
+      
+      
+      const data = {
+        userId,
+        traits: document,
+      };
+      
+      // uncomment for debug
+      console.log(`// dispatching identify on "${hook}" (user ${userId})`);
+      console.log(data);
+      
+      analytics.identify(data);
+      
+    } else {
+      // else use analytics.track
+      // see https://segment.com/docs/sources/server/node/#track
+      
+      const data = {
+        userId: user._id,
+        event: hook,
+        properties: document,
+      };
+      
+      // uncomment for debug
+      console.log(`// dispatching track on "${hook}"`);
+      console.log(data);
+      
+      analytics.track(data);  
     }
-    
-    if (document.services.resume) {
-      delete document.services.resume;
-    }
-    
-    const data = {
-      userId,
-      traits: document,
-    };
-    
-    // uncomment for debug
-    console.log(`// dispatching identify on "${hook}" (user ${userId})`);
-    console.log(data);
-    
-    analytics.identify(data);
-    
-  } else {
-    // else use analytics.track
-    // see https://segment.com/docs/sources/server/node/#track
-    
-    const data = {
-      userId: user._id,
-      event: hook,
-      properties: document,
-    };
-    
-    // uncomment for debug
-    console.log(`// dispatching track on "${hook}"`);
-    console.log(data);
-    
-    analytics.track(data);  
   }
 }
 
