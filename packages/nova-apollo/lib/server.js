@@ -19,7 +19,7 @@ import { _ } from 'meteor/underscore';
 
 import Users from 'meteor/nova:users';
 
-import { GraphQLSchema } from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 import OpticsAgent from 'optics-agent'
 

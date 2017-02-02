@@ -1,7 +1,6 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import { ShowIf, withCurrentUser, withMessages } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 
 class CommentsItem extends Component{

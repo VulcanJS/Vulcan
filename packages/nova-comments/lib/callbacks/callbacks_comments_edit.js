@@ -1,6 +1,4 @@
 import marked from 'marked';
-import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
 import { addCallback, Utils } from 'meteor/nova:core';
 
 // ------------------------------------- comments.edit.sync -------------------------------- //

@@ -1,4 +1,3 @@
-// import Telescope from 'meteor/nova:lib';
 import Comments from './collection.js';
 import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';

@@ -1,5 +1,5 @@
 import escapeStringRegexp from 'escape-string-regexp';
-import { Callbacks, addCallback, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/nova:core';
 
 function addSearchQueryParameter (parameters, terms) {
   if(!!terms.query) {

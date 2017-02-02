@@ -1,9 +1,8 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
-import { ShowIf, withDocument, withCurrentUser } from 'meteor/nova:core';
 
 const UsersProfile = (props) => {
   if (props.loading) {

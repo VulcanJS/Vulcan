@@ -84,8 +84,8 @@ export const requestAnalyticsAsync = (hook, document, user) => {
       };
       
       // uncomment for debug
-      console.log(`// dispatching identify on "${hook}" (user ${userId})`);
-      console.log(data);
+      // console.log(`// dispatching identify on "${hook}" (user ${userId})`);
+      // console.log(data);
       
       analytics.identify(data);
       
@@ -100,8 +100,8 @@ export const requestAnalyticsAsync = (hook, document, user) => {
       };
       
       // uncomment for debug
-      console.log(`// dispatching track on "${hook}"`);
-      console.log(data);
+      // console.log(`// dispatching track on "${hook}"`);
+      // console.log(data);
       
       analytics.track(data);  
     }
