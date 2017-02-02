@@ -36,10 +36,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
     name,
     rawComponent,
     hocs,
-    call: () => compose(...hocs)(rawComponent)
   };
-  
-  return compose(...hocs)(rawComponent);
 };
 
 /**
@@ -49,7 +46,9 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
  * @returns {Function|React Component} A (wrapped) React component
  */
 export const getComponent = (name) => {
-  return ComponentsTable[name].call();
+  const component = ComponentsTable[name];
+  const hocs = component.hocs.map(hoc => Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc);
+  return compose(...hocs)(component.rawComponent)
 };
 
 /**

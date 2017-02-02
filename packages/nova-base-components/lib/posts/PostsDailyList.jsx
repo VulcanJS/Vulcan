@@ -111,8 +111,8 @@ PostsDailyList.defaultProps = {
 const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
-  fragment: getRawComponent('PostsList').fragment,
+  fragmentName: 'PostsList',
   limit: 0,
 };
 
-registerComponent('PostsDailyList', PostsDailyList, withCurrentUser, withList(options));
+registerComponent('PostsDailyList', PostsDailyList, withCurrentUser, [withList, options]);

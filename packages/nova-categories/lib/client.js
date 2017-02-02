@@ -1,3 +1,4 @@
-import Categories from './modules.js';
+import Categories, { getCategories, getCategoriesAsOptions } from './modules.js';
 
+export { getCategories, getCategoriesAsOptions };
 export default Categories;

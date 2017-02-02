@@ -1,9 +1,8 @@
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
-import { ShowIf, withMessages } from 'meteor/nova:core';
 
 class PostsEditForm extends Component {
 
@@ -26,7 +25,7 @@ class PostsEditForm extends Component {
         <Components.SmartForm
           collection={Posts}
           documentId={this.props.post._id}
-          mutationFragment={getRawComponent('PostsPage').fragment}
+          mutationFragment={getFragment('PostsPage')}
           successCallback={post => {
             this.props.closeModal();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

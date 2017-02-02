@@ -51,13 +51,10 @@ import './comments/CommentsLoadMore.jsx';
 // categories
 
 import './categories/CategoriesList.jsx';
+import './categories/CategoriesNode.jsx';
 import './categories/Category.jsx';
 import './categories/CategoriesEditForm.jsx';
 import './categories/CategoriesNewForm.jsx';
-
-// permissions
-
-import './permissions/CanDo.jsx';
 
 // users
 

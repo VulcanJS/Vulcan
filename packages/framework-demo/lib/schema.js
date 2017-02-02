@@ -5,7 +5,6 @@ A SimpleSchema-compatible JSON schema
 */
 
 import Users from 'meteor/nova:users';
-import { GraphQLSchema } from 'meteor/nova:core';
 
 // define schema
 const schema = {

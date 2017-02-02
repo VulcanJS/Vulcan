@@ -1,11 +1,11 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 
 class PostsDay extends Component {
 
   render() {
 
-    const {date, networkStatus, posts} = this.props;
+    const {date, posts} = this.props;
     const noPosts = posts.length === 0;
 
     return (

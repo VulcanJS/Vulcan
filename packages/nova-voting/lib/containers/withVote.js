@@ -1,25 +1,37 @@
-import Posts from 'meteor/nova:posts';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { operateOnItem } from '../vote.js';
 
-// to adapt like withNew? or withDocument?
 const withVote = component => {
 
   return graphql(gql`
     mutation vote($documentId: String, $voteType: String, $collectionName: String) {
       vote(documentId: $documentId, voteType: $voteType, collectionName: $collectionName) {
-        _id
-        upvotes
-        upvoters {
+        ... on Post {
           _id
+          upvotes
+          upvoters {
+            _id
+          }
+          downvotes
+          downvoters {
+            _id
+          }
+          baseScore
         }
-        downvotes
-        downvoters {
+        ... on Comment {
           _id
+          upvotes
+          upvoters {
+            _id
+          }
+          downvotes
+          downvoters {
+            _id
+          }
+          baseScore
         }
-        baseScore
       }
     }
   `, {

@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -6,7 +6,6 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
-import { withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -27,13 +26,13 @@ class Newsletter extends Component {
     }
   }
 
-  subscribeEmail(data) {
-    this.props.addEmailNewsletter({email: data.email}).then(result => {
+  async subscribeEmail(data) {
+    try {
+      const result = await this.props.addEmailNewsletter({email: data.email});
       this.successCallbackSubscription(result);
-    }).catch(error => {
-      console.log(error);
+    } catch(error) {
       this.props.flash(error.message, "error");
-    });
+    }
   }
 
   successCallbackSubscription(result) {
@@ -100,8 +99,6 @@ function showBanner (user) {
   return (
     // showBanner cookie either doesn't exist or is not set to "no"
     Cookie.load('showBanner') !== "no"
-    // and showBanner user setting either doesn't exist or is set to true
-    // && Users.getSetting(user, 'newsletter.showBanner', true)
     // and user is not subscribed to the newsletter already (setting either DNE or is not set to false)
     && !Users.getSetting(user, 'newsletter_subscribeToNewsletter', false)
   );

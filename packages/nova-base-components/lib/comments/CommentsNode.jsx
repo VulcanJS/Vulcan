@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 
 class CommentsNode extends Component {

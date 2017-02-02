@@ -1,12 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Utils } from 'meteor/nova:core';
+import { Utils, getFragment, getFragmentName } from 'meteor/nova:core';
 
 export default function withDocument (options) {
   
-  const { queryName, collection, fragment, pollInterval = 20000 } = options,
-        fragmentName = fragment.definitions[0].name.value,
+  const { queryName, collection, pollInterval = 20000 } = options,
+        fragment = options.fragment || getFragment(options.fragmentName),
+        fragmentName = getFragmentName(fragment),
         singleResolverName = collection.options.resolvers.single.name;
 
   return graphql(gql`

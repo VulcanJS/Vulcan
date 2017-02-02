@@ -6,7 +6,7 @@ class FormGroup extends Component {
     return (
       <div className="form-section">
         {this.props.name === "default" ? null : <h3 className="form-section-heading">{this.props.label}</h3>}
-        {this.props.fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValue={this.props.updateCurrentValue} />)}
+        {this.props.fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} />)}
       </div>
     )
   }
@@ -17,7 +17,7 @@ FormGroup.propTypes = {
   label: React.PropTypes.string,
   order: React.PropTypes.number,
   fields: React.PropTypes.array,
-  updateCurrentValue: React.PropTypes.func
+  updateCurrentValues: React.PropTypes.func
 }
 
 export default FormGroup;

@@ -31,6 +31,11 @@
 .comments-item-meta{
   @include flex-center;
   margin-bottom: $vmargin;
+  
+  .comments-item-vote{
+    margin-right: 10px;
+  }
+
   .users-avatar{
     margin-right: 5px;
   }

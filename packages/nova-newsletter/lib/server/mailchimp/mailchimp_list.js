@@ -65,10 +65,10 @@ MailChimpList.add = function(userOrEmail, confirm, done){
         return {actionResult: 'subscribed'};
       }
       
-      throw new Meteor.Error("subscription-failed", error.message);
+      throw new Error("subscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
+    throw new Error("Please provide your MailChimp API key and list ID");
   }
 };
 
@@ -107,10 +107,10 @@ MailChimpList.remove = (user) => {
       return {actionResult: 'unsubscribed', ...subscribe};
 
     } catch (error) {
-      throw new Meteor.Error("unsubscription-failed", error.message);
+      throw new Error("unsubscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
+    throw new Error("Please provide your MailChimp API key and list ID");
   }
 };
 

@@ -1,36 +1,39 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-export const configureStore = (reducers, initialState = {}, middleware) => createStore(
-  // reducers 
+export const configureStore = (reducers, initialState = {}, middlewares) => createStore(
+  // reducers
   combineReducers(reducers),
   // initial state
   initialState,
   // middleware
   compose(
-    applyMiddleware(...middleware),
+    applyMiddleware(...middlewares),
     typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
 
-export let Actions = {};
+let actions = {};
 export const addAction = addedAction => {
-  Actions = {...Actions, ...addedAction};
-  
-  return Actions;
-};
+  actions = {...actions, ...addedAction};
 
-export let Reducers = {};
+  return actions;
+};
+export const getActions = () => actions;
+
+let reducers = {};
 export const addReducer = addedReducer => {
-  Reducers = {...Reducers, ...addedReducer};
-  
-  return Reducers;
-};
+  reducers = {...reducers, ...addedReducer};
 
-export let Middleware = [];
+  return reducers;
+};
+export const getReducers = () => reducers;
+
+let middlewares = [];
 export const addMiddleware = middlewareOrMiddlewareArray => {
   const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
-  
-  Middleware = [...Middleware, ...addedMiddleware];
-  
-  return Middleware;
+
+  middlewares = [...middlewares, ...addedMiddleware];
+
+  return middlewares;
 };
+export const getMiddlewares = () => middlewares;

@@ -1,8 +1,6 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:lib'; // TODO move Telescope.statuses elswhere
 import Users from 'meteor/nova:users';
-import marked from 'marked';
 import Posts from './collection.js';
-import { Utils, getSetting } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
@@ -90,13 +88,6 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     publish: true,
-    autoValue: (documentOrModifier) => {
-      // if title is changing, return new slug
-      const newTitle = documentOrModifier.title || documentOrModifier.$set && documentOrModifier.$set.title
-      if (newTitle) {
-        return Utils.slugify(newTitle)
-      }
-    }
   },
   /**
     Post body (markdown)
@@ -120,14 +111,6 @@ const schema = {
     optional: true,
     publish: true,
     viewableBy: ['guests'],
-    autoValue(documentOrModifier) {
-      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
-      if (body) {
-        return Utils.sanitize(marked(body))
-      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
-        return ''
-      }
-    }
   },
   /**
    Post Excerpt
@@ -135,18 +118,8 @@ const schema = {
   excerpt: {
     type: String,
     optional: true,
-    max: 255, //should not be changed the 255 is max we should load for each post/item
     publish: true,
     viewableBy: ['guests'],
-    autoValue(documentOrModifier) {
-      const excerptLength = getSetting('postExcerptLength', 30);
-      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
-      if (body) {
-        return Utils.trimHTML(Utils.sanitize(marked(body)), excerptLength);
-      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
-        return ''
-      }
-    }
   },
   /**
     Count of how many times the post's page was viewed

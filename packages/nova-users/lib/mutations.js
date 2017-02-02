@@ -1,8 +1,8 @@
-import { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
+import { newMutation, editMutation, removeMutation, Utils } from 'meteor/nova:lib';
 import Users from './collection'; // circular dependency?
 
 const performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
 };
 
 const mutations = {

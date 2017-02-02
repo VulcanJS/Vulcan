@@ -1,6 +1,5 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React from 'react';
-import { withCurrentUser } from 'meteor/nova:core';
 
 const UsersAccount = (props, context) => {
   // note: terms is as the same as a document-shape the SmartForm edit-mode expects to receive

@@ -1,4 +1,4 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:core';
 import React from 'react';
 
 const CommentsLoadMore = ({loadMore, count, totalCount}) => {

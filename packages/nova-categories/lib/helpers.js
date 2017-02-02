@@ -60,6 +60,7 @@ Categories.getUrl = function (category, isAbsolute) {
  * @summary Get a category's counter name
  * @param {Object} category
  */
- Categories.getCounterName = function (category) {
+Categories.getCounterName = function (category) {
   return category._id + "-postsCount";
- }
+}
+

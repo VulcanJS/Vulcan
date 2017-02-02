@@ -10,7 +10,8 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   api.use([
-    'nova:lib@1.0.0'
+    'nova:core@1.0.0',
+    'nova:posts@1.0.0', // needed to track posts click
   ]);
 
   api.mainModule("lib/server.js", "server");

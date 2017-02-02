@@ -16,7 +16,7 @@ class DateTime extends Component {
   }
 
   updateDate(date) {
-    this.context.updateCurrentValue(this.props.name, date);
+    this.context.updateCurrentValues({[this.props.name]: date});
   }
 
   render() {
@@ -48,7 +48,7 @@ DateTime.propTypes = {
 
 DateTime.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
 };
 
 export default DateTime;

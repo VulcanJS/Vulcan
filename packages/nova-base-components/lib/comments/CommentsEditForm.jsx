@@ -1,7 +1,6 @@
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import Comments from "meteor/nova:comments";
-import { withMessages } from 'meteor/nova:core';
 
 const CommentsEditForm = (props, context) => {
   return (
@@ -14,7 +13,7 @@ const CommentsEditForm = (props, context) => {
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}
         showRemove={true}
-        mutationFragment={getRawComponent('PostsCommentsThread').fragment}
+        mutationFragment={getFragment('CommentsList')}
       />
     </div>
   )

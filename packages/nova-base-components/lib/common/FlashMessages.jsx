@@ -1,5 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
-import { withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, withMessages } from 'meteor/nova:core';
 import React from 'react';
 
 const FlashMessages = ({messages, clear, markAsSeen}) => {

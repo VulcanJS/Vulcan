@@ -1,95 +1,104 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/nova:core';
-import React from 'react';
+import { Components, registerComponent, withDocument, withCurrentUser, getActions, withMutation } from 'meteor/nova:core';
 import Posts from 'meteor/nova:posts';
-import gql from 'graphql-tag';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const PostsPage = (props) => {
+class PostsPage extends Component {
+  
+  render() {
+    if (this.props.loading) {
+      
+      return <div className="posts-page"><Components.Loading/></div>
+      
+    } else {
+      
+      const post = this.props.document;
 
-  if (props.loading) {
+      const htmlBody = {__html: post.htmlBody};
 
-    return <div className="posts-page"><Components.Loading/></div>
+      return (
+        <div className="posts-page">
+          <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} description={post.excerpt} />
+          
+          <Components.PostsItem post={post} currentUser={this.props.currentUser} />
 
-  } else {
+          {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
-    const post = props.document;
+          <Components.PostsCommentsThread terms={{postId: post._id}} />
 
-    const htmlBody = {__html: post.htmlBody};
-
-    return (
-      <div className="posts-page">
-        <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
-        
-        <Components.PostsItem post={post} currentUser={props.currentUser} />
-
-        {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
-
-        {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
-
-        <Components.PostsCommentsThread terms={{postId: post._id}} />
-
-      </div> 
-    )
+        </div> 
+      );
+      
+    }
   }
-};
+  
+  // triggered after the component did mount on the client
+  async componentDidMount() {
+    try {
+      
+      // destructure the relevant props
+      const { 
+        // from the parent component, used in withDocument, GraphQL HOC
+        documentId,
+        // from connect, Redux HOC 
+        setViewed, 
+        postsViewed, 
+        // from withMutation, GraphQL HOC
+        increasePostViewCount,
+      } = this.props;
+      
+      // a post id has been found & it's has not been seen yet on this client session
+      if (documentId && !postsViewed.includes(documentId)) {
+        
+        // trigger the asynchronous mutation with postId as an argument
+        await increasePostViewCount({postId: documentId});
+        
+        // once the mutation is done, update the redux store
+        setViewed(documentId);
+      }
+      
+    } catch(error) {
+      console.log(error); // eslint-disable-line
+    }
+  }
+}
 
 PostsPage.displayName = "PostsPage";
 
 PostsPage.propTypes = {
-  document: React.PropTypes.object
+  documentId: PropTypes.string,
+  document: PropTypes.object,
+  postsViewed: PropTypes.array,
+  setViewed: PropTypes.func,
+  increasePostViewCount: PropTypes.func,
 }
 
-PostsPage.fragment = gql` 
-  fragment PostsSingleFragment on Post {
-    _id
-    title
-    url
-    body # extra
-    htmlBody # extra
-    slug
-    thumbnailUrl
-    baseScore
-    postedAt
-    sticky
-    status
-    categories {
-      # ...minimumCategoryInfo
-      _id
-      name
-      slug
-    }
-    commentCount
-    commenters {
-      # ...avatarUserInfo
-      _id
-      displayName
-      emailHash
-      slug
-    }
-    upvoters {
-      _id
-    }
-    downvoters {
-      _id
-    }
-    upvotes # should be asked only for admins?
-    score # should be asked only for admins?
-    viewCount # should be asked only for admins?
-    clickCount # should be asked only for admins?
-    user {
-      # ...avatarUserInfo
-      _id
-      displayName
-      emailHash
-      slug
-    }
-    userId
-  }
-`;
-
-const options = {
+const queryOptions = {
   collection: Posts,
   queryName: 'postsSingleQuery',
-  fragment: PostsPage.fragment,
+  fragmentName: 'PostsPage',
 };
 
-registerComponent('PostsPage', PostsPage, withCurrentUser, withDocument(options));
+const mutationOptions = {
+  name: 'increasePostViewCount',
+  args: {postId: 'String'},
+};
+
+const mapStateToProps = state => ({ postsViewed: state.postsViewed });
+const mapDispatchToProps = dispatch => bindActionCreators(getActions().postsViewed, dispatch);
+
+registerComponent(
+  // component name used by Nova
+  'PostsPage', 
+  // React component 
+  PostsPage,
+  // HOC to give access to the current user
+  withCurrentUser, 
+  // HOC to load the data of the document, based on queryOptions & a documentId props
+  [withDocument, queryOptions], 
+  // HOC to provide a single mutation, based on mutationOptions
+  withMutation(mutationOptions), 
+  // HOC to give access to the redux store & related actions
+  connect(mapStateToProps, mapDispatchToProps)
+);

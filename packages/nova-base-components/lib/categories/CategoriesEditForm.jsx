@@ -1,23 +1,25 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import Categories from "meteor/nova:categories";
-import { withMessages } from 'meteor/nova:core';
 
 const CategoriesEditForm = (props, context) => {
 
   return (
     <div className="categories-edit-form">
+      <div className="categories-edit-form-admin">
+        <div className="categories-edit-form-id">ID: {props.category._id}</div>
+      </div>
       <Components.SmartForm
         collection={Categories}
         documentId={props.category._id}
-        mutationFragment={getRawComponent('CategoriesList').fragment}
+        mutationFragment={getFragment('CategoriesList')}
         successCallback={category => {
-          props.closeCallback();
+          props.closeModal();
           props.flash(context.intl.formatMessage({id: 'categories.edit_success'}, {name: category.name}), "success");
         }}
         removeSuccessCallback={({documentId, documentTitle}) => {
-          props.closeCallback();
+          props.closeModal();
           props.flash(context.intl.formatMessage({id: 'categories.delete_success'}, {name: documentTitle}), "success");
           // context.events.track("category deleted", {_id: documentId});
         }}
@@ -30,7 +32,7 @@ const CategoriesEditForm = (props, context) => {
 
 CategoriesEditForm.propTypes = {
   category: React.PropTypes.object.isRequired,
-  closeCallback: React.PropTypes.func,
+  closeModal: React.PropTypes.func,
   flash: React.PropTypes.func,
 }
 

@@ -1,6 +1,5 @@
 import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
 
 class ModalTrigger extends Component {
@@ -58,4 +57,6 @@ ModalTrigger.defaultProps = {
   size: "large"
 }
 
-export default registerComponent('ModalTrigger', ModalTrigger);
+registerComponent('ModalTrigger', ModalTrigger);
+
+export default ModalTrigger;

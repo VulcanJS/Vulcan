@@ -9,6 +9,7 @@ Options:
   - queryName: an arbitrary name for the query
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
+  - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   
@@ -36,18 +37,24 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, Utils } from 'meteor/nova:core';
+import { getSetting, getFragment, getFragmentName } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
+import { withApollo } from 'react-apollo';
 
 const withList = (options) => {
 
-  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
-        fragmentName = fragment.definitions[0].name.value,
+  const { queryName, collection, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
+        fragment = options.fragment || getFragment(options.fragmentName),
+        fragmentName = getFragmentName(fragment),
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
 
+
   return compose(
+
+    // wrap component with Apollo HoC to give it access to the store
+    withApollo, 
 
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
@@ -79,7 +86,7 @@ const withList = (options) => {
         alias: 'withList',
         
         // graphql query options
-        options({terms, paginationTerms}) {
+        options({terms, paginationTerms, client: apolloClient}) {
           const mergedTerms = {...terms, ...paginationTerms};
           return {
             variables: {
@@ -90,7 +97,7 @@ const withList = (options) => {
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName);
+              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
             
             },
           };
@@ -157,7 +164,7 @@ const withList = (options) => {
 
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName) => {
+const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
 
   const newMutationName = `${collection._name}New`;
   const editMutationName = `${collection._name}Edit`;
@@ -166,7 +173,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   let newResults = previousResults;
 
   // get mongo selector and options objects based on current terms
-  const { selector, options } = collection.getParameters(mergedTerms);
+  const { selector, options } = collection.getParameters(mergedTerms, apolloClient);
   const mingoQuery = Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below

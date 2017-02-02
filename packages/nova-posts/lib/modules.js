@@ -13,5 +13,6 @@ import './emails.js';
 import './permissions.js';
 import './resolvers.js';
 import './mutations.js';
+import './redux.js';
 
 export default Posts;
