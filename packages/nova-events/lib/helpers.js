@@ -1,4 +1,5 @@
 import { getSetting } from 'meteor/nova:core';
+import Events from './collection.js';
 
 /*
 
@@ -47,7 +48,7 @@ export const initGoogleAnalytics = () => {
   
 */
 
-export const mutationAnalyticsAsync = (analytics, hook, document, user) => {
+export const requestAnalyticsAsync = (analytics, hook, document, user) => {
   
   if (hook.includes('users')) {
     // if the mutation is related to users, use analytics.identify
@@ -56,14 +57,22 @@ export const mutationAnalyticsAsync = (analytics, hook, document, user) => {
     // note: on users.new.async, user is undefined
     const userId = user ? user._id : document._id;
     
+    if (document.services.password) {
+      delete document.services.password;
+    }
+    
+    if (document.services.resume) {
+      delete document.services.resume;
+    }
+    
     const data = {
       userId,
       traits: document,
     };
     
     // uncomment for debug
-    // console.log(`// dispatching identify on "${hook}" (user ${userId})`);
-    // console.log(data);
+    console.log(`// dispatching identify on "${hook}" (user ${userId})`);
+    console.log(data);
     
     analytics.identify(data);
     
@@ -78,9 +87,23 @@ export const mutationAnalyticsAsync = (analytics, hook, document, user) => {
     };
     
     // uncomment for debug
-    // console.log(`// dispatching track on "${hook}"`);
-    // console.log(data);
+    console.log(`// dispatching track on "${hook}"`);
+    console.log(data);
     
     analytics.track(data);  
   }
 }
+
+// collection based logging
+Events.log = function (event) {
+
+  // if event is supposed to be unique, check if it has already been logged
+  if (!!event.unique && !!Events.findOne({name: event.name})) {
+    return;
+  }
+
+  event.createdAt = new Date();
+
+  Events.insert(event);
+
+};
