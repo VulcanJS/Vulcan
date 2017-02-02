@@ -1,10 +1,9 @@
-import gql from 'graphql-tag';
 import { registerFragment, getFragment } from 'meteor/nova:core';
 
 // ------------------------------ Vote ------------------------------ //
 
 // note: fragment used by default on the UsersProfile fragment
-registerFragment(gql`
+registerFragment(`
   fragment VotedItem on Vote {
     # nova:voting
     itemId
@@ -16,7 +15,7 @@ registerFragment(gql`
 // ------------------------------ Users ------------------------------ //
 
 // note: fragment used by default on UsersProfile, PostsList & CommentsList fragments
-registerFragment(gql`
+registerFragment(`
   fragment UsersMinimumInfo on User {
     # nova:users
     _id
@@ -27,7 +26,7 @@ registerFragment(gql`
   }
 `);
 
-registerFragment(gql`
+registerFragment(`
   fragment UsersProfile on User {
     # nova:users
     ...UsersMinimumInfo
@@ -62,14 +61,12 @@ registerFragment(gql`
       ...VotedItem
     }
   }
-  ${getFragment('UsersMinimumInfo')}
-  ${getFragment('VotedItem')}
 `);
 
 // ------------------------------ Categories ------------------------------ //
 
 // note: fragment used by default on CategoriesList & PostsList fragments
-registerFragment(gql`
+registerFragment(`
   fragment CategoriesMinimumInfo on Category {
     # nova:categories
     _id
@@ -78,7 +75,7 @@ registerFragment(gql`
   }
 `);
 
-registerFragment(gql`
+registerFragment(`
   fragment CategoriesList on Category {
     # nova:categories
     ...CategoriesMinimumInfo
@@ -90,12 +87,11 @@ registerFragment(gql`
       ...CategoriesMinimumInfo
     }
   }
-  ${getFragment('CategoriesMinimumInfo')}
 `);
 
 // ------------------------------ Posts ------------------------------ //
 
-const PostsFragment = gql`
+registerFragment(`
   fragment PostsList on Post {
     # nova:posts
     _id
@@ -138,17 +134,18 @@ const PostsFragment = gql`
     baseScore
     score
   }
-  ${getFragment('UsersMinimumInfo')}
-  ${getFragment('CategoriesMinimumInfo')}
-`;
+`);
 
-registerFragment(PostsFragment);
-// note: also register the same fragment as "PostsPage"
-registerFragment(PostsFragment, 'PostsPage');
+registerFragment(`
+  fragment PostsPage on Post {
+    ...PostsList
+  }
+`);
+
 
 // ----------------------------- Comments ------------------------------ //
 
-registerFragment(gql`
+registerFragment(`
   fragment CommentsList on Comment {
     # nova:comments
     _id
@@ -183,5 +180,4 @@ registerFragment(gql`
     baseScore
     score
   }
-  ${getFragment('UsersMinimumInfo')}
 `);
