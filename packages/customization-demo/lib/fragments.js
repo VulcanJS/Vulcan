@@ -1,11 +1,9 @@
-import { registerFragment, getFragment } from 'meteor/nova:lib';
+import { extendFragment } from 'meteor/nova:lib';
 
-const CustomPostsListFragment = `
-  fragment CustomPostsList on Post {
-    ...PostsList
-    color # new custom property!
-  }
-`;
+extendFragment('PostsList', `
+  color # new custom property!
+`);
 
-registerFragment(CustomPostsListFragment, 'PostsList');
-registerFragment(CustomPostsListFragment, 'PostsPage');
+extendFragment('PostsPage', `
+  color # new custom property!
+`);
