@@ -16,18 +16,18 @@ const UsersAvatar = ({user, size, link}) => {
     display: "inline-block",
     height: sizes[size],
     width: sizes[size]
-  }; 
+  };
 
   const imgStyle = {
     borderRadius: "100%",
     display: "block",
     height: sizes[size],
     width: sizes[size]
-  }; 
+  };
 
   const avatarUrl = Users.avatar.getUrl(user);
 
-  const img = <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={avatarUrl}/>;
+  const img = <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={avatarUrl} title={user.username}/>;
   const initials = <span className="avatar-initials"><span>{Users.avatar.getInitials(user)}</span></span>;
 
   const avatar = avatarUrl ? img : initials;
