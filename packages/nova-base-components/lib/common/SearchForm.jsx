@@ -1,4 +1,4 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import Formsy from 'formsy-react';

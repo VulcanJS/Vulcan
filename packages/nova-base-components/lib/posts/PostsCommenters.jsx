@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React from 'react';
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";

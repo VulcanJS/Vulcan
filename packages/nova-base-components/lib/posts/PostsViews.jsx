@@ -1,11 +1,10 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:core';
 
 const PostsViews = (props, context) => {
 

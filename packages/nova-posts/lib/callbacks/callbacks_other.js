@@ -1,17 +1,7 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:core';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
-
-// // ------------------------------------- posts.remove.validate -------------------------------- //
-
-// function PostsRemoveValidation (post, currentUser) {
-//   if (!currentUser || !Users.canEdit(currentUser, post)){
-//     throw new Meteor.Error(606, 'You need permission to edit or delete a post');
-//   }
-//   return post;
-// }
-// addCallback("posts.remove.validate", PostsRemoveValidation);
 
 // ------------------------------------- posts.remove.sync -------------------------------- //
 
@@ -49,7 +39,7 @@ addCallback("posts.approve.async", PostsApprovedNotification);
 
 function UsersRemoveDeletePosts (user, options) {
   if (options.deletePosts) {
-    var deletedPosts = Posts.remove({userId: userId});
+    Posts.remove({userId: user._id});
   } else {
     // not sure if anything should be done in that scenario yet
     // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});

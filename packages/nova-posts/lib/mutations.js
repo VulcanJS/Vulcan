@@ -1,8 +1,8 @@
-import { newMutation, editMutation, removeMutation, GraphQLSchema } from 'meteor/nova:core';
+import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 
 const performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
 };
 
 const mutations = {

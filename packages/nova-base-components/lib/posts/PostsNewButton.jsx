@@ -1,10 +1,7 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { ModalTrigger } from "meteor/nova:core";
-import Posts from "meteor/nova:posts";
-import { withCurrentUser } from 'meteor/nova:core';
 
 const PostsNewButton = (props, context) => {
 

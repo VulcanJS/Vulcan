@@ -109,12 +109,12 @@ function usersEditCheckEmail (modifier, user) {
   // if email is being modified, update user.emails too
   if (modifier.$set && modifier.$set.email) {
 
-    var newEmail = modifier.$set.email;
+    const newEmail = modifier.$set.email;
 
     // check for existing emails and throw error if necessary
-    var userWithSameEmail = Users.findByEmail(newEmail);
+    const userWithSameEmail = Users.findByEmail(newEmail);
     if (userWithSameEmail && userWithSameEmail._id !== user._id) {
-      throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
+      throw new Error(Utils.encodeIntlError({id:"users.email_already_taken", value: newEmail}));
     }
 
     // if user.emails exists, change it too

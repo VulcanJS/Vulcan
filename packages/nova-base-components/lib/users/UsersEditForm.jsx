@@ -1,8 +1,7 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Users from 'meteor/nova:users';
-import { ShowIf, withCurrentUser, withMessages } from 'meteor/nova:core';
 
 const UsersEditForm = (props, context) => {
   return (

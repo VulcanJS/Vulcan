@@ -27,6 +27,7 @@ to the client.
 
 */
 
+import { Utils } from './utils';
 import { runCallbacks, runCallbacksAsync } from './callbacks.js';
 
 export const newMutation = ({ collection, document, currentUser, validate, context }) => {
@@ -48,7 +49,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
     _.keys(newDocument).forEach(function (fieldName) {
       var field = schema[fieldName];
       if (!context.Users.canInsertField (currentUser, field)) {
-        throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
+        throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
       }
     });
 
@@ -110,7 +111,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     modifiedProperties.forEach(function (fieldName) {
       var field = schema[fieldName];
       if (!context.Users.canEditField(currentUser, field, document)) {
-        throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
+        throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
       }
     });
 

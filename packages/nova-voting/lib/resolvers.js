@@ -1,4 +1,4 @@
-import { GraphQLSchema } from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 const specificResolvers = {
   Post: {

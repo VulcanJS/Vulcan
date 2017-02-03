@@ -1,6 +1,5 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React from 'react';
-import Users from 'meteor/nova:users';
 
 const UsersSingle = (props, context) => {
   return <Components.UsersProfile userId={props.params._id} slug={props.params.slug} />

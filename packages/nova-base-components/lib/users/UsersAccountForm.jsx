@@ -1,4 +1,4 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';

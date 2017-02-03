@@ -54,7 +54,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
     operation === "cancelUpvote" && !hasUpvotedItem ||
     operation === "cancelDownvote" && !hasDownvotedItem
   ) {
-    throw new Meteor.Error(`Cannot perform operation "${collectionName}.${operation}"`);
+    throw new Error(`Cannot perform operation "${collectionName}.${operation}"`);
   }
 
   // ------------------------------ Sync Callbacks ------------------------------ //

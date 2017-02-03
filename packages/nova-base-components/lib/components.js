@@ -56,10 +56,6 @@ import './categories/Category.jsx';
 import './categories/CategoriesEditForm.jsx';
 import './categories/CategoriesNewForm.jsx';
 
-// permissions
-
-import './permissions/CanDo.jsx';
-
 // users
 
 import './users/UsersSingle.jsx';

@@ -27,32 +27,32 @@ const resolver = {
       const currentUser = context.currentUser;
       const user = Users.findOne({_id: args.userId});
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
-        throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
+        throw new Error(601, 'sorry_you_cannot_edit_this_user');
       }
       try {
         return MailChimpList.add(user, false);
       } catch (error) {
-        throw new Meteor.Error(500, error.message);
+        throw new Error(500, error.message);
       }
     },
     addEmailNewsletter(root, {email}, context) {
       try {
         return MailChimpList.add(email, true);
       } catch (error) {
-        throw new Meteor.Error(500, error.message);
+        throw new Error(500, error.message);
       }
     },
     removeUserNewsletter(root, { userId }, context) {
       const currentUser = context.currentUser;
       const user = Users.findOne({_id: userId});
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
-        throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
+        throw new Error(601, 'sorry_you_cannot_edit_this_user');
       }
       
       try {
         return MailChimpList.remove(user);
       } catch (error) {
-        throw new Meteor.Error(500, error.message);
+        throw new Error(500, error.message);
       }
     },
   },

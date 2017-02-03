@@ -246,20 +246,20 @@ class Form extends Component {
           delete e[key];
         }
       });
-      this.setState({
+      this.setState(prevState => ({
         currentValues: e
-      });
+      }));
     }
   }
 
   // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
   updateCurrentValues(newValues) {
-  	// keep the previous ones and extend (with possible replacement) with new ones
+    // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => ({
-  		currentValues: {
-  			...prevState.currentValues,
-  			...newValues,
-  		}
+      currentValues: {
+        ...prevState.currentValues,
+        ...newValues,
+      }
     }));
   }
 
@@ -287,41 +287,66 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
-    return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
+    return <div className="form-errors">{this.state.errors.map((message, index) => <Flash key={index} message={message}/>)}</div>
   }
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // add error to state
-  throwError(error) {
-    this.setState({
-      errors: [error]
-    });
+  // add error to form state 
+  // from "GraphQL Error: You have an error [error_code]"
+  // to { content: "You have an error", type: "error" }
+  throwError(errorMessage) {
+
+    let strippedError = errorMessage;
+    
+    // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
+    const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
+    if (graphqlPrefixIsPresent) {
+      strippedError = graphqlPrefixIsPresent[1];
+    }
+    
+    // strip the error code if present
+    const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
+    if (errorCodeIsPresent) {
+      strippedError = errorCodeIsPresent[1];
+    }
+    
+    // internationalize the error if necessary
+    const intlError = Utils.decodeIntlError(strippedError);
+    if(typeof intlError === 'object') {
+      const { id, value = "" } = intlError;
+      strippedError = this.context.intl.formatMessage({id}, {value});
+    }
+
+    // build the error for the Flash component and only keep the interesting message
+    const error = {
+      content: strippedError,
+      type: 'error'
+    };
+    
+    // update the state with unique errors messages
+    this.setState(prevState => ({
+      errors: _.uniq([...prevState.errors, error])
+    }));
   }
 
   // add something to prefilled values
   addToAutofilledValues(property) {
-    this.setState(function(state){
-      return {
-        autofilledValues: {
-          ...state.autofilledValues,
-          ...property
-        }
-      };
-    });
-  }
-
-  // clear value
-  clearValue(property) {
-
+    this.setState(prevState => ({
+      autofilledValues: {
+        ...prevState.autofilledValues,
+        ...property
+      }
+    }));
   }
 
   // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
+      clearForm: this.clearForm,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       updateCurrentValues: this.updateCurrentValues,
@@ -367,17 +392,14 @@ class Form extends Component {
   // catch graphql errors
   mutationErrorCallback(error) {
 
-    this.setState({disabled: false});
+    this.setState(prevState => ({disabled: false}));
 
-    console.log("// graphQL Error");
-    console.log(error);
-
+    console.log("// graphQL Error"); // eslint-disable-line no-console
+    console.log(error); // eslint-disable-line no-console
+    
     if (!_.isEmpty(error)) {
       // add error to state
-      this.throwError({
-        content: error.message,
-        type: "error"
-      });
+      this.throwError(error.message);
     }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
@@ -387,12 +409,12 @@ class Form extends Component {
 
   // submit form handler
   submitForm(data) {
-    this.setState({disabled: true});
+    this.setState(prevState => ({disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
     data = {
-      ...this.state.autofilledValues, // ex: can be values from EmbedlyURL or NewsletterSubscribe component
+      ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
     };
@@ -495,30 +517,30 @@ class Form extends Component {
 Form.propTypes = {
 
   // main options
-  collection: React.PropTypes.object,
-  document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  schema: React.PropTypes.object, // usually not needed
+  collection: PropTypes.object,
+  document: PropTypes.object, // if a document is passed, this will be an edit form
+  schema: PropTypes.object, // usually not needed
 
   // graphQL
-  newMutation: React.PropTypes.func, // the new mutation
-  editMutation: React.PropTypes.func, // the edit mutation
-  removeMutation: React.PropTypes.func, // the remove mutation
+  newMutation: PropTypes.func, // the new mutation
+  editMutation: PropTypes.func, // the edit mutation
+  removeMutation: PropTypes.func, // the remove mutation
 
   // form
-  prefilledProps: React.PropTypes.object,
-  layout: React.PropTypes.string,
-  fields: React.PropTypes.arrayOf(React.PropTypes.string),
-  showRemove: React.PropTypes.bool,
+  prefilledProps: PropTypes.object,
+  layout: PropTypes.string,
+  fields: PropTypes.arrayOf(PropTypes.string),
+  showRemove: PropTypes.bool,
 
   // callbacks
-  submitCallback: React.PropTypes.func,
-  successCallback: React.PropTypes.func,
-  removeSuccessCallback: React.PropTypes.func,
-  errorCallback: React.PropTypes.func,
-  cancelCallback: React.PropTypes.func,
+  submitCallback: PropTypes.func,
+  successCallback: PropTypes.func,
+  removeSuccessCallback: PropTypes.func,
+  errorCallback: PropTypes.func,
+  cancelCallback: PropTypes.func,
 
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  client: PropTypes.object,
 }
 
 Form.defaultProps = {
@@ -530,11 +552,12 @@ Form.contextTypes = {
 }
 
 Form.childContextTypes = {
-  autofilledValues: React.PropTypes.object,
-  addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValues: React.PropTypes.func,
-  throwError: React.PropTypes.func,
-  getDocument: React.PropTypes.func
+  autofilledValues: PropTypes.object,
+  addToAutofilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
+  throwError: PropTypes.func,
+  clearForm: PropTypes.func,
+  getDocument: PropTypes.func
 }
 
 module.exports = Form

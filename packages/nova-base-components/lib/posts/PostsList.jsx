@@ -1,8 +1,6 @@
-import { Components, getRawComponent, registerComponent } from 'meteor/nova:lib';
+import { Components, getRawComponent, registerComponent, withList, withCurrentUser } from 'meteor/nova:core';
 import React from 'react';
-import { withList } from 'meteor/nova:core';
 import Posts from 'meteor/nova:posts';
-import { withCurrentUser } from 'meteor/nova:core';
 import { Alert } from 'react-bootstrap';
 
 const PostsList = (props) => {

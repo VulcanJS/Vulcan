@@ -1,4 +1,4 @@
-import { extendFragment } from 'meteor/nova:lib';
+import { extendFragment } from 'meteor/nova:core';
 
 extendFragment('PostsList', `
   color # new custom property!
