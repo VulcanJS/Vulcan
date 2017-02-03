@@ -1,5 +1,4 @@
-import { Components, registerComponent, getRawComponent, getFragment } from 'meteor/nova:core';
-import { ShowIf, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, getRawComponent, getFragment, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';

@@ -1,8 +1,7 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
 
 class NewsletterButton extends Component {
   constructor(props) {

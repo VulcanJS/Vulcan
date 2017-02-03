@@ -27,7 +27,7 @@ function PostsNewRateLimit (post, user) {
 
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-      throw new Error(605, 'sorry_you_cannot_submit_more_than'+maxPostsPer24Hours+'posts_per_day');
+      throw new Error(Utils.encodeIntlError({id: "posts.max_per_day", value: postInterval-timeSinceLastPost}));
 
   }
 

@@ -7,8 +7,7 @@ Wrapped with the "withCurrentUser" container.
 
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { ModalTrigger } from 'meteor/nova:core';
-import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, ModalTrigger } from 'meteor/nova:core';
 import Movies from '../collection.js';
 
 class MoviesItem extends Component {

@@ -43,6 +43,7 @@ addStrings('en', {
   "posts.unsubscribed": "You have unsubscribed from “{name}” comments.",
   "posts.subscribed_posts" : "Posts subscribed to",
   "posts.link_already_posted": "This link has already been posted.",
+  "posts.max_per_day": "Sorry you cannot submit more than {value} posts per day.",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",

@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import NovaEmail from 'meteor/nova:email';

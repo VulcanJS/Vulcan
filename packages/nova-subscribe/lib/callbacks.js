@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import { Callbacks, addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
 

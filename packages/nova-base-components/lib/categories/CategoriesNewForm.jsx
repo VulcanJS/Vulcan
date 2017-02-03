@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import { Components, registerComponent, getFragment } from 'meteor/nova:lib';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import Categories from "meteor/nova:categories";
-import { withMessages } from 'meteor/nova:core';
 
 const CategoriesNewForm = (props, context) => {
 

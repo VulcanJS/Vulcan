@@ -1,10 +1,8 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, ModalTrigger } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
-import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
-// import { withCurrentUser } from 'meteor/nova:core';
 
 class PostsItem extends Component {
 

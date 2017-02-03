@@ -1,6 +1,5 @@
-import { Components } from 'meteor/nova:lib';
+import { Components, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import { withMessages } from 'meteor/nova:core';
 import { intlShape } from 'react-intl';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)

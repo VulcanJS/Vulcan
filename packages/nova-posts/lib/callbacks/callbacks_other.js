@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:core';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';

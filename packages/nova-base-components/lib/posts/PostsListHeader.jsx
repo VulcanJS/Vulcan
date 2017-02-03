@@ -1,6 +1,5 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:core';
 import React from 'react';
-import Categories from "meteor/nova:categories";
 
 const PostsListHeader = () => {
 
