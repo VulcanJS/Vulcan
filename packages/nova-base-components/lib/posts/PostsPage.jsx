@@ -3,6 +3,7 @@ import Posts from 'meteor/nova:posts';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { FormattedMessage } from 'react-intl';
 
 class PostsPage extends Component {
   
@@ -11,8 +12,12 @@ class PostsPage extends Component {
       
       return <div className="posts-page"><Components.Loading/></div>
       
-    } else {
+    } else if (!this.props.document) {
       
+      console.log(`// missing post (_id: ${this.props.documentId})`);
+      return <div className="posts-page"><FormattedMessage id="app.404"/></div> 
+
+    } else {
       const post = this.props.document;
 
       const htmlBody = {__html: post.htmlBody};
