@@ -9,6 +9,7 @@ import './deep_extend.js';
 import './intl-polyfill.js';
 import './graphql.js';
 import './icons.js';
+import './mongo-redux.js';
 
 export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp } from './components.js';
 export { createCollection } from './collections.js';
