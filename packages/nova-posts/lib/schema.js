@@ -34,7 +34,6 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['admins'],
-    publish: true, // publish so that admins can sort pending posts by createdAt
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }

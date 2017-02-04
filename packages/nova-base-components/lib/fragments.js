@@ -1,4 +1,4 @@
-import { registerFragment } from 'meteor/nova:core';
+import { registerFragment, getFragment } from 'meteor/nova:core';
 
 // ------------------------------ Vote ------------------------------ //
 
@@ -99,6 +99,7 @@ registerFragment(`
     url
     slug
     postedAt
+    createdAt
     sticky
     status
     body
