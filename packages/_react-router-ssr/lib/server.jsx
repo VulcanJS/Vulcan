@@ -238,6 +238,7 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       InjectData.pushData(res, 'fast-render-data', data);
     }
     catch(err) {
+      console.log(err)
       console.error(new Date(), 'error while server-rendering', err.stack);
     }
   });

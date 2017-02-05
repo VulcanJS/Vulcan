@@ -33,7 +33,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
     }
 
     // get all categories passed in terms
-    const categories = Meteor.isClient ? _.filter(getCategories(apolloClient), category => _.contains(slugs, category.slug) ) : Categories.find(selector).fetch();
+    const categories = !!apolloClient ? _.filter(getCategories(apolloClient), category => _.contains(slugs, category.slug) ) : Categories.find(selector).fetch();
     
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {

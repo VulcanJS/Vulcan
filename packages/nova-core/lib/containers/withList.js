@@ -110,7 +110,8 @@ const withList = (options) => {
                 // results = Utils.convertDates(collection, props.data[listResolverName]),
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
-                networkStatus = props.data.networkStatus;
+                networkStatus = props.data.networkStatus,
+                error = props.data.error;
 
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
@@ -120,6 +121,7 @@ const withList = (options) => {
             totalCount,
             refetch,
             networkStatus,
+            error,
             count: results && results.length,
 
             // regular load more (reload everything)

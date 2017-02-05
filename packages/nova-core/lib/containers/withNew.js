@@ -24,12 +24,14 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { getFragment, getFragmentName } from 'meteor/nova:core';
 
 export default function withNew(options) {
 
   // get options
-  const { collection, fragment } = options,
-        fragmentName = fragment.definitions[0].name.value,
+  const { collection } = options,
+        fragment = options.fragment || getFragment(options.fragmentName),
+        fragmentName = getFragmentName(fragment),
         collectionName = collection._name,
         mutationName = collection.options.mutations.new.name;
 
