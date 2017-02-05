@@ -47,7 +47,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
 
       // configure apollo
       client = new ApolloClient(meteorClientConfig());
-      var apolloClientReducer = (state = initialState.apollo, action) => {
+      var apolloClientReducer = (state = initialState && initialState.apollo, action) => {
         return client.reducer()(state, action);
       };
       addReducer({apollo: apolloClientReducer});
