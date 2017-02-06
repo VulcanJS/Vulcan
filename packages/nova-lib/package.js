@@ -54,7 +54,7 @@ Package.onUse(function (api) {
   //   'Telescope'
   // ]);
 
-  api.mainModule("lib/server.js", "server");
-  api.mainModule("lib/client.js", "client");
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });
