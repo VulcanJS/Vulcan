@@ -2,7 +2,6 @@
 
 nova:core                       # core components and wrappers
 nova:forms                      # auto-generated forms
-nova:apollo                     # data layer
 nova:routing                    # routing and server-side rendering
 nova:email                      # email
 nova:users                      # user management and permissions

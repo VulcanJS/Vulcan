@@ -1,4 +1,6 @@
-import { store } from './store.js';
+import { renderContext } from './render_context.js';
+
+const { store } = renderContext.get();
 
 // use global store
 Mongo.Collection.prototype.findRedux = function (selector = {}, options = {}) {

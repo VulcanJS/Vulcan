@@ -1,5 +1,5 @@
 // import and re-export
-export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp, createCollection, Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute, getRoute, populateRoutesApp, Utils, getSetting, Strings, addStrings, configureStore, getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware, Headtags, Fragments, registerFragment, getFragment, getFragmentName, extendFragment } from 'meteor/nova:lib';
+export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp, createCollection, Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute, getRoute, populateRoutesApp, Utils, getSetting, Strings, addStrings, configureStore, getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware, Headtags, Fragments, registerFragment, getFragment, getFragmentName, extendFragment, createApolloClient } from 'meteor/nova:lib';
 
 import './callbacks.js';
 

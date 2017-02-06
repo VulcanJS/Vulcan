@@ -5,7 +5,7 @@ export const configureStore = (reducers, initialState = {}, middlewares) => crea
   combineReducers(reducers),
   // initial state
   initialState,
-  // middleware
+  // middlewares
   compose(
     applyMiddleware(...middlewares),
     typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f

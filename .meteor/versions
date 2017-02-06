@@ -17,7 +17,6 @@ boilerplate-generator@1.0.11
 caching-compiler@1.1.9
 callback-hook@1.0.10
 check@1.2.4
-chuangbo:cookie@1.1.0
 coffeescript@1.11.1_4
 dburles:collection-helpers@1.1.0
 ddp@1.2.5
@@ -49,10 +48,7 @@ logging@1.1.16
 mdg:validation-error@0.5.1
 meteor@1.6.0
 meteor-base@1.0.4
-meteorhacks:fast-render@2.16.0
-meteorhacks:inject-data@2.0.1-patch
 meteorhacks:inject-initial@1.0.4
-meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
 meteorhacks:subs-manager@1.6.4
 minifier-css@1.2.15
@@ -63,7 +59,6 @@ modules-runtime@0.7.7
 mongo@1.1.14
 mongo-id@1.0.6
 nova:api@1.0.0
-nova:apollo@1.0.0
 nova:base-components@1.0.0
 nova:base-styles@1.0.0
 nova:categories@1.0.0
@@ -99,7 +94,6 @@ rate-limit@1.0.6
 react-meteor-data@0.2.9
 reactive-dict@1.1.8
 reactive-var@1.0.11
-reactrouter:react-router-ssr@3.1.6-patch
 reload@1.1.11
 retry@1.0.9
 routepolicy@1.0.12

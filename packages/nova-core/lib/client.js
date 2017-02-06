@@ -1,3 +1,4 @@
-export * from './modules.js';
+import './client/auth.js';
 
-export { store } from 'meteor/nova:lib';
+export * from './modules.js';
+export * from './client/render_context.js';

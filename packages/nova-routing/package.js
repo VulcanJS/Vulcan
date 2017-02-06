@@ -12,10 +12,9 @@ Package.onUse(function (api) {
   api.use([
     // Nova packages
     'nova:core@1.0.0',
-    'nova:apollo@1.0.0',
   ]);
 
-  api.mainModule('lib/routing-server.jsx', 'server');
-  api.mainModule('lib/routing-client.jsx', 'client');
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });
