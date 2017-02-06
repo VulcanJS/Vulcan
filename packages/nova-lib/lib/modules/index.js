@@ -6,10 +6,10 @@ import './settings.js';
 import './collections.js';
 import './deep.js';
 import './deep_extend.js';
-import './intl-polyfill.js';
+import './intl_polyfill.js';
 import './graphql.js';
 import './icons.js';
-import './mongo-redux.js';
+import './mongo_redux.js';
 
 export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp } from './components.js';
 export { createCollection } from './collections.js';
