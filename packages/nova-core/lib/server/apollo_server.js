@@ -14,7 +14,7 @@ import { _ } from 'meteor/underscore';
 
 import Users from 'meteor/nova:users';
 
-import { GraphQLSchema } from '../modules.js';
+import { GraphQLSchema } from '../modules/index.js';
 
 const generateTypeDefs = () => [`
 

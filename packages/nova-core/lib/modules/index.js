@@ -1,13 +1,43 @@
-// import and re-export
-export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp, createCollection, Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute, getRoute, populateRoutesApp, Utils, getSetting, Strings, addStrings, configureStore, getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware, Headtags, Fragments, registerFragment, getFragment, getFragmentName, extendFragment, createApolloClient } from 'meteor/nova:lib';
-
 import './callbacks.js';
+
+// import and re-export
+export {
+  // apollo
+  createApolloClient,
+  // callbacks
+  Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync,
+  // components
+  Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp,
+  // collections
+  createCollection,
+  // fragments
+  Fragments, registerFragment, getFragment, getFragmentName, extendFragment,
+  // graphql
+  GraphQLSchema,
+  // headtags
+  Headtags,
+  // redux
+  getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware,
+  // routes
+  Routes, addRoute, getRoute, populateRoutesApp,
+  // settings
+  getSetting,
+  // strings
+  Strings, addStrings,
+  // utils
+  Utils,
+  // store (for server only)
+  configureStore,
+  // mutations (for server only)
+  newMutation, editMutation, removeMutation,
+} from 'meteor/nova:lib';
 
 export { default as App } from "./components/App.jsx";
 export { default as Icon } from "./components/Icon.jsx";
 export { default as Loading } from "./components/Loading.jsx";
 export { default as ShowIf } from "./components/ShowIf.jsx";
 export { default as ModalTrigger } from './components/ModalTrigger.jsx';
+
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';
 export { default as withDocument } from './containers/withDocument.js';

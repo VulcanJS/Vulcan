@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-import { createApolloClient, addReducer, addMiddleware, getReducers, getMiddlewares } from '../modules.js';
+import { createApolloClient, addReducer, addMiddleware, getReducers, getMiddlewares } from '../modules/index.js';
 
 const loginToken = global.localStorage['Meteor.loginToken'];
 const apolloClient = createApolloClient();
