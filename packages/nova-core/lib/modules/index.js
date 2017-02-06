@@ -3,7 +3,7 @@ import './callbacks.js';
 // import and re-export
 export {
   // apollo
-  createApolloClient,
+  createApolloClient, renderContext,
   // callbacks
   Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync,
   // components
