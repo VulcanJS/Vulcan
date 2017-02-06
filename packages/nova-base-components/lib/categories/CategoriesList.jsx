@@ -5,18 +5,36 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Categories from 'meteor/nova:categories';
+import { withApollo } from 'react-apollo';
 
 class CategoriesList extends Component {
 
-  render() {
-
+  getNestedCategories() {
     const categories = this.props.results;
 
-    const currentQuery = _.clone(this.props.router.location.query);
-    delete currentQuery.cat;
+    // check if a category is currently active in the route
+    const currentCategorySlug = this.props.router.location.query && this.props.router.location.query.cat;
+    const currentCategory = Categories.findOneInStore(this.props.client.store, {slug: currentCategorySlug});
+    const parentCategories = Categories.getParents(currentCategory, this.props.client.store);
 
-    const categoriesClone = _.map(categories, _.clone); // we don't want to modify the objects we got from props
+    // decorate categories with active and expanded properties
+    const categoriesClone = _.map(categories, category => {
+      return {
+        ...category, // we don't want to modify the objects we got from props
+        active: currentCategory && category.slug === currentCategory.slug, 
+        expanded: parentCategories && _.contains(_.pluck(parentCategories, 'slug'), category.slug)
+      };
+    }); 
+
     const nestedCategories = Utils.unflatten(categoriesClone, '_id', 'parentId');
+
+    return nestedCategories;
+  }
+
+  render() {
+
+    const currentQuery = _.clone(this.props.router.location.query);
+    const nestedCategories = this.getNestedCategories();
 
     return (
       <div>
@@ -26,8 +44,8 @@ class CategoriesList extends Component {
           title={<FormattedMessage id="categories"/>}
           id="categories-dropdown"
         >
-          <div className="category-menu-item dropdown-item">
-            <LinkContainer to={{pathname:"/", query: currentQuery}}>
+          <div className="category-menu-item category-menu-item-all dropdown-item">
+            <LinkContainer className="category-menu-item-title" to={{pathname:"/", query: currentQuery}}>
               <MenuItem eventKey={0}>
                 <FormattedMessage id="categories.all"/>
               </MenuItem>
@@ -72,4 +90,4 @@ const options = {
   pollInterval: 0,
 };
 
-registerComponent('CategoriesList', CategoriesList, withRouter, [withList, options]);
+registerComponent('CategoriesList', CategoriesList, withRouter, withApollo, [withList, options]);

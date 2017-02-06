@@ -7,12 +7,11 @@ const specificResolvers = {
       return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];
     },
   },
-  // TODO: fix this
-  // Category: {
-  //   parent(category, args, context) {
-  //     return category.parent ? context.Categories.findOne({_id: category.parent }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
-  //   }
-  // },
+  Category: {
+    parent(category, args, context) {
+      return category.parentId ? context.Categories.findOne({_id: category.parentId }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
+    }
+  },
 };
 GraphQLSchema.addResolvers(specificResolvers);
 

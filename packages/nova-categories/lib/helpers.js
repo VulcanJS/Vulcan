@@ -6,14 +6,15 @@ import { Utils } from 'meteor/nova:core';
  * @summary Get all of a category's parents
  * @param {Object} category
  */
-Categories.getParents = function (category) {
+Categories.getParents = function (category, store) {
   const categoriesArray = [];
-
   const getParents = function recurse (category) {
-    const parent = Categories.findOne(category.parentId);
-    if (parent) {
-      categoriesArray.push(parent);
-      recurse(parent);
+    if (category && category.parentId) {
+      const parent = store ? Categories.findOneInStore(store, category.parentId) : Categories.findOne(category.parentId);
+      if (parent) {
+        categoriesArray.push(parent);
+        recurse(parent);
+      }
     }
   };
   getParents(category);

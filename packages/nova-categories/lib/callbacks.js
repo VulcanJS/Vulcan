@@ -47,9 +47,9 @@ function categoriesNewGenerateSlug (category) {
 }
 addCallback("categories.new.sync", categoriesNewGenerateSlug);
 
-function categoriesEditGenerateSlug (modifier) {
+function categoriesEditGenerateSlug (modifier, document) {
   // if slug is changing
-  if (modifier.$set && modifier.$set.slug) {
+  if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== document.slug) {
     const slug = modifier.$set.slug;
     modifier.$set.slug = Utils.getUnusedSlug(Categories, slug);
   }

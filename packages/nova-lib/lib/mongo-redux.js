@@ -20,6 +20,7 @@ Mongo.Collection.prototype.findInStore = function (store, selector = {}, options
   return {fetch: () => sortedDocs};
 }
 
-Mongo.Collection.prototype.findOneInStore = function (store, _id) {
-  return this.findInStore(store, {_id}).fetch();
+Mongo.Collection.prototype.findOneInStore = function (store, _idOrObject) {
+  const docs = typeof _idOrObject === 'string' ? this.findInStore(store, {_id: _idOrObject}).fetch() : this.findInStore(store, _idOrObject).fetch();
+  return docs.length === 0 ? undefined: docs[0];
 }
