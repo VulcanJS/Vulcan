@@ -73,6 +73,7 @@ class PostsItem extends Component {
 PostsItem.propTypes = {
   currentUser: React.PropTypes.object,
   post: React.PropTypes.object.isRequired,
+  terms: React.PropTypes.object,
 };
 
 registerComponent('PostsItem', PostsItem);

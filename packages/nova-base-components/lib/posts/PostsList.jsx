@@ -5,7 +5,7 @@ import { Alert } from 'react-bootstrap';
 
 const PostsList = (props) => {
 
-  const {results, loading, count, totalCount, loadMore, showHeader = true, networkStatus, currentUser, error} = props;
+  const {results, loading, count, totalCount, loadMore, showHeader = true, networkStatus, currentUser, error, terms} = props;
 
   const loadingMore = networkStatus === 2;
 
@@ -27,7 +27,7 @@ const PostsList = (props) => {
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader/> : null}
         <div className="posts-list-content">
-          {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} />)}
+          {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
         {hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
       </div>
