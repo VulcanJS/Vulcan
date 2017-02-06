@@ -7,14 +7,14 @@ import { addCallback, Utils } from 'meteor/nova:core';
 
 // View Parameter
 // Add a "view" property to terms which can be used to filter posts.
-function addViewParameter (parameters, terms) {
+function addViewParameter (parameters, terms, apolloClient) {
 
   // if view is not defined, default to "new"
   var view = !!terms.view ? Utils.dashToCamel(terms.view) : 'new';
 
   // get query parameters according to current view
   if (typeof Posts.views[view] !== 'undefined')
-    parameters = Utils.deepExtend(true, parameters, Posts.views[view](terms));
+    parameters = Utils.deepExtend(true, parameters, Posts.views[view](terms, apolloClient));
 
   return parameters;
 }
@@ -22,7 +22,7 @@ addCallback("posts.parameters", addViewParameter);
 
 // View Parameter
 // Add "after" and "before" properties to terms which can be used to limit posts in time.
-function addTimeParameter (parameters, terms) {
+function addTimeParameter (parameters, terms, apolloClient) {
 
   // console.log("// addTimeParameter")
 
@@ -102,7 +102,7 @@ function addTimeParameter (parameters, terms) {
 addCallback("posts.parameters", addTimeParameter);
 
 // limit the number of items that can be requested at once
-function limitPosts (parameters, terms) {
+function limitPosts (parameters, terms, apolloClient) {
   var maxLimit = 200;
 
   // 1. set default limit to 10

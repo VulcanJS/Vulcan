@@ -2,6 +2,7 @@ import { Components, registerComponent, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
+import { FormattedMessage, intlShape } from 'react-intl';
 
 class Vote extends Component {
 
@@ -42,7 +43,7 @@ class Vote extends Component {
     const user = this.props.currentUser;
 
     if(!user){
-      this.props.flash("Please log in first");
+      this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
       // this.stopLoading();
     } else {
       const voteType = hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
@@ -90,8 +91,7 @@ Vote.propTypes = {
 };
 
 Vote.contextTypes = {
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
+  intl: intlShape
 };
 
 registerComponent('Vote', Vote, withMessages, withVote);

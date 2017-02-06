@@ -65,6 +65,7 @@ addStrings('en', {
   "users.edit_account": "Edit Account",
   "users.edit_success": "User “{name}” edited",
   "users.log_in": "Log In",
+  "users.sign_up": "Sign Up",
   "users.log_out": "Log Out",
   "users.bio": "Bio",
   "users.displayName": "Display Name",
