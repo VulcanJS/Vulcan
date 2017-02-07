@@ -3,8 +3,7 @@ import { WebApp } from 'meteor/webapp';
 import { DDP } from 'meteor/ddp';
 import { Accounts } from 'meteor/accounts-base';
 
-import { getReducers, getMiddlewares } from '../modules/index.js';
-import { createApolloClient } from './apollo.js';
+import { createApolloClient, getReducers, getMiddlewares } from '../modules/index.js';
 import { configureStore } from './store.js';
 
 const Fibers = Npm.require('fibers');

@@ -26,7 +26,7 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
 
   networkInterface.use([{
     applyMiddleware(request, next) {
-      const { currentUserToken } = config;
+      const currentUserToken = Meteor.isClient ? global.localStorage['Meteor.loginToken'] : config.currentUserToken;
 
       if (!currentUserToken) {
         next();
@@ -47,7 +47,7 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
 };
 
 const meteorClientConfig = networkInterfaceConfig => ({
-  ssrMode: true,
+  ssrMode: Meteor.isServer,
   networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
   queryDeduplication: true,
 
