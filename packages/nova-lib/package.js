@@ -29,7 +29,7 @@ Package.onUse(function (api) {
     'service-configuration',
     'shell-server',
     //'apollo@0.1.2',
-    
+
     // Third-party packages
 
     'aldeed:simple-schema@1.5.3',
@@ -39,7 +39,7 @@ Package.onUse(function (api) {
     'percolatestudio:synced-cron@1.1.0',
     'jparker:gravatar@0.4.1',
     // 'kadira:flow-router-ssr@3.13.0',
-    "reactrouter:react-router-ssr@3.1.6-patch",
+    // "reactrouter:react-router-ssr@3.1.6-patch",
     // 'kadira:flow-router@2.12.1',
     // 'utilities:smart-methods@0.1.4',
     'meteorhacks:inject-initial@1.0.4',
@@ -54,7 +54,7 @@ Package.onUse(function (api) {
   //   'Telescope'
   // ]);
 
-  api.mainModule("lib/server.js", "server");
-  api.mainModule("lib/client.js", "client");
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });
