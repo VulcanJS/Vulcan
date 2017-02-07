@@ -36,15 +36,12 @@ Meteor.startup(() => {
   const options = {
     historyHook(req, res, newHistory) {
       req.history = newHistory;
-      // patch: renderContext doesn't get the values assigned from req
-      // const context = renderContext.get();
-      // context.history = req.history;
+      const context = renderContext.get();
+      context.history = req.history;
       return req.history;
     },
     wrapperHook(req, res, appGenerator) {
-      // patch: renderContext doesn't get the values assigned from req
-      // const { apolloClient, store } = renderContext.get();
-      const { apolloClient, store } = req;
+      const { apolloClient, store } = renderContext.get();
       const app = appGenerator();
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
@@ -52,10 +49,8 @@ Meteor.startup(() => {
       return Promise.await(getDataFromTree(app));
     },
     dehydrateHook(req, res) {
-      // patch: renderContext doesn't get the values assigned from req
-      // const context = renderContext.get();
-      // return context.apolloClient.store.getState();
-      return req.apolloClient.store.getState();
+      const context = renderContext.get();
+      return context.apolloClient.store.getState();
     },
     postRender(req, res) {
       // req.css = styleSheet.sheet ? styleSheet.rules().map(rule => rule.cssText).join('\n') : '';
