@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import { RoutePolicy } from 'meteor/routepolicy';
 import { WebApp } from 'meteor/webapp';
 
+import { ssr, ssrNext } from 'meteor/nova:core';
+
 import { InjectData } from './inject_data.js';
 
 function isAppUrl(req) {
@@ -114,7 +116,20 @@ export const RouterServer = {
 
     WebApp.rawConnectHandlers.use(cookieParser());
 
-    WebApp.connectHandlers.use((req, res, next) => {
+    // Ensure router middleware is at the end
+    ssrNext(() => {
+      const stack = WebApp.connectHandlers.stack;
+      if (stack[stack.length - 1].handle.name === 'routerMiddleware') {
+        return;
+      }
+      for (let i in stack) {
+        if (stack[i].handle.name === 'routerMiddleware') {
+          stack.push(stack.splice(i, 1)[0]);
+        }
+      }
+    });
+
+    ssr((req, res, next) => {
       if (!isAppUrl(req)) {
         next();
         return;
@@ -142,6 +157,6 @@ export const RouterServer = {
           res.end();
         }
       });
-    });
+    }, { name: 'routerMiddleware' });
   },
 };

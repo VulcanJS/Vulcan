@@ -44,3 +44,5 @@ export const renderContext = {
     return context;
   },
 };
+
+export const getRenderContext = () => renderContext.get();

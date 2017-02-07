@@ -9,7 +9,7 @@ import {
   Components,
   addRoute,
   Routes, populateComponentsApp, populateRoutesApp,
-  renderContext,
+  getRenderContext,
 } from 'meteor/nova:core';
 
 import { RouterServer } from './router.jsx';
@@ -36,12 +36,12 @@ Meteor.startup(() => {
   const options = {
     historyHook(req, res, newHistory) {
       req.history = newHistory;
-      const context = renderContext.get();
+      const context = getRenderContext();
       context.history = req.history;
       return req.history;
     },
     wrapperHook(req, res, appGenerator) {
-      const { apolloClient, store } = renderContext.get();
+      const { apolloClient, store } = getRenderContext();
       const app = appGenerator();
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
@@ -49,7 +49,7 @@ Meteor.startup(() => {
       return Promise.await(getDataFromTree(app));
     },
     dehydrateHook(req, res) {
-      const context = renderContext.get();
+      const context = getRenderContext();
       return context.apolloClient.store.getState();
     },
     postRender(req, res) {

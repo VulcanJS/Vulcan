@@ -140,7 +140,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   }
 
   // This binds the specified paths to the Express server running Apollo + GraphiQL
-  WebApp.connectHandlers.use(graphQLServer);
+  WebApp.connectHandlers.use(Meteor.bindEnvironment(graphQLServer));
 };
 
 Meteor.startup(function () {
