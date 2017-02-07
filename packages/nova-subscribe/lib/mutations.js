@@ -83,7 +83,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   // - the action is subscribe but the user has already subscribed to this item
   // - the action is unsubscribe but the user hasn't subscribed to this item
   if (!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
-    throw Error({id: 'app.mutation_not_allowed', value: 'Already subscribed'})
+    throw Error(Utils.encodeIntlError({id: 'app.mutation_not_allowed', value: 'Already subscribed'}))
   }
 
   // shorthand for useful variables
@@ -146,7 +146,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
        const { currentUser, [Utils.capitalize(collectionName)]: collection } = context;
        
        // permission check
-       if (!Users.canDo(context.currentUser, `${collectionName}.${action}`) || !Users.canDo(currentUser, `${collectionName}.${action}.all`)) {
+       if (!Users.canDo(context.currentUser, `${collectionName}.${action}`)) {
          throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
        }
        
