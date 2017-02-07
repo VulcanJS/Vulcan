@@ -8,6 +8,7 @@ Users.addField([
       optional: true,
       blackbox: true,
       hidden: true, // never show this
+      preload: true,
     }
   },
   {
@@ -16,11 +17,6 @@ Users.addField([
       type: [String],
       optional: true,
       hidden: true, // never show this,
-      // publish: true,
-      // join: {
-      //   joinAs: "subscribersArray",
-      //   collection: () => Users
-      // }
     }
   },
   {

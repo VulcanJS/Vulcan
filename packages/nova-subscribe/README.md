@@ -25,35 +25,35 @@ categories.unsubscribe
 
 This package also provides a reusable component called `SubscribeTo` to subscribe to an document of collection.
 
-This component takes two props, `document` & `documentType`. It can trigger any method described below:
+This component takes the `document` as a props. It can trigger any method described below:
 
 ```jsx
 // for example, in PostItem.jsx
-<Telescope.components.SubscribeTo document={post} documentType={"posts"} />
+<Components.SubscribeTo document={post} />
 
 // for example, in UsersProfile.jsx
-<Telescope.components.SubscribeTo document={user} documentType={"users"} />
+<Components.SubscribeTo document={user} />
 
 // for example, in Category.jsx
-<Telescope.components.SubscribeTo document={category} documentType={"categories"} />
+<Components.SubscribeTo document={category} />
 ```
 
 ### Extend to other collections than Users, Posts, Categories
-This package export a function called `subscribeMethodsGenerator` that takes a collection as an argument and create the associated methods code :
+This package export a function called `subscribMutationsGenerator` that takes a collection as an argument and create the associated methods code :
 
 ```js
 // in my custom package
-import subscribeMethodsGenerator from 'meteor/nova:subscribe';
+import subscribMutationsGenerator from 'meteor/nova:subscribe';
 import Movies from './collection.js';
 
-// the function creates the code, then you have to associate it to the Meteor namespace:
-Meteor.methods(subscribeMethodsGenerator(Movies)); 
+// the function creates the code and give it to the graphql server
+subscribMutationsGenerator(Movies); 
 ```
 
-This will creates for you the methods `movies.subscribe` & `movies.unsubscribe` than can be used in the `SubscribeTo` component: 
+This will creates for you the mutations `moviesSubscribe` & `moviesUnsubscribe` than can be used in the `SubscribeTo` component: 
 ```jsx
 // in my custom component
-<Telescope.components.SubscribeTo document={movie} documentType={"movies"} />
+<Components.SubscribeTo document={movie} />
 ```
 
 You'll also need to write the relevant callbacks, custom fields & permissions to run whenever a user is subscribed to your custom collection's item. See these files for inspiration.

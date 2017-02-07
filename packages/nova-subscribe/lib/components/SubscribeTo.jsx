@@ -1,75 +1,106 @@
 import React, { PropTypes, Component } from 'react';
-import { intlShape } from 'react-intl';
-import { withCurrentUser, withMessages, registerComponent } from 'meteor/nova:core';
+import { intlShape, FormattedMessage } from 'react-intl';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import Users from 'meteor/nova:users';
+import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/nova:core';
 
-class SubscribeTo extends Component {
+// boolean -> unsubscribe || subscribe
+const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe' 
+
+class SubscribeToActionHandler extends Component {
 
   constructor(props, context) {
     super(props, context);
 
     this.onSubscribe = this.onSubscribe.bind(this);
-    this.isSubscribed = this.isSubscribed.bind(this);
+    
+    this.state = {
+      subscribed: !!Users.isSubscribedTo(props.currentUser, props.document, props.documentType),
+    };
   }
 
-  onSubscribe(e) {
-    e.preventDefault();
+  async onSubscribe(e) {
+    try {
+      e.preventDefault();
 
-    const {document, documentType} = this.props;
+      const { document, documentType } = this.props;
+      const action = getSubscribeAction(this.state.subscribed);
+      
+      // todo: change the mutation to auto-update the user in the store
+      await this.setState(prevState => ({subscribed: !prevState.subscribed}));
 
-    const action = this.isSubscribed() ? `unsubscribe` : `subscribe`;
+      // mutation name will be for example postsSubscribe
+      await this.props[`${documentType + Utils.capitalize(action)}`]({documentId: document._id});
 
-    // method name will be for example posts.subscribe
-    this.context.actions.call(`${documentType}.${action}`, document._id, (error, result) => {
-      if (error) {
-        this.props.flash(error.message, "error");
-      }
+      // success message will be for example posts.subscribed
+      this.props.flash(this.context.intl.formatMessage(
+        {id: `${documentType}.${action}d`}, 
+        // handle usual name properties
+        {name: document.name || document.title || document.displayName}
+      ), "success");
+      
 
-      if (result) {
-        // success message will be for example posts.subscribed
-        this.props.flash(this.context.intl.formatMessage(
-          {id: `${documentType}.${action}d`}, 
-          // handle usual name properties
-          {name: document.name || document.title || document.displayName}
-        ), "success");
-        this.context.events.track(action, {'_id': this.props.document._id});
-      }
-    });
-  }
-
-  isSubscribed() {
-    const documentCheck = this.props.document;
-
-    return documentCheck && documentCheck.subscribers && documentCheck.subscribers.indexOf(this.context.currentUser._id) !== -1;
+    } catch(error) {
+      this.props.flash(error.message, "error");
+    }
   }
 
   render() {
-    const {currentUser, document, documentType} = this.props;
-
+    const { currentUser, document, documentType } = this.props;
+    const { subscribed } = this.state;
+    
+    const action = `${documentType}.${getSubscribeAction(subscribed)}`;
+    
     // can't subscribe to yourself or to own post (also validated on server side)
-    if (!currentUser || !document || (documentType === 'posts' && document && document.author === currentUser.username) || (documentType === 'users' && document === currentUser)) {
+    if (!currentUser || !document || (documentType === 'posts' && document.userId === currentUser._id) || (documentType === 'users' && document._id === currentUser._id)) {
       return null;
     }
 
-    const action = this.isSubscribed() ? `${documentType}.unsubscribe` : `${documentType}.subscribe`;
-
     const className = this.props.className ? this.props.className : "";
-
-    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}>{this.context.intl.formatMessage({id: action})}</a> : null;
+    
+    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}><FormattedMessage id={action} /></a> : null;
   }
 
 }
 
-SubscribeTo.propTypes = {
+SubscribeToActionHandler.propTypes = {
   document: React.PropTypes.object.isRequired,
-  documentType: React.PropTypes.string.isRequired,
   className: React.PropTypes.string,
   currentUser: React.PropTypes.object,
 }
 
-SubscribeTo.contextTypes = {
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
+SubscribeToActionHandler.contextTypes = {
   intl: intlShape
 };
+
+const subscribeMutationContainer = ({documentType, actionName}) => graphql(gql`
+  mutation ${documentType + actionName}($documentId: String) {
+    ${documentType + actionName}(documentId: $documentId) {
+      _id
+      subscribedItems
+    }
+  }
+`, {
+  props: ({ownProps, mutate}) => ({
+    [documentType + actionName]: vars => {
+      return mutate({ 
+        variables: vars,
+      });
+    },
+  }),
+});
+
+const SubscribeTo = props => {
+  
+  const documentType = `${props.document.__typename.toLowerCase()}s`;
+  
+  const withSubscribeMutations = ['Subscribe', 'Unsubscribe'].map(actionName => subscribeMutationContainer({documentType, actionName})); 
+  
+  const EnhancedHandler = compose(...withSubscribeMutations)(SubscribeToActionHandler);
+  
+  return <EnhancedHandler {...props} documentType={documentType} />;
+}
+
 
 registerComponent('SubscribeTo', SubscribeTo, withCurrentUser, withMessages);

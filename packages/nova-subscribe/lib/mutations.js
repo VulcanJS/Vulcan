@@ -1,4 +1,5 @@
 import Users from 'meteor/nova:users';
+import { Utils, GraphQLSchema } from 'meteor/nova:core';
 
 /**
  * @summary Verify that the un/subscription can be performed
@@ -36,8 +37,8 @@ const prepareSubscription = (action, collection, itemId, user) => {
 
   // assign the right fields depending on the collection
   const fields = {
-    subscribers: collectionName === 'Users' ? 'subscribers' : 'subscribers',
-    subscriberCount: collectionName === 'Users' ? 'subscriberCount' : 'subscriberCount',
+    subscribers: 'subscribers',
+    subscriberCount: 'subscriberCount',
   };
 
   // return true if the item has the subscriber's id in its fields
@@ -82,7 +83,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   // - the action is subscribe but the user has already subscribed to this item
   // - the action is unsubscribe but the user hasn't subscribed to this item
   if (!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
-    return false; // xxx: should return exploitable error
+    throw Error({id: 'app.mutation_not_allowed', value: 'Already subscribed'})
   }
 
   // shorthand for useful variables
@@ -122,58 +123,70 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
       [updateOperator]: { [`subscribedItems.${collectionName}`]: loggedItem }
     });
 
-    return true; // action completed! ✅
+    const updatedUser = Users.findOne({_id: user._id}, {fields: {_id:1, subscribedItems: 1}});
+    
+    return updatedUser;
   } else {
-    return false; // xxx: should return exploitable error
+    throw Error(Utils.encodeIntlError({id: 'app.something_bad_happened'}))
   }
 };
 
 /**
- * @summary Generate methods 'collection.subscribe' & 'collection.unsubscribe' automatically
+ * @summary Generate mutations 'collection.subscribe' & 'collection.unsubscribe' automatically
  * @params {Array[Collections]} collections
  */
- let subscribeMethodsGenerator;
- export default subscribeMethodsGenerator = (collection) => {
+ const subscribeMutationsGenerator = (collection) => {
 
-   // generic method function calling the performSubscriptionAction
-   const genericMethodFunction = (col, action) => {
+   // generic mutation function calling the performSubscriptionAction
+   const genericMutationFunction = (collectionName, action) => {
      // return the method code
-     return function(docId, userId) {
-       check(docId, String);
-       check(userId, Match.Maybe(String));
-
-       const currentUser = Users.findOne({_id: this.userId}); // this refers to Meteor thanks to previous fat arrows when this function-builder is used
-       const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
-
-       if (!Users.canDo(currentUser, `${col._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${col._name}.${action}.all`)) {
-         throw new Error(601, "You don't have the permission to do this");
+     return function(root, { documentId }, context) {
+       
+       // extract the current user & the relevant collection from the graphql server context
+       const { currentUser, [Utils.capitalize(collectionName)]: collection } = context;
+       
+       // permission check
+       if (!Users.canDo(context.currentUser, `${collectionName}.${action}`) || !Users.canDo(currentUser, `${collectionName}.${action}.all`)) {
+         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
        }
-
-       return performSubscriptionAction(action, col, docId, user);
+       
+       // do the actual subscription action
+       return performSubscriptionAction(action, collection, documentId, currentUser);
      };
    };
 
    const collectionName = collection._name;
-   // return an object of the shape expected by Meteor.methods
-   return {
-     [`${collectionName}.subscribe`]: genericMethodFunction(collection, 'subscribe'),
-     [`${collectionName}.unsubscribe`]: genericMethodFunction(collection, 'unsubscribe')
-   };
+   
+   // add mutations to the schema
+   GraphQLSchema.addMutation(`${collectionName}Subscribe(documentId: String): User`),
+   GraphQLSchema.addMutation(`${collectionName}Unsubscribe(documentId: String): User`);
+   
+   // create an object of the shape expected by mutations resolvers
+   GraphQLSchema.addResolvers({
+     Mutation: {
+       [`${collectionName}Subscribe`]: genericMutationFunction(collectionName, 'subscribe'),
+       [`${collectionName}Unsubscribe`]: genericMutationFunction(collectionName, 'unsubscribe'),
+     },
+   });
+   
+   
  };
 
-// Finally. Add the methods to the Meteor namespace 🖖
+// Finally. Add the mutations to the Meteor namespace 🖖
 
 // nova:users is a dependency of this package, it is alreay imported
-Meteor.methods(subscribeMethodsGenerator(Users));
+subscribeMutationsGenerator(Users);
 
-// check if nova:posts exists, if yes, add the methods to Posts
+// check if nova:posts exists, if yes, add the mutations to Posts
 if (typeof Package['nova:posts'] !== 'undefined') {
   import Posts from 'meteor/nova:posts';
-  Meteor.methods(subscribeMethodsGenerator(Posts));
+  subscribeMutationsGenerator(Posts);
 }
 
-// check if nova:categories exists, if yes, add the methods to Categories
+// check if nova:categories exists, if yes, add the mutations to Categories
 if (typeof Package['nova:categories'] !== "undefined") {
   import Categories from 'meteor/nova:categories';
-  Meteor.methods(subscribeMethodsGenerator(Categories));
+  subscribeMutationsGenerator(Categories);
 }
+
+export default subscribeMutationsGenerator;

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:lib'; // note: Telescope.notifications
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
 
