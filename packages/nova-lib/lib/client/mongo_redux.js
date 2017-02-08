@@ -1,4 +1,4 @@
-import { getRenderContext } from './render.js';
+import { getRenderContext } from './render_context.js';
 
 const { store } = getRenderContext;
 

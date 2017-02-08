@@ -1,6 +1,9 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { browserHistory } from 'react-router';
 
 import { createApolloClient, addReducer, addMiddleware, getReducers, getMiddlewares } from '../modules/index.js';
+
+const history = browserHistory;
 
 const loginToken = global.localStorage['Meteor.loginToken'];
 const apolloClient = createApolloClient();
@@ -32,6 +35,7 @@ store.reload = function reload() {
 };
 
 const context = {
+  history,
   loginToken,
   apolloClient,
   reducers,
@@ -46,3 +50,7 @@ export const renderContext = {
 };
 
 export const getRenderContext = () => renderContext.get();
+
+export const withRenderContext = (func) => {
+  func();
+};

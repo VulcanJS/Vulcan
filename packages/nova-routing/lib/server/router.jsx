@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import { RoutePolicy } from 'meteor/routepolicy';
 import { WebApp } from 'meteor/webapp';
 
-import { ssr, ssrNext } from 'meteor/nova:core';
+import { withRenderContext, withRenderContextRaw } from 'meteor/nova:core';
 
 import { InjectData } from './inject_data.js';
 
@@ -117,7 +117,7 @@ export const RouterServer = {
     WebApp.rawConnectHandlers.use(cookieParser());
 
     // Ensure router middleware is at the end
-    ssrNext(() => {
+    withRenderContext(() => {
       const stack = WebApp.connectHandlers.stack;
       if (stack[stack.length - 1].handle.name === 'routerMiddleware') {
         return;
@@ -129,7 +129,7 @@ export const RouterServer = {
       }
     });
 
-    ssr((req, res, next) => {
+    withRenderContextRaw((req, res, next) => {
       if (!isAppUrl(req)) {
         next();
         return;

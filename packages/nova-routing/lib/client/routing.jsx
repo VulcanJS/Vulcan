@@ -50,9 +50,7 @@ Meteor.startup(() => {
       store.reload();
     },
     historyHook(newHistory) {
-      const context = getRenderContext();
-      const history = newHistory;
-      context.history = history;
+      const { history } = getRenderContext();
       return history;
     },
     wrapperHook(appGenerator) {

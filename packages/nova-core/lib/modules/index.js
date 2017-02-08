@@ -18,8 +18,8 @@ export {
   Headtags,
   // redux
   getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware,
-  // render
-  renderContext, getRenderContext,
+  // render context
+  renderContext, getRenderContext, withRenderContext,
   // routes
   Routes, addRoute, getRoute, populateRoutesApp,
   // settings
@@ -32,8 +32,8 @@ export {
   configureStore,
   // mutations (for server only)
   newMutation, editMutation, removeMutation,
-  // ssr (for server only)
-  ssr, ssrNext
+  // render context (for server only)
+  withRenderContextRaw,
 } from 'meteor/nova:lib';
 
 export { default as App } from "./components/App.jsx";

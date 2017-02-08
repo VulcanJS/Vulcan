@@ -2,7 +2,7 @@ import cookie from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
 
-import { getRenderContext } from './render.js';
+import { getRenderContext } from './render_context.js';
 
 const context = getRenderContext();
 

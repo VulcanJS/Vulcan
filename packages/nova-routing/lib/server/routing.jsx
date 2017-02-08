@@ -35,10 +35,8 @@ Meteor.startup(() => {
 
   const options = {
     historyHook(req, res, newHistory) {
-      req.history = newHistory;
-      const context = getRenderContext();
-      context.history = req.history;
-      return req.history;
+      const { history } = getRenderContext();
+      return history;
     },
     wrapperHook(req, res, appGenerator) {
       const { apolloClient, store } = getRenderContext();
