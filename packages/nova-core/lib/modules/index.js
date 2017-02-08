@@ -3,7 +3,7 @@ import './callbacks.js';
 // import and re-export
 export {
   // apollo
-  createApolloClient, renderContext,
+  createApolloClient,
   // callbacks
   Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync,
   // components
@@ -18,6 +18,8 @@ export {
   Headtags,
   // redux
   getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware,
+  // render context
+  renderContext, getRenderContext, withRenderContext,
   // routes
   Routes, addRoute, getRoute, populateRoutesApp,
   // settings
@@ -30,6 +32,8 @@ export {
   configureStore,
   // mutations (for server only)
   newMutation, editMutation, removeMutation,
+  // render context (for server only)
+  withRenderContextRaw,
 } from 'meteor/nova:lib';
 
 export { default as App } from "./components/App.jsx";

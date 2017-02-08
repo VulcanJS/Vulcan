@@ -2,9 +2,9 @@ import cookie from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
 
-import { renderContext } from './render_context.js';
+import { getRenderContext } from './render_context.js';
 
-const context = renderContext.get();
+const context = getRenderContext();
 
 function setToken(loginToken, expires) {
   if (loginToken && expires !== -1) {

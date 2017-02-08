@@ -10,7 +10,7 @@ import {
   addRoute,
   addReducer, addMiddleware,
   Routes, populateComponentsApp, populateRoutesApp, runCallbacks,
-  renderContext,
+  getRenderContext,
 } from 'meteor/nova:core';
 
 import { RouterClient } from './router.jsx';
@@ -37,7 +37,7 @@ Meteor.startup(() => {
   const options = {
     rehydrateHook(data) {
       const initialState = data;
-      const context = renderContext.get();
+      const context = getRenderContext();
       context.initialState = initialState;
 
       // configure apollo
@@ -50,13 +50,11 @@ Meteor.startup(() => {
       store.reload();
     },
     historyHook(newHistory) {
-      const context = renderContext.get();
-      const history = newHistory;
-      context.history = history;
+      const { history } = getRenderContext();
       return history;
     },
     wrapperHook(appGenerator) {
-      const { apolloClient, store } = renderContext.get();
+      const { apolloClient, store } = getRenderContext();
       const app = appGenerator({
         onUpdate: () => {
           // the first argument is an item to iterate on, needed by nova:lib/callbacks
