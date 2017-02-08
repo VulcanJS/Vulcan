@@ -64,6 +64,8 @@ class FormComponent extends Component {
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
+        case "hidden":
+          return <Input         {...properties}  type="hidden" />;
         default:
           return <Input         {...properties} type="text" />;
       }
