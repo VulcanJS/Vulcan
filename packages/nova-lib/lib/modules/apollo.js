@@ -15,10 +15,14 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
     path = path.slice(1);
   }
 
-  // For SSR
-  const url = Meteor.absoluteUrl(path);
+  // add the rootUrl option, in case tests are made on development server
+  // see https://github.com/TelescopeJS/Telescope/issues/1554#issuecomment-277445915
+  const uri = Meteor.absoluteUrl(
+    path, 
+    { rootUrl: getSetting('developmentServerIp', Meteor.absoluteUrl()) }
+  );
   const networkInterface = createNetworkInterface({
-    uri: url,
+    uri,
     opts: {
       credentials: 'same-origin',
     }
