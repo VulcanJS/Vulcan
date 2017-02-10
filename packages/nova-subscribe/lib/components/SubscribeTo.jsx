@@ -93,7 +93,7 @@ const subscribeMutationContainer = ({documentType, actionName}) => graphql(gql`
 
 const SubscribeTo = props => {
   
-  const documentType = `${props.document.__typename.toLowerCase()}s`;
+  const documentType = Utils.getCollectionNameFromTypename(props.document.__typename);
   
   const withSubscribeMutations = ['Subscribe', 'Unsubscribe'].map(actionName => subscribeMutationContainer({documentType, actionName})); 
   

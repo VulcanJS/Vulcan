@@ -1,5 +1,6 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import 'isomorphic-fetch';
+import { getSetting } from './settings.js';
 
 const defaultNetworkInterfaceConfig = {
   path: '/graphql',
