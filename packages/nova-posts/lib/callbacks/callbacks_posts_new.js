@@ -84,7 +84,7 @@ addCallback("posts.new.sync", PostsNewDuplicateLinksCheck);
  * @summary Set the post's postedAt if it's approved
  */
 function PostsSetPostedAt (post, user) {
-  if (!post.postedAt) post.postedAt = new Date();
+  if (!post.postedAt && Posts.isApproved(post)) post.postedAt = new Date();
   return post;
 }
 addCallback("posts.new.sync", PostsSetPostedAt);
