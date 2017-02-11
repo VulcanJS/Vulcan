@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:core';
+import { Components, registerComponent, Utils } from 'meteor/nova:core';
 import { withMutation } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
@@ -65,12 +65,13 @@ class EmbedlyURL extends Component {
     } catch(error) {
       
       console.error(error); // eslint-disable-line
+      const errorMessage = error.message.includes('401') ? Utils.encodeIntlError({id: "app.embedly_not_authorized"}) : error.message; 
       
       // embedly component is done
       await this.setState({loading: false});
       
       // something bad happened
-      await this.context.throwError(error.message);
+      await this.context.throwError(errorMessage);
     }
   }
 

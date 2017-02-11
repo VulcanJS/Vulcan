@@ -316,7 +316,7 @@ class Form extends Component {
     }
     
     // internationalize the error if necessary
-    const intlError = Utils.decodeIntlError(strippedError);
+    const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
     if(typeof intlError === 'object') {
       const { id, value = "" } = intlError;
       strippedError = this.context.intl.formatMessage({id}, {value});

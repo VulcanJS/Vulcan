@@ -403,18 +403,34 @@ Utils.convertDates = (collection, listOrDocument) => {
 
 Utils.encodeIntlError = error => typeof error !== "object" ? error : JSON.stringify(error);
 
-Utils.decodeIntlError = error => {
+Utils.decodeIntlError = (error, options) => {
   try {
+    
+    let strippedError = error;
+    
+    // if the error hasn't been cleaned before (ex: it's not an error from a form)
+    if (!options.stripped) {
+      // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
+      const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
+      if (graphqlPrefixIsPresent) {
+        strippedError = graphqlPrefixIsPresent[1];
+      }
+      
+      // strip the error code if present
+      const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
+      if (errorCodeIsPresent) {
+        strippedError = errorCodeIsPresent[1];
+      }
+    }
+    
     // the error is an object internationalizable
-    const parsedError = JSON.parse(error);
+    const parsedError = JSON.parse(strippedError);
     
     // check if the error has at least an 'id' expected by react-intl
     if (!parsedError.id) {
       console.error('[Undecodable error]', error); // eslint-disable-line
       return {id: 'app.something_bad_happened', value: '[undecodable error]'}
     } 
-    
-    console.log(parsedError);
     
     // return the parsed error
     return parsedError; 

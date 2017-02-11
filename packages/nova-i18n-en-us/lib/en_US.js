@@ -154,6 +154,7 @@ addStrings('en', {
   "app.mutation_not_allowed": "Sorry, you don't have the rights to perform this mutation on this document (details: {value})",
   "app.disallowed_property_detected": "Disallowed property detected: {value}",
   "app.something_bad_happened": "Something bad happened...",
+  "app.embedly_not_authorized": "Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API",
   
   "newsletter": "Newsletter",
   "newsletter.subscribe": "Subscribe",
@@ -162,6 +163,7 @@ addStrings('en', {
   "newsletter.email": "Your email",
   "newsletter.success_message": "Thanks for subscribing!",
   "newsletter.subscription_updated": "Newsletter subscription updated.",
+  "newsletter.subscription_failed": "Subscription failed. Is Mailchimp configured in your settings file?",
 
   "admin": "Admin",
   "notifications": "Notifications",
