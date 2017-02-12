@@ -16,8 +16,10 @@ export {
   GraphQLSchema,
   // headtags
   Headtags,
+  // inject data
+  InjectData,
   // redux
-  getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware,
+  configureStore, STORE_RELOADED, addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
   // render context
   renderContext, getRenderContext, withRenderContext,
   // routes
@@ -28,12 +30,12 @@ export {
   Strings, addStrings,
   // utils
   Utils,
-  // store (for server only)
-  configureStore,
   // mutations (for server only)
   newMutation, editMutation, removeMutation,
   // render context (for server only)
-  withRenderContextRaw,
+  withRenderContextEnvironment,
+  // meteor patch (for server only)
+  bindEnvironment, webAppConnectHandlersUse
 } from 'meteor/nova:lib';
 
 export { default as App } from "./components/App.jsx";
