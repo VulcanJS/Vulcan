@@ -39,10 +39,10 @@ Meteor.startup(() => {
       return history;
     },
     wrapperHook(req, res, appGenerator) {
-      const context = getRenderContext();
-      context.store.reload({ message: 'reload store before render' });
+      const { apolloClient, store } = getRenderContext();
+      store.reload({ message: 'reload store before render' });
       const app = appGenerator();
-      return <ApolloProvider store={context.store} client={context.apolloClient}>{app}</ApolloProvider>;
+      return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
     preRender(req, res, app) {
       return Promise.await(getDataFromTree(app));
