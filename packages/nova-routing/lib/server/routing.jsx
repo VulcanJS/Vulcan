@@ -59,7 +59,7 @@ Meteor.startup(() => {
     htmlHook(req, res, dynamicHead, dynamicBody) {
       const head = Helmet.rewind();
       return {
-        dynamicHead: `${head.title}${head.meta}${head.link}${head.script}${dynamicHead}${res._injectHtml || ''}`,
+        dynamicHead: `${head.title}${head.meta}${head.link}${head.script}${dynamicHead}`,
         dynamicBody,
       };
     },
