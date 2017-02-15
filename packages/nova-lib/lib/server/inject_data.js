@@ -28,13 +28,13 @@ export const InjectData = {
     // if cors headers included if may cause some security holes
     // so we simply turn off injecting if we detect an cors header
     // read more: http://goo.gl/eGwb4e
-    // if (res._headers && res._headers['access-control-allow-origin']) {
-    //   const warnMessage =
-    //     'warn: injecting data turned off due to CORS headers. ' +
-    //     'read more: http://goo.gl/eGwb4e';
-    //   console.warn(warnMessage); // eslint-disable-line no-console
-    //   return;
-    // }
+    if (res._headers && res._headers['access-control-allow-origin']) {
+      const warnMessage =
+        'warn: injecting data turned off due to CORS headers. ' +
+        'read more: http://goo.gl/eGwb4e';
+      console.warn(warnMessage); // eslint-disable-line no-console
+      return;
+    }
 
     // inject data
     const data = this._encode(res._injectPayload);
