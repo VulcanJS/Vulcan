@@ -1,7 +1,7 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 /**
- * @summary Kick off the global namespace for Telescope.
+ * @summary Kick off the namespace for Telescope.
  * @namespace Telescope
  */
 
@@ -25,31 +25,5 @@ SimpleSchema.extendOptions({
   group: Match.Optional(Object), // form fieldset group
   preload: Match.Optional(Boolean),
 });
-
-// ------------------------------------- Statuses -------------------------------- //
-
-Telescope.statuses = [
-  {
-    value: 1,
-    label: 'pending'
-  },
-  {
-    value: 2,
-    label: 'approved'
-  },
-  {
-    value: 3,
-    label: 'rejected'
-  },
-  {
-    value: 4,
-    label: 'spam'
-  },
-  {
-    value: 5,
-    label: 'deleted'
-  }
-];
-
 
 export default Telescope;

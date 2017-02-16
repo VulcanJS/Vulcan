@@ -1,6 +1,32 @@
-import Telescope from 'meteor/nova:lib'; // TODO move Telescope.statuses elswhere
 import Users from 'meteor/nova:users';
 import Posts from './collection.js';
+
+/**
+ * @summary Posts statuses
+ * @type {Object}
+ */
+Posts.statuses = [
+  {
+    value: 1,
+    label: 'pending'
+  },
+  {
+    value: 2,
+    label: 'approved'
+  },
+  {
+    value: 3,
+    label: 'rejected'
+  },
+  {
+    value: 4,
+    label: 'spam'
+  },
+  {
+    value: 5,
+    label: 'deleted'
+  }
+];
 
 /**
  * @summary Posts config namespace
@@ -157,7 +183,7 @@ const schema = {
     },
     form: {
       noselect: true,
-      options: Telescope.statuses,
+      options: Posts.statuses,
       group: 'admin'
     },
     group: formGroups.admin
