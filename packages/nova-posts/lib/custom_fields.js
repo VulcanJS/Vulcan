@@ -9,7 +9,6 @@ Users.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }

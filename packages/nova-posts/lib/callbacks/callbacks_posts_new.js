@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib'; // TODO move Telescope.notifications to its own namespace
 import Posts from '../collection.js'
 import marked from 'marked';
 import Users from 'meteor/nova:users';
@@ -142,31 +141,3 @@ function PostsNewIncrementPostCount (post) {
   Users.update({_id: userId}, {$inc: {"postCount": 1}});
 }
 addCallback("posts.new.async", PostsNewIncrementPostCount);
-
-/**
- * @summary Add new post notification callback on post submit
- */
-function PostsNewNotifications (post) {
-
-  if (typeof Telescope.notifications !== "undefined") {
-
-    var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-    var notifiedUserIds = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
-    var notificationData = {
-      post: _.pick(post, '_id', 'userId', 'title', 'url', 'slug')
-    };
-
-    // remove post author ID from arrays
-    adminIds = _.without(adminIds, post.userId);
-    notifiedUserIds = _.without(notifiedUserIds, post.userId);
-
-    if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
-      // if post is pending, only notify admins
-      Telescope.notifications.create(adminIds, 'newPendingPost', notificationData);
-    } else if (!!notifiedUserIds.length) {
-      // if post is approved, notify everybody
-      Telescope.notifications.create(notifiedUserIds, 'newPost', notificationData);
-    }
-  }
-}
-addCallback("posts.new.async", PostsNewNotifications);

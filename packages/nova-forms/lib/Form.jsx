@@ -94,16 +94,18 @@ class Form extends Component {
       const fieldSchema = schema[fieldName];
 
       fieldSchema.name = fieldName;
-
+      
       // intialize properties
       let field = {
         name: fieldName,
         datatype: fieldSchema.type,
         control: fieldSchema.control,
-        hidden: fieldSchema.hidden,
         layout: this.props.layout,
         order: fieldSchema.order
       }
+      
+      // hide or show the field, a function taking form props as argument & returning a boolean can be used 
+      field.hidden = (typeof fieldSchema.hidden === 'function') ? !!fieldSchema.hidden.call(fieldSchema, this.props) : fieldSchema.hidden;
 
       // add label or internationalized field name if necessary (field not hidden)
       if (!field.hidden) {
@@ -314,7 +316,7 @@ class Form extends Component {
     }
     
     // internationalize the error if necessary
-    const intlError = Utils.decodeIntlError(strippedError);
+    const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
     if(typeof intlError === 'object') {
       const { id, value = "" } = intlError;
       strippedError = this.context.intl.formatMessage({id}, {value});

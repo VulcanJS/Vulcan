@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
@@ -78,7 +77,7 @@ Posts.getDefaultStatus = function (user) {
  * @param {Object} user
  */
 Posts.getStatusName = function (post) {
-  return _.findWhere(Telescope.statuses, {value: post.status}).label;
+  return Utils.findWhere(Posts.statuses, {value: post.status}).label;
 };
 
 /**

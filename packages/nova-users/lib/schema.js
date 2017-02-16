@@ -1,3 +1,4 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Users from './collection.js';
 
 const adminGroup = {
@@ -16,15 +17,12 @@ const ownsOrIsAdmin = (user, document) => {
 const schema = {
   _id: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
     preload: true,
   },
   username: {
     type: String,
-    // regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
     preload: true,
@@ -44,7 +42,6 @@ const schema = {
   },
   createdAt: {
     type: Date,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
     preload: true,
@@ -94,8 +91,6 @@ const schema = {
   displayName: {
     type: String,
     optional: true,
-    publish: true,
-    profile: true,
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
@@ -122,7 +117,6 @@ const schema = {
   */
   emailHash: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
     preload: true,
@@ -132,8 +126,6 @@ const schema = {
   */
   htmlBio: {
     type: String,
-    publish: true,
-    profile: true,
     optional: true,
     viewableBy: ['guests'],
   },
@@ -143,7 +135,6 @@ const schema = {
   karma: {
     type: Number,
     decimal: true,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
   },
@@ -152,7 +143,6 @@ const schema = {
   */
   slug: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
     preload: true,
@@ -163,8 +153,6 @@ const schema = {
   twitterUsername: {
     type: String,
     optional: true,
-    publish: true,
-    profile: true,
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
@@ -177,8 +165,6 @@ const schema = {
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    publish: true,
-    profile: true,
     optional: true,
     control: "text",
     insertableBy: ['members'],

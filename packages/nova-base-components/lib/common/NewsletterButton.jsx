@@ -1,6 +1,6 @@
-import { Components, registerComponent, withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, withMutation, withCurrentUser, withMessages, Utils } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
 class NewsletterButton extends Component {
@@ -26,8 +26,10 @@ class NewsletterButton extends Component {
       successCallback(mutationResult);
     } catch(error) {
       console.error(error); // eslint-disable-line no-console
-      
-      flash(error.message, "error");
+      flash(
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
+        "error"
+      );
     }
   }
 
@@ -52,6 +54,10 @@ NewsletterButton.propTypes = {
   successCallback: PropTypes.func.isRequired, // what do to after the mutationName
   addUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
   removeUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
+};
+
+NewsletterButton.contextTypes = {
+  intl: intlShape,
 };
 
 const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};

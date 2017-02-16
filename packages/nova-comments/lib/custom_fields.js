@@ -10,7 +10,6 @@ Users.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -26,7 +25,6 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -39,12 +37,6 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true,
-      // join: {
-      //   joinAs: "commentersArray",
-      //   collection: () => Users,
-      //   limit: 4
-      // },
       resolveAs: 'commenters: [User]',
       viewableBy: ['guests'],
     }

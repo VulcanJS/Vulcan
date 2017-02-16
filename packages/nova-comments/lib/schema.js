@@ -11,7 +11,6 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -24,7 +23,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     optional: true,
-    publish: true,
     resolveAs: 'parentComment: Comment',
     hidden: true // never show this
   },
@@ -38,7 +36,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     optional: true,
-    publish: true,
     resolveAs: 'topLevelComment: Comment',
     hidden: true // never show this
   },
@@ -48,7 +45,6 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    publish: false,
     viewableBy: ['admins'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
@@ -60,7 +56,6 @@ const schema = {
   postedAt: {
     type: Date,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
@@ -75,7 +70,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true,
     control: "textarea"
   },
   /**
@@ -84,7 +78,6 @@ const schema = {
   htmlBody: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -93,7 +86,6 @@ const schema = {
   author: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
@@ -107,7 +99,6 @@ const schema = {
   inactive: {
     type: Boolean,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -116,7 +107,6 @@ const schema = {
   postId: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
     insertableBy: ['members'],
     // regEx: SimpleSchema.RegEx.Id,
@@ -130,15 +120,10 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
     insertableBy: ['members'],
     hidden: true,
     resolveAs: 'user: User',
-    // join: {
-    //   joinAs: "user",
-    //   collection: () => Users
-    // },
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site.
@@ -146,39 +131,23 @@ const schema = {
   isDeleted: {
     type: Boolean,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   userIP: {
     type: String,
     optional: true,
-    publish: false,
     viewableBy: ['admins'],
   },
   userAgent: {
     type: String,
     optional: true,
-    publish: false,
     viewableBy: ['admins'],
   },
   referrer: {
     type: String,
     optional: true,
-    publish: false,
     viewableBy: ['admins'],
   }
 };
 
 export default schema;
-
-// todo: move to nova:notifications
-// if (typeof Telescope.notifications !== "undefined") {
-//   Comments.addField({
-//     fieldName: 'disableNotifications',
-//     fieldSchema: {
-//       type: Boolean,
-//       optional: true,
-//       hidden: true // never show this
-//     }
-//   });
-// }

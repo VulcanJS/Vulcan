@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:getting-started",
   summary: "Getting started posts",
-  version: '1.0.0',
+  version: "1.1.0",
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -14,11 +14,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@1.0.0',
-    'nova:posts@1.0.0',
-    'nova:comments@1.0.0',
-    'nova:users@1.0.0',
-    'nova:events@1.0.0',
+    'nova:core@1.1.0',
+    'nova:posts@1.1.0',
+    'nova:comments@1.1.0',
+    'nova:users@1.1.0',
+    'nova:events@1.1.0',
   ]);
 
   // both

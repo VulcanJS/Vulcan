@@ -1,19 +1,25 @@
-import Telescope from 'meteor/nova:lib';
+import { createNotification } from 'meteor/nova:notifications';
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
 
+// TODO: don't import these callbacks server-side (reduce bundle size of what's sent to the client)
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
+
+// note: leverage weak dependencies on packages
+const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
+const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
+const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
+
 
 /**
  * @summary Notify users subscribed to the comment's thread
  */
  
-if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:comments'] !== "undefined") {
-  import Posts from 'meteor/nova:posts';
+if (!!Posts && !!Comments) {
   
   const SubscribedPostNotifications = (comment) => {
     // note: dummy content has disableNotifications set to true
-    if (typeof Telescope.notifications !== "undefined" && Meteor.isServer && !comment.disableNotifications) {
+    if (Meteor.isServer && !comment.disableNotifications) {
 
       const post = Posts.findOne(comment.postId);
 
@@ -27,7 +33,7 @@ if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:comment
         // remove userIds of users that have already been notified
         // and of comment author (they could be replying in a thread they're subscribed to)
         let subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-        Telescope.notifications.create(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
+        createNotification(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
       }
@@ -40,9 +46,10 @@ if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:comment
 /**
  * @summary Notify users subscribed to 'another user' whenever another user posts
  */
-if (typeof Package['nova:posts'] !== "undefined") {
+if (!!Posts) {
+  
   const SubscribedUsersNotifications = (post) => {
-    if (typeof Telescope.notifications !== "undefined" && Meteor.isServer) {
+    if (Meteor.isServer) {
 
       let userIdsNotified = [];
       const notificationData = {
@@ -55,7 +62,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
         // remove userIds of users that have already been notified and of post's author 
         let subscriberIdsToNotify = _.difference(user.subscribers, userIdsNotified, [user._id]);
         
-        Telescope.notifications.create(subscriberIdsToNotify, 'newPost', notificationData);
+        createNotification(subscriberIdsToNotify, 'newPost', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
       }
@@ -69,12 +76,11 @@ if (typeof Package['nova:posts'] !== "undefined") {
  * @summary Notify users subscribed to 'another user' whenever another user posts
  */
 
- if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:categories'] !== "undefined") {
-  import Categories from 'meteor/nova:categories';
+ if (!!Posts && !!Categories) {
 
   const SubscribedCategoriesNotifications = (post) => {
 
-    if (typeof Telescope.notifications !== "undefined" && Meteor.isServer && !!post.categories && !!post.categories.length) {
+    if (Meteor.isServer && !!post.categories && !!post.categories.length) {
       // get the subscribers of the different categories from the post's categories
       const subscribers = post.categories
                                 // find the category from its id
@@ -93,7 +99,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
         // remove userIds of users that have already been notified and of post's author 
         let subscriberIdsToNotify = _.uniq(_.difference(subscribers, userIdsNotified, [post.userId]));
         
-        Telescope.notifications.create(subscriberIdsToNotify, 'newPost', notificationData);
+        createNotification(subscriberIdsToNotify, 'newPost', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
       }

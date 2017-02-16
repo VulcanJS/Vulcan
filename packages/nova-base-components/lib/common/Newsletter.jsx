@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withMutation, withMessages, Utils } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -31,7 +31,11 @@ class Newsletter extends Component {
       const result = await this.props.addEmailNewsletter({email: data.email});
       this.successCallbackSubscription(result);
     } catch(error) {
-      this.props.flash(error.message, "error");
+      console.error(error); // eslint-disable-line no-console
+      this.props.flash(
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
+        "error"
+      );
     }
   }
 

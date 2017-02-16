@@ -1,13 +1,10 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import NovaEmail from 'meteor/nova:email';
 import { getSetting } from 'meteor/nova:core';
 
-Telescope.notifications = {};
+export const createNotification = (userIds, notificationName, data) => {
 
-Telescope.notifications.create = (userIds, notificationName, data) => {
-
-  if (getSetting('enableNotifications', true)) {
+  if (getSetting('emailNotifications', true)) {
     // if userIds is not an array, wrap it in one
     if (!Array.isArray(userIds)) userIds = [userIds];
 
@@ -29,20 +26,3 @@ Telescope.notifications.create = (userIds, notificationName, data) => {
   }
 
 };
-
-// settings collection is deprecated
-// if (typeof Telescope.settings.collection !== "undefined") {
-//   Telescope.settings.collection.addField({
-//     fieldName: 'emailNotifications',
-//     fieldSchema: {
-//       type: Boolean,
-//       optional: true,
-//       defaultValue: true,
-//       form: {
-//         group: 'notifications',
-//         instructions: 'Enable email notifications for new posts and new comments (requires restart).'
-//       }
-//     }
-//   });
-// }
-

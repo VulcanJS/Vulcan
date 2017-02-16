@@ -6,7 +6,7 @@ const Group = ({name, actions}) => {
   return (
     <tr>
       <td>{name}</td>
-      <td><ul>{actions.map(action => <li><code>{action}</code></li>)}</ul></td>
+      <td><ul>{actions.map((action, index) => <li key={index}><code>{action}</code></li>)}</ul></td>
     </tr>
   )
 }
