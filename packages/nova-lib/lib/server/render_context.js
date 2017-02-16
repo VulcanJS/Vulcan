@@ -109,7 +109,7 @@ webAppConnectHandlersUse(bindEnvironment(function initRenderContextMiddleware(re
     },
   };
 
-  // create store and it will reload
+  // create store
   req.renderContext.store = configureStore(req.renderContext.getReducers, {}, (store) => {
     let chain, newDispatch;
     return next => (action) => {

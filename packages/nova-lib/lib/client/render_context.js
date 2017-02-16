@@ -28,7 +28,7 @@ const context = {
   getMiddlewares, // context.getMiddlewares same as getMiddlewares
 };
 
-// init store **Notes it will reload**
+// init store
 context.store = configureStore(context.getReducers, {}, (store) => {
   let chain, newDispatch;
   return next => (action) => {
