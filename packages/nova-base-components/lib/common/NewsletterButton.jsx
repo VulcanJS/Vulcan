@@ -27,7 +27,7 @@ class NewsletterButton extends Component {
     } catch(error) {
       console.error(error); // eslint-disable-line no-console
       flash(
-        this.context.intl.formatMessage(Utils.decodeIntlError(error.message)),
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
         "error"
       );
     }

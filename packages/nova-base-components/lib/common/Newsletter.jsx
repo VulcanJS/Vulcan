@@ -33,7 +33,7 @@ class Newsletter extends Component {
     } catch(error) {
       console.error(error); // eslint-disable-line no-console
       this.props.flash(
-        this.context.intl.formatMessage(Utils.decodeIntlError(error.message)),
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
         "error"
       );
     }
