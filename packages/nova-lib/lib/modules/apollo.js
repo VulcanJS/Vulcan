@@ -1,14 +1,20 @@
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import ApolloClient, { createNetworkInterface, createBatchingNetworkInterface } from 'apollo-client';
 import 'isomorphic-fetch';
+
+import { Meteor } from 'meteor/meteor';
+
 import { getSetting } from './settings.js';
 
 const defaultNetworkInterfaceConfig = {
-  path: '/graphql',
-  options: {},
+  path: '/graphql', // default graphql server endpoint
+  opts: {}, // additional fetch options like `credentials` or `headers`
+  useMeteorAccounts: true, // if true, send an eventual Meteor login token to identify the current user with every request
+  batchingInterface: false, // use a BatchingNetworkInterface by default instead of a NetworkInterface
+  batchInterval: 10, // default batch interval
 };
 
 const createMeteorNetworkInterface = (givenConfig = {}) => {
-  const config = _.extend(defaultNetworkInterfaceConfig, givenConfig);
+  const config = { ...defaultNetworkInterfaceConfig, ...givenConfig };
 
   // absoluteUrl adds a '/', so let's remove it first
   let path = config.path;
@@ -16,37 +22,54 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
     path = path.slice(1);
   }
 
-  // add the rootUrl option, in case tests are made on development server
-  // see https://github.com/TelescopeJS/Telescope/issues/1554#issuecomment-277445915
   const uri = Meteor.absoluteUrl(
-    path, 
-    { rootUrl: getSetting('developmentServerIp', Meteor.absoluteUrl()) }
+    path,
+    { rootUrl: getSetting('developmentServerIp', Meteor.absoluteUrl()) },
   );
-  const networkInterface = createNetworkInterface({
+
+  // allow the use of a batching network interface; if the options.batchingInterface is not specified, fallback to the standard network interface
+  const interfaceToUse = config.batchingInterface ? createBatchingNetworkInterface : createNetworkInterface;
+
+  // default interface options
+  const interfaceOptions = {
     uri,
     opts: {
-      credentials: 'same-origin',
-    }
-  });
-
-  networkInterface.use([{
-    applyMiddleware(request, next) {
-      const currentUserToken = Meteor.isClient ? global.localStorage['Meteor.loginToken'] : config.currentUserToken;
-
-      if (!currentUserToken) {
-        next();
-        return;
-      }
-
-      if (!request.options.headers) {
-        request.options.headers = new Headers();
-      }
-
-      request.options.headers.Authorization = currentUserToken;
-
-      next();
+      credentials: 'same-origin', // http://dev.apollodata.com/react/auth.html#Cookie
     },
-  }]);
+  };
+
+  // if a BatchingNetworkInterface is used with a correct batch interval, add it to the options
+  if (config.batchingInterface && config.batchInterval) {
+    interfaceOptions.batchInterval = config.batchInterval;
+  }
+
+  // if 'fetch' has been configured to be called with specific opts, add it to the options
+  if (Object.keys(config.opts).length > 0) {
+    interfaceOptions.opts = config.opts;
+  }
+
+  const networkInterface = interfaceToUse(interfaceOptions);
+
+  if (config.useMeteorAccounts) {
+    networkInterface.use([{
+      applyMiddleware(request, next) {
+        const currentUserToken = Meteor.isClient ? global.localStorage['Meteor.loginToken'] : config.loginToken;
+
+        if (!currentUserToken) {
+          next();
+          return;
+        }
+
+        if (!request.options.headers) {
+          request.options.headers = new Headers();
+        }
+
+        request.options.headers.Authorization = currentUserToken;
+
+        next();
+      },
+    }]);
+  }
 
   return networkInterface;
 };
@@ -54,7 +77,7 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
 const meteorClientConfig = networkInterfaceConfig => ({
   ssrMode: Meteor.isServer,
   networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
-  queryDeduplication: true,
+  queryDeduplication: true, // http://dev.apollodata.com/core/network.html#query-deduplication
 
   // Default to using Mongo _id, must use _id for queries.
   dataIdFromObject(result) {

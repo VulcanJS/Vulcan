@@ -39,15 +39,9 @@ Meteor.startup(() => {
       const initialState = data;
       const context = getRenderContext();
       context.initialState = initialState;
-
-      // configure apollo
-      const { apolloClient, store } = context;
-      const apolloClientReducer = (state = initialState && initialState.apollo, action) => apolloClient.reducer()(state, action);
-      addReducer({ apollo: apolloClientReducer });
-      addMiddleware(apolloClient.middleware());
-
-      // configure the redux store
-      store.reload();
+      const apolloClientReducer = (state = initialState && initialState.apollo, action) => context.apolloClient.reducer()(state, action);
+      context.addReducer({ apollo: apolloClientReducer });
+      context.store.reload({ message: 'replace apolloClientReducer with initialState, and reload store before render' });
     },
     historyHook(newHistory) {
       const { history } = getRenderContext();

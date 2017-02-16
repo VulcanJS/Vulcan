@@ -1,56 +1,52 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { browserHistory } from 'react-router';
+import { compose } from 'redux';
 
-import { createApolloClient, addReducer, addMiddleware, getReducers, getMiddlewares } from '../modules/index.js';
+import {
+  createApolloClient,
+  configureStore, STORE_RELOADED,
+  addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
+  Utils,
+} from '../modules/index.js';
 
+// init
 const history = browserHistory;
-
 const loginToken = global.localStorage['Meteor.loginToken'];
 const apolloClient = createApolloClient();
+addReducer({ apollo: apolloClient.reducer() });
+addMiddleware(Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware'));
 
-const reducers = addReducer({ apollo: apolloClient.reducer() });
-const middlewares = addMiddleware(apolloClient.middleware());
-
-const STORE_RELOADED = 'STORE_RELOADED';
-
-function mainMiddleware(store) {
-  let chain;
-  return next => (action) => {
-    if (!chain || action.type === STORE_RELOADED) {
-      chain = getMiddlewares().map(middleware => middleware(store));
-    }
-    return compose(...chain)(next)(action);
-  };
-}
-
-const store = createStore(s => s, {}, compose(
-  applyMiddleware(mainMiddleware),
-  typeof window !== 'undefined' && window.devToolsExtension ? window.devToolsExtension() : f => f,
-));
-
-store.reload = function reload() {
-  const rootReducer = combineReducers(getReducers());
-  this.replaceReducer(rootReducer);
-  this.dispatch({ type: STORE_RELOADED });
-};
-
+// init context
 const context = {
   history,
   loginToken,
   apolloClient,
-  reducers,
-  middlewares,
-  store,
+  addAction, // context.addAction same as addAction
+  getActions, // context.getActions same as getActions
+  addReducer, // context.addReducer same as addReducer
+  getReducers, // context.getReducers same as getReducers
+  addMiddleware, // context.addMiddleware same as addMiddleware
+  getMiddlewares, // context.getMiddlewares same as getMiddlewares
 };
 
-export const renderContext = {
-  get() {
-    return context;
-  },
-};
+// init store
+context.store = configureStore(context.getReducers, {}, (store) => {
+  let chain, newDispatch;
+  return next => (action) => {
+    if (!chain) {
+      chain = context.getMiddlewares().map(middleware => middleware(store));
+      newDispatch = compose(...chain)(next)
+    }
+    return newDispatch(action);
+  };
+})
 
+// render context object
+export const renderContext = { get: () => context };
+
+// render context get function
 export const getRenderContext = () => renderContext.get();
 
+// withRenderContext make it easy to access context
 export const withRenderContext = (func) => {
-  func();
+  func(context);
 };

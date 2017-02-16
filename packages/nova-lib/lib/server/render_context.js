@@ -1,19 +1,24 @@
 import { createMemoryHistory } from 'react-router';
+import { compose } from 'redux';
+import cookieParser from 'cookie-parser';
 
 import { Meteor } from 'meteor/meteor';
 import { DDP } from 'meteor/ddp';
 import { Accounts } from 'meteor/accounts-base';
 import { RoutePolicy } from 'meteor/routepolicy';
+import { WebApp } from 'meteor/webapp';
 
-import { createApolloClient, getReducers, getMiddlewares } from '../modules/index.js';
-import { configureStore } from './store.js';
+import {
+  createApolloClient,
+  configureStore, STORE_RELOADED, getActions, getReducers, getMiddlewares,
+  Utils,
+} from '../modules/index.js';
+
+import { webAppConnectHandlersUse, bindEnvironment } from './meteor_patch.js';
 
 const Fiber = Npm.require('fibers');
 
-export const renderContext = new Meteor.EnvironmentVariable();
-
-export const getRenderContext = () => renderContext.get();
-
+// check the req url
 function isAppUrl(req) {
   const url = req.url;
   if (url === '/favicon.ico' || url === '/robots.txt') {
@@ -34,6 +39,7 @@ function isAppUrl(req) {
   return /html/.test(req.headers.accept);
 }
 
+// for meteor.user
 const LoginContext = function LoginContext(loginToken) {
   this._loginToken = loginToken;
 
@@ -55,49 +61,121 @@ const LoginContext = function LoginContext(loginToken) {
   }
 };
 
-export const withRenderContextRaw = (func, options = {}) => {
-  const newFunc = Meteor.bindEnvironment((req, res, next) => {
-    Fiber.current._meteor_dynamics = Fiber.current._meteor_dynamics || [];
-    Fiber.current._meteor_dynamics[DDP._CurrentInvocation.slot] = req.loginContext;
-    Fiber.current._meteor_dynamics[renderContext.slot] = req.renderContext;
+// for req.cookies
+webAppConnectHandlersUse(cookieParser(), { order: 10, name: 'cookieParserMiddleware' });
 
-    func(req, res, next);
-
-    if (options.autoNext) {
-      next();
-    }
-  })
-
-  if (options.name) {
-    Object.defineProperty(newFunc, 'name', { value: options.name });
-  }
-  WebApp.connectHandlers.use(newFunc);
-}
-
-export const withRenderContext = (func) => {
-  withRenderContextRaw(func, { autoNext: true });
-};
-
-WebApp.connectHandlers.use(Meteor.bindEnvironment((req, res, next) => {
+// initRenderContextMiddleware
+webAppConnectHandlersUse(bindEnvironment(function initRenderContextMiddleware(req, res, next) {
+  // check the req url
   if (!isAppUrl(req)) {
     next();
     return;
   }
 
-  req.history = createMemoryHistory(req.url);
-  req.loginToken = req.cookies && req.cookies.meteor_login_token;
-  req.apolloClient = createApolloClient({ currentUserToken: req.loginToken });
-  req.reducers = { ...getReducers(), apollo: req.apolloClient.reducer() };
-  req.middlewares = [...getMiddlewares(), req.apolloClient.middleware()];
-  req.store = configureStore(req.reducers, {}, req.middlewares);
-  req.loginContext = new LoginContext(req.loginToken);
+  // init
+  const history = createMemoryHistory(req.url);
+  const loginToken = req.cookies && req.cookies.meteor_login_token;
+  const apolloClient = createApolloClient({ loginToken: loginToken });
+  let actions = {};
+  let reducers = { apollo: apolloClient.reducer() };
+  let middlewares = [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')];
+
+  // renderContext object
   req.renderContext = {
-    history: req.history,
-    loginToken: req.loginToken,
-    apolloClient: req.apolloClient,
-    reducers: req.reducers,
-    middlewares: req.middlewares,
-    store: req.store,
+    history,
+    loginToken,
+    apolloClient,
+    addAction(addedAction) { // context.addAction: add action to renderContext
+      actions = { ...actions, ...addedAction };
+      return this.getActions();
+    },
+    getActions() { // SSR actions = server actions + renderContext actions
+      return { ...getActions(), ...actions };
+    },
+    addReducer(addedReducer) { // context.addReducer: add reducer to renderContext
+      reducers = { ...reducers, ...addedReducer };
+      return this.getReducers();
+    },
+    getReducers() { // SSR reducers = server reducers + renderContext reducers
+      return { ...getReducers(), ...reducers };
+    },
+    addMiddleware(middlewareOrMiddlewareArray) { // context.addMiddleware: add middleware to renderContext
+      const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
+      middlewares = [...middlewares, ...addedMiddleware];
+      return this.getMiddlewares();
+    },
+    getMiddlewares() { // SSR middlewares = server middlewares + renderContext middlewares
+      return [...getMiddlewares(), ...middlewares];
+    },
   };
+
+  // create store
+  req.renderContext.store = configureStore(req.renderContext.getReducers, {}, (store) => {
+    let chain, newDispatch;
+    return next => (action) => {
+      if (!chain) {
+        chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
+        newDispatch = compose(...chain)(next)
+      }
+      return newDispatch(action);
+    };
+  })
+
+  // for meteor.user
+  req.loginContext = new LoginContext(loginToken);
+
   next();
-}));
+}), { order: 20 });
+
+// render context object
+export const renderContext = new Meteor.EnvironmentVariable();
+
+// render context get function
+export const getRenderContext = () => renderContext.get();
+
+// withRenderContextEnvironment
+export const withRenderContextEnvironment = (fn, options = {}) => {
+  // set newfn
+  const newfn = (req, res, next) => {
+    if (!isAppUrl(req)) {
+      next();
+      return;
+    }
+
+    Fiber.current._meteor_dynamics = Fiber.current._meteor_dynamics || [];
+    Fiber.current._meteor_dynamics[DDP._CurrentInvocation.slot] = req.loginContext;
+    Fiber.current._meteor_dynamics[renderContext.slot] = req.renderContext;
+
+    fn(req.renderContext, req, res, next);
+
+    if (options.autoNext) {
+      next();
+    }
+  };
+
+  // get evfn
+  const evfn = bindEnvironment(newfn);
+
+  // use it
+  WebApp.connectHandlers.use(evfn);
+
+  // get handle
+  const handle = WebApp.connectHandlers.stack[WebApp.connectHandlers.stack.length - 1].handle;
+
+  // copy options to handle
+  Object.keys(options).forEach((key) => {
+    handle[key] = options[key];
+  });
+
+  // copy raw fn
+  handle.fn = options.fn || fn;
+
+  // rename
+  const name = options.name || (options.fn && options.fn.name) || fn.name;
+  Utils.defineName(handle, name || '__withRenderContextEnvironment_evfn__');
+};
+
+// withRenderContext make it easy to access context
+export const withRenderContext = (func, options = {}) => {
+  withRenderContextEnvironment(func, { ...options, autoNext: true });
+};

@@ -384,7 +384,7 @@ Utils.getComponentDisplayName = (WrappedComponent) => {
  */
 Utils.convertDates = (collection, listOrDocument) => {
   // if undefined, just return
-  if (!listOrDocument || !listOrDocument.length) return listOrDocument;  
+  if (!listOrDocument || !listOrDocument.length) return listOrDocument;
 
   const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
   const schema = collection.simpleSchema()._schema;
@@ -405,37 +405,44 @@ Utils.encodeIntlError = error => typeof error !== "object" ? error : JSON.string
 
 Utils.decodeIntlError = (error, options) => {
   try {
-    
+
     let strippedError = error;
-    
+
     // if the error hasn't been cleaned before (ex: it's not an error from a form)
     if (!options.stripped) {
-      // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
+      // strip the "GraphQL Error: message [error_code]" given by Apollo if present
       const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
       if (graphqlPrefixIsPresent) {
         strippedError = graphqlPrefixIsPresent[1];
       }
-      
+
       // strip the error code if present
       const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
       if (errorCodeIsPresent) {
         strippedError = errorCodeIsPresent[1];
       }
     }
-    
+
     // the error is an object internationalizable
     const parsedError = JSON.parse(strippedError);
-    
+
     // check if the error has at least an 'id' expected by react-intl
     if (!parsedError.id) {
       console.error('[Undecodable error]', error); // eslint-disable-line
       return {id: 'app.something_bad_happened', value: '[undecodable error]'}
-    } 
-    
+    }
+
     // return the parsed error
-    return parsedError; 
-  } catch(__) { 
+    return parsedError;
+  } catch(__) {
     // the error is not internationalizable
     return error;
   }
+};
+
+Utils.findWhere = (array, criteria) => array.find(item => Object.keys(criteria).every(key => item[key] === criteria[key]));
+
+Utils.defineName = (o, name) => {
+  Object.defineProperty(o, 'name', { value: name });
+  return o;
 };

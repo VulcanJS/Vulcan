@@ -40,6 +40,7 @@ Meteor.startup(() => {
     },
     wrapperHook(req, res, appGenerator) {
       const { apolloClient, store } = getRenderContext();
+      store.reload({ message: 'reload store before render' });
       const app = appGenerator();
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
@@ -58,7 +59,7 @@ Meteor.startup(() => {
     htmlHook(req, res, dynamicHead, dynamicBody) {
       const head = Helmet.rewind();
       return {
-        dynamicHead: `${head.title}${head.meta}${head.link}${dynamicHead}${res._injectHtml || ''}`,
+        dynamicHead: `${head.title}${head.meta}${head.link}${head.script}${dynamicHead}`,
         dynamicBody,
       };
     },

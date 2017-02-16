@@ -1,14 +1,10 @@
 import React from 'react';
 import { match, RouterContext, createMemoryHistory } from 'react-router';
 import ReactDOMServer from 'react-dom/server';
-import cookieParser from 'cookie-parser';
 
 import { RoutePolicy } from 'meteor/routepolicy';
-import { WebApp } from 'meteor/webapp';
 
-import { withRenderContext, withRenderContextRaw } from 'meteor/nova:core';
-
-import { InjectData } from './inject_data.js';
+import { withRenderContextEnvironment, InjectData } from 'meteor/nova:core';
 
 function isAppUrl(req) {
   const url = req.url;
@@ -70,7 +66,7 @@ function generateSSRData(options, req, res, renderProps) {
 
     css = req.css;
   } catch (err) {
-    console.log(err) // eslint-disable-line no-console
+    console.log(err); // eslint-disable-line no-console
     console.error(new Date(), 'error while server-rendering', err.stack); // eslint-disable-line no-console
   }
 
@@ -114,22 +110,7 @@ export const RouterServer = {
       options = {};
     }
 
-    WebApp.rawConnectHandlers.use(cookieParser());
-
-    // Ensure router middleware is at the end
-    withRenderContext(() => {
-      const stack = WebApp.connectHandlers.stack;
-      if (stack[stack.length - 1].handle.name === 'routerMiddleware') {
-        return;
-      }
-      for (let i in stack) {
-        if (stack[i].handle.name === 'routerMiddleware') {
-          stack.push(stack.splice(i, 1)[0]);
-        }
-      }
-    });
-
-    withRenderContextRaw((req, res, next) => {
+    withRenderContextEnvironment(function routerMiddleware(context, req, res, next) {
       if (!isAppUrl(req)) {
         next();
         return;
@@ -138,7 +119,7 @@ export const RouterServer = {
       let history = createMemoryHistory(req.url);
 
       if (typeof options.historyHook === 'function') {
-        history = options.historyHook(res, req, history);
+        history = options.historyHook(req, res, history);
       }
 
       match({ history, routes, location: req.url }, (err, redirectLocation, renderProps) => {
@@ -157,6 +138,6 @@ export const RouterServer = {
           res.end();
         }
       });
-    }, { name: 'routerMiddleware' });
+    }, { order: 800 });
   },
 };

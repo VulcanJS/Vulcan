@@ -1,19 +1,23 @@
 import { EJSON } from 'meteor/ejson';
 
-export const InjectData = {
-  _data: {},
+import { webAppConnectHandlersUse } from './meteor_patch.js';
 
+// InjectData object
+export const InjectData = {
+  // encode object to string
   _encode(ejson) {
     const ejsonString = EJSON.stringify(ejson);
     return encodeURIComponent(ejsonString);
   },
 
+  // decode string to object
   _decode(encodedEjson) {
     const decodedEjsonString = decodeURIComponent(encodedEjson);
     if (!decodedEjsonString) return null;
     return EJSON.parse(decodedEjsonString);
   },
 
+  // push data to res._injectPayload and generate res._injectHtml
   pushData(res, key, value) {
     if (!res._injectPayload) {
       res._injectPayload = {};
@@ -37,6 +41,7 @@ export const InjectData = {
     res._injectHtml = `<script type="text/inject-data">${data}</script>`;
   },
 
+  // get data from res._injectPayload
   getData(res, key) {
     if (res._injectPayload) {
       // same as _.clone(res._injectPayload[key]);
@@ -47,3 +52,12 @@ export const InjectData = {
     return null;
   },
 };
+
+// **injectDataMiddleware, Notes that it must after router connect handler**
+webAppConnectHandlersUse(function injectDataMiddleware(req, res, next) {
+  if (res._injectHtml) {
+    req.dynamicHead = req.dynamicHead || '';
+    req.dynamicHead += res._injectHtml;
+  }
+  next();
+}, { order: 900 });
