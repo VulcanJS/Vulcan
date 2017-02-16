@@ -119,7 +119,7 @@ export const RouterServer = {
       let history = createMemoryHistory(req.url);
 
       if (typeof options.historyHook === 'function') {
-        history = options.historyHook(res, req, history);
+        history = options.historyHook(req, res, history);
       }
 
       match({ history, routes, location: req.url }, (err, redirectLocation, renderProps) => {
