@@ -175,7 +175,6 @@ postedAt: {
   optional: true,
   insertableBy: Users.isAdmin,
   editableBy: Users.isAdmin,
-  publish: true,
   control: "datetime",
   group: {
     name: "admin",

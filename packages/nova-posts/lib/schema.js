@@ -24,7 +24,6 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -47,7 +46,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    publish: true,
     control: "datetime",
     group: formGroups.admin
   },
@@ -62,7 +60,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "text",
-    publish: true,
     order: 10
   },
   /**
@@ -76,7 +73,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "text",
-    publish: true,
     order: 20
   },
   /**
@@ -86,7 +82,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    publish: true,
   },
   /**
     Post body (markdown)
@@ -99,7 +94,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "textarea",
-    publish: true,
     order: 30
   },
   /**
@@ -108,7 +102,6 @@ const schema = {
   htmlBody: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -117,7 +110,6 @@ const schema = {
   excerpt: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -126,7 +118,6 @@ const schema = {
   viewCount: {
     type: Number,
     optional: true,
-    publish: true,
     viewableBy: ['admins'],
     defaultValue: 0
   },
@@ -136,7 +127,6 @@ const schema = {
   lastCommentedAt: {
     type: Date,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -145,7 +135,6 @@ const schema = {
   clickCount: {
     type: Number,
     optional: true,
-    publish: true,
     viewableBy: ['admins'],
     defaultValue: 0
   },
@@ -180,7 +169,6 @@ const schema = {
     type: Boolean,
     optional: true,
     viewableBy: ['guests'],
-    publish: true
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -193,7 +181,6 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins'],
     control: "checkbox",
-    publish: true,
     group: formGroups.admin
   },
   /**
@@ -202,7 +189,6 @@ const schema = {
   inactive: {
     type: Boolean,
     optional: true,
-    publish: false,
     defaultValue: false
   },
   /**
@@ -212,19 +198,16 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   userAgent: {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   referrer: {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   /**
     The post author's name
@@ -233,7 +216,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    publish: true,
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
       const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
@@ -251,25 +233,6 @@ const schema = {
     insertableBy: ['members'],
     hidden: true,
     resolveAs: 'user: User',
-    // publish: true,
-    // regEx: SimpleSchema.RegEx.Id,
-    // insertableBy: ['admins'],
-    // editableBy: ['admins'],
-    // form: {
-    //   group: 'admin',
-    //   options: function () {
-    //     return Users.find().map(function (user) {
-    //       return {
-    //         value: user._id,
-    //         label: Users.getDisplayName(user)
-    //       };
-    //     });
-    //   }
-    // },
-    // join: {
-    //   joinAs: "user",
-    //   collection: () => Users
-    // }
   }
 };
 

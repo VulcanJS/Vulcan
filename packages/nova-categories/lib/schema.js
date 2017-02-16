@@ -29,14 +29,12 @@ const schema = {
     type: String,
     viewableBy: ['guests'],
     optional: true,
-    publish: true
   },
   name: {
     type: String,
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true
   },
   description: {
     type: String,
@@ -44,7 +42,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true,
     form: {
       rows: 3
     }
@@ -55,7 +52,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true
   },
   slug: {
     type: String,
@@ -63,7 +59,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true,
   },
   image: {
     type: String,
@@ -71,7 +66,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true
   },
   parentId: {
     type: String,
@@ -80,7 +74,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    publish: true,
     resolveAs: 'parent: Category',
     form: {
       options: formProps => getCategoriesAsOptions(formProps.client)

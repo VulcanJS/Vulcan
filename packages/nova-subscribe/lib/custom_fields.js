@@ -39,11 +39,6 @@ if (typeof Package['nova:posts'] !== "undefined") {
         type: [String],
         optional: true,
         hidden: true, // never show this
-        // publish: true,
-        // join: {
-        //   joinAs: "subscribersArray",
-        //   collection: () => Users
-        // }
       }
     },
     {
@@ -68,11 +63,6 @@ if (typeof Package['nova:categories'] !== "undefined") {
         type: [String],
         optional: true,
         hidden: true, // never show this
-        // publish: true,
-        // join: {
-        //   joinAs: "subscribersArray",
-        //   collection: () => Users
-        // }
       }
     },
     {
