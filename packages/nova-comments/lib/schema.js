@@ -151,15 +151,3 @@ const schema = {
 };
 
 export default schema;
-
-// todo: move to nova:notifications
-// if (typeof Telescope.notifications !== "undefined") {
-//   Comments.addField({
-//     fieldName: 'disableNotifications',
-//     fieldSchema: {
-//       type: Boolean,
-//       optional: true,
-//       hidden: true // never show this
-//     }
-//   });
-// }

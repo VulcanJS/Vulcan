@@ -1,5 +1,9 @@
 import Users from "meteor/nova:users";
 
+// note: leverage weak dependencies on packages
+const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
+const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
+
 Users.addField([
   {
     fieldName: 'subscribedItems',
@@ -30,8 +34,8 @@ Users.addField([
 ]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
-if (typeof Package['nova:posts'] !== "undefined") {
-  import Posts from 'meteor/nova:posts';
+if (!!Posts) {
+
   Posts.addField([
     {
       fieldName: 'subscribers',
@@ -54,8 +58,8 @@ if (typeof Package['nova:posts'] !== "undefined") {
 }
 
 // check if nova:categories exists, if yes, add the custom fields to Categories
-if (typeof Package['nova:categories'] !== "undefined") {
-  import Categories from 'meteor/nova:categories';
+if (!!Categories) {
+  
   Categories.addField([
     {
       fieldName: 'subscribers',

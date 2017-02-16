@@ -14,10 +14,12 @@ Package.onUse(function (api) {
     'nova:email@1.0.0',
     'nova:users@1.0.0'
   ]);
+  
+  api.use([
+    'nova:posts@1.0.0',
+    'nova:comments@1.0.0',
+  ], {weak: true});
 
-  api.addFiles([
-    'lib/notifications.js',
-    'lib/custom_fields.js'
-  ], ['client', 'server']);
+  api.mainModule('lib/modules.js', ['client', 'server']);
 
 });

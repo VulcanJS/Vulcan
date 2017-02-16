@@ -1,5 +1,8 @@
 import Users from 'meteor/nova:users';
 
+// note: leverage weak dependencies on packages
+const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
+
 const notificationsGroup = {
   name: "notifications",
   order: 2
@@ -18,7 +21,7 @@ Users.addField([
       viewableBy: ['guests'],
       insertableBy: ['admins'],
       editableBy: ['admins'],
-      group: notificationsGroup
+      group: notificationsGroup,
     }
   },
   {
@@ -32,12 +35,12 @@ Users.addField([
       viewableBy: ['guests'],
       insertableBy: ['members'],
       editableBy: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
     }
   }
 ]);
 
-if (typeof Comments !== "undefined") {
+if (!!Comments) {
   Users.addField([
     {
       fieldName: 'notifications_comments',
@@ -45,11 +48,12 @@ if (typeof Comments !== "undefined") {
         label: 'Comments on my posts',
         type: Boolean,
         optional: true,
-        defaultValue: true,
+        defaultValue: false,
         control: "checkbox",
         viewableBy: ['guests'],
         insertableBy: ['members'],
-        editableBy: ['members']
+        editableBy: ['members'],
+        group: notificationsGroup,
       }
     },
     {
@@ -58,11 +62,12 @@ if (typeof Comments !== "undefined") {
         label: 'Replies to my comments',
         type: Boolean,
         optional: true,
-        defaultValue: true,
+        defaultValue: false,
         control: "checkbox",
         viewableBy: ['guests'],
         insertableBy: ['members'],
-        editableBy: ['members']
+        editableBy: ['members'],
+        group: notificationsGroup,
       }
     }
   ]);  

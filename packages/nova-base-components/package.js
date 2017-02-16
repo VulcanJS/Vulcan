@@ -21,7 +21,6 @@ Package.onUse(function (api) {
     'fortawesome:fontawesome@4.5.0',
     'tmeasday:check-npm-versions@0.3.1',
     'std:accounts-ui@1.2.18',
-    'utilities:react-list-container@0.1.10',
   ]);
 
   api.mainModule("lib/server.js", "server");

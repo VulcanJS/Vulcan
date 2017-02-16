@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:core';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
@@ -21,19 +20,6 @@ function PostsSetPostedAt (modifier, post) {
 }
 addCallback("posts.approve.sync", PostsSetPostedAt);
 
-/**
- * @summary Add notification callback when a post is approved
- */
-function PostsApprovedNotification (post) {
-  if (typeof Telescope.notifications !== "undefined") {
-    var notificationData = {
-      post: _.pick(post, '_id', 'userId', 'title', 'url')
-    };
-
-    Telescope.notifications.create(post.userId, 'postApproved', notificationData);
-  }
-}
-addCallback("posts.approve.async", PostsApprovedNotification);
 
 // ------------------------------------- users.remove.async -------------------------------- //
 

@@ -15,11 +15,6 @@ Package.onUse(function (api) {
     'nova:users@1.0.0'
   ]);
 
-  api.use([
-    'nova:notifications@1.0.0',
-    'nova:email@1.0.0'
-  ], ['client', 'server'], {weak: true});
-
   api.mainModule("lib/server.js", "server");
   api.mainModule("lib/client.js", "client");
 
