@@ -70,9 +70,13 @@ export const getReducers = () => reducers;
 // **Notes: server side, addMiddleware to server share with every req**
 let middlewares = [];
 
-export const addMiddleware = (middlewareOrMiddlewareArray) => {
+export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
   const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
-  middlewares = [...middlewares, ...addedMiddleware];
+  if (options.unshift) {
+    middlewares = [...addedMiddleware, ...middlewares];
+  } else {
+    middlewares = [...middlewares, ...addedMiddleware];
+  }
   return middlewares;
 };
 export const getMiddlewares = () => middlewares;
