@@ -8,7 +8,6 @@ nova:users                      # user management and permissions
 
 ############ Features Packages ############
 
-nova:events
 nova:posts
 nova:comments
 nova:newsletter
@@ -17,6 +16,7 @@ nova:notifications
 nova:getting-started
 nova:categories
 nova:voting
+nova:events
 nova:embedly
 nova:api
 nova:rss
@@ -37,7 +37,7 @@ nova:i18n-en-us         # default language translation
 
 ############ Your Packages ############
 
-accounts-password@1.3.3
+accounts-password@1.3.4
 # accounts-twitter
 # accounts-facebook
 

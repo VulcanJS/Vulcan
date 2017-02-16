@@ -7,7 +7,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const Telescope = {};
 
-Telescope.VERSION = '1.0.0';
+Telescope.VERSION = '1.1.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 

@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:debug",
   summary: "Telescope debug package",
-  version: "1.0.0",
+  version: "1.1.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -15,11 +15,11 @@ Package.onUse(function (api) {
 
     // Nova packages
 
-    'nova:core@1.0.0',
-    'nova:posts@1.0.0',
-    'nova:users@1.0.0',
-    'nova:email@1.0.0',
-    'nova:comments@1.0.0'
+    'nova:core@1.1.0',
+    'nova:posts@1.1.0',
+    'nova:users@1.1.0',
+    'nova:email@1.1.0',
+    'nova:comments@1.1.0'
 
   ]);
 
