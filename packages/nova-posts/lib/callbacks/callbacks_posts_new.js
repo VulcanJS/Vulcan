@@ -81,10 +81,10 @@ addCallback("posts.new.sync", PostsNewDuplicateLinksCheck);
 // addCallback("posts.new.sync", PostsNewRequiredPropertiesCheck);
 
 /**
- * @summary Set the post's postedAt if it's approved
+ * @summary Set the post's postedAt if it's going to be approved
  */
 function PostsSetPostedAt (post, user) {
-  if (!post.postedAt && Posts.isApproved(post)) post.postedAt = new Date();
+  if (!post.postedAt && Posts.getDefaultStatus(user) === Posts.config.STATUS_APPROVED) post.postedAt = new Date();
   return post;
 }
 addCallback("posts.new.sync", PostsSetPostedAt);
