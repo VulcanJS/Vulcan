@@ -30,14 +30,15 @@ const context = {
 
 // init store **Notes it will reload**
 context.store = configureStore(context.getReducers, {}, (store) => {
-  let chain;
+  let chain, newDispatch;
   return next => (action) => {
-    if (!chain || action.type === STORE_RELOADED) {
+    if (!chain) {
       chain = context.getMiddlewares().map(middleware => middleware(store));
+      newDispatch = compose(...chain)(next)
     }
-    return compose(...chain)(next)(action);
+    return newDispatch(action);
   };
-}).reload({ message: 'init store' });
+})
 
 // render context object
 export const renderContext = { get: () => context };

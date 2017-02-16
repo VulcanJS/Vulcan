@@ -111,14 +111,15 @@ webAppConnectHandlersUse(bindEnvironment(function initRenderContextMiddleware(re
 
   // create store and it will reload
   req.renderContext.store = configureStore(req.renderContext.getReducers, {}, (store) => {
-    let chain;
-    return next => (action) => { // eslint-disable-line no-shadow
-      if (!chain || action.type === STORE_RELOADED) {
+    let chain, newDispatch;
+    return next => (action) => {
+      if (!chain) {
         chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
+        newDispatch = compose(...chain)(next)
       }
-      return compose(...chain)(next)(action);
+      return newDispatch(action);
     };
-  }).reload();
+  })
 
   // for meteor.user
   req.loginContext = new LoginContext(loginToken);
