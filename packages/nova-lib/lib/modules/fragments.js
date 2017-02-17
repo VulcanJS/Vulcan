@@ -34,8 +34,11 @@ export const getFragmentName = fragment => fragment && fragment.definitions[0] &
 // get fragment
 // note: parentFragmentName is used for debugging purposes only
 export const getFragment = (fragmentName, parentFragmentName) => {
-
   const fragment = Fragments[fragmentName];
+
+  if (!fragment) {
+    throw new Error(`Fragment "${fragmentName}" not registered.`)
+  }
 
   // pad the literals array with line returns for each subFragments
   const literals = [fragment.fragmentText, ...fragment.subFragments.map(x => '\n')];
