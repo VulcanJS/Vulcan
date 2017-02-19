@@ -38,7 +38,7 @@ const schema = {
   review: {
     label: 'Review',
     type: String,
-    control: "textarea",
+    control: 'textarea',
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members']
@@ -47,7 +47,7 @@ const schema = {
     label: 'Private Comments',
     type: String,
     optional: true,
-    control: "textarea",
+    control: 'textarea',
     viewableBy: Users.owns,
     insertableBy: ['members'],
     editableBy: ['members']

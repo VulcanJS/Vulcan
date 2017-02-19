@@ -5,15 +5,19 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'nova:core@1.1.0',
-    'nova:forms@1.1.0',
+    'nova:core',
+    'nova:forms',
 
-    'std:accounts-ui@1.2.18',
+    'std:accounts-ui',
   ]);
 
   api.addFiles('lib/style.css', 'client');
 
-  api.mainModule('server.js', 'server');
-  api.mainModule('client.js', 'client');
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
+
+  api.export([
+    'Movies',
+  ], ['client', 'server']);
 
 });

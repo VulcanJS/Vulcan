@@ -6,21 +6,18 @@ Wrapped with the "withDocument" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import { Components, registerComponent } from "meteor/nova:core";
-import Movies from '../collection.js';
+import { Components, registerComponent, getFragment } from "meteor/nova:core";
+import Movies from '../modules/collection.js';
 
-const MoviesEditForm = (props, context) => {
-  return (
-    <Components.SmartForm 
-      collection={Movies} 
-      documentId={props.documentId}
-      showRemove={true}
-    />
-  )
-}
-
-MoviesEditForm.contextTypes = {
-  closeCallback: React.PropTypes.func,
-}
+const MoviesEditForm = props =>
+  <Components.SmartForm 
+    collection={Movies} 
+    documentId={props.documentId}
+    mutationFragment={getFragment('MoviesItemFragment')}
+    showRemove={true}
+    successCallback={document => {
+      props.closeModal();
+    }}
+  />
 
 registerComponent('MoviesEditForm', MoviesEditForm);
