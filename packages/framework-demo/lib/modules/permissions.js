@@ -1,11 +1,5 @@
 import Users from 'meteor/nova:users';
 
-const guestsActions = [
-  'movies.view.own',
-  'movies.view.all',
-];
-Users.groups.guests.can(membersActions);
-
 const membersActions = [
   'movies.new',
   'movies.edit.own',

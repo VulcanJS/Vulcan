@@ -1,4 +1,4 @@
-import '../components/Accounts.jsx';
+import '../components/AccountsForm.jsx';
 import '../components/MoviesDetails.jsx';
 import '../components/MoviesEditForm.jsx';
 import '../components/MoviesItem.jsx';

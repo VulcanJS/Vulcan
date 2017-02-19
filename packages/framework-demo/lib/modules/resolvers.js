@@ -27,7 +27,7 @@ const resolvers = {
 
     name: 'moviesList',
 
-    resolver(root, {terms}, context, info) {
+    resolver(root, {terms = {}}, context, info) {
       let {selector, options} = context.Movies.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.fields = context.getViewableFields(context.currentUser, context.Movies);
@@ -51,7 +51,7 @@ const resolvers = {
     
     name: 'moviesTotal',
     
-    resolver(root, {terms}, context) {
+    resolver(root, {terms = {}}, context) {
       let {selector, options} = context.Movies.getParameters(terms);
       return context.Movies.find(selector, options).count();
     },
