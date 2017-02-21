@@ -20,12 +20,15 @@ class DateTime extends Component {
   }
 
   render() {
+
+    const date = typeof this.props.value === 'string' ? new Date(this.props.value) : this.props.value;
+    
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <DateTimePicker
-            value={this.props.value || new Date()}
+            value={date || new Date()}
             // newDate argument is a Moment object given by react-datetime
             onChange={newDate => this.updateDate(newDate._d)}
             format={"x"}
