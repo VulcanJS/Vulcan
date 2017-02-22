@@ -65,12 +65,15 @@ class Form extends Component {
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
+    this.clearField = this.clearField.bind(this);
+    this.unclearField = this.unclearField.bind(this);
 
     this.state = {
       disabled: false,
       errors: [],
       autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
-      currentValues: {}
+      currentValues: {},
+      clearedFields: []
     };
   }
 
@@ -333,6 +336,22 @@ class Form extends Component {
       errors: _.uniq([...prevState.errors, error])
     }));
   }
+  
+  // add to cleared fields
+  clearField(fieldName){
+    this.setState({
+      deletedFields: [...this.deletedFields, fieldName]
+    });
+    
+    return () => this.removeFromDeletedfields(fieldName);
+  }
+
+  // remove from cleared fields
+  unclearfield(fieldName){ 
+    this.setState({
+       deletedFields: this.deletedFields.filter( name => name != fieldName)
+      });
+  }
 
   // add something to prefilled values
   addToAutofilledValues(property) {
@@ -444,7 +463,7 @@ class Form extends Component {
       const set = _.compactObject(flatten(data));
 
       // put all keys without data on $unset
-      const unsetKeys = _.difference(fields, _.keys(set));
+      const unsetKeys = _.difference(fields, _.keys(set)).concat(this.state.deletedFields);
       const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
 
       // build modifier
@@ -492,6 +511,9 @@ class Form extends Component {
           onKeyDown={this.formKeyDown}
           disabled={this.state.disabled}
           ref="form"
+          clearField={this.clearField}
+          unclearField={this.unclearField}
+          clearedFields={this.state.clearedFields}
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
