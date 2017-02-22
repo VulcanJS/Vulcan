@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Utils, getFragment, getFragmentName } from 'meteor/nova:core';
+import { getFragment, getFragmentName } from 'meteor/nova:core';
 
 export default function withDocument (options) {
   
   const { queryName, collection, pollInterval = 20000 } = options,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        singleResolverName = collection.options.resolvers.single.name;
+        singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
 
   return graphql(gql`
     query ${queryName}($documentId: String, $slug: String) {

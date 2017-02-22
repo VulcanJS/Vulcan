@@ -47,8 +47,8 @@ const withList = (options) => {
   const { queryName, collection, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        listResolverName = collection.options.resolvers.list.name,
-        totalResolverName = collection.options.resolvers.total.name;
+        listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
+        totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
 
 
   return compose(

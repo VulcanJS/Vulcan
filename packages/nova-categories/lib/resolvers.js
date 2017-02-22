@@ -5,7 +5,6 @@ const specificResolvers = {
   Post: {
     async categories(post, args, context) {
       if (post.categories) {
-        console.log(post.categories);
         const categories = await context.BatchingCategories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
         
         return categories;

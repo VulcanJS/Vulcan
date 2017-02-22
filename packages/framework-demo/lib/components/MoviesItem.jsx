@@ -7,7 +7,7 @@ Wrapped with the "withCurrentUser" container.
 
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { Components, registerComponent, withCurrentUser, ModalTrigger } from 'meteor/nova:core';
+import { Components, registerComponent, ModalTrigger } from 'meteor/nova:core';
 import Movies from '../modules/collection.js';
 
 class MoviesItem extends Component {
@@ -63,4 +63,4 @@ class MoviesItem extends Component {
 
 }
 
-registerComponent('MoviesItem', MoviesItem, withCurrentUser);
+registerComponent('MoviesItem', MoviesItem);
