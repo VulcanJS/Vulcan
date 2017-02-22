@@ -17,13 +17,27 @@ class FormComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.handleBlur = this.handleBlur.bind(this);
+    this.state = {
+      isDirty: false
+    };
+    // this.handleBlur = this.handleBlur.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  handleBlur() {
+  onChange(name, value, isDefault=false) {
     // see https://facebook.github.io/react/docs/more-about-refs.html
     if (this.formControl !== null) {
-      this.props.updateCurrentValues({[this.props.name]: this.formControl.getValue()});
+      this.updateCurrentValue(value, isDefault);
+    }
+  }
+  
+  updateCurrentValue(value, isDefault=false){
+    console.log(value, isDefault)
+    this.props.updateCurrentValues({[this.props.name]: value});
+    if(!isDefault){
+      this.setState({
+        isDirty: true
+      });
     }
   }
 
@@ -33,12 +47,14 @@ class FormComponent extends Component {
     const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, ...rest } = this.props; // eslint-disable-line
 
     const base = this.props.control === "function" ? this.props : rest;
-
+    
     const properties = {
       ...base,
-      onBlur: this.handleBlur,
+      onChange: this.onChange,
       ref: (ref) => this.formControl = ref
     };
+
+    delete properties.clearField;
 
     // if control is a React component, use it
     if (typeof this.props.control === "function") {
@@ -67,20 +83,43 @@ class FormComponent extends Component {
         default:
           return <Input         {...properties} type="text" />;
       }
-
+    }
+  }
+  
+  clear(){
+    this.updateCurrentValue(this.props.prefilledValue);
+    this.setState({
+      isDirty: false
+    });
+  }
+  
+  addClearButton(){
+    const style = {
+      position: "absolute",
+      left: "calc(25% - 10px)",
+      top: "13px",
+      cursor: "hnad",
+      cursor: "pointer",
+      zIndex: 100
+    };
+    
+    switch (this.props.control) {
+      case "select":
+      case "datetime":
+        return this.state.isDirty ? <i style={style} onClick={e => this.clear()} className="icon fa fa-fw fa-times icon-close field-clear-button"></i> : "";
     }
   }
 
   render() {
     return (
-      <div className={"input-"+this.props.name}>
+      <div style={{position: "relative"}} className={"input-"+this.props.name}>
         {this.props.beforeComponent ? this.props.beforeComponent : null}
+        {this.addClearButton()}
         {this.renderComponent()}
         {this.props.afterComponent ? this.props.afterComponent : null}
       </div>
-    )
+    );
   }
-
 }
 
 FormComponent.propTypes = {

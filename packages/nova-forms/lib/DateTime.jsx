@@ -12,11 +12,12 @@ class DateTime extends Component {
 
   // when the datetime picker has mounted, SmartForm will catch the date value (no formsy mixin in this component)
   componentDidMount() {
-    this.updateDate(this.props.value || new Date());
+    this.updateDate(this.props.value || new Date(), true);
   }
 
-  updateDate(date) {
-    this.context.updateCurrentValues({[this.props.name]: date});
+  updateDate(date, isDefault=false) {
+    // this.context.updateCurrentValues({[this.props.name]: date});
+    this.props.onChange(this.props.name, date, isDefault);
   }
 
   render() {
@@ -25,7 +26,7 @@ class DateTime extends Component {
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <DateTimePicker
-            value={this.props.value || new Date()}
+            value={this.props.value}
             // newDate argument is a Moment object given by react-datetime
             onChange={newDate => this.updateDate(newDate._d)}
             format={"x"}

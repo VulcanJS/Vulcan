@@ -65,15 +65,14 @@ class Form extends Component {
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
-    this.clearField = this.clearField.bind(this);
-    this.unclearField = this.unclearField.bind(this);
+    // this.clearField = this.clearField.bind(this);
+    // this.unclearField = this.unclearField.bind(this);
 
     this.state = {
       disabled: false,
       errors: [],
       autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
       currentValues: {},
-      clearedFields: []
     };
   }
 
@@ -259,6 +258,14 @@ class Form extends Component {
 
   // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
   updateCurrentValues(newValues) {
+    // gets form field's name which is changed by user
+    // const [fieldName] = _.isObject(Object) ? Object.keys(newValues) : [];
+    // if fieldName is not empty
+    // if(fieldName){
+      // remove from clearedFields
+      // this.unclearField(fieldName);
+    // };
+    
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => ({
       currentValues: {
@@ -337,21 +344,21 @@ class Form extends Component {
     }));
   }
   
-  // add to cleared fields
+/*  // add to cleared fields
   clearField(fieldName){
     this.setState({
-      deletedFields: [...this.deletedFields, fieldName]
+      clearedFields: [...this.state.clearedFields, fieldName]
     });
     
-    return () => this.removeFromDeletedfields(fieldName);
+    return () => this.unclearField(fieldName);
   }
 
   // remove from cleared fields
-  unclearfield(fieldName){ 
+  unclearField(fieldName){ 
     this.setState({
-       deletedFields: this.deletedFields.filter( name => name != fieldName)
+       clearedFields: this.state.clearedFields.filter( name => name != fieldName)
       });
-  }
+  }*/
 
   // add something to prefilled values
   addToAutofilledValues(property) {
@@ -463,7 +470,8 @@ class Form extends Component {
       const set = _.compactObject(flatten(data));
 
       // put all keys without data on $unset
-      const unsetKeys = _.difference(fields, _.keys(set)).concat(this.state.deletedFields);
+      const unsetKeys = _.difference(fields, _.keys(set));
+      // .concat(this.state.clearedFields);
       const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
 
       // build modifier
@@ -511,9 +519,6 @@ class Form extends Component {
           onKeyDown={this.formKeyDown}
           disabled={this.state.disabled}
           ref="form"
-          clearField={this.clearField}
-          unclearField={this.unclearField}
-          clearedFields={this.state.clearedFields}
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
