@@ -2,19 +2,59 @@ import { GraphQLSchema } from 'meteor/nova:core';
 
 const specificResolvers = {
   Post: {
-    upvoters(post, args, context) {
-      return post.upvoters ? context.Users.find({_id: {$in: post.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async upvoters(post, args, context) {
+      try {
+        if (post.upvoters) {
+          const voters = await context.BatchingUsers.find({_id: {$in: post.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+          
+          return voters;
+        }
+        
+        return [];
+      } catch(error) {
+        throw Error(error);
+      }
     },
-    downvoters(post, args, context) {
-      return post.downvoters ? context.Users.find({_id: {$in: post.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async downvoters(post, args, context) {
+      try {
+        if (post.downvoters) {
+          const voters = await context.BatchingUsers.find({_id: {$in: post.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+          
+          return voters;
+        }
+        
+        return [];
+      } catch(error) {
+        throw Error(error);
+      }
     },
   },
   Comment: {
-    upvoters(comment, args, context) {
-      return comment.upvoters ? context.Users.find({_id: {$in: comment.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async upvoters(comment, args, context) {
+      try {
+        if (comment.upvoters) {
+          const voters = await context.BatchingUsers.find({_id: {$in: comment.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+          
+          return voters;
+        }
+        
+        return [];
+      } catch(error) {
+        throw Error(error);
+      }
     },
-    downvoters(comment, args, context) {
-      return comment.downvoters ? context.Users.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async downvoters(comment, args, context) {
+      try {
+        if (comment.downvoters) {
+          const voters = await context.BatchingUsers.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+          
+          return voters;
+        }
+        
+        return [];
+      } catch(error) {
+        throw Error(error);
+      }
     },
   },
 };

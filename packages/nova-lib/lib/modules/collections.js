@@ -1,3 +1,5 @@
+import DataLoader from 'dataloader';
+import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
@@ -114,7 +116,11 @@ export const createCollection = options => {
 
   // add collection to resolver context
   const context = {};
+
   context[Utils.capitalize(options.collectionName)] = collection;
+
+  context[`Batching${Utils.capitalize(options.collectionName)}`] = new BatchingCollection(collection);
+
   GraphQLSchema.addToContext(context);
 
   // ------------------------------------- Queries -------------------------------- //
@@ -185,4 +191,57 @@ export const createCollection = options => {
   }
 
   return collection;
+}
+
+/**
+ * @summary Find by ids, for DataLoader, inspired by https://github.com/tmeasday/mongo-find-by-ids/blob/master/index.js
+ */
+const findByIds = async function(collection, ids) {
+  try {
+    const docs = await collection.find({ _id: { $in: ids } }).fetch();
+    const idMap = {};
+    
+    docs.forEach(doc => { idMap[doc._id] = doc; });
+    
+    return ids.map(id => idMap[id]);
+  } catch(error) {
+    throw Error(error);
+  }
+}
+
+class BatchingCollection {
+  constructor(collection) {
+    this.collection = collection;
+    this.loader = new DataLoader(ids => findByIds(collection, ids));
+  }
+
+  findOne({ _id }) {
+    // note: do not handle slug atm
+    return this.loader.load(_id);
+  }
+
+  async find(selector, options) {
+    const docs = await this.collection.find(selector, options).fetch();
+    return docs;
+  }
+
+  async insert(doc) {
+    const _id = (await this.collection.insert(doc)).insertedId;
+
+    return _id;
+  }
+
+  async update({ _id }, modifier) {
+    const ret = await this.collection.update({ _id }, modifier);
+    this.loader.clear(_id);
+
+    return ret;
+  }
+
+  async remove({ _id }) {
+    const ret = this.collection.remove({ _id });
+    this.loader.clear(_id);
+
+    return ret;
+  }
 }
