@@ -3,11 +3,11 @@
 nova:core                       # core components and wrappers
 nova:forms                      # auto-generated forms
 nova:routing                    # routing and server-side rendering
-nova:email                      # email
 nova:users                      # user management and permissions
 
 ############ Features Packages ############
 
+nova:email
 nova:posts
 nova:comments
 nova:newsletter
@@ -42,4 +42,4 @@ accounts-password@1.3.4
 # accounts-facebook
 
 # customization-demo
-# framework-demo
+framework-demo

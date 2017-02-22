@@ -10,8 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:lib@1.1.0',
-    'nova:email@1.1.0'
+    'nova:lib@1.1.0'
   ]);
 
   api.mainModule("lib/server.js", "server");
