@@ -35,7 +35,7 @@ class SearchForm extends Component{
   search(data) {
 
     const router = this.props.router;
-    const query = data.searchQuery === '' ? {} : {query: data.searchQuery};
+    const query = data.searchQuery === '' ? router.location.query : {...router.location.query, query: data.searchQuery};
 
     delay(() => {
       router.push({pathname: "/", query: query});
