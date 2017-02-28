@@ -1,7 +1,7 @@
 import Users from './collection.js';
 import marked from 'marked';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import { addCallback, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { addCallback, Utils, runCallbacksAsync } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -131,3 +131,12 @@ function usersEditCheckEmail (modifier, user) {
   return modifier;
 }
 addCallback("users.edit.sync", usersEditCheckEmail);
+
+// when a user is edited, check if their profile is now complete
+function usersCheckCompletion (newUser, oldUser) {
+  if (!Users.hasCompletedProfile(oldUser) && Users.hasCompletedProfile(newUser)) {
+    runCallbacksAsync("users.profileCompleted.async", newUser);
+  }
+}
+addCallback("users.edit.async", usersCheckCompletion);
+

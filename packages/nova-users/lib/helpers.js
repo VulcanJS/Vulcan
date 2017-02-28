@@ -161,11 +161,14 @@ Users.getSetting = function (user = null, settingName, defaultValue = null) {
  * @param {Object} user
  */
 Users.hasCompletedProfile = function (user) {
+  
+  if (!user) return false;
+
   return _.every(Users.getRequiredFields(), function (fieldName) {
     return !!Utils.getNestedProperty(user, fieldName);
   });
+
 };
-Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Users.findOne(userId));};
 
 ///////////////////
 // Other Helpers //
@@ -235,18 +238,6 @@ Users.getRequiredFields = function () {
     return !!field.required;
   });
   return fields;
-};
-
-/**
- * @summary @method Users.getPreloadedFields
- * Get a list of all fields that need to be preloaded for the current user
- */
-Users.getPreloadedFields = function () {
-  // this = collection Users with the final (= extended) schema attached
-  const preloadedFields = _.compact(_.map(this.simpleSchema()._schema, (field, fieldName) => {
-    return field.preload ? fieldName : undefined;
-  }));
-  return preloadedFields;
 };
 
 Users.adminUsers = function (options) {

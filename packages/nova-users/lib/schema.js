@@ -19,13 +19,11 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   username: {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   emails: {
     type: [Object],
@@ -44,7 +42,6 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   isAdmin: {
     type: Boolean,
@@ -55,7 +52,6 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
-    preload: true,
   },
   profile: {
     type: Object,
@@ -81,6 +77,7 @@ const schema = {
     type: String,
     optional: true,
     control: "textarea",
+    required: true,
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
@@ -95,7 +92,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The user's email. Modifiable.
@@ -109,7 +105,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
-    preload: true,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -119,7 +114,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The HTML version of the bio field
@@ -145,7 +139,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The user's Twitter username
@@ -167,6 +160,7 @@ const schema = {
     regEx: SimpleSchema.RegEx.Url,
     optional: true,
     control: "text",
+    required: true,
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
@@ -187,7 +181,6 @@ const schema = {
         return groups.map(group => {return {value: group, label: group};});
       }
     },
-    preload: true,
   },
 };
 

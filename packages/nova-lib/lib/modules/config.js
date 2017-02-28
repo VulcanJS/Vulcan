@@ -23,7 +23,6 @@ SimpleSchema.extendOptions({
   control: Match.Optional(Match.Any), // SmartForm control (String or React component)
   order: Match.Optional(Number), // position in the form
   group: Match.Optional(Object), // form fieldset group
-  preload: Match.Optional(Boolean),
 });
 
 export default Telescope;
