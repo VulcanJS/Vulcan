@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     // third-party packages
     'fortawesome:fontawesome@4.5.0',
     'tmeasday:check-npm-versions@0.3.1',
-    'std:accounts-ui@1.2.18',
+    'std:accounts-ui@1.2.19',
   ]);
 
   api.mainModule("lib/server.js", "server");
