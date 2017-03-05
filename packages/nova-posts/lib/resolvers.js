@@ -2,15 +2,13 @@ import { GraphQLSchema } from 'meteor/nova:core';
 
 const specificResolvers = {
   Post: {
-    async user(post, args, context) {
-      const user = await context.BatchingUsers.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
-      return user;
+    user(post, args, context) {
+      return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
   },
   Mutation: {
-    async increasePostViewCount(root, { postId }, context) {
-      const ret = await context.BatchingPosts.update({_id: postId}, { $inc: { viewCount: 1 }});
-      return ret;
+    increasePostViewCount(root, { postId }, context) {
+      return context.Posts.update({_id: postId}, { $inc: { viewCount: 1 }});
     }
   }
 };
@@ -23,20 +21,12 @@ const resolvers = {
 
     name: 'postsList',
 
-    async resolver(root, {terms}, context, info) {
-      try {
-        let {selector, options} = context.Posts.getParameters(terms);
-        options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
-        options.skip = terms.offset;
-        options.fields = context.getViewableFields(context.currentUser, context.Posts);
-        
-        const posts = await context.BatchingPosts.find(selector, options);
-        
-        return posts;
-      } catch(error) {
-        console.error('[Resolver error]', error);
-        return [];
-      }
+    resolver(root, {terms}, context, info) {
+      let {selector, options} = context.Posts.getParameters(terms);
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Posts);
+      return context.Posts.find(selector, options).fetch();
     },
 
   },
@@ -45,15 +35,10 @@ const resolvers = {
     
     name: 'postsSingle',
 
-    async resolver(root, {documentId/*, slug*/}, context) {
-      try {
-        // const selector = documentId ? {_id: documentId} : {'slug': slug};
-        const post = await context.BatchingPosts.findOne({_id: documentId});
-        return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
-      } catch(error) {
-        console.error('[Resolver error]', error);
-        return null;
-      }
+    resolver(root, {documentId, slug}, context) {
+      const selector = documentId ? {_id: documentId} : {'slug': slug};
+      const post = context.Posts.findOne(selector);
+      return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
   
   },
@@ -62,15 +47,9 @@ const resolvers = {
     
     name: 'postsTotal',
     
-    async resolver(root, {terms}, context) {
-      try {
-        const {selector} = context.Posts.getParameters(terms);
-        const posts = await context.BatchingPosts.find(selector);
-        return posts.length
-      } catch(error) {
-        console.error('[Resolver error]', error);
-        return -1;
-      }
+    resolver(root, {terms}, context) {
+      const {selector} = context.Posts.getParameters(terms);
+      return context.Posts.find(selector).count();
     },
   
   }

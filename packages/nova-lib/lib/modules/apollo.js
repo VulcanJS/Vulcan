@@ -9,7 +9,7 @@ const defaultNetworkInterfaceConfig = {
   path: '/graphql', // default graphql server endpoint
   opts: {}, // additional fetch options like `credentials` or `headers`
   useMeteorAccounts: true, // if true, send an eventual Meteor login token to identify the current user with every request
-  batchingInterface: true, // use a BatchingNetworkInterface by default instead of a NetworkInterface
+  batchingInterface: false, // use a BatchingNetworkInterface by default instead of a NetworkInterface
   batchInterval: 10, // default batch interval
 };
 
