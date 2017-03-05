@@ -3,29 +3,22 @@ import React from 'react';
 import Posts from 'meteor/nova:posts';
 import { Alert } from 'react-bootstrap';
 
+const Error = ({error}) => <Alert className="flash-message" bsStyle="danger">{error.message}</Alert>
+
 const PostsList = (props) => {
 
   const {results, loading, count, totalCount, loadMore, showHeader = true, networkStatus, currentUser, error, terms} = props;
 
   const loadingMore = networkStatus === 2;
 
-  if (error) {
-
-    return (
-      <div className="posts-list">
-        <Alert className="flash-message" bsStyle="danger">
-          {error.message}
-        </Alert>
-      </div>
-    )
-
-  } else if (results && results.length) {
+  if (results && results.length) {
 
     const hasMore = totalCount > results.length;
 
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader/> : null}
+        {error ? <Error error={error} /> : null }
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
@@ -36,6 +29,7 @@ const PostsList = (props) => {
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader /> : null}
+        {error ? <Error error={error} /> : null }
         <div className="posts-list-content">
           <Components.PostsLoading/>
         </div>
@@ -45,6 +39,7 @@ const PostsList = (props) => {
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader /> : null}
+        {error ? <Error error={error} /> : null }
         <div className="posts-list-content">
           <Components.PostsNoResults/>
         </div>
