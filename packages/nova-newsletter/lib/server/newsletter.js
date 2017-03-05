@@ -9,17 +9,15 @@ import Newsletter from '../namespace.js';
 import { Utils, getSetting } from 'meteor/nova:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
-Posts.views.add("newsletter", function (terms) {
-  return {
-    selector: {
-      scheduledAt: {$exists: false}
-    },
-    options: {
-      sort: {baseScore: -1},
-      limit: terms.limit
-    }
-  };
-});
+Posts.addView("newsletter", terms => ({
+  selector: {
+    scheduledAt: {$exists: false}
+  },
+  options: {
+    sort: {baseScore: -1},
+    limit: terms.limit
+  }
+}));
 
 /**
  * @summary Return an array containing the latest n posts that can be sent in a newsletter

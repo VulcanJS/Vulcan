@@ -1,26 +1,7 @@
 import { Injected } from 'meteor/meteorhacks:inject-initial';
 import moment from 'moment';
-import Posts from './collection.js'
-import { addCallback, Utils } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 
-// Parameter callbacks
-
-// View Parameter
-// Add a "view" property to terms which can be used to filter posts.
-function addViewParameter (parameters, terms, apolloClient) {
-
-  // if view is not defined, default to "new"
-  var view = !!terms.view ? Utils.dashToCamel(terms.view) : 'new';
-
-  // get query parameters according to current view
-  if (typeof Posts.views[view] !== 'undefined')
-    parameters = Utils.deepExtend(true, parameters, Posts.views[view](terms, apolloClient));
-
-  return parameters;
-}
-addCallback("posts.parameters", addViewParameter);
-
-// View Parameter
 // Add "after" and "before" properties to terms which can be used to limit posts in time.
 function addTimeParameter (parameters, terms, apolloClient) {
 

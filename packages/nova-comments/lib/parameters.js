@@ -16,11 +16,3 @@ const CommentsMaxLimit = (parameters, terms) => {
 }
 
 addCallback("comments.parameters", CommentsMaxLimit);
-
-const CommentsBelongingToPost = (parameters, terms) => {
-  parameters.selector.postId = terms.postId;
-  
-  return parameters;
-};
-
-addCallback("comments.parameters", CommentsBelongingToPost);
