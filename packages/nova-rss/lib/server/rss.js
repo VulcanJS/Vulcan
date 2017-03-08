@@ -3,7 +3,7 @@ import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import { Utils, getSetting } from 'meteor/nova:core';
 
-Posts.views.rss = Posts.views.new; // default to "new" view for RSS feed
+Posts.addView('rss', Posts.views.new); // default to "new" view for RSS feed
 
 const getMeta = (url) => {
   const siteUrl = getSetting('siteUrl', Meteor.absoluteUrl());

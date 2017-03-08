@@ -6,13 +6,13 @@ const MailChimpList = {};
 
 MailChimpList.add = function(userOrEmail, confirm, done){
 
-  var apiKey = getSetting('mailChimpAPIKey');
-  var listId = getSetting('mailChimpListId');
+  const apiKey = getSetting('mailChimpAPIKey');
+  const listId = getSetting('mailChimpListId');
 
-  var user, email;
+  let user, email;
 
   confirm = (typeof confirm === 'undefined') ? false : confirm; // default to no confirmation
-
+  
   // not sure if it's really necessary that the function take both user and email?
   if (typeof userOrEmail === "string") {
     user = null;
@@ -32,15 +32,15 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       console.log('// Adding "'+email+'" to MailChimp list…'); // eslint-disable-line
 
-      var api = new MailChimp(apiKey);
-      var subscribeOptions = {
+      const api = new MailChimp(apiKey);
+      const subscribeOptions = {
         id: listId,
         email: {"email": email},
         double_optin: confirm
       };
 
       // subscribe user
-      var subscribe = api.call('lists', 'subscribe', subscribeOptions);
+      const subscribe = api.call('lists', 'subscribe', subscribeOptions);
 
       // mark user as subscribed
       if (!!user) {
@@ -53,13 +53,13 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
     } catch (error) {
       // if the email is already in the Mailchimp list, no need to throw an error
-      if (error.error === 214) {
-        console.log('// Email already present in the list!');
+      if (error.message === "214") {
+        console.log('// Email already present in the list!');  // eslint-disable-line
         
         // if this is a user subscribing, update the relevant setting
         if (user) {
           Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
-          console.log('// User setting updated');
+          console.log('// User setting updated'); // eslint-disable-line
         }
         
         return {actionResult: 'subscribed'};
@@ -89,15 +89,15 @@ MailChimpList.remove = (user) => {
 
       console.log('// Removing "'+email+'" from MailChimp list…'); // eslint-disable-line
 
-      var api = new MailChimp(apiKey);
-      var subscribeOptions = {
+      const api = new MailChimp(apiKey);
+      const subscribeOptions = {
         id: listId,
         email: {"email": email},
         delete_member: true // delete the member from the list to make it possible for him to *resubscribe* via API (mailchimp's spam prevention policy)
       };
 
       // unsubscribe user
-      var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
+      const subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
       // mark user as unsubscribed
       Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);

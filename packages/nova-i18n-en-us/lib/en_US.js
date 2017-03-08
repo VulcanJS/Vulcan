@@ -62,6 +62,7 @@ addStrings('en', {
 
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
+  "users.profile_completed": "Profile completed.",
   "users.edit_account": "Edit Account",
   "users.edit_success": "User “{name}” edited",
   "users.log_in": "Log In",

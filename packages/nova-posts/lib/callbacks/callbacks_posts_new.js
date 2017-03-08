@@ -21,10 +21,8 @@ function PostsNewRateLimit (post, user) {
       maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 5)));
 
     // check that user waits more than X seconds between posts
-    // if(timeSinceLastPost < postInterval)
-    //   throw new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
-
-    console.log(numberOfPostsInPast24Hours)
+    if(timeSinceLastPost < postInterval)
+      throw new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
 
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours >= maxPostsPer24Hours)
@@ -53,37 +51,10 @@ function PostsNewDuplicateLinksCheck (post, user) {
 addCallback("posts.new.sync", PostsNewDuplicateLinksCheck);
 
 /**
- * @summary Check for necessary properties
- */
-// function PostsNewRequiredPropertiesCheck (post, user) {
-
-//   // initialize default properties
-//   const defaultProperties = {
-//     createdAt: new Date(),
-//     author: Users.getDisplayNameById(post.userId),
-//     status: Posts.getDefaultStatus(user)
-//   };
-
-//   post = _.extend(defaultProperties, post);
-
-//   // generate slug
-//   post.slug = Utils.slugify(post.title);
-
-//   // if post is approved but doesn't have a postedAt date, give it a default date
-//   // note: pending posts get their postedAt date only once theyre approved
-//   if (Posts.isApproved(post) && !post.postedAt) {
-//     post.postedAt = new Date();
-//   }
-
-//   return post;
-// }
-// addCallback("posts.new.sync", PostsNewRequiredPropertiesCheck);
-
-/**
- * @summary Set the post's postedAt if it's approved
+ * @summary Set the post's postedAt if it's going to be approved
  */
 function PostsSetPostedAt (post, user) {
-  if (!post.postedAt) post.postedAt = new Date();
+  if (!post.postedAt && Posts.getDefaultStatus(user) === Posts.config.STATUS_APPROVED) post.postedAt = new Date();
   return post;
 }
 addCallback("posts.new.sync", PostsSetPostedAt);
@@ -102,10 +73,8 @@ addCallback("posts.new.sync", PostsNewSetFuture);
  */
 const PostsNewSlugify = post => {
   post.slug = Utils.slugify(post.title);
-  
   return post;
 }
-
 addCallback("posts.new.sync", PostsNewSlugify);
 
 /**

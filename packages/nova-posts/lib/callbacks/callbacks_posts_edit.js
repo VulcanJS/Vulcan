@@ -1,7 +1,6 @@
 import marked from 'marked';
 import Posts from '../collection.js'
-import Users from 'meteor/nova:users';
-import { runCallbacks, runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
+import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
@@ -60,7 +59,6 @@ const PostsEditSlugify = (modifier, post) => {
   if (modifier.$set && modifier.$set.title) {
     modifier.$set.slug = Utils.slugify(modifier.$set.title);
   }
-
   return modifier;
 }
 
@@ -96,7 +94,6 @@ addCallback("posts.edit.sync", PostsEditHTMLContent);
 //////////////////////////////////////////////////////
 // posts.edit.async                                 //
 //////////////////////////////////////////////////////
-
 
 function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {

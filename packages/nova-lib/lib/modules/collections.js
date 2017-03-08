@@ -93,6 +93,15 @@ Mongo.Collection.prototype.getPublicFields = function () {
   return fields;
 };
 
+
+Mongo.Collection.prototype.addDefaultView = function (view) {
+  this.defaultView = view;
+};
+
+Mongo.Collection.prototype.addView = function (viewName, view) {
+  this.views[viewName] = view;
+};
+
 export const createCollection = options => {
 
   // initialize new Mongo collection
@@ -103,6 +112,9 @@ export const createCollection = options => {
 
   // add typeName
   collection.typeName = options.typeName;
+
+  // add views
+  collection.views = [];
 
   if (options.schema) {
     // attach schema to collection
@@ -171,6 +183,16 @@ export const createCollection = options => {
       selector: {},
       options: {}
     };
+
+    if (collection.defaultView) {
+      parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient));
+    }
+
+    // handle view option
+    if (terms.view && collection.views[terms.view]) {
+      const view = collection.views[terms.view];
+      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient));
+    }
 
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${options.collectionName}.parameters`, parameters, _.clone(terms), apolloClient);

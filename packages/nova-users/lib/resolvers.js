@@ -24,7 +24,7 @@ const resolvers = {
     resolver(root, {terms}, context, info) {
       let {selector, options} = context.Users.getParameters(terms);
       
-      options.limit = (terms.limit < 1 || terms.limit > 10) ? 10 : terms.limit;
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Users);
       

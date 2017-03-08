@@ -403,10 +403,10 @@ Utils.convertDates = (collection, listOrDocument) => {
 
 Utils.encodeIntlError = error => typeof error !== "object" ? error : JSON.stringify(error);
 
-Utils.decodeIntlError = (error, options) => {
+Utils.decodeIntlError = (error, options = {stripped: false}) => {
   try {
-
-    let strippedError = error;
+    // do we get the error as a string or as an error object?
+    let strippedError = typeof error === 'string' ? error : error.message;
 
     // if the error hasn't been cleaned before (ex: it's not an error from a form)
     if (!options.stripped) {

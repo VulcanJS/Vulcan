@@ -1,8 +1,7 @@
 import Users from './collection.js';
 import marked from 'marked';
-import NovaEmail from 'meteor/nova:email';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import { addCallback, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { addCallback, Utils, runCallbacksAsync } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -83,19 +82,21 @@ function hasCompletedProfile (user) {
 }
 addCallback("users.profileCompleted.sync", hasCompletedProfile);
 
-function usersNewAdminUserCreationNotification (user) {
-  // send notifications to admins
-  const admins = Users.adminUsers();
-  admins.forEach(function(admin) {
-    if (Users.getSetting(admin, "notifications_users", false)) {
-      const emailProperties = Users.getNotificationProperties(user);
-      const html = NovaEmail.getTemplate('newUser')(emailProperties);
-      NovaEmail.send(Users.getEmail(admin), `New user account: ${emailProperties.displayName}`, NovaEmail.buildTemplate(html));
-    }
-  });
-  return user;
-}
-addCallback("users.new.sync", usersNewAdminUserCreationNotification);
+// remove this to get rid of dependency on nova:email
+
+// function usersNewAdminUserCreationNotification (user) {
+//   // send notifications to admins
+//   const admins = Users.adminUsers();
+//   admins.forEach(function(admin) {
+//     if (Users.getSetting(admin, "notifications_users", false)) {
+//       const emailProperties = Users.getNotificationProperties(user);
+//       const html = NovaEmail.getTemplate('newUser')(emailProperties);
+//       NovaEmail.send(Users.getEmail(admin), `New user account: ${emailProperties.displayName}`, NovaEmail.buildTemplate(html));
+//     }
+//   });
+//   return user;
+// }
+// addCallback("users.new.sync", usersNewAdminUserCreationNotification);
 
 function usersEditGenerateHtmlBio (modifier) {
   if (modifier.$set && modifier.$set.bio) {
@@ -130,3 +131,12 @@ function usersEditCheckEmail (modifier, user) {
   return modifier;
 }
 addCallback("users.edit.sync", usersEditCheckEmail);
+
+// when a user is edited, check if their profile is now complete
+function usersCheckCompletion (newUser, oldUser) {
+  if (!Users.hasCompletedProfile(oldUser) && Users.hasCompletedProfile(newUser)) {
+    runCallbacksAsync("users.profileCompleted.async", newUser);
+  }
+}
+addCallback("users.edit.async", usersCheckCompletion);
+

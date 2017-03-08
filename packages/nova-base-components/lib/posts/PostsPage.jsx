@@ -30,7 +30,7 @@ class PostsPage extends Component {
 
           {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
-          <Components.PostsCommentsThread terms={{postId: post._id}} />
+          <Components.PostsCommentsThread terms={{postId: post._id, view: 'postComments'}} />
 
         </div> 
       );

@@ -12,7 +12,6 @@ Users.addField([
       optional: true,
       blackbox: true,
       hidden: true, // never show this
-      preload: true,
     }
   },
   {

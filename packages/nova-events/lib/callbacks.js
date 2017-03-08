@@ -73,7 +73,7 @@ Posts.increaseClicks = (postId, ip) => {
 
   if(!existingClickEvent) {
     Events.log(clickEvent);
-    return Posts.update(postId, { $inc: { clickCount: 1 }});
+    return Posts.update(postId, { $inc: { clickCount: 1 }}, {validate: false, bypassCollection2:true});
   }
 };
 

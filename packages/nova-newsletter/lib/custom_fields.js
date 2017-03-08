@@ -23,7 +23,6 @@ Users.addField([
       editableBy: ['members'],
       viewableBy: ['guests'],
       control: NewsletterSubscribe,
-      preload: true,
       group: {
         name: "newsletter",
         label: "Newsletter",

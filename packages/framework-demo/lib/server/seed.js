@@ -4,7 +4,7 @@ Seed the database with some dummy content.
 
 */
 
-import Movies from './collection.js';
+import Movies from '../modules/collection.js';
 import Users from 'meteor/nova:users';
 import { newMutation } from 'meteor/nova:core';
 
