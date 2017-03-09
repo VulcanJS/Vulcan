@@ -27,7 +27,7 @@ component is also added to wait for withDocument's loading prop to be false)
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
-import { Components, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/nova:core';
@@ -41,7 +41,7 @@ class FormWrapper extends Component{
 
   // if a document is being passed, this is an edit form
   getFormType() {
-    return this.props.documentId ? "edit" : "new";
+    return this.props.documentId || this.props.slug ? "edit" : "new";
   }
 
   // get fragment used to decide what data to load from the server to populate the form,
@@ -64,32 +64,38 @@ class FormWrapper extends Component{
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // fields with resolvers that contain "[" should be treated as arrays of _ids
-    // TODO: find a cleaner way to handle this
+    // handle fields with resolvers that contain "[" 
+    // note: you can override the generated fragment with your own fragment given as a prop!
     relevantFields = relevantFields.map(fieldName => {
       const resolveAs = this.getSchema()[fieldName].resolveAs;
-      return resolveAs && resolveAs.indexOf('[') > -1 ? `${fieldName}{_id}` : fieldName;
+      
+      return resolveAs && resolveAs.includes('[') 
+        ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
+        : fieldName; // else just ask for the field name
     });
 
     // generate fragment based on the fields that can be edited. Note: always add _id.
-    const queryFragment = gql`
+    const generatedFragment = gql`
       fragment ${fragmentName} on ${this.props.collection.typeName} {
         _id
         ${relevantFields.join('\n')}
       }
     `
 
-    // get mutation fragment from props or else default to same as queryFragment
-    const mutationFragment = this.props.fragment || queryFragment;
-    
+    // get query & mutation fragments from props or else default to same as generatedFragment
     return {
-      queryFragment,
-      mutationFragment,
+      queryFragment: this.props.queryFragment || generatedFragment,
+      mutationFragment: this.props.mutationFragment || generatedFragment,
     };
   }
 
-  // prevent extra re-renderings for unknown reasons
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps) {
+    if (this.getFormType() === 'edit') {
+      // re-render only if the document selector changes
+      return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
+    }
+    
+    // prevent extra re-renderings for unknown reasons
     return false;
   }
 
@@ -101,7 +107,7 @@ class FormWrapper extends Component{
 
     const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
 
-    // props received from parent component (i.e. <SmartForm/> call)
+    // props received from parent component (i.e. <Components.SmartForm/> call)
     const parentProps = this.props;
 
     // props to pass on to child component (i.e. <Form />)
@@ -148,7 +154,7 @@ class FormWrapper extends Component{
         withRemove(mutationOptions)
       )(Loader);
 
-      return <WrappedComponent documentId={this.props.documentId} />
+      return <WrappedComponent documentId={this.props.documentId} slug={this.props.slug} />
     
     } else {
 
@@ -167,9 +173,11 @@ class FormWrapper extends Component{
 FormWrapper.propTypes = {
 
   // main options
-  collection: React.PropTypes.object,
+  collection: React.PropTypes.object.isRequired,
   documentId: React.PropTypes.string, // if a document is passed, this will be an edit form
   schema: React.PropTypes.object, // usually not needed
+  queryFragment: React.PropTypes.object,
+  mutationFragment: React.PropTypes.object,
 
   // graphQL
   newMutation: React.PropTypes.func, // the new mutation
@@ -205,12 +213,11 @@ FormWrapper.contextTypes = {
 FormWrapper.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
   throwError: React.PropTypes.func,
   getDocument: React.PropTypes.func
 }
 
-module.exports = compose(
-  withCurrentUser,
-  withApollo,
-)(FormWrapper);
+registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
+
+export default withCurrentUser(withApollo(FormWrapper));

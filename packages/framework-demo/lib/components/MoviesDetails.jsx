@@ -6,10 +6,8 @@ Wrapped with the "withDocument" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import Movies from '../collection.js';
-import { withDocument } from 'meteor/nova:core';
-import { compose } from 'react-apollo';
-import gql from 'graphql-tag';
+import Movies from '../modules/collection.js';
+import { withDocument, registerComponent } from 'meteor/nova:core';
 
 const MoviesDetails = props => {
   const movie = props.document;
@@ -19,7 +17,7 @@ const MoviesDetails = props => {
     return (
       <div>
         <h2>{movie.name} ({movie.year})</h2>
-        <p>Reviewed by <strong>{movie.user && movie.user.__displayName}</strong> on {movie.createdAt}</p>
+        <p>Reviewed by <strong>{movie.user && movie.user.displayName}</strong> on {movie.createdAt}</p>
         <p>{movie.review}</p>
         {movie.privateComments ? <p><strong>PRIVATE</strong>: {movie.privateComments}</p>: null}
       </div>
@@ -27,24 +25,10 @@ const MoviesDetails = props => {
   }
 }
 
-MoviesDetails.fragment = gql`
-  fragment moviesDetailsFragment on Movie {
-    _id
-    name
-    createdAt
-    year
-    review
-    privateComments
-    user {
-      __displayName
-    }
-  }
-`;
-
 const options = {
   collection: Movies,
   queryName: 'moviesSingleQuery',
-  fragment: MoviesDetails.fragment,
+  fragmentName: 'MoviesDetailsFragment',
 };
 
-export default compose(withDocument(options))(MoviesDetails);
+registerComponent('MoviesDetails', MoviesDetails, withDocument(options));

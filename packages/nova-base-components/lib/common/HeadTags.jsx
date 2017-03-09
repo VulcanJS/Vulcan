@@ -22,6 +22,7 @@ class HeadTags extends Component {
 			image = Utils.getSiteUrl() + image;
 		}
 
+		// add <meta /> markup specific to the page rendered
 		const meta = Headtags.meta.concat([
 			{ charset: "utf-8" },
 			{ name: "description", content: description },
@@ -40,6 +41,7 @@ class HeadTags extends Component {
 			{ name: "twitter:description", content: description }
 		]);
 
+		// add <link /> markup specific to the page rendered
 		const link = Headtags.link.concat([
 			{ rel: "canonical", href: Utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") }
@@ -47,7 +49,7 @@ class HeadTags extends Component {
 
 		return (
 			<div>
-				<Helmet title={title} meta={meta} link={link} />
+				<Helmet title={title} meta={meta} link={link} script={Headtags.script} />
 			</div>
 		);
 	}

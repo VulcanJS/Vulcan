@@ -17,7 +17,7 @@ class ThumbnailURL extends Component {
   }
 
   clearThumbnail() {
-    this.context.updateCurrentValue("thumbnailUrl", "");
+    this.context.updateCurrentValues({thumbnailUrl: ""});
   }
 
   showInput() {
@@ -69,7 +69,7 @@ ThumbnailURL.propTypes = {
 
 ThumbnailURL.contextTypes = {
   addToPrefilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
   deleteValue: React.PropTypes.func
 }
 

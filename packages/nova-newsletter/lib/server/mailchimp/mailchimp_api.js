@@ -25,7 +25,7 @@ const MailChimp = function ( apiKey, options ) {
 
     console.error( '[MailChimp] Error: No API Key defined!' ); // eslint-disable-line
 
-    throw new Meteor.Error(
+    throw new Error(
       'No API Key',
       'No API Key defined',
       'Define your API Key either in settings.json file or in a method call'
@@ -51,9 +51,9 @@ MailChimp.prototype.call = function ( section, method, options, callback ) {
       // A workaround for:
       // https://github.com/meteor/meteor/issues/2774
       if ( !error.error ) {
-        throw new Meteor.Error( error.code, error.message );
+        throw new Error( error.code, error.message );
       } else {
-        throw new Meteor.Error( error );
+        throw new Error( error );
       }
     }
   }
@@ -72,7 +72,7 @@ MailChimp.prototype.call = function ( section, method, options, callback ) {
 //     try {
 //       mailChimp = new MailChimp( clientOptions.apiKey, clientOptions.options );
 //     } catch ( error ) {
-//       throw new Meteor.Error( error.error, error.reason, error.details );
+//       throw new Error( error.error, error.reason, error.details );
 //     }
 
 //     switch ( section ) {

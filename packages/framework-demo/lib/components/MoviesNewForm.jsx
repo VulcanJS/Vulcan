@@ -5,21 +5,16 @@ A component to configure the "new movie" form.
 */
 
 import React, { PropTypes, Component } from 'react';
-import SmartForm from "meteor/nova:forms";
-import Movies from '../collection.js';
-import { MoviesListFragment } from './MoviesList.jsx';
+import Movies from '../modules/collection.js';
+import { Components, registerComponent, withMessages, getFragment } from 'meteor/nova:core';
 
-const MoviesNewForm = (props, context) => {
-  return (
-    <SmartForm 
-      collection={Movies}
-      fragment={MoviesListFragment}
-    />
-  )
-}
+const MoviesNewForm = props =>
+  <Components.SmartForm 
+    collection={Movies}
+    mutationFragment={getFragment('MoviesItemFragment')}
+    successCallback={document => {
+      props.closeModal();
+    }}
+  />
 
-MoviesNewForm.contextTypes = {
-  closeCallback: React.PropTypes.func,
-}
-
-export default MoviesNewForm;
+registerComponent('MoviesNewForm', MoviesNewForm, withMessages);

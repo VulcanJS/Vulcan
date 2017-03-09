@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
-
+import { intlShape } from 'react-intl';
 import DateTime from './DateTime.jsx';
 
 // import Utils from './utils.js';
@@ -23,14 +23,14 @@ class FormComponent extends Component {
   handleBlur() {
     // see https://facebook.github.io/react/docs/more-about-refs.html
     if (this.formControl !== null) {
-      this.props.updateCurrentValue(this.props.name, this.formControl.getValue());
+      this.props.updateCurrentValues({[this.props.name]: this.formControl.getValue()});
     }
   }
 
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValue, document, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, ...rest } = this.props; // eslint-disable-line
 
     const base = this.props.control === "function" ? this.props : rest;
 
@@ -60,6 +60,7 @@ class FormComponent extends Component {
         case "radiogroup":
           return <RadioGroup    {...properties} />;
         case "select":
+          properties.options = [{label: this.context.intl.formatMessage({id: "forms.select_option"}), disabled: true}, ...properties.options];
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
@@ -93,8 +94,12 @@ FormComponent.propTypes = {
   control: React.PropTypes.any,
   datatype: React.PropTypes.any,
   disabled: React.PropTypes.bool,
-  updateCurrentValue: React.PropTypes.func
+  updateCurrentValues: React.PropTypes.func
 }
+
+FormComponent.contextTypes = {
+  intl: intlShape
+};
 
 export default FormComponent;
 

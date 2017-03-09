@@ -22,12 +22,6 @@ const specificResolvers = {
     user(comment, args, context) {
       return context.Users.findOne({_id: comment.userId}, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
-    upvoters(comment, args, context) {
-      return comment.upvoters ? context.Users.find({_id: {$in: comment.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
-    downvoters(comment, args, context) {
-      return comment.downvoters ? context.Users.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
   },
 };
 
@@ -40,14 +34,14 @@ const resolvers = {
 
     name: 'commentsList',
 
-    resolver(root, {terms, offset, limit}, context) {
-      const options = {
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
-        fields: context.getViewableFields(context.currentUser, context.Comments)
-      };
+    resolver(root, {terms}, context) {
+      let {selector, options} = context.Comments.getParameters(terms);
 
-      return context.Comments.find({postId: terms.postId}, options).fetch();
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Comments);
+
+      return context.Comments.find(selector, options).fetch();
     },
 
   },

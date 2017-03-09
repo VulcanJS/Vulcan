@@ -1,4 +1,4 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
@@ -40,20 +40,16 @@ class AccountsButton extends Accounts.ui.Button {
 
 class AccountsField extends Accounts.ui.Field {
 
-  // see https://github.com/studiointeract/accounts-ui/issues/60
-  triggerUpdate () {
-    const { onChange } = this.props
-    if (this.input) {
-      onChange({ target: { value: this.input.value } })
-    }
-  }
-
   render() {
-    const { id, hint, /* label, */ type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
+    const { id, hint, /* label, */ type = 'text', onChange, className = "field", defaultValue = "", message } = this.props;
     const { mount = true } = this.state;
     return mount ? (
       <div className={ className }>
         <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        {message && (
+          <span className={['message', message.type].join(' ').trim()}>
+            {message.message}</span>
+        )}
       </div>
     ) : null;
   }

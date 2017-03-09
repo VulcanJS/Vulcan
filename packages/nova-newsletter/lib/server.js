@@ -2,6 +2,7 @@ import Newsletter from "./namespace.js";
 
 import './emails.js';
 import './custom_fields.js';
+import './fragments.js';
 
 import './server/newsletter.js';
 import './server/mailchimp/mailchimp_newsletter.js';

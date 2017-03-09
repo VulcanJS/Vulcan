@@ -55,8 +55,8 @@ Users.getGroups = user => {
   
     userGroups = ["members"];
 
-    if (user.__groups) { // custom groups
-      userGroups = userGroups.concat(user.__groups);
+    if (user.groups) { // custom groups
+      userGroups = userGroups.concat(user.groups);
     } 
     
     if (Users.isAdmin(user)) { // admin
@@ -113,34 +113,36 @@ Users.canDo = (user, action) => {
   return Users.getActions(user).indexOf(action) !== -1;
 };
 
+// DEPRECATED
+// TODO: remove this
 /**
  * @summary Check if a user can edit a document
  * @param {Object} user - The user performing the action
  * @param {Object} document - The document being edited
  */
-Users.canEdit = function (user, document) {
+// Users.canEdit = function (user, document) {
 
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
+//   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
-  // note(apollo): use of `__typename` given by react-apollo
-  //const collectionName = document.getCollectionName();
-  const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
+//   // note(apollo): use of `__typename` given by react-apollo
+//   //const collectionName = document.getCollectionName();
+//   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
   
-  if (!user || !document) {
-    return false;
-  }
+//   if (!user || !document) {
+//     return false;
+//   }
 
-  if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
+//   if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
 
-  if (Users.owns(user, document)) {
-    // if this is user's document, check if user can edit own documents
-    return Users.canDo(user, `${collectionName}.edit.own`);
-  } else {
-    // if this is not user's document, check if they can edit all documents
-    return Users.canDo(user, `${collectionName}.edit.all`);
-  }
+//   if (Users.owns(user, document)) {
+//     // if this is user's document, check if user can edit own documents
+//     return Users.canDo(user, `${collectionName}.edit.own`);
+//   } else {
+//     // if this is not user's document, check if they can edit all documents
+//     return Users.canDo(user, `${collectionName}.edit.all`);
+//   }
 
-};
+// };
 
 /**
  * @summary Check if a user owns a document
@@ -153,8 +155,8 @@ Users.owns = function (user, document) {
       // case 1: document is a post or a comment, use userId to check
       return user._id === document.userId;
     } else {
-      // case 2: document is a user, use _id to check
-      return user._id === document._id;
+      // case 2: document is a user, use _id or slug to check
+      return document.slug ? user.slug === document.slug : user._id === document._id;
     }
   } catch (e) {
     return false; // user not logged in
@@ -199,6 +201,16 @@ Users.getViewableFields = function (user, collection, document) {
       return Users.canViewField(user, field, document) ? fieldName : null;
     }
   )));
+}
+
+/**
+ * @summary For a given document, keep only fields viewable by current user
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} document - The document being returned by the resolver
+ */
+Users.keepViewableFields = function (user, collection, document) {
+  return document && document._id && _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
 }
 
 /**

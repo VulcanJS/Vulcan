@@ -1,40 +1,44 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import SmartForm from "meteor/nova:forms";
+import { intlShape } from 'react-intl';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import Categories from "meteor/nova:categories";
-import { withMessages } from 'meteor/nova:core';
 
-class CategoriesEditForm extends Component{
+const CategoriesEditForm = (props, context) => {
 
-  render() {
-
-    return (
-      <div className="categories-edit-form">
-        <SmartForm
-          collection={Categories}
-          documentId={this.props.category._id}
-          successCallback={category => {
-            this.context.closeCallback();
-            this.props.flash("Category edited.", "success");
-          }}
-          removeSuccessCallback={({documentId, documentTitle}) => {
-            this.context.closeCallback();
-            const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'categories.delete_success'}, {title: documentTitle});
-            this.props.flash(deleteDocumentSuccess, "success");
-            this.context.events.track("category deleted", {_id: documentId});
-          }}
-        />
+  return (
+    <div className="categories-edit-form">
+      <div className="categories-edit-form-admin">
+        <div className="categories-edit-form-id">ID: {props.category._id}</div>
       </div>
-    )
-  }
-}
+      <Components.SmartForm
+        collection={Categories}
+        documentId={props.category._id}
+        mutationFragment={getFragment('CategoriesList')}
+        successCallback={category => {
+          props.closeModal();
+          props.flash(context.intl.formatMessage({id: 'categories.edit_success'}, {name: category.name}), "success");
+        }}
+        removeSuccessCallback={({documentId, documentTitle}) => {
+          props.closeModal();
+          props.flash(context.intl.formatMessage({id: 'categories.delete_success'}, {name: documentTitle}), "success");
+          // context.events.track("category deleted", {_id: documentId});
+        }}
+        showRemove={true}
+      />
+    </div>
+  )
+
+};
 
 CategoriesEditForm.propTypes = {
-  category: React.PropTypes.object.isRequired
+  category: React.PropTypes.object.isRequired,
+  closeModal: React.PropTypes.func,
+  flash: React.PropTypes.func,
 }
 
 CategoriesEditForm.contextTypes = {
-  closeCallback: React.PropTypes.func,
+  intl: intlShape,
+  // events: React.PropTypes.object,
 };
 
 registerComponent('CategoriesEditForm', CategoriesEditForm, withMessages);

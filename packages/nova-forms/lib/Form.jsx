@@ -60,7 +60,7 @@ class Form extends Component {
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearForm = this.clearForm.bind(this);
-    this.updateCurrentValue = this.updateCurrentValue.bind(this);
+    this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
@@ -69,18 +69,9 @@ class Form extends Component {
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: {},
+      autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
       currentValues: {}
     };
-  }
-
-  componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent
-    // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this Form component
-    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
-    // let's not call setState on an unmounted component (avoid no-op / memory leak)
-    this.context.closeCallback = f => f;
   }
 
   // --------------------------------------------------------------------- //
@@ -103,16 +94,18 @@ class Form extends Component {
       const fieldSchema = schema[fieldName];
 
       fieldSchema.name = fieldName;
-
+      
       // intialize properties
       let field = {
         name: fieldName,
         datatype: fieldSchema.type,
         control: fieldSchema.control,
-        hidden: fieldSchema.hidden,
         layout: this.props.layout,
         order: fieldSchema.order
       }
+      
+      // hide or show the field, a function taking form props as argument & returning a boolean can be used 
+      field.hidden = (typeof fieldSchema.hidden === 'function') ? !!fieldSchema.hidden.call(fieldSchema, this.props) : fieldSchema.hidden;
 
       // add label or internationalized field name if necessary (field not hidden)
       if (!field.hidden) {
@@ -123,8 +116,9 @@ class Form extends Component {
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
       // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
       if (Array.isArray(field.value)) {
-        field.value = field.value.map(item => item._id);
+        field.value = field.value.map(item => item._id || item);
       }
 
       // backward compatibility from 'autoform' to 'form'
@@ -254,17 +248,21 @@ class Form extends Component {
           delete e[key];
         }
       });
-      this.setState({
+      this.setState(prevState => ({
         currentValues: e
-      });
+      }));
     }
   }
 
-  // manually update current value (i.e. on blur). See above for on change instead
-  updateCurrentValue(fieldName, fieldValue) {
-    const currentValues = this.state.currentValues;
-    currentValues[fieldName] = fieldValue;
-    this.setState({currentValues: currentValues});
+  // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
+  updateCurrentValues(newValues) {
+    // keep the previous ones and extend (with possible replacement) with new ones
+    this.setState(prevState => ({
+      currentValues: {
+        ...prevState.currentValues,
+        ...newValues,
+      }
+    }));
   }
 
   // key down handler
@@ -291,44 +289,69 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
-    return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
+    return <div className="form-errors">{this.state.errors.map((message, index) => <Flash key={index} message={message}/>)}</div>
   }
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // add error to state
-  throwError(error) {
-    this.setState({
-      errors: [error]
-    });
+  // add error to form state 
+  // from "GraphQL Error: You have an error [error_code]"
+  // to { content: "You have an error", type: "error" }
+  throwError(errorMessage) {
+
+    let strippedError = errorMessage;
+    
+    // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
+    const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
+    if (graphqlPrefixIsPresent) {
+      strippedError = graphqlPrefixIsPresent[1];
+    }
+    
+    // strip the error code if present
+    const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
+    if (errorCodeIsPresent) {
+      strippedError = errorCodeIsPresent[1];
+    }
+    
+    // internationalize the error if necessary
+    const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
+    if(typeof intlError === 'object') {
+      const { id, value = "" } = intlError;
+      strippedError = this.context.intl.formatMessage({id}, {value});
+    }
+
+    // build the error for the Flash component and only keep the interesting message
+    const error = {
+      content: strippedError,
+      type: 'error'
+    };
+    
+    // update the state with unique errors messages
+    this.setState(prevState => ({
+      errors: _.uniq([...prevState.errors, error])
+    }));
   }
 
   // add something to prefilled values
   addToAutofilledValues(property) {
-    this.setState(function(state){
-      return {
-        autofilledValues: {
-          ...state.autofilledValues,
-          ...property
-        }
-      };
-    });
-  }
-
-  // clear value
-  clearValue(property) {
-
+    this.setState(prevState => ({
+      autofilledValues: {
+        ...prevState.autofilledValues,
+        ...property
+      }
+    }));
   }
 
   // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
+      clearForm: this.clearForm,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      updateCurrentValue: this.updateCurrentValue,
+      updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
     };
   }
@@ -352,42 +375,33 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // run success callback if it exists
-    if (this.props.successCallback) this.props.successCallback(document);
-
-    // run close callback if it exists in context (i.e. we're inside a modal)
-    if (this.context.closeCallback) {
-      this.context.closeCallback();
-
-    // else there is no close callback (i.e. we're not inside a modal), call the clear form method
-    // note: we don't want to update the state of an unmounted component
-    } else {
+    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted (we are in an async callback, everything can happen!)
+    if (typeof this.refs.form !== 'undefined') {
       let clearCurrentValues = false;
-
       // reset form if this is a new document form
       if (this.props.formType === "new") {
         this.refs.form.reset();
         clearCurrentValues = true;
       }
-
       this.clearForm({clearErrors: true, clearCurrentValues});
     }
+
+    // run success callback if it exists
+    if (this.props.successCallback) this.props.successCallback(document);
+
   }
 
   // catch graphql errors
   mutationErrorCallback(error) {
 
-    this.setState({disabled: false});
+    this.setState(prevState => ({disabled: false}));
 
-    console.log("// graphQL Error");
-    console.log(error);
-
+    console.log("// graphQL Error"); // eslint-disable-line no-console
+    console.log(error); // eslint-disable-line no-console
+    
     if (!_.isEmpty(error)) {
       // add error to state
-      this.throwError({
-        content: error.message,
-        type: "error"
-      });
+      this.throwError(error.message);
     }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
@@ -397,12 +411,12 @@ class Form extends Component {
 
   // submit form handler
   submitForm(data) {
-    this.setState({disabled: true});
+    this.setState(prevState => ({disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
     data = {
-      ...this.state.autofilledValues, // ex: can be values from EmbedlyURL or NewsletterSubscribe component
+      ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
     };
@@ -418,11 +432,6 @@ class Form extends Component {
 
       // remove any empty properties
       let document = _.compactObject(flatten(data));
-
-      // add prefilled properties
-      if (this.props.prefilledProps) {
-        document = Object.assign(document, this.props.prefilledProps);
-      }
 
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
@@ -459,7 +468,6 @@ class Form extends Component {
       this.props.removeMutation({documentId})
         .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
-          if (this.context.closeCallback) this.context.closeCallback();
           if (this.props.refetch) this.props.refetch();
         })
         .catch((error) => {
@@ -486,7 +494,7 @@ class Form extends Component {
           ref="form"
         >
           {this.renderErrors()}
-          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
+          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
           <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
           {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
@@ -511,30 +519,30 @@ class Form extends Component {
 Form.propTypes = {
 
   // main options
-  collection: React.PropTypes.object,
-  document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  schema: React.PropTypes.object, // usually not needed
+  collection: PropTypes.object,
+  document: PropTypes.object, // if a document is passed, this will be an edit form
+  schema: PropTypes.object, // usually not needed
 
   // graphQL
-  newMutation: React.PropTypes.func, // the new mutation
-  editMutation: React.PropTypes.func, // the edit mutation
-  removeMutation: React.PropTypes.func, // the remove mutation
+  newMutation: PropTypes.func, // the new mutation
+  editMutation: PropTypes.func, // the edit mutation
+  removeMutation: PropTypes.func, // the remove mutation
 
   // form
-  prefilledProps: React.PropTypes.object,
-  layout: React.PropTypes.string,
-  fields: React.PropTypes.arrayOf(React.PropTypes.string),
-  showRemove: React.PropTypes.bool,
+  prefilledProps: PropTypes.object,
+  layout: PropTypes.string,
+  fields: PropTypes.arrayOf(PropTypes.string),
+  showRemove: PropTypes.bool,
 
   // callbacks
-  submitCallback: React.PropTypes.func,
-  successCallback: React.PropTypes.func,
-  removeSuccessCallback: React.PropTypes.func,
-  errorCallback: React.PropTypes.func,
-  cancelCallback: React.PropTypes.func,
+  submitCallback: PropTypes.func,
+  successCallback: PropTypes.func,
+  removeSuccessCallback: PropTypes.func,
+  errorCallback: PropTypes.func,
+  cancelCallback: PropTypes.func,
 
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  client: PropTypes.object,
 }
 
 Form.defaultProps = {
@@ -542,16 +550,16 @@ Form.defaultProps = {
 }
 
 Form.contextTypes = {
-  closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 
 Form.childContextTypes = {
-  autofilledValues: React.PropTypes.object,
-  addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
-  throwError: React.PropTypes.func,
-  getDocument: React.PropTypes.func
+  autofilledValues: PropTypes.object,
+  addToAutofilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
+  throwError: PropTypes.func,
+  clearForm: PropTypes.func,
+  getDocument: PropTypes.func
 }
 
 module.exports = Form

@@ -11,7 +11,6 @@ import './common/FlashMessages.jsx';
 import './common/Newsletter.jsx';
 import './common/NewsletterButton.jsx';
 import './common/SearchForm.jsx';
-import './common/Error404.jsx';
 import './common/Vote.jsx';
 
 // posts
@@ -51,13 +50,10 @@ import './comments/CommentsLoadMore.jsx';
 // categories
 
 import './categories/CategoriesList.jsx';
+import './categories/CategoriesNode.jsx';
 import './categories/Category.jsx';
 import './categories/CategoriesEditForm.jsx';
 import './categories/CategoriesNewForm.jsx';
-
-// permissions
-
-import './permissions/CanDo.jsx';
 
 // users
 

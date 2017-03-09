@@ -1,44 +1,36 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withMutation, withCurrentUser, withMessages, Utils } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
 
 class NewsletterButton extends Component {
   constructor(props) {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
-
-    const isSubscribed = props.user.__newsletter_subscribeToNewsletter;
-
-    this.state = {
-      labelId: isSubscribed ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
-      action: isSubscribed ? 'removeUserNewsletter' : 'addUserNewsletter'
-    };
   }
-
-  subscriptionAction() {
-
-    const action = this.state.action;
-    this.props[action]({userId: this.props.user._id}).then(result => {
-      this.props.successCallback(result);
-      // note: cannot update state, the component is unmounted when we try to update it 
-      // console.log(result);
-      // if (result.data[action].actionResult === 'subscribed') {
-      //   this.setState({
-      //     labelId: 'newsletter.unsubscribe',
-      //     action: 'removeUserNewsletter',
-      //   });
-      // } else {
-      //   this.setState({
-      //     labelId: 'newsletter.subscribe',
-      //     action: 'addUserNewsletter',
-      //   });
-      // }
-    }).catch(error => {
-      console.log(error); // eslint-disable-line no-console
-      this.props.flash(error.message, "error");
-    });
+  
+  // use async/await + try/catch <=> promise.then(res => ..).catch(e => ...)
+  async subscriptionAction() {
+    
+    const { 
+      flash, 
+      mutationName, 
+      successCallback, 
+      user, 
+      [mutationName]: mutationToTrigger, // dynamic 'mutationToTrigger' variable based on the mutationName (addUserNewsletter or removeUserNewsletter)
+    } = this.props;
+    
+    try {
+      const mutationResult = await mutationToTrigger({userId: user._id});
+      
+      successCallback(mutationResult);
+    } catch(error) {
+      console.error(error); // eslint-disable-line no-console
+      flash(
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
+        "error"
+      );
+    }
   }
 
   render() {
@@ -49,19 +41,23 @@ class NewsletterButton extends Component {
         onClick={this.subscriptionAction}
         bsStyle="primary"
       >
-        <FormattedMessage id={this.state.labelId}/>
+        <FormattedMessage id={this.props.label}/>
       </Button>
     )
   }
 }
 
 NewsletterButton.propTypes = {
-  user: React.PropTypes.object.isRequired,
-  successCallback: React.PropTypes.func.isRequired,
+  mutationName: PropTypes.string.isRequired, // mutation to fire
+  label: PropTypes.string.isRequired, // label of the button
+  user: PropTypes.object.isRequired, // user to operate on
+  successCallback: PropTypes.func.isRequired, // what do to after the mutationName
+  addUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
+  removeUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
 };
 
 NewsletterButton.contextTypes = {
-  actions: React.PropTypes.object,
+  intl: intlShape,
 };
 
 const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};

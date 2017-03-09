@@ -1,45 +1,46 @@
 import React from 'react';
-import { getSetting } from 'meteor/nova:core';
+import { FormattedMessage } from 'react-intl';
+import { getSetting, registerComponent, Components } from 'meteor/nova:core';
 
-const renderSetting = (field, key) => {
-  return (
-    <tr key={key}>
-      <td><code>{key}</code></td>
-      <td>{field.type && field.type.name}</td>
-      <td>{field.private ? <span className="private">private</span> : getSetting(key)}</td>
-      <td>{field.defaultValue && field.defaultValue.toString()}</td>
-      <td>{field.form && field.form.instructions}</td>
-    </tr>
-  )
-}
+const renderSetting = key => (
+  <tr key={key}>
+    <td><code>{key}</code></td>
+    <td>{JSON.stringify(getSetting(key))}</td>
+  </tr>
+);
 
 const Settings = props => {
+  
+  const publicSettings = Meteor.settings.public;
+  
   return (
-    <div className="settings">
-      <h1>Settings</h1>
+    <Components.ShowIf check={user => user && user.isAdmin} failureComponent={<FormattedMessage id="app.noPermission" />}>
+      <div className="settings">
+      
+        <h1>Public settings</h1>
+        
+        <div>To access your private settings, have a look at your <code>settings.json</code> file.</div>
+        
+        <div>More info about settings <a href="http://nova-docs.telescopeapp.org/settings.html">in the docs</a></div>
+        
+        <div className="settings-wrapper">
 
-      <div className="settings-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Value</td>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(publicSettings).filter(key => !Array.isArray(publicSettings[key])).map(renderSetting)}
+            </tbody>
+          </table>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Type</td>
-              <td>Value</td>
-              <td>Default</td>
-              <td>Description</td>
-            </tr>
-          </thead>
-          <tbody>
-            {_.map(_.omit(Meteor.settings, (value, key) => key.indexOf("$") >= 0), renderSetting)}
-          </tbody>
-        </table>
-
+        </div>
       </div>
-    
-    </div>
-  )
+    </Components.ShowIf>
+  );
 }
 
-module.exports = Settings
-export default Settings
+registerComponent('Settings', Settings);

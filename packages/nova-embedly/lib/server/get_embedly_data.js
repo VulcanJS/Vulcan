@@ -44,7 +44,7 @@ function getEmbedlyData(url) {
     console.log(error); // eslint-disable-line
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
     var errorObject = JSON.parse(error.message.substring(13));
-    throw new Meteor.Error(errorObject.error_code, errorObject.error_message);
+    throw new Error(errorObject.error_code, errorObject.error_message);
   }
 }
 
@@ -85,6 +85,9 @@ function updateMediaOnEdit (modifier, post) {
     var data = getEmbedlyData(newUrl);
     if(!!data) {
       if (!!data.media.html) {
+        if (modifier.$unset.media) {
+          delete modifier.$unset.media
+        }
         modifier.$set.media = data.media;
       }
 

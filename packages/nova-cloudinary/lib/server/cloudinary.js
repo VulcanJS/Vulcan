@@ -27,7 +27,7 @@ const CloudinaryUtils = {
       return data;
     } catch (error) {
       console.log("// Cloudinary upload failed for URL: "+imageUrl); // eslint-disable-line
-      console.log(error.stack); // eslint-disable-line
+      console.log(error); // eslint-disable-line
     }
   },
 
@@ -92,10 +92,12 @@ function cachePostThumbnailOnSubmit (post) {
     if (post.thumbnailUrl) {
 
       const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
-      Posts.update(post._id, {$set:{
-        cloudinaryId: data.cloudinaryId,
-        cloudinaryUrls: data.urls
-      }});
+      if (data) {
+        Posts.update(post._id, {$set:{
+          cloudinaryId: data.cloudinaryId,
+          cloudinaryUrls: data.urls
+        }});
+      }
 
     }
   }

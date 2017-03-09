@@ -1,11 +1,10 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:core';
 import { withApollo } from 'react-apollo';
 
 class UsersMenu extends Component {
@@ -22,7 +21,7 @@ class UsersMenu extends Component {
             <div>{Users.getDisplayName(currentUser)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <LinkContainer to={`/users/${currentUser.__slug}`}>
+            <LinkContainer to={`/users/${currentUser.slug}`}>
               <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage id="users.profile"/></MenuItem>
             </LinkContainer>
             <LinkContainer to={`/account`}>

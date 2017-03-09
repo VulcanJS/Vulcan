@@ -7,12 +7,11 @@ const specificResolvers = {
       return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];
     },
   },
-  // TODO: fix this
-  // Category: {
-  //   parent(category, args, context) {
-  //     return category.parent ? context.Categories.findOne({_id: category.parent }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
-  //   }
-  // },
+  Category: {
+    parent(category, args, context) {
+      return category.parentId ? context.Categories.findOne({_id: category.parentId }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
+    }
+  },
 };
 GraphQLSchema.addResolvers(specificResolvers);
 
@@ -23,14 +22,14 @@ const resolvers = {
 
     name: 'categoriesList',
 
-    resolver(root, {offset, limit}, context, info) {
-      const options = {
-        limit: limit,
-        skip: offset,
-        // keep only fields that should be viewable by current user
-        fields: context.getViewableFields(context.currentUser, context.Categories),
-      };
-      return context.Categories.find({}, options).fetch();
+    resolver(root, {terms}, context, info) {
+      let {selector, options} = context.Categories.getParameters(terms);
+      
+      options.limit = terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Categories);
+      
+      return context.Categories.find(selector, options).fetch();
     },
 
   },
@@ -39,8 +38,9 @@ const resolvers = {
 
     name: 'categoriesSingle',
 
-    resolver(root, {documentId}, context) {
-      return context.Categories.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
+    resolver(root, {documentId, slug}, context) {
+      const selector = documentId ? {_id: documentId} : {slug: slug};
+      return context.Categories.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },
 
   },

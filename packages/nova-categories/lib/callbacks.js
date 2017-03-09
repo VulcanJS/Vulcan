@@ -2,20 +2,6 @@ import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
 import { addCallback, Utils } from 'meteor/nova:core';
 
-// generate slug on insert
-// Categories.before.insert(function (userId, doc) {
-//   // if no slug has been provided, generate one
-//   var slug = !!doc.slug ? doc.slug : Utils.slugify(doc.name);
-//   doc.slug = Utils.getUnusedSlug(Categories, slug);
-// });
-
-// // generate slug on edit, if it has changed
-// Categories.before.update(function (userId, doc, fieldNames, modifier) {
-//   if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== doc.slug) {
-//     modifier.$set.slug = Utils.getUnusedSlug(Categories, modifier.$set.slug);
-//   }
-// });
-
 // add callback that adds categories CSS classes
 function addCategoryClass (postClass, post) {
   var classArray = _.map(Posts.getCategories(post), function (category){return "category-"+category.slug;});
@@ -37,7 +23,7 @@ var checkCategories = function (post) {
   var categoryCount = Categories.find({_id: {$in: post.categories}}).count();
 
   if (post.categories.length !== categoryCount) {
-    throw new Meteor.Error('invalid_category', 'invalid_category');
+    throw new Error({id: 'categories.invalid'});
   }
 };
 
@@ -61,9 +47,9 @@ function categoriesNewGenerateSlug (category) {
 }
 addCallback("categories.new.sync", categoriesNewGenerateSlug);
 
-function categoriesEditGenerateSlug (modifier) {
+function categoriesEditGenerateSlug (modifier, document) {
   // if slug is changing
-  if (modifier.$set && modifier.$set.slug) {
+  if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== document.slug) {
     const slug = modifier.$set.slug;
     modifier.$set.slug = Utils.getUnusedSlug(Categories, slug);
   }

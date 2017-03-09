@@ -1,8 +1,12 @@
 import Users from "meteor/nova:users";
 
+// note: leverage weak dependencies on packages
+const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
+const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
+
 Users.addField([
   {
-    fieldName: '__subscribedItems',
+    fieldName: 'subscribedItems',
     fieldSchema: {
       type: Object,
       optional: true,
@@ -11,20 +15,15 @@ Users.addField([
     }
   },
   {
-    fieldName: '__subscribers',
+    fieldName: 'subscribers',
     fieldSchema: {
       type: [String],
       optional: true,
       hidden: true, // never show this,
-      // publish: true,
-      // join: {
-      //   joinAs: "subscribersArray",
-      //   collection: () => Users
-      // }
     }
   },
   {
-    fieldName: '__subscriberCount',
+    fieldName: 'subscriberCount',
     fieldSchema: {
       type: Number,
       optional: true,
@@ -34,8 +33,8 @@ Users.addField([
 ]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
-if (typeof Package['nova:posts'] !== "undefined") {
-  import Posts from 'meteor/nova:posts';
+if (!!Posts) {
+
   Posts.addField([
     {
       fieldName: 'subscribers',
@@ -43,11 +42,6 @@ if (typeof Package['nova:posts'] !== "undefined") {
         type: [String],
         optional: true,
         hidden: true, // never show this
-        // publish: true,
-        // join: {
-        //   joinAs: "subscribersArray",
-        //   collection: () => Users
-        // }
       }
     },
     {
@@ -63,8 +57,8 @@ if (typeof Package['nova:posts'] !== "undefined") {
 }
 
 // check if nova:categories exists, if yes, add the custom fields to Categories
-if (typeof Package['nova:categories'] !== "undefined") {
-  import Categories from 'meteor/nova:categories';
+if (!!Categories) {
+  
   Categories.addField([
     {
       fieldName: 'subscribers',
@@ -72,11 +66,6 @@ if (typeof Package['nova:categories'] !== "undefined") {
         type: [String],
         optional: true,
         hidden: true, // never show this
-        // publish: true,
-        // join: {
-        //   joinAs: "subscribersArray",
-        //   collection: () => Users
-        // }
       }
     },
     {

@@ -2,14 +2,12 @@
 
 nova:core                       # core components and wrappers
 nova:forms                      # auto-generated forms
-nova:apollo                     # data layer
 nova:routing                    # routing and server-side rendering
-nova:email                      # email
 nova:users                      # user management and permissions
 
 ############ Features Packages ############
 
-nova:events
+nova:email
 nova:posts
 nova:comments
 nova:newsletter
@@ -18,6 +16,7 @@ nova:notifications
 nova:getting-started
 nova:categories
 nova:voting
+nova:events
 nova:embedly
 nova:api
 nova:rss
@@ -38,9 +37,9 @@ nova:i18n-en-us         # default language translation
 
 ############ Your Packages ############
 
-accounts-password@1.3.3
+accounts-password@1.3.4
 # accounts-twitter
 # accounts-facebook
 
 # customization-demo
-# framework-demo
+framework-demo

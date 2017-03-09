@@ -79,7 +79,7 @@ const PostsSchema = new SimpleSchema({
 New document form:
 
 ```jsx
-<SmartForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.new"
 />
@@ -88,7 +88,7 @@ New document form:
 Edit document form:
 
 ```jsx
-<SmartForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.edit"
   document={post}
@@ -175,7 +175,6 @@ postedAt: {
   optional: true,
   insertableBy: Users.isAdmin,
   editableBy: Users.isAdmin,
-  publish: true,
   control: "datetime",
   group: {
     name: "admin",
@@ -211,7 +210,7 @@ An object containing optional autofilled properties.
 
 A function that takes a property, and adds it to the `autofilledValues` object. 
 
-###### `throwError({content, type})`
+###### `throwError(errorMessage)`
 
 A callback function that can be used to throw an error. 
 

@@ -3,7 +3,7 @@ import { addCallback } from 'meteor/nova:core';
 
 function UsersRemoveDeleteComments (user, options) {
   if (options.deleteComments) {
-    var deletedComments = Comments.remove({userId: userId});
+    Comments.remove({userId: user._id});
   } else {
     // not sure if anything should be done in that scenario yet
     // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});

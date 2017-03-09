@@ -1,15 +1,14 @@
-import { removeMutation } from 'meteor/nova:core';
+import { removeMutation, addCallback } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
-import { addCallback } from 'meteor/nova:core';
 
 const CommentsRemovePostCommenters = (comment, currentUser) => {
   const { userId, postId } = comment;
 
   // dec user's comment count
   Users.update({_id: userId}, {
-    $inc:       {'__commentCount': -1}
+    $inc:       {'commentCount': -1}
   });
 
   const postComments = Comments.find({postId}, {sort: {postedAt: -1}}).fetch();

@@ -1,92 +1,40 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { ModalTrigger, Components, registerComponent, withList, Utils } from "meteor/nova:core";
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { ShowIf, ContextPasser, withList } from "meteor/nova:core";
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
-import Users from 'meteor/nova:users';
 import Categories from 'meteor/nova:categories';
-import gql from 'graphql-tag';
-
-// note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
+import { withApollo } from 'react-apollo';
 
 class CategoriesList extends Component {
 
-  constructor() {
-    super();
-    this.openCategoryEditModal = this.openCategoryEditModal.bind(this);
-    this.openCategoryNewModal = this.openCategoryNewModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.state = {
-      openModal: false
-    }
-  }
+  getNestedCategories() {
+    const categories = this.props.results;
 
-  openCategoryNewModal() {
-    // new category modal has number 0
-    this.setState({openModal: 0});
-  }
+    // check if a category is currently active in the route
+    const currentCategorySlug = this.props.router.location.query && this.props.router.location.query.cat;
+    const currentCategory = Categories.findOneInStore(this.props.client.store, {slug: currentCategorySlug});
+    const parentCategories = Categories.getParents(currentCategory, this.props.client.store);
 
-  openCategoryEditModal(index) {
-    // edit category modals are numbered from 1 to n
-    this.setState({openModal: index+1});
-  }
+    // decorate categories with active and expanded properties
+    const categoriesClone = _.map(categories, category => {
+      return {
+        ...category, // we don't want to modify the objects we got from props
+        active: currentCategory && category.slug === currentCategory.slug, 
+        expanded: parentCategories && _.contains(_.pluck(parentCategories, 'slug'), category.slug)
+      };
+    }); 
 
-  closeModal() {
-    this.setState({openModal: false});
-  }
+    const nestedCategories = Utils.unflatten(categoriesClone, '_id', 'parentId');
 
-  renderCategoryEditModal(category, index) {
-
-    return (
-      <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ContextPasser closeCallback={this.closeModal}>
-            <Components.CategoriesEditForm category={category}/>
-          </ContextPasser>
-        </Modal.Body>
-      </Modal>
-    )
-  }
-
-  renderCategoryNewModal() {
-
-    return (
-      <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ContextPasser closeCallback={this.closeModal}>
-            <Components.CategoriesNewForm/>
-          </ContextPasser>
-        </Modal.Body>
-      </Modal>
-    )
-  }
-
-  renderCategoryNewButton() {
-    return (
-      <div className="category-menu-item dropdown-item">
-        <MenuItem>
-          <Button bsStyle="primary" onClick={this.openCategoryNewModal}>
-            <FormattedMessage id="categories.new"/>
-          </Button>
-        </MenuItem>
-      </div>
-    );
+    return nestedCategories;
   }
 
   render() {
 
-    const categories = this.props.results;
-
     const currentQuery = _.clone(this.props.router.location.query);
-    delete currentQuery.cat;
+    const nestedCategories = this.getNestedCategories();
 
     return (
       <div>
@@ -96,8 +44,8 @@ class CategoriesList extends Component {
           title={<FormattedMessage id="categories"/>}
           id="categories-dropdown"
         >
-          <div className="category-menu-item dropdown-item">
-            <LinkContainer to={{pathname:"/", query: currentQuery}}>
+          <div className="category-menu-item category-menu-item-all dropdown-item">
+            <LinkContainer className="category-menu-item-title" to={{pathname:"/", query: currentQuery}}>
               <MenuItem eventKey={0}>
                 <FormattedMessage id="categories.all"/>
               </MenuItem>
@@ -107,40 +55,22 @@ class CategoriesList extends Component {
             // categories data are loaded
             !this.props.loading ?
               // there are currently categories
-              categories && categories.length > 0 ?
-                categories.map((category, index) => <Components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>)
+              nestedCategories && nestedCategories.length > 0 ?
+                nestedCategories.map((category, index) => <Components.CategoriesNode key={index} category={category} index={index} openModal={this.openCategoryEditModal}/>)
               // not any category found
               : null
             // categories are loading
             : <div className="dropdown-item"><MenuItem><Components.Loading /></MenuItem></div>
           }
-          <ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</ShowIf>
+          <Components.ShowIf check={Categories.options.mutations.new.check}>
+            <div className="categories-new-button category-menu-item dropdown-item">
+              <ModalTrigger title={<FormattedMessage id="categories.new"/>} component={<Button bsStyle="primary"><FormattedMessage id="categories.new"/></Button>}>
+                <Components.CategoriesNewForm/>
+              </ModalTrigger>
+            </div>
+          </Components.ShowIf>
         </DropdownButton>
 
-        <div>
-          {
-            /*
-              Modals cannot be inside DropdownButton component (see GH issue link on top of the file)
-              -> we place them in a <div> outside the <DropdownButton> component
-            */
-
-            /* Modals for each category to edit */
-            // categories data are loaded
-            !this.props.loading ?
-              // there are currently categories
-              categories && categories.length > 0 ?
-                categories.map((category, index) => this.renderCategoryEditModal(category, index))
-              // not any category found
-              : null
-            // categories are loading
-            : null
-          }
-
-          {
-            /* modal for creating a new category */
-            this.renderCategoryNewModal()
-          }
-        </div>
       </div>
     )
 
@@ -151,22 +81,13 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
-CategoriesList.fragment = gql`
-  fragment categoriesListFragment on Category {
-    _id
-    name
-    description
-    order
-    slug
-    image
-  }
-`;
 
-const categoriesListOptions = {
+const options = {
   collection: Categories,
   queryName: 'categoriesListQuery',
-  fragment: CategoriesList.fragment,
+  fragmentName: 'CategoriesList',
   limit: 0,
+  pollInterval: 0,
 };
 
-registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));
+registerComponent('CategoriesList', CategoriesList, withRouter, withApollo, [withList, options]);

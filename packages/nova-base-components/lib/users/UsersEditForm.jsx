@@ -1,37 +1,33 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-import SmartForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
-import { ShowIf, withCurrentUser, withDocument, withMessages } from 'meteor/nova:core';
-import gql from 'graphql-tag';
 
 const UsersEditForm = (props, context) => {
   return (
-    <ShowIf
+    <Components.ShowIf
       check={Users.options.mutations.edit.check}
-      document={{_id: props.userId || props.document && props.document._id}}
+      document={props.terms.documentId ? {_id: props.terms.documentId} : {slug: props.terms.slug}}
       failureComponent={<FormattedMessage id="app.noPermission"/>}
     >
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
-        <SmartForm 
+        <Components.SmartForm 
           collection={Users} 
-          documentId={props.userId || props.document && props.document._id}
-          queryToUpdate="usersSingleQuery"
+          {...props.terms}
           successCallback={user => {
             props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
           }}
           showRemove={true}
         />
       </div>
-    </ShowIf>
+    </Components.ShowIf>
   );
 };
 
 
 UsersEditForm.propTypes = {
-  document: React.PropTypes.object,
+  terms: React.PropTypes.object, // a user is defined by its unique _id or its unique slug
 };
 
 UsersEditForm.contextTypes = {
@@ -40,17 +36,4 @@ UsersEditForm.contextTypes = {
 
 UsersEditForm.displayName = "UsersEditForm";
 
-UsersEditForm.fragment = gql` 
-  fragment UsersEditFormFragment on User {
-    _id
-    __slug
-  }
-`;
-
-const options = {
-  collection: Users,
-  queryName: 'usersEditPermissionCheckQuery',
-  fragment: UsersEditForm.fragment,
-};
-
-registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, withDocument(options), withMessages);
+registerComponent('UsersEditForm', UsersEditForm, withMessages, withCurrentUser);

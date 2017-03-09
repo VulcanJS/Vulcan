@@ -1,9 +1,8 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { Link } from 'react-router';
-import { withCurrentUser } from 'meteor/nova:core';
 
 class UsersResetPassword extends Component {
   componentDidMount() {
@@ -36,5 +35,7 @@ UsersResetPassword.propsTypes = {
   currentUser: React.PropTypes.object,
   params: React.PropTypes.object,
 };
+
+UsersResetPassword.displayName = 'UsersResetPassword';
 
 registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);

@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMutation, withMessages, Utils } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -6,7 +6,6 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
-import { withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -27,13 +26,17 @@ class Newsletter extends Component {
     }
   }
 
-  subscribeEmail(data) {
-    this.props.addEmailNewsletter({email: data.email}).then(result => {
+  async subscribeEmail(data) {
+    try {
+      const result = await this.props.addEmailNewsletter({email: data.email});
       this.successCallbackSubscription(result);
-    }).catch(error => {
-      console.log(error);
-      this.props.flash(error.message, "error");
-    });
+    } catch(error) {
+      console.error(error); // eslint-disable-line no-console
+      this.props.flash(
+        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
+        "error"
+      );
+    }
   }
 
   successCallbackSubscription(result) {
@@ -46,20 +49,15 @@ class Newsletter extends Component {
 
     this.setState({showBanner: false});
 
-    // set cookie
+    // set cookie to keep the banner dismissed persistently 
     Cookie.save('showBanner', "no");
-
-    // TODO: fix this
-    // set user setting too (if logged in)
-    // if (this.context.currentUser) {
-    //   this.context.actions.call('users.setSetting', this.context.currentUser._id, 'newsletter.showBanner', false);
-    // }
   }
 
   renderButton() {
     return <Components.NewsletterButton
+              label="newsletter.subscribe"
+              mutationName="addUserNewsletter"
               successCallback={() => this.successCallbackSubscription()}
-              subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
               user={this.props.currentUser}
             />
   }
@@ -105,10 +103,8 @@ function showBanner (user) {
   return (
     // showBanner cookie either doesn't exist or is not set to "no"
     Cookie.load('showBanner') !== "no"
-    // and showBanner user setting either doesn't exist or is set to true
-    // && Users.getSetting(user, 'newsletter.showBanner', true)
     // and user is not subscribed to the newsletter already (setting either DNE or is not set to false)
-    && !Users.getSetting(user, '__newsletter_subscribeToNewsletter', false)
+    && !Users.getSetting(user, 'newsletter_subscribeToNewsletter', false)
   );
 }
 

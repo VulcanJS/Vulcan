@@ -6,14 +6,7 @@ Posts.addField([
   {
     fieldName: 'url',
     fieldSchema: {
-      type: String,
-      optional: true,
-      max: 500,
-      insertableBy: ['members'],
-      editableBy: ['members'],
-      viewableBy: ['guests'],
-      control: EmbedlyURL,
-      publish: true
+      control: EmbedlyURL, // we are just extending the field url, not replacing it
     }
   },
   {
@@ -24,7 +17,6 @@ Posts.addField([
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
-      publish: true,
       control: ThumbnailURL
     }
   },
@@ -32,7 +24,6 @@ Posts.addField([
     fieldName: 'media',
     fieldSchema: {
       type: Object,
-      publish: true,
       optional: true,
       blackbox: true,
       viewableBy: ['guests'],
@@ -43,7 +34,6 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
     }
   },
@@ -52,7 +42,6 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
     }
   }

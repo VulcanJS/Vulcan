@@ -1,13 +1,13 @@
+import RSS from 'rss';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import { Utils, getSetting } from 'meteor/nova:core';
 
-const RSS = Npm.require('rss');
+Posts.addView('rss', Posts.views.new); // default to "new" view for RSS feed
 
-Posts.views.rss = Posts.views.new; // default to "new" view for RSS feed
-
-const getMeta = function (url) {
-  var siteUrl = getSetting('siteUrl', Meteor.absoluteUrl());
+const getMeta = (url) => {
+  const siteUrl = getSetting('siteUrl', Meteor.absoluteUrl());
+  
   return {
     title: getSetting('title'),
     description: getSetting('tagline'),
@@ -17,20 +17,20 @@ const getMeta = function (url) {
   };
 };
 
-const servePostRSS = function (terms, url) {
-  var feed = new RSS(getMeta(url));
+export const servePostRSS = (terms, url) => {
+  const feed = new RSS(getMeta(url));
 
-  var parameters = Posts.getParameters(terms);
+  let parameters = Posts.getParameters(terms);
   delete parameters['options']['sort']['sticky'];
 
   const postsCursor = Posts.find(parameters.selector, parameters.options);
 
-  postsCursor.forEach(function(post) {
+  postsCursor.forEach((post) => {
 
-    var description = !!post.body ? post.body+'</br></br>' : '';
-    var feedItem = {
+    const description = !!post.body ? post.body+'</br></br>' : '';
+    const feedItem = {
       title: post.title,
-      description: description + '<a href="' + post.getPageUrl(true) + '">Discuss</a>',
+      description: description + '<a href="' + Posts.getPageUrl(post, true) + '">Discuss</a>',
       author: post.author,
       date: post.postedAt,
       guid: post._id,
@@ -38,7 +38,7 @@ const servePostRSS = function (terms, url) {
     };
 
     if (post.thumbnailUrl) {
-      var url = Utils.addHttp(post.thumbnailUrl);
+      const url = Utils.addHttp(post.thumbnailUrl);
       feedItem.custom_elements = [{"imageUrl":url}, {"content": url}];
     }
 
@@ -48,22 +48,23 @@ const servePostRSS = function (terms, url) {
   return feed.xml();
 };
 
-const serveCommentRSS = function (terms, url) {
-  var feed = new RSS(getMeta(url));
+export const serveCommentRSS = (terms, url) => {
+  const feed = new RSS(getMeta(url));
 
-  Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
-    var post = Posts.findOne(comment.postId);
+  const commentsCursor = Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20});
+  
+  commentsCursor.forEach(function(comment) {
+    const post = Posts.findOne(comment.postId);
+    
     feed.item({
      title: 'Comment on ' + post.title,
-     description: `${comment.body}</br></br><a href="${comment.getPageUrl(true)}">Discuss</a>`,
+     description: `${comment.body}</br></br><a href="${Comments.getPageUrl(comment, true)}">Discuss</a>`,
      author: comment.author,
      date: comment.postedAt,
-     url: comment.getPageUrl(true),
+     url: Comments.getPageUrl(comment, true),
      guid: comment._id
     });
   });
 
   return feed.xml();
 };
-
-export {servePostRSS, serveCommentRSS};

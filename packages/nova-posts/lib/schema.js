@@ -1,8 +1,32 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import marked from 'marked';
 import Posts from './collection.js';
-import { Utils } from 'meteor/nova:core';
+
+/**
+ * @summary Posts statuses
+ * @type {Object}
+ */
+Posts.statuses = [
+  {
+    value: 1,
+    label: 'pending'
+  },
+  {
+    value: 2,
+    label: 'approved'
+  },
+  {
+    value: 3,
+    label: 'rejected'
+  },
+  {
+    value: 4,
+    label: 'spam'
+  },
+  {
+    value: 5,
+    label: 'deleted'
+  }
+];
 
 /**
  * @summary Posts config namespace
@@ -26,7 +50,6 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -36,7 +59,6 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['admins'],
-    publish: true, // publish so that admins can sort pending posts by createdAt
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
@@ -50,7 +72,6 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    publish: true,
     control: "datetime",
     group: formGroups.admin
   },
@@ -65,7 +86,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "text",
-    publish: true,
     order: 10
   },
   /**
@@ -79,7 +99,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "text",
-    publish: true,
     order: 20
   },
   /**
@@ -89,14 +108,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    publish: true,
-    autoValue: (documentOrModifier) => {
-      // if title is changing, return new slug
-      const newTitle = documentOrModifier.title || documentOrModifier.$set && documentOrModifier.$set.title
-      if (newTitle) {
-        return Utils.slugify(newTitle)
-      }
-    }
   },
   /**
     Post body (markdown)
@@ -109,7 +120,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "textarea",
-    publish: true,
     order: 30
   },
   /**
@@ -118,16 +128,7 @@ const schema = {
   htmlBody: {
     type: String,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
-    autoValue(documentOrModifier) {
-      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
-      if (body) {
-        return Utils.sanitize(marked(body))
-      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
-        return ''
-      }
-    }
   },
   /**
    Post Excerpt
@@ -135,17 +136,7 @@ const schema = {
   excerpt: {
     type: String,
     optional: true,
-    max: 255, //should not be changed the 255 is max we should load for each post/item
-    publish: true,
     viewableBy: ['guests'],
-    autoValue(documentOrModifier) {
-      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
-      if (body) {
-        return Utils.trimHTML(Utils.sanitize(marked(body)), 30);
-      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
-        return ''
-      }
-    }
   },
   /**
     Count of how many times the post's page was viewed
@@ -153,7 +144,6 @@ const schema = {
   viewCount: {
     type: Number,
     optional: true,
-    publish: true,
     viewableBy: ['admins'],
     defaultValue: 0
   },
@@ -163,7 +153,6 @@ const schema = {
   lastCommentedAt: {
     type: Date,
     optional: true,
-    publish: true,
     viewableBy: ['guests'],
   },
   /**
@@ -172,7 +161,6 @@ const schema = {
   clickCount: {
     type: Number,
     optional: true,
-    publish: true,
     viewableBy: ['admins'],
     defaultValue: 0
   },
@@ -195,7 +183,7 @@ const schema = {
     },
     form: {
       noselect: true,
-      options: Telescope.statuses,
+      options: Posts.statuses,
       group: 'admin'
     },
     group: formGroups.admin
@@ -207,7 +195,6 @@ const schema = {
     type: Boolean,
     optional: true,
     viewableBy: ['guests'],
-    publish: true
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -220,7 +207,6 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins'],
     control: "checkbox",
-    publish: true,
     group: formGroups.admin
   },
   /**
@@ -229,7 +215,6 @@ const schema = {
   inactive: {
     type: Boolean,
     optional: true,
-    publish: false,
     defaultValue: false
   },
   /**
@@ -239,19 +224,16 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   userAgent: {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   referrer: {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-    publish: false
   },
   /**
     The post author's name
@@ -260,7 +242,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    publish: true,
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
       const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
@@ -278,25 +259,6 @@ const schema = {
     insertableBy: ['members'],
     hidden: true,
     resolveAs: 'user: User',
-    // publish: true,
-    // regEx: SimpleSchema.RegEx.Id,
-    // insertableBy: ['admins'],
-    // editableBy: ['admins'],
-    // form: {
-    //   group: 'admin',
-    //   options: function () {
-    //     return Users.find().map(function (user) {
-    //       return {
-    //         value: user._id,
-    //         label: Users.getDisplayName(user)
-    //       };
-    //     });
-    //   }
-    // },
-    // join: {
-    //   joinAs: "user",
-    //   collection: () => Users
-    // }
   }
 };
 

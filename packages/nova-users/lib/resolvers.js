@@ -2,18 +2,9 @@ import { GraphQLSchema } from 'meteor/nova:lib';
 
 const specificResolvers = {
   User: {
-    __downvotedComments(user, args, context) {
-      return user.__downvotedComments ? user.__downvotedComments : []
-    },
-    __downvotedPosts(user, args, context) {
-      return user.__downvotedPosts ? user.__downvotedPosts : []
-    },
-    __upvotedComments(user, args, context) {
-      return user.__upvotedComments ? user.__upvotedComments : []
-    },
-    __upvotedPosts(user, args, context) {
-      return user.__upvotedPosts ? user.__upvotedPosts : [];
-    },
+    twitterUsername(user, args, context) {
+      return context.Users.getTwitterName(context.Users.findOne(user._id));
+    }
   },
   Query: {
     currentUser(root, args, context) {
@@ -30,15 +21,14 @@ const resolvers = {
 
     name: 'usersList',
 
-    resolver(root, {offset, limit}, context, info) {
-      const options = {
-        // protected limit
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
-        // keep only fields that should be viewable by current user
-        fields: context.getViewableFields(context.currentUser, context.Users),
-      };
-      return context.Users.find({}, options).fetch();
+    resolver(root, {terms}, context, info) {
+      let {selector, options} = context.Users.getParameters(terms);
+      
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Users);
+      
+      return context.Users.find(selector, options).fetch();
     },
 
   },
@@ -48,8 +38,10 @@ const resolvers = {
     name: 'usersSingle',
     
     resolver(root, {documentId, slug}, context) {
-      const selector = documentId ? {_id: documentId} : {'__slug': slug};
-      return context.Users.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Users) });
+      const selector = documentId ? {_id: documentId} : {'slug': slug};
+      // get the user first so we can get a list of viewable fields specific to this user document
+      const user = context.Users.findOne(selector);
+      return context.Users.keepViewableFields(context.currentUser, context.Users, user);
     },
   
   },
@@ -58,8 +50,9 @@ const resolvers = {
     
     name: 'usersTotal',
     
-    resolver(root, args, context) {
-      return context.Users.find().count();
+    resolver(root, {terms}, context) {
+      const {selector} = context.Users.getParameters(terms);
+      return context.Users.find(selector).count();
     },
   
   }

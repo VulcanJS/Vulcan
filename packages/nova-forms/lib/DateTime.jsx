@@ -3,20 +3,34 @@ import DateTimePicker from 'react-datetime';
 // import moment from 'moment';
 
 class DateTime extends Component {
-  // when the datetime picker mounts, SmartForm will catch the date value (no formsy mixin in this component)
-  componentWillMount() {
-    this.context.addToAutofilledValues({[this.props.name]: this.props.value || new Date()});
+  
+  constructor(props) {
+    super(props);
+    
+    this.updateDate = this.updateDate.bind(this);
+  }
+
+  // when the datetime picker has mounted, SmartForm will catch the date value (no formsy mixin in this component)
+  componentDidMount() {
+    this.updateDate(this.props.value || new Date());
+  }
+
+  updateDate(date) {
+    this.context.updateCurrentValues({[this.props.name]: date});
   }
 
   render() {
+
+    const date = typeof this.props.value === 'string' ? new Date(this.props.value) : this.props.value;
+    
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <DateTimePicker
-            value={this.props.value || new Date()}
+            value={date || new Date()}
             // newDate argument is a Moment object given by react-datetime
-            onChange={newDate => { this.context.addToAutofilledValues({[this.props.name]: newDate._d}) }}
+            onChange={newDate => this.updateDate(newDate._d)}
             format={"x"}
             inputProps={{name: this.props.name}}
           />
@@ -37,7 +51,7 @@ DateTime.propTypes = {
 
 DateTime.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
 };
 
 export default DateTime;

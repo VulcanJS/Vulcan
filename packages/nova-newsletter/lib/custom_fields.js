@@ -12,30 +12,17 @@ Posts.addField({
 });
 
 Users.addField([
-  // TODO: fix this
-  // {
-  //   fieldName: '__newsletter_subscribeToNewsletter',
-  //   fieldName: 'telescope.newsletter.showBanner',
-  //   fieldSchema: {
-  //     type: Boolean,
-  //     optional: true,
-  //     publish: true,
-  //     defaultValue: true,
-  //   }
-  // },
   {
-    fieldName: '__newsletter_subscribeToNewsletter',
+    fieldName: 'newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to Newsletter',
       type: Boolean,
       optional: true,
-      publish: true,
       defaultValue: false,
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
       control: NewsletterSubscribe,
-      preload: true,
       group: {
         name: "newsletter",
         label: "Newsletter",

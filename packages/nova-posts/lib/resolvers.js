@@ -1,20 +1,19 @@
 import { GraphQLSchema } from 'meteor/nova:core';
 
-const speficicResolvers = {
+const specificResolvers = {
   Post: {
     user(post, args, context) {
       return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
-    upvoters(post, args, context) {
-      return post.upvoters ? context.Users.find({_id: {$in: post.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
-    downvoters(post, args, context) {
-      return post.downvoters ? context.Users.find({_id: {$in: post.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
   },
+  Mutation: {
+    increasePostViewCount(root, { postId }, context) {
+      return context.Posts.update({_id: postId}, { $inc: { viewCount: 1 }});
+    }
+  }
 };
 
-GraphQLSchema.addResolvers(speficicResolvers);
+GraphQLSchema.addResolvers(specificResolvers);
 
 const resolvers = {
 
@@ -22,11 +21,10 @@ const resolvers = {
 
     name: 'postsList',
 
-    resolver(root, {terms, offset, limit}, context, info) {
+    resolver(root, {terms}, context, info) {
       let {selector, options} = context.Posts.getParameters(terms);
-      options.limit = (limit < 1 || limit > 100) ? 100 : limit;
-      options.skip = offset;
-      // keep only fields that should be viewable by current user
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Posts);
       return context.Posts.find(selector, options).fetch();
     },
@@ -37,8 +35,10 @@ const resolvers = {
     
     name: 'postsSingle',
 
-    resolver(root, {documentId}, context) {
-      return context.Posts.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Posts) });
+    resolver(root, {documentId, slug}, context) {
+      const selector = documentId ? {_id: documentId} : {'slug': slug};
+      const post = context.Posts.findOne(selector);
+      return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
   
   },

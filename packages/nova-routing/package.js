@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:routing",
   summary: "Nova router package",
-  version: "1.0.0",
+  version: "1.2.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -11,13 +11,10 @@ Package.onUse(function (api) {
 
   api.use([
     // Nova packages
-    'nova:core@1.0.0',
-    'nova:apollo@1.0.0',
+    'nova:core@1.2.0',
   ]);
 
-  api.addFiles([
-    'lib/store.js',
-    'lib/routing.jsx'
-  ], ['client', 'server']);
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });

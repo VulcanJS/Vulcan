@@ -2,41 +2,22 @@ import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting } from 'meteor/nova:lib';
+import { Utils, getSetting } from 'meteor/nova:lib'; // import from nova:lib because nova:core is not loaded yet
 
 NovaEmail.templates = {};
 
-NovaEmail.addTemplates = function (templates) {
+NovaEmail.addTemplates = templates => {
   _.extend(NovaEmail.templates, templates);
 };
 
-// for template "foo", check if "custom_foo" exists. If it does, use it instead
-NovaEmail.getTemplate = function (templateName) {
+NovaEmail.getTemplate = templateName => Handlebars.compile(
+  NovaEmail.templates[templateName], 
+  { noEscape: true}
+);
 
-  var template = templateName;
+NovaEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
 
-  // note: template prefixes are disabled
-  // go through prefixes and keep the last one (if any) that points to a valid template
-  // Telescope.config.customPrefixes.forEach(function (prefix) {
-  //   if(typeof NovaEmail.templates[prefix+templateName] === 'string'){
-  //     template = prefix + templateName;
-  //   }
-  // });
-
-  // return Handlebars.templates[template];
-
-  // console.log(templateName)
-  // console.log(NovaEmail.templates[template])
-
-  return Handlebars.compile(NovaEmail.templates[template], {
-    noEscape: true
-  });
-
-};
-
-NovaEmail.buildTemplate = function (htmlContent, optionalProperties = {}) {
-
-  var emailProperties = {
+  const emailProperties = {
     secondaryColor: getSetting('secondaryColor', '#444444'),
     accentColor: getSetting('accentColor', '#DD3416'),
     siteName: getSetting('title', "Nova"),
@@ -52,22 +33,22 @@ NovaEmail.buildTemplate = function (htmlContent, optionalProperties = {}) {
     ...optionalProperties
   };
 
-  var emailHTML = NovaEmail.getTemplate("wrapper")(emailProperties);
+  const emailHTML = NovaEmail.getTemplate("wrapper")(emailProperties);
 
-  var inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
+  const inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
 
-  var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+  const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 
   return doctype+inlinedHTML;
 };
 
-NovaEmail.send = function(to, subject, html, text){
+NovaEmail.send = (to, subject, html, text) => {
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
-  var from = getSetting('defaultEmail', 'noreply@example.com');
-  var siteName = getSetting('title', 'Telescope');
+  const from = getSetting('defaultEmail', 'noreply@example.com');
+  const siteName = getSetting('title', 'Telescope');
   subject = '['+siteName+'] '+subject;
 
   if (typeof text === 'undefined'){
@@ -84,7 +65,7 @@ NovaEmail.send = function(to, subject, html, text){
   // console.log('html: '+html);
   // console.log('text: '+text);
 
-  var email = {
+  const email = {
     from: from,
     to: to,
     subject: subject,
@@ -103,11 +84,13 @@ NovaEmail.send = function(to, subject, html, text){
 
 };
 
-NovaEmail.buildAndSend = function (to, subject, template, properties) {
-  var html = NovaEmail.buildTemplate(NovaEmail.getTemplate(template)(properties));
+NovaEmail.buildAndSend = (to, subject, template, properties) => {
+  const html = NovaEmail.buildTemplate(NovaEmail.getTemplate(template)(properties));
   return NovaEmail.send (to, subject, html);
 };
 
-NovaEmail.buildAndSendHTML = function (to, subject, html) {
-  return NovaEmail.send (to, subject, NovaEmail.buildTemplate(html));
-};
+NovaEmail.buildAndSendHTML = (to, subject, html) => NovaEmail.send(
+  to,
+  subject,
+  NovaEmail.buildTemplate(html)
+);

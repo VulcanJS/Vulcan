@@ -1,10 +1,8 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, ModalTrigger } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
-import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
-import { withCurrentUser } from 'meteor/nova:core';
 
 class PostsItem extends Component {
 
@@ -25,7 +23,7 @@ class PostsItem extends Component {
       </div>
     )
   }
-
+  
   render() {
 
     const {post} = this.props;
@@ -37,7 +35,7 @@ class PostsItem extends Component {
       <div className={postClass}>
 
         <div className="posts-item-vote">
-          <Components.Vote post={post}/>
+          <Components.Vote collection={Posts} document={post} currentUser={this.props.currentUser}/>
         </div>
 
         {post.thumbnailUrl ? <Components.PostsThumbnail post={post}/> : null}
@@ -75,6 +73,7 @@ class PostsItem extends Component {
 PostsItem.propTypes = {
   currentUser: React.PropTypes.object,
   post: React.PropTypes.object.isRequired,
+  terms: React.PropTypes.object,
 };
 
-registerComponent('PostsItem', PostsItem, withCurrentUser);
+registerComponent('PostsItem', PostsItem);

@@ -9,17 +9,15 @@ import Newsletter from '../namespace.js';
 import { Utils, getSetting } from 'meteor/nova:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
-Posts.views.add("newsletter", function (terms) {
-  return {
-    selector: {
-      scheduledAt: {$exists: false}
-    },
-    options: {
-      sort: {baseScore: -1},
-      limit: terms.limit
-    }
-  };
-});
+Posts.addView("newsletter", terms => ({
+  selector: {
+    scheduledAt: {$exists: false}
+  },
+  options: {
+    sort: {baseScore: -1},
+    limit: terms.limit
+  }
+}));
 
 /**
  * @summary Return an array containing the latest n posts that can be sent in a newsletter
@@ -51,6 +49,7 @@ Newsletter.getPosts = function (postsCount) {
  */
 Newsletter.build = function (postsArray) {
   var postsHTML = '', subject = '';
+  const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
   postsArray.forEach(function (post, index) {
@@ -64,7 +63,7 @@ Newsletter.build = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: post.getAuthorName(),
+      authorName: Posts.getAuthorName(post),
       postLink: Posts.getLink(post, true),
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
@@ -84,7 +83,7 @@ Newsletter.build = function (postsArray) {
 
     // trim the body and remove any HTML tags
     if (post.body) {
-      properties.body = Utils.trimHTML(post.htmlBody, 20);
+      properties.body = Utils.trimHTML(post.htmlBody, excerptLength);
     }
 
     // if post has comments
@@ -97,7 +96,7 @@ Newsletter.build = function (postsArray) {
         var user = Users.findOne(comment.userId);
 
         // add properties to comment
-        comment.body = Utils.trimHTML(comment.htmlBody, 20);
+        comment.body = Utils.trimHTML(comment.htmlBody, excerptLength);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
         comment.authorAvatarUrl = Users.avatar.getUrl(user);
 

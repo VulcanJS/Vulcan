@@ -27,9 +27,10 @@
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo"
+    "googleAnalyticsId":"123foo",
+    "useSegment": false,
+    "segmentWriteKey": "456bar"
   },
-
 
   "defaultEmail": "hello@world.com",
   "mailUrl": "smtp://postmaster%40foo.mailgun.org:foo123@smtp.mailgun.org:587/",
@@ -38,6 +39,9 @@
   "embedlyKey":"123foo",
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
+
+  "newsletterExcerptLength": 20,
+  "postExcerptLength": 30,
 
   "categories": [
     {

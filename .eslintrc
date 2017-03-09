@@ -20,7 +20,8 @@
         "MailChimpAPI",
         "Juice",
         "Run",
-        "AppComposer"
+        "AppComposer",
+        "Query",
       ]
     }],
     "babel/array-bracket-spacing": 0,
@@ -39,7 +40,8 @@
     }],
     "no-console": 1,
     "react/prop-types": 0,
-    "meteor/audit-argument-checks": 0
+    "meteor/audit-argument-checks": 0,
+    "no-case-declarations": 0
   },
   "env": {
     "browser": true,

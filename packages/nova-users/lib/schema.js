@@ -1,8 +1,13 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Users from './collection.js';
 
 const adminGroup = {
   name: "admin",
   order: 10
+};
+
+const ownsOrIsAdmin = (user, document) => {
+  return Users.owns(user, document) || Users.isAdmin(user);
 };
 
 /**
@@ -12,18 +17,13 @@ const adminGroup = {
 const schema = {
   _id: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   username: {
     type: String,
-    // regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   emails: {
     type: [Object],
@@ -40,10 +40,8 @@ const schema = {
   },
   createdAt: {
     type: Date,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   isAdmin: {
     type: Boolean,
@@ -54,7 +52,6 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
-    preload: true,
   },
   profile: {
     type: Object,
@@ -76,7 +73,7 @@ const schema = {
   /**
     Bio (Markdown version)
   */
-  __bio: {
+  bio: {
     type: String,
     optional: true,
     control: "textarea",
@@ -87,21 +84,18 @@ const schema = {
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
   */
-  __displayName: {
+  displayName: {
     type: String,
     optional: true,
-    publish: true,
-    profile: true,
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The user's email. Modifiable.
   */
-  __email: {
+  email: {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
@@ -109,71 +103,60 @@ const schema = {
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
-    viewableBy: ['guests'],
-    preload: true,
+    viewableBy: ownsOrIsAdmin,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
     A hash of the email, used for Gravatar // TODO: change this when email changes
   */
-  __emailHash: {
+  emailHash: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The HTML version of the bio field
   */
-  __htmlBio: {
+  htmlBio: {
     type: String,
-    publish: true,
-    profile: true,
     optional: true,
     viewableBy: ['guests'],
   },
   /**
     The user's karma
   */
-  __karma: {
+  karma: {
     type: Number,
     decimal: true,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
   },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
-  __slug: {
+  slug: {
     type: String,
-    publish: true,
     optional: true,
     viewableBy: ['guests'],
-    preload: true,
   },
   /**
     The user's Twitter username
   */
-  __twitterUsername: {
+  twitterUsername: {
     type: String,
     optional: true,
-    publish: true,
-    profile: true,
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    resolveAs: 'twitterUsername: String',
   },
   /**
     A link to the user's homepage
   */
-  __website: {
+  website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    publish: true,
-    profile: true,
     optional: true,
     control: "text",
     insertableBy: ['members'],
@@ -183,7 +166,7 @@ const schema = {
   /**
     Groups
   */
-  __groups: {
+  groups: {
     type: [String],
     optional: true,
     control: "checkboxgroup",
@@ -196,7 +179,6 @@ const schema = {
         return groups.map(group => {return {value: group, label: group};});
       }
     },
-    preload: true,
   },
 };
 

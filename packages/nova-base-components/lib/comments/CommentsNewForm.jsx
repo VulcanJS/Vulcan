@@ -1,8 +1,6 @@
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import SmartForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
-import { ShowIf, withMessages } from 'meteor/nova:core';
 import { FormattedMessage } from 'react-intl';
 
 const CommentsNewForm = (props, context) => {
@@ -18,21 +16,21 @@ const CommentsNewForm = (props, context) => {
   }
 
   return (
-    <ShowIf
+    <Components.ShowIf
       check={Comments.options.mutations.new.check}
       failureComponent={<FormattedMessage id="users.cannot_comment"/>}
     >
       <div className="comments-new-form">
-        <SmartForm
+        <Components.SmartForm
           collection={Comments}
-          fragment={getRawComponent('PostsCommentsThread').fragment}
+          mutationFragment={getFragment('CommentsList')}
           successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
           layout="elementOnly"
         />
       </div>
-    </ShowIf>
+    </Components.ShowIf>
   )
 
 };

@@ -17,7 +17,7 @@ Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
   if(!!posts.length){
     return Newsletter.scheduleWithMailChimp(Newsletter.build(posts), isTest);
   }else{
-    var result = 'No posts to schedule today…';
+    var result = {result: 'No posts to schedule today…'};
     return result;
   }
 };

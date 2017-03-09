@@ -2,9 +2,8 @@ import React from 'react';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { Callbacks, Utils, registerComponent } from 'meteor/nova:core';
 
-const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 
 const renderFunction = (func, name) => {
   const s = func.toString();
@@ -48,10 +47,6 @@ const Cheatsheet = props => {
           <ul>
             {_.map(Users.is, renderFunction)}
           </ul>
-          <h3>Methods</h3>
-          <ul>
-            {_.map(methodList, (item, key) => (key.indexOf("users.") !== -1 ? renderFunction(item, key) : null))}
-          </ul>
         </div>
 
         <div className="cheatsheet-block">
@@ -60,10 +55,6 @@ const Cheatsheet = props => {
           <ul>
             {_.map(Posts, (item, key) => (key[0] !== "_" ? renderFunction(item, key) : null) )}
           </ul>
-          <h3>Methods</h3>
-          <ul>
-            {_.map(methodList, (item, key) => (key.indexOf("posts.") !== -1 ? renderFunction(item, key) : null))}
-          </ul>
         </div>
         
         <div className="cheatsheet-block">
@@ -71,10 +62,6 @@ const Cheatsheet = props => {
           <h3>Helpers (<code>Comments.*</code>)</h3>
           <ul>
             {_.map(Comments, (item, key) => (key[0] !== "_" ? renderFunction(item, key) : null) )}
-          </ul>
-          <h3>Methods</h3>
-          <ul>
-            {_.map(methodList, (item, key) => (key.indexOf("comments.") !== -1 ? renderFunction(item, key) : null))}
           </ul>
         </div>
 
@@ -107,5 +94,4 @@ const Cheatsheet = props => {
   )
 }
 
-module.exports = Cheatsheet
-export default Cheatsheet
+registerComponent('Cheatsheet', Cheatsheet);

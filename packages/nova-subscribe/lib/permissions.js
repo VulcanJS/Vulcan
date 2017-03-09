@@ -10,14 +10,3 @@ const membersActions = [
 ];
 
 Users.groups.members.can(membersActions);
-
-const adminActions = [
-  "posts.subscribe.all",
-  "posts.unsubscribe.all",
-  "users.subscribe.all",
-  "users.unsubscribe.all",
-  "categories.subscribe.all",
-  "categories.unsubscribe.all",
-];
-
-Users.groups.admins.can(adminActions);

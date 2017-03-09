@@ -1,20 +1,18 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
 import Categories from "meteor/nova:categories";
-import { withMessages } from 'meteor/nova:core';
-import SmartForm from "meteor/nova:forms";
-import update from 'immutability-helper';
 
 const CategoriesNewForm = (props, context) => {
 
   return (
     <div className="categories-new-form">
-      <SmartForm 
-        collection={Categories} 
-        queryToUpdate="categoriesListQuery"
+      <Components.SmartForm 
+        collection={Categories}
+        mutationFragment={getFragment('CategoriesList')}
         successCallback={category => {
-          context.closeCallback();
-          props.flash("Category created.", "success");
+          props.closeModal();
+          props.flash(context.intl.formatMessage({id: 'categories.new_success'}, {name: category.name}), "success");
         }}
       />
     </div>
@@ -23,8 +21,13 @@ const CategoriesNewForm = (props, context) => {
 
 CategoriesNewForm.displayName = "CategoriesNewForm";
 
-CategoriesNewForm.contextTypes = {
+CategoriesNewForm.propTypes = {
   closeCallback: React.PropTypes.func,
+  flash: React.PropTypes.func,
+};
+
+CategoriesNewForm.contextTypes = {
+  intl: intlShape,
 };
 
 registerComponent('CategoriesNewForm', CategoriesNewForm, withMessages);

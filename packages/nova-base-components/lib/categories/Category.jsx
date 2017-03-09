@@ -1,24 +1,18 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { ModalTrigger, Components, registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import Categories from 'meteor/nova:categories';
-import { ShowIf } from 'meteor/nova:core';
 
 class Category extends Component {
 
   renderEdit() {
     return (
-        <a onClick={this.props.openModal} className="edit-category-link">
-          <Components.Icon name="edit"/>
-        </a>
-    );
-    // return (
-    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Components.Icon name="edit"/></a>}>
-    //     <ComponentsCategoriesEditForm category={this.props.category}/>
-    //   </ModalTrigger>
-    // )
+      <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Components.Icon name="edit"/></a>}>
+        <Components.CategoriesEditForm category={this.props.category}/>
+      </ModalTrigger>
+    )
   }
 
   render() {
@@ -41,7 +35,7 @@ class Category extends Component {
             {category.name}
           </MenuItem>
         </LinkContainer>
-        <ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</ShowIf>
+        <Components.ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</Components.ShowIf>
       </div>
     )
   }

@@ -1,42 +1,6 @@
-import Telescope from 'meteor/nova:lib';
+import marked from 'marked';
 import Posts from '../collection.js'
-import Users from 'meteor/nova:users';
-import { runCallbacks, runCallbacksAsync, addCallback } from 'meteor/nova:core';
-
-
-//////////////////////////////////////////////////////
-// posts.edit.validate                              //
-//////////////////////////////////////////////////////
-
-
-// function PostsEditUserCheck (modifier, post, user) {
-//   // check that user can edit document
-//   if (!user || !Users.canEdit(user, post)) {
-//     throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_post');
-//   }
-//   return modifier;
-// }
-// addCallback("posts.edit.validate", PostsEditUserCheck);
-
-// function PostsEditSubmittedPropertiesCheck (modifier, post, user) {
-//   const schema = Posts.simpleSchema()._schema;
-//   // go over each field and throw an error if it's not editable
-//   // loop over each operation ($set, $unset, etc.)
-//   _.each(modifier, function (operation) {
-//     // loop over each property being operated on
-//     _.keys(operation).forEach(function (fieldName) {
-
-//       var field = schema[fieldName];
-//       if (!Users.canEditField(user, field, post)) {
-//         throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
-//       }
-
-//     });
-//   });
-//   return modifier;
-// }
-// addCallback("posts.edit.validate", PostsEditSubmittedPropertiesCheck);
-
+import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
@@ -88,11 +52,48 @@ function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
 }
 addCallback("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
+/**
+ * @summary If title is changing, return new slug
+ */
+const PostsEditSlugify = (modifier, post) => {
+  if (modifier.$set && modifier.$set.title) {
+    modifier.$set.slug = Utils.slugify(modifier.$set.title);
+  }
+  return modifier;
+}
+
+addCallback("posts.edit.sync", PostsEditSlugify);
+
+/**
+ * @summary If body is changing, update related fields (htmlBody & excerpt)
+ */
+const PostsEditHTMLContent = (modifier, post) => {
+  if (modifier.$set && typeof modifier.$set.body !== 'undefined') {
+    // excerpt length is configurable via the settings (30 words by default, ~255 characters)
+    const excerptLength = getSetting('postExcerptLength', 30); 
+    
+    // extend the modifier
+    modifier.$set = {
+      ...modifier.$set,
+      htmlBody: Utils.sanitize(marked(modifier.$set.body)),
+      excerpt: Utils.trimHTML(Utils.sanitize(marked(modifier.$set.body)), excerptLength),
+    };
+  } else if (modifier.$unset && modifier.$unset.body) {
+    // extend the modifier
+    modifier.$unset = {
+      ...modifier.$unset,
+      htmlBody: true,
+      excerpt: true,
+    };
+  }
+  
+  return modifier;
+}
+addCallback("posts.edit.sync", PostsEditHTMLContent);
 
 //////////////////////////////////////////////////////
 // posts.edit.async                                 //
 //////////////////////////////////////////////////////
-
 
 function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {

@@ -5,11 +5,10 @@ Users.addField([
     Count of the user's posts
   */
   {
-    fieldName: "__postCount",
+    fieldName: "postCount",
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }

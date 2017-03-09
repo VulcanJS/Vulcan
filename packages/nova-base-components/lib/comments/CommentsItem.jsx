@@ -1,7 +1,6 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import { ShowIf, withCurrentUser, withMessages } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 
 class CommentsItem extends Component{
@@ -100,14 +99,17 @@ class CommentsItem extends Component{
       <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
+            <div className="comments-item-vote">
+              <Components.Vote collection={Comments} document={this.props.comment} currentUser={this.props.currentUser}/>
+            </div>
             <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
-            <ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
+            <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
               </div>
-            </ShowIf>
+            </Components.ShowIf>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
