@@ -38,6 +38,7 @@ nova:i18n-en-us         # default language translation
 ############ Your Packages ############
 
 accounts-password@1.3.4
+lw-voting
 # accounts-twitter
 # accounts-facebook
 

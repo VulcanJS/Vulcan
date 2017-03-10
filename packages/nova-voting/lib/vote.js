@@ -34,21 +34,21 @@ export const operateOnItem = function (collection, originalItem, user, operation
   const collectionName = collection._name;
   const canDo = Users.canDo(user, `${collectionName}.${operation}`);
 
-  // console.log('// operateOnItem')
-  // console.log('isClient: ', isClient)
-  // console.log('collection: ', collectionName)
-  // console.log('operation: ', operation)
-  // console.log('item: ', item)
-  // console.log('user: ', user)
-  // console.log('hasUpvotedItem: ', hasUpvotedItem)
-  // console.log('hasDownvotedItem: ', hasDownvotedItem)
-  // console.log('canDo: ', canDo)
+  console.log('// operateOnItem')
+  console.log('isClient: ', isClient)
+  console.log('collection: ', collectionName)
+  console.log('operation: ', operation)
+  console.log('item: ', item)
+  console.log('user: ', user)
+  console.log('hasUpvotedItem: ', hasUpvotedItem)
+  console.log('hasDownvotedItem: ', hasDownvotedItem)
+  console.log('canDo: ', canDo)
 
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
-    !user || 
-    !canDo || 
+    !user ||
+    !canDo ||
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem ||
     operation === "cancelUpvote" && !hasUpvotedItem ||
@@ -58,20 +58,25 @@ export const operateOnItem = function (collection, originalItem, user, operation
   }
 
   // ------------------------------ Sync Callbacks ------------------------------ //
-  
+
   item = runCallbacks(operation, item, user, operation, isClient);
 
   /*
 
   voters arrays have different structures on client and server:
-  
+
   - client: [{__typename: "User", _id: 'foo123'}]
   - server: ['foo123']
-  
+
   */
 
   const voter = isClient ? {__typename: "User", _id: user._id} : user._id;
   const filterFunction = isClient ? u => u._id !== user._id : u => u !== user._id;
+
+  console.log('// Karma Update Before');
+  console.log('basescore: ', item.baseScore);
+  console.log('upvotes: ', item.upvotes);
+  console.log('downvotes: ', item.downvotes);
 
   switch (operation) {
 
@@ -85,7 +90,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
         upvotes: {$set: item.upvotes + 1},
         baseScore: {$set: item.baseScore + votePower},
       });
-      
+
       break;
 
     case "downvote":
@@ -98,7 +103,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
         downvotes: {$set: item.downvotes + 1},
         baseScore: {$set: item.baseScore - votePower},
       });
-      
+
       break;
 
     case "cancelUpvote":
@@ -116,11 +121,16 @@ export const operateOnItem = function (collection, originalItem, user, operation
         downvotes: {$set: item.upvotes - 1},
         baseScore: {$set: item.baseScore + votePower},
       });
-      
+
       break;
   }
 
   // console.log('new item', item);
+
+  console.log('// Karma Update After');
+  console.log('basescore: ', item.baseScore);
+  console.log('upvotes: ', item.upvotes);
+  console.log('downvotes: ', item.downvotes);
 
   return item;
 };
@@ -137,7 +147,7 @@ export const mutateItem = function (collection, originalItem, user, operation) {
   collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
 
   // --------------------- Server-Side Async Callbacks --------------------- //
-  runCallbacksAsync(operation+".async", newItem, user, collection, operation); 
-  
+  runCallbacksAsync(operation+".async", newItem, user, collection, operation);
+
   return newItem;
 }
