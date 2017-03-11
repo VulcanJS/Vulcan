@@ -10,7 +10,7 @@ import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema, Utils } from '../modules/index.js';
-import { webAppConnectHandlersUse, bindEnvironment } from './meteor_patch.js';
+import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 // defaults
 const defaultConfig = {
@@ -52,7 +52,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   }
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), Utils.defineName(graphqlExpress(async (req) => {
+  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
     let options;
     let user = null;
 
@@ -102,15 +102,15 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     options.context = deepmerge(options.context, GraphQLSchema.context);
 
     return options;
-  }), 'graphqlExpressMiddleware'));
+  }));
 
   // Start GraphiQL if enabled
   if (config.graphiql) {
-    graphQLServer.use(config.graphiqlPath, Utils.defineName(graphiqlExpress({ ...config.graphiqlOptions, endpointURL: config.path }), 'graphiqlExpressMiddleware'));
+    graphQLServer.use(config.graphiqlPath, graphiqlExpress({ ...config.graphiqlOptions, endpointURL: config.path }));
   }
 
   // This binds the specified paths to the Express server running Apollo + GraphiQL
-  webAppConnectHandlersUse(bindEnvironment(graphQLServer), {
+  webAppConnectHandlersUse(Meteor.bindEnvironment(graphQLServer), {
     name: 'graphQLServerMiddleware_bindEnvironment',
     order: 30,
   });
