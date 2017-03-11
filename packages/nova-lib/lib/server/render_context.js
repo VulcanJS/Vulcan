@@ -14,7 +14,7 @@ import {
   Utils,
 } from '../modules/index.js';
 
-import { webAppConnectHandlersUse, bindEnvironment } from './meteor_patch.js';
+import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 const Fiber = Npm.require('fibers');
 
@@ -65,7 +65,7 @@ const LoginContext = function LoginContext(loginToken) {
 webAppConnectHandlersUse(cookieParser(), { order: 10, name: 'cookieParserMiddleware' });
 
 // initRenderContextMiddleware
-webAppConnectHandlersUse(bindEnvironment(function initRenderContextMiddleware(req, res, next) {
+webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddleware(req, res, next) {
   // check the req url
   if (!isAppUrl(req)) {
     next();
@@ -154,7 +154,7 @@ export const withRenderContextEnvironment = (fn, options = {}) => {
   };
 
   // get evfn
-  const evfn = bindEnvironment(newfn);
+  const evfn = Meteor.bindEnvironment(newfn);
 
   // use it
   WebApp.connectHandlers.use(evfn);
@@ -166,13 +166,6 @@ export const withRenderContextEnvironment = (fn, options = {}) => {
   Object.keys(options).forEach((key) => {
     handle[key] = options[key];
   });
-
-  // copy raw fn
-  handle.fn = options.fn || fn;
-
-  // rename
-  const name = options.name || (options.fn && options.fn.name) || fn.name;
-  Utils.defineName(handle, name || '__withRenderContextEnvironment_evfn__');
 };
 
 // withRenderContext make it easy to access context

@@ -25,7 +25,7 @@ Meteor.startup(() => {
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
-  
+
   if (indexRoute) {
     delete indexRoute.path; // delete the '/' path to avoid warning
   }
@@ -42,7 +42,13 @@ Meteor.startup(() => {
       const initialState = data;
       const context = getRenderContext();
       context.initialState = initialState;
-      const apolloClientReducer = (state = initialState && initialState.apollo, action) => context.apolloClient.reducer()(state, action);
+      const apolloClientReducer = (state = {}, action) => {
+        if (initialState && initialState.apollo && !_.isEmpty(initialState.apollo.data) && _.isEmpty(state.data)) {
+          state = initialState.apollo
+        }
+        const newState = context.apolloClient.reducer()(state, action);
+        return newState;
+      }
       context.addReducer({ apollo: apolloClientReducer });
       context.store.reload({ message: 'replace apolloClientReducer with initialState, and reload store before render' });
     },

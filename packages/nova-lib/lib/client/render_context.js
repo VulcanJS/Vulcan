@@ -13,7 +13,7 @@ const history = browserHistory;
 const loginToken = global.localStorage['Meteor.loginToken'];
 const apolloClient = createApolloClient();
 addReducer({ apollo: apolloClient.reducer() });
-addMiddleware(Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware'));
+addMiddleware(apolloClient.middleware());
 
 // init context
 const context = {
