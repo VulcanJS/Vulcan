@@ -50,7 +50,8 @@ Meteor.startup(() => {
         return newState;
       }
       context.addReducer({ apollo: apolloClientReducer });
-      context.store.reload({ message: 'replace apolloClientReducer with initialState, and reload store before render' });
+      context.store.reload();
+      context.store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
     },
     historyHook(newHistory) {
       const { history } = getRenderContext();

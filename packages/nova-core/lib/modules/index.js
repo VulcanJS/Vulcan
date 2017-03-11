@@ -19,7 +19,7 @@ export {
   // inject data
   InjectData,
   // redux
-  configureStore, STORE_RELOADED, addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
+  configureStore, addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
   // render context
   renderContext, getRenderContext, withRenderContext,
   // routes

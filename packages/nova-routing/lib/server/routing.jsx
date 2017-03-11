@@ -24,7 +24,7 @@ Meteor.startup(() => {
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
-  
+
   if (indexRoute) {
     delete indexRoute.path; // delete the '/' path to avoid warning
   }
@@ -43,7 +43,8 @@ Meteor.startup(() => {
     },
     wrapperHook(req, res, appGenerator) {
       const { apolloClient, store } = getRenderContext();
-      store.reload({ message: 'reload store before render' });
+      store.reload();
+      store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
       const app = appGenerator();
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },

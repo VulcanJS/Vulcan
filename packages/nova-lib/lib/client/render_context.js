@@ -3,7 +3,7 @@ import { compose } from 'redux';
 
 import {
   createApolloClient,
-  configureStore, STORE_RELOADED,
+  configureStore,
   addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
   Utils,
 } from '../modules/index.js';

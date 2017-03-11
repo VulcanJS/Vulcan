@@ -1,7 +1,5 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-export const STORE_RELOADED = 'STORE_RELOADED';
-
 // create store, and implement reload function
 export const configureStore = (reducers, initialState = {}, middlewares) => {
   let getReducers;
@@ -36,7 +34,6 @@ export const configureStore = (reducers, initialState = {}, middlewares) => {
       reducers = typeof options.reducers === 'object' ? combineReducers(options.reducers) : options.reducers;
     }
     this.replaceReducer(reducers);
-    this.dispatch({ type: STORE_RELOADED, message: options.message });
     return store;
   };
 

@@ -10,7 +10,7 @@ import { WebApp } from 'meteor/webapp';
 
 import {
   createApolloClient,
-  configureStore, STORE_RELOADED, getActions, getReducers, getMiddlewares,
+  configureStore, getActions, getReducers, getMiddlewares,
   Utils,
 } from '../modules/index.js';
 
