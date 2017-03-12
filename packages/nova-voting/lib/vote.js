@@ -47,8 +47,8 @@ export const operateOnItem = function (collection, originalItem, user, operation
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
-    !user || 
-    !canDo || 
+    !user ||
+    !canDo ||
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem ||
     operation === "cancelUpvote" && !hasUpvotedItem ||
@@ -58,16 +58,16 @@ export const operateOnItem = function (collection, originalItem, user, operation
   }
 
   // ------------------------------ Sync Callbacks ------------------------------ //
-  
+
   item = runCallbacks(operation, item, user, operation, isClient);
 
   /*
 
   voters arrays have different structures on client and server:
-  
+
   - client: [{__typename: "User", _id: 'foo123'}]
   - server: ['foo123']
-  
+
   */
 
   const voter = isClient ? {__typename: "User", _id: user._id} : user._id;
@@ -77,7 +77,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
     case "upvote":
       if (hasDownvotedItem) {
-        operateOnItem(collection, item, user, "cancelDownvote", isClient);
+        item = operateOnItem(collection, item, user, "cancelDownvote", isClient);
       }
 
       item = update(item, {
@@ -85,12 +85,12 @@ export const operateOnItem = function (collection, originalItem, user, operation
         upvotes: {$set: item.upvotes + 1},
         baseScore: {$set: item.baseScore + votePower},
       });
-      
+
       break;
 
     case "downvote":
       if (hasUpvotedItem) {
-        operateOnItem(collection, item, user, "cancelUpvote", isClient);
+        item = operateOnItem(collection, item, user, "cancelUpvote", isClient);
       }
 
       item = update(item, {
@@ -98,7 +98,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
         downvotes: {$set: item.downvotes + 1},
         baseScore: {$set: item.baseScore - votePower},
       });
-      
+
       break;
 
     case "cancelUpvote":
@@ -113,10 +113,10 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
       item = update(item, {
         downvoters: {$set: item.downvoters.filter(filterFunction)},
-        downvotes: {$set: item.upvotes - 1},
+        downvotes: {$set: item.downvotes - 1},
         baseScore: {$set: item.baseScore + votePower},
       });
-      
+
       break;
   }
 
@@ -137,7 +137,7 @@ export const mutateItem = function (collection, originalItem, user, operation) {
   collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
 
   // --------------------- Server-Side Async Callbacks --------------------- //
-  runCallbacksAsync(operation+".async", newItem, user, collection, operation); 
-  
+  runCallbacksAsync(operation+".async", newItem, user, collection, operation);
+
   return newItem;
 }
