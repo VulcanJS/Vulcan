@@ -172,9 +172,9 @@ const withList = (options) => {
 // define query reducer separately
 const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
 
-  const newMutationName = `${collection._name}New`;
-  const editMutationName = `${collection._name}Edit`;
-  const removeMutationName = `${collection._name}Remove`;
+  const newMutationName = collection.options.mutations.new.name;
+  const editMutationName = collection.options.mutations.edit.name;
+  const removeMutationName = collection.options.mutations.remove.name;
 
   let newResults = previousResults;
 

@@ -28,7 +28,6 @@ Users.addField([
     fieldName: 'upvotedComments',
     fieldSchema: {
       type: [voteSchema],
-      publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvotedComments: [Vote]',
@@ -41,7 +40,6 @@ Users.addField([
     fieldName: 'upvotedPosts',
     fieldSchema: {
       type: [voteSchema],
-      publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvotedPosts: [Vote]',
@@ -54,7 +52,6 @@ Users.addField([
     fieldName: 'downvotedComments',
     fieldSchema: {
       type: [voteSchema],
-      publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvotedComments: [Vote]',
@@ -67,7 +64,6 @@ Users.addField([
     fieldName: 'downvotedPosts',
     fieldSchema: {
       type: [voteSchema],
-      publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvotedPosts: [Vote]',
@@ -84,7 +80,6 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -97,7 +92,6 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
     }
@@ -110,7 +104,6 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -123,7 +116,6 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
@@ -137,7 +129,6 @@ Posts.addField([
       type: Number,
       decimal: true,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -151,7 +142,6 @@ Posts.addField([
       type: Number,
       decimal: true,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -167,7 +157,6 @@ Comments.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -180,7 +169,6 @@ Comments.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
     }
@@ -193,7 +181,6 @@ Comments.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -206,7 +193,6 @@ Comments.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
@@ -220,7 +206,6 @@ Comments.addField([
       type: Number,
       decimal: true,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
@@ -234,7 +219,6 @@ Comments.addField([
       type: Number,
       decimal: true,
       optional: true,
-      publish: true,
       defaultValue: 0,
       viewableBy: ['guests'],
     }
