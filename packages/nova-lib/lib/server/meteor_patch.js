@@ -3,16 +3,6 @@ import { WebApp } from 'meteor/webapp';
 
 import { Utils } from '../modules/index.js';
 
-// our bindEnvironment keep the original function and auto rename the return function
-export const bindEnvironment = (fn) => {
-  const newfn = Meteor.bindEnvironment(fn);
-  newfn.fn = fn;
-  if (newfn.fn.name) {
-    Utils.defineName(newfn, `${newfn.fn.name}_bindEnvironment`);
-  }
-  return newfn;
-};
-
 // clever webAppConnectHandlersUse
 export const webAppConnectHandlersUse = (name, route, fn, options) => {
   // init
@@ -73,13 +63,6 @@ export const webAppConnectHandlersUse = (name, route, fn, options) => {
   Object.keys(options).forEach((key) => {
     handle[key] = options[key];
   });
-
-  // get original fn
-  handle.fn = options.fn || fn;
-
-  // rename
-  name = options.name || name || (options.fn && options.fn.name) || fn.name;
-  Utils.defineName(handle, name || '__webAppConnectHandlersUse_newfn__');
 };
 
 webAppConnectHandlersUse(function sortConnectHandlersMiddleware(req, res, next) {

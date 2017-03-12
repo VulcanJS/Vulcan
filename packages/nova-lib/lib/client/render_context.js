@@ -3,7 +3,7 @@ import { compose } from 'redux';
 
 import {
   createApolloClient,
-  configureStore, STORE_RELOADED,
+  configureStore,
   addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
   Utils,
 } from '../modules/index.js';
@@ -13,7 +13,7 @@ const history = browserHistory;
 const loginToken = global.localStorage['Meteor.loginToken'];
 const apolloClient = createApolloClient();
 addReducer({ apollo: apolloClient.reducer() });
-addMiddleware(Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware'));
+addMiddleware(apolloClient.middleware());
 
 // init context
 const context = {
