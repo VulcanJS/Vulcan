@@ -124,23 +124,23 @@ export const createCollection = options => {
     // ------------------------------------- Mutations -------------------------------- //
 
     if (mutations) {
-      const mutations = {};
+      const mutationResolvers = {};
       // new
       if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
         GraphQLSchema.addMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
-        mutations[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
+        mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
       }
       // edit
       if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
         GraphQLSchema.addMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
-        mutations[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
+        mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
         GraphQLSchema.addMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
-        mutations[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
+        mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
-      GraphQLSchema.addResolvers({ Mutation: { ...mutations } });
+      GraphQLSchema.addResolvers({ Mutation: { ...mutationResolvers } });
     }
   }
   
