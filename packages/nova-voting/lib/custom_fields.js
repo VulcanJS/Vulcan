@@ -15,7 +15,7 @@ const voteSchema = new SimpleSchema({
     optional: true
   },
   votedAt: {
-    type: Date, 
+    type: Date,
     optional: true
   }
 });
@@ -63,7 +63,7 @@ Users.addField([
   /**
     An array containing posts downvotes
   */
-  {  
+  {
     fieldName: 'downvotedPosts',
     fieldSchema: {
       type: [voteSchema],
@@ -240,4 +240,3 @@ Comments.addField([
     }
   },
 ]);
-
