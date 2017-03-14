@@ -27,35 +27,7 @@ class LWVote extends getRawComponent('Vote') {
       this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
       // this.stopLoading();
     } else {
-      // if (hasUpvoted(user, document)) {
-      //   const voteType = "cancelUpvote";
-      //   this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {});
-      // }
       const voteType = hasDownvoted(user, document) ? "cancelDownvote" : "downvote";
-      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
-        // this.stopLoading();
-      });
-    }
-  }
-
-  upvote(e) { //Overwrite upvote functionality to cancel downvote on upvote
-    e.preventDefault();
-
-    // this.startLoading();
-
-    const document = this.props.document;
-    const collection = this.props.collection;
-    const user = this.props.currentUser;
-
-    if(!user){
-      this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
-      // this.stopLoading();
-    } else {
-      // if (hasDownvoted(user, document)) {
-      //   const voteType = "cancelDownvote";
-      //   this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {});
-      // }
-      const voteType = hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
       this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
         // this.stopLoading();
       });

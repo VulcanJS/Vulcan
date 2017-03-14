@@ -36,7 +36,7 @@
   "mailUrl": "smtp://postmaster%40foo.mailgun.org:foo123@smtp.mailgun.org:587/",
   "scoreUpdateInterval": "30",
 
-  "embedlyKey":"123foo",
+  "embedlyKey":"e5e9e0e63822471a8dbe111043b4f297",
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
 
