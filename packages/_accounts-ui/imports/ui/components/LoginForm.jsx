@@ -21,16 +21,8 @@ import {
 export class LoginForm extends Tracker.Component {
   constructor(props) {
     super(props);
-    let {
-      formState,
-      loginPath,
-      signUpPath,
-      resetPasswordPath,
-      profilePath,
-      changePasswordPath
-    } = props;
 
-    if (formState === STATES.SIGN_IN && Package['accounts-password']) {
+    if (props.formState === STATES.SIGN_IN && Package['accounts-password']) {
       console.warn('Do not force the state to SIGN_IN on Accounts.ui.LoginForm, it will make it impossible to reset password in your app, this state is also the default state if logged out, so no need to force it.');
     }
 
@@ -38,7 +30,7 @@ export class LoginForm extends Tracker.Component {
     this.state = {
       messages: [],
       waiting: true,
-      formState: formState ? formState : Accounts.user() ? STATES.PROFILE : STATES.SIGN_IN,
+      formState: props.formState ? props.formState : (Accounts.user() ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
       onSignedInHook: props.onSignedInHook || Accounts.ui._options.onSignedInHook,
       onSignedOutHook: props.onSignedOutHook || Accounts.ui._options.onSignedOutHook,
@@ -48,7 +40,6 @@ export class LoginForm extends Tracker.Component {
   }
 
   componentDidMount() {
-    this.setState(prevState => ({ waiting: false, ready: true }));
     let changeState = Session.get(KEY_PREFIX + 'state');
     switch (changeState) {
       case 'enrollAccountToken':
@@ -83,7 +74,8 @@ export class LoginForm extends Tracker.Component {
       // Add the services list to the user.
       this.subscribe('servicesList');
       this.setState({
-        user: Accounts.user()
+        user: Accounts.user(),
+        waiting: !Accounts.loginServicesConfigured()
       });
 
     });
@@ -657,7 +649,12 @@ export class LoginForm extends Tracker.Component {
     loginWithService(options, (error) => {
       onSubmitHook(error,formState);
       if (error) {
-        this.showMessage(T9n.get(`error.accounts.${error.reason}`) || T9n.get("Unknown error"));
+        if (error instanceof Accounts.LoginCancelledError) {
+          // do nothing
+        } else {
+          console.warn(error.message || error)
+          this.showMessage((error.reason && T9n.get(`error.accounts.${error.reason}`)) || T9n.get('Unknown error'))
+        }
       } else {
         this.setState({ formState: STATES.PROFILE });
         this.clearDefaultFieldValues();
