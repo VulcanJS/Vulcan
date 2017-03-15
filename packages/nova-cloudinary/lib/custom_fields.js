@@ -12,11 +12,18 @@ Posts.addField([
   {
     fieldName: 'cloudinaryUrls',
     fieldSchema: {
-      type: [Object],
+      type: Array,
       blackbox: true,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'cloudinaryUrls: [JSON]',
+    }
+  },
+  {
+    fieldName: 'cloudinaryUrls.$',
+    fieldSchema: {
+      type: Object,
+      optional: true
     }
   }
 ]);

@@ -1,14 +1,14 @@
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import SimpleSchema from 'simpl-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 
-SimpleSchema.extendOptions({
-  viewableBy: Match.Optional(Match.OneOf(Function, [String])),
-  insertableBy: Match.Optional(Match.OneOf(Function, [String])),
-  editableBy: Match.Optional(Match.OneOf(Function, [String])),
-  resolveAs: Match.Optional(String),
-});
+SimpleSchema.extendOptions([
+  'viewableBy',
+  'insertableBy',
+  'editableBy',
+  'resolveAs'
+]);
 
 /**
  * @summary Meteor Collections.
@@ -94,13 +94,13 @@ export const createCollection = options => {
   GraphQLSchema.addToContext(context);
 
   if (generateGraphQLSchema){
-      
+
     // add collection to list of dynamically generated GraphQL schemas
     GraphQLSchema.addCollection(collection);
 
 
     // ------------------------------------- Queries -------------------------------- //
-    
+
     if (resolvers) {
       const queryResolvers = {};
       // list
@@ -143,7 +143,7 @@ export const createCollection = options => {
       GraphQLSchema.addResolvers({ Mutation: { ...mutationResolvers } });
     }
   }
-  
+
   // ------------------------------------- Parameters -------------------------------- //
 
   collection.getParameters = (terms = {}, apolloClient) => {

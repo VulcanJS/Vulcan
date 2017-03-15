@@ -30,8 +30,7 @@ Package.onUse(function (api) {
 
     // Third-party packages
 
-    'aldeed:simple-schema@1.5.3',
-    'aldeed:collection2@2.10.0',
+    'aldeed:collection2-core@2.0.0',
     'meteorhacks:picker@1.0.3',
     'percolatestudio:synced-cron@1.1.0',
     'jparker:gravatar@0.4.1',
