@@ -71,21 +71,21 @@ export class LoginForm extends Tracker.Component {
         Session.set(KEY_PREFIX + 'state', null);
         break;
     }
-    
+
     // Add default field values once the form did mount on the client
     this.setState(prevState => ({
       ...this.getDefaultFieldValues(),
     }));
-    
+
     // Listen for the user to login/logout.
     this.autorun(() => {
-      
+
       // Add the services list to the user.
       this.subscribe('servicesList');
       this.setState({
         user: Accounts.user()
       });
-      
+
     });
   }
 
@@ -228,7 +228,6 @@ export class LoginForm extends Tracker.Component {
       if (_.contains([
         "USERNAME_AND_EMAIL",
         "USERNAME_AND_OPTIONAL_EMAIL",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
       ], passwordSignupFields())) {
         loginFields.push(this.getUsernameOrEmailField());
       }
@@ -239,17 +238,11 @@ export class LoginForm extends Tracker.Component {
 
       if (_.contains([
         "EMAIL_ONLY",
-        "EMAIL_ONLY_NO_PASSWORD"
       ], passwordSignupFields())) {
         loginFields.push(this.getEmailField());
       }
 
-      if (!_.contains([
-        "EMAIL_ONLY_NO_PASSWORD",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
-      ], passwordSignupFields())) {
-        loginFields.push(this.getPasswordField());
-      }
+      loginFields.push(this.getPasswordField());
     }
 
     if (hasPasswordService() && formState == STATES.SIGN_UP) {
@@ -257,7 +250,6 @@ export class LoginForm extends Tracker.Component {
         "USERNAME_AND_EMAIL",
         "USERNAME_AND_OPTIONAL_EMAIL",
         "USERNAME_ONLY",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
       ], passwordSignupFields())) {
         loginFields.push(this.getUsernameField());
       }
@@ -265,8 +257,6 @@ export class LoginForm extends Tracker.Component {
       if (_.contains([
         "USERNAME_AND_EMAIL",
         "EMAIL_ONLY",
-        "EMAIL_ONLY_NO_PASSWORD",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
       ], passwordSignupFields())) {
         loginFields.push(this.getEmailField());
       }
@@ -275,12 +265,7 @@ export class LoginForm extends Tracker.Component {
         loginFields.push(Object.assign(this.getEmailField(), {required: false}));
       }
 
-      if (!_.contains([
-        "EMAIL_ONLY_NO_PASSWORD",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
-      ], passwordSignupFields())) {
-        loginFields.push(this.getPasswordField());
-      }
+      loginFields.push(this.getPasswordField());
     }
 
     if (formState == STATES.PASSWORD_RESET) {
@@ -351,10 +336,7 @@ export class LoginForm extends Tracker.Component {
       });
     }
 
-    if (user && !_.contains([
-        "EMAIL_ONLY_NO_PASSWORD",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
-      ], passwordSignupFields())
+    if (user
       && formState == STATES.PROFILE
       && (user.services && 'password' in user.services)) {
       loginButtons.push({
@@ -587,12 +569,7 @@ export class LoginForm extends Tracker.Component {
         error = true;
       }
       else {
-        if (_.contains([ "USERNAME_AND_EMAIL_NO_PASSWORD" ], passwordSignupFields())) {
-          this.loginWithoutPassword();
-          return;
-        } else {
-          loginSelector = usernameOrEmail;
-        }
+        loginSelector = usernameOrEmail;
       }
     } else if (username !== null) {
       if (!this.validateField('username', username)) {
@@ -610,16 +587,10 @@ export class LoginForm extends Tracker.Component {
         error = true;
       }
       else {
-        if (_.contains([ "EMAIL_ONLY_NO_PASSWORD" ], passwordSignupFields())) {
-          this.loginWithoutPassword();
-          error = true;
-        } else {
-          loginSelector = { email };
-        }
+        loginSelector = { email };
       }
     }
-    if (!_.contains([ "EMAIL_ONLY_NO_PASSWORD" ], passwordSignupFields())
-      && !this.validateField('password', password)) {
+    if (!this.validateField('password', password)) {
       error = true;
     }
 
@@ -722,7 +693,6 @@ export class LoginForm extends Tracker.Component {
     } else {
       if (_.contains([
         "USERNAME_AND_EMAIL",
-        "USERNAME_AND_EMAIL_NO_PASSWORD"
       ], passwordSignupFields()) && !this.validateField('username', username) ) {
         if (this.state.formState == STATES.SIGN_UP) {
           this.state.onSubmitHook("error.accounts.usernameRequired", this.state.formState);
@@ -737,13 +707,7 @@ export class LoginForm extends Tracker.Component {
       options.email = email;
     }
 
-    if (_.contains([
-      "EMAIL_ONLY_NO_PASSWORD",
-      "USERNAME_AND_EMAIL_NO_PASSWORD"
-    ], passwordSignupFields())) {
-      // Generate a random password.
-      options.password = Meteor.uuid();
-    } else if (!this.validateField('password', password)) {
+    if (!this.validateField('password', password)) {
       onSubmitHook("Invalid password", formState);
       error = true;
     } else {
@@ -783,60 +747,6 @@ export class LoginForm extends Tracker.Component {
       else {
         SignUp(options);
       }
-    }
-  }
-
-  loginWithoutPassword(){
-    const {
-      email = '',
-      usernameOrEmail = '',
-      waiting,
-      formState,
-      onSubmitHook
-    } = this.state;
-
-    if (waiting) {
-      return;
-    }
-
-    if (this.validateField('email', email)) {
-      this.setState({ waiting: true });
-
-      Accounts.loginWithoutPassword({ email: email }, (error) => {
-        if (error) {
-          this.showMessage(T9n.get(`error.accounts.${error.reason}`) || T9n.get("Unknown error"), 'error');
-        }
-        else {
-          this.showMessage(T9n.get("info.emailSent"), 'success', 5000);
-          this.clearDefaultFieldValues();
-        }
-        onSubmitHook(error, formState);
-        this.setState({ waiting: false });
-      });
-    } else if (this.validateField('username', usernameOrEmail)) {
-      this.setState({ waiting: true });
-
-      Accounts.loginWithoutPassword({ email: usernameOrEmail, username: usernameOrEmail }, (error) => {
-        if (error) {
-          this.showMessage(T9n.get(`error.accounts.${error.reason}`) || T9n.get("Unknown error"), 'error');
-        }
-        else {
-          this.showMessage(T9n.get("info.emailSent"), 'success', 5000);
-          this.clearDefaultFieldValues();
-        }
-        onSubmitHook(error, formState);
-        this.setState({ waiting: false });
-      });
-    } else {
-      let errMsg = null;
-      if (_.contains([ "USERNAME_AND_EMAIL_NO_PASSWORD" ], passwordSignupFields())) {
-        errMsg = T9n.get("error.accounts.Invalid email or username");
-      }
-      else {
-        errMsg = T9n.get("error.accounts.Invalid email");
-      }
-      this.showMessage(errMsg,'warning');
-      onSubmitHook(errMsg, formState);
     }
   }
 

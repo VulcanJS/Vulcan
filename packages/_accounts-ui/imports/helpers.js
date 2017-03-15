@@ -53,7 +53,7 @@ export function loginResultCallback(service, err) {
 };
 
 export function passwordSignupFields() {
-  return Accounts.ui._options.passwordSignupFields || "EMAIL_ONLY_NO_PASSWORD";
+  return Accounts.ui._options.passwordSignupFields || "USERNAME_AND_EMAIL";
 };
 
 export function validateEmail(email, showMessage, clearMessage) {
