@@ -4,25 +4,17 @@ import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { hasPasswordService } from '../../helpers.js';
 
 export class PasswordOrService extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasPasswordService: hasPasswordService(),
-      services: Object.keys(props.oauthServices).map(service => {
-        return props.oauthServices[service].label
-      })
-    };
-  }
-
   render () {
     let { className = "password-or-service", style = {} } = this.props;
-    let { hasPasswordService, services } = this.state;
-    labels = services;
+    const services = Object.keys(this.props.oauthServices).map(service => {
+      return this.props.oauthServices[service].label;
+    });
+    let labels = services;
     if (services.length > 2) {
       labels = [];
     }
 
-    if (hasPasswordService && services.length > 0) {
+    if (hasPasswordService() && services.length > 0) {
       return (
         <div style={ style } className={ className }>
           { `${T9n.get('orUse')} ${ labels.join(' / ') }` }
