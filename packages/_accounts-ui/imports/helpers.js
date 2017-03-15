@@ -1,4 +1,5 @@
-try { import { browserHistory } from 'react-router'; } catch(e) {}
+let browserHistory
+try { browserHistory = require('react-router').browserHistory } catch(e) {}
 export const loginButtonsSession = Accounts._loginButtonsSession;
 export const STATES = {
   SIGN_IN: Symbol('SIGN_IN'),
