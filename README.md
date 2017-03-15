@@ -1,14 +1,14 @@
-# Telescope Nova
+# Telescope
 
-[Version 1.0.0](https://github.com/TelescopeJS/Telescope/releases)
+[Version 1.2.0](https://github.com/TelescopeJS/Telescope/releases)
 
-This is the Apollo/GraphQL version of Telescope Nova. [You can find the documentation here](http://nova-docs.telescopeapp.org/).
+This is the Apollo/GraphQL version of Telescope, now known as [Vulcan](http://vulcanjs.org). [You can find the documentation here](http://docs.vulcanjs.org/).
 
-The fastest way to get started is:
-```sh
-npm install
-npm start
-```
+### Links
+
+- [Telescope Homepage](http://telescopeapp.org)
+- [Vulcan Teaser Homepage](http://vulcanjs.org)
+- [Documentation](http://docs.vulcanjs.org)
 
 ### Other Versions
 
