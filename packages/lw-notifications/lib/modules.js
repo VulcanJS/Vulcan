@@ -1,5 +1,7 @@
 import './views.js';
 import './fragments.js';
+import './callbacks.js';
+
 
 import NotificationsImport from './collection.js'
 

@@ -7,13 +7,11 @@ const resolvers = {
     name: 'notificationsList',
 
     resolver(root, {terms}, context, info) {
-      console.log("IS THE PARTY ON???")
       let {selector, options} = context.Notifications.getParameters(terms);
 
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Notifications);
-      console.log("IS THE PARTY ON?")
       return context.Notifications.find(selector, options).fetch();
     },
 

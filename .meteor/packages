@@ -12,7 +12,7 @@ nova:posts
 nova:comments
 nova:newsletter
 nova:search
-nova:notifications
+# nova:notifications
 nova:getting-started
 nova:categories
 nova:voting
@@ -20,7 +20,7 @@ nova:events
 nova:embedly
 nova:api
 nova:rss
-nova:subscribe
+# nova:subscribe
 
 ############ Debug Packages ############
 
