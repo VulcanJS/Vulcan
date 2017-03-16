@@ -5,19 +5,19 @@ import { newMutation } from 'meteor/nova:core';
 
 const seedData = [
   {
-     userId: "TotallyLegitUserID"
+     userId: "3WavsEhbS76e7opxK"
   },
   {
-     userId: "TotallyLegitUserID2"
+     userId: "3WavsEhbS76e7opxK"
   },
   {
-     userId: "TotallyLegitUserID3"
+     userId: "3WavsEhbS76e7opxK"
   },
   {
-     userId: "TotallyLegitUserID4"
+     userId: "3WavsEhbS76e7opxK"
   },
   {
-     userId: "TotallyLegitUserID5"
+     userId: "3WavsEhbS76e7opxK"
   }
 ];
 

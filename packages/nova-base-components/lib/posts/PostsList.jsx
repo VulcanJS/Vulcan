@@ -44,9 +44,9 @@ const PostsList = (props) => {
           <Components.PostsNoResults/>
         </div>
       </div>
-    )  
+    )
   }
-  
+
 };
 
 PostsList.displayName = "PostsList";

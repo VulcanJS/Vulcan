@@ -28,7 +28,7 @@ const NotificationsHeader = (props, context) => {
         <div className="nav">
           {/* CUSTOM CODE STARTS HERE*/}
           <div className="nav-notifications">
-            <Components.NotificationsList/>
+            <Components.NotificationsMenu/>
           </div>
           {/* CUSTOM CODE ENDS HERE*/}
           <div className="nav-user">

@@ -1,44 +1,53 @@
-import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
+import Notifications from '../collection.js'
 import { withApollo } from 'react-apollo';
+
+const something = (props) => <div>Something</div>
+
 
 class NotificationsList extends Component {
 
   render() {
 
-    const {currentUser, client} = this.props;
-
-    return (
-      <div className="notifications-menu">
-        <Dropdown id="notifications-dropdown">
-          <Dropdown.Toggle>
-            <div>Notifications</div>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <div>Notifications to be implemented soon!</div>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-    )
+    const results = this.props.results;
+    const currentUser = this.props.currentUser;
+    const refetch = this.props.refetch;
+    const loading = this.props.loading;
+    // console.log(currentUser);
+    // console.log(refetch);
+    if (results && results.length) {
+      return (
+        <div className="notifications-list">
+          {results.map(notification => <Components.NotificationsItem key={notification._id} currentUser={currentUser} notification={notification} />)}
+        </div>
+      )
+    } else if (loading) {
+        return (<Components.Loading/>)
+    } else {
+        return (<div>No Results</div>)
+    }
   }
-
 }
 
-NotificationsList.propsTypes = {
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
-};
+// const options = {
+//   collection: Notifications,
+//   queryName: 'notificationsListQuery',
+//   fragmentName: 'notificationsNavFragment',
+//   limit: 1,
+// };
 
 const options = {
-  collection: Users,
+  collection: Notifications,
   queryName: 'notificationsListQuery',
-  fragmentName: 'notificationItemFragment',
+  fragmentName: 'notificationsNavFragment',
   limit: 5,
 };
 
-registerComponent('NotificationsList', NotificationsList, withCurrentUser, withApollo);
+
+registerComponent('NotificationsList', NotificationsList,  withList(options), withCurrentUser, withApollo)
