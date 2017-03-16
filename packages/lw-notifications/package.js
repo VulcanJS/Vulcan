@@ -15,7 +15,7 @@ Package.onUse( function(api) {
     'nova:posts',
     'nova:users',
     'nova:voting',
-    'nova:notifications',
+    // 'nova:notifications',
   ]);
 
   api.mainModule('server.js', 'server');

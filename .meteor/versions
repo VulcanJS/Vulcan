@@ -75,12 +75,10 @@ nova:getting-started@1.2.0
 nova:i18n-en-us@1.2.0
 nova:lib@1.2.0
 nova:newsletter@1.2.0
-nova:notifications@1.2.0
 nova:posts@1.2.0
 nova:routing@1.2.0
 nova:rss@1.2.0
 nova:search@1.2.0
-nova:subscribe@1.2.0
 nova:users@1.2.0
 nova:voting@1.2.0
 npm-bcrypt@0.9.2
