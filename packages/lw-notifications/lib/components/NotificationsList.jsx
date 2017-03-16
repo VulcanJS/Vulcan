@@ -34,11 +34,11 @@ NotificationsList.propsTypes = {
   client: React.PropTypes.object,
 };
 
-// const options = {
-//   collection: Users,
-//   queryName: 'moviesListQuery',
-//   fragmentName: 'MoviesItemFragment',
-//   limit: 5,
-// };
+const options = {
+  collection: Users,
+  queryName: 'notificationsListQuery',
+  fragmentName: 'notificationItemFragment',
+  limit: 5,
+};
 
 registerComponent('NotificationsList', NotificationsList, withCurrentUser, withApollo);

@@ -18,7 +18,9 @@ import { newMutation, editMutation, removeMutation, Utils } from 'meteor/nova:co
 import Users from 'meteor/nova:users';
 
 const performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
+  if(!Meteor.isDevelopment){
+    if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
+  }
 }
 
 const mutations = {
@@ -86,6 +88,7 @@ const mutations = {
     mutation(root, {documentId}, context) {
 
       const document = context.Notifications.findOne(documentId);
+
       performCheck(this, context.currentUser, document);
 
       return removeMutation({

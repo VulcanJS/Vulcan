@@ -10,7 +10,7 @@ import { createCollection } from 'meteor/nova:lib'; // import from nova:lib beca
  */
 const Notifications = createCollection({
 
-  collection: Meteor.notifications,
+  // collection: Meteor.notifications,
 
   collectionName: 'notifications',
 

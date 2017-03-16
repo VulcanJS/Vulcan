@@ -22,31 +22,37 @@ const schema = {
   userId: {
     type: String,
     viewableBy: checkUser,
-    insertableBy: [],
-    editableBy: [],
   },
-  // documentId: {
-  //   type: String,
-  //   optional: true,
-  //   viewableBy: checkUser,
-  // },
-  // type: {
-  //   type: String,
-  //   optional: true,
-  //   viewableBy: checkUser,
-  // },
-  // createdAt: {
-  //   type: Date,
-  //   viewableBy: checkUser,
-  //   autoValue: (documentOrModifier) => {
-  //     if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
-  //   }
-  // },
-  // notificationMessage: {
-  //   type: String,
-  //   optional: true,
-  //   viewableBy: checkUser,
-  // }
+  documentId: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  type: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  createdAt: {
+    type: Date,
+    viewableBy: checkUser,
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    }
+  },
+  notificationMessage: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  viewed: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    viewableBy: checkUser,
+    insertableBy: checkUser,
+    editableBy: checkUser,
+  },
 };
 
 export default schema;
