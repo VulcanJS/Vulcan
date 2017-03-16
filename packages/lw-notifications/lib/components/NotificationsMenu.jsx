@@ -12,20 +12,25 @@ class NotificationsMenu extends Component {
   render() {
 
     const {currentUser, client} = this.props;
-    const terms = {view: 'userNotifications', userId: currentUser._id};
-    return (
-      <div className="notifications-menu">
-        <Dropdown id="notifications-dropdown">
-          <Dropdown.Toggle>
-            <div>Notifications</div>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <div>Notifications: </div>
-            <Components.NotificationsList terms={terms} />
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-    )
+
+    if(!currentUser){
+      return (<div></div>);
+    } else {
+      const terms = {view: 'userNotifications', userId: currentUser._id};
+      return (
+        <div className="notifications-menu">
+          <Dropdown id="notifications-dropdown">
+            <Dropdown.Toggle>
+              <div>Notifications</div>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <div>Notifications: </div>
+              <Components.NotificationsList terms={terms} />
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      )
+      }
   }
 
 }
