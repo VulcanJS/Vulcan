@@ -1,4 +1,4 @@
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import SimpleSchema from 'simpl-schema';
 import Users from './collection.js';
 
 const adminGroup = {
@@ -26,7 +26,11 @@ const schema = {
     viewableBy: ['guests'],
   },
   emails: {
-    type: [Object],
+    type: Array,
+    optional: true,
+  },
+  'emails.$': {
+    type: Object,
     optional: true,
   },
   "emails.$.address": {
@@ -127,7 +131,6 @@ const schema = {
   */
   karma: {
     type: Number,
-    decimal: true,
     optional: true,
     viewableBy: ['guests'],
   },
@@ -167,7 +170,7 @@ const schema = {
     Groups
   */
   groups: {
-    type: [String],
+    type: Array,
     optional: true,
     control: "checkboxgroup",
     insertableBy: ['admins'],
@@ -180,6 +183,10 @@ const schema = {
       }
     },
   },
+  'groups.$': {
+    type: String,
+    optional: true
+  }
 };
 
 export default schema;

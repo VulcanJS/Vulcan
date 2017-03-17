@@ -1,3 +1,5 @@
+import SimpleSchema from 'simpl-schema';
+
 import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
@@ -15,7 +17,7 @@ const voteSchema = new SimpleSchema({
     optional: true
   },
   votedAt: {
-    type: Date, 
+    type: Date,
     optional: true
   }
 });
@@ -27,10 +29,17 @@ Users.addField([
   {
     fieldName: 'upvotedComments',
     fieldSchema: {
-      type: [voteSchema],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvotedComments: [Vote]',
+    }
+  },
+  {
+    fieldName: 'upvotedComments.$',
+    fieldSchema: {
+      type: voteSchema,
+      optional: true
     }
   },
   /**
@@ -39,10 +48,17 @@ Users.addField([
   {
     fieldName: 'upvotedPosts',
     fieldSchema: {
-      type: [voteSchema],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvotedPosts: [Vote]',
+    }
+  },
+  {
+    fieldName: 'upvotedPosts.$',
+    fieldSchema: {
+      type: voteSchema,
+      optional: true
     }
   },
   /**
@@ -51,24 +67,38 @@ Users.addField([
   {
     fieldName: 'downvotedComments',
     fieldSchema: {
-      type: [voteSchema],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvotedComments: [Vote]',
     }
   },
+  {
+    fieldName: 'downvotedComments.$',
+    fieldSchema: {
+      type: voteSchema,
+      optional: true
+    }
+  },
   /**
     An array containing posts downvotes
   */
-  {  
+  {
     fieldName: 'downvotedPosts',
     fieldSchema: {
-      type: [voteSchema],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvotedPosts: [Vote]',
     }
   },
+  {
+    fieldName: 'downvotedPosts.$',
+    fieldSchema: {
+      type: voteSchema,
+      optional: true
+    }
+  }
 ]);
 
 Posts.addField([
@@ -90,10 +120,17 @@ Posts.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
+    }
+  },
+  {
+    fieldName: "upvoters.$",
+    fieldSchema: {
+      type: String,
+      optional: true
     }
   },
   /**
@@ -114,10 +151,17 @@ Posts.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
+    }
+  },
+  {
+    fieldName: "downvoters.$",
+    fieldSchema: {
+      type: String,
+      optional: true,
     }
   },
   /**
@@ -127,7 +171,6 @@ Posts.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
-      decimal: true,
       optional: true,
       defaultValue: 0,
       viewableBy: ['guests'],
@@ -140,7 +183,6 @@ Posts.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
-      decimal: true,
       optional: true,
       defaultValue: 0,
       viewableBy: ['guests'],
@@ -167,10 +209,17 @@ Comments.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
+    }
+  },
+  {
+    fieldName: "upvoters.$",
+    fieldSchema: {
+      type: String,
+      optional: true
     }
   },
   /**
@@ -191,10 +240,17 @@ Comments.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
+    }
+  },
+  {
+    fieldName: "downvoters.$",
+    fieldSchema: {
+      type: String,
+      optional: true,
     }
   },
   /**
@@ -204,7 +260,6 @@ Comments.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
-      decimal: true,
       optional: true,
       defaultValue: 0,
       viewableBy: ['guests'],
@@ -217,7 +272,6 @@ Comments.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
-      decimal: true,
       optional: true,
       defaultValue: 0,
       viewableBy: ['guests'],
