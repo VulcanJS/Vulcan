@@ -18,6 +18,8 @@ import {
   capitalize
 } from '../../helpers.js';
 
+const loggingInMessage = 'Logging In...';
+
 export class LoginForm extends Tracker.Component {
   constructor(props) {
     super(props);
@@ -99,6 +101,18 @@ export class LoginForm extends Tracker.Component {
         this.setState({
           formState: this.props.user ? STATES.PROFILE : STATES.SIGN_IN
         });
+      }
+
+      if (this.state.formState == STATES.PROFILE) {
+        if (!this.props.user && this.state.messages.length === 0) {
+          this.showMessage(loggingInMessage);
+        } else if (this.props.user &&
+          this.state.messages.find(({ message }) => message === loggingInMessage)) {
+          this.clearMessage(loggingInMessage);
+        }
+      } else if (prevState.formState == STATES.PROFILE &&
+        this.state.messages.find(({ message }) => message === loggingInMessage)) {
+        this.clearMessage(loggingInMessage);
       }
     } else {
       if (!prevState.user !== !this.state.user) {
@@ -394,10 +408,7 @@ export class LoginForm extends Tracker.Component {
         onClick: this.passwordChange.bind(this)
       });
 
-      const user = typeof this.props.user !== 'undefined'
-        ? this.props.user : Accounts.user();
-
-      if (user) {
+      if (Accounts.user()) {
         loginButtons.push({
           id: 'switchToSignOut',
           label: T9n.get('cancel'),
@@ -447,13 +458,10 @@ export class LoginForm extends Tracker.Component {
   }
 
   showForgotPasswordLink() {
-    const user = typeof this.props.user !== 'undefined'
-      ? this.props.user : this.state.user;
-    return !user
-      && this.state.formState == STATES.SIGN_IN
-      && _.contains(
-        ["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
-        passwordSignupFields());
+    return this.state.formState == STATES.SIGN_IN && _.contains(
+      ["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
+      passwordSignupFields()
+    );
   }
 
   /**
@@ -912,6 +920,7 @@ export class LoginForm extends Tracker.Component {
       deprecated: true,
       message: messages.map(({ message }) => message).join(', '),
     };
+
     return (
       <Accounts.ui.Form
         oauthServices={this.oauthButtons()}
