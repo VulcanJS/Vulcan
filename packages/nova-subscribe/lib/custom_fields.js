@@ -17,7 +17,15 @@ Users.addField([
   {
     fieldName: 'subscribers',
     fieldSchema: {
-      type: [String],
+      type: Array,
+      optional: true,
+      hidden: true, // never show this,
+    }
+  },
+  {
+    fieldName: 'subscribers.$',
+    fieldSchema: {
+      type: String,
       optional: true,
       hidden: true, // never show this,
     }
@@ -39,7 +47,15 @@ if (!!Posts) {
     {
       fieldName: 'subscribers',
       fieldSchema: {
-        type: [String],
+        type: Array,
+        optional: true,
+        hidden: true, // never show this
+      }
+    },
+    {
+      fieldName: 'subscribers.$',
+      fieldSchema: {
+        type: String,
         optional: true,
         hidden: true, // never show this
       }
@@ -58,12 +74,20 @@ if (!!Posts) {
 
 // check if nova:categories exists, if yes, add the custom fields to Categories
 if (!!Categories) {
-  
+
   Categories.addField([
     {
       fieldName: 'subscribers',
       fieldSchema: {
-        type: [String],
+        type: Array,
+        optional: true,
+        hidden: true, // never show this
+      }
+    },
+    {
+      fieldName: 'subscribers.$',
+      fieldSchema: {
+        type: String,
         optional: true,
         hidden: true, // never show this
       }

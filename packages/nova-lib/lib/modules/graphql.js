@@ -11,7 +11,8 @@ import GraphQLDate from 'graphql-date';
 import { Utils } from './utils.js';
 
 // convert a JSON schema to a GraphQL schema
-const jsTypeToGraphQLType = typeName => {
+const jsTypeToGraphQLType = type => {
+  const typeName = typeof type === 'function' ? type.name : type;
   switch (typeName) {
 
     case "String":
@@ -19,6 +20,9 @@ const jsTypeToGraphQLType = typeName => {
 
     case "Number":
       return "Float";
+
+    case 'SimpleSchema.Integer':
+      return 'Int';
 
     // assume all arrays contains strings for now
     case "Array":
@@ -87,7 +91,7 @@ export const GraphQLSchema = {
   addToContext(object) {
     this.context = deepmerge(this.context, object);
   },
-  
+
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
@@ -101,10 +105,10 @@ export const GraphQLSchema = {
 
     _.forEach(schema, (field, key) => {
       // console.log(field, key)
-      const fieldType = jsTypeToGraphQLType(field.type.name);
+      const fieldType = jsTypeToGraphQLType(field.type.singleType);
 
       if (key.indexOf('$') === -1) { // skip fields with "$"
-        
+
         // 1. main schema
         mainSchema.push(`${key}: ${fieldType}`);
 
@@ -115,18 +119,18 @@ export const GraphQLSchema = {
 
         if (field.insertableBy || field.editableBy) {
 
-          // note: marking a field as required makes it required for updates, too, 
+          // note: marking a field as required makes it required for updates, too,
           // which makes partial updates impossible
           // const isRequired = field.optional ? '' : '!';
-          
+
           const isRequired = '';
 
           // 2. input schema
           inputSchema.push(`${key}: ${fieldType}${isRequired}`);
-          
+
           // 3. unset schema
           unsetSchema.push(`${key}: Boolean`);
-        
+
         }
       }
     });

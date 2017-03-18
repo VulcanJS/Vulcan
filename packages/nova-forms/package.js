@@ -8,15 +8,14 @@ Package.describe({
 Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.3");
-  
+
   api.use([
     'nova:core@1.2.0',
     'nova:users@1.2.0',
-    
+
     'ecmascript',
     'check',
-    'aldeed:simple-schema@1.5.3',
-    'aldeed:collection2@2.8.0',
+    'aldeed:collection2-core@2.0.0',
     'fourseven:scss@3.8.0'
   ]);
 

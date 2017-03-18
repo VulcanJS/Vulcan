@@ -35,10 +35,17 @@ Posts.addField([
   {
     fieldName: "commenters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       resolveAs: 'commenters: [User]',
       viewableBy: ['guests'],
+    }
+  },
+  {
+    fieldName: "commenters.$",
+    fieldSchema: {
+      type: String,
+      optional: true
     }
   }
 ]);
