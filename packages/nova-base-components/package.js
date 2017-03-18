@@ -13,7 +13,6 @@ Package.onUse(function (api) {
     // Nova packages
     'nova:core@1.2.0',
     'nova:posts@1.2.0',
-    'nova:users@1.2.0',
     'nova:comments@1.2.0',
     'nova:voting@1.2.0',
 

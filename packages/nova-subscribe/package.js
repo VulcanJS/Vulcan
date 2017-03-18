@@ -12,7 +12,6 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:core@1.2.0',
-    'nova:users@1.2.0', // this dep is needed to check users permissions
     'nova:notifications@1.2.0',
     // dependencies on posts, categories are done with nested imports to reduce explicit dependencies
   ]);

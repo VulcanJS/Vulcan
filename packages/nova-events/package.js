@@ -11,7 +11,6 @@ Package.onUse(function(api) {
   
   api.use([
     'nova:core@1.2.0',
-    'nova:posts@1.2.0', // needed to track posts click
   ]);
 
   api.mainModule("lib/server.js", "server");

@@ -9,9 +9,8 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['nova:core@1.2.0']);
-
   api.use([
+    'nova:core@1.2.0',
     'nova:posts@1.2.0', 
     'nova:comments@1.2.0'
   ], ['client', 'server']);

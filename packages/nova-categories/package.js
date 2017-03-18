@@ -12,7 +12,6 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@1.2.0',
     'nova:posts@1.2.0',
-    'nova:users@1.2.0'
   ]);
 
   api.mainModule("lib/server.js", "server");

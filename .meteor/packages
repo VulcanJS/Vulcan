@@ -11,7 +11,6 @@ nova:email
 nova:posts
 nova:comments
 nova:newsletter
-nova:search
 nova:notifications
 nova:getting-started
 nova:categories

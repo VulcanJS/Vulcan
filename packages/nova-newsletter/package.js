@@ -13,7 +13,6 @@ Package.onUse(function (api) {
     'nova:core@1.2.0',
     'nova:posts@1.2.0',
     'nova:comments@1.2.0',
-    'nova:users@1.2.0',
     'nova:categories@1.2.0',
     'nova:email@1.2.0'
   ]);
