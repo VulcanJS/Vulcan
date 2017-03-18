@@ -1,6 +1,7 @@
 import './views.js';
 import './fragments.js';
 import './callbacks.js';
+import './custom_fields.js';
 
 
 import NotificationsImport from './collection.js'
