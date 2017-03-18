@@ -151,3 +151,9 @@ export const GraphQLSchema = {
     return graphQLSchema;
   }
 };
+
+export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
+export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
+export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
+export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
+export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);

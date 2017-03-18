@@ -13,7 +13,7 @@ export {
   // fragments
   Fragments, registerFragment, getFragment, getFragmentName, extendFragment,
   // graphql
-  GraphQLSchema,
+  GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext, 
   // headtags
   Headtags,
   // inject data

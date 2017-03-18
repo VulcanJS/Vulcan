@@ -462,7 +462,7 @@ class Form extends Component {
     const documentId = this.props.document._id;
     const documentTitle = document.title || document.name || '';
 
-    const deleteDocumentConfirm = this.context.intl.formatMessage({id: `${this.props.collection._name}.delete_confirm`}, {title: documentTitle});
+    const deleteDocumentConfirm = this.context.intl.formatMessage({id: 'forms.delete_confirm'}, {title: documentTitle});
 
     if (window.confirm(deleteDocumentConfirm)) {
       this.props.removeMutation({documentId})
@@ -504,7 +504,7 @@ class Form extends Component {
             ? <div>
                 <hr/>
                 <a onClick={this.deleteDocument} className={`${collectionName}-delete-link`}>
-                  <Components.Icon name="close"/> <FormattedMessage id={`${collectionName}.delete`}/>
+                  <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
                 </a>
               </div>
             : null

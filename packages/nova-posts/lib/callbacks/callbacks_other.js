@@ -1,6 +1,7 @@
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
+import Events from 'meteor/nova:events';
 
 // ------------------------------------- posts.remove.sync -------------------------------- //
 
@@ -32,3 +33,35 @@ function UsersRemoveDeletePosts (user, options) {
   }
 }
 addCallback("users.remove.async", UsersRemoveDeletePosts);
+
+
+// /**
+//  * @summary Increase the number of clicks on a post
+//  * @param {string} postId – the ID of the post being edited
+//  * @param {string} ip – the IP of the current user
+//  */
+Posts.increaseClicks = (postId, ip) => {
+  const clickEvent = {
+    name: 'click',
+    properties: {
+      postId: postId,
+      ip: ip
+    }
+  };
+
+  // make sure this IP hasn't previously clicked on this post
+  const existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
+
+  if(!existingClickEvent) {
+    Events.log(clickEvent);
+    return Posts.update(postId, { $inc: { clickCount: 1 }}, {validate: false, bypassCollection2:true});
+  }
+};
+
+// track links clicked, locally in Events collection
+// note: this event is not sent to segment cause we cannot access the current user 
+// in our server-side route /out -> sending an event would create a new anonymous 
+// user: the free limit of 1,000 unique users per month would be reached quickly
+addCallback('posts.click.async', function PostsClickTracking(postId, ip) {
+  return Posts.increaseClicks(postId, ip);
+});

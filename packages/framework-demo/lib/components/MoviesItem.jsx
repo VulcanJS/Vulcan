@@ -14,14 +14,11 @@ class MoviesItem extends Component {
 
   renderDetails() {
 
-    const movie = this.props;
+    const movie = this.props.movie;
 
     return (
       <div style={{display: 'inline-block', marginRight: '5px'}}>
-        <ModalTrigger 
-          label="View Details" 
-          component={<Button bsStyle="primary">Read Review</Button>} 
-        >
+        <ModalTrigger label="View Details">
           <Components.MoviesDetails documentId={movie._id}/>
         </ModalTrigger>
       </div>
@@ -31,15 +28,12 @@ class MoviesItem extends Component {
 
   renderEdit() {
 
-    const movie = this.props;
+    const movie = this.props.movie;
 
     return (
       <div style={{display: 'inline-block', marginRight: '5px'}}>
-        <ModalTrigger 
-          label="Edit Movie" 
-          component={<Button bsStyle="primary">Edit Movie</Button>} 
-        >
-          <Components.MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id} refetch={this.props.refetch}/>
+        <ModalTrigger label="Edit Movie" >
+          <Components.MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id} />
         </ModalTrigger>
       </div>
     )
@@ -47,7 +41,7 @@ class MoviesItem extends Component {
 
   render() {
     
-    const movie = this.props;
+    const movie = this.props.movie;
 
     return (
       <div key={movie.name} style={{paddingBottom: "15px",marginBottom: "15px", borderBottom: "1px solid #ccc"}}>
@@ -55,6 +49,7 @@ class MoviesItem extends Component {
         <p>By <strong>{movie.user && movie.user.displayName}</strong></p>
         <div className="item-actions">
           {this.renderDetails()}
+          &nbsp;|&nbsp;
           {Movies.options.mutations.edit.check(this.props.currentUser, movie) ? this.renderEdit() : null}
         </div>
       </div>

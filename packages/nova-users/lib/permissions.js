@@ -203,6 +203,13 @@ Users.getViewableFields = function (user, collection, document) {
   )));
 }
 
+// collection helper
+Users.helpers({
+  getViewableFields(collection, document) {
+    return Users.getViewableFields(this, collection, document);
+  }
+});
+
 /**
  * @summary For a given document, keep only fields viewable by current user
  * @param {Object} user - The user performing the action

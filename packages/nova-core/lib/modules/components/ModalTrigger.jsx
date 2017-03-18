@@ -31,7 +31,7 @@ class ModalTrigger extends Component {
 
   render() {
 
-    const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
+    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.openModal }) : <a href="#" onClick={this.openModal}>{this.props.label}</a>;
     const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
 
     return (
@@ -49,7 +49,8 @@ class ModalTrigger extends Component {
 }
 
 ModalTrigger.propTypes = {
-  component: React.PropTypes.object.isRequired,
+  label: React.PropTypes.string,
+  component: React.PropTypes.object,
   size: React.PropTypes.string
 }
 

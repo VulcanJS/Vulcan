@@ -1,11 +1,8 @@
 import { addCallback } from 'meteor/nova:core';
-import Posts from 'meteor/nova:posts';
-import Events from './collection.js';
 import { sendGoogleAnalyticsRequest, requestAnalyticsAsync } from './helpers';
 
 // add client-side callback: log a ga request on page view
 addCallback('router.onUpdate', sendGoogleAnalyticsRequest);
-
   
 // generate callbacks on collection for each common mutation
 ['users', 'posts', 'comments', 'categories'].map(collection => {
@@ -54,33 +51,3 @@ addCallback(`users.profileCompleted.async`, function ProfileCompletedTracking(us
 });
 
 
-// /**
-//  * @summary Increase the number of clicks on a post
-//  * @param {string} postId – the ID of the post being edited
-//  * @param {string} ip – the IP of the current user
-//  */
-Posts.increaseClicks = (postId, ip) => {
-  const clickEvent = {
-    name: 'click',
-    properties: {
-      postId: postId,
-      ip: ip
-    }
-  };
-
-  // make sure this IP hasn't previously clicked on this post
-  const existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
-
-  if(!existingClickEvent) {
-    Events.log(clickEvent);
-    return Posts.update(postId, { $inc: { clickCount: 1 }}, {validate: false, bypassCollection2:true});
-  }
-};
-
-// track links clicked, locally in Events collection
-// note: this event is not sent to segment cause we cannot access the current user 
-// in our server-side route /out -> sending an event would create a new anonymous 
-// user: the free limit of 1,000 unique users per month would be reached quickly
-addCallback(`posts.click.async`, function PostsClickTracking(postId, ip) {
-  return Posts.increaseClicks(postId, ip);
-});

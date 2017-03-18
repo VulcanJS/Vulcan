@@ -67,6 +67,26 @@ Mongo.Collection.prototype.addView = function (viewName, view) {
   this.views[viewName] = view;
 };
 
+// see https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js
+Mongo.Collection.prototype.helpers = function(helpers) {
+  var self = this;
+
+  if (self._transform && ! self._helpers)
+    throw new Meteor.Error("Can't apply helpers to '" +
+      self._name + "' a transform function already exists!");
+
+  if (! self._helpers) {
+    self._helpers = function Document(doc) { return _.extend(this, doc); };
+    self._transform = function(doc) {
+      return new self._helpers(doc);
+    };
+  }
+
+  _.each(helpers, function(helper, key) {
+    self._helpers.prototype[key] = helper;
+  });
+};
+
 export const createCollection = options => {
 
   const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true } = options;
@@ -146,7 +166,7 @@ export const createCollection = options => {
   
   // ------------------------------------- Parameters -------------------------------- //
 
-  collection.getParameters = (terms = {}, apolloClient) => {
+  collection.getParameters = (terms = {}, apolloClient, currentUser) => {
 
     // console.log(terms)
 
@@ -168,9 +188,17 @@ export const createCollection = options => {
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${collectionName}.parameters`, parameters, _.clone(terms), apolloClient);
 
-    // extend sort to sort posts by _id to break ties
-    // NOTE: always do this last to avoid _id sort overriding another sort
-    parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    // extend sort to sort posts by createdAt and _id to break ties
+    // NOTE: always do this last to avoid overriding another sort
+    parameters = Utils.deepExtend(true, parameters, {options: {sort: {createdAt: -1, _id: -1}}});
+
+    // limit number of items to 200
+    parameters.options.limit = (parameters.options.limit < 1 || parameters.options.limit > 200) ? 200 : parameters.options.limit;
+
+    // limit fields to viewable fields
+    if (currentUser) {
+      parameters.options.fields = currentUser.getViewableFields(collection);
+    }
 
     // console.log(parameters);
 

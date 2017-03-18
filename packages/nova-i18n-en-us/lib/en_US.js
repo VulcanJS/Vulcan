@@ -4,7 +4,9 @@ addStrings('en', {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
   "forms.select_option": "-- select option --",
-
+  "forms.delete": "Delete",
+  "forms.delete_confirm": "Delete document?",
+  
   "posts.new_post": "New Post",
   "posts.edit": "Edit",
   "posts.edit_success": "Post “{title}” edited.",

@@ -42,7 +42,7 @@ class MoviesList extends Component {
       return (
         <div className="movies">
           {canCreateNewMovie ? this.renderNew() : null}
-          {this.props.results.map(movie => <Components.MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser} refetch={this.props.refetch} />)}
+          {this.props.results.map(movie => <Components.MoviesItem key={movie._id} movie={movie} currentUser={this.props.currentUser} />)}
           {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>
       )

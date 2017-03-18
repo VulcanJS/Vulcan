@@ -446,3 +446,7 @@ Utils.defineName = (o, name) => {
   Object.defineProperty(o, 'name', { value: name });
   return o;
 };
+
+Utils.performCheck = (mutation, user, document) => {
+  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
+}
