@@ -1,12 +1,13 @@
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent, withCurrentUser } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { withApollo } from 'react-apollo';
 
-const UsersAccountForm = ({client}) => {
+const UsersAccountForm = ({client, currentUser}) => {
   return (
-    <Accounts.ui.LoginForm 
+    <Accounts.ui.LoginForm
+      user={currentUser}
       onPostSignUpHook={() => client.resetStore()}
       onSignedInHook={() => client.resetStore()}
       onSignedOutHook={() => client.resetStore()}
@@ -14,7 +15,7 @@ const UsersAccountForm = ({client}) => {
   )
 };
 
-registerComponent('UsersAccountForm', UsersAccountForm, withApollo);
+registerComponent('UsersAccountForm', UsersAccountForm, withCurrentUser, withApollo);
 
 // customize Accounts.ui
 

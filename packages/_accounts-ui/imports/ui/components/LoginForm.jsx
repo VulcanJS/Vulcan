@@ -26,11 +26,14 @@ export class LoginForm extends Tracker.Component {
       console.warn('Do not force the state to SIGN_IN on Accounts.ui.LoginForm, it will make it impossible to reset password in your app, this state is also the default state if logged out, so no need to force it.');
     }
 
+    const user = typeof props.user !== 'undefined'
+      ? props.user : Accounts.user();
+
     // Set inital state.
     this.state = {
       messages: [],
       waiting: true,
-      formState: props.formState ? props.formState : (Accounts.user() ? STATES.PROFILE : STATES.SIGN_IN),
+      formState: props.formState ? props.formState : (user ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
       onSignedInHook: props.onSignedInHook || Accounts.ui._options.onSignedInHook,
       onSignedOutHook: props.onSignedOutHook || Accounts.ui._options.onSignedOutHook,
@@ -91,10 +94,18 @@ export class LoginForm extends Tracker.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevState.user !== !this.state.user) {
-      this.setState({
-        formState: this.state.user ? STATES.PROFILE : STATES.SIGN_IN
-      });
+    if (typeof this.props.user !== 'undefined') {
+      if (!prevProps.user !== !this.props.user) {
+        this.setState({
+          formState: this.props.user ? STATES.PROFILE : STATES.SIGN_IN
+        });
+      }
+    } else {
+      if (!prevState.user !== !this.state.user) {
+        this.setState({
+          formState: this.state.user ? STATES.PROFILE : STATES.SIGN_IN
+        });
+      }
     }
   }
 
@@ -286,8 +297,10 @@ export class LoginForm extends Tracker.Component {
       changePasswordPath = Accounts.ui._options.changePasswordPath,
       profilePath = Accounts.ui._options.profilePath,
     } = this.props;
-    const { formState, waiting, user } = this.state;
+    const { formState, waiting } = this.state;
     let loginButtons = [];
+    const user = typeof this.props.user !== 'undefined'
+      ? this.props.user : this.state.user;
 
     if (user && formState == STATES.PROFILE) {
       loginButtons.push({
@@ -381,7 +394,10 @@ export class LoginForm extends Tracker.Component {
         onClick: this.passwordChange.bind(this)
       });
 
-      if (Accounts.user()) {
+      const user = typeof this.props.user !== 'undefined'
+        ? this.props.user : Accounts.user();
+
+      if (user) {
         loginButtons.push({
           id: 'switchToSignOut',
           label: T9n.get('cancel'),
@@ -431,7 +447,9 @@ export class LoginForm extends Tracker.Component {
   }
 
   showForgotPasswordLink() {
-    return !this.state.user
+    const user = typeof this.props.user !== 'undefined'
+      ? this.props.user : this.state.user;
+    return !user
       && this.state.formState == STATES.SIGN_IN
       && _.contains(
         ["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
