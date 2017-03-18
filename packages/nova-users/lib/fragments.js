@@ -14,5 +14,6 @@ registerFragment(`
     emailHash
     slug
     groups
+    services
   }
 `);
