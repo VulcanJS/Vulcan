@@ -1,4 +1,6 @@
 import Users from 'meteor/nova:users';
+import Posts from 'meteor/nova:posts';
+import Categories from 'meteor/nova:categories';
 import { Utils, GraphQLSchema } from 'meteor/nova:core';
 
 /**
@@ -174,21 +176,8 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
 
 // Finally. Add the mutations to the Meteor namespace 🖖
 
-// nova:users is a dependency of this package, it is alreay imported
 subscribeMutationsGenerator(Users);
-
-
-// note: leverage weak dependencies on packages
-const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
-// check if nova:posts exists, if yes, add the mutations to Posts
-if (!!Posts) {
-  subscribeMutationsGenerator(Posts);
-}
-
-// check if nova:categories exists, if yes, add the mutations to Categories
-const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
-if (!!Categories) {
-  subscribeMutationsGenerator(Categories);
-}
+subscribeMutationsGenerator(Posts);
+subscribeMutationsGenerator(Categories);
 
 export default subscribeMutationsGenerator;
