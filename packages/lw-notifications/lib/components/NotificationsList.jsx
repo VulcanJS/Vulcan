@@ -23,14 +23,14 @@ class NotificationsList extends Component {
     // console.log(refetch);
     if (results && results.length) {
       return (
-        <div className="notifications-list">
+        <div>
           {results.map(notification => <Components.NotificationsItem key={notification._id} currentUser={currentUser} notification={notification} />)}
         </div>
       )
     } else if (loading) {
         return (<Components.Loading/>)
     } else {
-        return (<div>No Results</div>)
+        return (<MenuItem>No Results</MenuItem>)
     }
   }
 }

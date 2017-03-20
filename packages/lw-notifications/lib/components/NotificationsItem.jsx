@@ -1,5 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
+import { Dropdown, DropdownButton, MenuItem } from 'react-bootstrap';
 
 
 
@@ -9,15 +10,19 @@ class NotificationsItem extends Component {
 
     currentUser = this.props.currentUser;
     notification = this.props.notification;
-    return (
-      <div key={notification._id} className="notification-item">
-        <p>
-          userId: {notification.userId}
-          notificationId: {notification._id}
-          notificationMessage: {notification.notificationMessage}
-          viewed: {notification.viewed}
-        </p>
-      </div>
+    className = "notification-item " + (notification.viewed ? "viewed" : "unviewed");
+    return ( <div>
+      <MenuItem href="" key={notification._id} disabled={notification.viewed} active>
+          {notification.notificationMessage ? notification.notificationMessage : "No Message"}
+          ({notification.type ? notification.type : "Unknown Type"})
+      </MenuItem>
+      <DropdownButton bsSize="xsmall" role="menuitem" bsStyle='link' title='Debug Information'>
+            <MenuItem> userId: {notification.userId} </MenuItem>
+            <MenuItem> notificationId: {notification._id} </MenuItem>
+            <MenuItem> documentId: {notification.documentId} </MenuItem>
+            <MenuItem> viewed: {notification.viewed}</MenuItem>
+      </DropdownButton>
+      <MenuItem divider /> </div>
     )
   }
 
