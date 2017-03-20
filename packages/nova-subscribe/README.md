@@ -23,7 +23,7 @@ categories.subscribe
 categories.unsubscribe
 ```
 
-This package also provides a reusable component called `SubscribeTo` to subscribe to an document of collection.
+This package also provides a reusable component called `SubscribeTo` to subscribe to a document of collection.
 
 This component takes the `document` as a props. It can trigger any method described below:
 
@@ -39,18 +39,18 @@ This component takes the `document` as a props. It can trigger any method descri
 ```
 
 ### Extend to other collections than Users, Posts, Categories
-This package export a function called `subscribMutationsGenerator` that takes a collection as an argument and create the associated methods code :
+This package exports a function called `subscribeMutationsGenerator` that takes a collection as an argument and creates the associated methods code:
 
 ```js
 // in my custom package
-import subscribMutationsGenerator from 'meteor/nova:subscribe';
+import subscribeMutationsGenerator from 'meteor/nova:subscribe';
 import Movies from './collection.js';
 
-// the function creates the code and give it to the graphql server
-subscribMutationsGenerator(Movies); 
+// the function creates the code and gives it to the graphql server
+subscribeMutationsGenerator(Movies);
 ```
 
-This will creates for you the mutations `moviesSubscribe` & `moviesUnsubscribe` than can be used in the `SubscribeTo` component: 
+This will create for you the mutations `moviesSubscribe` & `moviesUnsubscribe` than can be used in the `SubscribeTo` component:
 ```jsx
 // in my custom component
 <Components.SubscribeTo document={movie} />
