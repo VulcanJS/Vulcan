@@ -7,6 +7,7 @@ Notifications.addDefaultView(function (terms) {
   };
 });
 
+// notifications for a specific user (what you see in the notifications menu)
 Notifications.addView("userNotifications", function (terms) {
   return {
     selector: {userId: terms.userId},
