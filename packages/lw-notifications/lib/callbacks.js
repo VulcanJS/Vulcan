@@ -65,15 +65,12 @@ const CommentsNewNotifications = (comment) => {
   if(Meteor.isServer && !comment.disableNotifications) {
 
     const post = Posts.findOne(comment.postId);
-    const postAuthor = Users.findOne(post.userId);
 
-    // 1. Notify author of post (if they have new comment notifications turned on)
-    //    but do not notify author of post if they're the ones posting the comment
-    if (Users.getSetting(postAuthor, "notifications_comments", true) && comment.userId !== postAuthor._id) {
-      createNotifications([postAuthor.userId], 'newComment', 'comment', comment._id);
-    }
+    // keep track of whom we've notified (so that we don't notify the same user twice for one comment,
+    // if e.g. they're both the author of the post and the author of a comment being replied to)
+    let notifiedUsers = [];
 
-    // 2. Notify author of comment being replied to
+    // 1. Notify author of comment being replied to
     if (!!comment.parentCommentId) {
       const parentComment = Comments.findOne(comment.parentCommentId);
 
@@ -84,10 +81,32 @@ const CommentsNewNotifications = (comment) => {
         // do not notify parent comment author if they have reply notifications turned off
         if (Users.getSetting(parentCommentAuthor, "notifications_replies", true)) {
           createNotifications([parentCommentAuthor.userId], 'newReply', 'comment', comment._id);
+          notifiedUsers.push(parentCommentAuthor.userId);
         }
       }
     }
+
+    // 2. Notify author of post (if they have new comment notifications turned on)
+    //    but do not notify author of post if they're the ones posting the comment
+    //    nor if we just sent them a newReply notification above
+    const postAuthor = Users.findOne(post.userId);
+    if (comment.userId !== postAuthor._id && !_.contains(notifiedUsers, postAuthor._id)
+        && Users.getSetting(postAuthor, "notifications_comments", true)) {
+
+      createNotifications([postAuthor._id], 'newComment', 'comment', comment._id);
+      notifiedUsers.push(postAuthor._id);
+    }
+
+    // ROGTODO: allow author to unsubscribe, and only notify subscribers
+    // 3. Notify users who are subscribed to the post
+    console.log('post.subscribers:');
+    console.log(post.subscribers);
+    if (!!post.subscribers && !!post.subscribers.length) {
+      // remove userIds of users that have already been notified
+      // and of comment author (they could be replying in a thread they're subscribed to)
+      let subscribersToNotify = _.difference(post.subscribers, notifiedUsers, [comment.userId]);
+      createNotifications(subscribersToNotify, 'newCommentSubscribed', 'comment', comment._id);
+    }
   }
 }
-
 addCallback("comments.new.async", CommentsNewNotifications);
