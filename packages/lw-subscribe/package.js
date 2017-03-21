@@ -12,7 +12,6 @@ Package.onUse(function (api) {
     'nova:posts@1.2.0',
     'nova:comments@1.2.0',
     'nova:categories@1.2.0',
-    'lw-notifications',
   ]);
 
   api.mainModule("lib/modules.js", ["client"]);

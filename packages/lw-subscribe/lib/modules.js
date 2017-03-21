@@ -1,4 +1,3 @@
-// import './callbacks.js';
 import './custom_fields.js';
 import './helpers.js';
 import subscribeMutationsGenerator from './mutations.js';
