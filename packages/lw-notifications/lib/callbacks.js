@@ -99,8 +99,6 @@ const CommentsNewNotifications = (comment) => {
 
     // ROGTODO: allow author to unsubscribe, and only notify subscribers
     // 3. Notify users who are subscribed to the post
-    console.log('post.subscribers:');
-    console.log(post.subscribers);
     if (!!post.subscribers && !!post.subscribers.length) {
       // remove userIds of users that have already been notified
       // and of comment author (they could be replying in a thread they're subscribed to)
