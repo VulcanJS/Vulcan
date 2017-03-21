@@ -19,6 +19,7 @@ class NotificationsItem extends Component {
     return ( <div>
       <MenuItem href={notification.link} key={notification._id} disabled={notification.viewed} active>
           {notification.notificationMessage ? notification.notificationMessage : "No Message"}
+          &nbsp;
           ({notification.type ? notification.type : "Unknown Type"})
       </MenuItem>
       <DropdownButton id={notification._id} bsSize="xsmall" role="menuitem" bsStyle='link' title='Debug Information'>
