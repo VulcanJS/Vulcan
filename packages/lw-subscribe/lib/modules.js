@@ -5,5 +5,6 @@ import './permissions.js';
 import './fragments.js';
 
 import './components/SubscribeTo.jsx';
+import './components/PostItem.jsx';
 
 export default subscribeMutationsGenerator;
