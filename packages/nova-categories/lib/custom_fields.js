@@ -1,7 +1,7 @@
 import Posts from "meteor/nova:posts";
 import { getCategoriesAsOptions } from './schema.js';
 
-Posts.addField(
+Posts.addField([
   {
     fieldName: 'categories',
     fieldSchema: {
@@ -27,4 +27,4 @@ Posts.addField(
       optional: true
     }
   }
-);
+]);
