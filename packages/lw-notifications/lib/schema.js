@@ -23,16 +23,6 @@ const schema = {
     type: String,
     viewableBy: checkUser,
   },
-  documentId: {
-    type: String,
-    optional: true,
-    viewableBy: checkUser,
-  },
-  type: {
-    type: String,
-    optional: true,
-    viewableBy: checkUser,
-  },
   createdAt: {
     type: Date,
     viewableBy: checkUser,
@@ -40,7 +30,27 @@ const schema = {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
+  documentId: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  documentType: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  link: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
   notificationMessage: {
+    type: String,
+    optional: true,
+    viewableBy: checkUser,
+  },
+  notificationType: {
     type: String,
     optional: true,
     viewableBy: checkUser,

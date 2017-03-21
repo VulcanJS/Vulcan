@@ -8,8 +8,6 @@ import Users from 'meteor/nova:users';
 import Notifications from '../collection.js'
 import { withApollo } from 'react-apollo';
 
-const something = (props) => <div>Something</div>
-
 
 class NotificationsList extends Component {
 

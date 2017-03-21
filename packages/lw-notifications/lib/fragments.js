@@ -4,9 +4,10 @@ registerFragment(`
   fragment notificationsNavFragment on Notification {
     _id
     userId
-    notificationMessage
     createdAt
-    type
+    link
+    notificationMessage
+    notificationType
     viewed
   }
 `);
