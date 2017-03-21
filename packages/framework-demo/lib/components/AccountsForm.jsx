@@ -2,16 +2,17 @@ import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { withApollo } from 'react-apollo';
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent, withCurrentUser } from 'meteor/nova:core';
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
 });
 
-const AccountsForm = ({client}) => {
+const AccountsForm = ({client, currentUser}) => {
   return (
     <div>
-      <Accounts.ui.LoginForm 
+      <Accounts.ui.LoginForm
+        user={currentUser}
         onPostSignUpHook={() => client.resetStore()}
         onSignedInHook={() => client.resetStore()}
         onSignedOutHook={() => client.resetStore()}
@@ -26,7 +27,7 @@ class AccountsButton extends Accounts.ui.Button {
     if (type === 'link') {
       return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
     }
-    return <Button 
+    return <Button
         bsStyle="primary"
         className={ className }
         type={ type }
@@ -56,4 +57,4 @@ class AccountsField extends Accounts.ui.Field {
 Accounts.ui.Button = AccountsButton;
 Accounts.ui.Field = AccountsField;
 
-registerComponent('AccountsForm', AccountsForm, withApollo);
+registerComponent('AccountsForm', AccountsForm, withCurrentUser, withApollo);
