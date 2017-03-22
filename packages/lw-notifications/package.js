@@ -15,7 +15,8 @@ Package.onUse( function(api) {
     'nova:posts',
     'nova:users',
     'nova:voting',
-    // 'nova:notifications',
+
+    'lw-subscribe',
   ]);
 
   api.mainModule('server.js', 'server');
