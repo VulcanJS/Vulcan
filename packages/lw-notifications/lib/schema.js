@@ -10,6 +10,9 @@ const checkUser = (user, document) => {
   if(!document){
     return false;
   }
+  console.log("Check User");
+  console.log(user.userId);
+  console.log(document.userId);
   return user.userId == document.userId;
 }
 
@@ -17,15 +20,15 @@ const checkUser = (user, document) => {
 const schema = {
   _id: {
     type: String,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   userId: {
     type: String,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   createdAt: {
     type: Date,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
@@ -33,35 +36,35 @@ const schema = {
   documentId: {
     type: String,
     optional: true,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   documentType: {
     type: String,
     optional: true,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   link: {
     type: String,
     optional: true,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   notificationMessage: {
     type: String,
     optional: true,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   notificationType: {
     type: String,
     optional: true,
-    viewableBy: checkUser,
+    viewableBy: Users.owns,
   },
   viewed: {
     type: Boolean,
     optional: true,
     defaultValue: false,
-    viewableBy: checkUser,
-    insertableBy: checkUser,
-    editableBy: checkUser,
+    viewableBy: Users.owns,
+    insertableBy: Users.owns,
+    editableBy: Users.owns,
   },
 };
 

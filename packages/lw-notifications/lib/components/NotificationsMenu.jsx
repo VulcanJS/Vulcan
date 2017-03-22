@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withList, withEdit } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
@@ -34,7 +34,7 @@ class NotificationsMenu extends Component {
   render() {
     const results = this.props.results;
     const {currentUser, client} = this.props;
-    var unreadNotifications = 0;
+    let unreadNotifications = [];
     if (results && results.length) {
       unreadNotifications = results.filter(this.isNotViewed).length;
     }
@@ -44,17 +44,28 @@ class NotificationsMenu extends Component {
     } else {
       return (
         <div className="notifications-menu">
-          <DropdownButton id="notification-menu" bsStyle='info' title={'Notifications (' + unreadNotifications + ')'}>
+          <DropdownButton id="notification-menu" onClick={() => this.viewNotifications(unreadNotifications)} bsStyle='info' title={'Notifications (' + unreadNotifications + ')'}>
               {this.renderNotificationsList()}
           </DropdownButton>
         </div>
       )
-      }
     }
+  }
+
 
   isNotViewed(notification) {
     return (!notification.viewed);
-  }
+  };
+
+  viewNotifications(results) {
+    if(results && results.length && this.props){
+      let editMutation = this.props.editMutation;
+      let set = {viewed: true};
+      results.forEach(function(notification) {
+        editMutation({documentId: notification._id, set: set, unset: {}});
+      });
+    }
+  };
 
 }
 
@@ -63,13 +74,17 @@ NotificationsMenu.propsTypes = {
   client: React.PropTypes.object,
 };
 
-const options = {
+const withListOptions = {
   collection: Notifications,
   queryName: 'notificationsListQuery',
   fragmentName: 'notificationsNavFragment',
   limit: 5,
 };
 
+const withEditOptions = {
+  collection: Notifications,
+  fragmentName: 'notificationsNavFragment',
+};
 
 
-registerComponent('NotificationsMenu', NotificationsMenu, withList(options), withCurrentUser, withApollo);
+registerComponent('NotificationsMenu', NotificationsMenu, withList(withListOptions), withEdit(withEditOptions), withCurrentUser, withApollo);

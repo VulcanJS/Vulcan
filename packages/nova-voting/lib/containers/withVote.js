@@ -38,9 +38,9 @@ const withVote = component => {
     props: ({ownProps, mutate}) => ({
       vote: ({document, voteType, collection, currentUser}) => {
         const voteResult = operateOnItem(collection, document, currentUser, voteType, true);
-        return mutate({ 
+        return mutate({
           variables: {
-            documentId: document._id, 
+            documentId: document._id,
             voteType,
             collectionName: collection._name,
           },

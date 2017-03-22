@@ -1,5 +1,7 @@
 import Notifications from './collection.js';
 import Users from 'meteor/nova:users';
+import Comments from 'meteor/nova:comments';
+import Posts from 'meteor/nova:posts';
 import { addCallback, newMutation } from 'meteor/nova:core';
 
 const createNotifications = (userIds, notificationType, documentType, documentId) => {
@@ -10,8 +12,10 @@ const createNotifications = (userIds, notificationType, documentType, documentId
     let notificationData = {
       userId: userId,
       documentId: documentId,
-      type: documentType,
-      notificationMessage: notificationType
+      documentType: documentType,
+      notificationMessage: notificationMessage(notificationType, documentType, documentId),
+      notificationType: notificationType,
+      link: getLink(documentType, documentId),
     }
 
     newMutation({
@@ -24,9 +28,54 @@ const createNotifications = (userIds, notificationType, documentType, documentId
   });
 }
 
-// hard dependency on Comments and Posts packages
-const Comments = Package['nova:comments'].default;
-const Posts = Package['nova:posts'].default;
+const getLink = (documentType, documentId) => {
+  let document = getDocument(documentType, documentId);
+  switch(documentType) {
+    case "post":
+      return Posts.getPageUrl(document);
+    case "comment":
+      return Comments.getPageUrl(document);
+    case "user":
+      return Users.getProfileUrl(document, false);
+    default:
+      console.error("Invalid notification type");
+  }
+}
+
+const notificationMessage = (notificationType, documentType, documentId) => {
+  let document = getDocument(documentType, documentId);
+  switch(notificationType) {
+    case "newPost":
+      return Posts.getAuthorName(document) + ' has created a new post: ' + document.title;
+    case "newPendingPost":
+      return Posts.getAuthorName(document) + ' has a new post pending approval ' + document.title;
+    case "postApproved":
+      return 'Your post "' + document.title + '" has been approved';
+    case "newComment":
+      return Comments.getAuthorName(document) + ' left a new comment on your post "' + Posts.getDocument(document.postId).title + '"';
+    case "newReply":
+      return Comments.getAuthorName(document) + ' replied to your comment on ' + Posts.getDocument(document.postId).title + '"';
+    case "newCommentSubscribed":
+      return Comments.getAuthorName(document) + ' left a new comment on ' + Posts.getDocument(document.postId).title + '"';
+    case "newUser":
+      return user.displayName + ' just signed up!';
+    default:
+      console.error("Invalid notification type");
+  }
+}
+
+const getDocument = (documentType, documentId) => {
+  switch(documentType) {
+    case "post":
+      return Posts.findOne(documentId);
+    case "comment":
+      return Comments.findOne(documentId);
+    case "user":
+      return Users.findOne(documentId);
+    default:
+      console.error("Invalid documentType type");
+  }
+}
 
 /**
  * @summary Add notification callback when a post is approved
