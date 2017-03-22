@@ -36,7 +36,7 @@ class NotificationsMenu extends Component {
     const {currentUser, client} = this.props;
     let unreadNotifications = [];
     if (results && results.length) {
-      unreadNotifications = results.filter(this.isNotViewed).length;
+      unreadNotifications = results.filter(this.isNotViewed);
     }
 
     if(!currentUser){
@@ -44,7 +44,7 @@ class NotificationsMenu extends Component {
     } else {
       return (
         <div className="notifications-menu">
-          <DropdownButton id="notification-menu" onClick={() => this.viewNotifications(unreadNotifications)} bsStyle='info' title={'Notifications (' + unreadNotifications + ')'}>
+          <DropdownButton id="notification-menu" onClick={() => this.viewNotifications(unreadNotifications)} bsStyle='info' title={'Notifications (' + unreadNotifications.length + ')'}>
               {this.renderNotificationsList()}
           </DropdownButton>
         </div>
