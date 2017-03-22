@@ -52,8 +52,8 @@ class SubscribeToActionHandler extends Component {
     
     const action = `${documentType}.${getSubscribeAction(subscribed)}`;
     
-    // can't subscribe to yourself or to own post (also validated on server side)
-    if (!currentUser || !document || (documentType === 'posts' && document.userId === currentUser._id) || (documentType === 'users' && document._id === currentUser._id)) {
+    // can't subscribe to yourself
+    if (!currentUser || !document || (documentType === 'users' && document._id === currentUser._id)) {
       return null;
     }
 

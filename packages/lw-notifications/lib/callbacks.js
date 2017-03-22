@@ -1,8 +1,9 @@
 import Notifications from './collection.js';
 import Users from 'meteor/nova:users';
-import Comments from 'meteor/nova:comments';
 import Posts from 'meteor/nova:posts';
+import Comments from 'meteor/nova:comments';
 import { addCallback, newMutation } from 'meteor/nova:core';
+import { performSubscriptionAction } from 'meteor/lw-subscribe';
 
 const createNotifications = (userIds, notificationType, documentType, documentId) => {
   userIds.forEach(userId => {
@@ -107,6 +108,21 @@ const PostsNewNotifications = (post) => {
 }
 addCallback("posts.new.async", PostsNewNotifications);
 
+
+/**
+ * @summary Add default subscribers to the new post.
+ */
+const PostsNewSubscriptions = (post) => {
+  // Subscribe the post's author to comment notifications for the post
+  // (if they have the proper setting turned on)
+  const postAuthor = Users.findOne(post.userId);
+  if (Users.getSetting(postAuthor, "notifications_comments", true)) {
+
+    performSubscriptionAction('subscribe', Posts, post._id, postAuthor);
+  }
+}
+addCallback("posts.new.async", PostsNewSubscriptions);
+
 // add new comment notification callback on comment submit
 const CommentsNewNotifications = (comment) => {
 
@@ -135,19 +151,7 @@ const CommentsNewNotifications = (comment) => {
       }
     }
 
-    // 2. Notify author of post (if they have new comment notifications turned on)
-    //    but do not notify author of post if they're the ones posting the comment
-    //    nor if we just sent them a newReply notification above
-    const postAuthor = Users.findOne(post.userId);
-    if (comment.userId !== postAuthor._id && !_.contains(notifiedUsers, postAuthor._id)
-        && Users.getSetting(postAuthor, "notifications_comments", true)) {
-
-      createNotifications([postAuthor._id], 'newComment', 'comment', comment._id);
-      notifiedUsers.push(postAuthor._id);
-    }
-
-    // ROGTODO: allow author to unsubscribe, and only notify subscribers
-    // 3. Notify users who are subscribed to the post
+    // 2. Notify users who are subscribed to the post (which may or may not include the post's author)
     if (!!post.subscribers && !!post.subscribers.length) {
       // remove userIds of users that have already been notified
       // and of comment author (they could be replying in a thread they're subscribed to)

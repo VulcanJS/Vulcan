@@ -30,11 +30,6 @@ const prepareSubscription = (action, collection, itemId, user) => {
     if (item._id === user._id) {
       return false;
     }
-  } else {
-    // the item's owner is the subscriber, abort process
-    if (item.userId && item.userId === user._id) {
-      return false;
-    }
   }
 
   // assign the right fields depending on the collection
@@ -75,7 +70,7 @@ const prepareSubscription = (action, collection, itemId, user) => {
  * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
  * @returns {Boolean}
  */
-const performSubscriptionAction = (action, collection, itemId, user) => {
+export const performSubscriptionAction = (action, collection, itemId, user) => {
 
   // subscription preparation to verify if can pursue and give shorthand variables
   const subscription = prepareSubscription(action, collection, itemId, user);
