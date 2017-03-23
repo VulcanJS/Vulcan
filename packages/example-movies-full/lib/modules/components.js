@@ -1,4 +1,3 @@
-import '../components/AccountsForm.jsx';
 import '../components/movies/MoviesDetails.jsx';
 import '../components/movies/MoviesEditForm.jsx';
 import '../components/movies/MoviesItem.jsx';

@@ -8,9 +8,9 @@ import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent } from 'meteor/nova:core';
 
 const MoviesWrapper = () => 
-  <div className="wrapper framework-demo">
+  <div className="wrapper framework-demo" style={{maxWidth: '500px', margin: 'auto'}}>
 
-    <div className="header">
+    <div className="header" style={{padding: '20px 0', marginBottom: '20px', borderBottom: '1px solid #ccc'}}>
       <Components.AccountsLoginForm />
     </div>        
     
