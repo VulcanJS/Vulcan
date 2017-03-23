@@ -4,7 +4,7 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 // define schema
 const schema = {

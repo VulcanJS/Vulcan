@@ -1,9 +1,9 @@
-import Users from 'meteor/nova:users';
-import { Utils, getSetting } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 // note: leverage weak dependencies on packages
-const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
-const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
+const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
+const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
 
 Users.getNotificationProperties = user => {
   const properties = {

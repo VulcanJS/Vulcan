@@ -36,7 +36,7 @@ export {
   withRenderContextEnvironment,
   // meteor patch (for server only)
   webAppConnectHandlersUse
-} from 'meteor/nova:lib';
+} from 'meteor/vulcan:lib';
 
 export { default as Layout } from "./components/Layout.jsx";
 export { default as App } from "./components/App.jsx";

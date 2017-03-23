@@ -2,13 +2,13 @@
 
 // newsletter scheduling with MailChimp
 
-import Posts from 'meteor/nova:posts';
-import NovaEmail from 'meteor/nova:email';
+import Posts from 'meteor/vulcan:posts';
+import NovaEmail from 'meteor/vulcan:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
 import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
-import { Utils, getSetting } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 const defaultPosts = 5;
 

@@ -1,7 +1,7 @@
-import { Components, registerComponent } from 'meteor/nova:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { Link } from 'react-router';
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 
 const PostsCommenters = ({post}) => {
   return (

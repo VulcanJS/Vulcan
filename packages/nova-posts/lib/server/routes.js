@@ -1,4 +1,4 @@
-import { runCallbacksAsync } from 'meteor/nova:core';
+import { runCallbacksAsync } from 'meteor/vulcan:core';
 import escapeStringRegexp from 'escape-string-regexp';
 import { Picker } from 'meteor/meteorhacks:picker';
 import Posts from '../collection.js';

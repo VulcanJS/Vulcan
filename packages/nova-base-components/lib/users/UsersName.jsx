@@ -1,6 +1,6 @@
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import { Link } from 'react-router';
 
 const UsersName = ({user}) => <Link className="users-name" to={Users.getProfileUrl(user)}>{Users.getDisplayName(user)}</Link>

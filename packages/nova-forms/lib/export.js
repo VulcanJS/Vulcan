@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent } from 'meteor/vulcan:core';
 
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions([

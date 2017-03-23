@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 
 const PostsListHeader = () => {

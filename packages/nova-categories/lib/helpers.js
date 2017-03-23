@@ -1,6 +1,6 @@
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 import Categories from "./collection.js";
-import { Utils } from 'meteor/nova:core';
+import { Utils } from 'meteor/vulcan:core';
 
 /**
  * @summary Get all of a category's parents

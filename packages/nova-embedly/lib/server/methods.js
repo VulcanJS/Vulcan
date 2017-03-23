@@ -1,5 +1,5 @@
-import { getSetting } from 'meteor/nova:core';
-import Posts from 'meteor/nova:posts';
+import { getSetting } from 'meteor/vulcan:core';
+import Posts from 'meteor/vulcan:posts';
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {

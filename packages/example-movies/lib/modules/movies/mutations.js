@@ -14,8 +14,8 @@ Each mutation has:
 
 */
 
-import { newMutation, editMutation, removeMutation, Utils } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
+import { newMutation, editMutation, removeMutation, Utils } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 
 const mutations = {
 

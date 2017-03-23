@@ -1,4 +1,4 @@
-import { addAction, addReducer } from 'meteor/nova:core';
+import { addAction, addReducer } from 'meteor/vulcan:core';
 
 addAction({
   postsViewed: {

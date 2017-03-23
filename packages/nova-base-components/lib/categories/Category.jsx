@@ -1,9 +1,9 @@
-import { ModalTrigger, Components, registerComponent } from 'meteor/nova:core';
+import { ModalTrigger, Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
-import Categories from 'meteor/nova:categories';
+import Categories from 'meteor/vulcan:categories';
 
 class Category extends Component {
 

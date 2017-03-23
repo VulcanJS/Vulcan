@@ -6,7 +6,7 @@ Wrapped with the "withDocument" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import { Components, registerComponent, getFragment } from "meteor/nova:core";
+import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
 import Movies from '../../modules/movies/collection.js';
 

@@ -1,8 +1,8 @@
 import marked from 'marked';
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 import Comments from '../collection.js';
-import Users from 'meteor/nova:users';
-import { addCallback, Utils, getSetting } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { addCallback, Utils, getSetting } from 'meteor/vulcan:core';
 
 // ------------------------------------- comments.new.validate -------------------------------- //
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/nova:core';
-import Comments from 'meteor/nova:comments';
+import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import Comments from 'meteor/vulcan:comments';
 
 const PostsCommentsThread = (props, context) => {
 

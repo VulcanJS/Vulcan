@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const Fragments = {}; // will be populated on startup (see nova:routing)
+export const Fragments = {}; // will be populated on startup (see vulcan:routing)
 
 export const registerFragment = fragmentText => {
 

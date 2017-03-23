@@ -1,7 +1,7 @@
-import { Components, registerComponent, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, withMessages } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
-import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
+import { withVote, hasUpvoted, hasDownvoted } from 'meteor/vulcan:voting';
 import { FormattedMessage, intlShape } from 'react-intl';
 
 class Vote extends Component {

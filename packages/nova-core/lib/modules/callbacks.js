@@ -1,4 +1,4 @@
-import { addCallback, getActions } from 'meteor/nova:lib';
+import { addCallback, getActions } from 'meteor/vulcan:lib';
 
 /*
   

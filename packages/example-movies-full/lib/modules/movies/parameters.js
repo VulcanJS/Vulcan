@@ -7,7 +7,7 @@ the same sort can be used on the client, too.
 
 */
 
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 
 function sortByCreatedAt (parameters, terms) {
   return {

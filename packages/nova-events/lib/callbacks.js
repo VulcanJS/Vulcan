@@ -1,4 +1,4 @@
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 import { sendGoogleAnalyticsRequest, requestAnalyticsAsync } from './helpers';
 
 // add client-side callback: log a ga request on page view
@@ -17,7 +17,7 @@ addCallback('router.onUpdate', sendGoogleAnalyticsRequest);
       // the first argument is always the document we are interested in
       // the second to last argument is always the current user
       // on edit.async, the argument on index 1 is always the previous document
-      // see nova:lib/mutations.js for more informations
+      // see vulcan:lib/mutations.js for more informations
       
       // remove unnecessary 'previousDocument' if operating on a collection.edit hook
       if (hook.includes('edit')) {

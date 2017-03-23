@@ -1,11 +1,11 @@
-import { Components, registerComponent, withCurrentUser, withMutation, withMessages, Utils } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withMutation, withMessages, Utils } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 class Newsletter extends Component {
 

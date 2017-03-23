@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
-import { registerComponent, Utils, getSetting, Headtags } from 'meteor/nova:core';
+import { registerComponent, Utils, getSetting, Headtags } from 'meteor/vulcan:core';
 
 class HeadTags extends Component {
 	render() {

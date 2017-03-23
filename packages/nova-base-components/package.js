@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:base-components",
+  name: "vulcan:base-components",
   summary: "Telescope components package",
   version: "1.2.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -11,10 +11,10 @@ Package.onUse(function (api) {
 
   api.use([
     // Nova packages
-    'nova:core@1.2.0',
-    'nova:posts@1.2.0',
-    'nova:comments@1.2.0',
-    'nova:voting@1.2.0',
+    'vulcan:core@1.2.0',
+    'vulcan:posts@1.2.0',
+    'vulcan:comments@1.2.0',
+    'vulcan:voting@1.2.0',
 
     // third-party packages
     'fortawesome:fontawesome@4.5.0',

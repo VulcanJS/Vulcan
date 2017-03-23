@@ -11,7 +11,7 @@ import {
   addReducer, addMiddleware,
   Routes, populateComponentsApp, populateRoutesApp, runCallbacks,
   getRenderContext,
-} from 'meteor/nova:core';
+} from 'meteor/vulcan:core';
 
 import { RouterClient } from './router.jsx';
 
@@ -61,7 +61,7 @@ Meteor.startup(() => {
       const { apolloClient, store } = getRenderContext();
       const app = appGenerator({
         onUpdate: () => {
-          // the first argument is an item to iterate on, needed by nova:lib/callbacks
+          // the first argument is an item to iterate on, needed by vulcan:lib/callbacks
           // note: this item is not used in this specific callback: router.onUpdate
           runCallbacks('router.onUpdate', {}, store, apolloClient);
         },

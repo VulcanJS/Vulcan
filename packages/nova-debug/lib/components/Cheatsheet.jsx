@@ -1,8 +1,8 @@
 import React from 'react';
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import Users from 'meteor/nova:users';
-import { Callbacks, Utils, registerComponent } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import Users from 'meteor/vulcan:users';
+import { Callbacks, Utils, registerComponent } from 'meteor/vulcan:core';
 
 
 const renderFunction = (func, name) => {

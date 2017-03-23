@@ -1,4 +1,4 @@
-import { registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';

@@ -1,7 +1,7 @@
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting } from 'meteor/vulcan:core';
 
 const defaultFrequency = [1]; // every monday
 const defaultTime = '00:00'; // GMT

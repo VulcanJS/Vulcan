@@ -1,4 +1,4 @@
-import { GraphQLSchema, Utils } from 'meteor/nova:core';
+import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import { mutateItem } from './vote.js';
 
 const voteSchema = `

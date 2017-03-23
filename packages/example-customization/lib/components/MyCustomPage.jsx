@@ -4,7 +4,7 @@ Browse to http://localhost:3000/my-custom-route to see it.
 */
 
 import React from 'react';
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent } from 'meteor/vulcan:core';
 
 const MyCustomPage = () => {
   return (

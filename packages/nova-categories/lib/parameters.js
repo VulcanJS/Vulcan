@@ -1,5 +1,5 @@
 import Categories from './collection.js';
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 import { getCategories } from './schema.js';
 
 // Category Default Sorting by Ascending order (1, 2, 3..)

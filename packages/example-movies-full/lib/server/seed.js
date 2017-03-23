@@ -5,8 +5,8 @@ Seed the database with some dummy content.
 */
 
 import Movies from '../modules/movies/collection.js';
-import Users from 'meteor/nova:users';
-import { newMutation } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { newMutation } from 'meteor/vulcan:core';
 
 const seedData = [
   {

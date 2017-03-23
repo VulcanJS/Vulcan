@@ -1,6 +1,6 @@
-import { Components, getRawComponent, registerComponent, withList, withCurrentUser } from 'meteor/nova:core';
+import { Components, getRawComponent, registerComponent, withList, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
-import Posts from 'meteor/nova:posts';
+import Posts from 'meteor/vulcan:posts';
 import { Alert } from 'react-bootstrap';
 
 const Error = ({error}) => <Alert className="flash-message" bsStyle="danger">{error.message}</Alert>

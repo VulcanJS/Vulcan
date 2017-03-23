@@ -1,7 +1,7 @@
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import Users from 'meteor/nova:users';
-import { Utils } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import Users from 'meteor/vulcan:users';
+import { Utils } from 'meteor/vulcan:core';
 
 export const servePostsApi = (terms) => {
   var posts = [];

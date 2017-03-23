@@ -1,4 +1,4 @@
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema } from 'meteor/vulcan:core';
 
 // add these specific resolvers separately
 const specificResolvers = {

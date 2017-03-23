@@ -8,7 +8,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Movies from '../../modules/movies/collection.js';
-import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/vulcan:core';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={e => {e.preventDefault(); props.loadMore();}}>Load More ({props.count}/{props.totalCount})</a>
 

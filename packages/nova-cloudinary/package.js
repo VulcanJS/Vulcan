@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'nova:cloudinary',
+  name: 'vulcan:cloudinary',
   summary: 'Telescope file upload package.',
   version: "1.2.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -10,8 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:posts@1.2.0',
-    'nova:core@1.2.0'
+    'vulcan:posts@1.2.0',
+    'vulcan:core@1.2.0'
   ]);
 
   api.addFiles([

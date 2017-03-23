@@ -1,5 +1,5 @@
-import Users from 'meteor/nova:users';
-import { Utils } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { Utils } from 'meteor/vulcan:core';
 
 Users.isSubscribedTo = (user, document) => {
 

@@ -1,7 +1,7 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import { Link } from 'react-router';
 
 const UsersProfile = (props) => {

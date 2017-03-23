@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import Users from 'meteor/nova:users';
-import { withCurrentUser, Utils, Components, registerComponent, withMessages } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { withCurrentUser, Utils, Components, registerComponent, withMessages } from 'meteor/vulcan:core';
 import { FormattedMessage, intlShape } from 'react-intl';
 
 const UsersProfileCheck = (props, context) => {

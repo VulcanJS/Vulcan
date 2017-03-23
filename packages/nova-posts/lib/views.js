@@ -1,4 +1,4 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import Posts from './collection.js'
 
 /**

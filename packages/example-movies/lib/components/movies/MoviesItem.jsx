@@ -6,7 +6,7 @@ Wrapped with the "withCurrentUser" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import { registerComponent, ModalTrigger } from 'meteor/nova:core';
+import { registerComponent, ModalTrigger } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';
 import MoviesEditForm from './MoviesEditForm.jsx';

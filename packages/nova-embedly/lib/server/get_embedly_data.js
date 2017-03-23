@@ -1,5 +1,5 @@
-import Posts from "meteor/nova:posts";
-import { addCallback, getSetting } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import { addCallback, getSetting } from 'meteor/vulcan:core';
 
 function getEmbedlyData(url) {
   var data = {};

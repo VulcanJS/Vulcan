@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:forms",
+  name: "vulcan:forms",
   summary: "Form containers for React",
   version: "1.2.0",
   git: "https://github.com/meteor-utilities/react-form-containers.git"
@@ -10,8 +10,8 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.3");
 
   api.use([
-    'nova:core@1.2.0',
-    'nova:users@1.2.0',
+    'vulcan:core@1.2.0',
+    'vulcan:users@1.2.0',
 
     'ecmascript',
     'check',
@@ -31,7 +31,7 @@ Package.onTest(function(api) {
   api.use([
     'ecmascript',
     'tinytest',
-    'nova:forms'
+    'vulcan:forms'
   ]);
 
   api.mainModule('test.js');

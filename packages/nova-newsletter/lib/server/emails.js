@@ -1,6 +1,6 @@
-import NovaEmail from 'meteor/nova:email';
+import NovaEmail from 'meteor/vulcan:email';
 import Newsletter from "../namespace.js";
-import { getSetting } from 'meteor/nova:core';
+import { getSetting } from 'meteor/vulcan:core';
 
 // Extend email objects with server-only properties
 

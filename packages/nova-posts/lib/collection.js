@@ -2,7 +2,7 @@ import schema from './schema.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
 // import views from './views.js';
-import { createCollection } from 'meteor/nova:core';
+import { createCollection } from 'meteor/vulcan:core';
 
 /**
  * @summary The global namespace for Posts.

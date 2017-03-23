@@ -4,7 +4,7 @@ HoC that provides access to flash messages stored in Redux state and actions to 
 
 */
 
-import { getActions, addAction, addReducer } from 'meteor/nova:lib';
+import { getActions, addAction, addReducer } from 'meteor/vulcan:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 

@@ -1,9 +1,9 @@
-import Users from 'meteor/nova:users';
-import NovaEmail from 'meteor/nova:email';
+import Users from 'meteor/vulcan:users';
+import NovaEmail from 'meteor/vulcan:email';
 
 // note: leverage weak dependencies on packages
-const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
-const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
+const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
+const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
 
 const getTestUser = userId => typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
 

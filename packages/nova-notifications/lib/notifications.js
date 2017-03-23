@@ -1,6 +1,6 @@
-import Users from 'meteor/nova:users';
-import NovaEmail from 'meteor/nova:email';
-import { getSetting } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import NovaEmail from 'meteor/vulcan:email';
+import { getSetting } from 'meteor/vulcan:core';
 
 export const createNotification = (userIds, notificationName, data) => {
 

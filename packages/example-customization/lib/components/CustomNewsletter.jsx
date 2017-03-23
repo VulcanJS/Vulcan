@@ -7,7 +7,7 @@ all of the class's other methods (other render
 functions, event handlers, etc.).
 */
 
-import { Components, getRawComponent, replaceComponent }from 'meteor/nova:core';
+import { Components, getRawComponent, replaceComponent }from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage /*, intlShape */ } from 'react-intl';
 

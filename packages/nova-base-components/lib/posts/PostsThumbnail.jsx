@@ -1,6 +1,6 @@
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 
 const PostsThumbnail = ({post}) => {
   return (

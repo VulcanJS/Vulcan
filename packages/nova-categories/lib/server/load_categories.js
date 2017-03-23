@@ -1,5 +1,5 @@
 import Categories from "../collection.js";
-import { Utils, newMutation } from 'meteor/nova:core';
+import { Utils, newMutation } from 'meteor/vulcan:core';
 
 // Load categories from settings, if there are any
 

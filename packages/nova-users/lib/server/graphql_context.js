@@ -1,4 +1,4 @@
-import { GraphQLSchema } from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/vulcan:lib';
 import Users from '../modules.js';
 
 GraphQLSchema.addToContext({ getViewableFields: Users.getViewableFields })

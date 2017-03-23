@@ -1,4 +1,4 @@
-import { Headtags, Utils } from 'meteor/nova:core';
+import { Headtags, Utils } from 'meteor/vulcan:core';
 
 // add permanent <link /> markup
 Headtags.link.push({

@@ -1,5 +1,5 @@
-import { Components, registerComponent, Utils } from 'meteor/nova:core';
-import { withMutation } from 'meteor/nova:core';
+import { Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { withMutation } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
 

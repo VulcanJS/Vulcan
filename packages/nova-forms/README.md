@@ -4,7 +4,7 @@ This package provides a `SmartForm` component that works with the schema extensi
 
 ### Install
 
-`meteor add nova:forms`
+`meteor add vulcan:forms`
 
 (note: package is not published yet)
 

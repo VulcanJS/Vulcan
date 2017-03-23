@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting } from 'meteor/vulcan:core';
 // import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 const Input = FRC.Input;

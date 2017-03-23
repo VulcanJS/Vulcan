@@ -1,4 +1,4 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 /*
   Let's create a new "mods" group that can edit and delete any posts

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Button.jsx';
-import { Components, registerComponent } from 'meteor/nova:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
 
 export class AccountsSocialButtons extends React.Component {

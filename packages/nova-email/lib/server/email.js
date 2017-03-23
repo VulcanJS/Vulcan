@@ -2,7 +2,7 @@ import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting } from 'meteor/nova:lib'; // import from nova:lib because nova:core is not loaded yet
+import { Utils, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 
 NovaEmail.templates = {};
 

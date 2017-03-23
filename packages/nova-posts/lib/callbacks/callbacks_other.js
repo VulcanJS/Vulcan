@@ -1,7 +1,7 @@
 import Posts from '../collection.js'
-import Users from 'meteor/nova:users';
-import { addCallback } from 'meteor/nova:core';
-import Events from 'meteor/nova:events';
+import Users from 'meteor/vulcan:users';
+import { addCallback } from 'meteor/vulcan:core';
+import Events from 'meteor/vulcan:events';
 
 // ------------------------------------- posts.remove.sync -------------------------------- //
 

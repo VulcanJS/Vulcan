@@ -1,10 +1,10 @@
-import { registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 const PostsViews = (props, context) => {
 

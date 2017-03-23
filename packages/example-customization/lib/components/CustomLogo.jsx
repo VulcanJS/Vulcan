@@ -6,8 +6,8 @@ it the same way.
 
 import React from 'react';
 import { IndexLink } from 'react-router';
-import Users from 'meteor/nova:users';
-import { replaceComponent } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { replaceComponent } from 'meteor/vulcan:core';
 
 const CustomLogo = ({logoUrl, siteTitle, currentUser}) => {
   return (

@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'nova:accounts',
+  name: 'vulcan:accounts',
   version: '1.2.0',
   summary: 'Accounts UI for React in Meteor 1.3+',
   git: 'https://github.com/studiointeract/accounts-ui',

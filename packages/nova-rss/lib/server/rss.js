@@ -1,7 +1,7 @@
 import RSS from 'rss';
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import { Utils, getSetting } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 Posts.addView('rss', Posts.views.new); // default to "new" view for RSS feed
 

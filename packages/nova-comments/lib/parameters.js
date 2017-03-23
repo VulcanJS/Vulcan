@@ -1,4 +1,4 @@
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 
 // limit the number of items that can be requested at once
 const CommentsMaxLimit = (parameters, terms) => {

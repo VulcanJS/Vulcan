@@ -5,11 +5,11 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'nova:core',
-    'nova:forms',
-    'nova:routing',
+    'vulcan:core',
+    'vulcan:forms',
+    'vulcan:routing',
 
-    'nova:accounts',
+    'vulcan:accounts',
   ]);
 
   api.addFiles('lib/stylesheets/bootstrap.min.css', 'client');

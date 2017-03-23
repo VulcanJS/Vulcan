@@ -1,6 +1,6 @@
 import React from 'react';
 import { hasPasswordService } from '../../helpers.js';
-import { registerComponent } from 'meteor/nova:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'react-intl';
 
 export class AccountsPasswordOrService extends React.Component {

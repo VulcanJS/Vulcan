@@ -1,4 +1,4 @@
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema } from 'meteor/vulcan:core';
 // import Events from './collection.js';
 import { requestAnalyticsAsync } from './helpers.js';
 

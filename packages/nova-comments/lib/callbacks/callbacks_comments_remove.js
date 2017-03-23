@@ -1,7 +1,7 @@
-import { removeMutation, addCallback } from 'meteor/nova:core';
-import Posts from "meteor/nova:posts";
+import { removeMutation, addCallback } from 'meteor/vulcan:core';
+import Posts from "meteor/vulcan:posts";
 import Comments from '../collection.js';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 const CommentsRemovePostCommenters = (comment, currentUser) => {
   const { userId, postId } = comment;

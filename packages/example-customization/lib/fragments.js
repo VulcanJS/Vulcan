@@ -1,4 +1,4 @@
-import { extendFragment } from 'meteor/nova:core';
+import { extendFragment } from 'meteor/vulcan:core';
 
 extendFragment('PostsList', `
   color # new custom property!

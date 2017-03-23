@@ -1,7 +1,7 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 // note: leverage weak dependencies on packages
-const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
+const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
 
 const notificationsGroup = {
   name: "notifications",

@@ -1,15 +1,15 @@
-# nova:subscribe
+# vulcan:subscribe
 
 This optional package for Nova lets your users subscribe to the different domains (collections) of your application.
 
 ### Dependencies & usage
-Explicit dependency on `nova:users` to enable permissions.
+Explicit dependency on `vulcan:users` to enable permissions.
 
-If `nova:posts` is enabled, your users will be able to subscribe to:
+If `vulcan:posts` is enabled, your users will be able to subscribe to:
 * new posts from users they follow (subscribed to)
 * new comments on a post they are subscribed to
 
-If `nova:categories` is enabled, your users will be able to subscribe to new posts in a category.
+If `vulcan:categories` is enabled, your users will be able to subscribe to new posts in a category.
 
 ### Basic usage
 
@@ -43,7 +43,7 @@ This package export a function called `subscribMutationsGenerator` that takes a 
 
 ```js
 // in my custom package
-import subscribMutationsGenerator from 'meteor/nova:subscribe';
+import subscribMutationsGenerator from 'meteor/vulcan:subscribe';
 import Movies from './collection.js';
 
 // the function creates the code and give it to the graphql server

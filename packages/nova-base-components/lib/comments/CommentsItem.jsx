@@ -1,7 +1,7 @@
-import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import Comments from 'meteor/nova:comments';
+import Comments from 'meteor/vulcan:comments';
 
 class CommentsItem extends Component{
 

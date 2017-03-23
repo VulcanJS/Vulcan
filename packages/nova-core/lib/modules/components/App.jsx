@@ -1,4 +1,4 @@
-import { Components, registerComponent, getSetting, Strings } from 'meteor/nova:lib';
+import { Components, registerComponent, getSetting, Strings } from 'meteor/vulcan:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
 import withCurrentUser from '../containers/withCurrentUser.js';

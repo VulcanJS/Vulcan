@@ -1,4 +1,4 @@
-import { registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';

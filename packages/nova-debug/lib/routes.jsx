@@ -1,4 +1,4 @@
-import { addRoute, getComponent } from 'meteor/nova:core';
+import { addRoute, getComponent } from 'meteor/vulcan:core';
 
 addRoute([
   {name: "cheatsheet", path: "/cheatsheet", component: getComponent("Cheatsheet")},

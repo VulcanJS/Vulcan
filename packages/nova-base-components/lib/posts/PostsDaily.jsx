@@ -1,4 +1,4 @@
-import { Components, registerComponent, getSetting } from 'meteor/nova:core';
+import { Components, registerComponent, getSetting } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 

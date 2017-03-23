@@ -1,6 +1,6 @@
 import marked from 'marked';
 import Posts from '../collection.js'
-import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
+import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/vulcan:core';
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //

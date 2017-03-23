@@ -1,7 +1,7 @@
 import Newsletter from "../namespace.js";
 import MailChimpList from "./mailchimp/mailchimp_list.js";
-import Users from 'meteor/nova:users';
-import { GraphQLSchema, Utils } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 
 GraphQLSchema.addMutation('sendNewsletter : JSON');
 GraphQLSchema.addMutation('testNewsletter : JSON');

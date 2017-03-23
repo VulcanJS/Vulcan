@@ -1,8 +1,8 @@
-import Users from "meteor/nova:users";
+import Users from "meteor/vulcan:users";
 
 // note: leverage weak dependencies on packages
-const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
-const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
+const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
+const Categories = Package['vulcan:categories'] ? Package['vulcan:categories'].default : null;
 
 Users.addField([
   {
@@ -40,7 +40,7 @@ Users.addField([
   }
 ]);
 
-// check if nova:posts exists, if yes, add the custom fields to Posts
+// check if vulcan:posts exists, if yes, add the custom fields to Posts
 if (!!Posts) {
 
   Posts.addField([
@@ -72,7 +72,7 @@ if (!!Posts) {
 
 }
 
-// check if nova:categories exists, if yes, add the custom fields to Categories
+// check if vulcan:categories exists, if yes, add the custom fields to Categories
 if (!!Categories) {
 
   Categories.addField([

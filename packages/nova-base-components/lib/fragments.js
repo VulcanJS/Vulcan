@@ -1,11 +1,11 @@
-import { registerFragment, getFragment } from 'meteor/nova:core';
+import { registerFragment, getFragment } from 'meteor/vulcan:core';
 
 // ------------------------------ Vote ------------------------------ //
 
 // note: fragment used by default on the UsersProfile fragment
 registerFragment(`
   fragment VotedItem on Vote {
-    # nova:voting
+    # vulcan:voting
     itemId
     power
     votedAt
@@ -17,7 +17,7 @@ registerFragment(`
 // note: fragment used by default on UsersProfile, PostsList & CommentsList fragments
 registerFragment(`
   fragment UsersMinimumInfo on User {
-    # nova:users
+    # vulcan:users
     _id
     slug
     username
@@ -28,7 +28,7 @@ registerFragment(`
 
 registerFragment(`
   fragment UsersProfile on User {
-    # nova:users
+    # vulcan:users
     ...UsersMinimumInfo
     createdAt
     isAdmin
@@ -38,16 +38,16 @@ registerFragment(`
     website
     groups
     karma
-    # nova:posts
+    # vulcan:posts
     postCount
-    # nova:comments
+    # vulcan:comments
     commentCount
-    # nova:newsletter
+    # vulcan:newsletter
     newsletter_subscribeToNewsletter
-    # nova:notifications
+    # vulcan:notifications
     notifications_users
     notifications_posts
-    # nova:voting
+    # vulcan:voting
     downvotedComments {
       ...VotedItem
     }
@@ -68,7 +68,7 @@ registerFragment(`
 // note: fragment used by default on CategoriesList & PostsList fragments
 registerFragment(`
   fragment CategoriesMinimumInfo on Category {
-    # nova:categories
+    # vulcan:categories
     _id
     name
     slug
@@ -77,7 +77,7 @@ registerFragment(`
 
 registerFragment(`
   fragment CategoriesList on Category {
-    # nova:categories
+    # vulcan:categories
     ...CategoriesMinimumInfo
     description
     order
@@ -93,7 +93,7 @@ registerFragment(`
 
 registerFragment(`
   fragment PostsList on Post {
-    # nova:posts
+    # vulcan:posts
     _id
     title
     url
@@ -107,23 +107,23 @@ registerFragment(`
     excerpt
     viewCount
     clickCount
-    # nova:users
+    # vulcan:users
     userId
     user {
       ...UsersMinimumInfo
     }
-    # nova:embedly
+    # vulcan:embedly
     thumbnailUrl
-    # nova:categories
+    # vulcan:categories
     categories {
       ...CategoriesMinimumInfo
     }
-    # nova:comments
+    # vulcan:comments
     commentCount
     commenters {
       ...UsersMinimumInfo
     }
-    # nova:voting
+    # vulcan:voting
     upvoters {
       _id
     }
@@ -148,7 +148,7 @@ registerFragment(`
 
 registerFragment(`
   fragment CommentsList on Comment {
-    # nova:comments
+    # vulcan:comments
     _id
     postId
     parentCommentId
@@ -156,12 +156,12 @@ registerFragment(`
     body
     htmlBody
     postedAt
-    # nova:users
+    # vulcan:users
     userId
     user {
       ...UsersMinimumInfo
     }
-    # nova:posts
+    # vulcan:posts
     post {
       _id
       commentCount
@@ -169,7 +169,7 @@ registerFragment(`
         ...UsersMinimumInfo
       }
     }
-    # nova:voting
+    # vulcan:voting
     upvoters {
       _id
     }

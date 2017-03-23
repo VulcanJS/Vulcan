@@ -1,6 +1,6 @@
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 import Categories from "./collection.js";
-import { addCallback, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/vulcan:core';
 
 // add callback that adds categories CSS classes
 function addCategoryClass (postClass, post) {

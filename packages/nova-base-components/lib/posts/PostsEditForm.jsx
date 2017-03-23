@@ -1,7 +1,7 @@
-import { Components, registerComponent, getFragment, withMessages } from 'meteor/nova:core';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 import { withRouter } from 'react-router'
 
 class PostsEditForm extends Component {

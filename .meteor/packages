@@ -3,36 +3,36 @@
 
 ############ Core Packages ############
 
-nova:core                       # core components and wrappers
-nova:forms                      # auto-generated forms
-nova:routing                    # routing and server-side rendering
-nova:users                      # user management and permissions
+vulcan:core                       # core components and wrappers
+vulcan:forms                      # auto-generated forms
+vulcan:routing                    # routing and server-side rendering
+vulcan:users                      # user management and permissions
 
 ############ Features Packages ############
 
-# nova:email
-# nova:posts
-# nova:comments
-# nova:newsletter
-# nova:notifications
-# nova:getting-started
-# nova:categories
-# nova:voting
-# nova:events
-# nova:embedly
-# nova:api
-# nova:rss
-# nova:subscribe
+# vulcan:email
+# vulcan:posts
+# vulcan:comments
+# vulcan:newsletter
+# vulcan:notifications
+# vulcan:getting-started
+# vulcan:categories
+# vulcan:voting
+# vulcan:events
+# vulcan:embedly
+# vulcan:api
+# vulcan:rss
+# vulcan:subscribe
 
 ############ Theme Packages ############
 
-# nova:base-components        # default ui components
-# nova:base-styles            # default styling
-# nova:email-templates        # default email templates for notifications
+# vulcan:base-components        # default ui components
+# vulcan:base-styles            # default styling
+# vulcan:email-templates        # default email templates for notifications
 
 ############ Language Packages ############
 
-nova:i18n-en-us               # default language translation
+vulcan:i18n-en-us               # default language translation
 
 ############ Accounts Packages ############
 

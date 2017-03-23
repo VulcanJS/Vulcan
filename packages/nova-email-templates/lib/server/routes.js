@@ -1,6 +1,6 @@
 import { Picker } from 'meteor/meteorhacks:picker';
 
-import NovaEmail from 'meteor/nova:email';
+import NovaEmail from 'meteor/vulcan:email';
 
 Meteor.startup(function () {
 

@@ -4,7 +4,7 @@ Register the two GraphQL fragments used to query for data
 
 */
 
-import { registerFragment } from 'meteor/nova:core';
+import { registerFragment } from 'meteor/vulcan:core';
 
 registerFragment(`
   fragment MoviesItemFragment on Movie {

@@ -1,6 +1,6 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import MailChimp from './mailchimp_api.js';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting } from 'meteor/vulcan:core';
 
 const MailChimpList = {};
 

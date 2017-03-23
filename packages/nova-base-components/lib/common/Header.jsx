@@ -1,5 +1,5 @@
 import React from 'react';
-import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/nova:core';
+import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/vulcan:core';
 
 const Header = (props, context) => {
   

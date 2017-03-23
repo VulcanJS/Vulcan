@@ -1,6 +1,6 @@
 import {Inject} from 'meteor/meteorhacks:inject-initial';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
-import { getSetting } from 'meteor/nova:lib';
+import { getSetting } from 'meteor/vulcan:lib';
 
 if (getSetting('mailUrl')) {
   process.env.MAIL_URL = getSetting('mailUrl');

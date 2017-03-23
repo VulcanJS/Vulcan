@@ -1,5 +1,5 @@
-import { Components, registerComponent, withDocument, withCurrentUser, getActions, withMutation } from 'meteor/nova:core';
-import Posts from 'meteor/nova:posts';
+import { Components, registerComponent, withDocument, withCurrentUser, getActions, withMutation } from 'meteor/vulcan:core';
+import Posts from 'meteor/vulcan:posts';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

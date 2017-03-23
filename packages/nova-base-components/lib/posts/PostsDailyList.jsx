@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
-import Posts from 'meteor/nova:posts';
-import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
+import Posts from 'meteor/vulcan:posts';
+import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 
 class PostsDailyList extends Component{
 

@@ -1,5 +1,5 @@
 import Comments from '../collection.js';
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 
 function UsersRemoveDeleteComments (user, options) {
   if (options.deleteComments) {

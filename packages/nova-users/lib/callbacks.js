@@ -1,7 +1,7 @@
 import Users from './collection.js';
 import marked from 'marked';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import { addCallback, Utils, runCallbacksAsync } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { addCallback, Utils, runCallbacksAsync } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -82,7 +82,7 @@ function hasCompletedProfile (user) {
 }
 addCallback("users.profileCompleted.sync", hasCompletedProfile);
 
-// remove this to get rid of dependency on nova:email
+// remove this to get rid of dependency on vulcan:email
 
 // function usersNewAdminUserCreationNotification (user) {
 //   // send notifications to admins

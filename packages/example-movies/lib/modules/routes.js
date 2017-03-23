@@ -1,4 +1,4 @@
-import { addRoute } from 'meteor/nova:core';
+import { addRoute } from 'meteor/vulcan:core';
 
 import MoviesList from '../components/movies/MoviesList.jsx';
 

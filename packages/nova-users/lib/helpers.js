@@ -1,4 +1,4 @@
-import { Utils } from 'meteor/nova:lib';
+import { Utils } from 'meteor/vulcan:lib';
 import Users from './collection.js';
 import moment from 'moment';
 import _ from 'underscore';

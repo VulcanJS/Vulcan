@@ -1,7 +1,7 @@
 import moment from 'moment';
 import Posts from './collection.js';
-import Users from 'meteor/nova:users';
-import { Utils, getSetting } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 //////////////////
 // Link Helpers //

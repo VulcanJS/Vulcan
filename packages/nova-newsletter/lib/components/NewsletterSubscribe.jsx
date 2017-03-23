@@ -1,4 +1,4 @@
-import { Components, withMessages } from 'meteor/nova:core';
+import { Components, withMessages } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 

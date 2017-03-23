@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import { Components, Utils } from 'meteor/nova:core';
+import { Components, Utils } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';

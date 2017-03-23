@@ -1,7 +1,7 @@
-// import Users from 'meteor/nova:users';
+// import Users from 'meteor/vulcan:users';
 // 
-// if (typeof Package['nova:posts'] !== "undefined") {
-//   import Posts from "meteor/nova:posts";
+// if (typeof Package['vulcan:posts'] !== "undefined") {
+//   import Posts from "meteor/vulcan:posts";
 // 
 //   Posts.views.add("userSubscribedPosts", function (terms) {
 //     var user = Users.findOne(terms.userId),

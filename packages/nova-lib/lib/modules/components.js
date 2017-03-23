@@ -1,6 +1,6 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
-export const Components = {}; // will be populated on startup (see nova:routing)
+export const Components = {}; // will be populated on startup (see vulcan:routing)
 export const ComponentsTable = {} // storage for infos about components
 
 /**

@@ -1,5 +1,5 @@
-import { getSetting } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
+import { getSetting } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
 Users.avatar.setOptions({

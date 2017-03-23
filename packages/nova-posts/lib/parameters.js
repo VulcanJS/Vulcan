@@ -1,7 +1,7 @@
 import { Injected } from 'meteor/meteorhacks:inject-initial';
 import moment from 'moment';
 import escapeStringRegexp from 'escape-string-regexp';
-import { addCallback, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/vulcan:core';
 
 // Add "after" and "before" properties to terms which can be used to limit posts in time.
 function addTimeParameter (parameters, terms, apolloClient) {

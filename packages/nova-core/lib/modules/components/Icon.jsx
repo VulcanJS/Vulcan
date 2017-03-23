@@ -1,4 +1,4 @@
-import { registerComponent, Utils } from 'meteor/nova:lib';
+import { registerComponent, Utils } from 'meteor/vulcan:lib';
 import React from 'react';
 
 const Icon = ({ name, iconClass }) => {

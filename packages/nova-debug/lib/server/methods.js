@@ -1,6 +1,6 @@
-import NovaEmail from 'meteor/nova:email';
-import Users from 'meteor/nova:users';
-import { getSetting, Utils } from 'meteor/nova:core';
+import NovaEmail from 'meteor/vulcan:email';
+import Users from 'meteor/vulcan:users';
+import { getSetting, Utils } from 'meteor/vulcan:core';
 
 Meteor.methods({
   "email.test": function (emailName) {

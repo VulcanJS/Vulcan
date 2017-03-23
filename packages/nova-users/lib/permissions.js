@@ -1,5 +1,5 @@
 import Users from './collection.js';
-import { Utils } from 'meteor/nova:lib';
+import { Utils } from 'meteor/vulcan:lib';
 
 /**
  * @summary Users.groups object

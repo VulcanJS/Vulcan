@@ -1,12 +1,12 @@
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import Users from 'meteor/nova:users';
-import Categories from "meteor/nova:categories";
-import NovaEmail from 'meteor/nova:email';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import Users from 'meteor/vulcan:users';
+import Categories from "meteor/vulcan:categories";
+import NovaEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
-import { Utils, getSetting } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.addView("newsletter", terms => ({

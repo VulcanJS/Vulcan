@@ -1,6 +1,6 @@
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import { getSetting } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import { getSetting } from 'meteor/vulcan:core';
 import { updateScore } from './scoring.js';
 
 // TODO use a node cron or at least synced-cron

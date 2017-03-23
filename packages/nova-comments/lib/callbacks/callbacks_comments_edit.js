@@ -1,5 +1,5 @@
 import marked from 'marked';
-import { addCallback, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/vulcan:core';
 
 // ------------------------------------- comments.edit.sync -------------------------------- //
 

@@ -3,7 +3,7 @@ Let's add a callback to the new post method that
 appends a random emoji to the newly submitted post's title.
 */
 
-import { addCallback } from 'meteor/nova:core';
+import { addCallback } from 'meteor/vulcan:core';
 
 function PostsNewAddRandomEmoji (post, user) {
 

@@ -1,7 +1,7 @@
-import { addCallback, runCallbacksAsync, Utils } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
-import Posts from 'meteor/nova:posts';
-import Comments from 'meteor/nova:comments';
+import { addCallback, runCallbacksAsync, Utils } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
+import Posts from 'meteor/vulcan:posts';
+import Comments from 'meteor/vulcan:comments';
 import { operateOnItem, getVotePower } from './vote.js';
 import { updateScore } from './scoring.js';
 

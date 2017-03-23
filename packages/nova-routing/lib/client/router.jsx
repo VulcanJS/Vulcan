@@ -4,7 +4,7 @@ import { Router, browserHistory } from 'react-router';
 
 import { Meteor } from 'meteor/meteor';
 
-import { InjectData } from 'meteor/nova:core';
+import { InjectData } from 'meteor/vulcan:core';
 
 export const RouterClient = {
   run(routes, options) {

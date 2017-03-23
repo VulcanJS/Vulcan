@@ -1,5 +1,5 @@
-import Posts from "meteor/nova:posts";
-import Users from "meteor/nova:users";
+import Posts from "meteor/vulcan:posts";
+import Users from "meteor/vulcan:users";
 
 Users.addField([
   /**

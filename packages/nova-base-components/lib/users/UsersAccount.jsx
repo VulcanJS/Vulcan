@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
 
 const UsersAccount = (props, context) => {

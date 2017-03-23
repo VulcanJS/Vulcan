@@ -10,7 +10,7 @@ import {
   addRoute,
   Routes, populateComponentsApp, populateRoutesApp,
   getRenderContext,
-} from 'meteor/nova:core';
+} from 'meteor/vulcan:core';
 
 import { RouterServer } from './router.jsx';
 

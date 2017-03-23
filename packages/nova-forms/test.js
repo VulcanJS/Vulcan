@@ -1,7 +1,7 @@
 import { Tinytest } from "meteor/tinytest";
-import FormWrapper from 'meteor/nova:forms';
+import FormWrapper from 'meteor/vulcan:forms';
 
-Tinytest.add('nova:forms - initialize', function (test) {
+Tinytest.add('vulcan:forms - initialize', function (test) {
     // because of compose()
     test.equal('GraphQL', FormWrapper.name);
 });

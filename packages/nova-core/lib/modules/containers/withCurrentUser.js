@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getFragment } from 'meteor/nova:lib';
+import { getFragment } from 'meteor/vulcan:lib';
 import { graphql } from 'react-apollo';   
 import gql from 'graphql-tag';    
 

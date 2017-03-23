@@ -1,6 +1,6 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
-import { runCallbacks, runCallbacksAsync } from 'meteor/nova:core';
+import { runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import update from 'immutability-helper';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody

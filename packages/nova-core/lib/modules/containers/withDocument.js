@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName } from 'meteor/nova:core';
+import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
   

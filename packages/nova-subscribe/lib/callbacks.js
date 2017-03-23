@@ -1,14 +1,14 @@
-import { createNotification } from 'meteor/nova:notifications';
-import Users from 'meteor/nova:users';
-import { addCallback } from 'meteor/nova:core';
+import { createNotification } from 'meteor/vulcan:notifications';
+import Users from 'meteor/vulcan:users';
+import { addCallback } from 'meteor/vulcan:core';
 
 // TODO: don't import these callbacks server-side (reduce bundle size of what's sent to the client)
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
 
 // note: leverage weak dependencies on packages
-const Comments = Package['nova:comments'] ? Package['nova:comments'].default : null;
-const Posts = Package['nova:posts'] ? Package['nova:posts'].default : null;
-const Categories = Package['nova:categories'] ? Package['nova:categories'].default : null;
+const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
+const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
+const Categories = Package['vulcan:categories'] ? Package['vulcan:categories'].default : null;
 
 
 /**

@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:routing",
+  name: "vulcan:routing",
   summary: "Nova router package",
   version: "1.2.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     // Nova packages
-    'nova:core@1.2.0',
+    'vulcan:core@1.2.0',
   ]);
 
   api.mainModule('lib/server/main.js', 'server');

@@ -7,7 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React, { PropTypes, Component } from 'react';
 import Movies from '../../modules/movies/collection.js';
-import { withDocument, registerComponent } from 'meteor/nova:core';
+import { withDocument, registerComponent } from 'meteor/vulcan:core';
 
 const MoviesDetails = props => {
   const movie = props.document;

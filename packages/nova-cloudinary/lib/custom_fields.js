@@ -1,4 +1,4 @@
-import Posts from "meteor/nova:posts";
+import Posts from "meteor/vulcan:posts";
 
 Posts.addField([
   {

@@ -27,10 +27,10 @@ component is also added to wait for withDocument's loading prop to be false)
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
-import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/vulcan:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
-import { withDocument } from 'meteor/nova:core';
+import { withDocument } from 'meteor/vulcan:core';
 
 class FormWrapper extends Component{
 

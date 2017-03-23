@@ -1,7 +1,7 @@
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import Users from 'meteor/nova:users';
-import { addCallback } from 'meteor/nova:core';
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import Users from 'meteor/vulcan:users';
+import { addCallback } from 'meteor/vulcan:core';
 
 Users.addField({
   fieldName: 'isDummy',

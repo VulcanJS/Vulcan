@@ -1,5 +1,5 @@
 import Analytics from 'analytics-node';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting } from 'meteor/vulcan:core';
 import Events from './collection.js';
 /*
 

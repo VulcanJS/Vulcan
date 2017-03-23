@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { getSetting, registerComponent, Components } from 'meteor/nova:core';
+import { getSetting, registerComponent, Components } from 'meteor/vulcan:core';
 
 const renderSetting = key => (
   <tr key={key}>

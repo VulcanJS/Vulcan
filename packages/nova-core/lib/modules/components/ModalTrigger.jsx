@@ -1,4 +1,4 @@
-import { registerComponent } from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/vulcan:lib';
 import React, { PropTypes, Component } from 'react';
 import { Modal } from 'react-bootstrap';
 

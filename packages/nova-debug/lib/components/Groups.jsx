@@ -1,6 +1,6 @@
 import React from 'react';
-import { registerComponent } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
+import { registerComponent } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 
 const Group = ({name, actions}) => {
   return (

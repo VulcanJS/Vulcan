@@ -8,7 +8,7 @@ Three resolvers are defined:
 
 */
 
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema } from 'meteor/vulcan:core';
 
 // add the "user" resolver for the Movie type separately
 const movieResolver = {

@@ -1,4 +1,4 @@
-import { registerFragment } from 'meteor/nova:lib';
+import { registerFragment } from 'meteor/vulcan:lib';
 
 // ------------------------------ Vote ------------------------------ //
 

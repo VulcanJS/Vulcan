@@ -1,5 +1,5 @@
 import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail } from './get_embedly_data.js';
-import { GraphQLSchema, getSetting } from 'meteor/nova:core';
+import { GraphQLSchema, getSetting } from 'meteor/vulcan:core';
 
 // note: not used since the type of the query below is JSON
 // const embedlyDataSchema = `

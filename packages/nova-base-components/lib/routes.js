@@ -1,4 +1,4 @@
-import { addRoute } from 'meteor/nova:core';
+import { addRoute } from 'meteor/vulcan:core';
 
 addRoute([
   {name:'posts.list',     path: '/',                    componentName: 'PostsHome'}, // index route
