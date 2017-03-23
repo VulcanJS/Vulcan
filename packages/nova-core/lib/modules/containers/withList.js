@@ -37,20 +37,19 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, getFragment, getFragmentName } from 'meteor/nova:core';
+import { getFragment, getFragmentName } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
 import { withApollo } from 'react-apollo';
 
 const withList = (options) => {
 
-  const { collection, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
+  const { collection, limit = 10, pollInterval = 20000 } = options,
         queryName = options.queryName || `${collection._name}ListQuery`,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
-
 
   return compose(
 

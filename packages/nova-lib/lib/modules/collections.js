@@ -193,7 +193,7 @@ export const createCollection = options => {
     parameters = Utils.deepExtend(true, parameters, {options: {sort: {createdAt: -1, _id: -1}}});
 
     // limit number of items to 200
-    parameters.options.limit = (parameters.options.limit < 1 || parameters.options.limit > 200) ? 200 : parameters.options.limit;
+    parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
 
     // limit fields to viewable fields
     if (currentUser) {
