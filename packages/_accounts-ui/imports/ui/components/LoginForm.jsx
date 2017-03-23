@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
-import { Components, registerComponent } from 'meteor/nova:core';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
+import { intlShape } from 'react-intl';
+import { withApollo } from 'react-apollo';
 
 import {
   STATES,
@@ -28,19 +29,25 @@ export class AccountsLoginForm extends Tracker.Component {
       console.warn('Do not force the state to SIGN_IN on Accounts.ui.LoginForm, it will make it impossible to reset password in your app, this state is also the default state if logged out, so no need to force it.');
     }
 
-    const user = typeof props.user !== 'undefined'
-      ? props.user : Accounts.user();
+    const currentUser = props.currentUser;
+
+    const resetStoreAndThen = hook => {
+      return () => {
+        props.client.resetStore();
+        hook();
+      }
+    }
 
     // Set inital state.
     this.state = {
       messages: [],
       waiting: true,
-      formState: props.formState ? props.formState : (user ? STATES.PROFILE : STATES.SIGN_IN),
+      formState: props.formState ? props.formState : (currentUser ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
-      onSignedInHook: props.onSignedInHook || Accounts.ui._options.onSignedInHook,
-      onSignedOutHook: props.onSignedOutHook || Accounts.ui._options.onSignedOutHook,
+      onSignedInHook: resetStoreAndThen(props.onSignedInHook || Accounts.ui._options.onSignedInHook),
+      onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || Accounts.ui._options.onSignedOutHook),
       onPreSignUpHook: props.onPreSignUpHook || Accounts.ui._options.onPreSignUpHook,
-      onPostSignUpHook: props.onPostSignUpHook || Accounts.ui._options.onPostSignUpHook,
+      onPostSignUpHook: resetStoreAndThen(props.onPostSignUpHook || Accounts.ui._options.onPostSignUpHook),
     };
   }
 
@@ -79,7 +86,7 @@ export class AccountsLoginForm extends Tracker.Component {
       // Add the services list to the user.
       this.subscribe('servicesList');
       this.setState({
-        user: Accounts.user(),
+        currentUser: Accounts.user(),
         waiting: !Accounts.loginServicesConfigured()
       });
 
@@ -96,17 +103,17 @@ export class AccountsLoginForm extends Tracker.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (typeof this.props.user !== 'undefined') {
-      if (!prevProps.user !== !this.props.user) {
+    if (typeof this.props.currentUser !== 'undefined') {
+      if (!prevProps.currentUser !== !this.props.currentUser) {
         this.setState({
-          formState: this.props.user ? STATES.PROFILE : STATES.SIGN_IN
+          formState: this.props.currentUser ? STATES.PROFILE : STATES.SIGN_IN
         });
       }
 
       if (this.state.formState == STATES.PROFILE) {
-        if (!this.props.user && this.state.messages.length === 0) {
+        if (!this.props.currentUser && this.state.messages.length === 0) {
           this.showMessage(loggingInMessage);
-        } else if (this.props.user &&
+        } else if (this.props.currentUser &&
           this.state.messages.find(({ message }) => message === loggingInMessage)) {
           this.clearMessage(loggingInMessage);
         }
@@ -115,9 +122,9 @@ export class AccountsLoginForm extends Tracker.Component {
         this.clearMessage(loggingInMessage);
       }
     } else {
-      if (!prevState.user !== !this.state.user) {
+      if (!prevState.currentUser !== !this.state.currentUser) {
         this.setState({
-          formState: this.state.user ? STATES.PROFILE : STATES.SIGN_IN
+          formState: this.state.currentUser ? STATES.PROFILE : STATES.SIGN_IN
         });
       }
     }
@@ -151,7 +158,7 @@ export class AccountsLoginForm extends Tracker.Component {
       hint: this.context.intl.formatMessage({id: 'accounts.enter_username_or_email'}),
       label: this.context.intl.formatMessage({id: 'accounts.username_or_email'}),
       required: true,
-      defaultValue: this.state.username || "",
+      defaultValue: this.state.currentUsername || "",
       onChange: this.handleChange.bind(this, 'usernameOrEmail'),
       message: this.getMessageForField('usernameOrEmail'),
     };
@@ -163,7 +170,7 @@ export class AccountsLoginForm extends Tracker.Component {
       hint: this.context.intl.formatMessage({id: 'accounts.enter_username'}),
       label: this.context.intl.formatMessage({id: 'accounts.username'}),
       required: true,
-      defaultValue: this.state.username || "",
+      defaultValue: this.state.currentUsername || "",
       onChange: this.handleChange.bind(this, 'username'),
       message: this.getMessageForField('username'),
     };
@@ -313,10 +320,10 @@ export class AccountsLoginForm extends Tracker.Component {
     } = this.props;
     const { formState, waiting } = this.state;
     let loginButtons = [];
-    const user = typeof this.props.user !== 'undefined'
-      ? this.props.user : this.state.user;
+    const currentUser = typeof this.props.currentUser !== 'undefined'
+      ? this.props.currentUser : this.state.currentUser;
 
-    if (user && formState == STATES.PROFILE) {
+    if (currentUser && formState == STATES.PROFILE) {
       loginButtons.push({
         id: 'signOut',
         label: this.context.intl.formatMessage({id: 'accounts.sign_out'}),
@@ -355,9 +362,9 @@ export class AccountsLoginForm extends Tracker.Component {
       });
     }
 
-    if (user
+    if (currentUser
       && formState == STATES.PROFILE
-      && (user.services && 'password' in user.services)) {
+      && (currentUser.services && 'password' in currentUser.services)) {
       loginButtons.push({
         id: 'switchToChangePassword',
         label: this.context.intl.formatMessage({id: 'accounts.change_password'}),
@@ -651,7 +658,7 @@ export class AccountsLoginForm extends Tracker.Component {
   }
 
   oauthSignIn(serviceName) {
-    const { formState, waiting, user, onSubmitHook } = this.state;
+    const { formState, waiting, currentUser, onSubmitHook } = this.state;
     //Thanks Josh Owens for this one.
     function capitalService() {
       return serviceName.charAt(0).toUpperCase() + serviceName.slice(1);
@@ -751,8 +758,8 @@ export class AccountsLoginForm extends Tracker.Component {
         else {
           onSubmitHook(null, formState);
           this.setState({ formState: STATES.PROFILE, password: null });
-          let user = Accounts.user();
-          loginResultCallback(this.state.onPostSignUpHook.bind(this, _options, user));
+          let currentUser = Accounts.user();
+          loginResultCallback(this.state.onPostSignUpHook.bind(this, _options, currentUser));
           this.clearDefaultFieldValues();
         }
 
@@ -924,4 +931,4 @@ AccountsLoginForm.contextTypes = {
   intl: intlShape
 }
 
-registerComponent('AccountsLoginForm', AccountsLoginForm);
+registerComponent('AccountsLoginForm', AccountsLoginForm, withCurrentUser, withApollo);

@@ -11,7 +11,7 @@ const MoviesWrapper = () =>
   <div className="wrapper framework-demo">
 
     <div className="header">
-      <Components.AccountsForm />
+      <Components.AccountsLoginForm />
     </div>        
     
     <div className="main">

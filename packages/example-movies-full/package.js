@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'framework-demo',
+  name: 'example-movies-full',
 });
 
 Package.onUse(function (api) {
@@ -9,10 +9,10 @@ Package.onUse(function (api) {
     'nova:forms',
     'nova:routing',
 
-    'std:accounts-ui@1.2.19',
+    'nova:accounts',
   ]);
 
-  api.addFiles('lib/stylesheets/bootstrap.css', 'client');
+  api.addFiles('lib/stylesheets/bootstrap.min.css', 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

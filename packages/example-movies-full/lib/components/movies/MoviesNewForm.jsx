@@ -5,7 +5,7 @@ A component to configure the "new movie" form.
 */
 
 import React, { PropTypes, Component } from 'react';
-import Movies from '../modules/collection.js';
+import Movies from '../../modules/movies/collection.js';
 import { Components, registerComponent, withMessages, getFragment } from 'meteor/nova:core';
 
 const MoviesNewForm = props =>

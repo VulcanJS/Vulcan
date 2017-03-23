@@ -6,20 +6,23 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 */
 
 import React, { PropTypes, Component } from 'react';
-import { withList, withCurrentUser, Loading } from 'meteor/nova:core';
+import { Components, withList, withCurrentUser, Loading } from 'meteor/nova:core';
 
 import Movies from '../../modules/movies/collection.js';
 import MoviesItem from './MoviesItem.jsx';
 import MoviesNewForm from './MoviesNewForm.jsx';
-import AccountsForm from '../AccountsForm.jsx';
 
-const MoviesList = ({results, currentUser, loading, loadMore, count, totalCount}) => 
+const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   
   <div style={{maxWidth: '500px', margin: 'auto'}}>
 
     {/* user accounts */}
 
-    <AccountsForm />
+    <div style={{padding: '20px 0', marginBottom: '20px', borderBottom: '1px solid #ccc'}}>
+    
+      <Components.AccountsLoginForm />
+    
+    </div>
 
     {loading ? 
 
@@ -50,6 +53,7 @@ const MoviesList = ({results, currentUser, loading, loadMore, count, totalCount}
 const options = {
   collection: Movies,
   fragmentName: 'MoviesItemFragment',
+  limit: 5
 };
 
 export default withList(options)(withCurrentUser(MoviesList))

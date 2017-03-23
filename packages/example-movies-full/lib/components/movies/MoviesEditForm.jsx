@@ -7,7 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent, getFragment } from "meteor/nova:core";
-import Movies from '../modules/collection.js';
+import Movies from '../../modules/movies/collection.js';
 
 const MoviesEditForm = props =>
   <Components.SmartForm 

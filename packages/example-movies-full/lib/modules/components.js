@@ -1,7 +1,7 @@
 import '../components/AccountsForm.jsx';
-import '../components/MoviesDetails.jsx';
-import '../components/MoviesEditForm.jsx';
-import '../components/MoviesItem.jsx';
-import '../components/MoviesList.jsx';
-import '../components/MoviesNewForm.jsx';
-import '../components/MoviesWrapper.jsx';
+import '../components/movies/MoviesDetails.jsx';
+import '../components/movies/MoviesEditForm.jsx';
+import '../components/movies/MoviesItem.jsx';
+import '../components/movies/MoviesList.jsx';
+import '../components/movies/MoviesNewForm.jsx';
+import '../components/movies/MoviesWrapper.jsx';

@@ -9,7 +9,7 @@ Package.onUse(function (api) {
     'nova:forms',
     'nova:routing',
 
-    'std:accounts-ui@1.2.19',
+    'nova:accounts',
   ]);
 
   api.addFiles('lib/stylesheets/bootstrap.min.css');

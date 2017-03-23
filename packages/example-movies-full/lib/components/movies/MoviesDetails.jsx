@@ -6,7 +6,7 @@ Wrapped with the "withDocument" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import Movies from '../modules/collection.js';
+import Movies from '../../modules/movies/collection.js';
 import { withDocument, registerComponent } from 'meteor/nova:core';
 
 const MoviesDetails = props => {

@@ -1,6 +1,6 @@
 Package.describe({
-  name: 'std:accounts-ui',
-  version: '1.2.19',
+  name: 'nova:accounts',
+  version: '1.2.0',
   summary: 'Accounts UI for React in Meteor 1.3+',
   git: 'https://github.com/studiointeract/accounts-ui',
   documentation: 'README.md'
