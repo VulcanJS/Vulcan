@@ -13,7 +13,7 @@ const MoviesEditForm = props =>
   <Components.SmartForm 
     collection={Movies} 
     documentId={props.documentId}
-    mutationFragment={getFragment('MoviesItemFragment')}
+    mutationFragment={getFragment('MoviesDetailsFragment')}
     showRemove={true}
     successCallback={document => {
       props.closeModal();
