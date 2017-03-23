@@ -1,5 +1,5 @@
 Package.describe({
-  name: "customization-demo"
+  name: "example-customization"
 });
 
 Package.onUse( function(api) {
