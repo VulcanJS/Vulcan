@@ -4,7 +4,7 @@ import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { KEY_PREFIX } from '../../login_session.js';
-import './Form.jsx';
+import { Components, registerComponent } from 'meteor/nova:core';
 
 import {
   STATES,
@@ -20,7 +20,7 @@ import {
 
 const loggingInMessage = 'Logging In...';
 
-export class LoginForm extends Tracker.Component {
+export class AccountsLoginForm extends Tracker.Component {
   constructor(props) {
     super(props);
 
@@ -893,19 +893,6 @@ export class LoginForm extends Tracker.Component {
     this.setState({ messages: [] });
   }
 
-  componentWillMount() {
-    // XXX Check for backwards compatibility.
-    if (Meteor.isClient) {
-      const container = document.createElement('div');
-      ReactDOM.render(<Accounts.ui.Field message="test" />, container);
-      if (container.getElementsByClassName('message').length == 0) {
-        // Found backwards compatibility issue with 1.3.x
-        console.warn(`Implementations of Accounts.ui.Field must render message in v1.2.11.
-          https://github.com/studiointeract/accounts-ui/#deprecations`);
-      }
-    }
-  }
-
   componentWillUnmount() {
     if (this.hideMessageTimout) {
       clearTimeout(this.hideMessageTimout);
@@ -922,7 +909,7 @@ export class LoginForm extends Tracker.Component {
     };
 
     return (
-      <Accounts.ui.Form
+      <Components.AccountsForm
         oauthServices={this.oauthButtons()}
         fields={this.fields()} 
         buttons={this.buttons()}
@@ -933,4 +920,4 @@ export class LoginForm extends Tracker.Component {
   }
 }
 
-Accounts.ui.LoginForm = LoginForm;
+registerComponent('AccountsLoginForm', AccountsLoginForm);

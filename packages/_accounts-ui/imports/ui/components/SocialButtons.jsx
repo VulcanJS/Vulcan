@@ -1,19 +1,19 @@
 import React from 'react';
 import './Button.jsx';
-import {Accounts} from 'meteor/accounts-base';
+import { Components, registerComponent } from 'meteor/nova:core';
 
 
-export class SocialButtons extends React.Component {
+export class AccountsSocialButtons extends React.Component {
   render() {
     let { oauthServices = {}, className = "social-buttons" } = this.props;
     return(
       <div className={ className }>
         {Object.keys(oauthServices).map((id, i) => {
-          return <Accounts.ui.Button {...oauthServices[id]} key={i} />;
+          return <Components.AccountsButton {...oauthServices[id]} key={i} />;
         })}
       </div>
     );
   }
 }
 
-Accounts.ui.SocialButtons = SocialButtons;
+registerComponent('AccountsSocialButtons', AccountsSocialButtons);

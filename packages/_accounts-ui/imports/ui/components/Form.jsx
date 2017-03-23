@@ -1,14 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Accounts } from 'meteor/accounts-base';
-import './Fields.jsx';
-import './Buttons.jsx';
-import './FormMessage.jsx';
-import './PasswordOrService.jsx';
-import './SocialButtons.jsx';
-import './FormMessages.jsx';
+import { Components, registerComponent } from 'meteor/nova:core';
 
-export class Form extends React.Component {
+export class AccountsForm extends React.Component {
   componentDidMount() {
     let form = this.form;
     if (form) {
@@ -36,16 +30,16 @@ export class Form extends React.Component {
         className="accounts-ui"
         noValidate
       >
-        <Accounts.ui.Fields fields={ fields } />
-        <Accounts.ui.Buttons buttons={ buttons } />
-        <Accounts.ui.PasswordOrService oauthServices={ oauthServices } />
-        <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
-        <Accounts.ui.FormMessages messages={messages} />
+        <Components.AccountsFields fields={ fields } />
+        <Components.AccountsButtons buttons={ buttons } />
+        <Components.AccountsPasswordOrService oauthServices={ oauthServices } />
+        <Components.AccountsSocialButtons oauthServices={ oauthServices } />
+        <Components.AccountsFormMessages messages={messages} />
       </form>
     );
   }
 }
-Form.propTypes = {
+AccountsForm.propTypes = {
   oauthServices: React.PropTypes.object,
   fields: React.PropTypes.object.isRequired,
   buttons: React.PropTypes.object.isRequired,
@@ -53,4 +47,4 @@ Form.propTypes = {
   ready: React.PropTypes.bool
 };
 
-Accounts.ui.Form = Form;
+registerComponent('AccountsForm', AccountsForm);

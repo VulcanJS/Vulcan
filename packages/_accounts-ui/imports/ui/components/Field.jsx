@@ -1,7 +1,8 @@
 import React from 'react';
-import { Accounts } from 'meteor/accounts-base';
+import { FormControl } from 'react-bootstrap';
+import { registerComponent } from 'meteor/nova:core';
 
-export class Field extends React.Component {
+export class AccountsField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,16 +51,8 @@ export class Field extends React.Component {
       return <div className={ className }>{ label }</div>;
     }
     return mount ? (
-      <div className={ className }>
-        <label htmlFor={ id }>{ label }</label>
-        <input
-          id={ id }
-          ref={ (ref) => this.input = ref }
-          type={ type }
-          onChange={ onChange }
-          placeholder={ hint }
-          defaultValue={ defaultValue }
-        />
+      <div className={ className } style={{marginBottom: '10px'}}>
+        <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
         {message && (
           <span className={['message', message.type].join(' ').trim()}>
             {message.message}</span>
@@ -68,8 +61,8 @@ export class Field extends React.Component {
     ) : null;
   }
 }
-Field.propTypes = {
+AccountsField.propTypes = {
   onChange: React.PropTypes.func
 };
 
-Accounts.ui.Field = Field;
+registerComponent('AccountsField', AccountsField)

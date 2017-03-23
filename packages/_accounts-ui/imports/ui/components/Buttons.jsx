@@ -1,6 +1,6 @@
 import React from 'react';
 import './Button.jsx';
-import { Accounts } from 'meteor/accounts-base';
+import { Components, registerComponent } from 'meteor/nova:core';
 
 export class Buttons extends React.Component {
   render () {
@@ -8,11 +8,11 @@ export class Buttons extends React.Component {
     return (
       <div className={ className }>
         {Object.keys(buttons).map((id, i) =>
-          <Accounts.ui.Button {...buttons[id]} key={i} />
+          <Components.AccountsButton {...buttons[id]} key={i} />
         )}
       </div>
     );
   }
 };
 
-Accounts.ui.Buttons = Buttons;
+registerComponent('AccountsButtons', Buttons);

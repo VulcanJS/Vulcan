@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Accounts } from 'meteor/accounts-base';
+import { Components, registerComponent } from 'meteor/nova:core';
 
-export class FormMessages extends Component {
+export class AccountsFormMessages extends Component {
   render () {
     const { messages = [], className = "messages", style = {} } = this.props;
     return messages.length > 0 && (
@@ -9,7 +9,7 @@ export class FormMessages extends Component {
         {messages
           .filter(message => !('field' in message))
           .map(({ message, type }, i) =>
-          <Accounts.ui.FormMessage
+          <Components.AccountsFormMessage
             message={message}
             type={type}
             key={i}
@@ -20,4 +20,4 @@ export class FormMessages extends Component {
   }
 }
 
-Accounts.ui.FormMessages = FormMessages;
+registerComponent('AccountsFormMessages', AccountsFormMessages);

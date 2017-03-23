@@ -1,9 +1,9 @@
 import React from 'react';
-import { Accounts } from 'meteor/accounts-base';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { hasPasswordService } from '../../helpers.js';
+import { registerComponent } from 'meteor/nova:core';
 
-export class PasswordOrService extends React.Component {
+export class AccountsPasswordOrService extends React.Component {
   render () {
     let { className = "password-or-service", style = {} } = this.props;
     const services = Object.keys(this.props.oauthServices).map(service => {
@@ -24,8 +24,8 @@ export class PasswordOrService extends React.Component {
     return null;
   }
 }
-PasswordOrService.propTypes = {
+AccountsPasswordOrService.propTypes = {
   oauthServices: React.PropTypes.object
 };
 
-Accounts.ui.PasswordOrService = PasswordOrService;
+registerComponent('AccountsPasswordOrService', AccountsPasswordOrService);

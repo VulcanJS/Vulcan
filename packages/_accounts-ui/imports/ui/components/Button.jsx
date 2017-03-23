@@ -1,10 +1,10 @@
 import React from 'react';
-import { Accounts } from 'meteor/accounts-base';
-let Link;
-try { Link = require('react-router').Link; } catch(e) {}
+import { Button } from 'react-bootstrap';
+import { registerComponent } from 'meteor/nova:core';
 
-export class Button extends React.Component {
+export class AccountsButton extends React.Component {
   render () {
+
     const {
       label,
       href = null,
@@ -13,22 +13,22 @@ export class Button extends React.Component {
       className,
       onClick
     } = this.props;
-    if (type == 'link') {
-      // Support React Router.
-      if (Link && href) {
-        return <Link to={ href } className={ className }>{ label }</Link>;
-      } else {
-        return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
-      }
-    }
-    return <button className={ className }
-                   type={ type } 
-                   disabled={ disabled }
-                   onClick={ onClick }>{ label }</button>;
+
+    return type === 'link' ? 
+      <a href="#" className={ className } onClick={ onClick } style={{marginRight: '10px'}}>{ label }</a> :
+      <Button
+        style={{marginRight: '10px'}}
+        bsStyle="primary"
+        className={ className }
+        type={ type }
+        disabled={ disabled }
+        onClick={ onClick }>
+        { label }
+      </Button>;
   }
 }
-Button.propTypes = {
+AccountsButton.propTypes = {
   onClick: React.PropTypes.func
 };
 
-Accounts.ui.Button = Button;
+registerComponent('AccountsButton', AccountsButton);
