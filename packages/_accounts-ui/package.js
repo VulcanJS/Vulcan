@@ -16,10 +16,8 @@ Package.onUse(function(api) {
   api.use('random');
   api.use('email');
   api.use('session');
-  api.use('softwarerero:accounts-t9n');
 
   api.imply('accounts-base');
-  api.imply('softwarerero:accounts-t9n@1.3.3');
 
   api.use('accounts-oauth', {weak: true});
   api.use('accounts-password', {weak: true});

@@ -1,7 +1,7 @@
 import React from 'react';
-import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { hasPasswordService } from '../../helpers.js';
 import { registerComponent } from 'meteor/nova:core';
+import { intlShape } from 'react-intl';
 
 export class AccountsPasswordOrService extends React.Component {
   render () {
@@ -17,15 +17,20 @@ export class AccountsPasswordOrService extends React.Component {
     if (hasPasswordService() && services.length > 0) {
       return (
         <div style={ style } className={ className }>
-          { `${T9n.get('orUse')} ${ labels.join(' / ') }` }
+          { `${this.context.intl.formatMessage({id: 'accounts.or_use'})} ${ labels.join(' / ') }` }
         </div>
       );
     }
     return null;
   }
 }
+
 AccountsPasswordOrService.propTypes = {
   oauthServices: React.PropTypes.object
 };
+
+AccountsPasswordOrService.contextTypes = {
+  intl: intlShape
+}
 
 registerComponent('AccountsPasswordOrService', AccountsPasswordOrService);

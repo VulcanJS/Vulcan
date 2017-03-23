@@ -64,10 +64,10 @@ export function validateEmail(email, showMessage, clearMessage) {
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
   } else if (!email || email.length === 0) {
-    showMessage(T9n.get("error.emailRequired"), 'warning', false, 'email');
+    showMessage("accounts.error_email_required", 'warning', false, 'email');
     return false;
   } else {
-    showMessage(T9n.get("error.accounts.Invalid email"), 'warning', false, 'email');
+    showMessage("accounts.error_invalid_email", 'warning', false, 'email');
     return false;
   }
 }
@@ -76,7 +76,7 @@ export function validatePassword(password = '', showMessage, clearMessage){
   if (password.length >= Accounts.ui._options.minimumPasswordLength) {
     return true;
   } else {
-    const errMsg = T9n.get("error.minChar").replace(/7/, Accounts.ui._options.minimumPasswordLength);
+    const errMsg = "accounts.error_minchar"
     showMessage(errMsg, 'warning', false, 'password');
     return false;
   }
@@ -87,7 +87,7 @@ export function validateUsername(username, showMessage, clearMessage, formState)
     return true;
   } else {
     const fieldName = (passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP) ? 'username' : 'usernameOrEmail';
-    showMessage(T9n.get("error.usernameRequired"), 'warning', false, fieldName);
+    showMessage("accounts.error_username_required", 'warning', false, fieldName);
     return false;
   }
 }
