@@ -13,7 +13,7 @@ import MoviesEditForm from './MoviesEditForm.jsx';
 
 const MoviesItem = ({movie, currentUser}) =>
 
-  <div key={movie._id} style={{paddingBottom: "15px",marginBottom: "15px", borderBottom: "1px solid #ccc"}}>
+  <div style={{paddingBottom: "15px",marginBottom: "15px", borderBottom: "1px solid #ccc"}}>
 
     {/* document properties */}
     

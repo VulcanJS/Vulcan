@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'framework-demo-2',
+  name: 'example-movies',
 });
 
 Package.onUse(function (api) {
