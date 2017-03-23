@@ -1,3 +1,6 @@
+
+# see http://docs.vulcanjs.org/packages
+
 ############ Core Packages ############
 
 nova:core                       # core components and wrappers
@@ -7,38 +10,38 @@ nova:users                      # user management and permissions
 
 ############ Features Packages ############
 
-nova:email
-nova:posts
-nova:comments
-nova:newsletter
-nova:notifications
-nova:getting-started
-nova:categories
-nova:voting
-nova:events
-nova:embedly
-nova:api
-nova:rss
-nova:subscribe
-
-############ Debug Packages ############
-
-nova:debug
-# nova:kadira
+# nova:email
+# nova:posts
+# nova:comments
+# nova:newsletter
+# nova:notifications
+# nova:getting-started
+# nova:categories
+# nova:voting
+# nova:events
+# nova:embedly
+# nova:api
+# nova:rss
+# nova:subscribe
 
 ############ Theme Packages ############
 
-nova:base-components    # default ui components
-nova:base-styles        # default styling
+# nova:base-components        # default ui components
+# nova:base-styles            # default styling
+# nova:email-templates        # default email templates for notifications
 
-nova:email-templates    # default email templates for notifications
-nova:i18n-en-us         # default language translation
+############ Language Packages ############
 
-############ Your Packages ############
+nova:i18n-en-us               # default language translation
+
+############ Accounts Packages ############
 
 accounts-password@1.3.4
 # accounts-twitter
 # accounts-facebook
 
-# customization-demo
-framework-demo
+############ Your Packages ############
+
+example-movies
+# example-movies-full
+# example-customization
