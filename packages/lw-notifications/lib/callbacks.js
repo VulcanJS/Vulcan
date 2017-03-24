@@ -79,6 +79,34 @@ const getDocument = (documentType, documentId) => {
 }
 
 /**
+ * @summary Add default subscribers to the new post.
+ */
+const PostsNewSubscriptions = (post) => {
+  // Subscribe the post's author to comment notifications for the post
+  // (if they have the proper setting turned on)
+  const postAuthor = Users.findOne(post.userId);
+  if (Users.getSetting(postAuthor, "notifications_comments", true)) {
+
+    performSubscriptionAction('subscribe', Posts, post._id, postAuthor);
+  }
+}
+addCallback("posts.new.async", PostsNewSubscriptions);
+
+/**
+ * @summary Add default subscribers to the new comment.
+ */
+const CommentsNewSubscriptions = (comment) => {
+  // Subscribe the comment's author to reply notifications for the comment
+  // (if they have the proper setting turned on)
+  const commentAuthor = Users.findOne(comment.userId);
+  if (Users.getSetting(commentAuthor, "notifications_replies", true)) {
+
+    performSubscriptionAction('subscribe', Comments, comment._id, commentAuthor);
+  }
+}
+addCallback("comments.new.async", CommentsNewSubscriptions);
+
+/**
  * @summary Add notification callback when a post is approved
  */
 const PostsApprovedNotification = (post) => {
@@ -108,24 +136,8 @@ const PostsNewNotifications = (post) => {
 }
 addCallback("posts.new.async", PostsNewNotifications);
 
-
-/**
- * @summary Add default subscribers to the new post.
- */
-const PostsNewSubscriptions = (post) => {
-  // Subscribe the post's author to comment notifications for the post
-  // (if they have the proper setting turned on)
-  const postAuthor = Users.findOne(post.userId);
-  if (Users.getSetting(postAuthor, "notifications_comments", true)) {
-
-    performSubscriptionAction('subscribe', Posts, post._id, postAuthor);
-  }
-}
-addCallback("posts.new.async", PostsNewSubscriptions);
-
 // add new comment notification callback on comment submit
 const CommentsNewNotifications = (comment) => {
-
   // note: dummy content has disableNotifications set to true
   if(Meteor.isServer && !comment.disableNotifications) {
 
@@ -135,19 +147,16 @@ const CommentsNewNotifications = (comment) => {
     // if e.g. they're both the author of the post and the author of a comment being replied to)
     let notifiedUsers = [];
 
-    // 1. Notify author of comment being replied to
+    // 1. Notify users who are subscribed to the parent comment
     if (!!comment.parentCommentId) {
       const parentComment = Comments.findOne(comment.parentCommentId);
 
-      // do not notify author of parent comment if they're replying to their own comment
-      if (parentComment.userId !== comment.userId) {
-        const parentCommentAuthor = Users.findOne(parentComment.userId);
-
-        // do not notify parent comment author if they have reply notifications turned off
-        if (Users.getSetting(parentCommentAuthor, "notifications_replies", true)) {
-          createNotifications([parentCommentAuthor.userId], 'newReply', 'comment', comment._id);
-          notifiedUsers.push(parentCommentAuthor.userId);
-        }
+      if (!!parentComment.subscribers && !!parentComment.subscribers.length) {
+        // remove userIds of users that have already been notified
+        // and of comment author (they could be replying in a thread they're subscribed to)
+        let parentCommentSubscribersToNotify = _.difference(parentComment.subscribers, notifiedUsers, [comment.userId]);
+        createNotifications(parentCommentSubscribersToNotify, 'newReply', 'comment', comment._id);
+        notifiedUsers.concat(parentCommentSubscribersToNotify);
       }
     }
 
@@ -155,8 +164,8 @@ const CommentsNewNotifications = (comment) => {
     if (!!post.subscribers && !!post.subscribers.length) {
       // remove userIds of users that have already been notified
       // and of comment author (they could be replying in a thread they're subscribed to)
-      let subscribersToNotify = _.difference(post.subscribers, notifiedUsers, [comment.userId]);
-      createNotifications(subscribersToNotify, 'newCommentSubscribed', 'comment', comment._id);
+      let postSubscribersToNotify = _.difference(post.subscribers, notifiedUsers, [comment.userId]);
+      createNotifications(postSubscribersToNotify, 'newComment', 'comment', comment._id);
     }
   }
 }
