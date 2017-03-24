@@ -1,5 +1,6 @@
 import Users from 'meteor/nova:users';
 import Posts from 'meteor/nova:posts';
+import Comments from 'meteor/nova:comments';
 import Categories from 'meteor/nova:categories';
 import { Utils, GraphQLSchema } from 'meteor/nova:core';
 
@@ -138,26 +139,26 @@ export const performSubscriptionAction = (action, collection, itemId, user) => {
    const genericMutationFunction = (collectionName, action) => {
      // return the method code
      return function(root, { documentId }, context) {
-       
+
        // extract the current user & the relevant collection from the graphql server context
        const { currentUser, [Utils.capitalize(collectionName)]: collection } = context;
-       
+
        // permission check
        if (!Users.canDo(context.currentUser, `${collectionName}.${action}`)) {
          throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
        }
-       
+
        // do the actual subscription action
        return performSubscriptionAction(action, collection, documentId, currentUser);
      };
    };
 
    const collectionName = collection._name;
-   
+
    // add mutations to the schema
    GraphQLSchema.addMutation(`${collectionName}Subscribe(documentId: String): User`),
    GraphQLSchema.addMutation(`${collectionName}Unsubscribe(documentId: String): User`);
-   
+
    // create an object of the shape expected by mutations resolvers
    GraphQLSchema.addResolvers({
      Mutation: {
@@ -165,14 +166,13 @@ export const performSubscriptionAction = (action, collection, itemId, user) => {
        [`${collectionName}Unsubscribe`]: genericMutationFunction(collectionName, 'unsubscribe'),
      },
    });
-   
-   
  };
 
 // Finally. Add the mutations to the Meteor namespace 🖖
 
 subscribeMutationsGenerator(Users);
 subscribeMutationsGenerator(Posts);
+subscribeMutationsGenerator(Comments);
 subscribeMutationsGenerator(Categories);
 
 export default subscribeMutationsGenerator;
