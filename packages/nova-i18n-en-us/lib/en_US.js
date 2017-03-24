@@ -61,6 +61,8 @@ addStrings('en', {
   "comments.rate_limit_error": "Please wait {value} seconds before commenting again.",
   "comments.subscribe": "Subscribe",
   "comments.unsubscribe": "Unsubscribe",
+  "comments.subscribed": "You have subscribed to replies.",
+  "comments.unsubscribed": "You have unsubscribed from replies.",
 
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
