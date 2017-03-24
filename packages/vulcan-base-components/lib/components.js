@@ -66,5 +66,4 @@ import './users/UsersAvatar.jsx';
 import './users/UsersName.jsx';
 import './users/UsersMenu.jsx';
 import './users/UsersAccountMenu.jsx';
-import './users/UsersAccountForm.jsx';
 import './users/UsersResetPassword.jsx';

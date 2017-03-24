@@ -15,11 +15,10 @@ Package.onUse(function (api) {
     'vulcan:posts@1.3.0',
     'vulcan:comments@1.3.0',
     'vulcan:voting@1.3.0',
-
+    'vulcan:accounts@1.3.0',
+    
     // third-party packages
     'fortawesome:fontawesome@4.5.0',
-    'tmeasday:check-npm-versions@0.3.1',
-    'std:accounts-ui@1.2.19',
   ]);
 
   api.mainModule("lib/server.js", "server");

@@ -1,8 +1,7 @@
-import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { Link } from 'react-router';
+import { intlShape } from 'react-intl';
 
 class UsersResetPassword extends Component {
   componentDidMount() {
@@ -13,15 +12,15 @@ class UsersResetPassword extends Component {
   render() {
     if (!this.props.currentUser) {
       return (
-        <Accounts.ui.LoginForm
-          formState={ STATES.PASSWORD_CHANGE }
+        <Components.AccountsLoginForm
+          formState={ Symbol('PASSWORD_CHANGE') }
         />
       );
     }
 
     return (
       <div className='password-reset-form'>
-        <div>{T9n.get('info.passwordChanged')}!</div>
+        <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}!</div>
         <Link to="/">
           Return Home
         </Link>
@@ -30,6 +29,9 @@ class UsersResetPassword extends Component {
   }
 }
 
+UsersResetPassword.contextTypes = {
+  intl: intlShape
+}
 
 UsersResetPassword.propsTypes = {
   currentUser: React.PropTypes.object,
