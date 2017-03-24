@@ -31,6 +31,7 @@ const createNotifications = (userIds, notificationType, documentType, documentId
 
 const getLink = (documentType, documentId) => {
   let document = getDocument(documentType, documentId);
+
   switch(documentType) {
     case "post":
       return Posts.getPageUrl(document);
@@ -45,6 +46,7 @@ const getLink = (documentType, documentId) => {
 
 const notificationMessage = (notificationType, documentType, documentId) => {
   let document = getDocument(documentType, documentId);
+
   switch(notificationType) {
     case "newPost":
       return Posts.getAuthorName(document) + ' has created a new post: ' + document.title;
@@ -53,11 +55,9 @@ const notificationMessage = (notificationType, documentType, documentId) => {
     case "postApproved":
       return 'Your post "' + document.title + '" has been approved';
     case "newComment":
-      return Comments.getAuthorName(document) + ' left a new comment on your post "' + Posts.getDocument(document.postId).title + '"';
+      return Comments.getAuthorName(document) + ' left a new comment on "' + Posts.findOne(document.postId).title + '"';
     case "newReply":
-      return Comments.getAuthorName(document) + ' replied to your comment on ' + Posts.getDocument(document.postId).title + '"';
-    case "newCommentSubscribed":
-      return Comments.getAuthorName(document) + ' left a new comment on ' + Posts.getDocument(document.postId).title + '"';
+      return Comments.getAuthorName(document) + ' replied to a comment on "' + Posts.findOne(document.postId).title + '"';
     case "newUser":
       return user.displayName + ' just signed up!';
     default:
