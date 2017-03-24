@@ -6,16 +6,6 @@ A SimpleSchema-compatible JSON schema
 
 import Users from 'meteor/nova:users';
 
-const checkUser = (user, document) => {
-  if(!document){
-    return false;
-  }
-  console.log("Check User");
-  console.log(user.userId);
-  console.log(document.userId);
-  return user.userId == document.userId;
-}
-
 //define schema
 const schema = {
   _id: {
