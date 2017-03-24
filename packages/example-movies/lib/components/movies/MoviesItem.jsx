@@ -17,12 +17,8 @@ const MoviesItem = ({movie, currentUser}) =>
 
     {/* document properties */}
     
-    <ul>
-      <li><strong>User:</strong> {movie.user && movie.user.displayName}</li>
-      <li><strong>Name:</strong> {movie.name}</li>
-      <li><strong>Year:</strong> {movie.year}</li>
-      <li><strong>Review:</strong> {movie.review}</li>
-    </ul>
+    <h4>{movie.name} ({movie.year})</h4>
+    <p>{movie.review} – {movie.user && movie.user.displayName}</p>
     
     {/* edit document form */}
 
