@@ -5,8 +5,9 @@ function getEmbedlyData(url) {
   var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
   var embedlyKey = getSetting('embedlyKey');
+  // 200 x 200 is the minimum size accepted by facebook 
   var thumbnailWidth = getSetting('thumbnailWidth', 200);
-  var thumbnailHeight = getSetting('thumbnailHeight', 125);
+  var thumbnailHeight = getSetting('thumbnailHeight', 200);
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
