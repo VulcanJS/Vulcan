@@ -1,1 +1,1 @@
-Nova basic React components.
+Vulcan basic React components.

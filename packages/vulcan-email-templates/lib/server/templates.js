@@ -1,6 +1,6 @@
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
-NovaEmail.addTemplates({
+VulcanEmail.addTemplates({
   test:                     Assets.getText("lib/server/emails/common/test.handlebars"),
   wrapper:                  Assets.getText("lib/server/emails/common/wrapper.handlebars"),
   newPost:                  Assets.getText("lib/server/emails/posts/newPost.handlebars"),

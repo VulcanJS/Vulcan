@@ -13,7 +13,7 @@ Package.onUse(function (api) {
 
     'fourseven:scss',
 
-    // Nova packages
+    // Vulcan packages
 
     'vulcan:core@1.3.0',
     'vulcan:posts@1.3.0',

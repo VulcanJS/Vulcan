@@ -3,7 +3,7 @@
 // newsletter scheduling with MailChimp
 
 import Posts from 'meteor/vulcan:posts';
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
 import Newsletter from '../../namespace.js';
@@ -81,12 +81,12 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
 
       // send confirmation email
-      var confirmationHtml = NovaEmail.getTemplate('newsletterConfirmation')({
+      var confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpNewsletter.archive_url,
         subject: subject
       });
-      NovaEmail.send(defaultEmail, 'Newsletter scheduled', NovaEmail.buildTemplate(confirmationHtml));
+      VulcanEmail.send(defaultEmail, 'Newsletter scheduled', VulcanEmail.buildTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);

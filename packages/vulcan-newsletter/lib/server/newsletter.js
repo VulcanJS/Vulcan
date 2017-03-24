@@ -2,7 +2,7 @@ import Posts from "meteor/vulcan:posts";
 import Comments from "meteor/vulcan:comments";
 import Users from 'meteor/vulcan:users';
 import Categories from "meteor/vulcan:categories";
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
@@ -136,19 +136,19 @@ Newsletter.build = function (postsArray) {
     }
     // console.log(properties)
     // generate post item HTML and add it to the postsHTML string
-    postsHTML += NovaEmail.getTemplate('postItem')(properties);
+    postsHTML += VulcanEmail.getTemplate('postItem')(properties);
   });
 
   // 2. Wrap posts HTML in newsletter template
-  var newsletterHTML = NovaEmail.getTemplate('newsletter')({
-    siteName: getSetting('title', "Nova"),
+  var newsletterHTML = VulcanEmail.getTemplate('newsletter')({
+    siteName: getSetting('title', 'My App'),
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
 
   // 3. wrap newsletter HTML in email wrapper template
   // (also pass date to wrapper as extra property just in case we need it)
-  var emailHTML = NovaEmail.buildTemplate(newsletterHTML, {
+  var emailHTML = VulcanEmail.buildTemplate(newsletterHTML, {
     date: moment().format("dddd, MMMM D YYYY")
   });
 

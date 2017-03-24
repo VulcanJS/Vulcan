@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
 class Email extends Component {
 
@@ -55,7 +55,7 @@ Email.propTypes = {
 
 const Emails = props => {
 
-  const emails = NovaEmail.emails;
+  const emails = VulcanEmail.emails;
 
   return (
     <div className="emails">

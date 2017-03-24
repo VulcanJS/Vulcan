@@ -124,7 +124,7 @@ class Form extends Component {
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
         fieldSchema.form = fieldSchema.autoform;
-        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
+        console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
       }
 
       // replace value by prefilled value if value is empty

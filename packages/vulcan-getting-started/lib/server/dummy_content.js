@@ -23,7 +23,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   };
 
   if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/nova_getting-started/content/images/" + thumbnail;
+    post.thumbnailUrl = "/packages/vulcan_getting-started/content/images/" + thumbnail;
 
   newMutation({
     collection: Posts, 

@@ -1,6 +1,6 @@
 Package.describe({
   name: "vulcan:base-styles",
-  summary: "Nova basic styles package",
+  summary: "Vulcan basic styles package",
   version: '1.3.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });

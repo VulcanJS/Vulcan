@@ -90,8 +90,8 @@ addCallback("users.profileCompleted.sync", hasCompletedProfile);
 //   admins.forEach(function(admin) {
 //     if (Users.getSetting(admin, "notifications_users", false)) {
 //       const emailProperties = Users.getNotificationProperties(user);
-//       const html = NovaEmail.getTemplate('newUser')(emailProperties);
-//       NovaEmail.send(Users.getEmail(admin), `New user account: ${emailProperties.displayName}`, NovaEmail.buildTemplate(html));
+//       const html = VulcanEmail.getTemplate('newUser')(emailProperties);
+//       VulcanEmail.send(Users.getEmail(admin), `New user account: ${emailProperties.displayName}`, VulcanEmail.buildTemplate(html));
 //     }
 //   });
 //   return user;

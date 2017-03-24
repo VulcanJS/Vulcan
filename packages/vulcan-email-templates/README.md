@@ -1,1 +1,1 @@
-Nova email templates package. 
+Vulcan email templates package. 

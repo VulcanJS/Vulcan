@@ -1,5 +1,5 @@
 import Users from 'meteor/vulcan:users';
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 import { getSetting } from 'meteor/vulcan:core';
 
 export const createNotification = (userIds, notificationName, data) => {
@@ -11,14 +11,14 @@ export const createNotification = (userIds, notificationName, data) => {
     userIds.forEach(userId => {
 
       const user = Users.findOne(userId);
-      const email = NovaEmail.emails[notificationName];
+      const email = VulcanEmail.emails[notificationName];
       const properties = email.getProperties(data);
       const subject = email.subject(properties);
-      const html = NovaEmail.getTemplate(email.template)(properties);
+      const html = VulcanEmail.getTemplate(email.template)(properties);
 
       const userEmail = Users.getEmail(user);
       if (!!userEmail) {
-        NovaEmail.buildAndSendHTML(Users.getEmail(user), subject, html);
+        VulcanEmail.buildAndSendHTML(Users.getEmail(user), subject, html);
       } else {
         console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`); // eslint-disable-line
       }

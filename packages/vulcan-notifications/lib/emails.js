@@ -1,5 +1,5 @@
 import Users from 'meteor/vulcan:users';
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
 // note: leverage weak dependencies on packages
 const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
@@ -7,7 +7,7 @@ const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
 
 const getTestUser = userId => typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
 
-NovaEmail.addEmails({
+VulcanEmail.addEmails({
   
   newUser: {
     template: "newUser",
@@ -35,7 +35,7 @@ if (!!Posts) {
   
   const getTestPost = postId => typeof Posts.findOne(postId) === "undefined" ? {post: Posts.findOne()} : {post: Posts.findOne(postId)};
   
-  NovaEmail.addEmails({
+  VulcanEmail.addEmails({
     
     newPost: {
       template: "newPost",
@@ -76,7 +76,7 @@ if (!!Comments) {
     
   const getTestComment = commentId => typeof Comments.findOne(commentId) === "undefined" ? {comment: Comments.findOne()} : {comment: Comments.findOne(commentId)};
 
-  NovaEmail.addEmails({
+  VulcanEmail.addEmails({
 
     newComment: {
       template: "newComment",

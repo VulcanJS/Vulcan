@@ -1,7 +1,7 @@
 import Users from '../collection.js';
 import { runCallbacks, runCallbacksAsync } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
-function novaCreateUserCallbacks (options, user) {
+function createUserCallbacks (options, user) {
   user = runCallbacks("users.new.sync", user, options);
 
   runCallbacksAsync("users.new.async", user);
@@ -14,4 +14,4 @@ function novaCreateUserCallbacks (options, user) {
   return user;
 }
 
-Accounts.onCreateUser(novaCreateUserCallbacks);
+Accounts.onCreateUser(createUserCallbacks);

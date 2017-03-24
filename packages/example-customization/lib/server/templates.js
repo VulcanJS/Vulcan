@@ -2,9 +2,9 @@
 Register email templates.
 */
 
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
-NovaEmail.addTemplates({
+VulcanEmail.addTemplates({
   newPost: Assets.getText("lib/server/emails/customNewPost.handlebars"),
   customEmail: Assets.getText("lib/server/emails/customEmail.handlebars")
 });

@@ -1,11 +1,11 @@
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 import Users from 'meteor/vulcan:users';
 import { getSetting, Utils } from 'meteor/vulcan:core';
 
 Meteor.methods({
   "email.test": function (emailName) {
 
-    const email = NovaEmail.emails[emailName];
+    const email = VulcanEmail.emails[emailName];
 
     if(Users.isAdminById(this.userId)){
 
@@ -25,14 +25,14 @@ Meteor.methods({
         properties = email.getProperties(testObject);
 
         // then apply email template to properties, and wrap it with buildTemplate
-        html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
+        html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(properties));
 
       }
 
       // get subject
       const subject = "[Test] " + email.subject.bind(email)(properties);
 
-      NovaEmail.send (getSetting('defaultEmail'), subject, html)
+      VulcanEmail.send (getSetting('defaultEmail'), subject, html)
 
       return subject;
 

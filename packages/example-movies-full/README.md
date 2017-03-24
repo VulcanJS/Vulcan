@@ -1,1 +1,1 @@
-Nova demo package. 
+Vulcan demo package. 

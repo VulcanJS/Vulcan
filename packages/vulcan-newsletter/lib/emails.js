@@ -1,7 +1,7 @@
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 // email test routes (make available to client & server)
 
-NovaEmail.addEmails({
+VulcanEmail.addEmails({
 
   newsletter: {
     template: "newsletter",

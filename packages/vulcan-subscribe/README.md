@@ -1,6 +1,6 @@
 # vulcan:subscribe
 
-This optional package for Nova lets your users subscribe to the different domains (collections) of your application.
+This optional package for Vulcan lets your users subscribe to the different domains (collections) of your application.
 
 ### Dependencies & usage
 Explicit dependency on `vulcan:users` to enable permissions.
@@ -59,9 +59,9 @@ This will creates for you the mutations `moviesSubscribe` & `moviesUnsubscribe` 
 You'll also need to write the relevant callbacks, custom fields & permissions to run whenever a user is subscribed to your custom collection's item. See these files for inspiration.
 *Note: it's more or less always the same thing*
 
-* Custom fields: https://github.com/TelescopeJS/Telescope/blob/devel/packages/nova-subscribe/lib/custom_fields.js#L47-L75
-* Callbacks: https://github.com/TelescopeJS/Telescope/blob/devel/packages/nova-subscribe/lib/callbacks.js#L13-L36
-* Permissions: https://github.com/TelescopeJS/Telescope/blob/devel/packages/nova-subscribe/lib/permissions.js
+* Custom fields: https://github.com/TelescopeJS/Telescope/blob/devel/packages/vulcan-subscribe/lib/custom_fields.js#L47-L75
+* Callbacks: https://github.com/TelescopeJS/Telescope/blob/devel/packages/vulcan-subscribe/lib/callbacks.js#L13-L36
+* Permissions: https://github.com/TelescopeJS/Telescope/blob/devel/packages/vulcan-subscribe/lib/permissions.js
 
 ### Reusable component to show a list of subscribed items
 

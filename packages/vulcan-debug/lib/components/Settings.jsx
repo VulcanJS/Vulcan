@@ -21,7 +21,7 @@ const Settings = props => {
         
         <div>To access your private settings, have a look at your <code>settings.json</code> file.</div>
         
-        <div>More info about settings <a href="http://nova-docs.telescopeapp.org/settings.html">in the docs</a></div>
+        <div>More info about settings <a href="http://docs.vulcanjs.org/settings.html">in the docs</a></div>
         
         <div className="settings-wrapper">
 

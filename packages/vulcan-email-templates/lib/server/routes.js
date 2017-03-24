@@ -1,10 +1,10 @@
 import { Picker } from 'meteor/meteorhacks:picker';
 
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
 Meteor.startup(function () {
 
-  _.forEach(NovaEmail.emails, (email, key) => {
+  _.forEach(VulcanEmail.emails, (email, key) => {
 
     // template live preview routes
     Picker.route(email.path, (params, req, res) => {
@@ -25,7 +25,7 @@ Meteor.startup(function () {
         const properties = email.getProperties(testObject);
 
         // then apply email template to properties, and wrap it with buildTemplate
-        html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
+        html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(properties));
 
       }
 
@@ -36,7 +36,7 @@ Meteor.startup(function () {
 
     // raw template
     Picker.route("/email/template/:template", (params, req, res) => {
-      res.end(NovaEmail.templates[params.template]);
+      res.end(VulcanEmail.templates[params.template]);
     });
 
   });

@@ -43,7 +43,6 @@ CommentsNewForm.propTypes = {
   topLevelCommentId: React.PropTypes.string, // if reply
   successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
   cancelCallback: React.PropTypes.func,
-  novaFormMutation: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
 };

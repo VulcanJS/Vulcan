@@ -1,6 +1,6 @@
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 
-NovaEmail.addEmails({
+VulcanEmail.addEmails({
 
   test: {
     template: "test",

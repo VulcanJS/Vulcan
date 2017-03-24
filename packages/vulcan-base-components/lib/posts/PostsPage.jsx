@@ -94,7 +94,7 @@ const mapStateToProps = state => ({ postsViewed: state.postsViewed });
 const mapDispatchToProps = dispatch => bindActionCreators(getActions().postsViewed, dispatch);
 
 registerComponent(
-  // component name used by Nova
+  // component name used by Vulcan
   'PostsPage', 
   // React component 
   PostsPage,

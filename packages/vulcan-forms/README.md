@@ -1,4 +1,4 @@
-# Nova Forms
+# Vulcan Forms
 
 This package provides a `SmartForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
 

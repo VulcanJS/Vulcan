@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    // Nova packages
+    // Vulcan packages
     'vulcan:core@1.3.0',
     'vulcan:posts@1.3.0',
     'vulcan:comments@1.3.0',

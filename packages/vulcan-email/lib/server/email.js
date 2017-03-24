@@ -1,26 +1,26 @@
-import NovaEmail from '../namespace.js';
+import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
 import { Utils, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 
-NovaEmail.templates = {};
+VulcanEmail.templates = {};
 
-NovaEmail.addTemplates = templates => {
-  _.extend(NovaEmail.templates, templates);
+VulcanEmail.addTemplates = templates => {
+  _.extend(VulcanEmail.templates, templates);
 };
 
-NovaEmail.getTemplate = templateName => Handlebars.compile(
-  NovaEmail.templates[templateName], 
+VulcanEmail.getTemplate = templateName => Handlebars.compile(
+  VulcanEmail.templates[templateName], 
   { noEscape: true}
 );
 
-NovaEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
+VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
 
   const emailProperties = {
     secondaryColor: getSetting('secondaryColor', '#444444'),
     accentColor: getSetting('accentColor', '#DD3416'),
-    siteName: getSetting('title', "Nova"),
+    siteName: getSetting('title', 'My App'),
     tagline: getSetting('tagline'),
     siteUrl: Utils.getSiteUrl(),
     body: htmlContent,
@@ -33,7 +33,7 @@ NovaEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
     ...optionalProperties
   };
 
-  const emailHTML = NovaEmail.getTemplate("wrapper")(emailProperties);
+  const emailHTML = VulcanEmail.getTemplate("wrapper")(emailProperties);
 
   const inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
 
@@ -42,7 +42,7 @@ NovaEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
   return doctype+inlinedHTML;
 };
 
-NovaEmail.send = (to, subject, html, text) => {
+VulcanEmail.send = (to, subject, html, text) => {
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -84,13 +84,13 @@ NovaEmail.send = (to, subject, html, text) => {
 
 };
 
-NovaEmail.buildAndSend = (to, subject, template, properties) => {
-  const html = NovaEmail.buildTemplate(NovaEmail.getTemplate(template)(properties));
-  return NovaEmail.send (to, subject, html);
+VulcanEmail.buildAndSend = (to, subject, template, properties) => {
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(template)(properties));
+  return VulcanEmail.send (to, subject, html);
 };
 
-NovaEmail.buildAndSendHTML = (to, subject, html) => NovaEmail.send(
+VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(
   to,
   subject,
-  NovaEmail.buildTemplate(html)
+  VulcanEmail.buildTemplate(html)
 );

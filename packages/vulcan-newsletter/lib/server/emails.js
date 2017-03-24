@@ -1,12 +1,12 @@
-import NovaEmail from 'meteor/vulcan:email';
+import VulcanEmail from 'meteor/vulcan:email';
 import Newsletter from "../namespace.js";
 import { getSetting } from 'meteor/vulcan:core';
 
 // Extend email objects with server-only properties
 
-NovaEmail.emails.newsletter = {
+VulcanEmail.emails.newsletter = {
 
-  ...NovaEmail.emails.newsletter, 
+  ...VulcanEmail.emails.newsletter, 
 
   getNewsletter() {
     return Newsletter.build(Newsletter.getPosts(getSetting('postsPerNewsletter', 5)));
@@ -28,12 +28,12 @@ NovaEmail.emails.newsletter = {
 
 };
 
-NovaEmail.emails.newsletterConfirmation = {
+VulcanEmail.emails.newsletterConfirmation = {
 
-  ...NovaEmail.emails.newsletterConfirmation, 
+  ...VulcanEmail.emails.newsletterConfirmation, 
 
   getTestHTML() {
-    return NovaEmail.getTemplate('newsletterConfirmation')({
+    return VulcanEmail.getTemplate('newsletterConfirmation')({
       time: 'January 1st, 1901',
       newsletterLink: 'http://example.com',
       subject: 'Lorem ipsum dolor sit amet'
