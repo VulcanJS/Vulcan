@@ -110,6 +110,7 @@ class CommentsItem extends Component{
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
               </div>
             </Components.ShowIf>
+            <Components.SubscribeTo document={comment} />
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>

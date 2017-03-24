@@ -59,6 +59,8 @@ addStrings('en', {
   "comments.topLevelCommentId": "Top Level Comment ID",
   "comments.body": "Body",
   "comments.rate_limit_error": "Please wait {value} seconds before commenting again.",
+  "comments.subscribe": "Subscribe",
+  "comments.unsubscribe": "Unsubscribe",
 
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
