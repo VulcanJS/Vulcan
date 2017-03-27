@@ -7,6 +7,8 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
+    'fourseven:scss',
+
     'nova:core@1.2.0',
     'nova:users@1.2.0', // this dep is needed to check users permissions
     'nova:posts@1.2.0',
@@ -16,5 +18,10 @@ Package.onUse(function (api) {
 
   api.mainModule("lib/modules.js", ["client"]);
   api.mainModule("lib/modules.js", ["server"]);
+
+  api.addFiles([
+    'lib/stylesheets/_variables.scss',
+    'lib/stylesheets/custom.scss'
+  ], ['client']);
 
 });

@@ -156,7 +156,7 @@ const CommentsNewNotifications = (comment) => {
         // and of comment author (they could be replying in a thread they're subscribed to)
         let parentCommentSubscribersToNotify = _.difference(parentComment.subscribers, notifiedUsers, [comment.userId]);
         createNotifications(parentCommentSubscribersToNotify, 'newReply', 'comment', comment._id);
-        notifiedUsers.concat(parentCommentSubscribersToNotify);
+        notifiedUsers = notifiedUsers.concat(parentCommentSubscribersToNotify);
       }
     }
 

@@ -2,7 +2,7 @@ Package.describe({
   name: "lw-notifications"
 });
 
-Package.onUse( function(api) {
+Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
@@ -25,6 +25,5 @@ Package.onUse( function(api) {
   api.addFiles([
     'lib/stylesheets/custom.scss'
   ], ['client']);
-
 
 });
