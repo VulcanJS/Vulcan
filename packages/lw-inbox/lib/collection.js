@@ -1,27 +1,48 @@
-import schema from './schema.js';
-import mutations from './mutations.js';
-import resolvers from './resolvers.js';
+import { MessageSchema, ConversationSchema } from './schema.js';
+import { MessageResolvers, ConversationResolvers } from './resolvers.js';
+import { MessageMutations, ConversationMutations}  from './mutations.js';
+
+
 // TODO: is the following comment true in our case?
 import { createCollection } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 /**
- * @summary Telescope Notifications namespace
- * @namespace Notifications
+ * @summary Telescope Conversations namespace
+ * @namespace Conversations
  */
-const Notifications = createCollection({
+const Conversations = createCollection({
 
-  // collection: Meteor.notifications,
+  collectionName: 'conversations',
 
-  collectionName: 'notifications',
+  typeName: 'Conversation',
 
-  typeName: 'Notification',
+  schema: ConversationSchema,
 
-  schema,
+  resolvers: ConversationResolvers,
 
-  resolvers,
-
-  mutations,
+  mutations: ConversationMutations,
 
 });
 
-export default Notifications;
+
+/**
+ * @summary Telescope Messages namespace
+ * @namespace Messages
+ */
+const Messages = createCollection({
+
+  collectionName: 'messages',
+
+  typeName: 'Message',
+
+  schema: MessageSchema,
+
+  resolvers: MessageResolvers,
+
+  mutations: MessageMutations,
+
+});
+
+export {Messages, Conversations};
+
+// Conversations,

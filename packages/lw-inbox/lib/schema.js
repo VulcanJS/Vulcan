@@ -9,7 +9,15 @@ import GraphQLSchema from 'meteor/nova:core';
 
 const userInParticipants = function (user, document) {
   try {
-    document.participants.forEach(function (participant) {
+    let conversation;
+    if (document.conversation) { //Check if document is message and set conversation accordingly
+      conversation = document.conversation;
+    } else if (document.participants) { //Check if document is conversation
+      conversation = document;
+    } else { //If neither, return false
+      return false;
+    }
+    conversation.participants.forEach(function (participant) {
       if (participant._id == user._id) {
         return true
       }
@@ -17,9 +25,9 @@ const userInParticipants = function (user, document) {
   } catch (e) {
     return false; //user not logged in, or corrupt conversation
   }
-}
+};
 
-//define schema
+
 const ConversationSchema = {
   _id: {
     type: String,
@@ -40,13 +48,51 @@ const ConversationSchema = {
     optional: true,
     resolveAs: 'participants: [User]',
   },
-  messages: {
+  messageIds: {
     type: [String],
-    viewableBy: userinParticipants,
-    insertableBy: userinParticipants,
+    viewableBy: userInParticipants,
+    insertableBy: userInParticipants,
     optional: true,
     resolveAs: 'messages: [Message]',
   }
 };
 
-export default schema;
+const MessageSchema = {
+  _id: {
+    type: String,
+    viewableBy: Users.owns,
+  },
+  userId: {
+    type: String,
+    viewableBy: userInParticipants,
+    insertableBy: Users.owns,
+    resolveAs: 'user: User'
+  },
+  createdAt: {
+    type: Date,
+    viewableBy: userInParticipants,
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    },
+  },
+  messageMD: {
+    type: String,
+    viewableBy: userInParticipants,
+    insertableBy: Users.owns,
+    editableBy: Users.owns,
+    optional: true,
+  },
+  messageHTML: {
+    type: String,
+    viewableBy: userInParticipants,
+    optional: true,
+  },
+  conversationId: {
+    type: String,
+    viewableBy: userInParticipants,
+    insertableBy: Users.owns,
+    resolveAs: 'conversation: Conversation'
+  },
+};
+
+export { MessageSchema, ConversationSchema }

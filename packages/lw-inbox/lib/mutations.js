@@ -14,7 +14,7 @@ Each mutation has:
 
 */
 
-import { newMutation, editMutation, removeMutation, Utils } from 'meteor/nova:core';
+import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 
 const performCheck = (mutation, user, document) => {
@@ -23,15 +23,15 @@ const performCheck = (mutation, user, document) => {
   }
 }
 
-const mutations = {
+const ConversationMutations = {
 
   new: {
 
-    name: 'notificationsNew',
+    name: 'conversationsNew',
 
     check(user) {
       if (!user) return false;
-      return Users.canDo(user, 'notifications.new');
+      return Users.canDo(user, 'conversations.new');
     },
 
     mutation(root, {document}, context) {
@@ -39,7 +39,7 @@ const mutations = {
       performCheck(this, context.currentUser, document);
 
       return newMutation({
-        collection: context.Notifications,
+        collection: context.Conversations,
         document: document,
         currentUser: context.currentUser,
         validate: true,
@@ -51,20 +51,20 @@ const mutations = {
 
   edit: {
 
-    name: 'notificationsEdit',
+    name: 'conversationsEdit',
 
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, 'notifications.edit.own') : Users.canDo(user, `notifications.edit.all`);
+      return Users.owns(user, document) ? Users.canDo(user, 'conversations.edit.own') : Users.canDo(user, `conversations.edit.all`);
     },
 
     mutation(root, {documentId, set, unset}, context) {
 
-      const document = context.Notifications.findOne(documentId);
+      const document = context.Conversations.findOne(documentId);
       performCheck(this, context.currentUser, document);
 
       return editMutation({
-        collection: context.Notifications,
+        collection: context.Conversations,
         documentId: documentId,
         set: set,
         unset: unset,
@@ -78,21 +78,21 @@ const mutations = {
 
   remove: {
 
-    name: 'notificationsRemove',
+    name: 'conversationsRemove',
 
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, 'notifications.remove.own') : Users.canDo(user, `notifications.remove.all`);
+      return Users.owns(user, document) ? Users.canDo(user, 'conversations.remove.own') : Users.canDo(user, `conversations.remove.all`);
     },
 
     mutation(root, {documentId}, context) {
 
-      const document = context.Notifications.findOne(documentId);
+      const document = context.Conversations.findOne(documentId);
 
       performCheck(this, context.currentUser, document);
 
       return removeMutation({
-        collection: context.Notifications,
+        collection: context.Conversations,
         documentId: documentId,
         currentUser: context.currentUser,
         validate: true,
@@ -104,4 +104,91 @@ const mutations = {
 
 };
 
-export default mutations;
+const MessageMutations = {
+
+  new: {
+
+    name: 'messagesNew',
+
+    check(user) {
+      if (!user) return false;
+      return Users.canDo(user, 'messages.new');
+    },
+
+    mutation(root, {document}, context) {
+
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Messages,
+        document: document,
+        currentUser: context.currentUser,
+        validate: true,
+        context,
+      });
+    },
+
+  },
+
+  edit: {
+
+    name: 'messagesEdit',
+
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'messages.edit.own') : Users.canDo(user, `messages.edit.all`);
+    },
+
+    mutation(root, {documentId, set, unset}, context) {
+
+      const document = context.Messages.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Messages,
+        documentId: documentId,
+        set: set,
+        unset: unset,
+        currentUser: context.currentUser,
+        validate: true,
+        context,
+      });
+    },
+
+  },
+
+  remove: {
+
+    name: 'messagesRemove',
+
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'messages.remove.own') : Users.canDo(user, `messages.remove.all`);
+    },
+
+    mutation(root, {documentId}, context) {
+
+      const document = context.Messages.findOne(documentId);
+
+      performCheck(this, context.currentUser, document);
+
+      return removeMutation({
+        collection: context.Messages,
+        documentId: documentId,
+        currentUser: context.currentUser,
+        validate: true,
+        context,
+      });
+    },
+
+  },
+
+};
+
+GraphQLSchema.addMutation('addMessageToConversation(conversationId: String, messageId: String): String');
+
+
+export {
+  ConversationMutations,
+  MessageMutations
+};
