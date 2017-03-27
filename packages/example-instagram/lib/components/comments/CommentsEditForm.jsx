@@ -1,6 +1,6 @@
 /* 
 
-A component to configure the "edit movie" form.
+A component to configure the "edit comment" form.
 Wrapped with the "withDocument" container.
 
 */
@@ -8,18 +8,18 @@ Wrapped with the "withDocument" container.
 import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
-import Movies from '../../modules/movies/collection.js';
+import Comments from '../../modules/comments/collection.js';
 
-const MoviesEditForm = ({documentId, closeModal}) =>
+const CommentsEditForm = ({documentId, closeModal}) =>
 
   <Components.SmartForm 
-    collection={Movies}
+    collection={Comments}
     documentId={documentId}
-    mutationFragment={getFragment('MoviesItemFragment')}
+    mutationFragment={getFragment('CommentsItemFragment')}
     showRemove={true}
     successCallback={document => {
       closeModal();
     }}
   />
 
-export default MoviesEditForm;
+export default CommentsEditForm;

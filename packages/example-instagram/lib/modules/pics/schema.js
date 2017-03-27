@@ -27,24 +27,16 @@ const schema = {
   
   // custom properties
 
-  name: {
-    label: 'Name',
+  imageUrl: {
+    label: 'Image URL',
     type: String,
     optional: true,
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
   },
-  year: {
-    label: 'Year',
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-  review: {
-    label: 'Review',
+  body: {
+    label: 'Body',
     type: String,
     optional: true,
     control: 'textarea',
@@ -53,6 +45,15 @@ const schema = {
     editableBy: ['members']
   },
 
+  // GraphQL-only field
+
+  commentsCount: {
+    type: Number,
+    optional: true,
+    viewableBy: ['guests'],
+    hidden: true,
+    resolveAs: 'commentsCount: Float'
+  }
 };
 
 export default schema;

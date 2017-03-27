@@ -1,6 +1,6 @@
 /*
 
-The main Movies collection definition file.
+The main Pics collection definition file.
 
 */
 
@@ -12,11 +12,11 @@ import mutations from './mutations.js';
 import './permissions.js';
 import './parameters.js';
 
-const Movies = createCollection({
+const Pics = createCollection({
 
-  collectionName: 'movies',
+  collectionName: 'pics',
 
-  typeName: 'Movie',
+  typeName: 'Pic',
 
   schema,
   
@@ -26,4 +26,4 @@ const Movies = createCollection({
 
 });
 
-export default Movies;
+export default Pics;

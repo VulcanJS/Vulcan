@@ -27,32 +27,22 @@ const schema = {
   
   // custom properties
 
-  name: {
-    label: 'Name',
+  body: {
+    label: 'Body',
+    placeholder: 'Add a comment…',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-  year: {
-    label: 'Year',
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-  review: {
-    label: 'Review',
-    type: String,
-    optional: true,
-    control: 'textarea',
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members']
   },
-
+  picId: {
+    type: String,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    hidden: true,
+  },
+  
 };
 
 export default schema;

@@ -56,4 +56,4 @@ const options = {
   limit: 5
 };
 
-export default withList(options)(withCurrentUser(MoviesList))
+export default withList(options)(withCurrentUser(MoviesList));

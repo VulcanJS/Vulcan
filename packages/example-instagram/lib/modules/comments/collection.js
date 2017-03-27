@@ -1,6 +1,6 @@
 /*
 
-The main Movies collection definition file.
+The main Comments collection definition file.
 
 */
 
@@ -12,11 +12,11 @@ import mutations from './mutations.js';
 import './permissions.js';
 import './parameters.js';
 
-const Movies = createCollection({
+const Comments = createCollection({
 
-  collectionName: 'movies',
+  collectionName: 'comments',
 
-  typeName: 'Movie',
+  typeName: 'Comment',
 
   schema,
   
@@ -26,4 +26,11 @@ const Movies = createCollection({
 
 });
 
-export default Movies;
+Comments.addView('picComments', function (terms) {
+  return {
+    selector: {picId: terms.picId},
+    options: {sort: {createdAt: 1}}
+  };
+});
+
+export default Comments;
