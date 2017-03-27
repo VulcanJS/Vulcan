@@ -27,7 +27,7 @@ function getEmbedlyData(url) {
     });
 
     if (!!result.data.images && !!result.data.images.length) // there may not always be an image
-      result.data.thumbnailUrl = result.data.images[0].url // add thumbnailUrl as its own property and leave "http" in, Facebook scraper won't accept it as valid otherwise
+      result.data.thumbnailUrl = result.data.images[0].url.replace("http:","") // add thumbnailUrl as its own property
 
     if (result.data.authors && result.data.authors.length > 0) {
       result.data.sourceName = result.data.authors[0].name;
