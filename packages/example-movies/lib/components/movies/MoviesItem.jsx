@@ -6,7 +6,7 @@ Wrapped with the "withCurrentUser" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import { registerComponent, ModalTrigger } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';
 import MoviesEditForm from './MoviesEditForm.jsx';
@@ -17,19 +17,15 @@ const MoviesItem = ({movie, currentUser}) =>
 
     {/* document properties */}
     
-    <ul>
-      <li><strong>User:</strong> {movie.user && movie.user.displayName}</li>
-      <li><strong>Name:</strong> {movie.name}</li>
-      <li><strong>Year:</strong> {movie.year}</li>
-      <li><strong>Review:</strong> {movie.review}</li>
-    </ul>
+    <h4>{movie.name} ({movie.year})</h4>
+    <p>{movie.review} – {movie.user && movie.user.displayName}</p>
     
     {/* edit document form */}
 
     {Movies.options.mutations.edit.check(currentUser, movie) ? 
-      <ModalTrigger label="Edit Movie">
+      <Components.ModalTrigger label="Edit Movie">
         <MoviesEditForm currentUser={currentUser} documentId={movie._id} />
-      </ModalTrigger>
+      </Components.ModalTrigger>
       : null
     }
 

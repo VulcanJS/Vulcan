@@ -47,6 +47,7 @@ const schema = {
     label: 'Review',
     type: String,
     optional: true,
+    control: 'textarea',
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members']

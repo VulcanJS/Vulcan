@@ -8,7 +8,6 @@ Package.onUse(function (api) {
     'vulcan:core',
     'vulcan:forms',
     'vulcan:routing',
-
     'vulcan:accounts',
   ]);
 

@@ -10,15 +10,15 @@ import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
 import Movies from '../../modules/movies/collection.js';
 
-const MoviesEditForm = props =>
+const MoviesEditForm = ({documentId, closeModal}) =>
 
   <Components.SmartForm 
     collection={Movies}
-    documentId={props.documentId}
+    documentId={documentId}
     mutationFragment={getFragment('MoviesItemFragment')}
     showRemove={true}
     successCallback={document => {
-      props.closeModal();
+      closeModal();
     }}
   />
 

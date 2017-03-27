@@ -14,7 +14,7 @@ import MoviesNewForm from './MoviesNewForm.jsx';
 
 const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   
-  <div style={{maxWidth: '500px', margin: 'auto'}}>
+  <div style={{maxWidth: '500px', margin: '20px auto'}}>
 
     {/* user accounts */}
 
@@ -56,4 +56,4 @@ const options = {
   limit: 5
 };
 
-export default withList(options)(withCurrentUser(MoviesList))
+export default withList(options)(withCurrentUser(MoviesList));
