@@ -9,7 +9,8 @@ Package.onUse(function (api) {
     'vulcan:forms',
     'vulcan:routing',
     'vulcan:accounts',
-
+    'vulcan:forms-upload',
+    
     'fourseven:scss',
   ]);
 

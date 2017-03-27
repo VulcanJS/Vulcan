@@ -20,7 +20,7 @@ const HeaderLoggedIn = ({currentUser}) =>
 
       </div>
 
-      <Components.ModalTrigger label="Upload" size="small">
+      <Components.ModalTrigger label="Upload">
         <PicsNewForm />
       </Components.ModalTrigger>
 

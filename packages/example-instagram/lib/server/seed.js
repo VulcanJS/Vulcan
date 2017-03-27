@@ -29,7 +29,7 @@ var createPic = function (imageUrl, createdAt, body, username) {
 
   const pic = {
     createdAt,
-    imageUrl,
+    imageUrl: `http://vulcanjs.org/photos/${imageUrl}`,
     body, 
     isDummy: true,
     userId: user._id

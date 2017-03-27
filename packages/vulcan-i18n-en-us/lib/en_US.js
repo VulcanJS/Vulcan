@@ -30,6 +30,7 @@ addStrings('en', {
   "accounts.or_use": "or use",
   "accounts.info_email_sent": "Email sent.",
   "accounts.info_password_changed": "Password changed.",
+  "accounts.logging_in": "Logging in…",
 
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",

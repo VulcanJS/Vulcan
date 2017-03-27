@@ -4,6 +4,9 @@ A SimpleSchema-compatible JSON schema
 
 */
 
+import { getSetting } from 'meteor/vulcan:core';
+import Upload from 'meteor/vulcan:forms-upload';
+
 const schema = {
 
   // default properties
@@ -34,6 +37,12 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
+    control: Upload,
+    form: {
+      options: {
+        preset: getSetting('cloudinaryPresets').pics
+      },
+    }
   },
   body: {
     label: 'Body',

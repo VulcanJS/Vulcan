@@ -25,7 +25,7 @@ const PicsDetails = ({loading, document, currentUser}) => {
 
       <div className="pics-details">
 
-        <div className="pics-details-image"><img src={`http://vulcanjs.org/photos/${document.imageUrl}`}/></div>
+        <div className="pics-details-image"><img src={document.imageUrl}/></div>
         
         <div className="pics-details-sidebar">
           

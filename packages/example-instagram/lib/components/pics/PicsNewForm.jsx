@@ -9,16 +9,16 @@ import { Components, registerComponent, withCurrentUser, getFragment } from 'met
 
 import Pics from '../../modules/pics/collection.js';
 
-const PicsNewForm = ({currentUser}) =>
+const PicsNewForm = ({currentUser, closeModal}) =>
 
   <div>
 
     {Pics.options.mutations.new.check(currentUser) ?
       <div style={{marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ccc'}}>
-        <h4>Insert New Document</h4>
         <Components.SmartForm 
           collection={Pics}
           mutationFragment={getFragment('PicsItemFragment')}
+          successCallback={closeModal}
         /> 
       </div> :
       null
