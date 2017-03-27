@@ -1,10 +1,10 @@
-import { Components, registerComponent, withCurrentUser, withList, withEdit } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, withList, withEdit } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Dropdown, MenuItem, DropdownButton } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import { withApollo } from 'react-apollo';
 import Notifications from '../collection.js'
 

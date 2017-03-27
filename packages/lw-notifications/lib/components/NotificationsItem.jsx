@@ -1,10 +1,10 @@
-import { Components, registerComponent } from 'meteor/nova:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { Dropdown, DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
-import Users from "meteor/nova:comments";
+import Posts from "meteor/vulcan:posts";
+import Comments from "meteor/vulcan:comments";
+import Users from "meteor/vulcan:comments";
 
 
 

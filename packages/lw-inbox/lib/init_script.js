@@ -1,6 +1,6 @@
 import {Conversations, Messages} from './collection.js';
-import Users from 'meteor/nova:users';
-import { newMutation, editMutation } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { newMutation, editMutation } from 'meteor/vulcan:core';
 
 
 const seedData = [

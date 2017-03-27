@@ -1,8 +1,8 @@
-import {Components, getRawComponent, replaceComponent} from 'meteor/nova:core';
+import {Components, getRawComponent, replaceComponent} from 'meteor/vulcan:core';
 import React, {PropTypes, Component} from 'react';
 import classNames from 'classnames';
-import {withCurrentUser, withMessages} from 'meteor/nova:core';
-import {withVote, hasUpvoted, hasDownvoted} from 'meteor/nova:voting';
+import {withCurrentUser, withMessages} from 'meteor/vulcan:core';
+import {withVote, hasUpvoted, hasDownvoted} from 'meteor/vulcan:voting';
 
 
 class LWVote extends getRawComponent('Vote') {

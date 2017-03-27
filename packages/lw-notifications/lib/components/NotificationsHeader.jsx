@@ -5,9 +5,9 @@ it the same way.
 */
 
 import { IndexLink } from 'react-router';
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 import React, { PropTypes, Component } from 'react';
-import { withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/nova:core';
+import { withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/vulcan:core';
 
 
 
@@ -16,7 +16,7 @@ class NotificationsHeader extends Component {
   render () {
 
     logoUrl = getSetting("logoUrl");
-    siteTitle = getSetting("title", "Nova");
+    siteTitle = getSetting("title", "vulcan");
     tagline = getSetting("tagline");
 
     terms = {view: 'userNotifications', userId: (!!this.props.currentUser ? this.props.currentUser._id : "0")};

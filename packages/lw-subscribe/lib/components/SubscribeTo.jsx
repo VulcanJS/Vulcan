@@ -2,8 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage } from 'react-intl';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import Users from 'meteor/nova:users';
-import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/vulcan:core';
 
 // boolean -> unsubscribe || subscribe
 const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe' 

@@ -1,8 +1,8 @@
-import Users from 'meteor/nova:users';
-import Posts from 'meteor/nova:posts';
-import Comments from 'meteor/nova:comments';
-import Categories from 'meteor/nova:categories';
-import { Utils, GraphQLSchema } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import Posts from 'meteor/vulcan:posts';
+import Comments from 'meteor/vulcan:comments';
+import Categories from 'meteor/vulcan:categories';
+import { Utils, GraphQLSchema } from 'meteor/vulcan:core';
 
 /**
  * @summary Verify that the un/subscription can be performed

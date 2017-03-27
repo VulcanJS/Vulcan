@@ -1,8 +1,8 @@
 import Notifications from './collection.js';
-import Users from 'meteor/nova:users';
-import Posts from 'meteor/nova:posts';
-import Comments from 'meteor/nova:comments';
-import { addCallback, newMutation } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import Posts from 'meteor/vulcan:posts';
+import Comments from 'meteor/vulcan:comments';
+import { addCallback, newMutation } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from 'meteor/lw-subscribe';
 
 const createNotifications = (userIds, notificationType, documentType, documentId) => {

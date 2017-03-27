@@ -4,8 +4,8 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Users from 'meteor/nova:users';
-import GraphQLSchema from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import GraphQLSchema from 'meteor/vulcan:core';
 
 const userInParticipants = function (user, document) {
   try {
@@ -41,19 +41,32 @@ const ConversationSchema = {
     }
   },
   participants: {
-    type: [String],
+    type: Array,
     viewableBy: userInParticipants,
     editableBy: userInParticipants,
     insertableBy: userInParticipants,
     optional: true,
     resolveAs: 'participants: [User]',
   },
+  'participants.$': {
+    type: String,
+    viewableBy: userInParticipants,
+    editableBy: userInParticipants,
+    insertableBy: userInParticipants,
+    optional: true,
+  },
   messageIds: {
-    type: [String],
+    type: Array,
     viewableBy: userInParticipants,
     insertableBy: userInParticipants,
     optional: true,
     resolveAs: 'messages: [Message]',
+  },
+  'messageIds:.$': {
+    type: String,
+    viewableBy: userInParticipants,
+    insertableBy: userInParticipants,
+    optional: true,
   }
 };
 

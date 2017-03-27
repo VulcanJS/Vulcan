@@ -1,4 +1,4 @@
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema } from 'meteor/vulcan:core';
 
 const specificResolvers = {
   Post: {
@@ -32,7 +32,7 @@ const resolvers = {
   },
 
   single: {
-    
+
     name: 'postsSingle',
 
     resolver(root, {documentId, slug}, context) {
@@ -40,18 +40,18 @@ const resolvers = {
       const post = context.Posts.findOne(selector);
       return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
-  
+
   },
 
   total: {
-    
+
     name: 'postsTotal',
-    
+
     resolver(root, {terms}, context) {
       const {selector} = context.Posts.getParameters(terms);
       return context.Posts.find(selector).count();
     },
-  
+
   }
 };
 

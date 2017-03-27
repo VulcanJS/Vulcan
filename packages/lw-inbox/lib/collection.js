@@ -4,7 +4,7 @@ import { MessageMutations, ConversationMutations}  from './mutations.js';
 
 
 // TODO: is the following comment true in our case?
-import { createCollection } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { createCollection } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 /**
  * @summary Telescope Conversations namespace

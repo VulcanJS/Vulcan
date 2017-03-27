@@ -9,12 +9,12 @@ Package.onUse(function(api) {
   api.use([
     'fourseven:scss',
 
-    'nova:core',
-    'nova:base-components',
-    'nova:base-styles',
-    'nova:posts',
-    'nova:users',
-    'nova:voting',
+    'vulcan:core',
+    'vulcan:base-components',
+    'vulcan:base-styles',
+    'vulcan:posts',
+    'vulcan:users',
+    'vulcan:voting',
 
     'lw-subscribe',
   ]);

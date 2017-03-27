@@ -9,11 +9,11 @@ Package.onUse(function (api) {
   api.use([
     'fourseven:scss',
 
-    'nova:core@1.2.0',
-    'nova:users@1.2.0', // this dep is needed to check users permissions
-    'nova:posts@1.2.0',
-    'nova:comments@1.2.0',
-    'nova:categories@1.2.0',
+    'vulcan:core@1.2.0',
+    'vulcan:users@1.2.0', // this dep is needed to check users permissions
+    'vulcan:posts@1.2.0',
+    'vulcan:comments@1.2.0',
+    'vulcan:categories@1.2.0',
   ]);
 
   api.mainModule("lib/modules.js", ["client"]);

@@ -1,6 +1,6 @@
 import Notifications from './collection.js';
-import Users from 'meteor/nova:users';
-import { newMutation } from 'meteor/nova:core';
+import Users from 'meteor/vulcan:users';
+import { newMutation } from 'meteor/vulcan:core';
 
 
 const seedData = [

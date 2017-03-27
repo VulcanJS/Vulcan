@@ -1,4 +1,4 @@
-import Users from 'meteor/nova:users';
+import Users from 'meteor/vulcan:users';
 
 const notificationsGroup = {
   name: "notifications",
@@ -13,7 +13,6 @@ Users.addField([
       label: 'New users',
       type: Boolean,
       optional: true,
-      defaultValue: false,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['admins'],
@@ -27,7 +26,6 @@ Users.addField([
       label: 'New posts',
       type: Boolean,
       optional: true,
-      defaultValue: false,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['members'],
@@ -44,7 +42,6 @@ Users.addField([
       label: 'Comments on my posts',
       type: Boolean,
       optional: true,
-      defaultValue: false,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['members'],
@@ -58,7 +55,6 @@ Users.addField([
       label: 'Replies to my comments',
       type: Boolean,
       optional: true,
-      defaultValue: false,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['members'],

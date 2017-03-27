@@ -1,4 +1,4 @@
-import { registerFragment } from 'meteor/nova:core';
+import { registerFragment } from 'meteor/vulcan:core';
 
 registerFragment(`
   fragment notificationsNavFragment on Notification {
