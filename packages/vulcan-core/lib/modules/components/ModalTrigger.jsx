@@ -37,7 +37,7 @@ class ModalTrigger extends Component {
     return (
       <div className="modal-trigger">
         {triggerComponent}
-        <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
+        <Modal className={this.props.className} bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
             {childrenComponent}
@@ -49,6 +49,7 @@ class ModalTrigger extends Component {
 }
 
 ModalTrigger.propTypes = {
+  className: React.PropTypes.string,
   label: React.PropTypes.string,
   component: React.PropTypes.object,
   size: React.PropTypes.string

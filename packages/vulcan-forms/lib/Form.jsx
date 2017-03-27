@@ -155,8 +155,8 @@ class Form extends Component {
       }
 
       // add placeholder
-      if (fieldSchema.form && fieldSchema.form.placeholder) {
-       field.placeholder = fieldSchema.form.placeholder;
+      if (fieldSchema.placeholder) {
+       field.placeholder = fieldSchema.placeholder;
       }
 
       if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;

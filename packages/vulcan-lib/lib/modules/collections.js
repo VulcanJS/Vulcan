@@ -7,7 +7,7 @@ SimpleSchema.extendOptions([
   'viewableBy',
   'insertableBy',
   'editableBy',
-  'resolveAs'
+  'resolveAs',
 ]);
 
 /**
@@ -188,9 +188,9 @@ export const createCollection = options => {
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${collectionName}.parameters`, parameters, _.clone(terms), apolloClient);
 
-    // extend sort to sort posts by createdAt and _id to break ties
+    // extend sort to sort posts by _id to break ties
     // NOTE: always do this last to avoid overriding another sort
-    parameters = Utils.deepExtend(true, parameters, {options: {sort: {createdAt: -1, _id: -1}}});
+    parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
     // limit number of items to 200
     parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;

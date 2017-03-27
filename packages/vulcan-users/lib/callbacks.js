@@ -77,6 +77,20 @@ function setupUser (user, options) {
 }
 addCallback("users.new.sync", setupUser);
 
+/**
+ * @summary Copy over profile.isDummy to isDummy on user creation
+ * @param {Object} user – the user object being iterated on and returned
+ * @param {Object} options – user options
+ */
+function copyDummyProperty (user, options) {
+  if (typeof user.profile.isDummy !== "undefined") {
+    user.isDummy = user.profile.isDummy;
+  }
+  return user;
+}
+addCallback("users.new.sync", copyDummyProperty);
+
+
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }

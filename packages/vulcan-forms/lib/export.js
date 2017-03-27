@@ -7,7 +7,8 @@ if (typeof SimpleSchema !== "undefined") {
     'order', // order in the form
     'group', // form fieldset group
     'beforeComponent',
-    'afterComponent'
+    'afterComponent',
+    'placeholder',
   ]);
 }
 
