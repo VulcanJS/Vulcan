@@ -41,10 +41,10 @@ class NotificationsMenu extends Component {
 
     if(!currentUser){
       return (<div></div>);
-    } else {
+    } else { //TODO: Replace DrodownButton with custom Dropdown component and replace notification count with badge
       return (
         <div className="notifications-menu">
-          <DropdownButton id="notification-menu" onClick={() => this.viewNotifications(unreadNotifications)} bsStyle='info' title={'Notifications (' + unreadNotifications.length + ')'}>
+          <DropdownButton id="notification-menu" onClick={() => this.viewNotifications(unreadNotifications)}  bsStyle='info' title={'Notifications (' + unreadNotifications.length + ')'}>
               {this.renderNotificationsList()}
           </DropdownButton>
         </div>

@@ -66,18 +66,17 @@ if (Messages.find().fetch().length === 0) {
   })
 }
 
-Messages.find().fetch().forEach(document => {
-  let conversationId = document.conversationId;
-  let conversation = Conversations.findOne({_id: conversationId});
-  let messages = [];
-  messages.push(document._id);
-  console.log(messages);
-  let currentUser = Users.findOne();
-  editMutation({
-    collection: Conversations,
-    documentId: conversationId,
-    set: {messageIds: messages},
-    validate: false,
-    currentUser: currentUser,
-  });
-});
+// Messages.find().fetch().forEach(document => {
+//   let conversationId = document.conversationId;
+//   let conversation = Conversations.findOne({_id: conversationId});
+//   let messages = [];
+//   messages.push(document._id);
+//   let currentUser = Users.findOne();
+//   editMutation({
+//     collection: Conversations,
+//     documentId: conversationId,
+//     set: {messageIds: messages},
+//     validate: false,
+//     currentUser: currentUser,
+//   });
+// });
