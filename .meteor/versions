@@ -45,6 +45,7 @@ jquery@1.11.10
 livedata@1.0.18
 localstorage@1.0.12
 logging@1.1.17
+lw-inbox@0.0.0
 lw-notifications@0.0.0
 lw-subscribe@0.0.0
 lw-voting@0.0.0
