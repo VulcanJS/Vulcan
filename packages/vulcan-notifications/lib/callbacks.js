@@ -18,7 +18,7 @@ if (!!Posts) {
     createNotification(post.userId, 'postApproved', notificationData);
   }
   addCallback("posts.approve.async", PostsApprovedNotification);
-
+  
   /**
    * @summary Add new post notification callback on post submit
    */
@@ -26,7 +26,7 @@ if (!!Posts) {
 
     let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
     let notifiedUserIds = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
-
+    
     const notificationData = {
       post: _.pick(post, '_id', 'userId', 'title', 'url', 'slug')
     };
@@ -42,7 +42,7 @@ if (!!Posts) {
       // if post is approved, notify everybody
       createNotification(notifiedUserIds, 'newPost', notificationData);
     }
-
+    
   }
   addCallback("posts.new.async", PostsNewNotifications);
 }
@@ -65,7 +65,7 @@ if (!!Comments) {
 
       // 1. Notify author of post (if they have new comment notifications turned on)
       //    but do not notify author of post if they're the ones posting the comment
-      if (Users.getSetting(postAuthor, "notifications_comments", false) && comment.userId !== postAuthor._id) {
+      if (Users.getSetting(postAuthor, "notifications_comments", true) && comment.userId !== postAuthor._id) {
         createNotification(post.userId, 'newComment', notificationData);
         userIdsNotified.push(post.userId);
       }
@@ -82,7 +82,7 @@ if (!!Comments) {
           const parentCommentAuthor = Users.findOne(parentComment.userId);
 
           // do not notify parent comment author if they have reply notifications turned off
-          if (Users.getSetting(parentCommentAuthor, "notifications_replies", false)) {
+          if (Users.getSetting(parentCommentAuthor, "notifications_replies", true)) {
 
             // add parent comment to notification data
             notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author', 'htmlBody');
@@ -93,9 +93,9 @@ if (!!Comments) {
         }
 
       }
-
+      
     }
   }
-
-  addCallback("comments.new.async", CommentsNewNotifications);
+  
+  addCallback("comments.new.async", CommentsNewNotifications); 
 }
