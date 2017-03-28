@@ -5,8 +5,8 @@ import './permissions.js';
 import './fragments.js';
 
 import './components/SubscribeTo.jsx';
-import './components/PostItem.jsx';
-import './components/CommentsItem.jsx';
+import './components/LWPostsItem.jsx';
+import './components/LWCommentsItem.jsx';
 
 export { performSubscriptionAction } from './mutations.js';
 export default subscribeMutationsGenerator;
