@@ -1,28 +1,10 @@
-import { Components, registerComponent, ModalTrigger } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import React from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
 
-class PostsItem extends Component {
-
-  renderCategories() {
-    return this.props.post.categories && this.props.post.categories.length > 0 ? <Components.PostsCategories post={this.props.post} /> : "";
-  }
-
-  renderCommenters() {
-    return this.props.post.commenters && this.props.post.commenters.length > 0 ? <Components.PostsCommenters post={this.props.post}/> : "";
-  }
-
-  renderActions() {
-    return (
-      <div className="post-actions">
-        <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-          <Components.PostsEditForm post={this.props.post} />
-        </ModalTrigger>
-      </div>
-    )
-  }
+class LWPostsItem extends getRawComponent('PostsItem') {
 
   render() {
 
@@ -71,10 +53,4 @@ class PostsItem extends Component {
   }
 }
 
-PostsItem.propTypes = {
-  currentUser: React.PropTypes.object,
-  post: React.PropTypes.object.isRequired,
-  terms: React.PropTypes.object,
-};
-
-registerComponent('PostsItem', PostsItem);
+replaceComponent('PostsItem', LWPostsItem);
