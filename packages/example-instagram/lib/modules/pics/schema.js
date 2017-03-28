@@ -4,7 +4,7 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Upload from 'meteor/vulcan:forms-upload';
+import FormsUpload from 'meteor/vulcan:forms-upload';
 
 const schema = {
 
@@ -18,13 +18,14 @@ const schema = {
     type: Date,
     viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+      // if this is an insert, set createdAt to current timestamp
+      if (documentOrModifier && !documentOrModifier.$set) return new Date()  
     }
   },
   userId: {
     type: String,
     viewableBy: ['guests'],
-    resolveAs: 'user: User',
+    resolveAs: 'user: User', // resolve this field as "user" on the client
   },
   
   // custom properties
@@ -36,7 +37,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: Upload,
+    control: FormsUpload, // use the FormsUpload form component
     form: {
       options: {
         preset: 'vulcanstagram'
@@ -47,7 +48,7 @@ const schema = {
     label: 'Body',
     type: String,
     optional: true,
-    control: 'textarea',
+    control: 'textarea', // use a textarea form component
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members']
@@ -60,7 +61,7 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     hidden: true,
-    resolveAs: 'commentsCount: Float'
+    resolveAs: 'commentsCount: Float' // resolve as commentCount on the client
   }
 };
 

@@ -31,7 +31,6 @@
     "graphql-type-json": "^0.1.4",
     "handlebars": "^4.0.5",
     "history": "^3.0.0",
-    "hoist-non-react-statics": "^1.2.0",
     "html-to-text": "^2.1.0",
     "immutability-helper": "^2.0.0",
     "intl": "^1.2.4",

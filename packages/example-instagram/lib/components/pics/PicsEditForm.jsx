@@ -1,7 +1,6 @@
 /* 
 
 A component to configure the "edit pic" form.
-Wrapped with the "withDocument" container.
 
 */
 
