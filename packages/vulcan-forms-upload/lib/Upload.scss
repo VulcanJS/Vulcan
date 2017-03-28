@@ -1,0 +1,30 @@
+.upload-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.dropzone-base {
+  border: 4px dashed #ccc;
+  padding: 30px;
+  transition: "all 0.5s";
+  width: 300px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.dropzone-active {
+  border: #4FC47F 4px solid;
+}
+
+.dropzone-reject {
+  border: #DD3A0A 4px solid;
+}
+
+.upload-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-basis: 300px;
+}
