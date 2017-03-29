@@ -1,38 +1,9 @@
 
 # see http://docs.vulcanjs.org/packages
 
-############ Core Packages ############
-
-vulcan:core                       # core components and wrappers
-vulcan:forms                      # auto-generated forms
-vulcan:routing                    # routing and server-side rendering
-vulcan:users                      # user management and permissions
-
-############ Features Packages ############
-
-# vulcan:email
-# vulcan:posts
-# vulcan:comments
-# vulcan:newsletter
-# vulcan:notifications
-# vulcan:getting-started
-# vulcan:categories
-# vulcan:voting
-# vulcan:events
-# vulcan:embedly
-# vulcan:api
-# vulcan:rss
-# vulcan:subscribe
-
-############ Theme Packages ############
-
-# vulcan:base-components        # default ui components
-# vulcan:base-styles            # default styling
-# vulcan:email-templates        # default email templates for notifications
-
 ############ Language Packages ############
 
-vulcan:i18n-en-us               # default language translation
+vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
@@ -43,5 +14,6 @@ accounts-password@1.3.4
 ############ Your Packages ############
 
 example-movies
-# example-movies-full
+# example-instagram
+# example-forum
 # example-customization

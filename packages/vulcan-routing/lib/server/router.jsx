@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 
 import { RoutePolicy } from 'meteor/routepolicy';
 
-import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:core';
+import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:lib';
 
 function isAppUrl(req) {
   const url = req.url;

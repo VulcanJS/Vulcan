@@ -6,15 +6,16 @@ Package.onUse(function (api) {
 
   api.use([
 
-    // vulcan packages
+    // vulcan core
     'vulcan:core',
+
+    // vulcan packages
     'vulcan:forms',
-    'vulcan:routing',
     'vulcan:accounts',
     'vulcan:forms-upload',
     
     // third-party packages
-    'fourseven:scss',
+    'fourseven:scss@3.8.0',
 
   ]);
 

@@ -20,12 +20,6 @@ Package.onUse(function (api) {
     'vulcan:events@1.3.0',
   ]);
 
-  // both
-
-  api.addFiles([
-    'lib/getting_started.js'
-  ], ['client', 'server']);
-
   // client
 
   api.addAssets([
@@ -36,7 +30,7 @@ Package.onUse(function (api) {
   // server
 
   api.addFiles([
-    'lib/server/dummy_content.js'
+    'lib/server/seed.js'
   ], ['server']);
 
   api.addAssets('content/read_this_first.md', 'server');
