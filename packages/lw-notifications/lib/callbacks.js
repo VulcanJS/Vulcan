@@ -118,19 +118,25 @@ addCallback("posts.approve.async", PostsApprovedNotification);
  * @summary Add new post notification callback on post submit
  */
 const PostsNewNotifications = (post) => {
-
-  let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-  let usersToNotify = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
-
-  // remove post author ID from arrays
-  adminIds = _.without(adminIds, post.userId);
-  usersToNotify = _.without(usersToNotify, post.userId);
-
   if (post.status === Posts.config.STATUS_PENDING) {
     // if post is pending, only notify admins
+    let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
+
+    // remove this post's author
+    adminIds = _.without(adminIds, post.userId);
+
     createNotifications(adminIds, 'newPendingPost', 'post', post._id);
   } else {
-    // if post is approved, notify everybody
+    // add users who get notifications for all new posts
+    let usersToNotify = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
+
+    // add users subscribed to this post's author
+    const postAuthor = Users.findOne(post.userId);
+    usersToNotify = usersToNotify.concat(postAuthor.subscribers);
+
+    // remove this post's author
+    usersToNotify = _.without(usersToNotify, post.userId);
+
     createNotifications(usersToNotify, 'newPost', 'post', post._id);
   }
 }

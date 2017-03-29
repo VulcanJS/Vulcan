@@ -122,7 +122,7 @@ addStrings('en', {
   "users.cannot_post": "Sorry, you do not have permission to post at this time",
   "users.cannot_comment": "Sorry, you do not have permission to comment at this time",
   "users.subscribe": "Subscribe to this user's posts",
-  "users.unsubscribe": "Unsubscribe to this user's posts",
+  "users.unsubscribe": "Unsubscribe from this user's posts",
   "users.subscribed": "You have subscribed to “{name}” posts.",
   "users.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "users.subscribers": "Subscribers",
