@@ -1,6 +1,8 @@
 
 # see http://docs.vulcanjs.org/packages
 
+vulcan:core
+
 ############ Language Packages ############
 
 vulcan:i18n-en-us

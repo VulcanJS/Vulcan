@@ -23,7 +23,6 @@ Package.onUse(function (api) {
     'check',
     'http',
     'email',
-    'tracker',
     'ecmascript',
     'service-configuration',
     'shell-server',
