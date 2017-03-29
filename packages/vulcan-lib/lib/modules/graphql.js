@@ -85,6 +85,9 @@ export const GraphQLSchema = {
   addResolvers(resolvers) {
     this.resolvers = deepmerge(this.resolvers, resolvers);
   },
+  removeResolver(typeName, resolverName) {
+    delete this.resolvers[typeName][resolverName];
+  },
 
   // add objects to context
   context: {},
@@ -161,4 +164,5 @@ export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
 export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
 export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
+export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
