@@ -20,6 +20,7 @@ Package.onUse(function (api) {
     'vulcan:voting@1.3.0',
     'vulcan:accounts@1.3.0',
     'vulcan:email',
+    'vulcan:forms',
     'vulcan:newsletter',
     'vulcan:notifications',
     'vulcan:getting-started',
