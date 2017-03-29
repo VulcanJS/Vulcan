@@ -13,7 +13,10 @@ import './permissions.js';
 
 const Comments = createCollection({
 
-  collectionName: 'comments',
+  collectionName: 'Comments',
+  
+  // avoid conflicts with 'comments' collection in vulcan:comments
+  dbCollectionName: 'commentsInstagram',
 
   typeName: 'Comment',
 

@@ -95,7 +95,8 @@ export const GraphQLSchema = {
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
-    const collectionName = collection._name;
+    const collectionName = collection.options.collectionName;
+
     const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema

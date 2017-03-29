@@ -13,7 +13,7 @@ import './permissions.js';
 
 const Pics = createCollection({
 
-  collectionName: 'pics',
+  collectionName: 'Pics',
 
   typeName: 'Pic',
 
