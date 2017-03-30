@@ -2,6 +2,7 @@ import Notifications from './collection.js';
 import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
+import Categories from 'meteor/vulcan:categories';
 import { addCallback, newMutation } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from 'meteor/lw-subscribe';
 
@@ -118,19 +119,37 @@ addCallback("posts.approve.async", PostsApprovedNotification);
  * @summary Add new post notification callback on post submit
  */
 const PostsNewNotifications = (post) => {
-
-  let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-  let usersToNotify = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
-
-  // remove post author ID from arrays
-  adminIds = _.without(adminIds, post.userId);
-  usersToNotify = _.without(usersToNotify, post.userId);
-
   if (post.status === Posts.config.STATUS_PENDING) {
     // if post is pending, only notify admins
+    let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
+
+    // remove this post's author
+    adminIds = _.without(adminIds, post.userId);
+
     createNotifications(adminIds, 'newPendingPost', 'post', post._id);
   } else {
-    // if post is approved, notify everybody
+    // add users who get notifications for all new posts
+    let usersToNotify = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
+
+    // add users who are subscribed to this post's author
+    const postAuthor = Users.findOne(post.userId);
+    if (!!postAuthor.subscribers) {
+      usersToNotify = _.union(usersToNotify, postAuthor.subscribers);
+    }
+
+    // add users who are subscribed to this post's categories
+    if (!!post.categories) {
+      post.categories.forEach(cid => {
+        let c = Categories.findOne(cid);
+        if (!!c.subscribers) {
+          usersToNotify = _.union(usersToNotify, c.subscribers);
+        }
+      });
+    }
+
+    // remove this post's author
+    usersToNotify = _.without(usersToNotify, post.userId);
+
     createNotifications(usersToNotify, 'newPost', 'post', post._id);
   }
 }
