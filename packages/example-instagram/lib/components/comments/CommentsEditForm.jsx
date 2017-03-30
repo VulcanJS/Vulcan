@@ -1,7 +1,17 @@
 /* 
 
 A component to configure the "edit comment" form.
-Wrapped with the "withDocument" container.
+
+Components.SmartForm props:
+
+- collection: the collection in which to edit a document
+- documentId: the id of the document to edit
+- mutationFragment: the GraphQL fragment defining the data returned by the mutation
+- showRemove: whether to show the "delete document" action in the form
+- successCallback: what to do after the mutation succeeds
+
+Note: `closeModal` is available as a prop because this form will be opened
+in a modal popup. 
 
 */
 

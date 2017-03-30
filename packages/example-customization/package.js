@@ -5,12 +5,9 @@ Package.describe({
 Package.onUse( function(api) {
 
   api.use([
-    'fourseven:scss',
+    'fourseven:scss@3.8.0',
 
-    'vulcan:core',
-    'vulcan:base-components',
-    'vulcan:posts',
-    'vulcan:users'
+    'example-forum',
   ]);
 
   api.mainModule('server.js', 'server');

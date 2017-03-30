@@ -85,6 +85,9 @@ export const GraphQLSchema = {
   addResolvers(resolvers) {
     this.resolvers = deepmerge(this.resolvers, resolvers);
   },
+  removeResolver(typeName, resolverName) {
+    delete this.resolvers[typeName][resolverName];
+  },
 
   // add objects to context
   context: {},
@@ -95,7 +98,8 @@ export const GraphQLSchema = {
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
-    const collectionName = collection._name;
+    const collectionName = collection.options.collectionName;
+
     const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
@@ -160,4 +164,5 @@ export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
 export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
 export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
+export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);

@@ -5,16 +5,20 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
+
+    // vulcan core
     'vulcan:core',
+
+    // vulcan packages
     'vulcan:forms',
-    'vulcan:routing',
     'vulcan:accounts',
     'vulcan:forms-upload',
     
-    'fourseven:scss',
+    // third-party packages
+    'fourseven:scss@3.8.0',
+
   ]);
 
-  api.addFiles('lib/stylesheets/bootstrap.min.css');
   api.addFiles('lib/stylesheets/style.scss');
 
   api.addAssets([

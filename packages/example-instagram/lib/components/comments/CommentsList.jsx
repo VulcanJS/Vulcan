@@ -3,6 +3,8 @@
 List of comments. 
 Wrapped with the "withList" and "withCurrentUser" containers.
 
+All props except currentUser are passed by the withList container. 
+
 */
 
 import React, { PropTypes, Component } from 'react';

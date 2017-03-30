@@ -1,6 +1,6 @@
 /* 
 
-A component that shows a detailed view of a single movie. 
+A component that shows a detailed view of a single picture. 
 Wrapped with the "withDocument" container.
 
 */
