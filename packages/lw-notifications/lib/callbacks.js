@@ -138,12 +138,14 @@ const PostsNewNotifications = (post) => {
     }
 
     // add users who are subscribed to this post's categories
-    post.categories.forEach(cid => {
-      let c = Categories.findOne(cid);
-      if (!!c.subscribers) {
-        usersToNotify = _.union(usersToNotify, c.subscribers);
-      }
-    });
+    if (!!post.categories) {
+      post.categories.forEach(cid => {
+        let c = Categories.findOne(cid);
+        if (!!c.subscribers) {
+          usersToNotify = _.union(usersToNotify, c.subscribers);
+        }
+      });
+    }
 
     // remove this post's author
     usersToNotify = _.without(usersToNotify, post.userId);
