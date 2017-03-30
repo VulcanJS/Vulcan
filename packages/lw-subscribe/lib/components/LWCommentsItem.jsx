@@ -1,4 +1,7 @@
-import { getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import React from 'react';
+import { FormattedMessage, FormattedRelative } from 'react-intl';
+import Comments from "meteor/vulcan:comments";
 
 class LWCommentsItem extends getRawComponent('CommentsItem') {
 
