@@ -8,6 +8,7 @@ import Users from 'meteor/vulcan:users';
 import { withApollo } from 'react-apollo';
 import Notifications from '../collection.js'
 
+//TODO: Clean up this code: Remove unecessary imports, restructure code below to be more readable
 
 class NotificationsMenu extends Component {
 
@@ -33,7 +34,7 @@ class NotificationsMenu extends Component {
 
   render() {
     const results = this.props.results;
-    const {currentUser, client} = this.props;
+    const currentUser = this.props.currentUser;
     let unreadNotifications = [];
     if (results && results.length) {
       unreadNotifications = results.filter(this.isNotViewed);
@@ -87,4 +88,4 @@ const withEditOptions = {
 };
 
 
-registerComponent('NotificationsMenu', NotificationsMenu, withList(withListOptions), withEdit(withEditOptions), withCurrentUser, withApollo);
+registerComponent('NotificationsMenu', NotificationsMenu, withList(withListOptions), withEdit(withEditOptions), withCurrentUser);

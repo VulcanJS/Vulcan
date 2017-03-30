@@ -40,33 +40,29 @@ const ConversationSchema = {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
-  participants: {
+  participantIds: {
     type: Array,
     viewableBy: userInParticipants,
-    editableBy: userInParticipants,
-    insertableBy: userInParticipants,
     optional: true,
     resolveAs: 'participants: [User]',
   },
-  'participants.$': {
+  'participantIds.$': {
     type: String,
     viewableBy: userInParticipants,
-    editableBy: userInParticipants,
-    insertableBy: userInParticipants,
     optional: true,
   },
-  messageIds: {
-    type: Array,
-    viewableBy: userInParticipants,
-    insertableBy: userInParticipants,
-    optional: true,
-    resolveAs: 'messages: [Message]',
-  },
-  'messageIds:.$': {
+  title: {
     type: String,
     viewableBy: userInParticipants,
-    insertableBy: userInParticipants,
-    optional: true,
+    editableBy: ['members'],
+    insertableBy: ['members'],
+  },
+  latestActivity: {
+    type: Date,
+    viewableBy: userInParticipants,
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    }
   }
 };
 
@@ -91,8 +87,10 @@ const MessageSchema = {
   messageMD: {
     type: String,
     viewableBy: userInParticipants,
-    insertableBy: Users.owns,
+    insertableBy: ['members'],
     editableBy: Users.owns,
+    control: "textarea",
+    order: 1,
     optional: true,
   },
   messageHTML: {
@@ -103,7 +101,8 @@ const MessageSchema = {
   conversationId: {
     type: String,
     viewableBy: userInParticipants,
-    insertableBy: Users.owns,
+    insertableBy: ['members'],
+    hidden: true,
     resolveAs: 'conversation: Conversation'
   },
 };

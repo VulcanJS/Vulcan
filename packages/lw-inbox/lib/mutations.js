@@ -110,9 +110,9 @@ const MessageMutations = {
 
     name: 'messagesNew',
 
-    check(user) {
+    check(user, document) {
       if (!user) return false;
-      return Users.canDo(user, 'messages.new');
+      return (Users.canDo(user, 'messages.new') && user.userId == document.userId && Conversations.findOne(document.conversationId).participants.includes(user.userId));
     },
 
     mutation(root, {document}, context) {

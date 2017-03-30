@@ -1,8 +1,8 @@
 /*
 
 Generate the appropriate fragment for the current form, then
-wrap the main Form component with the necessary HoCs while passing 
-them the fragment. 
+wrap the main Form component with the necessary HoCs while passing
+them the fragment.
 
 This component is itself wrapped with:
 
@@ -13,7 +13,7 @@ And wraps the Form component with:
 
 - withNew
 
-Or: 
+Or:
 
 - withDocument
 - withEdit
@@ -64,12 +64,12 @@ class FormWrapper extends Component{
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // handle fields with resolvers that contain "[" 
+    // handle fields with resolvers that contain "["
     // note: you can override the generated fragment with your own fragment given as a prop!
     relevantFields = relevantFields.map(fieldName => {
       const resolveAs = this.getSchema()[fieldName].resolveAs;
-      
-      return resolveAs && resolveAs.includes('[') 
+
+      return resolveAs && resolveAs.includes('[')
         ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
         : fieldName; // else just ask for the field name
     });
@@ -91,10 +91,12 @@ class FormWrapper extends Component{
 
   shouldComponentUpdate(nextProps) {
     if (this.getFormType() === 'edit') {
-      // re-render only if the document selector changes
-      return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
-    }
-    
+      // re-render if the document selector changes
+      return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId
+    } else if (!_.isEqual(nextProps.prefilledProps, this.props.prefilledProps)) { //or if the prefilledProps change
+      return true
+    };
+
     // prevent extra re-renderings for unknown reasons
     return false;
   }
@@ -130,15 +132,15 @@ class FormWrapper extends Component{
     };
 
     // if this is an edit from, load the necessary data using the withDocument HoC
-    if (this.getFormType() === 'edit') { 
-    
+    if (this.getFormType() === 'edit') {
+
       // create a stateless loader component that's wrapped with withDocument,
       // displays the loading state if needed, and passes on loading and document
       const Loader = props => {
         const { document, loading } = props;
-        return loading ? 
-          <Components.Loading /> : 
-          <Form 
+        return loading ?
+          <Components.Loading /> :
+          <Form
             document={document}
             loading={loading}
             {...childProps}
@@ -155,7 +157,7 @@ class FormWrapper extends Component{
       )(Loader);
 
       return <WrappedComponent documentId={this.props.documentId} slug={this.props.slug} />
-    
+
     } else {
 
       WrappedComponent = compose(
@@ -163,7 +165,7 @@ class FormWrapper extends Component{
       )(Form);
 
       return <WrappedComponent {...childProps} {...parentProps} />
-    
+
     }
 
   }

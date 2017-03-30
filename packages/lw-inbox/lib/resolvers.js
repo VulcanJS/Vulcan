@@ -4,24 +4,11 @@ const specificConversationResolvers = {
   Conversation: {
     participants(conversation, args, context) {
       var participantArray = [];
-      conversation.participants.forEach(participantId => {
+      conversation.participantIds.forEach(participantId => {
         let participant = context.Users.findOne({_id: participantId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
         participantArray.push(participant);
       });
       return participantArray;
-    },
-    messages(conversation, args, context) {
-      var messageArray = [];
-      conversation.messageIds.forEach(function (messageId) {
-        let message = context.Messages.findOne({_id: messageId}, {fields: context.getViewableFields(context.currentUser, context.Messages)});
-        messageArray.push(message);
-      });
-      return messageArray;
-    },
-  },
-  Mutation: {
-    addMessageToConversation(root, { conversationId, messageId }, context) {
-      return context.Conversations.update({_id: conversationId}, {$push: {messageIds: messageId}});
     }
   }
 };
