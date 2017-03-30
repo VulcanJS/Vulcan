@@ -2,6 +2,7 @@ import Notifications from './collection.js';
 import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
+import Categories from 'meteor/vulcan:categories';
 import { addCallback, newMutation } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from 'meteor/lw-subscribe';
 
@@ -130,9 +131,19 @@ const PostsNewNotifications = (post) => {
     // add users who get notifications for all new posts
     let usersToNotify = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
 
-    // add users subscribed to this post's author
+    // add users who are subscribed to this post's author
     const postAuthor = Users.findOne(post.userId);
-    usersToNotify = usersToNotify.concat(postAuthor.subscribers);
+    if (!!postAuthor.subscribers) {
+      usersToNotify = _.union(usersToNotify, postAuthor.subscribers);
+    }
+
+    // add users who are subscribed to this post's categories
+    post.categories.forEach(cid => {
+      let c = Categories.findOne(cid);
+      if (!!c.subscribers) {
+        usersToNotify = _.union(usersToNotify, c.subscribers);
+      }
+    });
 
     // remove this post's author
     usersToNotify = _.without(usersToNotify, post.userId);

@@ -144,7 +144,7 @@ addStrings('en', {
   "categories.image": "Image",
   "categories.parentId": "Parent ID",
   "categories.subscribe": "Subscribe to this category's posts",
-  "categories.unsubscribe": "Unsubscribe to this category's posts",
+  "categories.unsubscribe": "Unsubscribe from this category's posts",
   "categories.subscribed": "You have subscribed to “{name}” posts.",
   "categories.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "categories.subscribed_categories" : "Categories subscribed to",
