@@ -13,24 +13,35 @@ import SmartForm from "meteor/vulcan:forms";
 
 class ConversationWrapper extends Component {
 
+  renderMessages(results, currentUser) {
+    if (results && results.length) {
+      return (
+        <div>
+          {results.map((message) => (<Components.MessageItem key={message._id} currentUser={currentUser} message={message} />))}
+        </div>);
+    } else {
+     return <div>No Results</div>
+    };
+  }
+
   render() {
 
     const results = this.props.results;
     const currentUser = this.props.currentUser;
     const refetch = this.props.refetch;
-    const refetchParent = this.props.refetchParent;
     const loading = this.props.loading;
     const conversation = this.props.conversation;
 
-
-    if (results && results.length) {
+    if (loading) {
+      return (<Components.Loading/>)
+    } else if (conversation) {
       return (
         <div>
           <PageHeader>
             {!!conversation.title ? conversation.title : _.pluck(conversation.participants, 'username').join(', ')}
             <br></br> <small>{conversation.createdAt}</small>
           </PageHeader>
-          {results.map(message => <Components.MessageItem key={message._id} currentUser={currentUser} message={message} />)}
+          {this.renderMessages(results, currentUser)}
           <div style={ {marginTop: '40px'} }>
             <SmartForm
               collection={Messages}
@@ -41,12 +52,9 @@ class ConversationWrapper extends Component {
           </div>
         </div>
       )
-    } else if (loading) {
-        return (<Components.Loading/>)
     } else {
-        return <div>No Results</div>
+      return <div>No Conversation Selected</div>
     }
-
   }
 
 

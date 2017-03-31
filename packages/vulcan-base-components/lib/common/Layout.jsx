@@ -12,7 +12,7 @@ class Layout extends Component {
         <Components.UsersProfileCheck {...this.props} />
 
         <Components.Header {...this.props}/>
-      
+
         <div className="main">
 
           <Components.FlashMessages />
@@ -22,9 +22,9 @@ class Layout extends Component {
           {this.props.children}
 
         </div>
-      
+
         <Components.Footer {...this.props}/>
-      
+
       </div>
     )
   }

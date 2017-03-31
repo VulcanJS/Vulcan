@@ -60,7 +60,7 @@ const notificationMessage = (notificationType, documentType, documentId) => {
     case "newReply":
       return Comments.getAuthorName(document) + ' replied to a comment on "' + Posts.findOne(document.postId).title + '"';
     case "newUser":
-      return user.displayName + ' just signed up!';
+      return document.displayName + ' just signed up!';
     default:
       console.error("Invalid notification type");
   }

@@ -6,15 +6,12 @@ const updateConversationActivity = (message) => {
   // Update latest Activity timestamp on conversation when new message is added
   const user = Users.findOne(message.userId);
   const conversation = Conversations.findOne(message.conversationId);
-  console.log('Callback User', user);
-  console.log('Callback Message', message);
-  console.log('Callback Conversation', conversation);
-  console.log(editMutation({
+  editMutation({
     collection: Conversations,
     documentId: conversation._id,
     set: {latestActivity: message.createdAt},
     currentUser: user,
     validate: false,
-  }));
+  });
 };
 addCallback("messages.new.async", updateConversationActivity);

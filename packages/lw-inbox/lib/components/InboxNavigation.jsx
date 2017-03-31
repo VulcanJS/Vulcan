@@ -61,17 +61,20 @@ class InboxNavigation extends Component {
     const currentUser = this.props.currentUser;
     const refetch = this.props.refetch;
     const loading = this.props.loading;
-    let conversation = results.find(c => (c._id == this.state.selectedConversation))
+    let conversation = results.find(c => (c._id == this.state.selectedConversation));
+    let notificationsSelect = (this.state.selectedConversation == "Notifications");
 
-    const terms = {view: 'messagesConversation', conversationId: this.state.selectedConversation};
+    const messagesTerms = {view: 'messagesConversation', conversationId: this.state.selectedConversation};
 
     if(currentUser && results && results.length) {
       return (
         <Grid>
           <Row className="Inbox-Grid">
             <Col xs={12} md={3}>{this.renderNavigation()}</Col>
-            <Col xs={12} md={6}><Components.ConversationWrapper refetchParent={refetch} terms={terms} conversation={conversation} /></Col>
-            <Col xs={12} md={3}><Components.ConversationDetails conversation={conversation}></Components.ConversationDetails></Col>
+            <Col xs={12} md={(notificationsSelect ? 9 : 6)}>
+              {notificationsSelect ? <Components.NotificationsWrapper/> : <Components.ConversationWrapper terms={messagesTerms} conversation={conversation} />}
+            </Col>
+            {notificationsSelect ? <div></div> : <Col xs={12} md={3}><Components.ConversationDetails conversation={conversation}></Components.ConversationDetails></Col>}
           </Row>
         </Grid>
       )

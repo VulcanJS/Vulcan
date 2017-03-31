@@ -4,6 +4,9 @@ import './views.js';
 import './callbacks.js';
 import './fragments.js';
 
+import './components/NotificationsFullscreenItem.jsx';
+import './components/NotificationsList.jsx';
+import './components/NotificationsWrapper.jsx';
 import './components/TitleEditForm.jsx';
 import './components/ConversationDetails.jsx';
 import './components/MessageItem.jsx';
