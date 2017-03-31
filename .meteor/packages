@@ -22,7 +22,7 @@ vulcan:events
 vulcan:embedly
 vulcan:api
 vulcan:rss
-vulcan:subscribe
+# vulcan:subscribe
 
 ############ Theme Packages ############
 
