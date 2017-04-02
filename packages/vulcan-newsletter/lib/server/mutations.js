@@ -1,4 +1,4 @@
-import Newsletter from "../namespace.js";
+import Newsletters from "../collection.js";
 import MailChimpList from "./mailchimp/mailchimp_list.js";
 import Users from 'meteor/vulcan:users';
 import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
@@ -13,14 +13,14 @@ const resolver = {
   Mutation: {
     sendNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) {
-        return Newsletter.scheduleNextWithMailChimp(false);
+        return Newsletters.scheduleNextWithMailChimp(false);
       } else {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
     },
     testNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
-        return Newsletter.scheduleNextWithMailChimp(true);
+        return Newsletters.scheduleNextWithMailChimp(true);
     },
     addUserNewsletter(root, args, context) {
 
@@ -36,7 +36,8 @@ const resolver = {
         throw new Error(errorMessage);
       }
     },
-    addEmailNewsletter(root, {email}, context) {
+    addEmailNewsletter(root, args, context) {
+      const email = args.email;
       try {
         return MailChimpList.add(email, true);
       } catch (error) {
