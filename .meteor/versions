@@ -24,6 +24,7 @@ ecmascript@0.6.3
 ecmascript-runtime@0.3.15
 ejson@1.0.13
 email@1.1.18
+example-movies-full@0.0.0
 fortawesome:fontawesome@4.5.0
 fourseven:scss@3.8.1
 geojson-utils@1.0.10
@@ -40,7 +41,6 @@ livedata@1.0.18
 localstorage@1.0.12
 logging@1.1.17
 lw-inbox@0.0.0
-lw-notifications@0.0.0
 lw-subscribe@0.0.0
 lw-voting@0.0.0
 meteor@1.6.1
