@@ -1,8 +1,11 @@
-import {Conversations, Messages} from './collection.js';
+import Conversations from './collections/conversations/collection.js';
+import Messages from './collections/messages/collection.js';
+import Notifications from './collections/notifications/collection.js';
+
 import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
-import Notifications from 'meteor/lw-notifications';
+
 import { newMutation, editMutation } from 'meteor/vulcan:core';
 
 // Notifications Seed Data

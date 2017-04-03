@@ -1,3 +1,3 @@
-import './lib/modules.js';
+import './lib/index.js';
 
-export * from './lib/modules.js';
+export * from './lib/index.js';

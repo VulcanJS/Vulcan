@@ -3,3 +3,21 @@
 display:block;
 width: 100%;
 }
+
+.viewed {
+  background-color: grey;
+}
+.unviewed {
+  background-color: blue;
+}
+.disabled {
+  background-color: #ddd;
+}
+.dropdown-menu {
+  padding: 15px;
+}
+
+.nav-notifications {
+  background-color: transparent;
+  margin-right: 20px;
+}

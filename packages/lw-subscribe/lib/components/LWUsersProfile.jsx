@@ -1,4 +1,4 @@
-import { Components, replaceComponent } from 'meteor/vulcan:core';
+import { Components, replaceComponent, ModalTrigger } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
@@ -32,6 +32,11 @@ const LWUsersProfile = (props) => {
             <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
           </Components.ShowIf>
           <li><Components.SubscribeTo document={user} /></li>
+          <li>
+            <ModalTrigger label="Send Message" >
+              <Components.newConversationButton user={user} />
+            </ModalTrigger>
+          </li>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
         <Components.PostsList terms={terms} />
