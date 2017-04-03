@@ -110,7 +110,7 @@ const PostsNewSubscriptions = (post) => {
   // Subscribe the post's author to comment notifications for the post
   // (if they have the proper setting turned on)
   const postAuthor = Users.findOne(post.userId);
-  if (Users.getSetting(postAuthor, "notifications_comments", true)) {
+  if (Users.getSetting(postAuthor, "auto_subscribe_to_my_posts", false)) {
 
     performSubscriptionAction('subscribe', Posts, post._id, postAuthor);
   }
@@ -124,7 +124,7 @@ const CommentsNewSubscriptions = (comment) => {
   // Subscribe the comment's author to reply notifications for the comment
   // (if they have the proper setting turned on)
   const commentAuthor = Users.findOne(comment.userId);
-  if (Users.getSetting(commentAuthor, "notifications_replies", true)) {
+  if (Users.getSetting(commentAuthor, "auto_subscribe_to_my_comments", false)) {
 
     performSubscriptionAction('subscribe', Comments, comment._id, commentAuthor);
   }

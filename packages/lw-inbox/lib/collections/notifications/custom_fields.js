@@ -37,11 +37,12 @@ Users.addField([
 
 Users.addField([
   {
-    fieldName: 'notifications_comments',
+    fieldName: 'auto_subscribe_to_my_posts',
     fieldSchema: {
-      label: 'Comments on my posts',
+      label: 'Automatically subscribe to my posts (to be notified of comments)',
       type: Boolean,
       optional: true,
+      defaultValue: true,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['members'],
@@ -50,11 +51,12 @@ Users.addField([
     }
   },
   {
-    fieldName: 'notifications_replies',
+    fieldName: 'auto_subscribe_to_my_comments',
     fieldSchema: {
-      label: 'Replies to my comments',
+      label: 'Automatically subscribe to my comments (to be notified of replies)',
       type: Boolean,
       optional: true,
+      defaultValue: true,
       control: "checkbox",
       viewableBy: ['guests'],
       insertableBy: ['members'],
