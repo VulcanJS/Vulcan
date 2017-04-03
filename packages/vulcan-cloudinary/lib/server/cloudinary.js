@@ -93,31 +93,27 @@ function cachePostThumbnailOnSubmit (post) {
 
       const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
       if (data) {
-        Posts.update(post._id, {$set:{
-          cloudinaryId: data.cloudinaryId,
-          cloudinaryUrls: data.urls
-        }});
+        post.cloudinaryId = data.cloudinaryId;
+        post.cloudinaryUrls = data.urls;
       }
 
     }
   }
+  return post;
 }
-addCallback("posts.new.async", cachePostThumbnailOnSubmit);
+addCallback("posts.new.sync", cachePostThumbnailOnSubmit);
 
-// post edit callback
-function cachePostThumbnailOnEdit (newPost, oldPost) {
+function cachePostThumbnailOnEdit (modifier, oldPost) {
   if (getSetting("cloudinaryAPIKey")) {
-    if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
-
-      const data = CloudinaryUtils.uploadImage(newPost.thumbnailUrl);
-      Posts.update(newPost._id, {$set:{
-        cloudinaryId: data.cloudinaryId,
-        cloudinaryUrls: data.urls
-      }});
-
+    if (modifier.$set.thumbnailUrl && modifier.$set.thumbnailUrl !== oldPost.thumbnailUrl) {
+      const data = CloudinaryUtils.uploadImage(modifier.$set.thumbnailUrl);
+      modifier.$set.cloudinaryId = data.cloudinaryId;
+      modifier.$set.cloudinaryUrls = data.urls;
     }
   }
+  return modifier;
 }
-addCallback("posts.edit.async", cachePostThumbnailOnEdit);
+addCallback("posts.edit.sync", cachePostThumbnailOnEdit);
+
 
 export default CloudinaryUtils;
