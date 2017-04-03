@@ -14,13 +14,13 @@ SimpleSchema.extendOptions([
  * @summary replacement for Collection2's attachSchema
  * @class Mongo.Collection
  */
-// Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
-//   if (schemaOrFields instanceof SimpleSchema) {
-//     this.simpleSchema = () => schemaOrFields;
-//   } else {
-//     this.simpleSchema().extend(schemaOrFields)
-//   }
-// }
+Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
+  if (schemaOrFields instanceof SimpleSchema) {
+    this.simpleSchema = () => schemaOrFields;
+  } else {
+    this.simpleSchema().extend(schemaOrFields)
+  }
+}
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.

@@ -29,7 +29,7 @@ Package.onUse(function (api) {
 
     // Third-party packages
 
-    'aldeed:collection2-core@2.0.0',
+    // 'aldeed:collection2-core@2.0.0',
     'meteorhacks:picker@1.0.3',
     'percolatestudio:synced-cron@1.1.0',
     'meteorhacks:inject-initial@1.0.4',

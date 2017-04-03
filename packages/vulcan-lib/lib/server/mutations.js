@@ -37,17 +37,20 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
 
   // we don't want to modify the original document
   let newDocument = Object.assign({}, document);
-
+  
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   // if document is not trusted, run validation steps
   if (validate) {
 
+    // validate document
+    collection.simpleSchema().validate(document);
+
     // check that the current user has permission to insert each field
-    _.keys(newDocument).forEach(function (fieldName) {
+    _.keys(newDocument).forEach(fieldName => {
       var field = schema[fieldName];
-      if (!context.Users.canInsertField (currentUser, field)) {
+      if (!field || !context.Users.canInsertField (currentUser, field)) {
         throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
       }
     });
@@ -55,10 +58,20 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
     // run validation callbacks
     newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser);
   }
-
+  
   // check if userId field is in the schema and add it to document if needed
   const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
   if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
+
+  // run autoValue step
+  _.keys(schema).forEach(fieldName => {
+    if (!newDocument[fieldName] && schema[fieldName].autoValue) {
+      const autoValue = schema[fieldName].autoValue(newDocument);
+      if (autoValue && typeof autoValue.$setOnInsert === 'undefined') {
+        newDocument[fieldName] = autoValue;
+      }
+    }
+  });
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
@@ -105,11 +118,14 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   // if document is not trusted, run validation steps
   if (validate) {
 
+    // validate modifiers
+    collection.simpleSchema().newContext().validate({$set: set, $unset: unset}, { modifier: true });
+
     // check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
       var field = schema[fieldName];
-      if (!context.Users.canEditField(currentUser, field, document)) {
+      if (!field || !context.Users.canEditField(currentUser, field, document)) {
         throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
       }
     });
@@ -118,11 +134,29 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser);
   }
 
+  // run autoValue step
+  _.keys(schema).forEach(fieldName => {
+    if (!modifier.$set[fieldName] && schema[fieldName].autoValue) {
+      const autoValue = schema[fieldName].autoValue(modifier);
+      if (autoValue && typeof autoValue.$setOnInsert === 'undefined') {
+        modifier.$set[fieldName] = autoValue;
+      }
+    }
+  });
+
   // run sync callbacks (on mongo modifier)
   modifier = runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
 
+  // remove empty modifiers
+  if (_.isEmpty(modifier.$set)) {
+    delete modifier.$set;
+  }
+  if (_.isEmpty(modifier.$unset)) {
+    delete modifier.$unset;
+  }
+  
   // update document
-  collection.update(documentId, modifier);
+  collection.update(documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
   const newDocument = collection.findOne(documentId);
@@ -131,6 +165,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
   // console.log("// edit mutation finished")
+  // console.log(modifier)
   // console.log(newDocument)
 
   return newDocument;
