@@ -5,7 +5,8 @@ import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
   
-  const { queryName, collection, pollInterval = 20000 } = options,
+  const { collection, pollInterval = 20000 } = options,
+        queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
