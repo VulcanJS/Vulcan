@@ -24,7 +24,7 @@ ecmascript-runtime@0.3.15
 ejson@1.0.13
 email@1.1.18
 example-movies@0.0.0
-fourseven:scss@3.8.1
+fourseven:scss@4.5.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
 html-tools@1.0.11

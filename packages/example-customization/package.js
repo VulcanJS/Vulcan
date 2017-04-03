@@ -5,7 +5,7 @@ Package.describe({
 Package.onUse( function(api) {
 
   api.use([
-    'fourseven:scss@3.8.0',
+    'fourseven:scss@4.5.0',
 
     'example-forum',
   ]);

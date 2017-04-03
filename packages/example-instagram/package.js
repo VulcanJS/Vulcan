@@ -15,7 +15,7 @@ Package.onUse(function (api) {
     'vulcan:forms-upload',
     
     // third-party packages
-    'fourseven:scss@3.8.0',
+    'fourseven:scss@4.5.0',
 
   ]);
 
