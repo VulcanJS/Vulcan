@@ -76,6 +76,7 @@ const withList = (options) => {
         query ${queryName}($terms: JSON) {
           ${totalResolverName}(terms: $terms)
           ${listResolverName}(terms: $terms) {
+            __typename
             ...${fragmentName}
           }
         }

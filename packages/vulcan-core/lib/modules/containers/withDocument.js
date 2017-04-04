@@ -14,6 +14,7 @@ export default function withDocument (options) {
   return graphql(gql`
     query ${queryName}($documentId: String, $slug: String) {
       ${singleResolverName}(documentId: $documentId, slug: $slug) {
+        __typename
         ...${fragmentName}
       }
     }
