@@ -305,7 +305,7 @@ Users.avatar = {
       default: gravatarDefault,
       secure: true
     };
-    return emailOrHash ? Gravatar.imageUrl(emailOrHash, options) : null;
+    return emailOrHash ? this.imageUrl(emailOrHash, options) : null;
 
   },
 
