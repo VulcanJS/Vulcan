@@ -1,1 +1,0 @@
-Nova email templates package. 

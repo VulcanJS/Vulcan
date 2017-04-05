@@ -1,1 +1,0 @@
-Nova basic React components.
