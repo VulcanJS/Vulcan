@@ -5,7 +5,8 @@ import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
 import Categories from 'meteor/vulcan:categories';
-import { addCallback, newMutation, editMutation } from 'meteor/vulcan:core';
+import marked from 'marked';
+import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from 'meteor/lw-subscribe';
 
 const updateConversationActivity = (message) => {
@@ -224,3 +225,17 @@ const messageNewNotification = (message) => {
   }
 }
 addCallback("messages.new.async", messageNewNotification);
+
+const messageNewHTMLContent = (message) => {
+  if(Meteor.isServer) {
+    console.log("MARKDOWN PARSING", marked(message.messageMD));
+    console.log("SANITIZING", Utils.sanitize(marked(message.messageMD)));
+    message = {
+      ...message,
+      messageHTML: Utils.sanitize(marked(message.messageMD)),
+    };
+    console.log("MESSAGE", message);
+  }
+  return message;
+}
+addCallback("messages.new.sync", messageNewHTMLContent);

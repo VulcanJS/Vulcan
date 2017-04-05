@@ -12,3 +12,5 @@ import './inbox/ConversationWrapper.jsx';
 import './inbox/InboxWrapper.jsx';
 import './inbox/InboxNavigation.jsx';
 import './inbox/newConversationButton.jsx';
+
+import './editor/EditorWrapper.jsx';

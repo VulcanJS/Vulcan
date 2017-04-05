@@ -20,7 +20,7 @@ class MessageItem extends Component {
       <Media>
         {(currentUser._id != message.user._id) ? <Media.Left> <Components.UsersAvatar user={message.user}/> </Media.Left> : <div></div>}
         <Media.Body>
-          {message.messageMD}
+          <div dangerouslySetInnerHTML={{__html: message.messageHTML}}></div>
         </Media.Body>
         {(currentUser._id == message.user._id) ? <Media.Right> <Components.UsersAvatar user={currentUser}/></Media.Right> : <div></div>}
       </Media>

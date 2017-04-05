@@ -6,6 +6,7 @@ A SimpleSchema-compatible JSON schema
 
 import Users from 'meteor/vulcan:users';
 import GraphQLSchema from 'meteor/vulcan:core';
+import MessageEditor from '../../editor/MessageEditor.jsx';
 
 const userInParticipants = function (user, document) {
   try {
@@ -57,6 +58,15 @@ const schema = {
   messageHTML: {
     type: String,
     viewableBy: userInParticipants,
+    optional: true,
+  },
+  messageDraftJS: {
+    type: Object,
+    viewableBy: userInParticipants,
+    insertableBy: ['members'],
+    editableBy: Users.owns,
+    control: MessageEditor,
+    order: 2,
     optional: true,
   },
   conversationId: {

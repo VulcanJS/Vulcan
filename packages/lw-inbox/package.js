@@ -16,14 +16,16 @@ Package.onUse( function(api) {
     'vulcan:users',
     'vulcan:voting',
     'lw-subscribe',
-    'example-movies-full'
+    'example-movies-full',
   ]);
 
   api.mainModule('server.js', 'server');
   api.mainModule('client.js', 'client');
 
   api.addFiles([
-    'lib/stylesheets/custom.scss'
+    'lib/stylesheets/custom.scss',
+    'lib/stylesheets/editor.scss'
+
   ], ['client']);
 
 
