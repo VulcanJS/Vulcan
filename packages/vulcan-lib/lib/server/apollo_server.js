@@ -118,18 +118,6 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
 // createApolloServer when server startup
 Meteor.startup(() => {
-  // hello
-  GraphQLSchema.addQuery(`
-    # say hello
-    hello: String
-  `);
-  GraphQLSchema.addResolvers({
-    Query: {
-      hello() {
-        return 'Hello Telescope!';
-      },
-    },
-  });
 
   // typeDefs
   const generateTypeDefs = () => [`

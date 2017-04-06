@@ -39,9 +39,9 @@ Package.onUse(function (api) {
 
   api.imply(packages);
 
-  // api.export([
-  //   'Telescope'
-  // ]);
+  api.export([
+    'Vulcan'
+  ]);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

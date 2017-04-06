@@ -1,5 +1,3 @@
-import Telescope from './config.js';
-
 import './utils.js';
 import './callbacks.js';
 import './settings.js';
@@ -23,5 +21,3 @@ export { configureStore, getActions, addAction, getReducers, addReducer, getMidd
 export { Headtags } from './headtags.js';
 export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment } from './fragments.js';
 export { createApolloClient } from './apollo.js';
-
-export default Telescope;
