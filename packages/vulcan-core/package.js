@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.use([
     'vulcan:lib@1.3.0',
     'vulcan:users@1.3.0',
+    'vulcan:routing@1.3.0'
   ]);
 
   api.imply([

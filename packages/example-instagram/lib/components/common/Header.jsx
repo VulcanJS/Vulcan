@@ -1,9 +1,21 @@
+/* 
+
+The Header component.
+
+Components.ModalTrigger is a built-in Vulcan component that displays
+its children in a popup triggered by either a text link, or a cusotm
+component (if the "component" prop is specified).
+
+*/
+
 import React, { PropTypes, Component } from 'react';
 import { Components, withCurrentUser } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import PicsNewForm from '../pics/PicsNewForm';
 
-const HeaderLoggedIn = ({currentUser}) =>
+// navigation bar component when the user is logged in
+
+const NavLoggedIn = ({currentUser}) =>
 
   <div className="header-nav header-logged-in">
     
@@ -20,13 +32,15 @@ const HeaderLoggedIn = ({currentUser}) =>
 
       </div>
 
-      <Components.ModalTrigger label="Upload" size="small">
+      <Components.ModalTrigger label="Upload">
         <PicsNewForm />
       </Components.ModalTrigger>
 
   </div>
 
-const HeaderLoggedOut = ({currentUser}) =>
+// navigation bar component when the user is logged out
+
+const NavLoggedOut = ({currentUser}) =>
 
   <div className="header-nav header-logged-out">
     
@@ -35,6 +49,8 @@ const HeaderLoggedOut = ({currentUser}) =>
       </Components.ModalTrigger>
 
   </div>
+
+// Header component
 
 const Header = ({currentUser}) =>
 
@@ -47,8 +63,8 @@ const Header = ({currentUser}) =>
       </h1>
 
       {currentUser ? 
-        <HeaderLoggedIn currentUser={currentUser}/> : 
-        <HeaderLoggedOut currentUser={currentUser}/>
+        <NavLoggedIn currentUser={currentUser}/> : 
+        <NavLoggedOut currentUser={currentUser}/>
       }
 
     </div>

@@ -45,7 +45,7 @@ import { withApollo } from 'react-apollo';
 const withList = (options) => {
 
   const { collection, limit = 10, pollInterval = 20000 } = options,
-        queryName = options.queryName || `${collection._name}ListQuery`,
+        queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
@@ -76,6 +76,7 @@ const withList = (options) => {
         query ${queryName}($terms: JSON) {
           ${totalResolverName}(terms: $terms)
           ${listResolverName}(terms: $terms) {
+            __typename
             ...${fragmentName}
           }
         }

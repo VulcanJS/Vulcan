@@ -16,13 +16,14 @@ const schema = {
     type: Date,
     viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+      // if this is an insert, set createdAt to current timestamp
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() 
     }
   },
   userId: {
     type: String,
     viewableBy: ['guests'],
-    resolveAs: 'user: User',
+    resolveAs: 'user: User', // resolve as "user" on the client
   },
   
   // custom properties
@@ -40,7 +41,7 @@ const schema = {
     type: String,
     viewableBy: ['guests'],
     insertableBy: ['members'],
-    hidden: true,
+    hidden: true, // never show this in forms
   },
   
 };

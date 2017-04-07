@@ -19,7 +19,7 @@ import {
   capitalize
 } from '../../helpers.js';
 
-const loggingInMessage = 'Logging In...';
+const loggingInMessage = 'accounts.logging_in';
 
 export class AccountsLoginForm extends Tracker.Component {
   constructor(props) {

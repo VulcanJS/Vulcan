@@ -11,12 +11,19 @@ SimpleSchema.extendOptions([
 ]);
 
 /**
- * @summary Meteor Collections.
+ * @summary replacement for Collection2's attachSchema
  * @class Mongo.Collection
  */
+Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
+  if (schemaOrFields instanceof SimpleSchema) {
+    this.simpleSchema = () => schemaOrFields;
+  } else {
+    this.simpleSchema().extend(schemaOrFields)
+  }
+}
 
 /**
- * @summary @summary Add an additional field (or an array of fields) to a schema.
+ * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} field
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
@@ -89,10 +96,10 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true } = options;
+  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(collectionName);
+  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
 
   // decorate collection with options
   collection.options = options;

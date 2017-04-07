@@ -11,12 +11,8 @@ Package.onUse(function(api) {
 
   api.use([
     'vulcan:core@1.3.0',
-    'vulcan:users@1.3.0',
 
-    'ecmascript',
-    'check',
-    'aldeed:collection2-core@2.0.0',
-    'fourseven:scss@3.8.0'
+    'fourseven:scss@4.5.0'
   ]);
 
   api.addFiles([

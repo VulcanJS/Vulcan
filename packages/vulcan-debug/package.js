@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
 
-    'fourseven:scss',
+    'fourseven:scss@4.5.0',
 
     // Vulcan packages
 

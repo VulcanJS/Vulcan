@@ -1,7 +1,6 @@
 /* 
 
 A component to configure the "edit pic" form.
-Wrapped with the "withDocument" container.
 
 */
 
@@ -15,7 +14,7 @@ const PicsEditForm = ({documentId, closeModal}) =>
   <Components.SmartForm 
     collection={Pics}
     documentId={documentId}
-    mutationFragment={getFragment('PicsItemFragment')}
+    mutationFragment={getFragment('PicsDetailsFragment')}
     showRemove={true}
     successCallback={document => {
       closeModal();

@@ -11,11 +11,11 @@ Package.onUse(function (api) {
 
   api.use([
     'vulcan:core@1.3.0',
-    'fourseven:scss',
+    'fourseven:scss@4.5.0',
   ]);
 
   api.addFiles([
-    'lib/stylesheets/bootstrap.css',
+    // 'lib/stylesheets/bootstrap.css',
     'lib/stylesheets/main.scss'
   ], ['client']);
 

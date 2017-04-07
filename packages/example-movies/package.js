@@ -5,10 +5,14 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
+
+    // vulcan core
     'vulcan:core',
+
+    // vulcan packages
     'vulcan:forms',
-    'vulcan:routing',
     'vulcan:accounts',
+    
   ]);
 
   api.addFiles('lib/stylesheets/bootstrap.min.css');

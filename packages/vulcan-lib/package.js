@@ -23,17 +23,15 @@ Package.onUse(function (api) {
     'check',
     'http',
     'email',
-    'tracker',
     'ecmascript',
     'service-configuration',
     'shell-server',
 
     // Third-party packages
 
-    'aldeed:collection2-core@2.0.0',
+    // 'aldeed:collection2-core@2.0.0',
     'meteorhacks:picker@1.0.3',
     'percolatestudio:synced-cron@1.1.0',
-    'jparker:gravatar@0.4.1',
     'meteorhacks:inject-initial@1.0.4',
   ];
 

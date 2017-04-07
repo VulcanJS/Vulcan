@@ -6,23 +6,23 @@ import Posts from 'meteor/vulcan:posts';
 import VulcanEmail from 'meteor/vulcan:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
-import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
 import { Utils, getSetting } from 'meteor/vulcan:core';
+import Newsletters from '../../collection.js';
 
 const defaultPosts = 5;
 
-Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
-  var posts = Newsletter.getPosts(getSetting('postsPerNewsletter', defaultPosts));
+Newsletters.scheduleNextWithMailChimp = function (isTest = false) {
+  var posts = Newsletters.getPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
-    return Newsletter.scheduleWithMailChimp(Newsletter.build(posts), isTest);
+    return Newsletters.scheduleWithMailChimp(Newsletters.build(posts), isTest);
   }else{
     var result = {result: 'No posts to schedule today…'};
     return result;
   }
 };
 
-Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
+Newsletters.scheduleWithMailChimp = function (campaign, isTest = false) {
 
   var apiKey = getSetting('mailChimpAPIKey');
   var listId = getSetting('mailChimpListId');
@@ -76,9 +76,22 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
       console.log('// Newsletter scheduled for '+scheduledTime);
       // console.log(schedule)
 
-      // if this is not a test, mark posts as sent
-      if (!isTest)
-        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
+      // if this is not a test, mark posts as sent and log newsletter
+      if (!isTest) {
+
+        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true, validate: false}) // eslint-disable-line
+        console.log(`updated ${updated} posts`)
+
+        // log newsletter
+        Newsletters.insert({
+          createdAt: new Date(),
+          scheduledAt: scheduledMoment.toDate(),
+          subject,
+          html: campaign.html,
+          provider: 'MailChimp'
+        });
+
+      }
 
       // send confirmation email
       var confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({

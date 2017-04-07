@@ -2,11 +2,11 @@ import Posts from "meteor/vulcan:posts";
 import { addCallback, getSetting } from 'meteor/vulcan:core';
 
 function getEmbedlyData(url) {
-  var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
   var embedlyKey = getSetting('embedlyKey');
+  // 200 x 200 is the minimum size accepted by facebook
   var thumbnailWidth = getSetting('thumbnailWidth', 200);
-  var thumbnailHeight = getSetting('thumbnailHeight', 125);
+  var thumbnailHeight = getSetting('thumbnailHeight', 200);
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
@@ -26,10 +26,8 @@ function getEmbedlyData(url) {
       }
     });
 
-    // console.log(result)
-
     if (!!result.data.images && !!result.data.images.length) // there may not always be an image
-      result.data.thumbnailUrl = result.data.images[0].url.replace("http:", ""); // add thumbnailUrl as its own property and remove "http"
+      result.data.thumbnailUrl = result.data.images[0].url.replace("http:","") // add thumbnailUrl as its own property
 
     if (result.data.authors && result.data.authors.length > 0) {
       result.data.sourceName = result.data.authors[0].name;

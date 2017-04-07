@@ -13,7 +13,6 @@ Posts.addField([
     fieldName: 'cloudinaryUrls',
     fieldSchema: {
       type: Array,
-      blackbox: true,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: 'cloudinaryUrls: [JSON]',
@@ -23,6 +22,7 @@ Posts.addField([
     fieldName: 'cloudinaryUrls.$',
     fieldSchema: {
       type: Object,
+      blackbox: true,
       optional: true
     }
   }

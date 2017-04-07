@@ -4,11 +4,10 @@ import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withRouter } from 'react-router'
 
-const PostsNewForm = (props, context) => {
-  return (
-    <Components.ShowIf
+const PostsNewForm = (props, context) => 
+  <Components.ShowIf
       check={Posts.options.mutations.new.check}
-      failureComponent={<Components.UsersAccountForm />}
+      failureComponent={<Components.AccountsLoginForm />}
     >
       <div className="posts-new-form">
         <Components.SmartForm
@@ -22,8 +21,6 @@ const PostsNewForm = (props, context) => {
         />
       </div>
     </Components.ShowIf>
-  );
-};
 
 PostsNewForm.propTypes = {
   closeModal: React.PropTypes.func,

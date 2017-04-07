@@ -10,11 +10,10 @@ import resolvers from './resolvers.js';
 import './fragments.js';
 import mutations from './mutations.js';
 import './permissions.js';
-import './parameters.js';
 
 const Pics = createCollection({
 
-  collectionName: 'pics',
+  collectionName: 'Pics',
 
   typeName: 'Pic',
 
@@ -24,6 +23,20 @@ const Pics = createCollection({
 
   mutations,
 
+});
+
+/*
+
+Set a default results view whenever the Pics collection is queried:
+
+- Pics are sorted by their createdAt timestamp in descending order
+
+*/
+
+Pics.addDefaultView(terms => {
+  return {
+    options: {sort: {createdAt: -1}}
+  };
 });
 
 export default Pics;

@@ -5,7 +5,7 @@ import Categories from "meteor/vulcan:categories";
 import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
-import Newsletter from '../namespace.js';
+import Newsletters from '../collection.js';
 import { Utils, getSetting } from 'meteor/vulcan:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
@@ -23,14 +23,14 @@ Posts.addView("newsletter", terms => ({
  * @summary Return an array containing the latest n posts that can be sent in a newsletter
  * @param {Number} postsCount
  */
-Newsletter.getPosts = function (postsCount) {
+Newsletters.getPosts = function (postsCount) {
 
   // look for last scheduled newsletter in the database
-  var lastNewsletter = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
+  var lastNewsletter = Newsletters.getLast();
 
   // if there is a last newsletter and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days');
-  var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.format("YYYY-MM-DD");
+  var after = (lastNewsletter && moment(lastNewsletter.createdAt).isAfter(lastWeek)) ? lastNewsletter.createdAt : lastWeek.format("YYYY-MM-DD");
 
   // get parameters using "newsletter" view
   var params = Posts.getParameters({
@@ -42,22 +42,23 @@ Newsletter.getPosts = function (postsCount) {
   return Posts.find(params.selector, params.options).fetch();
 };
 
+Newsletters.getSubject = posts => {
+  const subject = posts.map((post, index) => index > 0 ? `, ${post.title}` : post.title).join('');
+  return Utils.trimWords(subject, 15);
+}
+
 /**
  * @summary Build a newsletter campaign from an array of posts
  * (Called from Newsletter.scheduleNextWithMailChimp)
  * @param {Array} postsArray
  */
-Newsletter.build = function (postsArray) {
+Newsletters.build = function (postsArray) {
   var postsHTML = '', subject = '';
   const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
   postsArray.forEach(function (post, index) {
-
-    // add post title to email subject (don't add a coma for the first post)
-    if(index > 0) subject += ', ';
-    subject += post.title;
-
+    
     // get author of the current post
     var postUser = Users.findOne(post.userId);
 
@@ -155,9 +156,18 @@ Newsletter.build = function (postsArray) {
   // 4. build campaign object and return it
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
-    subject: Utils.trimWords(subject, 15),
+    subject: Newsletters.getSubject(postsArray),
     html: emailHTML
   };
 
   return campaign;
 };
+
+Newsletters.getNextScheduled = () => {
+  var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
+  return nextJob;
+}
+
+Newsletters.getLast = () => {
+  return Newsletters.findOne({}, {sort: {createdAt: -1}});
+}

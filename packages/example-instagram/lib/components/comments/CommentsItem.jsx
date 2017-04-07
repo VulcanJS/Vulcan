@@ -1,7 +1,11 @@
 /* 
 
 An item in the comments list.
-Wrapped with the "withCurrentUser" container.
+
+Note: Comments.options.mutations.edit.check is defined in 
+modules/comments/mutations.js and is used both on the server when
+performing the mutation, and here to check if the form link
+should be displayed. 
 
 */
 

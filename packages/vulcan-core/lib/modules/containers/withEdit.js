@@ -32,7 +32,7 @@ export default function withEdit(options) {
   const {collection } = options,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        collectionName = collection._name,
+        collectionName = collection.options.collectionName,
         mutationName = collection.options.mutations.edit.name;
 
   return graphql(gql`

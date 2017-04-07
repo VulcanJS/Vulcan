@@ -16,9 +16,7 @@ Package.onUse(function (api) {
     'vulcan:comments@1.3.0',
     'vulcan:voting@1.3.0',
     'vulcan:accounts@1.3.0',
-    
-    // third-party packages
-    'fortawesome:fontawesome@4.5.0',
+    'vulcan:categories@1.3.0',
   ]);
 
   api.mainModule("lib/server.js", "server");

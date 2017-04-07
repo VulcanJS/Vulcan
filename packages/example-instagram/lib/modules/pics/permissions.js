@@ -1,3 +1,9 @@
+/*
+
+Declare permissions for the comments collection.
+
+*/
+
 import Users from 'meteor/vulcan:users';
 
 const membersActions = [
