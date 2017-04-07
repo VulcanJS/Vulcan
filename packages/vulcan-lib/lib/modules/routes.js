@@ -1,4 +1,4 @@
-import { Components, getComponent } from './components';
+import {Components, getComponent} from './components';
 
 export const Routes = {}; // will be populated on startup (see vulcan:routing)
 export const RoutesTable = {}; // storage for infos about routes themselves
@@ -23,7 +23,7 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
   if (parentRouteName) {
 
     addAsChildRoute(parentRouteName, addedRoutes);
-  
+
   } else {
 
     // modify the routes table with the new routes
@@ -66,7 +66,7 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
 const addAsChildRoute = (parentRouteName, addedRoutes) => {
 
   // if the parentRouteName does not exist, error
-  if (!RoutesTable.parentRouteName) {
+  if (!RoutesTable[parentRouteName]) {
     throw new Error(`Route ${parentRouteName} doesn't exist`)
   }
 
