@@ -1,9 +1,6 @@
 import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
-const performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
-};
 
 const mutations = {
 
@@ -18,7 +15,7 @@ const mutations = {
     
     mutation(root, {document}, context) {
       
-      performCheck(this, context.currentUser, document);
+      Utils.performCheck(this, context.currentUser, document);
 
       return newMutation({
         collection: context.Posts,
@@ -43,7 +40,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.Posts.findOne(documentId);
-      performCheck(this, context.currentUser, document);
+      Utils.performCheck(this, context.currentUser, document);
 
       return editMutation({
         collection: context.Posts, 
@@ -70,7 +67,7 @@ const mutations = {
     mutation(root, {documentId}, context) {
 
       const document = context.Posts.findOne(documentId);
-      performCheck(this, context.currentUser, document);
+      Utils.performCheck(this, context.currentUser, document);
 
       return removeMutation({
         collection: context.Posts, 

@@ -447,6 +447,6 @@ Utils.defineName = (o, name) => {
   return o;
 };
 
-Utils.performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
+Utils.performCheck = (operation, user, checkedObject, context) => {
+  if (!operation.check(user, checkedObject, context)) throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
 }

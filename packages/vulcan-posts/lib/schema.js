@@ -5,7 +5,7 @@ import Posts from './collection.js';
  * @summary Posts statuses
  * @type {Object}
  */
-Posts.statuses = [
+export const statuses = [
   {
     value: 1,
     label: 'pending'
@@ -27,6 +27,8 @@ Posts.statuses = [
     label: 'deleted'
   }
 ];
+
+Posts.statuses = statuses;
 
 /**
  * @summary Posts config namespace

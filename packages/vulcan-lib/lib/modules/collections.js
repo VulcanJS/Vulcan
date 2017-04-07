@@ -133,12 +133,12 @@ export const createCollection = options => {
       // list
       if (resolvers.list) { // e.g. ""
         GraphQLSchema.addQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
-        queryResolvers[resolvers.list.name] = resolvers.list.resolver;
+        queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
         GraphQLSchema.addQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
-        queryResolvers[resolvers.single.name] = resolvers.single.resolver;
+        queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
