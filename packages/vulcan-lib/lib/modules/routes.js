@@ -1,4 +1,4 @@
-import {Components, getComponent} from './components';
+import { Components, getComponent } from './components';
 
 export const Routes = {}; // will be populated on startup (see vulcan:routing)
 export const RoutesTable = {}; // storage for infos about routes themselves
@@ -19,12 +19,13 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
   // be sure to have an array of routes to manipulate
   const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
 
-
-  //if there is a value for parentRouteName you are adding this route as new child
+  // if there is a value for parentRouteName you are adding this route as new child
   if (parentRouteName) {
+
     addAsChildRoute(parentRouteName, addedRoutes);
-  }
-  else {
+  
+  } else {
+
     // modify the routes table with the new routes
     addedRoutes.map(({name, path, ...properties}) => {
 
@@ -64,14 +65,15 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
 
 const addAsChildRoute = (parentRouteName, addedRoutes) => {
 
-  //if the parentRouteName does not exist just ignore this, silently?
-  if (!RoutesTable.hasOwnProperty(parentRouteName))
-    return;
+  // if the parentRouteName does not exist, error
+  if (!RoutesTable.parentRouteName) {
+    throw new Error(`Route ${parentRouteName} doesn't exist`)
+  }
 
   // modify the routes table with the new routes
   addedRoutes.map(({name, path, ...properties}) => {
 
-    //get the current child routes for this Route
+    // get the current child routes for this Route
     const childRoutes = RoutesTable[parentRouteName]['childRoutes'] || [];
 
     // check if there is already a route registered to this path
@@ -82,16 +84,14 @@ const addAsChildRoute = (parentRouteName, addedRoutes) => {
       delete childRoutes[routeWithSamePath.name];
     }
 
-
-    //append to the child routes the new route
+    // append to the child routes the new route
     childRoutes.push({
       name,
       path,
       ...properties
     });
 
-
-    //register the new child route (overwriting the current which is fine)
+    // register the new child route (overwriting the current which is fine)
     RoutesTable[parentRouteName]['childRoutes'] = childRoutes;
 
   });
