@@ -2,35 +2,6 @@ import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
 
 /**
- * @summary Posts statuses
- * @type {Object}
- */
-export const statuses = [
-  {
-    value: 1,
-    label: 'pending'
-  },
-  {
-    value: 2,
-    label: 'approved'
-  },
-  {
-    value: 3,
-    label: 'rejected'
-  },
-  {
-    value: 4,
-    label: 'spam'
-  },
-  {
-    value: 5,
-    label: 'deleted'
-  }
-];
-
-Posts.statuses = statuses;
-
-/**
  * @summary Posts config namespace
  * @type {Object}
  */
