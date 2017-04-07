@@ -1,3 +1,5 @@
+<img src="https://d3vv6lp55qjaqc.cloudfront.net/items/2B3C1z2V2y421p2I0P42/vulcan-logo-noborder.png" width="200">
+
 # Vulcan (formerly Telescope)
 
 [Version 1.3.0](https://github.com/TelescopeJS/Telescope/releases)
