@@ -1,6 +1,6 @@
 # Vulcan (formerly Telescope)
 
-[Version 1.3.0](https://github.com/TelescopeJS/Telescope/releases)
+[Version 1.3.1](https://github.com/TelescopeJS/Telescope/releases)
 
 This is the Apollo/GraphQL version of Telescope, now known as [Vulcan](http://vulcanjs.org). [You can find the documentation here](http://docs.vulcanjs.org/).
 

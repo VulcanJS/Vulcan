@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:cloudinary',
   summary: 'Telescope file upload package.',
-  version: '1.3.0',
+  version: '1.3.1',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,8 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'vulcan:posts@1.3.0',
-    'vulcan:core@1.3.0'
+    'vulcan:posts@1.3.1',
+    'vulcan:core@1.3.1'
   ]);
 
   api.addFiles([
