@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:debug",
   summary: "Telescope debug package",
-  version: '1.3.1',
+  version: '1.3.2',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -15,10 +15,10 @@ Package.onUse(function (api) {
 
     // Vulcan packages
 
-    'vulcan:core@1.3.1',
-    'vulcan:posts@1.3.1',
-    'vulcan:email@1.3.1',
-    'vulcan:comments@1.3.1'
+    'vulcan:core@1.3.2',
+    'vulcan:posts@1.3.2',
+    'vulcan:email@1.3.2',
+    'vulcan:comments@1.3.2'
 
   ]);
 
