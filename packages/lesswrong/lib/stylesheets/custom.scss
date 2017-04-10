@@ -1,0 +1,73 @@
+$hmargin: 10px;
+$small-font: 0.9rem;
+
+$light-yellow: #FFFBDB;
+
+$lightest-grey: #f3f3f3;
+$lighter-grey: #eee;
+$light-grey: #ddd;
+
+$light-blue: #DAEDFF;
+$blue: #0275d8;
+$white: #fff;
+$medium-grey: #bbb;
+$dark-grey: #888;
+$black: #333;
+
+$red: #E04E4B;
+
+$header-bg: $light-blue;
+
+$active-color: $blue;
+
+$lightest-border: $lightest-grey;
+$lighter-border: $lighter-grey;
+$light-border: $light-grey;
+
+$light-text: $medium-grey;
+$medium-text: $dark-grey;
+
+
+.list-group,
+.list-group-item{
+display:block;
+width: 100%;
+}
+
+.viewed {
+  background-color: grey;
+}
+.unviewed {
+  background-color: blue;
+}
+.disabled {
+  background-color: #ddd;
+}
+.dropdown-menu {
+  padding: 15px;
+}
+
+.nav-notifications {
+  background-color: transparent;
+  margin-right: 20px;
+}
+
+.comments-item-meta{
+  font-size: $small-font;
+
+  .comment-edit{
+    margin-right: $hmargin;
+  }
+}
+
+.upvoted{
+  .upvote-button{
+    color: $blue !important;
+  }
+}
+
+.downvoted{
+  .downvote-button{
+    color: $blue !important;
+  }
+}

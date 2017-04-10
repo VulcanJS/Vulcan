@@ -8,9 +8,13 @@ import './collections/messages/views.js';
 import Conversations from './collections/conversations/collection.js'
 import './collections/conversations/views.js';
 
+import './subscriptions/mutations.js';
+import './subscriptions/permissions.js';
+
 import './modules/fragments.js';
 import './modules/callbacks.js';
 
+import './collections/custom_fields.js';
 
 import './helpers.js'
 import './components.js';

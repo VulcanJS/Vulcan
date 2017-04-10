@@ -1,5 +1,5 @@
 Package.describe({
-  name: "lw-inbox"
+  name: "lesswrong"
 });
 
 Package.onUse( function(api) {
@@ -15,7 +15,6 @@ Package.onUse( function(api) {
     'vulcan:posts',
     'vulcan:users',
     'vulcan:voting',
-    'lw-subscribe',
   ]);
 
   api.mainModule('server.js', 'server');

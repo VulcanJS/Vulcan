@@ -7,7 +7,7 @@ import Comments from 'meteor/vulcan:comments';
 import Categories from 'meteor/vulcan:categories';
 import marked from 'marked';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
-import { performSubscriptionAction } from 'meteor/lw-subscribe';
+import { performSubscriptionAction } from '../subscriptions/mutations.js';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw, convertToRaw } from 'draft-js';
 

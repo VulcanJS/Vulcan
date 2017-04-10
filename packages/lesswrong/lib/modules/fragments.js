@@ -1,4 +1,4 @@
-import { registerFragment } from 'meteor/vulcan:core';
+import { registerFragment, extendFragment } from 'meteor/vulcan:core';
 
 registerFragment(`
   fragment conversationsListFragment on Conversation {
@@ -48,4 +48,8 @@ registerFragment(`
     notificationType
     viewed
   }
+`);
+
+extendFragment('UsersCurrent', `
+  subscribedItems
 `);
