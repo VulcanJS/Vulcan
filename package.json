@@ -19,6 +19,7 @@
     "classnames": "^2.2.3",
     "cookie-parser": "^1.4.3",
     "deepmerge": "^1.2.0",
+    "draft-js": "^0.10.0",
     "draft-js-alignment-plugin": "^2.0.0-beta10",
     "draft-js-buttons": "^2.0.0-beta10",
     "draft-js-export-html": "^0.5.2",
