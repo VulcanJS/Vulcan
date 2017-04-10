@@ -8,6 +8,9 @@ import Categories from 'meteor/vulcan:categories';
 import marked from 'marked';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from 'meteor/lw-subscribe';
+import { stateToHTML } from 'draft-js-export-html';
+import { convertFromRaw, convertToRaw } from 'draft-js';
+
 
 const updateConversationActivity = (message) => {
   // Update latest Activity timestamp on conversation when new message is added
@@ -228,13 +231,12 @@ addCallback("messages.new.async", messageNewNotification);
 
 const messageNewHTMLContent = (message) => {
   if(Meteor.isServer) {
-    console.log("MARKDOWN PARSING", marked(message.messageMD));
-    console.log("SANITIZING", Utils.sanitize(marked(message.messageMD)));
+    console.log(message.messageDraftJS)
+    const contentState = convertFromRaw(message.messageDraftJS);
     message = {
       ...message,
-      messageHTML: Utils.sanitize(marked(message.messageMD)),
+      messageHTML: Utils.sanitize(stateToHTML(contentState)),
     };
-    console.log("MESSAGE", message);
   }
   return message;
 }

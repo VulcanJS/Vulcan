@@ -94,7 +94,7 @@ class Form extends Component {
       const fieldSchema = schema[fieldName];
 
       fieldSchema.name = fieldName;
-      
+
       // intialize properties
       let field = {
         name: fieldName,
@@ -103,8 +103,8 @@ class Form extends Component {
         layout: this.props.layout,
         order: fieldSchema.order
       }
-      
-      // hide or show the field, a function taking form props as argument & returning a boolean can be used 
+
+      // hide or show the field, a function taking form props as argument & returning a boolean can be used
       field.hidden = (typeof fieldSchema.hidden === 'function') ? !!fieldSchema.hidden.call(fieldSchema, this.props) : fieldSchema.hidden;
 
       // add label or internationalized field name if necessary (field not hidden)
@@ -296,25 +296,25 @@ class Form extends Component {
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // add error to form state 
+  // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
   throwError(errorMessage) {
 
     let strippedError = errorMessage;
-    
-    // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
+
+    // strip the "GraphQL Error: message [error_code]" given by Apollo if present
     const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
     if (graphqlPrefixIsPresent) {
       strippedError = graphqlPrefixIsPresent[1];
     }
-    
+
     // strip the error code if present
     const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
     if (errorCodeIsPresent) {
       strippedError = errorCodeIsPresent[1];
     }
-    
+
     // internationalize the error if necessary
     const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
     if(typeof intlError === 'object') {
@@ -327,7 +327,7 @@ class Form extends Component {
       content: strippedError,
       type: 'error'
     };
-    
+
     // update the state with unique errors messages
     this.setState(prevState => ({
       errors: _.uniq([...prevState.errors, error])
@@ -398,7 +398,7 @@ class Form extends Component {
 
     console.log("// graphQL Error"); // eslint-disable-line no-console
     console.log(error); // eslint-disable-line no-console
-    
+
     if (!_.isEmpty(error)) {
       // add error to state
       this.throwError(error.message);
@@ -415,11 +415,13 @@ class Form extends Component {
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
+    console.log("Submit Form Pre-Process: ", data)
     data = {
       ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
     };
+    console.log("Submit Form Data: ",data);
 
     const fields = this.getFieldNames();
 
@@ -430,18 +432,24 @@ class Form extends Component {
 
     if (this.props.formType === "new") { // new document form
 
+      console.log("Submit Data SET PRE-FLATTEN", data);
+
       // remove any empty properties
-      let document = _.compactObject(flatten(data));
+      let document = _.compactObject(data);
+
+      console.log("Submit Data SET FLATTEN", document);
 
       // call method with new document
-      this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.newMutation({ document }).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
       const document = this.getDocument();
 
       // put all keys with data on $set
-      const set = _.compactObject(flatten(data));
+      const set = _.compactObject(data);
+
+      console.log("Submit Data SET FLATTEN", set);
 
       // put all keys without data on $unset
       const unsetKeys = _.difference(fields, _.keys(set));

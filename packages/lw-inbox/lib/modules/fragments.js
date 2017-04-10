@@ -27,8 +27,7 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     createdAt
-    messageMD
-    messageHTML
+    messageDraftJS
     conversationId
   }
 `);

@@ -14,3 +14,5 @@ import './inbox/InboxNavigation.jsx';
 import './inbox/newConversationButton.jsx';
 
 import './editor/EditorWrapper.jsx';
+import './editor/DraftJSRenderer.jsx';
+import './editor/MessageEditor.jsx';

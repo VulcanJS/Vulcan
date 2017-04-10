@@ -1,3 +1,14 @@
+// MessageEditor CSS
+
+.messageEditor {
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  padding: 16px;
+  margin: 15px;
+  overflow-y: scroll;
+}
+
 // Default editor CSS
 
 .editor {

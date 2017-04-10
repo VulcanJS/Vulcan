@@ -4,12 +4,21 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 class MessageEditor extends Component {
 
   render() {
+
+
+    const document = this.props.document;
+    const addValues = this.context.addToAutofilledValues;
+
     return (
-      <div style={{width:"300px", height:"200px"}}>
-        <Components.EditorWrapper />
+      <div className="messageEditor">
+        <Components.EditorWrapper addValues={addValues}/>
       </div>
     );
   }
+}
+
+MessageEditor.contextTypes = {
+  addToAutofilledValues: React.PropTypes.func,
 }
 
 registerComponent('MessageEditor', MessageEditor, withCurrentUser);

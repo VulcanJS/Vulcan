@@ -46,20 +46,6 @@ const schema = {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     },
   },
-  messageMD: {
-    type: String,
-    viewableBy: userInParticipants,
-    insertableBy: ['members'],
-    editableBy: Users.owns,
-    control: "textarea",
-    order: 1,
-    optional: true,
-  },
-  messageHTML: {
-    type: String,
-    viewableBy: userInParticipants,
-    optional: true,
-  },
   messageDraftJS: {
     type: Object,
     viewableBy: userInParticipants,
@@ -67,6 +53,7 @@ const schema = {
     editableBy: Users.owns,
     control: MessageEditor,
     order: 2,
+    blackbox: true,
     optional: true,
   },
   conversationId: {

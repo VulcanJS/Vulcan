@@ -31,6 +31,38 @@ import {
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 
+const focusPlugin = createFocusPlugin();
+const alignmentPlugin = createAlignmentPlugin();
+const { AlignmentTool } = alignmentPlugin;
+const resizeablePlugin = createResizeablePlugin();
+
+
+const decorator = composeDecorators(
+  focusPlugin.decorator,
+  alignmentPlugin.decorator,
+  resizeablePlugin.decorator,
+);
+
+const linkifyPlugin = createLinkifyPlugin();
+const imagePlugin = createImagePlugin({ decorator });
+const inlineToolbarPlugin = createInlineToolbarPlugin({
+  structure: [
+    BoldButton,
+    ItalicButton,
+    UnderlineButton,
+    CodeButton,
+    Separator,
+    HeadlineOneButton,
+    HeadlineTwoButton,
+    HeadlineThreeButton,
+    UnorderedListButton,
+    OrderedListButton,
+    BlockquoteButton,
+    CodeBlockButton,
+  ]
+});
+const { InlineToolbar } = inlineToolbarPlugin;
+
 const dummyState = {
     "entityMap": {
         "0": {
@@ -72,6 +104,14 @@ const dummyState = {
     }]
 };
 
+const plugins = [
+  linkifyPlugin,
+  imagePlugin,
+  inlineToolbarPlugin,
+  alignmentPlugin,
+  focusPlugin,
+  resizeablePlugin
+];
 
 class EditorWrapper extends Component {
 
@@ -84,53 +124,13 @@ class EditorWrapper extends Component {
     }
     this.onChange = this.onChange.bind(this);
     this.focus = this.focus.bind(this);
-
-    const focusPlugin = createFocusPlugin();
-    const alignmentPlugin = createAlignmentPlugin();
-    this.AlignmentTool = alignmentPlugin.AlignmentTool;
-    const resizeablePlugin = createResizeablePlugin();
-
-    const decorator = composeDecorators(
-      focusPlugin.decorator,
-      alignmentPlugin.decorator,
-      resizeablePlugin.decorator,
-    );
-
-    const linkifyPlugin = createLinkifyPlugin();
-    const imagePlugin = createImagePlugin({ decorator });
-    const inlineToolbarPlugin = createInlineToolbarPlugin({
-      structure: [
-        BoldButton,
-        ItalicButton,
-        UnderlineButton,
-        CodeButton,
-        Separator,
-        HeadlineOneButton,
-        HeadlineTwoButton,
-        HeadlineThreeButton,
-        UnorderedListButton,
-        OrderedListButton,
-        BlockquoteButton,
-        CodeBlockButton,
-      ]
-    });
-    this.InlineToolbar = inlineToolbarPlugin.InlineToolbar;
-
-    this.plugins = [
-      linkifyPlugin,
-      imagePlugin,
-      inlineToolbarPlugin,
-      alignmentPlugin,
-      focusPlugin,
-      resizeablePlugin
-    ];
   };
 
   onChange(editorState) {
     this.setState({
       editorState,
     });
-    // TODO: Make this somehow less terrible. I.e. not make it serialize the whole contentState one very state change. Ideally some kind of callback on form submit, but that doesn't exist, I think.
+    //TODO: Make this somehow less terrible. I.e. not make it serialize the whole contentState one very state change. Ideally some kind of callback on form submit, but that doesn't exist, I think.
     if (this.props.addValues) {
       const contentState = editorState.getCurrentContent();
       const rawContentState = convertToRaw(contentState: contentState);
@@ -145,35 +145,20 @@ class EditorWrapper extends Component {
   };
 
   render() {
-    const AlignmentTool = this.AlignmentTool;
-    const InlineToolbar = this.InlineToolbar;
-
-    if (this.props.readOnly) {
-      return (
-        <div>
-          <Editor
-            editorState={this.state.editorState}
-            onChange={(editorState) => this.setState({editorState})}
-            plugins={this.plugins}
-            readOnly />
+    return (
+      <div onClick={this.focus}>
+        <Editor
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+          plugins={plugins}
+          ref={(element) => {this.editor = element;}}
+        />
+        <div className="Toolbars">
+          <InlineToolbar />
+          <AlignmentTool />
         </div>
-      )
-    } else {
-      return (
-        <div onClick={this.focus}>
-          <Editor
-            editorState={this.state.editorState}
-            onChange={this.onChange}
-            plugins={this.plugins}
-            ref={(element) => {this.editor = element;}}
-          />
-          <div className="Toolbars">
-            <AlignmentTool />
-            <InlineToolbar />
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   }
 }
 

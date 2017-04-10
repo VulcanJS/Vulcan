@@ -31,7 +31,7 @@ class InboxNavigation extends Component {
         <Grid>
           <Row className="Inbox-Grid">
             <Col xs={12} md={3}>{this.renderNavigation()}</Col>
-            <Col xs={12} md={(notificationsSelect ? 9 : 6)}>
+            <Col xs={12} style={{position: "inherit"}} md={(notificationsSelect ? 9 : 6)}>
               {notificationsSelect ? <Components.NotificationsWrapper/> : <Components.ConversationWrapper terms={messagesTerms} conversation={conversation} />}
             </Col>
             {notificationsSelect ? <div></div> : <Col xs={12} md={3}><Components.ConversationDetails conversation={conversation}></Components.ConversationDetails></Col>}
