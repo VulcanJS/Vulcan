@@ -43,9 +43,7 @@ accounts-password@1.3.4
 
 ############ Your Packages ############
 
-lw-voting
-lw-subscribe
-lw-inbox
+lesswrong
 # example-movies
 # example-instagram
 example-forum
