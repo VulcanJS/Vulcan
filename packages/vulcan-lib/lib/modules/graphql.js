@@ -7,7 +7,7 @@ Utilities to generate the app's GraphQL schema
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
-
+import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 
 // convert a JSON schema to a GraphQL schema
@@ -85,6 +85,9 @@ export const GraphQLSchema = {
   addResolvers(resolvers) {
     this.resolvers = deepmerge(this.resolvers, resolvers);
   },
+  removeResolver(typeName, resolverName) {
+    delete this.resolvers[typeName][resolverName];
+  },
 
   // add objects to context
   context: {},
@@ -95,7 +98,8 @@ export const GraphQLSchema = {
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
-    const collectionName = collection._name;
+    const collectionName = collection.options.collectionName;
+
     const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
@@ -156,8 +160,15 @@ export const GraphQLSchema = {
   }
 };
 
+Vulcan.getGraphQLSchema = () => {
+  const schema = GraphQLSchema.finalSchema[0];
+  console.log(schema);
+  return schema;
+}
+
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
 export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
 export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
+export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);

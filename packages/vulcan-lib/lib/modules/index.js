@@ -1,5 +1,3 @@
-import Telescope from './config.js';
-
 import './utils.js';
 import './callbacks.js';
 import './settings.js';
@@ -14,7 +12,7 @@ import './mongo_redux.js';
 export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp } from './components.js';
 export { createCollection } from './collections.js';
 export { Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync } from './callbacks.js';
-export { GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
+export { GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext } from './graphql.js';
 export { Routes, addRoute, getRoute, populateRoutesApp } from './routes.js';
 export { Utils } from './utils.js';
 export { getSetting } from './settings.js';
@@ -23,5 +21,3 @@ export { configureStore, getActions, addAction, getReducers, addReducer, getMidd
 export { Headtags } from './headtags.js';
 export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment } from './fragments.js';
 export { createApolloClient } from './apollo.js';
-
-export default Telescope;

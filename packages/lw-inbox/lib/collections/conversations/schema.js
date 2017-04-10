@@ -30,10 +30,12 @@ const userInParticipants = function (user, document) {
 
 const schema = {
   _id: {
+    optional: true,
     type: String,
     viewableBy: userInParticipants,
   },
   createdAt: {
+    optional: true,
     type: Date,
     viewableBy: userInParticipants,
     autoValue: (documentOrModifier) => {
@@ -65,7 +67,8 @@ const schema = {
     viewableBy: userInParticipants,
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
-    }
+    },
+    optional: true,
   }
 };
 

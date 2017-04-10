@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 
 import { RoutePolicy } from 'meteor/routepolicy';
 
-import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:core';
+import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:lib';
 
 function isAppUrl(req) {
   const url = req.url;
@@ -21,9 +21,11 @@ function isAppUrl(req) {
     return false;
   }
 
-  // we only need to support HTML pages only
-  // this is a check to do it
-  return /html/.test(req.headers.accept);
+  // we only need to support HTML pages only for browsers
+  // Facebook's scraper uses a request header Accepts: */*
+  // so allow either
+  const facebookAcceptsHeader = new RegExp("/*\/*/");
+  return /html/.test(req.headers.accept) || facebookAcceptsHeader.test(req.headers.accept);
 }
 
 function generateSSRData(options, req, res, renderProps) {

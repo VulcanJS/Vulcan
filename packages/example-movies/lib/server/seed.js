@@ -55,18 +55,38 @@ const seedData = [
   },
 ];
 
+var createDummyUsers = function () {
+  console.log('// creating dummy users');
+  Accounts.createUser({
+    username: 'Bruce',
+    email: 'dummyuser1@telescopeapp.org',
+    profile: {
+      isDummy: true
+    }
+  });
+  Accounts.createUser({
+    username: 'Arnold',
+    email: 'dummyuser2@telescopeapp.org',
+    profile: {
+      isDummy: true
+    }
+  });
+  Accounts.createUser({
+    username: 'Julia',
+    email: 'dummyuser3@telescopeapp.org',
+    profile: {
+      isDummy: true
+    }
+  });
+};
+
 Meteor.startup(function () {
   if (Users.find().fetch().length === 0) {
-    Accounts.createUser({
-      username: 'DemoUser',
-      email: 'dummyuser@telescopeapp.org',
-      profile: {
-        isDummy: true
-      }
-    });
+    createDummyUsers();
   }
-  const currentUser = Users.findOne();
+  const currentUser = Users.findOne(); // just get the first user available
   if (Movies.find().fetch().length === 0) {
+    console.log('// creating dummy movies');
     seedData.forEach(document => {
       newMutation({
         action: 'movies.new',

@@ -16,7 +16,6 @@ Package.onUse( function(api) {
     'vulcan:users',
     'vulcan:voting',
     'lw-subscribe',
-    'example-movies-full',
   ]);
 
   api.mainModule('server.js', 'server');

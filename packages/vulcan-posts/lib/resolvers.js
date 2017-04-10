@@ -1,4 +1,5 @@
-import { GraphQLSchema } from 'meteor/vulcan:core';
+import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 
 const specificResolvers = {
   Post: {
@@ -21,11 +22,20 @@ const resolvers = {
 
     name: 'postsList',
 
+    check(user, terms, collection) {
+      const {selector} = collection.getParameters(terms);
+      const status = _.findWhere(collection.statuses, {value: selector.status || 2});
+      return Users.canDo(user, `posts.view.${status.label}.all`);
+    },
+
     resolver(root, {terms}, context, info) {
       let {selector, options} = context.Posts.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Posts);
+
+      Utils.performCheck(this, context.currentUser, terms, context.Posts);
+
       return context.Posts.find(selector, options).fetch();
     },
 
@@ -35,9 +45,19 @@ const resolvers = {
     
     name: 'postsSingle',
 
+    check(user, document, collection) {
+      if (!document) return false;
+      const status = _.findWhere(collection.statuses, {value: document.status});
+      return Users.owns(user, document) ? Users.canDo(user, `posts.view.${status.label}.own`) : Users.canDo(user, `posts.view.${status.label}.all`);
+    },
+
     resolver(root, {documentId, slug}, context) {
+
       const selector = documentId ? {_id: documentId} : {'slug': slug};
       const post = context.Posts.findOne(selector);
+
+      Utils.performCheck(this, context.currentUser, post, context.Posts);
+
       return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
   

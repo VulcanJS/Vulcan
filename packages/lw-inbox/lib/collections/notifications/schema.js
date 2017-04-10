@@ -9,6 +9,7 @@ import Users from 'meteor/vulcan:users';
 //define schema
 const schema = {
   _id: {
+    optional: true,
     type: String,
     viewableBy: Users.owns,
   },
@@ -17,6 +18,7 @@ const schema = {
     viewableBy: Users.owns,
   },
   createdAt: {
+    optional: true,
     type: Date,
     viewableBy: Users.owns,
     autoValue: (documentOrModifier) => {

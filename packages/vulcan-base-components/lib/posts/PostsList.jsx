@@ -1,9 +1,10 @@
-import { Components, getRawComponent, registerComponent, withList, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, getRawComponent, registerComponent, withList, withCurrentUser, Utils } from 'meteor/vulcan:core';
 import React from 'react';
 import Posts from 'meteor/vulcan:posts';
 import { Alert } from 'react-bootstrap';
+import { FormattedMessage, intlShape } from 'react-intl';
 
-const Error = ({error}) => <Alert className="flash-message" bsStyle="danger">{error.message}</Alert>
+const Error = ({error}) => <Alert className="flash-message" bsStyle="danger"><FormattedMessage id={error.id} values={{value: error.value}}/>{error.message}</Alert>
 
 const PostsList = (props) => {
 
@@ -18,7 +19,7 @@ const PostsList = (props) => {
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader/> : null}
-        {error ? <Error error={error} /> : null }
+        {error ? <Error error={Utils.decodeIntlError(error)} /> : null }
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
@@ -29,7 +30,7 @@ const PostsList = (props) => {
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader /> : null}
-        {error ? <Error error={error} /> : null }
+        {error ? <Error error={Utils.decodeIntlError(error)} /> : null }
         <div className="posts-list-content">
           <Components.PostsLoading/>
         </div>
@@ -39,7 +40,7 @@ const PostsList = (props) => {
     return (
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader /> : null}
-        {error ? <Error error={error} /> : null }
+        {error ? <Error error={Utils.decodeIntlError(error)} /> : null }
         <div className="posts-list-content">
           <Components.PostsNoResults/>
         </div>
@@ -60,6 +61,10 @@ PostsList.propTypes = {
   totalCount: React.PropTypes.number,
   loadMore: React.PropTypes.func,
   showHeader: React.PropTypes.bool,
+};
+
+PostsList.contextTypes = {
+  intl: intlShape
 };
 
 const options = {

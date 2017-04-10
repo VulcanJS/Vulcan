@@ -5,6 +5,27 @@ import Comments from "meteor/vulcan:comments";
 import Users from 'meteor/vulcan:users';
 import Events from "meteor/vulcan:events";
 
+const dummyFlag = {
+  fieldName: 'isDummy',
+  fieldSchema: {
+    type: Boolean,
+    optional: true,
+    hidden: true
+  }
+}
+Users.addField(dummyFlag);
+Posts.addField(dummyFlag);
+Comments.addField(dummyFlag);
+
+Posts.addField({
+  fieldName: 'dummySlug',
+  fieldSchema: {
+    type: String,
+    optional: true,
+    hidden: true // never show this
+  }
+});
+
 var toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
@@ -58,6 +79,7 @@ var createComment = function (slug, username, body, parentBody) {
 };
 
 var createDummyUsers = function () {
+  console.log('// inserting dummy users…');
   Accounts.createUser({
     username: 'Bruce',
     email: 'dummyuser1@telescopeapp.org',
@@ -82,6 +104,7 @@ var createDummyUsers = function () {
 };
 
 var createDummyPosts = function () {
+  console.log('// inserting dummy posts');
 
   createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
 
@@ -96,6 +119,7 @@ var createDummyPosts = function () {
 };
 
 var createDummyComments = function () {
+  console.log('// inserting dummy comments…');
 
   createComment("read_this_first", "Bruce", "What an awesome app!");
 
@@ -109,32 +133,21 @@ var createDummyComments = function () {
 
 };
 
-var deleteDummyContent = function () {
+const deleteDummyContent = function () {
   Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
 };
 
-Meteor.methods({
-  addGettingStartedContent: function () {
-    if (Users.isAdmin(Meteor.user())) {
-      createDummyUsers();
-      createDummyPosts();
-      createDummyComments();
-    }
-  },
-  removeGettingStartedContent: function () {
-    if (Users.isAdmin(Meteor.user()))
-      deleteDummyContent();
-  }
-});
-
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts or users in the db
-  if (!Users.find().count() && !Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
+  if (!Users.find().count()) {
     createDummyUsers();
+  }
+  if (!Posts.find().count()) {
     createDummyPosts();
+  }
+  if (!Comments.find().count()) {
     createDummyComments();
-    Events.log({name: 'createDummyContent', unique: true, important: true});
   }
 });

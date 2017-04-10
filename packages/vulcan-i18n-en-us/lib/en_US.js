@@ -30,6 +30,7 @@ addStrings('en', {
   "accounts.or_use": "or use",
   "accounts.info_email_sent": "Email sent.",
   "accounts.info_password_changed": "Password changed.",
+  "accounts.logging_in": "Logging in…",
 
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
@@ -188,7 +189,7 @@ addStrings('en', {
   "app.powered_by": "Powered by Telescope",
   "app.or": "Or",
   "app.noPermission": "Sorry, you do not have the permission to do this at this time.",
-  "app.mutation_not_allowed": "Sorry, you don't have the rights to perform this mutation on this document (details: {value})",
+  "app.operation_not_allowed": 'Sorry, you don\'t have the rights to perform the operation "{value}"',
   "app.disallowed_property_detected": "Disallowed property detected: {value}",
   "app.something_bad_happened": "Something bad happened...",
   "app.embedly_not_authorized": "Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API",

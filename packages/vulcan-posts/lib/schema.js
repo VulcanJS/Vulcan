@@ -2,33 +2,6 @@ import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
 
 /**
- * @summary Posts statuses
- * @type {Object}
- */
-Posts.statuses = [
-  {
-    value: 1,
-    label: 'pending'
-  },
-  {
-    value: 2,
-    label: 'approved'
-  },
-  {
-    value: 3,
-    label: 'rejected'
-  },
-  {
-    value: 4,
-    label: 'spam'
-  },
-  {
-    value: 5,
-    label: 'deleted'
-  }
-];
-
-/**
  * @summary Posts config namespace
  * @type {Object}
  */
@@ -183,7 +156,7 @@ const schema = {
     },
     form: {
       noselect: true,
-      options: Posts.statuses,
+      options: () => Posts.statuses,
       group: 'admin'
     },
     group: formGroups.admin

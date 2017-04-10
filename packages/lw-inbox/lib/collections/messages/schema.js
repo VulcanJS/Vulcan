@@ -32,14 +32,17 @@ const schema = {
   _id: {
     type: String,
     viewableBy: Users.owns,
+    optional: true,
   },
   userId: {
     type: String,
     viewableBy: userInParticipants,
     insertableBy: Users.owns,
-    resolveAs: 'user: User'
+    resolveAs: 'user: User',
+    optional: true,
   },
   createdAt: {
+    optional: true,
     type: Date,
     viewableBy: userInParticipants,
     autoValue: (documentOrModifier) => {

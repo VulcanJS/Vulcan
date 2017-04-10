@@ -205,7 +205,7 @@ Utils.sanitize = function(s) {
   if(Meteor.isServer){
     s = sanitizeHtml(s, {
       allowedTags: [
-        'h1','h2','h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul',
         'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike',
         'code', 'hr', 'br', 'div', 'table', 'thead', 'caption',
         'tbody', 'tr', 'th', 'td', 'pre', 'img'
@@ -447,6 +447,6 @@ Utils.defineName = (o, name) => {
   return o;
 };
 
-Utils.performCheck = (mutation, user, document) => {
-  if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
-}
+Utils.performCheck = (operation, user, checkedObject, context) => {
+  if (!operation.check(user, checkedObject, context)) throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
+};

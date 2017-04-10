@@ -11,7 +11,7 @@ import {
   addReducer, addMiddleware,
   Routes, populateComponentsApp, populateRoutesApp, runCallbacks,
   getRenderContext,
-} from 'meteor/vulcan:core';
+} from 'meteor/vulcan:lib';
 
 import { RouterClient } from './router.jsx';
 

@@ -1,13 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
 /**
- * @summary Kick off the namespace for Telescope.
- * @namespace Telescope
+ * @summary Kick off the namespace for Vulcan.
+ * @namespace Vulcan
  */
 
-const Telescope = {};
+Vulcan = {};
 
-Telescope.VERSION = '1.1.0';
+Vulcan.VERSION = '1.3.2';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -25,4 +25,4 @@ SimpleSchema.extendOptions([
   'group' // form fieldset group
 ]);
 
-export default Telescope;
+export default Vulcan;

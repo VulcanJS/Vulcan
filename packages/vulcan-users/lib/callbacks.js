@@ -1,6 +1,5 @@
 import Users from './collection.js';
 import marked from 'marked';
-import { Gravatar } from 'meteor/jparker:gravatar';
 import { addCallback, Utils, runCallbacksAsync } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 //////////////////////////////////////////////////////
@@ -45,7 +44,7 @@ function setupUser (user, options) {
 
   // generate email hash
   if (!!user.email) {
-    user.emailHash = Gravatar.hash(user.email);
+    user.emailHash = Users.avatar.hash(user.email);
   }
 
   // look in a few places for the displayName
@@ -139,7 +138,7 @@ function usersEditCheckEmail (modifier, user) {
     }
 
     // update email hash
-    modifier.$set.emailHash = Gravatar.hash(newEmail);
+    modifier.$set.emailHash = Users.avatar.hash(newEmail);
 
   }
   return modifier;

@@ -50,11 +50,13 @@ MailChimp.prototype.call = function ( section, method, options, callback ) {
     } catch ( error ) {
       // A workaround for:
       // https://github.com/meteor/meteor/issues/2774
-      if ( !error.error ) {
-        throw new Error( error.code, error.message );
-      } else {
-        throw new Error( error );
-      }
+      console.log('// MailChimp API error')
+      console.log(error)
+      // if ( !error.error ) {
+      //   throw new Error( error.code, error.message );
+      // } else {
+      //   throw new Error( error );
+      // }
     }
   }
 };

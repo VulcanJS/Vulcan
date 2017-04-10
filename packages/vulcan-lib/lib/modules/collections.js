@@ -11,12 +11,19 @@ SimpleSchema.extendOptions([
 ]);
 
 /**
- * @summary Meteor Collections.
+ * @summary replacement for Collection2's attachSchema
  * @class Mongo.Collection
  */
+Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
+  if (schemaOrFields instanceof SimpleSchema) {
+    this.simpleSchema = () => schemaOrFields;
+  } else {
+    this.simpleSchema().extend(schemaOrFields)
+  }
+}
 
 /**
- * @summary @summary Add an additional field (or an array of fields) to a schema.
+ * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} field
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
@@ -89,10 +96,10 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true } = options;
+  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(collectionName);
+  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
 
   // decorate collection with options
   collection.options = options;
@@ -126,12 +133,12 @@ export const createCollection = options => {
       // list
       if (resolvers.list) { // e.g. ""
         GraphQLSchema.addQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
-        queryResolvers[resolvers.list.name] = resolvers.list.resolver;
+        queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
         GraphQLSchema.addQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
-        queryResolvers[resolvers.single.name] = resolvers.single.resolver;
+        queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
