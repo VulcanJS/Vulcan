@@ -28,3 +28,5 @@ import './component-replacements/LWPostsViews.jsx';
 import './subscriptions/SubscribeTo.jsx';
 
 import './voting/LWVoting.jsx';
+
+import './posts/LWPostsPage.jsx';
