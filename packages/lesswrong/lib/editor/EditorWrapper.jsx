@@ -134,7 +134,7 @@ class EditorWrapper extends Component {
     if (this.props.addValues) {
       const contentState = editorState.getCurrentContent();
       const rawContentState = convertToRaw(contentState: contentState);
-      this.props.addValues({messageDraftJS: rawContentState });
+      this.props.addValues({draftJS: rawContentState });
       console.log("Raw Content State onChange: ", rawContentState);
       console.log("Test DeRawed Content State: ", convertFromRaw(rawContentState));
     }

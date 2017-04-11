@@ -49,7 +49,7 @@ const schema = {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     },
   },
-  messageDraftJS: {
+  draftJS: {
     type: Object,
     viewableBy: userInParticipants,
     insertableBy: ['members'],

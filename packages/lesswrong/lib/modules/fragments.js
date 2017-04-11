@@ -27,7 +27,7 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     createdAt
-    messageDraftJS
+    draftJS
     conversationId
   }
 `);
@@ -52,4 +52,8 @@ registerFragment(`
 
 extendFragment('UsersCurrent', `
   subscribedItems
+`);
+
+extendFragment('PostsList', `
+  draftJS
 `);

@@ -231,8 +231,8 @@ addCallback("messages.new.async", messageNewNotification);
 
 const messageNewHTMLContent = (message) => {
   if(Meteor.isServer) {
-    console.log(message.messageDraftJS)
-    const contentState = convertFromRaw(message.messageDraftJS);
+    console.log(message.draftJS)
+    const contentState = convertFromRaw(message.draftJS);
     message = {
       ...message,
       messageHTML: Utils.sanitize(stateToHTML(contentState)),

@@ -41,6 +41,7 @@ class LWPostsItem extends getRawComponent('PostsItem') {
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
             {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
+            {/* Added subscribe-to functionality */}
             <Components.SubscribeTo document={post} />
           </div>
 
