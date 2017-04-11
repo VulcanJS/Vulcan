@@ -33,7 +33,8 @@ class CategoriesList extends Component {
 
   render() {
 
-    const currentQuery = _.clone(this.props.router.location.query);
+    const allCategoriesQuery = _.clone(this.props.router.location.query);
+    delete allCategoriesQuery.cat;
     const nestedCategories = this.getNestedCategories();
 
     return (
@@ -45,7 +46,7 @@ class CategoriesList extends Component {
           id="categories-dropdown"
         >
           <div className="category-menu-item category-menu-item-all dropdown-item">
-            <LinkContainer className="category-menu-item-title" to={{pathname:"/", query: currentQuery}}>
+            <LinkContainer className="category-menu-item-title" to={{pathname:"/", query: allCategoriesQuery}}>
               <MenuItem eventKey={0}>
                 <FormattedMessage id="categories.all"/>
               </MenuItem>
