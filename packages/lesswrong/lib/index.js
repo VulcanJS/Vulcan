@@ -22,9 +22,6 @@ import './subscriptions/permissions.js';
 import './collections/posts/custom_fields.js';
 import './collections/posts/views.js';
 
-// Base-Components
-import './base-components/LWPostsViews.jsx';
-
 // Internationalization
 import './i18n-en-us/en_US.js';
 

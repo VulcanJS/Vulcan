@@ -23,6 +23,7 @@ import './component-replacements/LWCommentsItem.jsx';
 import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
+import './component-replacements/LWPostsViews.jsx';
 
 import './subscriptions/SubscribeTo.jsx';
 

@@ -1,4 +1,5 @@
 import Posts from "meteor/vulcan:posts";
+import PostEditor from '../../editor/PostEditor.jsx';
 
 Posts.addField([
   /**
