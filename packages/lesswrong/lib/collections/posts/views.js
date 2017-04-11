@@ -4,7 +4,6 @@ import Posts from 'meteor/vulcan:posts';
  * @summary Draft view
  */
 Posts.addView("draft", terms => {
-  console.log("userId", terms.userId);
   return {
     selector: {
       userId: terms.userId,

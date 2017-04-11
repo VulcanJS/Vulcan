@@ -12,8 +12,6 @@ const LWPostsViews = (props, context) => {
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled", "all_draft"];
 
-  console.log("canDo(posts.edit): ", Users.canDo(props.currentUser, "posts.edit.own"));
-
   if (Users.canDo(props.currentUser, "posts.edit.own")
   || Users.canDo(props.currentUser, "posts.edit.all")) {
     views = views.concat(["draft"]);
