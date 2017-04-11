@@ -63,14 +63,14 @@ var addJob = function () {
       if (process.env.NODE_ENV === "production" || getSetting("enableNewsletterInDev", false)) {
         console.log("// Scheduling newsletter…"); // eslint-disable-line
         console.log(new Date()); // eslint-disable-line
-        Newsletters.scheduleNextWithMailChimp();
+        Newsletters.send();
       }
     }
   });
 };
 
 Meteor.startup(function () {
-  if (getSetting('enableNewsletter', true) && getSetting('mailChimpAPIKey') && getSetting('mailChimpListId')) {
+  if (getSetting('enableNewsletter', true)) {
     addJob();
   }
 });

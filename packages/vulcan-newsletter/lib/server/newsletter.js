@@ -9,7 +9,7 @@ import Newsletters from '../modules/collection.js';
 import { Utils, getSetting } from 'meteor/vulcan:core';
 import htmlToText from 'html-to-text';
 
-const provider = getSetting('newsletterProvider', 'mailchimp');
+const provider = getSetting('newsletterProvider', 'mailchimp'); // default to MailChimp
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.addView("newsletter", terms => ({
@@ -194,8 +194,6 @@ Newsletters.subscribe = (userOrEmail, confirm = false) => {
 
     let user, email;
 
-    console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
-
     // not sure if it's really necessary that the function take both user and email?
     if (typeof userOrEmail === "string") {
       user = null;
@@ -206,6 +204,8 @@ Newsletters.subscribe = (userOrEmail, confirm = false) => {
       if (!email)
         throw 'User must have an email address';
     }
+
+    console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
 
     const subscribe = Newsletters[provider].subscribe(email, confirm);
 
@@ -254,7 +254,7 @@ Newsletters.unsubscribe = (userOrEmail) => {
 
 }
 
-Newsletters.send = () => {
+Newsletters.send = (isTest = false) => {
 
   const defaultPosts = 5;
   const posts = Newsletters.getPosts(getSetting('postsPerNewsletter', defaultPosts));
@@ -262,7 +262,7 @@ Newsletters.send = () => {
 
   if(!!posts.length){
 
-    const { title, subject, text, html, isTest = false } = Newsletters.build(posts);
+    const { title, subject, text, html } = Newsletters.build(posts);
 
     console.log('// Creating campaign…');
     console.log('// Subject: '+subject)

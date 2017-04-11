@@ -7,8 +7,8 @@ import './server/emails.js';
 import './server/mutations.js';
 import './server/callbacks.js';
 
-import './server/sendy/sendy.js';
-import './server/mailchimp/mailchimp_newsletter.js';
+import './server/integrations/sendy.js';
+import './server/integrations/mailchimp.js';
 
 Vulcan.Newsletters = Newsletters;
 

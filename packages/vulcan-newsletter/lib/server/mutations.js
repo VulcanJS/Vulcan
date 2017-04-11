@@ -1,5 +1,4 @@
 import Newsletters from "../modules/collection.js";
-import MailChimpList from "./mailchimp/mailchimp_list.js";
 import Users from 'meteor/vulcan:users';
 import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 
@@ -13,14 +12,14 @@ const resolver = {
   Mutation: {
     sendNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) {
-        return Newsletters.scheduleNextWithMailChimp(false);
+        return Newsletters.send();
       } else {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
     },
     testNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
-        return Newsletters.scheduleNextWithMailChimp(true);
+        return Newsletters.send(true);
     },
     addUserNewsletter(root, args, context) {
 
@@ -30,7 +29,7 @@ const resolver = {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
       try {
-        return MailChimpList.add(user, false);
+        return Newsletters.subscribe(user, false);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
@@ -39,7 +38,7 @@ const resolver = {
     addEmailNewsletter(root, args, context) {
       const email = args.email;
       try {
-        return MailChimpList.add(email, true);
+        return Newsletters.subscribe(email, true);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
@@ -53,7 +52,7 @@ const resolver = {
       }
       
       try {
-        return MailChimpList.remove(user);
+        return Newsletters.unsubscribe(user);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);

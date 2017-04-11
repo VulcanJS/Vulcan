@@ -7,6 +7,12 @@ import { getSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
 
+/*
+
+API
+
+*/
+
 const { apiKey, listId, fromName, fromEmail } = getSetting('mailchimp');
 
 const mailChimpAPI = new MailChimpNPM.MailChimpAPI(apiKey, { version : '2.0' });
@@ -32,6 +38,12 @@ const callSyncAPI = function ( section, method, options, callback ) {
     }
   }
 };
+
+/*
+
+Methods
+
+*/
 
 Newsletters.mailchimp = {
 
