@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Telescope libraries.',
-  version: '1.3.0',
+  version: '1.3.2',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -13,19 +13,19 @@ Package.onUse(function (api) {
 
     // Meteor packages
 
-    'meteor-base',
+    'meteor-base@1.0.4',
     'mongo',
     'tracker',
     'service-configuration',
-    'standard-minifiers',
-    'modules',
+    'standard-minifiers@1.0.6',
+    'modules@0.7.9',
     'accounts-base',
     'check',
     'http',
     'email',
-    'ecmascript',
+    'ecmascript@0.6.3',
     'service-configuration',
-    'shell-server',
+    'shell-server@0.2.3',
 
     // Third-party packages
 

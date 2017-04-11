@@ -1,0 +1,1 @@
+Vulcan accounts package (forked from https://github.com/studiointeract/accounts-ui)

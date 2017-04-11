@@ -156,7 +156,7 @@ const schema = {
     },
     form: {
       noselect: true,
-      options: Posts.statuses,
+      options: () => Posts.statuses,
       group: 'admin'
     },
     group: formGroups.admin
