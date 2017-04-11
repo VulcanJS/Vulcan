@@ -1,5 +1,5 @@
 import VulcanEmail from 'meteor/vulcan:email';
-import Newsletters from "../collection.js";
+import Newsletters from "../modules/collection.js";
 import { getSetting } from 'meteor/vulcan:core';
 
 // Extend email objects with server-only properties

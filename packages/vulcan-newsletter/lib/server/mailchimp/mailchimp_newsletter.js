@@ -2,108 +2,120 @@
 
 // newsletter scheduling with MailChimp
 
-import Posts from 'meteor/vulcan:posts';
-import VulcanEmail from 'meteor/vulcan:email';
-import htmlToText from 'html-to-text';
 import moment from 'moment';
-import MailChimp from './mailchimp_api.js';
-import { Utils, getSetting } from 'meteor/vulcan:core';
-import Newsletters from '../../collection.js';
+import { getSetting } from 'meteor/vulcan:core';
+import Newsletters from '../../modules/collection.js';
+import MailChimpNPM from 'mailchimp';
 
-const defaultPosts = 5;
+const { apiKey, listId, fromName, fromEmail } = getSetting('mailchimp');
 
-Newsletters.scheduleNextWithMailChimp = function (isTest = false) {
-  var posts = Newsletters.getPosts(getSetting('postsPerNewsletter', defaultPosts));
-  if(!!posts.length){
-    return Newsletters.scheduleWithMailChimp(Newsletters.build(posts), isTest);
-  }else{
-    var result = {result: 'No posts to schedule today…'};
-    return result;
+const mailChimpAPI = new MailChimpNPM.MailChimpAPI(apiKey, { version : '2.0' });
+
+const callSyncAPI = function ( section, method, options, callback ) {
+  if ( callback && typeof callback === 'function' ) {
+    // If anyone still wants to use old-fashioned callback method
+    mailChimpAPI.call( section, method, options, callback );
+  } else {
+    try {
+      var wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
+      return wrapped( section, method, options );
+    } catch ( error ) {
+      // A workaround for:
+      // https://github.com/meteor/meteor/issues/2774
+      console.log('// MailChimp API error')
+      console.log(error)
+      // if ( !error.error ) {
+      //   throw new Error( error.code, error.message );
+      // } else {
+      //   throw new Error( error );
+      // }
+    }
   }
 };
 
-Newsletters.scheduleWithMailChimp = function (campaign, isTest = false) {
+Newsletters.mailchimp = {
 
-  var apiKey = getSetting('mailChimpAPIKey');
-  var listId = getSetting('mailChimpListId');
-
-  if(!!apiKey && !!listId){
-
-    var wordCount = 15;
-    var subject = campaign.subject;
-    while (subject.length >= 150){
-      subject = Utils.trimWords(subject, wordCount);
-      wordCount--;
+  // add a user to a MailChimp list.
+  // called when a new user is created, or when an existing user fills in their email
+  subscribe(email, confirm = false) {
+    try {
+      const subscribeOptions = {
+        id: listId,
+        email: {email: email},
+        double_optin: confirm
+      };
+      // subscribe user
+      const subscribe = callSyncAPI('lists', 'subscribe', subscribeOptions);
+      return {result: 'subscribed', ...subscribe};
+    } catch (error) {
+      // if the email is already in the Mailchimp list, no need to throw an error
+      if (error.message === "214") {
+        return {result: 'already-subscribed'};
+      }
+      throw new Error("subscription-failed", error.message);
     }
+  },
+
+  // remove a user to a MailChimp list.
+  // called from the user's account
+  unsubscribe(email) {
+    try {
+      const subscribeOptions = {
+        id: listId,
+        email: {email: email},
+        delete_member: true // delete the member from the list to make it possible for him to *resubscribe* via API (mailchimp's spam prevention policy)
+      };
+      // unsubscribe user
+      const subscribe = callSyncAPI('lists', 'unsubscribe', subscribeOptions);
+      return {result: 'unsubscribed', ...subscribe};
+    } catch (error) {
+      throw new Error("unsubscribe-failed", error.message);
+    }
+  },
+
+  send({ title, subject, text, html, isTest = false }) {
 
     try {
 
-      var api = new MailChimp(apiKey);
-      var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = getSetting('defaultEmail');
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
           subject: subject,
-          from_email: defaultEmail,
-          from_name: getSetting('title')
+          from_email: fromEmail,
+          from_name: fromName
         },
         content: {
-          html: campaign.html,
+          html: html,
           text: text
         }
       };
 
-      console.log('// Creating campaign…');
-      console.log('// Subject: '+subject)
       // create campaign
-      var mailchimpNewsletter = api.call( 'campaigns', 'create', campaignOptions);
+      const mailchimpNewsletter = callSyncAPI('campaigns', 'create', campaignOptions);
 
       console.log('// Newsletter created');
       // console.log(campaign)
 
-      var scheduledTime = moment().utcOffset(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
+      const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
+      const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
 
-      var scheduleOptions = {
+      const scheduleOptions = {
         cid: mailchimpNewsletter.id,
         schedule_time: scheduledTime
       };
 
       // schedule campaign
-      var schedule = api.call('campaigns', 'schedule', scheduleOptions); // eslint-disable-line
+      const schedule = callSyncAPI('campaigns', 'schedule', scheduleOptions); // eslint-disable-line
 
       console.log('// Newsletter scheduled for '+scheduledTime);
-      // console.log(schedule)
 
-      // if this is not a test, mark posts as sent and log newsletter
-      if (!isTest) {
-
-        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true, validate: false}) // eslint-disable-line
-        console.log(`updated ${updated} posts`)
-
-        // log newsletter
-        Newsletters.insert({
-          createdAt: new Date(),
-          scheduledAt: scheduledMoment.toDate(),
-          subject,
-          html: campaign.html,
-          provider: 'MailChimp'
-        });
-
-      }
-
-      // send confirmation email
-      var confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
-        time: scheduledTime,
-        newsletterLink: mailchimpNewsletter.archive_url,
-        subject: subject
-      });
-      VulcanEmail.send(defaultEmail, 'Newsletter scheduled', VulcanEmail.buildTemplate(confirmationHtml));
+      return mailchimpNewsletter;
 
     } catch (error) {
       console.log(error);
+      return false;
     }
-    return subject;
   }
-};
+
+}

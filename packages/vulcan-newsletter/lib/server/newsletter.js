@@ -5,8 +5,11 @@ import Categories from "meteor/vulcan:categories";
 import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
-import Newsletters from '../collection.js';
+import Newsletters from '../modules/collection.js';
 import { Utils, getSetting } from 'meteor/vulcan:core';
+import htmlToText from 'html-to-text';
+
+const provider = getSetting('newsletterProvider', 'mailchimp');
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.addView("newsletter", terms => ({
@@ -18,6 +21,20 @@ Posts.addView("newsletter", terms => ({
     limit: terms.limit
   }
 }));
+
+/*
+
+getPosts
+getSubject
+build
+getNext
+getLast
+subscribe
+unsubscribe
+send
+
+
+*/
 
 /**
  * @summary Return an array containing the latest n posts that can be sent in a newsletter
@@ -49,11 +66,11 @@ Newsletters.getSubject = posts => {
 
 /**
  * @summary Build a newsletter campaign from an array of posts
- * (Called from Newsletter.scheduleNextWithMailChimp)
+ * (Called from Newsletter.send)
  * @param {Array} postsArray
  */
 Newsletters.build = function (postsArray) {
-  var postsHTML = '', subject = '';
+  let postsHTML = '';
   const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
@@ -157,17 +174,134 @@ Newsletters.build = function (postsArray) {
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
     subject: Newsletters.getSubject(postsArray),
-    html: emailHTML
+    html: emailHTML,
+    text: htmlToText.fromString(emailHTML, {wordwrap: 130})
   };
 
   return campaign;
 };
 
-Newsletters.getNextScheduled = () => {
+Newsletters.getNext = () => {
   var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
   return nextJob;
 }
 
 Newsletters.getLast = () => {
   return Newsletters.findOne({}, {sort: {createdAt: -1}});
+}
+
+Newsletters.subscribe = (userOrEmail, confirm = false) => {
+
+    let user, email;
+
+    console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+
+    // not sure if it's really necessary that the function take both user and email?
+    if (typeof userOrEmail === "string") {
+      user = null;
+      email = userOrEmail;
+    } else if (typeof userOrEmail === "object") {
+      user = userOrEmail;
+      email = Users.getEmail(user);
+      if (!email)
+        throw 'User must have an email address';
+    }
+
+    const subscribe = Newsletters[provider].subscribe(email, confirm);
+
+    console.log(subscribe)
+
+    if (subscribe.result === 'already-subscribed') {
+      console.log('// Email already present in the list!');
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+    }
+
+      // mark user as subscribed
+      if (!!user) {
+        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+      }
+
+      console.log("// User subscribed"); // eslint-disable-line
+
+}
+
+Newsletters.unsubscribe = (userOrEmail) => {
+
+  let user, email; 
+
+  if (typeof userOrEmail === "string") {
+    user = null;
+    email = userOrEmail;
+  } else if (typeof userOrEmail === "object") {
+    user = userOrEmail;
+    email = Users.getEmail(user);
+    if (!email)
+      throw 'User must have an email address';
+  }
+  
+  console.log('// Removing "'+email+'" from list…');
+
+  const unsubscribe = Newsletters[provider].unsubscribe(email);
+
+  console.log(unsubscribe);
+  
+  console.log("// User unsubscribed");
+
+  if (user) {
+    // mark user as unsubscribed
+    Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+  }
+
+}
+
+Newsletters.send = () => {
+
+  const defaultPosts = 5;
+  const posts = Newsletters.getPosts(getSetting('postsPerNewsletter', defaultPosts));
+  const postsIds = _.pluck(posts, '_id');
+
+  if(!!posts.length){
+
+    const { title, subject, text, html, isTest = false } = Newsletters.build(posts);
+
+    console.log('// Creating campaign…');
+    console.log('// Subject: '+subject)
+
+    const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
+    const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
+
+
+    const newsletter = Newsletters[provider].send({ title, subject, text, html, isTest });
+
+    // if newsletter sending is successufl and this is not a test, mark posts as sent and log newsletter
+    if (newsletter && !isTest) {
+
+      var updated = Posts.update({_id: {$in: postsIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
+      console.log(`updated ${updated} posts`)
+
+      // log newsletter
+      Newsletters.insert({
+        createdAt: new Date(),
+        scheduledAt: scheduledMoment.toDate(),
+        subject,
+        html,
+        provider,
+        properties: newsletter
+      });
+
+      // send confirmation email
+      const confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
+        time: scheduledTime,
+        newsletterLink: newsletter.archive_url,
+        subject: subject
+      });
+      VulcanEmail.send(getSetting('defaultEmail'), 'Newsletter scheduled', VulcanEmail.buildTemplate(confirmationHtml));
+
+    }
+
+  } else {
+    
+    console.log('No posts to schedule today…');
+  
+  }
 }

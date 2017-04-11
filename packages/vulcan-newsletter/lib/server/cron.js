@@ -1,6 +1,6 @@
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
-import Newsletters from '../collection.js';
+import Newsletters from '../modules/collection.js';
 import { getSetting } from 'meteor/vulcan:core';
 
 const defaultFrequency = [1]; // every monday
