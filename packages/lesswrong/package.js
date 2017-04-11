@@ -1,5 +1,7 @@
 Package.describe({
-  name: "lesswrong"
+  name: "lesswrong",
+  summary: "Lesswrong extensions and customizations package",
+  version: "0.1.0"
 });
 
 Package.onUse( function(api) {
