@@ -15,5 +15,21 @@ Posts.addField([
       editableBy: ['members'],
       control: "checkbox"
     }
-  }
+  },
+
+  /**
+    draftJS
+  */
+  {
+    fieldName: 'draftJS',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['members'],
+      insertableBy: ['members'],
+      control: PostEditor,
+      blackbox: true,
+    }
+  },
 ]);

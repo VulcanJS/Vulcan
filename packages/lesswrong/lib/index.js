@@ -1,6 +1,5 @@
 
 import './collections/subscription_fields.js';
-import './collections/editor_fields.js';
 
 // Notifications
 import Notifications from './collections/notifications/collection.js';
