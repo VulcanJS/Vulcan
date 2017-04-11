@@ -32,12 +32,10 @@ htmljs@1.0.11
 http@1.2.12
 id-map@1.0.9
 jquery@1.11.10
+lesswrong@0.0.0
 livedata@1.0.18
 localstorage@1.0.12
 logging@1.1.17
-lw-inbox@0.0.0
-lw-subscribe@0.0.0
-lw-voting@0.0.0
 meteor@1.6.1
 meteor-base@1.0.4
 meteorhacks:inject-initial@1.0.4

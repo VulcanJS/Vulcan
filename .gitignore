@@ -47,5 +47,5 @@ bundle.tar.gz
 
 jsdoc-conf.json
 jsdoc.json
-packages/nova-router/.npm
+packages/vulcan-router/.npm
 npm-debug.log
