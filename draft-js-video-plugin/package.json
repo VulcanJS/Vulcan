@@ -1,0 +1,34 @@
+{
+  "name": "draft-js-video-plugin",
+  "version": "2.0.0-beta.4",
+  "description": "video Plugin for DraftJS",
+  "author": {
+    "name": "Anchen li"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draft-js-plugins/draft-js-plugins.git"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "editor",
+    "video",
+    "draft",
+    "react",
+    "ux",
+    "components",
+    "widget",
+    "react-component"
+  ],
+  "scripts": {
+    "test": "node_modules/.bin/mocha --compilers js:babel-core/register --require testHelper.js **/__test__/*.js",
+    "clean": "../node_modules/.bin/rimraf lib",
+    "build": "npm run clean && npm run build:js",
+    "build:js": "WEBPACK_CONFIG=$(pwd)/webpack.config.js BABEL_DISABLE_CACHE=1 BABEL_ENV=production NODE_ENV=production ../node_modules/.bin/babel --out-dir='lib' --ignore='__test__/*' src",
+    "prepublish": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "draft-js-plugins": "file:../"
+  }
+}

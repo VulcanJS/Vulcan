@@ -1,0 +1,42 @@
+{
+  "name": "draft-js-drag-n-drop-plugin",
+  "version": "2.0.0-beta10",
+  "description": "Block Drag & Drop Plugin for DraftJS",
+  "author": {
+    "name": "Benjamin Kniffler",
+    "email": "benjamin@kniffler.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draft-js-plugins/draft-js-plugins.git"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "draft",
+    "react",
+    "ux",
+    "components",
+    "widget",
+    "react-component"
+  ],
+  "scripts": {
+    "clean": "../node_modules/.bin/rimraf lib",
+    "build": "npm run clean && npm run build:js",
+    "build:js": "WEBPACK_CONFIG=$(pwd)/webpack.config.js BABEL_DISABLE_CACHE=1 BABEL_ENV=production NODE_ENV=production ../node_modules/.bin/babel --out-dir='lib' --ignore='__test__/*' src",
+    "prepublish": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "decorate-component-with-props": "^1.0.2",
+    "find-with-regex": "^1.0.2",
+    "union-class-names": "^1.0.0",
+    "draft-js": ">=0.9.1",
+    "immutable": "~3.7.4"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  }
+}

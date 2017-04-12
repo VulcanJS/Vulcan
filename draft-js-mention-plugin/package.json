@@ -1,0 +1,45 @@
+{
+  "name": "draft-js-mention-plugin",
+  "version": "2.0.0-beta10",
+  "description": "Mention Plugin for DraftJS",
+  "author": {
+    "name": "Nik Graf",
+    "email": "nik@nikgraf.com",
+    "url": "http://www.nikgraf.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draft-js-plugins/draft-js-plugins.git"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "draft",
+    "react",
+    "ux",
+    "components",
+    "widget",
+    "react-component"
+  ],
+  "scripts": {
+    "clean": "../node_modules/.bin/rimraf lib",
+    "build": "npm run clean && npm run build:js && npm run build:css",
+    "build:js": "WEBPACK_CONFIG=$(pwd)/webpack.config.js BABEL_DISABLE_CACHE=1 BABEL_ENV=production NODE_ENV=production ../node_modules/.bin/babel --out-dir='lib' --ignore='__test__/*' src",
+    "build:css": "node ../scripts/concatCssFiles $(pwd) && ../node_modules/.bin/rimraf lib-css",
+    "prepublish": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "decorate-component-with-props": "^1.0.2",
+    "draft-js": ">=0.9.1",
+    "find-with-regex": "^1.0.2",
+    "immutable": "~3.7.4",
+    "lodash.escaperegexp": "^4.1.2",
+    "union-class-names": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  }
+}

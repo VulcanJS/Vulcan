@@ -1,0 +1,21 @@
+.DS_Store
+.idea
+*.iml
+
+# Dependency directory
+# Commenting this out is preferred by some people, see
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
+node_modules
+
+# Browserify cache & build files
+bundle.js
+.bundle.js
+
+# build
+/lib/
+
+# NPM debug
+npm-debug.log
+npm-debug.log*
+
+docs/build
