@@ -40,6 +40,7 @@ Newsletters.sendy = {
         from_name: fromName,
         from_email: fromEmail,
         reply_to: replyTo,
+        title: subject,
         subject: subject,
         plain_text: text,
         html_text: html,
@@ -48,7 +49,7 @@ Newsletters.sendy = {
     };
 
     console.log(params);
-    
+
     SendyAPI.createCampaign(params, function(err,result){
       if (err) {
         console.log('// Sendy error')
