@@ -8,7 +8,6 @@ import Categories from 'meteor/vulcan:categories';
 import marked from 'marked';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from '../subscriptions/mutations.js';
-import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw, convertToRaw } from 'draft-js';
 
 
@@ -228,16 +227,3 @@ const messageNewNotification = (message) => {
   }
 }
 addCallback("messages.new.async", messageNewNotification);
-
-const messageNewHTMLContent = (message) => {
-  if(Meteor.isServer) {
-    console.log(message.draftJS)
-    const contentState = convertFromRaw(message.draftJS);
-    message = {
-      ...message,
-      messageHTML: Utils.sanitize(stateToHTML(contentState)),
-    };
-  }
-  return message;
-}
-addCallback("messages.new.sync", messageNewHTMLContent);
