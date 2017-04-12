@@ -135,8 +135,6 @@ class EditorWrapper extends Component {
       const contentState = editorState.getCurrentContent();
       const rawContentState = convertToRaw(contentState: contentState);
       this.props.addValues({draftJS: rawContentState });
-      console.log("Raw Content State onChange: ", rawContentState);
-      console.log("Test DeRawed Content State: ", convertFromRaw(rawContentState));
     }
   };
 
@@ -149,10 +147,12 @@ class EditorWrapper extends Component {
     const InlineToolbar = this.InlineToolbar;
 
     if (this.props.readOnly) {
+      // If the component is readOnly, then check on each render whether the initialState changed, and recompute the content;
+      const editorState = EditorState.createWithContent(convertFromRaw(this.props.initialState));
       return (
         <div>
           <Editor
-            editorState={this.state.editorState}
+            editorState={editorState}
             onChange={(editorState) => this.setState({editorState})}
             plugins={this.plugins}
             readOnly />
