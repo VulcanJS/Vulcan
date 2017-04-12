@@ -12,7 +12,7 @@ const {server, apiKey, listId, fromName, fromEmail, replyTo } = getSetting('send
 
 const SendyAPI = new Sendy(server, apiKey);
 
-const subscribeSync = function ( options ) {
+const subscribeSync = options => {
   try {
     const wrapped = Meteor.wrapAsync( SendyAPI.subscribe, SendyAPI );
     return wrapped( options );
@@ -25,7 +25,7 @@ const subscribeSync = function ( options ) {
   }
 };
 
-const unsubscribeSync = function ( options ) {
+const unsubscribeSync = options => {
   try {
     const wrapped = Meteor.wrapAsync( SendyAPI.unsubscribe, SendyAPI );
     return wrapped( options );
@@ -35,7 +35,7 @@ const unsubscribeSync = function ( options ) {
   }
 };
 
-const createCampaignSync = function ( options ) {
+const createCampaignSync = options => {
   try {
     const wrapped = Meteor.wrapAsync( SendyAPI.createCampaign, SendyAPI );
     return wrapped( options );

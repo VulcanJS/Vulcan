@@ -17,7 +17,7 @@ const { apiKey, listId, fromName, fromEmail } = getSetting('mailchimp');
 
 const mailChimpAPI = new MailChimpNPM.MailChimpAPI(apiKey, { version : '2.0' });
 
-const callSyncAPI = function ( section, method, options, callback ) {
+const callSyncAPI = ( section, method, options, callback ) => {
   try {
     var wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
     return wrapped( section, method, options );
