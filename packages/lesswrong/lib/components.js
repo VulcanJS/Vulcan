@@ -24,6 +24,7 @@ import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
 import './component-replacements/LWPostsViews.jsx';
+import './component-replacements/LWPostsNewForm.jsx';
 
 import './subscriptions/SubscribeTo.jsx';
 
