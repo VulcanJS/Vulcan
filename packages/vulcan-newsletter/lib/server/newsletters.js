@@ -24,23 +24,82 @@ Posts.addView("newsletter", terms => ({
 
 /*
 
+subscribeUser
+
+subscribeEmail
+
+unsubscribeUser
+
+unsubscribeEmail
+
 getPosts
+
 getSubject
+
 build
+
 getNext
+
 getLast
-subscribe
-unsubscribe
+
 send
 
-
 */
+
+/**
+ * @summary Subscribe a user to the newsletter
+ * @param {Object} user
+ * @param {Boolean} confirm
+ */
+Newsletters.subscribeUser = (user, confirm = false) => {
+  const email = Users.getEmail(user);
+  if (!email) {
+    throw 'User must have an email address';
+  }
+
+  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  Newsletters[provider].subscribe(email, confirm);
+  Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+}
+
+/**
+ * @summary Subscribe an email to the newsletter
+ * @param {String} email
+ */
+Newsletters.subscribeEmail = (email, confirm = false) => {
+  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  Newsletters[provider].subscribe(email, confirm);
+}
+
+/**
+ * @summary Unsubscribe a user from the newsletter
+ * @param {Object} user
+ */
+Newsletters.unsubscribeUser = (user) => {
+  const email = Users.getEmail(user);
+  if (!email) {
+    throw 'User must have an email address';
+  }
+  
+  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+  Newsletters[provider].unsubscribe(email);
+  Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+}
+
+/**
+ * @summary Unsubscribe an email from the newsletter
+ * @param {String} email
+ */
+Newsletters.unsubscribeEmail = (email) => {
+  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+  Newsletters[provider].unsubscribe(email);
+}
 
 /**
  * @summary Return an array containing the latest n posts that can be sent in a newsletter
  * @param {Number} postsCount
  */
-Newsletters.getPosts = function (postsCount) {
+Newsletters.getPosts = postsCount => {
 
   // look for last scheduled newsletter in the database
   var lastNewsletter = Newsletters.getLast();
@@ -59,6 +118,11 @@ Newsletters.getPosts = function (postsCount) {
   return Posts.find(params.selector, params.options).fetch();
 };
 
+/**
+ * @summary Build a newsletter subject from an array of posts
+ * (Called from Newsletter.send)
+ * @param {Array} posts
+ */
 Newsletters.getSubject = posts => {
   const subject = posts.map((post, index) => index > 0 ? `, ${post.title}` : post.title).join('');
   return Utils.trimWords(subject, 15);
@@ -67,14 +131,14 @@ Newsletters.getSubject = posts => {
 /**
  * @summary Build a newsletter campaign from an array of posts
  * (Called from Newsletter.send)
- * @param {Array} postsArray
+ * @param {Array} posts
  */
-Newsletters.build = function (postsArray) {
+Newsletters.build = posts => {
   let postsHTML = '';
   const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
-  postsArray.forEach(function (post, index) {
+  posts.forEach(function (post, index) {
     
     // get author of the current post
     var postUser = Users.findOne(post.userId);
@@ -172,8 +236,8 @@ Newsletters.build = function (postsArray) {
 
   // 4. build campaign object and return it
   var campaign = {
-    postIds: _.pluck(postsArray, '_id'),
-    subject: Newsletters.getSubject(postsArray),
+    postIds: _.pluck(posts, '_id'),
+    subject: Newsletters.getSubject(posts),
     html: emailHTML,
     text: htmlToText.fromString(emailHTML, {wordwrap: 130})
   };
@@ -181,79 +245,25 @@ Newsletters.build = function (postsArray) {
   return campaign;
 };
 
+/**
+ * @summary Get info about the next scheduled newsletter
+ */
 Newsletters.getNext = () => {
   var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
   return nextJob;
 }
 
+/**
+ * @summary Get the last sent newsletter
+ */
 Newsletters.getLast = () => {
   return Newsletters.findOne({}, {sort: {createdAt: -1}});
 }
 
-Newsletters.subscribe = (userOrEmail, confirm = false) => {
-
-    let user, email;
-
-    // not sure if it's really necessary that the function take both user and email?
-    if (typeof userOrEmail === "string") {
-      user = null;
-      email = userOrEmail;
-    } else if (typeof userOrEmail === "object") {
-      user = userOrEmail;
-      email = Users.getEmail(user);
-      if (!email)
-        throw 'User must have an email address';
-    }
-
-    console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
-
-    const subscribe = Newsletters[provider].subscribe(email, confirm);
-
-    console.log(subscribe)
-
-    if (subscribe.result === 'already-subscribed') {
-      console.log('// Email already present in the list!');
-      Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
-    }
-
-      // mark user as subscribed
-      if (!!user) {
-        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
-      }
-
-      console.log("// User subscribed"); // eslint-disable-line
-
-}
-
-Newsletters.unsubscribe = (userOrEmail) => {
-
-  let user, email; 
-
-  if (typeof userOrEmail === "string") {
-    user = null;
-    email = userOrEmail;
-  } else if (typeof userOrEmail === "object") {
-    user = userOrEmail;
-    email = Users.getEmail(user);
-    if (!email)
-      throw 'User must have an email address';
-  }
-  
-  console.log('// Removing "'+email+'" from list…');
-
-  const unsubscribe = Newsletters[provider].unsubscribe(email);
-
-  console.log(unsubscribe);
-  
-  console.log("// User unsubscribed");
-
-  if (user) {
-    // mark user as unsubscribed
-    Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
-  }
-
-}
-
+/**
+ * @summary Send the newsletter
+ * @param {Boolean} isTest
+ */
 Newsletters.send = (isTest = false) => {
 
   const defaultPosts = 5;
@@ -267,10 +277,6 @@ Newsletters.send = (isTest = false) => {
     console.log('// Creating campaign…');
     console.log('// Subject: '+subject)
 
-    const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
-    const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
-
-
     const newsletter = Newsletters[provider].send({ title, subject, text, html, isTest });
 
     // if newsletter sending is successufl and this is not a test, mark posts as sent and log newsletter
@@ -279,10 +285,11 @@ Newsletters.send = (isTest = false) => {
       var updated = Posts.update({_id: {$in: postsIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
       console.log(`updated ${updated} posts`)
 
+      const createdAt = new Date();
+
       // log newsletter
       Newsletters.insert({
-        createdAt: new Date(),
-        scheduledAt: scheduledMoment.toDate(),
+        createdAt,
         subject,
         html,
         provider,
@@ -291,7 +298,7 @@ Newsletters.send = (isTest = false) => {
 
       // send confirmation email
       const confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
-        time: scheduledTime,
+        time: createdAt.toString(),
         newsletterLink: newsletter.archive_url,
         subject: subject
       });

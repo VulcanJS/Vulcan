@@ -18,24 +18,13 @@ const { apiKey, listId, fromName, fromEmail } = getSetting('mailchimp');
 const mailChimpAPI = new MailChimpNPM.MailChimpAPI(apiKey, { version : '2.0' });
 
 const callSyncAPI = function ( section, method, options, callback ) {
-  if ( callback && typeof callback === 'function' ) {
-    // If anyone still wants to use old-fashioned callback method
-    mailChimpAPI.call( section, method, options, callback );
-  } else {
-    try {
-      var wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
-      return wrapped( section, method, options );
-    } catch ( error ) {
-      // A workaround for:
-      // https://github.com/meteor/meteor/issues/2774
-      console.log('// MailChimp API error')
-      console.log(error)
-      // if ( !error.error ) {
-      //   throw new Error( error.code, error.message );
-      // } else {
-      //   throw new Error( error );
-      // }
-    }
+  try {
+    var wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
+    return wrapped( section, method, options );
+  } catch ( error ) {
+    // A workaround for https://github.com/meteor/meteor/issues/2774
+    console.log('// MailChimp API error')
+    console.log(error)
   }
 };
 

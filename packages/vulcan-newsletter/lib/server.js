@@ -1,7 +1,7 @@
 import Vulcan from 'meteor/vulcan:core';
 import Newsletters from './modules/index.js';
 
-import './server/newsletter.js';
+import './server/newsletters.js';
 import './server/cron.js';
 import './server/emails.js';
 import './server/mutations.js';

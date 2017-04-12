@@ -12,6 +12,39 @@ const {server, apiKey, listId, fromName, fromEmail, replyTo } = getSetting('send
 
 const SendyAPI = new Sendy(server, apiKey);
 
+const subscribeSync = function ( options ) {
+  try {
+    const wrapped = Meteor.wrapAsync( SendyAPI.subscribe, SendyAPI );
+    return wrapped( options );
+  } catch ( error ) {
+    console.log('// Sendy API error')
+    console.log(error)
+    if (error.message === 'Already subscribed.') {
+      return {result: 'already-subscribed'}
+    }
+  }
+};
+
+const unsubscribeSync = function ( options ) {
+  try {
+    const wrapped = Meteor.wrapAsync( SendyAPI.unsubscribe, SendyAPI );
+    return wrapped( options );
+  } catch ( error ) {
+    console.log('// Sendy API error')
+    console.log(error)
+  }
+};
+
+const createCampaignSync = function ( options ) {
+  try {
+    const wrapped = Meteor.wrapAsync( SendyAPI.createCampaign, SendyAPI );
+    return wrapped( options );
+  } catch ( error ) {
+    console.log('// Sendy API error')
+    console.log(error)
+  }
+};
+
 /*
 
 Methods
@@ -21,44 +54,26 @@ Methods
 Newsletters.sendy = {
 
   subscribe(email) {
-    SendyAPI.subscribe({email, list_id: listId}, function(err, result) {
-      if (err) console.log(err.toString());
-      else console.log('Success: ' + result);
-    });
+    return subscribeSync({email, list_id: listId});
   },
 
   unsubscribe(email) {
-    SendyAPI.unsubscribe({email, list_id: listId}, function(err, result) {
-      if (err) console.log(err.toString());
-      else console.log('Success: ' + result);
-    });
+    return unsubscribeSync({email, list_id: listId});
   },
 
   send({ title, subject, text, html, isTest = false }) {
-
     const params = {
-        from_name: fromName,
-        from_email: fromEmail,
-        reply_to: replyTo,
-        title: subject,
-        subject: subject,
-        plain_text: text,
-        html_text: html,
-        send_campaign: !isTest,
-        list_ids: listId
+      from_name: fromName,
+      from_email: fromEmail,
+      reply_to: replyTo,
+      title: subject,
+      subject: subject,
+      plain_text: text,
+      html_text: html,
+      send_campaign: !isTest,
+      list_ids: listId
     };
-
-    console.log(params);
-
-    SendyAPI.createCampaign(params, function(err,result){
-      if (err) {
-        console.log('// Sendy error')
-        console.log(err)
-      } else {
-        console.log(result)
-      }
-    });
-
+    return createCampaignSync(params);
   }
 
 }

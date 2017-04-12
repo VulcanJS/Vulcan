@@ -29,7 +29,7 @@ const resolver = {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
       try {
-        return Newsletters.subscribe(user, false);
+        return Newsletters.subscribeUser(user, false);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
@@ -38,7 +38,7 @@ const resolver = {
     addEmailNewsletter(root, args, context) {
       const email = args.email;
       try {
-        return Newsletters.subscribe(email, true);
+        return Newsletters.subscribeEmail(email, true);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
@@ -52,7 +52,7 @@ const resolver = {
       }
       
       try {
-        return Newsletters.unsubscribe(user);
+        return Newsletters.unsubscribeUser(user);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
