@@ -1,0 +1,64 @@
+
+.pluginsWrapper {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 0.5rem;
+}
+
+.plugins {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+  position: relative;
+}
+
+.plugin {
+  font-size: 0.9rem;
+  display: inline-block;
+  color: #777;
+  margin-top: 1rem;
+  border-right: 1px solid #eee;
+}
+
+.plugin:first-child {
+  border-left: 1px solid #eee;
+}
+
+@media (max-width: 480px) {
+  .plugin {
+    width: 33.33%;
+  }
+
+  .plugin:nth-child(3n+1) {
+    border-left: 1px solid #eee;
+  }
+}
+
+@media (min-width: 481px) {
+  .plugin {
+    width: 14%;
+  }
+}
+
+.wideContainer {
+  min-width: 300px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  max-width: 800px;
+}
+
+.link, .link:visited {
+  color: #979797;
+  text-decoration: underline;;
+  display: block;
+  padding: 18px 0px;
+}
+
+/* TODO colour links based on theme colours */
+.link:hover, .link:focus {
+  color: #9CB7C7;
+}
+
+.link:active {
+  color: #7E96A5;
+}

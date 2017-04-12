@@ -1,0 +1,18 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-size: 15px;
+  line-height: 1.4;
+  font-family: 'Open Sans', sans-serif;
+  color: #555;
+}
+
+figure {
+  margin: 0;
+}

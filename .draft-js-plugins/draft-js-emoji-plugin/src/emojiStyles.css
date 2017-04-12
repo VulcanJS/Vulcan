@@ -1,0 +1,31 @@
+.emoji {
+  background-position: center;
+  /* make sure the background the image is only shown once */
+  background-repeat: no-repeat;
+  background-size: contain;
+  /* move it a bit further down to align it nicer with the text */
+  vertical-align: middle;
+
+  /*
+  We need to limit the emoji width because it can be multiple characters
+  long if it is a 32bit unicode. Since the proper width depends on the font and
+  it's relationship between 0 and other characters it's not ideal. 1.95ch is not
+  the best value, but hopefully a good enough approximation for most fonts.
+  */
+  display: inline-block;
+  overflow: hidden;
+  max-width: 1.95ch;
+  /*
+  Needed for iOS rendering to avoid some icons using a lot of height without
+  actually needing it.
+  */
+  max-height: 1em;
+  line-height: inherit;
+  margin: -.2ex 0em .2ex;
+  /*
+  In the past we used opacity: 0 to hide the original Emoji icon no matter what
+  system it is. Recently we switched to color: transparent since it started to
+  work in recent iOS version.
+  */
+  color: transparent;
+}
