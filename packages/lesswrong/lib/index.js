@@ -34,6 +34,7 @@ import './modules/callbacks.js';
 import './helpers.js'
 import './components.js';
 import './routes.js';
+import './views.js';
 
 
 export { Conversations, Messages, Notifications }
