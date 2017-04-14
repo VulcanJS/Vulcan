@@ -1,10 +1,49 @@
 import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import { FormattedMessage, FormattedRelative } from 'react-intl';
-import { Link } from 'react-router';
-import Posts from "meteor/vulcan:posts";
+import { intlShape, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import Posts from 'meteor/vulcan:posts';
 
 class LWPostsPage extends getRawComponent('PostsPage') {
+
+  renderCommentViewSelector() {
+
+    let views = ["top", "new"];
+    const query = _.clone(this.props.router.location.query);
+
+    return (
+      <DropdownButton
+        bsStyle="default"
+        className="views btn-secondary"
+        title={this.context.intl.formatMessage({id: "posts.view"})}
+        id="views-dropdown"
+      >
+        {views.map(view =>
+          <LinkContainer key={view} to={{pathname: this.props.router.location.pathname, query: {...query, view: view}}} className="dropdown-item">
+            <MenuItem>
+              { /* borrow the text from post views */ }
+              <FormattedMessage id={"posts."+view}/>
+            </MenuItem>
+          </LinkContainer>
+        )}
+      </DropdownButton>
+    )
+
+  }
+
+  getView() {
+    switch(this.props.router.location.query.view) {
+        case 'top':
+          return 'postCommentsTop';
+        case 'new':
+          return 'postCommentsNew';
+    }
+
+    // default to top
+    return 'postCommentsTop';
+  }
 
   render() {
     if (this.props.loading) {
@@ -29,17 +68,20 @@ class LWPostsPage extends getRawComponent('PostsPage') {
           {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
           {/* Adding draftJS rendering here */}
-
           {post.draftJS ? <Components.EditorWrapper initialState={post.draftJS} readOnly /> : null}
 
-
-          <Components.PostsCommentsThread terms={{postId: post._id, view: 'postComments'}} />
-
+          {/* comment view selector and comment thread */}
+          { this.renderCommentViewSelector() }
+          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} />
         </div>
       );
-
     }
-  };
+  }
+
 }
 
-replaceComponent('PostsPage', LWPostsPage);
+LWPostsPage.contextTypes = {
+  intl: intlShape
+}
+
+replaceComponent('PostsPage', LWPostsPage, withRouter);
