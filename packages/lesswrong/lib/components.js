@@ -13,10 +13,12 @@ import './inbox/InboxWrapper.jsx';
 import './inbox/InboxNavigation.jsx';
 import './inbox/newConversationButton.jsx';
 
+import './editor/ImageAdd.jsx';
 import './editor/EditorWrapper.jsx';
 import './editor/DraftJSRenderer.jsx';
 import './editor/MessageEditor.jsx';
 import './editor/PostEditor.jsx';
+import './editor/CommentEditor.jsx';
 
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWCommentsItem.jsx';

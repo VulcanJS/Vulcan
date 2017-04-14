@@ -12,7 +12,7 @@ const PostsNewForm = (props, context) =>
       <div className="posts-new-form">
         <Components.SmartForm
           collection={Posts}
-          mutationFragment={getFragment('PostsPage'), getFragment('PostsList')}
+          mutationFragment={getFragment('PostsPage')}
           successCallback={post => {
             props.closeModal();
             props.router.push({pathname: Posts.getPageUrl(post)});

@@ -115,6 +115,7 @@ class EditorWrapper extends Component {
       ]
     });
     this.InlineToolbar = inlineToolbarPlugin.InlineToolbar;
+    this.imagePlugin = imagePlugin;
 
     this.plugins = [
       linkifyPlugin,
@@ -160,17 +161,22 @@ class EditorWrapper extends Component {
       )
     } else {
       return (
-        <div onClick={this.focus}>
-          <Editor
+        <div>
+          <div onClick={this.focus}>
+            <Editor
+              editorState={this.state.editorState}
+              onChange={this.onChange}
+              plugins={this.plugins}
+              ref={(element) => {this.editor = element;}}
+            />
+          </div>
+          <AlignmentTool />
+          <InlineToolbar />
+          <Components.ImageAdd
             editorState={this.state.editorState}
             onChange={this.onChange}
-            plugins={this.plugins}
-            ref={(element) => {this.editor = element;}}
+            modifier={this.imagePlugin.addImage}
           />
-          <div className="Toolbars">
-            <AlignmentTool />
-            <InlineToolbar />
-          </div>
         </div>
       );
     }

@@ -43,7 +43,6 @@ export default class AlignmentTool extends React.Component {
   }
 
   onVisibilityChanged = (visibleBlock) => {
-
     setTimeout(() => {
       let position;
       const boundingRect = this.props.store.getItem('boundingRect');
@@ -64,8 +63,7 @@ export default class AlignmentTool extends React.Component {
         alignment,
         position,
       });
-    } ,0);
-
+    }, 0);
   }
 
   onAlignmentChange = (alignment) => {

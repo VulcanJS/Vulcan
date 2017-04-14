@@ -415,13 +415,11 @@ class Form extends Component {
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
-    console.log("Submit Form Pre-Process: ", data)
     data = {
       ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
     };
-    console.log("Submit Form Data: ",data);
 
     const fields = this.getFieldNames();
 
@@ -432,12 +430,8 @@ class Form extends Component {
 
     if (this.props.formType === "new") { // new document form
 
-      console.log("Submit Data SET PRE-FLATTEN", data);
-
       // remove any empty properties
       let document = _.compactObject(data);
-
-      console.log("Submit Data SET FLATTEN", document);
 
       // call method with new document
       this.props.newMutation({ document }).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);

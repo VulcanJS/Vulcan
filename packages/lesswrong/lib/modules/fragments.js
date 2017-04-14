@@ -57,3 +57,54 @@ extendFragment('UsersCurrent', `
 extendFragment('PostsList', `
   draftJS
 `);
+
+registerFragment(`
+  fragment PostsList on Post {
+    # vulcan:posts
+    _id
+    title
+    url
+    slug
+    postedAt
+    createdAt
+    sticky
+    status
+    # body # We replaced this with draftJS
+    # htmlBody # We replaced this with draftJS
+    # excerpt # This won't work with draftJS
+    draftJS # Our replacement for body
+    viewCount
+    clickCount
+    # vulcan:users
+    userId
+    user {
+      ...UsersMinimumInfo
+    }
+    # vulcan:embedly
+    thumbnailUrl
+    # vulcan:categories
+    categories {
+      ...CategoriesMinimumInfo
+    }
+    # vulcan:comments
+    commentCount
+    commenters {
+      ...UsersMinimumInfo
+    }
+    # vulcan:voting
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes
+    downvotes
+    baseScore
+    score
+  }
+`);
+
+extendFragment('CommentsList', `
+  draftJS
+`);

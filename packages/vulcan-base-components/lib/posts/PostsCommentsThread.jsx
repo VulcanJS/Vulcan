@@ -1,18 +1,18 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { ModalTrigger, withList, withCurrentUser, withMessages, Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
 
 const PostsCommentsThread = (props, context) => {
 
   const {loading, terms: { postId }, results, totalCount} = props;
-  
+
   if (loading) {
-  
+
     return <div className="posts-comments-thread"><Components.Loading/></div>
-  
+
   } else {
-    
+
     const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, '_id', 'parentCommentId');
 
@@ -24,15 +24,16 @@ const PostsCommentsThread = (props, context) => {
           <div className="posts-comments-thread-new">
             <h4><FormattedMessage id="comments.new"/></h4>
             <Components.CommentsNewForm
-              postId={postId} 
-              type="comment" 
+              postId={postId}
+              type="comment"
+              successCallback={() => props.flash("Successfully posted comment")}
             />
           </div> :
           <div>
             <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
               <Components.UsersAccountForm/>
             </ModalTrigger>
-          </div> 
+          </div>
         }
       </div>
     );
@@ -52,4 +53,4 @@ const options = {
   limit: 0,
 };
 
-registerComponent('PostsCommentsThread', PostsCommentsThread, [withList, options], withCurrentUser);
+registerComponent('PostsCommentsThread', PostsCommentsThread, [withList, options], withCurrentUser, withMessages);

@@ -31,6 +31,11 @@ Posts.addField([
       insertableBy: ['members'],
       control: PostEditor,
       blackbox: true,
+      order: 25,
     }
   },
 ]);
+
+Posts.removeField('body');
+Posts.removeField('htmlBody');
+Posts.removeField('excerpt');

@@ -23,7 +23,6 @@ class MessageItem extends Component {
           {(currentUser._id != message.user._id) ? <Media.Left> <Components.UsersAvatar user={message.user}/> </Media.Left> : <div></div>}
           <Media.Body>
             <Components.EditorWrapper initialState={message.draftJS} readOnly />
-            <div>A message will be here</div>
           </Media.Body>
           {(currentUser._id == message.user._id) ? <Media.Right> <Components.UsersAvatar user={currentUser}/></Media.Right> : <div></div>}
         </Media>

@@ -93,7 +93,8 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "textarea",
-    order: 30
+    order: 30,
+    hidden: true,
   },
   /**
     HTML version of the post body

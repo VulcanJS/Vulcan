@@ -70,7 +70,9 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: "textarea"
+    control: "textarea",
+    optional: true,
+    hidden: true,
   },
   /**
     The HTML version of the comment body

@@ -22,6 +22,9 @@ import './subscriptions/permissions.js';
 import './collections/posts/custom_fields.js';
 import './collections/posts/views.js';
 
+// Commensts
+import './collections/comments/custom_fields.js';
+
 // Internationalization
 import './i18n-en-us/en_US.js';
 

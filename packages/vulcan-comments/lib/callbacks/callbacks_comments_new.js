@@ -23,7 +23,7 @@ addCallback("comments.new.validate", CommentsNewRateLimit);
 // ------------------------------------- comments.new.sync -------------------------------- //
 
 function CommentsNewGenerateHTMLBody (comment, user) {
-  comment.htmlBody = Utils.sanitize(marked(comment.body));
+  comment.draftJS = comment.draftJS;
   return comment;
 }
 addCallback("comments.new.sync", CommentsNewGenerateHTMLBody);

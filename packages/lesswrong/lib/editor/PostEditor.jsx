@@ -4,14 +4,12 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 class PostEditor extends Component {
 
   render() {
-
-
     const document = this.props.document;
     const addValues = this.context.addToAutofilledValues;
 
     return (
-      <div className="messageEditor">
-        <Components.EditorWrapper addValues={addValues}/>
+      <div className="postEditor">
+        <Components.EditorWrapper addValues={addValues} initialState={document.draftJS} />
       </div>
     );
   }
