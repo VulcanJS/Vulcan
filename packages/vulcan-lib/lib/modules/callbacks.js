@@ -11,6 +11,10 @@ export const Callbacks = {};
  */
 export const addCallback = function (hook, callback) {
 
+  if (!callback.name) {
+    console.log(`// Warning! You are adding an unnamed callback to ${hook}. Please use the function foo () {} syntax.`);
+  }
+
   // if callback array doesn't exist yet, initialize it
   if (typeof Callbacks[hook] === "undefined") {
     Callbacks[hook] = [];

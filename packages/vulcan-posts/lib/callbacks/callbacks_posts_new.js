@@ -71,7 +71,7 @@ addCallback("posts.new.sync", PostsNewSetFuture);
 /**
  * @summary Set the post's slug based on its title
  */
-const PostsNewSlugify = post => {
+function PostsNewSlugify (post) {
   post.slug = Utils.slugify(post.title);
   return post;
 }
@@ -80,7 +80,7 @@ addCallback("posts.new.sync", PostsNewSlugify);
 /**
  * @summary Set the post's HTML content & the excerpt based on its possible body
  */
-const PostsNewHTMLContent = post => {
+function PostsNewHTMLContent (post) {
   if (post.body) {
     // excerpt length is configurable via the settings (30 words by default, ~255 characters)
     const excerptLength = getSetting('postExcerptLength', 30); 

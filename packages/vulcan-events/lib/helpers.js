@@ -11,13 +11,13 @@ import Events from './collection.js';
 
 */
 
-export const sendGoogleAnalyticsRequest = () => {
+export function sendGoogleAnalyticsRequest () {
   if (window && window.ga) {
     window.ga('send', 'pageview', {
       'page': window.location.pathname
     });
   }
-};
+}
 
 export const initGoogleAnalytics = () => {
 
