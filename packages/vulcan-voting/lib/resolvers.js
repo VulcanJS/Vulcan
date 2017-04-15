@@ -2,22 +2,28 @@ import { GraphQLSchema } from 'meteor/vulcan:core';
 
 const specificResolvers = {
   Post: {
-    async upvoters(post, args, context) {
+    async upvoters(post, args, {currentUser, Users}) {
       console.log("// Post.upvoters: ", new Date().getMilliseconds())
-      const upvoters = post.upvoters ? await context.Users.loader.loadMany(post.upvoters, `Post.upvoters (${post.title})`) : [];
-      return context.Users.restrictViewableFields(context.currentUser, context.Users, upvoters);
+      if (!post.upvoters) return [];
+      const upvoters = await Users.loader.loadMany(post.upvoters);
+      return Users.restrictViewableFields(currentUser, Users, upvoters);
     },
-    downvoters(post, args, context) {
-      return post.downvoters ? context.Users.find({_id: {$in: post.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async downvoters(post, args, {currentUser, Users}) {
+      if (!post.downvoters) return [];
+      const downvoters = await Users.loader.loadMany(post.downvoters);
+      return Users.restrictViewableFields(currentUser, Users, downvoters);
     },
   },
   Comment: {
-    upvoters(comment, args, context) {
-      return comment.upvoters ? context.Users.find({_id: {$in: comment.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
+    async upvoters(comment, args, {currentUser, Users}) {
+      if (!comment.upvoters) return [];
+      const upvoters = await Users.loader.loadMany(comment.upvoters);
+      return Users.restrictViewableFields(currentUser, Users, upvoters);
     },
-    downvoters(comment, args, context) {
-      return comment.downvoters ? context.Users.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
+    async downvoters(comment, args, {currentUser, Users}) {
+      if (!comment.downvoters) return [];
+      const downvoters = await Users.loader.loadMany(comment.downvoters);
+      return Users.restrictViewableFields(currentUser, Users, downvoters);    },
   },
 };
 

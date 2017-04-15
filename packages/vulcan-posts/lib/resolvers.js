@@ -5,6 +5,7 @@ const specificResolvers = {
   Post: {
     async user(post, args, context) {
       console.log("// Post.user: ", new Date().getMilliseconds())
+      if (!post.userId) return null;
       const user = await context.Users.loader.load(post.userId, `Post.user (${post.title})`);
       return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
     },
@@ -30,10 +31,8 @@ const resolvers = {
       return Users.canDo(user, `posts.view.${status.label}.all`);
     },
 
-    async resolver(root, {terms}, context, info) {
+    resolver(root, {terms}, {currentUser, Users, Posts}, info) {
       console.log("// Post.list: ", new Date().getMilliseconds())
-
-      const { Posts, currentUser } = context;
 
       // check that the current user can access the current query terms
       Utils.performCheck(this, currentUser, terms, Posts);
@@ -65,14 +64,14 @@ const resolvers = {
       return Users.owns(user, document) ? Users.canDo(user, `posts.view.${status.label}.own`) : Users.canDo(user, `posts.view.${status.label}.all`);
     },
 
-    resolver(root, {documentId, slug}, context) {
+    async resolver(root, {documentId, slug}, {currentUser, Users, Posts}) {
 
-      const selector = documentId ? {_id: documentId} : {'slug': slug};
-      const post = context.Posts.findOne(selector);
+      // don't use Dataloader if post is selected by slug
+      const post = documentId ? await Posts.loader.load(documentId) : Posts.findOne({slug});
 
-      Utils.performCheck(this, context.currentUser, post, context.Posts);
+      Utils.performCheck(this, currentUser, post, Posts);
 
-      return context.Users.restrictViewableFields(context.currentUser, context.Posts, post);
+      return Users.restrictViewableFields(currentUser, Posts, post);
     },
   
   },
@@ -81,9 +80,9 @@ const resolvers = {
     
     name: 'postsTotal',
     
-    resolver(root, {terms}, context) {
-      const {selector} = context.Posts.getParameters(terms);
-      return context.Posts.find(selector).count();
+    resolver(root, {terms}, {Posts}) {
+      const {selector} = Posts.getParameters(terms);
+      return Posts.find(selector).count();
     },
   
   }
