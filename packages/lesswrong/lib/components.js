@@ -1,3 +1,6 @@
+import './home/RecentComments.jsx';
+import './home/Sidebar.jsx';
+
 import './notificationMenu/NotificationsHeader.jsx';
 import './notificationMenu/NotificationsMenu.jsx';
 import './notificationMenu/NotificationsItem.jsx';
@@ -22,6 +25,7 @@ import './editor/CommentEditor.jsx';
 
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWCommentsItem.jsx';
+import './component-replacements/LWPostsHome.jsx';
 import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
