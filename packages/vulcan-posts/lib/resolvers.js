@@ -4,7 +4,6 @@ import Users from 'meteor/vulcan:users';
 const specificResolvers = {
   Post: {
     async user(post, args, context) {
-      console.log("// Post.user: ", new Date().getMilliseconds())
       if (!post.userId) return null;
       const user = await context.Users.loader.load(post.userId, `Post.user (${post.title})`);
       return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
@@ -32,7 +31,6 @@ const resolvers = {
     },
 
     resolver(root, {terms}, {currentUser, Users, Posts}, info) {
-      console.log("// Post.list: ", new Date().getMilliseconds())
 
       // check that the current user can access the current query terms
       Utils.performCheck(this, currentUser, terms, Posts);

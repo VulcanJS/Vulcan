@@ -3,7 +3,6 @@ import { GraphQLSchema } from 'meteor/vulcan:core';
 const specificResolvers = {
   Post: {
     async upvoters(post, args, {currentUser, Users}) {
-      console.log("// Post.upvoters: ", new Date().getMilliseconds())
       if (!post.upvoters) return [];
       const upvoters = await Users.loader.loadMany(post.upvoters);
       return Users.restrictViewableFields(currentUser, Users, upvoters);
