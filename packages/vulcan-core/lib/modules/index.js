@@ -9,7 +9,7 @@ export {
   // components
   Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp,
   // collections
-  createCollection,
+  Collections, createCollection,
   // fragments
   Fragments, registerFragment, getFragment, getFragmentName, extendFragment,
   // graphql

@@ -21,10 +21,10 @@ const resolver = {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
         return Newsletters.send(true);
     },
-    addUserNewsletter(root, args, context) {
+    addUserNewsletter(root, {userId}, context) {
 
       const currentUser = context.currentUser;
-      const user = Users.findOne({_id: args.userId});
+      const user = Users.findOne({_id: userId});
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
@@ -35,8 +35,7 @@ const resolver = {
         throw new Error(errorMessage);
       }
     },
-    addEmailNewsletter(root, args, context) {
-      const email = args.email;
+    addEmailNewsletter(root, {email}, context) {
       try {
         return Newsletters.subscribeEmail(email, true);
       } catch (error) {

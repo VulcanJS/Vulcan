@@ -1,7 +1,10 @@
+import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
+
+export const Collections = [];
 
 SimpleSchema.extendOptions([
   'viewableBy',
@@ -99,7 +102,7 @@ export const createCollection = options => {
   const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+  const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
 
   // decorate collection with options
   collection.options = options;
@@ -211,6 +214,8 @@ export const createCollection = options => {
 
     return parameters;
   }
+
+  Collections.push(collection);
 
   return collection;
 }

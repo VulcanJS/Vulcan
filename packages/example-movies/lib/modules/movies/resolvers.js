@@ -30,7 +30,7 @@ const resolvers = {
 
     resolver(root, {documentId}, context) {
       const document = context.Movies.findOne({_id: documentId});
-      return context.Users.keepViewableFields(context.currentUser, context.Movies, document);
+      return context.Users.restrictViewableFields(context.currentUser, context.Movies, document);
     },
   
   },

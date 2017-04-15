@@ -11,7 +11,7 @@ const Users = createCollection({
 
   collection: Meteor.users,
 
-  collectionName: 'users',
+  collectionName: 'Users',
 
   typeName: 'User',
 
