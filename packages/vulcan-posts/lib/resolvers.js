@@ -3,8 +3,10 @@ import Users from 'meteor/vulcan:users';
 
 const specificResolvers = {
   Post: {
-    user(post, args, context) {
-      return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
+    async user(post, args, context) {
+      console.log("// Post.user: ", new Date().getMilliseconds())
+      const user = await context.Users.loader.load(post.userId, `Post.user (${post.title})`);
+      return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
     },
   },
   Mutation: {
@@ -22,21 +24,33 @@ const resolvers = {
 
     name: 'postsList',
 
-    check(user, terms, collection) {
-      const {selector} = collection.getParameters(terms);
-      const status = _.findWhere(collection.statuses, {value: selector.status || 2});
+    check(user, terms, Posts) {
+      const {selector} = Posts.getParameters(terms);
+      const status = _.findWhere(Posts.statuses, {value: selector.status || 2});
       return Users.canDo(user, `posts.view.${status.label}.all`);
     },
 
-    resolver(root, {terms}, context, info) {
-      let {selector, options} = context.Posts.getParameters(terms);
+    async resolver(root, {terms}, context, info) {
+      console.log("// Post.list: ", new Date().getMilliseconds())
+
+      const { Posts, currentUser } = context;
+
+      // check that the current user can access the current query terms
+      Utils.performCheck(this, currentUser, terms, Posts);
+
+      // get selector and options from terms and perform Mongo query
+      let {selector, options} = Posts.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
-      options.fields = context.getViewableFields(context.currentUser, context.Posts);
+      const posts = Posts.find(selector, options).fetch();
 
-      Utils.performCheck(this, context.currentUser, terms, context.Posts);
+      // restrict documents fields
+      const restrictedPosts = Users.restrictViewableFields(currentUser, Posts, posts);
 
-      return context.Posts.find(selector, options).fetch();
+      // prime the cache
+      restrictedPosts.forEach(post => Posts.loader.prime(post._id, post));
+
+      return restrictedPosts;
     },
 
   },
@@ -58,7 +72,7 @@ const resolvers = {
 
       Utils.performCheck(this, context.currentUser, post, context.Posts);
 
-      return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
+      return context.Users.restrictViewableFields(context.currentUser, context.Posts, post);
     },
   
   },
