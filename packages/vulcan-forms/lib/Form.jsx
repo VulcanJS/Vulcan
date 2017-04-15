@@ -69,7 +69,7 @@ class Form extends Component {
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
+      autofilledValues: props.prefilledProps || {},
       currentValues: {}
     };
   }
@@ -226,11 +226,11 @@ class Form extends Component {
 
   // for each field, we apply the following logic:
   // - if its value is currently being inputted, use that
+  // - else if its value is provided by the autofilledValues object, use that
   // - else if its value was provided by the db, use that (i.e. props.document)
-  // - else if its value is provded by the autofilledValues object, use that
   getDocument() {
     const currentDocument = _.clone(this.props.document) || {};
-    const document = Object.assign(_.clone(this.state.autofilledValues), currentDocument,  _.clone(this.state.currentValues));
+    const document = Object.assign(currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
     return document;
   }
 
