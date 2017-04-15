@@ -10,7 +10,7 @@ import './icons.js';
 import './mongo_redux.js';
 
 export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp } from './components.js';
-export { createCollection } from './collections.js';
+export { Collections, createCollection } from './collections.js';
 export { Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync } from './callbacks.js';
 export { GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext } from './graphql.js';
 export { Routes, addRoute, getRoute, populateRoutesApp } from './routes.js';

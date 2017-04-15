@@ -211,13 +211,17 @@ Users.helpers({
 });
 
 /**
- * @summary For a given document, keep only fields viewable by current user
+ * @summary For a given document or list of documents, keep only fields viewable by current user
  * @param {Object} user - The user performing the action
  * @param {Object} collection - The collection
  * @param {Object} document - The document being returned by the resolver
  */
-Users.keepViewableFields = function (user, collection, document) {
-  return document && document._id && _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
+Users.restrictViewableFields = function (user, collection, docOrDocs) {
+
+  const restrictDoc = document => _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
+  
+  return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
+
 }
 
 /**

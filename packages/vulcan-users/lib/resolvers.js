@@ -51,7 +51,7 @@ const resolvers = {
       const selector = documentId ? {_id: documentId} : {'slug': slug};
       // get the user first so we can get a list of viewable fields specific to this user document
       const user = context.Users.findOne(selector);
-      return context.Users.keepViewableFields(context.currentUser, context.Users, user);
+      return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
     },
 
   },

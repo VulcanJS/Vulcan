@@ -10,7 +10,7 @@ import { createCollection } from 'meteor/vulcan:core';
  */
  const Categories = createCollection({
 
-   collectionName: 'categories',
+   collectionName: 'Categories',
 
    typeName: 'Category',
 
