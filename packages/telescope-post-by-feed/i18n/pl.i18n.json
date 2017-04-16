@@ -1,0 +1,5 @@
+{
+  "feed_already_exists": "Kanał z tym samym URL już istnieje.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed": "Musisz się zalogować jako admin aby dodawać nowe kanały.",
+  "import_new_posts_from_feeds": "Zaimportuj nowe posty z kanałów."
+}
