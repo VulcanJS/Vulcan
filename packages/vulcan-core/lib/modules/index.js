@@ -23,7 +23,7 @@ export {
   // render context
   renderContext, getRenderContext, withRenderContext,
   // routes
-  Routes, addRoute, getRoute, populateRoutesApp,
+  Routes, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
   // settings
   getSetting,
   // strings
