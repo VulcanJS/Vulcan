@@ -133,10 +133,11 @@ var createDummyComments = function () {
 
 };
 
-const deleteDummyContent = function () {
+Vulcan.removeGettingStartedContent = () => {
   Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
+  console.log('// Getting started content removed');
 };
 
 Meteor.startup(function () {
