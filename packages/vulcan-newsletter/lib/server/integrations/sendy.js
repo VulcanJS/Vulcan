@@ -8,72 +8,77 @@ API
 
 */
 
-const {server, apiKey, listId, fromName, fromEmail, replyTo } = getSetting('sendy');
+const settings = getSetting('sendy');
 
-const SendyAPI = new Sendy(server, apiKey);
+if (settings) {
+  
+  const { server, apiKey, listId, fromName, fromEmail, replyTo } = settings;
+  const SendyAPI = new Sendy(server, apiKey);
 
-const subscribeSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( SendyAPI.subscribe, SendyAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log('// Sendy API error')
-    console.log(error)
-    if (error.message === 'Already subscribed.') {
-      return {result: 'already-subscribed'}
+  const subscribeSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( SendyAPI.subscribe, SendyAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log('// Sendy API error')
+      console.log(error)
+      if (error.message === 'Already subscribed.') {
+        return {result: 'already-subscribed'}
+      }
     }
-  }
-};
+  };
 
-const unsubscribeSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( SendyAPI.unsubscribe, SendyAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log('// Sendy API error')
-    console.log(error)
-  }
-};
+  const unsubscribeSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( SendyAPI.unsubscribe, SendyAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log('// Sendy API error')
+      console.log(error)
+    }
+  };
 
-const createCampaignSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( SendyAPI.createCampaign, SendyAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log('// Sendy API error')
-    console.log(error)
-  }
-};
+  const createCampaignSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( SendyAPI.createCampaign, SendyAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log('// Sendy API error')
+      console.log(error)
+    }
+  };
 
-/*
+  /*
 
-Methods
+  Methods
 
-*/
+  */
 
-Newsletters.sendy = {
+  Newsletters.sendy = {
 
-  subscribe(email) {
-    return subscribeSync({email, list_id: listId});
-  },
+    subscribe(email) {
+      return subscribeSync({email, list_id: listId});
+    },
 
-  unsubscribe(email) {
-    return unsubscribeSync({email, list_id: listId});
-  },
+    unsubscribe(email) {
+      return unsubscribeSync({email, list_id: listId});
+    },
 
-  send({ title, subject, text, html, isTest = false }) {
-    const params = {
-      from_name: fromName,
-      from_email: fromEmail,
-      reply_to: replyTo,
-      title: subject,
-      subject: subject,
-      plain_text: text,
-      html_text: html,
-      send_campaign: !isTest,
-      list_ids: listId
-    };
-    return createCampaignSync(params);
+    send({ title, subject, text, html, isTest = false }) {
+      const params = {
+        from_name: fromName,
+        from_email: fromEmail,
+        reply_to: replyTo,
+        title: subject,
+        subject: subject,
+        plain_text: text,
+        html_text: html,
+        send_campaign: !isTest,
+        list_ids: listId
+      };
+      return createCampaignSync(params);
+    }
+
   }
 
 }

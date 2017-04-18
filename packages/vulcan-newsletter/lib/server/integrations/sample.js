@@ -4,67 +4,75 @@ This is a sample template for future integrations.
 
 */
 
+import { getSetting } from 'meteor/vulcan:core';
+import Newsletters from '../../modules/collection.js';
+
 /*
 
 API
 
 */
 
-const {server, apiKey, listId, somethingElse } = getSetting('providerName');
+const settings = getSetting('providerName');
 
-const MyProviderAPI = new ProviderAPI(server, apiKey);
+if (settings) {
 
-const subscribeSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( MyProviderAPI.subscribe, MyProviderAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log(error)
-  }
-};
+  const {server, apiKey, listId, somethingElse } = settings;
+  const MyProviderAPI = new ProviderAPI(server, apiKey);
 
-const unsubscribeSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( MyProviderAPI.unsubscribe, MyProviderAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log(error)
-  }
-};
+  const subscribeSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( MyProviderAPI.subscribe, MyProviderAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log(error)
+    }
+  };
 
-const sendSync = options => {
-  try {
-    const wrapped = Meteor.wrapAsync( MyProviderAPI.send, MyProviderAPI );
-    return wrapped( options );
-  } catch ( error ) {
-    console.log(error)
-  }
-};
+  const unsubscribeSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( MyProviderAPI.unsubscribe, MyProviderAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log(error)
+    }
+  };
 
-/*
+  const sendSync = options => {
+    try {
+      const wrapped = Meteor.wrapAsync( MyProviderAPI.send, MyProviderAPI );
+      return wrapped( options );
+    } catch ( error ) {
+      console.log(error)
+    }
+  };
 
-Methods
+  /*
 
-*/
+  Methods
 
-Newsletters.providerName = {
+  */
 
-  subscribe(email) {
-    return subscribeSync({email});
-  },
+  Newsletters.providerName = {
 
-  unsubscribe(email) {
-    return unsubscribeSync({email});
-  },
+    subscribe(email) {
+      return subscribeSync({email});
+    },
 
-  send({ title, subject, text, html, isTest = false }) {
-    const options = {
-      title,
-      subject,
-      text,
-      html
-    };
-    return sendSync(options);
+    unsubscribe(email) {
+      return unsubscribeSync({email});
+    },
+
+    send({ title, subject, text, html, isTest = false }) {
+      const options = {
+        title,
+        subject,
+        text,
+        html
+      };
+      return sendSync(options);
+    }
+
   }
 
 }
