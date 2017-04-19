@@ -10,7 +10,7 @@ vulcan:users                      # user management and permissions
 
 ############ Features Packages ############
 
-# vulcan:email
+vulcan:email
 # vulcan:posts
 # vulcan:comments
 # vulcan:newsletter
@@ -42,6 +42,7 @@ accounts-password@1.3.4
 
 ############ Your Packages ############
 
+example-a-reminder
 # example-movies
 # example-movies-full
 # example-customization

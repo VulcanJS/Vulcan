@@ -44,6 +44,7 @@
     "mingo": "^0.8.1",
     "moment": "^2.13.0",
     "optics-agent": "^1.0.5",
+    "prop-types": "^15.5.8",
     "react": "^15.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
     "react-apollo": "^1.0.0-rc.3",
