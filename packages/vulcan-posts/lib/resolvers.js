@@ -26,8 +26,13 @@ const resolvers = {
 
     check(user, terms, Posts) {
       const {selector} = Posts.getParameters(terms);
-      const status = _.findWhere(Posts.statuses, {value: selector.status || 2});
-      return Users.canDo(user, `posts.view.${status.label}.all`);
+      if (selector.status) {
+        const statuses = selector.status['$in'] ? selector.status['$in'] : [selector.status];
+        const statusesLabel = statuses.map(status => _.findWhere(Posts.statuses, {value: status}).label)
+        return _.every(statusesLabel, label => Users.canDo(user, `posts.view.${label}.all`));
+      } else {
+        return Users.canDo(user, `posts.view.approved.all`);
+      }
     },
 
     resolver(root, {terms}, {currentUser, Users, Posts}, info) {

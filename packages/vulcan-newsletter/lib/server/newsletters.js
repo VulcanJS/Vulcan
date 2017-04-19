@@ -58,7 +58,8 @@ Newsletters.subscribeUser = (user, confirm = false) => {
   }
 
   console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
-  Newsletters[provider].subscribe(email, confirm);
+  const result = Newsletters[provider].subscribe(email, confirm);
+  if (result) {console.log ('-> added')}
   Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
 }
 
@@ -68,8 +69,10 @@ Newsletters.subscribeUser = (user, confirm = false) => {
  */
 Newsletters.subscribeEmail = (email, confirm = false) => {
   console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
-  Newsletters[provider].subscribe(email, confirm);
+  const result = Newsletters[provider].subscribe(email, confirm);
+  if (result) {console.log ('-> added')}
 }
+
 
 /**
  * @summary Unsubscribe a user from the newsletter

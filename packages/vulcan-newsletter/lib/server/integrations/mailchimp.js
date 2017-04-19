@@ -21,14 +21,8 @@ if (settings) {
   const mailChimpAPI = new MailChimpNPM.MailChimpAPI(apiKey, { version : '2.0' });
 
   const callSyncAPI = ( section, method, options, callback ) => {
-    try {
-      var wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
-      return wrapped( section, method, options );
-    } catch ( error ) {
-      // A workaround for https://github.com/meteor/meteor/issues/2774
-      console.log('// MailChimp API error')
-      console.log(error)
-    }
+    const wrapped = Meteor.wrapAsync( mailChimpAPI.call, mailChimpAPI );
+    return wrapped( section, method, options );
   };
 
   /*

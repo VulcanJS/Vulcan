@@ -196,7 +196,7 @@ export const createCollection = options => {
     }
 
     // iterate over posts.parameters callbacks
-    parameters = runCallbacks(`${collectionName}.parameters`, parameters, _.clone(terms), apolloClient);
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
 
     // extend sort to sort posts by _id to break ties
     // NOTE: always do this last to avoid overriding another sort

@@ -68,6 +68,7 @@ function generateSSRData(options, req, res, renderProps) {
 
     css = req.css;
   } catch (err) {
+    console.log('url: ', req.url); // eslint-disable-line no-console
     console.log(err); // eslint-disable-line no-console
     console.error(new Date(), 'error while server-rendering', err.stack); // eslint-disable-line no-console
   }

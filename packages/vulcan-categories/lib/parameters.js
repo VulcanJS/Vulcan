@@ -16,7 +16,6 @@ addCallback('categories.parameters', CategoriesAscOrderSorting);
 function PostsCategoryParameter(parameters, terms, apolloClient) {
 
   const cat = terms.cat || terms["cat[]"];
-
   // filter by category if category slugs are provided
   if (cat) {
 
@@ -32,16 +31,18 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       slugs = cat;
     }
 
+    // TODO: use new Apollo imperative API
     // get all categories passed in terms
     const categories = !!apolloClient ? _.filter(getCategories(apolloClient), category => _.contains(slugs, category.slug) ) : Categories.find(selector).fetch();
     
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {
       categoriesIds.push(category._id);
-      categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
+      // TODO: find a better way to handle child categories
+      // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
     });
 
-    parameters.selector = Meteor.isClient ? {'categories._id': {$in: categoriesIds}} : {categories: {$in: categoriesIds}};
+    parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {$in: categoriesIds}};
   }
   
   return parameters;
