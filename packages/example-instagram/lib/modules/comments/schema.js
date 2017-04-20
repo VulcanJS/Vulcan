@@ -10,10 +10,12 @@ const schema = {
 
   _id: {
     type: String,
+    optional: true,
     viewableBy: ['guests'],
   },
   createdAt: {
     type: Date,
+    optional: true,
     viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
       // if this is an insert, set createdAt to current timestamp
@@ -22,6 +24,7 @@ const schema = {
   },
   userId: {
     type: String,
+    optional: true,
     viewableBy: ['guests'],
     resolveAs: 'user: User', // resolve as "user" on the client
   },
@@ -32,7 +35,6 @@ const schema = {
     label: 'Body',
     placeholder: 'Add a comment…',
     type: String,
-    optional: true,
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members']
