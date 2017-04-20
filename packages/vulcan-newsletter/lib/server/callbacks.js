@@ -5,10 +5,7 @@ import Newsletters from '../modules/collection.js';
 function subscribeUserOnProfileCompletion (user) {
   if (!!getSetting('autoSubscribe') && !!Users.getEmail(user)) {
     try {
-      Newsletters.subscribe(user, false, function (error, result) {
-        console.log(error); // eslint-disable-line
-        console.log(result); // eslint-disable-line
-      });
+      Newsletters.subscribeUser(user, false);
     } catch (error) {
       console.log("// Newsletter Error:") // eslint-disable-line
       console.log(error) // eslint-disable-line
