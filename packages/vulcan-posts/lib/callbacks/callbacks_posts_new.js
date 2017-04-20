@@ -69,6 +69,18 @@ function PostsNewSetFuture (post, user) {
 addCallback("posts.new.sync", PostsNewSetFuture);
 
 /**
+ * @summary Force sticky to default to false when it's not specified
+ */
+function PostsNewSetStickyToFalse (post, user) {
+  if (!post.sticky) {
+    post.sticky = false;
+  }
+  return post;
+}
+addCallback("posts.new.sync", PostsNewSetStickyToFalse);
+
+
+/**
  * @summary Set the post's slug based on its title
  */
 function PostsNewSlugify (post) {
