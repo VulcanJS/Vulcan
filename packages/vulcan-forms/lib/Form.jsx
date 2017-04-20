@@ -65,6 +65,7 @@ class Form extends Component {
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
+    this.setFormState = this.setFormState.bind(this);
 
     this.state = {
       disabled: false,
@@ -344,6 +345,10 @@ class Form extends Component {
     }));
   }
 
+  setFormState(fn) {
+    this.setState(fn);
+  }
+
   // pass on context to all child components
   getChildContext() {
     return {
@@ -353,6 +358,7 @@ class Form extends Component {
       addToAutofilledValues: this.addToAutofilledValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
+      setFormState: this.setFormState,
     };
   }
 
@@ -557,6 +563,7 @@ Form.childContextTypes = {
   autofilledValues: PropTypes.object,
   addToAutofilledValues: PropTypes.func,
   updateCurrentValues: PropTypes.func,
+  setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
   getDocument: PropTypes.func
