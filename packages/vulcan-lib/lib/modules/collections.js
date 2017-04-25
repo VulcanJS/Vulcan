@@ -120,7 +120,7 @@ export const createCollection = options => {
 
   // add collection to resolver context
   const context = {};
-  context[Utils.capitalize(collectionName)] = collection;
+  context[collectionName] = collection;
   GraphQLSchema.addToContext(context);
 
   if (generateGraphQLSchema){
