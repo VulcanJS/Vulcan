@@ -161,8 +161,10 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   // get fresh copy of document from db
   const newDocument = collection.findOne(documentId);
 
-  // clear cache
-  collection.loader.clear(documentId);
+  // clear cache if needed
+  if (collection.loader) {
+    collection.loader.clear(documentId);
+  }
 
   // run async callbacks
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
@@ -193,9 +195,11 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
 
   collection.remove(documentId);
 
-  // clear cache
-  collection.loader.clear(documentId);
-  
+  // clear cache if needed
+  if (collection.loader) {
+    collection.loader.clear(documentId);
+  }
+
   runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 
   return document;
