@@ -173,9 +173,14 @@ const withList = (options) => {
 // define query reducer separately
 const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
 
-  const newMutationName = collection.options.mutations.new.name;
-  const editMutationName = collection.options.mutations.edit.name;
-  const removeMutationName = collection.options.mutations.remove.name;
+  // if collection has no mutations defined, just return previous results
+  if (!collection.options.mutations) {
+    return previousResults;
+  }
+
+  const newMutationName = collection.options.mutations.new && collection.options.mutations.new.name;
+  const editMutationName = collection.options.mutations.edit && collection.options.mutations.edit.name;
+  const removeMutationName = collection.options.mutations.remove && collection.options.mutations.remove.name;
 
   let newResults = previousResults;
 
