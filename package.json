@@ -5,7 +5,7 @@
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "sh prestart_nova.sh",
+    "prestart": "bash prestart_nova.sh",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
