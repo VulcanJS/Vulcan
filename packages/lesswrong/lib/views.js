@@ -16,6 +16,7 @@ Comments.addView("postCommentsNew", function (terms) {
 
 Comments.addView("recentComments", function (terms) {
   return {
+    selector: {baseScore: {$gte: 0}},
     options: {sort: {postedAt: -1}},
     limit: 15
   };
