@@ -13,3 +13,10 @@ Comments.addView("postCommentsNew", function (terms) {
     options: {sort: {postedAt: -1}}
   };
 });
+
+Comments.addView("recentComments", function (terms) {
+  return {
+    options: {sort: {postedAt: -1}},
+    limit: 15
+  };
+});
