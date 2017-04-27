@@ -10,7 +10,7 @@ Package.onUse( function(api) {
     'vulcan:users'
   ]);
 
-  // api.mainModule('server.js', 'server');
+  api.mainModule('lib/server/main.js', 'server');
   api.mainModule('client.js', 'client');
 
   api.addFiles([
