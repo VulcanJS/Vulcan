@@ -11,7 +11,7 @@ Package.onUse( function(api) {
   ]);
 
   api.mainModule('lib/server/main.js', 'server');
-  api.mainModule('client.js', 'client');
+  api.mainModule('lib/client/main.js', 'client');
 
   api.addFiles([
     'lib/modules/index.js'
