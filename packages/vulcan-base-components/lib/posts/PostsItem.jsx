@@ -16,7 +16,7 @@ class PostsItem extends Component {
 
   renderActions() {
     return (
-      <div className="post-actions">
+      <div className="posts-actions">
         <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
           <Components.PostsEditForm post={this.props.post} />
         </ModalTrigger>

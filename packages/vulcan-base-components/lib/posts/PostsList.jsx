@@ -1,4 +1,4 @@
-import { Components, getRawComponent, registerComponent, withList, withCurrentUser, Utils } from 'meteor/vulcan:core';
+import { Components, registerComponent, withList, withCurrentUser, Utils } from 'meteor/vulcan:core';
 import React from 'react';
 import Posts from 'meteor/vulcan:posts';
 import { Alert } from 'react-bootstrap';
@@ -8,7 +8,7 @@ const Error = ({error}) => <Alert className="flash-message" bsStyle="danger"><Fo
 
 const PostsList = (props) => {
 
-  const {results, loading, count, totalCount, loadMore, showHeader = true, networkStatus, currentUser, error, terms} = props;
+  const {results, loading, count, totalCount, loadMore, showHeader = true, showLoadMore = true, networkStatus, currentUser, error, terms} = props;
 
   const loadingMore = networkStatus === 2;
 
@@ -23,7 +23,7 @@ const PostsList = (props) => {
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
-        {hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
+        {showLoadMore ? hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/> : null}
       </div>
     )
   } else if (loading) {
