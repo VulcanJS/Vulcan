@@ -19,7 +19,7 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/graphql@^0.8.0", "@types/graphql@^0.8.5", "@types/graphql@^0.8.6":
+"@types/graphql@^0.8.5", "@types/graphql@^0.8.6":
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
 
@@ -134,21 +134,7 @@ ansi-styles@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
-apollo-client@^1.0.0-rc.2:
-  version "1.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.0.0-rc.5.tgz#862bbd72a267a998627009665b5581ed13e26010"
-  dependencies:
-    graphql-anywhere "^3.0.1"
-    graphql-tag "^1.3.1"
-    redux "^3.4.0"
-    symbol-observable "^1.0.2"
-    whatwg-fetch "^2.0.0"
-  optionalDependencies:
-    "@types/async" "^2.0.31"
-    "@types/graphql" "^0.8.0"
-    "@types/isomorphic-fetch" "0.0.33"
-
-apollo-client@^1.0.1:
+apollo-client@^1.0.1, apollo-client@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.0.2.tgz#4355bd49d53a1489bc91d9f56d5b3d0ffe33fb3c"
   dependencies:
@@ -948,6 +934,10 @@ data-uri-to-buffer@0:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-0.0.4.tgz#46e13ab9da8e309745c8d01ce547213ebdb2fe3f"
 
+dataloader@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.3.0.tgz#6fec5be4b30a712e4afd30b86b4334566b97673b"
+
 datauri@~0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/datauri/-/datauri-0.2.1.tgz#f4e8addbb3e54e3dc12d1c88543b8b0b1bf692fa"
@@ -1542,6 +1532,18 @@ fbjs@^0.8.1, fbjs@^0.8.4:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
+fbjs@^0.8.9:
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
 figures@^1.3.5:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -1757,10 +1759,6 @@ graphql-server-express@^0.6.0:
 graphql-server-module-graphiql@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.6.0.tgz#e37634b05f000731981e8ed13103f9a5861e5da0"
-
-graphql-tag@^1.3.1:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-1.3.2.tgz#7abb3a8fd9f3415d07163314ed237061c785b759"
 
 graphql-tag@^2.0.0:
   version "2.0.0"
@@ -2813,6 +2811,12 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@^15.5.8:
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  dependencies:
+    fbjs "^0.8.9"
+
 protobufjs-no-cli@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/protobufjs-no-cli/-/protobufjs-no-cli-5.0.1.tgz#17a527da0bc49f1f974f512d852950be26acbb82"
@@ -2915,13 +2919,13 @@ react-addons-pure-render-mixin@^15.4.1:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-apollo@^1.0.0-rc.3:
-  version "1.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.0.0-rc.3.tgz#a1d613785d1f07dcf012d7cde4f2c3a0507ceb03"
+react-apollo@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.1.1.tgz#136a6be6e0ed7bfa5292e67073e1829fe12e1e17"
   dependencies:
-    apollo-client "^1.0.0-rc.2"
+    apollo-client "^1.0.2"
     graphql-anywhere "^3.0.0"
-    graphql-tag "^1.3.1"
+    graphql-tag "^2.0.0"
     hoist-non-react-statics "^1.2.0"
     invariant "^2.2.1"
     lodash.flatten "^4.2.0"
@@ -2929,6 +2933,7 @@ react-apollo@^1.0.0-rc.3:
     lodash.isobject "^3.0.2"
     lodash.pick "^4.4.0"
     object-assign "^4.0.1"
+    prop-types "^15.5.8"
   optionalDependencies:
     react-dom "0.14.x || 15.* || ^15.0.0"
 
