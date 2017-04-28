@@ -58,6 +58,8 @@ class LWPostsPage extends getRawComponent('PostsPage') {
     } else {
       const post = this.props.document;
       const htmlBody = {__html: post.htmlBody};
+      console.log("HTML BODY:");
+      console.log(htmlBody);
 
       return (
         <div className="posts-page">

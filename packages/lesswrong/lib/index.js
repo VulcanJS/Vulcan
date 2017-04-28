@@ -22,6 +22,9 @@ import './subscriptions/permissions.js';
 import './collections/posts/custom_fields.js';
 import './collections/posts/views.js';
 
+// Users
+import './collections/users/custom_fields.js';
+
 // Comments
 import './collections/comments/custom_fields.js';
 
@@ -31,6 +34,7 @@ import './i18n-en-us/en_US.js';
 // General
 import './modules/fragments.js';
 import './modules/callbacks.js';
+
 
 
 
