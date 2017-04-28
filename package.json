@@ -1,11 +1,11 @@
 {
-  "name": "Nova",
+  "name": "Vulcan",
   "version": "1.2.0",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "sh prestart_nova.sh",
+    "prestart": "sh prestart_vulcan.sh",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
@@ -47,7 +47,7 @@
     "optics-agent": "^1.0.5",
     "react": "^15.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
-    "react-apollo": "^1.0.0-rc.3",
+    "react-apollo": "^1.1.1",
     "react-bootstrap": "^0.30.7",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^0.4.6",

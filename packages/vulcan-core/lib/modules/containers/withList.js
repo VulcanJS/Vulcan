@@ -51,6 +51,18 @@ const withList = (options) => {
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
 
+  // build graphql query from options
+  const query = gql`
+    query ${queryName}($terms: JSON) {
+      ${totalResolverName}(terms: $terms)
+      ${listResolverName}(terms: $terms) {
+        __typename
+        ...${fragmentName}
+      }
+    }
+    ${fragment}
+  `;
+
   return compose(
 
     // wrap component with Apollo HoC to give it access to the store
@@ -71,17 +83,7 @@ const withList = (options) => {
     // wrap component with graphql HoC
     graphql(
 
-      // build graphql query from options
-      gql`
-        query ${queryName}($terms: JSON) {
-          ${totalResolverName}(terms: $terms)
-          ${listResolverName}(terms: $terms) {
-            __typename
-            ...${fragmentName}
-          }
-        }
-        ${fragment}
-      `,
+      query,
 
       {
         alias: 'withList',

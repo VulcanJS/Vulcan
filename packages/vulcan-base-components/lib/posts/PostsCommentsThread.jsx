@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
 
 const PostsCommentsThread = (props, context) => {
@@ -29,9 +29,9 @@ const PostsCommentsThread = (props, context) => {
             />
           </div> :
           <div>
-            <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
-              <Components.UsersAccountForm/>
-            </ModalTrigger>
+            <Components.ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
+              <Components.AccountsLoginForm/>
+            </Components.ModalTrigger>
           </div> 
         }
       </div>
