@@ -64,9 +64,16 @@ class FormWrapper extends Component{
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // resolve any array field as fieldName{_id}
+    // resolve any array field with resolveAs as fieldName{_id}
+    /* 
+    - string field with no resolver -> fieldName
+    - string field with a resolver  -> fieldName
+    - array field with no resolver  -> fieldName
+    - array field with a resolver   -> fieldName{_id}
+    */
     relevantFields = relevantFields.map(fieldName => {
-      return this.getSchema()[fieldName].type.definitions[0].type === Array
+      const field = this.getSchema()[fieldName]
+      return field.resolveAs && field.type.definitions[0].type === Array
         ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
         : fieldName; // else just ask for the field name
     });
