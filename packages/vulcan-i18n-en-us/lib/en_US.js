@@ -101,6 +101,7 @@ addStrings('en', {
   "users.edit_success": "User “{name}” edited",
   "users.log_in": "Log In",
   "users.sign_up": "Sign Up",
+  "users.sign_up_log_in": "Sign Up/Log In",
   "users.log_out": "Log Out",
   "users.bio": "Bio",
   "users.displayName": "Display Name",

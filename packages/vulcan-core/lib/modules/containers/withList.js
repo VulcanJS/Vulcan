@@ -71,12 +71,13 @@ const withList = (options) => {
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
 
-      // either get initial limit from options, or default to settings
+      // get initial limit from props, or else options
+      const paginationLimit = props.terms && props.terms.limit || limit;
       const paginationTerms = {
-        limit, 
-        itemsPerPage: limit, 
+        limit: paginationLimit, 
+        itemsPerPage: paginationLimit, 
       };
-    
+      
       return paginationTerms;
     }),
 
