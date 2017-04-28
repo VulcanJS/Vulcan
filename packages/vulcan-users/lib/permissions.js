@@ -218,6 +218,8 @@ Users.helpers({
  */
 Users.restrictViewableFields = function (user, collection, docOrDocs) {
 
+  if (!docOrDocs) return {};
+  
   const restrictDoc = document => _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
   
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);

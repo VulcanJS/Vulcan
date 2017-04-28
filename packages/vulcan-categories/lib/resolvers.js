@@ -5,7 +5,7 @@ const specificResolvers = {
   Post: {
     async categories(post, args, {currentUser, Users, Categories}) {
       if (!post.categories) return [];
-      const categories = await Categories.loader.loadMany(post.categories);
+      const categories = _.compact(await Categories.loader.loadMany(post.categories));
       return Users.restrictViewableFields(currentUser, Categories, categories);
     },
   },
