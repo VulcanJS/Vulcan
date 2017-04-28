@@ -7,6 +7,7 @@ class Sidebar extends Component {
     return (
       <div>
         <Components.RecentComments />
+        <Components.TopContributors />
       </div>
     )
   }

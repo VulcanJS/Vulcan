@@ -14,13 +14,12 @@ class SelectCommentsList extends Component {
     return (
       <div>
         <div><h5>{this.props.title}</h5></div>
-        {
-          <div className="comments-list">
-            {loading ?
-              <Loading /> :
-              <div className="comments-items">
-                {
-                  results.map(comment =>
+        <div className="comments-list">
+          {
+            loading ? <Loading /> :
+            <div className="comments-items">
+              {
+                results.map(comment =>
                   <div key={comment._id}>
                     <div>From post:&nbsp;
                       <Link to={Posts.getPageUrl(comment.post)}>
@@ -29,11 +28,11 @@ class SelectCommentsList extends Component {
                     </div>
                     <Components.CommentsItem comment={comment} currentUser={currentUser} />
                   </div>
-                )}
-              </div>
-            }
-          </div>
-        }
+                )
+              }
+            </div>
+          }
+        </div>
       </div>
     )
   }

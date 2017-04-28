@@ -123,3 +123,10 @@ registerFragment(`
     }
   }
 `);
+
+registerFragment(`
+  fragment UsersList on User {
+    ...UsersMinimumInfo
+    karma
+  }
+`);

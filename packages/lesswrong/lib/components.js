@@ -1,5 +1,6 @@
 import './home/RecentComments.jsx';
 import './home/Sidebar.jsx';
+import './home/TopContributors.jsx';
 
 import './notificationMenu/NotificationsHeader.jsx';
 import './notificationMenu/NotificationsMenu.jsx';
