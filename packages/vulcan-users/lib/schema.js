@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import Users from './collection.js';
+import { Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 const adminGroup = {
   name: "admin",
@@ -56,6 +57,11 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
+    onInsert: user => {
+      // if this is not a dummy account, and is the first user ever, make them an admin
+      const realUsersCount = Users.find({'profile.isDummy': {$ne: true}}).count();
+      return (!user.profile.isDummy && realUsersCount === 0) ? true : false;
+    }
   },
   profile: {
     type: Object,
@@ -95,6 +101,17 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    onInsert: (user, options) => {
+      if (user.profile.username) {
+        return user.profile.username;
+      } else if (user.profile.name) {
+        return user.profile.name;
+      } else if (user.services.linkedin && user.services.linkedin.firstName) {
+        return user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
+      } else {
+        return user.username;
+      }
+    }
   },
   /**
     The user's email. Modifiable.
@@ -108,6 +125,22 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
+    onInsert: (user, options) => {
+      // look in a few places for the user email
+      if (options.email) {
+        return options.email;
+      } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
+        return _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
+      } else if (user.services.facebook && user.services.facebook.email) {
+        return user.services.facebook.email;
+      } else if (user.services.github && user.services.github.email) {
+        return user.services.github.email;
+      } else if (user.services.google && user.services.google.email) {
+        return user.services.google.email;
+      } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
+        return user.services.linkedin.emailAddress;
+      }
+    }
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -117,6 +150,11 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: user => {
+      if (user.email) {
+        return Users.avatar.hash(user.email);
+      }
+    }
   },
   /**
     The HTML version of the bio field
@@ -141,6 +179,11 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: user => {
+      // create a basic slug from display name and then modify it if this slugs already exists;
+      const basicSlug = Utils.slugify(user.displayName);
+      return Utils.getUnusedSlug(Users, basicSlug);
+    }
   },
   /**
     The user's Twitter username
@@ -153,6 +196,11 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     resolveAs: 'twitterUsername: String',
+    onInsert: user => {
+      if (user.services && user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   /**
     A link to the user's homepage
