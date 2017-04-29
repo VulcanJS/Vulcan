@@ -1,17 +1,20 @@
 import Users from '../collection.js';
-import { runCallbacks, runCallbacksAsync } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { newMutation } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
-function createUserCallbacks (options, user) {
-  user = runCallbacks("users.new.sync", user, options);
-
-  runCallbacksAsync("users.new.async", user);
-
-  // check if all required fields have been filled in. If so, run profile completion callbacks
-  if (Users.hasCompletedProfile(user)) {
-    runCallbacksAsync("users.profileCompleted.async", user);
+const createUser = user => {
+  
+  // if user has an email, copy it over to emails array
+  if(user.email) {
+    user.emails = [{address: user.email, verified: false}];
   }
 
-  return user;
+  user.services = {};
+
+  newMutation({
+    collection: Users, 
+    document: user,
+    validate: false
+  });
 }
 
-Accounts.onCreateUser(createUserCallbacks);
+export default createUser;
