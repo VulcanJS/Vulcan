@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Components, registerComponent, withList, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 import Users from "meteor/vulcan:users";
 
 class UsersList extends Component {
