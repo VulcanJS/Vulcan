@@ -13,7 +13,7 @@ vulcan:users                      # user management and permissions
 vulcan:email
 vulcan:posts
 vulcan:comments
-vulcan:newsletter
+# vulcan:newsletter
 # vulcan:notifications
 vulcan:getting-started
 vulcan:categories

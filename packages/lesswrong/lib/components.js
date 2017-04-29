@@ -26,6 +26,7 @@ import './editor/CommentEditor.jsx';
 
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWCommentsItem.jsx';
+import './component-replacements/LWNewsletter.jsx';
 import './component-replacements/LWPostsHome.jsx';
 import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
