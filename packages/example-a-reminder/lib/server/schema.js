@@ -18,7 +18,6 @@ const schema = {
     viewableBy: Users.owns,
     resolveAs: 'user: User',
   },
-
   // custom properties
   message: {
     label: 'Message',
@@ -27,7 +26,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
   },
-
   deliveryTime{
     label: 'Delivery Time',
     type: Date,
@@ -35,11 +33,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
   }
-}
-
 };
 
 export default schema;
-
-
-}
