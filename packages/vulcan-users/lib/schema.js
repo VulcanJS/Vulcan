@@ -25,6 +25,7 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    insertableBy: ['guests'],
   },
   emails: {
     type: Array,
@@ -47,6 +48,9 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    }
   },
   isAdmin: {
     type: Boolean,
@@ -59,8 +63,8 @@ const schema = {
     group: adminGroup,
     onInsert: user => {
       // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = Users.find({'profile.isDummy': {$ne: true}}).count();
-      return (!user.profile.isDummy && realUsersCount === 0) ? true : false;
+      const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+      return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },
   profile: {
@@ -102,9 +106,11 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     onInsert: (user, options) => {
-      if (user.profile.username) {
+      if (user.username) {
+        return user.username;
+      } else if (user.profile && user.profile.username) {
         return user.profile.username;
-      } else if (user.profile.name) {
+      } else if (user.profile && user.profile.name) {
         return user.profile.name;
       } else if (user.services.linkedin && user.services.linkedin.firstName) {
         return user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
@@ -122,14 +128,12 @@ const schema = {
     regEx: SimpleSchema.RegEx.Email,
     required: true,
     control: "text",
-    insertableBy: ['members'],
+    insertableBy: ['guests'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
-    onInsert: (user, options) => {
+    onInsert: (user) => {
       // look in a few places for the user email
-      if (options.email) {
-        return options.email;
-      } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
+      if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
         return _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
       } else if (user.services.facebook && user.services.facebook.email) {
         return user.services.facebook.email;

@@ -8,6 +8,7 @@ addStrings('en', {
   "accounts.error_username_required": "Username required",
   "accounts.error_accounts_": "",
   "accounts.error_unknown": "Unknown error",
+  "accounts.error_user_not_found": "User not found",
   "accounts.enter_username_or_email": "Enter username or email",
   "accounts.username_or_email": "Username or email",
   "accounts.enter_username": "Enter username",
