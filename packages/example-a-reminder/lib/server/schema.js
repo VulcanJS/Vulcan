@@ -1,3 +1,5 @@
+import Users from 'meteor/vulcan:users';
+
 const schema = {
   _id: {
     type: String,
@@ -18,8 +20,6 @@ const schema = {
   },
 
   // custom properties
-  //
-  //message
   message: {
     label: 'Message',
     type: String,
@@ -28,11 +28,13 @@ const schema = {
     editableBy: ['members'],
   },
 
-  //
-  //reminder time
-  // needs format for cron library 
-  //reminderTime{
-  // }
+  deliveryTime{
+    label: 'Delivery Time',
+    type: Date,
+    viewableBy: Users.owns,
+    insertableBy: ['members'],
+    editableBy: ['members'],
+  }
 }
 
 };
