@@ -29,7 +29,7 @@ const PostsCommentsThread = (props, context) => {
             />
           </div> :
           <div>
-            <Components.ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
+            <Components.ModalTrigger size="small" component={<a href="#"><FormattedMessage id="comments.please_log_in"/></a>}>
               <Components.AccountsLoginForm/>
             </Components.ModalTrigger>
           </div> 

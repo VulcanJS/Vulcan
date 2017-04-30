@@ -19,8 +19,6 @@ import {
   capitalize
 } from '../../helpers.js';
 
-const loggingInMessage = 'accounts.logging_in';
-
 export class AccountsLoginForm extends Tracker.Component {
   constructor(props) {
     super(props);
@@ -110,6 +108,8 @@ export class AccountsLoginForm extends Tracker.Component {
         });
       }
 
+      const loggingInMessage = this.context.intl.formatMessage({id: 'accounts.logging_in'});
+      
       if (this.state.formState == STATES.PROFILE) {
         if (!this.props.currentUser && this.state.messages.length === 0) {
           this.showMessage(loggingInMessage);

@@ -202,6 +202,14 @@ export const createCollection = options => {
     // NOTE: always do this last to avoid overriding another sort
     parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
+    // remove any null fields (setting a field to null means it should be deleted)
+    _.keys(parameters.selector).forEach(key => {
+      if (parameters.selector[key] === null) delete parameters.selector[key];
+    });
+    _.keys(parameters.options).forEach(key => {
+      if (parameters.options[key] === null) delete parameters.options[key];
+    });
+    
     // limit number of items to 200
     parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
 
