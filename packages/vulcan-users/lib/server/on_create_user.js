@@ -1,5 +1,5 @@
 import Users from '../collection.js';
-import { runCallbacks, runCallbacksAsync } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { runCallbacks, runCallbacksAsync, Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 function onCreateUserCallback (options, user) {
 
@@ -7,6 +7,7 @@ function onCreateUserCallback (options, user) {
 
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
+  delete options.profile; // we don't use profile
 
   // validate options since they can't be trusted
   Users.simpleSchema().validate(options);

@@ -26,6 +26,11 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     insertableBy: ['guests'],
+    onInsert: user => {
+      if (user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   emails: {
     type: Array,
@@ -112,10 +117,10 @@ const schema = {
         return user.profile.username;
       } else if (user.profile && user.profile.name) {
         return user.profile.name;
+      } else if (user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
       } else if (user.services.linkedin && user.services.linkedin.firstName) {
         return user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
-      } else {
-        return user.username;
       }
     }
   },

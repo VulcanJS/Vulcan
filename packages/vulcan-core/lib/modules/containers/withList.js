@@ -115,6 +115,7 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
+                loading = props.data.loading,
                 error = props.data.error;
 
           if (error) {
@@ -124,7 +125,7 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading: networkStatus === 1, // networkStatus = 1 <=> the graphql container is loading
+            loading,
             results,
             totalCount,
             refetch,

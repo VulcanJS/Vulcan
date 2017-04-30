@@ -62,7 +62,6 @@ const resolvers = {
     name: 'postsSingle',
 
     check(user, document, collection) {
-      if (!document) return false;
       const status = _.findWhere(collection.statuses, {value: document.status});
       return Users.owns(user, document) ? Users.canDo(user, `posts.view.${status.label}.own`) : Users.canDo(user, `posts.view.${status.label}.all`);
     },
@@ -72,7 +71,7 @@ const resolvers = {
       // don't use Dataloader if post is selected by slug
       const post = documentId ? await Posts.loader.load(documentId) : Posts.findOne({slug});
 
-      Utils.performCheck(this, currentUser, post, Posts);
+      Utils.performCheck(this, currentUser, post, Posts, documentId);
 
       return Users.restrictViewableFields(currentUser, Posts, post);
     },

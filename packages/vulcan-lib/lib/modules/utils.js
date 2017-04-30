@@ -447,6 +447,14 @@ Utils.defineName = (o, name) => {
   return o;
 };
 
-Utils.performCheck = (operation, user, checkedObject, context) => {
-  if (!operation.check(user, checkedObject, context)) throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
+Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
+
+  if (!checkedObject) {
+    throw new Error(Utils.encodeIntlError({id: `app.document_not_found`, value: documentId}))
+  }
+
+  if (!operation.check(user, checkedObject, context)) {
+    throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
+  }
+
 }
