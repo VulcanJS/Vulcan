@@ -1,4 +1,4 @@
-//Reminders collection
+// Reminders collection
 import { createCollection } from 'meteor/vulcan:core';
 import schema from './schema.js';
 // import resolvers from './resolvers.js';
