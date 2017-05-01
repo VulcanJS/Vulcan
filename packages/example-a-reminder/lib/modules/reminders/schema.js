@@ -3,19 +3,18 @@ import Users from 'meteor/vulcan:users';
 const schema = {
   _id: {
     type: String,
-    type: String,
-    viewableBy: Users.owns,
+    viewableBy: ['members'],
   },
   createdAt: {
     type: Date,
-    viewableBy: Users.owns,
+    viewableBy: ['members'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
   userId: {
     type: String,
-    viewableBy: Users.owns,
+    viewableBy: ['members'],
     resolveAs: 'user: User',
   },
   // custom properties
@@ -24,14 +23,14 @@ const schema = {
     type: String,
     viewableBy: Users.owns,
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: Users.owns,
   },
   deliveryTime{
     label: 'Delivery Time',
     type: Date,
     viewableBy: Users.owns,
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: Users.owns,
   }
 };
 
