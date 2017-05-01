@@ -20,6 +20,7 @@ const schema = {
   // custom properties
   message: {
     label: 'Message',
+    placeholder: 'type a message for your reminder...',
     type: String,
     viewableBy: Users.owns,
     insertableBy: ['members'],
