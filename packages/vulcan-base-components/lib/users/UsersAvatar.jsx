@@ -25,7 +25,7 @@ const UsersAvatar = ({user, size, link}) => {
     width: sizes[size]
   };
 
-  const avatarUrl = Users.avatar.getUrl(user);
+  const avatarUrl = user.avatarUrl || Users.avatar.getUrl(user);
 
   const img = <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={avatarUrl} title={user.username}/>;
   const initials = <span className="avatar-initials"><span>{Users.avatar.getInitials(user)}</span></span>;

@@ -1,35 +1,27 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 
-class Layout extends Component {
+const Layout = props =>
+  <div className="wrapper" id="wrapper">
 
-  render() {
-    return (
-      <div className="wrapper" id="wrapper">
+    <Components.HeadTags />
 
-        <Components.HeadTags />
+    <Components.UsersProfileCheck currentUser={props.currentUser} documentId={props.currentUser && props.currentUser._id} />
 
-        <Components.UsersProfileCheck {...this.props} />
+    <Components.Header />
+  
+    <div className="main">
 
-        <Components.Header {...this.props}/>
-      
-        <div className="main">
+      <Components.FlashMessages />
 
-          <Components.FlashMessages />
+      <Components.Newsletter />
 
-          <Components.Newsletter />
+      {props.children}
 
-          {this.props.children}
+    </div>
+  
+    <Components.Footer />
+  
+  </div>
 
-        </div>
-      
-        <Components.Footer {...this.props}/>
-      
-      </div>
-    )
-  }
-}
-
-Layout.displayName = "Layout";
-
-registerComponent('Layout', Layout);
+registerComponent('Layout', Layout, withCurrentUser);
