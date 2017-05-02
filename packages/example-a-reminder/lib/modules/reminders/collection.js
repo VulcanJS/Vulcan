@@ -5,8 +5,6 @@ import resolvers from './resolvers.js';
 // import './fragments.js';
 import mutations from './mutations.js';
 import './permissions.js';
-// import './parameters.js';
-
 
 // const Reminders = createCollection({
 //
