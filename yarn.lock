@@ -3018,6 +3018,12 @@ react-overlays@^0.6.10:
     react-prop-types "^0.4.0"
     warning "^3.0.0"
 
+react-places-autocomplete@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-places-autocomplete/-/react-places-autocomplete-5.0.0.tgz#a180f27920d9871e9102749f2fb8ed39ad3aae28"
+  dependencies:
+    react "^15.0.0"
+
 react-prop-types@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
@@ -3061,7 +3067,7 @@ react-side-effect@1.0.2:
   dependencies:
     fbjs "0.1.0-alpha.10"
 
-"react@>=0.14.7 || ^15.0.0-rc.2", react@^15.4.1:
+"react@>=0.14.7 || ^15.0.0-rc.2", react@^15.0.0, react@^15.4.1:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
