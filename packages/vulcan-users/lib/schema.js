@@ -112,15 +112,16 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     onInsert: (user, options) => {
-      if (user.profile && user.profile.name) {
-        return user.profile.name;
-      } else if (user.services.twitter && user.services.twitter.screenName) {
-        return user.services.twitter.screenName;
-      } else if (user.services.linkedin && user.services.linkedin.firstName) {
-        return user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
-      } else if (user.username) {
-        return user.username
-      }
+      const profileName = Utils.getNestedProperty(user, 'profile.name');
+      const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
+      const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
+
+      if (profileName) return profileName;
+      if (twitterName) return twitterName;
+      if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+      if (user.username) return user.username;
+      return undefined;
+
     }
   },
   /**
@@ -137,17 +138,18 @@ const schema = {
     viewableBy: ownsOrIsAdmin,
     onInsert: (user) => {
       // look in a few places for the user email
-      if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-        return _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
-      } else if (user.services.facebook && user.services.facebook.email) {
-        return user.services.facebook.email;
-      } else if (user.services.github && user.services.github.email) {
-        return user.services.github.email;
-      } else if (user.services.google && user.services.google.email) {
-        return user.services.google.email;
-      } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-        return user.services.linkedin.emailAddress;
-      }
+      const meteorEmails = Utils.getNestedProperty('services.meteor-developer.emails');
+      const facebookEmail = Utils.getNestedProperty('services.facebook.email');
+      const githubEmail = Utils.getNestedProperty('services.github.email');
+      const googleEmail = Utils.getNestedProperty('services.google.email');
+      const linkedinEmail = Utils.getNestedProperty('services.linkedin.emailAddress');
+      
+      if (meteorEmails) return _.findWhere(meteorEmails, { primary: true }).address;
+      if (facebookEmail) return facebookEmail;
+      if (githubEmail) return githubEmail;
+      if (googleEmail) return googleEmail;
+      if (linkedinEmail) return linkedinEmail;
+      return undefined;
     }
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
@@ -169,8 +171,14 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     onInsert: user => {
+
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+      const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
+      
       if (twitterAvatar) return twitterAvatar;
+      if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
+      return undefined;
+
     }
   },
   /**
