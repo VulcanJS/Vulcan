@@ -31,7 +31,7 @@ export default function withDocument (options) {
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
       return {
-        loading: data.networkStatus === 1,
+        loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),
         document: data[singleResolverName],
         fragmentName,
