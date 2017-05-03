@@ -1,12 +1,10 @@
-/*
-all imports
-*/
-
-// business logic
-
+import { replaceComponent } from 'meteor/vulcan:core';
+import './reminders/collection.js';
 // components
-import "../components/CalendarPage.jsx";
-import "../components/Home.jsx";
+import "../components/common/CalendarPage.jsx";
+import Layout from "../components/common/Layout.jsx";
+
+replaceComponent('Layout', Layout);
 
 // routes
 import "../routes.jsx";

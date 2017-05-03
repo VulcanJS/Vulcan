@@ -26,7 +26,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: Users.owns,
   },
-  deliveryTime{
+  deliveryTime: {
     label: 'Delivery Time',
     type: Date,
     viewableBy: Users.owns,
