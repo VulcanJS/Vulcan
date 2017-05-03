@@ -5,13 +5,13 @@ import { withDocument, Components, registerComponent, withMessages } from 'meteo
 import { FormattedMessage, intlShape } from 'react-intl';
 import { gql } from 'react-apollo';
 
-const UsersProfileCheck = ({currentUser, document, flash}, context) => {
+const UsersProfileCheck = ({currentUser, document, loading, flash}, context) => {
 
   // we're loading all fields marked as "mustComplete" using withDocument
   const userMustCompleteFields = document;
 
-  // if user is not logged in, don't return anything
-  if (!currentUser) {
+  // if user is not logged in, or userMustCompleteFields is still loading, don't return anything
+  if (!currentUser || loading) {
 
     return null;
   
@@ -22,7 +22,7 @@ const UsersProfileCheck = ({currentUser, document, flash}, context) => {
       return !userMustCompleteFields[fieldName];
     });
 
-    if (fieldsToComplete.length) {
+    if (fieldsToComplete.length > 0) {
 
       return (
         <Modal bsSize='small' show={ true }>

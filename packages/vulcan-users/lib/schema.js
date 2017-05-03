@@ -169,8 +169,8 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     onInsert: user => {
-      const twitterAvatar = _.deep(user, 'services.twitter.profile_image_url_https');
-      return twitterAvatar;
+      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+      if (twitterAvatar) return twitterAvatar;
     }
   },
   /**

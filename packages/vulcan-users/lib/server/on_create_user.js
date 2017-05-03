@@ -7,7 +7,6 @@ function onCreateUserCallback (options, user) {
 
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
-  delete options.profile; // we don't use profile
 
   // validate options since they can't be trusted
   Users.simpleSchema().validate(options);
@@ -35,8 +34,6 @@ function onCreateUserCallback (options, user) {
       }
     }
   });
-
-  console.log(user)
   
   user = runCallbacks("users.new.sync", user);
 
