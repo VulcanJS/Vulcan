@@ -138,12 +138,12 @@ const schema = {
     viewableBy: ownsOrIsAdmin,
     onInsert: (user) => {
       // look in a few places for the user email
-      const meteorEmails = Utils.getNestedProperty('services.meteor-developer.emails');
-      const facebookEmail = Utils.getNestedProperty('services.facebook.email');
-      const githubEmail = Utils.getNestedProperty('services.github.email');
-      const googleEmail = Utils.getNestedProperty('services.google.email');
-      const linkedinEmail = Utils.getNestedProperty('services.linkedin.emailAddress');
-      
+      const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
+      const facebookEmail = Utils.getNestedProperty(user, 'services.facebook.email');
+      const githubEmail = Utils.getNestedProperty(user, 'services.github.email');
+      const googleEmail = Utils.getNestedProperty(user, 'services.google.email');
+      const linkedinEmail = Utils.getNestedProperty(user, 'services.linkedin.emailAddress');
+
       if (meteorEmails) return _.findWhere(meteorEmails, { primary: true }).address;
       if (facebookEmail) return facebookEmail;
       if (githubEmail) return githubEmail;
@@ -174,7 +174,7 @@ const schema = {
 
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
       const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
-      
+
       if (twitterAvatar) return twitterAvatar;
       if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
       return undefined;
