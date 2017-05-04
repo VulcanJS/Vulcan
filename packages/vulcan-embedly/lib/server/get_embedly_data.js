@@ -1,57 +1,18 @@
 import Posts from "meteor/vulcan:posts";
 import { addCallback, getSetting } from 'meteor/vulcan:core';
+import { embedAPI } from './embedapi.js'
 
 function getEmbedlyData(url) {
-  var extractBase = 'http://api.embed.ly/1/extract';
+  
   var embedlyKey = getSetting('embedlyKey');
+  var extractBase = 'http://api.embed.ly/1/extract';
   // 200 x 200 is the minimum size accepted by facebook
   var thumbnailWidth = getSetting('thumbnailWidth', 200);
   var thumbnailHeight = getSetting('thumbnailHeight', 200);
 
-  if(!embedlyKey) {
-    // fail silently to still let the post be submitted as usual
-    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module."); // eslint-disable-line
-    return null;
-  }
-  else if( embedlyKey.length > 32 ){//Embed API key is 40 chars in length
-      var extractBase = 'https://EmbedAPI.com/api/embed';
-    try {
-    var result = Meteor.http.get(extractBase, {
-      params: {
-        key: embedlyKey,
-        url: url,
-        image_width: thumbnailWidth,
-        image_height: thumbnailHeight,
-        image_method: 'crop'
-      }
-    });
-
-    // console.log(result.content)
-    result.content = JSON.parse(result.content);
-    var embedData = {title: result.content.title ,description: result.content.description };
+  if(!embedlyKey)
+    return embedAPI(url);
     
-    if ( !_.isEmpty(result.content.pics) )
-       embedData.thumbnailUrl = result.content.pics[0];
-
-    if ( !!result.content.media )
-      embedData.media = result.content.media;
-     
-    if ( !_.isEmpty(result.content.authors) ) {
-       embedData.sourceName = result.content.authors[0].name;
-       embedData.sourceUrl = result.content.authors[0].url;
-    }
-    //console.log("embedData",embedData)
-    return embedData;
-
-  } catch (error) {
-    console.log(error); // eslint-disable-line
-    // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
-    var errorObject = JSON.parse(error.message.substring(13));
-    throw new Error(errorObject.error_code, errorObject.error_message);
-  }
-  
-  }
-else{
   try {
 
     var result = Meteor.http.get(extractBase, {
@@ -75,14 +36,13 @@ else{
     var embedlyData = _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl', 'sourceName', 'sourceUrl');
 
     return embedlyData;
-
+    
   } catch (error) {
     console.log(error); // eslint-disable-line
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
     var errorObject = JSON.parse(error.message.substring(13));
     throw new Error(errorObject.error_code, errorObject.error_message);
   }
-}//end else
 }
 
 // For security reason, we make the media property non-modifiable by the client and
