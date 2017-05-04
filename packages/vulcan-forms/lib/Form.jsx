@@ -110,11 +110,14 @@ class Form extends Component {
 
       // add label or internationalized field name if necessary (field not hidden)
       if (!field.hidden) {
-        field.label = fieldSchema.label ? fieldSchema.label : this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+        field.label = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: fieldSchema.label});
       }
 
       // add value
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
+
+      // convert value type if needed
+      if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
 
       // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
       // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})

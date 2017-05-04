@@ -7,7 +7,7 @@ import DateTime from './DateTime.jsx';
 // import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
-// const CheckboxGroup = FRC.CheckboxGroup;
+const CheckboxGroup = FRC.CheckboxGroup;
 const Input = FRC.Input;
 const RadioGroup = FRC.RadioGroup;
 const Select = FRC.Select;
@@ -32,10 +32,10 @@ class FormComponent extends Component {
     // see https://facebook.github.io/react/warnings/unknown-prop.html
     const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, ...rest } = this.props; // eslint-disable-line
 
-    const base = this.props.control === "function" ? this.props : rest;
+    // const base = typeof this.props.control === "function" ? this.props : rest;
 
     const properties = {
-      ...base,
+      ...rest,
       onBlur: this.handleBlur,
       ref: (ref) => this.formControl = ref
     };
@@ -54,11 +54,11 @@ class FormComponent extends Component {
           return <Textarea      {...properties} />;
         case "checkbox":
           return <Checkbox      {...properties} />;
-        // note: checkboxgroup cause React refs error
         case "checkboxgroup":
           return <CheckboxGroup  {...properties} />;
         case "radiogroup":
-          return <RadioGroup    {...properties} />;
+          // not sure why, but onChange needs to be specified here
+          return <RadioGroup    {...properties} onChange={(name, value) => {this.props.updateCurrentValues({[name]: value})}}/>;
         case "select":
           properties.options = [{label: this.context.intl.formatMessage({id: "forms.select_option"}), disabled: true}, ...properties.options];
           return <Select        {...properties} />;
@@ -102,82 +102,3 @@ FormComponent.contextTypes = {
 };
 
 export default FormComponent;
-
-//-------------------------------------//
-
-// having the CheckboxGroup component in this file prevents a weird bug
-
-import ComponentMixin from './component';
-import Row from './row';
-
-const CheckboxGroup = React.createClass({
-
-    mixins: [Formsy.Mixin, ComponentMixin],
-
-    propTypes: {
-        name: React.PropTypes.string.isRequired,
-        options: React.PropTypes.array.isRequired
-    },
-
-    getDefaultProps: function() {
-        return {
-            label: '',
-            help: null
-        };
-    },
-
-    changeCheckbox: function() {
-        var value = [];
-        this.props.options.forEach(function(option, key) {
-            if (this.refs['element-' + key].checked) {
-                value.push(option.value);
-            }
-
-        }.bind(this));
-        this.setValue(value);
-        this.props.onChange(this.props.name, value);
-    },
-
-    renderElement: function() {
-        var _this = this;
-        var controls = this.props.options.map(function(checkbox, key) {
-            var checked = (_this.getValue().indexOf(checkbox.value) !== -1);
-            var disabled = _this.isFormDisabled() || checkbox.disabled || _this.props.disabled;
-            return (
-                <div className="checkbox" key={key}>
-                    <label>
-                        <input
-                            ref={'element-' + key}
-                            checked={checked}
-                            type="checkbox"
-                            value={checkbox.value}
-                            onChange={_this.changeCheckbox}
-                            disabled={disabled}
-                        /> {checkbox.label}
-                    </label>
-                </div>
-            );
-        });
-        return controls;
-    },
-
-    render: function() {
-
-        if (this.getLayout() === 'elementOnly') {
-            return (
-                <div>{this.renderElement()}</div>
-            );
-        }
-
-        return (
-            <Row
-                {...this.getRowProperties()}
-                fakeLabel={true}
-            >
-                {this.renderElement()}
-                {this.renderHelp()}
-                {this.renderErrorMessage()}
-            </Row>
-        );
-    }
-});
