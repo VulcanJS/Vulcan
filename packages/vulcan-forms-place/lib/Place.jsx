@@ -1,28 +1,46 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
+
 
 class Place extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { address: '' };
+    this.state = { address: props.value };
     this.onChange = (address) => this.setState({ address });
+    this.onSelect = (address, placeId) => this.setState({ address, placeId });
     this.onBlur = this.onBlur.bind(this);
+  }
+
+  componentDidMount() {
+    if (typeof window !== 'undefined') {
+      this.placesService = new window.google.maps.places.PlacesService(document.createElement('div'))
+    }
   }
 
   onBlur() {
     
-    const address = this.state.address;
+    const {placeId} = this.state;
 
-    geocodeByAddress(address,  (err, latLng) => {
-      if (err) { console.log(err) }
+    this.placesService.getDetails({placeId}, (result) => {
+      console.log(result)
       this.context.addToAutofilledValues({
-        placeName: address,
-        placeLat: latLng.lat,
-        placeLong: latLng.lng
+        placeName: result.name,
+        placeId: placeId,
+        placeLat: result.geometry.location.lat(),
+        placeLng: result.geometry.location.lng()
       });
     });
+
+    // geocodeByAddress(address,  (err, latLng) => {
+    //   if (err) { console.log(err) }
+    //   this.context.addToAutofilledValues({
+    //     placeName: address,
+    //     placeLat: latLng.lat,
+    //     placeLong: latLng.lng
+    //   });
+    // });
 
   }
 
@@ -38,7 +56,7 @@ class Place extends Component {
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          <PlacesAutocomplete inputProps={inputProps} />
+          <PlacesAutocomplete inputProps={inputProps} onSelect={this.onSelect} />
         </div>
       </div>
     );
