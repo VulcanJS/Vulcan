@@ -13,7 +13,45 @@ function getEmbedlyData(url) {
     console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module."); // eslint-disable-line
     return null;
   }
+  else if( embedlyKey.length > 32 ){//Embed API key is 40 chars in length
+      var extractBase = 'https://EmbedAPI.com/api/embed';
+    try {
+    var result = Meteor.http.get(extractBase, {
+      params: {
+        key: embedlyKey,
+        url: url,
+        image_width: thumbnailWidth,
+        image_height: thumbnailHeight,
+        image_method: 'crop'
+      }
+    });
 
+    // console.log(result.content)
+    result.content = JSON.parse(result.content);
+    var embedData = {title: result.content.title ,description: result.content.description };
+    
+    if ( !_.isEmpty(result.content.pics) )
+       embedData.thumbnailUrl = result.content.pics[0];
+
+    if ( !!result.content.media )
+      embedData.media = result.content.media;
+     
+    if ( !_.isEmpty(result.content.authors) ) {
+       embedData.sourceName = result.content.authors[0].name;
+       embedData.sourceUrl = result.content.authors[0].url;
+    }
+    //console.log("embedData",embedData)
+    return embedData;
+
+  } catch (error) {
+    console.log(error); // eslint-disable-line
+    // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
+    var errorObject = JSON.parse(error.message.substring(13));
+    throw new Error(errorObject.error_code, errorObject.error_message);
+  }
+  
+  }
+else{
   try {
 
     var result = Meteor.http.get(extractBase, {
@@ -44,6 +82,7 @@ function getEmbedlyData(url) {
     var errorObject = JSON.parse(error.message.substring(13));
     throw new Error(errorObject.error_code, errorObject.error_message);
   }
+}//end else
 }
 
 // For security reason, we make the media property non-modifiable by the client and
