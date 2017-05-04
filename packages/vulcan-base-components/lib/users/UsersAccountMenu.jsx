@@ -8,6 +8,7 @@ const UsersAccountMenu = () => {
   return (
     <Dropdown id="accounts-dropdown" className="users-account-menu">
       <Dropdown.Toggle>
+        <Components.Icon name="user"/>
         <FormattedMessage id="users.sign_up_log_in"/>
       </Dropdown.Toggle>
       <Dropdown.Menu>
