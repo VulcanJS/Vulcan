@@ -27,6 +27,10 @@ $light-border: $light-grey;
 $light-text: $medium-grey;
 $medium-text: $dark-grey;
 
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+}
 
 .list-group,
 .list-group-item{
@@ -70,4 +74,14 @@ width: 100%;
   .downvote-button{
     color: $blue !important;
   }
+}
+
+.top-contributors{
+  .users-avatar{
+    margin-right: 5px;
+  }
+  .users-name{
+    margin-right: 5px;
+  }
+  @include flex-center;
 }

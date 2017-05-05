@@ -108,3 +108,25 @@ registerFragment(`
 extendFragment('CommentsList', `
   draftJS
 `);
+
+registerFragment(`
+  fragment SelectCommentsList on Comment {
+    ...CommentsList
+    post {
+      _id
+      commentCount
+      commenters {
+        ...UsersMinimumInfo
+      }
+      slug
+      title
+    }
+  }
+`);
+
+registerFragment(`
+  fragment UsersList on User {
+    ...UsersMinimumInfo
+    karma
+  }
+`);
