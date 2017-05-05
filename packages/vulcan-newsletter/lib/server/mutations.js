@@ -1,5 +1,4 @@
-import Newsletters from "../collection.js";
-import MailChimpList from "./mailchimp/mailchimp_list.js";
+import Newsletters from "../modules/collection.js";
 import Users from 'meteor/vulcan:users';
 import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 
@@ -13,33 +12,32 @@ const resolver = {
   Mutation: {
     sendNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) {
-        return Newsletters.scheduleNextWithMailChimp(false);
+        return Newsletters.send();
       } else {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
     },
     testNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
-        return Newsletters.scheduleNextWithMailChimp(true);
+        return Newsletters.send(true);
     },
-    addUserNewsletter(root, args, context) {
+    addUserNewsletter(root, {userId}, context) {
 
       const currentUser = context.currentUser;
-      const user = Users.findOne({_id: args.userId});
+      const user = Users.findOne({_id: userId});
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
       try {
-        return MailChimpList.add(user, false);
+        return Newsletters.subscribeUser(user, false);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
       }
     },
-    addEmailNewsletter(root, args, context) {
-      const email = args.email;
+    addEmailNewsletter(root, {email}, context) {
       try {
-        return MailChimpList.add(email, true);
+        return Newsletters.subscribeEmail(email, true);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);
@@ -53,7 +51,7 @@ const resolver = {
       }
       
       try {
-        return MailChimpList.remove(user);
+        return Newsletters.unsubscribeUser(user);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);

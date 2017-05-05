@@ -27,6 +27,7 @@ Comments.addField([
     fieldSchema: {
       type: Boolean,
       optional: true,
+      hidden: true, 
       defaultValue: false,
       viewableBy: ['guests'],
       editableBy: ['members'],
@@ -41,6 +42,7 @@ Comments.addField([
     fieldName: 'legacyId',
     fieldSchema: {
       type: String,
+      hidden: true,
       optional: true,
       viewableBy: ['guests'],
       editableBy: ['members'],
@@ -56,7 +58,23 @@ Comments.addField([
     fieldSchema: {
       type: Boolean,
       optional: true,
+      hidden: true,
       defaultValue: false,
+      viewableBy: ['guests'],
+      editableBy: ['members'],
+      insertableBy: ['members'],
+    }
+  },
+
+  /**
+    Legacy Parent Id: Id of parent comment in original LW database
+  */
+  {
+    fieldName: 'legacyParentId',
+    fieldSchema: {
+      type: String,
+      hidden: true,
+      optional: true,
       viewableBy: ['guests'],
       editableBy: ['members'],
       insertableBy: ['members'],

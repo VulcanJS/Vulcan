@@ -1,4 +1,5 @@
-import { GraphQLSchema } from 'meteor/vulcan:lib';
+import { GraphQLSchema, Utils } from 'meteor/vulcan:lib';
+import Users from 'meteor/vulcan:users';
 
 const resolvers = {
 
@@ -6,13 +7,37 @@ const resolvers = {
 
     name: 'notificationsList',
 
-    resolver(root, {terms}, context, info) {
-      let {selector, options} = context.Notifications.getParameters(terms);
+    check(user, terms, Notifications) {
+      const {selector, options} = Notifications.getParameters(terms);
+      if (user) {
+        if (user._id == selector.userId) {
+          return true;
+        } else {
+          return false;
+        };
+      } else {
+        return false;
+      };
+    },
 
+    resolver(root, {terms}, {currentUser, Notifications, Users}, info) {
+
+      // check that the current user can access the current query terms
+      Utils.performCheck(this, currentUser, terms, Notifications);
+
+      // get selector and options from terms and perform Mongo query
+      let {selector, options} = Notifications.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 1000) ? 1000 : terms.limit;
       options.skip = terms.offset;
-      options.fields = context.getViewableFields(context.currentUser, context.Notifications);
-      return context.Notifications.find(selector, options).fetch();
+      const notifications = Notifications.find(selector, options).fetch();
+
+      //restrict document fields
+      const restrictedNotifications = Users.restrictViewableFields(currentUser, Notifications, notifications);
+
+      //prime the cache
+      restrictedNotifications.forEach(notification => Notifications.loader.prime(notification._id, notification));
+
+      return restrictedNotifications;
     },
 
   },

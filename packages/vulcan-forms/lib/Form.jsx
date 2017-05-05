@@ -65,11 +65,12 @@ class Form extends Component {
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
+    this.setFormState = this.setFormState.bind(this);
 
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
+      autofilledValues: props.prefilledProps || {},
       currentValues: {}
     };
   }
@@ -226,11 +227,11 @@ class Form extends Component {
 
   // for each field, we apply the following logic:
   // - if its value is currently being inputted, use that
+  // - else if its value is provided by the autofilledValues object, use that
   // - else if its value was provided by the db, use that (i.e. props.document)
-  // - else if its value is provded by the autofilledValues object, use that
   getDocument() {
     const currentDocument = _.clone(this.props.document) || {};
-    const document = Object.assign(_.clone(this.state.autofilledValues), currentDocument,  _.clone(this.state.currentValues));
+    const document = Object.assign(currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
     return document;
   }
 
@@ -344,6 +345,10 @@ class Form extends Component {
     }));
   }
 
+  setFormState(fn) {
+    this.setState(fn);
+  }
+
   // pass on context to all child components
   getChildContext() {
     return {
@@ -353,6 +358,7 @@ class Form extends Component {
       addToAutofilledValues: this.addToAutofilledValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
+      setFormState: this.setFormState,
     };
   }
 
@@ -559,6 +565,7 @@ Form.childContextTypes = {
   autofilledValues: PropTypes.object,
   addToAutofilledValues: PropTypes.func,
   updateCurrentValues: PropTypes.func,
+  setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
   getDocument: PropTypes.func

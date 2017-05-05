@@ -10,7 +10,6 @@ import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:co
 
 import Pics from '../../modules/pics/collection.js';
 import PicsItem from './PicsItem.jsx';
-import PicsNewForm from './PicsNewForm.jsx';
 
 const PicsList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   

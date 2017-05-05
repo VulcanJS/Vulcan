@@ -34,13 +34,14 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
 
   renderComment() {
     const draftJS = this.props.comment.draftJS;
-
+    const htmlBody = {__html: this.props.comment.htmlBody};
     const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
 
     return (
       <div className="comments-item-text">
         {draftJS ? <Components.EditorWrapper initialState={draftJS} readOnly /> :
-        <div> No DraftJS Comment Content</div>}
+        null}
+        {htmlBody ? <div className="comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
         { showReplyButton ?
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>

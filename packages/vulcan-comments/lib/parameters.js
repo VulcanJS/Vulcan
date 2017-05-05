@@ -1,7 +1,7 @@
 import { addCallback } from 'meteor/vulcan:core';
 
 // limit the number of items that can be requested at once
-const CommentsMaxLimit = (parameters, terms) => {
+function CommentsMaxLimit (parameters, terms) {
   var maxLimit = 1000;
   // if a limit was provided with the terms, add it too (note: limit=0 means "no limit")
   if (typeof terms.limit !== 'undefined') {

@@ -30,7 +30,7 @@ const resolvers = {
 
     resolver(root, {documentId}, context) {
       const document = context.Comments.findOne({_id: documentId});
-      return context.Users.keepViewableFields(context.currentUser, context.Comments, document);
+      return context.Users.restrictViewableFields(context.currentUser, context.Comments, document);
     },
   
   },

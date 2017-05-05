@@ -3,7 +3,7 @@ import Posts from "meteor/vulcan:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/vulcan:users';
 
-const CommentsRemovePostCommenters = (comment, currentUser) => {
+function CommentsRemovePostCommenters (comment, currentUser) {
   const { userId, postId } = comment;
 
   // dec user's comment count
@@ -23,11 +23,11 @@ const CommentsRemovePostCommenters = (comment, currentUser) => {
   });
 
   return comment;
-};
+}
 
 addCallback("comments.remove.async", CommentsRemovePostCommenters);
 
-const CommentsRemoveChildrenComments = (comment, currentUser) => {
+function CommentsRemoveChildrenComments (comment, currentUser) {
 
   const childrenComments = Comments.find({parentCommentId: comment._id}).fetch();
 
@@ -42,6 +42,6 @@ const CommentsRemoveChildrenComments = (comment, currentUser) => {
   });
 
   return comment;
-};
+}
 
 addCallback("comments.remove.async", CommentsRemoveChildrenComments);

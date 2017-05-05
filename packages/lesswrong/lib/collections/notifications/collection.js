@@ -11,7 +11,7 @@ const Notifications = createCollection({
 
   // collection: Meteor.notifications,
 
-  collectionName: 'notifications',
+  collectionName: 'Notifications',
 
   typeName: 'Notification',
 

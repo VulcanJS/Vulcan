@@ -43,6 +43,7 @@ Posts.addField([
     fieldSchema: {
       type: Boolean,
       optional: true,
+      hidden: true,
       defaultValue: false,
       viewableBy: ['guests'],
       editableBy: ['members'],
@@ -58,6 +59,24 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
+      hidden: true,
+      viewableBy: ['guests'],
+      editableBy: ['members'],
+      insertableBy: ['members'],
+    }
+  },
+
+  /**
+    Legacy Spam: True if the original post in the legacy LW database had this post
+    marked as spam
+  */
+  {
+    fieldName: 'legacySpam',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      hidden: true, 
       viewableBy: ['guests'],
       editableBy: ['members'],
       insertableBy: ['members'],

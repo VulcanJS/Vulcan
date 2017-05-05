@@ -1,16 +1,13 @@
-import MailChimpList from './mailchimp/mailchimp_list.js';
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting } from 'meteor/vulcan:core';
+import Newsletters from '../modules/collection.js';
 
 function subscribeUserOnProfileCompletion (user) {
   if (!!getSetting('autoSubscribe') && !!Users.getEmail(user)) {
     try {
-      MailChimpList.add(user, false, function (error, result) {
-        console.log(error); // eslint-disable-line
-        console.log(result); // eslint-disable-line
-      });
+      Newsletters.subscribeUser(user, false);
     } catch (error) {
-      console.log("// MailChimp Error:") // eslint-disable-line
+      console.log("// Newsletter Error:") // eslint-disable-line
       console.log(error) // eslint-disable-line
     }
   }

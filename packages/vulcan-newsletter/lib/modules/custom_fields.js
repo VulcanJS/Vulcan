@@ -1,4 +1,4 @@
-import NewsletterSubscribe from './components/NewsletterSubscribe.jsx';
+import NewsletterSubscribe from '../components/NewsletterSubscribe.jsx';
 import Posts from "meteor/vulcan:posts";
 import Users from 'meteor/vulcan:users';
 

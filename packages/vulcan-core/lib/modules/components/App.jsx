@@ -26,7 +26,7 @@ class App extends Component {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
         {
-          this.props.loading ? 
+          this.props.currentUserLoading ? 
             <Components.Loading /> :
             <Components.Layout>{this.props.children}</Components.Layout>
         }
@@ -37,7 +37,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  loading: React.PropTypes.bool,
+  currentUserLoading: React.PropTypes.bool,
 }
 
 App.childContextTypes = {

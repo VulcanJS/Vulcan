@@ -63,7 +63,7 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
  **/
 
 
-const addAsChildRoute = (parentRouteName, addedRoutes) => {
+export const addAsChildRoute = (parentRouteName, addedRoutes) => {
 
   // if the parentRouteName does not exist, error
   if (!RoutesTable[parentRouteName]) {

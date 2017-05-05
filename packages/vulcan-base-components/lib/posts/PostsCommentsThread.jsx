@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ModalTrigger, withList, withCurrentUser, withMessages, Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
 
 const PostsCommentsThread = (props, context) => {
@@ -26,7 +26,6 @@ const PostsCommentsThread = (props, context) => {
             <Components.CommentsNewForm
               postId={postId}
               type="comment"
-              successCallback={() => props.flash("Successfully posted comment")}
             />
           </div> :
           <div>
@@ -53,4 +52,4 @@ const options = {
   limit: 0,
 };
 
-registerComponent('PostsCommentsThread', PostsCommentsThread, [withList, options], withCurrentUser, withMessages);
+registerComponent('PostsCommentsThread', PostsCommentsThread, [withList, options], withCurrentUser);

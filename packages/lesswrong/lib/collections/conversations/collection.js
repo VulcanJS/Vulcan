@@ -9,7 +9,7 @@ import { createCollection } from 'meteor/vulcan:core';
  */
 const Conversations = createCollection({
 
-  collectionName: 'conversations',
+  collectionName: 'Conversations',
 
   typeName: 'Conversation',
 

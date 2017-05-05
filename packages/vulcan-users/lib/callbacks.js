@@ -12,65 +12,25 @@ import { addCallback, Utils, runCallbacksAsync } from 'meteor/vulcan:lib'; // im
  * @param {Object} options – user options
  */
 function setupUser (user, options) {
+
+  const schema = Users.simpleSchema()._schema;
+
   // ------------------------------ Properties ------------------------------ //
-  var userProperties = {
-    profile: options.profile || {},
-    karma: 0,
-    isInvited: false,
-    postCount: 0,
-    commentCount: 0,
-    invitedCount: 0,
-    upvotedPosts: [],
-    downvotedPosts: [],
-    upvotedComments: [],
-    downvotedComments: []
-  };
-  user = _.extend(user, userProperties);
+  user.profile = options.profile || {};
 
-  // look in a few places for the user email
-  if (options.email) {
-    user.email = options.email;
-  } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-    user.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
-  } else if (user.services.facebook && user.services.facebook.email) {
-    user.email = user.services.facebook.email;
-  } else if (user.services.github && user.services.github.email) {
-    user.email = user.services.github.email;
-  } else if (user.services.google && user.services.google.email) {
-    user.email = user.services.google.email;
-  } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-    user.email = user.services.linkedin.emailAddress;
-  }
-
-  // generate email hash
-  if (!!user.email) {
-    user.emailHash = Users.avatar.hash(user.email);
-  }
-
-  // look in a few places for the displayName
-  if (user.profile.username) {
-    user.displayName = user.profile.username;
-  } else if (user.profile.name) {
-    user.displayName = user.profile.name;
-  } else if (user.services.linkedin && user.services.linkedin.firstName) {
-    user.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
-  } else {
-    user.displayName = user.username;
-  }
-
-  // add Twitter username
-  if (user.services && user.services.twitter && user.services.twitter.screenName) {
-    user.twitterUsername = user.services.twitter.screenName;
-  }
-
-  // create a basic slug from display name and then modify it if this slugs already exists;
-  const basicSlug = Utils.slugify(user.displayName);
-  user.slug = Utils.getUnusedSlug(Users, basicSlug);
-
-  // if this is not a dummy account, and is the first user ever, make them an admin
-  user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
-
-  // Events.track('new user', {username: user.displayName, email: user.email});
+  // run onInsert step
+  _.keys(schema).forEach(fieldName => {
+    // if schema has onInsert defined, run autovalue on user and options
+    if (!user[fieldName] && schema[fieldName].onInsert) {
+      const autoValue = schema[fieldName].onInsert(user, options);
+      if (autoValue) {
+        user[fieldName] = autoValue;
+      }
+    // otherwise, check whether options field has schema fields and extend the userObject
+    } else if (!user[fieldName] && schema[fieldName] && options[fieldName]) {
+      user[fieldName] = options[fieldName];
+    }
+  });
 
   return user;
 }
@@ -152,4 +112,3 @@ function usersCheckCompletion (newUser, oldUser) {
   }
 }
 addCallback("users.edit.async", usersCheckCompletion);
-
