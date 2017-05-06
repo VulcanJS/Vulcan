@@ -125,7 +125,7 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading,
+            loading: networkStatus === 1,
             results,
             totalCount,
             refetch,
