@@ -364,7 +364,9 @@ export class AccountsLoginForm extends Tracker.Component {
 
     if (currentUser
       && formState == STATES.PROFILE
-      && (currentUser.services && 'password' in currentUser.services)) {
+      // note: user.services is not published so change password link would never be shown
+      // && (currentUser.services && 'password' in currentUser.services)
+      ) {
       loginButtons.push({
         id: 'switchToChangePassword',
         label: this.context.intl.formatMessage({id: 'accounts.change_password'}),
