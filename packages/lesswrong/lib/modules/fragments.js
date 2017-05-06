@@ -113,13 +113,13 @@ registerFragment(`
   fragment SelectCommentsList on Comment {
     ...CommentsList
     post {
+      title
       _id
       commentCount
       commenters {
         ...UsersMinimumInfo
       }
       slug
-      title
     }
   }
 `);

@@ -22,7 +22,7 @@ const specificResolvers = {
     async post(comment, args, {currentUser, Users, Posts}) {
       if (!comment.postId) return null;
       const post = await Posts.loader.load(comment.postId);
-      return Users.restrictViewableFields(currentUser, Users, post);
+      return Users.restrictViewableFields(currentUser, Posts, post);
     },
     async user(comment, args, {currentUser, Users}) {
       if (!comment.userId) return null;
@@ -61,24 +61,24 @@ const resolvers = {
   },
 
   single: {
-    
+
     name: 'commentsSingle',
-    
+
     async resolver(root, {documentId}, {currentUser, Users, Comments}) {
       const comment = await Comments.loader.load(documentId);
       return Users.restrictViewableFields(currentUser, Comments, comment);
     },
-  
+
   },
 
   total: {
-    
+
     name: 'commentsTotal',
     // broken because it doesn't take any arguments in the query
     resolver(root, {terms}, context) {
       return context.Comments.find({postId: terms.postId}).count();
     },
-  
+
   }
 };
 

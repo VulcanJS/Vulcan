@@ -10,7 +10,7 @@ Users.groups = {};
  * @summary Group class
  */
 class Group {
-  
+
   constructor() {
     this.actions = [];
   }
@@ -50,15 +50,15 @@ Users.getGroups = user => {
   if (!user) { // guests user
 
     userGroups = ["guests"];
-  
+
   } else {
-  
+
     userGroups = ["members"];
 
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
-    } 
-    
+    }
+
     if (Users.isAdmin(user)) { // admin
       userGroups.push("admins");
     }
@@ -85,18 +85,18 @@ Users.getActions = user => {
 
 /**
  * @summary check if a user is a member of a group
- * @param {Array} user 
+ * @param {Array} user
  * @param {String} group or array of groups
  */
 Users.isMemberOf = (user, groupOrGroups) => {
   const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
-  
+
   // everybody is considered part of the guests group
   if (groups.indexOf('guests') !== -1) return true;
-  
+
   // every logged in user is part of the members group
-  if (groups.indexOf('members') !== -1) return !!user; 
-  
+  if (groups.indexOf('members') !== -1) return !!user;
+
   // the admin group have their own function
   if (groups.indexOf('admin') !== -1) return Users.isAdmin(user);
 
@@ -127,7 +127,7 @@ Users.canDo = (user, action) => {
 //   // note(apollo): use of `__typename` given by react-apollo
 //   //const collectionName = document.getCollectionName();
 //   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
-  
+
 //   if (!user || !document) {
 //     return false;
 //   }
@@ -219,7 +219,7 @@ Users.helpers({
 Users.restrictViewableFields = function (user, collection, docOrDocs) {
 
   const restrictDoc = document => _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
-  
+
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 
 }
@@ -259,8 +259,8 @@ Users.createGroup("guests"); // non-logged-in users
 Users.createGroup("members"); // regular users
 
 const membersActions = [
-  "users.new", 
-  "users.edit.own", 
+  "users.new",
+  "users.edit.own",
   "users.remove.own"
 ];
 Users.groups.members.can(membersActions);
@@ -268,7 +268,7 @@ Users.groups.members.can(membersActions);
 Users.createGroup("admins"); // admin users
 
 const adminActions = [
-  "users.new", 
+  "users.new",
   "users.edit.all",
   "users.remove.all",
   "settings.edit"

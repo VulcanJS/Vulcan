@@ -45,8 +45,8 @@ const schema = {
     optional: true,
     type: Date,
     viewableBy: userInParticipants,
-    autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    onInsert: (document, currentUser) => {
+      return new Date();
     },
   },
   draftJS: {
