@@ -1,6 +1,6 @@
 import Categories from './collection.js';
 
-export { getCategories, getCategoriesAsOptions } from './schema.js';
+export { getCategories, getCategoriesAsOptions, getCategoriesAsNestedOptions } from './schema.js';
 import './helpers.js';
 import './callbacks.js';
 import './parameters.js';
