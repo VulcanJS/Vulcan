@@ -55,4 +55,6 @@ Utils.icons = {
   spinner: "spinner",
   new: "plus",
   user: "user",
+  like: "heart",
+  image: "picture-o",
 };

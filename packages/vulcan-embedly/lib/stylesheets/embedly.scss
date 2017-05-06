@@ -1,9 +1,43 @@
-.embedly-thumbnail{
-  display: block;
-  margin-bottom: 5px;
-  border: 3px solid #ddd;
+.embedly-form-control{
+  display: flex;
 }
 
-.thumbnail-url-clear{
+.embedly-url-field{
+  position: relative;
+  flex: 1;
+  margin-right: 10px;
+}
 
+.embedly-thumbnail-placeholder{
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .icon{
+    display: block;
+    color: rgba(0,0,0,0.5);
+  }
+  span{
+    display: none;
+  }
+}
+
+.embedly-thumbnail-image{
+  height: 60px;
+  width: auto;
+  display: block;
+}
+
+.embedly-thumbnail-actions{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .thumbnail-edit{
+    margin-right: 5px;
+  }
+  span{
+    display: none;
+  }
 }

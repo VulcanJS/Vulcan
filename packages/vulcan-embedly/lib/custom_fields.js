@@ -17,7 +17,7 @@ Posts.addField([
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
-      control: ThumbnailURL
+      hidden: true
     }
   },
   {

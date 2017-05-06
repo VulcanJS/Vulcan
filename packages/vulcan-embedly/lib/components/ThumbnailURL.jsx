@@ -29,15 +29,15 @@ class ThumbnailURL extends Component {
   renderThumbnail() {
     return (
       <div>
-          <img
-            className="embedly-thumbnail"
-            src={this.props.value}
-            style={{
-              "width": 150,
-              "height": getSetting('thumbnailHeight', 150) * 150 / getSetting('thumbnailWidth', 150)
-            }}
-            />
-          <a className="thumbnail-url-clear" onClick={this.clearThumbnail}><FormattedMessage id="posts.clear_thumbnail"/></a>
+        <img
+          className="embedly-thumbnail"
+          src={this.props.value}
+          style={{
+            "width": 150,
+            "height": getSetting('thumbnailHeight', 150) * 150 / getSetting('thumbnailWidth', 150)
+          }}
+          />
+        <a className="thumbnail-url-clear" onClick={this.clearThumbnail}><FormattedMessage id="posts.clear_thumbnail"/></a>
       </div>
     )
   }
