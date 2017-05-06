@@ -12,17 +12,17 @@ const specificResolvers = {
     async parentComment(comment, args, {currentUser, Users, Comments}) {
       if (!comment.parentCommentId) return null;
       const parentComment = await Comments.loader.load(comment.parentCommentId);
-      return Users.restrictViewableFields(currentUser, Users, parentComment);
+      return Users.restrictViewableFields(currentUser, Comments, parentComment);
     },
     async topLevelComment(comment, args, {currentUser, Users, Comments}) {
       if (!comment.topLevelCommentId) return null;
       const topLevelComment = await Comments.loader.load(comment.topLevelCommentId);
-      return Users.restrictViewableFields(currentUser, Users, topLevelComment);
+      return Users.restrictViewableFields(currentUser, Comments, topLevelComment);
     },
     async post(comment, args, {currentUser, Users, Posts}) {
       if (!comment.postId) return null;
       const post = await Posts.loader.load(comment.postId);
-      return Users.restrictViewableFields(currentUser, Users, post);
+      return Users.restrictViewableFields(currentUser, Posts, post);
     },
     async user(comment, args, {currentUser, Users}) {
       if (!comment.userId) return null;
