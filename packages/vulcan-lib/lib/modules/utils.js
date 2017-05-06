@@ -308,7 +308,13 @@ Utils.findIndex = (array, predicate) => {
 }
 
 // adapted from http://stackoverflow.com/a/22072374/649299
-Utils.unflatten = function(array, idProperty, parentIdProperty, parent, level=0, tree){
+Utils.unflatten = function(array, options, parent, level=0, tree){
+
+  const { 
+    idProperty = '_id', 
+    parentIdProperty = 'parentId', 
+    childrenProperty = 'childrenResults'
+  } = options;
 
   level++;
 
@@ -334,13 +340,13 @@ Utils.unflatten = function(array, idProperty, parentIdProperty, parent, level=0,
       tree = children;
     } else {
       // else, we add the children to the parent as the "childrenResults" property
-      parent.childrenResults = children;
+      parent[childrenProperty] = children;
     }
 
     // we call the function on each child
     children.forEach(child => {
       child.level = level;
-      Utils.unflatten(array, idProperty, parentIdProperty, child, level);
+      Utils.unflatten(array, options, child, level);
     });
   }
 

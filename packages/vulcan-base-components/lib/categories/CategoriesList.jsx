@@ -26,7 +26,7 @@ class CategoriesList extends Component {
       };
     }); 
 
-    const nestedCategories = Utils.unflatten(categoriesClone, '_id', 'parentId');
+    const nestedCategories = Utils.unflatten(categoriesClone, {idProperty: '_id', parentIdProperty: 'parentId'});
 
     return nestedCategories;
   }
