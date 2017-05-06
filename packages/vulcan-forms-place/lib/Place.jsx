@@ -1,13 +1,15 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import FRC from 'formsy-react-components';
 
+const Input = FRC.Input;
 
 class Place extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { address: props.value };
+    this.state = { address: props.value, placeName: props.value };
     this.onChange = (address) => this.setState({ address });
     this.onSelect = (address, placeId) => this.setState({ address, placeId });
     this.onBlur = this.onBlur.bind(this);
@@ -25,6 +27,9 @@ class Place extends Component {
 
     this.placesService.getDetails({placeId}, (result) => {
       console.log(result)
+      
+      this.setState({placeName: result.name});
+
       this.context.addToAutofilledValues({
         placeName: result.name,
         placeId: placeId,
@@ -57,6 +62,7 @@ class Place extends Component {
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <PlacesAutocomplete inputProps={inputProps} onSelect={this.onSelect} />
+          <Input name={this.props.name} type="hidden" readOnly value={this.state.placeName} />
         </div>
       </div>
     );
