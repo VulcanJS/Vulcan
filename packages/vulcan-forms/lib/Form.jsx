@@ -470,10 +470,9 @@ class Form extends Component {
       unsetKeys = _.unique(unsetKeys.concat(_.difference(this.state.deletedValues, setKeys)));
 
       // build mutation arguments object
-      const args = {documentId: document._id, set: set};
+      const args = {documentId: document._id, set: set, unset: {}};
       if (unsetKeys.length > 0) {
-        const unset = _.object(unsetKeys, unsetKeys.map(() => true));
-        args.unset = unset;
+        args.unset = _.object(unsetKeys, unsetKeys.map(() => true));
       }
       // call method with _id of document being edited and modifier
       this.props.editMutation(args).then(this.editMutationSuccessCallback).catch(this.mutationErrorCallback);
