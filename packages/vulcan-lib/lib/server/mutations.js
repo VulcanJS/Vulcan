@@ -119,7 +119,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   if (validate) {
 
     // validate modifiers
-    collection.simpleSchema().newContext().validate({$set: set, $unset: unset}, { modifier: true });
+    collection.simpleSchema().validate({$set: set, $unset: unset}, { modifier: true });
 
     // check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
