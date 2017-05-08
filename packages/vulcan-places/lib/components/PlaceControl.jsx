@@ -5,11 +5,11 @@ import FRC from 'formsy-react-components';
 
 const Input = FRC.Input;
 
-class Place extends Component {
+class PlaceControl extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { address: props.value, placeName: props.value };
+    this.state = { address: props.value, placeName: props.value, placeId: props.document.placeId };
     this.onChange = (address) => this.setState({ address });
     this.onSelect = (address, placeId) => this.setState({ address, placeId });
     this.onBlur = this.onBlur.bind(this);
@@ -33,8 +33,6 @@ class Place extends Component {
       this.context.addToAutofilledValues({
         placeName: result.name,
         placeId: placeId,
-        placeLat: result.geometry.location.lat(),
-        placeLng: result.geometry.location.lng()
       });
     });
 
@@ -69,16 +67,16 @@ class Place extends Component {
   }
 }
 
-Place.propTypes = {
+PlaceControl.propTypes = {
   name: React.PropTypes.string,
   value: React.PropTypes.any,
   label: React.PropTypes.string
 };
 
-Place.contextTypes = {
+PlaceControl.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
 }
 
-registerComponent('Place', Place);
+registerComponent('PlaceControl', PlaceControl);
 
-export default Place;
+export default PlaceControl;
