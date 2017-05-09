@@ -1,12 +1,12 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 
-const Layout = props =>
+const Layout = ({currentUser, children}) =>
   <div className="wrapper" id="wrapper">
 
     <Components.HeadTags />
 
-    <Components.UsersProfileCheck currentUser={props.currentUser} documentId={props.currentUser && props.currentUser._id} />
+    {currentUser ? <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} /> : null}
 
     <Components.Header />
   
@@ -16,7 +16,7 @@ const Layout = props =>
 
       <Components.Newsletter />
 
-      {props.children}
+      {children}
 
     </div>
   

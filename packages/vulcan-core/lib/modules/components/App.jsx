@@ -25,11 +25,9 @@ class App extends Component {
   render() {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        {
-          this.props.currentUserLoading ? 
-            <Components.Loading /> :
-            <Components.Layout>{this.props.children}</Components.Layout>
-        }
+        <Components.Layout>
+          { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+        </Components.Layout>
       </IntlProvider>
     )
   }
