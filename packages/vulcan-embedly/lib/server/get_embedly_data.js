@@ -1,19 +1,18 @@
 import Posts from "meteor/vulcan:posts";
 import { addCallback, getSetting } from 'meteor/vulcan:core';
+import { embedAPI } from './embedapi.js'
 
 function getEmbedlyData(url) {
-  var extractBase = 'http://api.embed.ly/1/extract';
+  
   var embedlyKey = getSetting('embedlyKey');
+  var extractBase = 'http://api.embed.ly/1/extract';
   // 200 x 200 is the minimum size accepted by facebook
   var thumbnailWidth = getSetting('thumbnailWidth', 400);
   var thumbnailHeight = getSetting('thumbnailHeight', 300);
 
-  if(!embedlyKey) {
-    // fail silently to still let the post be submitted as usual
-    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module."); // eslint-disable-line
-    return null;
-  }
-
+  if(!embedlyKey)
+    return embedAPI(url);
+    
   try {
 
     var result = Meteor.http.get(extractBase, {
@@ -37,7 +36,7 @@ function getEmbedlyData(url) {
     var embedlyData = _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl', 'sourceName', 'sourceUrl');
 
     return embedlyData;
-
+    
   } catch (error) {
     console.log(error); // eslint-disable-line
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
