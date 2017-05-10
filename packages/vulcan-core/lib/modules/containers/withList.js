@@ -12,7 +12,8 @@ Options:
   - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
-  
+  - terms: an object that defines which documents to fetch
+
 Props Received: 
 
   - terms: an object that defines which documents to fetch
@@ -91,7 +92,9 @@ const withList = (options) => {
         
         // graphql query options
         options({terms, paginationTerms, client: apolloClient}) {
-          const mergedTerms = {...terms, ...paginationTerms};
+          // get terms either from props or from options
+          const baseTerms = terms || options.terms;
+          const mergedTerms = {...baseTerms, ...paginationTerms};
           return {
             variables: {
               terms: mergedTerms,
