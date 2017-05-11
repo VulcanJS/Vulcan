@@ -7,7 +7,7 @@ class HeadTags extends Component {
 
 		const url = !!this.props.url ? this.props.url : Utils.getSiteUrl();
 		const title = !!this.props.title ? this.props.title : getSetting("title", "My App");
-		const description = !!this.props.description ? this.props.description : getSetting("tagline");
+		const description = !!this.props.description ? this.props.description : getSetting("tagline") || getSetting("description");
 
 		// default image meta: logo url, else site image defined in settings
 		let image = !!getSetting("siteImage") ? getSetting("siteImage"): getSetting("logoUrl");

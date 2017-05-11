@@ -63,6 +63,8 @@ Meteor.methods({
 
     if (Users.isAdmin(Meteor.user())) {
 
+      console.log(`// caching ${limit} thumbnails…`)
+
       var postsWithUncachedThumbnails = Posts.find({
         thumbnailUrl: { $exists: true },
         originalThumbnailUrl: { $exists: false }
