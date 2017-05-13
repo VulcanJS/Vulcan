@@ -61,13 +61,13 @@ class EmbedlyURL extends Component {
         await this.setState({loading: true});
 
         // the URL has changed, get new title, body, thumbnail & media for this url
-        const result = await this.props.getEmbedlyData({url});
+        const result = await this.props.getEmbedData({url});
         
         // uncomment for debug
         // console.log('Embedly Data', result);
         
         // extract the relevant data, for easier consumption
-        const { data: { getEmbedlyData: { title, description, thumbnailUrl } } } = result;
+        const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;
 
         // update the form
         await this.context.updateCurrentValues({
@@ -145,7 +145,7 @@ class EmbedlyURL extends Component {
     loadingStyle.display = this.state.loading ? "block" : "none";
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const {document, control, getEmbedlyData, ...rest} = this.props; // eslint-disable-line
+    const {document, control, getEmbedData, ...rest} = this.props; // eslint-disable-line
 
     return (
       <div className="form-group row embedly-form-group" style={wrapperStyle}>
@@ -191,7 +191,11 @@ EmbedlyURL.contextTypes = {
   intl: intlShape
 }
 
-export default withMutation({
-  name: 'getEmbedlyData',
+const options = {
+  name: 'getEmbedData',
   args: {url: 'String'},
-})(EmbedlyURL);
+}
+
+export default withMutation(options)(EmbedlyURL);
+
+registerComponent('EmbedlyURL', EmbedlyURL, [withMutation, options]);

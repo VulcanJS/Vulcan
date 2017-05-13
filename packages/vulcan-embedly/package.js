@@ -15,18 +15,12 @@ Package.onUse( function(api) {
     'fourseven:scss@4.5.0'
   ]);
 
-  api.addFiles([
-    'lib/embedly.js',
-    'lib/custom_fields.js'
-  ], ['client', 'server']);
-
-  api.addFiles([
-    // 'lib/server/get_embedly_data.js'
-    'lib/server/mutations.js'
-  ], ['server']);
 
   api.addFiles([
     'lib/stylesheets/embedly.scss'
   ], ['client']);
+
+  api.mainModule('lib/client/main.js', 'client');
+  api.mainModule('lib/server/main.js', 'server');
 
 });
