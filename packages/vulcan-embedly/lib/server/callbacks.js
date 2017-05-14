@@ -33,9 +33,9 @@ function addMediaAfterSubmit (post) {
 
     }
 
-    return post;
-
   }
+  
+  return post;
 }
 addCallback("posts.new.sync", addMediaAfterSubmit);
 
