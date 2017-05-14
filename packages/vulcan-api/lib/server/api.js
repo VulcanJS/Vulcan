@@ -6,6 +6,10 @@ import { Utils } from 'meteor/vulcan:core';
 export const servePostsApi = (terms) => {
   var posts = [];
 
+  if (!terms.limit) {
+    terms.limit = 50;
+  }
+  
   var parameters = Posts.getParameters(terms);
 
   const postsCursor = Posts.find(parameters.selector, parameters.options);
