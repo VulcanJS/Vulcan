@@ -54,18 +54,21 @@ export const runCallbacks = function () {
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
-    return callbacks.reduce(function(result, callback) {
+    return callbacks.reduce(function(accumulator, callback) {
       // console.log(callback.name);
       // return callback(result, constant);
-      const newArguments = [result].concat(args);
-      return callback.apply(this, newArguments);
+      const newArguments = [accumulator].concat(args);
+      // return callback.apply(this, newArguments);
       // uncomment for debugging
-      // try {
-      //   return callback(result, constant);
-      // } catch (error) {
-      //   console.log(`// error at callback [${callback.name}] in hook [${hook}]`)
-      //   throw error;
-      // }
+      try {
+        return callback.apply(this, newArguments);
+      } catch (error) {
+        console.log(`// error at callback [${callback.name}] in hook [${hook}]`);
+        console.log(error);
+        // throw error;
+        // passed the unchanged accumulator to the next iteration of the loop
+        return accumulator;
+      }
     }, item);
 
   } else { // else, just return the item unchanged
