@@ -11,7 +11,7 @@ export {
   // collections
   Collections, createCollection,
   // fragments
-  Fragments, registerFragment, getFragment, getFragmentName, extendFragment,
+  Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment,
   // graphql
   GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext, 
   // headtags

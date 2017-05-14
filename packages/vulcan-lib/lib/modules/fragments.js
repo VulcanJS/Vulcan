@@ -28,6 +28,13 @@ export const extendFragment = (fragmentName, newProperties) => {
   registerFragment(newFragmentText);
 }
 
+// remove a property from a fragment
+export const removeFromFragment = (fragmentName, propertyName) => {
+  const fragment = Fragments[fragmentName];
+  const newFragmentText = fragment.fragmentText.replace(propertyName, '');
+  registerFragment(newFragmentText);  
+}
+
 // get fragment name from fragment object
 export const getFragmentName = fragment => fragment && fragment.definitions[0] && fragment.definitions[0].name.value;
 

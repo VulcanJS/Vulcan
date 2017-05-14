@@ -14,7 +14,8 @@ SimpleSchema.extendOptions([
 ]);
 
 /**
- * @summary replacement for Collection2's attachSchema
+ * @summary replacement for Collection2's attachSchema. Pass either a schema, to
+ * initialize or replace the schema, or some fields, to extend the current schema
  * @class Mongo.Collection
  */
 Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
@@ -57,7 +58,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
   var schema = _.omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
-  collection.attachSchema(schema, {replace: true});
+  collection.attachSchema(new SimpleSchema(schema));
 };
 
 /**
