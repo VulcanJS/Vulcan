@@ -5,8 +5,8 @@ import { Button } from 'react-bootstrap';
 
 const PostsNewButton = (props, context) => {
 
-  const size = props.currentUser ? "large" : "small";
-  const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
+  const size = props.currentUser ? 'large' : 'small';
+  const button = <Button className="posts-new-button" bsStyle="primary"><Components.Icon name="new"/> <FormattedMessage id="posts.new_post"/></Button>;
   return (
     <Components.ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
       <Components.PostsNewForm />

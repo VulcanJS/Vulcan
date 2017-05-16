@@ -14,7 +14,7 @@ class PostsDay extends Component {
         { noPosts ? <Components.PostsNoMore /> :
           <div className="posts-list">
             <div className="posts-list-content">
-              {posts.map(post => <Components.PostsItem post={post} key={post._id} currentUser={this.props.currentUser} />)}
+              {posts.map((post, index) => <Components.PostsItem post={post} key={post._id} index={index} currentUser={this.props.currentUser} />)}
             </div>
           </div>
         }

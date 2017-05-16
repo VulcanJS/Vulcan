@@ -6,9 +6,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 
 const Error = ({error}) => <Alert className="flash-message" bsStyle="danger"><FormattedMessage id={error.id} values={{value: error.value}}/>{error.message}</Alert>
 
-const PostsList = (props) => {
-
-  const {results, loading, count, totalCount, loadMore, showHeader = true, showLoadMore = true, networkStatus, currentUser, error, terms} = props;
+const PostsList = ({results, loading, count, totalCount, loadMore, showHeader = true, showLoadMore = true, networkStatus, currentUser, error, terms}) => {
 
   const loadingMore = networkStatus === 2;
 
