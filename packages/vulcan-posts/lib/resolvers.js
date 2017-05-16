@@ -5,7 +5,7 @@ const specificResolvers = {
   Post: {
     async user(post, args, context) {
       if (!post.userId) return null;
-      const user = await context.Users.loader.load(post.userId, `Post.user (${post.title})`);
+      const user = await context.Users.loader.load(post.userId);
       return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
     },
   },
