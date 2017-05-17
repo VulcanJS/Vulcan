@@ -1,9 +1,9 @@
 {
   "public": {
     "title": "LessWrong Development Server",
-    "tagline":"LessWrong Development Server",
+    "tagline":"A community blog devoted to refining the art of rationality",
 
-    "logoUrl": "http://placekitten.com/250/80",
+    "logoUrl": "/packages/lesswrong/lib/assets/Logo.svg",
     "logoHeight": "80",
     "logoWidth": "250",
     "faviconUrl": "/favicon.ico",
@@ -11,11 +11,11 @@
     "requirePostsApproval":false,
     "requireViewInvite":false,
     "requirePostInvite":false,
-    "enableNewsletter":true,
+    "enableNewsletter":false,
     "autoSubscribe":false,
     "emailNotifications":true,
     "postInterval": 20,
-    "RSSLinksPointTo": "link",
+    "RSSLinksPointTo": "post",
     "commentInterval": 20,
     "maxPostsPerDay": 10,
     "startInvitesCount": 5,

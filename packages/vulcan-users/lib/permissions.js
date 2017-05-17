@@ -219,9 +219,8 @@ Users.helpers({
 Users.restrictViewableFields = function (user, collection, docOrDocs) {
 
   const restrictDoc = document => _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
-
-  return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
-
+  returnValue = Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
+  return returnValue
 }
 
 /**

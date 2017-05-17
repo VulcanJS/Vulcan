@@ -18,16 +18,10 @@ class NotificationsItem extends Component {
     className = "notification-item " + (notification.viewed ? "viewed" : "unviewed");
     return ( <div>
       <LinkContainer to={notification.link ? notification.link : "/"}>
-        <MenuItem key={notification._id} disabled={notification.viewed} active>
+        <MenuItem key={notification._id} disabled={notification.viewed}>
             {notification.notificationMessage + ": (" + notification.notificationType + ")"}
         </MenuItem>
       </LinkContainer>
-      <DropdownButton id={notification._id} bsSize="xsmall" role="menuitem" bsStyle='link' title='Debug Information'>
-            <MenuItem> userId: {notification.userId} </MenuItem>
-            <MenuItem> notificationId: {notification._id} </MenuItem>
-            <MenuItem> documentId: {notification.documentId} </MenuItem>
-            <MenuItem> viewed: {notification.viewed ? "true" : "false"}</MenuItem>
-      </DropdownButton>
       <MenuItem divider /> </div>
     )
   }

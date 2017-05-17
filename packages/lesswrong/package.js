@@ -23,9 +23,14 @@ Package.onUse( function(api) {
   api.mainModule('client.js', 'client');
 
   api.addFiles([
+    'lib/stylesheets/bootstrap.scss',
     'lib/stylesheets/custom.scss',
-    'lib/stylesheets/editor.scss'
+    'lib/stylesheets/editor.scss',
+  ], ['client']);
 
+  api.addAssets([
+    'lib/assets/test.jpg',
+    'lib/assets/Logo.svg',
   ], ['client']);
 
 

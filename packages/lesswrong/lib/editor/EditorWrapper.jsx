@@ -13,6 +13,7 @@ import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-pl
 import createFocusPlugin from 'draft-js-focus-plugin';
 import createAlignmentPlugin from 'draft-js-alignment-plugin';
 import createResizeablePlugin from 'draft-js-resizeable-plugin';
+import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin';
 import create from 'draft-js-linkify-plugin';
 
 import {
@@ -117,13 +118,16 @@ class EditorWrapper extends Component {
     this.InlineToolbar = inlineToolbarPlugin.InlineToolbar;
     this.imagePlugin = imagePlugin;
 
+    const markdownShortcutsPlugin = createMarkdownShortcutsPlugin();
+
     this.plugins = [
       linkifyPlugin,
       imagePlugin,
       inlineToolbarPlugin,
       alignmentPlugin,
       focusPlugin,
-      resizeablePlugin
+      resizeablePlugin,
+      markdownShortcutsPlugin,
     ];
   };
 

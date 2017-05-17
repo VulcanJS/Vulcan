@@ -7,7 +7,9 @@ it the same way.
 import { IndexLink } from 'react-router';
 import Users from 'meteor/vulcan:users';
 import React, { PropTypes, Component } from 'react';
-import { withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/vulcan:core';
+import {Utils, withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/vulcan:core';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+
 
 
 
@@ -24,33 +26,20 @@ class NotificationsHeader extends Component {
 
 
     return (
-      <div className="header-wrapper">
-
-        <header className="header">
-
-          <div className="logo">
-            <Components.Logo logoUrl={logoUrl} siteTitle={siteTitle} />
-            {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
-          </div>
-
-          <div className="nav">
-            {/* CUSTOM CODE STARTS HERE*/}
-            <div className="nav-notifications">
-              {!!this.props.currentUser ? <Components.NotificationsMenu title="Notifications" terms={notificationTerms}/> : <div></div>}
-            </div>
-            {/* CUSTOM CODE ENDS HERE*/}
-            <div className="nav-user">
-              {!!this.props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
-            </div>
-
-            <div className="nav-new-post">
-              <Components.PostsNewButton/>
-            </div>
-
-          </div>
-
-        </header>
-      </div>
+      <header className="header-wrapper">
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Components.Logo logoUrl={Utils.getSiteUrl() + 'packages/lesswrong/lib/assets/Logo.svg'}/>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav pullRight={true}>
+            {!!this.props.currentUser ? <Components.NotificationsMenu title="Notifications" terms={notificationTerms}/> : null}
+            {!!this.props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
+            <NavItem> <Components.PostsNewButton/> </NavItem>
+          </Nav>
+        </Navbar>
+      </header>
     )
   }
 }

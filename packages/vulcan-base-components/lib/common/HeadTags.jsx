@@ -11,10 +11,10 @@ class HeadTags extends Component {
 
 		// default image meta: logo url, else site image defined in settings
 		let image = !!getSetting("siteImage") ? getSetting("siteImage"): getSetting("logoUrl");
-		
-		// overwrite default image if one is passed as props 
+
+		// overwrite default image if one is passed as props
 		if (!!this.props.image) {
-			image = this.props.image; 
+			image = this.props.image;
 		}
 
 		// add site url base if the image is stored locally
@@ -45,7 +45,6 @@ class HeadTags extends Component {
 		const link = Headtags.link.concat([
 			{ rel: "canonical", href: Utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") },
-		  { rel: 'stylesheet', type: 'text/css', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css' },
 		  { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
 		]);
 

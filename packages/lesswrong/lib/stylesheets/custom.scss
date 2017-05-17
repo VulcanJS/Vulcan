@@ -85,3 +85,77 @@ width: 100%;
   }
   @include flex-center;
 }
+
+.commentEditor{
+  border: #d1d1d1;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.postEditor{
+  border: #d1d1d1;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.messageEditor{
+  border: #d1d1d1;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.posts-item-title{
+  margin-top: 0px;
+}
+
+.logo-image{
+  font-size: 30px;
+  margin-top: 18px;
+  margin-bottom: 7px;
+}
+
+.page-header{
+  margin-top: 0px;
+}
+
+h1{
+  margin-top: 0px;
+}
+
+h2{
+  margin-top: 0px;
+}
+
+h3{
+  margin-top: 0px;
+}
+
+.tagline{
+  font-size: 1.1rem !important;
+}
+
+.header-wrapper{
+  background-color: rgb(247,247,247);
+  .header{
+    padding-top: 5px;
+    padding-bottom: 0px;
+  }
+}
+.navbar{
+  .container{
+    padding: 0;
+  }
+}
+
+.navbar-default{
+  background-color: rgb(247,247,247);
+}

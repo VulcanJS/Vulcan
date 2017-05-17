@@ -35,10 +35,10 @@ fi
 
 test -f settings.json || (echo "🛠  ${blue}Creating your own settings.json file...\n"; cp sample_settings.json settings.json;)
 
-echo "🌋  ${bold}${purple}Happy hacking with Vulcan!${reset}";
+echo "🌋  ${bold}${purple}Welcome to the LessWrong development server!${reset}";
 
-echo "📖  ${blue}The docs are available at: ${purple}http://docs.vulcanjs.org";
-
+echo "📖  ${blue}We are using Vulcan, whose docs are available at: ${purple}http://docs.vulcanjs.org";
+echo "📖  ${blue}You can find our Github repo here: ${purple}https://github.com/Discordius/Telescope/tree/devel";
 
 if tput setaf 1 &> /dev/null; then
   tput sgr0;
