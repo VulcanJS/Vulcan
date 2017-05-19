@@ -72,6 +72,7 @@ addStrings('en', {
   "posts.enter_thumbnail_url": "Enter URL",
   "posts.created_message": "Post created.",
   "posts.rate_limit_error": "Please wait {value} seconds before posting again.",
+  "posts.sign_up_or_log_in_first": "Please sign up or log in first.",
   "posts.postedAt": "Posted at",
   "posts.dateNotDefined": "Date not defined",
   "posts.subscribe": "Subscribe",

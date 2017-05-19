@@ -9,6 +9,32 @@ import { withApollo } from 'react-apollo';
 
 class CategoriesList extends Component {
 
+  constructor() {
+    super();
+    this.getCurrentCategoriesArray = this.getCurrentCategoriesArray.bind(this);
+    this.getCategoryLink = this.getCategoryLink.bind(this);
+  }
+
+  getCurrentCategoriesArray() {
+    const currentCategories = _.clone(this.props.location.query.cat);
+    if (currentCategories) {
+      return Array.isArray(currentCategories) ? currentCategories : [currentCategories]
+    } else {
+      return [];
+    }
+  }
+
+  getCategoryLink(slug) {
+    const categories = this.getCurrentCategoriesArray();
+    return {
+      pathname: '/',
+      query: {
+        ...this.props.location.query,
+        cat: categories.includes(slug) ? _.without(categories, slug) : categories.concat([slug])
+      }
+    }
+  }
+
   getNestedCategories() {
     const categories = this.props.results;
 
