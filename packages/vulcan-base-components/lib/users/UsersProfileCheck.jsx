@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import Users from 'meteor/vulcan:users';
 import { withCurrentUser, Utils, Components, registerComponent, withMessages } from 'meteor/vulcan:core';
@@ -47,13 +48,13 @@ const UsersProfileCheck = (props, context) => {
 };
 
 UsersProfileCheck.propsTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: PropTypes.object
 };
 
 UsersProfileCheck.contextTypes = {
   intl: intlShape
 };
 
-UsersProfileCheck.displayName = "UsersProfileCheck";
+UsersProfileCheck.displayName = 'UsersProfileCheck';
 
 registerComponent('UsersProfileCheck', UsersProfileCheck, withMessages, withCurrentUser);

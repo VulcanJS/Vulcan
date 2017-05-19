@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
 
-const PostsCommentsThread = (props, context) => {
+const PostsCommentsThread = (props, /* context*/) => {
 
   const {loading, terms: { postId }, results, totalCount} = props;
   
@@ -39,10 +40,10 @@ const PostsCommentsThread = (props, context) => {
   }
 };
 
-PostsCommentsThread.displayName = "PostsCommentsThread";
+PostsCommentsThread.displayName = 'PostsCommentsThread';
 
 PostsCommentsThread.propTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: PropTypes.object
 };
 
 const options = {

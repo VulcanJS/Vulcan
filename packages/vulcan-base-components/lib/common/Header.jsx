@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/vulcan:core';
 
 const Header = (props, context) => {
@@ -37,7 +38,7 @@ const Header = (props, context) => {
 Header.displayName = "Header";
 
 Header.propTypes = {
-  currentUser: React.PropTypes.object,
+  currentUser: PropTypes.object,
 };
 
 registerComponent('Header', Header, withCurrentUser);

@@ -1,11 +1,11 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { getSetting } from 'meteor/vulcan:core';
-// import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 const Input = FRC.Input;
 
-class ThumbnailURL extends Component {
+class ThumbnailURL extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -43,11 +43,8 @@ class ThumbnailURL extends Component {
   }
 
   render() {
-
     const {name, /* value, */ label} = this.props;
-
-    const inputType = this.state.showInput ? "text" : "hidden";
-
+    const inputType = this.state.showInput ? 'text' : 'hidden';
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{label}</label>
@@ -62,15 +59,15 @@ class ThumbnailURL extends Component {
 }
 
 ThumbnailURL.propTypes = {
-  name: React.PropTypes.string,
-  value: React.PropTypes.any,
-  label: React.PropTypes.string
-}
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.string
+};
 
 ThumbnailURL.contextTypes = {
-  addToPrefilledValues: React.PropTypes.func,
-  updateCurrentValues: React.PropTypes.func,
-  deleteValue: React.PropTypes.func
-}
+  addToPrefilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
+  deleteValue: PropTypes.func
+};
 
 export default ThumbnailURL;

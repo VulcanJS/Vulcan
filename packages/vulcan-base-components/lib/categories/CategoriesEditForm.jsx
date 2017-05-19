@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
 import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import Categories from "meteor/vulcan:categories";
@@ -16,29 +17,27 @@ const CategoriesEditForm = (props, context) => {
         mutationFragment={getFragment('CategoriesList')}
         successCallback={category => {
           props.closeModal();
-          props.flash(context.intl.formatMessage({id: 'categories.edit_success'}, {name: category.name}), "success");
+          props.flash(context.intl.formatMessage({ id: 'categories.edit_success' }, { name: category.name }), 'success');
         }}
-        removeSuccessCallback={({documentId, documentTitle}) => {
+        removeSuccessCallback={({ documentId, documentTitle }) => {
           props.closeModal();
-          props.flash(context.intl.formatMessage({id: 'categories.delete_success'}, {name: documentTitle}), "success");
+          props.flash(context.intl.formatMessage({ id: 'categories.delete_success' }, { name: documentTitle }), 'success');
           // context.events.track("category deleted", {_id: documentId});
         }}
         showRemove={true}
       />
     </div>
-  )
-
+  );
 };
 
 CategoriesEditForm.propTypes = {
-  category: React.PropTypes.object.isRequired,
-  closeModal: React.PropTypes.func,
-  flash: React.PropTypes.func,
-}
+  category: PropTypes.object.isRequired,
+  closeModal: PropTypes.func,
+  flash: PropTypes.func,
+};
 
 CategoriesEditForm.contextTypes = {
   intl: intlShape,
-  // events: React.PropTypes.object,
 };
 
 registerComponent('CategoriesEditForm', CategoriesEditForm, withMessages);

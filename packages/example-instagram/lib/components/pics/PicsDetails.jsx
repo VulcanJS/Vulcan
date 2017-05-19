@@ -5,7 +5,7 @@ Wrapped with the "withDocument" container.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import Pics from '../../modules/pics/collection.js';
 import { Components, withDocument } from 'meteor/vulcan:core';
 import CommentsList from '../comments/CommentsList.jsx';

@@ -5,12 +5,12 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Pics from '../../modules/pics/collection.js';
 import PicsItem from './PicsItem.jsx';
-import PicsNewForm from './PicsNewForm.jsx';
+// import PicsNewForm from './PicsNewForm.jsx';
 
 const PicsList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   

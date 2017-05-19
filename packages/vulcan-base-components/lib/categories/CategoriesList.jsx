@@ -1,5 +1,6 @@
 import { ModalTrigger, Components, registerComponent, withList, Utils } from "meteor/vulcan:core";
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
@@ -7,7 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Categories from 'meteor/vulcan:categories';
 import { withApollo } from 'react-apollo';
 
-class CategoriesList extends Component {
+class CategoriesList extends PureComponent {
 
   getNestedCategories() {
     const categories = this.props.results;
@@ -79,7 +80,7 @@ class CategoriesList extends Component {
 }
 
 CategoriesList.propTypes = {
-  results: React.PropTypes.array,
+  results: PropTypes.array,
 };
 
 

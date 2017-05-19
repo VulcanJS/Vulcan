@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import { intlShape } from 'react-intl';
@@ -13,7 +14,7 @@ const RadioGroup = FRC.RadioGroup;
 const Select = FRC.Select;
 const Textarea = FRC.Textarea;
 
-class FormComponent extends Component {
+class FormComponent extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -84,17 +85,17 @@ class FormComponent extends Component {
 }
 
 FormComponent.propTypes = {
-  document: React.PropTypes.object,
-  name: React.PropTypes.string,
-  label: React.PropTypes.string,
-  value: React.PropTypes.any,
-  placeholder: React.PropTypes.string,
-  prefilledValue: React.PropTypes.any,
-  options: React.PropTypes.any,
-  control: React.PropTypes.any,
-  datatype: React.PropTypes.any,
-  disabled: React.PropTypes.bool,
-  updateCurrentValues: React.PropTypes.func
+  document: PropTypes.object,
+  name: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.any,
+  placeholder: PropTypes.string,
+  prefilledValue: PropTypes.any,
+  options: PropTypes.any,
+  control: PropTypes.any,
+  datatype: PropTypes.any,
+  disabled: PropTypes.bool,
+  updateCurrentValues: PropTypes.func
 }
 
 FormComponent.contextTypes = {
@@ -110,13 +111,14 @@ export default FormComponent;
 import ComponentMixin from './component';
 import Row from './row';
 
+// TODO: Convert to react component
 const CheckboxGroup = React.createClass({
 
     mixins: [Formsy.Mixin, ComponentMixin],
 
     propTypes: {
-        name: React.PropTypes.string.isRequired,
-        options: React.PropTypes.array.isRequired
+        name: PropTypes.string.isRequired,
+        options: PropTypes.array.isRequired
     },
 
     getDefaultProps: function() {
