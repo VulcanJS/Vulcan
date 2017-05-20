@@ -1,7 +1,7 @@
 Package.describe({
   name: "example-forum",
   summary: "Telescope forum package",
-  version: '1.3.2',
+  version: '1.4.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -12,13 +12,13 @@ Package.onUse(function (api) {
   api.use([
 
     // vulcan core
-    'vulcan:core@1.3.2',
+    'vulcan:core@1.4.0',
 
     // vulcan packages
-    'vulcan:posts@1.3.2',
-    'vulcan:comments@1.3.2',
-    'vulcan:voting@1.3.2',
-    'vulcan:accounts@1.3.2',
+    'vulcan:posts@1.4.0',
+    'vulcan:comments@1.4.0',
+    'vulcan:voting@1.4.0',
+    'vulcan:accounts@1.4.0',
     'vulcan:email',
     'vulcan:forms',
     'vulcan:newsletter',

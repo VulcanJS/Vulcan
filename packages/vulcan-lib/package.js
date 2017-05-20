@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Telescope libraries.',
-  version: '1.3.2',
+  version: '1.4.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
