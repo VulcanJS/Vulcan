@@ -130,3 +130,17 @@ registerFragment(`
     karma
   }
 `);
+
+registerFragment(`
+  fragment newRSSFeedFragment on RSSFeed {
+    _id
+    userId
+    createdAt
+    ownedByUser
+    displayFullContent
+    nickname
+    url
+    status
+    rawFeed
+  }
+`);

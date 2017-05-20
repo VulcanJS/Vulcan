@@ -37,6 +37,11 @@ const LWUsersProfile = (props) => {
               <Components.newConversationButton user={user} />
             </ModalTrigger>
           </li>
+          <li>
+            <ModalTrigger label="Register new RSS Feed" >
+              <Components.newFeedButton user={user} />
+            </ModalTrigger>
+          </li>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
         <Components.PostsList terms={terms} />

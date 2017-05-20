@@ -14,7 +14,6 @@ import Conversations from './collections/conversations/collection.js'
 import './collections/conversations/views.js';
 
 // RSSFeeds
-import './collections/rssfeeds/permissions.js'
 import RSSFeeds from './collections/rssfeeds/collection.js'
 import './collections/rssfeeds/views.js'
 
@@ -31,6 +30,8 @@ import './collections/users/custom_fields.js';
 
 // Comments
 import './collections/comments/custom_fields.js';
+
+
 
 // Internationalization
 import './i18n-en-us/en_US.js';
@@ -49,4 +50,4 @@ import './views.js';
 // Settings for Vulcan
 import './modules/settings.js';
 
-export { Conversations, Messages, Notifications }
+export { Conversations, Messages, Notifications, RSSFeeds }

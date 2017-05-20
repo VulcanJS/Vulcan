@@ -36,6 +36,9 @@ import './component-replacements/LWPostsViews.jsx';
 import './component-replacements/LWPostsNewForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
 
+// RSS Feed Integration
+import './rss-integration/newFeedButton.jsx';
+
 import './subscriptions/SubscribeTo.jsx';
 
 import './voting/LWVoting.jsx';
