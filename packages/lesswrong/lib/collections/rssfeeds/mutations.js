@@ -55,7 +55,7 @@ const mutations = {
 
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, 'rssfeeds.edit.own') : Users.canDo(user, `rssfeeds.edit.all`);
+      return Users.isAdmin(user);
     },
 
     mutation(root, {documentId, set, unset}, context) {
@@ -82,7 +82,7 @@ const mutations = {
 
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, 'rssfeeds.remove.own') : Users.canDo(user, `rssfeeds.remove.all`);
+      return Users.isAdmin(user);
     },
 
     mutation(root, {documentId}, context) {
