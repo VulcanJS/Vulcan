@@ -25,8 +25,9 @@ class NotificationsMenu extends Component {
       return (
         <div>
           <LinkContainer to={{pathname: '/inbox', query: {select: "Notifications"}}}>
-            <MenuItem> See all notifications in Inbox </MenuItem>
+            <MenuItem> See all your notifications and messages </MenuItem>
           </LinkContainer>
+          <MenuItem divider />
           {results.map(notification => <Components.NotificationsItem key={notification._id} currentUser={currentUser} notification={notification} />)}
           <MenuItem onClick={() => loadMore()}>Load More</MenuItem>
         </div>
@@ -49,7 +50,7 @@ class NotificationsMenu extends Component {
 
     if(!currentUser){
       return (<div></div>);
-    } else { //TODO: Replace DrodownButton with custom Dropdown component and replace notification count with badge
+    } else {
       return (
         <NavDropdown id="notification-nav" onClick={() => this.viewNotifications(unreadNotifications)} title={title + ' (' + unreadNotifications.length + ')'}>
             {this.renderNotificationsList()}

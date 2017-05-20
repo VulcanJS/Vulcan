@@ -29,8 +29,7 @@ Package.onUse( function(api) {
   ], ['client']);
 
   api.addAssets([
-    'lib/assets/test.jpg',
-    'lib/assets/Logo.svg',
+    'assets/Logo.svg',
   ], ['client']);
 
 

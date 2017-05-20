@@ -13,7 +13,7 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 
 
-class NotificationsHeader extends Component {
+class LWHeader extends Component {
 
   render () {
 
@@ -30,7 +30,7 @@ class NotificationsHeader extends Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
-              <Components.Logo logoUrl={Utils.getSiteUrl() + 'packages/lesswrong/lib/assets/Logo.svg'}/>
+              <Components.Logo logoUrl={Utils.getSiteUrl() + 'packages/lesswrong/assets/Logo.svg'}/>
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight={true}>
@@ -44,4 +44,4 @@ class NotificationsHeader extends Component {
   }
 }
 
-replaceComponent('Header', NotificationsHeader, withCurrentUser);
+replaceComponent('Header', LWHeader, withCurrentUser);

@@ -1,3 +1,16 @@
+/*
+
+CSS File with general modifications. Usually stuff gets added here first and
+then moved to more specific files as it becomes necessary.
+
+
+*/
+
+
+// Variable Definitions. Used only in this file. Current setup sadly doesn't
+// allow for global scss variable definitions :(
+$lw-green: #588f27;
+
 $hmargin: 10px;
 $small-font: 0.9rem;
 
@@ -18,7 +31,7 @@ $red: #E04E4B;
 
 $header-bg: $light-blue;
 
-$active-color: $blue;
+$active-color: $lightest-grey !important;
 
 $lightest-border: $lightest-grey;
 $lighter-border: $lighter-grey;
@@ -32,29 +45,33 @@ $medium-text: $dark-grey;
   align-items: center;
 }
 
-.list-group,
-.list-group-item{
-display:block;
-width: 100%;
+
+// CSS modifications for notifications navbar
+.navbar-nav{
+  .dropdown-menu{
+    min-width: 300px;
+    padding: 15px;
+  }
+  .viewed {
+    background-color: $lightest-grey;
+  }
+  .disabled {
+    background-color: $lightest-grey;
+  }
 }
 
-.viewed {
-  background-color: grey;
-}
-.unviewed {
-  background-color: blue;
-}
-.disabled {
-  background-color: #ddd;
-}
-.dropdown-menu {
-  padding: 15px;
-}
 
+// CSS modifications for notifications page
 .nav-notifications {
   background-color: transparent;
   margin-right: 20px;
 }
+
+.notification-filters{
+  margin-bottom: 20px;
+}
+
+// CSS modifications for comments
 
 .comments-item-meta{
   font-size: $small-font;
@@ -64,17 +81,27 @@ width: 100%;
   }
 }
 
+// CSS modifications for voting
+
+
 .upvoted{
   .upvote-button{
-    color: $blue !important;
+    color: $lw-green !important;
   }
 }
 
 .downvoted{
   .downvote-button{
-    color: $blue !important;
+    color: $lw-green !important;
   }
 }
+
+.posts-item-vote:hover{
+  color: $dark-grey;
+}
+
+
+//CSS modifications for sidebar
 
 .top-contributors{
   .users-avatar{
@@ -85,6 +112,11 @@ width: 100%;
   }
   @include flex-center;
 }
+
+// CSS modifications for the three different editor types: commentEditor, postEditor
+// and messageEditor. For now they are all equal, but we probably want to change
+// that in the future
+
 
 .commentEditor{
   border: #d1d1d1;
@@ -113,9 +145,13 @@ width: 100%;
   margin-bottom: 10px;
 }
 
+// CSS modifications for posts
+
 .posts-item-title{
   margin-top: 0px;
 }
+
+// CSS modifications for header
 
 .logo-image{
   font-size: 30px;
@@ -125,22 +161,6 @@ width: 100%;
 
 .page-header{
   margin-top: 0px;
-}
-
-h1{
-  margin-top: 0px;
-}
-
-h2{
-  margin-top: 0px;
-}
-
-h3{
-  margin-top: 0px;
-}
-
-.tagline{
-  font-size: 1.1rem !important;
 }
 
 .header-wrapper{
@@ -158,4 +178,22 @@ h3{
 
 .navbar-default{
   background-color: rgb(247,247,247);
+}
+
+.tagline{
+  font-size: 1.1rem !important;
+}
+
+// General CSS modifications
+
+h1{
+  margin-top: 0px;
+}
+
+h2{
+  margin-top: 0px;
+}
+
+h3{
+  margin-top: 0px;
 }

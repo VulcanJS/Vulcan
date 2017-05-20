@@ -58,7 +58,7 @@ const resolvers = {
   },
 
   single: {
-    
+
     name: 'postsSingle',
 
     check(user, document, collection) {
@@ -76,18 +76,18 @@ const resolvers = {
 
       return Users.restrictViewableFields(currentUser, Posts, post);
     },
-  
+
   },
 
   total: {
-    
+
     name: 'postsTotal',
-    
+
     resolver(root, {terms}, {Posts}) {
       const {selector} = Posts.getParameters(terms);
       return Posts.find(selector).count();
     },
-  
+
   }
 };
 

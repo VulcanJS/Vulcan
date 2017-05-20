@@ -1,4 +1,4 @@
-
+// Subscriptions
 import './collections/subscription_fields.js';
 
 // Notifications
@@ -36,12 +36,13 @@ import './modules/fragments.js';
 import './modules/callbacks.js';
 
 
-
-
+// Misc.
 import './helpers.js'
 import './components.js';
 import './routes.js';
 import './views.js';
 
+// Settings for Vulcan
+import './modules/settings.js';
 
 export { Conversations, Messages, Notifications }

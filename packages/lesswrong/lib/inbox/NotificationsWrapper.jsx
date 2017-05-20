@@ -26,7 +26,7 @@ class NotificationsWrapper extends Component {
 
     return (
 
-      <div>
+      <div className="notification-filters">
         <DropdownButton
           bsStyle="default"
           className="views btn-secondary"

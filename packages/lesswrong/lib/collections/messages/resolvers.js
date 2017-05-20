@@ -1,4 +1,5 @@
-import { GraphQLSchema } from 'meteor/vulcan:lib';
+import { GraphQLSchema, Utils } from 'meteor/vulcan:lib';
+import Conversations from 'meteor/lesswrong/lib/collections/conversations/collection.js';
 
 const specificResolvers = {
   Message: {
@@ -35,6 +36,7 @@ const resolvers = {
     name: 'messageSingle',
 
     resolver(root, {documentId}, context) {
+
       return context.Messages.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Messages) });
     },
 

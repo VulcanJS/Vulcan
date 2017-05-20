@@ -1,3 +1,8 @@
+// This renderer is currently not being used, though
+// we might get around to using it at some point. Dynamic
+// textfields are currently rendered by adding a `readOnly`
+// tag to an editor block. 
+
 import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import redraft, { Atomic } from 'redraft';
