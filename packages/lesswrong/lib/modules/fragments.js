@@ -141,6 +141,17 @@ registerFragment(`
     nickname
     url
     status
-    rawFeed
+  }
+`);
+
+registerFragment(`
+  fragment RSSFeedMinimumInfo on RSSFeed {
+    _id
+    userId
+    createdAt
+    ownedByUser
+    displayFullContent
+    nickname
+    url
   }
 `);

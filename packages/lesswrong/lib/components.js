@@ -38,6 +38,9 @@ import './component-replacements/LWUsersAccountMenu.jsx';
 
 // RSS Feed Integration
 import './rss-integration/newFeedButton.jsx';
+import './rss-integration/editFeedButton.jsx';
+import './rss-integration/feedItem.jsx';
+import './rss-integration/feedList.jsx';
 
 import './subscriptions/SubscribeTo.jsx';
 

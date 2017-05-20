@@ -19,6 +19,7 @@ const LWUsersProfile = (props) => {
     const user = props.document;
 
     const terms = {view: "userPosts", userId: user._id};
+    const feedTerms = {userId: user._id};
 
     return (
       <div className="page users-profile">
@@ -43,6 +44,8 @@ const LWUsersProfile = (props) => {
             </ModalTrigger>
           </li>
         </ul>
+        <h3>Users Feeds</h3>
+        <Components.FeedList terms={feedTerms} />
         <h3><FormattedMessage id="users.posts"/></h3>
         <Components.PostsList terms={terms} />
       </div>
