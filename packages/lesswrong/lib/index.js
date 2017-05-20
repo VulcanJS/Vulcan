@@ -13,6 +13,10 @@ import './collections/messages/views.js';
 import Conversations from './collections/conversations/collection.js'
 import './collections/conversations/views.js';
 
+// RSSFeeds
+import './collections/rssfeeds/permissions.js'
+import RSSFeeds from './collections/rssfeeds/collection.js'
+import './collections/rssfeeds/views.js'
 
 // Subscriptions
 import './subscriptions/mutations.js';

@@ -76,9 +76,19 @@ Posts.addField([
       type: Boolean,
       optional: true,
       defaultValue: false,
-      hidden: true, 
+      hidden: true,
       viewableBy: ['guests'],
       editableBy: ['members'],
+      insertableBy: ['members'],
+    }
+  },
+  {
+    fieldName: 'rssFeedId',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
       insertableBy: ['members'],
     }
   },
