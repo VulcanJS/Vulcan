@@ -83,6 +83,11 @@ To create your own package, create a folder named after the concept it's associa
 ```
 
 ## Development Tips
+
+### Getting Started
+
+To set up the project, navigate into the `.draft-js-plugins folder`, then run `npm install`. Then navigate to the top level directory and run `npm install` there as well. Then run npm start and you should be good to go. 
+
 ### Iteration
 * Prefer `_.range(n).forEach(i => my_function())` over `for (var i=0; i<n; i++)...`
 * If the body of a for loop performs a stateful action (i.e. modifies a variable outside the scope of the for body), use `forEach`. Else, use `map`. 
