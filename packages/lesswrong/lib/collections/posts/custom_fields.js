@@ -83,13 +83,14 @@ Posts.addField([
     }
   },
   {
-    fieldName: 'rssFeedId',
+    fieldName: 'feedId',
     fieldSchema: {
       type: String,
       optional: true,
       viewableBy: ['guests'],
       editableBy: ['admins'],
       insertableBy: ['members'],
+      resolveAs: 'feed: RSSFeed',
     }
   },
 ]);

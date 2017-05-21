@@ -3,8 +3,21 @@ import React from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
+import Users from "meteor/vulcan:users";
 
 class LWPostsItem extends getRawComponent('PostsItem') {
+
+  renderPostFeeds() {
+    feed = this.props.post.feed
+
+    if (!!feed) {
+      return <Link to={Users.getProfileUrl(this.props.post.feed.user)} className="postFeedNickname">
+                {feed.nickname}
+             </Link>;
+    } else {
+      return null;
+    }
+  }
 
   render() {
 
@@ -29,6 +42,7 @@ class LWPostsItem extends getRawComponent('PostsItem') {
               {post.title}
             </Link>
             {this.renderCategories()}
+            {this.renderPostFeeds()}
           </h3>
 
           <div className="posts-item-meta">

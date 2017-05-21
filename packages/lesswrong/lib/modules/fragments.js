@@ -102,6 +102,10 @@ registerFragment(`
     downvotes
     baseScore
     score
+    feedId
+    feed {
+      ...RSSFeedMinimumInfo
+    }
   }
 `);
 
@@ -148,6 +152,9 @@ registerFragment(`
   fragment RSSFeedMinimumInfo on RSSFeed {
     _id
     userId
+    user {
+      ...UsersMinimumInfo
+    }
     createdAt
     ownedByUser
     displayFullContent

@@ -184,6 +184,12 @@ $medium-text: $dark-grey;
   font-size: 1.1rem !important;
 }
 
+// CSS Modifications for RSS Feed integration
+.postFeedNickname{
+  font-size: 0.7rem;
+  font-color: $lighter-grey;
+}
+
 // General CSS modifications
 
 h1{
