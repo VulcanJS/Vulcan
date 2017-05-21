@@ -16,6 +16,7 @@ import './collections/conversations/views.js';
 // RSSFeeds
 import RSSFeeds from './collections/rssfeeds/collection.js'
 import './collections/rssfeeds/views.js'
+import './rss-integration/callbacks'
 
 // Subscriptions
 import './subscriptions/mutations.js';
