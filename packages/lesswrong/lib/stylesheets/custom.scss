@@ -190,6 +190,18 @@ $medium-text: $dark-grey;
   font-color: $lighter-grey;
 }
 
+.displayFullContentTag{
+  margin-left: 10px;
+  color: $dark-grey;
+  float: right;
+}
+
+.ownedByUserTag{
+  margin-left: 10px;
+  color: $dark-grey;
+  float:right;
+}
+
 // General CSS modifications
 
 h1{

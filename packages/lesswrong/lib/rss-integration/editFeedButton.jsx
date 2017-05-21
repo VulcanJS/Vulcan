@@ -12,12 +12,8 @@ import RSSFeeds from '../collections/rssfeeds/collection.js';
 import Posts from 'meteor/vulcan:posts'
 
 class editFeedButton extends Component {
-
   render() {
-
-    const button = <a className="edit-rss-button"> Edit </a>;
     return (
-      <Components.ModalTrigger title={'Edit'} component={button}>
         <Components.SmartForm
           collection={RSSFeeds}
           documentId={this.props.feed._id}
@@ -33,9 +29,8 @@ class editFeedButton extends Component {
           }}
           showRemove={true}
         />
-      </Components.ModalTrigger>
-    )
-  }
+      )
+    }
 }
 
 registerComponent('editFeedButton', editFeedButton, withCurrentUser, withRouter);

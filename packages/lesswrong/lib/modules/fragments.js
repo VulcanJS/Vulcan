@@ -103,6 +103,7 @@ registerFragment(`
     baseScore
     score
     feedId
+    feedLink
     feed {
       ...RSSFeedMinimumInfo
     }
