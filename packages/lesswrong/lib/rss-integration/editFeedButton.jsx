@@ -17,7 +17,8 @@ class editFeedButton extends Component {
         <Components.SmartForm
           collection={RSSFeeds}
           documentId={this.props.feed._id}
-          mutationFragment={getFragment('RSSFeedMinimumInfo')}
+          prefilledProps={ {userId: this.props.feed.userId} }
+          mutationFragment={getFragment('RSSFeedMutationFragment')}
           successCallback={feed => {
             this.props.closeModal();
             this.props.flash("Successfully edited feed", 'success');

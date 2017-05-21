@@ -68,7 +68,7 @@ const addJob = function () {
               feedLink: newPost.link
             };
 
-            let lwUser = Users.findOne();
+            let lwUser = Users.findOne({_id: feed.userId});
 
             newMutation({
               collection: Posts,

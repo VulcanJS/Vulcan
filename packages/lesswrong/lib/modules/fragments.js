@@ -163,3 +163,14 @@ registerFragment(`
     url
   }
 `);
+
+registerFragment(`
+  fragment RSSFeedMutationFragment on RSSFeed {
+    _id
+    userId
+    ownedByUser
+    displayFullContent
+    nickname
+    url
+  }
+`);
