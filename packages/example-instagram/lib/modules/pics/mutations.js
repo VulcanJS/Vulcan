@@ -49,7 +49,7 @@ const mutations = {
     
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, 'pics.edit.own') : Users.canDo(user, `pics.edit.all`);
+      return Users.canDo(user, `pics.edit.all`) || Users.owns(user, document) && Users.canDo(user, 'pics.edit.own');
     },
 
     mutation(root, {documentId, set, unset}, context) {

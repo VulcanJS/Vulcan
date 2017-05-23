@@ -50,8 +50,8 @@ const resolvers = {
 // add the "user" resolver for the Comment type separately
 const commentUserResolver = {
   Comment: {
-    user(movie, args, context) {
-      return context.Users.findOne({ _id: movie.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
+    user(comment, args, context) {
+      return context.Users.findOne({ _id: comment.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
     },
   },
 };
