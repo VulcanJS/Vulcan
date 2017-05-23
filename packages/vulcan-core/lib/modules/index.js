@@ -9,9 +9,9 @@ export {
   // components
   Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp,
   // collections
-  createCollection,
+  Collections, createCollection,
   // fragments
-  Fragments, registerFragment, getFragment, getFragmentName, extendFragment,
+  Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment,
   // graphql
   GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext, 
   // headtags
@@ -23,7 +23,7 @@ export {
   // render context
   renderContext, getRenderContext, withRenderContext,
   // routes
-  Routes, addRoute, getRoute, populateRoutesApp,
+  Routes, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
   // settings
   getSetting,
   // strings

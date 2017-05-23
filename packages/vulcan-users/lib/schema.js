@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import Users from './collection.js';
+import { Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 const adminGroup = {
   name: "admin",
@@ -24,6 +25,12 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    insertableBy: ['guests'],
+    onInsert: user => {
+      if (user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   emails: {
     type: Array,
@@ -46,6 +53,9 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    }
   },
   isAdmin: {
     type: Boolean,
@@ -56,11 +66,17 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
+    onInsert: user => {
+      // if this is not a dummy account, and is the first user ever, make them an admin
+      const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+      return (!user.isDummy && realUsersCount === 0) ? true : false;
+    }
   },
   profile: {
     type: Object,
     optional: true,
-    blackbox: true
+    blackbox: true,
+    insertableBy: ['guests'],
   },
   // telescope-specific data, kept for backward compatibility and migration purposes
   telescope: {
@@ -95,6 +111,18 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    onInsert: (user, options) => {
+      const profileName = Utils.getNestedProperty(user, 'profile.name');
+      const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
+      const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
+
+      if (profileName) return profileName;
+      if (twitterName) return twitterName;
+      if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+      if (user.username) return user.username;
+      return undefined;
+
+    }
   },
   /**
     The user's email. Modifiable.
@@ -103,11 +131,26 @@ const schema = {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
-    required: true,
+    mustComplete: true,
     control: "text",
-    insertableBy: ['members'],
+    insertableBy: ['guests'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
+    onInsert: (user) => {
+      // look in a few places for the user email
+      const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
+      const facebookEmail = Utils.getNestedProperty(user, 'services.facebook.email');
+      const githubEmail = Utils.getNestedProperty(user, 'services.github.email');
+      const googleEmail = Utils.getNestedProperty(user, 'services.google.email');
+      const linkedinEmail = Utils.getNestedProperty(user, 'services.linkedin.emailAddress');
+
+      if (meteorEmails) return _.findWhere(meteorEmails, { primary: true }).address;
+      if (facebookEmail) return facebookEmail;
+      if (githubEmail) return githubEmail;
+      if (googleEmail) return googleEmail;
+      if (linkedinEmail) return linkedinEmail;
+      return undefined;
+    }
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -117,6 +160,26 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: user => {
+      if (user.email) {
+        return Users.avatar.hash(user.email);
+      }
+    }
+  },
+  avatarUrl: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: user => {
+
+      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+      const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
+
+      if (twitterAvatar) return twitterAvatar;
+      if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
+      return undefined;
+
+    }
   },
   /**
     The HTML version of the bio field
@@ -141,6 +204,11 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: user => {
+      // create a basic slug from display name and then modify it if this slugs already exists;
+      const basicSlug = Utils.slugify(user.displayName);
+      return Utils.getUnusedSlug(Users, basicSlug);
+    }
   },
   /**
     The user's Twitter username
@@ -153,6 +221,11 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     resolveAs: 'twitterUsername: String',
+    onInsert: user => {
+      if (user.services && user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   /**
     A link to the user's homepage

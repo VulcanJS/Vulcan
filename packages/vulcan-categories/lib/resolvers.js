@@ -3,13 +3,17 @@ import { GraphQLSchema } from 'meteor/vulcan:core';
 // add these specific resolvers separately
 const specificResolvers = {
   Post: {
-    categories(post, args, context) {
-      return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];
+    async categories(post, args, {currentUser, Users, Categories}) {
+      if (!post.categories) return [];
+      const categories = _.compact(await Categories.loader.loadMany(post.categories));
+      return Users.restrictViewableFields(currentUser, Categories, categories);
     },
   },
   Category: {
-    parent(category, args, context) {
-      return category.parentId ? context.Categories.findOne({_id: category.parentId }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
+    async parent(category, args, {currentUser, Users, Categories}) {
+      if (!category.parentId) return null;
+      const parent = await Categories.loader.load(category.parentId);
+      return Users.restrictViewableFields(currentUser, Categories, parent);
     }
   },
 };

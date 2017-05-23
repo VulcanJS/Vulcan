@@ -10,7 +10,7 @@ import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/vulcan
 /**
  * @summary Check for duplicate links
  */
-const PostsEditDuplicateLinksCheck = (modifier, post) => {
+function PostsEditDuplicateLinksCheck (modifier, post) {
   if(post.url !== modifier.$set.url && !!modifier.$set.url) {
     Posts.checkForSameUrl(modifier.$set.url);
   }
@@ -55,7 +55,7 @@ addCallback("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 /**
  * @summary If title is changing, return new slug
  */
-const PostsEditSlugify = (modifier, post) => {
+function PostsEditSlugify (modifier, post) {
   if (modifier.$set && modifier.$set.title) {
     modifier.$set.slug = Utils.slugify(modifier.$set.title);
   }
@@ -67,7 +67,7 @@ addCallback("posts.edit.sync", PostsEditSlugify);
 /**
  * @summary If body is changing, update related fields (htmlBody & excerpt)
  */
-const PostsEditHTMLContent = (modifier, post) => {
+function PostsEditHTMLContent (modifier, post) {
   if (modifier.$set && typeof modifier.$set.body !== 'undefined') {
     // excerpt length is configurable via the settings (30 words by default, ~255 characters)
     const excerptLength = getSetting('postExcerptLength', 30); 

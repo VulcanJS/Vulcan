@@ -1,5 +1,5 @@
 import Categories from './collection.js';
-import { addCallback } from 'meteor/vulcan:core';
+import { addCallback, getSetting } from 'meteor/vulcan:core';
 import { getCategories } from './schema.js';
 
 // Category Default Sorting by Ascending order (1, 2, 3..)
@@ -16,7 +16,6 @@ addCallback('categories.parameters', CategoriesAscOrderSorting);
 function PostsCategoryParameter(parameters, terms, apolloClient) {
 
   const cat = terms.cat || terms["cat[]"];
-
   // filter by category if category slugs are provided
   if (cat) {
 
@@ -32,18 +31,21 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       slugs = cat;
     }
 
+    // TODO: use new Apollo imperative API
     // get all categories passed in terms
     const categories = !!apolloClient ? _.filter(getCategories(apolloClient), category => _.contains(slugs, category.slug) ) : Categories.find(selector).fetch();
     
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {
       categoriesIds.push(category._id);
-      categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
+      // TODO: find a better way to handle child categories
+      // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
     });
 
-    parameters.selector = Meteor.isClient ? {'categories._id': {$in: categoriesIds}} : {categories: {$in: categoriesIds}};
+    const operator = getSetting('categoriesFilter', 'union') === 'union' ? '$in' : '$all';
+
+    parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {[operator]: categoriesIds}};
   }
-  
   return parameters;
 }
 

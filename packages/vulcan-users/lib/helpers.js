@@ -232,10 +232,10 @@ Users.setSetting = (user, settingName, value) => {
  * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
-  var schema = Utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
+  var schema = Users.simpleSchema()._schema;
   var fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return !!field.required;
+    return !!field.mustComplete;
   });
   return fields;
 };

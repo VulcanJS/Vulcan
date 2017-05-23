@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
 
 const PostsCommentsThread = (props, /* context*/) => {
@@ -15,7 +15,7 @@ const PostsCommentsThread = (props, /* context*/) => {
   } else {
     
     const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
-    const nestedComments = Utils.unflatten(resultsClone, '_id', 'parentCommentId');
+    const nestedComments = Utils.unflatten(resultsClone, {idProperty: '_id', parentIdProperty: 'parentCommentId'});
 
     return (
       <div className="posts-comments-thread">
@@ -30,9 +30,9 @@ const PostsCommentsThread = (props, /* context*/) => {
             />
           </div> :
           <div>
-            <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
-              <Components.UsersAccountForm/>
-            </ModalTrigger>
+            <Components.ModalTrigger size="small" component={<a href="#"><FormattedMessage id="comments.please_log_in"/></a>}>
+              <Components.AccountsLoginForm/>
+            </Components.ModalTrigger>
           </div> 
         }
       </div>

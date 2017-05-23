@@ -4,6 +4,7 @@ import express from 'express';
 import { makeExecutableSchema } from 'graphql-tools';
 import deepmerge from 'deepmerge';
 import OpticsAgent from 'optics-agent'
+import DataLoader from 'dataloader';
 
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
@@ -11,6 +12,9 @@ import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema, Utils } from '../modules/index.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
+
+import { Collections } from '../modules/collections.js';
+import findByIds from '../modules/findbyids.js';
 
 // defaults
 const defaultConfig = {
@@ -99,7 +103,13 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       }
     }
 
+    // merge with custom context
     options.context = deepmerge(options.context, GraphQLSchema.context);
+
+    // go over context and add Dataloader to each collection
+    Collections.forEach(collection => {
+      options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
+    });
 
     return options;
   }));

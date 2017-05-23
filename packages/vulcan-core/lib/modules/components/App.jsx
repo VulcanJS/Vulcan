@@ -24,23 +24,21 @@ class App extends PureComponent {
   render() {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        {
-          this.props.loading ? 
-            <Components.Loading /> :
-            <Components.Layout>{this.props.children}</Components.Layout>
-        }
+        <Components.Layout>
+          { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+        </Components.Layout>
       </IntlProvider>
     );
   }
 }
 
 App.propTypes = {
-  loading: PropTypes.bool,
-};
+  currentUserLoading: PropTypes.bool,
+}
 
 App.childContextTypes = {
   intl: intlShape,
-};
+}
 
 App.displayName = 'App';
 

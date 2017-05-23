@@ -1,7 +1,10 @@
+import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
+
+export const Collections = [];
 
 SimpleSchema.extendOptions([
   'viewableBy',
@@ -11,7 +14,8 @@ SimpleSchema.extendOptions([
 ]);
 
 /**
- * @summary replacement for Collection2's attachSchema
+ * @summary replacement for Collection2's attachSchema. Pass either a schema, to
+ * initialize or replace the schema, or some fields, to extend the current schema
  * @class Mongo.Collection
  */
 Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
@@ -54,7 +58,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
   var schema = _.omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
-  collection.attachSchema(schema, {replace: true});
+  collection.attachSchema(new SimpleSchema(schema));
 };
 
 /**
@@ -99,7 +103,7 @@ export const createCollection = options => {
   const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+  const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
 
   // decorate collection with options
   collection.options = options;
@@ -117,7 +121,7 @@ export const createCollection = options => {
 
   // add collection to resolver context
   const context = {};
-  context[Utils.capitalize(collectionName)] = collection;
+  context[collectionName] = collection;
   GraphQLSchema.addToContext(context);
 
   if (generateGraphQLSchema){
@@ -193,12 +197,20 @@ export const createCollection = options => {
     }
 
     // iterate over posts.parameters callbacks
-    parameters = runCallbacks(`${collectionName}.parameters`, parameters, _.clone(terms), apolloClient);
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
 
     // extend sort to sort posts by _id to break ties
     // NOTE: always do this last to avoid overriding another sort
     parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
+    // remove any null fields (setting a field to null means it should be deleted)
+    _.keys(parameters.selector).forEach(key => {
+      if (parameters.selector[key] === null) delete parameters.selector[key];
+    });
+    _.keys(parameters.options).forEach(key => {
+      if (parameters.options[key] === null) delete parameters.options[key];
+    });
+    
     // limit number of items to 200
     parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
 
@@ -211,6 +223,8 @@ export const createCollection = options => {
 
     return parameters;
   }
+
+  Collections.push(collection);
 
   return collection;
 }

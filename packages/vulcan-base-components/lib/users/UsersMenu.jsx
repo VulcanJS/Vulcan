@@ -19,7 +19,7 @@ class UsersMenu extends PureComponent {
         <Dropdown id="user-dropdown">
           <Dropdown.Toggle>
             <Components.UsersAvatar size="small" user={currentUser} link={false} />
-            <div>{Users.getDisplayName(currentUser)}</div>
+            <div className="users-menu-name">{Users.getDisplayName(currentUser)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <LinkContainer to={`/users/${currentUser.slug}`}>

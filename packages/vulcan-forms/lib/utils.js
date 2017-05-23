@@ -45,7 +45,7 @@ const flatten = function(data) {
 const getInsertableFields = function (schema, user) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return Users.canInsertField(user, field);
+    return !field.hidden && Users.canInsertField(user, field);
   });
   return fields;
 };
@@ -58,7 +58,7 @@ const getInsertableFields = function (schema, user) {
 const getEditableFields = function (schema, user, document) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return Users.canEditField(user, field, document);
+    return !field.hidden && Users.canEditField(user, field, document);
   });
   return fields;
 };

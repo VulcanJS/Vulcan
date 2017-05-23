@@ -13,19 +13,19 @@ Package.onUse(function (api) {
 
     // Meteor packages
 
-    'meteor-base@1.0.4',
+    'meteor-base',
     'mongo',
     'tracker',
     'service-configuration',
-    'standard-minifiers@1.0.6',
-    'modules@0.7.9',
+    'standard-minifiers',
+    'modules',
     'accounts-base',
     'check',
     'http',
     'email',
-    'ecmascript@0.6.3',
+    'ecmascript',
     'service-configuration',
-    'shell-server@0.2.3',
+    'shell-server',
 
     // Third-party packages
 

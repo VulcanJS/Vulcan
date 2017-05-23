@@ -1,5 +1,5 @@
 import VulcanEmail from 'meteor/vulcan:email';
-import Newsletters from "../collection.js";
+import Newsletters from "../modules/collection.js";
 import { getSetting } from 'meteor/vulcan:core';
 
 // Extend email objects with server-only properties
@@ -19,11 +19,9 @@ VulcanEmail.emails.newsletter = {
   getTestHTML() {
     var campaign = this.getNewsletter();
     var newsletterEnabled = `<div class="newsletter-enabled"><strong>Newsletter Enabled:</strong> ${getSetting('enableNewsletter', true)}</div>`;
-    var mailChimpAPIKey = `<div class="mailChimpAPIKey"><strong>mailChimpAPIKey:</strong> ${typeof getSetting('mailChimpAPIKey') !== "undefined"}</div>`;
-    var mailChimpListId = `<div class="mailChimpListId"><strong>mailChimpListId:</strong> ${typeof getSetting('mailChimpListId') !== "undefined"}</div>`;
     var campaignSubject = `<div class="campaign-subject"><strong>Subject:</strong> ${campaign.subject} (note: contents might change)</div>`;
-    var campaignSchedule = `<div class="campaign-schedule"><strong>Scheduled for:</strong> ${Newsletters.getNextScheduled()}</div>`;
-    return newsletterEnabled+mailChimpAPIKey+mailChimpListId+campaignSubject+campaignSchedule+campaign.html;
+    var campaignSchedule = `<div class="campaign-schedule"><strong>Scheduled for:</strong> ${Newsletters.getNext()}</div>`;
+    return newsletterEnabled+campaignSubject+campaignSchedule+campaign.html;
   }
 
 };

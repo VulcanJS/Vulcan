@@ -12,7 +12,8 @@ Options:
   - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
-  
+  - terms: an object that defines which documents to fetch
+
 Props Received: 
 
   - terms: an object that defines which documents to fetch
@@ -51,6 +52,18 @@ const withList = (options) => {
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
 
+  // build graphql query from options
+  const query = gql`
+    query ${queryName}($terms: JSON) {
+      ${totalResolverName}(terms: $terms)
+      ${listResolverName}(terms: $terms) {
+        __typename
+        ...${fragmentName}
+      }
+    }
+    ${fragment}
+  `;
+
   return compose(
 
     // wrap component with Apollo HoC to give it access to the store
@@ -59,36 +72,29 @@ const withList = (options) => {
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
 
-      // either get initial limit from options, or default to settings
+      // get initial limit from props, or else options
+      const paginationLimit = props.terms && props.terms.limit || limit;
       const paginationTerms = {
-        limit, 
-        itemsPerPage: limit, 
+        limit: paginationLimit, 
+        itemsPerPage: paginationLimit, 
       };
-    
+      
       return paginationTerms;
     }),
 
     // wrap component with graphql HoC
     graphql(
 
-      // build graphql query from options
-      gql`
-        query ${queryName}($terms: JSON) {
-          ${totalResolverName}(terms: $terms)
-          ${listResolverName}(terms: $terms) {
-            __typename
-            ...${fragmentName}
-          }
-        }
-        ${fragment}
-      `,
+      query,
 
       {
         alias: 'withList',
         
         // graphql query options
         options({terms, paginationTerms, client: apolloClient}) {
-          const mergedTerms = {...terms, ...paginationTerms};
+          // get terms either from props or from options
+          const baseTerms = terms || options.terms;
+          const mergedTerms = {...baseTerms, ...paginationTerms};
           return {
             variables: {
               terms: mergedTerms,
@@ -112,6 +118,7 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
+                loading = props.data.loading,
                 error = props.data.error;
 
           if (error) {
@@ -121,7 +128,7 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading: networkStatus === 1, // networkStatus = 1 <=> the graphql container is loading
+            loading: networkStatus === 1,
             results,
             totalCount,
             refetch,
@@ -173,9 +180,14 @@ const withList = (options) => {
 // define query reducer separately
 const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
 
-  const newMutationName = collection.options.mutations.new.name;
-  const editMutationName = collection.options.mutations.edit.name;
-  const removeMutationName = collection.options.mutations.remove.name;
+  // if collection has no mutations defined, just return previous results
+  if (!collection.options.mutations) {
+    return previousResults;
+  }
+
+  const newMutationName = collection.options.mutations.new && collection.options.mutations.new.name;
+  const editMutationName = collection.options.mutations.edit && collection.options.mutations.edit.name;
+  const removeMutationName = collection.options.mutations.remove && collection.options.mutations.remove.name;
 
   let newResults = previousResults;
 

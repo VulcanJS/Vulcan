@@ -5,7 +5,7 @@ HoC that provides a simple mutation that expects a single JSON object in return
 Example usage:
 
 export default withMutation({
-  name: 'getEmbedlyData',
+  name: 'getEmbedData',
   args: {url: 'String'},
 })(EmbedlyURL);
 

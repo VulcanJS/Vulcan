@@ -33,7 +33,7 @@ const UsersProfile = (props) => {
           </Components.ShowIf>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
-        <Components.PostsList terms={terms} />
+        <Components.PostsList terms={terms} showHeader={false} />
       </div>
     )
   }

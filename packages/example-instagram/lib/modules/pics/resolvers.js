@@ -30,7 +30,7 @@ const resolvers = {
 
     resolver(root, {documentId}, context) {
       const document = context.Pics.findOne({_id: documentId});
-      return context.Users.keepViewableFields(context.currentUser, context.Pics, document);
+      return context.Users.restrictViewableFields(context.currentUser, context.Pics, document);
     },
   
   },

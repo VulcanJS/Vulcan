@@ -24,6 +24,10 @@
     }
     .logo-image{
       margin-right: $hmargin;
+      img{
+        max-width: 150px;
+        max-height: 100px;
+      }
     }
   }
   .tagline{

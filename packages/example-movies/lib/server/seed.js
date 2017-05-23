@@ -55,29 +55,24 @@ const seedData = [
   },
 ];
 
+const createUser = function (username, email) {
+  const user = {
+    username,
+    email,
+    isDummy: true
+  };
+  newMutation({
+    collection: Users, 
+    document: user,
+    validate: false
+  });
+}
+
 var createDummyUsers = function () {
-  console.log('// creating dummy users');
-  Accounts.createUser({
-    username: 'Bruce',
-    email: 'dummyuser1@telescopeapp.org',
-    profile: {
-      isDummy: true
-    }
-  });
-  Accounts.createUser({
-    username: 'Arnold',
-    email: 'dummyuser2@telescopeapp.org',
-    profile: {
-      isDummy: true
-    }
-  });
-  Accounts.createUser({
-    username: 'Julia',
-    email: 'dummyuser3@telescopeapp.org',
-    profile: {
-      isDummy: true
-    }
-  });
+  console.log('// inserting dummy users…');
+  createUser('Bruce', 'dummyuser1@telescopeapp.org');
+  createUser('Arnold', 'dummyuser2@telescopeapp.org');
+  createUser('Julia', 'dummyuser3@telescopeapp.org');
 };
 
 Meteor.startup(function () {
