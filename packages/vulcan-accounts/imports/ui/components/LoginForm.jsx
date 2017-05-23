@@ -467,7 +467,7 @@ export class AccountsLoginForm extends Tracker.Component {
   }
 
   showForgotPasswordLink() {
-    return this.state.formState == STATES.SIGN_IN && _.contains(
+    return this.state.formState == STATES.SIGN_IN && hasPasswordService() && _.contains(
       ["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
       passwordSignupFields()
     );

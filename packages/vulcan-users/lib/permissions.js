@@ -219,8 +219,23 @@ Users.helpers({
 Users.restrictViewableFields = function (user, collection, docOrDocs) {
 
   if (!docOrDocs) return {};
+
+  const restrictDoc = document => {
+
+    // get array of all keys viewable by user
+    const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
+    const restrictedDocument = _.clone(document);
+    
+    // loop over each property in the document and delete it if it's not viewable
+    _.forEach(restrictedDocument, (value, key) => {
+      if (!viewableKeys.includes(key)) {
+        delete restrictedDocument[key];
+      }
+    });
   
-  const restrictDoc = document => _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
+    return restrictedDocument;
+  
+  };
   
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 

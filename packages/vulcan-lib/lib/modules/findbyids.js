@@ -5,11 +5,10 @@
 const findByIds = async function(collection, ids, context) {
   
   // get documents
-  const cleanedIds = ids.map(id => id.split('|')[0]);
-  const documents = await collection.find({ _id: { $in: cleanedIds } }).fetch();
+  const documents = await collection.find({ _id: { $in: ids } }).fetch();
 
   // order documents in the same order as the ids passed as argument
-  const orderedDocuments = cleanedIds.map(id => _.findWhere(documents, {_id: id}));
+  const orderedDocuments = ids.map(id => _.findWhere(documents, {_id: id}));
 
   return orderedDocuments;
 }

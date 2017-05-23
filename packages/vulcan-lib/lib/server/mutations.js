@@ -65,7 +65,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
 
   // run onInsert step
   _.keys(schema).forEach(fieldName => {
-    if (!newDocument[fieldName] && schema[fieldName].onInsert) {
+    if (schema[fieldName].onInsert) {
       const autoValue = schema[fieldName].onInsert(newDocument, currentUser);
       if (autoValue) {
         newDocument[fieldName] = autoValue;
@@ -136,10 +136,16 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
 
   // run onEdit step
   _.keys(schema).forEach(fieldName => {
-    if (!document[fieldName] && schema[fieldName].onEdit) {
+
+    if (schema[fieldName].onEdit) {
       const autoValue = schema[fieldName].onEdit(modifier, document, currentUser);
-      if (autoValue) {
-        modifier.$set[fieldName] = autoValue;
+      if (typeof autoValue !== 'undefined') {
+        if (autoValue === null) {
+          // if any autoValue returns null, then unset the field
+          modifier.$unset[fieldName] = true;
+        } else {
+          modifier.$set[fieldName] = autoValue;
+        }
       }
     }
   });
@@ -194,7 +200,7 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
 
   // run onRemove step
   _.keys(schema).forEach(fieldName => {
-    if (!document[fieldName] && schema[fieldName].onRemove) {
+    if (schema[fieldName].onRemove) {
       schema[fieldName].onRemove(document, currentUser);
     }
   });
