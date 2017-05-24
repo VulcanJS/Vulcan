@@ -50,7 +50,7 @@ function addTimeParameter (parameters, terms, apolloClient) {
       if (Meteor.isClient) {
         startOfDay.add(timeDifference, "minutes");
         // console.log("// after add   ", startOfDay.toDate(), startOfDay.valueOf());
-        // note: on the client, dates are stored as strings, 
+        // note: on the client, dates are stored as strings,
         // so use strings for MongoDB filtering options too
         postedAt.$gte = startOfDay.toISOString();
       } else {
@@ -119,7 +119,7 @@ addCallback("posts.parameters", limitPosts);
 
 function addSearchQueryParameter (parameters, terms) {
   if(!!terms.query) {
-    
+
     const query = escapeStringRegexp(terms.query);
 
     parameters = Utils.deepExtend(true, parameters, {
@@ -128,9 +128,11 @@ function addSearchQueryParameter (parameters, terms) {
           {title: {$regex: query, $options: 'i'}},
           {url: {$regex: query, $options: 'i'}},
           // note: we cannot search the body field because it's not published
-          // to the client. If we did, we'd get different result sets on 
+          // to the client. If we did, we'd get different result sets on
           // client and server
-          {excerpt: {$regex: query, $options: 'i'}}
+          {excerpt: {$regex: query, $options: 'i'}},
+          //LessWrong: Modification to test whether body search works
+          {body: {$regex: query, $options: 'i'}}
         ]
       }
     });

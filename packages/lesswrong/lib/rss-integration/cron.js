@@ -5,7 +5,6 @@ import { newMutation, editMutation } from 'meteor/vulcan:core';
 import Posts from 'meteor/vulcan:posts';
 import Users from 'meteor/vulcan:users';
 
-
 SyncedCron.options = {
   log: true,
   collectionName: 'cronHistory',
@@ -18,7 +17,7 @@ const addJob = function () {
   SyncedCron.add({
     name: 'addNewRSSPosts',
     schedule(parser) {
-      return parser.text('every 1 minutes');
+      return parser.text('every 10 minutes');
     },
     job() {
       const feedparser = require('feedparser-promised');
@@ -88,6 +87,4 @@ const addJob = function () {
 };
 
 
-Meteor.startup(function () {
-  addJob();
-});
+Meteor.startup(addJob);

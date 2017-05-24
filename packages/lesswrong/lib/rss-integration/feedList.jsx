@@ -24,7 +24,7 @@ class FeedList extends Component {
         </ListGroup>
       )
     } else {
-      return <Components.Loading />
+      return <div> This user has no feeds associated with them</div>
     }
   }
 }
@@ -33,7 +33,7 @@ const options = {
   collection: RSSFeeds,
   queryName: 'userRSSListQuery',
   fragmentName: 'RSSFeedMinimumInfo',
-  limit: 30,
+  limit: 10,
 };
 
 registerComponent('FeedList', FeedList, withList(options), withCurrentUser);

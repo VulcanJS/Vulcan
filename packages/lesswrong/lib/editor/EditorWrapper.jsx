@@ -32,66 +32,66 @@ import {
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 
-const dummyState = {}
+// const dummyState = {}
 
 // Uncomment for initiating editors with a more comprehensive
 // initial state. Used for testing.
-// const dummyState = {
-//     "entityMap": {
-//         "0": {
-//             "type": "image",
-//             "mutability": "IMMUTABLE",
-//             "data": {
-//                 "src": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-//             }
-//         }
-//     },
-//     "blocks": [{
-//         "key": "9gm3s",
-//         "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
-//         "type": "unstyled",
-//         "depth": 0,
-//         "inlineStyleRanges": [],
-//         "entityRanges": [],
-//         "data": {}
-//     }, {
-//         "key": "ov7r",
-//         "text": " ",
-//         "type": "atomic",
-//         "depth": 0,
-//         "inlineStyleRanges": [],
-//         "entityRanges": [{
-//             "offset": 0,
-//             "length": 1,
-//             "key": 0
-//         }],
-//         "data": {}
-//     }, {
-//         "key": "e23a8",
-//         "text": "See advanced examples further down …",
-//         "type": "unstyled",
-//         "depth": 0,
-//         "inlineStyleRanges": [],
-//         "entityRanges": [],
-//         "data": {}
-//     }]
-// };
+const dummyState = {
+    "entityMap": {
+        "0": {
+            "type": "image",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+            }
+        }
+    },
+    "blocks": [{
+        "key": "9gm3s",
+        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }, {
+        "key": "ov7r",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
+        "data": {}
+    }, {
+        "key": "e23a8",
+        "text": "See advanced examples further down …",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }]
+};
 
 
 class EditorWrapper extends Component {
 
   constructor(props){
     super(props);
-    if (props.initialState) {
-      this.state = {editorState: EditorState.createWithContent(convertFromRaw(props.initialState))}
-    } else {
-      this.state = {editorState:
-      EditorState.createEmpty()}
-    }
+    // if (props.initialState) {
+    //   this.state = {editorState: EditorState.createWithContent(convertFromRaw(props.initialState))}
+    // } else {
+    //   this.state = {editorState:
+    //   EditorState.createEmpty()}
+    // }
     // Uncomment for initializing editor components with more
     // complicated state. Used for testing.
     // else {
-    //   this.state = {editorState: EditorState.createWithContent(convertFromRaw(dummyState))};
+    this.state = {editorState: EditorState.createWithContent(convertFromRaw(dummyState))};
     // }
     this.onChange = this.onChange.bind(this);
     this.focus = this.focus.bind(this);
@@ -128,7 +128,7 @@ class EditorWrapper extends Component {
     this.InlineToolbar = inlineToolbarPlugin.InlineToolbar;
     this.imagePlugin = imagePlugin;
 
-    const markdownShortcutsPlugin = createMarkdownShortcutsPlugin();
+    // const markdownShortcutsPlugin = createMarkdownShortcutsPlugin();
 
     this.plugins = [
       linkifyPlugin,
@@ -137,7 +137,7 @@ class EditorWrapper extends Component {
       alignmentPlugin,
       focusPlugin,
       resizeablePlugin,
-      markdownShortcutsPlugin,
+      // markdownShortcutsPlugin,
     ];
   };
 

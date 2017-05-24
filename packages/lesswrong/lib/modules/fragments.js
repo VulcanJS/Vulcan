@@ -69,7 +69,7 @@ registerFragment(`
     createdAt
     sticky
     status
-    # body # We replaced this with draftJS
+    body # We replaced this with draftJS
     htmlBody # We replaced this with draftJS
     # excerpt # This won't work with draftJS
     draftJS # Our replacement for body

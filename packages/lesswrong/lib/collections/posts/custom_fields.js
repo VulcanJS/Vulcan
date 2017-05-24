@@ -123,5 +123,3 @@ Posts.addField([
     }
   },
 ]);
-
-Posts.removeField('body');

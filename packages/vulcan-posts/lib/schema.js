@@ -84,16 +84,15 @@ const schema = {
   },
   /**
     Post body (markdown)
+    LessWrong: Changed this so it's no longer editable or insertable, since it is
+    now just a plaintext representation of the content, and we don't want to
+    make it available to the user anymore. We sadly can't change fields through
+    the current schema interface.
   */
   body: {
     type: String,
     optional: true,
-    max: 3000,
     viewableBy: ['guests'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    control: "textarea",
-    order: 30,
     hidden: true,
   },
   /**

@@ -19,7 +19,7 @@ const LWUsersProfile = (props) => {
     const user = props.document;
 
     const terms = {view: "userPosts", userId: user._id};
-    const feedTerms = {userId: user._id};
+    const feedTerms = {view: "usersFeed", userId: user._id};
 
     return (
       <div className="page users-profile">

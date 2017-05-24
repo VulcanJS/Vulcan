@@ -1,7 +1,7 @@
 import { addCallback, editMutation } from 'meteor/vulcan:core';
 import RSSFeeds from '../collections/rssfeeds/collection.js';
 
-const PopulateRawFeed = (feed) => {
+const populateRawFeed = (feed) => {
   const feedparser = require('feedparser-promised');
   const url = feed.url;
   feedparser.parse(url).then(currentPosts => {
@@ -17,4 +17,4 @@ const PopulateRawFeed = (feed) => {
   })
 }
 
-addCallback("rssfeeds.new.async", PopulateRawFeed);
+addCallback("rssfeeds.new.async", populateRawFeed);

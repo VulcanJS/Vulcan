@@ -1,9 +1,9 @@
-// import Messages from "./collection.js"
-//
-// //Messages for a specific conversation
-// Messages.addView("messagesConversation", function (terms) {
-//   return {
-//     selector: {conversationId: terms.conversationId},
-//     options: {sort: {createdAt: 1}}
-//   };
-// });
+import RSSFeeds from "./collection.js"
+
+//Messages for a specific conversation
+RSSFeeds.addView("usersFeed", function (terms) {
+  return {
+    selector: {userId: terms.userId},
+    options: {sort: {createdAt: 1}}
+  };
+});

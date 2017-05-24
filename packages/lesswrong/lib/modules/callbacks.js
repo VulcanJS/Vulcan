@@ -227,3 +227,54 @@ const messageNewNotification = (message) => {
   }
 }
 addCallback("messages.new.async", messageNewNotification);
+
+const postsNewPlaintextBody = function (post) {
+  draftJS = post.draftJS;
+  bodyText = "";
+  draftJS.blocks.forEach((block) => {
+    if (block.text) {
+      bodyText += block.text;
+    };
+  });
+  console.log("postsNewPlaintextBody");
+
+  post = {
+    ...post,
+    body: bodyText,
+  };
+  console.log(post);
+  return post;
+}
+
+addCallback("posts.new.sync", postsNewPlaintextBody);
+
+const postsEditPlaintextBody = function (modifier, post) {
+
+  if (modifier.$set && typeof modifier.$set.draftJS !== 'undefined') {
+
+    draftJS = modifier.$set.draftJS;
+    bodyText = "";
+
+    draftJS.blocks.forEach((block) => {
+      if (block.text) {
+        bodyText += block.text;
+      };
+    });
+
+    // extend the modifier
+    modifier.$set = {
+      ...modifier.$set,
+      body: bodyText,
+    };
+  } else if (modifier.$unset && modifier.$unset.body) {
+    // extend the modifier
+    modifier.$unset = {
+      ...modifier.$unset,
+      body: true,
+    };
+  }
+  console.log("postsEditPlaintextBody");
+  console.log(modifier);
+  return modifier;
+}
+addCallback("posts.edit.sync", postsEditPlaintextBody);
