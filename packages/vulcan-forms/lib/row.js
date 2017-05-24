@@ -2,36 +2,12 @@
 
 'use strict';
 
-var React = require('react');
-var classNames = require('classnames/dedupe');
+import React, { PropTypes, Component } from 'react';
+import classNames from 'classnames/dedupe';
 
-var Row = React.createClass({
+class Row extends Component {
 
-    propTypes: {
-        label: React.PropTypes.node,
-        rowClassName: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array,
-            React.PropTypes.object
-        ]),
-        labelClassName: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array,
-            React.PropTypes.object
-        ]),
-        elementWrapperClassName: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array,
-            React.PropTypes.object
-        ]),
-        required: React.PropTypes.bool,
-        hasErrors: React.PropTypes.bool,
-        fakeLabel: React.PropTypes.bool,
-        layout: React.PropTypes.oneOf(['horizontal', 'vertical', 'elementOnly']),
-        htmlFor: React.PropTypes.string
-    },
-
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             label: '',
             rowClassName: '',
@@ -41,9 +17,9 @@ var Row = React.createClass({
             hasErrors: false,
             fakeLabel: false
         };
-    },
+    }
 
-    renderLabel: function() {
+    renderLabel() {
 
         if (this.props.layout === 'elementOnly') {
             return '';
@@ -74,9 +50,9 @@ var Row = React.createClass({
                 {this.props.required ? ' *' : null}
             </label>
         );
-    },
+    }
 
-    render: function() {
+    render() {
 
         if (this.props.layout === 'elementOnly') {
             return (
@@ -121,6 +97,30 @@ var Row = React.createClass({
         );
     }
 
-});
+}
 
-module.exports = Row;
+Row.propTypes = {
+    label: React.PropTypes.node,
+    rowClassName: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.array,
+        React.PropTypes.object
+    ]),
+    labelClassName: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.array,
+        React.PropTypes.object
+    ]),
+    elementWrapperClassName: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.array,
+        React.PropTypes.object
+    ]),
+    required: React.PropTypes.bool,
+    hasErrors: React.PropTypes.bool,
+    fakeLabel: React.PropTypes.bool,
+    layout: React.PropTypes.oneOf(['horizontal', 'vertical', 'elementOnly']),
+    htmlFor: React.PropTypes.string
+}
+
+export default Row;
