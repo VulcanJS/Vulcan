@@ -1,5 +1,6 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Dropdown, MenuItem } from 'react-bootstrap';
@@ -28,8 +29,8 @@ const UsersMenu = ({currentUser, client}) =>
 
 
 UsersMenu.propsTypes = {
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  client: PropTypes.object,
 };
 
 registerComponent('UsersMenu', UsersMenu, withCurrentUser, withApollo);

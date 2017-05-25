@@ -1,8 +1,8 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import DateTimePicker from 'react-datetime';
-// import moment from 'moment';
 
-class DateTime extends Component {
+class DateTime extends PureComponent {
   
   constructor(props) {
     super(props);
@@ -41,17 +41,17 @@ class DateTime extends Component {
 }
 
 DateTime.propTypes = {
-  control: React.PropTypes.any,
-  datatype: React.PropTypes.any,
-  group: React.PropTypes.any,
-  label: React.PropTypes.string,
-  name: React.PropTypes.string,
-  value: React.PropTypes.any,
+  control: PropTypes.any,
+  datatype: PropTypes.any,
+  group: PropTypes.any,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.any,
 };
 
 DateTime.contextTypes = {
-  addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValues: React.PropTypes.func,
+  addToAutofilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
 };
 
 export default DateTime;

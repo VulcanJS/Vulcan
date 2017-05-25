@@ -1,9 +1,10 @@
 import { Components, getSetting, registerComponent } from 'meteor/vulcan:lib';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
 
-class Upload extends Component {
+class Upload extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -33,16 +34,16 @@ class Upload extends Component {
     });
 
     // request url to cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting("cloudinaryCloudName")}/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinaryCloudName')}/upload`;
 
     // request body
     const body = new FormData();
-    body.append("file", files[0]);
-    body.append("upload_preset", this.props.options.preset);
+    body.append('file', files[0]);
+    body.append('upload_preset', this.props.options.preset);
 
     // post request to cloudinary
     fetch(cloudinaryUrl, {
-      method: "POST",
+      method: 'POST',
       body,
     })
     .then(res => res.json()) // json-ify the readable strem
@@ -60,7 +61,7 @@ class Upload extends Component {
       // tell vulcanForm to catch the value
       this.context.addToAutofilledValues({[this.props.name]: avatarUrl});
     })
-    .catch(err => console.log("err", err));
+    .catch(err => console.log('err', err));
   }
 
   clearImage(e) {
@@ -73,7 +74,6 @@ class Upload extends Component {
   }
 
   render() {
-
     const { uploading, preview, value } = this.state;
     // show the actual uploaded image or the preview
     const image = preview || value;
@@ -109,14 +109,14 @@ class Upload extends Component {
 }
 
 Upload.propTypes = {
-  name: React.PropTypes.string,
-  value: React.PropTypes.any,
-  label: React.PropTypes.string
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.string
 };
 
 Upload.contextTypes = {
-  addToAutofilledValues: React.PropTypes.func,
-}
+  addToAutofilledValues: PropTypes.func,
+};
 
 registerComponent('Upload', Upload);
 
