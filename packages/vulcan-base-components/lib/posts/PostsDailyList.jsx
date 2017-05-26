@@ -1,10 +1,11 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import Posts from 'meteor/vulcan:posts';
 import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 
-class PostsDailyList extends Component{
+class PostsDailyList extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -98,9 +99,9 @@ class PostsDailyList extends Component{
 }
 
 PostsDailyList.propTypes = {
-  currentUser: React.PropTypes.object,
-  days: React.PropTypes.number,
-  increment: React.PropTypes.number
+  currentUser: PropTypes.object,
+  days: PropTypes.number,
+  increment: PropTypes.number
 };
 
 PostsDailyList.defaultProps = {

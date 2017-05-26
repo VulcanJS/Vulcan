@@ -1,5 +1,6 @@
 import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -43,8 +44,8 @@ const PostsViews = (props, context) => {
 }
 
 PostsViews.propTypes = {
-  currentUser: React.PropTypes.object,
-  defaultView: React.PropTypes.string
+  currentUser: PropTypes.object,
+  defaultView: PropTypes.string
 };
 
 PostsViews.defaultProps = {
@@ -52,7 +53,7 @@ PostsViews.defaultProps = {
 };
 
 PostsViews.contextTypes = {
-  currentRoute: React.PropTypes.object,
+  currentRoute: PropTypes.object,
   intl: intlShape
 };
 

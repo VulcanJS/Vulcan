@@ -7,7 +7,7 @@ All props except currentUser are passed by the withList container.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Comments from '../../modules/comments/collection.js';

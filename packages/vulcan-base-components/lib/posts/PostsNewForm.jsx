@@ -1,6 +1,7 @@
 import { Components, registerComponent, getRawComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import Posts from "meteor/vulcan:posts";
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router'
 
@@ -30,7 +31,7 @@ PostsNewForm.propTypes = {
 }
 
 PostsNewForm.contextTypes = {
-  closeCallback: React.PropTypes.func,
+  closeCallback: PropTypes.func,
   intl: intlShape
 };
 

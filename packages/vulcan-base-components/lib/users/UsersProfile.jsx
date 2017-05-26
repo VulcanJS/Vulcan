@@ -1,5 +1,5 @@
 import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/vulcan:users';
 import { Link } from 'react-router';
@@ -40,7 +40,7 @@ const UsersProfile = (props) => {
 }
 
 UsersProfile.propTypes = {
-  // document: React.PropTypes.object.isRequired,
+  // document: PropTypes.object.isRequired,
 }
 
 UsersProfile.displayName = "UsersProfile";

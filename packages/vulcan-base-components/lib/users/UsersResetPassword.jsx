@@ -1,9 +1,10 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { intlShape } from 'react-intl';
 
-class UsersResetPassword extends Component {
+class UsersResetPassword extends PureComponent {
   componentDidMount() {
     const token = this.props.params.token;
     Accounts._loginButtonsSession.set('resetPasswordToken', token);
@@ -34,8 +35,8 @@ UsersResetPassword.contextTypes = {
 }
 
 UsersResetPassword.propsTypes = {
-  currentUser: React.PropTypes.object,
-  params: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  params: PropTypes.object,
 };
 
 UsersResetPassword.displayName = 'UsersResetPassword';
