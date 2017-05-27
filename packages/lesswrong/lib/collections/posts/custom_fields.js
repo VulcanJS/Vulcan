@@ -122,4 +122,16 @@ Posts.addField([
       group: formGroups.admin
     }
   },
+
+  {
+    fieldName: 'body',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      insertableBy: [],
+      editableBy: [],
+      hidden: false,
+    }
+  },
 ]);
