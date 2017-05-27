@@ -8,7 +8,7 @@ functions, event handlers, etc.).
 */
 
 import { Components, getRawComponent, replaceComponent }from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { FormattedMessage /*, intlShape */ } from 'react-intl';
 
 class CustomNewsletter extends getRawComponent('Newsletter') {

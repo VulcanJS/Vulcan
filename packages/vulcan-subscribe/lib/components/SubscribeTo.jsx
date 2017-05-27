@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'react-intl';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -8,7 +9,7 @@ import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/
 // boolean -> unsubscribe || subscribe
 const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe' 
 
-class SubscribeToActionHandler extends Component {
+class SubscribeToActionHandler extends PureComponent {
 
   constructor(props, context) {
     super(props, context);
@@ -65,10 +66,10 @@ class SubscribeToActionHandler extends Component {
 }
 
 SubscribeToActionHandler.propTypes = {
-  document: React.PropTypes.object.isRequired,
-  className: React.PropTypes.string,
-  currentUser: React.PropTypes.object,
-}
+  document: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  currentUser: PropTypes.object,
+};
 
 SubscribeToActionHandler.contextTypes = {
   intl: intlShape
@@ -100,7 +101,6 @@ const SubscribeTo = props => {
   const EnhancedHandler = compose(...withSubscribeMutations)(SubscribeToActionHandler);
   
   return <EnhancedHandler {...props} documentType={documentType} />;
-}
-
+};
 
 registerComponent('SubscribeTo', SubscribeTo, withCurrentUser, withMessages);
