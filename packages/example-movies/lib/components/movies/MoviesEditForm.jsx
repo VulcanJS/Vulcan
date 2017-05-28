@@ -4,7 +4,7 @@ A component to configure the "edit movie" form.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
 import Movies from '../../modules/movies/collection.js';

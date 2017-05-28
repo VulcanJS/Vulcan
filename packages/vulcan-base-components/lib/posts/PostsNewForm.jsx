@@ -1,6 +1,7 @@
 import { Components, registerComponent, getRawComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import Posts from "meteor/vulcan:posts";
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router'
 
@@ -15,7 +16,7 @@ const PostsNewForm = (props, context) =>
           mutationFragment={getFragment('PostsPage')}
           successCallback={post => {
             props.closeModal();
-            props.router.push({pathname: Posts.getPageUrl(post)});
+            props.router.push({pathname: props.redirect || Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
         />
@@ -26,10 +27,11 @@ PostsNewForm.propTypes = {
   closeModal: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
+  redirect: React.PropTypes.string,
 }
 
 PostsNewForm.contextTypes = {
-  closeCallback: React.PropTypes.func,
+  closeCallback: PropTypes.func,
   intl: intlShape
 };
 

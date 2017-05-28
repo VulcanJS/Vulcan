@@ -9,7 +9,7 @@ Note: the Helmet library is used to insert meta tags and link tags in the <head>
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import Header from './Header.jsx';
 

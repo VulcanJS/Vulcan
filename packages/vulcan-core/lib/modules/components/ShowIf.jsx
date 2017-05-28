@@ -1,5 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
 
 const ShowIf = props => {
@@ -8,10 +9,10 @@ const ShowIf = props => {
 };
 
 ShowIf.propTypes = {
-  check: React.PropTypes.func.isRequired,
-  currentUser: React.PropTypes.object,
-  document: React.PropTypes.object,
-  failureComponent: React.PropTypes.object,
+  check: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
+  document: PropTypes.object,
+  failureComponent: PropTypes.object,
 };
 
 ShowIf.displayName = "ShowIf";

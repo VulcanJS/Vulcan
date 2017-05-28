@@ -1,5 +1,6 @@
 import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Comments from "meteor/vulcan:comments";
 import { FormattedMessage } from 'react-intl';
 
@@ -36,15 +37,15 @@ const CommentsNewForm = (props, context) => {
 };
 
 CommentsNewForm.propTypes = {
-  postId: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string, // "comment" or "reply"
-  parentComment: React.PropTypes.object, // if reply, the comment being replied to
-  parentCommentId: React.PropTypes.string, // if reply
-  topLevelCommentId: React.PropTypes.string, // if reply
-  successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
-  cancelCallback: React.PropTypes.func,
-  router: React.PropTypes.object,
-  flash: React.PropTypes.func,
+  postId: PropTypes.string.isRequired,
+  type: PropTypes.string, // "comment" or "reply"
+  parentComment: PropTypes.object, // if reply, the comment being replied to
+  parentCommentId: PropTypes.string, // if reply
+  topLevelCommentId: PropTypes.string, // if reply
+  successCallback: PropTypes.func, // a callback to execute when the submission has been successful
+  cancelCallback: PropTypes.func,
+  router: PropTypes.object,
+  flash: PropTypes.func,
 };
 
 registerComponent('CommentsNewForm', CommentsNewForm, withMessages);

@@ -5,7 +5,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';

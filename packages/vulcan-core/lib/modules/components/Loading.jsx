@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:lib';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 
 const Loading = props => {
   return (

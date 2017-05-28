@@ -48,7 +48,7 @@ VulcanEmail.send = (to, subject, html, text) => {
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
-  const siteName = getSetting('title', 'Telescope');
+  const siteName = getSetting('title', 'Vulcan');
   subject = '['+siteName+'] '+subject;
 
   if (typeof text === 'undefined'){
@@ -58,13 +58,6 @@ VulcanEmail.send = (to, subject, html, text) => {
     });
   }
 
-  console.log('//////// sending email…'); // eslint-disable-line
-  console.log('from: '+from); // eslint-disable-line
-  console.log('to: '+to); // eslint-disable-line
-  console.log('subject: '+subject); // eslint-disable-line
-  // console.log('html: '+html);
-  // console.log('text: '+text);
-
   const email = {
     from: from,
     to: to,
@@ -72,12 +65,31 @@ VulcanEmail.send = (to, subject, html, text) => {
     text: text,
     html: html
   };
+  
+  if (process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false)) {
 
-  try {
-    Email.send(email);
-  } catch (error) {
-    console.log("// error while sending email:"); // eslint-disable-line
-    console.log(error); // eslint-disable-line
+    console.log('//////// sending email…'); // eslint-disable-line
+    console.log('from: '+from); // eslint-disable-line
+    console.log('to: '+to); // eslint-disable-line
+    console.log('subject: '+subject); // eslint-disable-line
+    // console.log('html: '+html);
+    // console.log('text: '+text);
+
+    try {
+      Email.send(email);
+    } catch (error) {
+      console.log("// error while sending email:"); // eslint-disable-line
+      console.log(error); // eslint-disable-line
+    }
+
+  } else {
+
+    console.log('//////// sending email (simulation)…'); // eslint-disable-line
+    console.log('from: '+from); // eslint-disable-line
+    console.log('to: '+to); // eslint-disable-line
+    console.log('subject: '+subject); // eslint-disable-line
+    console.log('Note: emails turned off in development mode. Set "enableDevelopmentEmails" setting to "true" to enable.');
+
   }
 
   return email;

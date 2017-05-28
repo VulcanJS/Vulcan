@@ -1,1 +1,3 @@
-import '../modules/index.js';
+import EmbedlyURL from '../modules/index.js';
+
+export default EmbedlyURL;

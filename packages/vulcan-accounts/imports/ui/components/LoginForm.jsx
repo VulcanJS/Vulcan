@@ -109,7 +109,7 @@ export class AccountsLoginForm extends Tracker.Component {
       }
 
       const loggingInMessage = this.context.intl.formatMessage({id: 'accounts.logging_in'});
-      
+
       if (this.state.formState == STATES.PROFILE) {
         if (!this.props.currentUser && this.state.messages.length === 0) {
           this.showMessage(loggingInMessage);
@@ -752,7 +752,7 @@ export class AccountsLoginForm extends Tracker.Component {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
           this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
-          if (this.context.intl.formatMessaget({id: `error.accounts_${error.reason}`})) {
+          if (this.context.intl.formatMessage({id: `error.accounts_${error.reason}`})) {
             onSubmitHook(`error.accounts.${error.reason}`, formState);
           }
           else {

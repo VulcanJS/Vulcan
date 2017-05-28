@@ -24,7 +24,8 @@ component is also added to wait for withDocument's loading prop to be false)
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
 import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/vulcan:core';
@@ -32,7 +33,7 @@ import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
 
-class FormWrapper extends Component{
+class FormWrapper extends PureComponent {
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
@@ -135,8 +136,7 @@ class FormWrapper extends Component{
     };
 
     // if this is an edit from, load the necessary data using the withDocument HoC
-    if (this.getFormType() === 'edit') { 
-    
+    if (this.getFormType() === 'edit') {
       // create a stateless loader component that's wrapped with withDocument,
       // displays the loading state if needed, and passes on loading and document
       const Loader = props => {
@@ -150,7 +150,7 @@ class FormWrapper extends Component{
             {...parentProps}
             {...props}
           />;
-      }
+      };
       Loader.displayName = `withLoader(Form)`;
 
       WrappedComponent = compose(
@@ -167,60 +167,57 @@ class FormWrapper extends Component{
         withNew(mutationOptions)
       )(Form);
 
-      return <WrappedComponent {...childProps} {...parentProps} />
+      return <WrappedComponent {...childProps} {...parentProps} />;
     
     }
-
   }
-
 }
 
 FormWrapper.propTypes = {
-
   // main options
-  collection: React.PropTypes.object.isRequired,
-  documentId: React.PropTypes.string, // if a document is passed, this will be an edit form
-  schema: React.PropTypes.object, // usually not needed
-  queryFragment: React.PropTypes.object,
-  mutationFragment: React.PropTypes.object,
+  collection: PropTypes.object.isRequired,
+  documentId: PropTypes.string, // if a document is passed, this will be an edit form
+  schema: PropTypes.object, // usually not needed
+  queryFragment: PropTypes.object,
+  mutationFragment: PropTypes.object,
 
   // graphQL
-  newMutation: React.PropTypes.func, // the new mutation
-  editMutation: React.PropTypes.func, // the edit mutation
-  removeMutation: React.PropTypes.func, // the remove mutation
+  newMutation: PropTypes.func, // the new mutation
+  editMutation: PropTypes.func, // the edit mutation
+  removeMutation: PropTypes.func, // the remove mutation
 
   // form
-  prefilledProps: React.PropTypes.object,
-  layout: React.PropTypes.string,
-  fields: React.PropTypes.arrayOf(React.PropTypes.string),
-  showRemove: React.PropTypes.bool,
+  prefilledProps: PropTypes.object,
+  layout: PropTypes.string,
+  fields: PropTypes.arrayOf(PropTypes.string),
+  showRemove: PropTypes.bool,
 
   // callbacks
-  submitCallback: React.PropTypes.func,
-  successCallback: React.PropTypes.func,
-  removeSuccessCallback: React.PropTypes.func,
-  errorCallback: React.PropTypes.func,
-  cancelCallback: React.PropTypes.func,
+  submitCallback: PropTypes.func,
+  successCallback: PropTypes.func,
+  removeSuccessCallback: PropTypes.func,
+  errorCallback: PropTypes.func,
+  cancelCallback: PropTypes.func,
 
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  client: PropTypes.object,
 }
 
 FormWrapper.defaultProps = {
-  layout: "horizontal",
+  layout: 'horizontal',
 }
 
 FormWrapper.contextTypes = {
-  closeCallback: React.PropTypes.func,
+  closeCallback: PropTypes.func,
   intl: intlShape
 }
 
 FormWrapper.childContextTypes = {
-  autofilledValues: React.PropTypes.object,
-  addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValues: React.PropTypes.func,
-  throwError: React.PropTypes.func,
-  getDocument: React.PropTypes.func
+  autofilledValues: PropTypes.object,
+  addToAutofilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
+  throwError: PropTypes.func,
+  getDocument: PropTypes.func
 }
 
 registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);

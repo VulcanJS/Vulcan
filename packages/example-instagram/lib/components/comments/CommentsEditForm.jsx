@@ -15,7 +15,7 @@ in a modal popup.
 
 */
 
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
 import Comments from '../../modules/comments/collection.js';

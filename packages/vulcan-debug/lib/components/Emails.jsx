@@ -1,9 +1,10 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import VulcanEmail from 'meteor/vulcan:email';
 
-class Email extends Component {
+class Email extends PureComponent {
 
   constructor() {
     super();
@@ -29,14 +30,14 @@ class Email extends Component {
 
   render() {
     
-    const {email, name} = this.props;
+    const { email, name } = this.props;
 
     return (
       <tr>
         <td>{name}</td>
         <td><a href={"/email/template/"+email.template} target="_blank">{email.template}</a></td>
         <td>{email.subject({})}</td>
-        <td><a href={email.path.replace(":_id?", "")} target="_blank">{email.path}</a></td>
+        <td><a href={email.path.replace(':_id?', '')} target="_blank">{email.path}</a></td>
         <td>
           <div className={this.state.loading ? "test-email loading" : "test-email"}>
             <Button disabled={this.state.loading} onClick={this.sendTest} bsStyle="primary">Send Test</Button>
@@ -49,11 +50,11 @@ class Email extends Component {
 }
 
 Email.propTypes = {
-  email: React.PropTypes.object,
-  name: React.PropTypes.string
-}
+  email: PropTypes.object,
+  name: PropTypes.string
+};
 
-const Emails = props => {
+const Emails = (/* props*/) => {
 
   const emails = VulcanEmail.emails;
 
@@ -82,6 +83,6 @@ const Emails = props => {
     
     </div>
   )
-}
+};
 
 registerComponent('Emails', Emails);
