@@ -43,14 +43,14 @@ export const removeCallback = function (hookName, callbackName) {
  */
 export const runCallbacks = function () {
 
-  // the first argument is the name of the hook
+  // the first argument is the name of the hook or an array of functions
   const hook = arguments[0];
   // the second argument is the item on which to iterate
   const item = arguments[1];
   // successive arguments are passed to each iteration
   const args = Array.prototype.slice.call(arguments).slice(2);
 
-  const callbacks = Callbacks[hook];
+  const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
@@ -90,11 +90,12 @@ export const runCallbacks = function () {
  */
 export const runCallbacksAsync = function () {
 
-  // the first argument is the name of the hook
+  // the first argument is the name of the hook or an array of functions
   var hook = arguments[0];
   // successive arguments are passed to each iteration
   var args = Array.prototype.slice.call(arguments).slice(1);
-  var callbacks = Callbacks[hook];
+
+  const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
 
