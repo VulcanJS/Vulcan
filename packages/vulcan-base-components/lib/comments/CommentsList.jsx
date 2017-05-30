@@ -3,6 +3,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 const CommentsList = ({comments, commentCount}) => {
+  console.log("CommentsList");
+  console.log(Object.isFrozen(comments));
 
   if (commentCount > 0) {
     return (

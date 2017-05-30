@@ -78,7 +78,7 @@ const addJob = function () {
           })
 
         }).catch( (error) => {
-          console.log(feed);
+          // console.log(feed);
           console.log('error: ', error);
         });
      })

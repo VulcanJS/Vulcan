@@ -236,13 +236,11 @@ const postsNewPlaintextBody = function (post) {
       bodyText += block.text;
     };
   });
-  console.log("postsNewPlaintextBody");
 
   post = {
     ...post,
     body: bodyText,
   };
-  console.log(post);
   return post;
 }
 
@@ -273,8 +271,6 @@ const postsEditPlaintextBody = function (modifier, post) {
       body: true,
     };
   }
-  console.log("postsEditPlaintextBody");
-  console.log(modifier);
   return modifier;
 }
 addCallback("posts.edit.sync", postsEditPlaintextBody);

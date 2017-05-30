@@ -45,6 +45,13 @@ $medium-text: $dark-grey;
   align-items: center;
 }
 
+// CSS modifications for adjusting font in various contexts
+
+.comments-item{
+  font-size: 20px;
+  width: 700px;
+  margin-left: 60px;
+}
 
 // CSS modifications for notifications navbar
 .navbar-nav{
@@ -188,7 +195,7 @@ $medium-text: $dark-grey;
 .postFeedNickname{
   font-size: 0.7rem;
   font-color: $lighter-grey;
-  margin-left: 10px; 
+  margin-left: 10px;
 }
 
 .displayFullContentTag{

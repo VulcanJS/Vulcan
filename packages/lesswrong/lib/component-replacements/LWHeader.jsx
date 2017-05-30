@@ -10,8 +10,8 @@ import React, { PropTypes, Component } from 'react';
 import {Utils, withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/vulcan:core';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
-
-
+//TODO: Add `withNewEditor` somewhere that is more reasonable.
+import withNewEditor from '../editor/withNewEditor.jsx';
 
 class LWHeader extends Component {
 

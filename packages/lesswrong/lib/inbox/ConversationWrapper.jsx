@@ -41,7 +41,7 @@ class ConversationWrapper extends Component {
             <br></br> <small>{conversation.createdAt}</small>
           </PageHeader>
           {this.renderMessages(results, currentUser)}
-          <div style={ {marginTop: '40px'} }>
+          <div style={ {marginTop: '40px'} }> //TODO: Clean up the CSS for this component
             <SmartForm
               collection={Messages}
               prefilledProps={ {conversationId: conversation._id} }

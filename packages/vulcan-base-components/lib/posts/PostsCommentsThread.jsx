@@ -16,6 +16,12 @@ const PostsCommentsThread = (props, context) => {
     const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, '_id', 'parentCommentId');
 
+    console.log("PostsCommentsThread");
+    console.log("results:");
+    console.log(Object.isFrozen(results));
+    console.log("nestedComments:");
+    console.log(Object.isFrozen(nestedComments));
+
     return (
       <div className="posts-comments-thread">
         <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>

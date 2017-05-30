@@ -6,12 +6,15 @@ class PostEditor extends Component {
   render() {
     const document = this.props.document;
     const addValues = this.context.addToAutofilledValues;
-
-    return (
-      <div className="postEditor">
-        <Components.EditorWrapper addValues={addValues} initialState={document.draftJS} />
-      </div>
-    );
+    if (!!document) {
+      return (
+        <div className="postEditor">
+          <Components.EditorWrapper addValues={addValues} initialState={document.draftJS} />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
