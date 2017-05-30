@@ -96,13 +96,9 @@ class FormWrapper extends PureComponent {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.getFormType() === 'edit') {
-      // re-render only if the document selector changes
-      return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
-    }
-    
     // prevent extra re-renderings for unknown reasons
-    return false;
+    // re-render only if the document selector changes
+    return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
   }
 
   render() {

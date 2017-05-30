@@ -24,21 +24,19 @@ const resolvers = {
 
     name: 'postsList',
 
-    check(user, terms, Posts) {
-      const {selector} = Posts.getParameters(terms);
-      if (selector.status) {
-        const statuses = selector.status['$in'] ? selector.status['$in'] : [selector.status];
-        const statusesLabel = statuses.map(status => _.findWhere(Posts.statuses, {value: status}).label)
-        return _.every(statusesLabel, label => Users.canDo(user, `posts.view.${label}.all`));
+    check(currentUser, post, Posts) {
+      if (Users.isAdmin(currentUser)) { // admins can always see everything
+        return true;
+      } else if (post.status === Posts.config.STATUS_APPROVED) {
+        return !post.isFuture; // future posts should not be viewable
+      } else if (post.status === Posts.config.STATUS_PENDING) {
+        return Users.owns(currentUser, post); // pending posts only viewable by owner
       } else {
-        return Users.canDo(user, `posts.view.approved.all`);
+        return false;
       }
     },
 
     resolver(root, {terms}, {currentUser, Users, Posts}, info) {
-
-      // check that the current user can access the current query terms
-      Utils.performCheck(this, currentUser, terms, Posts);
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = Posts.getParameters(terms);
@@ -47,7 +45,8 @@ const resolvers = {
       const posts = Posts.find(selector, options).fetch();
 
       // restrict documents fields
-      const restrictedPosts = Users.restrictViewableFields(currentUser, Posts, posts);
+      const viewablePosts = _.filter(posts, post => this.check(currentUser, post, Posts));
+      const restrictedPosts = Users.restrictViewableFields(currentUser, Posts, viewablePosts);
 
       // prime the cache
       restrictedPosts.forEach(post => Posts.loader.prime(post._id, post));
