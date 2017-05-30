@@ -57,7 +57,8 @@ const UsersProfileCheck = ({currentUser, document, loading, flash}, context) => 
 
 };
 
-UsersProfileCheck.propsTypes = {
+
+UsersProfileCheck.propTypes = {
   currentUser: PropTypes.object
 };
 
