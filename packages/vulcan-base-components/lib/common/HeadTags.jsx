@@ -45,7 +45,7 @@ class HeadTags extends Component {
 		const link = Headtags.link.concat([
 			{ rel: "canonical", href: url },
 			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") },
-		  { rel: 'stylesheet', type: 'text/css', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css' },
+		  { rel: 'stylesheet', type: 'text/css', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' },
 		  { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
 		]);
 
