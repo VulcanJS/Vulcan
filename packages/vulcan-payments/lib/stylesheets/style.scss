@@ -1,0 +1,21 @@
+.stripe-checkout{
+  position: relative;
+  display: inline-block;
+  .spinner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -20px;
+    margin-top: -5px;
+    display: none;
+  }
+  &.checkout-loading{
+    div:first-child{
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .spinner{
+      display: block;
+    }
+  }
+}
