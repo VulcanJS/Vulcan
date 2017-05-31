@@ -56,7 +56,7 @@ A product is a type of purchase a user can make. It has a `name`, `amount` (in c
 New products are defined using the `addProduct` function, which takes two arguments. The first argument is a unique **product key** used to identify the product. The second argument can be an object (for "static" products like a subscription):
 
 ```
-import { addProduct } from 'meteor/payments';
+import { addProduct } from 'meteor/vulcan:payments';
 
 addProduct('membership', {
   'amount': 25000,
@@ -68,7 +68,7 @@ addProduct('membership', {
 Or it can be a function (for "dynamic" products like in an e-commerce site) that takes the associated document (i.e. the product being sold) as argument and returns an object:
 
 ```
-import { addProduct } from 'meteor/payments';
+import { addProduct } from 'meteor/vulcan:payments';
 
 addProduct('book', book => ({
   'name': book.title,
