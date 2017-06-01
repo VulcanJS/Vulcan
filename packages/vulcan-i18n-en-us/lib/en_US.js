@@ -86,6 +86,9 @@ addStrings('en', {
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
+  "comments.count_0": "No comments",
+  "comments.count_1": "1 comment",
+  "comments.count_2": "{count} comments",
   "comments.new": "New Comment",
   "comments.no_comments": "No comments to display.",
   "comments.reply": "Reply",

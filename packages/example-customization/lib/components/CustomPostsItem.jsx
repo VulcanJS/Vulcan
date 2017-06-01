@@ -42,7 +42,10 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
             <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
-                <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
+                {!post.commentCount || post.commentCount === 0 ? <FormattedMessage id="comments.count_0"/> : 
+                  post.commentCount === 1 ? <FormattedMessage id="comments.count_1" /> :
+                    <FormattedMessage id="comments.count_2" values={{count: post.commentCount}}/>
+                }              
               </Link>
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}

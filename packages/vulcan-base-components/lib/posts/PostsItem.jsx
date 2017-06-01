@@ -1,9 +1,10 @@
 import { Components, registerComponent, ModalTrigger } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, FormattedRelative } from 'meteor/vulcan:i18n';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
+import moment from 'moment';
 
 class PostsItem extends PureComponent {
 
@@ -52,10 +53,13 @@ class PostsItem extends PureComponent {
 
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Components.UsersAvatar user={post.user} size="small"/><Components.UsersName user={post.user}/></div> : null}
-            <div className="posts-item-date">{post.postedAt ? <FormattedRelative value={post.postedAt}/> : <FormattedMessage id="posts.dateNotDefined"/>}</div>
+            <div className="posts-item-date">{post.postedAt ? moment(new Date(post.postedAt)).fromNow() : <FormattedMessage id="posts.dateNotDefined"/>}</div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
-                <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
+                {!post.commentCount || post.commentCount === 0 ? <FormattedMessage id="comments.count_0"/> : 
+                  post.commentCount === 1 ? <FormattedMessage id="comments.count_1" /> :
+                    <FormattedMessage id="comments.count_2" values={{count: post.commentCount}}/>
+                }
               </Link>
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}

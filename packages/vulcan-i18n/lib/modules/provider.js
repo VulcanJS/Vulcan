@@ -11,9 +11,15 @@ export default class IntlProvider extends Component{
     this.formatMessage = this.formatMessage.bind(this);
   }
 
-  formatMessage({ id }) {
+  formatMessage({ id }, values) {
     const messages = Strings[getSetting('locale', 'en')] || {};
-    return messages[id];
+    let message = messages[id];
+    if (values) {
+      _.forEach(values, (value, key) => {
+        message = message.replace(`{${key}}`, value);
+      });
+    }
+    return message;
   }
 
   formatStuff(something) {
