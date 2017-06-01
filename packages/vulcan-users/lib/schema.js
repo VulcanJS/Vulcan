@@ -27,7 +27,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['guests'],
     onInsert: user => {
-      if (user.services.twitter && user.services.twitter.screenName) {
+      if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
     }

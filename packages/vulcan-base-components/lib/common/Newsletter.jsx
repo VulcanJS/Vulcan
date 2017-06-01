@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/lib/Button';
 import Cookie from 'react-cookie';
 import Users from 'meteor/vulcan:users';
 

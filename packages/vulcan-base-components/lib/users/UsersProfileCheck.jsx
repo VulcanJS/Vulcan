@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/lib/Modal'
 import Users from 'meteor/vulcan:users';
 import { withDocument, Components, registerComponent, withMessages } from 'meteor/vulcan:core';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';

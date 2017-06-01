@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/lib/Button';
 
 const PostsNewButton = (props, context) => {
 

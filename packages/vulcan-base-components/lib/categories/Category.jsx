@@ -2,7 +2,7 @@ import { ModalTrigger, Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
-import { MenuItem } from 'react-bootstrap';
+import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { withRouter } from 'react-router'
 import Categories from 'meteor/vulcan:categories';
 
