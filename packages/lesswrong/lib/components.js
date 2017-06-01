@@ -27,6 +27,7 @@ import './editor/ContentRenderer.jsx';
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWHeader.jsx';
 import './component-replacements/LWCommentsItem.jsx';
+import './component-replacements/LWPostsNewButton.jsx';
 import './component-replacements/LWNewsletter.jsx';
 import './component-replacements/LWLayout.jsx';
 import './component-replacements/LWPostsHome.jsx';

@@ -9,6 +9,7 @@ import Users from 'meteor/vulcan:users';
 import React, { PropTypes, Component } from 'react';
 import {Utils, withCurrentUser, getSetting, Components, replaceComponent } from 'meteor/vulcan:core';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 //TODO: Add `withNewEditor` somewhere that is more reasonable.
 import withNewEditor from '../editor/withNewEditor.jsx';
@@ -36,7 +37,9 @@ class LWHeader extends Component {
           <Nav pullRight={true}>
             {!!this.props.currentUser ? <Components.NotificationsMenu title="Notifications" terms={notificationTerms}/> : null}
             {!!this.props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
-            <NavItem> <Components.PostsNewButton/> </NavItem>
+            <LinkContainer to="/newPost">
+              <NavItem> <Components.PostsNewButton /> </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar>
       </header>

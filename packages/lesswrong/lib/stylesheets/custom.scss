@@ -51,6 +51,14 @@ $medium-text: $dark-grey;
   font-size: 20px;
 }
 
+// CSS Modifications for Navbar buttons and styles
+
+.post-new-button{
+  a{
+    color: $lw-green !important;
+  }
+}
+
 // CSS modifications for notifications navbar
 .navbar-nav{
   .dropdown-menu{

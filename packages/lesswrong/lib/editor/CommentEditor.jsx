@@ -38,7 +38,7 @@ class CommentEditor extends Component {
       const state = JSON.parse(JSON.stringify(document.content));
       editor.trigger.editable.add(state)
     } else {
-      editor.trigger.editable.add(placeholderContent); 
+      editor.trigger.editable.add(placeholderContent);
     }
 
   }
@@ -66,6 +66,6 @@ CommentEditor.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
 }
 
-registerComponent('CommentEditor', withEditor(CommentEditor), withCurrentUser);
+registerComponent('CommentEditor', CommentEditor, withEditor, withCurrentUser);
 
 export default withEditor(CommentEditor);
