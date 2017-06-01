@@ -71,7 +71,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
           {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
           {/* Adding content rendering here */}
-          {post.content ? <Components.PostEditor initialState={post.content} readOnly /> : null}
+          {post.content ? <div className="posts-page-content"> <Components.ContentRenderer state={post.content} /> </div> : null}
 
           {/* comment view selector and comment thread */}
           { this.renderCommentViewSelector() }
