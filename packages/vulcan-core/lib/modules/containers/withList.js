@@ -40,7 +40,8 @@ import gql from 'graphql-tag';
 import update from 'immutability-helper';
 import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
-import { compose, withState } from 'recompose';
+import compose from 'recompose/compose';
+import withState from 'recompose/withState';
 
 const withList = (options) => {
 
