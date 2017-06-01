@@ -4,7 +4,7 @@ import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo } from 'react-apollo';
 
 import {

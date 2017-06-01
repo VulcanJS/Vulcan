@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { getSetting, registerComponent, Components } from 'meteor/vulcan:core';
 
 const renderSetting = key => (

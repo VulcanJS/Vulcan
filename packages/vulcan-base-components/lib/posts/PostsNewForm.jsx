@@ -2,7 +2,7 @@ import { Components, registerComponent, getRawComponent, getFragment, withMessag
 import Posts from "meteor/vulcan:posts";
 import React from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, FormattedMessage } from 'react-intl';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router'
 
 const PostsNewForm = (props, context) => 

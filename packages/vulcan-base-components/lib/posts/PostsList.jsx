@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Posts from 'meteor/vulcan:posts';
 import { Alert } from 'react-bootstrap';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 
 const Error = ({error}) => <Alert className="flash-message" bsStyle="danger"><FormattedMessage id={error.id} values={{value: error.value}}/>{error.message}</Alert>

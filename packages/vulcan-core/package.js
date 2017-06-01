@@ -11,6 +11,7 @@ Package.onUse(function(api) {
 
   api.use([
     'vulcan:lib@1.4.0',
+    'vulcan:i18n@1.4.0',
     'vulcan:users@1.4.0',
     'vulcan:routing@1.4.0'
   ]);

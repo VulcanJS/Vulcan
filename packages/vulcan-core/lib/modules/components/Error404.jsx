@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const Error404 = () => {
   return (

@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withMutation, withMessages, Utils } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';

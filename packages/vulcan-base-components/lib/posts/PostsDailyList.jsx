@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Posts from 'meteor/vulcan:posts';
 import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 

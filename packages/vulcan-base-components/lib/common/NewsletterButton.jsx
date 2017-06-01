@@ -1,6 +1,6 @@
 import { Components, registerComponent, withMutation, withCurrentUser, withMessages, Utils } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { Button } from 'react-bootstrap';
 
 class NewsletterButton extends Component {

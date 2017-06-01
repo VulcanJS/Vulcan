@@ -1,7 +1,7 @@
 import { Components, registerComponent, ModalTrigger } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, FormattedRelative } from 'react-intl';
+import { FormattedMessage, FormattedRelative } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
 

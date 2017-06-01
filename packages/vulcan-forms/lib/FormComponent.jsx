@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import DateTime from './DateTime.jsx';
 
 // import Utils from './utils.js';

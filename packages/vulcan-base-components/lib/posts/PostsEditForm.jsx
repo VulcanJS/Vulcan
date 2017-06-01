@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import Posts from "meteor/vulcan:posts";
 import { withRouter } from 'react-router'
 

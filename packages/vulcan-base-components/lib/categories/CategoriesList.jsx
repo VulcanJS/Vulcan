@@ -1,7 +1,7 @@
 import { ModalTrigger, Components, registerComponent, withList, Utils } from "meteor/vulcan:core";
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';

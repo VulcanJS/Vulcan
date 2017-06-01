@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/vulcan:voting';
-import { /*FormattedMessage,*/ intlShape } from 'react-intl';
+import { /*FormattedMessage,*/ intlShape } from 'meteor/vulcan:i18n';
 
 class Vote extends PureComponent {
 

@@ -2,7 +2,7 @@ import { Components, registerComponent, getFragment, withMessages } from 'meteor
 import React from 'react';
 import PropTypes from 'prop-types';
 import Comments from "meteor/vulcan:comments";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const CommentsNewForm = (props, context) => {
 

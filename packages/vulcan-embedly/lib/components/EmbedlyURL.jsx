@@ -1,7 +1,7 @@
 import { Components, registerComponent, Utils, getSetting } from 'meteor/vulcan:core';
 import { withMutation } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import FRC from 'formsy-react-components';
 
 const Input = FRC.Input;

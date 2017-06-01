@@ -2,7 +2,7 @@ import React from 'react'
 import StripeCheckout from 'react-stripe-checkout';
 import { Components, registerComponent, getSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 import withCreateCharge from '../containers/withCreateCharge.js';
 import { Products } from '../modules/products.js';
