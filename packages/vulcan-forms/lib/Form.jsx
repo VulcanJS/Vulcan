@@ -23,7 +23,8 @@ This component expects:
 */
 
 import { Components, Utils, runCallbacks } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
@@ -449,7 +450,7 @@ class Form extends Component {
 
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
-    
+
     const fields = this.getFieldNames();
 
     // if there's a submit callback, run it

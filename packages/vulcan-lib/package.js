@@ -11,6 +11,8 @@ Package.onUse(function (api) {
 
   var packages = [
 
+    'buffer', // see https://github.com/meteor/meteor/issues/8645
+
     // Meteor packages
 
     'meteor-base',
