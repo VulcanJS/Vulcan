@@ -10,6 +10,24 @@ const formGroups = {
 
 Posts.addField([
   /**
+    URL (Overwriting original schema)
+  */
+  {
+    fieldName: "url",
+    fieldSchema: {
+      order: 20,
+    }
+  },
+  /**
+    Title (Overwriting original schema)
+  */
+  {
+    fieldName: "title",
+    fieldSchema: {
+      order: 10,
+    }
+  },
+  /**
     Drafts
   */
   {

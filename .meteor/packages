@@ -16,7 +16,7 @@ vulcan:comments
 # vulcan:newsletter
 # vulcan:notifications
 vulcan:getting-started
-vulcan:categories
+# vulcan:categories
 vulcan:voting
 vulcan:events
 vulcan:embedly
@@ -37,8 +37,8 @@ vulcan:i18n-en-us
 ############ Accounts Packages ############
 
 accounts-password
-# accounts-twitter
-# accounts-facebook
+accounts-twitter
+accounts-facebook
 
 ############ Your Packages ############
 
