@@ -1,9 +1,10 @@
 import { Components, withMessages } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
-class NewsletterSubscribe extends Component {
+class NewsletterSubscribe extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -38,10 +39,10 @@ class NewsletterSubscribe extends Component {
       );
       
       // display a nice message to the client
-      this.props.flash(this.context.intl.formatMessage({id: "newsletter.subscription_updated"}), "success");
+      this.props.flash(this.context.intl.formatMessage({ id: 'newsletter.subscription_updated' }), 'success');
     } catch(e) {
       // note: the result didn't have the shape expected, this shouldn't happen unless we change the code of our mailchimp wrapper
-      this.props.flash("Something went wrong... Please contact the administrator to check the state of your newsletter subscription.");
+      this.props.flash('Something went wrong... Please contact the administrator to check the state of your newsletter subscription.');
     }
   }
   
@@ -63,7 +64,7 @@ class NewsletterSubscribe extends Component {
 }
 
 NewsletterSubscribe.contextTypes = {
-  addToAutofilledValues: React.PropTypes.func,
+  addToAutofilledValues: PropTypes.func,
   intl: intlShape
 };
 

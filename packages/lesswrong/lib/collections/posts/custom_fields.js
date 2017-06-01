@@ -26,10 +26,10 @@ Posts.addField([
   },
 
   /**
-    draftJS
+    Ory Editor JSON
   */
   {
-    fieldName: 'draftJS',
+    fieldName: 'content',
     fieldSchema: {
       type: Object,
       optional: true,

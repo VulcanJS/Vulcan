@@ -23,16 +23,12 @@ import divider from 'ory-editor-plugins-divider'
 
 class ContentRenderer extends Component {
   render() {
-    console.log("isFrozen");
-    console.log(Object.isFrozen(this.props.state));
     const state = JSON.parse(JSON.stringify(this.props.state));
 
     const plugins = {
       content: [slate(), spacer, image, video, divider],
       layout: [parallax({ defaultPlugin: slate() })] // Define plugins for layout cells
     };
-    console.log("ContentRenderer:");
-    console.log(state);
     return (
       <HTMLRenderer state={state} plugins={plugins} />
     );

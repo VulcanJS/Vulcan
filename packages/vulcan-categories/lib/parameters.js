@@ -1,5 +1,5 @@
 import Categories from './collection.js';
-import { addCallback } from 'meteor/vulcan:core';
+import { addCallback, getSetting } from 'meteor/vulcan:core';
 import { getCategories } from './schema.js';
 
 // Category Default Sorting by Ascending order (1, 2, 3..)
@@ -42,9 +42,10 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
     });
 
-    parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {$in: categoriesIds}};
+    const operator = getSetting('categoriesFilter', 'union') === 'union' ? '$in' : '$all';
+
+    parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {[operator]: categoriesIds}};
   }
-  
   return parameters;
 }
 

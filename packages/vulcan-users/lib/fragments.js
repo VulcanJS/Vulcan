@@ -15,5 +15,6 @@ registerFragment(`
     slug
     groups
     services
+    avatarUrl
   }
 `);

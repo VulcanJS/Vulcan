@@ -1,9 +1,20 @@
 import { GraphQLSchema } from 'meteor/vulcan:lib';
+import Users from './collection.js';
 
 const specificResolvers = {
   User: {
     twitterUsername(user, args, context) {
       return context.Users.getTwitterName(context.Users.findOne(user._id));
+    },
+    async avatarUrl(user, args, context) {
+      if (user.avatarUrl) {
+        return user.avatarUrl;
+      } else {
+        // user has already been cleaned up by Users.restrictViewableFields, so we
+        // reload the full user object from the cache to access user.services
+        const fullUser = await Users.loader.load(user._id);
+        return Users.avatar.getUrl(fullUser);
+      }
     }
   },
   Query: {

@@ -270,7 +270,7 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
   }
 
   renderComment() {
-    let content = this.props.comment.draftJS;
+    let content = this.props.comment.content;
 
     const htmlBody = {__html: this.props.comment.htmlBody};
     const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;

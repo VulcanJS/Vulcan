@@ -9,7 +9,7 @@ class PostEditor extends Component {
     if (!!document) {
       return (
         <div className="postEditor">
-          <Components.EditorWrapper addValues={addValues} initialState={document.draftJS} />
+          <Components.EditorWrapper addValues={addValues} initialState={document.content} />
         </div>
       );
     } else {

@@ -49,7 +49,7 @@ const schema = {
       return new Date();
     },
   },
-  draftJS: {
+  content: {
     type: Object,
     viewableBy: userInParticipants,
     insertableBy: ['members'],

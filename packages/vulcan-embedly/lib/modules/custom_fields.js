@@ -1,5 +1,4 @@
-import EmbedlyURL from './components/EmbedlyURL.jsx';
-import ThumbnailURL from './components/ThumbnailURL.jsx';
+import EmbedlyURL from '../components/EmbedlyURL.jsx';
 import Posts from "meteor/vulcan:posts";
 
 Posts.addField([
@@ -17,7 +16,7 @@ Posts.addField([
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
-      control: ThumbnailURL
+      hidden: true
     }
   },
   {

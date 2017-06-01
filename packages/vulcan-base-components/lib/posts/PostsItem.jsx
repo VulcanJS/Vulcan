@@ -1,10 +1,11 @@
 import { Components, registerComponent, ModalTrigger } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
 
-class PostsItem extends Component {
+class PostsItem extends PureComponent {
 
   renderCategories() {
     return this.props.post.categories && this.props.post.categories.length > 0 ? <Components.PostsCategories post={this.props.post} /> : "";
@@ -16,7 +17,7 @@ class PostsItem extends Component {
 
   renderActions() {
     return (
-      <div className="post-actions">
+      <div className="posts-actions">
         <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
           <Components.PostsEditForm post={this.props.post} />
         </ModalTrigger>
@@ -71,9 +72,9 @@ class PostsItem extends Component {
 }
 
 PostsItem.propTypes = {
-  currentUser: React.PropTypes.object,
-  post: React.PropTypes.object.isRequired,
-  terms: React.PropTypes.object,
+  currentUser: PropTypes.object,
+  post: PropTypes.object.isRequired,
+  terms: PropTypes.object,
 };
 
 registerComponent('PostsItem', PostsItem);

@@ -52,5 +52,9 @@ Utils.icons = {
   clicks: "mouse-pointer", 
   score: "line-chart",
   reply: "reply",
-  spinner: "spinner"
+  spinner: "spinner",
+  new: "plus",
+  user: "user",
+  like: "heart",
+  image: "picture-o",
 };

@@ -11,7 +11,7 @@ class MessageEditor extends Component {
 
     return (
       <div className="messageEditor">
-        <Components.EditorWrapper addValues={addValues} initialState={document.draftJS}/>
+        <Components.EditorWrapper addValues={addValues} initialState={document.content}/>
       </div>
     );
   }

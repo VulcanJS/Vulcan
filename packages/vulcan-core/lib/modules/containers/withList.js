@@ -12,7 +12,8 @@ Options:
   - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
-  
+  - terms: an object that defines which documents to fetch
+
 Props Received: 
 
   - terms: an object that defines which documents to fetch
@@ -34,13 +35,12 @@ Terms object can have the following properties:
 */
      
 import React, { PropTypes, Component } from 'react';
-import { graphql } from 'react-apollo';
+import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
 import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
-import { withApollo } from 'react-apollo';
 
 const withList = (options) => {
 
@@ -71,12 +71,13 @@ const withList = (options) => {
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
 
-      // either get initial limit from options, or default to settings
+      // get initial limit from props, or else options
+      const paginationLimit = props.terms && props.terms.limit || limit;
       const paginationTerms = {
-        limit, 
-        itemsPerPage: limit, 
+        limit: paginationLimit, 
+        itemsPerPage: paginationLimit, 
       };
-    
+      
       return paginationTerms;
     }),
 
@@ -90,7 +91,9 @@ const withList = (options) => {
         
         // graphql query options
         options({terms, paginationTerms, client: apolloClient}) {
-          const mergedTerms = {...terms, ...paginationTerms};
+          // get terms either from props or from options
+          const baseTerms = terms || options.terms;
+          const mergedTerms = {...baseTerms, ...paginationTerms};
           return {
             variables: {
               terms: mergedTerms,
@@ -114,6 +117,7 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
+                loading = props.data.loading,
                 error = props.data.error;
 
           if (error) {
@@ -123,7 +127,7 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading: networkStatus === 1, // networkStatus = 1 <=> the graphql container is loading
+            loading: networkStatus === 1,
             results,
             totalCount,
             refetch,

@@ -1,5 +1,5 @@
 import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/vulcan:users';
 import { Link } from 'react-router';
@@ -33,14 +33,14 @@ const UsersProfile = (props) => {
           </Components.ShowIf>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
-        <Components.PostsList terms={terms} />
+        <Components.PostsList terms={terms} showHeader={false} />
       </div>
     )
   }
 }
 
 UsersProfile.propTypes = {
-  // document: React.PropTypes.object.isRequired,
+  // document: PropTypes.object.isRequired,
 }
 
 UsersProfile.displayName = "UsersProfile";

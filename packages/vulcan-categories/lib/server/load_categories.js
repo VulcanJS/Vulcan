@@ -12,6 +12,15 @@ if (Meteor.settings && Meteor.settings.categories) {
     // look for existing category with same slug
     let existingCategory = Categories.findOne({slug: slug});
 
+    // look for parent category
+    if (category.parent) {
+      const parentCategory = Categories.findOne({slug: category.parent});
+      if (parentCategory) {
+        category.parentId = parentCategory._id;
+        delete category.parent;
+      }
+    }
+
     if (existingCategory) {
       // if category exists, update it with settings data except slug
       delete category.slug;

@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
-export class AccountsForm extends React.Component {
+export class AccountsForm extends PureComponent {
   componentDidMount() {
     let form = this.form;
     if (form) {
@@ -23,11 +24,13 @@ export class AccountsForm extends React.Component {
       ready = true,
       className
     } = this.props;
+    const _className = classnames("accounts-ui",  {
+        "ready": ready,
+    });
     return (
       <form
         ref={(ref) => this.form = ref}
-        className={[className, ready ? "ready" : null].join(' ')}
-        className="accounts-ui"
+        className={_className}
         noValidate
       >
         <Components.AccountsFields fields={ fields } />
@@ -40,11 +43,11 @@ export class AccountsForm extends React.Component {
   }
 }
 AccountsForm.propTypes = {
-  oauthServices: React.PropTypes.object,
-  fields: React.PropTypes.object.isRequired,
-  buttons: React.PropTypes.object.isRequired,
-  error: React.PropTypes.string,
-  ready: React.PropTypes.bool
+  oauthServices: PropTypes.object,
+  fields: PropTypes.object.isRequired,
+  buttons: PropTypes.object.isRequired,
+  error: PropTypes.string,
+  ready: PropTypes.bool
 };
 
 registerComponent('AccountsForm', AccountsForm);

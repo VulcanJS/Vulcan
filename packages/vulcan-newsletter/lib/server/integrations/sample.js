@@ -53,7 +53,7 @@ if (settings) {
 
   */
 
-  Newsletters.providerName = {
+  Newsletters["providerName"] = {
 
     subscribe(email) {
       return subscribeSync({email});

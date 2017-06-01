@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import Posts from 'meteor/vulcan:posts';
 
-import withNewEditor from '../editor/withNewEditor.jsx';
+
 
 
 class LWPostsPage extends getRawComponent('PostsPage') {
@@ -70,8 +70,8 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
           {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
-          {/* Adding draftJS rendering here */}
-          {post.draftJS ? <Components.PostEditor initialState={post.draftJS} readOnly /> : null}
+          {/* Adding content rendering here */}
+          {post.content ? <Components.PostEditor initialState={post.content} readOnly /> : null}
 
           {/* comment view selector and comment thread */}
           { this.renderCommentViewSelector() }
@@ -87,4 +87,4 @@ LWPostsPage.contextTypes = {
   intl: intlShape
 }
 
-replaceComponent('PostsPage', withNewEditor(LWPostsPage), withRouter);
+replaceComponent('PostsPage', LWPostsPage, withRouter);

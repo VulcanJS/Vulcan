@@ -25,6 +25,12 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    insertableBy: ['guests'],
+    onInsert: user => {
+      if (user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   emails: {
     type: Array,
@@ -47,6 +53,9 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    }
   },
   isAdmin: {
     type: Boolean,
@@ -59,14 +68,15 @@ const schema = {
     group: adminGroup,
     onInsert: user => {
       // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = Users.find({'profile.isDummy': {$ne: true}}).count();
-      return (!user.profile.isDummy && realUsersCount === 0) ? true : false;
+      const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+      return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },
   profile: {
     type: Object,
     optional: true,
-    blackbox: true
+    blackbox: true,
+    insertableBy: ['guests'],
   },
   // telescope-specific data, kept for backward compatibility and migration purposes
   telescope: {
@@ -102,15 +112,16 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     onInsert: (user, options) => {
-      if (user.profile.username) {
-        return user.profile.username;
-      } else if (user.profile.name) {
-        return user.profile.name;
-      } else if (user.services.linkedin && user.services.linkedin.firstName) {
-        return user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
-      } else {
-        return user.username;
-      }
+      const profileName = Utils.getNestedProperty(user, 'profile.name');
+      const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
+      const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
+
+      if (profileName) return profileName;
+      if (twitterName) return twitterName;
+      if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+      if (user.username) return user.username;
+      return undefined;
+
     }
   },
   /**
@@ -120,26 +131,25 @@ const schema = {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
-    required: true,
+    mustComplete: true,
     control: "text",
-    insertableBy: ['members'],
+    insertableBy: ['guests'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
-    onInsert: (user, options) => {
+    onInsert: (user) => {
       // look in a few places for the user email
-      if (options.email) {
-        return options.email;
-      } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-        return _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
-      } else if (user.services.facebook && user.services.facebook.email) {
-        return user.services.facebook.email;
-      } else if (user.services.github && user.services.github.email) {
-        return user.services.github.email;
-      } else if (user.services.google && user.services.google.email) {
-        return user.services.google.email;
-      } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-        return user.services.linkedin.emailAddress;
-      }
+      const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
+      const facebookEmail = Utils.getNestedProperty(user, 'services.facebook.email');
+      const githubEmail = Utils.getNestedProperty(user, 'services.github.email');
+      const googleEmail = Utils.getNestedProperty(user, 'services.google.email');
+      const linkedinEmail = Utils.getNestedProperty(user, 'services.linkedin.emailAddress');
+
+      if (meteorEmails) return _.findWhere(meteorEmails, { primary: true }).address;
+      if (facebookEmail) return facebookEmail;
+      if (githubEmail) return githubEmail;
+      if (googleEmail) return googleEmail;
+      if (linkedinEmail) return linkedinEmail;
+      return undefined;
     }
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
@@ -154,6 +164,21 @@ const schema = {
       if (user.email) {
         return Users.avatar.hash(user.email);
       }
+    }
+  },
+  avatarUrl: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: user => {
+
+      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+      const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
+
+      if (twitterAvatar) return twitterAvatar;
+      if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
+      return undefined;
+
     }
   },
   /**

@@ -1,4 +1,4 @@
-import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, replaceComponent, ModalTrigger } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link } from 'react-router';
@@ -6,6 +6,21 @@ import Posts from "meteor/vulcan:posts";
 import Users from "meteor/vulcan:users";
 
 class LWPostsItem extends getRawComponent('PostsItem') {
+
+  renderActions() {
+    post = this.props.post;
+
+    return (
+      <div>
+        <div className="posts-actions">
+          <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
+            <Components.PostsEditForm post={this.props.post} />
+          </ModalTrigger>
+        </div>
+      </div>
+
+    )
+  }
 
   renderPostFeeds() {
     feed = this.props.post.feed
@@ -56,7 +71,7 @@ class LWPostsItem extends getRawComponent('PostsItem') {
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
             {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
             {/* Added subscribe-to functionality */}
-            <Components.SubscribeTo document={post} />
+            <Components.SubscribeTo className="posts-item-subscribe" document={post} />
           </div>
 
         </div>

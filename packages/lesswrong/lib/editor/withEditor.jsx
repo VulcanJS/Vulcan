@@ -11,7 +11,6 @@ function withEditor(WrappedComponent) {
       this.context.editor.trigger.mode.edit();
     }
     render() {
-      console.log(this.context);
       return <WrappedComponent editor={this.context.editor} {...this.props} />
     }
   }

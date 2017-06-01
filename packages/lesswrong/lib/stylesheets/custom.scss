@@ -49,8 +49,6 @@ $medium-text: $dark-grey;
 
 .comments-item{
   font-size: 20px;
-  width: 700px;
-  margin-left: 60px;
 }
 
 // CSS modifications for notifications navbar
@@ -156,6 +154,10 @@ $medium-text: $dark-grey;
 
 .posts-item-title{
   margin-top: 0px;
+}
+
+.posts-item-subscribe{
+  margin-left: 15px;
 }
 
 // CSS modifications for header

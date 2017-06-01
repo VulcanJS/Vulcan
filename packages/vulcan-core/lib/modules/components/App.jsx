@@ -1,22 +1,21 @@
 import { Components, registerComponent, getSetting, Strings } from 'meteor/vulcan:lib';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { IntlProvider, intlShape} from 'react-intl';
 import withCurrentUser from '../containers/withCurrentUser.js';
 
 
-class App extends Component {
+class App extends PureComponent {
 
   getLocale() {
-    return getSetting("locale", "en");
+    return getSetting('locale', 'en');
   }
 
   getChildContext() {
     
     const messages = Strings[this.getLocale()] || {};
     const intlProvider = new IntlProvider({locale: this.getLocale()}, messages);
-    
-    const {intl} = intlProvider.getChildContext();
-
+    const { intl } = intlProvider.getChildContext();
     return {
       intl: intl
     };
@@ -25,19 +24,16 @@ class App extends Component {
   render() {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        {
-          this.props.currentUserLoading ? 
-            <Components.Loading /> :
-            <Components.Layout>{this.props.children}</Components.Layout>
-        }
+        <Components.Layout>
+          { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+        </Components.Layout>
       </IntlProvider>
-    )
+    );
   }
-
 }
 
 App.propTypes = {
-  currentUserLoading: React.PropTypes.bool,
+  currentUserLoading: PropTypes.bool,
 }
 
 App.childContextTypes = {

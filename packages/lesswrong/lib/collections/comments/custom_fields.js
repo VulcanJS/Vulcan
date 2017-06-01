@@ -3,10 +3,10 @@ import CommentEditor from '../../editor/CommentEditor.jsx';
 
 Comments.addField([
   /**
-    draftJS
+    Ory Editor content JSON
   */
   {
-    fieldName: 'draftJS',
+    fieldName: 'content',
     fieldSchema: {
       type: Object,
       optional: true,
@@ -27,7 +27,7 @@ Comments.addField([
     fieldSchema: {
       type: Boolean,
       optional: true,
-      hidden: true, 
+      hidden: true,
       defaultValue: false,
       viewableBy: ['guests'],
       editableBy: ['members'],

@@ -1,41 +1,31 @@
-import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail } from './get_embedly_data.js';
 import { GraphQLSchema, getSetting } from 'meteor/vulcan:core';
+import Embed from '../modules/embed.js';
 
-// note: not used since the type of the query below is JSON
-// const embedlyDataSchema = `
-//   type EmbedlyData {
-//     title: String
-//     media: JSON
-//     description: String
-//     thumbnailUrl: String
-//     sourceName: String
-//     sourceUrl: String
-//   }
-// `;
-// GraphQLSchema.addSchema(embedlyDataSchema);
+const embedProvider = getSetting('embedProvider', 'builtin');
 
-GraphQLSchema.addMutation('getEmbedlyData(url: String) : JSON');
+GraphQLSchema.addMutation('getEmbedData(url: String) : JSON');
 
 const resolver = {
   Mutation: {
-    getEmbedlyData(root, args, context) {
-      console.log('// getEmbedlyData')
+    getEmbedData(root, args, context) {
+      const data = Embed[embedProvider].getData(args.url);
+      console.log('// getEmbedData')
       console.log(args)
-      console.log(getEmbedlyData(args.url))
-      return getEmbedlyData(args.url);
+      console.log(data)
+      return data;
     },
   },
 };
 GraphQLSchema.addResolvers(resolver);
 
 // Meteor.methods({
-//   testGetEmbedlyData: function (url) {
+//   testgetEmbedData: function (url) {
 //     check(url, String);
-//     console.log(getEmbedlyData(url));
+//     console.log(getEmbedData(url));
 //   },
-//   getEmbedlyData: function (url) {
+//   getEmbedData: function (url) {
 //     check(url, String);
-//     return getEmbedlyData(url);
+//     return getEmbedData(url);
 //   },
 //   embedlyKeyExists: function () {
 //     return !!getSetting('embedlyKey');

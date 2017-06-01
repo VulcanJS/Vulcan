@@ -6,50 +6,6 @@ import { addCallback, Utils, runCallbacksAsync } from 'meteor/vulcan:lib'; // im
 // Callbacks                                        //
 //////////////////////////////////////////////////////
 
-/**
- * @summary Set up user object on creation
- * @param {Object} user – the user object being iterated on and returned
- * @param {Object} options – user options
- */
-function setupUser (user, options) {
-
-  const schema = Users.simpleSchema()._schema;
-
-  // ------------------------------ Properties ------------------------------ //
-  user.profile = options.profile || {};
-
-  // run onInsert step
-  _.keys(schema).forEach(fieldName => {
-    // if schema has onInsert defined, run autovalue on user and options
-    if (!user[fieldName] && schema[fieldName].onInsert) {
-      const autoValue = schema[fieldName].onInsert(user, options);
-      if (autoValue) {
-        user[fieldName] = autoValue;
-      }
-    // otherwise, check whether options field has schema fields and extend the userObject
-    } else if (!user[fieldName] && schema[fieldName] && options[fieldName]) {
-      user[fieldName] = options[fieldName];
-    }
-  });
-
-  return user;
-}
-addCallback("users.new.sync", setupUser);
-
-/**
- * @summary Copy over profile.isDummy to isDummy on user creation
- * @param {Object} user – the user object being iterated on and returned
- * @param {Object} options – user options
- */
-function copyDummyProperty (user, options) {
-  if (typeof user.profile.isDummy !== "undefined") {
-    user.isDummy = user.profile.isDummy;
-  }
-  return user;
-}
-addCallback("users.new.sync", copyDummyProperty);
-
-
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }

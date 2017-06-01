@@ -1,3 +1,9 @@
+.users-account-menu{
+  .icon{
+    display: none;
+  }
+}
+
 .accounts-ui{
   .buttons{
     a{
@@ -25,7 +31,7 @@
         border-color: #3b5998;
       }
       &:last-child{
-        margin-right: 0;
+        margin-right: 0 !important;
       }
     }
   }
@@ -33,4 +39,8 @@
 
 .password-reset-form{
   text-align: center;
+}
+
+.change-password-link{
+  margin-bottom: $vmargin;
 }

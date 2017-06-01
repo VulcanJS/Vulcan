@@ -228,23 +228,28 @@ const messageNewNotification = (message) => {
 }
 addCallback("messages.new.async", messageNewNotification);
 
-const postsNewPlaintextBody = function (post) {
-  draftJS = post.draftJS;
-  bodyText = "";
-  draftJS.blocks.forEach((block) => {
-    if (block.text) {
-      bodyText += block.text;
-    };
-  });
-
-  post = {
-    ...post,
-    body: bodyText,
-  };
-  return post;
-}
-
-addCallback("posts.new.sync", postsNewPlaintextBody);
+//
+// This used to be the draftJS parsing into plaintext that allowed full-text search.
+// Now that we moved to the Ory editor, this no longer works. We will want to write
+// our own ORY-Editor-JSON to plain-text parser, which shouldn't be too hard. 
+//
+// function postsNewPlaintextBody (post) {
+//   content = post.content;
+//   bodyText = "";
+//   content.blocks.forEach((block) => {
+//     if (block.text) {
+//       bodyText += block.text;
+//     };
+//   });
+//
+//   post = {
+//     ...post,
+//     body: bodyText,
+//   };
+//   return post;
+// }
+//
+// addCallback("posts.new.sync", postsNewPlaintextBody);
 
 const postsEditPlaintextBody = function (modifier, post) {
 

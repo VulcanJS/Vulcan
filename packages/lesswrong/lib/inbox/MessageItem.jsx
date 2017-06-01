@@ -17,12 +17,12 @@ class MessageItem extends Component {
     const currentUser = this.props.currentUser;
     const message = this.props.message;
 
-    if (message.draftJS) {
+    if (message.content) {
       return (
         <Media>
           {(currentUser._id != message.user._id) ? <Media.Left> <Components.UsersAvatar user={message.user}/> </Media.Left> : <div></div>}
           <Media.Body>
-            <Components.EditorWrapper initialState={message.draftJS} readOnly />
+            <Components.EditorWrapper initialState={message.content} readOnly />
           </Media.Body>
           {(currentUser._id == message.user._id) ? <Media.Right> <Components.UsersAvatar user={currentUser}/></Media.Right> : <div></div>}
         </Media>

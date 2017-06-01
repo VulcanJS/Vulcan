@@ -1,11 +1,12 @@
 import { ModalTrigger, Components, registerComponent } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 import { MenuItem } from 'react-bootstrap';
 import { withRouter } from 'react-router'
 import Categories from 'meteor/vulcan:categories';
 
-class Category extends Component {
+class Category extends PureComponent {
 
   renderEdit() {
     return (
@@ -42,10 +43,10 @@ class Category extends Component {
 }
 
 Category.propTypes = {
-  category: React.PropTypes.object,
-  index: React.PropTypes.number,
-  currentCategorySlug: React.PropTypes.string,
-  openModal: React.PropTypes.func
+  category: PropTypes.object,
+  index: PropTypes.number,
+  currentCategorySlug: PropTypes.string,
+  openModal: PropTypes.func
 };
 
 registerComponent('Category', Category, withRouter);

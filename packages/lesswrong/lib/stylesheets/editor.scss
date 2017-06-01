@@ -6,6 +6,9 @@
 @import '../../../node_modules/ory-editor-plugins-image/lib/index.css';
 @import '../../../node_modules/ory-editor-plugins-video/lib/index.css';
 
+
+// Preventing material bootstrap from duplicating decorative elements on the
+// input elements
 .ory-toolbar-drawer {
   input {
     box-shadow: none !important;
@@ -15,6 +18,13 @@
 
 .ory-dimensions {
   font-size: 22px;
+  input {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
+}
+
+.ory-prevent-blur {
   input {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;

@@ -27,7 +27,7 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     createdAt
-    draftJS
+    content
     conversationId
   }
 `);
@@ -55,7 +55,7 @@ extendFragment('UsersCurrent', `
 `);
 
 extendFragment('PostsList', `
-  draftJS
+  content
 `);
 
 registerFragment(`
@@ -69,10 +69,10 @@ registerFragment(`
     createdAt
     sticky
     status
-    body # We replaced this with draftJS
-    htmlBody # We replaced this with draftJS
-    # excerpt # This won't work with draftJS
-    draftJS # Our replacement for body
+    body # We replaced this with content
+    htmlBody # We replaced this with content
+    # excerpt # This won't work with content
+    content # Our replacement for body
     viewCount
     clickCount
     # vulcan:users
@@ -111,7 +111,7 @@ registerFragment(`
 `);
 
 extendFragment('CommentsList', `
-  draftJS
+  content
 `);
 
 registerFragment(`

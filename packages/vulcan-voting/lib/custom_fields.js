@@ -31,7 +31,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: ['guests'],
+      viewableBy: Users.owns,
       resolveAs: 'upvotedComments: [Vote]',
     }
   },
@@ -50,7 +50,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: ['guests'],
+      viewableBy: Users.owns,
       resolveAs: 'upvotedPosts: [Vote]',
     }
   },
@@ -69,7 +69,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: ['guests'],
+      viewableBy: Users.owns,
       resolveAs: 'downvotedComments: [Vote]',
     }
   },
@@ -88,7 +88,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: ['guests'],
+      viewableBy: Users.owns,
       resolveAs: 'downvotedPosts: [Vote]',
     }
   },

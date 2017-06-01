@@ -1,4 +1,4 @@
-import { registerFragment, getFragment } from 'meteor/vulcan:core';
+import { registerFragment } from 'meteor/vulcan:core';
 
 // ------------------------------ Vote ------------------------------ //
 
@@ -23,6 +23,7 @@ registerFragment(`
     username
     displayName
     emailHash
+    avatarUrl
   }
 `);
 
@@ -42,11 +43,6 @@ registerFragment(`
     postCount
     # vulcan:comments
     commentCount
-    # vulcan:newsletter
-    newsletter_subscribeToNewsletter
-    # vulcan:notifications
-    notifications_users
-    notifications_posts
     # vulcan:voting
     downvotedComments {
       ...VotedItem

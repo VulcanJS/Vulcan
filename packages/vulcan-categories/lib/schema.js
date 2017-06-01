@@ -1,3 +1,4 @@
+import { Utils } from 'meteor/vulcan:core';
 
 export function getCategories (apolloClient) {
 
@@ -5,10 +6,13 @@ export function getCategories (apolloClient) {
   const apolloData = apolloClient.store.getState().apollo.data;
   
   // filter these data based on their typename: we are interested in the categories data
-  const categories = _.filter(apolloData, (object, key) => {
+  let categories = _.filter(apolloData, (object, key) => {
     return object.__typename === 'Category'
   });
 
+  // order categories
+  categories = _.sortBy(categories, cat => cat.order);
+  
   return categories;
 }
 
@@ -21,6 +25,21 @@ export function getCategoriesAsOptions (apolloClient) {
       // slug: category.slug, // note: it may be used to look up from prefilled props
     };
   });
+}
+
+export function getCategoriesAsNestedOptions (apolloClient) {
+  // give the form component (here: checkboxgroup) exploitable data
+  const formattedCategories = getCategories(apolloClient).map(function (category) {
+    return {
+      value: category._id,
+      label: category.name,
+      parentId: category.parentId,
+      _id: category._id
+      // slug: category.slug, // note: it may be used to look up from prefilled props
+    };
+  });
+  const nestedCategories = Utils.unflatten(formattedCategories, {idProperty: '_id', parentIdProperty: 'parentId', childrenProperty: 'options'});
+  return nestedCategories;
 }
 
 // category schema

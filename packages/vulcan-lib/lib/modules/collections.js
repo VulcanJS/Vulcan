@@ -14,7 +14,8 @@ SimpleSchema.extendOptions([
 ]);
 
 /**
- * @summary replacement for Collection2's attachSchema
+ * @summary replacement for Collection2's attachSchema. Pass either a schema, to
+ * initialize or replace the schema, or some fields, to extend the current schema
  * @class Mongo.Collection
  */
 Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
@@ -57,7 +58,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
   var schema = _.omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
-  collection.attachSchema(schema, {replace: true});
+  collection.attachSchema(new SimpleSchema(schema));
 };
 
 /**
@@ -202,6 +203,14 @@ export const createCollection = options => {
     // NOTE: always do this last to avoid overriding another sort
     parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
+    // remove any null fields (setting a field to null means it should be deleted)
+    _.keys(parameters.selector).forEach(key => {
+      if (parameters.selector[key] === null) delete parameters.selector[key];
+    });
+    _.keys(parameters.options).forEach(key => {
+      if (parameters.options[key] === null) delete parameters.options[key];
+    });
+    
     // limit number of items to 200
     parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
 

@@ -17,6 +17,7 @@ export function sendGoogleAnalyticsRequest () {
       'page': window.location.pathname
     });
   }
+  return {}
 }
 
 export const initGoogleAnalytics = () => {
