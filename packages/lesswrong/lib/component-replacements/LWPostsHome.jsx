@@ -8,12 +8,15 @@ const LWPostsHome = (props, context) => {
   return (
     <div>
       <Row>
+        <Components.PostsList terms={terms}/>
+        {/* Sidebar Layout */}
+        {/*
         <Col xs={12} md={8}>
           <Components.PostsList terms={terms}/>
         </Col>
         <Col xs={12} md={4}>
           <Components.Sidebar />
-        </Col>
+        </Col>*/}
       </Row>
     </div>
   )

@@ -28,18 +28,29 @@ Posts.addField([
     }
   },
   /**
+    Categories (Overwriting original schema)
+  */
+  {
+    fieldName: "categories",
+    fieldSchema: {
+      hidden: true,
+    }
+  },
+  /**
     Drafts
   */
   {
     fieldName: "draft",
     fieldSchema: {
+      label: 'Save to Drafts',
       type: Boolean,
       optional: true,
       defaultValue: false,
       viewableBy: ['members'],
       insertableBy: ['members'],
       editableBy: ['members'],
-      control: "checkbox"
+      order: 30,
+      control: "checkbox",
     }
   },
 
@@ -119,7 +130,7 @@ Posts.addField([
       optional: true,
       viewableBy: ['guests'],
       editableBy: ['admins'],
-      insertableBy: ['members'],
+      insertableBy: ['admins'],
       resolveAs: 'feed: RSSFeed',
       group: formGroups.admin
     }
@@ -136,7 +147,7 @@ Posts.addField([
       optional: true,
       viewableBy: ['guests'],
       editableBy: ['admins'],
-      insertableBy: ['members'],
+      insertableBy: ['admins'],
       group: formGroups.admin
     }
   },
@@ -147,9 +158,9 @@ Posts.addField([
       type: String,
       optional: true,
       viewableBy: ['guests'],
-      insertableBy: [],
-      editableBy: [],
-      hidden: false,
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+      hidden: true,
     }
   },
 ]);

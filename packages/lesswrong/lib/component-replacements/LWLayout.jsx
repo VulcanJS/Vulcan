@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import withNewEditor from '../editor/withNewEditor.jsx';
 
 // In here we define the Layout component for the page and also instantiate a new
-// Ory-Editor instance by applying the `withNewEditor` HoC. 
+// Ory-Editor instance by applying the `withNewEditor` HoC.
 
 const Layout = ({currentUser, children}) =>
   <div className="wrapper" id="wrapper">
@@ -25,7 +25,8 @@ const Layout = ({currentUser, children}) =>
 
     </div>
 
-    <Components.Footer />
+    {/* Commented out footer for now, we might want to add our own Footer at a later point*/}
+    {/* <Components.Footer /> */}
 
   </div>
 

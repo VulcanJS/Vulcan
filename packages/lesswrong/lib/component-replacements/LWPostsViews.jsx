@@ -10,11 +10,11 @@ import Users from 'meteor/vulcan:users';
 const LWPostsViews = (props, context) => {
 
   let views = ["top", "new", "best"];
-  const adminViews = ["pending", "rejected", "scheduled", "all_draft"];
+  const adminViews = ["pending", "rejected", "scheduled", "all_drafts"];
 
   if (Users.canDo(props.currentUser, "posts.edit.own")
   || Users.canDo(props.currentUser, "posts.edit.all")) {
-    views = views.concat(["draft"]);
+    views = views.concat(["drafts"]);
   }
 
   if (Users.canDo(props.currentUser, "posts.edit.all")) {

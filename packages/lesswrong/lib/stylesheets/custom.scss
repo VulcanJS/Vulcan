@@ -51,8 +51,36 @@ $medium-text: $dark-grey;
   font-size: 20px;
 }
 
-.posts-page-content{
-  font-size: 20px;
+.posts-page{
+  margin-left: 200px;
+  margin-right:200px;
+  .posts-page-content{
+    font-size: 20px;
+  }
+  .posts-page-body{
+    font-size: 20px;
+  }
+}
+
+
+// CSS Modifications for the New Post Page
+
+.posts-new-form{
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.posts-new-form{
+  .input-draft{
+    float: right;
+    width: 170px;
+    .control-label{
+      width: 10%;
+    }
+  }
+  .btn-primary{
+    float: right;
+  }
 }
 
 // CSS Modifications for Navbar buttons and styles
@@ -145,11 +173,6 @@ $medium-text: $dark-grey;
 }
 
 .postEditor{
-  border: #d1d1d1;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 16px;
   margin-bottom: 10px;
 }
 

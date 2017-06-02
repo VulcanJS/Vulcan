@@ -14,7 +14,7 @@ Posts.addDefaultView(terms => ({
 /**
  * @summary Draft view
  */
-Posts.addView("draft", terms => {
+Posts.addView("drafts", terms => {
   return {
     selector: {
       userId: terms.userId,
@@ -28,7 +28,7 @@ Posts.addView("draft", terms => {
 /**
  * @summary All drafts view
  */
-Posts.addView("all_draft", terms => ({
+Posts.addView("all_drafts", terms => ({
   selector: {
     draft: true
   },
