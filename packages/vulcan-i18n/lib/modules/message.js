@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import { getSetting, Strings } from 'meteor/vulcan:lib';
 
-const FormattedMessage = ({ id, values }) => {
+const FormattedMessage = ({ id, values, defaultMessage }) => {
   const messages = Strings[getSetting('locale', 'en')] || {};
-  let message = messages[id];
+  let message = messages[id] || defaultMessage;
   if (values) {
     _.forEach(values, (value, key) => {
       message = message.replace(`{${key}}`, value);
