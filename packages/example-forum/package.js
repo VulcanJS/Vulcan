@@ -21,7 +21,6 @@ Package.onUse(function (api) {
     'vulcan:accounts@1.4.0',
     'vulcan:email',
     'vulcan:forms',
-    'vulcan:newsletter',
     'vulcan:notifications',
     'vulcan:getting-started',
     'vulcan:categories',

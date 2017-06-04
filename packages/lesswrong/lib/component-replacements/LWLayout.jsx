@@ -19,8 +19,6 @@ const Layout = ({currentUser, children}) =>
       <Components.FlashMessages />
 
 
-      <Components.Newsletter />
-
       {children}
 
     </div>
