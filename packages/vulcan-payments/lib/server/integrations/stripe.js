@@ -1,4 +1,4 @@
-import { getSetting, newMutation, editMutation, Collections, runCallbacks } from 'meteor/vulcan:core';
+import { getSetting, newMutation, editMutation, Collections, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 // import express from 'express';
 import Stripe from 'stripe';
 // import { Picker } from 'meteor/meteorhacks:picker';
@@ -19,7 +19,7 @@ const sampleProduct = {
 // returns a promise:
 export const createCharge = async (args) => {
   
-  let collection, document;
+  let collection, document, returnDocument = {};
 
   const {token, userId, productKey, associatedCollection, associatedId, properties } = args;
 
@@ -99,7 +99,7 @@ export const createCharge = async (args) => {
     // run collection.charge.sync callbacks
     modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc);
 
-    const newDocument = editMutation({
+    returnDocument = editMutation({
       collection,
       documentId: associatedId,
       set: modifier.$set,
@@ -107,16 +107,13 @@ export const createCharge = async (args) => {
       validate: false
     });
 
-    newDocument.__typename = collection.typeName;
-
-    return newDocument;
-    
-  } else {
-
-    return {}
+    returnDocument.__typename = collection.typeName;
 
   }
 
+  runCallbacksAsync(`${collection._name}.charge.async`, returnDocument, chargeDoc);
+
+  return returnDocument;
 }
 
 /*

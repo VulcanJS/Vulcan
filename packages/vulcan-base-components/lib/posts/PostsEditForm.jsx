@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
+import { Components, registerComponent, getFragment, withMessages, withCurrentUser } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Posts from "meteor/vulcan:posts";
+import Users from "meteor/vulcan:users";
 import { withRouter } from 'react-router'
 
 class PostsEditForm extends PureComponent {
@@ -22,7 +23,7 @@ class PostsEditForm extends PureComponent {
 
     return (
       <div className="posts-edit-form">
-        {this.renderAdminArea()}
+        {Users.isAdmin(this.props.currentUser) ? this.renderAdminArea() : null}
         <Components.SmartForm
           collection={Posts}
           documentId={this.props.post._id}
@@ -61,4 +62,4 @@ PostsEditForm.contextTypes = {
   intl: intlShape
 }
 
-registerComponent('PostsEditForm', PostsEditForm, withMessages, withRouter);
+registerComponent('PostsEditForm', PostsEditForm, withMessages, withRouter, withCurrentUser);

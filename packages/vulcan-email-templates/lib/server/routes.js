@@ -27,6 +27,15 @@ Meteor.startup(function () {
         // then apply email template to properties, and wrap it with buildTemplate
         html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(properties));
 
+        html += `
+          <div style="border: 1px solid #999; padding: 20px; margin: 20px;">
+            <pre>
+            <code>
+              ${JSON.stringify(properties, null, '\t')}
+            </code>
+            </pre>
+          </div>
+        `
       }
 
       // return html
