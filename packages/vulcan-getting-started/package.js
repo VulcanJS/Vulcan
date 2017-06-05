@@ -18,6 +18,7 @@ Package.onUse(function (api) {
     'vulcan:posts@1.4.0',
     'vulcan:comments@1.4.0',
     'vulcan:events@1.4.0',
+    'vulcan:users@1.4.0',
   ]);
 
   // client

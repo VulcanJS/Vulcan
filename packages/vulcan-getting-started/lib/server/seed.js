@@ -31,7 +31,7 @@ var toTitleCase = function (str) {
 };
 
 var createPost = function (slug, postedAt, username, thumbnail) {
-  
+
   const user = Users.findOne({username: username});
 
   var post = {
@@ -47,7 +47,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
     post.thumbnailUrl = "/packages/vulcan_getting-started/content/images/" + thumbnail;
 
   newMutation({
-    collection: Posts, 
+    collection: Posts,
     document: post,
     currentUser: user,
     validate: false
@@ -71,7 +71,7 @@ var createComment = function (slug, username, body, parentBody) {
     comment.parentCommentId = parentComment._id;
 
   newMutation({
-    collection: Comments, 
+    collection: Comments,
     document: comment,
     currentUser: user,
     validate: false
@@ -82,10 +82,11 @@ const createUser = function (username, email) {
   const user = {
     username,
     email,
+    services: {},
     isDummy: true
   };
   newMutation({
-    collection: Users, 
+    collection: Users,
     document: user,
     validate: false
   });

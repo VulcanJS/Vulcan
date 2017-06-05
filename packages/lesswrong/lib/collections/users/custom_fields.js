@@ -48,4 +48,24 @@ Users.addField([
       insertableBy: ['members'],
     }
   },
+
+  /**
+    legacyData: A complete dump of all the legacy data we have on this post in a
+    single blackbox object. Never queried on the client, but useful for a lot
+    of backend functionality, and simplifies the data import from the legacy
+    LessWrong database
+  */
+
+  {
+    fieldName: 'legacyData',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      viewableBy: ['admins'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+      hidden: true,
+      blackbox: true,
+    }
+  },
 ]);

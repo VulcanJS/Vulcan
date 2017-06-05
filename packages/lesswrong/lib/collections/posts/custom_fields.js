@@ -152,6 +152,11 @@ Posts.addField([
     }
   },
 
+  /**
+    body: Changed original body attribute to be just a plain-text version of the
+    original content, to allow for search.
+    TODO: Currently defunct because of lack of plaintext parser for ORY-Editor
+  */
   {
     fieldName: 'body',
     fieldSchema: {
@@ -163,4 +168,24 @@ Posts.addField([
       hidden: true,
     }
   },
+
+  /**
+    legacyData: A complete dump of all the legacy data we have on this post in a
+    single blackbox object. Never queried on the client, but useful for a lot
+    of backend functionality, and simplifies the data import from the legacy
+    LessWrong database
+  */
+
+  {
+    fieldName: 'legacyData',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      viewableBy: ['admins'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+      hidden: true,
+      blackbox: true,
+    }
+  }
 ]);

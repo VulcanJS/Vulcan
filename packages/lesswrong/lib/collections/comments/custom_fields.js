@@ -1,4 +1,5 @@
 import Comments from "meteor/vulcan:comments";
+import Users from "meteor/vulcan:users";
 import CommentEditor from '../../editor/CommentEditor.jsx';
 
 Comments.addField([
@@ -80,4 +81,74 @@ Comments.addField([
       insertableBy: ['members'],
     }
   },
+
+  /**
+    legacyData: A complete dump of all the legacy data we have on this post in a
+    single blackbox object. Never queried on the client, but useful for a lot
+    of backend functionality, and simplifies the data import from the legacy
+    LessWrong database
+  */
+
+  {
+    fieldName: 'legacyData',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      viewableBy: ['admins'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+      hidden: true,
+      blackbox: true,
+    }
+  },
+
+  /**
+    retracted: Indicates whether a comment has been retracted by its author.
+    Results in the text of the comment being struck-through, but still readable.
+  */
+
+  {
+    fieldName: 'retracted',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      viewableBy: ['guests'],
+      insertableBy: Users.own,
+      editableBy: Users.own,
+    }
+  },
+
+  /**
+    deleted: Indicates whether a comment has been deleted by an admin.
+    This removes the content of the comment, but still renders replies.
+  */
+
+  {
+    fieldName: 'deleted',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      viewableBy: ['guests'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+    }
+  },
+
+  /**
+    spam: Indicates whether a comment has been marked as spam.
+    This removes the content of the comment, but still renders replies.
+  */
+
+  {
+    fieldName: 'spam',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      viewableBy: ['guests'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
+    }
+  },
+
+
 ]);

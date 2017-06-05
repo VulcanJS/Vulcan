@@ -1,5 +1,6 @@
 accounts-base@1.2.16
 accounts-facebook@1.1.1
+accounts-google@1.1.2
 accounts-oauth@1.1.15
 accounts-password@1.3.5
 accounts-twitter@1.2.1
@@ -30,6 +31,7 @@ example-forum@1.4.0
 facebook-oauth@1.3.1
 fourseven:scss@4.5.0
 geojson-utils@1.0.10
+google-oauth@1.2.4
 hot-code-push@1.0.4
 html-tools@1.0.11
 htmljs@1.0.11
@@ -97,7 +99,6 @@ vulcan:forms@1.4.0
 vulcan:getting-started@1.4.0
 vulcan:i18n-en-us@1.4.0
 vulcan:lib@1.4.0
-vulcan:newsletter@1.4.0
 vulcan:notifications@1.4.0
 vulcan:posts@1.4.0
 vulcan:routing@1.4.0
