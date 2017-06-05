@@ -115,6 +115,7 @@ Comments.addField([
       viewableBy: ['guests'],
       insertableBy: Users.own,
       editableBy: Users.own,
+      control: "checkbox",
     }
   },
 
@@ -131,6 +132,7 @@ Comments.addField([
       viewableBy: ['guests'],
       insertableBy: ['admins'],
       editableBy: ['admins'],
+      control: "checkbox"
     }
   },
 
@@ -147,6 +149,7 @@ Comments.addField([
       viewableBy: ['guests'],
       insertableBy: ['admins'],
       editableBy: ['admins'],
+      control: "checkbox",
     }
   },
 
