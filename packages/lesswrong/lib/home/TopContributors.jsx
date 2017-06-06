@@ -38,7 +38,7 @@ const usersOptions = {
   collection: Users,
   queryName: 'usersListQuery',
   fragmentName: 'UsersList',
-  limit: 0,
+  limit: 10,
 };
 
 registerComponent('UsersList', UsersList, withList(usersOptions), withCurrentUser);

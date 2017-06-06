@@ -1,6 +1,10 @@
 import './home/RecentComments.jsx';
 import './home/Sidebar.jsx';
 import './home/TopContributors.jsx';
+import './home/WelcomeBox.jsx';
+
+import './recent-comments/RecentCommentsItem.jsx';
+import './recent-comments/RecentCommentsPage.jsx';
 
 
 import './notificationMenu/NotificationsMenu.jsx';
@@ -37,6 +41,7 @@ import './component-replacements/LWPostsViews.jsx';
 import './component-replacements/LWPostsNewForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
 import './component-replacements/LWUsersMenu.jsx';
+import './component-replacements/LWPostsListHeader.jsx';
 
 // RSS Feed Integration
 import './rss-integration/newFeedButton.jsx';

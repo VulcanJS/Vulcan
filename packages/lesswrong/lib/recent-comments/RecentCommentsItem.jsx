@@ -1,23 +1,23 @@
-import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import Comments from "meteor/vulcan:comments";
 
 import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 
-class LWCommentsItem extends getRawComponent('CommentsItem') {
+class RecentCommentsItem extends getRawComponent('CommentsItem') {
 
   // TODO: Make comments collapsible
   // TODO: Create unique comment-links
-  
+
   render() {
     const comment = this.props.comment;
 
     return (
-      <div className="comments-item" id={comment._id}>
-        <div className="comments-item-body">
-          <div className="comments-item-meta">
-            <div className="comments-item-vote">
+      <div className="comments-item recent-comments-item" id={comment._id}>
+        <div className="comments-item-body recent-comments-item-body ">
+          <div className="comments-item-meta recent-comments-item-meta">
+            <div className="comments-item-vote recent-comments-item-vote ">
               <Components.Vote collection={Comments} document={this.props.comment} currentUser={this.props.currentUser}/>
             </div>
             <Components.UsersAvatar size="small" user={comment.user}/>
@@ -44,18 +44,17 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
     const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
 
     return (
-      <div className="comments-item-text">
+      <div className="recent-comments-item-text comments-item-text">
         {content ? <Components.ContentRenderer state={content} /> :
         null}
-        {htmlBody ? <div className="comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
-        { showReplyButton ?
-          <a className="comments-item-reply-link" onClick={this.showReply}>
+        {htmlBody ? <div className="recent-comment-body comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+          {/*{ showReplyButton ? <a className="recent-comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
-          </a> : null}
+          </a> : null} */}
       </div>
     )
   }
 
 }
 
-replaceComponent('CommentsItem', LWCommentsItem);
+registerComponent('RecentCommentsItem', RecentCommentsItem);

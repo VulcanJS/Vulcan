@@ -4,20 +4,23 @@ import Comments from 'meteor/vulcan:comments';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
 
-class SelectCommentsList extends Component {
+class RecentComments extends Component {
 
   render() {
     const results = this.props.results;
     const currentUser = this.props.currentUser;
     const loading = this.props.loading;
+    const fontSize = this.props.fontSize;
 
     return (
       <div>
-        <div><h5>{this.props.title}</h5></div>
+        <Link to="/recentComments" >
+          <div><h5>Recent Comments</h5></div>
+        </Link>
         <div className="comments-list">
           {
             loading ? <Loading /> :
-            <div className="comments-items">
+            <div className={"comments-items" + (fontSize == "small" ? " smalltext" : "")}>
               {
                 results.map(comment =>
                   <div key={comment._id}>
@@ -26,7 +29,7 @@ class SelectCommentsList extends Component {
                         {comment.post.title}
                       </Link>
                     </div>
-                    <Components.CommentsItem comment={comment} currentUser={currentUser} />
+                    <Components.RecentCommentsItem comment={comment} currentUser={currentUser} />
                   </div>
                 )
               }
@@ -46,17 +49,4 @@ const commentsOptions = {
   limit: 0,
 };
 
-registerComponent('SelectCommentsList', SelectCommentsList, withList(commentsOptions), withCurrentUser);
-
-
-class RecentComments extends Component {
-
-  render() {
-    return (
-      <Components.SelectCommentsList title='Recent comments' terms={{view: 'recentComments'}} />
-    )
-  }
-
-}
-
-registerComponent('RecentComments', RecentComments);
+registerComponent('RecentComments', RecentComments, withList(commentsOptions), withCurrentUser);

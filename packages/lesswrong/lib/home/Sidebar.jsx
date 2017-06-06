@@ -6,7 +6,7 @@ class Sidebar extends Component {
   render() {
     return (
       <div>
-        <Components.RecentComments />
+        <Components.RecentComments terms={{view: 'recentComments', limit: 5}} fontSize="small" />
         <Components.TopContributors />
       </div>
     )
