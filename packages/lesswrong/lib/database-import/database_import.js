@@ -20,6 +20,7 @@ const postgresImport = true;
 const POSTSNUMBER = 10
 const POSTSMETANUMBER = 10
 const COMMENTSNUMBER = 10
+const COMMENTSMETANUMBER = 10
 const USERNUMBER = 500
 const USERMETANUMBER = 500
 
@@ -196,12 +197,12 @@ if (postgresImport) {
     data.forEach((row) => {
       post = Posts.findOne({legacy: true, legacyId: row.thing_id});
       if (post) {
-        console.log("Adding Meta Information to post: " + post.title);
+        // console.log("Adding Meta Information to post: " + post.title);
         user = Users.findOne();
         set = {
           postedAt: moment(row.date).toDate(),
         };
-        console.log(set);
+        // console.log(set);
         if (row.deleted) {
           set.status = 3;
         };
@@ -391,12 +392,24 @@ if (postgresImport) {
     db.any('SELECT thing_id, key, value from reddit_data_comment', [true])
       .then((data) => {
         processComments(data);
-        console.log("Finished processing comments. Database import is completed")
+        console.log("Finished processing comments, processing comment metadata...")
+        queryAndProcessCommentsMeta();
       })
       .catch((err) => {
         console.log("Welp, we failed at processing LessWrong 1.0 comment data. I am sorry.", err);
       });
   };
+
+  function queryAndProcessCommentsMeta() {
+    db.any('SELECT deleted, spam, date from reddit_thing_comment', [true])
+      .then((data) => {
+        processCommentsMeta(data);
+        console.log("Finished processing comment metadata, dataimport is completed.");
+      })
+      .catch((err) => {
+        console.log("Welp, we failed at processing LessWrong 1.0 comment metadata data. I am sorry.", err);
+      });
+  }
 
   queryAndProcessUsers();
 
