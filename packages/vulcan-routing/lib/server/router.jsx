@@ -1,7 +1,7 @@
 import React from 'react';
 import { match, RouterContext, createMemoryHistory } from 'react-router';
 import ReactDOMServer from 'react-dom/server';
-
+import moment from 'moment';
 import { RoutePolicy } from 'meteor/routepolicy';
 
 import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:lib';
@@ -61,6 +61,9 @@ function generateSSRData(options, req, res, renderProps) {
       const data = options.dehydrateHook(req, res);
       InjectData.pushData(res, 'dehydrated-initial-data', JSON.stringify(data));
     }
+
+    // send server timezone to client
+    InjectData.pushData(res, 'utcOffset', moment().utcOffset());
 
     if (options.postRender) {
       options.postRender(req, res);
