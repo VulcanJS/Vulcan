@@ -1,4 +1,4 @@
-import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
+import { addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
 const specificResolvers = {
@@ -16,7 +16,7 @@ const specificResolvers = {
   }
 };
 
-GraphQLSchema.addResolvers(specificResolvers);
+addGraphQLResolvers(specificResolvers);
 
 const resolvers = {
 

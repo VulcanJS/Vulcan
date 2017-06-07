@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { IntlProvider, intlShape} from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
 
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-
 class App extends PureComponent {
 
   getLocale() {

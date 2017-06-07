@@ -10,7 +10,7 @@ const FormattedMessage = ({ id, values, defaultMessage }) => {
       message = message.replace(`{${key}}`, value);
     });
   }
-  return <span className="i18n-message">{messages[id]}</span>
+  return <span className="i18n-message">{message}</span>
 }
 
 export default FormattedMessage;
