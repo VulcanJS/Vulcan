@@ -74,8 +74,12 @@ Users.getGroups = user => {
  * @param {Object} user
  */
 Users.getActions = user => {
-  const userGroups = Users.getGroups(user);
-  const groupActions = userGroups.map(groupName => {
+  let userGroups = Users.getGroups(user);
+  if (!userGroups.includes('guests')) {
+    // always give everybody permission for guests actions, too
+    userGroups.push('guests');
+  }
+  let groupActions = userGroups.map(groupName => {
     // note: make sure groupName corresponds to an actual group
     const group = Users.groups[groupName];
     return group && group.actions;

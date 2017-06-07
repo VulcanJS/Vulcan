@@ -1,14 +1,12 @@
 import Users from 'meteor/vulcan:users';
 
 const guestsActions = [
-  "comments.view.own",
-  "comments.view.all"
+  "comments.view"
 ];
 Users.groups.guests.can(guestsActions);
 
 const membersActions = [
-  "comments.view.own",
-  "comments.view.all",
+  "comments.view",
   "comments.new", 
   "comments.edit.own", 
   "comments.remove.own", 
