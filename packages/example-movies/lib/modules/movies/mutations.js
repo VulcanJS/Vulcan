@@ -30,7 +30,7 @@ const mutations = {
     
     mutation(root, {document}, context) {
       
-      Utils.performCheck(this, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return newMutation({
         collection: context.Movies,
@@ -55,7 +55,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.Movies.findOne(documentId);
-      Utils.performCheck(this, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.Movies, 
@@ -82,7 +82,7 @@ const mutations = {
     mutation(root, {documentId}, context) {
 
       const document = context.Movies.findOne(documentId);
-      Utils.performCheck(this, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return removeMutation({
         collection: context.Movies, 

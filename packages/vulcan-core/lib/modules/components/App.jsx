@@ -23,7 +23,7 @@ class App extends PureComponent {
   render() {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <Components.Layout>
+        <Components.Layout {...this.props} >
           { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
         </Components.Layout>
       </IntlProvider>

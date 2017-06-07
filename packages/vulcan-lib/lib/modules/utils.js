@@ -459,7 +459,7 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
     throw new Error(Utils.encodeIntlError({id: `app.document_not_found`, value: documentId}))
   }
 
-  if (!operation.check(user, checkedObject, context)) {
+  if (!operation(user, checkedObject, context)) {
     throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
   }
 
