@@ -26,6 +26,11 @@ SimpleSchema.extendOptions([
   'onInsert', // field insert callback
   'onEdit', // field edit callback
   'onRemove', // field remove callback
+  'viewableBy',
+  'insertableBy',
+  'editableBy',
+  'resolveAs',
+  'limit',
 ]);
 
 export default Vulcan;

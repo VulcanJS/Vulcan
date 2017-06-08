@@ -6,13 +6,6 @@ import { runCallbacks } from './callbacks.js';
 
 export const Collections = [];
 
-SimpleSchema.extendOptions([
-  'viewableBy',
-  'insertableBy',
-  'editableBy',
-  'resolveAs',
-]);
-
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
  * initialize or replace the schema, or some fields, to extend the current schema
@@ -177,7 +170,7 @@ export const createCollection = options => {
 
   // ------------------------------------- Parameters -------------------------------- //
 
-  collection.getParameters = (terms = {}, apolloClient, currentUser) => {
+  collection.getParameters = (terms = {}, apolloClient) => {
 
     // console.log(terms)
 
@@ -213,11 +206,6 @@ export const createCollection = options => {
     
     // limit number of items to 200
     parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
-
-    // limit fields to viewable fields
-    if (currentUser) {
-      parameters.options.fields = currentUser.getViewableFields(collection);
-    }
 
     // console.log(parameters);
 

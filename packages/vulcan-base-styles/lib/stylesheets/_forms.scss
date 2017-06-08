@@ -112,3 +112,19 @@ div.ReactTags__suggestions mark{
     color: $light-grey;
   }
 }
+
+.form-input{
+  position: relative;
+}
+.form-control-limit{
+  position: absolute;
+  background: white;
+  padding: 5px;
+  bottom: 5px;
+  right: 5px;
+  color: $light-grey;
+  font-size: 80%;
+  &.danger{
+    color: #EF1642;
+  }
+}

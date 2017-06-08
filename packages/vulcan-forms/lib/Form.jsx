@@ -164,6 +164,11 @@ class Form extends Component {
         field.help = typeof fieldSchema.form.help === "function" ? fieldSchema.form.help.call(fieldSchema) : fieldSchema.form.help;
       }
 
+      // add limit
+      if (fieldSchema.limit) {
+       field.limit = fieldSchema.limit;
+      }
+      
       // add placeholder
       if (fieldSchema.placeholder) {
        field.placeholder = fieldSchema.placeholder;
