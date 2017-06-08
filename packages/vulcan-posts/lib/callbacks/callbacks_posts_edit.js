@@ -1,6 +1,6 @@
 import marked from 'marked';
 import Posts from '../collection.js'
-import { runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/vulcan:core';
+import { runCallbacks, runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/vulcan:core';
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
@@ -38,15 +38,17 @@ addCallback("posts.edit.sync", PostsEditForceStickyToFalse);
  */
 function PostsEditSetIsFuture (modifier, post) {
   // if a post's postedAt date is in the future, set isFuture to true
-  modifier.$set.isFuture = modifier.$set.postedAt && new Date(modifier.$set.postedAt).getTime() > new Date().getTime() + 1000;
+  if (modifier.$set.postedAt && new Date(modifier.$set.postedAt).getTime() > new Date().getTime() + 1000) {
+    modifier.$set.isFuture = true;
+  }
   return modifier;
 }
 addCallback("posts.edit.sync", PostsEditSetIsFuture);
 
 
 function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
-  if (Posts.isApproved(modifier) && !Posts.isApproved(post)) {
-    modifier = runCallbacksAsync("posts.approve.sync", modifier, post);
+  if (modifier.$set && Posts.isApproved(modifier.$set) && !Posts.isApproved(post)) {
+    modifier = runCallbacks("posts.approve.sync", modifier, post);
   }
   return modifier;
 }

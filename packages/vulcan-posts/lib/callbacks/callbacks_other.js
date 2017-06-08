@@ -18,6 +18,9 @@ addCallback("posts.remove.sync", PostsRemoveOperations);
  */
 function PostsSetPostedAt (modifier, post) {
   modifier.$set.postedAt = new Date();
+  if (modifier.$unset) {
+    delete modifier.$unset.postedAt;
+  }
   return modifier;
 }
 addCallback("posts.approve.sync", PostsSetPostedAt);
