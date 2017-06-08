@@ -182,7 +182,7 @@
     @include flex-center;
   }
   font-size: $small-font;
-  .users-avatar{
+  .avatar{
     margin-right: 5px;
   }
   .users-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
@@ -235,7 +235,7 @@
 
 .posts-commenters-avatars{
   display: flex;
-  .users-avatar{
+  .avatar{
     margin-right: $hmargin;
   }
 }
