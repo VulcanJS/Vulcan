@@ -23,7 +23,12 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
-        {showLoadMore ? hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/> : null}
+        {showLoadMore ? 
+          hasMore ? 
+            <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> : 
+            <Components.PostsNoMore/> : 
+          null
+        }
       </div>
     )
   } else if (loading) {
