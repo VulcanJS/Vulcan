@@ -128,3 +128,21 @@ div.ReactTags__suggestions mark{
     color: #EF1642;
   }
 }
+
+.form-section-heading{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $light-grey;
+}
+
+.form-section-heading-title{
+  margin: 0;
+}
+
+.form-section-collapsed{
+  display: none;
+}
