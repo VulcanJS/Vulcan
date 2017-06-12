@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:getting-started",
   summary: "Getting started posts",
-  version: '1.4.0',
+  version: '1.5.0',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -14,10 +14,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'vulcan:core@1.4.0',
-    'vulcan:posts@1.4.0',
-    'vulcan:comments@1.4.0',
-    'vulcan:events@1.4.0',
+    'vulcan:core@1.5.0',
+    'vulcan:posts@1.5.0',
+    'vulcan:comments@1.5.0',
+    'vulcan:events@1.5.0',
   ]);
 
   // client

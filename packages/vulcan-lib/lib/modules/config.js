@@ -7,7 +7,7 @@ import SimpleSchema from 'simpl-schema';
 
 Vulcan = {};
 
-Vulcan.VERSION = '1.4.0';
+Vulcan.VERSION = '1.5.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 
