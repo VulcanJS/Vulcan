@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:lib',
+    'vulcan:lib@1.5.0',
   ]);
 
   api.mainModule('lib/server/main.js', 'server');
