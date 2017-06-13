@@ -1,6 +1,7 @@
 import React from 'react';
 import { Components, withList } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
+import Button from 'react-bootstrap/lib/Button';
 
 import AdminUsersItem from './AdminUsersItem.jsx';
 
@@ -22,6 +23,7 @@ const AdminUsersList = ({results, loading, loadMore, count, totalCount, networkS
             <th>Email</th>
             <th>Created</th>
             <th>Groups</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +34,7 @@ const AdminUsersList = ({results, loading, loadMore, count, totalCount, networkS
         {hasMore ? 
           isLoadingMore ? 
             <Components.Loading/> 
-            : <button className="btn btn-primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</button> 
+            : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button> 
           : null
         }
       </div>
