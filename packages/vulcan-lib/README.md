@@ -1,1 +1,1 @@
-Telescope libraries package, used internally. 
+Vulcan libraries package, used internally. 

@@ -1,1 +1,1 @@
-Telescope scoring package, used internally. 
+Vulcan scoring package, used internally. 

@@ -1,4 +1,4 @@
-# Telescope Newsletter
+# Vulcan Newsletter
 
 This package schedules an automatic newsletter digest.
 
@@ -7,7 +7,7 @@ This package schedules an automatic newsletter digest.
 ### Install
 
 1. `mrt add telescope-newsletter`.
-2. Go to the Telescope settings page and add your MailChimp API key and List ID. 
+2. Go to the Vulcan settings page and add your MailChimp API key and List ID. 
 
 ### Dependencies
 
@@ -28,7 +28,7 @@ Note that for this package to work properly, you'll also need to fill in the **D
 
 ### How It Works
 
-The package works with [MailChimp](http://mailchimp.com), which means you'll need to fill in an API key and List ID in your Telescope app's settings panel. 
+The package works with [MailChimp](http://mailchimp.com), which means you'll need to fill in an API key and List ID in your Vulcan app's settings panel. 
 
 Every `x` days, it builds a digest consisting of the top `y` items posted in the past `x` days that haven't yet been sent out in a newsletter. 
 

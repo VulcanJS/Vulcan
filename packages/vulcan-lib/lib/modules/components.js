@@ -4,7 +4,7 @@ export const Components = {}; // will be populated on startup (see vulcan:routin
 export const ComponentsTable = {} // storage for infos about components
 
 /**
- * Register a Telescope component with a name, a raw component than can be extended
+ * Register a Vulcan component with a name, a raw component than can be extended
  * and one or more optional higher order components.
  *
  * @param {String} name The name of the component to register.
@@ -82,7 +82,7 @@ export const populateComponentsApp = () => {
 };
 
 /**
- * Replace a Telescope component with the same name with a new component or 
+ * Replace a Vulcan component with the same name with a new component or 
  * an extension of the raw component and one or more optional higher order components.
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *

@@ -1,1 +1,1 @@
-Telescope Kadira package, used internally. 
+Vulcan Kadira package, used internally. 

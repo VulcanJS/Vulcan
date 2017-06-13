@@ -1,1 +1,1 @@
-Telescope core package, used internally. 
+Vulcan core package, used internally. 
