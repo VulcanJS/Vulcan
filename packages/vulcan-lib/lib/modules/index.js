@@ -21,3 +21,4 @@ export { configureStore, getActions, addAction, getReducers, addReducer, getMidd
 export { Headtags } from './headtags.js';
 export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment } from './fragments.js';
 export { createApolloClient } from './apollo.js';
+export { dynamicLoader } from './dynamic_loader.js';
