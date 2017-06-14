@@ -7,8 +7,8 @@ import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 
 class RecentCommentsItem extends getRawComponent('CommentsItem') {
 
-  // TODO: Make comments collapsible
-  // TODO: Create unique comment-links
+  // TODO: Make comments collapsible id:10
+  // TODO: Create unique comment-links id:16
 
   render() {
     const comment = this.props.comment;

@@ -27,7 +27,7 @@ class SubscribeToActionHandler extends Component {
       const { document, documentType } = this.props;
       const action = getSubscribeAction(this.state.subscribed);
 
-      // TODO: change the mutation to auto-update the user in the store
+      // TODO: change the mutation to auto-update the user in the store id:13
       await this.setState(prevState => ({subscribed: !prevState.subscribed}));
 
       // mutation name will be for example postsSubscribe

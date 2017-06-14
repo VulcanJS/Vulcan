@@ -145,7 +145,7 @@ class EditorWrapper extends Component {
     this.setState({
       editorState,
     });
-    // TODO: Make this somehow less terrible. I.e. not make it serialize the whole contentState one very state change. Ideally some kind of callback on form submit, but that doesn't exist, I think.
+    // TODO: Make this somehow less terrible. I.e. not make it serialize the whole contentState one very state change. Ideally some kind of callback on form submit, but that doesn't exist, I think. id:12
     if (this.props.addValues) {
       const contentState = editorState.getCurrentContent();
       const rawContentState = convertToRaw(contentState: contentState);

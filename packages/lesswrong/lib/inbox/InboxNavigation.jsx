@@ -50,7 +50,7 @@ class InboxNavigation extends Component {
     const refetch = this.props.refetch;
     const loading = this.props.loading;
 
-    //TODO: Add ability to add conversation from Inbox page, by searching for a user
+    //TODO: Add ability to add conversation from Inbox page, by searching for a user id:15
 
     if(results && results.length){
       return (
