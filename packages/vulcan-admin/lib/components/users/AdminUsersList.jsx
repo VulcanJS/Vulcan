@@ -46,6 +46,7 @@ const options = {
   collection: Users,
   fragmentName: 'UsersCurrent',
   terms: {view: 'usersAdmin'},
+  limit: 20
 }
 
 export default withList(options)(AdminUsersList);

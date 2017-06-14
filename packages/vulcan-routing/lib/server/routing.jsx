@@ -10,6 +10,7 @@ import {
   addRoute,
   Routes, populateComponentsApp, populateRoutesApp,
   getRenderContext,
+  dynamicLoader,
 } from 'meteor/vulcan:lib';
 
 import { RouterServer } from './router.jsx';
@@ -28,6 +29,13 @@ Meteor.startup(() => {
   if (indexRoute) {
     delete indexRoute.path; // delete the '/' path to avoid warning
   }
+
+  // go through each route and if it's a promise, wrap it with dynamicLoader
+  _.forEach(childRoutes, (route, routeName) => {
+    if (route.component && typeof route.component.then === 'function') {
+      route.component = dynamicLoader(route.component);
+    }
+  });
 
   const AppRoutes = {
     path: '/',

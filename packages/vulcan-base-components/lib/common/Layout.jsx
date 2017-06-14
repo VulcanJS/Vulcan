@@ -1,10 +1,10 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
+import classNames from 'classnames';
 
-const Layout = ({currentUser, children}) =>
-  <div className="wrapper" id="wrapper">
+const Layout = ({currentUser, children, currentRoute}) =>
 
-    <Components.HeadTags />
+  <div className={classNames('wrapper', `wrapper-${currentRoute.name.replace('.', '-')}`)} id="wrapper">
 
     {currentUser ? <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} /> : null}
 
