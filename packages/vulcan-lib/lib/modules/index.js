@@ -19,6 +19,6 @@ export { getSetting } from './settings.js';
 export { Strings, addStrings } from './strings.js';
 export { configureStore, getActions, addAction, getReducers, addReducer, getMiddlewares, addMiddleware } from './redux.js';
 export { Headtags } from './headtags.js';
-export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment } from './fragments.js';
+export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment, initializeFragments } from './fragments.js';
 export { createApolloClient } from './apollo.js';
 export { dynamicLoader } from './dynamic_loader.js';

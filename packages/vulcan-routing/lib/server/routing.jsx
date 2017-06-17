@@ -8,7 +8,7 @@ import { Meteor } from 'meteor/meteor';
 import {
   Components,
   addRoute,
-  Routes, populateComponentsApp, populateRoutesApp,
+  Routes, populateComponentsApp, populateRoutesApp, initializeFragments,
   getRenderContext,
   dynamicLoader,
 } from 'meteor/vulcan:lib';
@@ -22,7 +22,8 @@ Meteor.startup(() => {
   // init the application components and routes, including components & routes from 3rd-party packages
   populateComponentsApp();
   populateRoutesApp();
-
+  initializeFragments();
+  
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
 
