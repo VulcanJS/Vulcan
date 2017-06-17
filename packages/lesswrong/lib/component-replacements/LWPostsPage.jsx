@@ -1,6 +1,6 @@
 import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import { intlShape, FormattedMessage } from 'react-intl';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';

@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withList, withEdit } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Meteor } from 'meteor/meteor';
 import { NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';

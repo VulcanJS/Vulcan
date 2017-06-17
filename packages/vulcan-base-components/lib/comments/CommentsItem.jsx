@@ -1,8 +1,9 @@
 import { Components, registerComponent, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from 'meteor/vulcan:comments';
+import moment from 'moment';
 
 class CommentsItem extends PureComponent {
 
@@ -105,7 +106,7 @@ class CommentsItem extends PureComponent {
             </div>
             <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
-            <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
+            <div className="comments-item-date">{moment(new Date(comment.postedAt)).fromNow()}</div>
             <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>

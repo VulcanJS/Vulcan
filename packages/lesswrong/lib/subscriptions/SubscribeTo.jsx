@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { intlShape, FormattedMessage } from 'react-intl';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Users from 'meteor/vulcan:users';

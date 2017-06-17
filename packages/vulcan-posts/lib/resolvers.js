@@ -1,5 +1,4 @@
-import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
-import Users from 'meteor/vulcan:users';
+import { addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
 
 const specificResolvers = {
   Post: {
@@ -16,25 +15,13 @@ const specificResolvers = {
   }
 };
 
-GraphQLSchema.addResolvers(specificResolvers);
+addGraphQLResolvers(specificResolvers);
 
 const resolvers = {
 
   list: {
 
     name: 'postsList',
-
-    check(currentUser, post, Posts) {
-      if (Users.isAdmin(currentUser)) { // admins can always see everything
-        return true;
-      } else if (post.status === Posts.config.STATUS_APPROVED) {
-        return !post.isFuture; // future posts should not be viewable
-      } else if (post.status === Posts.config.STATUS_PENDING) {
-        return Users.owns(currentUser, post); // pending posts only viewable by owner
-      } else {
-        return false;
-      }
-    },
 
     resolver(root, {terms}, {currentUser, Users, Posts}, info) {
 
@@ -45,7 +32,7 @@ const resolvers = {
       const posts = Posts.find(selector, options).fetch();
 
       // restrict documents fields
-      const viewablePosts = _.filter(posts, post => this.check(currentUser, post, Posts));
+      const viewablePosts = _.filter(posts, post => Posts.checkAccess(currentUser, post));
       const restrictedPosts = Users.restrictViewableFields(currentUser, Posts, viewablePosts);
 
       // prime the cache
@@ -60,17 +47,12 @@ const resolvers = {
 
     name: 'postsSingle',
 
-    check(user, document, collection) {
-      const status = _.findWhere(collection.statuses, {value: document.status});
-      return Users.owns(user, document) ? Users.canDo(user, `posts.view.${status.label}.own`) : Users.canDo(user, `posts.view.${status.label}.all`);
-    },
-
     async resolver(root, {documentId, slug}, {currentUser, Users, Posts}) {
 
       // don't use Dataloader if post is selected by slug
       const post = documentId ? await Posts.loader.load(documentId) : Posts.findOne({slug});
 
-      Utils.performCheck(this, currentUser, post, Posts, documentId);
+      Utils.performCheck(Posts.checkAccess, currentUser, post, Posts, documentId);
 
       return Users.restrictViewableFields(currentUser, Posts, post);
     },

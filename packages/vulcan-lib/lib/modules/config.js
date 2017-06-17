@@ -7,7 +7,7 @@ import SimpleSchema from 'simpl-schema';
 
 Vulcan = {};
 
-Vulcan.VERSION = '1.4.0';
+Vulcan.VERSION = '1.5.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -26,6 +26,11 @@ SimpleSchema.extendOptions([
   'onInsert', // field insert callback
   'onEdit', // field edit callback
   'onRemove', // field remove callback
+  'viewableBy',
+  'insertableBy',
+  'editableBy',
+  'resolveAs',
+  'limit',
 ]);
 
 export default Vulcan;

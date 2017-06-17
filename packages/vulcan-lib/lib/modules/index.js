@@ -4,7 +4,7 @@ import './settings.js';
 import './collections.js';
 import './deep.js';
 import './deep_extend.js';
-import './intl_polyfill.js';
+// import './intl_polyfill.js';
 import './graphql.js';
 import './icons.js';
 import './mongo_redux.js';

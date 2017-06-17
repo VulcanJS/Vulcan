@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import FRC from 'formsy-react-components';
 import ReactTagInput from 'react-tag-input';
+import PropTypes from 'prop-types';
 
 const ReactTags = ReactTagInput.WithContext;
 

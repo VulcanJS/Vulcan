@@ -35,6 +35,7 @@ export default function withMutation({name, args}) {
   }
 
   return graphql(gql`${mutation}`, {
+    alias: 'withMutation',
     props: ({ownProps, mutate}) => ({
       [name]: (vars) => {
         return mutate({ 

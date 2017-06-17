@@ -1,6 +1,6 @@
 import { registerComponent, Components } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import { withRouter, Link } from 'react-router'

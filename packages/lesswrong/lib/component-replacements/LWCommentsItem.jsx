@@ -1,7 +1,9 @@
 import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import { FormattedMessage, FormattedRelative } from 'react-intl';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from "meteor/vulcan:comments";
+import moment from 'moment';
+
 
 import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 
@@ -9,7 +11,7 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
 
   // TODO: Make comments collapsible id:18
   // TODO: Create unique comment-links id:14
-  
+
   render() {
     const comment = this.props.comment;
 
@@ -22,7 +24,7 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
             </div>
             <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
-            <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
+            <div className="comments-item-date">{moment(new Date(comment.postedAt)).fromNow()}</div>
             <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>

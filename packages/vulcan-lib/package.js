@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Telescope libraries.',
-  version: '1.4.0',
+  version: '1.5.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,6 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   var packages = [
+
+    'buffer', // see https://github.com/meteor/meteor/issues/8645
 
     // Meteor packages
 

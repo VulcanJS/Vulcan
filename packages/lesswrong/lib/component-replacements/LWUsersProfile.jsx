@@ -1,6 +1,6 @@
 import { Components, replaceComponent, ModalTrigger } from 'meteor/vulcan:core';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
 import Users from "meteor/vulcan:users";
 

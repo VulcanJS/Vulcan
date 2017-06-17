@@ -14,7 +14,7 @@ const DATEIMPORT = false;
 
 // This variable determines whether we will try to import legacy LessWrong data
 // from a local postgres server.
-const postgresImport = true;
+const postgresImport = false;
 
 // Constants related to various functionalities of the import
 const POSTSNUMBER = 10

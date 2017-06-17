@@ -1,7 +1,7 @@
 import { Components, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends PureComponent {

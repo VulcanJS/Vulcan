@@ -9,7 +9,8 @@ import { withRouter } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button, Grid, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/vulcan:core';
-import { FormattedMessage, FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
+import moment from 'moment';
 import Notifications from '../collections/notifications/collection.js'
 import Conversations from '../collections/conversations/collection.js';
 
@@ -63,7 +64,7 @@ class InboxNavigation extends Component {
             <LinkContainer key={conversation._id} to={{pathname: "/inbox", query: {select: conversation._id}}}>
               <ListGroupItem>
                 {!!conversation.title ? conversation.title : _.pluck(conversation.participants, 'username').join(' - ')}
-                <br></br> {conversation.latestActivity ? <FormattedRelative value={conversation.latestActivity}/> : null}
+                <br></br> {conversation.latestActivity ? moment(new Date(conversation.latestActivity)).fromNow() : null}
               </ListGroupItem>
             </LinkContainer>)
           }

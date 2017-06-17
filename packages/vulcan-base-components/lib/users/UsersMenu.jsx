@@ -1,9 +1,11 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Meteor } from 'meteor/meteor';
-import { NavDropdown,Dropdown, MenuItem } from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/lib/Dropdown';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/vulcan:users';
 import { withApollo } from 'react-apollo';

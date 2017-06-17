@@ -34,6 +34,7 @@ class ConversationWrapper extends Component {
     if (loading) {
       return (<Components.Loading/>)
     } else if (conversation) {
+      //TODO: Clean up the CSS for this component id:17
       return (
         <div>
           <PageHeader>
@@ -41,7 +42,7 @@ class ConversationWrapper extends Component {
             <br></br> <small>{conversation.createdAt}</small>
           </PageHeader>
           {this.renderMessages(results, currentUser)}
-          <div style={ {marginTop: '40px'} }> //TODO: Clean up the CSS for this component id:17
+          <div style={ {marginTop: '40px'} }>
             <SmartForm
               collection={Messages}
               prefilledProps={ {conversationId: conversation._id} }

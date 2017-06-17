@@ -26,7 +26,7 @@ component is also added to wait for withDocument's loading prop to be false)
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo, compose } from 'react-apollo';
 import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/vulcan:core';
 import Form from './Form.jsx';

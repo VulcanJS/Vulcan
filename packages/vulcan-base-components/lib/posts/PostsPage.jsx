@@ -3,7 +3,7 @@ import Posts from 'meteor/vulcan:posts';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 class PostsPage extends Component {
   

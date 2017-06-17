@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Dropdown, NavDropdown } from 'react-bootstrap';
 
 const LWUsersAccountMenu = () => {

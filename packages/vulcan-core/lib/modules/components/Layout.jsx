@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 
 const Layout = ({children}) =>

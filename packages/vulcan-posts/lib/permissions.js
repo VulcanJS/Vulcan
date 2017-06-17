@@ -1,18 +1,11 @@
 import Users from 'meteor/vulcan:users';
 
 const guestsActions = [
-  "posts.view.approved.own",
-  "posts.view.approved.all"
+  "posts.view.approved"
 ];
 Users.groups.guests.can(guestsActions);
 
 const membersActions = [
-  "posts.view.approved.own",
-  "posts.view.approved.all",
-  "posts.view.pending.own",
-  "posts.view.rejected.own",
-  "posts.view.spam.own",
-  "posts.view.deleted.own",
   "posts.new", 
   "posts.edit.own", 
   "posts.remove.own",
@@ -20,10 +13,10 @@ const membersActions = [
 Users.groups.members.can(membersActions);
 
 const adminActions = [
-  "posts.view.pending.all",
-  "posts.view.rejected.all",
-  "posts.view.spam.all",
-  "posts.view.deleted.all",
+  "posts.view.pending",
+  "posts.view.rejected",
+  "posts.view.spam",
+  "posts.view.deleted",
   "posts.new.approved",
   "posts.edit.all",
   "posts.remove.all"

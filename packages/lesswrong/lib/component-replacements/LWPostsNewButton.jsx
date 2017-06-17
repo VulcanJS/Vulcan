@@ -2,13 +2,12 @@ import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:cor
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
 const PostsNewButton = (props, context) => {
 
   return (
-    <Button className="posts-new-button" bsStyle="primary"> <FormattedMessage id="posts.new_post"/></Button>
+    <Button className="posts-new-button" bsStyle="primary"> New Post </Button>
   )
 }
 

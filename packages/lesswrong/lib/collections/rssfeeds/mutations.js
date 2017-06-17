@@ -28,7 +28,7 @@ const mutations = {
     name: 'rssFeedsNew',
 
     check(user, document) {
-      // For now we only let admins add new RSS feeds. We will change this at a later point in time
+      // For now we only let admins add new RSS feeds. We will change this.check at a later point in time
       // TODO: Change permissions to allow users to add their own RSS feeds id:26
       if (!user || !document) return false;
       return Users.isAdmin(user);
@@ -36,7 +36,7 @@ const mutations = {
 
     mutation(root, {document}, context) {
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return newMutation({
         collection: context.RSSFeeds,
@@ -61,7 +61,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.RSSFeeds.findOne(documentId);
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.RSSFeeds,
@@ -89,7 +89,7 @@ const mutations = {
 
       const document = context.RSSFeeds.findOne(documentId);
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return removeMutation({
         collection: context.RSSFeeds,

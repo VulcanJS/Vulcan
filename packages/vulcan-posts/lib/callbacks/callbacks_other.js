@@ -7,6 +7,7 @@ import Events from 'meteor/vulcan:events';
 
 function PostsRemoveOperations (post) {
   Users.update({_id: post.userId}, {$inc: {"postCount": -1}});
+  return post;
 }
 addCallback("posts.remove.sync", PostsRemoveOperations);
 
@@ -17,6 +18,9 @@ addCallback("posts.remove.sync", PostsRemoveOperations);
  */
 function PostsSetPostedAt (modifier, post) {
   modifier.$set.postedAt = new Date();
+  if (modifier.$unset) {
+    delete modifier.$unset.postedAt;
+  }
   return modifier;
 }
 addCallback("posts.approve.sync", PostsSetPostedAt);

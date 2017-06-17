@@ -36,7 +36,7 @@ const mutations = {
 
     mutation(root, {document}, context) {
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return newMutation({
         collection: context.Conversations,
@@ -61,7 +61,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.Conversations.findOne(documentId);
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.Conversations,
@@ -89,7 +89,7 @@ const mutations = {
 
       const document = context.Conversations.findOne(documentId);
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return removeMutation({
         collection: context.Conversations,

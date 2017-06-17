@@ -1,9 +1,8 @@
 import { Components, registerComponent, getSetting, Strings } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { IntlProvider, intlShape} from 'react-intl';
+import { IntlProvider, intlShape} from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
-
 
 class App extends PureComponent {
 
@@ -24,7 +23,7 @@ class App extends PureComponent {
   render() {
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <Components.Layout>
+        <Components.Layout {...this.props} >
           { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
         </Components.Layout>
       </IntlProvider>

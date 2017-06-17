@@ -40,7 +40,8 @@ import gql from 'graphql-tag';
 import update from 'immutability-helper';
 import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
-import { compose, withState } from 'recompose';
+import compose from 'recompose/compose';
+import withState from 'recompose/withState';
 
 const withList = (options) => {
 
@@ -91,9 +92,8 @@ const withList = (options) => {
         
         // graphql query options
         options({terms, paginationTerms, client: apolloClient}) {
-          // get terms either from props or from options
-          const baseTerms = terms || options.terms;
-          const mergedTerms = {...baseTerms, ...paginationTerms};
+          // get terms from options, then props, then pagination
+          const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
           return {
             variables: {
               terms: mergedTerms,

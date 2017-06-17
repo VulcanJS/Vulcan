@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { intlShape } from 'react-intl';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 class UsersResetPassword extends PureComponent {
   componentDidMount() {

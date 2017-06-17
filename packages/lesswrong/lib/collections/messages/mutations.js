@@ -36,7 +36,7 @@ const mutations = {
 
     mutation(root, {document}, context) {
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return newMutation({
         collection: context.Messages,
@@ -61,7 +61,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.Messages.findOne(documentId);
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.Messages,
@@ -89,7 +89,7 @@ const mutations = {
 
       const document = context.Messages.findOne(documentId);
 
-      performCheck(this, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return removeMutation({
         collection: context.Messages,
@@ -105,4 +105,4 @@ const mutations = {
 };
 
 
-export default mutations; 
+export default mutations;

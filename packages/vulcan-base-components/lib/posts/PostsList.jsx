@@ -2,8 +2,8 @@ import { Components, registerComponent, withList, withCurrentUser, Utils } from 
 import React from 'react';
 import PropTypes from 'prop-types';
 import Posts from 'meteor/vulcan:posts';
-import { Alert } from 'react-bootstrap';
-import { FormattedMessage, intlShape } from 'react-intl';
+import Alert from 'react-bootstrap/lib/Alert'
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 
 const Error = ({error}) => <Alert className="flash-message" bsStyle="danger"><FormattedMessage id={error.id} values={{value: error.value}}/>{error.message}</Alert>
@@ -23,7 +23,12 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
-        {showLoadMore ? hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/> : null}
+        {showLoadMore ? 
+          hasMore ? 
+            <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> : 
+            <Components.PostsNoMore/> : 
+          null
+        }
       </div>
     )
   } else if (loading) {

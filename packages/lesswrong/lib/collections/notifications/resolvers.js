@@ -23,7 +23,7 @@ const resolvers = {
     resolver(root, {terms}, {currentUser, Notifications, Users}, info) {
 
       // check that the current user can access the current query terms
-      Utils.performCheck(this, currentUser, terms, Notifications);
+      Utils.performCheck(this.check, currentUser, terms, Notifications);
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = Notifications.getParameters(terms);
