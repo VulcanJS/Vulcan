@@ -1,9 +1,11 @@
 import React from 'react';
-import { Components, withList } from 'meteor/vulcan:core';
+import { Components, withList, AdminColumns } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import Button from 'react-bootstrap/lib/Button';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 import AdminUsersItem from './AdminUsersItem.jsx';
+import '../../modules/columns.js';
 
 const AdminUsersList = ({results, loading, loadMore, count, totalCount, networkStatus}) => {
   
@@ -19,11 +21,7 @@ const AdminUsersList = ({results, loading, loadMore, count, totalCount, networkS
       <table className="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Created</th>
-            <th>Groups</th>
-            <th>Actions</th>
+            {_.sortBy(AdminColumns, column => column.order).map(column => <th key={column.name}><FormattedMessage id={`admin.${column.name}`} /></th>)}
           </tr>
         </thead>
         <tbody>
@@ -44,7 +42,7 @@ const AdminUsersList = ({results, loading, loadMore, count, totalCount, networkS
 
 const options = {
   collection: Users,
-  fragmentName: 'UsersCurrent',
+  fragmentName: 'UsersAdmin',
   terms: {view: 'usersAdmin'},
   limit: 20
 }

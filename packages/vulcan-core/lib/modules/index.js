@@ -37,7 +37,9 @@ export {
   // meteor patch (for server only)
   webAppConnectHandlersUse,
   // dynamic imports loader using react-loadable
-  dynamicLoader
+  dynamicLoader,
+  // admin stuff
+  AdminColumns, addAdminColumn,
 } from 'meteor/vulcan:lib';
 
 export { default as Layout } from "./components/Layout.jsx";

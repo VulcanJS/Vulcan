@@ -1,3 +1,3 @@
 import './routes.js';
-
-// import '../components/AdminHome.jsx';
+import './i18n.js';
+import './fragments.js';

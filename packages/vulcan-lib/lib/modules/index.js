@@ -22,3 +22,4 @@ export { Headtags } from './headtags.js';
 export { Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment, initializeFragments } from './fragments.js';
 export { createApolloClient } from './apollo.js';
 export { dynamicLoader } from './dynamic_loader.js';
+export { AdminColumns, addAdminColumn } from './admin.js';
