@@ -1,6 +1,17 @@
 import { addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
 
 const specificResolvers = {
+  User: {
+    async posts(user, args, { currentUser, Users, Posts }) {
+      const posts = Posts.find({userId: user._id}).fetch();
+
+      // restrict documents fields
+      const viewablePosts = _.filter(posts, post => Posts.checkAccess(currentUser, post));
+      const restrictedPosts = Users.restrictViewableFields(currentUser, Posts, viewablePosts);
+    
+      return restrictedPosts;
+    }
+  },
   Post: {
     async user(post, args, context) {
       if (!post.userId) return null;
