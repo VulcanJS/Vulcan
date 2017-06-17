@@ -49,3 +49,5 @@ jsdoc-conf.json
 jsdoc.json
 packages/vulcan-router/.npm
 npm-debug.log
+
+*.imdone

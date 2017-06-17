@@ -155,7 +155,7 @@ Posts.addField([
   /**
     body: Changed original body attribute to be just a plain-text version of the
     original content, to allow for search.
-    TODO: Currently defunct because of lack of plaintext parser for ORY-Editor
+    TODO: Currently defunct because of lack of plaintext parser for ORY-Editor id:24
   */
   {
     fieldName: 'body',

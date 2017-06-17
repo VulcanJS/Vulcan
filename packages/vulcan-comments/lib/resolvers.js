@@ -45,7 +45,7 @@ const resolvers = {
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = Comments.getParameters(terms);
-      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.limit = (terms.limit < 1 || terms.limit > 1000) ? 1000 : terms.limit;
       options.skip = terms.offset;
       const comments = Comments.find(selector, options).fetch();
 

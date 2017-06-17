@@ -46,7 +46,6 @@ const commentsOptions = {
   collection: Comments,
   queryName: 'selectCommentsListQuery',
   fragmentName: 'SelectCommentsList',
-  limit: 0,
 };
 
 registerComponent('RecentComments', RecentComments, withList(commentsOptions), withCurrentUser);

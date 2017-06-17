@@ -1,9 +1,9 @@
 import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
-import { newMutation, editMutation } from 'meteor/vulcan:core';
+import { newMutation, editMutation, runCallbacks, Utils } from 'meteor/vulcan:core';
 import moment from 'moment';
-
+import marked from 'marked';
 // Import file-management library
 import fs from 'fs';
 
@@ -14,7 +14,7 @@ const DATEIMPORT = false;
 
 // This variable determines whether we will try to import legacy LessWrong data
 // from a local postgres server.
-const postgresImport = false;
+const postgresImport = true;
 
 // Constants related to various functionalities of the import
 const POSTSNUMBER = 10
@@ -72,7 +72,8 @@ if (postgresImport) {
       processedUsers.push(userSchema);
     });
 
-    processedUsers.slice(0,USERNUMBER).forEach((user) => {
+    processedUsers.forEach((user) => {
+      let n = 0;
       // If account does not exist yet, create it
       if (!Users.findOne({legacy: true, legacyId: user.legacyId})) {
         try {
@@ -87,19 +88,28 @@ if (postgresImport) {
           // If account creation fails, try again without email address.
           // LW 1.0 didn't validate the email addresses, so we have some Invalid
           // email addresses in the database, that we don't want to copy over.
-          delete user.email;
+          // delete user.email;
+
+          if(err.code == 11000) {
+            user.username = user.username + "_duplicate" + Math.random().toString();
+          };
           newMutation({
             collection: Users,
             document: user,
             validate: false
           });
+
+          n = n+1;
+          if (n % 1000 == 0) {
+            console.log("Imported users up to Nr.: " + n);
+          }
         }
       };
     });
   };
 
   let processUsersMeta = (users) => {
-    users.slice(0,USERMETANUMBER).forEach((user) => {
+    users.forEach((user) => {
       user = Users.findOne({legacy: true, legacyId: user.thing_id});
       if (user) {
         set = {
@@ -140,7 +150,7 @@ if (postgresImport) {
 
     datePickles = {};
 
-    Object.keys(posts).slice(0,POSTSNUMBER).forEach((key) => {
+    Object.keys(posts).forEach((key) => {
       post_date = {
         id: key,
         datePickle: posts[key].date,
@@ -160,25 +170,24 @@ if (postgresImport) {
     });
 
     processedPosts = [];
-    Object.keys(posts).slice(0,POSTSNUMBER).forEach((key) => {
-      let lwUser = Users.findOne({legacy: true, legacyId: key});
+    Object.keys(posts).forEach((key) => {
+      let lwUser = Users.findOne({legacy: true, legacyId: posts[key].author_id});
       var post = {
         legacy: true,
         legacyId: key,
         legacyData: posts[key],
         title: posts[key].title,
-        isDummy: true,
         userId: lwUser._id,
         htmlBody: posts[key].article,
         userIP: posts[key].ip,
       };
-      if (posts[key].url.substring(0,7) == "http://") {
+      if (posts[key].url.substring(0,7) == "http://" || posts[key].url.substring(0,7) == "https://") {
         post.url = posts[key].url;
       }
       processedPosts.push(post);
     });
     // console.log("PROCESSED POSTS: ", processedPosts.slice(0,10))
-    processedPosts.slice(0,POSTSNUMBER).forEach((post) => {
+    processedPosts.forEach((post) => {
       user = Users.findOne({_id: post.userId});
       if (!Posts.findOne({legacy: post.legacy, legacyId: post.legacyId})) {
         // console.log("ADDED NEW POST");
@@ -194,11 +203,20 @@ if (postgresImport) {
   }
 
   let processPostsMeta = (data) => {
+
+    legacyIdtoPostMap = {};
+    postArray = Posts.find().fetch().forEach(post => {
+      legacyIdtoPostMap[post.legacyId] = post;
+    });
+
+    let set;
+    let modifier;
+    let n = 0;
+
     data.forEach((row) => {
-      post = Posts.findOne({legacy: true, legacyId: row.thing_id});
+      post = legacyIdtoPostMap[row.thing_id];
       if (post) {
         // console.log("Adding Meta Information to post: " + post.title);
-        user = Users.findOne();
         set = {
           postedAt: moment(row.date).toDate(),
         };
@@ -210,13 +228,17 @@ if (postgresImport) {
           set.status = 3;
           set.legacySpam = true;
         };
+
+        set.baseScore = set.ups - set.downs;
+
+        set.baseScore = row.ups - row.downs;
         // console.log(set)
-        editMutation({
-          collection: Posts,
-          documentId: post._id,
-          set: set,
-          validate: false,
-        })
+        modifier = {$set: set};
+        Posts.update(post._id, modifier, {removeEmptyStrings: false});
+        n = n + 1;
+        if (n % 1000 == 0) {
+          console.log("Processed post metadata for posts: " + n);
+        }
       };
     });
   };
@@ -235,21 +257,50 @@ if (postgresImport) {
       }
     });
 
+    console.log("Finished importing comments, now processing comments")
+
     // console.log("UNPROCESSED COMMENT 1: ", comments['1']);
     // console.log("UNPROCESSED COMMENT 2: ", comments['2']);
 
-    processedComments = [];
-    Object.keys(comments).slice(0,COMMENTSNUMBER).forEach((key) => {
-      author = Users.findOne({legacy: true, legacyId: comments[key].author_id});
+    let processedComments = {};
+    // let userSearchAverage = 0;
+    // let postSearchAverage = 0;
+    // let insertCommentAverage = 0;
+    let n = 0;
+    //
+    // let startTime;
+    // let userSearchTime;
+    // let postSearchTime;
+    // let insertCommentTime;
+    let comment;
+    let userId;
+
+    legacyIdtoPostMap = {};
+    postArray = Posts.find().fetch().forEach(post => {
+      legacyIdtoPostMap[post.legacyId] = post;
+    });
+
+    legacyIdtoUserMap = {};
+    userArray = Users.find().fetch().forEach(user => {
+      legacyIdtoUserMap[user.legacyId] = user;
+    });
+
+    const NS_PER_SEC = 1e9;
+
+    Object.keys(comments).forEach((key) => {
+      startTime = process.hrtime();
+      author = legacyIdtoUserMap[comments[key].author_id];
+      // userSearchTime = process.hrtime(startTime);
       // console.log("ADDED COMMENT NR. : ");
       // console.log(key);
       //
       // console.log("AUTHOR: ");
       // console.log(author);
-      post = Posts.findOne({legacy: true, legacyId: comments[key].link_id});
+      post = legacyIdtoPostMap[comments[key].link_id];
+      // postSearchTime = process.hrtime(startTime);
       // console.log("POST: ");
       // console.log(post);
-      var comment = {
+      comment = {
         legacy: true,
         legacyId: key,
         legacyParentId: comments[key].parent_id,
@@ -258,52 +309,112 @@ if (postgresImport) {
         userId: author._id,
         body: comments[key].body,
         retracted: comments[key].retracted,
+        createdAt: new Date(),
+        postedAt: new Date(),
       };
-      processedComments.push(comment);
-    });
+      userId = comment.userId;
+      Users.update({_id: userId}, {
+        $inc:       {'commentCount': 1}
+      });
 
-    processedComments.slice(0,COMMENTSNUMBER).forEach((comment) => {
-      if (comment.legacyParentId) {
-        parentComment = Comments.findOne({legacy: true, legacyId: comment.legacyParentId});
-        comment.parentCommentId = parentComment._id;
-        comment.topLevelCommentId = parentComment._id;
+      // update post
+      Posts.update(comment.postId, {
+        $inc:       {commentCount: 1},
+        $set:       {lastCommentedAt: new Date()},
+        $addToSet:  {commenters: userId}
+      });
+
+      try {
+        if (comment.legacyParentId) {
+          comment.parentCommentId = processedComments[comment.legacyParentId]._id;
+          comment.topLevelCommentId = processedComments[comment.legacyParentId]._id;
+        }
+      } catch(err) {
+        console.log("Tried to add child before parent comment");
+        console.log(err);
+        console.log("Comment: ");
+        console.log(comment);
+        console.log(comment.legacyParentId);
       }
-      author = Users.findOne({_id: comment.userId});
-      if (!Comments.findOne({legacy: true, legacyId: comment.legacyId})) {
-        // console.log("Added new comment: ");
-        newMutation({
-          collection: Comments,
-          document: comment,
-          currentUser: author,
-          validate: false,
-        })
-      };
-    });
 
+
+      // comment = runCallbacks(`comments.new.sync`, comment, author);
+      if (comment.body) {
+        comment.htmlBody = Utils.sanitize(marked(comment.body));
+      };
+
+
+
+      comment._id = Comments.insert(comment);
+
+      // newMutation({
+      //   collection: Comments,
+      //   document: comment,
+      //   currentUser: author,
+      //   validate: false,
+      // })
+
+      // insertCommentTime = process.hrtime(startTime);
+      n = n+1;
+      // userSearchAverage = userSearchAverage * (n-1)/n + (userSearchTime[0] * NS_PER_SEC + userSearchTime[1]) /n;
+      // postSearchAverage = postSearchAverage * (n-1)/n + (postSearchTime[0] * NS_PER_SEC + postSearchTime[1])/n;
+      // insertCommentAverage = insertCommentAverage * (n-1)/n + (insertCommentTime[0] * NS_PER_SEC + insertCommentTime[1])/n;
+
+      if (n % 1000 == 0) {
+        console.log("Inserted Comment Nr. : " + n);
+        // console.log("User Search Average: ");
+        // console.log(userSearchAverage);
+        // console.log(userSearchTime[0]);
+        // console.log("Post Search Average: ");
+        // console.log(postSearchAverage - userSearchAverage);
+        // console.log(postSearchTime[0]);
+        // console.log("Insert Comment Average: ");
+        // console.log(insertCommentAverage - postSearchAverage);
+      };
+
+      processedComments[comment.legacyId] = comment;
+    });
   };
 
   let processCommentsMeta = (data) => {
-    data.slice(0,COMMENTSMETANUMBER).forEach((row) => {
-      comment = Comments.findOne({legacy: true, legacyId: row.thing_id});
+    console.log("Started processing meta comments");
+    let n = 0;
+    let modifier;
+
+    let legacyIdtoCommentMap = {};
+    Comments.find().fetch().forEach(comment => {
+      legacyIdtoCommentMap[comment.legacyId] = comment;
+    });
+
+    let comment;
+    data.forEach((row) => {
+      comment = legacyIdtoCommentMap[row.thing_id];
+
       if (comment) {
-        // console.log("Adding Meta Information to post: " + post.title);
-        user = Users.findOne();
+
+
+
         set = {
           postedAt: moment(row.date).toDate()
         };
         if (row.deleted) {
           set.deleted = true;
+          set.isDeleted = true;
         };
         if (row.spam) {
           set.spam = true;
         };
+
+        set.baseScore = row.ups - row.downs;
         // console.log(set)
-        editMutation({
-          collection: Posts,
-          documentId: post._id,
-          set: set,
-          validate: false,
-        })
+
+        modifier = {$set: set};
+
+        Comments.update(comment._id, modifier, {removeEmptyStrings: false});
+        n = n + 1;
+        if (n % 1000 == 0) {
+          console.log("Processed Metadata on comment Nr.: " + n);
+        };
       };
     });
   };
@@ -381,7 +492,7 @@ if (postgresImport) {
       .then((data) => {
         processPostsMeta(data);
         console.log("Finished processing post metadata, processing comments...");
-        queryAndProcessComments();
+        // queryAndProcessComments(data);
       })
       .catch((err) => {
         console.log("Welp, we failed at processing LessWrong 1.0 post metadata. I am sorry.", err);
@@ -391,6 +502,7 @@ if (postgresImport) {
   function queryAndProcessComments() {
     db.any('SELECT thing_id, key, value from reddit_data_comment', [true])
       .then((data) => {
+        console.log("Started processing comments...")
         processComments(data);
         console.log("Finished processing comments, processing comment metadata...")
         queryAndProcessCommentsMeta();
@@ -401,7 +513,7 @@ if (postgresImport) {
   };
 
   function queryAndProcessCommentsMeta() {
-    db.any('SELECT deleted, spam, date from reddit_thing_comment', [true])
+    db.any('SELECT thing_id, ups, downs, deleted, spam, date from reddit_thing_comment', [true])
       .then((data) => {
         processCommentsMeta(data);
         console.log("Finished processing comment metadata, dataimport is completed.");
@@ -411,7 +523,7 @@ if (postgresImport) {
       });
   }
 
-  queryAndProcessUsers();
+  queryAndProcessPostsMeta();
 
   // db.any('SELECT thing_id, key, value from reddit_data_account', [true])
   //   .then((data) => {

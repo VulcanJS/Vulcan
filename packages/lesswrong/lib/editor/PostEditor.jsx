@@ -3,6 +3,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 import { Trash, DisplayModeToggle, Toolbar } from 'ory-editor-ui'
 import withEditor from './withEditor.jsx'
+import { IntercomAPI } from 'react-intercom';
 
 const placeholderContent = {
     id: '2',
@@ -40,12 +41,13 @@ class PostEditor extends Component {
       const state = JSON.parse(JSON.stringify(document.content));
       editor.trigger.editable.add(state)
     } else {
-      editor.trigger.editable.add(placeholderContent); 
+      editor.trigger.editable.add(placeholderContent);
     }
 
   }
 
   render() {
+    IntercomAPI('hide');
     const document = this.props.document;
     const addValues = this.context.addToAutofilledValues;
     const editor = this.props.editor;

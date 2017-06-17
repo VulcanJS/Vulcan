@@ -29,7 +29,7 @@ const mutations = {
 
     check(user, document) {
       // For now we only let admins add new RSS feeds. We will change this at a later point in time
-      // TODO: Change permissions to allow users to add their own RSS feeds
+      // TODO: Change permissions to allow users to add their own RSS feeds id:26
       if (!user || !document) return false;
       return Users.isAdmin(user);
     },

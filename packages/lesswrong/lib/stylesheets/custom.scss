@@ -63,6 +63,10 @@ $medium-text: $dark-grey;
   margin-top: 30px;
 }
 
+.posts-item.posts-sticky {
+    background: rgba(0, 0, 0, 0.03) !important;
+}
+
 // CSS modifications for adjusting font in various contexts
 
 .comments-item{

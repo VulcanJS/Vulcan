@@ -32,8 +32,8 @@
     "segmentWriteKey": "456bar"
   },
 
-  "defaultEmail": "hello@world.com",
-  "mailUrl": "smtp://postmaster%40foo.mailgun.org:foo123@smtp.mailgun.org:587/",
+  "defaultEmail": "postmaster@lesserwrong.com",
+  "mailUrl": "smtp://postmaster@mg.lesserwrong.com:a09aec2342e75bd4c859851ed883b361@smtp.mailgun.org:587/",
   "scoreUpdateInterval": "30",
 
   "embedlyKey":"e5e9e0e63822471a8dbe111043b4f297",

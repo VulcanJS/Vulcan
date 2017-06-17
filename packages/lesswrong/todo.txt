@@ -1,0 +1,7 @@
+#CLOSED_BETA: Finalize the Intercom integration id:154
+#CLOSED_BETA: Set up the new login system id:155
+#CLOSED_BETA: Write the new frontpage copy text id:139
+#CLOSED_BETA: Run the invitation email copy text by Harmanas and Matt id:74
+#CLOSED_BETA: Write the welcome text for the LW2 frontpage id:90
+#CLOSED_BETA: Run the welcome text by Matt and Harmanas id:20
+#CLOSED_BETA: Create indicator for legacy-imported accounts id:210

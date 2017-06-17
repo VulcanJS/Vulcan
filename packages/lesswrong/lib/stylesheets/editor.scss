@@ -30,3 +30,11 @@
     -webkit-box-shadow: none !important;
   }
 }
+
+// Changing the location of the ory-toolbar buttons to work well with the
+// Intercom button
+
+.ory-controls-mode-toggle-control-group {
+  padding: 13px !important;
+  bottom: 75px !important;
+}

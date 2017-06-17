@@ -10,6 +10,8 @@ import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:cor
 import { performSubscriptionAction } from '../subscriptions/mutations.js';
 import { convertFromRaw, convertToRaw } from 'draft-js';
 
+import { IntercomAPI } from 'react-intercom';
+
 
 const updateConversationActivity = (message) => {
   // Update latest Activity timestamp on conversation when new message is added
@@ -231,7 +233,7 @@ addCallback("messages.new.async", messageNewNotification);
 //
 // This used to be the draftJS parsing into plaintext that allowed full-text search.
 // Now that we moved to the Ory editor, this no longer works. We will want to write
-// our own ORY-Editor-JSON to plain-text parser, which shouldn't be too hard. 
+// our own ORY-Editor-JSON to plain-text parser, which shouldn't be too hard.
 //
 // function postsNewPlaintextBody (post) {
 //   content = post.content;
@@ -279,3 +281,31 @@ const postsEditPlaintextBody = function (modifier, post) {
   return modifier;
 }
 addCallback("posts.edit.sync", postsEditPlaintextBody);
+
+// Register a new user in our Intercom database
+
+// const intercomUserNew = function(user) {
+//   IntercomAPI('update', { "name" : user.displayName, "email" : user.email, "user_id" : user._id, "createdAt" : user.createdAt });
+//   return user;
+//   console.log("New user Intercom API call");
+//   console.log(user);
+// }
+//
+// addCallback("users.new.sync", intercomUserNew);
+//
+// const intercomUserEdit = function(modifier, user) {
+//   if (modifier.$set) {
+//     name = modifier.$set.displayName ? modifier.$set.displayName : user.displayName ;
+//     email = modifier.$set.email ? modifier.$set.email : user.email;
+//     createdAt = modifier.$set.createdAt ? modifier.$set.createdAt : user.createdAt;
+//     IntercomAPI('update', { "name" : name, "email" : email, "user_id" : user._id, "createdAt" : createdAt });
+//   } else if (modifier.$unset) {
+//     name = modifier.$unset.displayName ? "" : user.displayName;
+//     email = modifier.$unset.email ? "" : user.email;
+//     createdAt = modifier.$unset.createdAt ? "" : user.createdAt;
+//     IntercomAPI('update', { "name" : name, "email" : email, "user_id" : user._id, "createdAt" : createdAt });
+//   }
+//   return modifier;
+// }
+//
+// addCallback("users.edit.sync", intercomUserEdit);
