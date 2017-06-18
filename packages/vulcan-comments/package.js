@@ -1,8 +1,8 @@
 Package.describe({
   name: "vulcan:comments",
-  summary: "Telescope comments package",
+  summary: "Vulcan comments package",
   version: '1.5.0',
-  git: "https://github.com/TelescopeJS/Telescope.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {

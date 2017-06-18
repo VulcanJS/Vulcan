@@ -8,3 +8,4 @@ import './ui/components/FormMessages.jsx';
 import './ui/components/LoginForm.jsx';
 import './ui/components/PasswordOrService.jsx';
 import './ui/components/SocialButtons.jsx';
+import './ui/components/ResetPassword.jsx';

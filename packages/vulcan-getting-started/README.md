@@ -1,1 +1,1 @@
-Telescope getting started package, used internally. 
+Vulcan getting started package, used internally. 

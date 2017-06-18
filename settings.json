@@ -72,5 +72,11 @@
       "appId": "foo",
       "secret": "bar"
     }
-  }
+  },
+  "galaxy.meteor.com": {
+       "env": {
+          "MONGO_URL": "mongodb://habryka:6fpfghyLnVIP@aws-us-west-2-portal.2.dblayer.com:16140/lesswrong2?ssl=true",
+           "MAIL_URL": "smtp://postmaster@mg.lesserwrong.com:a09aec2342e75bd4c859851ed883b361@smtp.mailgun.org:587/"
+        }
+   }
 }

@@ -3,8 +3,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { intlShape } from 'meteor/vulcan:i18n';
+import { STATES } from '../../helpers.js';
 
-class UsersResetPassword extends PureComponent {
+class AccountsResetPassword extends PureComponent {
   componentDidMount() {
     const token = this.props.params.token;
     Accounts._loginButtonsSession.set('resetPasswordToken', token);
@@ -14,31 +15,28 @@ class UsersResetPassword extends PureComponent {
     if (!this.props.currentUser) {
       return (
         <Components.AccountsLoginForm
-          formState={ Symbol('PASSWORD_CHANGE') }
+          formState={ STATES.PASSWORD_CHANGE }
         />
       );
+    } else {
+      return (
+        <div className='password-reset-form'>
+          <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}!</div>
+        </div>
+      );
     }
-
-    return (
-      <div className='password-reset-form'>
-        <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}!</div>
-        <Link to="/">
-          Return Home
-        </Link>
-      </div>
-    );
   }
 }
 
-UsersResetPassword.contextTypes = {
+AccountsResetPassword.contextTypes = {
   intl: intlShape
 }
 
-UsersResetPassword.propsTypes = {
+AccountsResetPassword.propsTypes = {
   currentUser: PropTypes.object,
   params: PropTypes.object,
 };
 
-UsersResetPassword.displayName = 'UsersResetPassword';
+AccountsResetPassword.displayName = 'AccountsResetPassword';
 
-registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);
+registerComponent('AccountsResetPassword', AccountsResetPassword, withCurrentUser);

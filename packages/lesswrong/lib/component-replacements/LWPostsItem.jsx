@@ -14,9 +14,9 @@ class LWPostsItem extends getRawComponent('PostsItem') {
     return (
       <div>
         <div className="posts-actions">
-          <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-            <Components.PostsEditForm post={this.props.post} />
-          </ModalTrigger>
+          <Link to={{pathname:'/editPost', query:{postId: post._id}}}>
+            Edit
+          </Link>
         </div>
       </div>
 

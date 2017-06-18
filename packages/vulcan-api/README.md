@@ -1,1 +1,1 @@
-Telescope API package, used internally. 
+Vulcan API package, used internally. 

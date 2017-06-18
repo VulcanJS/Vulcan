@@ -39,6 +39,7 @@ import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
 import './component-replacements/LWPostsViews.jsx';
 import './component-replacements/LWPostsNewForm.jsx';
+import './component-replacements/LWPostsEditForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
 import './component-replacements/LWUsersMenu.jsx';
 import './component-replacements/LWPostsListHeader.jsx';

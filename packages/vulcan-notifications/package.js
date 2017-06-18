@@ -1,6 +1,6 @@
 Package.describe({
   name: "vulcan:notifications",
-  summary: "Telescope notifications package",
+  summary: "Vulcan notifications package",
   version: '1.5.0',
   git: "https://github.com/TelescopeJS/telescope-notifications.git"
 });

@@ -32,12 +32,6 @@ function generateSSRData(options, req, res, renderProps) {
   let html;
   let css;
 
-  // Disable Server Side Rendering
-  options = {
-      disableSSR: true,
-      ...options,
-  }
-
   try {
     req.css = '';
 

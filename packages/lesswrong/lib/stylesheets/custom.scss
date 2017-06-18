@@ -49,18 +49,21 @@ $medium-text: $dark-grey;
 // Recent Comments Page CSS Modifications
 
 .recent-comments-page{
-  margin-left: 200px;
-  margin-right: 200px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
 // Home Page CSS Modifications
 
 .home-welcomebox{
-  margin-left: 200px;
-  margin-right: 200px;
+  width: 780px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 60px;
   margin-top: 30px;
+  font-size: 16px;
 }
 
 .posts-item.posts-sticky {
@@ -70,7 +73,7 @@ $medium-text: $dark-grey;
 // CSS modifications for adjusting font in various contexts
 
 .comments-item{
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .posts-home{
@@ -81,8 +84,9 @@ $medium-text: $dark-grey;
 
 
 .posts-page{
-  margin-left: 200px;
-  margin-right:200px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
   .posts-page-content{
     font-size: 20px;
   }
@@ -96,11 +100,30 @@ $medium-text: $dark-grey;
 // CSS Modifications for the New Post Page
 
 .posts-new-form{
-  margin-left: 200px;
-  margin-right: 200px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .posts-new-form{
+  .input-draft{
+    float: right;
+    width: 170px;
+    .control-label{
+      width: 10%;
+    }
+  }
+  .btn-primary{
+    float: right;
+  }
+}
+
+// CSS Modifications for the Edit Post Page
+.posts-edit-form{
+
+}
+
+.posts-edit-form{
   .input-draft{
     float: right;
     width: 170px;

@@ -12,7 +12,7 @@ import getSlug from 'speakingurl';
 import { getSetting } from './settings.js';
 
 /**
- * @summary The global namespace for Telescope utils.
+ * @summary The global namespace for Vulcan utils.
  * @namespace Telescope.utils
  */
 export const Utils = {};
@@ -130,7 +130,7 @@ Utils.getSiteUrl = function () {
 };
 
 /**
- * @summary The global namespace for Telescope utils.
+ * @summary The global namespace for Vulcan utils.
  * @param {String} url - the URL to redirect
  */
 Utils.getOutgoingUrl = function (url) {

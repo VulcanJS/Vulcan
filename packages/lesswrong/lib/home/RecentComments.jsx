@@ -48,4 +48,4 @@ const commentsOptions = {
   fragmentName: 'SelectCommentsList',
 };
 
-registerComponent('RecentComments', RecentComments, withList(commentsOptions), withCurrentUser);
+registerComponent('RecentComments', RecentComments, [withList, commentsOptions], withCurrentUser);

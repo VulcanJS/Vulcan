@@ -1,6 +1,6 @@
 Package.describe({
   name: "vulcan:rss",
-  summary: "Telescope RSS package",
+  summary: "Vulcan RSS package",
   version: '1.5.0',
   git: "https://github.com/TelescopeJS/telescope-rss.git"
 });

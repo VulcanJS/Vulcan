@@ -1,8 +1,8 @@
 import { addRoute, getComponent } from 'meteor/vulcan:core';
 
 addRoute([
-  {name: "cheatsheet", path: "/cheatsheet", component: getComponent("Cheatsheet")},
-  {name: "groups", path: "/groups", component: getComponent("Groups")},
-  {name: "settings", path: "/settings", component: getComponent("Settings")},
-  {name: "emails", path: "/emails", component: getComponent("Emails")},
+  {name: "cheatsheet", path: "/cheatsheet", component: import('./components/Cheatsheet.jsx')},
+  {name: "groups", path: "/groups", component: import('./components/Groups.jsx')},
+  {name: "settings", path: "/settings", component: import('./components/Settings.jsx')},
+  {name: "emails", path: "/emails", component: import('./components/Emails.jsx')},
 ]);

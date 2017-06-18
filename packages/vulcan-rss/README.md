@@ -1,1 +1,1 @@
-Telescope RSS package, used internally. 
+Vulcan RSS package, used internally. 

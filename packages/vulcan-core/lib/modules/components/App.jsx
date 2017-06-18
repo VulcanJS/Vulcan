@@ -21,11 +21,18 @@ class App extends PureComponent {
   }
 
   render() {
+    
+    const currentRoute = _.last(this.props.routes);
+    const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
+
     return (
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <Components.Layout {...this.props} >
-          { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
-        </Components.Layout>
+        <div>
+          <Components.HeadTags />
+          <LayoutComponent {...this.props} currentRoute={currentRoute}>
+            { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+          </LayoutComponent>
+        </div>
       </IntlProvider>
     );
   }

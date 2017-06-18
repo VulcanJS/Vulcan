@@ -9,6 +9,7 @@ vulcan:users                      # user management and permissions
 
 ############ Features Packages ############
 
+vulcan:admin
 vulcan:email
 vulcan:posts
 vulcan:comments
@@ -36,9 +37,9 @@ vulcan:i18n-en-us
 ############ Accounts Packages ############
 
 accounts-password
-accounts-twitter
-accounts-facebook
-accounts-google
+# accounts-twitter
+# accounts-facebook
+# accounts-google
 
 ############ Your Packages ############
 

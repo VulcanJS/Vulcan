@@ -23,7 +23,7 @@ export {
   // render context
   renderContext, getRenderContext, withRenderContext,
   // routes
-  Routes, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
+  Routes, RoutesTable, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
   // settings
   getSetting,
   // strings
@@ -35,7 +35,11 @@ export {
   // render context (for server only)
   withRenderContextEnvironment,
   // meteor patch (for server only)
-  webAppConnectHandlersUse
+  webAppConnectHandlersUse,
+  // dynamic imports loader using react-loadable
+  dynamicLoader,
+  // admin stuff
+  AdminColumns, addAdminColumn,
 } from 'meteor/vulcan:lib';
 
 export { default as Layout } from "./components/Layout.jsx";
@@ -45,6 +49,7 @@ export { default as Loading } from "./components/Loading.jsx";
 export { default as ShowIf } from "./components/ShowIf.jsx";
 export { default as ModalTrigger } from './components/ModalTrigger.jsx';
 export { default as Error404 } from './components/Error404.jsx';
+export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';

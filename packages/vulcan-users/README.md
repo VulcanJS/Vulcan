@@ -1,1 +1,1 @@
-Telescope users package, used internally. 
+Vulcan users package, used internally. 

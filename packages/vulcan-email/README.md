@@ -1,1 +1,1 @@
-Telescope email package, used internally. 
+Vulcan email package, used internally. 

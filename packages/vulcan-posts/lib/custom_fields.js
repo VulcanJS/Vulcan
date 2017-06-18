@@ -12,5 +12,17 @@ Users.addField([
       defaultValue: 0,
       viewableBy: ['guests'],
     }
+  },
+  /**
+    The user's associated posts (GraphQL only)
+  */
+  {
+    fieldName: "posts",
+    fieldSchema: {
+      type: Array,
+      optional: true,
+      viewableBy: ['guests'],
+      resolveAs: 'posts: [Post]'
+    }
   }
 ]);

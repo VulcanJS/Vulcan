@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 
 export const Fragments = {}; // will be populated on startup (see vulcan:routing)
 
+export const FragmentsExtensions = {}; // will be used on startup
+
 export const registerFragment = fragmentText => {
 
   // extract name from fragment text
@@ -22,6 +24,11 @@ export const registerFragment = fragmentText => {
 
 // extend a fragment with additional properties
 export const extendFragment = (fragmentName, newProperties) => {
+  FragmentsExtensions[fragmentName] = newProperties;
+}
+
+// perform fragment extension
+export const extendFragmentWithProperties = (fragmentName, newProperties) => {
   const fragment = Fragments[fragmentName];
   const fragmentEndPosition = fragment.fragmentText.lastIndexOf('}');
   const newFragmentText =[fragment.fragmentText.slice(0, fragmentEndPosition), newProperties, fragment.fragmentText.slice(fragmentEndPosition)].join('');
@@ -59,4 +66,10 @@ export const getFragment = (fragmentName, parentFragmentName) => {
   const gqlArguments = [literals, ...fragment.subFragments.map(f => getFragment(f, fragmentName))];
 
   return gql.apply(null, gqlArguments);
+}
+
+export const initializeFragments = () => {
+  _.forEach(FragmentsExtensions, (newProperties, fragmentName) => {
+    extendFragmentWithProperties(fragmentName, newProperties);
+  });
 }
