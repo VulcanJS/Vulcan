@@ -21,9 +21,9 @@ Meteor.startup(() => {
   addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
+  initializeFragments();
   populateComponentsApp();
   populateRoutesApp();
-  initializeFragments();
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');

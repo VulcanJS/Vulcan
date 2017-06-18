@@ -18,10 +18,10 @@ import RSSFeeds from './collections/rssfeeds/collection.js'
 import './collections/rssfeeds/views.js'
 import './rss-integration/callbacks'
 //
-// // Subscriptions
-// import './subscriptions/mutations.js';
-// import './subscriptions/permissions.js';
-//
+// Subscriptions
+import './subscriptions/mutations.js';
+import './subscriptions/permissions.js';
+
 // Posts
 import './collections/posts/custom_fields.js';
 import './collections/posts/resolvers.js';
@@ -41,8 +41,8 @@ import './i18n-en-us/en_US.js';
 // // General
 import './modules/fragments.js';
 import './modules/callbacks.js';
-import './modules/indexes.js';
-//
+
+
 // // Misc.
 import './helpers.js'
 import './components.js';

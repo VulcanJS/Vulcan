@@ -49,7 +49,7 @@ class NotificationsMenu extends Component {
     }
 
     if(!currentUser){
-      return (<div></div>);
+      return null;
     } else {
       return (
         <NavDropdown id="notification-nav" onClick={() => this.viewNotifications(unreadNotifications)} title={title + ' (' + unreadNotifications.length + ')'}>

@@ -22,8 +22,6 @@ Comments.addView("recentComments", function (terms) {
   };
 });
 
-Comments._ensureIndex({'postedAt': -1, '_id': -1});
-
 Users.addView("topContributors", function (terms) {
   return {
     options: {sort: {karma: -1}},

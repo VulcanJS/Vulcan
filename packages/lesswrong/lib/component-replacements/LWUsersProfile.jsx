@@ -26,21 +26,21 @@ const LWUsersProfile = (props) => {
         <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} />
         <h2 className="page-title">{Users.getDisplayName(user)}</h2>
         {user.htmlBio ? <div dangerouslySetInnerHTML={{__html: user.htmlBio}}></div> : null }
+        <Components.SubscribeTo document={user} />
         <ul>
           {user.twitterUsername ? <li><a href={"http://twitter.com/" + user.twitterUsername}>@{user.twitterUsername}</a></li> : null }
           {user.website ? <li><a href={user.website}>{user.website}</a></li> : null }
           <Components.ShowIf check={Users.options.mutations.edit.check} document={user}>
-            <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
+            <div>
+              <li>
+                <Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link>
+              </li>
+            </div>
           </Components.ShowIf>
-          <li><Components.SubscribeTo document={user} /></li>
+          {user.isAdmin ? <li> <ModalTrigger label="Register new RSS Feed" > <Components.newFeedButton user={user} /> </ModalTrigger> </li> : null}
           <li>
             <ModalTrigger label="Send Message" >
               <Components.newConversationButton user={user} />
-            </ModalTrigger>
-          </li>
-          <li>
-            <ModalTrigger label="Register new RSS Feed" >
-              <Components.newFeedButton user={user} />
             </ModalTrigger>
           </li>
         </ul>
