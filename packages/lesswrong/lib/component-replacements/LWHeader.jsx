@@ -11,9 +11,6 @@ import {Utils, withCurrentUser, getSetting, Components, replaceComponent } from 
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-//TODO: Add `withNewEditor` somewhere that is more reasonable. id:11
-import withNewEditor from '../editor/withNewEditor.jsx';
-
 class LWHeader extends Component {
 
   render () {

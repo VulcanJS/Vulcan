@@ -24,8 +24,8 @@ Accounts.emailTemplates.resetPassword.from = () => {
 };
 
 Accounts.emailTemplates.resetPassword.text = (user, url) => {
-  return 'This is your invite to the LessWrong 2.0 closed beta. You should have received another email from us with more detailed instructions on the beta. \n\n'
-    + 'To activate your account, click on the link below, you can change your username on your profile page. \n \n'
+  return 'This is your invite to the LessWrong 2.0 closed beta. You should have received another email from us with more detailed instructions on how to participate in the beta. \n\n'
+    + 'To activate your account, click on the link below. You can change your username on your profile page. \n \n'
     + url;
 };
 Accounts.emailTemplates.verifyEmail = {
@@ -40,6 +40,8 @@ Accounts.emailTemplates.verifyEmail = {
 if (getSetting('mailUrl')) {
   console.log("Set Mail URL environment variable");
   process.env.MAIL_URL = getSetting('mailUrl');
+  console.log("Set Root URL variable");
+  process.env.ROOT_URL = "http://www.lesserwrong.com/";
 };
 
 let userId = Users.findOne({email: 'panisnecis+lesswrong@gmail.com'});

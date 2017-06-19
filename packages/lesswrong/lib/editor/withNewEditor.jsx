@@ -62,6 +62,7 @@ function withNewEditor(WrappedComponent) {
         plugins,
         // pass the content state - you can add multiple editables here
         editables: editables,
+        defaultPlugin: slate(),
       })
 
       this.editor = editor;

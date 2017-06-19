@@ -27,6 +27,8 @@ import './editor/MessageEditor.jsx';
 import './editor/PostEditor.jsx';
 import './editor/CommentEditor.jsx';
 import './editor/ContentRenderer.jsx';
+// Component for testing the editor. Useful for debugging
+import './editor/EditorTest.jsx';
 
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWHeader.jsx';
@@ -43,6 +45,7 @@ import './component-replacements/LWPostsEditForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
 import './component-replacements/LWUsersMenu.jsx';
 import './component-replacements/LWPostsListHeader.jsx';
+
 
 // RSS Feed Integration
 import './rss-integration/newFeedButton.jsx';
