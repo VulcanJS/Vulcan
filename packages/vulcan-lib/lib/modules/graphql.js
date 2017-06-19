@@ -145,16 +145,14 @@ export const GraphQLSchema = {
       }
     `
 
-    if (inputSchema.length) {
-      graphQLSchema += `
-        input ${collectionName}Input {
-          ${inputSchema.join('\n  ')}
-        }
-        input ${collectionName}Unset {
-          ${unsetSchema.join('\n  ')}
-        }
-      `
-    }
+    graphQLSchema += `
+      input ${collectionName}Input {
+        ${inputSchema.join('\n  ')}
+      }
+      input ${collectionName}Unset {
+        ${unsetSchema.join('\n  ')}
+      }
+    `
 
     return graphQLSchema;
   }
