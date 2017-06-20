@@ -59,6 +59,21 @@ extendFragment('PostsList', `
 `);
 
 registerFragment(`
+  fragment RSSFeedMinimumInfo on RSSFeed {
+    _id
+    userId
+    user {
+      ...UsersMinimumInfo
+    }
+    createdAt
+    ownedByUser
+    displayFullContent
+    nickname
+    url
+  }
+`);
+
+registerFragment(`
   fragment PostsList on Post {
     # vulcan:posts
     _id
@@ -149,20 +164,7 @@ registerFragment(`
   }
 `);
 
-registerFragment(`
-  fragment RSSFeedMinimumInfo on RSSFeed {
-    _id
-    userId
-    user {
-      ...UsersMinimumInfo
-    }
-    createdAt
-    ownedByUser
-    displayFullContent
-    nickname
-    url
-  }
-`);
+
 
 registerFragment(`
   fragment RSSFeedMutationFragment on RSSFeed {
