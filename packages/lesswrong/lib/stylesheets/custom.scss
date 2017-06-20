@@ -58,7 +58,7 @@ $medium-text: $dark-grey;
 // Home Page CSS Modifications
 
 .home-welcomebox{
-  width: 780px;
+  max-width: 780px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 60px;
@@ -73,7 +73,8 @@ $medium-text: $dark-grey;
 // CSS modifications for adjusting font in various contexts
 
 .comments-item{
-  font-size: 14px;
+  font-size: 16px;
+  color: rgba(0,0,0,0.87);
 }
 
 .posts-home{
@@ -84,14 +85,27 @@ $medium-text: $dark-grey;
 
 
 .posts-page{
-  width: 800px;
+  padding-bottom: 70px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   .posts-page-content{
-    font-size: 20px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    line-height: 1.6;
+    font-size: 18px;
+    color: rgba(0,0,0,0.87);
   }
   .posts-page-body{
-    font-size: 20px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    line-height: 1.6;
+    font-size: 18px;
+    color: rgba(0,0,0,0.87);;
   }
 }
 
@@ -100,9 +114,10 @@ $medium-text: $dark-grey;
 // CSS Modifications for the New Post Page
 
 .posts-new-form{
-  width: 800px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 70px;
 }
 
 .posts-new-form{
@@ -217,6 +232,7 @@ $medium-text: $dark-grey;
 
 
 .commentEditor{
+  font-size: 16px !important;
   border: #d1d1d1;
   border-width: 1px;
   border-style: solid;
@@ -226,10 +242,12 @@ $medium-text: $dark-grey;
 }
 
 .postEditor{
+  font-size: 18px !important;
   margin-bottom: 10px;
 }
 
 .messageEditor{
+  font-size: 16px !important;
   border: #d1d1d1;
   border-width: 1px;
   border-style: solid;
