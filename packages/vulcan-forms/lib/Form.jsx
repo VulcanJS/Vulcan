@@ -468,7 +468,7 @@ class Form extends Component {
     if (this.props.formType === "new") { // new document form
 
       // remove any empty properties
-      let document = _.compactObject(flatten(data));
+      let document = _.compactObject(data);
 
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
@@ -478,7 +478,7 @@ class Form extends Component {
       const document = this.getDocument();
 
       // put all keys with data on $set
-      const set = _.compactObject(flatten(data));
+      const set = _.compactObject(data);
 
       // put all keys without data on $unset
       const setKeys = _.keys(set);

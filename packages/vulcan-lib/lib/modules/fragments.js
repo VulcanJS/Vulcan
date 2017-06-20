@@ -42,6 +42,9 @@ export const removeFromFragment = (fragmentName, propertyName) => {
   registerFragment(newFragmentText);  
 }
 
+// get fragment name from fragment object
+export const getFragmentName = fragment => fragment && fragment.definitions[0] && fragment.definitions[0].name.value;
+
 // get actual gql fragment
 export const getFragment = fragmentName => {
 
@@ -52,7 +55,9 @@ export const getFragment = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`)
   }
   if (!fragment.fragmentObject) {
-    throw new Error(`Fragment "${fragmentName}" not initialized.`)
+    console.log('// !fragment.fragmentObject: '+fragmentName)
+    initializeFragment(fragmentName);
+    // throw new Error(`Fragment "${fragmentName}" not initialized.`)
   }
 
   // return fragment object created by gql
