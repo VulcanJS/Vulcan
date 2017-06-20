@@ -147,10 +147,10 @@ export const GraphQLSchema = {
 
     graphQLSchema += `
       input ${collectionName}Input {
-        ${inputSchema.join('\n  ')}
+        ${inputSchema.length ? inputSchema.join('\n  ') : '_blank: Boolean'}
       }
       input ${collectionName}Unset {
-        ${unsetSchema.join('\n  ')}
+        ${inputSchema.length ? unsetSchema.join('\n  ') : '_blank: Boolean'}
       }
     `
 
