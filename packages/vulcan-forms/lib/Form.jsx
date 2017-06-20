@@ -75,11 +75,10 @@ class Form extends Component {
       errors: [],
       autofilledValues: props.prefilledProps || {},
       deletedValues: [],
-      currentValues: {},
-      submitFormCallbacks: [],
+      currentValues: {}
     };
 
-    // this.submitFormCallbacks = [];
+    this.submitFormCallbacks = [];
   }
 
   // --------------------------------------------------------------------- //
@@ -169,7 +168,7 @@ class Form extends Component {
       if (fieldSchema.limit) {
        field.limit = fieldSchema.limit;
       }
-      
+
       // add placeholder
       if (fieldSchema.placeholder) {
        field.placeholder = fieldSchema.placeholder;
@@ -369,9 +368,7 @@ class Form extends Component {
 
   // add a callback to the form submission
   addToSubmitForm(callback) {
-    this.setState(prevState => ({
-      submitFormCallbacks: [...prevState.submitFormCallbacks, callback]
-    }));
+    this.submitFormCallbacks.push(callback);
   }
 
   setFormState(fn) {
@@ -385,7 +382,6 @@ class Form extends Component {
       clearForm: this.clearForm,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      addToSubmitForm: this.addToSubmitForm,
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
@@ -475,7 +471,7 @@ class Form extends Component {
       let document = _.compactObject(data);
 
       // call method with new document
-      this.props.newMutation({ document }).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -483,8 +479,6 @@ class Form extends Component {
 
       // put all keys with data on $set
       const set = _.compactObject(data);
-
-      console.log("Submit Data SET FLATTEN", set);
 
       // put all keys without data on $unset
       const setKeys = _.keys(set);
@@ -542,7 +536,7 @@ class Form extends Component {
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
-          
+
           <div className="form-submit">
             <Button type="submit" bsStyle="primary">{this.props.submitLabel ? this.props.submitLabel : <FormattedMessage id="forms.submit"/>}</Button>
             {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>{this.props.cancelLabel ? this.props.cancelLabel : <FormattedMessage id="forms.cancel"/>}</a> : null}
