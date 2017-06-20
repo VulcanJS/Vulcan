@@ -6,7 +6,7 @@
     "logoUrl": "/packages/lesswrong/lib/assets/Logo.svg",
     "logoHeight": "80",
     "logoWidth": "250",
-    "faviconUrl": "/favicon.ico",
+    "faviconUrl": "http://res.cloudinary.com/lesswrong-2-0/image/upload/v1497915096/favicon_lncumn.ico",
 
     "requirePostsApproval":false,
     "requireViewInvite":false,
