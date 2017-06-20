@@ -5,8 +5,9 @@ const populateRawFeed = (feed) => {
   const feedparser = require('feedparser-promised');
   const url = feed.url;
   feedparser.parse(url).then(currentPosts => {
-    var set = {};
-    set.rawFeed = currentPosts;
+    var set = {
+      rawFeed: currentPosts,
+    };
 
     editMutation({
       collection: RSSFeeds,
@@ -14,7 +15,7 @@ const populateRawFeed = (feed) => {
       set: set,
       validate: false,
     })
-  })
+  });
 }
 
 addCallback("rssfeeds.new.async", populateRawFeed);
