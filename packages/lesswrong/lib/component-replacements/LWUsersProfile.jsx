@@ -1,4 +1,4 @@
-import { Components, replaceComponent, ModalTrigger } from 'meteor/vulcan:core';
+import { Components, replaceComponent, registerComponent, ModalTrigger , withCurrentUser} from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
@@ -37,7 +37,9 @@ const LWUsersProfile = (props) => {
               </li>
             </div>
           </Components.ShowIf>
-          {user.isAdmin ? <li> <ModalTrigger label="Register new RSS Feed" > <Components.newFeedButton user={user} /> </ModalTrigger> </li> : null}
+          {props.currentUser && props.currentUser.isAdmin ? <li> <ModalTrigger label="Register new RSS Feed">
+              <Components.newFeedButton user={user} />
+            </ModalTrigger> </li> : null}
           <li>
             <ModalTrigger label="Send Message" >
               <Components.newConversationButton user={user} />
@@ -65,4 +67,4 @@ const options = {
   fragmentName: 'UsersProfile',
 };
 
-replaceComponent('UsersProfile', LWUsersProfile);
+replaceComponent('UsersProfile', LWUsersProfile, withCurrentUser);

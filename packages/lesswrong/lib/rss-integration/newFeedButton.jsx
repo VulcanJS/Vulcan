@@ -24,6 +24,7 @@ class newFeedButton extends Component {
           <Components.SmartForm
             collection={RSSFeeds}
             mutationFragment={getFragment('newRSSFeedFragment')}
+            prefilledProps={{userId: user._id}}
             successCallback={conversation => {
               this.props.closeModal();
             }}
@@ -33,7 +34,7 @@ class newFeedButton extends Component {
         </div>
       )
     } else {
-      return <Components.Loading />
+      return <div> <Components.Loading /> </div>
     }
   }
 }

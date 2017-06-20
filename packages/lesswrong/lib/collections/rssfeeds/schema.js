@@ -20,9 +20,6 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['admins'],
     resolveAs: 'user: User',
-    onInsert: (document, currentUser) => {
-      currentUser._id;
-    },
     optional: true,
   },
   createdAt: {

@@ -26,10 +26,10 @@ class LWPostsItem extends getRawComponent('PostsItem') {
   renderPostFeeds() {
     feed = this.props.post.feed
 
-    if (!!feed && feed.user) {
-      return <Link to={this.props.post.feedLink} className="postFeedNickname">
+    if (feed && feed.user) {
+      return <a href={this.props.post.feedLink} className="postFeedNickname">
                 {feed.nickname}
-             </Link>;
+             </a>;
     } else {
       return null;
     }
