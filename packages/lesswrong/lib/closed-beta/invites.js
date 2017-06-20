@@ -43,6 +43,3 @@ if (getSetting('mailUrl')) {
   console.log("Set Root URL variable");
   process.env.ROOT_URL = "http://www.lesserwrong.com/";
 };
-
-let userId = Users.findOne({email: 'panisnecis+lesswrong@gmail.com'});
-Accounts.sendResetPasswordEmail(userId);
