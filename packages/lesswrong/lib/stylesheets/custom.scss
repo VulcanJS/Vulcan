@@ -74,12 +74,16 @@ $medium-text: $dark-grey;
 
 .comments-item{
   font-size: 16px;
+  line-height: 1.25;
   color: rgba(0,0,0,0.87);
 }
 
 .posts-home{
   .recent-comments-item{
-    font-size: 13px ;
+    font-size: 14px;
+    blockquote {
+      font-size: 14.25px;
+    }
   }
 }
 
@@ -233,17 +237,20 @@ $medium-text: $dark-grey;
 
 .commentEditor{
   font-size: 16px !important;
+  line-height: 1.25 !important;
   border: #d1d1d1;
   border-width: 1px;
   border-style: solid;
   border-radius: 5px;
   padding: 16px;
   margin-bottom: 10px;
+  color: rgba(0,0,0,0.87);
 }
 
 .postEditor{
   font-size: 18px !important;
   margin-bottom: 10px;
+  color: rgba(0,0,0,0.87);
 }
 
 .messageEditor{
@@ -254,6 +261,7 @@ $medium-text: $dark-grey;
   border-radius: 5px;
   padding: 16px;
   margin-bottom: 10px;
+  color: rgba(0,0,0,0.87);
 }
 
 // CSS modifications for posts
