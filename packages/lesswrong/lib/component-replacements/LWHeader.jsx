@@ -28,7 +28,7 @@ class LWHeader extends Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
-              <Components.Logo logoUrl={Utils.getSiteUrl() + 'packages/lesswrong/assets/Logo.png'}/>
+              <Components.Logo logoUrl={logoUrl}/>
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight={true}>
