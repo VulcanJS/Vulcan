@@ -9,6 +9,9 @@ import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
 import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
+import { disableFragmentWarnings } from 'graphql-tag';
+
+disableFragmentWarnings();
 
 // convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = type => {

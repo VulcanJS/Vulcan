@@ -1,3 +1,1 @@
-import Posts from './modules.js';
-
-export default Posts;
+export * from './modules.js';
