@@ -31,7 +31,7 @@ const mutations = {
 
     check(user) {
       if (!user) return false;
-      return Users.canDo(user, 'conversations.new');
+      return Users.canDo(user, 'conversations.new.own');
     },
 
     mutation(root, {document}, context) {

@@ -29,41 +29,53 @@ const placeholderContent = {
 
 
 class MessageEditor extends Component {
-  constructor(props) {
-    super(props);
-    const editor = this.props.editor;
+  constructor(props, context) {
+    super(props,context);
+    let editor = this.props.editor;
     const document = this.props.document;
+    let state = document && document.content ? document.content : createEmptyState();
+    this.state = {
+      contentState: state,
+    };
+    editor.trigger.editable.add(state);
+  }
 
-    if (document && document.content) {
-      const state = JSON.parse(JSON.stringify(document.content));
-      editor.trigger.editable.add(state)
-    } else {
-      editor.trigger.editable.add(placeholderContent);
+  componentWillMount() {
+    //Add function for resetting form to form submit callbacks
+    const resetEditor = (data) => {
+      // On Form submit, create a new empty editable
+      let editor = this.props.editor;
+      let state = createEmptyState();
+      editor.trigger.editable.add(state);
+      this.setState({
+        contentState: state,
+      })
+      return data;
     }
-
+    const addToSubmitCallbacks = this.context.addToSubmitForm;
+    addToSubmitCallbacks(resetEditor);
   }
 
   render() {
     const document = this.props.document;
     const addValues = this.context.addToAutofilledValues;
-    const editor = this.props.editor;
-
-    const onChange = function(data) {
-      addValues({content: data});
-      return data;
-    };
-
+    let editor = this.props.editor;
+    onChange = (state) => {
+      addValues({content: state});
+      return state;
+    }
     return (
-      <div className="messageEditor">
-        <Editable editor={editor} id={placeholderContent.id} onChange={onChange} />
+      <div className="commentEditor">
+        <Editable editor={editor} id={this.state.contentState.id} onChange={onChange} />
         <Toolbar editor={editor} />
       </div>
-    );
+    )
   }
 }
 
 MessageEditor.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
+  addToSubmitForm: React.PropTypes.func,
 }
 
 registerComponent('MessageEditor', MessageEditor, withEditor, withCurrentUser);
