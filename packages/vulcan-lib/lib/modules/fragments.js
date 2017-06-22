@@ -86,9 +86,11 @@ export const initializeFragment = (fragmentName) => {
 }
 
 export const initializeFragments = () => {
-  // extend fragment text
+  // extend fragment text if fragment exists
   _.forEach(FragmentsExtensions, (newProperties, fragmentName) => {
-    extendFragmentWithProperties(fragmentName, newProperties);
+    if (Fragments[fragmentName]) {
+      extendFragmentWithProperties(fragmentName, newProperties);
+    }
   });
   // initialize fragments to create gql fragment object
   _.forEach(Fragments, (fragmentItem, fragmentName) => {
