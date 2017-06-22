@@ -9,9 +9,11 @@ import './collections/notifications/views.js';
 // Inbox
 import Messages from './collections/messages/collection.js'
 import './collections/messages/views.js';
+import './collections/messages/permissions.js';
 
 import Conversations from './collections/conversations/collection.js'
 import './collections/conversations/views.js';
+import './collections/conversations/permissions.js';
 //
 // RSSFeeds
 import RSSFeeds from './collections/rssfeeds/collection.js'
@@ -24,6 +26,7 @@ import './subscriptions/permissions.js';
 
 // Posts
 import './collections/posts/custom_fields.js';
+import './collections/posts/callbacks.js';
 import './collections/posts/resolvers.js';
 import './collections/posts/views.js';
 //

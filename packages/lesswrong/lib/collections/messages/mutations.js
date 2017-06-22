@@ -16,6 +16,7 @@ Each mutation has:
 
 import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
+import Conversations from '../conversations/collection.js';
 
 const performCheck = (check, user, document) => {
   if(!Meteor.isDevelopment){
@@ -31,7 +32,7 @@ const mutations = {
 
     check(user, document) {
       if (!user) return false;
-      return (Users.canDo(user, 'messages.new') && user.userId == document.userId && Conversations.findOne(document.conversationId).participants.includes(user.userId));
+      return (Users.canDo(user, 'messages.new.own') && user.userId == document.userId && Conversations.findOne(document.conversationId).participantIds.includes(user._id));
     },
 
     mutation(root, {document}, context) {
