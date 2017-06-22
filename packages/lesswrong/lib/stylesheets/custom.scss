@@ -138,11 +138,12 @@ $medium-text: $dark-grey;
 }
 
 // CSS Modifications for the Edit Post Page
-.posts-edit-form{
-
-}
 
 .posts-edit-form{
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 70px;
   .input-draft{
     float: right;
     width: 170px;
