@@ -9,6 +9,7 @@ const notificationsGroup = {
 };
 
 // Add notifications options to user profile settings
+
 Users.addField([
   {
     fieldName: 'notifications_users',
@@ -40,6 +41,7 @@ Users.addField([
   }
 ]);
 
+// LESSWRONG: Overwrote defaultValue to be true, since we can't override
 if (!!Comments) {
   Users.addField([
     {
@@ -48,7 +50,7 @@ if (!!Comments) {
         label: 'Comments on my posts',
         type: Boolean,
         optional: true,
-        defaultValue: false,
+        defaultValue: true,
         control: "checkbox",
         viewableBy: ['guests'],
         insertableBy: ['members'],
@@ -62,7 +64,7 @@ if (!!Comments) {
         label: 'Replies to my comments',
         type: Boolean,
         optional: true,
-        defaultValue: false,
+        defaultValue: true,
         control: "checkbox",
         viewableBy: ['guests'],
         insertableBy: ['members'],
@@ -70,5 +72,5 @@ if (!!Comments) {
         group: notificationsGroup,
       }
     }
-  ]);  
+  ]);
 }
