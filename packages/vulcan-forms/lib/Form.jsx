@@ -445,6 +445,12 @@ class Form extends Component {
 
   // submit form handler
   submitForm(data) {
+
+    // if form is disabled (there is already a submit handler running) don't do anything
+    if (this.state.disabled) {
+      return;
+    }
+    
     this.setState(prevState => ({disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
