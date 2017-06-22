@@ -58,7 +58,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: "text",
+    control: "url",
     order: 10
   },
   /**
