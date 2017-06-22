@@ -16,13 +16,12 @@ class NotificationsItem extends Component {
     currentUser = this.props.currentUser;
     notification = this.props.notification;
     className = "notification-item " + (notification.viewed ? "viewed" : "unviewed");
-    return ( <div>
+    return (
       <LinkContainer to={notification.link ? notification.link : "/"}>
-        <MenuItem key={notification._id} disabled={notification.viewed}>
-            {notification.notificationMessage + ": (" + notification.notificationType + ")"}
+        <MenuItem key={notification._id} className={className}>
+            {notification.notificationMessage}
         </MenuItem>
       </LinkContainer>
-      <MenuItem divider /> </div>
     )
   }
 

@@ -1,84 +1,74 @@
 import { Components, registerComponent, withCurrentUser, withList, withEdit } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import { Meteor } from 'meteor/meteor';
+import React, { Component } from 'react';
 import { NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import Users from 'meteor/vulcan:users';
-import { withApollo } from 'react-apollo';
 import Notifications from '../collections/notifications/collection.js'
 
 class NotificationsMenu extends Component {
 
-  renderNotificationsList() {
-
-    const results = this.props.results;
-    const currentUser = this.props.currentUser;
-    const refetch = this.props.refetch;
-    const loading = this.props.loading;
-    const loadMore = this.props.loadMore;
-    const totalCount = this.props.totalCount;
-    // console.log(currentUser);
-    // console.log(refetch);
-    if (results && results.length) {
-      return (
-        <div>
-          <LinkContainer to={{pathname: '/inbox', query: {select: "Notifications"}}}>
-            <MenuItem> See all your notifications and messages </MenuItem>
-          </LinkContainer>
-          <MenuItem divider />
-          {results.map(notification => <Components.NotificationsItem key={notification._id} currentUser={currentUser} notification={notification} />)}
-          <MenuItem onClick={() => loadMore()}>Load More</MenuItem>
-        </div>
-      )
-    } else if (loading) {
-        return (<Components.Loading/>)
-    } else {
-        return (<MenuItem>No Results</MenuItem>)
-    }
-  }
-
   render() {
-    const results = this.props.results;
-    const currentUser = this.props.currentUser;
-    const title = this.props.title;
-    let unreadNotifications = [];
-    if (results && results.length) {
-      unreadNotifications = results.filter(this.isNotViewed);
-    }
+      const results = this.props.results;
+      const currentUser = this.props.currentUser;
+      const refetch = this.props.refetch;
+      const loading = this.props.loading;
+      const loadMore = this.props.loadMore;
+      const totalCount = this.props.totalCount;
+      const title = this.props.title;
 
-    if(!currentUser){
-      return null;
-    } else {
-      return (
-        <NavDropdown id="notification-nav" onClick={() => this.viewNotifications(unreadNotifications)} title={title + ' (' + unreadNotifications.length + ')'}>
-            {this.renderNotificationsList()}
-        </NavDropdown>
-      )
-    }
+      let unreadNotifications = [];
+      if (results && results.length) {
+        unreadNotifications = results.filter(this.isNotViewed);
+      }
+      // console.log(currentUser);
+      // console.log(refetch);
+
+      //TODO: Display Load More button only when not all notifications are loaded already
+      if (!currentUser) {
+        return null;
+      } else if (results && results.length) {
+        return (
+          <NavDropdown className="notification-nav" id="notification-nav" onClick={this.viewNotifications(unreadNotifications)} title={title+' ('+unreadNotifications.length+')'}>
+            <LinkContainer to={{pathname: '/inbox', query: {select: "Notifications"}}}>
+              <MenuItem> See all your notifications and messages </MenuItem>
+            </LinkContainer>
+            <MenuItem divider />
+            {results.map(notification => <Components.NotificationsItem key={notification._id} currentUser={currentUser} notification={notification} />)}
+            <MenuItem divider />
+            <MenuItem onClick={() => loadMore()}>Load More</MenuItem>
+          </NavDropdown>
+        )
+      } else if (loading) {
+          return (<Components.Loading/>)
+      } else {
+          return (
+          <NavDropdown className="notification-nav" id="notification-nav" onClick={this.viewNotifications(unreadNotifications)} title={title+' ('+unreadNotifications.length+')'}>
+              <div> No results </div>
+          </NavDropdown>)
+      }
   }
-
 
   isNotViewed(notification) {
     return (!notification.viewed);
   };
 
   viewNotifications(results) {
-    if(results && results.length && this.props){
-      let editMutation = this.props.editMutation;
-      let set = {viewed: true};
-      results.forEach(function(notification) {
-        editMutation({documentId: notification._id, set: set, unset: {}});
-      });
+    const VIEW_NOTIFICATIONS_DELAY = 1200;
+    return () => {
+      console.log("View Notifications called");
+      return setTimeout(() => {
+        console.log("View Notifications activated");
+        if(results && results.length){
+          let editMutation = this.props.editMutation;
+          let set = {viewed: true};
+          results.forEach((notification) => {
+            console.log(notification);
+            editMutation({documentId: notification._id, set: set, unset: {}});
+          });
+        }
+      }, VIEW_NOTIFICATIONS_DELAY)
     }
   };
 
-}
-
-NotificationsMenu.propsTypes = {
-  currentUser: React.PropTypes.object,
-  client: React.PropTypes.object,
 };
 
 const withListOptions = {

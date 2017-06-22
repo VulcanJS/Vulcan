@@ -61,7 +61,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.Notifications.findOne(documentId);
-      performCheck(this.check.check, context.currentUser, document);
+      performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.Notifications,

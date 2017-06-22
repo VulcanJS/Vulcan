@@ -38,7 +38,7 @@ const schema = {
     optional: true,
     type: Date,
     viewableBy: userInParticipants,
-    onInsert: (document, currentUser) => {
+    onInsert: (document) => {
       return new Date();
     }
   },
@@ -65,8 +65,8 @@ const schema = {
   latestActivity: {
     type: Date,
     viewableBy: userInParticipants,
-    autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    onInsert: (document) => {
+      return new Date(); // if this is an insert, set createdAt to current timestamp
     },
     optional: true,
   }

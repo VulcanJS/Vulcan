@@ -9,15 +9,7 @@ const resolvers = {
 
     check(user, terms, Notifications) {
       const {selector, options} = Notifications.getParameters(terms);
-      if (user) {
-        if (user._id == selector.userId) {
-          return true;
-        } else {
-          return false;
-        };
-      } else {
-        return false;
-      };
+      return user && user._id == selector.userId;
     },
 
     resolver(root, {terms}, {currentUser, Notifications, Users}, info) {

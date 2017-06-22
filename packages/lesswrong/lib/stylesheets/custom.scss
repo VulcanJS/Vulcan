@@ -166,15 +166,23 @@ $medium-text: $dark-grey;
 
 // CSS modifications for notifications navbar
 .navbar-nav{
-  .dropdown-menu{
-    min-width: 300px;
-    padding: 15px;
-  }
-  .viewed {
-    background-color: $lightest-grey;
-  }
-  .disabled {
-    background-color: $lightest-grey;
+  .notification-nav{
+    .dropdown-menu{
+      white-space: normal;
+      min-width: 250px;
+      padding: 16px;
+      li {
+        a {
+          white-space: normal;
+        }
+      }
+      .viewed {
+        background-color: $lightest-grey;
+      }
+      .unviewed {
+        background-color: $white;
+      }
+    }
   }
 }
 
