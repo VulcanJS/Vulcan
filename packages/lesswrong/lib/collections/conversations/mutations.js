@@ -17,9 +17,9 @@ Each mutation has:
 import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
-const performCheck = (mutation, user, document) => {
+const performCheck = (check, user, document) => {
   if(!Meteor.isDevelopment){
-    if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
+    if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
   }
 }
 
