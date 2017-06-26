@@ -4,7 +4,9 @@ import Users from 'meteor/vulcan:users';
 const specificResolvers = {
   Query: {
     lastEvent(root, {documentId, userId}, context) {
-      let events = context.LWEvents.find({documentId: documentId, userId: userId}, {limit: 1, sort: {endTime: -1}}).fetch();
+      // console.log("Querying last event:", {documentId, userId});
+      let events = context.LWEvents.find({documentId: documentId, userId: userId}, {limit: 1, sort: {createdAt: -1}}).fetch();
+      // console.log("Found events: ", events);
       return events[0];
     },
   },

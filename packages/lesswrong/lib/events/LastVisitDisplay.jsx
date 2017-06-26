@@ -16,7 +16,7 @@ const LastVisitDisplay = (props, context) => {
   } else {
     return (
       <div className="last-visit-display">
-        You last visited this page {moment(lastEvent.properties.startTime).calendar()} for  {moment.duration(lastEvent.properties.duration).humanize()}
+        You last visited this page {moment(lastEvent.properties.startTime).fromNow()} for  {moment.duration(lastEvent.properties.duration).humanize()}
       </div>
     )
   };
