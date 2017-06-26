@@ -8,8 +8,6 @@ import Categories from 'meteor/vulcan:categories';
 import marked from 'marked';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from '../subscriptions/mutations.js';
-import { convertFromRaw, convertToRaw } from 'draft-js';
-
 import { IntercomAPI } from 'react-intercom';
 
 

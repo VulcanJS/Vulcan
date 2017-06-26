@@ -8,8 +8,6 @@ import React, { PropTypes, Component } from 'react';
 import { Media } from 'react-bootstrap';
 import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/vulcan:core';
 import Messages from "../collections/messages/collection.js";
-import { convertFromRaw } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
 
 class MessageItem extends Component {
 
