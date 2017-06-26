@@ -19,9 +19,7 @@ import Users from 'meteor/vulcan:users';
 import Conversations from '../conversations/collection.js';
 
 const performCheck = (check, user, document) => {
-  if(!Meteor.isDevelopment){
-    if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
-  }
+  if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
 }
 
 const mutations = {
@@ -31,8 +29,7 @@ const mutations = {
     name: 'messagesNew',
 
     check(user, document) {
-      if (!user) return false;
-      return (Users.canDo(user, 'messages.new.own') && user.userId == document.userId && Conversations.findOne(document.conversationId).participantIds.includes(user._id));
+      return user && Users.canDo(user, 'messages.new.own') && user.userId == document.userId && Conversations.findOne(document.conversationId).participantIds.includes(user._id);
     },
 
     mutation(root, {document}, context) {

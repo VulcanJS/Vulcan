@@ -18,9 +18,7 @@ import { newMutation, editMutation, removeMutation, Utils } from 'meteor/vulcan:
 import Users from 'meteor/vulcan:users';
 
 const performCheck = (check, user, document) => {
-  if(!Meteor.isDevelopment){
-    if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
-  }
+  if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
 }
 
 const mutations = {
@@ -30,8 +28,7 @@ const mutations = {
     name: 'notificationsNew',
 
     check(user) {
-      if (!user) return false;
-      return Users.canDo(user, 'notifications.new');
+      return user && Users.canDo(user, 'notifications.new');
     },
 
     mutation(root, {document}, context) {
