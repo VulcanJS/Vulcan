@@ -52,11 +52,9 @@ class NotificationsMenu extends Component {
   };
 
   viewNotifications(results) {
-    const VIEW_NOTIFICATIONS_DELAY = 1200;
+    const VIEW_NOTIFICATIONS_DELAY = 500;
     return () => {
-      console.log("View Notifications called");
       return setTimeout(() => {
-        console.log("View Notifications activated");
         if(results && results.length){
           let editMutation = this.props.editMutation;
           let set = {viewed: true};
