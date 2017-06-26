@@ -9,8 +9,8 @@ function sendIntercomEvent (event, user) {
       ...event.properties,
       documentId: event.documentId,
     }
-    console.log("Sent event to Intercom");
-    console.log(event);
+    // console.log("Sent event to Intercom");
+    // console.log(event);
     let currentTime = new Date();
     let intercomEvent = {
       event_name: event.name,
@@ -18,7 +18,7 @@ function sendIntercomEvent (event, user) {
       user_id: user._id,
       metadata: event.properties
     };
-    console.log(intercomEvent);
+    // console.log(intercomEvent);
     intercomClient.events.create(intercomEvent);
   };
 };

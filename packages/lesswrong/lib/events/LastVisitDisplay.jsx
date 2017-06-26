@@ -6,7 +6,7 @@ import moment from 'moment';
 
 const LastVisitDisplay = (props, context) => {
   const lastEvent = props.lastEvent;
-  console.log("lastVisitDisplay props: ", props);
+  // console.log("lastVisitDisplay props: ", props);
   if (!lastEvent || !lastEvent.properties) {
     return (
       <div className="last-visit-display">

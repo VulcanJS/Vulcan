@@ -59,7 +59,7 @@ class NotificationsMenu extends Component {
           let editMutation = this.props.editMutation;
           let set = {viewed: true};
           results.forEach((notification) => {
-            console.log(notification);
+            // console.log(notification);
             editMutation({documentId: notification._id, set: set, unset: {}});
           });
         }

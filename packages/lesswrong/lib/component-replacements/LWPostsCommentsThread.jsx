@@ -18,7 +18,7 @@ const LWPostsCommentsThread = (props, /* context*/) => {
     const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, {idProperty: '_id', parentIdProperty: 'parentCommentId'});
     const lastEvent = props.event;
-    console.log("LWPostsCommentsThread event", lastEvent);
+    // console.log("LWPostsCommentsThread event", lastEvent);
 
     return (
       <div className="posts-comments-thread">
