@@ -20,6 +20,10 @@ import RSSFeeds from './collections/rssfeeds/collection.js'
 import './collections/rssfeeds/views.js'
 import './rss-integration/callbacks.js'
 //
+// LWEvents
+import LWEvents from './collections/lwevents/collection.js';
+import './collections/lwevents/permissions.js';
+import './events/callbacks_sync.js';
 // Subscriptions
 import './subscriptions/mutations.js';
 import './subscriptions/permissions.js';

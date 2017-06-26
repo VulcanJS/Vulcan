@@ -176,3 +176,28 @@ registerFragment(`
     url
   }
 `);
+
+registerFragment(`
+  fragment newEventFragment on LWEvent {
+    _id
+    createdAt
+    userId
+    name
+    important
+    properties
+    intercom
+  }
+`);
+
+registerFragment(`
+  fragment lastEventFragment on LWEvent {
+    _id
+    createdAt
+    documentId
+    userId
+    name
+    important
+    properties
+    intercom
+  }
+`);

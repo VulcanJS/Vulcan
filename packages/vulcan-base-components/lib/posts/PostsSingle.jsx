@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent , withCurrentUser} from 'meteor/vulcan:core';
 import React from 'react';
 
 const PostsSingle = (props, context) => {

@@ -27,9 +27,9 @@
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo",
-    "useSegment": false,
-    "segmentWriteKey": "456bar"
+    "googleAnalyticsId":"UA-60844744-4",
+    "useSegment": true,
+    "segmentWriteKey": "uWJwcdCkl36EEQoSmEg8yYA1Sud4byov"
   },
 
   "defaultEmail": "no-reply@lesserwrong.com",
@@ -39,6 +39,8 @@
   "embedlyKey":"e5e9e0e63822471a8dbe111043b4f297",
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
+
+  "intercomToken":"dG9rOjE1N2Q1NDExXzMyM2ZfNDBkMl9iNzc4XzViYzg2Yzk5YThhZToxOjA=",
 
   "newsletterExcerptLength": 20,
   "postExcerptLength": 30,
@@ -75,7 +77,7 @@
   },
   "galaxy.meteor.com": {
        "env": {
-          "MONGO_URL": "mongodb://habryka:6fpfghyLnVIP@aws-us-west-2-portal.2.dblayer.com:16140/lesswrong2?ssl=true",
+          "MONGO_URL": "mongodb://habryka:6fpfghyLnVIP@ds139042-a0.mlab.com:39042,ds139042-a1.mlab.com:39042/lesswrong2?replicaSet=rs-ds139042",
           "MAIL_URL": "smtp://postmaster@mg.lesserwrong.com:a09aec2342e75bd4c859851ed883b361@smtp.mailgun.org:587/",
           "ROOT_URL": "https://www.lesserwrong.com"
         }
