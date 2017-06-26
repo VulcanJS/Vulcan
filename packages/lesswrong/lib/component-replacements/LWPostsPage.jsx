@@ -58,6 +58,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
     } else {
       const post = this.props.document;
+      const userId = this.props.currentUser && this.props.currentUser._id;
       const htmlBody = {__html: post.htmlBody};
 
       return (
@@ -73,7 +74,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
           {/* comment view selector and comment thread */}
           { this.renderCommentViewSelector() }
-          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} documentId={post._id} userId={this.props.currentUser._id} />
+          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} documentId={post._id} userId={userId} />
         </div>
       );
     }

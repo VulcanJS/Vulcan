@@ -23,7 +23,7 @@ const LWPostsCommentsThread = (props, /* context*/) => {
     return (
       <div className="posts-comments-thread">
         <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-        <Components.LastVisitDisplay lastEvent={lastEvent} />
+        {currentUser ? <Components.LastVisitDisplay lastEvent={lastEvent} /> : null}
         <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} lastVisitDate={lastEvent && lastEvent.properties.startTime}/>
         {!!currentUser ?
           <div className="posts-comments-thread-new">

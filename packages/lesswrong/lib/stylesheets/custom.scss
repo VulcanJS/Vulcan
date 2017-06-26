@@ -74,12 +74,13 @@ $medium-text: $dark-grey;
 // Home Page CSS Modifications
 
 .home-welcomebox{
-  max-width: 780px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 60px;
   margin-top: 30px;
   font-size: 16px;
+  padding: 25px;
 }
 
 .posts-item.posts-sticky {
