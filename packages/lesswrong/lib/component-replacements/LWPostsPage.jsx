@@ -1,4 +1,5 @@
-import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, replaceComponent, withNew } from 'meteor/vulcan:core';
+import withNewEvents from '../events/withNewEvents.jsx';
 import React from 'react';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router'
@@ -7,10 +8,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import Posts from 'meteor/vulcan:posts';
 
 
-
-
 class LWPostsPage extends getRawComponent('PostsPage') {
-
   renderCommentViewSelector() {
 
     let views = ["top", "new"];
@@ -75,16 +73,64 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
           {/* comment view selector and comment thread */}
           { this.renderCommentViewSelector() }
-          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} />
+          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} documentId={post._id} userId={this.props.currentUser._id} />
         </div>
       );
     }
   }
 
+  async componentDidMount() {
+    try {
+
+      // destructure the relevant props
+      const {
+        // from the parent component, used in withDocument, GraphQL HOC
+        documentId,
+        // from connect, Redux HOC
+        setViewed,
+        postsViewed,
+        // from withMutation, GraphQL HOC
+        increasePostViewCount,
+      } = this.props;
+
+      // a post id has been found & it's has not been seen yet on this client session
+      if (documentId && !postsViewed.includes(documentId)) {
+
+        // trigger the asynchronous mutation with postId as an argument
+        await increasePostViewCount({postId: documentId});
+
+        // once the mutation is done, update the redux store
+        setViewed(documentId);
+      }
+
+      //LESSWRONG: register page-visit event
+      if(this.props.currentUser) {
+        const registerEvent = this.props.registerEvent;
+        const currentUser = this.props.currentUser;
+        const eventProperties = {
+          userId: currentUser._id,
+          important: false,
+          intercom: true,
+        };
+
+        if(this.props.document) {
+          const post = this.props.document;
+          eventProperties.documentId = post._id;
+          eventProperties.postTitle = post.title;
+        };
+        const eventId = registerEvent('post-view', eventProperties);
+      }
+
+
+
+    } catch(error) {
+      console.log(error); // eslint-disable-line
+    }
+  }
 }
 
 LWPostsPage.contextTypes = {
   intl: intlShape
 }
 
-replaceComponent('PostsPage', LWPostsPage, withRouter);
+replaceComponent('PostsPage', LWPostsPage, withRouter, withNewEvents);

@@ -45,6 +45,22 @@ $medium-text: $dark-grey;
   align-items: center;
 }
 
+// CSS modifications for comment threads
+
+.posts-comments-thread{
+  .posts-comments-thread-title{
+    display: inline;
+  }
+  .last-visit-display{
+    float: right;
+  }
+  .comments-list{
+    margin-top: 15px;
+    .comment-new{
+      background-color: rgba(88, 143, 39, 0.04);
+    }
+  }
+}
 
 // Recent Comments Page CSS Modifications
 

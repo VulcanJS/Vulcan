@@ -30,9 +30,14 @@ import './editor/ContentRenderer.jsx';
 // Component for testing the editor. Useful for debugging
 import './editor/EditorTest.jsx';
 
+import './events/LastVisitDisplay.jsx';
+
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWHeader.jsx';
 import './component-replacements/LWCommentsItem.jsx';
+import './component-replacements/LWCommentsList.jsx';
+import './component-replacements/LWCommentsNode.jsx';
+import './component-replacements/LWPostsCommentsThread.jsx';
 import './component-replacements/LWPostsNewButton.jsx';
 import './component-replacements/LWLayout.jsx';
 import './component-replacements/LWPostsHome.jsx';

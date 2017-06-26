@@ -17,14 +17,12 @@ Comments.addView("postCommentsNew", function (terms) {
 
 Comments.addView("recentComments", function (terms) {
   return {
-    options: {sort: {postedAt: -1}},
-    limit: terms.limit ? terms.limit : 5
+    options: {sort: {postedAt: -1}, limit: terms.limit || 5},
   };
 });
 
 Users.addView("topContributors", function (terms) {
   return {
-    options: {sort: {karma: -1}},
-    limit: 5
+    options: {sort: {karma: -1}, limit: 5},
   };
 });
