@@ -66,6 +66,7 @@ class Form extends Component {
     this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
+    this.getDocument = this.getDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
     this.setFormState = this.setFormState.bind(this);

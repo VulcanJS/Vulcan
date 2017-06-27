@@ -68,16 +68,21 @@ class EmbedlyURL extends Component {
         
         // extract the relevant data, for easier consumption
         const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;
-
+        const body = description;
+        
         // update the form
-        this.context.updateCurrentValues({
-          title: title || "",
-          body: description || "",
-          // thumbnailUrl: thumbnailUrl || "",
-        });
+        if (title && !this.context.getDocument().title) {
+          this.context.updateCurrentValues({title});
+        }
+        if (body && !this.context.getDocument().body) {
+          this.context.updateCurrentValues({body});
+        }
+        if (thumbnailUrl && !this.context.getDocument().thumbnailUrl) {
+          this.setState({thumbnailUrl: thumbnailUrl});
+        }
 
         // embedly component is done
-        this.setState({loading: false, thumbnailUrl: thumbnailUrl || ""});
+        this.setState({loading: false});
         
         // remove errors & keep the current values 
         this.context.clearForm({clearErrors: true}); 
@@ -188,6 +193,7 @@ EmbedlyURL.contextTypes = {
   addToDeletedValues: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  getDocument: PropTypes.func,
   intl: intlShape
 }
 
