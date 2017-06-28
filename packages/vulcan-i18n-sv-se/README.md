@@ -1,0 +1,1 @@
+Vulcan i18n sv_SE package.
