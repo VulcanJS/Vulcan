@@ -17,23 +17,19 @@ Each mutation has:
 import { newMutation, editMutation, removeMutation, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
-const performCheck = (check, user, document) => {
-  if (!check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
-}
-
 const mutations = {
 
   new: {
 
     name: 'LWEventsNew',
 
-    check(user) {
-      return user && Users.canDo(user, 'events.new');
+    check(user, document) {
+      return user && (Users.canDo(user, 'events.new') || Users.canDo(user, 'events.new.own') && document.userId === user._id);
     },
 
     mutation(root, {document}, context) {
 
-      performCheck(this.check, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return newMutation({
         collection: context.LWEvents,
@@ -58,7 +54,7 @@ const mutations = {
     mutation(root, {documentId, set, unset}, context) {
 
       const document = context.LWEvents.findOne(documentId);
-      performCheck(this.check, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return editMutation({
         collection: context.LWEvents,
@@ -86,7 +82,7 @@ const mutations = {
 
       const document = context.LWEvents.findOne(documentId);
 
-      performCheck(this.check, context.currentUser, document);
+      Utils.performCheck(this.check, context.currentUser, document);
 
       return removeMutation({
         collection: context.LWEvents,
