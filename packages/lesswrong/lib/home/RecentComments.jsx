@@ -25,7 +25,7 @@ class RecentComments extends Component {
                 results.map(comment =>
                   <div key={comment._id}>
                     <div>From post:&nbsp;
-                      <Link to={Posts.getPageUrl(comment.post)}>
+                      <Link to={Posts.getPageUrl(comment.post)+"#"+comment._id}>
                         {comment.post.title}
                       </Link>
                     </div>

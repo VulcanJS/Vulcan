@@ -1,19 +1,21 @@
-import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from "meteor/vulcan:comments";
 import moment from 'moment';
 
-class LWCommentsItem extends getRawComponent('CommentsItem') {
+class CommentWithContext extends getRawComponent('CommentsItem') {
 
   // TODO: Make comments collapsible id:18
   // TODO: Create unique comment-links id:14
 
+  // LESSWRONG: Changed the comments-item id, but nothing else
   render() {
     const comment = this.props.comment;
 
     return (
-      <div className="comments-item" id={comment._id+"context"}>
+
+      <div className="comments-item" id={comment._id}> {/* This is the only line we changed */}
         <div className="comments-item-body">
           <div className="comments-item-meta">
             <div className="comments-item-vote">
@@ -37,13 +39,14 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
   }
 
   renderComment() {
-    let content = this.props.comment.content;
-
-    const htmlBody = {__html: this.props.comment.htmlBody};
-    const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
+    const comment = this.props.comment;
+    const content = comment.content;
+    const htmlBody = {__html: comment.htmlBody};
+    const showReplyButton = !comment.isDeleted && !!this.props.currentUser;
 
     return (
       <div className="comments-item-text">
+        {comment.parentCommentId ? <Components.CommentInlineWrapper documentId={comment.parentCommentId} /> : null}
         {content ? <Components.ContentRenderer state={content} /> :
         null}
         {htmlBody ? <div className="comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
@@ -51,10 +54,10 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
+        <div className="comment-context-link"> <a href={"#"+comment._id+"context"}>See comment in full context</a> </div>
       </div>
     )
   }
-
 }
 
-replaceComponent('CommentsItem', LWCommentsItem);
+registerComponent('CommentWithContext', CommentWithContext);

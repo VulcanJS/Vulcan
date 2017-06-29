@@ -1,4 +1,4 @@
-import { Components, getRawComponent, replaceComponent, withNew } from 'meteor/vulcan:core';
+import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import withNewEvents from '../events/withNewEvents.jsx';
 import React from 'react';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
@@ -53,7 +53,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
     } else if (!this.props.document) {
 
-      console.log(`// missing post (_id: ${this.props.documentId})`);
+      // console.log(`// missing post (_id: ${this.props.documentId})`);
       return <div className="posts-page"><FormattedMessage id="app.404"/></div>
 
     } else {
@@ -61,11 +61,23 @@ class LWPostsPage extends getRawComponent('PostsPage') {
       const userId = this.props.currentUser && this.props.currentUser._id;
       const htmlBody = {__html: post.htmlBody};
 
+      let linkedCommentId = this.props.router.location.hash.substring(1);
+      // Check for "context" as last part of the hash and ignore it if it exists
+      // TODO: Make this less ugly
+      if (linkedCommentId.substring(linkedCommentId.length - 7, linkedCommentId.length) === "context") {
+        linkedCommentId = linkedCommentId.slice(0,-7);
+      }
+
+
       return (
         <div className="posts-page">
           <Components.HeadTags url={Posts.getPageUrl(post)} title={post.title} image={post.thumbnailUrl} description={post.excerpt} />
-
+            {linkedCommentId ? <div className="posts-comments-thread-linked-comment">
+                <Components.CommentWithContextWrapper documentId={linkedCommentId} />
+            </div> : null}
           <Components.PostsItem post={post} currentUser={this.props.currentUser} />
+
+
 
           {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
@@ -118,8 +130,9 @@ class LWPostsPage extends getRawComponent('PostsPage') {
           const post = this.props.document;
           eventProperties.documentId = post._id;
           eventProperties.postTitle = post.title;
-        };
-        const eventId = registerEvent('post-view', eventProperties);
+        }
+        // console.log("Registered event: ", eventProperties);
+        registerEvent('post-view', eventProperties);
       }
 
 

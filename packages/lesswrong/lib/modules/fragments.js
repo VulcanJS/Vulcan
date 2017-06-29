@@ -125,8 +125,42 @@ registerFragment(`
   }
 `);
 
-extendFragment('CommentsList', `
-  content
+registerFragment(`
+  fragment CommentsList on Comment {
+    # vulcan:comments
+    _id
+    postId
+    parentCommentId
+    topLevelCommentId
+    body
+    htmlBody
+    content
+    postedAt
+    # vulcan:users
+    userId
+    user {
+      ...UsersMinimumInfo
+    }
+    # vulcan:posts
+    post {
+      _id
+      commentCount
+      commenters {
+        ...UsersMinimumInfo
+      }
+    }
+    # vulcan:voting
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes
+    downvotes
+    baseScore
+    score
+  }
 `);
 
 registerFragment(`
@@ -199,5 +233,50 @@ registerFragment(`
     important
     properties
     intercom
+  }
+`);
+
+registerFragment(`
+  fragment commentWithContextFragment on Comment {
+    # vulcan:comments
+    _id
+    parentCommentId
+    topLevelCommentId
+    body
+    htmlBody
+    content
+    postedAt
+    # vulcan:users
+    userId
+    user {
+      ...UsersMinimumInfo
+    }
+    # vulcan:posts
+    # vulcan:voting
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes
+    downvotes
+    baseScore
+    score
+  }
+`);
+
+registerFragment(`
+  fragment commentInlineFragment on Comment {
+    # vulcan:comments
+    _id
+    body
+    htmlBody
+    content
+    # vulcan:users
+    userId
+    user {
+      ...UsersMinimumInfo
+    }
   }
 `);

@@ -47,6 +47,32 @@ $medium-text: $dark-grey;
 
 // CSS modifications for comment threads
 
+.posts-comments-thread-linked-comment{
+  .comment-wrapper{
+    margin-top: 15px;
+    min-height: 30px;
+  }
+  .posts-comments-thread-linked-comment-title{
+    display: inline;
+  }
+  .comment-inline {
+    .comment-inline-text{
+      font-weight: 300;
+    }
+    .well{
+      padding-top: 9px;
+      padding-bottom: 9px;
+      .comment-inline-description{
+        margin-bottom: 5px;
+        font-weight: 400;
+      }
+    }
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+
 .posts-comments-thread{
   .posts-comments-thread-title{
     display: inline;
@@ -94,6 +120,16 @@ $medium-text: $dark-grey;
   font-size: 16px;
   line-height: 1.25;
   color: rgba(0,0,0,0.87);
+  .comments-item-date{
+    a{
+      color: $medium-grey;
+    }
+  .comment-context-link{
+    font-weight: 300;
+    font-size: 14px;
+  }
+  }
+
 }
 
 .posts-home{
@@ -139,7 +175,7 @@ $medium-text: $dark-grey;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 70px;
+  padding-bottom: 120px;
 }
 
 .posts-new-form{

@@ -49,6 +49,11 @@ import './component-replacements/LWUsersAccountMenu.jsx';
 import './component-replacements/LWUsersMenu.jsx';
 import './component-replacements/LWPostsListHeader.jsx';
 
+// Comment link code
+import './comments/CommentInline.jsx';
+import './comments/CommentInlineWrapper.jsx';
+import './comments/CommentWithContext.jsx';
+import './comments/CommentWithContextWrapper.jsx';
 
 // RSS Feed Integration
 import './rss-integration/newFeedButton.jsx';
