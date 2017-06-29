@@ -25,7 +25,7 @@ Accounts.emailTemplates.resetPassword.from = () => {
 
 Accounts.emailTemplates.resetPassword.text = (user, url) => {
   return 'This is your invite to the LessWrong 2.0 closed beta. You should have received another email from us with more detailed instructions on how to participate in the beta. \n\n'
-    + 'To activate your account, click on the link below. You can change your username on your profile page. \n \n'
+    + 'To activate your account, click on the link below. You can change your username on your profile page. The link in this email will expire within 2 days, if your link has expired, please just send us a message and we will send you a new link.\n \n'
     + url;
 };
 Accounts.emailTemplates.verifyEmail = {
