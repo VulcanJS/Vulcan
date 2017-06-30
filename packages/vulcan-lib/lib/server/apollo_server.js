@@ -5,6 +5,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import deepmerge from 'deepmerge';
 import OpticsAgent from 'optics-agent'
 import DataLoader from 'dataloader';
+import { formatError } from 'apollo-errors';
 
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
@@ -110,6 +111,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     Collections.forEach(collection => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
+
+    // add error formatting from apollo-errors
+    options.formatError = formatError;
 
     return options;
   }));

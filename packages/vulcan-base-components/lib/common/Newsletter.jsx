@@ -32,11 +32,10 @@ class Newsletter extends PureComponent {
       const result = await this.props.addEmailNewsletter({email: data.email});
       this.successCallbackSubscription(result);
     } catch(error) {
-      console.error(error); // eslint-disable-line no-console
-      this.props.flash(
-        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
-        "error"
-      );
+      const graphQLError = error.graphQLErrors[0];
+      console.error(graphQLError); // eslint-disable-line no-console
+      const message = this.context.intl.formatMessage({id: `newsletter.error_${this.state.error.name}`}, {message: this.state.error.message});
+      this.props.flash(message, 'error');
     }
   }
 
