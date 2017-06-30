@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
+import { getSetting } from './settings.js';
 
 export const Collections = [];
 
@@ -192,20 +193,25 @@ export const createCollection = options => {
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
 
-    // extend sort to sort posts by _id to break ties
+    // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
-    parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    if (!(parameters.options.sort && parameters.options.sort._id)) {
+      parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    }
 
     // remove any null fields (setting a field to null means it should be deleted)
     _.keys(parameters.selector).forEach(key => {
       if (parameters.selector[key] === null) delete parameters.selector[key];
     });
-    _.keys(parameters.options).forEach(key => {
-      if (parameters.options[key] === null) delete parameters.options[key];
-    });
-    
-    // limit number of items to 200
-    parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
+    if (parameters.options.sort) {
+      _.keys(parameters.options.sort).forEach(key => {
+        if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
+      });
+    }
+
+    // limit number of items to 200 by default
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
+    parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
 
     // console.log(parameters);
 

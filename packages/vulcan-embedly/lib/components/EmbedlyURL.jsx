@@ -58,7 +58,7 @@ class EmbedlyURL extends Component {
       if (url.length) {
 
         // notify the user that something happens
-        await this.setState({loading: true});
+        this.setState({loading: true});
 
         // the URL has changed, get new title, body, thumbnail & media for this url
         const result = await this.props.getEmbedData({url});
@@ -68,19 +68,24 @@ class EmbedlyURL extends Component {
 
         // extract the relevant data, for easier consumption
         const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;
-
+        const body = description;
+        
         // update the form
-        await this.context.updateCurrentValues({
-          title: title || "",
-          // body: description || "",
-          // thumbnailUrl: thumbnailUrl || "",
-        });
+        if (title && !this.context.getDocument().title) {
+          this.context.updateCurrentValues({title});
+        }
+        if (body && !this.context.getDocument().body) {
+          this.context.updateCurrentValues({body});
+        }
+        if (thumbnailUrl && !this.context.getDocument().thumbnailUrl) {
+          this.setState({thumbnailUrl: thumbnailUrl});
+        }
 
         // embedly component is done
-        await this.setState({loading: false, thumbnailUrl});
+        this.setState({loading: false});
 
         // remove errors & keep the current values
-        await this.context.clearForm({clearErrors: true});
+        this.context.clearForm({clearErrors: true});
       }
     } catch(error) {
 
@@ -88,10 +93,10 @@ class EmbedlyURL extends Component {
       const errorMessage = error.message.includes('401') ? Utils.encodeIntlError({id: "app.embedly_not_authorized"}) : error.message;
 
       // embedly component is done
-      await this.setState({loading: false});
+      this.setState({loading: false});
 
       // something bad happened
-      await this.context.throwError(errorMessage);
+      this.context.throwError(errorMessage);
     }
   }
 
@@ -155,7 +160,7 @@ class EmbedlyURL extends Component {
             <Input
               {...rest}
               onBlur={this.handleBlur}
-              type="text"
+              type="url"
               ref={ref => this.input = ref}
               layout="elementOnly"
             />
@@ -188,6 +193,7 @@ EmbedlyURL.contextTypes = {
   addToDeletedValues: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  getDocument: PropTypes.func,
   intl: intlShape
 }
 

@@ -66,6 +66,7 @@ class Form extends Component {
     this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
+    this.getDocument = this.getDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
     this.setFormState = this.setFormState.bind(this);
@@ -445,6 +446,12 @@ class Form extends Component {
 
   // submit form handler
   submitForm(data) {
+
+    // if form is disabled (there is already a submit handler running) don't do anything
+    if (this.state.disabled) {
+      return;
+    }
+    
     this.setState(prevState => ({disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin

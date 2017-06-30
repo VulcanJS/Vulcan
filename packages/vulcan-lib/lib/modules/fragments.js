@@ -45,31 +45,55 @@ export const removeFromFragment = (fragmentName, propertyName) => {
 // get fragment name from fragment object
 export const getFragmentName = fragment => fragment && fragment.definitions[0] && fragment.definitions[0].name.value;
 
-// get fragment
-// note: parentFragmentName is used for debugging purposes only
-export const getFragment = (fragmentName, parentFragmentName) => {
+// get actual gql fragment
+export const getFragment = fragmentName => {
+
+  // get entire fragment as stored
   const fragment = Fragments[fragmentName];
 
   if (!fragment) {
     throw new Error(`Fragment "${fragmentName}" not registered.`)
   }
+  if (!fragment.fragmentObject) {
+    console.log('// !fragment.fragmentObject: '+fragmentName)
+    initializeFragment(fragmentName);
+    // throw new Error(`Fragment "${fragmentName}" not initialized.`)
+  }
+
+  // return fragment object created by gql
+  return fragment.fragmentObject;  
+}
+
+// create gql fragment from fragment name, text, and subfragments
+export const initializeFragment = (fragmentName) => {
+
+  const fragmentItem = Fragments[fragmentName];
 
   // pad the literals array with line returns for each subFragments
-  const literals = [fragment.fragmentText, ...fragment.subFragments.map(x => '\n')];
-  
-  // console.log(`// getFragment: ${parentFragmentName ? parentFragmentName + ' > ' : ''}${fragmentName}`)
-  // console.log('fragmentText: ', fragment.fragmentText)
-  // console.log('subFragments:', fragment.subFragments)
-  // console.log('length:', fragment.subFragments.length)
+  const literals = [fragmentItem.fragmentText, ...fragmentItem.subFragments.map(x => '\n')];
 
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
-  const gqlArguments = [literals, ...fragment.subFragments.map(f => getFragment(f, fragmentName))];
+  const gqlArguments = [literals, ...fragmentItem.subFragments.map(subFragmentName => {
+    // if subfragment hasn't been initialized yet, do it now
+    if (!(Fragments[subFragmentName] && Fragments[subFragmentName].fragmentObject)) {
+      initializeFragment(subFragmentName);
+    }
+    // return subfragment's gql fragment
+    return Fragments[subFragmentName].fragmentObject;
+  })];
 
-  return gql.apply(null, gqlArguments);
+  fragmentItem.fragmentObject = gql.apply(null, gqlArguments);
 }
 
 export const initializeFragments = () => {
+  // extend fragment text if fragment exists
   _.forEach(FragmentsExtensions, (newProperties, fragmentName) => {
-    extendFragmentWithProperties(fragmentName, newProperties);
+    if (Fragments[fragmentName]) {
+      extendFragmentWithProperties(fragmentName, newProperties);
+    }
   });
+  // initialize fragments to create gql fragment object
+  _.forEach(Fragments, (fragmentItem, fragmentName) => {
+    initializeFragment(fragmentName);
+  })
 }

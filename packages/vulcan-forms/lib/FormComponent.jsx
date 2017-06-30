@@ -66,6 +66,10 @@ class FormComponent extends PureComponent {
       switch (this.props.control) {
         case "text":
           return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        case "url":
+          return <Input         {...properties} type="url" onChange={this.updateCharacterCount} />;
+        case "email":
+          return <Input         {...properties} type="email" onChange={this.updateCharacterCount} />;
         case "textarea":
           return <Textarea      {...properties} onChange={this.updateCharacterCount} />;
         case "checkbox":
@@ -81,7 +85,7 @@ class FormComponent extends PureComponent {
         case "datetime":
           return <DateTime      {...properties} />;
         default:
-          return <Input         {...properties} type="text" />;
+          return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
       }
 
     }
