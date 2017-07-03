@@ -61,6 +61,10 @@ import './rss-integration/editFeedButton.jsx';
 import './rss-integration/feedItem.jsx';
 import './rss-integration/feedList.jsx';
 
+// Old LW Link Redirect
+import './legacy-redirects/LegacyPostRedirect.jsx'
+import './legacy-redirects/LegacyPostWrapper.jsx'
+
 import './subscriptions/SubscribeTo.jsx';
 
 import './voting/LWVoting.jsx';

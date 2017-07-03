@@ -126,6 +126,14 @@ registerFragment(`
 `);
 
 registerFragment(`
+  fragment PostUrl on Post {
+    _id
+    url
+    slug
+  }
+`);
+
+registerFragment(`
   fragment CommentsList on Comment {
     # vulcan:comments
     _id

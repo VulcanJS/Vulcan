@@ -28,14 +28,15 @@ Meteor.startup(function () {
     Meteor.setInterval(function () {
       let updatedPosts = 0;
       let updatedComments = 0;
-
+      console.log("Started updating the score of inactive items");
       Posts.find({'inactive': true}).forEach(function (post) {
         updatedPosts += updateScore({collection: Posts, item: post});
       });
       Comments.find({'inactive': true}).forEach(function (comment) {
         updatedComments += updateScore({collection: Comments, item: comment});
       });
-    }, 3600 * 1000);
+      console.log("finished updating the score of inactive items");
+    }, 3600 * 24 * 1000);
 
   }
 });

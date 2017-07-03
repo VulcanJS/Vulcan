@@ -49,6 +49,8 @@ import './i18n-en-us/en_US.js';
 import './modules/fragments.js';
 import './modules/callbacks.js';
 
+// Legacy Post Redirect
+import './legacy-redirects/views.js';
 
 // // Misc.
 import './helpers.js'

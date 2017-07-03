@@ -61,19 +61,20 @@ class LWPostsPage extends getRawComponent('PostsPage') {
       const userId = this.props.currentUser && this.props.currentUser._id;
       const htmlBody = {__html: post.htmlBody};
 
-      let linkedCommentId = this.props.router.location.hash.substring(1);
+      let commentHash = this.props.router.location.hash.substring(1);
+      commentHash = commentHash.length == 17 && commentHash;
       // Check for "context" as last part of the hash and ignore it if it exists
       // TODO: Make this less ugly
-      if (linkedCommentId.substring(linkedCommentId.length - 7, linkedCommentId.length) === "context") {
-        linkedCommentId = linkedCommentId.slice(0,-7);
+      if (commentHash && commentHash.substring(commentHash.length - 7, commentHash.length) === "context") {
+        commentHash = commentHash.slice(0,-7);
       }
 
 
       return (
         <div className="posts-page">
           <Components.HeadTags url={Posts.getPageUrl(post)} title={post.title} image={post.thumbnailUrl} description={post.excerpt} />
-            {linkedCommentId ? <div className="posts-comments-thread-linked-comment">
-                <Components.CommentWithContextWrapper documentId={linkedCommentId} />
+            {commentHash ? <div className="posts-comments-thread-linked-comment">
+                <Components.CommentWithContextWrapper documentId={commentHash} />
             </div> : null}
           <Components.PostsItem post={post} currentUser={this.props.currentUser} />
 

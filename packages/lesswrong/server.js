@@ -12,4 +12,7 @@ import './lib/modules/indexes.js';
 // Closed Beta stuff
 import './lib/closed-beta/invites.js';
 
+// Old LW posts and comment rerouting
+import './lib/legacy-redirects/routes.js';
+
 export * from './lib/index.js';
