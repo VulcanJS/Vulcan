@@ -47,14 +47,4 @@ const resolvers = {
   }
 };
 
-// add the "user" resolver for the Movie type separately
-const movieUserResolver = {
-  Movie: {
-    user(movie, args, context) {
-      return context.Users.findOne({ _id: movie.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
-    },
-  },
-};
-addGraphQLResolvers(movieUserResolver);
-
 export default resolvers;

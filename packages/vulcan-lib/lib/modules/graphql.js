@@ -119,9 +119,26 @@ export const GraphQLSchema = {
         // 1. main schema
         mainSchema.push(`${key}: ${fieldType}`);
 
-        // if field has a resolver, also push it to schema
+        // if field has a resolveAs, also push it to schema
         if (field.resolveAs) {
-          mainSchema.push(field.resolveAs);
+
+          if (typeof field.resolveAs === 'string') {
+            // if resolveAs is a string, push it and done
+            mainSchema.push(field.resolveAs);
+          } else {
+
+            // if resolveAs is an object, first push its type definition
+            mainSchema.push(`${field.resolveAs.fieldName}: ${field.resolveAs.typeName}`);
+
+            // then build actual resolver object and pass it to addGraphQLResolvers
+            const resolver = {
+              [mainTypeName]: {
+                [field.resolveAs.fieldName]: field.resolveAs.resolver
+              }
+            };
+            addGraphQLResolvers(resolver);
+          }
+
         }
 
         if (field.insertableBy || field.editableBy) {
@@ -167,6 +184,7 @@ Vulcan.getGraphQLSchema = () => {
   return schema;
 }
 
+export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
 export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
 export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);

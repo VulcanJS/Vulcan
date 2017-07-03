@@ -11,7 +11,8 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 
-import { GraphQLSchema, Utils } from '../modules/index.js';
+import { GraphQLSchema } from '../modules/graphql.js';
+import { Utils } from '../modules/utils.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 import { Collections } from '../modules/collections.js';

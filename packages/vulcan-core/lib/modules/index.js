@@ -1,46 +1,10 @@
 import './callbacks.js';
 
 // import and re-export
-export {
-  // apollo
-  createApolloClient,
-  // callbacks
-  Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync,
-  // components
-  Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp,
-  // collections
-  Collections, createCollection,
-  // fragments
-  Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment,
-  // graphql
-  GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext, 
-  // headtags
-  Headtags,
-  // inject data
-  InjectData,
-  // redux
-  configureStore, addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
-  // render context
-  renderContext, getRenderContext, withRenderContext,
-  // routes
-  Routes, RoutesTable, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
-  // settings
-  getSetting,
-  // strings
-  Strings, addStrings,
-  // utils
-  Utils,
-  // mutations (for server only)
-  newMutation, editMutation, removeMutation,
-  // render context (for server only)
-  withRenderContextEnvironment,
-  // meteor patch (for server only)
-  webAppConnectHandlersUse,
-  // dynamic imports loader using react-loadable
-  dynamicLoader,
-  // admin stuff
-  AdminColumns, addAdminColumn,
-} from 'meteor/vulcan:lib';
+export * from 'meteor/vulcan:lib';
+
+export * from './default_mutations.js';
+export * from './default_resolvers.js';
 
 export { default as Layout } from "./components/Layout.jsx";
 export { default as App } from "./components/App.jsx";

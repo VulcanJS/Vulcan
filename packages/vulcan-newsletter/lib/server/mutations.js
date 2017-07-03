@@ -31,7 +31,6 @@ const resolver = {
       return Newsletters.subscribeUser(user, false);
     },
     addEmailNewsletter(root, {email}, context) {
-      }
       return Newsletters.subscribeEmail(email, true);
     },
     removeUserNewsletter(root, { userId }, context) {
