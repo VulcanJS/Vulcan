@@ -8,8 +8,6 @@ Three resolvers are defined:
 
 */
 
-import { addGraphQLResolvers } from 'meteor/vulcan:core';
-
 // basic list, single, and total query resolvers
 const resolvers = {
 

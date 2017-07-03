@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { GraphQLSchema } from './graphql.js';
+import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
@@ -116,12 +116,12 @@ export const createCollection = options => {
   // add collection to resolver context
   const context = {};
   context[collectionName] = collection;
-  GraphQLSchema.addToContext(context);
+  addToGraphQLContext(context);
 
   if (generateGraphQLSchema){
 
     // add collection to list of dynamically generated GraphQL schemas
-    GraphQLSchema.addCollection(collection);
+    addGraphQLCollection(collection);
 
 
     // ------------------------------------- Queries -------------------------------- //
@@ -130,20 +130,20 @@ export const createCollection = options => {
       const queryResolvers = {};
       // list
       if (resolvers.list) { // e.g. ""
-        GraphQLSchema.addQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
+        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
-        GraphQLSchema.addQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
+        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
-        GraphQLSchema.addQuery(`${resolvers.total.name}(terms: JSON): Int`);
+        addGraphQLQuery(`${resolvers.total.name}(terms: JSON): Int`);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
-      GraphQLSchema.addResolvers({ Query: { ...queryResolvers } });
+      addGraphQLResolvers({ Query: { ...queryResolvers } });
     }
 
     // ------------------------------------- Mutations -------------------------------- //
@@ -152,20 +152,20 @@ export const createCollection = options => {
       const mutationResolvers = {};
       // new
       if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-        GraphQLSchema.addMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
+        addGraphQLMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
         mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
       }
       // edit
       if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-        GraphQLSchema.addMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
+        addGraphQLMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-        GraphQLSchema.addMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
+        addGraphQLMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
         mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
-      GraphQLSchema.addResolvers({ Mutation: { ...mutationResolvers } });
+      addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
     }
   }
 

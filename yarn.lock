@@ -167,6 +167,12 @@ apollo-client@^1.0.1, apollo-client@^1.1.2:
     "@types/graphql" "^0.9.0"
     "@types/isomorphic-fetch" "0.0.34"
 
+apollo-errors@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/apollo-errors/-/apollo-errors-1.4.0.tgz#7fb0c58c4ab1712cf5568315e88493aaee38697d"
+  dependencies:
+    es6-error "^4.0.0"
+
 argparse@^1.0.7:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.9.tgz#73d83bc263f86e97f8cc4f6bae1b0e90a7d22c86"
@@ -1241,6 +1247,10 @@ es5-ext@^0.10.7, es5-ext@^0.10.8, es5-ext@~0.10.11, es5-ext@~0.10.2, es5-ext@~0.
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
+
+es6-error@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/es6-error/-/es6-error-4.0.2.tgz#eec5c726eacef51b7f6b73c20db6e1b13b069c98"
 
 es6-iterator@2:
   version "2.0.0"
