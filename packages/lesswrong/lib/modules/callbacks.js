@@ -11,7 +11,7 @@ import { performSubscriptionAction } from '../subscriptions/mutations.js';
 import { IntercomAPI } from 'react-intercom';
 
 
-const updateConversationActivity = (message) => {
+function updateConversationActivity (message) {
   // Update latest Activity timestamp on conversation when new message is added
   const user = Users.findOne(message.userId);
   const conversation = Conversations.findOne(message.conversationId);
@@ -109,7 +109,7 @@ const getDocument = (documentType, documentId) => {
 /**
  * @summary Add default subscribers to the new post.
  */
-const PostsNewSubscriptions = (post) => {
+function PostsNewSubscriptions (post) {
   // Subscribe the post's author to comment notifications for the post
   // (if they have the proper setting turned on)
   const postAuthor = Users.findOne(post.userId);
@@ -123,7 +123,7 @@ addCallback("posts.new.async", PostsNewSubscriptions);
 /**
  * @summary Add default subscribers to the new comment.
  */
-const CommentsNewSubscriptions = (comment) => {
+function CommentsNewSubscriptions (comment) {
   // Subscribe the comment's author to reply notifications for the comment
   // (if they have the proper setting turned on)
   const commentAuthor = Users.findOne(comment.userId);
@@ -145,7 +145,7 @@ addCallback("posts.approve.async", PostsApprovedNotification);
 /**
  * @summary Add new post notification callback on post submit
  */
-const PostsNewNotifications = (post) => {
+function PostsNewNotifications (post) {
   if (post.status === Posts.config.STATUS_PENDING) {
     // if post is pending, only notify admins
     let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
@@ -183,7 +183,7 @@ const PostsNewNotifications = (post) => {
 addCallback("posts.new.async", PostsNewNotifications);
 
 // add new comment notification callback on comment submit
-const CommentsNewNotifications = (comment) => {
+function CommentsNewNotifications(comment) {
   // note: dummy content has disableNotifications set to true
   if(Meteor.isServer && !comment.disableNotifications) {
 
@@ -217,7 +217,7 @@ const CommentsNewNotifications = (comment) => {
 }
 addCallback("comments.new.async", CommentsNewNotifications);
 
-const messageNewNotification = (message) => {
+function messageNewNotification(message) {
   if(Meteor.isServer) {
     const conversation = Conversations.findOne(message.conversationId);
     //Make sure to not notify the author of the message
