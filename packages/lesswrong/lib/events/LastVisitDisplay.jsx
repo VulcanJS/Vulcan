@@ -1,7 +1,5 @@
-import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import { Button } from 'react-bootstrap';
+import { registerComponent} from 'meteor/vulcan:core';
 import React from 'react';
-import withLastEvent from './withLastEvent.jsx';
 import moment from 'moment';
 
 const LastVisitDisplay = (props, context) => {
@@ -19,7 +17,7 @@ const LastVisitDisplay = (props, context) => {
         You last visited this page {moment(lastEvent.properties.startTime).fromNow()} for  {moment.duration(lastEvent.properties.duration).humanize()}
       </div>
     )
-  };
+  }
 }
 
 LastVisitDisplay.displayName = 'LastVisitDisplay';

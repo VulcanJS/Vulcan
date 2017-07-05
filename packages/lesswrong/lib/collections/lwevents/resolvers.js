@@ -1,20 +1,5 @@
 import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-
-const specificResolvers = {
-  Query: {
-    lastEvent(root, {documentId, userId}, context) {
-      // console.log("Querying last event:", {documentId, userId});
-      let events = context.LWEvents.find({documentId: documentId, userId: userId}, {limit: 1, sort: {createdAt: -1}}).fetch();
-      // console.log("Found events: ", events);
-      return events[0];
-    },
-  },
-};
-
-GraphQLSchema.addResolvers(specificResolvers);
-GraphQLSchema.addQuery(`lastEvent(documentId: String, userId: String): LWEvent`);
-
 const resolvers = {
 
   list: {
@@ -28,6 +13,7 @@ const resolvers = {
     },
 
     resolver(root, {terms}, {currentUser, LWEvents, Users}, info) {
+      console.log("LWEvents resolver terms", terms);
 
       // check that the current user can access the current query terms
       Utils.performCheck(this.check, currentUser, terms, LWEvents);
@@ -37,14 +23,15 @@ const resolvers = {
       options.limit = (terms.limit < 1 || terms.limit > 1000) ? 1000 : terms.limit;
       options.skip = terms.offset;
       const events = LWEvents.find(selector, options).fetch();
+      console.log("LWEvents resolver events", events);
 
       //restrict document fields
       const restrictedEvents = Users.restrictViewableFields(currentUser, LWEvents, events);
 
       //prime the cache
-      restrictedEvents.forEach(event => Notifications.loader.prime(event._id, event));
+      restrictedEvents.forEach(event => LWEvents.loader.prime(event._id, event));
 
-      return restrictedNotifications;
+      return restrictedEvents;
     },
 
   },
@@ -60,7 +47,7 @@ const resolvers = {
     },
 
     resolver(root, {documentId}, context) {
-      document = context.LWEvents.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.LWEvents) });
+      const document = context.LWEvents.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.LWEvents) });
       Utils.performCheck(this.check, context.currentUser, document, context.LWEvents)
       return document
     },

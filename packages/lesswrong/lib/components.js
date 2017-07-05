@@ -36,6 +36,7 @@ import './component-replacements/LWCommentsItem.jsx';
 import './component-replacements/LWCommentsList.jsx';
 import './component-replacements/LWCommentsNode.jsx';
 import './component-replacements/LWPostsCommentsThread.jsx';
+import './component-replacements/LWPostsCommentsThreadWrapper.jsx';
 import './component-replacements/LWPostsNewButton.jsx';
 import './component-replacements/LWLayout.jsx';
 import './component-replacements/LWPostsHome.jsx';

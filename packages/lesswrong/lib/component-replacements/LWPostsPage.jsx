@@ -61,8 +61,10 @@ class LWPostsPage extends getRawComponent('PostsPage') {
       const userId = this.props.currentUser && this.props.currentUser._id;
       const htmlBody = {__html: post.htmlBody};
 
-      let commentHash = this.props.router.location.hash.substring(1);
-      commentHash = commentHash.length == 17 && commentHash;
+      let commentHash = this.props.params.commentId;
+      if (commentHash){
+        commentHash = commentHash.length == 17 && commentHash;
+      }
       // Check for "context" as last part of the hash and ignore it if it exists
       // TODO: Make this less ugly
       if (commentHash && commentHash.substring(commentHash.length - 7, commentHash.length) === "context") {
@@ -73,9 +75,9 @@ class LWPostsPage extends getRawComponent('PostsPage') {
       return (
         <div className="posts-page">
           <Components.HeadTags url={Posts.getPageUrl(post)} title={post.title} image={post.thumbnailUrl} description={post.excerpt} />
-            {commentHash ? <div className="posts-comments-thread-linked-comment">
-                <Components.CommentWithContextWrapper documentId={commentHash} />
-            </div> : null}
+          {commentHash ? <div className="posts-comments-thread-linked-comment">
+              <Components.CommentWithContextWrapper documentId={commentHash} />
+          </div> : null}
           <Components.PostsItem post={post} currentUser={this.props.currentUser} />
 
 
@@ -87,7 +89,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
           {/* comment view selector and comment thread */}
           { this.renderCommentViewSelector() }
-          <Components.PostsCommentsThread terms={{postId: post._id, view: this.getView()}} documentId={post._id} userId={userId} />
+          <Components.PostsCommentsThreadWrapper terms={{postId: post._id, view: this.getView()}} userId={userId} />
         </div>
       );
     }

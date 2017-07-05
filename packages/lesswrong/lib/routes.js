@@ -9,3 +9,5 @@ addRoute({ name: 'recentComments', path: '/recentComments', componentName: 'Rece
 
 //Route for testing the editor. Useful for debugging
 addRoute({ name: 'editorTest', path: '/editorTest', componentName: 'EditorTest' });
+
+addRoute({name:'posts.single',   path:'posts/:_id(/:slug)(/:commentId)',    componentName: 'PostsSingle'})

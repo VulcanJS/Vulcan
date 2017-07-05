@@ -2,9 +2,8 @@ import { Components, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
-const CommentsList = ({comments, commentCount, currentUser, lastVisitDate}) => {
-  if (commentCount > 0) {
-    const currentDate = new Date();
+const CommentsList = ({comments, currentUser, lastVisitDate}) => {
+  if (comments) {
     return (
       <div className="comments-list">
         {comments.map(comment => <Components.CommentsNode currentUser={currentUser} comment={comment} key={comment._id} newComment={lastVisitDate && (comment.postedAt > lastVisitDate)}/>)}

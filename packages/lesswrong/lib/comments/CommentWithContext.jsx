@@ -15,7 +15,7 @@ class CommentWithContext extends getRawComponent('CommentsItem') {
 
     return (
 
-      <div className="comments-item" id={comment._id}> {/* This is the only line we changed */}
+      <div className="comments-item" id={comment._id+"top"}> {/* This is the only line we changed */}
         <div className="comments-item-body">
           <div className="comments-item-meta">
             <div className="comments-item-vote">
@@ -54,7 +54,7 @@ class CommentWithContext extends getRawComponent('CommentsItem') {
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
-        <div className="comment-context-link"> <a href={"#"+comment._id+"context"}>See comment in full context</a> </div>
+        <div className="comment-context-link"> <a href={"#"+comment._id}>See comment in full context</a> </div>
       </div>
     )
   }

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { withList, withCurrentUser, Components, replaceComponent, Utils } from 'meteor/vulcan:core';
 import { withRouter } from 'react-router';
-import Comments from 'meteor/vulcan:comments';
-import withLastEvent from '../events/withLastEvent.jsx';
+import LWEvents from '../collections/lwevents/collection.js';
 
 const LWPostsCommentsThread = (props, /* context*/) => {
 
-  const {loading, terms: { postId }, results, totalCount, currentUser} = props;
+  const {loading, terms: {postId}, results, comments, currentUser} = props;
 
   if (loading) {
 
@@ -16,11 +15,9 @@ const LWPostsCommentsThread = (props, /* context*/) => {
 
   } else {
 
-    const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
+    const resultsClone = _.map(comments, _.clone); // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, {idProperty: '_id', parentIdProperty: 'parentCommentId'});
-    const lastEvent = props.event;
-
-    // console.log("LWPostsCommentsThread event", lastEvent);
+    const lastEvent = results[0];
 
     return (
       <div className="posts-comments-thread">
@@ -28,7 +25,7 @@ const LWPostsCommentsThread = (props, /* context*/) => {
 
         <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
 
-        <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} lastVisitDate={lastEvent && lastEvent.properties.startTime}/>
+        <Components.CommentsList currentUser={currentUser} comments={nestedComments} lastVisitDate={lastEvent && lastEvent.properties.startTime}/>
         {!!currentUser ?
           <div className="posts-comments-thread-new">
             <h4><FormattedMessage id="comments.new"/></h4>
@@ -55,10 +52,10 @@ LWPostsCommentsThread.propTypes = {
 };
 
 const options = {
-  collection: Comments,
-  queryName: 'commentsListQuery',
-  fragmentName: 'CommentsList',
-  limit: 0,
+  collection: LWEvents,
+  queryName: 'lastPostVisitQuery',
+  fragmentName: 'lastEventFragment',
+  limit: 1,
 };
 
-replaceComponent('PostsCommentsThread', LWPostsCommentsThread, [withList, options], withCurrentUser, withRouter, withLastEvent({}));
+replaceComponent('PostsCommentsThread', LWPostsCommentsThread, [withList, options], withCurrentUser, withRouter);

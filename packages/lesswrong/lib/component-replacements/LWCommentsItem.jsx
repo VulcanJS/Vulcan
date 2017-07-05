@@ -1,5 +1,6 @@
 import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
+import { withRouter, Link } from 'react-router';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from "meteor/vulcan:comments";
 import moment from 'moment';
@@ -11,9 +12,11 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
 
   render() {
     const comment = this.props.comment;
+    const params = this.props.router.params;
+    const commentLink = "/posts/"+params._id+"/"+params.slug+"/"+comment._id;
 
     return (
-      <div className="comments-item" id={comment._id+"context"}>
+      <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
             <div className="comments-item-vote">
@@ -21,7 +24,7 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
             </div>
             <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
-            <div className="comments-item-date"><a href={"#"+comment._id}>{moment(new Date(comment.postedAt)).fromNow()} </a></div>
+            <div className="comments-item-date"><Link to={commentLink}>{moment(new Date(comment.postedAt)).fromNow()} </Link></div>
             <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
@@ -57,4 +60,4 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
 
 }
 
-replaceComponent('CommentsItem', LWCommentsItem);
+replaceComponent('CommentsItem', LWCommentsItem, withRouter);
