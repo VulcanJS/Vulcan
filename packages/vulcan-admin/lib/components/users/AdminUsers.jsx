@@ -1,6 +1,4 @@
 import React, { PureComponent } from 'react';
-// import Users from 'meteor/vulcan:users';
-
 import AdminUsersList from './AdminUsersList.jsx';
 
 // see: http://stackoverflow.com/questions/1909441/jquery-keyup-delay
