@@ -48,7 +48,7 @@ class RecentCommentsItem extends getRawComponent('CommentsItem') {
       <div className="recent-comments-item-text comments-item-text">
         {content ? <Components.ContentRenderer state={content} /> :
         null}
-        {htmlBody ? <div className="recent-comment-body comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+        {htmlBody && !content ? <div className="recent-comment-body comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
           {/*{ showReplyButton ? <a className="recent-comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null} */}

@@ -132,11 +132,15 @@ function addSearchQueryParameter (parameters, terms) {
           // client and server
           {excerpt: {$regex: query, $options: 'i'}},
           //LessWrong: Modification to test whether body search works
-          {body: {$regex: query, $options: 'i'}}
+          {htmlBody: {$regex: query, $options: 'i'}}
         ]
+      },
+      options: {
+        sort: {baseScore: -1},
       }
     });
   }
+  // console.log("Add Search Query Parameters parameters: ", parameters)
   return parameters;
 }
 addCallback("posts.parameters", addSearchQueryParameter);

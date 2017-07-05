@@ -1,5 +1,6 @@
 import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
+// TODO: Replace this with the default resolvers, and add checkDocument function
 const resolvers = {
 
   list: {
@@ -13,7 +14,7 @@ const resolvers = {
     },
 
     resolver(root, {terms}, {currentUser, LWEvents, Users}, info) {
-      console.log("LWEvents resolver terms", terms);
+      // console.log("LWEvents resolver terms", terms);
 
       // check that the current user can access the current query terms
       Utils.performCheck(this.check, currentUser, terms, LWEvents);
@@ -23,7 +24,7 @@ const resolvers = {
       options.limit = (terms.limit < 1 || terms.limit > 1000) ? 1000 : terms.limit;
       options.skip = terms.offset;
       const events = LWEvents.find(selector, options).fetch();
-      console.log("LWEvents resolver events", events);
+      // console.log("LWEvents resolver events", events);
 
       //restrict document fields
       const restrictedEvents = Users.restrictViewableFields(currentUser, LWEvents, events);

@@ -49,7 +49,7 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
       <div className="comments-item-text">
         {content ? <Components.ContentRenderer state={content} /> :
         null}
-        {htmlBody ? <div className="comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+        {htmlBody && !content ? <div className="comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
         { showReplyButton ?
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>

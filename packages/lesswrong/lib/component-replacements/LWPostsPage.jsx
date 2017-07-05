@@ -82,7 +82,7 @@ class LWPostsPage extends getRawComponent('PostsPage') {
 
 
 
-          {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+          {post.htmlBody && !post.content ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
           {/* Adding content rendering here */}
           {post.content ? <div className="posts-page-content"> <Components.ContentRenderer state={post.content} /> </div> : null}

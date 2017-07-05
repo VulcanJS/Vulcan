@@ -5,10 +5,11 @@ import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
 import Categories from 'meteor/vulcan:categories';
-import marked from 'marked';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from '../subscriptions/mutations.js';
-import { IntercomAPI } from 'react-intercom';
+import ReactDOMServer from 'react-dom/server';
+import { Components } from 'meteor/vulcan:core';
+import React from 'react';
 
 
 function updateConversationActivity (message) {
@@ -227,6 +228,27 @@ function messageNewNotification(message) {
   }
 }
 addCallback("messages.new.async", messageNewNotification);
+
+function postsNewHTMLBody(post) {
+  if (post.content) {
+    const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={post.content} />);
+    Posts.update(post._id, {$set: {htmlBody: html}});
+  }
+}
+
+addCallback("posts.new.async", postsNewHTMLBody);
+addCallback("posts.edit.async", postsNewHTMLBody);
+
+function commentsNewHTMLBody(comment) {
+  if (comment.content) {
+    const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={comment.content} />);
+    Comments.update(comment._id, {$set: {htmlBody: html}});
+  }
+}
+
+addCallback("comments.new.async", commentsNewHTMLBody);
+addCallback("comments.edit.async", commentsNewHTMLBody);
+
 
 //
 // This used to be the draftJS parsing into plaintext that allowed full-text search.

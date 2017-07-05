@@ -8,6 +8,9 @@ Posts.addDefaultView(terms => ({
   selector: {
     status: Posts.config.STATUS_APPROVED,
     isFuture: {$ne: true} // match both false and undefined
+  },
+  options: {
+    sort: {score: -1}
   }
 }));
 
