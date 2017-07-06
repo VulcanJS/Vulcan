@@ -20,7 +20,7 @@ class CommentEditor extends Component {
 
   componentWillMount() {
     //Add function for resetting form to form submit callbacks
-    const resetEditor = (data) => {
+    const resetEditor = (result) => {
       // On Form submit, create a new empty editable
       let editor = this.props.editor;
       let state = createEmptyState();
@@ -28,10 +28,10 @@ class CommentEditor extends Component {
       this.setState({
         contentState: state,
       })
-      return data;
+      console.log("Reset Editor result", result);
+      return result;
     }
-    const addToSubmitCallbacks = this.context.addToSubmitForm;
-    addToSubmitCallbacks(resetEditor);
+    this.context.addToSuccessForm(resetEditor);
   }
 
   render() {
@@ -53,7 +53,7 @@ class CommentEditor extends Component {
 
 CommentEditor.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
-  addToSubmitForm: React.PropTypes.func,
+  addToSuccessForm: React.PropTypes.func,
 };
 
 registerComponent('CommentEditor', CommentEditor, withEditor, withCurrentUser);
