@@ -2,6 +2,7 @@ import Posts from '../collection.js'
 import marked from 'marked';
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting, Utils } from 'meteor/vulcan:core';
+import { createError } from 'apollo-errors';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -22,15 +23,13 @@ function PostsNewRateLimit (post, user) {
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval){
-      const e = new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
-      e.break = true;
-      throw e;
+      const RateLimitError = createError('posts.rate_limit_error', {message: 'posts.rate_limit_error'});
+      throw new RateLimitError({data: {break: true, value: postInterval-timeSinceLastPost}});
     }
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours >= maxPostsPer24Hours){
-      const e = new Error(Utils.encodeIntlError({id: "posts.max_per_day", value: maxPostsPer24Hours}));
-      e.break = true;
-      throw e;
+      const RateLimitError = createError('posts.max_per_day', {message: 'posts.max_per_day'});
+      throw new RateLimitError({data: {break: true, value: maxPostsPer24Hours}});
     }
   }
 
@@ -47,8 +46,9 @@ addCallback("posts.new.validate", PostsNewRateLimit);
  * @summary Check for duplicate links
  */
 function PostsNewDuplicateLinksCheck (post, user) {
-  if(!!post.url) {
-    Posts.checkForSameUrl(post.url);
+  if(!!post.url && Posts.checkForSameUrl(post.url)) {
+    const DuplicateError = createError('posts.link_already_posted', {message: 'posts.link_already_posted'});
+    throw new DuplicateError({data: {break: true, url: post.url}});
   }
   return post;
 }
