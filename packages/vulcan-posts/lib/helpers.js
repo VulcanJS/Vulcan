@@ -109,7 +109,9 @@ Posts.checkForSameUrl = function (url) {
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
   if (typeof postWithSameLink !== 'undefined') {
-    throw new Error(Utils.encodeIntlError({id: 'posts.link_already_posted'}));
+    const e = new Error(Utils.encodeIntlError({id: 'posts.link_already_posted'}));
+    e.break = true;
+    throw e;
   }
 };
 

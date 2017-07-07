@@ -21,13 +21,17 @@ function PostsNewRateLimit (post, user) {
       maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 5)));
 
     // check that user waits more than X seconds between posts
-    if(timeSinceLastPost < postInterval)
-      throw new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
-
+    if(timeSinceLastPost < postInterval){
+      const e = new Error(Utils.encodeIntlError({id: "posts.rate_limit_error", value: postInterval-timeSinceLastPost}));
+      e.break = true;
+      throw e;
+    }
     // check that the user doesn't post more than Y posts per day
-    if(numberOfPostsInPast24Hours >= maxPostsPer24Hours)
-      throw new Error(Utils.encodeIntlError({id: "posts.max_per_day", value: maxPostsPer24Hours}));
-
+    if(numberOfPostsInPast24Hours >= maxPostsPer24Hours){
+      const e = new Error(Utils.encodeIntlError({id: "posts.max_per_day", value: maxPostsPer24Hours}));
+      e.break = true;
+      throw e;
+    }
   }
 
   return post;
