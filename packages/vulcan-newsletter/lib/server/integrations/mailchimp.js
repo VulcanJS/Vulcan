@@ -47,7 +47,7 @@ if (settings) {
         return {result: 'subscribed', ...subscribe};
       } catch (error) {
         // if the email is already in the Mailchimp list, no need to throw an error
-        if (error.message === "214") {
+        if (error.code === 214) {
           return {result: 'already-subscribed'};
         }
         throw new Error("subscription-failed", error.message);
