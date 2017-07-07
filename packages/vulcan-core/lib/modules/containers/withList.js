@@ -45,7 +45,7 @@ import withState from 'recompose/withState';
 
 const withList = (options) => {
 
-  const { collection, limit = 10, pollInterval = 20000 } = options,
+  const { collection, limit = 10, pollInterval = 20000, totalResolver = true } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
@@ -55,7 +55,7 @@ const withList = (options) => {
   // build graphql query from options
   const query = gql`
     query ${queryName}($terms: JSON) {
-      ${totalResolverName}(terms: $terms)
+      ${totalResolver ? `${totalResolverName}(terms: $terms)` : ``}
       ${listResolverName}(terms: $terms) {
         __typename
         ...${fragmentName}
