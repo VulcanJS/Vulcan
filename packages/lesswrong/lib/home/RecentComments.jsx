@@ -19,7 +19,7 @@ class RecentComments extends Component {
         </Link>
         <div className="comments-list">
           {
-            loading ? <Loading /> :
+            loading || !results ? <Loading /> :
             <div className={"comments-items" + (fontSize == "small" ? " smalltext" : "")}>
               {
                 results.map(comment =>
@@ -46,6 +46,7 @@ const commentsOptions = {
   collection: Comments,
   queryName: 'selectCommentsListQuery',
   fragmentName: 'SelectCommentsList',
+  totalResolver: false,
 };
 
 registerComponent('RecentComments', RecentComments, [withList, commentsOptions], withCurrentUser);

@@ -40,6 +40,7 @@ import './component-replacements/LWPostsCommentsThreadWrapper.jsx';
 import './component-replacements/LWPostsNewButton.jsx';
 import './component-replacements/LWLayout.jsx';
 import './component-replacements/LWPostsHome.jsx';
+import './component-replacements/LWPostsList.jsx';
 import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
