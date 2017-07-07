@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import Editor, { Editable, createEmptyState } from 'ory-editor-core';
-import { Trash, DisplayModeToggle, Toolbar } from 'ory-editor-ui'
+import { Editable, createEmptyState } from 'ory-editor-core';
+import { Toolbar } from 'ory-editor-ui'
 import withEditor from './withEditor.jsx'
 
 
@@ -27,8 +27,7 @@ class CommentEditor extends Component {
       editor.trigger.editable.add(state);
       this.setState({
         contentState: state,
-      })
-      console.log("Reset Editor result", result);
+      });
       return result;
     }
     this.context.addToSuccessForm(resetEditor);
