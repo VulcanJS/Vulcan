@@ -13,10 +13,11 @@ Picker.route('/out', ({ query}, req, res, next) => {
     even without the hash
     */
 
-    // decoce url just in case
-    const decodedUrl = decodeURIComponent(query.url);
-
     try {
+
+      // decode url just in case
+      const decodedUrl = decodeURIComponent(query.url);
+
       const post = Posts.findOne({url: {$regex: escapeStringRegexp(decodedUrl)}}, {sort: {postedAt: -1, createdAt: -1}});
 
       if (post) {

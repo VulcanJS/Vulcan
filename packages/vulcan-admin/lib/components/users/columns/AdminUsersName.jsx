@@ -6,7 +6,7 @@ import { Components } from 'meteor/vulcan:core';
 const AdminUsersName = ({ user }) =>
   <div>
     <Link to={Users.getProfileUrl(user)}>
-      <Components.UsersAvatar user={user} link={false}/> <span>{Users.getDisplayName(user)}</span>
+      <Components.Avatar user={user} link={false}/> <span>{Users.getDisplayName(user)}</span>
     </Link> 
     {_.rest(Users.getGroups(user)).map(group => <code key={group}>{group}</code>)}
   </div>

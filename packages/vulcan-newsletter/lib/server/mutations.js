@@ -28,20 +28,10 @@ const resolver = {
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
-      try {
-        return Newsletters.subscribeUser(user, false);
-      } catch (error) {
-        const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
-        throw new Error(errorMessage);
-      }
+      return Newsletters.subscribeUser(user, false);
     },
     addEmailNewsletter(root, {email}, context) {
-      try {
-        return Newsletters.subscribeEmail(email, true);
-      } catch (error) {
-        const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
-        throw new Error(errorMessage);
-      }
+      return Newsletters.subscribeEmail(email, true);
     },
     removeUserNewsletter(root, { userId }, context) {
       const currentUser = context.currentUser;

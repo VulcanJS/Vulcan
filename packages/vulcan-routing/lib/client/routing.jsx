@@ -32,13 +32,6 @@ Meteor.startup(() => {
     delete indexRoute.path; // delete the '/' path to avoid warning
   }
 
-  // go through each route and if it's a promise, wrap it with dynamicLoader
-  _.forEach(childRoutes, (route, routeName) => {
-    if (route.component && typeof route.component.then === 'function') {
-      route.component = dynamicLoader(route.component);
-    }
-  });
-
   const AppRoutes = {
     path: '/',
     component: Components.App,

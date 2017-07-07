@@ -28,7 +28,7 @@ export const createCharge = async (args) => {
   }
   
   // initialize Stripe
-  const keySecret = stripeSettings.secretKey;
+  const keySecret = Meteor.isDevelopment ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
   const stripe = new Stripe(keySecret);
 
   // if an associated collection name and document id have been provided, 
