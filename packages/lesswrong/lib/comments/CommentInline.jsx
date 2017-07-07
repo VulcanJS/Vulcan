@@ -22,7 +22,7 @@ class CommentInline extends getRawComponent('CommentsItem') {
             </div>
             {content ? <Components.ContentRenderer state={content} /> :
             null}
-            {htmlBody ? <div className="comment-inline-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+            {htmlBody && !content ? <div className="comment-inline-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
           </Well>
         </div>
       </div>
