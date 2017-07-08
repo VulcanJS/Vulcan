@@ -100,7 +100,8 @@ const schema = {
         if (!category.parentId) return null;
         const parent = await Categories.loader.load(category.parentId);
         return Users.restrictViewableFields(currentUser, Categories, parent);
-      }
+      },
+      keepOriginal: true
     },
     form: {
       options: formProps => getCategoriesAsOptions(formProps.client)

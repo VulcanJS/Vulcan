@@ -30,7 +30,8 @@ const schema = {
         if (!comment.parentCommentId) return null;
         const parentComment = await Comments.loader.load(comment.parentCommentId);
         return Users.restrictViewableFields(currentUser, Comments, parentComment);
-      }
+      },
+      keepOriginal: true
     },
     hidden: true // never show this
   },
@@ -52,6 +53,7 @@ const schema = {
         const topLevelComment = await Comments.loader.load(comment.topLevelCommentId);
         return Users.restrictViewableFields(currentUser, Comments, topLevelComment);
       },
+      keepOriginal: true
     },
     hidden: true // never show this
   },
@@ -136,6 +138,7 @@ const schema = {
         const post = await Posts.loader.load(comment.postId);
         return Users.restrictViewableFields(currentUser, Posts, post);
       },
+      keepOriginal: true
     },
     hidden: true // never show this
   },
@@ -155,7 +158,8 @@ const schema = {
         if (!comment.userId) return null;
         const user = await Users.loader.load(comment.userId);
         return Users.restrictViewableFields(currentUser, Users, user);
-      }
+      },
+      keepOriginal: true
     },
   },
   /**

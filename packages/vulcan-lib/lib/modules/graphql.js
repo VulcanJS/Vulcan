@@ -131,11 +131,6 @@ export const GraphQLSchema = {
 
       if (fieldName.indexOf('$') === -1) { // skip fields containing "$" in their name
 
-        // try to guess GraphQL type
-        if (fieldType) {
-          mainSchema.push(`${fieldName}: ${fieldType}`);
-        }
-
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
 
@@ -156,6 +151,16 @@ export const GraphQLSchema = {
             addGraphQLResolvers(resolver);
           }
 
+          // if keepOriginal option is enabled, also add original field to schema
+          if (field.resolveAs.keepOriginal && fieldType) {
+            mainSchema.push(`${fieldName}: ${fieldType}`);
+          }
+
+        } else {
+          // try to guess GraphQL type
+          if (fieldType) {
+            mainSchema.push(`${fieldName}: ${fieldType}`);
+          }
         }
 
         if (field.insertableBy || field.editableBy) {

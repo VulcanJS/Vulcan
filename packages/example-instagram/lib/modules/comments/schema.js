@@ -30,7 +30,8 @@ const schema = {
       type: 'User', 
       resolver(comment, args, context) {
         return context.Users.findOne({ _id: comment.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
-      }
+      },
+      keepOriginal: true
     }
   },
   

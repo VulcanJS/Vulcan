@@ -30,7 +30,8 @@ const schema = {
       type: 'User',
       resolver: (movie, args, context) => {
         return context.Users.findOne({ _id: movie.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
-      }
+      },
+      keepOriginal: true
     }
   },
   
