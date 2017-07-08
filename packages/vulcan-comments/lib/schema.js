@@ -23,7 +23,15 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     optional: true,
-    resolveAs: 'parentComment: Comment',
+    resolveAs: {
+      fieldName: 'parentComment',
+      type: 'Comment',
+      resolver: async (comment, args, {currentUser, Users, Comments}) => {
+        if (!comment.parentCommentId) return null;
+        const parentComment = await Comments.loader.load(comment.parentCommentId);
+        return Users.restrictViewableFields(currentUser, Comments, parentComment);
+      }
+    },
     hidden: true // never show this
   },
   /**
@@ -36,7 +44,15 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     optional: true,
-    resolveAs: 'topLevelComment: Comment',
+    resolveAs: {
+      fieldName: 'topLevelComment',
+      type: 'Comment',
+      resolver: async (comment, args, {currentUser, Users, Comments}) => {
+        if (!comment.topLevelCommentId) return null;
+        const topLevelComment = await Comments.loader.load(comment.topLevelCommentId);
+        return Users.restrictViewableFields(currentUser, Comments, topLevelComment);
+      },
+    },
     hidden: true // never show this
   },
   /**
@@ -112,7 +128,15 @@ const schema = {
     insertableBy: ['members'],
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    resolveAs: 'post: Post',
+    resolveAs: {
+      fieldName: 'post',
+      type: 'Post',
+      resolver: async (comment, args, {currentUser, Users, Posts}) => {
+        if (!comment.postId) return null;
+        const post = await Posts.loader.load(comment.postId);
+        return Users.restrictViewableFields(currentUser, Posts, post);
+      },
+    },
     hidden: true // never show this
   },
   /**
@@ -124,7 +148,15 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     hidden: true,
-    resolveAs: 'user: User',
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: async (comment, args, {currentUser, Users}) => {
+        if (!comment.userId) return null;
+        const user = await Users.loader.load(comment.userId);
+        return Users.restrictViewableFields(currentUser, Users, user);
+      }
+    },
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site.

@@ -32,7 +32,15 @@ Users.addField([
       type: Array,
       optional: true,
       viewableBy: Users.owns,
-      resolveAs: 'upvotedComments: [Vote]',
+      resolveAs: {
+        fieldName: 'upvotedComments',
+        type: '[Comment]',
+        resolver: async (user, args, {currentUser, Users, Comments}) => {
+          if (!user.upvotedComments) return [];
+          const comments = await Comments.loader.loadMany(user.upvotedComments);
+          return Users.restrictViewableFields(currentUser, Comments, comments);
+        }
+      },
     }
   },
   {
@@ -51,7 +59,15 @@ Users.addField([
       type: Array,
       optional: true,
       viewableBy: Users.owns,
-      resolveAs: 'upvotedPosts: [Vote]',
+      resolveAs: {
+        fieldName: 'upvotedPosts',
+        type: '[Post]',
+        resolver: async (user, args, {currentUser, Users, Posts}) => {
+          if (!user.upvotedPosts) return [];
+          const posts = await Posts.loader.loadMany(user.upvotedPosts);
+          return Users.restrictViewableFields(currentUser, Posts, posts);
+        }
+      },
     }
   },
   {
@@ -70,7 +86,15 @@ Users.addField([
       type: Array,
       optional: true,
       viewableBy: Users.owns,
-      resolveAs: 'downvotedComments: [Vote]',
+      resolveAs: {
+        fieldName: 'downvotedComments',
+        type: '[Comment]',
+        resolver: async (user, args, {currentUser, Users, Comments}) => {
+          if (!user.downvotedComments) return [];
+          const comments = await Comments.loader.loadMany(user.downvotedComments);
+          return Users.restrictViewableFields(currentUser, Comments, comments);
+        }
+      },
     }
   },
   {
@@ -89,7 +113,15 @@ Users.addField([
       type: Array,
       optional: true,
       viewableBy: Users.owns,
-      resolveAs: 'downvotedPosts: [Vote]',
+      resolveAs: {
+        fieldName: 'downvotedPosts',
+        type: '[Post]',
+        resolver: async (user, args, {currentUser, Users, Posts}) => {
+          if (!user.downvotedPosts) return [];
+          const posts = await Posts.loader.loadMany(user.downvotedPosts);
+          return Users.restrictViewableFields(currentUser, Posts, posts);
+        }
+      },
     }
   },
   {
@@ -123,7 +155,15 @@ Posts.addField([
       type: Array,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: 'upvoters: [User]',
+      resolveAs: {
+        fieldName: 'upvoters',
+        type: '[User]',
+        resolver: async (post, args, {currentUser, Users}) => {
+          if (!post.upvoters) return [];
+          const upvoters = await Users.loader.loadMany(post.upvoters);
+          return Users.restrictViewableFields(currentUser, Users, upvoters);
+        },
+      },
     }
   },
   {
@@ -154,7 +194,15 @@ Posts.addField([
       type: Array,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: 'downvoters: [User]',
+      resolveAs: {
+        fieldName: 'downvoters',
+        type: '[User]',
+        resolver: async (post, args, {currentUser, Users}) => {
+          if (!post.downvoters) return [];
+          const downvoters = await Users.loader.loadMany(post.downvoters);
+          return Users.restrictViewableFields(currentUser, Users, downvoters);
+        },
+      },
     }
   },
   {
@@ -212,7 +260,15 @@ Comments.addField([
       type: Array,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: 'upvoters: [User]',
+      resolveAs: {
+        fieldName: 'upvoters',
+        type: '[User]',
+        resolver: async (comment, args, {currentUser, Users}) => {
+          if (!comment.upvoters) return [];
+          const upvoters = await Users.loader.loadMany(comment.upvoters);
+          return Users.restrictViewableFields(currentUser, Users, upvoters);
+        },
+      },
     }
   },
   {
@@ -243,7 +299,15 @@ Comments.addField([
       type: Array,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: 'downvoters: [User]',
+      resolveAs: {
+        fieldName:'downvoters',
+        type: '[User]',
+        resolver: async (comment, args, {currentUser, Users}) => {
+          if (!comment.downvoters) return [];
+          const downvoters = await Users.loader.loadMany(comment.downvoters);
+          return Users.restrictViewableFields(currentUser, Users, downvoters);
+        },
+      },
     }
   },
   {

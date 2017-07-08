@@ -1,7 +1,6 @@
 import './graphql.js';
 import './custom_fields.js';
 import './permissions.js';
-import './resolvers.js';
 import './scoring.js';
 import './callbacks.js';
 

@@ -37,7 +37,15 @@ Posts.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      resolveAs: 'commenters: [User]',
+      resolveAs: {
+        fieldName: 'commenters',
+        type: '[User]',
+        resolver: async (post, args, {currentUser, Users}) => {
+          if (!post.commenters) return [];
+          const commenters = await Users.loader.loadMany(post.commenters);
+          return Users.restrictViewableFields(currentUser, Users, commenters);
+        },
+      },
       viewableBy: ['guests'],
     }
   },

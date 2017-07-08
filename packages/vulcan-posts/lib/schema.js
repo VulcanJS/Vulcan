@@ -231,7 +231,15 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     hidden: true,
-    resolveAs: 'user: User',
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: async (post, args, context) => {
+        if (!post.userId) return null;
+        const user = await context.Users.loader.load(post.userId);
+        return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
+      },
+    },
   }
 };
 

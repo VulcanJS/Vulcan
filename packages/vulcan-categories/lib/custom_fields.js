@@ -17,7 +17,15 @@ Posts.addField([
         order: 50,
         options: formProps => getCategoriesAsOptions(formProps.client),
       },
-      resolveAs: 'categories: [Category]'
+      resolveAs: {
+        fieldName: 'categories',
+        type: '[Category]',
+        resolver: async (post, args, {currentUser, Users, Categories}) => {
+          if (!post.categories) return [];
+          const categories = _.compact(await Categories.loader.loadMany(post.categories));
+          return Users.restrictViewableFields(currentUser, Categories, categories);
+        }
+      }
     }
   },
   {
