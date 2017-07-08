@@ -34,7 +34,7 @@ Users.addField([
       viewableBy: Users.owns,
       resolveAs: {
         fieldName: 'upvotedComments',
-        type: '[Comment]',
+        type: '[Vote]',
         resolver: async (user, args, {currentUser, Users, Comments}) => {
           if (!user.upvotedComments) return [];
           const comments = await Comments.loader.loadMany(user.upvotedComments);
@@ -61,7 +61,7 @@ Users.addField([
       viewableBy: Users.owns,
       resolveAs: {
         fieldName: 'upvotedPosts',
-        type: '[Post]',
+        type: '[Vote]',
         resolver: async (user, args, {currentUser, Users, Posts}) => {
           if (!user.upvotedPosts) return [];
           const posts = await Posts.loader.loadMany(user.upvotedPosts);
@@ -88,7 +88,7 @@ Users.addField([
       viewableBy: Users.owns,
       resolveAs: {
         fieldName: 'downvotedComments',
-        type: '[Comment]',
+        type: '[Vote]',
         resolver: async (user, args, {currentUser, Users, Comments}) => {
           if (!user.downvotedComments) return [];
           const comments = await Comments.loader.loadMany(user.downvotedComments);
@@ -115,7 +115,7 @@ Users.addField([
       viewableBy: Users.owns,
       resolveAs: {
         fieldName: 'downvotedPosts',
-        type: '[Post]',
+        type: '[Vote]',
         resolver: async (user, args, {currentUser, Users, Posts}) => {
           if (!user.downvotedPosts) return [];
           const posts = await Posts.loader.loadMany(user.downvotedPosts);
