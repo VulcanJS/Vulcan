@@ -27,7 +27,7 @@ const schema = {
     viewableBy: ['guests'],
     resolveAs: {
       fieldName: 'user',
-      typeName: 'User', 
+      type: 'User', 
       resolver(comment, args, context) {
         return context.Users.findOne({ _id: comment.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
       }
