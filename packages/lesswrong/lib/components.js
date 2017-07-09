@@ -50,6 +50,7 @@ import './component-replacements/LWPostsEditForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
 import './component-replacements/LWUsersMenu.jsx';
 import './component-replacements/LWPostsListHeader.jsx';
+import './component-replacements/LWVoting.jsx';
 
 // Comment link code
 import './comments/CommentInline.jsx';
@@ -68,5 +69,3 @@ import './legacy-redirects/LegacyPostRedirect.jsx'
 import './legacy-redirects/LegacyPostWrapper.jsx'
 
 import './subscriptions/SubscribeTo.jsx';
-
-import './voting/LWVoting.jsx';

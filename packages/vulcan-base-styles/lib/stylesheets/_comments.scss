@@ -12,8 +12,8 @@
   margin-bottom: $vmargin;
 }
 
-.comments-node .comments-node, .comments-item-reply{
-  border-left: 10px $lightest-border solid;
+.comments-node, .comments-item-reply{
+  border-left: 5px $lightest-border solid;
   padding-left: $hmargin;
 }
 
@@ -31,7 +31,7 @@
 .comments-item-meta{
   @include flex-center;
   margin-bottom: $vmargin;
-  
+
   .comments-item-vote{
     margin-right: 10px;
   }

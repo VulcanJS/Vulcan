@@ -24,6 +24,7 @@ Package.onUse( function(api) {
   api.addFiles([
     'lib/stylesheets/bootstrap.scss',
     'lib/stylesheets/custom.scss',
+    'lib/stylesheets/comments.scss',
     'lib/stylesheets/editor.scss',
   ], ['client']);
 

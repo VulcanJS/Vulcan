@@ -1,0 +1,117 @@
+$lw-green: #588f27;
+
+$hmargin: 10px;
+$small-font: 0.9rem;
+
+$light-yellow: #FFFBDB;
+
+$lightest-grey: #f3f3f3;
+$lighter-grey: #eee;
+$light-grey: #ddd;
+
+$light-blue: #DAEDFF;
+$blue: #0275d8;
+$white: #fff;
+$medium-grey: #bbb;
+$dark-grey: #888;
+$black: #333;
+
+$red: #E04E4B;
+
+$header-bg: $light-blue;
+
+$active-color: $lightest-grey !important;
+
+$lightest-border: $lightest-grey;
+$lighter-border: $lighter-grey;
+$light-border: $light-grey;
+
+$light-text: $medium-grey;
+$medium-text: $dark-grey;
+
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+}
+
+
+// Experimental CSS modifications for Comments
+
+
+.comments-item{
+  .comments-item-body {
+    border-style: none;
+    padding: 0px;
+    .comments-item-text {
+      font-size: 18px;
+      p {
+        margin-bottom: 0.5em;
+      }
+    }
+  }
+  a {
+    color: $black;
+    text-decoration: underline;
+  }
+  .comments-item-meta {
+    margin-bottom: 8px;
+    .users-name {
+      margin-right: 10px;
+      font-weight: 600;
+    }
+  }
+  .upvote-button, .downvote-button {
+    color: rgba(0,0,0,0.33);
+    .icon {
+      display: inline;
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+  }
+  .comments-item-bottom {
+    font-size: 12px;
+    .vote {
+      font-weight: 300;
+      color: $dark-grey; 
+    }
+  }
+
+  .comments-item-bottom, .comments-item-meta {
+    a {
+      color: $dark-grey;
+      text-decoration: none;
+    }
+    .vote {
+      display: inline;
+    }
+    .vote-count {
+      display: inline;
+      margin-right: 5px;
+    }
+    .comments-item-reply-link {
+      margin-right: 5px;
+    }
+  }
+  blockquote {
+    padding: 11.5px 23px;
+    font-size: 15px;
+    display: block;
+    padding: 15px 0px 10px 25px;
+    position: relative;
+    line-height: 1.15;
+    border-style: none;
+  }
+  blockquote:before {
+    content: "\201C";
+    font-size: 40px;
+    font-weight: 300;
+    color: #999;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+  }
+}
+
+.comments-node:hover{
+  border-color: $light-grey;
+}

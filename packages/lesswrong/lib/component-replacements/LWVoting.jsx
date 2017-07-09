@@ -1,7 +1,6 @@
 import {Components, getRawComponent, replaceComponent} from 'meteor/vulcan:core';
 import React, {PropTypes, Component} from 'react';
-import {withCurrentUser, withMessages} from 'meteor/vulcan:core';
-import {withVote, hasUpvoted, hasDownvoted} from 'meteor/vulcan:voting';
+import {hasDownvoted} from 'meteor/vulcan:voting';
 
 
 class LWVote extends getRawComponent('Vote') {
@@ -24,8 +23,7 @@ class LWVote extends getRawComponent('Vote') {
       this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
     } else {
       const voteType = hasDownvoted(user, document) ? "cancelDownvote" : "downvote";
-      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
-      });
+      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser});
     }
   }
 
@@ -33,11 +31,11 @@ class LWVote extends getRawComponent('Vote') {
   render() { //Slightly modified render function. Added downvote button
     return (
       <div className={this.getActionClass()}>
+        <div className="vote-count">{this.props.document.baseScore || 0} points</div>
         <a className="upvote-button" onClick={this.upvote}>
             {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
             <div className="sr-only">Upvote</div>
         </a>
-            <div className="vote-count">{this.props.document.baseScore || 0}</div>
         <a className="downvote-button" onClick={this.downvote}>
             {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="downvote" /> }
             <div className="sr-only">Downvote</div>

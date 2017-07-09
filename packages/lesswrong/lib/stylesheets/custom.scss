@@ -47,6 +47,13 @@ $medium-text: $dark-grey;
 
 // CSS modifications for comment threads
 
+.header-taglines {
+  font-size: 16px;
+  margin-top: 28px;
+  float: left;
+  margin-left: 15px;
+}
+
 .posts-comments-thread-linked-comment{
   .comment-wrapper{
     margin-top: 15px;
@@ -124,12 +131,11 @@ $medium-text: $dark-grey;
     a{
       color: $medium-grey;
     }
+  }
   .comment-context-link{
     font-weight: 300;
     font-size: 14px;
   }
-  }
-
 }
 
 .posts-home{
