@@ -1,6 +1,6 @@
 import Newsletters from "../modules/collection.js";
 import Users from 'meteor/vulcan:users';
-import { addGraphQLMutation, Utils } from 'meteor/vulcan:core';
+import { addGraphQLMutation, addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
 
 addGraphQLMutation('sendNewsletter : JSON');
 addGraphQLMutation('testNewsletter : JSON');
