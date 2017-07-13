@@ -1,4 +1,4 @@
-import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
+import { addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Utils } from 'meteor/vulcan:core';
 import { mutateItem } from './vote.js';
 
 const voteSchema = `
@@ -11,7 +11,7 @@ const voteSchema = `
   union Votable = Post | Comment
 `;
 
-GraphQLSchema.addSchema(voteSchema);
+addGraphQLSchema(voteSchema);
 
 const resolverMap = {
   Votable: {
@@ -29,9 +29,9 @@ const resolverMap = {
   },
 };
 
-GraphQLSchema.addResolvers(resolverMap);
+addGraphQLResolvers(resolverMap);
 
-GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : Votable');
+addGraphQLMutation('vote(documentId: String, voteType: String, collectionName: String) : Votable');
 
 const voteResolver = {
   Mutation: {
@@ -43,4 +43,4 @@ const voteResolver = {
   },
 };
 
-GraphQLSchema.addResolvers(voteResolver);
+addGraphQLResolvers(voteResolver);

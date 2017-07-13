@@ -1,12 +1,12 @@
 import Newsletters from "../modules/collection.js";
 import Users from 'meteor/vulcan:users';
-import { GraphQLSchema, Utils } from 'meteor/vulcan:core';
+import { addGraphQLMutation, Utils } from 'meteor/vulcan:core';
 
-GraphQLSchema.addMutation('sendNewsletter : JSON');
-GraphQLSchema.addMutation('testNewsletter : JSON');
-GraphQLSchema.addMutation('addUserNewsletter(userId: String) : JSON');
-GraphQLSchema.addMutation('addEmailNewsletter(email: String) : JSON');
-GraphQLSchema.addMutation('removeUserNewsletter(userId: String) : JSON');
+addGraphQLMutation('sendNewsletter : JSON');
+addGraphQLMutation('testNewsletter : JSON');
+addGraphQLMutation('addUserNewsletter(userId: String) : JSON');
+addGraphQLMutation('addEmailNewsletter(email: String) : JSON');
+addGraphQLMutation('removeUserNewsletter(userId: String) : JSON');
 
 const resolver = {
   Mutation: {
@@ -49,4 +49,4 @@ const resolver = {
     },
   },
 };
-GraphQLSchema.addResolvers(resolver);
+addGraphQLResolvers(resolver);
