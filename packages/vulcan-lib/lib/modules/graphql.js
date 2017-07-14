@@ -141,7 +141,7 @@ export const GraphQLSchema = {
 
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
-            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? field.resolveAs.arguments : ''}: ${field.resolveAs.type}`);
+            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -152,8 +152,8 @@ export const GraphQLSchema = {
             addGraphQLResolvers(resolver);
           }
 
-          // if keepOriginal option is enabled, also add original field to schema
-          if (field.resolveAs.keepOriginal && fieldType) {
+          // if addOriginalField option is enabled, also add original field to schema
+          if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(`${fieldName}: ${fieldType}`);
           }
 

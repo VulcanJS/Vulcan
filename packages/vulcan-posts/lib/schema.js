@@ -239,7 +239,7 @@ const schema = {
         const user = await context.Users.loader.load(post.userId);
         return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
       },
-      keepOriginal: true
+      addOriginalField: true
     },
   }
 };

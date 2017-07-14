@@ -24,7 +24,7 @@ Users.addField([
       viewableBy: ['guests'],
       resolveAs: {
         fieldName: 'posts',
-        arguments: '(limit: Int = 5)',
+        arguments: 'limit: Int = 5',
         type: '[Post]',
         resolver: (user, { limit }, { currentUser, Users, Posts }) => {
           const posts = Posts.find({ userId: user._id }, { limit }).fetch();

@@ -33,7 +33,7 @@ const schema = {
       resolver(pic, args, context) {
         return context.Users.findOne({ _id: pic.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
       },
-      keepOriginal: true
+      addOriginalField: true
     }
   },
   
