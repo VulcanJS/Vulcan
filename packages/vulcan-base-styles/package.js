@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:base-styles",
   summary: "Vulcan basic styles package",
   version: '1.5.0',
-  git: "https://github.com/TelescopeJS/Telescope.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {

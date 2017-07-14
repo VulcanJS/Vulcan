@@ -1,0 +1,33 @@
+.admin-users-search{
+  margin-bottom: 10px;
+  padding: 2px 7px;
+}
+
+.admin-users-item-name{
+  a{
+    display: flex;
+    align-items: center;
+    div{
+      margin-right: 5px;
+    }
+  }
+}
+
+.admin-users-item-groups{
+  code{
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+.admin-users-load-more{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-users{
+  .avatar img{
+    width: 20px;
+  }
+}

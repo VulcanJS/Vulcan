@@ -13,7 +13,7 @@ const UsersMenu = ({currentUser, client}) =>
   <div className="users-menu">
     <Dropdown id="user-dropdown">
       <Dropdown.Toggle>
-        <Components.UsersAvatar size="small" user={currentUser} link={false} />
+        <Components.UsersAvatar size="small" user={currentUser} addLink={false} />
         <div className="users-menu-name">{Users.getDisplayName(currentUser)}</div>
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -22,6 +22,10 @@ const UsersMenu = ({currentUser, client}) =>
         </LinkContainer>
         <LinkContainer to={`/account`}>
           <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
+        </LinkContainer>
+
+        <LinkContainer to={`/admin`}>
+          <MenuItem className="dropdown-item" eventKey="2">Admin</MenuItem>
         </LinkContainer>
         <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(() => client.resetStore())}><FormattedMessage id="users.log_out"/></MenuItem>
       </Dropdown.Menu>

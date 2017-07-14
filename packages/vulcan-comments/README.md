@@ -1,1 +1,1 @@
-Telescope comments package, used internally. 
+Vulcan comments package, used internally. 

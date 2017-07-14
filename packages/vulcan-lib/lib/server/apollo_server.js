@@ -5,12 +5,14 @@ import { makeExecutableSchema } from 'graphql-tools';
 import deepmerge from 'deepmerge';
 import OpticsAgent from 'optics-agent'
 import DataLoader from 'dataloader';
+import { formatError } from 'apollo-errors';
 
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 
-import { GraphQLSchema, Utils } from '../modules/index.js';
+import { GraphQLSchema } from '../modules/graphql.js';
+import { Utils } from '../modules/utils.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 import { Collections } from '../modules/collections.js';
@@ -110,6 +112,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     Collections.forEach(collection => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
+
+    // add error formatting from apollo-errors
+    options.formatError = formatError;
 
     return options;
   }));

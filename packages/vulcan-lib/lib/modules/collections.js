@@ -1,8 +1,9 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { GraphQLSchema } from './graphql.js';
+import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
+import { getSetting } from './settings.js';
 
 export const Collections = [];
 
@@ -115,12 +116,12 @@ export const createCollection = options => {
   // add collection to resolver context
   const context = {};
   context[collectionName] = collection;
-  GraphQLSchema.addToContext(context);
+  addToGraphQLContext(context);
 
   if (generateGraphQLSchema){
 
     // add collection to list of dynamically generated GraphQL schemas
-    GraphQLSchema.addCollection(collection);
+    addGraphQLCollection(collection);
 
 
     // ------------------------------------- Queries -------------------------------- //
@@ -129,20 +130,20 @@ export const createCollection = options => {
       const queryResolvers = {};
       // list
       if (resolvers.list) { // e.g. ""
-        GraphQLSchema.addQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
+        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
-        GraphQLSchema.addQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
+        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
-        GraphQLSchema.addQuery(`${resolvers.total.name}(terms: JSON): Int`);
+        addGraphQLQuery(`${resolvers.total.name}(terms: JSON): Int`);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
-      GraphQLSchema.addResolvers({ Query: { ...queryResolvers } });
+      addGraphQLResolvers({ Query: { ...queryResolvers } });
     }
 
     // ------------------------------------- Mutations -------------------------------- //
@@ -151,20 +152,20 @@ export const createCollection = options => {
       const mutationResolvers = {};
       // new
       if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-        GraphQLSchema.addMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
+        addGraphQLMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
         mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
       }
       // edit
       if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-        GraphQLSchema.addMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
+        addGraphQLMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-        GraphQLSchema.addMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
+        addGraphQLMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
         mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
-      GraphQLSchema.addResolvers({ Mutation: { ...mutationResolvers } });
+      addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
     }
   }
 
@@ -192,20 +193,25 @@ export const createCollection = options => {
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
 
-    // extend sort to sort posts by _id to break ties
+    // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
-    parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    if (!(parameters.options.sort && parameters.options.sort._id)) {
+      parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    }
 
     // remove any null fields (setting a field to null means it should be deleted)
     _.keys(parameters.selector).forEach(key => {
       if (parameters.selector[key] === null) delete parameters.selector[key];
     });
-    _.keys(parameters.options).forEach(key => {
-      if (parameters.options[key] === null) delete parameters.options[key];
-    });
-    
-    // limit number of items to 200
-    parameters.options.limit = (terms.limit < 1 || terms.limit > 200) ? 200 : terms.limit;
+    if (parameters.options.sort) {
+      _.keys(parameters.options.sort).forEach(key => {
+        if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
+      });
+    }
+
+    // limit number of items to 200 by default
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
+    parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
 
     // console.log(parameters);
 

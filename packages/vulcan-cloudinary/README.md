@@ -1,4 +1,4 @@
-Telescope file upload package, used internally. 
+Vulcan file upload package, used internally. 
 
 ### Custom Posts Fields
 

@@ -1,9 +1,9 @@
-import { GraphQLSchema, getSetting } from 'meteor/vulcan:core';
+import { addGraphQLMutation, addGraphQLResolvers, getSetting } from 'meteor/vulcan:core';
 import Embed from '../modules/embed.js';
 
 const embedProvider = getSetting('embedProvider', 'builtin');
 
-GraphQLSchema.addMutation('getEmbedData(url: String) : JSON');
+addGraphQLMutation('getEmbedData(url: String) : JSON');
 
 const resolver = {
   Mutation: {
@@ -16,7 +16,7 @@ const resolver = {
     },
   },
 };
-GraphQLSchema.addResolvers(resolver);
+addGraphQLResolvers(resolver);
 
 // Meteor.methods({
 //   testgetEmbedData: function (url) {

@@ -4,11 +4,9 @@ The main Pics collection definition file.
 
 */
 
-import { createCollection } from 'meteor/vulcan:core';
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 import schema from './schema.js';
-import resolvers from './resolvers.js';
 import './fragments.js';
-import mutations from './mutations.js';
 import './permissions.js';
 
 const Pics = createCollection({
@@ -19,9 +17,9 @@ const Pics = createCollection({
 
   schema,
   
-  resolvers,
+  resolvers: getDefaultResolvers('Pics'),
 
-  mutations,
+  mutations: getDefaultMutations('Pics'),
 
 });
 

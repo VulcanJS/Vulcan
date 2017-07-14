@@ -1,1 +1,1 @@
-Telescope posts package, used internally. 
+Vulcan posts package, used internally. 

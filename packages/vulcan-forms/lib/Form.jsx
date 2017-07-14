@@ -61,11 +61,14 @@ class Form extends Component {
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.addToDeletedValues = this.addToDeletedValues.bind(this);
     this.addToSubmitForm = this.addToSubmitForm.bind(this);
+    this.addToSuccessForm = this.addToSuccessForm.bind(this);
+    this.addToFailureForm = this.addToFailureForm.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearForm = this.clearForm.bind(this);
     this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
+    this.getDocument = this.getDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
     this.setFormState = this.setFormState.bind(this);
@@ -79,6 +82,8 @@ class Form extends Component {
     };
 
     this.submitFormCallbacks = [];
+    this.successFormCallbacks = [];
+    this.failureFormCallbacks = [];
   }
 
   // --------------------------------------------------------------------- //
@@ -101,7 +106,7 @@ class Form extends Component {
       const fieldSchema = schema[fieldName];
 
       fieldSchema.name = fieldName;
-      
+
       // intialize properties
       let field = {
         name: fieldName,
@@ -110,8 +115,8 @@ class Form extends Component {
         layout: this.props.layout,
         order: fieldSchema.order
       }
-      
-      // hide or show the field, a function taking form props as argument & returning a boolean can be used 
+
+      // hide or show the field, a function taking form props as argument & returning a boolean can be used
       field.hidden = (typeof fieldSchema.hidden === 'function') ? !!fieldSchema.hidden.call(fieldSchema, this.props) : fieldSchema.hidden;
 
       // add label or internationalized field name if necessary (field not hidden)
@@ -168,7 +173,7 @@ class Form extends Component {
       if (fieldSchema.limit) {
        field.limit = fieldSchema.limit;
       }
-      
+
       // add placeholder
       if (fieldSchema.placeholder) {
        field.placeholder = fieldSchema.placeholder;
@@ -304,48 +309,30 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
-    return <div className="form-errors">{this.state.errors.map((message, index) => <Flash key={index} message={message}/>)}</div>
+    return (
+      <div className="form-errors">
+        {this.state.errors.map((error, index) => 
+          <Flash key={index} message={{content: this.context.intl.formatMessage({id: error.name}, error.data), type: 'error' }}/>
+        )}
+      </div>
+    )
   }
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // add error to form state 
+  // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
-  throwError(errorMessage) {
+  throwError(error) {
 
-    let strippedError = errorMessage;
-    
-    // strip the "GraphQL Error: message [error_code]" given by Apollo if present 
-    const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
-    if (graphqlPrefixIsPresent) {
-      strippedError = graphqlPrefixIsPresent[1];
-    }
-    
-    // strip the error code if present
-    const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
-    if (errorCodeIsPresent) {
-      strippedError = errorCodeIsPresent[1];
-    }
-    
-    // internationalize the error if necessary
-    const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
-    if(typeof intlError === 'object') {
-      const { id, value = "" } = intlError;
-      strippedError = this.context.intl.formatMessage({id}, {value});
-    }
+    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+    const graphQLError = error.graphQLErrors[0];
 
-    // build the error for the Flash component and only keep the interesting message
-    const error = {
-      content: strippedError,
-      type: 'error'
-    };
-    
-    // update the state with unique errors messages
+    // add error to state
     this.setState(prevState => ({
-      errors: _.uniq([...prevState.errors, error])
+      errors: [...prevState.errors, graphQLError]
     }));
   }
 
@@ -371,6 +358,16 @@ class Form extends Component {
     this.submitFormCallbacks.push(callback);
   }
 
+  // add a callback to form submission success
+  addToSuccessForm(callback) {
+    this.successFormCallbacks.push(callback);
+  }
+
+  // add a callback to form submission failure
+  addToFailureForm(callback) {
+    this.failureFormCallbacks.push(callback);
+  }
+
   setFormState(fn) {
     this.setState(fn);
   }
@@ -387,6 +384,8 @@ class Form extends Component {
       getDocument: this.getDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
+      addToSuccessForm: this.addToSuccessForm,
+      addToFailureForm: this.addToFailureForm,
     };
   }
 
@@ -420,6 +419,9 @@ class Form extends Component {
       this.clearForm({clearErrors: true, clearCurrentValues});
     }
 
+    // run document through mutation success callbacks
+    result = runCallbacks(this.successFormCallbacks, result);
+
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
 
@@ -432,10 +434,13 @@ class Form extends Component {
 
     console.log("// graphQL Error"); // eslint-disable-line no-console
     console.log(error); // eslint-disable-line no-console
-    
+
+    // run mutation failure callbacks on error, we do not allow the callbacks to change the error
+    runCallbacks(this.failureFormCallbacks, error);
+
     if (!_.isEmpty(error)) {
       // add error to state
-      this.throwError(error.message);
+      this.throwError(error);
     }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
@@ -445,6 +450,12 @@ class Form extends Component {
 
   // submit form handler
   submitForm(data) {
+
+    // if form is disabled (there is already a submit handler running) don't do anything
+    if (this.state.disabled) {
+      return;
+    }
+
     this.setState(prevState => ({disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
@@ -457,7 +468,7 @@ class Form extends Component {
 
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
-    
+
     const fields = this.getFieldNames();
 
     // if there's a submit callback, run it
@@ -468,7 +479,7 @@ class Form extends Component {
     if (this.props.formType === "new") { // new document form
 
       // remove any empty properties
-      let document = _.compactObject(flatten(data));
+      let document = _.compactObject(data);
 
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
@@ -478,7 +489,7 @@ class Form extends Component {
       const document = this.getDocument();
 
       // put all keys with data on $set
-      const set = _.compactObject(flatten(data));
+      const set = _.compactObject(data);
 
       // put all keys without data on $unset
       const setKeys = _.keys(set);
@@ -536,7 +547,7 @@ class Form extends Component {
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
-          
+
           <div className="form-submit">
             <Button type="submit" bsStyle="primary">{this.props.submitLabel ? this.props.submitLabel : <FormattedMessage id="forms.submit"/>}</Button>
             {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>{this.props.cancelLabel ? this.props.cancelLabel : <FormattedMessage id="forms.cancel"/>}</a> : null}
@@ -605,6 +616,8 @@ Form.childContextTypes = {
   addToAutofilledValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
   addToSubmitForm: PropTypes.func,
+  addToFailureForm: PropTypes.func,
+  addToSuccessForm: PropTypes.func,
   updateCurrentValues: PropTypes.func,
   setFormState: PropTypes.func,
   throwError: PropTypes.func,

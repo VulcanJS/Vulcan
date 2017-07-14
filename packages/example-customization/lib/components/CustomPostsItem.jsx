@@ -1,8 +1,9 @@
 import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import { FormattedMessage, FormattedRelative } from 'meteor/vulcan:i18n';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
+import moment from 'moment';
 
 class CustomPostsItem extends getRawComponent('PostsItem') {
 
@@ -39,7 +40,7 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
 
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Components.UsersAvatar user={post.user} size="small"/><Components.UsersName user={post.user}/></div> : null}
-            <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
+            <div className="posts-item-date">{post.postedAt ? moment(new Date(post.postedAt)).fromNow() : <FormattedMessage id="posts.dateNotDefined"/>}</div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
                 {!post.commentCount || post.commentCount === 0 ? <FormattedMessage id="comments.count_0"/> : 
@@ -55,7 +56,6 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
         </div>
 
         {this.renderCommenters()}
-
 
       </div>
     )

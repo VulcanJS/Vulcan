@@ -98,8 +98,6 @@ registerFragment(`
     createdAt
     sticky
     status
-    body
-    htmlBody
     excerpt
     viewCount
     clickCount
@@ -136,6 +134,8 @@ registerFragment(`
 registerFragment(`
   fragment PostsPage on Post {
     ...PostsList
+    body
+    htmlBody
   }
 `);
 

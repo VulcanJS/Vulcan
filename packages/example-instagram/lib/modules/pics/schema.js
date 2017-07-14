@@ -27,7 +27,14 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    resolveAs: 'user: User', // resolve this field as "user" on the client
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver(pic, args, context) {
+        return context.Users.findOne({ _id: pic.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
+      },
+      addOriginalField: true
+    }
   },
   
   // custom properties
@@ -62,7 +69,13 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     hidden: true,
-    resolveAs: 'commentsCount: Float' // resolve as commentCount on the client
+    resolveAs: {
+      fieldName: 'commentsCount',
+      type: 'Float',
+      resolver(pic, args, context) {
+        return context.Comments.find({picId: pic._id}).count();
+      }
+    }
   }
 };
 

@@ -1,1 +1,1 @@
-Telescope notifications package, used internally. 
+Vulcan notifications package, used internally. 

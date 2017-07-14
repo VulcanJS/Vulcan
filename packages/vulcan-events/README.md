@@ -1,1 +1,1 @@
-Telescope events package, used internally. 
+Vulcan events package, used internally. 

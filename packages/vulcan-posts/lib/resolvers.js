@@ -1,13 +1,6 @@
 import { addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
 
 const specificResolvers = {
-  Post: {
-    async user(post, args, context) {
-      if (!post.userId) return null;
-      const user = await context.Users.loader.load(post.userId);
-      return context.Users.restrictViewableFields(context.currentUser, context.Users, user);
-    },
-  },
   Mutation: {
     increasePostViewCount(root, { postId }, context) {
       return context.Posts.update({_id: postId}, { $inc: { viewCount: 1 }});
@@ -27,7 +20,6 @@ const resolvers = {
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = Posts.getParameters(terms);
-      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       const posts = Posts.find(selector, options).fetch();
 

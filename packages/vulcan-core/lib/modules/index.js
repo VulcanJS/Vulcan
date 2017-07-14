@@ -1,42 +1,10 @@
 import './callbacks.js';
 
 // import and re-export
-export {
-  // apollo
-  createApolloClient,
-  // callbacks
-  Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync,
-  // components
-  Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, populateComponentsApp,
-  // collections
-  Collections, createCollection,
-  // fragments
-  Fragments, registerFragment, getFragment, getFragmentName, extendFragment, removeFromFragment,
-  // graphql
-  GraphQLSchema, addGraphQLSchema, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, removeGraphQLResolver, addToGraphQLContext, 
-  // headtags
-  Headtags,
-  // inject data
-  InjectData,
-  // redux
-  configureStore, addAction, getActions, addReducer, getReducers, addMiddleware, getMiddlewares,
-  // render context
-  renderContext, getRenderContext, withRenderContext,
-  // routes
-  Routes, addRoute, addAsChildRoute, getRoute, populateRoutesApp,
-  // settings
-  getSetting,
-  // strings
-  Strings, addStrings,
-  // utils
-  Utils,
-  // mutations (for server only)
-  newMutation, editMutation, removeMutation,
-  // render context (for server only)
-  withRenderContextEnvironment,
-  // meteor patch (for server only)
-  webAppConnectHandlersUse
-} from 'meteor/vulcan:lib';
+export * from 'meteor/vulcan:lib';
+
+export * from './default_mutations.js';
+export * from './default_resolvers.js';
 
 export { default as Layout } from "./components/Layout.jsx";
 export { default as App } from "./components/App.jsx";
@@ -45,6 +13,9 @@ export { default as Loading } from "./components/Loading.jsx";
 export { default as ShowIf } from "./components/ShowIf.jsx";
 export { default as ModalTrigger } from './components/ModalTrigger.jsx';
 export { default as Error404 } from './components/Error404.jsx';
+export { default as DynamicLoading } from './components/DynamicLoading.jsx';
+export { default as HeadTags } from './components/HeadTags.jsx';
+export { default as Avatar } from './components/Avatar.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';

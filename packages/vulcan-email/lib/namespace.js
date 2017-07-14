@@ -1,5 +1,5 @@
 /**
- * @summary Telescope VulcanEmail namespace
+ * @summary Vulcan VulcanEmail namespace
  * @namespace VulcanEmail
  */
 const VulcanEmail = {};

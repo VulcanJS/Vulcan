@@ -1,1 +1,1 @@
-Telescope tags package, used internally. 
+Vulcan tags package, used internally. 

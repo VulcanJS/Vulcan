@@ -6,6 +6,7 @@ import moment from 'moment';
 import { getSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
+import { createError } from 'apollo-errors';
 
 /*
 
@@ -46,11 +47,18 @@ if (settings) {
         const subscribe = callSyncAPI('lists', 'subscribe', subscribeOptions);
         return {result: 'subscribed', ...subscribe};
       } catch (error) {
-        // if the email is already in the Mailchimp list, no need to throw an error
-        if (error.code === 214) {
-          return {result: 'already-subscribed'};
+        console.log(error)
+        let name, message;
+        if (error.code == 214) {
+          name = 'has_unsubscribed';
+        } else if (error.code == 214) {
+          name = 'already_subscribed';
+        } else {
+          name = 'subscription_failed';
+          message = error.message;
         }
-        throw new Error("subscription-failed", error.message);
+        const NewsletterError = createError(name, { message });
+        throw new NewsletterError();
       }
     },
 
@@ -81,7 +89,8 @@ if (settings) {
             list_id: listId,
             subject: subject,
             from_email: fromEmail,
-            from_name: fromName
+            from_name: fromName,
+            timewarp: true // NOTE: Sidebar only
           },
           content: {
             html: html,
@@ -95,7 +104,8 @@ if (settings) {
         console.log('// Newsletter created');
         // console.log(campaign)
 
-        const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
+        // NOTE: Sidebar only, schedule for next day at 9 AM
+        const scheduledMoment = moment().add(1, 'day').startOf('day').hour(9);
         const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
 
         const scheduleOptions = {

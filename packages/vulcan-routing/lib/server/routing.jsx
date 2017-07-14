@@ -8,8 +8,9 @@ import { Meteor } from 'meteor/meteor';
 import {
   Components,
   addRoute,
-  Routes, populateComponentsApp, populateRoutesApp,
+  Routes, populateComponentsApp, populateRoutesApp, initializeFragments,
   getRenderContext,
+  dynamicLoader,
 } from 'meteor/vulcan:lib';
 
 import { RouterServer } from './router.jsx';
@@ -19,9 +20,10 @@ Meteor.startup(() => {
   addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
+  initializeFragments();
   populateComponentsApp();
   populateRoutesApp();
-
+  
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
 

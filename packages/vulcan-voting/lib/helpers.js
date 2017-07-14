@@ -7,7 +7,7 @@
  */
 const hasUpvoted = (user, document) => {
   // note(apollo): check upvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
-  return user && document.upvoters && !!document.upvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
+  return user && document.upvoters && !!document.upvoters.find(u => u && (typeof u === 'string' ? u === user._id : u._id === user._id));
 };
 
 /**
@@ -18,7 +18,7 @@ const hasUpvoted = (user, document) => {
  */
 const hasDownvoted = (user, document) => {
   // note(apollo): check downvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
-  return user && document.downvoters && !!document.downvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
+  return user && document.downvoters && !!document.downvoters.find(u => u && (typeof u === 'string' ? u === user._id : u._id === user._id));
 };
 
 export { hasUpvoted, hasDownvoted }

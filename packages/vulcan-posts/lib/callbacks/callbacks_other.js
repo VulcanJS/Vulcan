@@ -14,17 +14,18 @@ addCallback("posts.remove.sync", PostsRemoveOperations);
 // ------------------------------------- posts.approve.async -------------------------------- //
 
 /**
- * @summary set postedAt when a post is approved
+ * @summary set postedAt when a post is approved and it doesn't have a postedAt date
  */
 function PostsSetPostedAt (modifier, post) {
-  modifier.$set.postedAt = new Date();
-  if (modifier.$unset) {
-    delete modifier.$unset.postedAt;
+  if (!modifier.$set.postedAt && !post.postedAt) {
+    modifier.$set.postedAt = new Date();
+    if (modifier.$unset) {
+      delete modifier.$unset.postedAt;
+    }
   }
   return modifier;
 }
 addCallback("posts.approve.sync", PostsSetPostedAt);
-
 
 // ------------------------------------- users.remove.async -------------------------------- //
 

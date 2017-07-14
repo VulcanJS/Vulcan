@@ -1,10 +1,10 @@
 import schema from './schema.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
-import { createCollection, GraphQLSchema } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { createCollection, addGraphQLQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 /**
- * @summary Telescope Users namespace
+ * @summary Vulcan Users namespace
  * @namespace Users
  */
 const Users = createCollection({
@@ -23,6 +23,6 @@ const Users = createCollection({
 
 });
 
-GraphQLSchema.addQuery(`currentUser: User`);
+addGraphQLQuery(`currentUser: User`);
 
 export default Users;

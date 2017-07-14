@@ -1,8 +1,8 @@
 Package.describe({
   name: "vulcan:events",
-  summary: "Telescope event tracking package",
+  summary: "Vulcan event tracking package",
   version: '1.5.0',
-  git: "https://github.com/TelescopeJS/Telescope.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function(api) {

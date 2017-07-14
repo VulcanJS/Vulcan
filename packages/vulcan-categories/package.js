@@ -1,6 +1,6 @@
 Package.describe({
   name: "vulcan:categories",
-  summary: "Telescope tags package",
+  summary: "Vulcan tags package",
   version: '1.5.0',
   git: "https://github.com/TelescopeJS/telescope-tags.git"
 });

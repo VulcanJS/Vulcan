@@ -25,7 +25,14 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    resolveAs: 'user: User', // resolve as "user" on the client
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User', 
+      resolver(comment, args, context) {
+        return context.Users.findOne({ _id: comment.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
+      },
+      addOriginalField: true
+    }
   },
   
   // custom properties
