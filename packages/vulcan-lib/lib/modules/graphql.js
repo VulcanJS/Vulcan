@@ -140,7 +140,8 @@ export const GraphQLSchema = {
           } else {
 
             // if resolveAs is an object, first push its type definition
-            mainSchema.push(`${field.resolveAs.fieldName}: ${field.resolveAs.type}`);
+            // include arguments if there are any
+            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? field.resolveAs.arguments : ''}: ${field.resolveAs.type}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -195,6 +196,7 @@ export const GraphQLSchema = {
         ${inputSchema.length ? unsetSchema.join('\n  ') : '_blank: Boolean'}
       }
     `
+
     return graphQLSchema;
   }
 };

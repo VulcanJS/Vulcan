@@ -24,9 +24,10 @@ Users.addField([
       viewableBy: ['guests'],
       resolveAs: {
         fieldName: 'posts',
+        arguments: '(limit: Int = 5)',
         type: '[Post]',
-        resolver: (user, args, { currentUser, Users, Posts }) => {
-          const posts = Posts.find({userId: user._id}).fetch();
+        resolver: (user, { limit }, { currentUser, Users, Posts }) => {
+          const posts = Posts.find({ userId: user._id }, { limit }).fetch();
 
           // restrict documents fields
           const viewablePosts = _.filter(posts, post => Posts.checkAccess(currentUser, post));
