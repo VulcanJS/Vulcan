@@ -4,6 +4,14 @@
 }
 
 .admin-users-item-name{
+  .modal-trigger{
+    display: inline-block;
+    cursor: pointer;
+  }
+  .avatar{
+    display: inline-block;
+    margin-right: 5px;
+  }
   a{
     display: flex;
     align-items: center;
