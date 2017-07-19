@@ -52,6 +52,7 @@ $medium-text: $dark-grey;
   a {
     color: $black;
     text-decoration: underline;
+    font-weight: 500;
   }
   .comments-item-meta {
     margin-bottom: 8px;
@@ -72,7 +73,7 @@ $medium-text: $dark-grey;
     font-size: 12px;
     .vote {
       font-weight: 300;
-      color: $dark-grey; 
+      color: $dark-grey;
     }
   }
 
@@ -100,6 +101,7 @@ $medium-text: $dark-grey;
     position: relative;
     line-height: 1.15;
     border-style: none;
+    margin-bottom: 0px;
   }
   blockquote:before {
     content: "\201C";
