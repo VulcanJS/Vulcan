@@ -14,7 +14,7 @@ export const registerFragment = fragmentText => {
   const fragmentName = fragmentText.match(/fragment (.*) on/)[1];
   
   // extract subFragments from text
-  const matchedSubFragments = fragmentText.match(/\.\.\.(.*)/g) || [];
+  const matchedSubFragments = fragmentText.match(/\.\.\.([^\s].*)/g) || [];
   const subFragments = _.unique(matchedSubFragments.map(f => f.replace('...', '')));
   
   // register fragment
