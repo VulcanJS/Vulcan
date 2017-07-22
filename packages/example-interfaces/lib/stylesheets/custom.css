@@ -1,0 +1,14 @@
+.category.top-category {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.category-header > * {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+.category > .category-list {
+    padding-left: 25px;
+}
