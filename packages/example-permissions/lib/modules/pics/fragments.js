@@ -30,5 +30,6 @@ registerFragment(`
     imageUrl
     commentsCount
     body
+    managerId
   }
 `);

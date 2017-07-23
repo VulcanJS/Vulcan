@@ -76,7 +76,23 @@ const schema = {
         return context.Comments.find({picId: pic._id, isDeleted: {$ne: true}}).count();
       }
     }
-  }
+  },
+
+  managerId: {
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
+    resolveAs: {
+      fieldName: 'manager',
+      type: 'User',
+      resolver(pic, args, context) {
+        return context.Users.findOne({ _id: pic.managerId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
+      },
+      addOriginalField: true
+    }
+  },
 };
 
 export default schema;

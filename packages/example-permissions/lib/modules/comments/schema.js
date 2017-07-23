@@ -55,9 +55,9 @@ const schema = {
     type: Boolean,
     optional: true,
     control: 'checkbox',
-    viewableBy: ['mods'],
-    insertableBy: ['mods'],
-    editableBy: ['mods'],
+    viewableBy: ['mods', 'admins', 'managers'],
+    insertableBy: ['mods', 'admins', 'managers'],
+    editableBy: ['mods', 'admins', 'managers'],
   },
   
 };

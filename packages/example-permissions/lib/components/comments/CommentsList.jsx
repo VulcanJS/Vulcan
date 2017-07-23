@@ -13,7 +13,7 @@ import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:co
 import Comments from '../../modules/comments/collection.js';
 import CommentsItem from './CommentsItem.jsx';
 
-const CommentsList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
+const CommentsList = ({results = [], currentUser, loading, loadMore, count, totalCount, pic}) => 
   
   <div className="comments-list">
 
@@ -22,7 +22,7 @@ const CommentsList = ({results = [], currentUser, loading, loadMore, count, tota
       <Loading /> :
 
       <div className="comments-items">
-        {results.map(comment => <CommentsItem key={comment._id} comment={comment} currentUser={currentUser} />)}
+        {results.map(comment => <CommentsItem key={comment._id} comment={comment} currentUser={currentUser} pic={pic} />)}
       </div>
       
     }

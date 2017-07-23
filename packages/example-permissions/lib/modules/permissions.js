@@ -6,7 +6,8 @@ User groups:
 2. Members
 3. Photographers (custom)
 4. Mods (custom)
-5. Admins
+5. Managers (custom)
+6. Admins
 
 Guests can:
 
@@ -29,6 +30,11 @@ Mods can:
 - View deleted comments
 - Edit other user's comments
 
+Managers can:
+
+- Do everything a member can
+- View/insert/edit the isDeleted field (see Pics schema)
+
 Admins can:
 
 - Do everything
@@ -45,6 +51,7 @@ Create new custom groups
 
 Users.createGroup('photographers');
 Users.createGroup('mods');
+Users.createGroup('managers');
 
 /*
 

@@ -48,7 +48,7 @@ const PicsDetails = ({loading, document, currentUser}) => {
 
           </div>
 
-          <CommentsList terms={{view: 'picComments', picId: document._id}} />
+          <CommentsList terms={{view: 'picComments', picId: document._id}} pic={document}/>
         
           {Comments.options.mutations.new.check(currentUser) ?
             <CommentsNewForm picId={document._id} /> :
