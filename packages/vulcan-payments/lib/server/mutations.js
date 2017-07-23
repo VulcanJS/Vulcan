@@ -10,7 +10,7 @@ const resolver = {
   },
 };
 addGraphQLResolvers(resolver);
-addGraphQLMutation('createChargeMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON) : Chargeable');
+addGraphQLMutation('createChargeMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON, coupon: String) : Chargeable');
 
 const chargeableSchema = `
   union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}

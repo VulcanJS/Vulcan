@@ -22,18 +22,21 @@ class Checkout extends React.Component {
 
   onToken(token) {
 
-    const {createChargeMutation, productKey, associatedCollection, associatedDocument, callback, properties, currentUser, flash} = this.props;
+    const {createChargeMutation, productKey, associatedCollection, associatedDocument, callback, properties, currentUser, flash, coupon} = this.props;
 
     this.setState({ loading: true });
 
-    createChargeMutation({
+    const args = {
       token, 
       userId: currentUser._id, 
       productKey,
       associatedCollection: associatedCollection._name,
       associatedId: associatedDocument._id,
-      properties, 
-    }).then(response => {
+      properties,
+      coupon,
+    }
+
+    createChargeMutation(args).then(response => {
 
       // not needed because we just unmount the whole component:
       this.setState({ loading: false });
@@ -55,7 +58,7 @@ class Checkout extends React.Component {
 
   render() {
 
-    const {productKey, currentUser, button} = this.props;
+    const {productKey, currentUser, button, coupon} = this.props;
   
     const sampleProduct = {
       amount: 10000,
@@ -69,6 +72,12 @@ class Checkout extends React.Component {
     const definedProduct = Products[productKey];
     const product = typeof definedProduct === 'function' ? definedProduct(this.props.associatedDocument) : definedProduct || sampleProduct;
 
+    let amount = product.amount;
+
+    if (coupon && product.coupons && product.coupons[coupon]) {
+      amount -= product.coupons[coupon];
+    }
+
     return (
       <div className={classNames('stripe-checkout', {'checkout-loading': this.state.loading})}>
         <StripeCheckout
@@ -77,7 +86,7 @@ class Checkout extends React.Component {
           ComponentClass="div"
           name={product.name}
           description={product.description}
-          amount={product.amount}
+          amount={amount}
           currency={product.currency}
           email={Users.getEmail(currentUser)}
           allowRememberMe
