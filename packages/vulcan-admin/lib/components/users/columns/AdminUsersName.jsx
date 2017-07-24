@@ -1,14 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Users from 'meteor/vulcan:users';
-import { Components } from 'meteor/vulcan:core';
+import { Components, withMessages } from 'meteor/vulcan:core';
+import { intlShape } from 'meteor/vulcan:i18n';
 
-const AdminUsersName = ({ user }) =>
+const Username = ({ user }) => 
   <div>
-    <Link to={Users.getProfileUrl(user)}>
-      <Components.Avatar user={user} link={false}/> <span>{Users.getDisplayName(user)}</span>
-    </Link> 
-    {_.rest(Users.getGroups(user)).map(group => <code key={group}>{group}</code>)}
+    <Components.Avatar user={user} link={false}/> 
+    <span>{Users.getDisplayName(user)}</span>
   </div>
 
-export default AdminUsersName;
+const EditForm = ({ user, closeModal, flash, intl }) =>
+  <Components.SmartForm 
+    collection={Users} 
+    documentId={user._id}
+    successCallback={user => {          
+      closeModal();
+      flash(intl.formatMessage({ id: 'users.edit_success' }, {name: Users.getDisplayName(user)}), 'success')
+    }}
+    showRemove={true}
+  />
+
+const AdminUsersName = ({ user, flash }, context) =>
+  <div>
+
+    <Components.ModalTrigger title={`${context.intl.formatMessage({ id: 'users.edit_account'})}: ${Users.getDisplayName(user)}`} component={<div><Username user={user} /></div>}>
+      <EditForm user={user} flash={flash} intl={context.intl} />
+    </Components.ModalTrigger>
+
+    {_.rest(Users.getGroups(user)).map(group => <code key={group}>{group}</code>)}
+  
+  </div>
+
+AdminUsersName.contextTypes = {
+  intl: intlShape
+};
+
+export default withMessages(AdminUsersName);

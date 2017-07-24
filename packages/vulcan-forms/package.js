@@ -16,6 +16,7 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
+    "lib/style.scss",
     "lib/datetime.scss"
   ], "client");
 
