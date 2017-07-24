@@ -45,11 +45,6 @@ export const createCharge = async (args) => {
 
   let amount = product.amount;
 
-  // apply discount coupon if there is one
-  if (coupon && product.coupons && product.coupons[coupon]) {
-    amount -= product.coupons[coupon];
-  }
-
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
@@ -59,24 +54,28 @@ export const createCharge = async (args) => {
     source: token.id
   });
 
+  // create metadata object
+  const metadata = {
+    userId: userId,
+    userName: Users.getDisplayName(user),
+    userProfile: Users.getProfileUrl(user, true),
+    ...properties
+  }
+
+  // apply discount coupon and add it to metadata, if there is one
+  if (coupon && product.coupons && product.coupons[coupon]) {
+    amount -= product.coupons[coupon];
+    metadata.coupon = coupon;
+    metadata.discountAmount = product.coupons[coupon];
+  }
+
   // gather charge data
   const chargeData = {
     amount,
     description: product.description,
     currency: product.currency,
     customer: customer.id,
-    metadata: {
-      userId: userId,
-      userName: Users.getDisplayName(user),
-      userProfile: Users.getProfileUrl(user, true),
-      ...properties
-    }
-  }
-
-  // add coupon and discount info to charge data if they exist
-  if (coupon && product.coupons && product.coupons[coupon]) {
-    chargeData.metadata.coupon = coupon;
-    chargeData.metadata.discountAmount = product.coupons[coupon];
+    metadata
   }
 
   // create Stripe charge
