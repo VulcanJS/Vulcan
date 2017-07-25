@@ -14,7 +14,10 @@ accounts-password
 
 ############ Your Packages ############
 
-example-movies
+example-simple
+# example-movies
 # example-instagram
 # example-forum
 # example-customization
+# example-permissions
+# example-membership
