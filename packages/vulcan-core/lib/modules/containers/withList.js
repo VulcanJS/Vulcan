@@ -38,7 +38,7 @@ import React, { PropTypes, Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getDefaultFragment } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
@@ -47,10 +47,20 @@ const withList = (options) => {
 
   const { collection, limit = 10, pollInterval = 20000, totalResolver = true } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
-        fragment = options.fragment || getFragment(options.fragmentName),
-        fragmentName = getFragmentName(fragment),
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
+
+  let fragment;
+
+  if (options.fragment) {
+    fragment = options.fragment;
+  } else if (options.fragmentName) {
+    fragment = getFragment(options.fragmentName);
+  } else {
+    fragment = getDefaultFragment(collection);
+  }
+
+  const fragmentName = getFragmentName(fragment);
 
   // build graphql query from options
   const query = gql`

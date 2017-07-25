@@ -46,6 +46,26 @@ export const getFragmentObject = (fragmentText, subFragments) => {
 
 /*
 
+Create default "dumb" gql fragment object for a given collection
+
+*/
+export const getDefaultFragment = collection => {
+  const schema = collection.simpleSchema()._schema;
+  const fieldNames = _.reject(_.keys(schema), fieldName => fieldName.indexOf('$') !== -1);
+
+  const fragmentText = `
+    fragment ${collection._name}DefaultFragment on ${collection.typeName} {
+      ${fieldNames.map(fieldName => {
+        return fieldName+'\n'
+      }).join('')}
+    }
+  `;
+
+  return gql`${fragmentText}`;
+
+}
+/*
+
 Queue a fragment to be extended with additional properties.
 
 Note: can be used even before the fragment has been registered. 
