@@ -54,15 +54,19 @@ class FormWrapper extends PureComponent {
 
     const schema = this.getSchema();
     const fields = this.props.fields;
+    const viewableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].viewableBy);
     const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableBy);
     const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableBy);
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === 'new' ? insertableFields : editableFields;
+    let queryFields = this.getFormType() === 'new' ? insertableFields : editableFields;
+    // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
+    let mutationFields = this.getFormType() === 'new' ? _.unique(insertableFields.concat(viewableFields)) : _.unique(insertableFields.concat(editableFields));
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
-      relevantFields = _.intersection(relevantFields, fields);
+      queryFields = _.intersection(queryFields, fields);
+      mutationFields = _.intersection(mutationFields, fields);
     }
 
     // resolve any array field with resolveAs as fieldName{_id}
@@ -72,26 +76,35 @@ class FormWrapper extends PureComponent {
     - array field with no resolver  -> fieldName
     - array field with a resolver   -> fieldName{_id}
     */
-    relevantFields = relevantFields.map(fieldName => {
+    const mapFieldNameToField = fieldName => {
       const field = this.getSchema()[fieldName]
       return field.resolveAs && field.type.definitions[0].type === Array
         ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
         : fieldName; // else just ask for the field name
-    });
+    }
+    queryFields = queryFields.map(mapFieldNameToField);
+    mutationFields = mutationFields.map(mapFieldNameToField);
 
-    // generate fragment based on the fields that can be edited. Note: always add _id.
-    const generatedFragment = gql`
+    // generate query fragment based on the fields that can be edited. Note: always add _id.
+    const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.props.collection.typeName} {
         _id
-        ${relevantFields.join('\n')}
+        ${queryFields.join('\n')}
+      }
+    `
+    // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
+    const generatedMutationFragment = gql`
+      fragment ${fragmentName} on ${this.props.collection.typeName} {
+        _id
+        ${mutationFields.join('\n')}
       }
     `
 
     // get query & mutation fragments from props or else default to same as generatedFragment
     // note: mutationFragment should probably always be specified in props
     return {
-      queryFragment: this.props.queryFragment || generatedFragment,
-      mutationFragment: this.props.mutationFragment || generatedFragment,
+      queryFragment: this.props.queryFragment || generatedQueryFragment,
+      mutationFragment: this.props.mutationFragment || generatedMutationFragment,
     };
   }
 
