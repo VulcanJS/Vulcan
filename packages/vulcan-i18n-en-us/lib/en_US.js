@@ -211,6 +211,8 @@ addStrings('en', {
   "newsletter.subscription_updated": "Newsletter subscription updated.",
   "newsletter.subscription_failed": "Subscription failed. Is Mailchimp configured in your settings file?",
 
+  "cards.edit": "Edit",
+  
   "admin": "Admin",
   "notifications": "Notifications",
 });

@@ -1,5 +1,5 @@
 import { registerComponent, Components } from 'meteor/vulcan:lib';
-import { intlShape } from 'meteor/vulcan:i18n';
+import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -86,14 +86,16 @@ const CardItem = ({label, value, typeName}) =>
     <td>{getFieldValue(value, typeName)}</td>
   </tr>
 
-const CardEdit = props =>
+const CardEdit = (props, context) =>
   <tr>
     <td colSpan="2">
-      <Components.ModalTrigger label={<Button bsStyle="default">Edit</Button>}>
+      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Button bsStyle="default"><FormattedMessage id="cards.edit" /></Button>}>
         <CardEditForm {...props} />
       </Components.ModalTrigger>
     </td>
   </tr>
+
+CardEdit.contextTypes = { intl: intlShape };
 
 const CardEditForm = ({ collection, document, closeModal }) =>
   <Components.SmartForm 
