@@ -72,7 +72,9 @@ export const runCallbacks = function () {
       } catch (error) {
         console.log(`// error at callback [${callback.name}] in hook [${hook}]`);
         console.log(error);
-        // throw error;
+        if (error.break || error.data && error.data.break) {
+          throw error;
+        }
         // pass the unchanged accumulator to the next iteration of the loop
         return accumulator;
       }

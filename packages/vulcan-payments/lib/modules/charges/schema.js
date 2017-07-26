@@ -20,7 +20,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    resolveAs: 'user: User', // resolve as "user" on the client
   },
   
   // custom properties

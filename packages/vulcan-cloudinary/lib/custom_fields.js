@@ -15,7 +15,6 @@ Posts.addField([
       type: Array,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: 'cloudinaryUrls: [JSON]',
     }
   },
   {

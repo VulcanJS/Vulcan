@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:admin",
   summary: "Vulcan components package",
-  version: '1.5.0',
+  version: '1.6.0',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
     'fourseven:scss@4.5.0',
     'dynamic-import',
     // Vulcan packages
-    'vulcan:core@1.5.0',
+    'vulcan:core@1.6.0',
 
   ]);
 

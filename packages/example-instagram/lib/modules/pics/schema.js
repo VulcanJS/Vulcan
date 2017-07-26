@@ -29,10 +29,11 @@ const schema = {
     viewableBy: ['guests'],
     resolveAs: {
       fieldName: 'user',
-      typeName: 'User',
+      type: 'User',
       resolver(pic, args, context) {
         return context.Users.findOne({ _id: pic.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
       },
+      addOriginalField: true
     }
   },
   
@@ -70,7 +71,7 @@ const schema = {
     hidden: true,
     resolveAs: {
       fieldName: 'commentsCount',
-      typeName: 'Float',
+      type: 'Float',
       resolver(pic, args, context) {
         return context.Comments.find({picId: pic._id}).count();
       }

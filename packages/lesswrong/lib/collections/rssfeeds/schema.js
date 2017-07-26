@@ -19,7 +19,12 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['admins'],
-    resolveAs: 'user: User',
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: (feed, args, context) => context.Users.findOne({_id: message.userId}, {fields: context.getViewableFields(context.currentUser, context.Users)}),
+      addOriginalField: true,
+    },
     optional: true,
   },
   createdAt: {

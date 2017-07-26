@@ -89,7 +89,7 @@ export const getDefaultMutations = collectionName => ({
     
     check(user, document) {
       if (!user || !document) return false;
-      return Users.owns(user, document) ? Users.canDo(user, `${collectionName}.remove.own`) : Users.canDo(user, `${collectionName}.remove.all`);
+      return Users.owns(user, document) ? Users.canDo(user, `${collectionName.toLowerCase()}.remove.own`) : Users.canDo(user, `${collectionName.toLowerCase()}.remove.all`);
     },
     
     mutation(root, {documentId}, context) {

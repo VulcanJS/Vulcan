@@ -13,32 +13,46 @@ import { disableFragmentWarnings } from 'graphql-tag';
 
 disableFragmentWarnings();
 
-// convert a JSON schema to a GraphQL schema
-const jsTypeToGraphQLType = type => {
+// get GraphQL type for a given schema and field name
+const getGraphQLType = (schema, fieldName) => {
+
+  const field = schema[fieldName];
+  const type = field.type.singleType;
   const typeName = typeof type === 'function' ? type.name : type;
+
   switch (typeName) {
 
-    case "String":
-      return "String";
+    case 'String':
+      return 'String';
 
-    case "Number":
-      return "Float";
+    case 'Boolean':
+      return 'Boolean';
+
+    case 'Number':
+      return 'Float';
 
     case 'SimpleSchema.Integer':
       return 'Int';
 
-    // assume all arrays contains strings for now
-    case "Array":
-      return "[String]";
+    // for arrays, look for type of associated schema field or default to [String]
+    case 'Array':
+      const arrayItemFieldName = `${fieldName}.$`;
+      // note: make sure field has an associated array
+      if (schema[arrayItemFieldName]) {
+        // try to get array type from associated array
+        const arrayItemType = getGraphQLType(schema, arrayItemFieldName);
+        return arrayItemType ? `[${arrayItemType}]` : null;
+      }
+      return null;
 
-    case "Object":
-      return "JSON";
+    case 'Object':
+      return 'JSON';
 
-    case "Date":
-      return "Date";
+    case 'Date':
+      return 'Date';
 
     default:
-      return typeName;
+      return null;
   }
 }
 
@@ -110,16 +124,14 @@ export const GraphQLSchema = {
 
     let mainSchema = [], inputSchema = [], unsetSchema = [];
 
-    _.forEach(schema, (field, key) => {
-      // console.log(field, key)
-      const fieldType = jsTypeToGraphQLType(field.type.singleType);
+    _.forEach(schema, (field, fieldName) => {
+      // console.log(field, fieldName)
 
-      if (key.indexOf('$') === -1) { // skip fields with "$"
+      const fieldType = getGraphQLType(schema, fieldName);
 
-        // 1. main schema
-        mainSchema.push(`${key}: ${fieldType}`);
+      if (fieldName.indexOf('$') === -1) { // skip fields containing "$" in their name
 
-        // if field has a resolveAs, also push it to schema
+        // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
 
           if (typeof field.resolveAs === 'string') {
@@ -128,7 +140,8 @@ export const GraphQLSchema = {
           } else {
 
             // if resolveAs is an object, first push its type definition
-            mainSchema.push(`${field.resolveAs.fieldName}: ${field.resolveAs.typeName}`);
+            // include arguments if there are any
+            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -139,6 +152,16 @@ export const GraphQLSchema = {
             addGraphQLResolvers(resolver);
           }
 
+          // if addOriginalField option is enabled, also add original field to schema
+          if (field.resolveAs.addOriginalField && fieldType) {
+            mainSchema.push(`${fieldName}: ${fieldType}`);
+          }
+
+        } else {
+          // try to guess GraphQL type
+          if (fieldType) {
+            mainSchema.push(`${fieldName}: ${fieldType}`);
+          }
         }
 
         if (field.insertableBy || field.editableBy) {
@@ -150,10 +173,10 @@ export const GraphQLSchema = {
           const isRequired = '';
 
           // 2. input schema
-          inputSchema.push(`${key}: ${fieldType}${isRequired}`);
+          inputSchema.push(`${fieldName}: ${fieldType}${isRequired}`);
 
           // 3. unset schema
-          unsetSchema.push(`${key}: Boolean`);
+          unsetSchema.push(`${fieldName}: Boolean`);
 
         }
       }

@@ -93,7 +93,16 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    resolveAs: 'parent: Category',
+    resolveAs: {
+      fieldName: 'parent',
+      type: 'Category',
+      resolver: async (category, args, {currentUser, Users, Categories}) => {
+        if (!category.parentId) return null;
+        const parent = await Categories.loader.load(category.parentId);
+        return Users.restrictViewableFields(currentUser, Categories, parent);
+      },
+      addOriginalField: true
+    },
     form: {
       options: formProps => getCategoriesAsOptions(formProps.client)
     }

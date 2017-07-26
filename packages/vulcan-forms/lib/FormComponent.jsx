@@ -28,6 +28,10 @@ class FormComponent extends PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.updateCharacterCount(nextProps.name, nextProps.value)
+  }
+
   handleBlur() {
     // see https://facebook.github.io/react/docs/more-about-refs.html
     if (this.formControl !== null) {

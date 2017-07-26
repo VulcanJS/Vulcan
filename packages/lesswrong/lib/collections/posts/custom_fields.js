@@ -131,8 +131,13 @@ Posts.addField([
       viewableBy: ['guests'],
       editableBy: ['admins'],
       insertableBy: ['admins'],
-      resolveAs: 'feed: RSSFeed',
-      group: formGroups.admin
+      resolveAs: {
+        fieldName: 'feed',
+        type: 'RSSFeed',
+        resolver: (post, args, context) => context.RSSFeeds.findOne({_id: post.feedId}, {fields: context.getViewableFields(context.currentUser, context.RSSFeeds)}),
+        addOriginalField: true,
+      },
+      group: formGroups.admin,
     }
   },
 

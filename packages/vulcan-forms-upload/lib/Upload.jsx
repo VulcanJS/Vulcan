@@ -1,40 +1,128 @@
+/*
+
+This component supports either uploading and storing a single image, or
+an array of images. 
+
+Note also that an image can be stored as a simple string, or as an array of formats
+(each format being itself an object).
+
+*/
 import { Components, getSetting, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
 
+/*
+
+Get a URL from an image or an array of images
+
+*/
+const getImageUrl = imageOrImageArray => {
+  // if image is actually an array of formats, use first format
+  const image = Array.isArray(imageOrImageArray) ? imageOrImageArray[0] : imageOrImageArray;
+  // if image is an object, return secure_url; else return image itself
+  const imageUrl = typeof image === 'string' ? image : image.secure_url;
+  return imageUrl
+}
+
+/*
+
+Remove the nth item from an array
+
+*/
+const removeNthItem = (array, n) => [..._.first(array, n), ..._.rest(array, n+1)];
+
+/*
+
+Display a single image
+
+*/
+class Image extends PureComponent {
+
+  constructor() {
+    super();
+    this.clearImage = this.clearImage.bind(this);
+  }
+
+  clearImage(e) {
+    e.preventDefault();
+    this.props.clearImage(this.props.index);
+  }
+
+  render() {
+    return (
+      <div>
+        <a href="javascript:void(0)" onClick={this.clearImage}><Components.Icon name="close"/> Remove image</a>
+        <img style={{height: 120}} src={getImageUrl(this.props.image)} />
+      </div>
+    )
+  }
+}
+
+/*
+
+Cloudinary Image Upload component
+
+*/
 class Upload extends PureComponent {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this.onDrop = this.onDrop.bind(this);
     this.clearImage = this.clearImage.bind(this);
+    this.enableMultiple = this.enableMultiple.bind(this);
+
+    const isEmpty = this.enableMultiple() ? props.value.length === 0 : !props.value;
+    const emptyValue = this.enableMultiple() ? [] : '';
 
     this.state = {
       preview: '',
       uploading: false,
-      value: props.value || '',
+      value: isEmpty ? emptyValue : props.value,
     }
+
   }
 
+  /*
+
+  Add to autofilled values so SmartForms doesn't think the field is empty
+  if the user submits the form without changing it
+
+  */
   componentWillMount() {
-    this.context.addToAutofilledValues({[this.props.name]: this.props.value || ''});
+    const isEmpty = this.enableMultiple() ? this.props.value.length === 0 : !this.props.value;
+    const emptyValue = this.enableMultiple() ? [] : '';
+    this.context.addToAutofilledValues({[this.props.name]: isEmpty ? emptyValue : this.props.value});
   }
 
+  /*
+
+  Check the field's type to decide if the component should handle
+  multiple image uploads or not
+
+  */
+  enableMultiple() {
+    return this.props.datatype.definitions[0].type === Array;
+  }
+
+  /*
+
+  When an image is uploaded
+
+  */
   onDrop(files) {
     console.log(this)
     
     // set the component in upload mode with the preview
     this.setState({
-      preview: files[0].preview,
+      preview: this.enableMultiple ? [...this.state.preview, files[0].preview] : files[0].preview,
       uploading: true,
-      value: '',
     });
 
     // request url to cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinaryCloudName')}/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary').cloudName}/upload`;
 
     // request body
     const body = new FormData();
@@ -48,35 +136,41 @@ class Upload extends PureComponent {
     })
     .then(res => res.json()) // json-ify the readable strem
     .then(body => {
-      // use the https:// url given by cloudinary
-      const avatarUrl = body.secure_url;
+      // use the https:// url given by cloudinary; or eager property if using transformations
+      const imageUrl = body.eager ? body.eager : body.secure_url;
+      const newValue = this.enableMultiple() ? [...this.state.value, imageUrl] : imageUrl;
 
       // set the uploading status to false
       this.setState({
         preview: '',
         uploading: false,
-        value: avatarUrl,
+        value: newValue,
       });
 
       // tell vulcanForm to catch the value
-      this.context.addToAutofilledValues({[this.props.name]: avatarUrl});
+      this.context.addToAutofilledValues({[this.props.name]: newValue});
     })
     .catch(err => console.log('err', err));
   }
 
-  clearImage(e) {
-    e.preventDefault();
-    this.context.addToAutofilledValues({[this.props.name]: ''});
+  /*
+
+  Remove the image at `index` (or just remove image if no index is passed)
+
+  */
+  clearImage(index) {
+    const newValue = this.enableMultiple() ? removeNthItem(this.state.value, index): '';
+    this.context.addToAutofilledValues({[this.props.name]: newValue});
     this.setState({
-      preview: '',
-      value: '',
+      preview: newValue,
+      value: newValue,
     });
   }
 
   render() {
     const { uploading, preview, value } = this.state;
     // show the actual uploaded image or the preview
-    const image = preview || value;
+    const imageData = preview || value;
 
     return (
       <div className="form-group row">
@@ -84,7 +178,7 @@ class Upload extends PureComponent {
         <div className="col-sm-9">
           <div className="upload-field">
             <Dropzone ref="dropzone"
-              multiple={false}
+              multiple={this.enableMultiple()}
               onDrop={this.onDrop}
               accept="image/*"
               className="dropzone-base"
@@ -94,11 +188,15 @@ class Upload extends PureComponent {
               <div>Drop an image here, or click to select an image to upload.</div>
             </Dropzone>
 
-            {image ?
+            {imageData ?
               <div className="upload-state">
-                {uploading ? <span>Uploading... Preview:</span> : null}
-                {value ? <a onClick={this.clearImage}><Components.Icon name="close"/> Remove image</a> : null}
-                <img style={{height: 120}} src={image} />
+                {uploading ? <span>Uploading…</span> : null}
+                <div className="images">
+                  {this.enableMultiple() ? 
+                    imageData.map((image, index) => <Image clearImage={this.clearImage} key={index} index={index} image={image}/>) : 
+                    <Image clearImage={this.clearImage} image={imageData}/>
+                  }
+                </div>
               </div>
             : null}
           </div>

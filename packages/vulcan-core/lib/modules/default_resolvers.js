@@ -1,3 +1,5 @@
+import { Utils } from 'meteor/vulcan:core';
+
 /*
 
 Default list, single, and total resolvers

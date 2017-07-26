@@ -21,7 +21,7 @@ export const createCharge = async (args) => {
   
   let collection, document, returnDocument = {};
 
-  const {token, userId, productKey, associatedCollection, associatedId, properties } = args;
+  const {token, userId, productKey, associatedCollection, associatedId, properties, coupon } = args;
 
   if (!stripeSettings) {
     throw new Error('Please fill in your Stripe settings');
@@ -43,6 +43,8 @@ export const createCharge = async (args) => {
   const definedProduct = Products[productKey];
   const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
 
+  let amount = product.amount;
+
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
@@ -52,19 +54,32 @@ export const createCharge = async (args) => {
     source: token.id
   });
 
-  // create Stripe charge
-  const charge = await stripe.charges.create({
-    amount: product.amount,
+  // create metadata object
+  const metadata = {
+    userId: userId,
+    userName: Users.getDisplayName(user),
+    userProfile: Users.getProfileUrl(user, true),
+    ...properties
+  }
+
+  // apply discount coupon and add it to metadata, if there is one
+  if (coupon && product.coupons && product.coupons[coupon]) {
+    amount -= product.coupons[coupon];
+    metadata.coupon = coupon;
+    metadata.discountAmount = product.coupons[coupon];
+  }
+
+  // gather charge data
+  const chargeData = {
+    amount,
     description: product.description,
     currency: product.currency,
     customer: customer.id,
-    metadata: {
-      userId: userId,
-      userName: Users.getDisplayName(user),
-      userProfile: Users.getProfileUrl(user, true),
-      ...properties
-    }
-  });
+    metadata
+  }
+
+  // create Stripe charge
+  const charge = await stripe.charges.create(chargeData);
 
   // create charge document for storing in our own Charges collection
   const chargeDoc = {

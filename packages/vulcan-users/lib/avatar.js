@@ -88,7 +88,7 @@ Users.avatar = {
 
     // Default avatar image's URL. It can be a relative path
     // (relative to website's base URL, e.g. 'images/defaultthis.png').
-    defaultImageUrl: 'https://placekitten.com/80/80',
+    defaultImageUrl: 'http://www.gravatar.com/avatar/?d=identicon',
 
     // This property name will be used to fetch an avatar url from the user's profile
     // (e.g. 'avatar'). If this property is set and a property of that name exists

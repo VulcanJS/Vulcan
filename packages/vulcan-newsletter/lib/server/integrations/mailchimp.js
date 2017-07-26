@@ -49,7 +49,7 @@ if (settings) {
       } catch (error) {
         console.log(error)
         let name, message;
-        if (error.code == 212) {
+        if (error.code == 214) {
           name = 'has_unsubscribed';
         } else if (error.code == 214) {
           name = 'already_subscribed';
