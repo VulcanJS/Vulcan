@@ -309,7 +309,13 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
-    return <div className="form-errors">{this.state.errors.map((message, index) => <Flash key={index} message={message}/>)}</div>
+    return (
+      <div className="form-errors">
+        {this.state.errors.map((error, index) => 
+          <Flash key={index} message={{content: error.message || this.context.intl.formatMessage({id: error.name}, error.data), type: 'error' }}/>
+        )}
+      </div>
+    )
   }
 
   // --------------------------------------------------------------------- //
@@ -319,38 +325,14 @@ class Form extends Component {
   // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
-  throwError(errorMessage) {
+  throwError(error) {
 
-    let strippedError = errorMessage;
+    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+    const graphQLError = error.graphQLErrors[0];
 
-    // strip the "GraphQL Error: message [error_code]" given by Apollo if present
-    const graphqlPrefixIsPresent = strippedError.match(/GraphQL error: (.*)/);
-    if (graphqlPrefixIsPresent) {
-      strippedError = graphqlPrefixIsPresent[1];
-    }
-
-    // strip the error code if present
-    const errorCodeIsPresent = strippedError.match(/(.*)\[(.*)\]/);
-    if (errorCodeIsPresent) {
-      strippedError = errorCodeIsPresent[1];
-    }
-
-    // internationalize the error if necessary
-    const intlError = Utils.decodeIntlError(strippedError, {stripped: true});
-    if(typeof intlError === 'object') {
-      const { id, value = "" } = intlError;
-      strippedError = this.context.intl.formatMessage({id}, {value});
-    }
-
-    // build the error for the Flash component and only keep the interesting message
-    const error = {
-      content: strippedError,
-      type: 'error'
-    };
-
-    // update the state with unique errors messages
+    // add error to state
     this.setState(prevState => ({
-      errors: _.uniq([...prevState.errors, error])
+      errors: [...prevState.errors, graphQLError]
     }));
   }
 
@@ -458,7 +440,7 @@ class Form extends Component {
 
     if (!_.isEmpty(error)) {
       // add error to state
-      this.throwError(error.message);
+      this.throwError(error);
     }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?

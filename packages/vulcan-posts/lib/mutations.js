@@ -1,4 +1,4 @@
-import { newMutation, editMutation, removeMutation, GraphQLSchema, Utils } from 'meteor/vulcan:core';
+import { newMutation, editMutation, removeMutation, addGraphQLMutation, Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
 
@@ -82,6 +82,6 @@ const mutations = {
 
 };
 
-GraphQLSchema.addMutation('increasePostViewCount(postId: String): Float');
+addGraphQLMutation('increasePostViewCount(postId: String): Float');
 
 export default mutations;

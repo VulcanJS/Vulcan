@@ -31,7 +31,6 @@ import './subscriptions/permissions.js';
 // Posts
 import './collections/posts/custom_fields.js';
 import './collections/posts/callbacks.js';
-import './collections/posts/resolvers.js';
 import './collections/posts/views.js';
 //
 // Users

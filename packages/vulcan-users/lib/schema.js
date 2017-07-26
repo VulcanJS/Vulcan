@@ -179,6 +179,20 @@ const schema = {
       if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
       return undefined;
 
+    },
+    resolveAs: {
+      fieldName: 'avatarUrl',
+      type: 'String',
+      resolver: async (user, args, context) => {
+        if (user.avatarUrl) {
+          return user.avatarUrl;
+        } else {
+          // user has already been cleaned up by Users.restrictViewableFields, so we
+          // reload the full user object from the cache to access user.services
+          const fullUser = await Users.loader.load(user._id);
+          return Users.avatar.getUrl(fullUser);
+        }
+      }
     }
   },
   /**
@@ -220,7 +234,13 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
-    resolveAs: 'twitterUsername: String',
+    resolveAs: {
+      fieldName: 'twitterUsername',
+      type: 'String',
+      resolver: (user, args, context) => {
+        return context.Users.getTwitterName(context.Users.findOne(user._id));
+      },
+    },
     onInsert: user => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;

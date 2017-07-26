@@ -114,7 +114,7 @@ Users.isMemberOf = (user, groupOrGroups) => {
  * @param {String} action
  */
 Users.canDo = (user, action) => {
-  return Users.getActions(user).indexOf(action) !== -1;
+  return Users.isAdmin(user) || Users.getActions(user).indexOf(action) !== -1;
 };
 
 // DEPRECATED

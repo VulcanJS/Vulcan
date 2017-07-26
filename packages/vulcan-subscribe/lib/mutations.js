@@ -1,5 +1,5 @@
 import Users from 'meteor/vulcan:users';
-import { Utils, GraphQLSchema } from 'meteor/vulcan:core';
+import { Utils, addGraphQLMutation, addGraphQLResolvers } from 'meteor/vulcan:core';
 
 /**
  * @summary Verify that the un/subscription can be performed
@@ -158,11 +158,11 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
    const collectionName = collection._name;
    
    // add mutations to the schema
-   GraphQLSchema.addMutation(`${collectionName}Subscribe(documentId: String): User`),
-   GraphQLSchema.addMutation(`${collectionName}Unsubscribe(documentId: String): User`);
+   addGraphQLMutation(`${collectionName}Subscribe(documentId: String): User`),
+   addGraphQLMutation(`${collectionName}Unsubscribe(documentId: String): User`);
    
    // create an object of the shape expected by mutations resolvers
-   GraphQLSchema.addResolvers({
+   addGraphQLResolvers({
      Mutation: {
        [`${collectionName}Subscribe`]: genericMutationFunction(collectionName, 'subscribe'),
        [`${collectionName}Unsubscribe`]: genericMutationFunction(collectionName, 'unsubscribe'),

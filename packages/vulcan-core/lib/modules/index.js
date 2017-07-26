@@ -16,6 +16,7 @@ export { default as Error404 } from './components/Error404.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as Avatar } from './components/Avatar.jsx';
+export { default as Card } from './components/Card.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';

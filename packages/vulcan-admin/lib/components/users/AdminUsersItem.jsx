@@ -6,7 +6,7 @@ const AdminUsersItem = ({ user }) => {
   <tr className="admin-users-item">
     {_.sortBy(AdminColumns, column => column.order).map(column => {
       const Component = column.component || Components[column.componentName];
-      return <td key={column.name} className={`admin-users-item-${column.name}`}><Component user={user} /></td>
+      return <td key={column.name} className={`admin-users-item-${column.name.replace('users.', '')}`}><Component user={user} /></td>
     })}
   </tr>
   )

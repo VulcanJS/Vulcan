@@ -43,8 +43,11 @@ accounts-password
 
 ############ Your Packages ############
 
+# example-simple
 # example-movies
 # example-instagram
 example-forum
 lesswrong
 # example-customization
+# example-permissions
+# example-membership

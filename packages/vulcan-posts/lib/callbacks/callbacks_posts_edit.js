@@ -37,9 +37,16 @@ addCallback("posts.edit.sync", PostsEditForceStickyToFalse);
  * @summary Set status
  */
 function PostsEditSetIsFuture (modifier, post) {
-  // if a post's postedAt date is in the future, set isFuture to true
-  if (modifier.$set.postedAt && new Date(modifier.$set.postedAt).getTime() > new Date().getTime() + 1000) {
-    modifier.$set.isFuture = true;
+  const postTime = new Date(modifier.$set.postedAt).getTime();
+  const currentTime = new Date().getTime() + 1000; // why "+ 1000" ??
+  if (modifier.$set.postedAt) {
+    if (postTime > currentTime) {
+      // if a post's postedAt date is in the future, set isFuture to true
+      modifier.$set.isFuture = true;
+    } else if (post.isFuture) {
+      // else if a post has isFuture to true but its date is in the past, set isFuture to false
+      modifier.$set.isFuture = false;
+    }
   }
   return modifier;
 }

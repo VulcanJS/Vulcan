@@ -1,4 +1,4 @@
-import { GraphQLSchema, Collections } from 'meteor/vulcan:core';
+import { addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Collections } from 'meteor/vulcan:core';
 // import Users from 'meteor/vulcan:users';
 import { createCharge } from '../server/integrations/stripe.js';
 
@@ -9,13 +9,13 @@ const resolver = {
     },
   },
 };
-GraphQLSchema.addResolvers(resolver);
-GraphQLSchema.addMutation('createChargeMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON) : Chargeable');
+addGraphQLResolvers(resolver);
+addGraphQLMutation('createChargeMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON, coupon: String) : Chargeable');
 
 const chargeableSchema = `
   union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}
 `;
-GraphQLSchema.addSchema(chargeableSchema);
+addGraphQLSchema(chargeableSchema);
 
 const resolverMap = {
   Chargeable: {
@@ -24,4 +24,4 @@ const resolverMap = {
     },
   },
 };
-GraphQLSchema.addResolvers(resolverMap);
+addGraphQLResolvers(resolverMap);

@@ -2,7 +2,7 @@ import { extendFragment, addAdminColumn } from 'meteor/vulcan:core';
 import AdminUsersPosts from './components/AdminUsersPosts';
 
 extendFragment('UsersAdmin', `
-  posts{
+  posts(limit: 5){
     ...PostsPage
   }
 `);
