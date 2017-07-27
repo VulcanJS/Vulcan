@@ -69,3 +69,14 @@ import './legacy-redirects/LegacyPostRedirect.jsx'
 import './legacy-redirects/LegacyPostWrapper.jsx'
 
 import './subscriptions/SubscribeTo.jsx';
+
+// Frontend Rework
+
+import '../components/App.jsx';
+import '../components/Layout.jsx';
+import '../components/common/FlashMessages.jsx';
+import '../components/common/Header.jsx';
+import '../components/common/Home.jsx';
+import '../components/common/Section.jsx';
+import '../components/users/UsersMenu.jsx';
+import '../components/users/UsersAccountMenu.jsx';

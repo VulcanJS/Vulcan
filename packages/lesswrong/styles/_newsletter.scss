@@ -1,0 +1,36 @@
+.newsletter{
+  background: $white;
+  border: 1px solid $light-border;
+  border-radius: 3px;
+  position: relative;
+  @include medium-large{
+    @include flex-center;
+    justify-content: center;
+  }
+  padding: $vmargin $hmargin;
+  margin-bottom: $vmargin;
+  .newsletter-tagline{
+    font-size: 1.35rem;
+    @include small{
+      text-align: center;
+      margin-bottom: $vmargin;
+    }
+    @include medium-large{
+      margin: 0 $hmargin 0 0;
+    }
+  }
+  .newsletter-button{
+    // min-width: 100px;
+  }
+  .newsletter-form{
+    @include flex-center;
+    .form-control{
+      margin: 0 5px 0 0;
+    }
+  }
+  .newsletter-close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}

@@ -4,9 +4,6 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Users from 'meteor/vulcan:users';
-import GraphQLSchema from 'meteor/vulcan:core';
-
 const schema = {
   _id: {
     type: String,

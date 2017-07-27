@@ -1,0 +1,38 @@
+.accounts-ui{
+  .field{
+    margin-bottom: $vmargin/2;
+  }
+}
+
+.users-menu{
+  .avatar{
+    margin-right: 5px;
+  }
+}
+
+.avatar-initials{
+  background: $light-grey;
+  color: $dark-grey;
+  text-align: center;
+  border-radius: 100%;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span{
+    display: block;
+    line-height: 1;
+  }
+}
+
+.users-newsletter-settings {
+  @include flex-center;
+  margin-top: $vmargin;
+}
+
+.log-in-message{
+  h3{
+    text-align: center;
+  }
+}

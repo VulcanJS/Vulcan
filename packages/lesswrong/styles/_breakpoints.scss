@@ -1,0 +1,28 @@
+$small-break:  600px;
+$medium-break: 800px;
+
+@mixin small(){ // smaller than small-break
+  @media screen and (max-width: $small-break) {
+    @content;
+  }
+}
+@mixin small-medium(){ // smaller than medium-break
+  @media screen and (max-width: $medium-break) {
+    @content;
+  }
+}
+@mixin medium(){ // between small and medium-break
+  @media screen and (min-width: $small-break) and (max-width: $medium-break) {
+    @content;
+  }
+}
+@mixin medium-large(){ // larger than small-break
+  @media screen and (min-width: $small-break) {
+    @content;
+  }
+}
+@mixin large(){ // larger than medium-break
+  @media screen and (min-width: $medium-break) {
+    @content;
+  }
+}

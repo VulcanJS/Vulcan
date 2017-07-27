@@ -65,3 +65,10 @@ import './users/UsersAvatar.jsx';
 import './users/UsersName.jsx';
 import './users/UsersMenu.jsx';
 import './users/UsersAccountMenu.jsx';
+
+// Frontend Rework
+
+import './components/App.jsx';
+import './components/Layout.jsx';
+import './components/common/Flash.jsx';
+import './components/common/FlashMessages.jsx';

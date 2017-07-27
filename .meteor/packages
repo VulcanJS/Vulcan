@@ -27,7 +27,7 @@ vulcan:rss
 ############ Theme Packages ############
 
 vulcan:base-components        # default ui components
-vulcan:base-styles            # default styling
+# vulcan:base-styles            # default styling
 vulcan:email-templates        # default email templates for notifications
 
 ############ Language Packages ############
