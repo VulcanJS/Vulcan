@@ -100,6 +100,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 3,
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -111,6 +112,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 1,
     onInsert: (user, options) => {
       const profileName = Utils.getNestedProperty(user, 'profile.name');
       const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
@@ -136,6 +138,7 @@ const schema = {
     insertableBy: ['guests'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
+    order: 2,
     onInsert: (user) => {
       // look in a few places for the user email
       const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
@@ -218,6 +221,7 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    order: 4,
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const basicSlug = Utils.slugify(user.displayName);
@@ -234,6 +238,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 6,
     resolveAs: {
       fieldName: 'twitterUsername',
       type: 'String',
@@ -258,6 +263,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 5,
   },
   /**
     Groups
