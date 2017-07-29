@@ -83,7 +83,6 @@ const schema = {
     type: Object,
     blackbox: true,
     optional: true,
-    viewableBy: ['guests'],
   },
   services: {
     type: Object,

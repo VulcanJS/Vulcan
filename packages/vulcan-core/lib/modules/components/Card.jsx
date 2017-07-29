@@ -107,13 +107,13 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />
 
-const Card = ({collection, document, currentUser}, {intl}) => {
+const Card = ({className, collection, document, currentUser, fields}, {intl}) => {
 
-  const fieldNames = _.without(_.keys(document), '__typename', '_id');
+  const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
   const canEdit = currentUser && collection.options.mutations.edit.check(currentUser, document);
 
   return (
-    <div className={classNames('datacard', `datacard-${collection._name}`)}>
+    <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>
       <table className="table table-bordered" style={{maxWidth: '100%'}}>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
@@ -127,6 +127,14 @@ const Card = ({collection, document, currentUser}, {intl}) => {
 };
 
 Card.displayName = "Card";
+
+Card.propTypes = {
+  className: PropTypes.string,
+  collection: PropTypes.object,
+  document: PropTypes.object,
+  currentUser: PropTypes.object,
+  fields: PropTypes.array,
+}
 
 Card.contextTypes = {
   intl: intlShape
