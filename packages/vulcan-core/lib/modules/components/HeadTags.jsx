@@ -24,7 +24,7 @@ class HeadTags extends PureComponent {
     }
 
     // add <meta /> markup specific to the page rendered
-    const meta = Headtags.meta.concat([
+    Headtags.meta.push(...[
       { charset: "utf-8" },
       { name: "description", content: description },
       // responsive
@@ -43,16 +43,16 @@ class HeadTags extends PureComponent {
     ]);
 
     // add <link /> markup specific to the page rendered
-    const link = Headtags.link.concat([
+    Headtags.link.push(...[
       { rel: "canonical", href: url },
-      { rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") },
-      { rel: 'stylesheet', type: 'text/css', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css' },
-      { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
+      { name: 'favicon',rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") },
+      { name: 'bootstrap', rel: 'stylesheet', type: 'text/css', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css' },
+      { name: 'font-awesome', rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
     ]);
 
     return (
       <div>
-        <Helmet title={title} meta={meta} link={link} script={Headtags.script} />
+        <Helmet title={title} meta={Headtags.meta} link={Headtags.link} script={Headtags.script} />
       </div>
     );
   }
