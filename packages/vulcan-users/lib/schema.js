@@ -2,9 +2,24 @@ import SimpleSchema from 'simpl-schema';
 import Users from './collection.js';
 import { Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
+///////////////////////////////////////
+// Order for the Schema is as follows. Change as you see fit: 
+// 00. 
+// 10. Display Name
+// 20. Email
+// 30. Bio 
+// 40. Slug
+// 50. Website
+// 60. Twitter username
+// 70.
+// 80.
+// 90.
+// 100.
+// Anything else..
+///////////////////////////////////////
+
 const adminGroup = {
   name: "admin",
-  order: 10
 };
 
 const ownsOrIsAdmin = (user, document) => {
@@ -91,17 +106,6 @@ const schema = {
     blackbox: true,
   },
   /**
-    Bio (Markdown version)
-  */
-  bio: {
-    type: String,
-    optional: true,
-    control: "textarea",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-  },
-  /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
   */
   displayName: {
@@ -111,18 +115,29 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 10,
     onInsert: (user, options) => {
       const profileName = Utils.getNestedProperty(user, 'profile.name');
       const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
       const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
-
       if (profileName) return profileName;
       if (twitterName) return twitterName;
       if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
       if (user.username) return user.username;
       return undefined;
-
-    }
+    },
+    /**
+    Bio (Markdown version)
+  */
+  bio: {
+    type: String,
+    optional: true,
+    control: "textarea",
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
+    order: 30,
+  }
   },
   /**
     The user's email. Modifiable.
@@ -136,6 +151,7 @@ const schema = {
     insertableBy: ['guests'],
     editableBy: ['members'],
     viewableBy: ownsOrIsAdmin,
+    order: 20,
     onInsert: (user) => {
       // look in a few places for the user email
       const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
@@ -218,33 +234,11 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    order: 40,
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const basicSlug = Utils.slugify(user.displayName);
       return Utils.getUnusedSlug(Users, basicSlug);
-    }
-  },
-  /**
-    The user's Twitter username
-  */
-  twitterUsername: {
-    type: String,
-    optional: true,
-    control: "text",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-    resolveAs: {
-      fieldName: 'twitterUsername',
-      type: 'String',
-      resolver: (user, args, context) => {
-        return context.Users.getTwitterName(context.Users.findOne(user._id));
-      },
-    },
-    onInsert: user => {
-      if (user.services && user.services.twitter && user.services.twitter.screenName) {
-        return user.services.twitter.screenName;
-      }
     }
   },
   /**
@@ -258,6 +252,31 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    order: 50,
+  },
+    /**
+    The user's Twitter username
+  */
+  twitterUsername: {
+    type: String,
+    optional: true,
+    control: "text",
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
+    order: 60,
+    resolveAs: {
+      fieldName: 'twitterUsername',
+      type: 'String',
+      resolver: (user, args, context) => {
+        return context.Users.getTwitterName(context.Users.findOne(user._id));
+      },
+    },
+    onInsert: user => {
+      if (user.services && user.services.twitter && user.services.twitter.screenName) {
+        return user.services.twitter.screenName;
+      }
+    }
   },
   /**
     Groups
