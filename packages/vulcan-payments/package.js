@@ -8,9 +8,9 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core',
+    'vulcan:core@1.6.0',
 
-    'fourseven:scss',
+    'fourseven:scss@4.5.4',
   ]);
 
   api.mainModule('lib/server/main.js', 'server');
