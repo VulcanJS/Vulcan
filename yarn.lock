@@ -1716,15 +1716,15 @@ formidable@^1.0.17:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.1.1.tgz#96b8886f7c3c3508b932d6bd70c4d3a88f35f1a9"
 
-formsy-react-components@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/formsy-react-components/-/formsy-react-components-0.8.1.tgz#2ce4dc17edb9c73e389c1e720532325e08f9f128"
+formsy-react-components@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/formsy-react-components/-/formsy-react-components-0.10.1.tgz#6a1144e5ad801a02ebce4c46e5033e8ee305c41c"
   dependencies:
     classnames "^2.1.3"
 
-formsy-react@^0.18.1:
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/formsy-react/-/formsy-react-0.18.1.tgz#c52ee95baef2896f1547ce6df8dae5fcdbd9ab40"
+formsy-react@^0.19.5:
+  version "0.19.5"
+  resolved "https://registry.yarnpkg.com/formsy-react/-/formsy-react-0.19.5.tgz#760a57ac0113442e3df4c309c3638dd92957e78e"
   dependencies:
     form-data-to-object "^0.2.0"
 

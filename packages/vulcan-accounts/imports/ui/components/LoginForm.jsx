@@ -112,7 +112,7 @@ export class AccountsLoginForm extends Tracker.Component {
 
       if (this.state.formState == STATES.PROFILE) {
         if (!this.props.currentUser && this.state.messages.length === 0) {
-          this.showMessage(loggingInMessage);
+          // this.showMessage(loggingInMessage); // don't show logging in message for now
         } else if (this.props.currentUser &&
           this.state.messages.find(({ message }) => message === loggingInMessage)) {
           this.clearMessage(loggingInMessage);

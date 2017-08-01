@@ -45,7 +45,7 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
 
         {/* documents list */}
 
-        {results.map(movie => <Components.Card key={movie._id} collection={Movies} document={movie} currentUser={currentUser} />)}
+        {results.map(movie => <Components.Card fields={['name', 'year', 'review']} key={movie._id} collection={Movies} document={movie} currentUser={currentUser} />)}
         
         {/* load more */}
 

@@ -124,8 +124,9 @@ const schema = {
       if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
       if (user.username) return user.username;
       return undefined;
-    },
-    /**
+    }
+  },
+  /**
     Bio (Markdown version)
   */
   bio: {
@@ -136,7 +137,6 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     order: 30,
-  }
   },
   /**
     The user's email. Modifiable.
