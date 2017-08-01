@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:categories",
   summary: "Vulcan tags package",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-tags.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {

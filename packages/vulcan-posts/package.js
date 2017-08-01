@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:posts",
   summary: "Vulcan posts package",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-posts.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {

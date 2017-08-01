@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:newsletter",
   summary: "Vulcan email newsletter package",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-newsletter.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {

@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:rss",
   summary: "Vulcan RSS package",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-rss.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Npm.depends({rss: "1.1.1"});

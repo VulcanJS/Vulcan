@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:subscribe",
   summary: "Subscribe to posts, users, etc. to be notified of new activity",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 

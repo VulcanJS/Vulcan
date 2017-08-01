@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:getting-started",
   summary: "Getting started posts",
   version: '1.6.1',
-  git: "https://github.com/TelescopeJS/telescope-getting-started.git"
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Npm.depends({

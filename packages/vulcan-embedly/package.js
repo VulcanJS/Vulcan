@@ -2,7 +2,7 @@ Package.describe({
   name: "vulcan:embedly",
   summary: "Vulcan Embedly module package",
   version: '1.6.1',
-  git: 'https://github.com/TelescopeJS/telescope-embedly.git'
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 Package.onUse( function(api) {
