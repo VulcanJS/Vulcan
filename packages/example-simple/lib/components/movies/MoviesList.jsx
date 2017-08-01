@@ -62,7 +62,6 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
 const options = {
   collection: Movies,
   limit: 5,
-  pollInterval: 0
 };
 
 export default withList(options)(withCurrentUser(MoviesList));
