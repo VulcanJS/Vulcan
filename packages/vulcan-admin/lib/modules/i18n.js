@@ -1,9 +1,9 @@
 import { addStrings } from 'meteor/vulcan:core';
 
 addStrings('en', {
-  'admin.users.name': 'Name',
-  'admin.users.created': 'Created',
-  'admin.users.groups': 'Groups',
-  'admin.users.actions': 'Actions',
-  'admin.users.email': 'Email',
+  'datatable.users.name': 'Name',
+  'datatable.users.created': 'Created',
+  'datatable.users.groups': 'Groups',
+  'datatable.users.actions': 'Actions',
+  'datatable.users.email': 'Email',
 });
