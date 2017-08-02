@@ -55,7 +55,7 @@ class Datatable extends PureComponent {
     const DatatableWithList = withList(options)(Components.DatatableContents);
 
     return (
-      <div className="datatable">
+      <div className={`datatable datatable-${this.props.collection._name}`}>
         <input className="datatable-search" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} />
         <DatatableWithList {...this.props} terms={{query: this.state.query}} />
       </div>

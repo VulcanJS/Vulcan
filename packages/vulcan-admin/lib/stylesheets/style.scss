@@ -1,40 +1,40 @@
-.admin-users-search{
-  margin-bottom: 10px;
-  padding: 2px 7px;
-}
+.datatable-users{
+  .datatable-search{
+    margin-bottom: 10px;
+    padding: 2px 7px;
+  }
 
-.admin-users-item-name{
-  .modal-trigger{
-    display: inline-block;
-    cursor: pointer;
+  .datatable-item-name{
+    .modal-trigger{
+      display: inline-block;
+      cursor: pointer;
+    }
+    .avatar{
+      display: inline-block;
+      margin-right: 5px;
+    }
+    a{
+      display: flex;
+      align-items: center;
+      div{
+        margin-right: 5px;
+      }
+    }
   }
-  .avatar{
-    display: inline-block;
-    margin-right: 5px;
-  }
-  a{
-    display: flex;
-    align-items: center;
-    div{
+
+  .datatable-item-groups{
+    code{
+      display: inline-block;
       margin-right: 5px;
     }
   }
-}
 
-.admin-users-item-groups{
-  code{
-    display: inline-block;
-    margin-right: 5px;
+  .datatable-load-more{
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
 
-.admin-users-load-more{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.admin-users{
   .avatar img{
     width: 20px;
   }
