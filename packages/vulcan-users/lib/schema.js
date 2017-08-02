@@ -45,7 +45,8 @@ const schema = {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
-    }
+    },
+    searchable: true
   },
   emails: {
     type: Array,
@@ -124,7 +125,8 @@ const schema = {
       if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
       if (user.username) return user.username;
       return undefined;
-    }
+    },
+    searchable: true
   },
   /**
     Bio (Markdown version)
@@ -137,6 +139,7 @@ const schema = {
     editableBy: ['members'],
     viewableBy: ['guests'],
     order: 30,
+    searchable: true
   },
   /**
     The user's email. Modifiable.
@@ -165,7 +168,8 @@ const schema = {
       if (googleEmail) return googleEmail;
       if (linkedinEmail) return linkedinEmail;
       return undefined;
-    }
+    },
+    searchable: true
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**

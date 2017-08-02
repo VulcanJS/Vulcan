@@ -31,6 +31,7 @@ SimpleSchema.extendOptions([
   'editableBy',
   'resolveAs',
   'limit',
+  'searchable',
 ]);
 
 export default Vulcan;
