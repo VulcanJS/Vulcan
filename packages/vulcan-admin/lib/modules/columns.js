@@ -7,22 +7,22 @@ import AdminUsersActions from '../components/users/columns/AdminUsersActions.jsx
 
 addAdminColumn([
   {
-    name: 'users.name',
+    name: 'name',
     order: 1,
     component: AdminUsersName
   },
   {
-    name: 'users.email',
+    name: 'email',
     order: 10,
     component: AdminUsersEmail
   },
   {
-    name: 'users.created',
+    name: 'created',
     order: 20,
     component: AdminUsersCreated
   },
   {
-    name: 'users.actions',
+    name: 'actions',
     order: 100,
     component: AdminUsersActions
   },

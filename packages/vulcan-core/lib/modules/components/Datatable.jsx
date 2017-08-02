@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withList from '../containers/withList.js';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
-import Button from 'react-bootstrap/lib/Button';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 /*
 
@@ -72,13 +72,42 @@ registerComponent('Datatable', Datatable, withCurrentUser);
 
 /*
 
+DatatableHeader Component
+
+*/
+const DatatableHeader = ({ collection, column }, { intl }) => {
+  const schema = collection.simpleSchema()._schema;
+  const columnName = typeof column === 'string' ? column : column.name;
+
+  /*
+
+  use either:
+  
+  1. the column name translation
+  2. the column name label in the schema (if the column name matches a schema field)
+  3. the raw column name.
+  
+  */
+  const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
+
+  return <th>{formattedLabel}</th>;
+}
+
+DatatableHeader.contextTypes = {
+  intl: intlShape
+};
+
+registerComponent('DatatableHeader', DatatableHeader);
+
+/*
+
 DatatableContents Component
 
 */
 
 const DatatableContents = (props) => {
-  const {columns, results, loading, loadMore, count, totalCount, networkStatus} = props;
-
+  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus} = props;
+  
   if (loading) {
     return <Components.Loading />;
   }
@@ -91,11 +120,11 @@ const DatatableContents = (props) => {
       <table className="table">
         <thead>
           <tr>
-            {_.sortBy(columns, column => column.order).map(column => <th key={column.name}><FormattedMessage id={`datatable.${column.name}`} /></th>)}
+            {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
           </tr>
         </thead>
         <tbody>
-          {results.map(document => <Components.DatatableItem columns={columns} document={document} key={document._id}/>)}
+          {results.map((document, index) => <Components.DatatableRow columns={columns} document={document} key={index}/>)}
         </tbody>
       </table>
       <div className="admin-users-load-more">
@@ -113,20 +142,39 @@ registerComponent('DatatableContents', DatatableContents);
 
 /*
 
-DatatableItem Component
+DatatableRow Component
 
 */
-
-const DatatableItem = ({ columns, document }) => {
+const DatatableRow = ({ columns, document }) => {
   return (
   <tr className="datatable-item">
-    {_.sortBy(columns, column => column.order).map(column => {
-      const Component = column.component || Components[column.componentName];
-      return <td key={column.name} className={`datatable-item-${column.name.replace('users.', '')}`}><Component document={document} /></td>
-    })}
+    {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} />)}
   </tr>
   )
 }
-registerComponent('DatatableItem', DatatableItem);
+registerComponent('DatatableRow', DatatableRow);
 
-export default Datatable;
+/*
+
+DatatableCell Component
+
+*/
+const DatatableCell = ({ column, document }) => {
+  const Component = column.component || Components[column.componentName] || Components.DatatableDefaultCell;
+
+  return (
+    <td className={`datatable-item-${column.name || column}`}><Component column={column} document={document} /></td>
+  )
+}
+registerComponent('DatatableCell', DatatableCell);
+
+/*
+
+DatatableDefaultCell Component
+
+*/
+
+const DatatableDefaultCell = ({ column, document }) =>
+  <div>{typeof column === 'string' ? document[column] : document[column.name]}</div>
+
+registerComponent('DatatableDefaultCell', DatatableDefaultCell);
