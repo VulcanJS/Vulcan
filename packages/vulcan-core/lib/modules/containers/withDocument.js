@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getDefaultFragment } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
   
@@ -16,7 +16,7 @@ export default function withDocument (options) {
   } else if (options.fragmentName) {
     fragment = getFragment(options.fragmentName);
   } else {
-    fragment = getDefaultFragment(collection);
+    fragment = getFragment(`${collection.options.name}DefaultFragment`);
   }
 
   const fragmentName = getFragmentName(fragment);

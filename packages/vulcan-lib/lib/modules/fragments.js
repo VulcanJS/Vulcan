@@ -49,20 +49,23 @@ export const getFragmentObject = (fragmentText, subFragments) => {
 Create default "dumb" gql fragment object for a given collection
 
 */
-export const getDefaultFragment = collection => {
+export const getDefaultFragmentText = collection => {
   const schema = collection.simpleSchema()._schema;
   const fieldNames = _.reject(_.keys(schema), fieldName => fieldName.indexOf('$') !== -1 || !schema[fieldName].viewableBy);
 
   const fragmentText = `
-    fragment ${collection._name}DefaultFragment on ${collection.typeName} {
+    fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
       ${fieldNames.map(fieldName => {
         return fieldName+'\n'
       }).join('')}
     }
   `;
 
-  return gql`${fragmentText}`;
+  return fragmentText;
 
+}
+export const getDefaultFragment = collection => {
+  return gql`${getDefaultFragmentText(collection)}`;
 }
 /*
 

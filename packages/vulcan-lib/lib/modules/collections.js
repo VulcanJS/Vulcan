@@ -4,6 +4,8 @@ import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLRe
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
+import { registerFragment, getDefaultFragmentText } from './fragments.js';
+import escapeStringRegexp from 'escape-string-regexp';
 
 export const Collections = [];
 
@@ -168,6 +170,10 @@ export const createCollection = options => {
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
     }
   }
+
+  // ------------------------------------- Default Fragment -------------------------------- //
+
+  registerFragment(getDefaultFragmentText(collection));
 
   // ------------------------------------- Parameters -------------------------------- //
 
