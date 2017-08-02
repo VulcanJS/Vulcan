@@ -750,6 +750,7 @@ export class AccountsLoginForm extends Tracker.Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
+          console.log(error)
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
           this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
           if (this.context.intl.formatMessage({id: `error.accounts_${error.reason}`})) {
@@ -770,7 +771,6 @@ export class AccountsLoginForm extends Tracker.Component {
         this.setState({ waiting: false });
       });
     };
-
     if (!error) {
       this.setState({ waiting: true });
       // Allow for Promises to return.

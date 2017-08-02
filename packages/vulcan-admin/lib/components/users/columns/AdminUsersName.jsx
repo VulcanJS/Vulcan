@@ -20,7 +20,7 @@ const EditForm = ({ user, closeModal, flash, intl }) =>
     showRemove={true}
   />
 
-const AdminUsersName = ({ user, flash }, context) =>
+const AdminUsersName = ({ document: user, flash }, context) => 
   <div>
 
     <Components.ModalTrigger title={`${context.intl.formatMessage({ id: 'users.edit_account'})}: ${Users.getDisplayName(user)}`} component={<div><Username user={user} /></div>}>

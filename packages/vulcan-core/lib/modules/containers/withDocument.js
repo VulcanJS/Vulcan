@@ -16,7 +16,7 @@ export default function withDocument (options) {
   } else if (options.fragmentName) {
     fragment = getFragment(options.fragmentName);
   } else {
-    fragment = getFragment(`${collection.options.name}DefaultFragment`);
+    fragment = getFragment(`${collection.options.collectionName}DefaultFragment`);
   }
 
   const fragmentName = getFragmentName(fragment);

@@ -215,6 +215,18 @@ export const createCollection = options => {
       });
     }
 
+    if(terms.query) {
+        
+      const query = escapeStringRegexp(terms.query);
+
+      const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
+      parameters = Utils.deepExtend(true, parameters, {
+        selector: {
+          $or: searchableFieldNames.map(fieldName => ({[fieldName]: {$regex: query, $options: 'i'}}))
+        }
+      });
+    }
+
     // limit number of items to 200 by default
     const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
     parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
