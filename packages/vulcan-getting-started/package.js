@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:getting-started",
   summary: "Getting started posts",
-  version: '1.6.1',
+  version: '1.7.0',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
@@ -14,10 +14,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'vulcan:core@1.6.1',
-    'vulcan:posts@1.6.1',
-    'vulcan:comments@1.6.1',
-    'vulcan:events@1.6.1',
+    'vulcan:core@1.7.0',
+    'vulcan:posts@1.7.0',
+    'vulcan:comments@1.7.0',
+    'vulcan:events@1.7.0',
   ]);
 
   // client
