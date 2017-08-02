@@ -8,7 +8,7 @@ extendFragment('UsersAdmin', `
 `);
 
 addAdminColumn({
-  name: 'users.posts',
+  name: 'posts',
   order: 50,
   component: AdminUsersPosts
 });

@@ -53,7 +53,8 @@ ModalTrigger.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   component: PropTypes.object,
-  size: PropTypes.string
+  size: PropTypes.string,
+  title: PropTypes.string
 }
 
 ModalTrigger.defaultProps = {

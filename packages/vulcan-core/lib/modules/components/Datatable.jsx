@@ -3,8 +3,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withList from '../containers/withList.js';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import { intlShape } from 'meteor/vulcan:i18n';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import Button from 'react-bootstrap/lib/Button';
 
 /*
 
@@ -66,7 +66,8 @@ class Datatable extends PureComponent {
 Datatable.propTypes = {
   collection: PropTypes.object,
   columns: PropTypes.array,
-  options: PropTypes.object
+  options: PropTypes.object,
+  showEdit: PropTypes.bool,
 }
 registerComponent('Datatable', Datatable, withCurrentUser);
 
@@ -89,7 +90,6 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
   
   */
   const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
-
   return <th>{formattedLabel}</th>;
 }
 
@@ -106,7 +106,7 @@ DatatableContents Component
 */
 
 const DatatableContents = (props) => {
-  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus} = props;
+  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit} = props;
   
   if (loading) {
     return <Components.Loading />;
@@ -121,10 +121,11 @@ const DatatableContents = (props) => {
         <thead>
           <tr>
             {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
+            {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
           </tr>
         </thead>
         <tbody>
-          {results.map((document, index) => <Components.DatatableRow columns={columns} document={document} key={index}/>)}
+          {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit}/>)}
         </tbody>
       </table>
       <div className="admin-users-load-more">
@@ -145,14 +146,47 @@ registerComponent('DatatableContents', DatatableContents);
 DatatableRow Component
 
 */
-const DatatableRow = ({ columns, document }) => {
+const DatatableRow = ({ collection, columns, document, showEdit }, { intl }) => {
   return (
   <tr className="datatable-item">
+
     {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} />)}
+  
+    {showEdit ? 
+      <td>
+        <Components.ModalTrigger 
+          label={intl.formatMessage({id: 'datatable.edit'})} 
+          component={<Button bsStyle="primary"><FormattedMessage id="datatable.edit" /></Button>}
+        >
+          <Components.DatatableEditForm collection={collection} document={document} />
+        </Components.ModalTrigger>
+      </td>
+    : null}
+
   </tr>
   )
 }
 registerComponent('DatatableRow', DatatableRow);
+
+DatatableRow.contextTypes = {
+  intl: intlShape
+};
+/*
+
+DatatableEditForm Component
+
+*/
+const DatatableEditForm = ({ collection, document, closeModal }) =>
+  <Components.SmartForm 
+    collection={collection}
+    documentId={document._id}
+    showRemove={true}
+    successCallback={document => {
+      closeModal();
+    }}
+  />
+registerComponent('DatatableEditForm', DatatableEditForm);
+
 
 /*
 
