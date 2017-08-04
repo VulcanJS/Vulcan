@@ -1,15 +1,15 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 
-const Section = ({title, titleWidth = 220, contentWidth = 675, TitleComponent, children}) => {
+const Section = ({contentStyle, title, titleWidth = 220, contentWidth = 715, TitleComponent, children}) => {
 
   return (
-    <div className="Section" style={{width: `${titleWidth+contentWidth}px`}}>
-      <div className="SectionTitle" style={{width: `${titleWidth}px`, float: 'left'}}>
-        {title}
+    <div className="section" style={{width: `${titleWidth+contentWidth+5}px`, display: 'flex'}}>
+      <div className="section-title" style={{width: `${titleWidth}px`}}>
+        <h2>{title}</h2>
         {TitleComponent ? <TitleComponent /> : null}
       </div>
-      <div className="SectionContent" style={{width: `${contentWidth}`, float: 'right'}}>
+      <div className="section-content" style={{width: `${contentWidth}`, ...contentStyle}}>
         {children}
       </div>
     </div>

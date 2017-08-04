@@ -1,6 +1,5 @@
 .header-wrapper{
-  background: $header-bg;
-  margin-bottom: $vmargin;
+  margin-bottom: 20px;
 }
 
 .header{
@@ -8,7 +7,6 @@
     @include flex-center;
     justify-content: space-between;
   }
-  padding-top: $vmargin;
   padding-bottom: $vmargin;
 }
 

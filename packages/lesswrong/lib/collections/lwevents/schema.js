@@ -21,7 +21,12 @@ const schema = {
     type: String,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    resolveAs: 'user: User',
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: (event, args, context) => context.Users.findOne({_id: event.userId}, {fields: context.getViewableFields(context.currentUser, context.Users)}),
+      addOriginalField: true,
+    },
     optional: true,
   },
   name: {

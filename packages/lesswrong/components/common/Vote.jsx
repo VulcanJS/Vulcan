@@ -10,6 +10,7 @@ class Vote extends PureComponent {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.downvote = this.downvote.bind(this);
     this.getActionClass = this.getActionClass.bind(this);
     // this.startLoading = this.startLoading.bind(this);
     // this.stopLoading = this.stopLoading.bind(this);
@@ -22,7 +23,7 @@ class Vote extends PureComponent {
 
   note: with optimisitc UI, loading functions are not needed
   also, setState triggers issues when the component is unmounted
-  before the vote mutation returns. 
+  before the vote mutation returns.
 
   */
 
@@ -51,7 +52,22 @@ class Vote extends PureComponent {
       this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
         // this.stopLoading();
       });
-    } 
+    }
+  }
+
+  downvote(e) { //Downvote function. Copied functionality from upvote function in base-package
+    e.preventDefault();
+
+    const document = this.props.document;
+    const collection = this.props.collection;
+    const user = this.props.currentUser;
+
+    if(!user){
+      this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
+    } else {
+      const voteType = hasDownvoted(user, document) ? "cancelDownvote" : "downvote";
+      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser});
+    }
   }
 
   getActionClass() {
@@ -61,7 +77,7 @@ class Vote extends PureComponent {
     const isUpvoted = hasUpvoted(user, document);
     const isDownvoted = hasDownvoted(user, document);
     const actionsClass = classNames(
-      'vote', 
+      'vote',
       {voted: isUpvoted || isDownvoted},
       {upvoted: isUpvoted},
       {downvoted: isDownvoted}
@@ -73,10 +89,14 @@ class Vote extends PureComponent {
   render() {
     return (
       <div className={this.getActionClass()}>
+        <div className="vote-count">{this.props.document.baseScore || 0} points</div>
         <a className="upvote-button" onClick={this.upvote}>
-          {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
-          <div className="sr-only">Upvote</div>
-          <div className="vote-count">{this.props.document.baseScore || 0}</div>
+            {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
+            <div className="sr-only">Upvote</div>
+        </a>
+        <a className="downvote-button" onClick={this.downvote}>
+            {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="downvote" /> }
+            <div className="sr-only">Downvote</div>
         </a>
       </div>
     )

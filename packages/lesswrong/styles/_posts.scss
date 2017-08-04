@@ -88,41 +88,28 @@
 //////////////////////////////////////////////////////
 
 .posts-item{
-  @include medium-large{
-    @include flex-center;
-  }
-  border-bottom: $border;
-  padding: $vmargin 5px;
+  display: flex;
+  position: relative;
   // margin-bottom: 15px;
   &.posts-sticky{
+    .posts-item-title::before {
+      font-family: FontAwesome;
+      content: "\f08d"
+    }
     background: $light-yellow;
-
   }
 }
 
 .posts-item-vote{
-  @include border;
-  @include border-radius;
-  @include flex-center;
-  flex-direction: column;
-  justify-content: center;
-  padding: 3px 5px;
-  @include small{
-    float: right;    
-  }
-  @include medium-large{
-    margin-right: $hmargin;
-  }
-  @include activeHover;
-  &, &:active, &:hover{
-    text-decoration: none;
+  display: inline;
+  .vote {
+    display: inline;
   }
 }
 
 .upvote-button{
   .icon{
-    text-align: center;
-    display: block;
+    display: inline;
   }
   .voted &{
     color: $light-text;
@@ -130,14 +117,12 @@
 }
 
 .vote-count{
-  text-align: center;
-  display: block;
+  display: inline;
 }
 
 .downvote-button{
   .icon{
-    text-align: center;
-    display: block;
+    display: inline;
   }
   .voted &{
     color: $light-text;
@@ -149,118 +134,30 @@
 }
 
 .posts-item-title{
-  @include small{
-    margin-right: 40px;
-    font-size: $large-font;
-    margin-bottom: $vmargin/2;
-  }
-  @include medium-large{
-    @include flex-center;
-    font-size: $larger-font;
-    margin-bottom: 5px;
-  }
-  .posts-item-title-link{
-    @include small{
-      display: block;
-      margin-bottom: $vmargin/2;
-    }
-    color: $black;
-    &, &:active, &:hover{
-      text-decoration: none;
-    }
-  }
+  display: inline;
+  font-size: $large-font;
 }
 
 .posts-categories{
-  flex-wrap: wrap;
-  @include medium-large{
-    margin-left: 5px;
-  }
-  @include flex-center;
-  a{
-    display: block;
-    font-size: $small-font;
-    @include border;
-    @include border-radius;
-    margin-right: 5px;
-    padding: 2px 6px;
-    @include activeHover;
-  }
+  display: inline;
 }
 
 .posts-item-meta{
-  @include medium-large{
-    @include flex-center;
-  }
+  display: inline;
   font-size: $small-font;
-  .avatar{
-    margin-right: 5px;
+  .users-name, .posts-item-date, .posts-item-comments, .posts-item-admin, .posts-actions, .posts-item-user {
+    display: inline;
   }
-  .users-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
-    margin-right: $hmargin;
-  }
-}
-
-.posts-item-user{
-  @include small{
-    margin-bottom: $vmargin/2;
-  }
-  @include flex-center;
-}
-
-.posts-item-date, .posts-item-comments{
-  @include small{
-    margin-bottom: $vmargin/2;
-  }
-  color: $medium-text;
 }
 
 .posts-stats{
-  @include small{
-    margin-bottom: $vmargin/2;
-    display: inline-block;
-  }
-  @include border;
-  @include border-radius;
-  font-size: $smaller-font;
-  .posts-stats-item{
-    border-right: $border;
-    padding: 2px 5px;
-    display: inline-block;
-    &:last-child{
-      border: none;
-    }
-  }
-}
-
-.post-actions{
-  @include flex-center;
-}
-
-.posts-commenters{
-  @include small{
-    display: none;
-  }
-  @include flex-center;
+  display: inline;
 }
 
 .posts-commenters-avatars{
   display: flex;
   .avatar{
     margin-right: $hmargin;
-  }
-}
-
-.posts-thumbnail{
-  @include small{
-    float: left;
-  }
-  display: block;
-  margin-right: $hmargin;
-  img{
-    display: block;
-    height: 50px;
-    width: auto;
   }
 }
 
@@ -294,7 +191,7 @@
     &:hover{
       background: inherit;
       color: inherit;
-      border: inherit;      
+      border: inherit;
     }
   }
   .posts-no-results{

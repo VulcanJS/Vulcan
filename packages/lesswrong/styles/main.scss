@@ -5,7 +5,9 @@
 @import "variables";
 @import "spinner";
 @import "global";
+@import "fonts";
 
+@import "layout";
 @import "accounts";
 @import "categories";
 @import "cheatsheet";
@@ -16,6 +18,9 @@
 @import "forms";
 @import "posts";
 @import "users";
+@import "collections";
+
+
 
 .new-post-button{
   margin-bottom: 15px;
