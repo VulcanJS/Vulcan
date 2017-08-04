@@ -8,6 +8,17 @@ const schema = {
     viewableBy: ['guests'],
   },
 
+  createdAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    },
+  },
+
+  // Custom Properties
+
   title: {
     type: String,
     optional: true,
@@ -23,7 +34,7 @@ const schema = {
   },
 
   description: {
-    type: Object,
+    type: String,
     blackbox: true,
     optional: true,
     viewableBy: ['guests'],
@@ -32,13 +43,6 @@ const schema = {
 
   number: {
     type: Number,
-    optional: false,
-    viewableBy: ['guests'],
-    editableBy: Users.owns,
-  },
-
-  parentSequence: {
-    type: String,
     optional: false,
     viewableBy: ['guests'],
     editableBy: Users.owns,
@@ -53,9 +57,10 @@ const schema = {
       type: '[Post]',
       resolver: (chapter, args, context) => {
         return (_.map(chapter.postIds, (id) =>
-          { return context.Posts.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Chapters)})
+          { return context.Posts.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Posts)})
         }))
-      }
+      },
+      addOriginalField: true,
     }
   },
 

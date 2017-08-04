@@ -27,7 +27,8 @@ import './events/callbacks_sync.js';
 // Chapters
 import Chapters from './collections/chapters/collection.js';
 // Sequences
-// import Sequences from './collections/sequences/collection.js';
+import Sequences from './collections/sequences/collection.js';
+import './collections/sequences/fragments.js';
 
 
 // Subscriptions
@@ -70,4 +71,4 @@ import './modules/settings.js';
 // Closed Beta Stuff
 import './closed-beta/configuration.js';
 //
-export { Conversations, Messages, Notifications, RSSFeeds }
+export { Conversations, Messages, Notifications, RSSFeeds, Chapters, Sequences }

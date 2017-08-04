@@ -1,5 +1,7 @@
 import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 import schema from './schema.js';
+import './fragments.js'
+import './permissions.js'
 
 const Sequences = createCollection({
 

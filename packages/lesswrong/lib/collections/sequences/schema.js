@@ -9,6 +9,31 @@ const schema = {
     viewableBy: ['guests'],
   },
 
+  createdAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    },
+  },
+
+  userId: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: (sequence, args, context) => {
+        return context.Users.findOne({ _id: sequence.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users)})
+      },
+      addOriginalField: true,
+    }
+  },
+
+  // Custom Properties
+
   title: {
     type: String,
     optional: false,
@@ -23,18 +48,25 @@ const schema = {
     editableBy: Users.owns,
   },
 
+  commentCount:{
+    type: Number,
+    optional: true,
+    viewableBy: ['guests'],
+  },
+
   chapterIds: {
     type: Array,
     optional: false,
     viewableBy: ["guests"],
     resolveAs: {
       fieldName: 'chapters',
-      type: '[Chapters]',
+      type: '[Chapter]',
       resolver: (sequence, args, context) => {
-        return _.map(sequence.chapterIds, (id) => {
-          return context.Chapters.findOne({_id: id}, {fields: context.Users.getViewableFields(context.currentUser, context.Sequences)})
-        });
-      }
+        return (_.map(sequence.chapterIds, (id) =>
+          { return context.Chapters.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Chapters)})
+        }))
+      },
+      addOriginalField: true,
     }
   },
 
@@ -42,7 +74,6 @@ const schema = {
     type: String,
     optional: true,
   }
-
 
 }
 

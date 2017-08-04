@@ -16,3 +16,5 @@ import './lib/closed-beta/invites.js';
 import './lib/legacy-redirects/routes.js';
 
 export * from './lib/index.js';
+
+import './lib/collections/sequences/seed.js'

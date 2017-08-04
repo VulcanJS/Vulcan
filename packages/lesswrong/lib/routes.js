@@ -6,6 +6,8 @@ addRoute({ name: 'editPost', path: '/editPost', componentName: 'PostsEditForm' }
 
 addRoute({ name: 'recentComments', path: '/recentComments', componentName: 'RecentCommentsPage' });
 
+addRoute({ name: 'sequence', path: '/sequences/:_id', componentName: 'SequencesSingle' });
+
 
 //Route for testing the editor. Useful for debugging
 addRoute({ name: 'editorTest', path: '/editorTest', componentName: 'EditorTest' });

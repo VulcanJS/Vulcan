@@ -69,3 +69,10 @@ import './legacy-redirects/LegacyPostRedirect.jsx'
 import './legacy-redirects/LegacyPostWrapper.jsx'
 
 import './subscriptions/SubscribeTo.jsx';
+
+// sequences-page
+import './sequences-page/ChaptersItem.jsx'
+import './sequences-page/ChaptersList.jsx'
+import './sequences-page/SequencesPage.jsx'
+import './sequences-page/SequencesPostsList.jsx'
+import './sequences-page/SequencesSingle.jsx'
