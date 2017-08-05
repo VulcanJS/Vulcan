@@ -59,6 +59,7 @@ class Form extends Component {
     this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
     this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
+    this.getAutofilledValues = this.getAutofilledValues.bind(this);
     this.addToDeletedValues = this.addToDeletedValues.bind(this);
     this.addToSubmitForm = this.addToSubmitForm.bind(this);
     this.addToSuccessForm = this.addToSuccessForm.bind(this);
@@ -346,6 +347,11 @@ class Form extends Component {
     }));
   }
 
+  // get autofilled values
+  getAutofilledValues() {
+    return this.state.autofilledValues;
+  }
+
   // add something to deleted values
   addToDeletedValues(name) {
     this.setState(prevState => ({
@@ -377,7 +383,7 @@ class Form extends Component {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
-      autofilledValues: this.state.autofilledValues,
+      getAutofilledValues: this.getAutofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
@@ -612,7 +618,7 @@ Form.contextTypes = {
 }
 
 Form.childContextTypes = {
-  autofilledValues: PropTypes.object,
+  getAutofilledValues: PropTypes.func,
   addToAutofilledValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
   addToSubmitForm: PropTypes.func,
