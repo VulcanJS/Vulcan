@@ -1,0 +1,63 @@
+$card-padding: 20px;
+
+.collection-card-item {
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    .collection-card-link {
+      text-decoration: none;
+    }
+  }
+}
+
+.recommended-reading-section {
+  margin-top: -20px;
+}
+
+.collection-card {
+  position: relative;
+  padding: $card-padding;
+  height: 312px;
+  box-shadow: none !important;
+  margin-bottom: 5px;
+  .collection-card-content {
+    width: 315px;
+    border-top-style: solid;
+    border-top-width: 4px;
+    margin-left: auto;
+    padding-top: 10px;
+    color: rgba(0,0,0,0.6);
+  }
+  .collection-card-title {
+    color: rgba(0,0,0,0.7);
+    font-size: 30px !important;
+    padding: 0px !important;
+    line-height: 120% !important;
+    padding-bottom: 10px !important;
+  }
+  .collection-card-text {
+    padding: 0px !important;
+    line-height: normal !important;
+    font-size: 16px !important;
+  }
+  .collection-card-media {
+    width: 315px;
+    overflow:hidden;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.collections-carousel {
+
+  .slick-next {
+    float: right;
+    position: absolute !important;
+    right: -50px;
+  }
+  .slick-prev {
+    float: left;
+    position: absolute !important;
+    left: -50px;
+  }
+}

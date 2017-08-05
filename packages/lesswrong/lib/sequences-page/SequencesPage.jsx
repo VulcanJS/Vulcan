@@ -4,7 +4,6 @@ import Sequences from '../collections/sequences/collection.js'
 
 const SequencesPage = ({document, currentUser, loading}) =>
 <div className="sequences-page">
-  {console.log("Sequences Page document", document)}
   {!loading && document ? <div>
     <div className="sequences-title">
       {document.title}

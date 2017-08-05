@@ -41,7 +41,7 @@ import './component-replacements/LWPostsNewButton.jsx';
 import './component-replacements/LWLayout.jsx';
 import './component-replacements/LWPostsHome.jsx';
 import './component-replacements/LWPostsList.jsx';
-import './component-replacements/LWPostsItem.jsx';
+// import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
 import './component-replacements/LWPostsViews.jsx';
@@ -76,3 +76,16 @@ import './sequences-page/ChaptersList.jsx'
 import './sequences-page/SequencesPage.jsx'
 import './sequences-page/SequencesPostsList.jsx'
 import './sequences-page/SequencesSingle.jsx'
+// Frontend Rework
+
+import '../components/App.jsx';
+import '../components/Layout.jsx';
+import '../components/common/FlashMessages.jsx';
+import '../components/common/Header.jsx';
+import '../components/common/HeadTags.jsx';
+import '../components/common/Home.jsx';
+import '../components/common/Section.jsx';
+import '../components/users/UsersMenu.jsx';
+import '../components/users/UsersAccountMenu.jsx';
+import '../components/posts/PostsItem.jsx';
+import '../components/collections/CollectionsCard.jsx';

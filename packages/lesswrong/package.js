@@ -26,6 +26,7 @@ Package.onUse( function(api) {
     'lib/stylesheets/custom.scss',
     'lib/stylesheets/comments.scss',
     'lib/stylesheets/editor.scss',
+    'styles/main.scss',
   ], ['client']);
 
   api.addAssets([

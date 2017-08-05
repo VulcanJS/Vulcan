@@ -343,40 +343,6 @@ $medium-text: $dark-grey;
   margin-right: 10px;
 }
 
-// CSS modifications for header
-
-.logo-image{
-  font-size: 30px;
-  width: 200px;
-  margin-top: 18px;
-  margin-bottom: 7px;
-}
-
-.page-header{
-  margin-top: 0px;
-}
-
-.header-wrapper{
-  background-color: rgb(247,247,247);
-  .header{
-    padding-top: 5px;
-    padding-bottom: 0px;
-  }
-}
-.navbar{
-  .container{
-    padding: 0;
-  }
-}
-
-.navbar-default{
-  background-color: rgb(247,247,247);
-}
-
-.tagline{
-  font-size: 1.1rem !important;
-}
-
 // CSS Modifications for RSS Feed integration
 .postFeedNickname{
   font-size: 0.7rem;
