@@ -33,11 +33,5 @@ class MessageItem extends Component {
 
 }
 
-const options = {
-  collection: Messages,
-  queryName: 'messagesForConversation',
-  fragmentName: 'messageListFragment',
-  limit: 50,
-};
 
 registerComponent('MessageItem', MessageItem);
