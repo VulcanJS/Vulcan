@@ -38,7 +38,13 @@ class ModalTrigger extends PureComponent {
     return (
       <div className="modal-trigger">
         {triggerComponent}
-        <Modal className={this.props.className} bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
+        <Modal
+          className={this.props.className}
+          bsSize={this.props.size}
+          show={this.state.modalIsOpen}
+          onHide={this.closeModal}
+          dialogClassName={this.props.dialogClassName}
+        >
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
             {childrenComponent}

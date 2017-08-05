@@ -12,6 +12,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 /*
 
@@ -52,9 +53,12 @@ class Image extends PureComponent {
 
   render() {
     return (
-      <div>
+      <div className="upload-image">
+        <div className="upload-image-contents">
+          <img style={{width: 150}} src={getImageUrl(this.props.image)} />
+          {this.props.image.loading ? <div className="upload-loading"><Components.Loading /></div> : null}
+        </div>
         <a href="javascript:void(0)" onClick={this.clearImage}><Components.Icon name="close"/> Remove image</a>
-        <img style={{height: 120}} src={getImageUrl(this.props.image)} />
       </div>
     )
   }
@@ -113,11 +117,12 @@ class Upload extends PureComponent {
 
   */
   onDrop(files) {
-    console.log(this)
     
+    const preview = {secure_url: files[0].preview, loading: true};
+
     // set the component in upload mode with the preview
     this.setState({
-      preview: this.enableMultiple ? [...this.state.preview, files[0].preview] : files[0].preview,
+      preview: this.enableMultiple() ? [...this.state.preview, preview] : preview,
       uploading: true,
     });
 
@@ -170,7 +175,8 @@ class Upload extends PureComponent {
   render() {
     const { uploading, preview, value } = this.state;
     // show the actual uploaded image or the preview
-    const imageData = preview || value;
+
+    const imageData = this.enableMultiple() ? (preview ? value.concat(preview) : value) : value || preview;
 
     return (
       <div className="form-group row">
@@ -185,13 +191,13 @@ class Upload extends PureComponent {
               activeClassName="dropzone-active"
               rejectClassName="dropzone-reject"
             >
-              <div>Drop an image here, or click to select an image to upload.</div>
+              <div><FormattedMessage id="upload.prompt"/></div>
+              {uploading ? <div className="upload-uploading"><span><FormattedMessage id="upload.uploading"/></span></div> : null}
             </Dropzone>
 
             {imageData ?
               <div className="upload-state">
-                {uploading ? <span>Uploading…</span> : null}
-                <div className="images">
+                <div className="upload-images">
                   {this.enableMultiple() ? 
                     imageData.map((image, index) => <Image clearImage={this.clearImage} key={index} index={index} image={image}/>) : 
                     <Image clearImage={this.clearImage} image={imageData}/>
