@@ -1,6 +1,7 @@
-import { Components, getRawComponent, registerComponent} from 'meteor/vulcan:core';
+import { Components, registerComponent} from 'meteor/vulcan:core';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 const testCollections = [
   {
@@ -37,14 +38,17 @@ const Home = (props, context) => {
 
   return (
     <div className="home">
-      <Row>
         <Components.Section contentStyle={{marginTop: '-20px'}} title="Recommended Reading">
           <Components.CollectionsCard collection={testCollections[0]} big={true}/>
           <Components.CollectionsCard collection={testCollections[1]} float={"left"}/>
           <Components.CollectionsCard collection={testCollections[2]} float={"right"}/>
         </Components.Section>
-        <Components.Section title="Featured Posts">
-          <Components.PostsList terms={terms} />
+        <Components.Section title="Recent Posts"
+          titleComponent= {<div className="recent-posts-title-component">
+            sorted by<br /> <Components.PostsViews />
+          <div className="new-post-link"><Link to={"/newPost"}> new post </Link></div>
+          </div>}>
+          <Components.PostsList terms={terms} showHeader={false} />
         </Components.Section>
         <Components.Section title="Recent Posts">
           <Components.PostsList terms={terms} />
@@ -52,14 +56,6 @@ const Home = (props, context) => {
         <Components.Section title="Recent Comments">
           <Components.RecentComments terms={{view: 'recentComments', limit: 5}} fontSize="small" />
         </Components.Section>
-        {/* Sidebar Layout */}
-        <Col xs={12} md={8}>
-          <Components.PostsList terms={terms}/>
-        </Col>
-        <Col xs={12} md={4}>
-          <Components.Sidebar />
-        </Col>
-      </Row>
     </div>
   )
 };

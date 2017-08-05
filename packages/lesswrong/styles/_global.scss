@@ -1,5 +1,6 @@
 body{
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", sans-serif;
+  font-family: "ETBook", serif;
+  color: rgba(0,0,0,0.87)
 }
 
 .main, .footer {
@@ -15,7 +16,13 @@ body{
 
 a{
   cursor: pointer;
+  color: inherit;
 }
+
+p a {
+  @include link-underline(#fff, currentcolor, #b4d5f3)
+}
+
 
 .page-title{
   margin-bottom: $vmargin*2;
@@ -24,3 +31,7 @@ a{
 .message.error {
   color: $red;
 }
+
+// a {
+//   @include link-underline(#fff, rgba(0,0,0,0.87), #b4d5fe )
+// }

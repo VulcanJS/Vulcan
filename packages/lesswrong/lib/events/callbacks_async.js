@@ -20,7 +20,7 @@ function sendIntercomEvent (event, user) {
     };
     console.log(intercomEvent);
     intercomClient.events.create(intercomEvent);
-  };
-};
+  }
+}
 
 addCallback('lwevents.new.async', sendIntercomEvent);

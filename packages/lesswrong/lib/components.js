@@ -44,7 +44,6 @@ import './component-replacements/LWPostsList.jsx';
 // import './component-replacements/LWPostsItem.jsx';
 import './component-replacements/LWUsersProfile.jsx';
 import './component-replacements/LWPostsPage.jsx';
-import './component-replacements/LWPostsViews.jsx';
 import './component-replacements/LWPostsNewForm.jsx';
 import './component-replacements/LWPostsEditForm.jsx';
 import './component-replacements/LWUsersAccountMenu.jsx';
@@ -82,4 +81,6 @@ import '../components/common/Section.jsx';
 import '../components/users/UsersMenu.jsx';
 import '../components/users/UsersAccountMenu.jsx';
 import '../components/posts/PostsItem.jsx';
+import '../components/posts/PostsViews.jsx';
+
 import '../components/collections/CollectionsCard.jsx';

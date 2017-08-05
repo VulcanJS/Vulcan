@@ -192,5 +192,24 @@ Posts.addField([
       hidden: true,
       blackbox: true,
     }
+  },
+
+  /**
+    viewedDummy: This determines whether a user has by default read a post or not. Also resolved to the viewed field, which looks up whether a user has visited a page before.
+  */
+
+  {
+    fieldName: 'viewedDefault',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      hidden: true,
+      viewableBy: ['guests'],
+      resolveAs: {
+        fieldName: 'viewed',
+        type: 'Boolean',
+        resolver: (post, args, context) => context.currentUser ?  !!context.LWEvents.findOne({name:'post-view', documentId: post._id, userId: context.currentUser._id}) : false
+      }
+    }
   }
 ]);

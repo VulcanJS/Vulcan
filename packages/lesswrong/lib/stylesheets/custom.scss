@@ -104,23 +104,6 @@ $medium-text: $dark-grey;
   margin-right: auto;
 }
 
-
-// Home Page CSS Modifications
-
-.home-welcomebox{
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 60px;
-  margin-top: 30px;
-  font-size: 16px;
-  padding: 25px;
-}
-
-.posts-item.posts-sticky {
-    background: rgba(0, 0, 0, 0.03) !important;
-}
-
 // CSS modifications for adjusting font in various contexts
 
 .comments-item{
@@ -344,11 +327,7 @@ $medium-text: $dark-grey;
 }
 
 // CSS Modifications for RSS Feed integration
-.postFeedNickname{
-  font-size: 0.7rem;
-  font-color: $lighter-grey;
-  margin-left: 10px;
-}
+
 
 .displayFullContentTag{
   margin-left: 10px;

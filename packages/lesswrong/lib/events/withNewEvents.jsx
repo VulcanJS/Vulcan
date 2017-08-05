@@ -44,9 +44,9 @@ function withNewEvents(WrappedComponent) {
 
     closeEvent(eventId, properties = {}) {
       const newMutation = this.props.newMutation;
-      event = this.state.events[eventId];
+      let event = this.state.events[eventId];
       // Update properties with current time and duration in ms
-      currentTime = new Date();
+      let currentTime = new Date();
       event.properties = {
         endTime: currentTime,
         duration: currentTime - event.properties.startTime,
@@ -64,7 +64,6 @@ function withNewEvents(WrappedComponent) {
 
     componentWillUnmount() {
       // When unmounting, close all current event trackers
-      const newMutation = this.props.newMutation;
       const events = this.state.events;
       Object.keys(events).forEach(key => {
         this.closeEvent(key);
@@ -82,7 +81,7 @@ function withNewEvents(WrappedComponent) {
   return withNew(newEventOptions)(EventsWrapped);
 }
 
-newEventOptions = {
+const newEventOptions = {
   collection: LWEvents,
   fragmentName: 'newEventFragment',
 }

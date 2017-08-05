@@ -13,20 +13,25 @@ import Paper from 'material-ui/Paper';
 import h2p from 'html2plaintext';
 
 const paperStyle = {
-  padding: 20,
+  padding: '10px',
   backgroundColor: 'transparent',
+}
+
+const commentCountIconStyle = {
+  width: '30px',
+  height: '30px',
+  color: 'rgba(0,0,0,0.1)',
+}
+
+const commentCountBadgeStyle = {
+  top: '13px',
+  right: '9px',
+  backgroundColor: 'transparent',
+  color: 'rgba(0,0,0,0.6)',
 }
 
 
 class PostsItem extends PureComponent {
-
-  constructor(props) {
-    super(props);
-    this.state = { shadow: 0};
-  }
-
-  onMouseOver = () => this.setState({shadow: 2});
-  onMouseOut = () => this.setState({shadow: 0});
   //
   // renderCategories() {
   //   return this.props.post.categories && this.props.post.categories.length > 0 ? <Components.PostsCategories post={this.props.post} /> : "";
@@ -46,6 +51,11 @@ class PostsItem extends PureComponent {
     )
   }
 
+  renderPostFeeds() {
+    const feed = this.props.post.feed
+    return (feed && feed.user ? <object> <a href={this.props.post.feedLink} className="post-feed-nickname"> {feed.nickname} </a> </object> : null);
+  }
+
 
   render() {
 
@@ -58,26 +68,25 @@ class PostsItem extends PureComponent {
 
     return (
       <Paper
+        className={postClass}
         style={paperStyle}
-        zDepth={this.state.shadow}
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
+        zDepth={0}
       >
-        <div className={postClass}>
+       <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+         <div className="posts-item-content">
           <div>
             <h3 className="posts-item-title">
-              <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
                 {post.title}
-              </Link>
             </h3>
+            {this.renderPostFeeds()}
 
-            <div className="posts-item-meta">
+            <object><div className="posts-item-meta">
               {post.postedAt ? <div className="posts-item-date"> {moment(new Date(post.postedAt)).fromNow()} </div> : null}
               {post.user ? <div className="posts-item-user"><Components.UsersName user={post.user}/></div> : null}
               <div className="posts-item-vote"> <Components.Vote collection={Posts} document={post} currentUser={this.props.currentUser}/> </div>
               {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
               {this.props.currentUser && this.props.currentUser.isAdmin ? <div className="posts-item-admin"><Components.PostsStats post={post} /></div> : null}
-            </div>
+            </div></object>
             <div className="posts-item-summary">
               {post.excerpt ?  post.excerpt  : h2p(post.htmlBody).slice(0,140)}
             </div>
@@ -87,15 +96,20 @@ class PostsItem extends PureComponent {
               className="posts-item-comment-count"
               badgeContent={post.commentCount}
               secondary={true}
-              badgeStyle={{top:12, right:12}}
+              badgeStyle={commentCountBadgeStyle}
             >
-              <IconButton tooltip="Comments" containerElement={<Link to={Posts.getPageUrl(post)} />}>
+              <IconButton
+                iconStyle={commentCountIconStyle}
+                tooltip="Comments"
+                containerElement={<object><Link to={Posts.getPageUrl(post)} /></object>}
+                >
                 <CommentIcon />
               </IconButton>
             </Badge>
           </div>
         </div>
-      </Paper>
+      </Link>
+    </Paper>
     )
   }
 }
