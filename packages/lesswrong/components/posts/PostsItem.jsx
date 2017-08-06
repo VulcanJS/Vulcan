@@ -17,12 +17,6 @@ const paperStyle = {
   backgroundColor: 'transparent',
 }
 
-const commentCountIconStyle = {
-  width: '30px',
-  height: '30px',
-  color: 'rgba(0,0,0,0.1)',
-}
-
 const commentCountBadgeStyle = {
   top: '13px',
   right: '9px',
@@ -60,11 +54,16 @@ class PostsItem extends PureComponent {
   render() {
 
     const {post} = this.props;
+    const newComments = post.lastVisitedAt < post.lastCommentedAt;
 
     let postClass = "posts-item";
     if (post.sticky) postClass += " posts-sticky";
 
-
+    const commentCountIconStyle = {
+      width: '30px',
+      height: '30px',
+      color: newComments ? 'rgba(100, 169, 105, 0.5)' : 'rgba(0,0,0,0.1)',
+    }
 
     return (
       <Paper
@@ -88,7 +87,7 @@ class PostsItem extends PureComponent {
               {this.props.currentUser && this.props.currentUser.isAdmin ? <div className="posts-item-admin"><Components.PostsStats post={post} /></div> : null}
             </div></object>
             <div className="posts-item-summary">
-              {post.excerpt ?  post.excerpt  : h2p(post.htmlBody).slice(0,140)}
+              {post.excerpt || post.url ? ("This is a linkpost for " + post.url) : h2p(post.htmlBody).slice(0,140)}
             </div>
           </div>
           <div className="posts-item-comments">
@@ -100,7 +99,7 @@ class PostsItem extends PureComponent {
             >
               <IconButton
                 iconStyle={commentCountIconStyle}
-                tooltip="Comments"
+                tooltip={newComments ? ("last comment " + moment(post.lastCommentedAt).calendar()) : "Comments"}
                 containerElement={<object><Link to={Posts.getPageUrl(post)} /></object>}
                 >
                 <CommentIcon />

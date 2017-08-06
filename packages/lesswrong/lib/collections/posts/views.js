@@ -36,3 +36,11 @@ Posts.addView("all_drafts", terms => ({
     sort: {createdAt: -1}
   }
 }));
+
+Posts.addView("featured", terms => ({
+  options: {
+    sort: {
+      featuredPriority: -1,
+    }
+  }
+}))

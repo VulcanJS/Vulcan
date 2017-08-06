@@ -1,9 +1,14 @@
-import { Components, registerComponent, withMessages } from 'meteor/vulcan:core';
+import { Components, replaceComponent, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/vulcan:voting';
 import { /*FormattedMessage,*/ intlShape } from 'meteor/vulcan:i18n';
+
+import FontIcon from 'material-ui/FontIcon';
+
+import UpvoteIcon from 'material-ui/svg-icons/navigation/expand-less';
+import DownvoteIcon from 'material-ui/svg-icons/navigation/expand-more';
 
 class Vote extends PureComponent {
 
@@ -91,11 +96,11 @@ class Vote extends PureComponent {
       <div className={this.getActionClass()}>
         <div className="vote-count">{this.props.document.baseScore || 0} points</div>
         <a className="upvote-button" onClick={this.upvote}>
-            {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
+            {this.state.loading ? <Components.Icon name="spinner" /> : <FontIcon className="material-icons">expand_less</FontIcon> }
             <div className="sr-only">Upvote</div>
         </a>
         <a className="downvote-button" onClick={this.downvote}>
-            {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="downvote" /> }
+            {this.state.loading ? <Components.Icon name="spinner" /> : <FontIcon className="material-icons">expand_more</FontIcon> }
             <div className="sr-only">Downvote</div>
         </a>
       </div>
@@ -115,4 +120,4 @@ Vote.contextTypes = {
   intl: intlShape
 };
 
-registerComponent('Vote', Vote, withMessages, withVote);
+replaceComponent('Vote', Vote, withMessages, withVote);

@@ -1,4 +1,4 @@
-import { Components, registerComponent, withList, withCurrentUser, Utils } from 'meteor/vulcan:core';
+import { Components, replaceComponent, withList, withCurrentUser, Utils } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Posts from 'meteor/vulcan:posts';
@@ -14,8 +14,6 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
 
   if (results && results.length) {
 
-    const hasMore = totalCount > results.length;
-
     return (
       <div className={classNames(className, 'posts-list')}>
         {showHeader ? <Components.PostsListHeader/> : null}
@@ -23,12 +21,7 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
-        {showLoadMore ? 
-          hasMore ? 
-            <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> : 
-            <Components.PostsNoMore/> : 
-          null
-        }
+        {showLoadMore ? <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> : null}
       </div>
     )
   } else if (loading) {
@@ -76,6 +69,7 @@ const options = {
   collection: Posts,
   queryName: 'postsListQuery',
   fragmentName: 'PostsList',
+  totalResolver: false,
 };
 
-registerComponent('PostsList', PostsList, withCurrentUser, [withList, options]);
+replaceComponent('PostsList', PostsList, withCurrentUser, [withList, options]);

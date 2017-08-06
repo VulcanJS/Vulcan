@@ -43,7 +43,7 @@ const DropdownLabelStyle = {
   paddingLeft: '0px',
   paddingRight: '0px',
   height: 'normal',
-  color: 'rgba(0,0,0,0.6)',
+  color: 'inherit',
 };
 
 const DropdownListStyle = {

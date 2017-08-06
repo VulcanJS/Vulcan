@@ -47,6 +47,7 @@ class HeadTags extends PureComponent {
 			{ rel: "canonical", href: url },
 			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") },
 			{ rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
+			{ rel: "stylesheet", href: "https://fonts.googleapis.com/icon?family=Material+Icons"}
 		]);
 
 		return (

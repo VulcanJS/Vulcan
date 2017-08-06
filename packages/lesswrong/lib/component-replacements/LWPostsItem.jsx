@@ -9,7 +9,7 @@ import moment from 'moment';
 class LWPostsItem extends getRawComponent('PostsItem') {
 
   renderActions() {
-    post = this.props.post;
+    const post = this.props.post;
 
     return (
       <div>
@@ -23,17 +23,7 @@ class LWPostsItem extends getRawComponent('PostsItem') {
     )
   }
 
-  renderPostFeeds() {
-    feed = this.props.post.feed
 
-    if (feed && feed.user) {
-      return <a href={this.props.post.feedLink} className="postFeedNickname">
-                {feed.nickname}
-             </a>;
-    } else {
-      return null;
-    }
-  }
 
   render() {
 

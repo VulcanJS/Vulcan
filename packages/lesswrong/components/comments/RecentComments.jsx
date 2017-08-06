@@ -4,13 +4,11 @@ import Comments from 'meteor/vulcan:comments';
 import { Link } from 'react-router';
 import Posts from "meteor/vulcan:posts";
 
-class RecentComments extends Component {
-
-  render() {
-    const results = this.props.results;
-    const currentUser = this.props.currentUser;
-    const loading = this.props.loading;
-    const fontSize = this.props.fontSize;
+const RecentComments = (props) => {
+    const results = props.results;
+    const currentUser = props.currentUser;
+    const loading = props.loading;
+    const fontSize = props.fontSize;
 
     return (
       <div>
@@ -18,29 +16,17 @@ class RecentComments extends Component {
           <div><h5>Recent Comments</h5></div>
         </Link>
         <div className="comments-list">
-          {
-            loading || !results ? <Loading /> :
+          {loading || !results ? <Loading /> :
             <div className={"comments-items" + (fontSize == "small" ? " smalltext" : "")}>
-              {
-                results.map(comment =>
+              {results.map(comment =>
                   <div key={comment._id}>
-                    <div>From post:&nbsp;
-                      <Link to={Posts.getPageUrl(comment.post)+"/"+comment._id}>
-                        {comment.post.title}
-                      </Link>
-                    </div>
                     <Components.RecentCommentsItem comment={comment} currentUser={currentUser} />
                   </div>
-                )
-              }
-            </div>
-          }
+                )}
+            </div>}
         </div>
-      </div>
-    )
+      </div>)
   }
-
-}
 
 const commentsOptions = {
   collection: Comments,

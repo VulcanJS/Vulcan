@@ -88,6 +88,7 @@ registerFragment(`
     htmlBody # We replaced this with content
     # excerpt # This won't work with content
     content # Our replacement for body
+    lastVisitedAt 
     viewCount
     clickCount
     # vulcan:users
@@ -106,6 +107,7 @@ registerFragment(`
     commenters {
       ...UsersMinimumInfo
     }
+    lastCommentedAt
     # vulcan:voting
     upvoters {
       _id

@@ -1,10 +1,6 @@
-import './home/RecentComments.jsx';
 import './home/Sidebar.jsx';
 import './home/TopContributors.jsx';
 import './home/WelcomeBox.jsx';
-
-import './recent-comments/RecentCommentsItem.jsx';
-import './recent-comments/RecentCommentsPage.jsx';
 
 
 import './notificationMenu/NotificationsMenu.jsx';
@@ -32,9 +28,6 @@ import './events/LastVisitDisplay.jsx';
 
 import './component-replacements/LWCategory.jsx';
 import './component-replacements/LWHeader.jsx';
-import './component-replacements/LWCommentsItem.jsx';
-import './component-replacements/LWCommentsList.jsx';
-import './component-replacements/LWCommentsNode.jsx';
 import './component-replacements/LWPostsCommentsThread.jsx';
 import './component-replacements/LWPostsCommentsThreadWrapper.jsx';
 import './component-replacements/LWPostsNewButton.jsx';
@@ -84,9 +77,18 @@ import '../components/common/Header.jsx';
 import '../components/common/HeadTags.jsx';
 import '../components/common/Home.jsx';
 import '../components/common/Section.jsx';
+import '../components/common/Vote.jsx';
 import '../components/users/UsersMenu.jsx';
 import '../components/users/UsersAccountMenu.jsx';
 import '../components/posts/PostsItem.jsx';
 import '../components/posts/PostsViews.jsx';
+import '../components/posts/PostsList.jsx';
+import '../components/posts/PostsLoadMore.jsx';
+import '../components/comments/CommentsItem.jsx';
+import '../components/comments/CommentsList.jsx';
+import '../components/comments/CommentsNode.jsx';
+import '../components/comments/RecentComments.jsx';
+import '../components/comments/RecentCommentsItem.jsx';
+import '../components/comments/RecentCommentsPage.jsx';
 
 import '../components/collections/CollectionsCard.jsx';

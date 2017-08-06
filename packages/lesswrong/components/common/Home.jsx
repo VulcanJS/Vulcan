@@ -34,8 +34,8 @@ const testCollections = [
 ]
 
 const Home = (props, context) => {
-  const terms = _.isEmpty(props.location && props.location.query) ? {view: 'top', limit: 5}: props.location.query;
-
+  const recentPostsTerms = _.isEmpty(props.location && props.location.query) ? {view: 'top', limit: 5}: props.location.query;
+  const featuredPostsTerms = {view: 'featured', limit: 3};
   return (
     <div className="home">
         <Components.Section contentStyle={{marginTop: '-20px'}} title="Recommended Reading">
@@ -43,16 +43,17 @@ const Home = (props, context) => {
           <Components.CollectionsCard collection={testCollections[1]} float={"left"}/>
           <Components.CollectionsCard collection={testCollections[2]} float={"right"}/>
         </Components.Section>
+        <Components.Section title="Featured Posts">
+          <Components.PostsList terms={featuredPostsTerms} showHeader={false} showLoadMore={false} />
+        </Components.Section>
         <Components.Section title="Recent Posts"
           titleComponent= {<div className="recent-posts-title-component">
             sorted by<br /> <Components.PostsViews />
           <div className="new-post-link"><Link to={"/newPost"}> new post </Link></div>
           </div>}>
-          <Components.PostsList terms={terms} showHeader={false} />
+          <Components.PostsList terms={recentPostsTerms} showHeader={false} />
         </Components.Section>
-        <Components.Section title="Recent Posts">
-          <Components.PostsList terms={terms} />
-        </Components.Section>
+
         <Components.Section title="Recent Comments">
           <Components.RecentComments terms={{view: 'recentComments', limit: 5}} fontSize="small" />
         </Components.Section>

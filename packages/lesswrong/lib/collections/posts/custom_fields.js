@@ -195,21 +195,43 @@ Posts.addField([
   },
 
   /**
-    viewedDummy: This determines whether a user has by default read a post or not. Also resolved to the viewed field, which looks up whether a user has visited a page before.
+    lastVisitDateDefault: Sets the default of what the lastVisit of a post should be, resolves to the date of the last visit of a user, when a user is loggedn in. Returns null when no user is logged in;
   */
 
   {
-    fieldName: 'viewedDefault',
+    fieldName: 'lastVisitedAtDefault',
     fieldSchema: {
-      type: Boolean,
+      type: Date,
       optional: true,
       hidden: true,
       viewableBy: ['guests'],
       resolveAs: {
-        fieldName: 'viewed',
-        type: 'Boolean',
-        resolver: (post, args, context) => context.currentUser ?  !!context.LWEvents.findOne({name:'post-view', documentId: post._id, userId: context.currentUser._id}) : false
+        fieldName: 'lastVisitedAt',
+        type: 'Date',
+        resolver: (post, args, context) => {
+          if(context.currentUser){
+            const event = context.LWEvents.findOne({name:'post-view', documentId: post._id, userId: context.currentUser._id});
+            return event ? event.createdAt : post.lastVisitDateDefault;
+          } else {
+            return post.lastVisitDateDefault;
+          }
+        }
       }
+    }
+  },
+
+  /**
+    FeaturedPriority: Determines which posts end up on the frontpage. Posts with higher priority are displayed first.
+  */
+
+  {
+    fieldName: 'featuredPriority',
+    fieldSchema: {
+      type: Number,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
+      group: formGroups.admin,
     }
   }
 ]);

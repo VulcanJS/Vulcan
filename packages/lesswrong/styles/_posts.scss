@@ -80,27 +80,20 @@
   }
 }
 
-.posts-list-content{
-  // padding-top: 15px;
-  // margin-top: 15px;
-  margin-bottom: $vmargin;
-}
-
 .posts-load-more, .comments-load-more{
-  display: block;
-  text-align: center;
-  @include border;
-  @include border-radius;
-  font-size: $large-font;
-  padding: 10px 20px;
-  @include activeHover;
-  width: 100%;
-  background: $white;
-  color: $active-color;
+  font-size: 16px;
+  color: rgba(100, 169, 105, 0.6);
 }
 
-.posts-load-more-loading{
-  padding: 21px 0;
+.posts-load-more {
+  margin-left: 22px;
+  .posts-load-more-link{
+    &:hover, &:focus, &:active{
+      text-decoration: none !important;
+      background: inherit;
+      color: rgba(100, 169, 105, 0.9);
+    }
+  }
 }
 
 //////////////////////////////////////////////////////
@@ -158,14 +151,46 @@
   // margin-bottom: 15px;
   .posts-item-comments {
     margin-left: auto;
+    position: relative;
     .posts-item-comment-count {
+      @include vertical-center;
       padding: initial !important;
     }
   }
+
+  .vote {
+    .material-icons {
+      vertical-align:middle;
+      font-size: 16px !important;
+      color: rgba(0,0,0,0.4) !important;
+      border-radius: 100%;
+      &:hover {
+        background-color: rgba(0,0,0,0.05);
+      }
+    }
+  }
+
+  .upvoted {
+    .upvote-button {
+      .material-icons {
+        color: rgba(100, 169, 105, 0.9) !important;
+      }
+    }
+  }
+
+  .downvoted {
+    .downvote-button {
+      .material-icons {
+        color: rgba(100, 169, 105, 0.9) !important;
+      }
+    }
+  }
+
   &.posts-sticky{
     .posts-item-title::before {
-      font-family: FontAwesome;
-      content: "\f08d"
+      font-size: $large-font;
+      content: url('https://res.cloudinary.com/lesswrong-2-0/image/upload/v1501979389/Vector_jzpt6u.svg');
+      margin-right: 3px;
     }
   }
 }
@@ -256,10 +281,12 @@
   .posts-load-more{
     border: none;
     padding: 0;
-    &:hover{
-      background: inherit;
-      color: inherit;
-      border: inherit;
+    .posts-load-more-link{
+      &:hover{
+        text-decoration: none !important;
+        background: inherit;
+        color: rgba(100, 169, 105, 0.9);
+      }
     }
   }
   .posts-no-results{
