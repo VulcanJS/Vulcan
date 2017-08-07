@@ -9,12 +9,13 @@ vulcan:i18n-en-us
 ############ Accounts Packages ############
 
 accounts-password@1.4.0
-# accounts-twitter
+accounts-twitter
 # accounts-facebook
 
 ############ Your Packages ############
 
-example-simple
+thinkhow
+# example-simple
 # example-movies
 # example-instagram
 # example-forum
