@@ -17,6 +17,13 @@ const appBarStyle = {
   boxShadow: "none",
 }
 
+const appBarTitleStyle = {
+  paddingTop: '2px',
+  fontSize: '19px',
+  cursor: 'pointer',
+  flex: 'none',
+}
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +53,7 @@ class Header extends Component {
             onTitleTouchTap={() => router.push("/")}
             iconElementRight = {!!currentUser ? <Components.UsersMenu /> : <Components.UsersAccountMenu />}
             style={appBarStyle}
+            titleStyle={appBarTitleStyle}
           />
         <Drawer open={this.state.showNavigation} containerStyle={drawerStyle} >
           <MenuItem> Menu Item 1</MenuItem>

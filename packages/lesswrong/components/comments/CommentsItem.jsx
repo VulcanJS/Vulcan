@@ -5,7 +5,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from "meteor/vulcan:comments";
 import moment from 'moment';
 
-class LWCommentsItem extends getRawComponent('CommentsItem') {
+class CommentsItem extends getRawComponent('CommentsItem') {
 
   // TODO: Make comments collapsible id:18
   // TODO: Create unique comment-links id:14
@@ -20,7 +20,6 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
       <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
-            <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
             <div className="comments-item-vote">
               <Components.Vote collection={Comments} document={this.props.comment} currentUser={this.props.currentUser}/>
@@ -64,4 +63,4 @@ class LWCommentsItem extends getRawComponent('CommentsItem') {
 
 }
 
-replaceComponent('CommentsItem', LWCommentsItem, withRouter);
+replaceComponent('CommentsItem', CommentsItem, withRouter);

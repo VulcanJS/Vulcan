@@ -54,6 +54,8 @@
 }
 
 .users-account-menu, .users-menu{
+  margin-top: 5px;
+  color: rgba(0,0,0,0.5) !important;
   .dropdown-toggle{
     @include flex-center;
     padding: 0;

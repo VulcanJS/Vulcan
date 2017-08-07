@@ -39,12 +39,12 @@ class UsersMenu extends PureComponent {
 
     return (
       <div className="users-menu">
-        <FlatButton label={Users.getDisplayName(currentUser)} onTouchTap={this.handleTouchTap} />
+        <FlatButton labelStyle={{textTransform: 'none', fontSize: '16px', color: 'rgba(0,0,0,0.5)'}} label={Users.getDisplayName(currentUser)} onTouchTap={this.handleTouchTap} />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
           onRequestClose={this.handleRequestClose}
         >
           <Menu>

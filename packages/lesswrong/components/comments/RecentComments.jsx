@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { Components, registerComponent, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 import Comments from 'meteor/vulcan:comments';
-import { Link } from 'react-router';
-import Posts from "meteor/vulcan:posts";
 
 const RecentComments = (props) => {
     const results = props.results;
     const currentUser = props.currentUser;
     const loading = props.loading;
     const fontSize = props.fontSize;
+    const loadMore = props.loadMore;
+    const loadingMore = props.networkStatus == 2;
 
     return (
       <div>
-        <Link to="/recentComments" >
-          <div><h5>Recent Comments</h5></div>
-        </Link>
-        <div className="comments-list">
+        <div className="comments-list recent-comments-list">
           {loading || !results ? <Loading /> :
             <div className={"comments-items" + (fontSize == "small" ? " smalltext" : "")}>
               {results.map(comment =>
@@ -23,6 +20,7 @@ const RecentComments = (props) => {
                     <Components.RecentCommentsItem comment={comment} currentUser={currentUser} />
                   </div>
                 )}
+                <Components.CommentsLoadMore loading={loadingMore} loadMore={loadMore}  />
             </div>}
         </div>
       </div>)

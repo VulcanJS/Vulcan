@@ -19,6 +19,24 @@
 
 .comments-item{
   margin-bottom: $vmargin;
+  position: relative;
+  a {
+    text-decoration: none;
+  }
+  .comments-more-actions-menu {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 6px;
+  }
+  &:hover .comments-more-actions-menu {
+    display: block;
+  }
+}
+
+.comments-subscribe:hover {
+  text-decoration: none;
+  color: inherit;
 }
 
 .comments-item-body{
@@ -31,9 +49,41 @@
 .comments-item-meta{
   @include flex-center;
   margin-bottom: $vmargin;
+  color: rgba(0,0,0,0.5);
+  a:hover, a:active, a:focus {
+    text-decoration: none;
+    color: rgba(0,0,0,0.3);
+  }
 
   .comments-item-vote{
     margin-right: 10px;
+    .vote {
+      .material-icons {
+        vertical-align:middle;
+        font-size: 16px !important;
+        color: rgba(0,0,0,0.4) !important;
+        border-radius: 100%;
+        &:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
+      }
+    }
+
+    .upvoted {
+      .upvote-button {
+        .material-icons {
+          color: rgba(100, 169, 105, 0.9) !important;
+        }
+      }
+    }
+
+    .downvoted {
+      .downvote-button {
+        .material-icons {
+          color: rgba(100, 169, 105, 0.9) !important;
+        }
+      }
+    }
   }
 
   .avatar{
@@ -53,10 +103,14 @@
   .comment-delete {
     margin-left: 8px;
   }
+  .comments-item-origin {
+    margin-left: 8px;
+    .comments-item-origin-post-title {
+      color: rgba(0,0,0,0.5);
+    }
+  }
 }
 
-.comments-item-text{
-}
 
 .comments-edit-form, .comments-new-form{
   .input-body{
@@ -80,4 +134,20 @@
   a{
     display: block;
   }
+}
+
+.recent-comments-list {
+  margin-top: -10px;
+  max-width: 700px;
+  margin-left: 10px;
+  .recent-comments-item {
+    margin-bottom: 0px;
+    &:hover {
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
+.comments-load-more {
+  margin-left: 10px;
 }

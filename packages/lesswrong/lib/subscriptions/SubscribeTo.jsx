@@ -57,7 +57,7 @@ class SubscribeToActionHandler extends Component {
       return null;
     }
 
-    const className = this.props.className ? this.props.className : "";
+    const className = this.props.className || "";
 
     return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}><FormattedMessage id={action} /></a> : null;
   }
