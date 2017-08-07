@@ -19,7 +19,7 @@ deploy.sh
 dump/
 dump/*
 
-settings.json
+
 settings.json.not-used
 .idea
 
