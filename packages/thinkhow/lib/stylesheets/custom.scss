@@ -1,0 +1,244 @@
+body {
+  color: rgba(0,0,0,.8)!important;
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", sans-serif;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover, a:focus, a:active, a.active {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header-wrapper {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  max-width: 1080px;
+
+}
+
+.main {
+  max-width: 800px;
+}
+
+.logo .logo-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.header-wrapper {
+    background: #ffffff;
+}
+
+.logo-hello {
+  display: flex;
+  justify-content: center;
+  color: #333;
+}
+
+// Navigation
+
+.nav {
+    border-top: none;
+}
+
+// Posts
+
+.posts-list-content {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.2rem;
+}
+
+.posts-day {
+  margin-bottom: 60px;
+}
+
+.posts-day-heading {
+  margin-bottom: 20px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.posts-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 20px;
+}
+
+.posts-page .posts-item {
+    border-radius: .2rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 20px;
+    margin-bottom: 15px;
+}
+
+.posts-page-body {
+    margin-top: 30px;
+    font-size: 1.1rem;
+}
+
+.posts-page-body a {
+  font-weight: 600;
+  border-bottom: 2px solid #F8BD3B;
+}
+
+.posts-page-body a:hover {
+  background-color: #F8BD3B;
+  border-bottom: 2px solid #F8BD3B;
+}
+
+.posts-item-title {
+    font-size: 1.2rem;
+}
+
+.posts-no-more {
+  display: none;
+}
+
+.users-name, .posts-item-date, .post-item-views, .posts-item-comments, .posts-stats, .post-actions{
+  margin-right: 10px;
+  color: rgba(0,0,0,.5);
+}
+
+.users-name {
+  font-weight: 600;
+}
+
+.posts-item-comments a {
+  font-weight: 600;
+}
+
+.users-name:hover, .posts-item-comments:hover, {
+  color: rgba(0, 0, 0, 0.8);
+  text-decoration: underline;
+}
+
+.posts-commenters-discuss {
+  color: rgba(0, 0, 0, 0.5)
+}
+
+.posts-thumbnail img {
+  display: none;
+}
+
+.posts-load-more, .comments-load-more {
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+  border-radius: .2rem;
+}
+
+.posts-load-more:hover, .comments-load-more:hover {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #F8BD3B;
+  border: 1px solid #F8BD3B;
+}
+
+
+// Buttons
+.btn {
+  border-radius: 0.2rem;
+}
+
+.btn-primary {
+    color: rgba(0,0,0,.8);
+    background-color: #F8BD3B;
+    border-color: #F8BD3B;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: rgba(0,0,0,.8);
+    background-color: #F8B41E;
+    border-color: #F8B41E;
+}
+
+.upvote-button {
+    border: none;
+    border-radius: .2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3px 7px;
+}
+
+.upvote-button:hover {
+    background-color: #F8BD3B;
+}
+
+
+// Comments
+.posts-comments-thread {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    padding-top: 30px;
+}
+
+.comments-item-body {
+    border-radius: .2rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 20px;
+}
+
+.comments-item-meta {
+    margin-bottom: 10px;
+}
+
+.posts-comments-thread-new {
+  padding-top: 20px;
+}
+
+.comments-item-reply-link {
+  color: rgba(0,0,0,.5);
+}
+
+.comments-item-reply-link:hover {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+
+// Alerts
+
+
+// Footer
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 40px;
+  margin-bottom: 0px;
+  max-width: none;
+}
+
+.footer a {
+  font-weight: 600;
+  border-bottom: 2px solid #F8BD3B;
+}
+
+.footer a:hover {
+  background-color: #F8BD3B;
+  border-bottom: 2px solid #F8BD3B;
+}
+
+// URL Thumbnail Hack
+
+.newsletter {
+  display: none;
+}
+
+.embedly-url-field {
+  margin-right: 0px;
+}
+
+.embedly-thumbnail-placeholder {
+  display: none;
+}

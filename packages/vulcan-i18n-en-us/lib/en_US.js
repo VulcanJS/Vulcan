@@ -35,13 +35,13 @@ addStrings('en', {
   "accounts.info_password_changed": "Password changed.",
   "accounts.logging_in": "Logging in…",
 
-  "forms.submit": "Submit",
+  "forms.submit": "Publish",
   "forms.cancel": "Cancel",
   "forms.select_option": "-- select option --",
   "forms.delete": "Delete",
   "forms.delete_confirm": "Delete document?",
-  
-  "posts.new_post": "New Post",
+
+  "posts.new_post": "New post",
   "posts.edit": "Edit",
   "posts.edit_success": "Post “{title}” edited.",
   "posts.delete": "Delete",
@@ -49,7 +49,7 @@ addStrings('en', {
   "posts.delete_success": "Post “{title}” deleted.",
   "posts.title": "Title",
   "posts.url": "URL",
-  "posts.body": "Body",
+  "posts.body": "Content",
   "posts.categories": "Categories",
   "posts.thumbnailUrl": "Thumbnail URL",
   "posts.status": "Status",
@@ -84,19 +84,19 @@ addStrings('en', {
   "posts.max_per_day": "Sorry you cannot submit more than {value} posts per day.",
   "posts.like": "Like",
 
-  "comments.comments": "Comments",
+  "comments.comments": "Thoughts",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
-  "comments.count_0": "No comments",
-  "comments.count_1": "1 comment",
-  "comments.count_2": "{count} comments",
-  "comments.new": "New Comment",
-  "comments.no_comments": "No comments to display.",
+  "comments.count_0": "no thoughts",
+  "comments.count_1": "1 thought",
+  "comments.count_2": "{count} thoughts",
+  "comments.new": "Add a thought...",
+  "comments.no_comments": "No thoughts yet...",
   "comments.reply": "Reply",
   "comments.edit": "Edit",
   "comments.delete": "Delete",
-  "comments.delete_confirm": "Delete this comment?",
-  "comments.delete_success": "Comment deleted.",
-  "comments.please_log_in": "Please log in to comment.",
+  "comments.delete_confirm": "Delete this thought?",
+  "comments.delete_success": "Thought deleted.",
+  "comments.please_log_in": "Log in to write a thought.",
   "comments.parentCommentId": "Parent Comment ID",
   "comments.topLevelCommentId": "Top Level Comment ID",
   "comments.body": "Body",
@@ -201,7 +201,7 @@ addStrings('en', {
   "app.disallowed_property_detected": "Disallowed property detected: {value}",
   "app.something_bad_happened": "Something bad happened...",
   "app.embedly_not_authorized": "Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API",
-  
+
   "newsletter": "Newsletter",
   "newsletter.subscribe": "Subscribe",
   "newsletter.unsubscribe": "Unsubscribe",
@@ -211,9 +211,6 @@ addStrings('en', {
   "newsletter.subscription_updated": "Newsletter subscription updated.",
   "newsletter.subscription_failed": "Subscription failed. Is Mailchimp configured in your settings file?",
 
-  "cards.edit": "Edit",
-  "datatable.edit": "Edit",
-  
   "admin": "Admin",
   "notifications": "Notifications",
 });
