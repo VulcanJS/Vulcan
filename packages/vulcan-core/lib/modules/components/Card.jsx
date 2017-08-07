@@ -6,18 +6,26 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Button from 'react-bootstrap/lib/Button';
 
-const getLabel = (fieldName, collection, intl) => {
+const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  if (fieldSchema) {
+    return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  } else {
+    return fieldName;
+  }
 }
 
-const getTypeName = (fieldName, collection) => {
+const getTypeName = (field, fieldName, collection) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  const type = fieldSchema.type.singleType;
-  const typeName = typeof type === 'function' ? type.name : type;
-  return typeName;
+  if (fieldSchema) {
+    const type = fieldSchema.type.singleType;
+    const typeName = typeof type === 'function' ? type.name : type;
+    return typeName;
+  } else {
+    return typeof field;
+  }
 }
 
 const parseImageUrl = value => {
@@ -118,7 +126,7 @@ const Card = ({className, collection, document, currentUser, fields}, {intl}) =>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
           {fieldNames.map((fieldName, index) => 
-            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(fieldName, collection)} label={getLabel(fieldName, collection, intl)}/>
+            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(document[fieldName], fieldName, collection)} label={getLabel(document[fieldName], fieldName, collection, intl)}/>
           )}
         </tbody>
       </table>
