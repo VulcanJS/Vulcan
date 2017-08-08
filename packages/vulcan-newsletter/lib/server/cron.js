@@ -24,7 +24,13 @@ var getSchedule = function (parser) {
 
   // Default is once a week (Mondays)
   if (!!frequency) {
-    schedule = recur.on(frequency).dayOfWeek();
+   //build an array from object
+    let tempF = [];
+    for (var prop in frequency) {
+      tempF.push(frequency[prop]);
+    }
+
+    schedule = recur.on(...tempF).dayOfWeek()
   }
   else {
     schedule = recur.on(2).dayOfWeek();

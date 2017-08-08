@@ -9,10 +9,13 @@ export const getSetting = (setting, defaultValue) => {
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
       return {
+        // i changed the position of default value because it overides the setting.json values
+        //example: "newsletterFrequency": [2,3] inside cron.js will be overwriten by the default --> result [1,3]
+        ...defaultValue,
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
-        ...defaultValue
+        
       }
     } else {
       return rootSetting || privateSetting || publicSetting || defaultValue;
