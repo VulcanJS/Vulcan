@@ -24,7 +24,8 @@ var getSchedule = function (parser) {
 
   // Default is once a week (Mondays)
   if (!!frequency) {
-    schedule = recur.on(frequency).dayOfWeek();
+    const frequencyArray = Array.isArray(frequency) ? frequency : _.toArray(frequency);
+    schedule = recur.on(frequencyArray).dayOfWeek();
   }
   else {
     schedule = recur.on(2).dayOfWeek();
