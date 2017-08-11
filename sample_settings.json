@@ -37,8 +37,12 @@
   "scoreUpdateInterval": "30",
 
   "embedlyKey":"123foo",
-  "mailChimpAPIKey": "123foo",
-  "mailChimpListId": "123foo",
+
+  "newsletterProvider": "mailchimp",
+  "mailchimp": {
+    "apiKey": "123foo",
+    "listId": "123foo"
+  },
   "newsletterFrequency": [1,2,3,4,5,6,7],
   "newsletterTime": "14:20",
   "newsletterExcerptLength": 20,
