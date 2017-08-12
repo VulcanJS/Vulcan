@@ -17,9 +17,9 @@ const Collections = createCollection({
 
   schema,
 
-  resolvers: getDefaultResolvers('Sequences'),
+  resolvers: getDefaultResolvers('Collections'),
 
-  mutations: getDefaultMutations('Sequences'),
+  mutations: getDefaultMutations('Collections'),
 });
 
 export default Collections;

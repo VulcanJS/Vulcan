@@ -54,10 +54,8 @@ const SequencesList = ({className, loading, currentUser, terms, results, error})
     return (<div className={classNames(className, 'sequences-list')}>
       <div className="sequences-list-content">
           {results.map(sequence => {
-            return (<div className="sequences-list-item">
-              <Components.SequencesListItem sequence={sequence} key={sequence._id}
-              currentUser={currentUser} terms={terms} />
-            </div>);
+            return (<Components.SequencesListItem sequence={sequence} key={sequence._id}
+              currentUser={currentUser} terms={terms} />);
         })}
       </div>
     </div>);
@@ -81,7 +79,7 @@ const SequencesList = ({className, loading, currentUser, terms, results, error})
 
 const withMockList = (seqListComp) => {
   return (options) => {
-    return SequencesList({loading: false, results: results, error: null, ...options});
+    return seqListComp({loading: false, results: results, error: null, ...options});
   }
 };
 
