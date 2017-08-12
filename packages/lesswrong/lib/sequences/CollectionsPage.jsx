@@ -9,17 +9,19 @@ const collection = {
   title: "Map and Territory",
   id: "dummyId",
   user: {displayName: "EliezerYudkowsky"},
-  description: "Rationality: From AI to Zombies serves as a long-form introduction to formative ideas behind LessWrong, the Machine Intelligence Research Institute, the Center for Applied Rationality, and substantial parts of the effective altruist community.",
+  summary: "Rationality: From AI to Zombies serves as a long-form introduction to formative ideas behind LessWrong, the Machine Intelligence Research Institute, the Center for Applied Rationality, and substantial parts of the effective altruist community.",
   image: "http://i.imgur.com/dVXiZtw.png",
   color: "#B1D4B4",
   big: true,
   createdAt: "2017-08-06T21:15:49.175Z",
-  sequences: [
+  books: [
     {
       title: "Rationality and Rationalization",
       id: "dummyId2",
+      subtitle: "My wife's boyfriend heard it from the news first and so he and my wife's son were both scared silly.",
       user: {displayName: "Yvain"},
       summary: "Welcome to Slate Star Codex, a blog about science, medicine, philosophy, politics, and futurism. (there’s also one post about hallucinatory cactus-people, but it’s not representative)",
+      subtitle: "My wife's boyfriend heard it from the news first and so he and my wife's son were both scared silly.",
       image: "http://i.imgur.com/dVXiZtw.png",
       color: "#88ACB8",
       big: false,
@@ -33,6 +35,7 @@ const collection = {
       id: "dummyId3",
       user: {displayName: "EliezerYudkowsky"},
       summary: "Every inch of wall space is covered by a bookcase. Each bookcase has six shelves, going almost to the ceiling. Some bookshelves are stacked to the brim with hardback books.",
+      subtitle: "My wife's boyfriend heard it from the news first and so he and my wife's son were both scared silly.",
       image: "http://i.imgur.com/dVXiZtw.png",
       color: "#757AA7",
       big: false,
@@ -45,22 +48,25 @@ const collection = {
 };
 
 const subtitle = (subtitle) => {
-  <div className="sequence-subtitle">{subtitle}</div>
+  return <div className="book-subtitle">{subtitle}</div>;
 };
 
+const gridTerms = {};
+
 const CollectionsPage = ({collection, currentUser, loading, error}) => {
-  if (collection && collection.length) {
+  if (collection) {
   return (<div className="collections-page">
-      <div className="collection-name">{collection.title}</div>
-      <div className="collection-description">{collection.description}</div>
+      <div className="collection-title">{collection.title}</div>
+      <div className="collection-description">{collection.summary}</div>
       <div className="collections-page-content">
-      {/* For each sequence, print a section with a grid of sequences */}
-      {collection.sequences.map(sequence => {
-        <Components.Section title={sequence.title}
-          titleComponent={subtitle(sequence.subtitle)}>
-          <div className="sequence-description">{sequence.description}</div>
-          <Components.SequencesGrid terms={communitySeqTerms} className="sequence-grid-list" />
-        </Components.Section>
+      {/* For each book, print a section with a grid of sequences */}
+      {collection.books.map(book => {
+        return (<Components.Section title={book.title}
+          titleComponent={subtitle(book.subtitle)} className="book-title">
+          <div className="book-description">{book.summary}</div>
+          {/* A grid of sequences in this book */}
+          <Components.SequencesGrid terms={gridTerms} className="book-sequences-grid-list" />
+        </Components.Section>);
       })}
     </div>
     </div>);
@@ -83,7 +89,7 @@ const CollectionsPage = ({collection, currentUser, loading, error}) => {
 
 const withMockDocument = (collectionsDocumentComp) => {
   return (options) => {
-    return collectionsDocumentComp({loading: false, collection: collection, error: null, ...options});
+    return collectionsDocumentComp({collection, loading: false, error: null, ...options});
   }
 };
 

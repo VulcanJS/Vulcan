@@ -86,6 +86,7 @@ const results = [
   }
 ];
 
+//TODO: What do the terms do in other list components? Check posts list.
 const SequencesGrid = ({className, loading, currentUser, terms, results, error}) => {
   console.log("//   Rendering SequencesGrid");
   if (results && results.length) {

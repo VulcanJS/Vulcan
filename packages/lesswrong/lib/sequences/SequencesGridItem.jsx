@@ -10,7 +10,7 @@ const SequencesGridItem = ({sequence, currentUser}) => {
     <div className="sequences-grid-item-top">
       <div className="sequences-grid-item-title">{sequence.title}</div>
       <div className="sequences-grid-item-progress">{sequence.finishedPosts}/{sequence.totalPosts} articles</div>
-      <div className="sequences-grid-item-author">by {sequence.displayName}</div>
+      <div className="sequences-grid-item-author">by {sequence.user.displayName}</div>
     </div>
     <div className="sequences-grid-item-bottom">
       <img className="sequences-grid-item-image" src={sequence.image} />

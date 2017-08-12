@@ -56,7 +56,7 @@ const SequencesList = ({className, loading, currentUser, terms, results, error})
           {results.map(sequence => {
             return (<Components.SequencesListItem sequence={sequence} key={sequence._id}
               currentUser={currentUser} terms={terms} />);
-        })}
+          })}
       </div>
     </div>);
   } else if (loading) {
@@ -79,7 +79,7 @@ const SequencesList = ({className, loading, currentUser, terms, results, error})
 
 const withMockList = (seqListComp) => {
   return (options) => {
-    return seqListComp({loading: false, results: results, error: null, ...options});
+    return SequencesList({loading: false, results: results, error: null, ...options});
   }
 };
 
