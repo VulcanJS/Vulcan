@@ -98,7 +98,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   return newDocument;
 }
 
-export const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
+export const editMutation = ({ collection, documentId, set, unset = {}, currentUser, validate, context }) => {
 
   // console.log("// editMutation")
   // console.log(collection._name)
