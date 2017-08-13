@@ -129,7 +129,7 @@ export const GraphQLSchema = {
 
       const fieldType = getGraphQLType(schema, fieldName);
 
-      if (fieldName.indexOf('$') === -1) { // skip fields containing "$" in their name
+      if (fieldName.indexOf('.') === -1) { // skip fields containing "." in their name
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
