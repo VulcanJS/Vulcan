@@ -9,10 +9,11 @@ export const getSetting = (setting, defaultValue) => {
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
       return {
+        ...defaultValue,
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
-        ...defaultValue
+        
       }
     } else {
       return rootSetting || privateSetting || publicSetting || defaultValue;
