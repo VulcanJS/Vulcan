@@ -20,7 +20,7 @@ a{
 }
 
 p a {
-  @include link-underline(#fff, currentcolor, #b4d5f3)
+  @include link-underline(#fff, rgba(0,0,0,0.87), #b4d5f3, rgba(0,0,0,0.3))
 }
 
 
@@ -30,6 +30,10 @@ p a {
 
 .message.error {
   color: $red;
+}
+
+.ais-InstantSearch__root {
+  font-family: inherit !important;
 }
 
 // a {
