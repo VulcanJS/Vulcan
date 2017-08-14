@@ -86,9 +86,9 @@ registerFragment(`
     status
     body # We replaced this with content
     htmlBody # We replaced this with content
-    # excerpt # This won't work with content
+    excerpt # This won't work with content
     content # Our replacement for body
-    lastVisitedAt 
+    lastVisitedAt
     viewCount
     clickCount
     # vulcan:users

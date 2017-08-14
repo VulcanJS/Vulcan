@@ -10,6 +10,10 @@ addRoute({ name: 'sequence', path: '/sequences/:_id', componentName: 'SequencesS
 
 //Route for testing the editor. Useful for debugging
 addRoute({ name: 'editorTest', path: '/editorTest', componentName: 'EditorTest' });
-addRoute({name:'posts.single',   path:'posts/:_id(/:slug)(/:commentId)',    componentName: 'PostsSingle'})
+
+addRoute({ name: 'searchTest', path: '/searchTest', componentName: 'SearchBar'});
+
+
+addRoute({name:'posts.single',   path:'posts/:_id(/:slug)(/:commentId)', componentName: 'PostsSingle'})
 
 addRoute({name: 'home', path: '/', componentName: 'Home'});

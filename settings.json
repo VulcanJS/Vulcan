@@ -40,6 +40,9 @@
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
 
+  "algoliaAppId": "Z0GR6EXQHD",
+  "algoliaAdminKey": "4d66392c9aae3ac014f171eea0e97617",
+
   "intercomToken":"dG9rOjE1N2Q1NDExXzMyM2ZfNDBkMl9iNzc4XzViYzg2Yzk5YThhZToxOjA=",
 
   "newsletterExcerptLength": 20,
