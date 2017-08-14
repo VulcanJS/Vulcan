@@ -9,7 +9,7 @@ import { withRouter } from 'react-router'
 class LWPostsEditForm extends PureComponent {
 
   renderAdminArea() {
-    postId = this.props.location.query.postId;
+    const postId = this.props.location.query.postId;
     return (
       <Components.ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
         <div className="posts-edit-form-admin">
@@ -24,7 +24,7 @@ class LWPostsEditForm extends PureComponent {
 
   render() {
 
-    postId = this.props.location.query.postId;
+    const postId = this.props.location.query.postId;
 
     return (
       <div className="posts-edit-form">
