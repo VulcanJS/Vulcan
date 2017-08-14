@@ -7,9 +7,11 @@ import Comments from 'meteor/vulcan:comments';
 import Categories from 'meteor/vulcan:categories';
 import { addCallback, newMutation, editMutation, Utils } from 'meteor/vulcan:core';
 import { performSubscriptionAction } from '../subscriptions/mutations.js';
+import h2p from 'html2plaintext';
 import ReactDOMServer from 'react-dom/server';
 import { Components } from 'meteor/vulcan:core';
 import React from 'react';
+import { anchorate } from 'anchorate';
 
 
 function updateConversationActivity (message) {
@@ -23,7 +25,7 @@ function updateConversationActivity (message) {
     currentUser: user,
     validate: false,
   });
-};
+}
 
 addCallback("messages.new.async", updateConversationActivity);
 
@@ -229,25 +231,35 @@ function messageNewNotification(message) {
 }
 addCallback("messages.new.async", messageNewNotification);
 
-function postsNewHTMLBody(post) {
+function postsNewHTMLBodyAndPlaintextBody(post) {
   if (post.content) {
     const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={post.content} />);
-    Posts.update(post._id, {$set: {htmlBody: html}});
+    const plaintextBody = h2p(html);
+    const excerpt =  plaintextBody.slice(0,140);
+    Posts.update(post._id, {$set: {htmlBody: html, body: plaintextBody, excerpt: excerpt}});
   }
 }
 
-addCallback("posts.new.async", postsNewHTMLBody);
-addCallback("posts.edit.async", postsNewHTMLBody);
+addCallback("posts.new.async", postsNewHTMLBodyAndPlaintextBody);
+addCallback("posts.edit.async", postsNewHTMLBodyAndPlaintextBody);
 
-function commentsNewHTMLBody(comment) {
+function commentsNewHTMLBodyAndPlaintextBody(comment) {
   if (comment.content) {
     const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={comment.content} />);
-    Comments.update(comment._id, {$set: {htmlBody: html}});
+    const plaintextBody = h2p(html);
+    Comments.update(comment._id, {$set: {htmlBody: html, body: plaintextBody}});
   }
 }
 
-addCallback("comments.new.async", commentsNewHTMLBody);
-addCallback("comments.edit.async", commentsNewHTMLBody);
+addCallback("comments.new.async", commentsNewHTMLBodyAndPlaintextBody);
+addCallback("comments.edit.async", commentsNewHTMLBodyAndPlaintextBody);
+
+function reactRouterAnchorTags(unusedItem) {
+  anchorate();
+  return unusedItem;
+}
+
+addCallback("router.onUpdate", reactRouterAnchorTags);
 
 
 //
