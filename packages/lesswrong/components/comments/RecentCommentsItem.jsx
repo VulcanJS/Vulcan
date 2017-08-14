@@ -48,7 +48,7 @@ class RecentCommentsItem extends getRawComponent('CommentsItem') {
         zDepth={0}
         id={comment._id}
       >
-        <Link to={Posts.getPageUrl(comment.post) + "#" + comment._id}>
+        <Link to={Posts.getPageUrl(comment.post) + "/" + comment._id}>
           <div className="comments-item-body recent-comments-item-body ">
             <object><div className="comments-item-meta recent-comments-item-meta">
               <Components.UsersName user={comment.user}/>

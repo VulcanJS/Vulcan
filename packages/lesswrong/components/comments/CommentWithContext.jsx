@@ -3,6 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Comments from "meteor/vulcan:comments";
 import moment from 'moment';
+import { Link, withRouter } from 'react-router';
 
 class CommentWithContext extends getRawComponent('CommentsItem') {
 
@@ -12,24 +13,26 @@ class CommentWithContext extends getRawComponent('CommentsItem') {
   // LESSWRONG: Changed the comments-item id, but nothing else
   render() {
     const comment = this.props.comment;
+    const params = this.props.router.params;
+    const commentLink = "/posts/"+params._id+"/"+params.slug+"/"+comment._id;
+    const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
 
     return (
-
-      <div className="comments-item" id={comment._id+"top"}> {/* This is the only line we changed */}
+      <div className="comments-item comments-item-context" id={comment._id+"top"}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
+            <Components.UsersName user={comment.user}/>
             <div className="comments-item-vote">
               <Components.Vote collection={Comments} document={this.props.comment} currentUser={this.props.currentUser}/>
             </div>
-            <Components.UsersAvatar size="small" user={comment.user}/>
-            <Components.UsersName user={comment.user}/>
-            <div className="comments-item-date"><a href={"#"+comment._id}>{moment(new Date(comment.postedAt)).fromNow()} </a></div>
+
             <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
               </div>
             </Components.ShowIf>
-            <Components.SubscribeTo document={comment} />
+            {/* <Components.SubscribeTo document={comment} /> */}
+            <div className="comments-item-date"><Link to={commentLink}>{moment(new Date(comment.postedAt)).fromNow()} </Link></div>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
@@ -60,4 +63,4 @@ class CommentWithContext extends getRawComponent('CommentsItem') {
   }
 }
 
-registerComponent('CommentWithContext', CommentWithContext);
+registerComponent('CommentWithContext', CommentWithContext, withRouter);

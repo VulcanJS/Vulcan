@@ -15,7 +15,9 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    onInsert: () => {return new Date()},
+    onInsert: (document, currentUser) => {
+      return new Date();
+    }
   },
   userId: {
     type: String,

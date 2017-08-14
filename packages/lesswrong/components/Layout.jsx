@@ -1,4 +1,5 @@
 import { Components, replaceComponent} from 'meteor/vulcan:core';
+// import { InstantSearch} from 'react-instantsearch/dom';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 

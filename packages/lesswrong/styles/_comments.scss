@@ -1,7 +1,5 @@
 .posts-comments-thread{
-  border-top: $border;
   margin-top: $vmargin;
-  padding-top: $vmargin;
 }
 
 .posts-comments-thread-title{
@@ -15,7 +13,20 @@
 .comments-node, .comments-item-reply{
   border-left: 5px $lightest-border solid;
   padding-left: $hmargin;
+  &:hover {
+    border-color: $light-grey;
+  }
 }
+
+.comment-new {
+  .comments-node {
+    border-left-color: rgba(100, 169, 105, 0.4);
+    &:hover {
+      border-left-color: rgba(100, 169, 105, 0.9);
+    }
+  }
+}
+
 
 .comments-item{
   margin-bottom: $vmargin;
@@ -24,13 +35,19 @@
     text-decoration: none;
   }
   .comments-more-actions-menu {
-    display: none;
+    opacity: 0;
     position: absolute;
-    top: 10px;
+    top: 2px;
     right: 6px;
   }
   &:hover .comments-more-actions-menu {
-    display: block;
+    opacity: 1;
+  }
+}
+
+.recent-comments-item {
+  .comments-more-actions-menu {
+    top: 10px;
   }
 }
 
@@ -53,37 +70,6 @@
   a:hover, a:active, a:focus {
     text-decoration: none;
     color: rgba(0,0,0,0.3);
-  }
-
-  .comments-item-vote{
-    margin-right: 10px;
-    .vote {
-      .material-icons {
-        vertical-align:middle;
-        font-size: 16px !important;
-        color: rgba(0,0,0,0.4) !important;
-        border-radius: 100%;
-        &:hover {
-          background-color: rgba(0,0,0,0.05);
-        }
-      }
-    }
-
-    .upvoted {
-      .upvote-button {
-        .material-icons {
-          color: rgba(100, 169, 105, 0.9) !important;
-        }
-      }
-    }
-
-    .downvoted {
-      .downvote-button {
-        .material-icons {
-          color: rgba(100, 169, 105, 0.9) !important;
-        }
-      }
-    }
   }
 
   .avatar{
@@ -111,14 +97,84 @@
   }
 }
 
+.comments-item-vote{
+  display: inline-block;
+  margin-right: 10px;
+  .vote {
+    .material-icons {
+      vertical-align:middle;
+      font-size: 16px !important;
+      color: rgba(0,0,0,0.4) !important;
+      border-radius: 100%;
+      &:hover {
+        background-color: rgba(0,0,0,0.05);
+      }
+    }
+  }
+
+  .upvoted {
+    .upvote-button {
+      .material-icons {
+        color: rgba(100, 169, 105, 0.9) !important;
+      }
+    }
+  }
+
+  .downvoted {
+    .downvote-button {
+      .material-icons {
+        color: rgba(100, 169, 105, 0.9) !important;
+      }
+    }
+  }
+}
+
 
 .comments-edit-form, .comments-new-form{
+
+  .input-content {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0,0,0,0.1);
+    font-size: 18px;
+    .commentEditor {
+      font-size: 18px;
+      padding: 0px;
+      margin-bottom: 0px;
+    }
+  }
+  .input-deleted {
+    font-size:14px;
+  }
+  .form-submit {
+    display: flex;
+    .btn-primary {
+      color: rgba(100, 169, 105, 0.9);
+      padding: 0px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-left: auto;
+      margin-right: 0px;
+      margin-top: 5px;
+      background-color: transparent;
+      box-shadow: none;
+      &:hover {
+        background-color: transparent;
+        color: rgba(100, 169, 105, 0.5);
+      }
+    }
+  }
+  .form-cancel {
+    float: left;
+    position:absolute;
+    margin-top: 10px;
+    margin-left: 0px;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.5);
+  }
   .input-body{
     margin-bottom: $hmargin;
-  }
-  .form-cancel{
-    display: inline-block;
-    margin-left: $hmargin;
   }
 }
 
@@ -140,11 +196,12 @@
   margin-top: -10px;
   max-width: 700px;
   margin-left: 10px;
-  .recent-comments-item {
-    margin-bottom: 0px;
-    &:hover {
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
-    }
+}
+
+.recent-comments-item {
+  margin-bottom: 0px;
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
   }
 }
 

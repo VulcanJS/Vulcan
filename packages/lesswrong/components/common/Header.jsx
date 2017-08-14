@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { withCurrentUser, Components, replaceComponent } from 'meteor/vulcan:core';
 import { withRouter } from 'react-router';
 
+import { SearchBox, CurrentRefinements, ClearAll } from 'react-instantsearch/dom';
+import NoSSR from 'react-no-ssr';
+
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -42,6 +45,11 @@ class Header extends Component {
     this.setState({showNavigation: false});
   }
 
+  renderAppBarElementRight = () => <div>
+    <NoSSR><Components.SearchBar /></NoSSR>
+    {this.props.currentUser ? <Components.UsersMenu /> : <Components.UsersAccountMenu />}
+  </div>
+
   render() {
     let { router, currentUser } = this.props;
     return (
@@ -51,7 +59,7 @@ class Header extends Component {
             title="LESSWRONG"
             onLeftIconButtonTouchTap={this.toggleNavigation}
             onTitleTouchTap={() => router.push("/")}
-            iconElementRight = {!!currentUser ? <Components.UsersMenu /> : <Components.UsersAccountMenu />}
+            iconElementRight = {this.renderAppBarElementRight()}
             style={appBarStyle}
             titleStyle={appBarTitleStyle}
           />

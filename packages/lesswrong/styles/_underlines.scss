@@ -36,9 +36,9 @@
 
 
 
-@mixin link-underline($background, $text, $selection){
+@mixin link-underline($background, $text, $selection, $underline){
     @include text-underline-crop($background);
-    @include text-background($background, $text);
+    @include text-background($background, $underline);
     @include text-selection($selection);
 
     color: $text;
