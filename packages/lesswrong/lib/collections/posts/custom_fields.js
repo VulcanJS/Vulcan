@@ -72,6 +72,20 @@ Posts.addField([
   },
 
   /**
+    Html Body field, made editable to allow access in edit form
+  */
+  {
+    fieldName: 'htmlBody',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['members'],
+      control: "textarea",
+    }
+  },
+
+  /**
     Legacy: Boolean used to indicate that post was imported from old LW database
   */
   {
