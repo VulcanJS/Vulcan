@@ -1,7 +1,5 @@
 import schema from './schema.js';
-import mutations from './mutations.js';
-import resolvers from './resolvers.js';
-import { createCollection } from 'meteor/vulcan:core';
+import { getDefaultResolvers, getDefaultMutations, createCollection } from 'meteor/vulcan:core';
 
 /**
  * @summary Initiate LWEvents collection
@@ -17,9 +15,9 @@ const LWEvents = createCollection({
 
   schema,
 
-  resolvers,
+  resolvers: getDefaultResolvers('LWEvents'),
 
-  mutations,
+  mutations: getDefaultMutations('LWEvents'),
 
 });
 
