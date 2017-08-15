@@ -1,3 +1,4 @@
+import Users from 'meteor/vulcan:users';
 import schema from './schema.js';
 import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 import './permissions.js';
