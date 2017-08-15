@@ -31,38 +31,53 @@ class SearchBar extends Component {
     const className = this.state.open ? "open" : null
     return <div className="search">
       <InstantSearch
-        indexName="dev_posts"
+        indexName="test_posts"
         algoliaClient={algoliaClient("Z0GR6EXQHD", "0b1d20b957917dbb5e1c2f3ad1d04ee2")}
         >
         <div className={"search-bar " + className}>
           <div onTouchTap={this.openSearch} className="search-bar-box">
-            <SearchBox />
+            <SearchBox resetComponent={<div></div>}/>
           </div>
           <div className="search-bar-close" onTouchTap={this.closeSearch}>
             <FontIcon className="material-icons" style={closeIconStyle}>close</FontIcon>
           </div>
         </div>
-        <div className={"search-results " + className} onTouchTap={this.closeSearch}>
+        <div className={"search-results " + className}>
           <div className="search-results-container">
-            <div className="search-results-posts">
-              <Index indexName="test_posts">
-                <Configure hitsPerPage={5} />
-                <Components.Section title="Posts" titleWidth={150}>
-                  <div className="search-results-posts-content">
-                    <Hits hitComponent={Components.PostsSearchHit} />
-                  </div>
-                </Components.Section>
-              </Index>
+            <div className="search-results-container-left">
+              <div className="search-results-posts">
+                  <Configure hitsPerPage={5} />
+                  <Components.Section title="Posts" titleWidth={150}>
+                    <div className="search-results-posts-content">
+                      <Hits hitComponent={Components.PostsSearchHit} />
+                    </div>
+                    <Pagination />
+                  </Components.Section>
+              </div>
+              <div className="search-results-comments">
+                <Index indexName="test_comments">
+                  <Configure hitsPerPage={5} />
+                  <Components.Section title="Comments" titleWidth={150}>
+                    <div className="search-results-comments-content">
+                      <Hits hitComponent={Components.CommentsSearchHit} />
+                    </div>
+                     <object><Pagination /></object>
+                  </Components.Section>
+                </Index>
+              </div>
             </div>
-            <div className="search-results-comments">
-              <Index indexName="test_comments">
-                <Configure hitsPerPage={5} />
-                <Components.Section title="Comments" titleWidth={150}>
-                  <div className="search-results-comments-content">
-                    <Hits hitComponent={Components.CommentsSearchHit} />
+            <div className="search-results-container-right">
+              <div className="search-results-users">
+                <Index indexName= "test_users">
+                  <Configure hitsPerPage={5} />
+                  <div className="search-results-user-heading">
+                    <h2>Users</h2>
                   </div>
-                </Components.Section>
-              </Index>
+                  <div className="search-resulsts-users-content">
+                    <Hits hitComponent={Components.UsersSearchHit} />
+                  </div>
+                </Index>
+              </div>
             </div>
           </div>
         </div>

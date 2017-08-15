@@ -136,12 +136,27 @@
   top: 64px;
   background-color: white;
   .search-results-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
     margin-top: 30px;
     width: 1100px;
     margin-left: auto;
     margin-right: auto;
+    .search-results-container-left {
+      max-width:720px;
+      float: left;
+    }
+    .search-results-container-right {
+      max-width: 380px;
+      float: right;
+    }
     .search-results-posts-content, .search-results-comments-content {
       margin-top: -10px;
+    }
+    .section {
+      margin-left: inherit;
     }
   }
   &.open {
@@ -150,6 +165,9 @@
   }
   .posts-item {
     width: 550px;
+    .posts-item-summary {
+      max-width: 440px;
+    }
   }
   .search-results-comments-item {
     width: 550px;
