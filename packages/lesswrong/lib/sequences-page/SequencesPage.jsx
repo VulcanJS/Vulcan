@@ -19,7 +19,7 @@ const SequencesPage = ({document, currentUser, loading}) =>
         {document.commentCount}
       </div>
       {document.userId ? <div className="sequences-author">
-        by {document.user}
+        by {document.user.displayName}
       </div> : null}
     </div>
     <div className="sequences-chapters">
