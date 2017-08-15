@@ -94,7 +94,7 @@ class Vote extends PureComponent {
   render() {
     return (
       <div className={this.getActionClass()}>
-        <div className="vote-count">{this.props.document.baseScore || 0} points</div>
+        <div className="vote-count">{this.props.document.baseScore || 0} <span className="vote-count-text">points</span></div>
         <a className="upvote-button" onClick={this.upvote}>
             {this.state.loading ? <Components.Icon name="spinner" /> : <FontIcon className="material-icons">expand_less</FontIcon> }
             <div className="sr-only">Upvote</div>

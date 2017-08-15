@@ -2,6 +2,10 @@ import './lib/index.js';
 // import './lib/init_script.js';
 import './lib/database-import/database_import.js';
 import './lib/rss-integration/cron.js';
+import './lib/closed-beta/sscImport.js';
+import './lib/closed-beta/hpmorImport.js';
+import './lib/closed-beta/algoliaExport.js';
+import './lib/closed-beta/fixBodyField.js';
 
 // LW Events
 import './lib/events/server.js';

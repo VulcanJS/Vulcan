@@ -26,7 +26,7 @@
   }
 }
 
-.recent-posts-title-component {
+.recent-posts-title-component, .posts-page-comments-title-component {
   font-style: italic;
   margin-top: 20px;
   font-size: 20px;
@@ -36,7 +36,7 @@
     margin-top: 20px;
     a {
       color: rgba(0,0,0,0.6);
-      @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3)
+      @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3, rgba(0,0,0,0.3))
     }
     a:visited {
       color: inherit;
@@ -58,16 +58,30 @@
 
 }
 
-.posts-views{
-  .posts-views-dropdown {
+.posts-views, .comments-views{
+  .posts-views-dropdown, .comments-views-dropdown {
     div div {
-      @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3)
+      @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3, rgba(0,0,0,0.3))
     }
     div div:hover {
       color: rgba(0,0,0,0.4) !important;
     }
   }
   display: inline;
+}
+
+.highlight-date-selector {
+  margin-top: 20px;
+  .highlight-date-selector-date {
+    display: inline-block;
+  }
+  a {
+    text-transform: lowercase;
+    @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3, rgba(0,0,0,0.3));
+  }
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 
@@ -101,6 +115,7 @@
 //////////////////////////////////////////////////////
 
 .posts-item{
+  padding: 10px;
   &:hover {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
   }
@@ -162,7 +177,7 @@
     .material-icons {
       vertical-align:middle;
       font-size: 16px !important;
-      color: rgba(0,0,0,0.4) !important;
+      color: rgba(0,0,0,0.2) !important;
       border-radius: 100%;
       &:hover {
         background-color: rgba(0,0,0,0.05);
@@ -259,11 +274,246 @@
 //////////////////////////////////////////////////////
 
 .posts-page{
-  .posts-item{
-    @include border-radius;
-    border: $border;
-    padding: $hmargin;
-    margin-bottom: $vmargin;
+  margin-bottom: 100px;
+  .posts-page-content-header {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    .posts-page-content-header-title {
+      h1 {
+        font-size: 50px;
+        text-align: center;
+        font-weight: bold;
+        line-height: 52px;
+      }
+      margin-bottom: 25px;
+    }
+    .posts-page-content-header-voting {
+      text-align: center;
+      margin-bottom: 15px;
+      .vote {
+        position: relative;
+        font-size: 20px;
+        color: rgba(0,0,0,0.5);
+        .vote-count {
+          position: relative;
+
+          &:before, &:after {
+            content: "";
+            position: absolute;
+            border-bottom: 1px solid rgba(0,0,0,0.5);
+            width: 75px;
+            top: 12px;
+          }
+          &:before {
+            left:-87px;
+          }
+          &:after {
+            right:-87px;
+          }
+          margin-right: 0px;
+          .vote-count-text {
+            display: none;
+          }
+        }
+        .material-icons {
+          color: rgba(0,0,0,0.4) !important;
+          border-radius: 100%;
+        }
+
+        .material-icons:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
+
+        .upvote-button {
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          left: 0px;
+          right: 0px;
+          top: -14px;
+          width: 30px;
+          height: 20px;
+        }
+        .downvote-button {
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          left: 0px;
+          right: 0px;
+          top: 25px;
+          width: 30px;
+          height: 20px;
+        }
+      }
+      .upvoted {
+        .upvote-button {
+          .material-icons {
+            color: rgba(100, 169, 105, 0.9) !important;
+          }
+        }
+      }
+
+      .downvoted {
+        .downvote-button {
+          .material-icons {
+            color: rgba(100, 169, 105, 0.9) !important;
+          }
+        }
+      }
+    }
+    .posts-page-content-header-author {
+      text-align: center;
+      color: rgba(0,0,0,0.5);
+
+      a:hover, a:focus, a:active {
+        text-decoration: none;
+        color: rgba(0,0,0,0.3);
+      }
+    }
+  }
+
+  .posts-page-content-body {
+    position: relative;
+    width: 640px;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-top: 50px;
+      margin-bottom: 15px;
+    }
+    h2 {
+      margin-top: 32px;
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    a:hover {
+      text-decoration: none;
+      color: rgba(0,0,0,0.5);
+    }
+    .posts-page-content-body-metadata {
+      position: absolute;
+      right: 100%;
+      top: 3px;
+      width: 200px;
+      padding-right: 30px;
+      text-align: right;
+      color: rgba(0,0,0,0.5);
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: none;
+        color: rgba(0,0,0,0.3);
+      }
+      .posts-page-content-body-metadata-date {
+        font-size: 16px;
+        font-weight: bold;
+        color: rgba(0,0,0,0.5);
+        margin-bottom: -5px;
+      }
+      .posts-page-content-body-metadata-comments {
+        font-size: 14px;
+      }
+      .posts-page-content-body-metadata-actions {
+        font-size: 14px;
+      }
+    }
+  }
+  .posts-page-content-footer {
+    margin-bottom: 30px;
+    .posts-page-content-footer-voting {
+      text-align: center;
+      margin-bottom: 15px;
+      .vote {
+        position: relative;
+        font-size: 30px;
+        color: rgba(0,0,0,0.5);
+        .vote-count {
+          position: relative;
+          margin-right: 0px;
+          .vote-count-text {
+            display: none;
+          }
+        }
+        .material-icons {
+          color: rgba(0,0,0,0.4) !important;
+          border-radius: 100%;
+          font-size: 45px !important;
+        }
+
+        .material-icons:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
+
+        .upvote-button {
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          left: 0px;
+          right: 0px;
+          top: -23px;
+          width: 50px;
+          height: 30px;
+
+        }
+        .downvote-button {
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          left: 0px;
+          right: 0px;
+          top: 30px;
+          width: 50px;
+          height: 30px;
+        }
+      }
+      .upvoted {
+        .upvote-button {
+          .material-icons {
+            color: rgba(100, 169, 105, 0.9) !important;
+          }
+        }
+      }
+
+      .downvoted {
+        .downvote-button {
+          .material-icons {
+            color: rgba(100, 169, 105, 0.9) !important;
+          }
+        }
+      }
+    }
+    .posts-page-content-footer-author {
+      text-align: center;
+      color: rgba(0,0,0,0.5);
+      font-size: 20px;
+
+      a:hover, a:focus, a:active {
+        text-decoration: none;
+        color: rgba(0,0,0,0.3);
+      }
+    }
+  }
+  .section {
+    width: 715px !important;
+    position: relative;
+    display: inherit !important;
+    .section-title {
+      position: absolute;
+      top: 0px;
+      padding-right: 15px;
+      right: 100%;
+    }
+    .section-content {
+      display: relative;
+    }
   }
 }
 

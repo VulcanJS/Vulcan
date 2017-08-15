@@ -13,7 +13,6 @@ import Paper from 'material-ui/Paper';
 import h2p from 'html2plaintext';
 
 const paperStyle = {
-  padding: '10px',
   backgroundColor: 'transparent',
 }
 
@@ -87,20 +86,20 @@ class PostsItem extends PureComponent {
               {this.props.currentUser && this.props.currentUser.isAdmin ? <div className="posts-item-admin"><Components.PostsStats post={post} /></div> : null}
             </div></object>
             <div className="posts-item-summary">
-              {post.excerpt || post.url ? ("This is a linkpost for " + post.url) : h2p(post.htmlBody).slice(0,140)}
+              {post.url ? ("This is a linkpost for " + post.url) : post.excerpt}
             </div>
           </div>
           <div className="posts-item-comments">
             <Badge
               className="posts-item-comment-count"
-              badgeContent={post.commentCount}
+              badgeContent={post.commentCount || 0}
               secondary={true}
               badgeStyle={commentCountBadgeStyle}
             >
               <IconButton
                 iconStyle={commentCountIconStyle}
                 tooltip={newComments ? ("last comment " + moment(post.lastCommentedAt).calendar()) : "Comments"}
-                containerElement={<object><Link to={Posts.getPageUrl(post)} /></object>}
+                containerElement={<object><Link to={Posts.getPageUrl(post) + "#comments"} /></object>}
                 >
                 <CommentIcon />
               </IconButton>

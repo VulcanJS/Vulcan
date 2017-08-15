@@ -2,7 +2,6 @@ import { withNew } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import uuid from 'uuid/v4';
 import LWEvents from '../collections/lwevents/collection.js';
-import compose from 'recompose/compose';
 
 
 /*

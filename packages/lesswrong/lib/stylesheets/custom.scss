@@ -55,6 +55,10 @@ $medium-text: $dark-grey;
 }
 
 .posts-comments-thread-linked-comment{
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px; 
   .comment-wrapper{
     margin-top: 15px;
     min-height: 30px;
@@ -79,22 +83,6 @@ $medium-text: $dark-grey;
   }
 }
 
-
-.posts-comments-thread{
-  .posts-comments-thread-title{
-    display: inline;
-  }
-  .last-visit-display{
-    float: right;
-    font-weight: 200;
-  }
-  .comments-list{
-    margin-top: 15px;
-    .comment-new{
-      background-color: rgba(88, 143, 39, 0.04);
-    }
-  }
-}
 
 // Recent Comments Page CSS Modifications
 
@@ -129,33 +117,6 @@ $medium-text: $dark-grey;
     }
   }
 }
-
-
-.posts-page{
-  padding-bottom: 70px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  .posts-page-content{
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-top: 20px;
-    padding-bottom: 30px;
-    line-height: 1.6;
-    font-size: 18px;
-    color: rgba(0,0,0,0.87);
-  }
-  .posts-page-body{
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-top: 20px;
-    padding-bottom: 30px;
-    line-height: 1.6;
-    font-size: 18px;
-    color: rgba(0,0,0,0.87);;
-  }
-}
-
 
 
 // CSS Modifications for the New Post Page
@@ -288,14 +249,8 @@ $medium-text: $dark-grey;
 
 
 .commentEditor{
-  font-size: 16px !important;
+  font-size: 18px !important;
   line-height: 1.25 !important;
-  border: #d1d1d1;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 16px;
-  margin-bottom: 10px;
   color: rgba(0,0,0,0.87);
 }
 
