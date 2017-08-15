@@ -1,12 +1,29 @@
+import Users from 'meteor/vulcan:users';
 import schema from './schema.js';
-import resolvers from './resolvers.js';
-import mutations  from './mutations.js';
-import { createCollection } from 'meteor/vulcan:core';
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
+import './permissions.js';
 
 /**
  * @summary Telescope Conversations namespace
  * @namespace Conversations
  */
+
+const options = {
+     checkNew: (user, document) => {
+       if (!user || !document) return false;
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversation.new.own') : Users.canDo(user, `conversation.new.all`)},
+
+     checkEdit: (user, document) => {
+       if (!user || !document) return false;
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversation.edit.own') : Users.canDo(user, `conversation.edit.all`)
+     },
+
+     checkRemove: (user, document) => {
+       if (!user || !document) return false;
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversation.remove.own') : Users.canDo(user, `conversation.remove.all`)
+     },
+ }
+
 const Conversations = createCollection({
 
   collectionName: 'Conversations',
@@ -15,9 +32,9 @@ const Conversations = createCollection({
 
   schema,
 
-  resolvers,
+  resolvers: getDefaultResolvers('Conversations'),
 
-  mutations,
+  mutations: getDefaultMutations('Conversations', options)
 
 });
 

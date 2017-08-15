@@ -38,7 +38,14 @@ const schema = {
     type: String,
     viewableBy: userInParticipants,
     insertableBy: Users.owns,
-    resolveAs: 'user: User',
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: (message, args, context) => {
+        return context.Users.finOne({_id: message.UserId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
+      },
+      addOriginalField: true,
+    },
     optional: true,
   },
   createdAt: {
@@ -64,8 +71,13 @@ const schema = {
     viewableBy: userInParticipants,
     insertableBy: ['members'],
     hidden: true,
-    resolveAs: 'conversation: Conversation'
-  },
+    resolveAs: {
+      fieldName: 'conversation',
+      type: 'Conversation',
+      resolver: (message, args, context) => {
+        return context.Conversations.findOne({ _id: message.conversationId }, { fields: context.getViewableFields(context.currentUser, context.Conversations) })}
+      },
+   }
 };
 
 export default schema;

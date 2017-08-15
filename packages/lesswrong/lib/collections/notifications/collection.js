@@ -1,7 +1,5 @@
 import schema from './schema.js';
-import mutations from './mutations.js';
-import resolvers from './resolvers.js';
-import { createCollection } from 'meteor/vulcan:core';
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 
 /**
  * @summary Telescope Notifications namespace
@@ -17,9 +15,9 @@ const Notifications = createCollection({
 
   schema,
 
-  resolvers,
+  resolvers: getDefaultResolvers('Notifications'),
 
-  mutations,
+  mutations: getDefaultMutations('Notifications'),
 
 });
 

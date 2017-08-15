@@ -49,8 +49,18 @@ const schema = {
     editableBy: ['admins'],
     optional: true,
     hidden: true,
-    resolveAs: 'participants: [User]',
+    resolveAs: {
+      fieldName: 'participants',
+      type: '[User]',
+      resolver: (conversation, args, context) => {
+        return _.map(conversation.paricipantIds,
+          (participantId => {context.Users.findOne({ _id: participantId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) })})
+        )
+      },
+      addOriginalField: true
+    }
   },
+
   'participantIds.$': {
     type: String,
     viewableBy: userInParticipants,

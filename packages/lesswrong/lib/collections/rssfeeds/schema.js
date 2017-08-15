@@ -19,7 +19,7 @@ const schema = {
     resolveAs: {
       fieldName: 'user',
       type: 'User',
-      resolver: (feed, args, context) => context.Users.findOne({_id: feed.userId}, {fields: context.getViewableFields(context.currentUser, context.Users)}),
+      resolver: (message, args, context) => context.Users.findOne({_id: message.userId}, {fields: context.getViewableFields(context.currentUser, context.Users)}),
       addOriginalField: true,
     },
     optional: true,
