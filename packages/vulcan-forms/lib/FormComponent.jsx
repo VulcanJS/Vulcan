@@ -43,8 +43,9 @@ class FormComponent extends PureComponent {
 
   updateCharacterCount(name, value) {
     if (this.props.limit) {
+      const characterCount = value ? value.length : 0;
       this.setState({
-        limit: this.props.limit - value.length
+        limit: this.props.limit - characterCount
       });
     }
   }
@@ -57,6 +58,7 @@ class FormComponent extends PureComponent {
     // const base = typeof this.props.control === "function" ? this.props : rest;
 
     const properties = {
+      value: '', // default value, will be overridden by `rest` if real value has been passed down through props
       ...rest,
       onBlur: this.handleBlur,
       ref: (ref) => this.formControl = ref,
@@ -70,8 +72,6 @@ class FormComponent extends PureComponent {
     } else { // else pick a predefined component
 
       switch (this.props.control) {
-        case "text":
-          return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
         case "number":
           return <Input         {...properties} type="number" onChange={this.updateCharacterCount} />;
         case "url":
@@ -83,7 +83,7 @@ class FormComponent extends PureComponent {
         case "checkbox":
           return <Checkbox      {...properties} />;
         case "checkboxgroup":
-          if (!properties.value) properties.value = [];
+          // if (!properties.value) properties.value = [];
           return <CheckboxGroup {...properties} />;
         case "radiogroup":
           // not sure why, but onChange needs to be specified here
@@ -93,8 +93,10 @@ class FormComponent extends PureComponent {
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
-        default:
+        case "text":
+        default: 
           return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        
       }
 
     }

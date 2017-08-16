@@ -201,7 +201,7 @@ class Form extends Component {
       // add error state
       const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
       if (validationError) {
-        const fieldErrors = _.filter(validationError.data.errors, error => error.data.value === fieldName);
+        const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
         if (fieldErrors) {
           field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
         }
@@ -314,7 +314,13 @@ class Form extends Component {
   }
 
   getErrorMessage(error) {
-    return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {value: this.getLabel(error.data.value)});
+    if (error.data.fieldName) {
+      // if error has a corresponding field name, "labelify" that field name
+      const fieldName = this.getLabel(error.data.fieldName);
+      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {...error.data, fieldName});
+    } else {
+      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data);
+    }
   }
 
   // --------------------------------------------------------------------- //
@@ -350,7 +356,7 @@ class Form extends Component {
           
           } else { // this is a regular error
             
-            message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {value: error.data.value})}
+            message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
 
           }
 
@@ -504,7 +510,8 @@ class Form extends Component {
       return;
     }
 
-    this.setState(prevState => ({disabled: true}));
+    // clear errors and disable form while it's submitting
+    this.setState(prevState => ({errors: [], disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
