@@ -73,6 +73,8 @@ class Form extends Component {
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
     this.setFormState = this.setFormState.bind(this);
+    this.getLabel = this.getLabel.bind(this);
+    this.getErrorMessage = this.getErrorMessage.bind(this);
 
     this.state = {
       disabled: false,
@@ -99,6 +101,7 @@ class Form extends Component {
   getFieldGroups() {
 
     const schema = this.getSchema();
+    const document = this.getDocument();
 
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
@@ -122,19 +125,23 @@ class Form extends Component {
 
       // add label or internationalized field name if necessary (field not hidden)
       if (!field.hidden) {
-        field.label = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: fieldSchema.label});
+        field.label = this.getLabel(fieldName);
       }
 
       // add value
-      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
+      if (document[fieldName]){
 
-      // convert value type if needed
-      if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
+        field.value = document[fieldName];
 
-      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-      if (Array.isArray(field.value)) {
-        field.value = field.value.map(item => item._id || item);
+        // convert value type if needed
+        if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
+        
+        // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+        // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
+        if (Array.isArray(field.value)) {
+          field.value = field.value.map(item => item._id || item);
+        }
+
       }
 
       // backward compatibility from 'autoform' to 'form'
@@ -191,6 +198,14 @@ class Form extends Component {
       // add document
       field.document = this.getDocument();
 
+      // add error state
+      const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
+      if (validationError) {
+        const fieldErrors = _.filter(validationError.data.errors, error => error.data.value === fieldName);
+        if (fieldErrors) {
+          field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
+        }
+      }
       return field;
 
     });
@@ -294,6 +309,14 @@ class Form extends Component {
     }
   }
 
+  getLabel(fieldName) {
+    return this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
+  }
+
+  getErrorMessage(error) {
+    return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {value: this.getLabel(error.data.value)});
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
@@ -310,11 +333,29 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
+
     return (
       <div className="form-errors">
-        {this.state.errors.map((error, index) => 
-          <Flash key={index} message={{content: error.message || this.context.intl.formatMessage({id: error.name}, error.data), type: 'error' }}/>
-        )}
+        {this.state.errors.map((error, index) => {
+
+          let message;
+
+          if (error.data.errors) { // this error is a "multi-error" with multiple sub-errors
+
+            message = error.data.errors.map(error => {
+              return {
+                content: this.getErrorMessage(error)
+              }
+            });
+          
+          } else { // this is a regular error
+            
+            message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {value: error.data.value})}
+
+          }
+
+          return <Flash key={index} message={message} type="error"/>
+        })}
       </div>
     )
   }
@@ -330,6 +371,7 @@ class Form extends Component {
 
     // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
+    console.log(graphQLError)
 
     // add error to state
     this.setState(prevState => ({
@@ -486,7 +528,6 @@ class Form extends Component {
 
       // remove any empty properties
       let document = _.compactObject(data);
-
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
 
