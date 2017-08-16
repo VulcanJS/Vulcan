@@ -6,6 +6,7 @@ registerFragment(`
     title
     createdAt
     latestActivity
+    participantIds
     participants {
       ...UsersMinimumInfo
     }
@@ -34,6 +35,7 @@ registerFragment(`
 
 registerFragment(`
   fragment editTitle on Conversation {
+    _id
     title
   }
 `);

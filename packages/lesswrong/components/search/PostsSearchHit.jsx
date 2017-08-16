@@ -33,12 +33,12 @@ const PostsSearchHit = ({hit}) => <div className="search-results-posts-item">
          {/*this.renderPostFeeds() */}
 
          <object><div className="posts-item-meta">
-           {hit.postedAt ? <div className="posts-item-date"> {moment(new Date(hit.postedAt['$date'])).fromNow()} </div> : null}
+           {hit.postedAt ? <div className="posts-item-date"> {moment(new Date(hit.postedAt)).fromNow()} </div> : null}
            {hit.baseScore} points
            {/* post.user ? <div className="posts-item-user"><Components.UsersName user={post.user}/></div> : null */}
          </div></object>
          <div className="posts-item-summary">
-           <Snippet attributeName="htmlBody" hit={hit} tagName="mark" />
+           <Snippet attributeName="body" hit={hit} tagName="mark" />
          </div>
        </div>
        <div className="posts-item-comments">

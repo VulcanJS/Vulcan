@@ -21,7 +21,7 @@ const CommentsSearchHit = ({hit}) => <div className="search-results-comments-ite
           </div>
         </div></object>
       <div className="recent-comments-item-text comments-item-text">
-        <Highlight attributeName="body" hit={hit} tagName="mark" />
+        <Snippet attributeName="body" hit={hit} tagName="mark" />
       </div>
       </div>
     </Link>

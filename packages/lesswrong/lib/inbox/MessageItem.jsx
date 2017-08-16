@@ -18,11 +18,11 @@ class MessageItem extends Component {
     if (message.content) {
       return (
         <Media>
-          {(currentUser._id != message.user._id) ? <Media.Left> <Components.UsersAvatar user={message.user}/> </Media.Left> : <div></div>}
+          {(message.user && currentUser._id != message.user._id) ? <Media.Left> <Components.UsersAvatar user={message.user}/> </Media.Left> : <div></div>}
           <Media.Body>
             <Components.ContentRenderer state={message.content} />
           </Media.Body>
-          {(currentUser._id == message.user._id) ? <Media.Right> <Components.UsersAvatar user={currentUser}/></Media.Right> : <div></div>}
+          {(message.user && currentUser._id == message.user._id) ? <Media.Right> <Components.UsersAvatar user={currentUser}/></Media.Right> : <div></div>}
         </Media>
       )
     } else {

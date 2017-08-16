@@ -30,9 +30,10 @@ function updateConversationActivity (message) {
 addCallback("messages.new.async", updateConversationActivity);
 
 const createNotifications = (userIds, notificationType, documentType, documentId) => {
+  console.log("Notifications are being created for users: ", userIds, notificationType);
   userIds.forEach(userId => {
 
-    let user = Users.findOne(userId);
+    let user = Users.findOne({ _id:userId });
 
     let notificationData = {
       userId: userId,

@@ -97,5 +97,6 @@ import '../components/comments/CommentWithContext.jsx';
 import '../components/comments/CommentWithContextWrapper.jsx';
 import '../components/search/PostsSearchHit.jsx';
 import '../components/search/CommentsSearchHit.jsx';
+import '../components/search/UsersSearchHit.jsx';
 
 import '../components/collections/CollectionsCard.jsx';

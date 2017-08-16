@@ -8,7 +8,6 @@ import React, { PropTypes, Component } from 'react';
 import { Button, Grid, Row, Col, ListGroup, ListGroupItem, PageHeader, Panel } from 'react-bootstrap';
 import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/vulcan:core';
 import Messages from "../collections/messages/collection.js";
-import SmartForm from "meteor/vulcan:forms";
 
 class ConversationWrapper extends Component {
 
@@ -19,8 +18,8 @@ class ConversationWrapper extends Component {
           {results.map((message) => (<Components.MessageItem key={message._id} currentUser={currentUser} message={message} />))}
         </div>);
     } else {
-     return <div>No Results</div>
-    };
+     return <div>There are no messages in  this conversation yet!</div>
+    }
   }
 
   render() {
@@ -39,17 +38,15 @@ class ConversationWrapper extends Component {
         <div>
           <PageHeader>
             {!!conversation.title ? conversation.title : _.pluck(conversation.participants, 'username').join(', ')}
-            <br></br> <small>{conversation.createdAt}</small>
+            <br /> <small>{conversation.createdAt}</small>
           </PageHeader>
           {this.renderMessages(results, currentUser)}
-          <div style={ {marginTop: '40px'} }>
-            <SmartForm
+            <Components.SmartForm
               collection={Messages}
               prefilledProps={ {conversationId: conversation._id} }
               successCallback={(message) => {refetch()}}
               errorCallback={(message)=> console.log("Failed to send", error)}
             />
-          </div>
         </div>
       )
     } else {

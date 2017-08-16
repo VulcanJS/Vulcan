@@ -28,6 +28,7 @@ class InboxNavigation extends Component {
 
     if(currentUser && results && results.length) {
       let conversation = results.find(c => (c._id == select));
+      console.log("InboxNavigation conversation: ", conversation);
       let notificationsSelect = (select == "Notifications");
       return (
         <Grid>
@@ -36,7 +37,7 @@ class InboxNavigation extends Component {
             <Col xs={12} style={{position: "inherit"}} md={(notificationsSelect ? 9 : 6)}>
               {notificationsSelect ? <Components.NotificationsWrapper/> : <Components.ConversationWrapper terms={messagesTerms} conversation={conversation} />}
             </Col>
-            {notificationsSelect ? <div></div> : <Col xs={12} md={3}><Components.ConversationDetails conversation={conversation}></Components.ConversationDetails></Col>}
+            {notificationsSelect ? <div></div> : <Col xs={12} md={3}><Components.ConversationDetails conversation={conversation}/></Col>}
           </Row>
         </Grid>
       )
@@ -76,13 +77,6 @@ class InboxNavigation extends Component {
   }
 
 }
-
-const notificationOptions = {
-  collection: Notifications,
-  queryName: 'notificationsListQuery',
-  fragmentName: 'notificationsNavFragment',
-  limit: 50,
-};
 
 const conversationOptions = {
   collection: Conversations,

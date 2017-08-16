@@ -4,6 +4,7 @@ A SimpleSchema-compatible JSON schema
 
 */
 
+<<<<<<< HEAD
 const userInParticipants = function (user, document) {
   try {
     let conversation;
@@ -24,34 +25,38 @@ const userInParticipants = function (user, document) {
   }
 };
 
+=======
+import Users from 'meteor/vulcan:users';
+import GraphQLSchema from 'meteor/vulcan:core';
+>>>>>>> fb9fb44441a2deee45515afab7714f491a803d51
 
 const schema = {
   _id: {
     optional: true,
     type: String,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
   },
   createdAt: {
     optional: true,
     type: Date,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     onInsert: (document) => {
       return new Date();
     }
   },
   participantIds: {
     type: Array,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['admins'],
+    editableBy: ['members'],
     optional: true,
     hidden: true,
     resolveAs: {
       fieldName: 'participants',
       type: '[User]',
       resolver: (conversation, args, context) => {
-        return _.map(conversation.paricipantIds,
-          (participantId => {context.Users.findOne({ _id: participantId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) })})
+        return _.map(conversation.participantIds,
+          (participantId => {return context.Users.findOne({ _id: participantId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) })})
         )
       },
       addOriginalField: true
@@ -62,15 +67,16 @@ const schema = {
     type: String,
     optional: true,
   },
+
   title: {
     type: String,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     editableBy: ['members'],
     insertableBy: ['members'],
   },
   latestActivity: {
     type: Date,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     onInsert: (document) => {
       return new Date(); // if this is an insert, set createdAt to current timestamp
     },
