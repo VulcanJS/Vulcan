@@ -17,7 +17,7 @@ class CommentsListSection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      highlightDate: this.props.lastEvent ? this.props.lastEvent.properties.startTime : new Date(),
+      highlightDate: this.props.lastEvent && this.props.lastEvent.properties ? this.props.lastEvent.properties.startTime : new Date(),
     }
   }
 
