@@ -12,7 +12,7 @@ import Users from 'meteor/vulcan:users';
  */
 Comments.getPageUrl = function(comment, isAbsolute = false){
   const post = Posts.findOne(comment.postId);
-  return `${Posts.getPageUrl(post, isAbsolute)}/#${comment._id}`;
+  return `${Posts.getPageUrl(post, isAbsolute)}/${comment._id}`;
 };
 
 ///////////////////

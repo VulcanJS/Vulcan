@@ -60,7 +60,7 @@ const getDocument = (documentType, documentId) => {
   }
 };
 
-
+//
 if(Notifications.find().fetch().length === 0) {
   _.times(10, (i) => {
     Users.find().fetch().forEach(user => {
@@ -121,7 +121,7 @@ if(Notifications.find().fetch().length === 0) {
       });
     });
   });
-};
+}
 
 // _.times(10, (i) => {
 //   Users.find().fetch().forEach(user => {
