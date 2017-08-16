@@ -78,7 +78,7 @@ class Upload extends PureComponent {
     this.clearImage = this.clearImage.bind(this);
     this.enableMultiple = this.enableMultiple.bind(this);
 
-    const isEmpty = this.enableMultiple() ? props.value.length === 0 : !props.value;
+    const isEmpty = !props.value || (this.enableMultiple() && props.value.length === 0);
     const emptyValue = this.enableMultiple() ? [] : '';
 
     this.state = {
@@ -96,7 +96,7 @@ class Upload extends PureComponent {
 
   */
   componentWillMount() {
-    const isEmpty = this.enableMultiple() ? this.props.value.length === 0 : !this.props.value;
+    const isEmpty = !this.props.value || (this.enableMultiple() && this.props.value.length === 0);
     const emptyValue = this.enableMultiple() ? [] : '';
     this.context.addToAutofilledValues({[this.props.name]: isEmpty ? emptyValue : this.props.value});
   }
