@@ -56,7 +56,7 @@ const schema = {
 
   chapterIds: {
     type: Array,
-    optional: false,
+    optional: true,
     viewableBy: ["guests"],
     resolveAs: {
       fieldName: 'chapters',
@@ -72,6 +72,11 @@ const schema = {
 
   'chapterIds.$': {
     type: String,
+    optional: true,
+  },
+
+  draft: {
+    type: Boolean,
     optional: true,
   }
 

@@ -4,9 +4,6 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Users from 'meteor/vulcan:users';
-import GraphQLSchema from 'meteor/vulcan:core';
-
 const userInParticipants = function (user, document) {
   try {
     let conversation;
@@ -63,7 +60,6 @@ const schema = {
 
   'participantIds.$': {
     type: String,
-    viewableBy: userInParticipants,
     optional: true,
   },
   title: {

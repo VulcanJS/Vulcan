@@ -42,7 +42,7 @@ const schema = {
       fieldName: 'user',
       type: 'User',
       resolver: (message, args, context) => {
-        return context.Users.finOne({_id: message.UserId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
+        return context.Users.findOne({_id: message.UserId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
       },
       addOriginalField: true,
     },
