@@ -16,7 +16,7 @@ const UsersSearchHit = ({hit}) => <div className="search-results-users-item user
           {hit.displayName}
         </div>
         <div className="users-item-meta">
-          <div className="search-results-users-item-karma">{hit.karma} points </div>
+          <div className="users-item-karma">{hit.karma} points </div>
           <div className="users-item-created-date"> {moment(new Date(hit.createdAt)).fromNow()}</div>
         </div>
       </div>

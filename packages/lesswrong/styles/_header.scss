@@ -173,4 +173,36 @@
     width: 550px;
     padding: 10px;
   }
+
+  .search-results-users {
+    margin-left: 10px;
+    padding-left: 30px;
+    border-left-style: solid;
+    border-left-color: rgba(0,0,0,0.1);
+    border-left-width: 1px;
+    .search-results-users-heading {
+      h2 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 0px;
+      }
+    }
+    .users-item-name {
+      font-size: 16px;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .users-item-meta{
+      display: inline-block;
+      .users-item-karma {
+        font-size: 14px;
+        display: inline-block;
+        margin-right: 5px;
+      }
+      .users-item-created-date {
+        display: inline-block;
+      }
+    }
+  }
+
 }

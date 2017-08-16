@@ -69,8 +69,8 @@ class SearchBar extends Component {
             <div className="search-results-container-right">
               <div className="search-results-users">
                 <Index indexName= "test_users">
-                  <Configure hitsPerPage={5} />
-                  <div className="search-results-user-heading">
+                  <Configure hitsPerPage={10} />
+                  <div className="search-results-users-heading">
                     <h2>Users</h2>
                   </div>
                   <div className="search-resulsts-users-content">
