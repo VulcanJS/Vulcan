@@ -258,14 +258,28 @@ _.mixin({
   compactObject : function(object) {
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
-      if(!value && typeof value !== "boolean") {
+      /*
+        
+        Remove a value if:
+        1. it's not a boolean
+        2. it's not a number
+        3. it's undefined
+        4. it's an empty string
+        5. it's null
+        6. it's an empty array
+
+      */
+      if (typeof value === 'boolean' || typeof value === 'number') {
+        return
+      }
+
+      if(value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
         delete clone[key];
       }
     });
     return clone;
   }
 });
-
 
 Utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
