@@ -36,7 +36,7 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password
+accounts-password@1.4.0
 # accounts-twitter
 # accounts-facebook
 # accounts-google
@@ -51,3 +51,4 @@ lesswrong
 # example-customization
 # example-permissions
 # example-membership
+# example-interfaces

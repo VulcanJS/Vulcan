@@ -67,7 +67,10 @@ Meteor.startup(() => {
           // note: this item is not used in this specific callback: router.onUpdate
           runCallbacks('router.onUpdate', {}, store, apolloClient);
         },
-        render: applyRouterMiddleware(useScroll())
+        render: applyRouterMiddleware(useScroll((prevRouterProps, nextRouterProps) => {
+          // if the action is REPLACE, return false so that we don't jump back to top of page
+          return !(nextRouterProps.location.action === 'REPLACE');
+        }))
       });
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },

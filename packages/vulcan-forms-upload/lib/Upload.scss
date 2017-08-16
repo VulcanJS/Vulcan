@@ -8,9 +8,27 @@
   border: 4px dashed #ccc;
   padding: 30px;
   transition: "all 0.5s";
-  width: 300px;
+  width: 250px;
   cursor: pointer;
   color: #ccc;
+  margin-right: 10px;
+  position: relative;
+}
+
+.upload-uploading{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span{
+    display: block;
+    font-size: 1.5rem;
+  }
 }
 
 .dropzone-active {
@@ -21,10 +39,36 @@
   border: #DD3A0A 4px solid;
 }
 
-.upload-state {
+.upload-images{
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  // align-items: center;
+}
+.upload-image{
+  margin-right: 10px;
+  a, img{
+    display: block;
+    text-align: center;
+  }
+  a{
+    font-size: 0.8rem;
+  }
+}
+
+.upload-image-contents{
+  position: relative;
+}
+
+.upload-loading{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.8);
+  display: flex;
+  justify-content: center;
   align-items: center;
-  flex-basis: 300px;
 }

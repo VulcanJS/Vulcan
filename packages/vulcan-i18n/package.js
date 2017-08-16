@@ -1,14 +1,14 @@
 Package.describe({
   name: 'vulcan:i18n',
   summary: "i18n client polyfill",
-  version: '1.6.0',
+  version: '1.7.0',
   git: "https://github.com/VulcanJS/Vulcan"
 });
 
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:lib@1.6.0',
+    'vulcan:lib@1.7.0',
   ]);
 
   api.mainModule('lib/server/main.js', 'server');

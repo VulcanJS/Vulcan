@@ -1,8 +1,8 @@
 Package.describe({
   name: "vulcan:rss",
   summary: "Vulcan RSS package",
-  version: '1.6.0',
-  git: "https://github.com/TelescopeJS/telescope-rss.git"
+  version: '1.7.0',
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Npm.depends({rss: "1.1.1"});
@@ -10,9 +10,9 @@ Npm.depends({rss: "1.1.1"});
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core@1.6.0',
-    'vulcan:posts@1.6.0',
-    'vulcan:comments@1.6.0'
+    'vulcan:core@1.7.0',
+    'vulcan:posts@1.7.0',
+    'vulcan:comments@1.7.0'
   ]);
 
   api.addFiles(['lib/headtags.js'], ['client', 'server']);

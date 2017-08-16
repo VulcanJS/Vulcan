@@ -182,8 +182,11 @@ export const GraphQLSchema = {
       }
     });
 
+    const { interfaces = [] } = collection.options;
+    const graphQLInterfaces = interfaces.length ? `implements ${interfaces.join(`, `)} ` : '';
+
     let graphQLSchema = `
-      type ${mainTypeName} {
+      type ${mainTypeName} ${graphQLInterfaces}{
         ${mainSchema.join('\n  ')}
       }
     `

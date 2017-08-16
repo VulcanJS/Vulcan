@@ -6,6 +6,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 */
 
 import React from 'react';
+import Helmet from 'react-helmet';
 import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';
@@ -13,6 +14,10 @@ import Movies from '../../modules/movies/collection.js';
 const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   
   <div style={{maxWidth: '500px', margin: '20px auto'}}>
+
+    <Helmet>
+      <link name="bootstrap" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
+    </Helmet>
 
     {/* user accounts */}
 
@@ -40,7 +45,7 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
 
         {/* documents list */}
 
-        {results.map(movie => <Components.Card key={movie._id} collection={Movies} document={movie} currentUser={currentUser} />)}
+        {results.map(movie => <Components.Card fields={['name', 'year', 'review']} key={movie._id} collection={Movies} document={movie} currentUser={currentUser} />)}
         
         {/* load more */}
 
@@ -57,7 +62,6 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
 const options = {
   collection: Movies,
   limit: 5,
-  pollInterval: 0
 };
 
 export default withList(options)(withCurrentUser(MoviesList));

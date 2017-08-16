@@ -118,6 +118,10 @@ div.ReactTags__suggestions mark{
 
 .form-input{
   position: relative;
+  margin-bottom: 1rem;
+}
+.form-group{
+  margin-bottom: 0;
 }
 .form-control-limit{
   position: absolute;
@@ -144,8 +148,28 @@ div.ReactTags__suggestions mark{
 
 .form-section-heading-title{
   margin: 0;
+  font-size: 1.25rem;
 }
 
 .form-section-collapsed{
   display: none;
+}
+
+.input-error{
+  color: #EF1642;
+  input, textarea, select{
+    border-color: #EF1642;
+  }
+}
+
+.form-input-errors{
+  color: #EF1642;
+  text-align: right;
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 0.8rem;
+  li{
+    margin: 0;
+  }
 }

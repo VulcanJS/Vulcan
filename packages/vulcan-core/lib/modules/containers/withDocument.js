@@ -7,9 +7,19 @@ export default function withDocument (options) {
   
   const { collection, pollInterval = 20000 } = options,
         queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
-        fragment = options.fragment || getFragment(options.fragmentName),
-        fragmentName = getFragmentName(fragment),
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
+
+  let fragment;
+
+  if (options.fragment) {
+    fragment = options.fragment;
+  } else if (options.fragmentName) {
+    fragment = getFragment(options.fragmentName);
+  } else {
+    fragment = getFragment(`${collection.options.collectionName}DefaultFragment`);
+  }
+
+  const fragmentName = getFragmentName(fragment);
 
   return graphql(gql`
     query ${queryName}($documentId: String, $slug: String) {

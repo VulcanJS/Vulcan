@@ -59,7 +59,8 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "url",
-    order: 10
+    order: 10,
+    searchable: true
   },
   /**
     Title
@@ -72,7 +73,8 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: "text",
-    order: 20
+    order: 20,
+    searchable: true
   },
   /**
     Slug
@@ -110,6 +112,7 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    searchable: true
   },
   /**
     Count of how many times the post's page was viewed

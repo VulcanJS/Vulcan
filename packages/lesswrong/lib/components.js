@@ -65,11 +65,9 @@ import './sequences-page/SequencesPostsList.jsx'
 import './sequences-page/SequencesSingle.jsx'
 // Frontend Rework
 
-import '../components/App.jsx';
 import '../components/Layout.jsx';
 import '../components/common/FlashMessages.jsx';
 import '../components/common/Header.jsx';
-import '../components/common/HeadTags.jsx';
 import '../components/common/Home.jsx';
 import '../components/common/Section.jsx';
 import '../components/common/Vote.jsx';

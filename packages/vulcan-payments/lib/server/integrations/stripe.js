@@ -114,7 +114,7 @@ export const createCharge = async (args) => {
     // run collection.charge.sync callbacks
     modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc);
 
-    returnDocument = editMutation({
+    returnDocument = await editMutation({
       collection,
       documentId: associatedId,
       set: modifier.$set,

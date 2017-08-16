@@ -7,6 +7,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 import React from 'react';
 import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
+import Helmet from 'react-helmet';
 
 import Movies from '../../modules/movies/collection.js';
 import MoviesItem from './MoviesItem.jsx';
@@ -16,6 +17,10 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
   
   <div style={{maxWidth: '500px', margin: '20px auto'}}>
 
+    <Helmet>
+      <link name="bootstrap" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
+    </Helmet>
+    
     {/* user accounts */}
 
     <div style={{padding: '20px 0', marginBottom: '20px', borderBottom: '1px solid #ccc'}}>

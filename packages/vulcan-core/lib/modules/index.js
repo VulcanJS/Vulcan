@@ -17,6 +17,8 @@ export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as Avatar } from './components/Avatar.jsx';
 export { default as Card } from './components/Card.jsx';
+export { default as Datatable } from './components/Datatable.jsx';
+export { default as Flash } from './components/Flash.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';
@@ -26,3 +28,5 @@ export { default as withEdit } from './containers/withEdit.js';
 export { default as withRemove } from './containers/withRemove.js';
 export { default as withCurrentUser } from './containers/withCurrentUser.js';
 export { default as withMutation } from './containers/withMutation.js';
+
+export { findResultsState } from './components/App.jsx';

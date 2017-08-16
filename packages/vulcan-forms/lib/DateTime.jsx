@@ -51,7 +51,6 @@ DateTime.propTypes = {
 };
 
 DateTime.contextTypes = {
-  addToAutofilledValues: PropTypes.func,
   updateCurrentValues: PropTypes.func,
 };
 

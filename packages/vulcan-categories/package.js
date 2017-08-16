@@ -1,8 +1,8 @@
 Package.describe({
   name: "vulcan:categories",
   summary: "Vulcan tags package",
-  version: '1.6.0',
-  git: "https://github.com/TelescopeJS/telescope-tags.git"
+  version: '1.7.0',
+  git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {
@@ -10,8 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'vulcan:core@1.6.0',
-    'vulcan:posts@1.6.0',
+    'vulcan:core@1.7.0',
+    'vulcan:posts@1.7.0',
   ]);
 
   api.mainModule("lib/server.js", "server");

@@ -108,11 +108,11 @@ export class AccountsLoginForm extends Tracker.Component {
         });
       }
 
-      const loggingInMessage = this.context.intl.formatMessage({id: 'accounts.logging_in'});
+      const loggingInMessage = 'accounts.logging_in';
 
       if (this.state.formState == STATES.PROFILE) {
         if (!this.props.currentUser && this.state.messages.length === 0) {
-          this.showMessage(loggingInMessage);
+          // this.showMessage(loggingInMessage); // don't show logging in message for now
         } else if (this.props.currentUser &&
           this.state.messages.find(({ message }) => message === loggingInMessage)) {
           this.clearMessage(loggingInMessage);
@@ -626,7 +626,7 @@ export class AccountsLoginForm extends Tracker.Component {
         onSubmitHook(error,formState);
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
+          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown', errorId, 'error');
         }
         else {
           loginResultCallback(() => this.state.onSignedInHook());
@@ -689,7 +689,7 @@ export class AccountsLoginForm extends Tracker.Component {
           // do nothing
         } else {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage((error.reason && this.context.intl.formatMessage({id: errorId})) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}))
+          this.showMessage((error.reason && this.context.intl.formatMessage({id: errorId})) || 'accounts.error_unknown' && errorId)
         }
       } else {
         this.setState({ formState: STATES.PROFILE });
@@ -750,8 +750,9 @@ export class AccountsLoginForm extends Tracker.Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
+          console.log(error)
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
+          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
           if (this.context.intl.formatMessage({id: `error.accounts_${error.reason}`})) {
             onSubmitHook(`error.accounts.${error.reason}`, formState);
           }
@@ -770,7 +771,6 @@ export class AccountsLoginForm extends Tracker.Component {
         this.setState({ waiting: false });
       });
     };
-
     if (!error) {
       this.setState({ waiting: true });
       // Allow for Promises to return.
@@ -803,10 +803,10 @@ export class AccountsLoginForm extends Tracker.Component {
       Accounts.forgotPassword({ email: email }, (error) => {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
+          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
         }
         else {
-          this.showMessage(this.context.intl.formatMessage({id: 'accounts.info_email_sent'}), 'success', 5000);
+          this.showMessage('accounts.info_email_sent', 'success', 5000);
           this.clearDefaultFieldValues();
         }
         onSubmitHook(error, formState);
@@ -837,11 +837,11 @@ export class AccountsLoginForm extends Tracker.Component {
       Accounts.resetPassword(token, newPassword, (error) => {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
+          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
           onSubmitHook(error, formState);
         }
         else {
-          this.showMessage(this.context.intl.formatMessage({id: 'accounts.info_password_changed'}), 'success', 5000);
+          this.showMessage('accounts.info_password_changed', 'success', 5000);
           onSubmitHook(null, formState);
           this.setState({ formState: STATES.PROFILE });
           Accounts._loginButtonsSession.set('resetPasswordToken', null);
@@ -854,11 +854,11 @@ export class AccountsLoginForm extends Tracker.Component {
       Accounts.changePassword(password, newPassword, (error) => {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || this.context.intl.formatMessage({id: 'accounts.error_unknown'}), 'error');
+          this.showMessage(this.context.intl.formatMessage({id:errorId}) || 'accounts.error_unknown' && errorId, 'error');
           onSubmitHook(error, formState);
         }
         else {
-          this.showMessage(this.context.intl.formatMessage({id: 'accounts.info_password_changed'}), 'success', 5000);
+          this.showMessage('accounts.info_password_changed', 'success', 5000);
           onSubmitHook(null, formState);
           this.setState({ formState: STATES.PROFILE });
           this.clearDefaultFieldValues();
@@ -871,7 +871,7 @@ export class AccountsLoginForm extends Tracker.Component {
     if (message) {
       this.setState(({ messages = [] }) => {
         messages.push({
-          message,
+          message: this.context.intl.formatMessage({id: message}),
           type,
           ...(field && { field }),
         });
