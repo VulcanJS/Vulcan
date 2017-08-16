@@ -9,6 +9,7 @@ const upvoteWeight = 1;
 const downvoteWeight = 1;
 
 if (fixKarma) {
+  let usersCount = 0;
   Users.find().fetch().forEach((user) => {
     if (user.legacy) {
       const mainPostKarma = upvoteWeight * user.legacyData.karma_ups_link_lesswrong - downvoteWeight * user.legacyData.karma_downs_link_lesswrong
@@ -25,12 +26,10 @@ if (fixKarma) {
       const karmaData = {
         karma: karma
       }
-
-      
+      Users.update({_id: user._id}, {$inc: {karma: karma}});
+      if (usersCount % 1000 == 0 ){
+        console.log("Updated karma of n users: ", usersCount);
+      }
     }
-
-
-
-
   })
 }
