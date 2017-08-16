@@ -14,7 +14,7 @@ div.ReactTags__tagInput {
   border-radius: 2px;
   display: inline-block;
 }
-div.ReactTags__tagInput input, 
+div.ReactTags__tagInput input,
 div.ReactTags__tagInput input:focus {
   // height: 31px;
   // margin: 0;
@@ -145,4 +145,8 @@ div.ReactTags__suggestions mark{
 
 .form-section-collapsed{
   display: none;
+}
+
+.modal-dialog {
+  margin-top: 100px !important;
 }
