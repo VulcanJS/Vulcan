@@ -4,7 +4,9 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-<<<<<<< HEAD
+import Users from 'meteor/vulcan:users';
+import GraphQLSchema from 'meteor/vulcan:core';
+
 const userInParticipants = function (user, document) {
   try {
     let conversation;
@@ -25,10 +27,6 @@ const userInParticipants = function (user, document) {
   }
 };
 
-=======
-import Users from 'meteor/vulcan:users';
-import GraphQLSchema from 'meteor/vulcan:core';
->>>>>>> fb9fb44441a2deee45515afab7714f491a803d51
 
 const schema = {
   _id: {
