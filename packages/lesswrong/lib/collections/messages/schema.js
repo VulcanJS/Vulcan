@@ -8,26 +8,6 @@ import Users from 'meteor/vulcan:users';
 import GraphQLSchema from 'meteor/vulcan:core';
 import MessageEditor from '../../editor/MessageEditor.jsx';
 
-const userInParticipants = function (user, document) {
-  try {
-    let conversation;
-    if (document.conversation) { //Check if document is message and set conversation accordingly
-      conversation = document.conversation;
-    } else if (document.participants) { //Check if document is conversation
-      conversation = document;
-    } else { //If neither, return false
-      return false;
-    }
-    conversation.participants.forEach(function (participant) {
-      if (participant._id == user._id) {
-        return true
-      }
-    });
-  } catch (e) {
-    return false; //user not logged in, or corrupt conversation
-  }
-};
-
 const schema = {
   _id: {
     type: String,
@@ -36,13 +16,13 @@ const schema = {
   },
   userId: {
     type: String,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     insertableBy: Users.owns,
     resolveAs: {
       fieldName: 'user',
       type: 'User',
       resolver: (message, args, context) => {
-        return context.Users.finOne({_id: message.UserId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
+        return context.Users.findOne({_id: message.userId}, {fields: context.getViewableFields(context.currentUser, context.Users)});
       },
       addOriginalField: true,
     },
@@ -51,14 +31,14 @@ const schema = {
   createdAt: {
     optional: true,
     type: Date,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     onInsert: (document, currentUser) => {
       return new Date();
     },
   },
   content: {
     type: Object,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     insertableBy: ['members'],
     editableBy: Users.owns,
     control: MessageEditor,
@@ -68,16 +48,17 @@ const schema = {
   },
   conversationId: {
     type: String,
-    viewableBy: userInParticipants,
+    viewableBy: ['members'],
     insertableBy: ['members'],
     hidden: true,
     resolveAs: {
       fieldName: 'conversation',
       type: 'Conversation',
       resolver: (message, args, context) => {
-        return context.Conversations.findOne({ _id: message.conversationId }, { fields: context.getViewableFields(context.currentUser, context.Conversations) })}
-      },
-   }
+        return context.Conversations.findOne({ _id: message.conversationId }, { fields: context.getViewableFields(context.currentUser, context.Conversations) })},
+      addOriginalField: true,
+    },
+  }
 };
 
 export default schema;
