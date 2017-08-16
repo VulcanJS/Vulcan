@@ -12,11 +12,13 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
   // mutation for inserting a new document
 
   new: {
-    
+
     name: `${collectionName}New`,
-    
+
     // check function called on a user to see if they can perform the operation
     check(user, document) {
+      console.log("getDefaultMutations details", options, user, document);
+      console.log("getDefaultMutations options.newCheck", options.newCheck); 
       if (options.newCheck) {
         return options.newCheck(user, document);
       }
@@ -25,9 +27,9 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
       // else, check if they can perform "foo.new" operation (e.g. "movies.new")
       return Users.canDo(user, `${collectionName.toLowerCase()}.new`);
     },
-    
+
     async mutation(root, {document}, context) {
-      
+
       const collection = context[collectionName];
 
       // check if current user can pass check function; else throw error
@@ -36,7 +38,7 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
       // pass document to boilerplate newMutation function
       return await newMutation({
         collection,
-        document: document, 
+        document: document,
         currentUser: context.currentUser,
         validate: true,
         context,
@@ -48,9 +50,9 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
   // mutation for editing a specific document
 
   edit: {
-    
+
     name: `${collectionName}Edit`,
-    
+
     // check function called on a user and document to see if they can perform the operation
     check(user, document) {
       if (options.editCheck) {
@@ -58,7 +60,7 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
       }
 
       if (!user || !document) return false;
-      // check if user owns the document being edited. 
+      // check if user owns the document being edited.
       // if they do, check if they can perform "foo.edit.own" action
       // if they don't, check if they can perform "foo.edit.all" action
       return Users.owns(user, document) ? Users.canDo(user, `${collectionName.toLowerCase()}.edit.own`) : Users.canDo(user, `${collectionName.toLowerCase()}.edit.all`);
@@ -76,10 +78,10 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
 
       // call editMutation boilerplate function
       return await editMutation({
-        collection, 
-        documentId: documentId, 
-        set: set, 
-        unset: unset, 
+        collection,
+        documentId: documentId,
+        set: set,
+        unset: unset,
         currentUser: context.currentUser,
         validate: true,
         context,
@@ -87,22 +89,22 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
     },
 
   },
-  
+
   // mutation for removing a specific document (same checks as edit mutation)
 
   remove: {
 
     name: `${collectionName}Remove`,
-    
+
     check(user, document) {
       if (options.removeCheck) {
         return options.removeCheck(user);
       }
-      
+
       if (!user || !document) return false;
       return Users.owns(user, document) ? Users.canDo(user, `${collectionName.toLowerCase()}.remove.own`) : Users.canDo(user, `${collectionName.toLowerCase()}.remove.all`);
     },
-    
+
     async mutation(root, {documentId}, context) {
 
       const collection = context[collectionName];
@@ -111,8 +113,8 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
       Utils.performCheck(this.check, context.currentUser, document, context);
 
       return await removeMutation({
-        collection, 
-        documentId: documentId, 
+        collection,
+        documentId: documentId,
         currentUser: context.currentUser,
         validate: true,
         context,
