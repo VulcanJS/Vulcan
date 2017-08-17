@@ -20,14 +20,11 @@ export const getDefaultSubscriptions = collectionName => ({
 		subscription: {
 			resolve: (payload, variables, context, info) => {
                 const collection = context[collectionName];
-                if(collection.checkAccess && !collection.checkAccess(context.currentUser, payload)){
-                    return {
-                        error:"Forbidden Access",
-                        code:403
-                    }
+                if (collection.checkAccess) {
+                    Utils.performCheck(collection.checkAccess, context.currentUser, payload.node, collection, payload._id);
                 }
-                const restrictedPayload = context.Users.restrictViewableFields(context.currentUser, collection, payload);
-				return restrictedPayload;
+                payload.node = context.Users.restrictViewableFields(context.currentUser, collection, payload.node);
+				return payload;
 			},
 			subscribe: withFilter(() => pubsub.asyncIterator(Utils.camelCaseify(collectionName)), subscribeFilter)
 		}

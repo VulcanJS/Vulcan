@@ -7,6 +7,7 @@
     "scripts": {
         "prestart": "sh prestart_vulcan.sh",
         "start": "meteor --settings settings.json",
+        "debug": "meteor debug --settings settings.json",
         "lint": "eslint --cache --ext .jsx,js packages"
     },
     "dependencies": {
