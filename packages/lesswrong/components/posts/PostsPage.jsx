@@ -1,6 +1,8 @@
-import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:core';
+import { Components, getRawComponent, replaceComponent, withDocument, registerComponent, getActions, withCurrentUser, withMutation } from 'meteor/vulcan:core';
 import withNewEvents from '../../lib/events/withNewEvents.jsx';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link, withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
@@ -8,7 +10,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import Posts from 'meteor/vulcan:posts';
 import moment from 'moment';
 
-class PostsPage extends getRawComponent('PostsPage') {
+class PostsPage extends Component {
   renderCommentViewSelector() {
 
     let views = ["top", "new"];
@@ -179,9 +181,45 @@ class PostsPage extends getRawComponent('PostsPage') {
     }
   }
 }
+PostsPage.displayName = "PostsPage";
 
-PostsPage.contextTypes = {
-  intl: intlShape
+PostsPage.propTypes = {
+  documentId: PropTypes.string,
+  document: PropTypes.object,
+  postsViewed: PropTypes.array,
+  setViewed: PropTypes.func,
+  increasePostViewCount: PropTypes.func,
 }
 
-replaceComponent('PostsPage', PostsPage, withRouter, withNewEvents);
+const queryOptions = {
+  collection: Posts,
+  queryName: 'postsSingleQuery',
+  fragmentName: 'PostsPage',
+};
+
+const mutationOptions = {
+  name: 'increasePostViewCount',
+  args: {postId: 'String'},
+};
+
+const mapStateToProps = state => ({ postsViewed: state.postsViewed });
+const mapDispatchToProps = dispatch => bindActionCreators(getActions().postsViewed, dispatch);
+
+registerComponent(
+  // component name used by Vulcan
+  'PostsPage',
+  // React component
+  PostsPage,
+  // HOC to give access to the current user
+  withCurrentUser,
+  // HOC to give access to LW2 event API
+  withNewEvents,
+  // HOC to give access to router and params
+  withRouter,
+  // HOC to load the data of the document, based on queryOptions & a documentId props
+  [withDocument, queryOptions],
+  // HOC to provide a single mutation, based on mutationOptions
+  withMutation(mutationOptions),
+  // HOC to give access to the redux store & related actions
+  connect(mapStateToProps, mapDispatchToProps),
+);

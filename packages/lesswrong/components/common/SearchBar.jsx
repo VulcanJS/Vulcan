@@ -15,53 +15,82 @@ class SearchBar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      open: false,
+      inputOpen: false,
+      searchOpen: false,
+      currentQuery: "",
     }
   }
 
-  openSearch = () => {
-    this.setState({open: true})
+  openSearchInput = () => {
+    this.setState({inputOpen: true});
+  }
+
+  closeSearchInput = () => {
+    this.setState({inputOpen: false});
+  }
+
+  openSearchResults = () => {
+    this.setState({searchOpen: true});
+  }
+
+  closeSearchResults = () => {
+    this.setState({searchOpen: false});
   }
 
   closeSearch = () => {
-    this.setState({open: false})
+    this.setState({searchOpen: false, inputOpen: false});
+  }
+
+  handleSearchTap = () => {
+    this.setState({inputOpen: true, searchOpen: this.state.currentQuery});
+  }
+
+  queryStateControl = (searchState) => {
+    this.setState({currentQuery: searchState.query});
+    if (searchState.query) {
+      this.openSearchResults();
+    } else {
+      this.closeSearchResults();
+    }
   }
 
   render() {
-    const className = this.state.open ? "open" : null
+    const inputOpenClass = this.state.inputOpen ? "open" : null;
+    const resultsOpenClass = this.state.searchOpen ? "open" : null;
     return <div className="search">
       <InstantSearch
         indexName="test_posts"
         algoliaClient={algoliaClient("Z0GR6EXQHD", "0b1d20b957917dbb5e1c2f3ad1d04ee2")}
+        onSearchStateChange={this.queryStateControl}
         >
-        <div className={"search-bar " + className}>
-          <div onTouchTap={this.openSearch} className="search-bar-box">
-            <SearchBox resetComponent={<div></div>}/>
+        <div className={"search-bar " + inputOpenClass}>
+          <div className="search-bar-box">
+            <SearchBox onTouchTap={this.handleSearchTap} resetComponent={<div className="search-box-reset"></div>} />
           </div>
           <div className="search-bar-close" onTouchTap={this.closeSearch}>
             <FontIcon className="material-icons" style={closeIconStyle}>close</FontIcon>
           </div>
         </div>
-        <div className={"search-results " + className}>
+        <div className={"search-results " + resultsOpenClass}>
           <div className="search-results-container">
             <div className="search-results-container-left">
               <div className="search-results-posts">
-                  <Configure hitsPerPage={5} />
-                  <Components.Section title="Posts" titleWidth={150}>
-                    <div className="search-results-posts-content">
+                <Index indexName="test_posts">
+                  <Configure hitsPerPage={3} />
+                  <Components.Section title="Posts" titleWidth={150} titleComponent={<Pagination pagesPadding={0} showFirst={false}/>}>
+                    <div className="search-results-posts-content" onTouchTap={this.closeSearch}>
                       <Hits hitComponent={Components.PostsSearchHit} />
                     </div>
-                    <Pagination />
                   </Components.Section>
+                </Index>
               </div>
               <div className="search-results-comments">
                 <Index indexName="test_comments">
-                  <Configure hitsPerPage={5} />
-                  <Components.Section title="Comments" titleWidth={150}>
-                    <div className="search-results-comments-content">
+                  <Configure hitsPerPage={3} />
+                  <Components.Section title="Comments" titleWidth={150} titleComponent={<Pagination pagesPadding={0} showFirst={false}/>}>
+                    <div className="search-results-comments-content" onTouchTap={this.closeSearch}>
                       <Hits hitComponent={Components.CommentsSearchHit} />
                     </div>
-                     <object><Pagination /></object>
                   </Components.Section>
                 </Index>
               </div>
@@ -73,7 +102,7 @@ class SearchBar extends Component {
                   <div className="search-results-users-heading">
                     <h2>Users</h2>
                   </div>
-                  <div className="search-resulsts-users-content">
+                  <div className="search-resulsts-users-content" onTouchTap={this.closeSearch}>
                     <Hits hitComponent={Components.UsersSearchHit} />
                   </div>
                 </Index>

@@ -70,7 +70,7 @@ const Sequences = createCollection({
 
   resolvers: getDefaultResolvers('Sequences'),
 
-  mutations,
+  mutations: getDefaultResolvers('Sequences')
 })
 
 export default Sequences;
