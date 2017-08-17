@@ -9,6 +9,9 @@ const ChaptersItem = ({chapter, currentUser}) =>
       <div className="chapters-item-title">
         Chapter {chapter.number}: {chapter.title}
       </div>
+      <div className="chapters-item-subtitle">
+        {chapter.subtitle}
+      </div>
       <div className="chapters-item-description">
         {chapter.description}
       </div>

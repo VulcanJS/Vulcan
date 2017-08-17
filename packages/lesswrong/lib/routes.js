@@ -5,7 +5,12 @@ addRoute({ name: 'newPost', path: '/newPost', componentName: 'PostsNewForm' });
 addRoute({ name: 'editPost', path: '/editPost', componentName: 'PostsEditForm' });
 addRoute({ name: 'recentComments', path: '/recentComments', componentName: 'RecentCommentsPage' });
 
-addRoute({ name: 'sequence', path: '/sequences/:_id', componentName: 'SequencesSingle' });
+// Sequences
+addRoute({ name: 'sequencesHome', path: '/sequences/home', componentName: 'SequencesHome' });
+addRoute({ name: 'sequences', path: '/sequences/:_id', componentName: 'SequencesSingle' });
+
+// Collections
+addRoute({ name: 'collections', path: '/collections/:_id', componentName: 'CollectionsSingle' });
 
 
 //Route for testing the editor. Useful for debugging

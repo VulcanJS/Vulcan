@@ -30,6 +30,8 @@ import Chapters from './collections/chapters/collection.js';
 // Sequences
 import Sequences from './collections/sequences/collection.js';
 import './collections/sequences/fragments.js';
+import Collections from './collections/collections/collection.js';
+import './collections/collections/fragments.js';
 
 
 // Subscriptions

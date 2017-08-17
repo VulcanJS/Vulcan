@@ -57,13 +57,19 @@ import './legacy-redirects/LegacyPostWrapper.jsx'
 
 import './subscriptions/SubscribeTo.jsx';
 
-// sequences-page
-import './sequences-page/ChaptersItem.jsx'
-import './sequences-page/ChaptersList.jsx'
-import './sequences-page/SequencesPage.jsx'
-import './sequences-page/SequencesPostsList.jsx'
-import './sequences-page/SequencesSingle.jsx'
-// Frontend Rework
+// Sequences
+import './sequences/SequencesPage.jsx';
+import './sequences/SequencesPostsList.jsx';
+import './sequences/SequencesSingle.jsx';
+import './sequences/SequencesHome.jsx';
+import './sequences/SequencesList.jsx';
+import './sequences/SequencesGrid.jsx';
+import './sequences/SequencesListItem.jsx';
+import './sequences/SequencesGridItem.jsx';
+import './sequences/ChaptersItem.jsx';
+import './sequences/ChaptersList.jsx';
+import './sequences/CollectionsSingle.jsx';
+import './sequences/CollectionsPage.jsx';
 
 import '../components/Layout.jsx';
 import '../components/common/FlashMessages.jsx';
