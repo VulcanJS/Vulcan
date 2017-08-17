@@ -750,9 +750,16 @@ export class AccountsLoginForm extends Tracker.Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
-          console.log(error)
-          const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
+          console.log(error);
+
+          const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_').replace('.','')}`;
+
+          if (this.context.intl.formatMessage({id: errorId})){
+            this.showMessage(errorId, 'error');
+          } else {
+            this.showMessage('accounts.error_unknown', 'error');
+          }
+
           if (this.context.intl.formatMessage({id: `error.accounts_${error.reason}`})) {
             onSubmitHook(`error.accounts.${error.reason}`, formState);
           }
@@ -867,11 +874,11 @@ export class AccountsLoginForm extends Tracker.Component {
     }
   }
 
-  showMessage(message, type, clearTimeout, field){
-    if (message) {
+  showMessage(messageId, type, clearTimeout, field){
+    if (messageId) {
       this.setState(({ messages = [] }) => {
         messages.push({
-          message: this.context.intl.formatMessage({id: message}),
+          message: this.context.intl.formatMessage({id: messageId}),
           type,
           ...(field && { field }),
         });
@@ -880,7 +887,7 @@ export class AccountsLoginForm extends Tracker.Component {
       if (clearTimeout) {
         this.hideMessageTimout = setTimeout(() => {
           // Filter out the message that timed out.
-          this.clearMessage(message);
+          this.clearMessage(messageId);
         }, clearTimeout);
       }
     }
