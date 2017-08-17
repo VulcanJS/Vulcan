@@ -2,25 +2,25 @@ import Users from 'meteor/vulcan:users';
 import Sequences from './collection.js'
 
 const membersActions = [
-  'sequence.edit.own',
-  'sequence.text.edit.own',
-  'chapter.add.own',
-  'chapter.delete.own',
-  'chapter.title.edit.own',
-  'chapter.subtitle.edit.own',
-  'chapter.text.edit.own',
-  'post.new.own',
-  'post.edit.own',
-  'post.remove.own',
+  'sequences.edit.own',
+  'sequences.text.edit.own',
+  'chapters.add.own',
+  'chapters.delete.own',
+  'chapters.title.edit.own',
+  'chapters.subtitle.edit.own',
+  'chapters.text.edit.own',
+  'posts.new.own',
+  'posts.edit.own',
+  'posts.remove.own',
 ];
 Users.groups.members.can(membersActions);
 
 const adminActions= [
-  'sequence.edit.all',
+  'sequences.edit.all',
 ]
 Users.groups.admins.can(adminActions);
 
 Sequences.checkAccess = (user, document) => {
   if (!user || !document) return false;
-  return Users.owns(user, document) ? Users.canDo(user, 'conversation.view.own') : (Users.canDo(user, `conversation.view.all`) || !document.draft)
+  return Users.owns(user, document) ? Users.canDo(user, 'conversations.view.own') : (Users.canDo(user, `conversations.view.all`) || !document.draft)
     };

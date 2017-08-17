@@ -7,12 +7,12 @@ import './permissions.js'
 const options = {
   checkEdit: (user, document) => {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'sequence.edit.own') : Users.canDo(user, `sequence.edit.all`)
+    return Users.owns(user, document) ? Users.canDo(user, 'sequences.edit.own') : Users.canDo(user, `sequences.edit.all`)
   },
 
   checkRemove: (user, document) => {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'sequence.edit.own') : Users.canDo(user, `sequence.edit.all`)
+    return Users.owns(user, document) ? Users.canDo(user, 'sequences.edit.own') : Users.canDo(user, `sequences.edit.all`)
   },
 }
 
