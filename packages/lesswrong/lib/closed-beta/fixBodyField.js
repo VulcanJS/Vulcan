@@ -4,6 +4,7 @@ import h2p from 'html2plaintext';
 const runFix = false;
 
 if (runFix) {
+  console.log("Running body field fix on database...");
   Posts.find().fetch().forEach((post) => {
     if (post.htmlBody) {
       const html = post.htmlBody;

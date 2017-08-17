@@ -17,8 +17,6 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
 
     // check function called on a user to see if they can perform the operation
     check(user, document) {
-      console.log("getDefaultMutations details", options, user, document);
-      console.log("getDefaultMutations options.newCheck", options.newCheck); 
       if (options.newCheck) {
         return options.newCheck(user, document);
       }

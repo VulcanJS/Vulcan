@@ -197,7 +197,7 @@ Meteor.startup(function () {
       subtitle: 'This is where things are',
       description: 'Captain Underpants',
       number: 1,
-      postIds: [Posts.findOne({dummySlug: "read_this_first"})._id, Posts.findOne({dummySlug: "deploying"})._id]
+      postIds: [Posts.findOne()._id, Posts.findOne()._id]
 
     },
 
@@ -206,7 +206,7 @@ Meteor.startup(function () {
       subtitle: 'More Things Are Here',
       description: 'Blah Blah Blah',
       number: 2,
-      postIds: [Posts.findOne({dummySlug: "customizing"})._id, Posts.findOne({dummySlug: "removing_getting_started_posts"})._id]
+      postIds: [Posts.findOne()._id, Posts.findOne()._id]
 
     },
 
@@ -215,7 +215,7 @@ Meteor.startup(function () {
       subtitle: 'The Map is Not the Territory',
       description: 'A core idea in decision theory is that of...',
       number: 1,
-      postIds: [Posts.findOne({dummySlug: "getting_help"})._id, Posts.findOne({dummySlug: "customizing"})._id]
+      postIds: [Posts.findOne()._id, Posts.findOne()._id]
 
     },
 
@@ -224,7 +224,7 @@ Meteor.startup(function () {
       subtitle: 'Omega is here to do two things...',
       description: 'An ombusdman, ombuds or public advocate is an official...',
       number: 2,
-      postIds: [Posts.findOne({dummySlug: "removing_getting_started_posts"})._id, Posts.findOne({dummySlug: "deploying"})._id]
+      postIds: [Posts.findOne()._id, Posts.findOne()._id]
 
     }
 
@@ -247,12 +247,12 @@ Meteor.startup(function () {
     {
       title: 'Highly Advanced Epistemology 101 for Beginners',
       description: 'The original sequences were a series of essays...',
-      chapterIds: [Chapters.findOne()._id, Chapters.findOne({title: 'Made Up'})._id, Chapters.findOne({title: 'Even More Made Up'})._id]
+      chapterIds: [Chapters.findOne()._id, Chapters.findOne()._id, Chapters.findOne()._id]
     },
     {
       title: 'How to make rationalist pie',
       description: 'Actually you should think about tau...',
-      chapterIds: [Chapters.findOne()._id, Chapters.findOne({title: 'A Diary of Omega'})._id, Chapters.findOne({title: 'Omega is coming home'})._id]
+      chapterIds: [Chapters.findOne()._id, Chapters.findOne()._id, Chapters.findOne()._id]
     }
 
   ]

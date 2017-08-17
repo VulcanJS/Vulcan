@@ -12,21 +12,22 @@ if (fixKarma) {
   let usersCount = 0;
   Users.find().fetch().forEach((user) => {
     if (user.legacy) {
-      const mainPostKarma = upvoteWeight * user.legacyData.karma_ups_link_lesswrong - downvoteWeight * user.legacyData.karma_downs_link_lesswrong
+      // Function to deal with fields sometimes being undefined. Casts undefined to 0;
+      const f = (number) => number || 0;
+      const mainPostKarma = upvoteWeight * f(user.legacyData.karma_ups_link_lesswrong) - downvoteWeight * f(user.legacyData.karma_downs_link_lesswrong);
 
-      const mainCommentKarma = upvoteWeight *  user.legacyData.karma_ups_comment_lesswrong -
-      downvoteWeight * user.legacyData.karma_downs_comment_lesswrong
+      const mainCommentKarma = upvoteWeight *  f(user.legacyData.karma_ups_comment_lesswrong) -
+      downvoteWeight * f(user.legacyData.karma_downs_comment_lesswrong)
 
-      const discussionPostKarma = upvoteWeight * user.legacyData.karma_ups_link_discussion - downvoteWeight * user.legacyData.karma_downs_link_discussion
+      const discussionPostKarma = upvoteWeight * f(user.legacyData.karma_ups_link_discussion) - downvoteWeight * f(user.legacyData.karma_downs_link_discussion)
 
-      const discussionCommentKarma = upvoteWeight * user.legacyData.karma_ups_comment_discussion - downvoteWeight  * user.legacyData.karma_downs_comment_discussion
+      const discussionCommentKarma = upvoteWeight * f(user.legacyData.karma_ups_comment_discussion) - downvoteWeight  * f(user.legacyData.karma_downs_comment_discussion)
 
       const karma = mainPostKarmaWeight * mainPostKarma + mainCommentKarmaWeight * mainCommentKarma + discussionPostKarmaWeight * discussionPostKarma + discussionCommentKarmaWeight * discussionCommentKarma
 
-      const karmaData = {
-        karma: karma
-      }
-      Users.update({_id: user._id}, {$inc: {karma: karma}});
+      Users.update({_id: user._id}, {$set :{karma: karma}});
+      usersCount++;
+
       if (usersCount % 1000 == 0 ){
         console.log("Updated karma of n users: ", usersCount);
       }

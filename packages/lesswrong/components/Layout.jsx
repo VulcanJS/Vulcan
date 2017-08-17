@@ -6,6 +6,8 @@ import Helmet from 'react-helmet';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import Intercom, { IntercomAPI } from 'react-intercom';
+
 const muiTheme = getMuiTheme({
   "fontFamily": "ETBook",
   "palette": {
@@ -42,6 +44,14 @@ const Layout = ({currentUser, children, currentRoute}) =>
         </Helmet>
 
         {currentUser ? <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} /> : null}
+
+        {/* Sign up user for Intercom, if they do not yet have an account */}
+
+        {currentUser ? <Intercom appID="wtb8z7sj"
+            user_id={currentUser._id} email={currentUser.email} name={currentUser.displayName}
+        /> : null}
+
+        {currentUser ? IntercomAPI('update', { "name" : currentUser.displayName, "email" : currentUser.email, "user_id" : currentUser._id, "createdAt" : currentUser.createdAt }) : null}
 
         <Components.Header {...this.props}/>
 
