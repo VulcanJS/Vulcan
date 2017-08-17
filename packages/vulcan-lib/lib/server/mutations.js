@@ -27,8 +27,9 @@ to the client.
 
 */
 
-import { Utils, runCallbacks, runCallbacksAsync } from '../modules/index.js';
+import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
 import { createError } from 'apollo-errors';
+import { validateDocument, validateModifier } from '../modules/validation.js';
 
 export const newMutation = async ({ collection, document, currentUser, validate, context }) => {
 
@@ -42,73 +43,9 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  /*
-
-    If document is not trusted, run validation steps:
-  
-    1. Check that the current user has permission to insert each field
-    2. Check field lengths
-    3. Check field types
-    4. Check for missing fields
-    5. Run SimpleSchema validation step (for now)
-    6. Run validation callbacks
-    
-  */
   if (validate) {
 
-    const validationErrors = [];
-
-    // Check validity of inserted document
-    _.forEach(newDocument, (value, fieldName) => {
-
-      const fieldSchema = schema[fieldName];
-
-      // 1. check that the current user has permission to insert each field
-      if (!fieldSchema || !context.Users.canInsertField (currentUser, fieldSchema)) {
-        validationErrors.push({
-          id: 'app.disallowed_property_detected', 
-          fieldName
-        });
-      }
-
-      // 2. check field lengths
-      if (fieldSchema.limit && value.length > fieldSchema.limit) {
-        validationErrors.push({
-          id: 'app.field_is_too_long', 
-          data: {fieldName, limit: fieldSchema.limit}
-        });
-      }
-
-      // 3. check that fields have the proper type
-      // TODO
-
-    });
-
-    // 4. check that required fields have a value
-    _.keys(schema).forEach(fieldName => {
-
-      const fieldSchema = schema[fieldName];
-
-      
-      if ((fieldSchema.required || !fieldSchema.optional) && typeof newDocument[fieldName] === 'undefined') {
-        validationErrors.push({
-          id: 'app.required_field_missing', 
-          data: {fieldName}
-        });
-      }
-
-    });
-
-    // 5. still run SS validation for now for backwards compatibility
-    try {
-      collection.simpleSchema().validate(document);
-    } catch (error) {
-      console.log(error)
-      validationErrors.push({
-        id: 'app.schema_validation_error',
-        data: {message: error.message}
-      });
-    }
+    const validationErrors = validateDocument(newDocument, collection, context);
 
     // run validation callbacks
     newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser, validationErrors);
@@ -176,78 +113,11 @@ export const editMutation = async ({ collection, documentId, set, unset, current
   // get original document from database
   let document = collection.findOne(documentId);
 
-  /*
-
-    If document is not trusted, run validation steps:
   
-    1. Check that the current user has permission to edit each field
-    2. Check field lengths
-    3. Check field types
-    4. Run SimpleSchema validation step (for now)
-    5. Check for missing fields
-    6. Run validation callbacks
-
-  */
   if (validate) {
 
-    const validationErrors = [];
+    const validationErrors = validateModifier(modifier, collection, context);
 
-    // 1. check that the current user has permission to edit each field
-    const modifiedProperties = _.keys(set).concat(_.keys(unset));
-    modifiedProperties.forEach(function (fieldName) {
-      var field = schema[fieldName];
-      if (!field || !context.Users.canEditField(currentUser, field, document)) {
-        validationErrors.push({
-          id: 'app.disallowed_property_detected', 
-          fieldName
-        });
-      }
-    });
-
-    // Check validity of set modifier
-    _.forEach(set, (value, fieldName) => {
-
-      const fieldSchema = schema[fieldName];
-
-      // 2. check field lengths
-      if (fieldSchema.limit && value.length > fieldSchema.limit) {
-        validationErrors.push({
-          id: 'app.field_is_too_long', 
-          data: {fieldName, limit: fieldSchema.limit}
-        });
-      }
-
-      // 3. check that fields have the proper type
-      // TODO
-
-    });
-
-    // 4. check that required fields have a value
-    _.keys(schema).forEach(fieldName => {
-
-      const fieldSchema = schema[fieldName];
-
-      if ((fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
-        validationErrors.push({
-          id: 'app.required_field_missing', 
-          data: {fieldName}
-        });
-      }
-
-    });
-
-    // 5. still run SS validation for now for backwards compatibility
-    try {
-      collection.simpleSchema().validate({$set: set, $unset: unset}, { modifier: true });
-    } catch (error) {
-      console.log(error)
-      validationErrors.push({
-        id: 'app.schema_validation_error',
-        data: {message: error.message}
-      });
-    }
-
-    // 6. run validation callbacks
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
 
     if (validationErrors.length) {
