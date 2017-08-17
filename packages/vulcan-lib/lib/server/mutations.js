@@ -27,7 +27,7 @@ to the client.
 
 */
 
-import { Utils, runCallbacks, runCallbacksAsync } from '../modules/index.js';
+import { Utils, pubsub, runCallbacks, runCallbacksAsync } from '../modules/index.js';
 
 export const newMutation = ({ collection, document, currentUser, validate, context }) => {
 
@@ -87,6 +87,9 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
 
   // get fresh copy of document from db
   const insertedDocument = collection.findOne(newDocument._id);
+
+  // run subscription publication
+  pubsub.publish(collectionName, { mutation: 'CREATED', node: insertedDocument });
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
@@ -172,6 +175,9 @@ export const editMutation = ({ collection, documentId, set, unset = {}, currentU
     collection.loader.clear(documentId);
   }
 
+  // run subscription publication
+  pubsub.publish(collectionName, { mutation: 'UPDATED', node: newDocument });
+    
   // run async callbacks
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
@@ -213,6 +219,9 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
   if (collection.loader) {
     collection.loader.clear(documentId);
   }
+
+  // run subscription publication
+  pubsub.publish(collectionName, { mutation: 'DELETED', node: document });    
 
   runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 

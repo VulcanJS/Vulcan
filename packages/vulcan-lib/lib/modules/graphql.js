@@ -9,6 +9,7 @@ import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
 import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
+import { getFieldFilters, addFiltersToSchema } from './filters.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 
 disableFragmentWarnings();
@@ -94,6 +95,12 @@ export const GraphQLSchema = {
     this.mutations.push(mutation);
   },
 
+  // mutations
+  subscriptions: [],
+  addSubscription(subscription) {
+    this.subscriptions.push(subscription);
+  },
+
   // add resolvers
   resolvers: {
     JSON: GraphQLJSON,
@@ -122,7 +129,7 @@ export const GraphQLSchema = {
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
     const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
-    let mainSchema = [], inputSchema = [], unsetSchema = [];
+    let mainSchema = [], inputSchema = [], unsetSchema = [], filterSchema = [];
 
     _.forEach(schema, (field, fieldName) => {
       // console.log(field, fieldName)
@@ -136,12 +143,20 @@ export const GraphQLSchema = {
 
           if (typeof field.resolveAs === 'string') {
             // if resolveAs is a string, push it and done
+
             mainSchema.push(field.resolveAs);
+
+            // TODO : Build Filter for string defined resolveAs
+            // filterSchema.push(getFieldFilters.resolveAsIsString(field.resolveAs))
+
           } else {
 
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
             mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
+            
+            // Build Filter for object defined resolveAs
+            filterSchema.push(getFieldFilters.resolveAsIsObject(field.resolveAs));
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -155,12 +170,19 @@ export const GraphQLSchema = {
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(`${fieldName}: ${fieldType}`);
+
+            // Build Filter for original Field
+            filterSchema.push(getFieldFilters.field(fieldName, fieldType));
+
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
             mainSchema.push(`${fieldName}: ${fieldType}`);
+
+            // Build Filter for field
+            filterSchema.push(getFieldFilters.field(fieldName, fieldType));
           }
         }
 
@@ -200,6 +222,8 @@ export const GraphQLSchema = {
       }
     `
 
+    graphQLSchema = addFiltersToSchema(graphQLSchema, mainTypeName, filterSchema);
+
     return graphQLSchema;
   }
 };
@@ -214,6 +238,7 @@ export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSche
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
 export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
 export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
+export const addGraphQLSubscription = GraphQLSchema.addSubscription.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);

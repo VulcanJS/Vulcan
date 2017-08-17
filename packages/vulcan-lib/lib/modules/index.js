@@ -13,6 +13,7 @@ export * from './components.js';
 export * from './collections.js';
 export * from './callbacks.js';
 export * from './graphql.js';
+export * from './filters.js';
 export * from './routes.js';
 export * from './utils.js';
 export * from './settings.js';

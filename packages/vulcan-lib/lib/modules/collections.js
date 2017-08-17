@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
+import { PubSub } from 'graphql-subscriptions';
+import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLSubscription, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
@@ -8,6 +9,7 @@ import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
 
 export const Collections = [];
+export const pubsub = new PubSub();
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
@@ -96,7 +98,7 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
+  const {collectionName, typeName, schema, resolvers, mutations, subscriptions, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
   const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
@@ -168,6 +170,19 @@ export const createCollection = options => {
         mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
+    }
+
+    // ------------------------------------- Subscriptions -------------------------------- //
+  
+    if (subscriptions) {
+      const subscriptionResolvers = {};
+    // default
+      if (subscriptions.default) {
+        // e.g. "movies(filter: moviesFilter) : Movie"
+        addGraphQLSubscription(`${subscriptions.default.name}(filter: ${typeName}SubscriptionFilter) : ${typeName}SubscriptionPayload`);
+        subscriptionResolvers[subscriptions.default.name] = subscriptions.default.subscription;
+      }
+      addGraphQLResolvers({ Subscription: { ...subscriptionResolvers } });
     }
   }
 

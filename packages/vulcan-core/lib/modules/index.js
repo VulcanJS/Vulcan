@@ -5,6 +5,7 @@ export * from 'meteor/vulcan:lib';
 
 export * from './default_mutations.js';
 export * from './default_resolvers.js';
+export * from './default_subscriptions.js';
 
 export { default as Layout } from "./components/Layout.jsx";
 export { default as App } from "./components/App.jsx";

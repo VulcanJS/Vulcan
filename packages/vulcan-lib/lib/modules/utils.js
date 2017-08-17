@@ -167,12 +167,17 @@ Utils.getShortUrl = function(post) {
   return post.shortUrl || post.url;
 };
 
-Utils.getDomain = function(url) {
+Utils.getDomain = function(url, port = false) {
+  const part = port ? 'host' : 'hostname';
   try {
-    return urlObject.parse(url).hostname.replace('www.', '');
+    return urlObject.parse(url)[part].replace('www.', '');
   } catch (error) {
     return null;
   }
+};
+
+Utils.getSiteDomain = function(port = false) {
+  return this.getDomain(this.getSiteUrl(), port);
 };
 
 Utils.invitesEnabled = function() {
