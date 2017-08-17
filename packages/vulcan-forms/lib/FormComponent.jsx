@@ -4,6 +4,7 @@ import FRC from 'formsy-react-components';
 import { intlShape } from 'meteor/vulcan:i18n';
 import DateTime from './DateTime.jsx';
 import classNames from 'classnames';
+import Flash from './Flash.jsx';
 
 // import Utils from './utils.js';
 
@@ -20,6 +21,7 @@ class FormComponent extends PureComponent {
     super(props);
     this.handleBlur = this.handleBlur.bind(this);
     this.updateCharacterCount = this.updateCharacterCount.bind(this);
+    this.renderErrors = this.renderErrors.bind(this);
 
     if (props.limit) {
       this.state = {
@@ -41,8 +43,9 @@ class FormComponent extends PureComponent {
 
   updateCharacterCount(name, value) {
     if (this.props.limit) {
+      const characterCount = value ? value.length : 0;
       this.setState({
-        limit: this.props.limit - value.length
+        limit: this.props.limit - characterCount
       });
     }
   }
@@ -50,14 +53,15 @@ class FormComponent extends PureComponent {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, ...rest } = this.props; // eslint-disable-line
 
     // const base = typeof this.props.control === "function" ? this.props : rest;
 
     const properties = {
+      value: '', // default value, will be overridden by `rest` if real value has been passed down through props
       ...rest,
       onBlur: this.handleBlur,
-      ref: (ref) => this.formControl = ref
+      ref: (ref) => this.formControl = ref,
     };
 
     // if control is a React component, use it
@@ -68,8 +72,8 @@ class FormComponent extends PureComponent {
     } else { // else pick a predefined component
 
       switch (this.props.control) {
-        case "text":
-          return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        case "number":
+          return <Input         {...properties} type="number" onChange={this.updateCharacterCount} />;
         case "url":
           return <Input         {...properties} type="url" onChange={this.updateCharacterCount} />;
         case "email":
@@ -79,7 +83,8 @@ class FormComponent extends PureComponent {
         case "checkbox":
           return <Checkbox      {...properties} />;
         case "checkboxgroup":
-          return <CheckboxGroup  {...properties} />;
+          // if (!properties.value) properties.value = [];
+          return <CheckboxGroup {...properties} />;
         case "radiogroup":
           // not sure why, but onChange needs to be specified here
           return <RadioGroup    {...properties} onChange={(name, value) => {this.props.updateCurrentValues({[name]: value})}}/>;
@@ -88,18 +93,33 @@ class FormComponent extends PureComponent {
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
-        default:
+        case "text":
+        default: 
           return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        
       }
 
     }
   }
 
-  render() {
+  renderErrors() {
     return (
-      <div className={classNames('form-input', `input-${this.props.name}`)}>
+      <ul className="form-input-errors">
+        {this.props.errors.map((error, index) => <li key={index}>{error.message}</li>)}
+      </ul>
+    )
+  }
+
+  render() {
+
+    const hasErrors = this.props.errors && this.props.errors.length;
+    const inputClass = classNames('form-input', `input-${this.props.name}`, {'input-error': hasErrors});
+
+    return (
+      <div className={inputClass}>
         {this.props.beforeComponent ? this.props.beforeComponent : null}
         {this.renderComponent()}
+        {hasErrors ? this.renderErrors() : null}
         {this.props.limit ? <div className={classNames('form-control-limit', {danger: this.state.limit < 10})}>{this.state.limit}</div> : null}
         {this.props.afterComponent ? this.props.afterComponent : null}
       </div>

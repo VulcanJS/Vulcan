@@ -59,6 +59,7 @@ class Form extends Component {
     this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
     this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
+    this.getAutofilledValues = this.getAutofilledValues.bind(this);
     this.addToDeletedValues = this.addToDeletedValues.bind(this);
     this.addToSubmitForm = this.addToSubmitForm.bind(this);
     this.addToSuccessForm = this.addToSuccessForm.bind(this);
@@ -72,6 +73,8 @@ class Form extends Component {
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
     this.setFormState = this.setFormState.bind(this);
+    this.getLabel = this.getLabel.bind(this);
+    this.getErrorMessage = this.getErrorMessage.bind(this);
 
     this.state = {
       disabled: false,
@@ -98,6 +101,7 @@ class Form extends Component {
   getFieldGroups() {
 
     const schema = this.getSchema();
+    const document = this.getDocument();
 
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
@@ -121,19 +125,23 @@ class Form extends Component {
 
       // add label or internationalized field name if necessary (field not hidden)
       if (!field.hidden) {
-        field.label = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: fieldSchema.label});
+        field.label = this.getLabel(fieldName);
       }
 
       // add value
-      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
+      if (document[fieldName]){
 
-      // convert value type if needed
-      if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
+        field.value = document[fieldName];
 
-      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-      if (Array.isArray(field.value)) {
-        field.value = field.value.map(item => item._id || item);
+        // convert value type if needed
+        if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
+        
+        // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+        // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
+        if (Array.isArray(field.value)) {
+          field.value = field.value.map(item => item._id || item);
+        }
+
       }
 
       // backward compatibility from 'autoform' to 'form'
@@ -190,6 +198,14 @@ class Form extends Component {
       // add document
       field.document = this.getDocument();
 
+      // add error state
+      const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
+      if (validationError) {
+        const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
+        if (fieldErrors) {
+          field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
+        }
+      }
       return field;
 
     });
@@ -293,6 +309,20 @@ class Form extends Component {
     }
   }
 
+  getLabel(fieldName) {
+    return this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
+  }
+
+  getErrorMessage(error) {
+    if (error.data.fieldName) {
+      // if error has a corresponding field name, "labelify" that field name
+      const fieldName = this.getLabel(error.data.fieldName);
+      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {...error.data, fieldName});
+    } else {
+      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data);
+    }
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
@@ -309,11 +339,29 @@ class Form extends Component {
 
   // render errors
   renderErrors() {
+
     return (
       <div className="form-errors">
-        {this.state.errors.map((error, index) => 
-          <Flash key={index} message={{content: error.message || this.context.intl.formatMessage({id: error.name}, error.data), type: 'error' }}/>
-        )}
+        {this.state.errors.map((error, index) => {
+
+          let message;
+
+          if (error.data.errors) { // this error is a "multi-error" with multiple sub-errors
+
+            message = error.data.errors.map(error => {
+              return {
+                content: this.getErrorMessage(error)
+              }
+            });
+          
+          } else { // this is a regular error
+            
+            message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
+
+          }
+
+          return <Flash key={index} message={message} type="error"/>
+        })}
       </div>
     )
   }
@@ -329,6 +377,7 @@ class Form extends Component {
 
     // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
+    console.log(graphQLError)
 
     // add error to state
     this.setState(prevState => ({
@@ -344,6 +393,11 @@ class Form extends Component {
         ...property
       }
     }));
+  }
+
+  // get autofilled values
+  getAutofilledValues() {
+    return this.state.autofilledValues;
   }
 
   // add something to deleted values
@@ -377,7 +431,7 @@ class Form extends Component {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
-      autofilledValues: this.state.autofilledValues,
+      getAutofilledValues: this.getAutofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
@@ -456,7 +510,8 @@ class Form extends Component {
       return;
     }
 
-    this.setState(prevState => ({disabled: true}));
+    // clear errors and disable form while it's submitting
+    this.setState(prevState => ({errors: [], disabled: true}));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
@@ -480,7 +535,6 @@ class Form extends Component {
 
       // remove any empty properties
       let document = _.compactObject(data);
-
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
 
@@ -612,7 +666,7 @@ Form.contextTypes = {
 }
 
 Form.childContextTypes = {
-  autofilledValues: PropTypes.object,
+  getAutofilledValues: PropTypes.func,
   addToAutofilledValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
   addToSubmitForm: PropTypes.func,

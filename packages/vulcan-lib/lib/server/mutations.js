@@ -28,8 +28,9 @@ to the client.
 */
 
 import { Utils, runCallbacks, runCallbacksAsync } from '../modules/index.js';
+import { createError } from 'apollo-errors';
 
-export const newMutation = ({ collection, document, currentUser, validate, context }) => {
+export const newMutation = async ({ collection, document, currentUser, validate, context }) => {
 
   // console.log("// newMutation")
   // console.log(collection._name)
@@ -41,22 +42,82 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  // if document is not trusted, run validation steps
+  /*
+
+    If document is not trusted, run validation steps:
+  
+    1. Check that the current user has permission to insert each field
+    2. Check field lengths
+    3. Check field types
+    4. Check for missing fields
+    5. Run SimpleSchema validation step (for now)
+    6. Run validation callbacks
+    
+  */
   if (validate) {
 
-    // validate document
-    collection.simpleSchema().validate(document);
+    const validationErrors = [];
 
-    // check that the current user has permission to insert each field
-    _.keys(newDocument).forEach(fieldName => {
-      var field = schema[fieldName];
-      if (!field || !context.Users.canInsertField (currentUser, field)) {
-        throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
+    // Check validity of inserted document
+    _.forEach(newDocument, (value, fieldName) => {
+
+      const fieldSchema = schema[fieldName];
+
+      // 1. check that the current user has permission to insert each field
+      if (!fieldSchema || !context.Users.canInsertField (currentUser, fieldSchema)) {
+        validationErrors.push({
+          id: 'app.disallowed_property_detected', 
+          fieldName
+        });
       }
+
+      // 2. check field lengths
+      if (fieldSchema.limit && value.length > fieldSchema.limit) {
+        validationErrors.push({
+          id: 'app.field_is_too_long', 
+          data: {fieldName, limit: fieldSchema.limit}
+        });
+      }
+
+      // 3. check that fields have the proper type
+      // TODO
+
     });
 
+    // 4. check that required fields have a value
+    _.keys(schema).forEach(fieldName => {
+
+      const fieldSchema = schema[fieldName];
+
+      
+      if ((fieldSchema.required || !fieldSchema.optional) && typeof newDocument[fieldName] === 'undefined') {
+        validationErrors.push({
+          id: 'app.required_field_missing', 
+          data: {fieldName}
+        });
+      }
+
+    });
+
+    // 5. still run SS validation for now for backwards compatibility
+    try {
+      collection.simpleSchema().validate(document);
+    } catch (error) {
+      console.log(error)
+      validationErrors.push({
+        id: 'app.schema_validation_error',
+        data: {message: error.message}
+      });
+    }
+
     // run validation callbacks
-    newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser);
+    newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser, validationErrors);
+  
+    if (validationErrors.length) {
+      const NewDocumentValidationError = createError('app.validation_error', {message: 'app.new_document_validation_error'});
+      throw new NewDocumentValidationError({data: {break: true, errors: validationErrors}});
+    }
+
   }
 
   // check if userId field is in the schema and add it to document if needed
@@ -80,7 +141,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   // }
 
   // run sync callbacks
-  newDocument = runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
+  newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 
   // add _id to document
   newDocument._id = collection.insert(newDocument);
@@ -98,7 +159,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   return newDocument;
 }
 
-export const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
+export const editMutation = async ({ collection, documentId, set, unset, currentUser, validate, context }) => {
 
   // console.log("// editMutation")
   // console.log(collection._name)
@@ -115,23 +176,85 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   // get original document from database
   let document = collection.findOne(documentId);
 
-  // if document is not trusted, run validation steps
+  /*
+
+    If document is not trusted, run validation steps:
+  
+    1. Check that the current user has permission to edit each field
+    2. Check field lengths
+    3. Check field types
+    4. Run SimpleSchema validation step (for now)
+    5. Check for missing fields
+    6. Run validation callbacks
+
+  */
   if (validate) {
 
-    // validate modifiers
-    collection.simpleSchema().validate({$set: set, $unset: unset}, { modifier: true });
+    const validationErrors = [];
 
-    // check that the current user has permission to edit each field
+    // 1. check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
       var field = schema[fieldName];
       if (!field || !context.Users.canEditField(currentUser, field, document)) {
-        throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
+        validationErrors.push({
+          id: 'app.disallowed_property_detected', 
+          fieldName
+        });
       }
     });
 
-    // run validation callbacks
-    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser);
+    // Check validity of set modifier
+    _.forEach(set, (value, fieldName) => {
+
+      const fieldSchema = schema[fieldName];
+
+      // 2. check field lengths
+      if (fieldSchema.limit && value.length > fieldSchema.limit) {
+        validationErrors.push({
+          id: 'app.field_is_too_long', 
+          data: {fieldName, limit: fieldSchema.limit}
+        });
+      }
+
+      // 3. check that fields have the proper type
+      // TODO
+
+    });
+
+    // 4. check that required fields have a value
+    _.keys(schema).forEach(fieldName => {
+
+      const fieldSchema = schema[fieldName];
+
+      if ((fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
+        validationErrors.push({
+          id: 'app.required_field_missing', 
+          data: {fieldName}
+        });
+      }
+
+    });
+
+    // 5. still run SS validation for now for backwards compatibility
+    try {
+      collection.simpleSchema().validate({$set: set, $unset: unset}, { modifier: true });
+    } catch (error) {
+      console.log(error)
+      validationErrors.push({
+        id: 'app.schema_validation_error',
+        data: {message: error.message}
+      });
+    }
+
+    // 6. run validation callbacks
+    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
+
+    if (validationErrors.length) {
+      const EditDocumentValidationError = createError('app.validation_error', {message: 'app.edit_document_validation_error'});
+      throw new EditDocumentValidationError({data: {break: true, errors: validationErrors}});
+    }
+
   }
 
   // run onEdit step
@@ -151,7 +274,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   });
 
   // run sync callbacks (on mongo modifier)
-  modifier = runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
+  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
 
   // remove empty modifiers
   if (_.isEmpty(modifier.$set)) {
@@ -182,7 +305,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   return newDocument;
 }
 
-export const removeMutation = ({ collection, documentId, currentUser, validate, context }) => {
+export const removeMutation = async ({ collection, documentId, currentUser, validate, context }) => {
 
   // console.log("// removeMutation")
   // console.log(collection._name)
@@ -205,7 +328,7 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
     }
   });
 
-  runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
+  await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
   collection.remove(documentId);
 

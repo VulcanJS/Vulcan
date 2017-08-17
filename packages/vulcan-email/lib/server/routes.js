@@ -1,6 +1,6 @@
 import { Picker } from 'meteor/meteorhacks:picker';
 
-import VulcanEmail from 'meteor/vulcan:email';
+import VulcanEmail from '../namespace.js';
 
 Meteor.startup(function () {
 

@@ -33,10 +33,13 @@ class FormGroup extends PureComponent {
   }
 
   render() {
+
+    const hasErrors = _.some(this.props.fields, field => field.errors && field.errors.length);
+
     return (
       <div className="form-section">
         {this.props.name === 'default' ? null : this.renderHeading()}
-        <div className={classNames({'form-section-collapsed': this.state.collapsed})}>
+        <div className={classNames({'form-section-collapsed': this.state.collapsed && !hasErrors})}>
           {this.props.fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} />)}
         </div>
       </div>

@@ -3,7 +3,7 @@ import Users from 'meteor/vulcan:users';
 import { Components, withRemove } from 'meteor/vulcan:core';
 import Button from 'react-bootstrap/lib/Button';
 
-const AdminUsersActions = ({ user, removeMutation }) =>{
+const AdminUsersActions = ({ document: user, removeMutation }) =>{
 
   const deleteHandler = e => {
     e.preventDefault();

@@ -23,7 +23,7 @@ export const getDefaultResolvers = collectionName => ({
       const collection = context[collectionName];
 
       // get selector and options from terms and perform Mongo query
-      let {selector, options} = collection.getParameters(terms);
+      let {selector, options} = collection.getParameters(terms, {}, context);
       options.skip = terms.offset;
       const docs = collection.find(selector, options).fetch();
 
@@ -78,7 +78,7 @@ export const getDefaultResolvers = collectionName => ({
       
       const collection = context[collectionName];
 
-      const {selector} = collection.getParameters(terms);
+      const {selector} = collection.getParameters(terms, {}, context);
       return collection.find(selector).count();
     },
   

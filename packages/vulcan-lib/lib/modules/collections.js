@@ -4,6 +4,8 @@ import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLRe
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
+import { registerFragment, getDefaultFragmentText } from './fragments.js';
+import escapeStringRegexp from 'escape-string-regexp';
 
 export const Collections = [];
 
@@ -169,9 +171,13 @@ export const createCollection = options => {
     }
   }
 
+  // ------------------------------------- Default Fragment -------------------------------- //
+
+  registerFragment(getDefaultFragmentText(collection));
+
   // ------------------------------------- Parameters -------------------------------- //
 
-  collection.getParameters = (terms = {}, apolloClient) => {
+  collection.getParameters = (terms = {}, apolloClient, context) => {
 
     // console.log(terms)
 
@@ -191,7 +197,7 @@ export const createCollection = options => {
     }
 
     // iterate over posts.parameters callbacks
-    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient, context);
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
@@ -206,6 +212,18 @@ export const createCollection = options => {
     if (parameters.options.sort) {
       _.keys(parameters.options.sort).forEach(key => {
         if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
+      });
+    }
+
+    if(terms.query) {
+        
+      const query = escapeStringRegexp(terms.query);
+
+      const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
+      parameters = Utils.deepExtend(true, parameters, {
+        selector: {
+          $or: searchableFieldNames.map(fieldName => ({[fieldName]: {$regex: query, $options: 'i'}}))
+        }
       });
     }
 

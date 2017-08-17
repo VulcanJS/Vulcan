@@ -6,18 +6,26 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Button from 'react-bootstrap/lib/Button';
 
-const getLabel = (fieldName, collection, intl) => {
+const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  if (fieldSchema) {
+    return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  } else {
+    return fieldName;
+  }
 }
 
-const getTypeName = (fieldName, collection) => {
+const getTypeName = (field, fieldName, collection) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  const type = fieldSchema.type.singleType;
-  const typeName = typeof type === 'function' ? type.name : type;
-  return typeName;
+  if (fieldSchema) {
+    const type = fieldSchema.type.singleType;
+    const typeName = typeof type === 'function' ? type.name : type;
+    return typeName;
+  } else {
+    return typeof field;
+  }
 }
 
 const parseImageUrl = value => {
@@ -89,7 +97,7 @@ const CardItem = ({label, value, typeName}) =>
 const CardEdit = (props, context) =>
   <tr>
     <td colSpan="2">
-      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Button bsStyle="default"><FormattedMessage id="cards.edit" /></Button>}>
+      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Button bsStyle="info"><FormattedMessage id="cards.edit" /></Button>}>
         <CardEditForm {...props} />
       </Components.ModalTrigger>
     </td>
@@ -107,18 +115,18 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />
 
-const Card = ({collection, document, currentUser}, {intl}) => {
+const Card = ({className, collection, document, currentUser, fields}, {intl}) => {
 
-  const fieldNames = _.without(_.keys(document), '__typename', '_id');
+  const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
   const canEdit = currentUser && collection.options.mutations.edit.check(currentUser, document);
 
   return (
-    <div className={classNames('datacard', `datacard-${collection._name}`)}>
+    <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>
       <table className="table table-bordered" style={{maxWidth: '100%'}}>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
           {fieldNames.map((fieldName, index) => 
-            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(fieldName, collection)} label={getLabel(fieldName, collection, intl)}/>
+            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(document[fieldName], fieldName, collection)} label={getLabel(document[fieldName], fieldName, collection, intl)}/>
           )}
         </tbody>
       </table>
@@ -127,6 +135,14 @@ const Card = ({collection, document, currentUser}, {intl}) => {
 };
 
 Card.displayName = "Card";
+
+Card.propTypes = {
+  className: PropTypes.string,
+  collection: PropTypes.object,
+  document: PropTypes.object,
+  currentUser: PropTypes.object,
+  fields: PropTypes.array,
+}
 
 Card.contextTypes = {
   intl: intlShape

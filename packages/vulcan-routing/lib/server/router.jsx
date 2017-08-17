@@ -1,6 +1,7 @@
 import React from 'react';
 import { match, RouterContext, createMemoryHistory } from 'react-router';
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server'
+import { ServerStyleSheet } from 'styled-components'
 import moment from 'moment';
 import { RoutePolicy } from 'meteor/routepolicy';
 
@@ -31,6 +32,7 @@ function isAppUrl(req) {
 function generateSSRData(options, req, res, renderProps) {
   let html;
   let css;
+  let styledComponentCss;
 
   try {
     req.css = '';
@@ -52,7 +54,9 @@ function generateSSRData(options, req, res, renderProps) {
     }
 
     if (!options.disableSSR) {
-      html = ReactDOMServer.renderToString(app);
+      const sheet = new ServerStyleSheet();
+      html = renderToString(sheet.collectStyles(app));
+      styledComponentCss = sheet.getStyleTags();
     } else if (options.loadingScreen) {
       html = options.loadingScreen;
     }
@@ -76,17 +80,23 @@ function generateSSRData(options, req, res, renderProps) {
     console.error(new Date(), 'error while server-rendering', err.stack); // eslint-disable-line no-console
   }
 
-  return { html, css };
+  return { html, css, styledComponentCss };
 }
 
 function sendSSRHtml(options, req, res, next, renderProps) {
-  const { css, html } = generateSSRData(options, req, res, renderProps);
+  const { css, html, styledComponentCss } = generateSSRData(options, req, res, renderProps);
 
   req.dynamicHead = req.dynamicHead || '';
   req.dynamicBody = req.dynamicBody || '';
 
+  // css declared in the project
   if (css) {
     req.dynamicHead += `<style id="${options.styleCollectorId || 'css-style-collector-data'}">${css}</style>`;
+  }
+
+  // css collected by styled-components
+  if (styledComponentCss) {
+    req.dynamicHead += styledComponentCss;
   }
 
   let rootElementAttributes = '';

@@ -6,6 +6,7 @@ import './lib/closed-beta/sscImport.js';
 import './lib/closed-beta/hpmorImport.js';
 import './lib/closed-beta/algoliaExport.js';
 import './lib/closed-beta/fixBodyField.js';
+import './lib/closed-beta/fixKarmaField.js';
 
 // LW Events
 import './lib/events/server.js';
