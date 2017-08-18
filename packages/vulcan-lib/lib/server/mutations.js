@@ -30,10 +30,9 @@ to the client.
 import { Utils, pubsub, runCallbacks, runCallbacksAsync } from '../modules/index.js';
 
 export const newMutation = ({ collection, document, currentUser, validate, context }) => {
-
-  // console.log("// newMutation")
-  // console.log(collection._name)
-  // console.log(document)
+   console.log("// newMutation")
+   console.log(collection._name)
+   console.log(document)
 
   // we don't want to modify the original document
   let newDocument = Object.assign({}, document);
@@ -54,7 +53,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
         throw new Error(Utils.encodeIntlError({id: 'app.disallowed_property_detected', value: fieldName}));
       }
     });
-
+    
     // run validation callbacks
     newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser);
   }
@@ -78,7 +77,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   //   post.userIP = this.connection.clientAddress;
   //   post.userAgent = this.connection.httpHeaders["user-agent"];
   // }
-
+  
   // run sync callbacks
   newDocument = runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 

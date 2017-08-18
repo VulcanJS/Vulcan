@@ -4,25 +4,31 @@ The main Comments collection definition file.
 
 */
 
-import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
+import { createCollection, getDefaultResolvers, getDefaultMutations, getDefaultSubscriptions } from 'meteor/vulcan:core';
 import schema from './schema.js';
 import './fragments.js';
 import './permissions.js';
 
+const collectionName = 'Comments';
+// avoid conflicts with 'comments' collection in vulcan:comments
+const dbCollectionName = 'commentsInstagram';
+const typeName = 'Comment';
+
 const Comments = createCollection({
 
-  collectionName: 'Comments',
+  collectionName,
   
-  // avoid conflicts with 'comments' collection in vulcan:comments
-  dbCollectionName: 'commentsInstagram',
+  dbCollectionName,
 
-  typeName: 'Comment',
+  typeName,
 
   schema,
   
-  resolvers: getDefaultResolvers('Comments'),
+  resolvers: getDefaultResolvers(collectionName),
 
-  mutations: getDefaultMutations('Comments'),
+  mutations: getDefaultMutations(collectionName),
+  
+  subscriptions: getDefaultSubscriptions(collectionName,dbCollectionName)
 
 });
 

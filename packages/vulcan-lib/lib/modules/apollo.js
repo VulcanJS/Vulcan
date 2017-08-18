@@ -1,4 +1,6 @@
 import ApolloClient, { createNetworkInterface, createBatchingNetworkInterface } from 'apollo-client';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
+import { Utils } from './utils.js';
 import 'isomorphic-fetch';
 
 import { Meteor } from 'meteor/meteor';
@@ -11,6 +13,7 @@ const defaultNetworkInterfaceConfig = {
   useMeteorAccounts: true, // if true, send an eventual Meteor login token to identify the current user with every request
   batchingInterface: true, // use a BatchingNetworkInterface by default instead of a NetworkInterface
   batchInterval: 10, // default batch interval
+  subscriptions: Meteor.isClient ? `ws://${Utils.getSiteDomain(true)}/subscriptions` :null
 };
 
 const createMeteorNetworkInterface = (givenConfig = {}) => {
@@ -48,7 +51,20 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
     interfaceOptions.opts = config.opts;
   }
 
-  const networkInterface = interfaceToUse(interfaceOptions);
+  let networkInterface = interfaceToUse(interfaceOptions);
+
+  if(config.subscriptions){
+      console.log(config.subscriptions)
+    // Create a normal network interface:
+    const wsClient = new SubscriptionClient(config.subscriptions, {
+      reconnect: true
+    });
+    // Extend the network interface with the WebSocket
+    networkInterface = addGraphQLSubscriptions(
+      networkInterface,
+      wsClient
+    );
+  }
 
   if (config.useMeteorAccounts) {
     networkInterface.use([{

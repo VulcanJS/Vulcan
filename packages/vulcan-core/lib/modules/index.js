@@ -23,6 +23,8 @@ export { default as Datatable } from './components/Datatable.jsx';
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';
 export { default as withDocument } from './containers/withDocument.js';
+export { default as withReactiveList } from './containers/withReactiveList.js';
+export { default as withReactiveDocument } from './containers/withReactiveDocument.js';
 export { default as withNew } from './containers/withNew.js';
 export { default as withEdit } from './containers/withEdit.js';
 export { default as withRemove } from './containers/withRemove.js';

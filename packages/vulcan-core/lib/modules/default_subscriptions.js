@@ -7,11 +7,12 @@ Default subscriptions
 */
 
 const subscribeFilter = (payload, variables) => {
+    console.log(payload,variables)
 	if (!payload) return false;
 	return matchFilter(payload, variables.filter);
 };
 
-export const getDefaultSubscriptions = collectionName => ({
+export const getDefaultSubscriptions = (collectionName,dbCollectionName) => ({
 	// resolver for subscription with filtering and permission check
 
 	default: {
@@ -26,7 +27,10 @@ export const getDefaultSubscriptions = collectionName => ({
                 payload.node = context.Users.restrictViewableFields(context.currentUser, collection, payload.node);
 				return payload;
 			},
-			subscribe: withFilter(() => pubsub.asyncIterator(Utils.camelCaseify(collectionName)), subscribeFilter)
+			subscribe: withFilter(() => pubsub.asyncIterator(dbCollectionName), (payload, variables)=>{
+                console.log(dbCollectionName)
+                console.log(collectionName)
+                return subscribeFilter(payload, variables)})
 		}
 	}
 });

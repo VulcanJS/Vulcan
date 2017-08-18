@@ -8,7 +8,7 @@ All props except currentUser are passed by the withList container.
 */
 
 import React from 'react';
-import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
+import { Components, withReactiveList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Comments from '../../modules/comments/collection.js';
 import CommentsItem from './CommentsItem.jsx';
@@ -34,4 +34,4 @@ const options = {
   fragmentName: 'CommentsItemFragment',
 };
 
-export default withList(options)(withCurrentUser(CommentsList));
+export default withReactiveList(options)(withCurrentUser(CommentsList));

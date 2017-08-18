@@ -37,13 +37,17 @@ const stringFilters = [
 const allFilters = [...defaultFilters, ...stringFilters];
 
 const checkField = (payloadNode, filterNode) => field => {
-	let index;
-	if (field.indexOf('_') === 0) {
-		index = field.slice(1).indexOf('_') + 1;
-	} else if (field.indexOf('_') === -1) {
-		index = field.length;
+    let index,_prefixed=0,test=field;
+    // if field starts with _ then slice _ out for testing
+	if (test.indexOf('_') === 0) {
+        test = test.slice(1);
+        _prefixed = 1;
+    }
+    // check _ in field
+    if (test.indexOf('_') === -1) {
+		index = test.length + _prefixed;
 	} else {
-		index = field.indexOf('_');
+		index = test.indexOf('_') + _prefixed;
 	}
 	const fieldName = field.slice(0, index);
 	const filterName = field.slice(index);

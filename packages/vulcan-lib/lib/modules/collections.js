@@ -193,7 +193,6 @@ export const createCollection = options => {
   // ------------------------------------- Parameters -------------------------------- //
 
   collection.getParameters = (terms = {}, apolloClient) => {
-
     // console.log(terms)
 
     let parameters = {

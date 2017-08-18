@@ -7,7 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React from 'react';
 import Pics from '../../modules/pics/collection.js';
-import { Components, withDocument } from 'meteor/vulcan:core';
+import { Components, withReactiveDocument } from 'meteor/vulcan:core';
 import CommentsList from '../comments/CommentsList.jsx';
 import CommentsNewForm from '../comments/CommentsNewForm.jsx';
 import PicsEditForm from './PicsEditForm.jsx';
@@ -68,4 +68,4 @@ const options = {
   fragmentName: 'PicsDetailsFragment',
 };
 
-export default withDocument(options)(PicsDetails);
+export default withReactiveDocument(options)(PicsDetails);

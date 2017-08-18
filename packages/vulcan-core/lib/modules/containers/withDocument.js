@@ -46,6 +46,7 @@ export default function withDocument (options) {
         document: data[singleResolverName],
         fragmentName,
         fragment,
+        subscribeToMore:data.subscribeToMore
       };
     },
   });

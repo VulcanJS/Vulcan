@@ -127,6 +127,7 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
+                subscribeToMore = props.data.subscribeToMore,
                 loading = props.data.loading,
                 error = props.data.error;
 
@@ -142,6 +143,7 @@ const withList = (options) => {
             totalCount,
             refetch,
             networkStatus,
+            subscribeToMore,
             error,
             count: results && results.length,
 
