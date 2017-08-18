@@ -234,7 +234,7 @@ export class AccountsLoginForm extends Tracker.Component {
       type: 'password',
       required: true,
       onChange: this.handleChange.bind(this, 'newPassword'),
-      message: this.getMessageForField('newPassword'),
+      message: this.getMessageForField('password'),
     };
   }
 
@@ -857,7 +857,7 @@ export class AccountsLoginForm extends Tracker.Component {
       Accounts.resetPassword(token, newPassword, (error) => {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
+          this.showMessage(errorId, 'error');
           onSubmitHook(error, formState);
         }
         else {
@@ -874,7 +874,7 @@ export class AccountsLoginForm extends Tracker.Component {
       Accounts.changePassword(password, newPassword, (error) => {
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id:errorId}) || 'accounts.error_unknown' && errorId, 'error');
+          this.showMessage(errorId, 'error');
           onSubmitHook(error, formState);
         }
         else {
