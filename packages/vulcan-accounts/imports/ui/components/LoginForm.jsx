@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
@@ -332,7 +333,7 @@ export class AccountsLoginForm extends Tracker.Component {
       });
     }
 
-    if (this.showCreateAccountLink()) {
+    if (this.showCreateAccountLink() && this.props.showSignUpLink) {
       loginButtons.push({
         id: 'switchToSignUp',
         label: this.context.intl.formatMessage({id: 'accounts.sign_up'}),
@@ -342,7 +343,7 @@ export class AccountsLoginForm extends Tracker.Component {
       });
     }
 
-    if (formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) {
+    if ((formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) && this.props.showSignInLink) {
       loginButtons.push({
         id: 'switchToSignIn',
         label: this.context.intl.formatMessage({id: 'accounts.sign_in'}),
@@ -938,6 +939,16 @@ export class AccountsLoginForm extends Tracker.Component {
       />
     );
   }
+}
+
+AccountsLoginForm.propTypes = {
+  showSignInLink: PropTypes.bool,
+  showSignUpLink: PropTypes.bool,
+}
+
+AccountsLoginForm.defaultProps = {
+  showSignInLink: true,
+  showSignUpLink: true,
 }
 
 AccountsLoginForm.contextTypes = {

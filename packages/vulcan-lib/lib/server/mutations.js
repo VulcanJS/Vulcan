@@ -112,11 +112,10 @@ export const editMutation = async ({ collection, documentId, set, unset, current
 
   // get original document from database
   let document = collection.findOne(documentId);
-
   
   if (validate) {
 
-    const validationErrors = validateModifier(modifier, collection, context);
+    const validationErrors = validateModifier(modifier, document, collection, context);
 
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
 

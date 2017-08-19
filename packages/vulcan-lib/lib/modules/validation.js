@@ -83,7 +83,7 @@ export const validateDocument = (document, collection, context) => {
   5. Run SimpleSchema validation step (for now)
   
 */
-export const validateModifier = (modifier, collection, context) => {
+export const validateModifier = (modifier, document, collection, context) => {
 
   const { Users, currentUser } = context;
   const schema = collection.simpleSchema()._schema;
