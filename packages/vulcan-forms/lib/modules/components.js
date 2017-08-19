@@ -1,12 +1,12 @@
-import '../components/controls/Checkbox.jsx';
-import '../components/controls/Checkboxgroup.jsx';
-import '../components/controls/Datetime.jsx';
-import '../components/controls/Default.jsx';
-import '../components/controls/Email.jsx';
-import '../components/controls/Number.jsx';
-import '../components/controls/Radiogroup.jsx';
-import '../components/controls/Select.jsx';
-import '../components/controls/Textarea.jsx';
-import '../components/controls/Url.jsx';
+import '../components/bootstrap/Checkbox.jsx';
+import '../components/bootstrap/Checkboxgroup.jsx';
+import '../components/bootstrap/Datetime.jsx';
+import '../components/bootstrap/Default.jsx';
+import '../components/bootstrap/Email.jsx';
+import '../components/bootstrap/Number.jsx';
+import '../components/bootstrap/Radiogroup.jsx';
+import '../components/bootstrap/Select.jsx';
+import '../components/bootstrap/Textarea.jsx';
+import '../components/bootstrap/Url.jsx';
 
 import '../components/FormWrapper.jsx';
