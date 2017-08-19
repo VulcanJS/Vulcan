@@ -16,11 +16,12 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    "lib/style.scss",
-    "lib/datetime.scss"
+    "lib/stylesheets/style.scss",
+    "lib/stylesheets/datetime.scss"
   ], "client");
 
-  api.mainModule("lib/export.js", ["client", "server"]);
+  api.mainModule("lib/client/main.js", ["client"]);
+  api.mainModule("lib/server/main.js", ["server"]);
 
 });
 
@@ -31,5 +32,4 @@ Package.onTest(function(api) {
     'vulcan:forms'
   ]);
 
-  api.mainModule('test.js');
 });

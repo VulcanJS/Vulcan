@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 import { registerComponent } from 'meteor/vulcan:core';
 
+import './components.js';
+
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions([
     'control', // SmartForm control (String or React component)
@@ -12,5 +14,5 @@ if (typeof SimpleSchema !== "undefined") {
   ]);
 }
 
-import FormWrapper from './FormWrapper.jsx';
+import FormWrapper from '../components/FormWrapper.jsx';
 export default FormWrapper;

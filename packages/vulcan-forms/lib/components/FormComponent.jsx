@@ -5,7 +5,8 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import DateTime from './DateTime.jsx';
 import classNames from 'classnames';
 import Flash from './Flash.jsx';
-
+import { Components } from 'meteor/vulcan:core';
+　
 // import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
@@ -72,32 +73,75 @@ class FormComponent extends PureComponent {
     } else { // else pick a predefined component
 
       switch (this.props.control) {
+        
         case "number":
-          return <Input         {...properties} type="number" onChange={this.updateCharacterCount} />;
+          properties.onChange = this.updateCharacterCount;
+          return <Components.FormComponentNumber {...properties}/>;
+
         case "url":
-          return <Input         {...properties} type="url" onChange={this.updateCharacterCount} />;
+          properties.onChange = this.updateCharacterCount;
+          return <Components.FormComponentUrl {...properties}/>;
+
         case "email":
-          return <Input         {...properties} type="email" onChange={this.updateCharacterCount} />;
+          properties.onChange = this.updateCharacterCount;
+          return <Components.FormComponentEmail {...properties}/>;
+
         case "textarea":
-          return <Textarea      {...properties} onChange={this.updateCharacterCount} />;
+          properties.onChange = this.updateCharacterCount;
+          return <Components.FormComponentTextarea {...properties}/>;
+
         case "checkbox":
-          return <Checkbox      {...properties} />;
+          return <Components.FormComponentCheckbox {...properties} />;
+
         case "checkboxgroup":
-          // if (!properties.value) properties.value = [];
-          return <CheckboxGroup {...properties} />;
+          return <Components.FormComponentCheckboxGroup {...properties} />;
+
         case "radiogroup":
           // not sure why, but onChange needs to be specified here
-          return <RadioGroup    {...properties} onChange={(name, value) => {this.props.updateCurrentValues({[name]: value})}}/>;
+          properties.onChange = (name, value) => {this.props.updateCurrentValues({[name]: value})};
+          return <Components.FormComponentRadioGroup {...properties} />;
+        
         case "select":
           properties.options = [{label: this.context.intl.formatMessage({id: "forms.select_option"}), disabled: true}, ...properties.options];
-          return <Select        {...properties} />;
+          return <Components.FormComponentSelect {...properties} />;
+        
         case "datetime":
-          return <DateTime      {...properties} />;
+          return <Components.FormComponentDateTime {...properties} />;
+        
         case "text":
-        default: 
-          return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        default:
+          properties.onChange = this.updateCharacterCount;
+          return <Components.FormComponentDefault {...properties}/>;
         
       }
+
+      // switch (this.props.control) {
+      //   case "number":
+      //     return <Input         {...properties} type="number" onChange={this.updateCharacterCount} />;
+      //   case "url":
+      //     return <Input         {...properties} type="url" onChange={this.updateCharacterCount} />;
+      //   case "email":
+      //     return <Input         {...properties} type="email" onChange={this.updateCharacterCount} />;
+      //   case "textarea":
+      //     return <Textarea      {...properties} onChange={this.updateCharacterCount} />;
+      //   case "checkbox":
+      //     return <Checkbox      {...properties} />;
+      //   case "checkboxgroup":
+      //     // if (!properties.value) properties.value = [];
+      //     return <CheckboxGroup {...properties} />;
+      //   case "radiogroup":
+      //     // not sure why, but onChange needs to be specified here
+      //     return <RadioGroup    {...properties} onChange={(name, value) => {this.props.updateCurrentValues({[name]: value})}}/>;
+      //   case "select":
+      //     properties.options = [{label: this.context.intl.formatMessage({id: "forms.select_option"}), disabled: true}, ...properties.options];
+      //     return <Select        {...properties} />;
+      //   case "datetime":
+      //     return <DateTime      {...properties} />;
+      //   case "text":
+      //   default: 
+      //     return <Input         {...properties} type="text" onChange={this.updateCharacterCount} />;
+        
+      // }
 
     }
   }
