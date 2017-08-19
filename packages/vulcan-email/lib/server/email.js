@@ -2,7 +2,7 @@ import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Utils, getSetting, runQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 
 VulcanEmail.templates = {};
 
@@ -96,9 +96,17 @@ VulcanEmail.send = (to, subject, html, text) => {
 
 };
 
-VulcanEmail.buildAndSend = (to, subject, template, properties) => {
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(template)(properties));
-  return VulcanEmail.send (to, subject, html);
+VulcanEmail.buildAndSend = async ({ to, email, variables, data }) => {
+
+  // either use data passed as argument, or execute email's GraphQL query
+  const result = await runQuery(email.query, variables);
+  const emailData = data || result.data;
+
+  const subject = typeof email.subject === 'function' ? email.subject(emailData) : email.subject;
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(emailData));
+
+  return VulcanEmail.send(to, subject, html);
+
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(
