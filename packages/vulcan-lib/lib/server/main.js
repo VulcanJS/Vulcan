@@ -1,6 +1,7 @@
 import './oauth_config.js';
-import './apollo_server.js';
+export * from './apollo_server.js';
 import './intl_polyfill.js';
+export * from './query.js';
 
 export * from './meteor_patch.js';
 export * from '../modules/index.js';
