@@ -1,13 +1,13 @@
 <span class="heading">
-<a href="{{profileUrl}}">{{authorName}}</a>
+<a href="{{CommentsSingle.user.profileUrl}}">{{CommentsSingle.user.displayName}}</a>
 left a new comment on 
-<a href="{{postUrl}}" class="action-link">{{postTitle}}</a>:
+<a href="{{CommentsSingle.post.pageUrl}}" class="action-link">{{CommentsSingle.post.title}}</a>:
 </span>
 <br/><br/>
 
 <div class="comment-body">
-{{{htmlBody}}}
+{{{CommentsSingle.htmlBody}}}
 </div>
 <br>
 
-<a href="{{commentUrl}}" class="action-link">Reply</a><br/><br/>
+<a href="{{CommentsSingle.pageUrl}}" class="action-link">Reply</a><br/><br/>

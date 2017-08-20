@@ -1,18 +1,18 @@
 <span class="heading">
-<a href="{{profileUrl}}">{{postAuthorName}}</a>
+<a href="{{PostsSingle.user.profileUrl}}">{{PostsSingle.user.displayName}}</a>
 has created a new post:
-{{#if url}}
-  <a href="{{linkUrl}}" class="action-link">{{postTitle}}</a>
+{{#if PostsSingle.url}}
+  <a href="{{PostsSingle.linkUrl}}" class="action-link">{{PostsSingle.title}}</a>
 {{else}}
-  {{postTitle}}
+  {{PostsSingle.title}}
 {{/if}}
 </span><br><br>
 
-{{#if htmlBody}}
+{{#if PostsSingle.htmlBody}}
   <div class="post-body">
-  {{{htmlBody}}}
+  {{{PostsSingle.htmlBody}}}
   </div>
   <br>
 {{/if}}
 
-<a href="{{postUrl}}">Discuss</a><br><br>
+<a href="{{PostsSingle.pageUrl}}">Discuss</a><br><br>
