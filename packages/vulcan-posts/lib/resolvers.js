@@ -42,7 +42,7 @@ const resolvers = {
     async resolver(root, {documentId, slug}, {currentUser, Users, Posts}) {
 
       // don't use Dataloader if post is selected by slug
-      const post = documentId ? await Posts.loader.load(documentId) : Posts.findOne({slug});
+      const post = documentId ? await Posts.loader.load(documentId) : (slug ? Posts.findOne({slug}) : Posts.findOne());
 
       Utils.performCheck(Posts.checkAccess, currentUser, post, Posts, documentId);
 

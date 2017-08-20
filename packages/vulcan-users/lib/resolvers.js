@@ -52,7 +52,7 @@ const resolvers = {
 
     async resolver(root, {documentId, slug}, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
-      const user = documentId ? await Users.loader.load(documentId) : Users.findOne({slug});
+      const user = documentId ? await Users.loader.load(documentId) : (slug ? Users.findOne({slug}): Users.findOne());
       return Users.restrictViewableFields(currentUser, Users, user);
     },
 

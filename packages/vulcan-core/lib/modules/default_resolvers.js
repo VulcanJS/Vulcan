@@ -54,7 +54,7 @@ export const getDefaultResolvers = collectionName => ({
       const collection = context[collectionName];
 
       // don't use Dataloader if doc is selected by slug
-      const doc = documentId ? await collection.loader.load(documentId) : collection.findOne({slug});
+      const doc = documentId ? await collection.loader.load(documentId) : (slug ? collection.findOne({slug}) : collection.findOne());
 
       // if collection has a checkAccess function defined, use it to perform a check on the current document
       // (will throw an error if check doesn't pass)
