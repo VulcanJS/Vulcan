@@ -96,11 +96,13 @@ VulcanEmail.send = (to, subject, html, text) => {
 
 };
 
-VulcanEmail.buildAndSend = async ({ to, email, variables, data }) => {
+VulcanEmail.buildAndSend = async ({ to, email, variables }) => {
 
-  // either use data passed as argument, or execute email's GraphQL query
-  const result = await runQuery(email.query, variables);
-  const emailData = data || result.data;
+  // execute email's GraphQL query
+  const result = email.query ? await runQuery(email.query, variables) : {data: {}};
+
+  // if email has a data() function, merge its return value with results from the query
+  const emailData = email.data ? {...result.data, ...email.data()} : result.data;
 
   const subject = typeof email.subject === 'function' ? email.subject(emailData) : email.subject;
   const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(emailData));

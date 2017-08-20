@@ -19,8 +19,10 @@ Meteor.startup(function () {
       } else {
 
         // else get test object (sample post, comment, user, etc.)
-        const result = await runQuery(email.query, email.testVariables || {})
-        const emailTestData = result.data;
+        const result = email.query ? await runQuery(email.query, email.testVariables || {}) : {data: {}};
+        
+        // if email has a data() function, merge it with results of query
+        const emailTestData = email.data ? {...result.data, ...email.data()} : result.data;
         const subject = typeof email.subject === 'function' ? email.subject(emailTestData) : email.subject;
 
         // then apply email template to properties, and wrap it with buildTemplate
