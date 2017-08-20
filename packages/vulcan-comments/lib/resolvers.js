@@ -3,7 +3,7 @@ const resolvers = {
 
   list: {
 
-    name: 'commentsList',
+    name: 'CommentsList',
 
     resolver(root, {terms}, {currentUser, Users, Comments}) {
 
@@ -25,10 +25,10 @@ const resolvers = {
 
   single: {
     
-    name: 'commentsSingle',
+    name: 'CommentsSingle',
     
     async resolver(root, {documentId}, {currentUser, Users, Comments}) {
-      const comment = await Comments.loader.load(documentId);
+      const comment = documentId ? await Comments.loader.load(documentId) : Comments.findOne();
       return Users.restrictViewableFields(currentUser, Comments, comment);
     },
   
@@ -36,7 +36,7 @@ const resolvers = {
 
   total: {
     
-    name: 'commentsTotal',
+    name: 'CommentsTotal',
     // broken because it doesn't take any arguments in the query
     resolver(root, {terms}, context) {
       return context.Comments.find({postId: terms.postId}).count();

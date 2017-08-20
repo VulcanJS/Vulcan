@@ -14,7 +14,7 @@ const resolvers = {
 
   list: {
 
-    name: 'postsList',
+    name: 'PostsList',
 
     resolver(root, {terms}, {currentUser, Users, Posts}, info) {
 
@@ -37,7 +37,7 @@ const resolvers = {
 
   single: {
     
-    name: 'postsSingle',
+    name: 'PostsSingle',
 
     async resolver(root, {documentId, slug}, {currentUser, Users, Posts}) {
 
@@ -53,7 +53,7 @@ const resolvers = {
 
   total: {
     
-    name: 'postsTotal',
+    name: 'PostsTotal',
     
     resolver(root, {terms}, {Posts}) {
       const {selector} = Posts.getParameters(terms);

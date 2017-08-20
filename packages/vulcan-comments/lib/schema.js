@@ -184,7 +184,21 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['admins'],
-  }
+  },
+
+  // GraphQL only fields
+
+  pageUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      fieldName: 'pageUrl',
+      type: 'String',
+      resolver: (comment, args, context) => {
+        return context.Comments.getPageUrl(comment, true);
+      },
+    }  
+  },
 };
 
 export default schema;

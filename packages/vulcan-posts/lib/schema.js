@@ -1,5 +1,6 @@
 import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
+import { Utils } from 'meteor/vulcan:core';
 
 /**
  * @summary Posts config namespace
@@ -244,7 +245,34 @@ const schema = {
       },
       addOriginalField: true
     },
+  },
+
+  // GraphQL-only fields
+
+  pageUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      fieldName: 'pageUrl',
+      type: 'String',
+      resolver: (post, args, context) => {
+        return Posts.getPageUrl(post, true);
+      },
+    }  
+  },
+
+  linkUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      fieldName: 'linkUrl',
+      type: 'String',
+      resolver: (post, args, context) => {
+        return post.url ? Utils.getOutgoingUrl(post.url) : Posts.getPageUrl(post, true);
+      },
+    }  
   }
+
 };
 
 export default schema;

@@ -301,6 +301,20 @@ const schema = {
   'groups.$': {
     type: String,
     optional: true
+  },
+
+  // GraphQL only fields
+
+  profileUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      fieldName: 'profileUrl',
+      type: 'String',
+      resolver: (user, args, context) => {
+        return Users.getProfileUrl(user, true);
+      },
+    }  
   }
 };
 
