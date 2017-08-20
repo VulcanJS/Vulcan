@@ -25,7 +25,7 @@ const resolvers = {
 
   list: {
 
-    name: 'usersList',
+    name: 'UsersList',
 
     resolver(root, {terms}, {currentUser, Users}, info) {
 
@@ -48,7 +48,7 @@ const resolvers = {
 
   single: {
 
-    name: 'usersSingle',
+    name: 'UsersSingle',
 
     async resolver(root, {documentId, slug}, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
@@ -60,7 +60,7 @@ const resolvers = {
 
   total: {
 
-    name: 'usersTotal',
+    name: 'UsersTotal',
 
     resolver(root, {terms}, context) {
       const {selector} = context.Users.getParameters(terms);

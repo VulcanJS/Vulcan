@@ -68,7 +68,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['admins'],
     onInsert: () => {
       return new Date();
     }
@@ -88,18 +88,18 @@ const schema = {
       return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },
-  profile: {
-    type: Object,
-    optional: true,
-    blackbox: true,
-    insertableBy: ['guests'],
-  },
-  // telescope-specific data, kept for backward compatibility and migration purposes
-  telescope: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
+  // profile: {
+  //   type: Object,
+  //   optional: true,
+  //   blackbox: true,
+  //   insertableBy: ['guests'],
+  // },
+  // // telescope-specific data, kept for backward compatibility and migration purposes
+  // telescope: {
+  //   type: Object,
+  //   blackbox: true,
+  //   optional: true,
+  // },
   services: {
     type: Object,
     optional: true,
