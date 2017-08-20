@@ -5,13 +5,20 @@ export const FragmentsExtensions = {}; // will be used on startup
 
 /*
 
+Get a fragment's name from its text
+
+*/
+export const extractFragmentName = fragmentText => fragmentText.match(/fragment (.*) on/)[1];
+
+/*
+
 Register a fragment, including its text, the text of its subfragments, and the fragment object
 
 */
 export const registerFragment = fragmentText => {
 
   // extract name from fragment text
-  const fragmentName = fragmentText.match(/fragment (.*) on/)[1];
+  const fragmentName = extractFragmentName(fragmentText);
   
   // extract subFragments from text
   const matchedSubFragments = fragmentText.match(/\.\.\.([^\s].*)/g) || [];
@@ -49,9 +56,20 @@ export const getFragmentObject = (fragmentText, subFragments) => {
 Create default "dumb" gql fragment object for a given collection
 
 */
-export const getDefaultFragmentText = collection => {
+export const getDefaultFragmentText = (collection, options = { onlyViewable: true }) => {
   const schema = collection.simpleSchema()._schema;
-  const fieldNames = _.reject(_.keys(schema), fieldName => fieldName.indexOf('$') !== -1 || !schema[fieldName].viewableBy);
+  const fieldNames = _.reject(_.keys(schema), fieldName => {
+    /*
+
+    Exclude a field from the default fragment if
+    1. it has a resolver
+    2. it has $ in its name
+    3. it's not viewable (if onlyViewable option is true)
+
+    */
+    const field = schema[fieldName];
+    return field.resolveAs || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
+  });
 
   const fragmentText = `
     fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
@@ -124,6 +142,19 @@ export const getFragment = fragmentName => {
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentObject;  
+}
+
+/*
+
+Get gql fragment text
+
+*/
+export const getFragmentText = fragmentName => {
+  if (!Fragments[fragmentName]) {
+    throw new Error(`Fragment "${fragmentName}" not registered.`)
+  }
+  // return fragment object created by gql
+  return Fragments[fragmentName].fragmentText;  
 }
 
 /*
