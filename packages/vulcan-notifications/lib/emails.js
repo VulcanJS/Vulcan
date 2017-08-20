@@ -1,70 +1,99 @@
-import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
 
 // note: leverage weak dependencies on packages
 const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
 const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
 
-const getTestUser = userId => typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
-
 VulcanEmail.addEmails({
   
   newUser: {
     template: "newUser",
     path: "/email/new-user/:_id?",
-    getProperties: Users.getNotificationProperties,
     subject() {
       return "A new user has been created";
     },
-    getTestObject: getTestUser,
+    query: `
+      query UsersSingleQuery($documentId: String){
+        UsersSingle(documentId: $documentId){
+          displayName
+          profileUrl
+        }
+      }
+    `
   },
 
   accountApproved: {
     template: "accountApproved",
     path: "/email/account-approved/:_id?",
-    getProperties: Users.getNotificationProperties,
     subject() {
       return "Your account has been approved.";
     },
-    getTestObject: getTestUser,
+    query: `
+      query UsersSingleQuery($documentId: String){
+        UsersSingle(documentId: $documentId){
+          displayName
+        }
+        SiteData{
+          title
+          url
+        }
+      }
+    `
   }
 
 });
 
 if (!!Posts) {
   
-  const getTestPost = postId => typeof Posts.findOne(postId) === "undefined" ? {post: Posts.findOne()} : {post: Posts.findOne(postId)};
+  const postsQuery = `
+    query PostsSingleQuery($documentId: String){
+      PostsSingle(documentId: $documentId){
+        title
+        url
+        pageUrl
+        linkUrl
+        htmlBody
+        thumbnailUrl
+        user{
+          profileUrl
+          displayName
+        }
+      }
+    }
+  `
   
+  const dummyPost = {title: '[title]', user: {displayName: '[user]'}};
+
   VulcanEmail.addEmails({
     
     newPost: {
       template: "newPost",
       path: "/email/new-post/:_id?",
-      getProperties: Posts.getNotificationProperties,
-      subject({postAuthorName="[postAuthorName]", postTitle="[postTitle]"}) {
-        return postAuthorName+' has created a new post: '+postTitle;
+      subject(data) {
+        const post = _.isEmpty(data) ? dummyPost : data.PostsSingle;
+        return post.user.displayName+' has created a new post: '+post.title;
       },
-      getTestObject: getTestPost,
+      query: postsQuery
     },
     
     newPendingPost: {
       template: "newPendingPost",
       path: "/email/new-pending-post/:_id?",
-      getProperties: Posts.getNotificationProperties,
-      subject({postAuthorName="[postAuthorName]", postTitle="[postTitle]"}) {
-        return postAuthorName+' has a new post pending approval: '+postTitle;
+      subject(data) {
+        const post = _.isEmpty(data) ? dummyPost : data.PostsSingle;
+        return post.user.displayName+' has a new post pending approval: '+post.title;
       },
-      getTestObject: getTestPost,
+      query: postsQuery
     },
     
     postApproved: {
       template: "postApproved",
       path: "/email/post-approved/:_id?",
-      getProperties: Posts.getNotificationProperties,
-      subject({postTitle="[postTitle]"}) {
-        return 'Your post “'+postTitle+'” has been approved';
+      subject(data) {
+        const post = _.isEmpty(data) ? dummyPost : data.PostsSingle;
+        return 'Your post “'+post.title+'” has been approved';
       },
-      getTestObject: getTestPost,
+      query: postsQuery
     }
     
   });
@@ -73,39 +102,56 @@ if (!!Posts) {
 
 
 if (!!Comments) {
-    
-  const getTestComment = commentId => typeof Comments.findOne(commentId) === "undefined" ? {comment: Comments.findOne()} : {comment: Comments.findOne(commentId)};
+  
+  const commentsQuery = `
+    query CommentsSingleQuery($documentId: String){
+      CommentsSingle(documentId: $documentId){
+        pageUrl
+        htmlBody
+        post{
+          pageUrl
+          title
+        }
+        user{
+          profileUrl
+          displayName
+        }
+      }
+    }
+  `    
+
+  const dummyComment = {post: {title: '[title]'}, user: {displayName: '[user]'}};
 
   VulcanEmail.addEmails({
 
     newComment: {
       template: "newComment",
       path: "/email/new-comment/:_id?",
-      getProperties: Comments.getNotificationProperties,
-      subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
-        return authorName+' left a new comment on your post "' + postTitle + '"';
+      subject(data) {
+        const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle;
+        return comment.user.displayName+' left a new comment on your post "' + comment.post.title + '"';
       },
-      getTestObject: getTestComment,
+      query: commentsQuery
     },
 
     newReply: {
       template: "newReply",
       path: "/email/new-reply/:_id?",
-      getProperties: Comments.getNotificationProperties,
-      subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
-        return authorName+' replied to your comment on "'+postTitle+'"';
+      subject(data) {
+        const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle;
+        return comment.user.displayName+' replied to your comment on "'+comment.post.title+'"';
       },
-      getTestObject: getTestComment,
+      query: commentsQuery
     },
 
     newCommentSubscribed: {
       template: "newComment",
       path: "/email/new-comment-subscribed/:_id?",
-      getProperties: Comments.getNotificationProperties,
-      subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
-        return authorName+' left a new comment on "' + postTitle + '"';
+      subject(data) {
+        const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle;
+        return comment.user.displayName+' left a new comment on "' + comment.post.title + '"';
       },
-      getTestObject: getTestComment,
+      query: commentsQuery
     }
 
   });

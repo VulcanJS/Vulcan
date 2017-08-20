@@ -19,7 +19,7 @@ Meteor.startup(function () {
       } else {
 
         // else get test object (sample post, comment, user, etc.)
-        const result = await runQuery(email.query, email.testVariables)
+        const result = await runQuery(email.query, email.testVariables || {})
         const emailTestData = result.data;
         const subject = typeof email.subject === 'function' ? email.subject(emailTestData) : email.subject;
 
@@ -28,12 +28,8 @@ Meteor.startup(function () {
 
         html += `
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
-          <div style="border: 1px solid #999; padding: 20px; margin: 20px;">
-            <pre>
-            <code>
-              ${JSON.stringify(emailTestData, null, '\t')}
-            </code>
-            </pre>
+          <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px;">
+            <pre><code>${JSON.stringify(emailTestData, null, 2)}</code></pre>
           </div>
         `
       }
