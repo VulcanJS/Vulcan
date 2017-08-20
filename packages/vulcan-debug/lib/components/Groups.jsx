@@ -37,3 +37,5 @@ const Groups = props => {
 }
 
 registerComponent('Groups', Groups);
+
+export default Groups;

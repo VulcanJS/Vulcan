@@ -12,13 +12,14 @@ Package.onUse(function (api) {
   api.use([
 
     'fourseven:scss@4.5.0',
+    'dynamic-import@0.1.1',
 
     // Vulcan packages
 
     'vulcan:core@1.7.0',
-    'vulcan:posts@1.7.0',
+    // 'vulcan:posts@1.7.0',
     'vulcan:email@1.7.0',
-    'vulcan:comments@1.7.0'
+    // 'vulcan:comments@1.7.0'
 
   ]);
 
@@ -29,19 +30,19 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/components.js',
     'lib/routes.jsx',
-    'lib/globals.js'
+    // 'lib/globals.js'
   ], ['client', 'server']);
 
   api.addFiles([
     'lib/server/methods.js'
   ], ['server']);
 
-  api.export([
-    'Telescope',
-    'Posts',
-    'Comments',
-    'Users',
-    'Categories'
-  ], ['client', 'server']);
+  // api.export([
+  //   'Telescope',
+  //   'Posts',
+  //   'Comments',
+  //   'Users',
+  //   'Categories'
+  // ], ['client', 'server']);
 
 });

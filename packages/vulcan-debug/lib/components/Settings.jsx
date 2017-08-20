@@ -44,3 +44,5 @@ const Settings = props => {
 }
 
 registerComponent('Settings', Settings);
+
+export default Settings;

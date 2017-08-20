@@ -86,3 +86,5 @@ const Emails = (/* props*/) => {
 };
 
 registerComponent('Emails', Emails);
+
+export default Emails;
