@@ -9,20 +9,22 @@ import './permissions.js';
  */
 
 const options = {
-     checkNew: (user, document) => {
-       console.log(document);
+     newCheck: (user, document) => {
        if (!user || !document) return false;
-       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.new.own') : Users.canDo(user, `conversations.new.all`)
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.new.own')
+        : Users.canDo(user, `conversations.new.all`)
      },
 
-     checkEdit: (user, document) => {
+     editCheck: (user, document) => {
        if (!user || !document) return false;
-       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.edit.own') : Users.canDo(user, `conversations.edit.all`)
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.edit.own')
+       : Users.canDo(user, `conversations.edit.all`)
      },
 
-     checkRemove: (user, document) => {
+     removeCheck: (user, document) => {
        if (!user || !document) return false;
-       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.remove.own') : Users.canDo(user, `conversations.remove.all`)
+       return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.remove.own')
+       : Users.canDo(user, `conversations.remove.all`)
      },
  }
 

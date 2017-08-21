@@ -25,11 +25,12 @@ import './rss-integration/callbacks.js'
 import LWEvents from './collections/lwevents/collection.js';
 import './collections/lwevents/permissions.js';
 import './events/callbacks_sync.js';
-// Chapters
-import Chapters from './collections/chapters/collection.js';
 // Sequences
 import Sequences from './collections/sequences/collection.js';
 import './collections/sequences/fragments.js';
+// Chapters
+import Chapters from './collections/chapters/collection.js';
+// Collections
 import Collections from './collections/collections/collection.js';
 import './collections/collections/fragments.js';
 

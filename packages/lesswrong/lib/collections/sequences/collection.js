@@ -4,13 +4,14 @@ import schema from './schema.js';
 import './fragments.js'
 import './permissions.js'
 
+
 const options = {
-  checkEdit: (user, document) => {
+  editCheck: (user, document) => {
     if (!user || !document) return false;
     return Users.owns(user, document) ? Users.canDo(user, 'sequences.edit.own') : Users.canDo(user, `sequences.edit.all`)
   },
 
-  checkRemove: (user, document) => {
+  removeCheck: (user, document) => {
     if (!user || !document) return false;
     return Users.owns(user, document) ? Users.canDo(user, 'sequences.edit.own') : Users.canDo(user, `sequences.edit.all`)
   },
@@ -33,7 +34,7 @@ mutations.new = {
 
   mutation(root, {document}, context) {
 
-    performCheck(this.check, context.currentUser, document);
+    Utils.performCheck(this.check, context.currentUser, document);
 
     let chapterData = {
       number: 0,

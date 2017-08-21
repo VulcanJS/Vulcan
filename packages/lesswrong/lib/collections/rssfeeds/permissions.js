@@ -8,7 +8,7 @@ const membersActions = [
 Users.groups.members.can(membersActions);
 
 const adminActions = [
-  'rssfeeds.new',
+  'rssfeeds.new.all',
   'rssfeeds.edit.all',
   'rssfeeds.remove.all',
 ];

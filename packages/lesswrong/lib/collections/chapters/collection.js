@@ -3,22 +3,26 @@
 
 import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 import schema from './schema.js';
-import Users from 'meteor/vulcan:users'
+import Users from 'meteor/vulcan:users';
+import Sequences from '../sequences/collection.js';
 
 const options = {
-  checkNew: (user, document) => {
+  newCheck: (user, document) => {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'chapters.new.own') : Users.canDo(user, `chapters.new.all`)
+    let parentSequence = Sequences.findOne({chapterIds: document._id});
+    return Users.owns(user, parentSequence) ? Users.canDo(user, 'chapters.new.own') : Users.canDo(user, `chapters.new.all`)
   },
 
-  checkEdit: (user, document) => {
+  editCheck: (user, document) => {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'chapters.edit.own') : Users.canDo(user, `chapters.edit.all`)
+    let parentSequence = Sequences.findOne({chapterIds: document._id});
+    return Users.owns(user, parentSequence) ? Users.canDo(user, 'chapters.edit.own') : Users.canDo(user, `chapters.edit.all`)
   },
 
-  checkRemove: (user, document) => {
+  removeCheck: (user, document) => {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'chapters.remove.own') : Users.canDo(user, `chapters.remove.all`)
+    let parentSequence = Sequences.findOne({chapterIds: document._id});
+    return Users.owns(user, parentSequence) ? Users.canDo(user, 'chapters.remove.own') : Users.canDo(user, `chapters.remove.all`)
   },
 }
 
