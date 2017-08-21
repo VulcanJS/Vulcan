@@ -61,6 +61,11 @@ export const runCallbacks = function () {
       try {
         const result = callback.apply(this, newArguments);
 
+        // if callback is only supposed to run once, remove it
+        if (callback.runOnce) {
+          removeCallback(hook, callback.name);
+        }
+
         if (typeof result === 'undefined') {
           // if result of current iteration is undefined, don't pass it on
           console.log(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)

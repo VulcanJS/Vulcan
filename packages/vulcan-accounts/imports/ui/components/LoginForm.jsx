@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo } from 'react-apollo';
 
@@ -37,16 +37,28 @@ export class AccountsLoginForm extends Tracker.Component {
       }
     }
 
+    const postLogInAndThen = hook => {
+      return () => {
+        props.client.resetStore();
+
+        if(Callbacks['users.postlogin']) { // execute any post-sign-in callbacks
+          runCallbacks('users.postlogin');
+        } else { // or else execute the hook
+          hook();
+        }
+      }
+    }
+
     // Set inital state.
     this.state = {
       messages: [],
       waiting: true,
       formState: props.formState ? props.formState : (currentUser ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
-      onSignedInHook: resetStoreAndThen(props.onSignedInHook || Accounts.ui._options.onSignedInHook),
+      onSignedInHook: resetStoreAndThen(postLogInAndThen(props.onSignedInHook || Accounts.ui._options.onSignedInHook)),
       onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || Accounts.ui._options.onSignedOutHook),
       onPreSignUpHook: props.onPreSignUpHook || Accounts.ui._options.onPreSignUpHook,
-      onPostSignUpHook: resetStoreAndThen(props.onPostSignUpHook || Accounts.ui._options.onPostSignUpHook),
+      onPostSignUpHook: resetStoreAndThen(postLogInAndThen(props.onPostSignUpHook || Accounts.ui._options.onPostSignUpHook)),
     };
   }
 

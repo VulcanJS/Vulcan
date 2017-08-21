@@ -127,6 +127,7 @@ addStrings('en', {
   "users.posts": "Posts",
   "users.upvoted_posts": "Upvoted Posts",
   "users.please_log_in": "Please log in",
+  "users.please_sign_up_log_in": "Please sign up or log in",
   "users.cannot_post": "Sorry, you do not have permission to post at this time",
   "users.cannot_comment": "Sorry, you do not have permission to comment at this time",
   "users.subscribe": "Subscribe to this user's posts",
