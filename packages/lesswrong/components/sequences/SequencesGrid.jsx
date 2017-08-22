@@ -1,9 +1,11 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, withList } from 'meteor/vulcan:core';
 import React from 'react';
 import { Link } from 'react-router';
+import Sequences from '../../lib/collections/sequences/collection.js';
 
-const SequencesGrid = ({sequences}) => {
-  if (sequences && sequences.length) {
+const SequencesGrid = ({results, loading}) => {
+  if (results && results.length && !loading) {
+    const sequences = results;
     return (<div className='sequences-grid'>
       <div className="sequences-grid-content">
           {sequences.map(sequence => {
@@ -16,5 +18,11 @@ const SequencesGrid = ({sequences}) => {
   }
 };
 
+const options = {
+  collection: Sequences,
+  queryName: 'SequencesGridQuery',
+  fragmentName: 'SequencesPageFragment',
+}
 
-registerComponent('SequencesGrid', SequencesGrid);
+
+registerComponent('SequencesGrid', SequencesGrid, withList(options));
