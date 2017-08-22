@@ -16,12 +16,7 @@ const paperStyle = {
   backgroundColor: 'transparent',
 }
 
-const commentCountBadgeStyle = {
-  top: '13px',
-  right: '9px',
-  backgroundColor: 'transparent',
-  color: 'rgba(0,0,0,0.6)',
-}
+
 
 
 class PostsItem extends PureComponent {
@@ -53,6 +48,7 @@ class PostsItem extends PureComponent {
   render() {
 
     const {post} = this.props;
+    const read = post.lastVisitedAt;
     const newComments = post.lastVisitedAt < post.lastCommentedAt;
 
     let postClass = "posts-item";
@@ -61,7 +57,16 @@ class PostsItem extends PureComponent {
     const commentCountIconStyle = {
       width: '30px',
       height: '30px',
-      color: newComments ? 'rgba(100, 169, 105, 0.5)' : 'rgba(0,0,0,0.1)',
+      color: read ? (newComments ? 'rgba(100, 169, 105, 0.9)' : 'rgba(100, 169, 105, 0.5)') : 'rgba(0,0,0,0.1)',
+    }
+
+    const commentCountBadgeStyle = {
+      top: '13px',
+      right: '9px',
+      pointerEvents: 'none',
+      backgroundColor: 'transparent',
+      color: read ? 'white' : 'rgba(0,0,0,0.6)',
+      zIndex: 2,
     }
 
     return (
@@ -70,7 +75,7 @@ class PostsItem extends PureComponent {
         style={paperStyle}
         zDepth={0}
       >
-       <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+       {/*<Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>*/}
          <div className="posts-item-content">
           <div>
             <h3 className="posts-item-title">
@@ -106,7 +111,7 @@ class PostsItem extends PureComponent {
             </Badge>
           </div>
         </div>
-      </Link>
+      {/*</Link>*/}
     </Paper>
     )
   }
