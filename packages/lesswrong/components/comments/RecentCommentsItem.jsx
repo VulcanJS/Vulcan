@@ -60,7 +60,7 @@ class RecentCommentsItem extends getRawComponent('CommentsItem') {
                 on <span className="comments-item-origin-post-title">{comment.post.title}</span>
               </div>
             </div></object>
-            {this.state.showEdit ? this.renderEdit() : this.renderComment()}
+          {this.state.showEdit ? this.renderEdit() : this.renderComment()}
 
           </div>
           {this.state.showReply ? this.renderReply() : null}
@@ -85,12 +85,11 @@ class RecentCommentsItem extends getRawComponent('CommentsItem') {
 
   renderComment() {
     let content = this.props.comment.content;
-
     const htmlBody = {__html: this.props.comment.htmlBody};
 
     return (
       <div className="recent-comments-item-text comments-item-text">
-        {content ? <Components.ContentRenderer state={content} /> :
+        {content ? <object><Components.ContentRenderer state={content} /></object> :
         null}
         {htmlBody && !content ? <div className="recent-comment-body comment-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
           {/*{ showReplyButton ? <a className="recent-comments-item-reply-link" onClick={this.showReply}>

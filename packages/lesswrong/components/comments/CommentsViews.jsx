@@ -69,6 +69,7 @@ class CommentsViews extends Component {
     }
 
     const query = _.clone(props.router.location.query);
+    const pathname = _.clone(props.router.location.pathname);
     return (
       <div className="comments-views">
         <DropDownMenu
@@ -86,8 +87,8 @@ class CommentsViews extends Component {
               const link = <Link
                 to={
                   (props.currentUser) ?
-                  {pathname: "/", query: {...query, view: view, postId: props.postId, userId: props.currentUser._id}} :
-                  {pathname: "/", query: {...query, view: view, postId: props.postId}}
+                  {pathname: pathname, query: {...query, view: view, postId: props.postId, userId: props.currentUser._id}} :
+                  {pathname: pathname, query: {...query, view: view, postId: props.postId}}
                 }/>
               return <MenuItem
                 key={view}
