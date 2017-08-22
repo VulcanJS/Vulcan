@@ -54,7 +54,7 @@ const Home = (props, context) => {
           <Components.PostsList terms={recentPostsTerms} showHeader={false} />
         </Components.Section>
 
-        <Components.Section title="Recent Comments">
+         <Components.Section title="Recent Comments">
           <Components.RecentComments terms={{view: 'recentComments', limit: 5}} fontSize="small" />
         </Components.Section>
     </div>

@@ -14,6 +14,8 @@ const drawerStyle = {
   backgroundColor: "none",
   boxShadow: "none",
   top: "80px",
+  width: "150px",
+  position: "absolute", 
 }
 
 const appBarStyle = {
