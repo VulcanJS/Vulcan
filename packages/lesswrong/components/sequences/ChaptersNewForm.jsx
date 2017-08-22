@@ -1,6 +1,5 @@
 import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import React from 'react';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import Chapters from '../../lib/collections/chapters/collection.js';
 

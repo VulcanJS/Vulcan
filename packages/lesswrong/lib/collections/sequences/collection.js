@@ -1,9 +1,6 @@
-import { createCollection, getDefaultResolvers, getDefaultMutations, newMutation } from 'meteor/vulcan:core';
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import schema from './schema.js';
-import './fragments.js'
-import './permissions.js'
-
 
 const options = {
   editCheck: (user, document) => {

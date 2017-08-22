@@ -7,6 +7,7 @@ registerFragment(`
     title
     subtitle
     description
+    number
     sequenceId
     sequence {
       ...SequencesPageFragment

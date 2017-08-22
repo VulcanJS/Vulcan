@@ -9,6 +9,8 @@ addRoute({ name: 'recentComments', path: '/recentComments', componentName: 'Rece
 addRoute({ name: 'sequencesHome', path: '/sequences', componentName: 'SequencesHome' });
 addRoute({ name: 'sequences', path: '/sequences/:_id', componentName: 'SequencesSingle' });
 addRoute({ name: 'sequencesEdit', path: '/sequencesEdit/:_id', componentName: 'SequencesEditForm'});
+addRoute({ name: 'sequencesNew', path: '/sequencesNew', componentName: 'SequencesNewForm'});
+
 addRoute({ name: 'chaptersEdit', path: '/chaptersEdit/:_id', componentName: 'ChaptersEditForm'});
 
 // Collections

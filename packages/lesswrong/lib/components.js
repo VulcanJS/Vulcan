@@ -99,6 +99,7 @@ import '../components/sequences/SequencesPage.jsx';
 import '../components/sequences/SequencesPostsList.jsx';
 import '../components/sequences/SequencesSingle.jsx';
 import '../components/sequences/SequencesEditForm.jsx';
+import '../components/sequences/SequencesNewForm.jsx';
 import '../components/sequences/SequencesHome.jsx';
 import '../components/sequences/SequencesList.jsx';
 import '../components/sequences/SequencesGrid.jsx';

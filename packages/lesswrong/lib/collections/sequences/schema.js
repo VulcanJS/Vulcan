@@ -42,6 +42,7 @@ const schema = {
     optional: false,
     viewableBy: ['guests'],
     editableBy: ['admins'],
+    insertableBy: ['members'],
   },
 
   description: {
@@ -49,6 +50,7 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
+    insertableBy: ['members'],
     control: EditorFormComponent,
     blackbox: true,
   },
@@ -66,7 +68,7 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
-    insertableBy: Users.owns,
+    insertableBy: ['members']
   },
 
   //Cloudinary image id for the banner image (high resolution)
@@ -76,9 +78,9 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
-    insertableBy: Users.owns,
+    insertableBy: ['members']
   },
-  
+
 }
 
 
