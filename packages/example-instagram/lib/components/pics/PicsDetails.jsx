@@ -7,7 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React from 'react';
 import Pics from '../../modules/pics/collection.js';
-import { Components, withReactiveDocument } from 'meteor/vulcan:core';
+import { Components, withDocument } from 'meteor/vulcan:core';
 import CommentsList from '../comments/CommentsList.jsx';
 import CommentsNewForm from '../comments/CommentsNewForm.jsx';
 import PicsEditForm from './PicsEditForm.jsx';
@@ -48,8 +48,8 @@ const PicsDetails = ({loading, document, currentUser}) => {
 
           </div>
 
-          <CommentsList terms={{view: 'picComments', picId: document._id}} />
-        
+          {/*<CommentsList terms={{view: 'picComments', picId: document._id}} />*/}
+          <CommentsList filter={{picId: document._id}} orderBy={'createdAt_ASC'}/>
           {Comments.options.mutations.new.check(currentUser) ?
             <CommentsNewForm picId={document._id} /> :
             null
@@ -68,4 +68,4 @@ const options = {
   fragmentName: 'PicsDetailsFragment',
 };
 
-export default withReactiveDocument(options)(PicsDetails);
+export default withDocument(options)(PicsDetails);

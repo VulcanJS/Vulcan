@@ -14,28 +14,33 @@ export const getDefaultResolvers = collectionName => ({
 
     name: `${collectionName}List`,
 
-    resolver(root, {terms}, context, info) {
-
+    async resolver(root, {filter, orderBy, offset, limit, search, terms}, context, info) {
+      let options, selector;
       // get currentUser and Users collection from context
       const { currentUser, Users } = context;
 
       // get collection based on collectionName argument
       const collection = context[collectionName];
-
       // get selector and options from terms and perform Mongo query
-      let {selector, options} = collection.getParameters(terms);
-      options.skip = terms.offset;
-      const docs = collection.find(selector, options).fetch();
+      if(filter){
+         const filterParams = collection.getFilterParameters(filter,orderBy,limit,search);
+         selector = filterParams.selector;
+         options = filterParams.options;
+         options.skip = offset;
+      }else if(terms){
+        const termsParams = collection.getParameters(terms);
+        selector = termsParams.selector;
+        options = termsParams.options;
+        options.skip = terms.offset;
+      }
 
+      const docs = collection.find(selector, options).fetch();
       // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
       const viewableDocs = collection.checkAccess ? _.filter(docs, doc => collection.checkAccess(currentUser, doc)) : docs;
-      
       // take the remaining documents and remove any fields that shouldn't be accessible
       const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
-
       // prime the cache
       restrictedDocs.forEach(doc => collection.loader.prime(doc._id, doc));
-
       // return results
       return restrictedDocs;
     },
@@ -61,7 +66,6 @@ export const getDefaultResolvers = collectionName => ({
       if (collection.checkAccess) {
         Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
       }
-
       // filter out disallowed properties and return resulting document
       return Users.restrictViewableFields(currentUser, collection, doc);
     },
@@ -74,11 +78,18 @@ export const getDefaultResolvers = collectionName => ({
     
     name: `${collectionName}Total`,
     
-    resolver(root, {terms}, context) {
-      
-      const collection = context[collectionName];
+    resolver(root, {filter, search, terms}, context) {
+    
+        let options, selector;
+        // get collection based on collectionName argument
+        const collection = context[collectionName];
+        // get selector and options from terms and perform Mongo query
+        if(filter){
+            selector = collection.getFilterParameters(filter,null,null,search).selector;
+        }else if(terms){
+            selector = collection.getParameters(terms).selector;
+        }
 
-      const {selector} = collection.getParameters(terms);
       return collection.find(selector).count();
     },
   

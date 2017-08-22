@@ -31,7 +31,8 @@ const PicsList = ({results = [], currentUser, loading, loadMore, count, totalCou
 const options = {
   collection: Pics,
   fragmentName: 'PicsItemFragment',
-  limit: 6
+  limit: 6,
+ // filter:{_id_not:'1', _id_not_in:['a','b','c'],AND:[{body_not:'d'},{userId_not:'e'}]}
 };
 
 export default withList(options)(withCurrentUser(PicsList));

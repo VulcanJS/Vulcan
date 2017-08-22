@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { PubSub } from 'graphql-subscriptions';
 import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLSubscription, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
+import { getSelectorFromFilter, getOptionParameter } from './filters.js'
 import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
@@ -134,9 +135,13 @@ export const createCollection = options => {
       const queryResolvers = {};
       // list
       if (resolvers.list) { // e.g. ""
-        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
+        addGraphQLQuery(`${resolvers.list.name}(filter: ${typeName}Filter, orderBy: ${typeName}OrderBy, offset: Int, limit: Int, search: String, terms: JSON): [${typeName}]`);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
+      /*if (resolvers.list) { // e.g. ""
+        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
+        queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
+      }*/
       // single
       if (resolvers.single) {
         addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
@@ -144,9 +149,13 @@ export const createCollection = options => {
       }
       // total
       if (resolvers.total) {
-        addGraphQLQuery(`${resolvers.total.name}(terms: JSON): Int`);
+        addGraphQLQuery(`${resolvers.total.name}(filter: ${typeName}Filter, search: String, terms: JSON): Int`);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
+      /*if (resolvers.total) {
+        addGraphQLQuery(`${resolvers.total.name}(terms: JSON): Int`);
+        queryResolvers[resolvers.total.name] = resolvers.total.resolver;
+      } */
       addGraphQLResolvers({ Query: { ...queryResolvers } });
     }
 
@@ -244,6 +253,64 @@ export const createCollection = options => {
     // limit number of items to 200 by default
     const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
     parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
+
+    // console.log(parameters);
+
+    return parameters;
+  }
+
+  collection.getFilterParameters = (filter = {}, orderBy, limit, search, apolloClient) => {
+    // console.log(terms)
+
+    let parameters = {
+      selector: getSelectorFromFilter(filter),
+      options: getOptionParameter(orderBy)
+    };
+
+    /*if (collection.defaultView) {
+      parameters = Utils.deepExtend(true, parameters, collection.defaultView(filter, apolloClient));
+    }
+
+    // handle view option
+    if (terms.view && collection.views[terms.view]) {
+      const view = collection.views[terms.view];
+      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient));
+    }
+
+    // iterate over posts.parameters callbacks
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
+*/
+    // extend sort to sort posts by _id to break ties, unless there's already an id sort
+    // NOTE: always do this last to avoid overriding another sort
+    if (!(parameters.options.sort && parameters.options.sort._id)) {
+      parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+    }
+
+    // remove any null fields (setting a field to null means it should be deleted)
+    _.keys(parameters.selector).forEach(key => {
+      if (parameters.selector[key] === null) delete parameters.selector[key];
+    });
+    if (parameters.options.sort) {
+      _.keys(parameters.options.sort).forEach(key => {
+        if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
+      });
+    }
+
+    if(search) {
+        
+      const search = escapeStringRegexp(search);
+
+      const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
+      parameters = Utils.deepExtend(true, parameters, {
+        selector: {
+          $or: searchableFieldNames.map(fieldName => ({[fieldName]: {$regex: search, $options: 'i'}}))
+        }
+      });
+    }
+
+    // limit number of items to 200 by default
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
+    parameters.options.limit = (!limit || limit < 1 || limit > maxDocuments) ? maxDocuments : limit;
 
     // console.log(parameters);
 

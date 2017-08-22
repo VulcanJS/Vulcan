@@ -9,7 +9,7 @@ import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
 import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
-import { getFieldFilters, addFiltersToSchema } from './filters.js';
+import { getFieldFilters, addFiltersToSchema, addOrderToSchema } from './filters.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 
 disableFragmentWarnings();
@@ -129,7 +129,7 @@ export const GraphQLSchema = {
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
     const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
-    let mainSchema = [], inputSchema = [], unsetSchema = [], filterSchema = [];
+    let mainSchema = [], inputSchema = [], unsetSchema = [], filterSchema = [], orderSchema = [];
 
     _.forEach(schema, (field, fieldName) => {
       // console.log(field, fieldName)
@@ -174,6 +174,13 @@ export const GraphQLSchema = {
             // Build Filter for original Field
             filterSchema.push(getFieldFilters.field(fieldName, fieldType));
 
+            // Build OrderBy parameter
+            if(['String','Float','Int','Date'].includes(fieldType)){
+                orderSchema.push(
+                    `${fieldName}_ASC
+                    ${fieldName}_DESC`
+                )
+            }
           }
 
         } else {
@@ -183,6 +190,14 @@ export const GraphQLSchema = {
 
             // Build Filter for field
             filterSchema.push(getFieldFilters.field(fieldName, fieldType));
+
+            // Build OrderBy parameter
+            if(['String','Float','Int','Date'].includes(fieldType)){
+                orderSchema.push(
+                    `${fieldName}_ASC
+                    ${fieldName}_DESC`
+                )
+            }
           }
         }
 
@@ -223,6 +238,7 @@ export const GraphQLSchema = {
     `
 
     graphQLSchema = addFiltersToSchema(graphQLSchema, mainTypeName, filterSchema);
+    graphQLSchema = addOrderToSchema(graphQLSchema, mainTypeName, orderSchema);
 
     return graphQLSchema;
   }
