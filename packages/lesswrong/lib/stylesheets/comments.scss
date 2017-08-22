@@ -95,21 +95,22 @@ $medium-text: $dark-grey;
   }
   blockquote {
     padding: 11.5px 23px;
-    font-size: 15px;
+    font-size: 17px;
+    color: rgba(0,0,0,0.7);
     display: block;
     padding: 15px 0px 10px 25px;
     position: relative;
-    line-height: 1.15;
+    line-height: 1.2;
     border-style: none;
     margin-bottom: 0px;
-  }
+}
   blockquote:before {
     content: "\201C";
     font-size: 40px;
     font-weight: 300;
     color: #999;
     position: absolute;
-    left: 10px;
+    left: 5px;
     top: 5px;
   }
 }

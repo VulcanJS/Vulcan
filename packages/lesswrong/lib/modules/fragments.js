@@ -56,10 +56,6 @@ extendFragment('UsersCurrent', `
   subscribedItems
 `);
 
-extendFragment('PostsList', `
-  content
-`);
-
 registerFragment(`
   fragment RSSFeedMinimumInfo on RSSFeed {
     _id
@@ -86,10 +82,10 @@ registerFragment(`
     createdAt
     sticky
     status
-    body # We replaced this with content
-    htmlBody # We replaced this with content
+    # body # We replaced this with content
+    # htmlBody # We replaced this with content
     excerpt # This won't work with content
-    content # Our replacement for body
+    # content # Our replacement for body
     lastVisitedAt
     viewCount
     clickCount
@@ -126,6 +122,15 @@ registerFragment(`
     feed {
       ...RSSFeedMinimumInfo
     }
+  }
+`);
+
+registerFragment(`
+  fragment LWPostsPage on Post {
+    ...PostsList
+    body
+    htmlBody
+    content
   }
 `);
 

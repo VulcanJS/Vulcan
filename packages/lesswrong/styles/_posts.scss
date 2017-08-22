@@ -118,6 +118,7 @@
   padding: 10px;
   &:hover {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
   }
   .posts-item-content {
     display: flex;
@@ -276,7 +277,7 @@
 .posts-page{
   margin-bottom: 100px;
   .posts-page-content-header {
-    max-width: 700px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 40px;
@@ -554,3 +555,98 @@
   justify-content: space-between;
   margin-bottom: $vmargin * 2;
 }
+
+.posts-search-auto-complete {
+  li {
+    list-style: none;
+  }
+  .react-autosuggest__suggestion--highlighted {
+      background-color: rgba(0,0,0,0.05);
+  }
+  ul {
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+}
+
+.posts-list-edit-item-title {
+  display: inline;
+  margin-right: 10px;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.posts-list-edit-item-meta {
+  display: inline-block;
+  color: rgba(0,0,0,0.5);
+  div {
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+svg.drag-handle {
+    position: absolute;
+    display: block !important;
+    color: rgba(0,0,0,0.5);
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    cursor: pointer;
+}
+
+.posts-list-edit-item-box {
+  display: block;
+  margin-left: 30px;
+  .posts-list-edit-item-remove {
+    opacity: 0;
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+    .remove-icon {
+    color: rgba(0,0,0,0.3) !important;
+    }
+  }
+  &:hover .posts-list-edit-item-remove {
+    opacity: 1;
+  }
+}
+
+.posts-list-editor-item {
+  list-style:none;
+  position: relative;
+  padding: 5px;
+}
+
+
+//
+// .posts-list-editor-item-meta {
+//   position: absolute;
+//   left: -50px;
+//   bottom: 0px;
+//   top: 0px;
+//   height: 20px;
+//   text-align: center;
+//   width: 40px;
+//   margin: auto;
+//   cursor: pointer;
+// }
+//
+// .drag-handle {
+//   left: -40px;
+//   bottom: 0px;
+//   margin-top: -10px !important;
+//   top: 0px;
+//   margin: auto;
+//   cursor: pointer;
+// }
+//
+// a.posts-item-wrapper-remove {
+//   position: absolute;
+//   left: 4px;
+//   bottom: -6px;
+//   font-size: 10px;
+//   &:hover {
+//     color: rgba(0,0,0,0.4) !important;
+//   }
+// }

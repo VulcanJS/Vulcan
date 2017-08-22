@@ -1,8 +1,33 @@
 $card-padding: 20px;
 
+.collections-page {
+  margin-right: 90px;
+}
+
+.collections-header {
+  padding-left: 20px;
+  margin-bottom: 50px;
+}
+
+.collections-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  border-top-style: solid;
+  border-top-width: 4px;
+}
+
+.collections-description {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  line-height: 1.25;
+}
+
 .collection-card-item {
+  position:relative;
   &:hover {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    z-index: 100;
     .collection-card-link {
       text-decoration: none;
     }
@@ -20,7 +45,7 @@ $card-padding: 20px;
   box-shadow: none !important;
   margin-bottom: 5px;
   .collection-card-content {
-    width: 315px;
+    width: 313px;
     border-top-style: solid;
     border-top-width: 4px;
     margin-left: auto;
@@ -40,7 +65,7 @@ $card-padding: 20px;
     font-size: 16px !important;
   }
   .collection-card-media {
-    width: 315px;
+    width: 313px;
     overflow:hidden;
   }
   a:hover {
@@ -48,16 +73,22 @@ $card-padding: 20px;
   }
 }
 
-.collections-carousel {
+.book-subtitle {
+    line-height: 1.1;
+    font-size: 20px;
+    margin-top: 20px;
+    font-style: italic;
+}
 
-  .slick-next {
-    float: right;
-    position: absolute !important;
-    right: -50px;
-  }
-  .slick-prev {
-    float: left;
-    position: absolute !important;
-    left: -50px;
-  }
+.book-description {
+    margin-left: 20px;
+    font-size: 20px;
+    line-height: 1.25;
+    margin-bottom: 25px;
+}
+
+.chapters-edit-form {
+    width: 700px;
+    margin-left: auto;
+    margin-right: 75px;
 }

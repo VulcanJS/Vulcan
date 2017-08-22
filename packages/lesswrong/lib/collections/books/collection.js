@@ -3,15 +3,15 @@ import { createCollection, getDefaultResolvers, getDefaultMutations } from 'mete
 import schema from './schema.js';
 
 const Collections = createCollection({
-  collectionName: 'Collections',
+  collectionName: 'Books',
 
-  typeName: 'Collection',
+  typeName: 'Book',
 
   schema,
 
-  resolvers: getDefaultResolvers('Collections'),
+  resolvers: getDefaultResolvers('Books'),
 
-  mutations: getDefaultMutations('Collections'),
+  mutations: getDefaultMutations('Books'),
 });
 
 export default Collections;

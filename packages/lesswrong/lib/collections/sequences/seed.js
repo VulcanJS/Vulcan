@@ -2,270 +2,132 @@ import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Chapters from '../chapters/collection.js';
 import Sequences from './collection.js';
+import Books from '../books/collection.js';
 import Collections from '../collections/collection.js';
-import { newMutation } from 'meteor/vulcan:core';
-import moment from 'moment';
-import Comments from "meteor/vulcan:comments";
-import Events from "meteor/vulcan:events";
+import { newMutation, editMutation } from 'meteor/vulcan:core';
 
-const dummyFlag = {
-  fieldName: 'isDummy',
-  fieldSchema: {
-    type: Boolean,
-    optional: true,
-    hidden: true
-  }
-}
-Users.addField(dummyFlag);
-Posts.addField(dummyFlag);
-Comments.addField(dummyFlag);
+const runSeed = true;
 
-Posts.addField({
-  fieldName: 'dummySlug',
-  fieldSchema: {
-    type: String,
-    optional: true,
-    hidden: true // never show this
-  }
-});
-
-var toTitleCase = function (str) {
-  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-};
-
-const createPost = function (slug, postedAt, username, thumbnail) {
-
-  const user = Users.findOne({username: username});
-
-  var post = {
-    postedAt: postedAt,
-    body: Assets.getText("content/" + slug + ".md"),
-    title: toTitleCase(slug.replace(/_/g, ' ')),
-    dummySlug: slug,
-    isDummy: true,
-    userId: user._id
-  };
-
-  if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/vulcan_getting-started/content/images/" + thumbnail;
-
-  newMutation({
-    collection: Posts,
-    document: post,
-    currentUser: user,
-    validate: false
-  });
-
-};
-
-const createComment = function (slug, username, body, parentBody) {
-
-  const user = Users.findOne({username: username});
-
-  var comment = {
-    postId: Posts.findOne({dummySlug: slug})._id,
+const createSequence = (user, title) => {
+  const sequenceData = {
     userId: user._id,
-    body: body,
-    isDummy: true,
-    disableNotifications: true
+    title,
   };
-  var parentComment = Comments.findOne({body: parentBody});
-  if (parentComment)
-    comment.parentCommentId = parentComment._id;
-
-  newMutation({
-    collection: Comments,
-    document: comment,
+  return newMutation({
+    collection: Sequences,
+    document: sequenceData,
     currentUser: user,
-    validate: false
+    validate: false,
   });
-};
+}
 
+const createChapter = (title, subtitle, sequenceId) => {
+  return newMutation ({
+    collection: Chapters,
+    document: {title, subtitle, sequenceId},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
 
-const createUser = function (username, email, password = null) {
-  options = {
-    username,
-    email,
-    password
-  };
-  console.log("Creating user: <", options, ">");
-  Accounts.createUser(options);
-};
+const addPostsToChapter = (chapterId, postIds) => {
+  return editMutation({
+    collection: Chapters,
+    documentId: chapterId,
+    set: {postIds},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
 
+const createBook = (title, subtitle) => {
+  return newMutation ({
+    collection: Books,
+    document: {title, subtitle},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
 
-const createCollection = function () {
+const addSequencesToBook = (bookId, sequenceIds) => {
+  return editMutation({
+    collection: Books,
+    documentId: bookId,
+    set: {sequenceIds},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
 
-  const user = Users.findOne();
-
-  var collection = {
-
-  };
-
-  newMutation({
+const createCollection = (user, title) => {
+  return newMutation({
     collection: Collections,
-    document: collection,
-    currentUser: user,
-    validate: false
+    document: {userId: user._id, title},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
+
+const addBooksToCollection = (collectionId, bookIds) => {
+  return editMutation({
+    collection: Collections,
+    documentId: collectionId,
+    set: {bookIds},
+    currentUser: Users.findOne(),
+    validate: false,
+  })
+}
+
+if(runSeed) {
+  Meteor.startup(async function () {
+
+    const currentUser = Users.findOne({_id: "nmk3nLpQE89dMRzzN"});
+
+    const first_sequence = await createSequence(currentUser, "Map and Territory");
+    const first_chapter = await createChapter("","", first_sequence._id);
+
+    await addPostsToChapter(first_chapter._id, ["RcZCwxFiZzE6X7nsv", "SqF8cHjJv43mvJJzx", "YshRbqZHYFoEMqFAu", "jnZbHi873v9vcpGpZ", "R8cpqD3NA4rZxRdQ4", "Yq6aA4M3JKWaQepPJ", "CPm5LTwHrvBJCa9h5", "sSqoEw9eRP2kPKLCz", "HLqWn5LASfhhArZ7w", "46qnWRSR7L2eyNbMA"]);
+
+    const col1 = await createCollection(currentUser, "The Sequences");
+    const col2 = await createCollection(currentUser, "The Codex");
+    const col3 = await createCollection(currentUser, "Harry Potter and the Methods of Rationality");
+
+    console.log("Created Collections: ", col1, col2, col3);
+
+    const book1 = await createBook("Book I: The Real Deal", "This is another subtitle");
+    const book2 = await createBook("Book II: The Real Real Deal", "And another Subtitle");
+    const book3 = await createBook("Book III: The Real More Deal")
+
+    console.log("Created Books: ", book1, book2, book3);
+
+    await addBooksToCollection(col1._id, [book1._id, book2._id, book3._id])
+    await addBooksToCollection(col2._id, [book1._id, book2._id, book3._id])
+    await addBooksToCollection(col3._id, [book1._id, book2._id, book3._id])
+
+    console.log("Added books to collections: ", col1.title);
+
+    const seq1 = await createSequence(currentUser, "Map and Territory");
+    const seq2 = await createSequence(currentUser, "The Other Territory");
+    const seq3 = await createSequence(currentUser, "And One More Sequence");
+
+    console.log("Created Sequences ", seq1, seq2, seq3);
+
+    await addSequencesToBook(book1._id, [seq1._id, seq2._id, seq3._id])
+    await addSequencesToBook(book2._id, [seq1._id, seq2._id, seq3._id])
+    await addSequencesToBook(book3._id, [seq1._id, seq2._id, seq3._id])
+
+    console.log("Added sequences to books");
+
+    const chap1 = await createChapter("Chapter 1: The end of Chapters", "The one chapter to bind them all", seq1._id);
+    const chap2 = await createChapter("Chapter 2: The return of the Chapters", "In the darkness to find them", seq1._id);
+    const chap3 = await createChapter("Chapter 3: A new Chapterious Hope", "And Forever Bind Them", seq2._id);
+
+    console.log("Created Chapters", chap1, chap2, chap3);
+
+    await addPostsToChapter(chap1._id, ["zztyZ4SKy7suZBpbk", "zzsNpwTuduGNggT7G", "zyuXC7suPt2M85Scd", "zwvYRBqarbj8MmDub"])
+    await addPostsToChapter(chap2._id, ["zztyZ4SKy7suZBpbk", "zzsNpwTuduGNggT7G", "zyuXC7suPt2M85Scd"])
+    await addPostsToChapter(chap3._id, ["zzsNpwTuduGNggT7G", "zyuXC7suPt2M85Scd", "zwvYRBqarbj8MmDub"])
+
+    console.log("Added Posts to Chapters")
   });
-};
-
-var createDummyUsers = function () {
-  console.log('// inserting dummy users!!!!');
-  createUser('admin', 'admin@admin.com', 'password');
-  createUser('Harm', 'dummyuser1@telescopeapp.org');
-  createUser('Ben', 'dummyuser2@telescopeapp.org');
-  createUser('Oliver', 'dummyuser3@telescopeapp.org');
-};
-
-var createDummyPosts = function () {
-  console.log('// inserting dummy posts');
-
-  createPost("read_this_first", moment().toDate(), "Harm", "telescope.png");
-
-  createPost("deploying", moment().subtract(10, 'minutes').toDate(), "Ben");
-
-  createPost("customizing", moment().subtract(3, 'hours').toDate(), "Oliver");
-
-  createPost("getting_help", moment().subtract(1, 'days').toDate(), "Harm", "stackoverflow.png");
-
-  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Oliver");
-
-};
-
-var createDummyComments = function () {
-  console.log('// inserting dummy comments…');
-
-  createComment("read_this_first", "Harm", "What an awesome app!");
-
-  createComment("deploying", "Ben", "Deploy to da choppah!");
-  createComment("deploying", "Oliver", "Do you really need to say this all the time?", "Deploy to da choppah!");
-
-  createComment("customizing", "Oliver", "This is really cool!");
-
-  createComment("removing_getting_started_posts", "Harm", "Yippee ki-yay!");
-  createComment("removing_getting_started_posts", "Ben", "I'll be back.", "Yippee ki-yay!");
-
-};
-
-Vulcan.removeGettingStartedContent = () => {
-  Users.remove({'profile.isDummy': true});
-  Posts.remove({isDummy: true});
-  Comments.remove({isDummy: true});
-  console.log('// Getting started content removed');
-};
-
-Meteor.startup(function () {
-  // insert dummy content only if createDummyContent hasn't happened and there aren't any posts or users in the db
-  if (!Users.find().count()) {
-    createDummyUsers();
-  }
-  if (!Posts.find().count()) {
-    createDummyPosts();
-  }
-  if (!Comments.find().count()) {
-    createDummyComments();
-  }
-  if (!Collections.find().count()) {
-    createCollection();
-  }
-
-  if (Users.find().fetch().length === 0) {
-    Accounts.createUser({
-      username: 'DemoUser',
-      email: 'dummyuser@telescopeapp.org',
-      profile: {
-        isDummy: true
-      }
-    });
-  }
-
-  const currentUser = Users.findOne();
-
-  const chaptersSeedData = [
-
-    {
-      title: 'null',
-      subtitle: 'null',
-      description: 'null',
-      number: 0,
-      postIds: []
-
-    },
-
-    {
-      title: 'Made Up',
-      subtitle: 'This is where things are',
-      description: 'Captain Underpants',
-      number: 1,
-      postIds: [Posts.findOne()._id, Posts.findOne()._id]
-
-    },
-
-    {
-      title: 'Even More Made Up',
-      subtitle: 'More Things Are Here',
-      description: 'Blah Blah Blah',
-      number: 2,
-      postIds: [Posts.findOne()._id, Posts.findOne()._id]
-
-    },
-
-    {
-      title: 'A Diary of Omega',
-      subtitle: 'The Map is Not the Territory',
-      description: 'A core idea in decision theory is that of...',
-      number: 1,
-      postIds: [Posts.findOne()._id, Posts.findOne()._id]
-
-    },
-
-    {
-      title: 'Omega is coming home',
-      subtitle: 'Omega is here to do two things...',
-      description: 'An ombusdman, ombuds or public advocate is an official...',
-      number: 2,
-      postIds: [Posts.findOne()._id, Posts.findOne()._id]
-
-    }
-
-  ]
-
-  if (Chapters.find().fetch().length === 0) {
-    chaptersSeedData.forEach(document => {
-      newMutation({
-        action: 'chapters.new',
-        collection: Chapters,
-        document: document,
-        currentUser: currentUser,
-        validate: false
-      });
-    });
-  }
-
-  const sequencesSeedData = [
-
-    {
-      title: 'Highly Advanced Epistemology 101 for Beginners',
-      description: 'The original sequences were a series of essays...',
-      chapterIds: [Chapters.findOne()._id, Chapters.findOne()._id, Chapters.findOne()._id]
-    },
-    {
-      title: 'How to make rationalist pie',
-      description: 'Actually you should think about tau...',
-      chapterIds: [Chapters.findOne()._id, Chapters.findOne()._id, Chapters.findOne()._id]
-    }
-
-  ]
-
-  if (Sequences.find().fetch().length === 0) {
-    sequencesSeedData.forEach(document => {
-      newMutation({
-        action: 'sequences.new',
-        collection: Sequences,
-        document: document,
-        currentUser: currentUser,
-        validate: false
-      });
-    });
-  }
-});
+}

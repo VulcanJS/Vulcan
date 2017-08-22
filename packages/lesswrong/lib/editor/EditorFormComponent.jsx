@@ -1,19 +1,20 @@
 import React, { PropTypes, Component } from 'react';
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import { Editable, createEmptyState } from 'ory-editor-core';
 import { Toolbar } from 'ory-editor-ui'
 import withEditor from './withEditor.jsx'
 
 
-
-class CommentEditor extends Component {
+class EditorFormComponent extends Component {
   constructor(props, context) {
     super(props,context);
+    const fieldName = this.props.name;
     let editor = this.props.editor;
     const document = this.props.document;
-    let state = document && document.content ? document.content : createEmptyState();
+    let state = (document && document[fieldName]) || createEmptyState();
+    state = JSON.parse(JSON.stringify(state));
     this.state = {
-      contentState: state,
+      [fieldName]: state,
     };
     editor.trigger.editable.add(state);
   }
@@ -22,11 +23,12 @@ class CommentEditor extends Component {
     //Add function for resetting form to form submit callbacks
     const resetEditor = (result) => {
       // On Form submit, create a new empty editable
+      const fieldName = this.props.name;
       let editor = this.props.editor;
       let state = createEmptyState();
       editor.trigger.editable.add(state);
       this.setState({
-        contentState: state,
+        [fieldName]: state,
       });
       return result;
     }
@@ -34,26 +36,27 @@ class CommentEditor extends Component {
   }
 
   render() {
+    const fieldName = this.props.name;
     const addValues = this.context.addToAutofilledValues;
     let editor = this.props.editor;
     const onChange = (state) => {
-      addValues({content: state});
+      addValues({[fieldName]: state});
       return state;
     }
     return (
       <div className="commentEditor">
-        <Editable editor={editor} id={this.state.contentState.id} onChange={onChange} />
+        <Editable editor={editor} id={this.state[fieldName].id} onChange={onChange} />
         <Toolbar editor={editor} />
       </div>
     )
   }
 }
 
-CommentEditor.contextTypes = {
+EditorFormComponent.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
   addToSuccessForm: React.PropTypes.func,
 };
 
-registerComponent('CommentEditor', CommentEditor, withEditor, withCurrentUser);
+registerComponent("EditorFormComponent", EditorFormComponent, withEditor);
 
-export default withEditor(CommentEditor);
+export default withEditor(EditorFormComponent);

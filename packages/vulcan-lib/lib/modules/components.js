@@ -12,9 +12,9 @@ export const ComponentsTable = {} // storage for infos about components
  * @param {...Function} hocs The HOCs to compose with the raw component.
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
- * 
+ *
  * @returns Structure of a component in the list:
  *
  * ComponentsTable.Foo = {
@@ -29,7 +29,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('// registering component');
   // console.log(name);
   // console.log('raw component', rawComponent);
-  // console.log('higher order components', hocs); 
+  // console.log('higher order components', hocs);
 
   // store the component in the table
   ComponentsTable[name] = {
@@ -61,10 +61,10 @@ export const getComponent = (name) => {
 export const populateComponentsApp = () => {
   // loop over each component in the list
   Object.keys(ComponentsTable).map(name => {
-    
+
     // populate an entry in the lookup table
     Components[name] = getComponent(name);
-    
+
     // uncomment for debug
     // console.log('init component:', name);
   });
@@ -82,7 +82,7 @@ export const populateComponentsApp = () => {
 };
 
 /**
- * Replace a Vulcan component with the same name with a new component or 
+ * Replace a Vulcan component with the same name with a new component or
  * an extension of the raw component and one or more optional higher order components.
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *
@@ -92,12 +92,12 @@ export const populateComponentsApp = () => {
  * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
  export const replaceComponent = (name, newComponent, ...newHocs) => {
   const previousComponent = ComponentsTable[name];
-  
+
   // xxx : throw an error if the previous component doesn't exist
 
   // console.log('// replacing component');
@@ -106,7 +106,7 @@ export const populateComponentsApp = () => {
   // console.log('new hocs', newHocs);
   // console.log('previous hocs', previousComponent.hocs);
 
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
 };
 
 export const copyHoCs = (sourceComponent, targetComponent) => {

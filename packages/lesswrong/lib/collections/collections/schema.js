@@ -1,14 +1,11 @@
 import Users from 'meteor/vulcan:users'
-import { Components } from 'meteor/vulcan:core';
-import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
-
 const schema = {
 
   // default properties
 
   _id: {
     type: String,
-    optional: true,
+    optional: false,
     viewableBy: ['guests'],
   },
 
@@ -16,6 +13,8 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
     onInsert: () => {
       return new Date();
     },
@@ -42,6 +41,7 @@ const schema = {
     optional: false,
     viewableBy: ['guests'],
     editableBy: ['admins'],
+    insertableBy: ['admins'],
   },
 
   description: {
@@ -49,35 +49,37 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
-    control: EditorFormComponent,
-    blackbox: true,
+    insertableBy: ['admins'],
   },
 
-  commentCount:{
-    type: Number,
+  bookIds: {
+    type: Array,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ["guests"],
+    resolveAs: {
+      fieldName: 'books',
+      type: '[Book]',
+      resolver: (collection, args, context) => {
+        return (_.map(collection.bookIds, (id) =>
+          { return context.Books.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Books)})
+        }))
+      },
+      addOriginalField: true,
+    }
   },
 
-  //Cloudinary image id for the grid Image
-
-  gridImageId: {
+  'bookIds.$': {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    editableBy: ['admins'],
-    insertableBy: Users.owns,
   },
 
-  //Cloudinary image id for the banner image (high resolution)
-
-  bannerImageId: {
+  imageUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ["guests"],
     editableBy: ['admins'],
-    insertableBy: Users.owns,
-  },
+    insertableBy: ['admins'],
+  }
 
 }
 

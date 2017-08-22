@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Components, withDocument, registerComponent } from 'meteor/vulcan:core';
-import Sequences from '../collections/sequences/collection.js';
+import Sequences from '../../lib/collections/sequences/collection.js';
 import moment from 'moment';
 import Posts from 'meteor/vulcan:posts';
 
@@ -38,23 +38,29 @@ const SequencesHome = ({document, currentUser, loading}) => {
   console.log("// Rendering SequencesHome component.");
   // TODO: decide on terms for community sequences
   const communitySeqTerms = {};
-  return <div>
+  return <div className="sequences-home">
     {/* Title */}
-    <div className="sequences-list-title">
-      Sequences
-    </div>
-    {/* Description */}
-    <div className="sequences-list-description">
-      Sequences are collections of posts that are curated by the community and
-      are structured similarly to books. This is the place where you can find
-      the best posts on LessWrong in easy to read formats.
-    </div>
+    <Components.Section>
+      <div className="sequences-header">
+        <div className="sequences-list-title">
+          <h1>Sequences</h1>
+        </div>
+        {/* Description */}
+        <div className="sequences-list-description">
+          Sequences are collections of posts that are curated by the community and
+          are structured similarly to books. This is the place where you can find
+          the best posts on LessWrong in easy to read formats.
+        </div>
+      </div>
+    </Components.Section>
     {/* Curated collections tripartite */}
     <div className="sequences-list-curated-collections">
       <Components.Section title="Curated Collections">
-        <Components.CollectionsCard collection={testCollections[0]} big={true}/>
-        <Components.CollectionsCard collection={testCollections[1]} float={"left"}/>
-        <Components.CollectionsCard collection={testCollections[2]} float={"right"}/>
+        <div className="recommended-reading-section">
+          <Components.CollectionsCard collection={testCollections[0]} big={true}/>
+          <Components.CollectionsCard collection={testCollections[1]} float={"left"}/>
+          <Components.CollectionsCard collection={testCollections[2]} float={"right"}/>
+        </div>
       </Components.Section>
     </div>
     {/* Other curated sequences grid (make a sequencesGrid component w/ flexbox) */}

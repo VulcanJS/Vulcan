@@ -21,6 +21,7 @@ import './editor/MessageEditor.jsx';
 import './editor/PostEditor.jsx';
 import './editor/CommentEditor.jsx';
 import './editor/ContentRenderer.jsx';
+import './editor/EditorFormComponent.jsx';
 // Component for testing the editor. Useful for debugging
 import './editor/EditorTest.jsx';
 
@@ -57,19 +58,7 @@ import './legacy-redirects/LegacyPostWrapper.jsx'
 
 import './subscriptions/SubscribeTo.jsx';
 
-// Sequences
-import './sequences/SequencesPage.jsx';
-import './sequences/SequencesPostsList.jsx';
-import './sequences/SequencesSingle.jsx';
-import './sequences/SequencesHome.jsx';
-import './sequences/SequencesList.jsx';
-import './sequences/SequencesGrid.jsx';
-import './sequences/SequencesListItem.jsx';
-import './sequences/SequencesGridItem.jsx';
-import './sequences/ChaptersItem.jsx';
-import './sequences/ChaptersList.jsx';
-import './sequences/CollectionsSingle.jsx';
-import './sequences/CollectionsPage.jsx';
+
 
 import '../components/Layout.jsx';
 import '../components/common/FlashMessages.jsx';
@@ -81,6 +70,7 @@ import '../components/common/SearchBar.jsx';
 import '../components/users/UsersMenu.jsx';
 import '../components/users/UsersAccountMenu.jsx';
 import '../components/posts/PostsItem.jsx';
+import '../components/posts/PostsItemWrapper.jsx';
 import '../components/posts/PostsPage.jsx';
 import '../components/posts/PostsViews.jsx';
 import '../components/posts/PostsList.jsx';
@@ -100,7 +90,27 @@ import '../components/comments/CommentInlineWrapper.jsx';
 import '../components/comments/CommentWithContext.jsx';
 import '../components/comments/CommentWithContextWrapper.jsx';
 import '../components/search/PostsSearchHit.jsx';
+import '../components/search/PostsSearchAutoComplete.jsx';
 import '../components/search/CommentsSearchHit.jsx';
 import '../components/search/UsersSearchHit.jsx';
 
+// Sequences
+import '../components/sequences/SequencesPage.jsx';
+import '../components/sequences/SequencesPostsList.jsx';
+import '../components/sequences/SequencesSingle.jsx';
+import '../components/sequences/SequencesEditForm.jsx';
+import '../components/sequences/SequencesHome.jsx';
+import '../components/sequences/SequencesList.jsx';
+import '../components/sequences/SequencesGrid.jsx';
+import '../components/sequences/SequencesListItem.jsx';
+import '../components/sequences/SequencesGridItem.jsx';
+import '../components/sequences/ChaptersItem.jsx';
+import '../components/sequences/ChaptersList.jsx';
+import '../components/sequences/ChaptersEditForm.jsx';
+import '../components/sequences/ChaptersNewForm.jsx';
+import '../components/sequences/CollectionsSingle.jsx';
+import '../components/sequences/CollectionsPage.jsx';
+
 import '../components/collections/CollectionsCard.jsx';
+
+import '../components/form-components/PostsListEditor.jsx';

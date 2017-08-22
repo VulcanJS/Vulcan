@@ -1,10 +1,12 @@
 import Users from 'meteor/vulcan:users';
+import PostsListEditor from '../../../components/form-components/PostsListEditor.jsx';
+import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
 
 const schema = {
 
   _id: {
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
   },
 
@@ -23,35 +25,59 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ["admins"],
+    insertableBy: ['members'],
   },
 
   subtitle: {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ["admins"],
+    insertableBy: ['members'],
   },
 
   description: {
-    type: String,
+    type: Object,
     blackbox: true,
     optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ["admins"],
+    insertableBy: ['members'],
+    control: EditorFormComponent,
   },
 
   number: {
     type: Number,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ['members'],
+    insertableBy: ['members'],
+  },
+
+  sequenceId: {
+    type: String,
+    optional: false,
+    hidden: true,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['members'],
+    resolveAs: {
+      fieldName: 'sequence',
+      type: 'Sequence',
+      resolver: (chapter, args, context) => {
+        return context.Sequences.findOne({_id: chapter.sequenceId}, {fields: context.Users.getViewableFields(context.currentUser, context.Posts)})
+      },
+      addOriginalField: true,
+    }
   },
 
   postIds: {
     type: Array,
     optional: false,
     viewableBy: ["guests"],
+    editableBy: ["admins"],
+    insertableBy: ['members'],
     resolveAs: {
       fieldName: 'posts',
       type: '[Post]',
@@ -61,7 +87,8 @@ const schema = {
         }))
       },
       addOriginalField: true,
-    }
+    },
+    control: PostsListEditor,
   },
 
   "postIds.$": {

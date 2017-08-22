@@ -1,7 +1,18 @@
 import { registerFragment } from 'meteor/vulcan:core';
 
 registerFragment(`
-  fragment CollectionPageFragment on Sequence {
+  fragment CollectionsPageFragment on Collection {
     _id
+    createdAt
+    user {
+      ...UsersMinimumInfo
+    }
+    title
+    description
+    imageUrl
+    bookIds
+    books {
+      ...BookPageFragment
+    }
   }
 `);
