@@ -27,7 +27,8 @@ const muiTheme = getMuiTheme({
   },
   "flatButton": {
     "primaryTextColor": "rgba(0,0,0,0.54)"
-  }
+  },
+  userAgent: 'all',
 });
 
 const Layout = ({currentUser, children, currentRoute}) =>
