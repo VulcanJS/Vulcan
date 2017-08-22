@@ -1,5 +1,5 @@
 import { Components, registerComponent} from 'meteor/vulcan:core';
-import Posts from 'meteor/vulcan:posts';
+import Users from 'meteor/vulcan:users';
 import moment from 'moment';
 import { Link } from 'react-router';
 import { InstantSearch, Hits, SearchBox, Highlight, RefinementList, Pagination, CurrentRefinements, ClearAll, Snippet} from 'react-instantsearch/dom';
@@ -10,7 +10,7 @@ import Badge from 'material-ui/Badge';
 import React, { PureComponent } from 'react';
 
 const UsersSearchHit = ({hit}) => <div className="search-results-users-item users-item">
-    <Link to={"/"}>
+    <Link to={Users.getProfileUrl(hit)}>
       <div className="users-item-body ">
         <div className="users-item-name">
           {hit.displayName}

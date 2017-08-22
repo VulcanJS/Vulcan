@@ -1,5 +1,6 @@
 import { Components, registerComponent} from 'meteor/vulcan:core';
 import Posts from 'meteor/vulcan:posts';
+import Comments from 'meteor/vulcan:comments';
 import moment from 'moment';
 import { Link } from 'react-router';
 import { InstantSearch, Hits, SearchBox, Highlight, RefinementList, Pagination, CurrentRefinements, ClearAll, Snippet} from 'react-instantsearch/dom';
