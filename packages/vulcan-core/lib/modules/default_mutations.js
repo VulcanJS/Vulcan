@@ -96,7 +96,7 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
 
     check(user, document) {
       if (options.removeCheck) {
-        return options.removeCheck(user);
+        return options.removeCheck(user, document);
       }
 
       if (!user || !document) return false;

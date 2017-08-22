@@ -26,7 +26,7 @@ const AutoComplete = connectAutoComplete(
       renderSuggestion={hit =>
         <Components.PostsSearchHit hit={hit} clickAction={clickAction} />}
       inputProps={{
-        placeholder: 'Type a product',
+        placeholder: 'Search for posts',
         value: currentRefinement,
         onChange: () => {},
       }}
