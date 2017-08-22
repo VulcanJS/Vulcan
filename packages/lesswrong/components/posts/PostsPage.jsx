@@ -194,7 +194,7 @@ PostsPage.propTypes = {
 const queryOptions = {
   collection: Posts,
   queryName: 'postsSingleQuery',
-  fragmentName: 'PostsPage',
+  fragmentName: 'LWPostsPage',
 };
 
 const mutationOptions = {
