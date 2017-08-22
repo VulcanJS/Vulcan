@@ -57,7 +57,7 @@ const schema = {
 
   sequenceId: {
     type: String,
-    optional: false,
+    optional: true,
     hidden: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],

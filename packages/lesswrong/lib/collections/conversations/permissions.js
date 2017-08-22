@@ -19,5 +19,5 @@ Users.groups.admins.can(adminActions);
 
 Conversations.checkAccess = (user, document) => {
   if (!user || !document) return false;
-  return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversation.view.own') : Users.canDo(user, `conversation.view.all`)
+  return document.participantIds.includes(user._id) ? Users.canDo(user, 'conversations.view.own') : Users.canDo(user, `conversations.view.all`)
     };

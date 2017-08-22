@@ -78,7 +78,7 @@ const schema = {
     editableBy: ['admins'],
     insertableBy: Users.owns,
   },
-
+  
 }
 
 

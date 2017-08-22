@@ -6,7 +6,7 @@ import Books from '../books/collection.js';
 import Collections from '../collections/collection.js';
 import { newMutation, editMutation } from 'meteor/vulcan:core';
 
-const runSeed = true;
+const runSeed = false;
 
 const createSequence = (user, title) => {
   const sequenceData = {
