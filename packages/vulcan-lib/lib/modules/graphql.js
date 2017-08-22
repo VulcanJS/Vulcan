@@ -16,239 +16,235 @@ disableFragmentWarnings();
 
 // get GraphQL type for a given schema and field name
 const getGraphQLType = (schema, fieldName) => {
+	const field = schema[fieldName];
+	const type = field.type.singleType;
+	const typeName = typeof type === 'function' ? type.name : type;
 
-  const field = schema[fieldName];
-  const type = field.type.singleType;
-  const typeName = typeof type === 'function' ? type.name : type;
+	switch (typeName) {
+		case 'String':
+			return 'String';
 
-  switch (typeName) {
+		case 'Boolean':
+			return 'Boolean';
 
-    case 'String':
-      return 'String';
+		case 'Number':
+			return 'Float';
 
-    case 'Boolean':
-      return 'Boolean';
+		case 'SimpleSchema.Integer':
+			return 'Int';
 
-    case 'Number':
-      return 'Float';
+		// for arrays, look for type of associated schema field or default to [String]
+		case 'Array':
+			const arrayItemFieldName = `${fieldName}.$`;
+			// note: make sure field has an associated array
+			if (schema[arrayItemFieldName]) {
+				// try to get array type from associated array
+				const arrayItemType = getGraphQLType(schema, arrayItemFieldName);
+				return arrayItemType ? `[${arrayItemType}]` : null;
+			}
+			return null;
 
-    case 'SimpleSchema.Integer':
-      return 'Int';
+		case 'Object':
+			return 'JSON';
 
-    // for arrays, look for type of associated schema field or default to [String]
-    case 'Array':
-      const arrayItemFieldName = `${fieldName}.$`;
-      // note: make sure field has an associated array
-      if (schema[arrayItemFieldName]) {
-        // try to get array type from associated array
-        const arrayItemType = getGraphQLType(schema, arrayItemFieldName);
-        return arrayItemType ? `[${arrayItemType}]` : null;
-      }
-      return null;
+		case 'Date':
+			return 'Date';
 
-    case 'Object':
-      return 'JSON';
-
-    case 'Date':
-      return 'Date';
-
-    default:
-      return null;
-  }
-}
+		default:
+			return null;
+	}
+};
 
 export const GraphQLSchema = {
+	// collections used to auto-generate schemas
+	collections: [],
+	addCollection(collection) {
+		this.collections.push(collection);
+	},
+	// generate GraphQL schemas for all registered collections
+	getCollectionsSchemas() {
+		const collectionsSchemas = this.collections
+			.map(collection => {
+				return this.generateSchema(collection);
+			})
+			.join('\n');
+		return collectionsSchemas;
+	},
 
-  // collections used to auto-generate schemas
-  collections: [],
-  addCollection(collection) {
-    this.collections.push(collection);
-  },
-  // generate GraphQL schemas for all registered collections
-  getCollectionsSchemas() {
-    const collectionsSchemas = this.collections.map(collection => {
-      return this.generateSchema(collection);
-    }).join('\n');
-    return collectionsSchemas;
-  },
+	// additional schemas
+	schemas: [],
+	addSchema(schema) {
+		this.schemas.push(schema);
+	},
+	// get extra schemas defined manually
+	getAdditionalSchemas() {
+		const additionalSchemas = this.schemas.join('\n');
+		return additionalSchemas;
+	},
 
-  // additional schemas
-  schemas: [],
-  addSchema(schema) {
-    this.schemas.push(schema);
-  },
-  // get extra schemas defined manually
-  getAdditionalSchemas() {
-    const additionalSchemas = this.schemas.join('\n');
-    return additionalSchemas;
-  },
+	// queries
+	queries: [],
+	addQuery(query) {
+		this.queries.push(query);
+	},
 
-  // queries
-  queries: [],
-  addQuery(query) {
-    this.queries.push(query);
-  },
+	// mutations
+	mutations: [],
+	addMutation(mutation) {
+		this.mutations.push(mutation);
+	},
 
-  // mutations
-  mutations: [],
-  addMutation(mutation) {
-    this.mutations.push(mutation);
-  },
+	// mutations
+	subscriptions: [],
+	addSubscription(subscription) {
+		this.subscriptions.push(subscription);
+	},
 
-  // mutations
-  subscriptions: [],
-  addSubscription(subscription) {
-    this.subscriptions.push(subscription);
-  },
+	// add resolvers
+	resolvers: {
+		JSON: GraphQLJSON,
+		Date: GraphQLDate,
+	},
+	addResolvers(resolvers) {
+		this.resolvers = deepmerge(this.resolvers, resolvers);
+	},
+	removeResolver(typeName, resolverName) {
+		delete this.resolvers[typeName][resolverName];
+	},
 
-  // add resolvers
-  resolvers: {
-    JSON: GraphQLJSON,
-    Date: GraphQLDate,
-  },
-  addResolvers(resolvers) {
-    this.resolvers = deepmerge(this.resolvers, resolvers);
-  },
-  removeResolver(typeName, resolverName) {
-    delete this.resolvers[typeName][resolverName];
-  },
+	// add objects to context
+	context: {},
+	addToContext(object) {
+		this.context = deepmerge(this.context, object);
+	},
 
-  // add objects to context
-  context: {},
-  addToContext(object) {
-    this.context = deepmerge(this.context, object);
-  },
+	// generate a GraphQL schema corresponding to a given collection
+	generateSchema(collection) {
+		const collectionName = collection.options.collectionName;
 
-  // generate a GraphQL schema corresponding to a given collection
-  generateSchema(collection) {
+		const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
-    const collectionName = collection.options.collectionName;
+		// backward-compatibility code: we do not want user.telescope fields in the graphql schema
+		const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
-    const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
+		let mainSchema = [],
+			inputSchema = [],
+			unsetSchema = [],
+			filterSchema = [],
+			orderSchema = [];
 
-    // backward-compatibility code: we do not want user.telescope fields in the graphql schema
-    const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
+		_.forEach(schema, (field, fieldName) => {
+			// console.log(field, fieldName)
 
-    let mainSchema = [], inputSchema = [], unsetSchema = [], filterSchema = [], orderSchema = [];
+			const fieldType = getGraphQLType(schema, fieldName);
 
-    _.forEach(schema, (field, fieldName) => {
-      // console.log(field, fieldName)
+			if (fieldName.indexOf('$') === -1) {
+				// skip fields containing "$" in their name
 
-      const fieldType = getGraphQLType(schema, fieldName);
+				// if field has a resolveAs, push it to schema
+				if (field.resolveAs) {
+					if (typeof field.resolveAs === 'string') {
+						// if resolveAs is a string, push it and done
 
-      if (fieldName.indexOf('$') === -1) { // skip fields containing "$" in their name
+						mainSchema.push(field.resolveAs);
 
-        // if field has a resolveAs, push it to schema
-        if (field.resolveAs) {
+						// TODO : Build Filter for string defined resolveAs
+						// filterSchema.push(getFieldFilters.resolveAsIsString(field.resolveAs))
+					} else {
+						// if resolveAs is an object, first push its type definition
+						// include arguments if there are any
+						mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
 
-          if (typeof field.resolveAs === 'string') {
-            // if resolveAs is a string, push it and done
+						// Build Filter for object defined resolveAs
+						filterSchema.push(getFieldFilters.resolveAsIsObject(field.resolveAs));
 
-            mainSchema.push(field.resolveAs);
+						// then build actual resolver object and pass it to addGraphQLResolvers
+						const resolver = {
+							[mainTypeName]: {
+								[field.resolveAs.fieldName]: field.resolveAs.resolver,
+							},
+						};
+						addGraphQLResolvers(resolver);
+					}
 
-            // TODO : Build Filter for string defined resolveAs
-            // filterSchema.push(getFieldFilters.resolveAsIsString(field.resolveAs))
+					// if addOriginalField option is enabled, also add original field to schema
+					if (field.resolveAs.addOriginalField && fieldType) {
+						mainSchema.push(`${fieldName}: ${fieldType}`);
 
-          } else {
+						// Build Filter for original Field
+						filterSchema.push(getFieldFilters.field(fieldName, fieldType));
 
-            // if resolveAs is an object, first push its type definition
-            // include arguments if there are any
-            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
-            
-            // Build Filter for object defined resolveAs
-            filterSchema.push(getFieldFilters.resolveAsIsObject(field.resolveAs));
+						// Build OrderBy parameter
+						if (['String', 'Float', 'Int', 'Date'].includes(fieldType)) {
+							orderSchema.push(
+								`${fieldName}_ASC
+                    ${fieldName}_DESC`,
+							);
+						}
+					}
+				} else {
+					// try to guess GraphQL type
+					if (fieldType) {
+						mainSchema.push(`${fieldName}: ${fieldType}`);
 
-            // then build actual resolver object and pass it to addGraphQLResolvers
-            const resolver = {
-              [mainTypeName]: {
-                [field.resolveAs.fieldName]: field.resolveAs.resolver
-              }
-            };
-            addGraphQLResolvers(resolver);
-          }
+						// Build Filter for field
+						filterSchema.push(getFieldFilters.field(fieldName, fieldType));
 
-          // if addOriginalField option is enabled, also add original field to schema
-          if (field.resolveAs.addOriginalField && fieldType) {
-            mainSchema.push(`${fieldName}: ${fieldType}`);
+						// Build OrderBy parameter
+						if (['String', 'Float', 'Int', 'Date'].includes(fieldType)) {
+							orderSchema.push(
+								`${fieldName}_ASC
+                    ${fieldName}_DESC`,
+							);
+						}
+					}
+				}
 
-            // Build Filter for original Field
-            filterSchema.push(getFieldFilters.field(fieldName, fieldType));
+				if (field.insertableBy || field.editableBy) {
+					// note: marking a field as required makes it required for updates, too,
+					// which makes partial updates impossible
+					// const isRequired = field.optional ? '' : '!';
 
-            // Build OrderBy parameter
-            if(['String','Float','Int','Date'].includes(fieldType)){
-                orderSchema.push(
-                    `${fieldName}_ASC
-                    ${fieldName}_DESC`
-                )
-            }
-          }
+					const isRequired = '';
 
-        } else {
-          // try to guess GraphQL type
-          if (fieldType) {
-            mainSchema.push(`${fieldName}: ${fieldType}`);
+					// 2. input schema
+					inputSchema.push(`${fieldName}: ${fieldType}${isRequired}`);
 
-            // Build Filter for field
-            filterSchema.push(getFieldFilters.field(fieldName, fieldType));
+					// 3. unset schema
+					unsetSchema.push(`${fieldName}: Boolean`);
+				}
+			}
+		});
 
-            // Build OrderBy parameter
-            if(['String','Float','Int','Date'].includes(fieldType)){
-                orderSchema.push(
-                    `${fieldName}_ASC
-                    ${fieldName}_DESC`
-                )
-            }
-          }
-        }
+		const { interfaces = [] } = collection.options;
+		const graphQLInterfaces = interfaces.length ? `implements ${interfaces.join(`, `)} ` : '';
 
-        if (field.insertableBy || field.editableBy) {
-
-          // note: marking a field as required makes it required for updates, too,
-          // which makes partial updates impossible
-          // const isRequired = field.optional ? '' : '!';
-
-          const isRequired = '';
-
-          // 2. input schema
-          inputSchema.push(`${fieldName}: ${fieldType}${isRequired}`);
-
-          // 3. unset schema
-          unsetSchema.push(`${fieldName}: Boolean`);
-
-        }
-      }
-    });
-
-    const { interfaces = [] } = collection.options;
-    const graphQLInterfaces = interfaces.length ? `implements ${interfaces.join(`, `)} ` : '';
-
-    let graphQLSchema = `
+		let graphQLSchema = `
       type ${mainTypeName} ${graphQLInterfaces}{
         ${mainSchema.join('\n  ')}
       }
-    `
+    `;
 
-    graphQLSchema += `
+		graphQLSchema += `
       input ${collectionName}Input {
         ${inputSchema.length ? inputSchema.join('\n  ') : '_blank: Boolean'}
       }
       input ${collectionName}Unset {
         ${inputSchema.length ? unsetSchema.join('\n  ') : '_blank: Boolean'}
       }
-    `
+    `;
 
-    graphQLSchema = addFiltersToSchema(graphQLSchema, mainTypeName, filterSchema);
-    graphQLSchema = addOrderToSchema(graphQLSchema, mainTypeName, orderSchema);
+		graphQLSchema = addFiltersToSchema(graphQLSchema, mainTypeName, filterSchema);
+		graphQLSchema = addOrderToSchema(graphQLSchema, mainTypeName, orderSchema);
 
-    return graphQLSchema;
-  }
+		return graphQLSchema;
+	},
 };
 
 Vulcan.getGraphQLSchema = () => {
-  const schema = GraphQLSchema.finalSchema[0];
-  console.log(schema);
-  return schema;
-}
+	const schema = GraphQLSchema.finalSchema[0];
+	return schema;
+};
 
 export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);

@@ -49,3 +49,4 @@ jsdoc.json
 packages/nova-router/.npm
 npm-debug.log
 .vscode
+*.directory
