@@ -75,7 +75,7 @@ class PostsItem extends PureComponent {
         style={paperStyle}
         zDepth={0}
       >
-       {/*<Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>*/}
+       <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
          <div className="posts-item-content">
           <div>
             <h3 className="posts-item-title">
@@ -111,7 +111,7 @@ class PostsItem extends PureComponent {
             </Badge>
           </div>
         </div>
-      {/*</Link>*/}
+      </Link>
     </Paper>
     )
   }
