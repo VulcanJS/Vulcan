@@ -41,7 +41,7 @@ class SequencesPage extends Component {
           <div className="sequences-banner-wrapper">
             <NoSSR>
             <div className="sequences-image">
-              <Image publicId="Group_ybgiy6.png" cloudName="lesswrong-2-0" quality="auto" sizes="100vw" responsive={true} width="auto" height="380" dpr="auto" crop="fill" />
+              <Image publicId={document.bannerImageId || "Group_ybgiy6.png"} cloudName="lesswrong-2-0" quality="auto" sizes="100vw" responsive={true} width="auto" height="380" dpr="auto" crop="fill" gravity="custom" />
               <div className="sequences-image-scrim-overlay"></div>
             </div>
             </NoSSR>

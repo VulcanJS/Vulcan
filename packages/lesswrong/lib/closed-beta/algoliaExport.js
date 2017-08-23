@@ -67,6 +67,7 @@ function postToAlgoliaPost(post) {
   const algoliaMetaInfo = {
     _id: post._id,
     userId: post.userId,
+    url: post.url,
     title: post.title,
     slug: post.slug,
     baseScore: post.baseScore,
@@ -77,10 +78,13 @@ function postToAlgoliaPost(post) {
     userIP: post.userIP,
     createdAt: post.createdAt,
     postedAt: post.postedAt,
+    isFuture: post.isFuture,
+    viewCount: post.viewCount,
     lastCommentedAt: post.lastCommentedAt,
   };
   const postAuthor = Users.findOne({_id: post.userId});
   if (postAuthor) {
+    algoliaMetaInfo.authorSlug = postAuthor.slug;
     algoliaMetaInfo.authorDisplayName = postAuthor.displayName;
     algoliaMetaInfo.authorUserName = postAuthor.username;
   }
@@ -105,7 +109,7 @@ function postToAlgoliaPost(post) {
   } else {
     postBatch.push(_.clone(algoliaMetaInfo));
   }
-
+  Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}});
   return postBatch;
 }
 
@@ -135,7 +139,6 @@ if (runExport){
         importPostCount++;
         if (importPostCount % 100 == 0) {
           console.log("Imported n posts: ",  importPostCount, importBatch.length)
-          console.log("Test importBatch", _.map(importBatch, _.clone))
           postIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
             if(error) {
               console.log("Algolia Error: ", error);

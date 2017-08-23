@@ -10,8 +10,6 @@ import IconButton from 'material-ui/IconButton';
 import Badge from 'material-ui/Badge';
 import Paper from 'material-ui/Paper';
 
-import h2p from 'html2plaintext';
-
 const paperStyle = {
   backgroundColor: 'transparent',
 }

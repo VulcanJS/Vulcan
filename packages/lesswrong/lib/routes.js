@@ -11,6 +11,7 @@ addRoute({ name: 'sequences', path: '/sequences/:_id', componentName: 'Sequences
 addRoute({ name: 'sequencesEdit', path: '/sequencesEdit/:_id', componentName: 'SequencesEditForm'});
 addRoute({ name: 'sequencesNew', path: '/sequencesNew', componentName: 'SequencesNewForm'});
 
+
 addRoute({ name: 'chaptersEdit', path: '/chaptersEdit/:_id', componentName: 'ChaptersEditForm'});
 
 // Collections
@@ -21,6 +22,7 @@ addRoute({ name: 'collections', path: '/collections/:_id', componentName: 'Colle
 addRoute({ name: 'editorTest', path: '/editorTest', componentName: 'EditorTest' });
 addRoute({ name: 'searchTest', path: '/searchTest', componentName: 'SearchBar'});
 addRoute({ name: 'postsListEditorTest', path:'/postsListEditorTest', componentName: 'PostsListEditor'})
+addRoute({ name: 'imageUploadTest', path: '/imageUpload', componentName: 'ImageUpload'});
 
 
 

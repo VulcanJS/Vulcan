@@ -1,6 +1,7 @@
 import Users from 'meteor/vulcan:users'
 import { Components } from 'meteor/vulcan:core';
 import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
+import ImageUpload from '../../../components/form-components/ImageUpload.jsx';
 
 const schema = {
 
@@ -68,7 +69,8 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
-    insertableBy: ['members']
+    insertableBy: ['members'],
+    control: ImageUpload,
   },
 
   //Cloudinary image id for the banner image (high resolution)
@@ -78,7 +80,8 @@ const schema = {
     optional: true,
     viewableBy: ['guests'],
     editableBy: ['admins'],
-    insertableBy: ['members']
+    insertableBy: ['members'],
+    control: ImageUpload,
   },
 
 }
