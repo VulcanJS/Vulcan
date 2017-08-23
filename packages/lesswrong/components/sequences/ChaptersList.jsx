@@ -12,8 +12,6 @@ const ChaptersList = ({results, loading, canEdit}) => {
   }
 }
 
-
-
 const options = {
   collection: Chapters,
   queryName: 'chaptersListQuery',

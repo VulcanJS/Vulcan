@@ -9,9 +9,6 @@ registerFragment(`
     description
     number
     sequenceId
-    sequence {
-      ...SequencesPageFragment
-    }
     postIds
     posts {
       ...PostsList

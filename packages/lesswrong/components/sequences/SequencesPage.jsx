@@ -33,6 +33,7 @@ class SequencesPage extends Component {
                 successCallback={this.showSequence}
                 cancelCallback={this.showSequence} />
     } else {
+      console.log("Sequences Page document", document);
       const date = moment(new Date(document.createdAt)).format('MMM DD, YYYY');
       const canEdit = Users.canDo(currentUser, 'sequences.edit.all') || (Users.canDo(currentUser, 'sequences.edit.own') && Users.owns(currentUser, document))
       return (<div className="sequences-page">

@@ -12,6 +12,8 @@ class EditorFormComponent extends Component {
     let editor = this.props.editor;
     const document = this.props.document;
     let state = (document && document[fieldName]) || createEmptyState();
+    console.log("EditorFormComponent constructor state", state);
+    console.log("EditorFormComponent constructor document[fieldName]", fieldName, document[fieldName]);
     state = JSON.parse(JSON.stringify(state));
     this.state = {
       [fieldName]: state,
