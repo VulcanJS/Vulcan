@@ -49,7 +49,7 @@ const schema = {
     type: Object,
     optional: true,
     viewableBy: ['guests'],
-    editableBy: ['admins'],
+    editableBy: ['members'],
     insertableBy: ['members'],
     control: EditorFormComponent,
     blackbox: true,
