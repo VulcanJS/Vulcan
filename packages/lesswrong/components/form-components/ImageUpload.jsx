@@ -17,10 +17,9 @@ class ImageUpload extends Component {
     }
     const addValues = context.addToAutofilledValues;
     const addToSuccessForm = context.addToSuccessForm;
-    if (addValues & addToSuccessForm) {
-      addValues({[fieldName]: imageId});
-      addToSuccessForm((results) => this.setImageInfo({} ,""));
-    }
+    console.log("ImageUpload added initial value");
+    addValues({[fieldName]: imageId});
+    addToSuccessForm((results) => this.setImageInfo({} ,""));
   }
 
   setImageInfo = (error, imageInfo) => {

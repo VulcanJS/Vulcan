@@ -6,11 +6,7 @@
   },
   "scripts": {
     "prestart": "sh prestart_lesswrong.sh",
-<<<<<<< HEAD
     "start": "MONGO_URL='mongodb://dev:lukemuehlhauser23@ds155813-a0.mlab.com:55813,ds155813-a1.mlab.com:55813/lesswrong2?replicaSet=rs-ds155813' meteor --settings settings.json",
-=======
-    "start": "meteor --settings settings.json",
->>>>>>> a57cf0cd9dea329b3f51952f587bddee29fde8c1
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
