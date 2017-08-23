@@ -213,6 +213,10 @@
   }
   .posts-item {
     width: 550px;
+    .posts-item-score {
+      display: inline;
+      margin-right: 5px;
+    }
     .posts-item-summary {
       max-width: 440px;
     }

@@ -37,8 +37,8 @@ const PostsSearchHit = ({hit, clickAction}) => {
 
            <object><div className="posts-item-meta">
              {hit.postedAt ? <div className="posts-item-date"> {moment(new Date(hit.postedAt)).fromNow()} </div> : null}
-             {hit.baseScore} points
-             {/* post.user ? <div className="posts-item-user"><Components.UsersName user={post.user}/></div> : null */}
+             <div className="posts-item-score">{hit.baseScore} points</div>
+             {hit.authorDisplayName ? <div className="posts-item-user">{hit.authorDisplayName}</div> : null}
            </div></object>
            <div className="posts-item-summary">
              <Snippet attributeName="body" hit={hit} tagName="mark" />

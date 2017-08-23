@@ -115,3 +115,4 @@ import '../components/sequences/CollectionsPage.jsx';
 import '../components/collections/CollectionsCard.jsx';
 
 import '../components/form-components/PostsListEditor.jsx';
+import '../components/form-components/ImageUpload.jsx';
