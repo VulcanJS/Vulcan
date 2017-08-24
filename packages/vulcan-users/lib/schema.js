@@ -309,7 +309,6 @@ const schema = {
     type: String,
     optional: true,
     resolveAs: {
-      fieldName: 'profileUrl',
       type: 'String',
       resolver: (user, args, context) => {
         return Users.getProfileUrl(user, true);
