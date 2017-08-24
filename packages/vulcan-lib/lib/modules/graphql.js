@@ -139,14 +139,17 @@ export const GraphQLSchema = {
             mainSchema.push(field.resolveAs);
           } else {
 
+            // get resolver name from resolveAs object, or else default to field name
+            const resolverName = field.resolveAs.fieldName || fieldName;
+
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
-            mainSchema.push(`${field.resolveAs.fieldName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
+            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${field.resolveAs.type}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
               [mainTypeName]: {
-                [field.resolveAs.fieldName]: field.resolveAs.resolver
+                [resolverName]: field.resolveAs.resolver
               }
             };
             addGraphQLResolvers(resolver);
