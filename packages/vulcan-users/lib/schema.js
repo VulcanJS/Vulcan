@@ -305,7 +305,7 @@ const schema = {
 
   // GraphQL only fields
 
-  profileUrl: {
+  pageUrl: {
     type: String,
     optional: true,
     resolveAs: {
@@ -316,6 +316,7 @@ const schema = {
       },
     }  
   }
+
 };
 
 export default schema;

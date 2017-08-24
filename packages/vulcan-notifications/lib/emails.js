@@ -16,7 +16,7 @@ VulcanEmail.addEmails({
       query UsersSingleQuery($documentId: String){
         UsersSingle(documentId: $documentId){
           displayName
-          profileUrl
+          pageUrl
         }
       }
     `
@@ -55,7 +55,7 @@ if (!!Posts) {
         htmlBody
         thumbnailUrl
         user{
-          profileUrl
+          pageUrl
           displayName
         }
       }
@@ -113,7 +113,7 @@ if (!!Comments) {
           title
         }
         user{
-          profileUrl
+          pageUrl
           displayName
         }
       }
