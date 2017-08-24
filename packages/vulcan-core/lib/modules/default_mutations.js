@@ -54,7 +54,7 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
     // check function called on a user and document to see if they can perform the operation
     check(user, document) {
       if (options.editCheck) {
-        return options.editCheck(user);
+        return options.editCheck(user, document);
       }
 
       if (!user || !document) return false;
@@ -96,7 +96,7 @@ export const getDefaultMutations = (collectionName, options = {}) => ({
     
     check(user, document) {
       if (options.removeCheck) {
-        return options.removeCheck(user);
+        return options.removeCheck(user, document);
       }
       
       if (!user || !document) return false;
