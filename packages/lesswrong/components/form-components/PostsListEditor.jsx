@@ -4,7 +4,6 @@ import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:co
 import IconButton from 'material-ui/IconButton';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import DragIcon from 'material-ui/svg-icons/editor/drag-handle';
-import {List, ListItem} from 'material-ui/List';
 
 
 const DragHandle = SortableHandle(() => <DragIcon className="drag-handle"/>); // This can be any component you want

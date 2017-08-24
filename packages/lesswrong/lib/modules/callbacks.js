@@ -238,6 +238,11 @@ function postsNewHTMLBodyAndPlaintextBody(post) {
     const plaintextBody = h2p(html);
     const excerpt =  plaintextBody.slice(0,140);
     Posts.update(post._id, {$set: {htmlBody: html, body: plaintextBody, excerpt: excerpt}});
+  } else if (post.htmlBody) {
+    const html = post.htmlBody;
+    const plaintextBody = h2p(html);
+    const excerpt = plaintextBody.slice(0,140);
+    Posts.update(post._id, {$set: {body: plaintextBody, excerpt: excerpt}});
   }
 }
 
@@ -249,6 +254,10 @@ function commentsNewHTMLBodyAndPlaintextBody(comment) {
     const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={comment.content} />);
     const plaintextBody = h2p(html);
     Comments.update(comment._id, {$set: {htmlBody: html, body: plaintextBody}});
+  } else if (comment.htmlBody){
+    const html = comment.htmlBody;
+    const plaintextBody = h2p(html);
+    Comments.update(comment._id, {$set: {body: plaintextBody}});
   }
 }
 

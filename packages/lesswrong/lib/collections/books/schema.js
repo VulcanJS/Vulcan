@@ -1,11 +1,15 @@
 import Users from 'meteor/vulcan:users'
+import SequencesListEditor from '../../../components/form-components/SequencesListEditor.jsx';
+import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
+
+
 const schema = {
 
   // default properties
 
   _id: {
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
   },
 
@@ -21,29 +25,44 @@ const schema = {
 
   title: {
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ['members'],
+    insertableBy: ['members'],
   },
 
   subtitle: {
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ['members'],
+    insertableBy: ['members'],
   },
 
   description: {
     type: Object,
     optional: true,
     viewableBy: ['guests'],
-    editableBy: Users.owns,
+    editableBy: ['members'],
+    insertableBy: ['members'],
+    control: EditorFormComponent,
+    blackbox: true, 
+  },
+
+  collectionId: {
+    type: String,
+    optional: false,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['members'],
   },
 
   sequenceIds: {
     type: Array,
     optional: false,
     viewableBy: ["guests"],
+    editableBy: ['members'],
+    insertableBy: ['members'],
     resolveAs: {
       fieldName: 'sequences',
       type: '[Sequence]',
@@ -53,7 +72,8 @@ const schema = {
         }))
       },
       addOriginalField: true,
-    }
+    },
+    control: SequencesListEditor,
   },
 
   'sequenceIds.$': {

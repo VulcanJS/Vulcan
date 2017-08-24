@@ -93,11 +93,14 @@ import '../components/search/PostsSearchHit.jsx';
 import '../components/search/PostsSearchAutoComplete.jsx';
 import '../components/search/CommentsSearchHit.jsx';
 import '../components/search/UsersSearchHit.jsx';
+import '../components/search/SequencesSearchHit.jsx';
+import '../components/search/SequencesSearchAutoComplete.jsx';
 
 // Sequences
 import '../components/sequences/SequencesPage.jsx';
 import '../components/sequences/SequencesPostsList.jsx';
 import '../components/sequences/SequencesSingle.jsx';
+import '../components/form-components/SequencesListEditorItem.jsx';
 import '../components/sequences/SequencesEditForm.jsx';
 import '../components/sequences/SequencesNewForm.jsx';
 import '../components/sequences/SequencesHome.jsx';
@@ -111,8 +114,14 @@ import '../components/sequences/ChaptersEditForm.jsx';
 import '../components/sequences/ChaptersNewForm.jsx';
 import '../components/sequences/CollectionsSingle.jsx';
 import '../components/sequences/CollectionsPage.jsx';
+import '../components/sequences/CollectionsEditForm.jsx';
+import '../components/sequences/BooksNewForm.jsx';
+import '../components/sequences/BooksEditForm.jsx';
+import '../components/sequences/BooksItem.jsx';
 
 import '../components/collections/CollectionsCard.jsx';
 
+
 import '../components/form-components/PostsListEditor.jsx';
 import '../components/form-components/ImageUpload.jsx';
+import '../components/form-components/SequencesListEditor.jsx';

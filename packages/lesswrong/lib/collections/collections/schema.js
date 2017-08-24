@@ -1,4 +1,5 @@
-import Users from 'meteor/vulcan:users'
+import Users from 'meteor/vulcan:users';
+import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
 const schema = {
 
   // default properties
@@ -50,36 +51,40 @@ const schema = {
     viewableBy: ['guests'],
     editableBy: ['admins'],
     insertableBy: ['admins'],
+    control: EditorFormComponent,
   },
 
-  bookIds: {
+  /*
+    Dummy field that resolves to the array of books that belong to a sequence
+  */
+
+  booksDummy: {
     type: Array,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ['guests'],
     resolveAs: {
       fieldName: 'books',
       type: '[Book]',
-      resolver: (collection, args, context) => {
-        return (_.map(collection.bookIds, (id) =>
-          { return context.Books.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Books)})
-        }))
-      },
-      addOriginalField: true,
+      resolver: (sequence, args, context) => {
+        const books = context.Books.find({collectionId: sequence._id}, {fields: context.Users.getViewableFields(context.currentUser, context.Books)}).fetch();
+        console.log("booksDummy resolver: ", books);
+        return books;
+      }
     }
   },
 
-  'bookIds.$': {
+  'booksDummy.$': {
     type: String,
     optional: true,
   },
 
-  imageUrl: {
+  gridImageId: {
     type: String,
     optional: true,
     viewableBy: ["guests"],
     editableBy: ['admins'],
     insertableBy: ['admins'],
-  }
+  },
 
 }
 

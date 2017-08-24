@@ -56,10 +56,32 @@ const schema = {
     blackbox: true,
   },
 
+  descriptionPlaintext: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+  },
+
   commentCount:{
     type: Number,
     optional: true,
     viewableBy: ['guests'],
+  },
+
+  karma: {
+    type: Number,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
+  },
+
+  score: {
+    type: Number,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
   },
 
   //Cloudinary image id for the grid Image

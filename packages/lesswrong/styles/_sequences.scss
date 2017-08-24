@@ -289,3 +289,90 @@
     margin-left: auto;
     margin-right: 90px;
 }
+
+.sequences-list-edit-item-title {
+  display: inline;
+  margin-right: 10px;
+  font-variant: small-caps;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.sequences-list-edit-item-meta {
+  display: inline-block;
+  color: rgba(0,0,0,0.5);
+  div {
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+svg.drag-handle {
+    position: absolute;
+    display: block !important;
+    color: rgba(0,0,0,0.5);
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    cursor: pointer;
+}
+
+.sequences-list-edit-item-box {
+  display: block;
+  margin-left: 30px;
+  .sequences-list-edit-item-remove {
+    opacity: 0;
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+    .remove-icon {
+    color: rgba(0,0,0,0.3) !important;
+    }
+  }
+  &:hover .sequences-list-edit-item-remove {
+    opacity: 1;
+  }
+}
+
+.sequences-list-editor-item {
+  list-style:none;
+  position: relative;
+  padding: 5px;
+}
+
+.sequences-item-title{
+  display: inline;
+  font-size: $large-font;
+  font-variant: small-caps;
+  margin-right: 8px;
+  text-decoration: none;
+  a:hover{
+    color: inherit;
+  }
+}
+
+.sequences-item-meta {
+  display: inline-block;
+  color: rgba(0,0,0,0.5);
+  div {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .sequences-item-user a {
+    color: rgba(0,0,0,0.5);
+  }
+}
+
+.books-item-description {
+  margin-left: 20px;
+  font-size: 20px;
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+
+.books-item-subtitle {
+  font-size: 20px;
+  line-height: 1.1;
+  font-style: italic;
+  margin-top: 20px;
+}

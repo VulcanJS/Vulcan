@@ -1,15 +1,15 @@
 import Users from 'meteor/vulcan:users';
 
 const adminActions = [
-  'collection.new',
-  'collection.edit',
-  'collection.remove'
+  'collections.new.all',
+  'collections.edit.all',
+  'collections.remove.all'
 ];
 
 Users.groups.admins.can(adminActions);
 
 const memberActions = [
-  'collection.edit.own',
+  'collections.edit.own',
 ];
 
 Users.groups.members.can(memberActions);

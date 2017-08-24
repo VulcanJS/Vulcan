@@ -40,10 +40,10 @@ const addPostsToChapter = (chapterId, postIds) => {
   })
 }
 
-const createBook = (title, subtitle) => {
+const createBook = (title, subtitle, collectionId) => {
   return newMutation ({
     collection: Books,
-    document: {title, subtitle},
+    document: {title, subtitle, collectionId},
     currentUser: Users.findOne(),
     validate: false,
   })
@@ -94,17 +94,11 @@ if(runSeed) {
 
     console.log("Created Collections: ", col1, col2, col3);
 
-    const book1 = await createBook("Book I: The Real Deal", "This is another subtitle");
-    const book2 = await createBook("Book II: The Real Real Deal", "And another Subtitle");
-    const book3 = await createBook("Book III: The Real More Deal")
+    const book1 = await createBook("Book I: The Real Deal", "This is another subtitle", col1._id);
+    const book2 = await createBook("Book II: The Real Real Deal", "And another Subtitle", col1._id);
+    const book3 = await createBook("Book III: The Real More Deal", col2._id);
 
     console.log("Created Books: ", book1, book2, book3);
-
-    await addBooksToCollection(col1._id, [book1._id, book2._id, book3._id])
-    await addBooksToCollection(col2._id, [book1._id, book2._id, book3._id])
-    await addBooksToCollection(col3._id, [book1._id, book2._id, book3._id])
-
-    console.log("Added books to collections: ", col1.title);
 
     const seq1 = await createSequence(currentUser, "Map and Territory");
     const seq2 = await createSequence(currentUser, "The Other Territory");

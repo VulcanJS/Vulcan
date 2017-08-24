@@ -10,7 +10,7 @@ vulcan:users                      # user management and permissions
 ############ Features Packages ############
 
 vulcan:admin
-vulcan:email
+# vulcan:email
 vulcan:posts
 vulcan:comments
 # vulcan:newsletter
@@ -28,7 +28,7 @@ vulcan:rss
 
 vulcan:base-components        # default ui components
 # vulcan:base-styles            # default styling
-vulcan:email-templates        # default email templates for notifications
+# vulcan:email-templates        # default email templates for notifications
 
 ############ Language Packages ############
 
