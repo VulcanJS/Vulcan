@@ -11,5 +11,6 @@ registerFragment(`
     sequences {
       ...SequencesPageFragment
     }
+    collectionId
   }
 `);

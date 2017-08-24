@@ -68,7 +68,7 @@ const schema = {
     viewableBy: ['guests'],
   },
 
-  karma: {
+  baseScore: {
     type: Number,
     optional: true,
     viewableBy: ['guests'],
@@ -104,6 +104,30 @@ const schema = {
     editableBy: ['admins'],
     insertableBy: ['members'],
     control: ImageUpload,
+  },
+
+  draft: {
+    type: Boolean,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['members'],
+    insertableBy: ['members'],
+    control: "checkbox"
+  },
+
+  isDeleted: {
+    type: Boolean,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['members'],
+    insertableBy: ['members'],
+    control: "checkbox"
+  },
+
+  algoliaIndexAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ['guests'],
   },
 
 }

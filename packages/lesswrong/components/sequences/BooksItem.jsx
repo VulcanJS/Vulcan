@@ -30,8 +30,8 @@ class BooksItem extends Component {
     if (this.state.edit) {
       return <Components.BooksEditForm
                 documentId={book._id}
-                successCallback={this.showChapter}
-                cancelCallback={this.showChapter} />
+                successCallback={this.showBook}
+                cancelCallback={this.showBook} />
     } else {
       return <div className="books-item">
         <Components.Section title={book.title}
