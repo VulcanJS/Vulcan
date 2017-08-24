@@ -66,13 +66,13 @@ const SequencesHome = ({document, currentUser, loading}) => {
     {/* Other curated sequences grid (make a sequencesGrid component w/ flexbox) */}
     <div className="sequences-list-curated-sequences">
       <Components.Section title="Other Curated Sequences">
-        <Components.SequencesGrid terms={communitySeqTerms} className="community-sequences-grid" />
+        <Components.SequencesGridWrapper terms={communitySeqTerms} className="community-sequences-grid" />
       </Components.Section>
     </div>
     {/* In-progress sequences grid (make a sequencesGrid component w/ flexbox)*/}
     <div className="sequences-list-progress-sequences">
       <Components.Section title="In Progress Sequences">
-        <Components.SequencesGrid terms={communitySeqTerms} className="community-sequences-grid" />
+        <Components.SequencesGridWrapper terms={communitySeqTerms} className="community-sequences-grid" />
       </Components.Section>
     </div>
     {/* Community sequences list (make a sequencesList w/ roll your own list) */}

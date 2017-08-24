@@ -38,7 +38,7 @@ class ChaptersItem extends Component {
           titleComponent={this.renderTitleComponent(chapter, this.props.canEdit)}
         >
           {chapter.description ? <div className="chapters-item-description">
-              {chapter.description ? <Components.ContentRenderer state={chapter.description} /> : null}
+              <Components.ContentRenderer state={chapter.description} />
             </div> : null}
 
           <div className="chapters-item-posts">

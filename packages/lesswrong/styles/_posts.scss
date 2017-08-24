@@ -145,8 +145,8 @@
   .posts-item-meta {
     display: inline-block;
     color: rgba(0,0,0,0.5);
-
-    .posts-item-date, .posts-item-date, .posts-item-user, .posts-actions, .posts-item-admin {
+    div {
+      display: inline-block;
       margin-right: 5px;
     }
     .posts-item-user a {

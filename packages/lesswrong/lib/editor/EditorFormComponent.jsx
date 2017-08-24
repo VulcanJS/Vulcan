@@ -47,6 +47,7 @@ class EditorFormComponent extends Component {
     }
     return (
       <div className="commentEditor">
+        <div className="editor-form-component-description">{fieldName}</div>
         <Editable editor={editor} id={this.state[fieldName].id} onChange={onChange} />
         <Toolbar editor={editor} />
       </div>
