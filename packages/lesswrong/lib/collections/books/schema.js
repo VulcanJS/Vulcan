@@ -21,6 +21,15 @@ const schema = {
       return new Date();
     },
   },
+
+  postedAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date();
+    },
+  },
   // Custom Properties
 
   title: {
@@ -46,7 +55,13 @@ const schema = {
     editableBy: ['members'],
     insertableBy: ['members'],
     control: EditorFormComponent,
-    blackbox: true, 
+    blackbox: true,
+  },
+
+  plaintextDescription: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
   },
 
   collectionId: {

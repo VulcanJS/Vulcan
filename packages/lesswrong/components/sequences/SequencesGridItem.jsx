@@ -1,5 +1,6 @@
 import { Components, registerComponent, withCurrentUser} from 'meteor/vulcan:core';
 import { Image } from 'cloudinary-react';
+import NoSSR from 'react-no-ssr';
 import React from 'react';
 
 
@@ -15,7 +16,7 @@ const SequencesGridItem = ({sequence, currentUser}) => {
     </div>
     <div className="sequences-grid-item-bottom">
       <div className="sequences-grid-item-image">
-        {sequence.gridImageId ? <Image cloudName="lesswrong-2-0" publidId={sequence.gridImageId} /> : null}
+        <NoSSR><Image publicId={sequence.gridImageId || "Group_ybgiy6.png"} cloudName="lesswrong-2-0" quality="auto" width={203} height={80} crop="fill" /></NoSSR>
       </div>
     </div>
   </div>;

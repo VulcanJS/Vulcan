@@ -2,6 +2,7 @@ import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
 import Users from 'meteor/vulcan:users';
 import RSSFeeds from '../collections/rssfeeds/collection.js';
+import Sequences from '../collections/sequences/collection.js';
 import algoliasearch from 'algoliasearch';
 import { getSetting } from 'meteor/vulcan:core';
 
@@ -10,6 +11,7 @@ const runExport = false;
 const runPostExport = false;
 const runCommentExport = false;
 const runUserExport = false;
+const runSequenceExport = false;
 
 function commentToAlgoliaComment(comment) {
   const algoliaComment = {
@@ -43,7 +45,34 @@ function commentToAlgoliaComment(comment) {
   if (comment.body) {
     algoliaComment.body = comment.body.slice(0,2000);
   }
-  return algoliaComment
+  return [algoliaComment]
+}
+
+function sequenceToAlgoliaSequence(sequence) {
+  const algoliaSequence = {
+    objectID: sequence._id,
+    _id: sequence._id,
+    title: sequence.title,
+    userId: sequence.userId,
+    baseScore: sequence.baseScore,
+    score: sequence.score,
+    isDeleted: sequence.isDeleted,
+    createdAt: sequence.createdAt,
+    postedAt: sequence.postedAt,
+    algoliaIndexAt: sequence.algoliaIndexAt,
+  };
+  const sequenceAuthor = Users.findOne({_id: sequence.userId});
+  if (sequenceAuthor) {
+    algoliaSequence.authorDisplayName = sequenceAuthor.displayName;
+    algoliaSequence.authorUserName = sequenceAuthor.username;
+    algoliaSequence.authorSlug = sequenceAuthor.slug;
+  }
+  //  Limit comment size to ensure we stay below Algolia search Limit
+  // TODO: Actually limit by encoding size as opposed to characters
+  if (sequence.plaintextDescription) {
+    algoliaSequence.plaintextDescription = sequence.plaintextDescription.slice(0,2000);
+  }
+  return [algoliaSequence]
 }
 
 function userToAlgoliaUser(user) {
@@ -59,7 +88,7 @@ function userToAlgoliaUser(user) {
     website: user.website,
     groups: user.groups,
   }
-  return algoliaUser;
+  return [algoliaUser];
 }
 
 
@@ -113,145 +142,140 @@ function postToAlgoliaPost(post) {
   return postBatch;
 }
 
+function algoliaExport(algoliaClient, Collection, indexName, exportFunction, selector = {}) {
+  console.log(`Exporting ${indexName}...`);
+  let algoliaIndex = algoliaClient.initIndex(indexName);
+  console.log("Initiated Index connection", algoliaIndex)
+
+  let importCount = 0;
+  let importBatch = [];
+  let batchContainer = [];
+  let totalErrors = [];
+  Collection.find(selector).fetch().forEach((item) => {
+    batchContainer = exportFunction(item);
+    importBatch = [...importBatch, ...batchContainer];
+    importCount++;
+    if (importCount % 100 == 0) {
+      console.log("Imported n posts: ",  importCount, importBatch.length)
+      algoliaIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
+        if(error) {
+          console.log("Algolia Error: ", error);
+          totalErrors.push(error);
+        }
+        console.log("write operation received: ", content);
+        algoliaIndex.waitTask(content, function contentIndexed() {
+          console.log("object " + content + " indexed");
+        });
+      });
+      importBatch = [];
+    }
+  })
+  console.log("Exporting last n posts ", importCount);
+  algoliaIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
+    if(error) {
+      console.log("Algolia Error: ", error)
+    }
+    console.log("write operation received: " + content);
+    algoliaIndex.waitTask(content, function contentIndexed() {
+      console.log("object " + content + " indexed");
+    });
+  });
+  console.log("Encountered the following errors: ", totalErrors)
+}
+
 if (runExport){
   const algoliaAppId = getSetting('algoliaAppId');
   const algoliaAdminKey = getSetting('algoliaAdminKey');
   let client = algoliasearch(algoliaAppId, algoliaAdminKey);
-
   console.log("Starting Export");
 
+  if (runPostExport) algoliaExport(client, Posts, 'test_posts', postToAlgoliaPost, {baseScore: {$gt: 0}})
+  if (runCommentExport) algoliaExport(client, Comments, 'test_comments', commentToAlgoliaComment, {baseScore: {$gt: 0}})
+  if (runUserExport) algoliaExport(client, Users, 'test_users', userToAlgoliaUser)
+  if (runSequenceExport) algoliaExport(client, Sequences, 'test_sequences', sequenceToAlgoliaSequence)
 
-
-  if (runPostExport) {
-    console.log("Exporting Posts...")
-    let postIndex = client.initIndex('test_posts');
-
-    console.log("Initiated Index connection", postIndex)
-
-    let importPostCount = 0;
-    let importBatch = [];
-    let postBatch = [];
-    let totalErrors = [];
-    Posts.find().fetch().forEach((post) => {
-      if (post.baseScore > 0) {
-        postBatch = postToAlgoliaPost(post);
-        importBatch = [...importBatch, ...postBatch];
-        importPostCount++;
-        if (importPostCount % 100 == 0) {
-          console.log("Imported n posts: ",  importPostCount, importBatch.length)
-          postIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
-            if(error) {
-              console.log("Algolia Error: ", error);
-              totalErrors.push(error);
-            }
-            console.log("write operation received: ", content);
-            postIndex.waitTask(content, function contentIndexed() {
-              console.log("object " + content + " indexed");
-            });
-          });
-          importBatch = [];
-        }
-      }
-    })
-    console.log("Exporting last n posts ", importPostCount);
-    postIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
-      if(error) {
-        console.log("Algolia Error: ", error)
-      }
-      console.log("write operation received: " + content);
-      postIndex.waitTask(content, function contentIndexed() {
-        console.log("object " + content + " indexed");
-      });
-    });
-    console.log("Encountered the following errors: ", totalErrors)
-  }
-
-
-
-  if (runCommentExport) {
-    console.log("Exporting Comments...")
-    let commentIndex = client.initIndex('test_comments');
-
-    console.log("Initiated Index connection", commentIndex)
-    let exportCommentCount = 0;
-    let algoliaComment =  {};
-    let exportBatch = [];
-    let totalErrors = [];
-    Comments.find().fetch().forEach((comment) => {
-      if (comment.baseScore > 0) {
-        algoliaComment =  commentToAlgoliaComment(comment);
-        exportBatch.push(algoliaComment);
-        exportCommentCount++;
-        if (exportCommentCount % 100 == 0) {
-          console.log("Exported n comments: ", exportCommentCount);
-          commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-            if(error) {
-              console.log("Algolia Error: ", error);
-              totalErrors.push(error);
-            }
-            console.log("write operation received: ", content);
-            commentIndex.waitTask(content, function contentIndexed() {
-              console.log("object " + content + " indexed");
-            });
-          });
-          exportBatch = [];
-        }
-      }
-    })
-    console.log("Exporting last n posts ", exportCommentCount);
-    commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-      if(error) {
-        console.log("Algolia Error: ", error)
-      }
-      console.log("write operation received: " + content);
-      commentIndex.waitTask(content, function contentIndexed() {
-        console.log("object " + content + " indexed");
-      });
-    });
-    console.log("Encountered the following errors: ", totalErrors)
-  }
-
-  if (runUserExport) {
-    console.log("Exporting Users...")
-    let userIndex = client.initIndex('test_users');
-
-    console.log("Initiated Index connection", userIndex)
-    let exportUserCount = 0;
-    let algoliaUser =  {};
-    let exportBatch = [];
-    let totalErrors = [];
-    Users.find().fetch().forEach((user) => {
-      algoliaUser =  userToAlgoliaUser(user);
-      exportBatch.push(algoliaUser);
-      exportUserCount++;
-      if (exportUserCount % 100 == 0) {
-        console.log("Exported n users: ", exportUserCount);
-        userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-          if(error) {
-            console.log("Algolia Error: ", error);
-            totalErrors.push(error);
-          }
-          console.log("write operation received: ", content);
-          userIndex.waitTask(content, function contentIndexed() {
-            console.log("object " + content + " indexed");
-          });
-        });
-        exportBatch = [];
-      }
-    })
-    console.log("Exporting last n users ", exportUserCount);
-    userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-      if(error) {
-        console.log("Algolia Error: ", error)
-      }
-      console.log("write operation received: " + content);
-      userIndex.waitTask(content, function contentIndexed() {
-        console.log("object " + content + " indexed");
-      });
-    });
-    console.log("Encountered the following errors: ", totalErrors)
-  }
-
-
+  // if (runCommentExport) {
+  //   console.log("Exporting Comments...")
+  //   let commentIndex = client.initIndex('test_comments');
+  //
+  //   console.log("Initiated Index connection", commentIndex)
+  //   let exportCommentCount = 0;
+  //   let algoliaComment =  {};
+  //   let exportBatch = [];
+  //   let totalErrors = [];
+  //   Comments.find().fetch().forEach((comment) => {
+  //     if (comment.baseScore > 0) {
+  //       algoliaComment =  commentToAlgoliaComment(comment);
+  //       exportBatch.push(algoliaComment);
+  //       exportCommentCount++;
+  //       if (exportCommentCount % 100 == 0) {
+  //         console.log("Exported n comments: ", exportCommentCount);
+  //         commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
+  //           if(error) {
+  //             console.log("Algolia Error: ", error);
+  //             totalErrors.push(error);
+  //           }
+  //           console.log("write operation received: ", content);
+  //           commentIndex.waitTask(content, function contentIndexed() {
+  //             console.log("object " + content + " indexed");
+  //           });
+  //         });
+  //         exportBatch = [];
+  //       }
+  //     }
+  //   })
+  //   console.log("Exporting last n posts ", exportCommentCount);
+  //   commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
+  //     if(error) {
+  //       console.log("Algolia Error: ", error)
+  //     }
+  //     console.log("write operation received: " + content);
+  //     commentIndex.waitTask(content, function contentIndexed() {
+  //       console.log("object " + content + " indexed");
+  //     });
+  //   });
+  //   console.log("Encountered the following errors: ", totalErrors)
+  // }
+  //
+  // if (runUserExport) {
+  //   console.log("Exporting Users...")
+  //   let userIndex = client.initIndex('test_users');
+  //
+  //   console.log("Initiated Index connection", userIndex)
+  //   let exportUserCount = 0;
+  //   let algoliaUser =  {};
+  //   let exportBatch = [];
+  //   let totalErrors = [];
+  //   Users.find().fetch().forEach((user) => {
+  //     algoliaUser =  userToAlgoliaUser(user);
+  //     exportBatch.push(algoliaUser);
+  //     exportUserCount++;
+  //     if (exportUserCount % 100 == 0) {
+  //       console.log("Exported n users: ", exportUserCount);
+  //       userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
+  //         if(error) {
+  //           console.log("Algolia Error: ", error);
+  //           totalErrors.push(error);
+  //         }
+  //         console.log("write operation received: ", content);
+  //         userIndex.waitTask(content, function contentIndexed() {
+  //           console.log("object " + content + " indexed");
+  //         });
+  //       });
+  //       exportBatch = [];
+  //     }
+  //   })
+  //   console.log("Exporting last n users ", exportUserCount);
+  //   userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
+  //     if(error) {
+  //       console.log("Algolia Error: ", error)
+  //     }
+  //     console.log("write operation received: " + content);
+  //     userIndex.waitTask(content, function contentIndexed() {
+  //       console.log("object " + content + " indexed");
+  //     });
+  //   });
+  //   console.log("Encountered the following errors: ", totalErrors)
+  // }
 
 }
