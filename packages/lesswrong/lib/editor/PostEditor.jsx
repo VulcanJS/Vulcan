@@ -29,7 +29,6 @@ const placeholderContent = {
   };
 
 function htmlToOry(html) {
-  Utils.sanitize(html)
   return {
       id: '2',
       cells: [{
@@ -42,7 +41,7 @@ function htmlToOry(html) {
                     name: 'ory/editor/core/content/slate'
                   },
                   state: {
-                    importFromHtml: "<p>In the room below, connected to the rooftop by <em> a simple wooden ladder </em>, was Harry's new office inside Hogwarts. A wide room, surrounded by full-wall windows on four sides for sunlight; currently bare of furnishings but for four chairs and a desk. Harry had told Headmistress McGonagall what he was looking for, and Headmistress McGonagall had put on the Sorting Hat and then told Harry the series of twists and turns that would take him where he wanted to be. High enough in Hogwarts that the castle shouldn't have been that tall, high enough in Hogwarts that nobody looking from the outside would see a piece of castle corresponding to where Harry now sat. It seemed like an elementary precaution against snipers that there was no reason not to take.</p>",
+                    importFromHtml: Utils.sanitize(html),
                   }
                 },
                 id: '7d29c96e-53b8-4b3e-b0f1-758b405d6daf'
@@ -68,32 +67,49 @@ class PostEditor extends Component {
       // Perform deep copy on content to avoid Slate bug when passing
       // in frozen or immutable objects
       const state = JSON.parse(JSON.stringify(document.content));
-      editor.trigger.editable.add(state)}
+      editor.trigger.editable.add(state)
     // } else if (document && document.htmlBody) {
     //   console.log("Found old html content, importing to Ory...");
     //   console.log("Ory Translation: ", htmlToOry(document.htmlBody));
     //   editor.trigger.editable.add(htmlToOry(document.htmlBody));
-    // } 
-    else {
+    } else {
       editor.trigger.editable.add(placeholderContent);
     }
 
   }
 
-  render() {
+  componentWillMount() {
     IntercomAPI('hide');
-    const document = this.props.document;
-    const addValues = this.context.addToAutofilledValues;
-    const editor = this.props.editor;
-
-    const onChange = function(data) {
-      addValues({content: data});
+    //Add function for resetting form to form submit callbacks
+    const fieldName = this.props.name;
+    const checkForEmpty = (data) => {
+      if (this.isEditorEmpty(data[fieldName])) {
+        console.log("Submitted empty editor component, resetting state");
+        data[fieldName] = null;
+      }
       return data;
-    };
+    }
+    this.context.addToSubmitForm(checkForEmpty);
+  }
 
+  isEditorEmpty = (state) => {
+    const slateState = state && state.cells && state.cells[0] && state.cells[0].content && state.cells[0].content.state
+    const blocks = slateState && slateState.serialized && slateState.serialized.nodes && _.filter(slateState.serialized.nodes, (b) => (b.kind == "block"))
+    const textState = blocks && _.filter(blocks, (b) => _.filter(b.nodes, (b2) => b2.kind == "text" && b2.text != "").length)
+    return textState;
+  }
+
+  onChange = (state) => {
+    const fieldName = this.props.name;
+    const addValues = this.context.addToAutofilledValues;
+    addValues({[fieldName]: state});
+  }
+
+  render() {
+    const editor = this.props.editor;
     return (
       <div className="postEditor">
-        <Editable editor={editor} id={placeholderContent.id} onChange={onChange} />
+        <Editable editor={editor} id={placeholderContent.id} onChange={this.onChange} />
         <Trash editor={editor} />
         <DisplayModeToggle editor={editor} />
         <Toolbar editor={editor} />
@@ -104,7 +120,9 @@ class PostEditor extends Component {
 
 PostEditor.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
-}
+  addToSuccessForm: React.PropTypes.func,
+  addToSubmitForm: React.PropTypes.func,
+};
 
 registerComponent('PostEditor', PostEditor, withEditor, withCurrentUser);
 

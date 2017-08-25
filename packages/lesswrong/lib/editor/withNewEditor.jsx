@@ -49,39 +49,30 @@ function withNewEditor(WrappedComponent) {
   class EditorWrapped extends Component {
     constructor(props) {
       super(props);
-
-      initialContent = this.props.initialContent;
-      editables = this.props.editables;
-
+      let initialContent = this.props.initialContent;
+      let editables = this.props.editables;
       const plugins = {
         content: [slate(), spacer, image, video, divider],
         layout: [parallax({ defaultPlugin: slate() })] // Define plugins for layout cells
       }
-
       const editor = new Editor({
         plugins,
         // pass the content state - you can add multiple editables here
         editables: editables,
         defaultPlugin: slate(),
       })
-
       this.editor = editor;
-    };
-
+    }
     getChildContext() {
       return {editor: this.editor};
-    };
-
+    }
     render() {
       return <WrappedComponent editor={this.editor} {...this.props} />
-    };
-  };
-
+    }
+  }
   EditorWrapped.childContextTypes = {
     editor: PropTypes.object,
   };
-
   return EditorWrapped;
 }
-
 export default withNewEditor;
