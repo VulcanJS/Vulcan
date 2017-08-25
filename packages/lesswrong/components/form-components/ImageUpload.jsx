@@ -35,17 +35,19 @@ class ImageUpload extends Component {
   }
 
   uploadWidget = () => {
-    let min_image_height, min_image_width, cropping_aspect_ratio, cropping_default_selection_ratio;
+    let min_image_height, min_image_width, cropping_aspect_ratio, cropping_default_selection_ratio, upload_preset;
     if (this.props.name == "gridImageId") {
       min_image_height = 80;
       min_image_width = 203;
       cropping_aspect_ratio = 2.5375;
+      upload_preset = 'tz0mgw2s';
     } else if (this.props.name == "bannerImageId") {
       min_image_height = 380;
       min_image_width = 1600;
       cropping_default_selection_ratio = 3;
+      upload_preset = 'navcjwf7';
     }
-    cloudinary.openUploadWidget({cropping: "server", cloud_name: 'lesswrong-2-0', upload_preset: 'navcjwf7', theme: 'minimal', min_image_height, min_image_width, cropping_validate_dimension: true, cropping_show_dimensions: true, cropping_default_selection_ratio, cropping_aspect_ratio}, this.setImageInfo);
+    cloudinary.openUploadWidget({cropping: "server", cloud_name: 'lesswrong-2-0', upload_preset, theme: 'minimal', min_image_height, min_image_width, cropping_validate_dimension: true, cropping_show_dimensions: true, cropping_default_selection_ratio, cropping_aspect_ratio}, this.setImageInfo);
   }
   render(){
     return (
@@ -55,7 +57,7 @@ class ImageUpload extends Component {
           <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'/>
         </Helmet>
         <div className="image-upload-description">{this.props.name}</div>
-        {this.state.imageId ? <Image publicId={this.state.imageId} cloudName="lesswrong-2-0" quality="auto" sizes="100vw" responsive={true} width={this.props.name == "gridImageId" ? "203" : "auto"} height={this.props.name == "bannerImageId" ? "380" : "80"} dpr="auto" crop="crop" gravity="custom" /> : null}
+        {this.state.imageId ? <Image publicId={this.state.imageId} cloudName="lesswrong-2-0" quality="auto" sizes="100vw" responsive={true} width={this.props.name == "gridImageId" ? "203" : "auto"} height={this.props.name == "bannerImageId" ? "380" : "80"} dpr="auto" crop="fill" gravity="custom" /> : null}
         <FlatButton label={this.state.imageId ? "Replace Image" : "Upload Image"} onClick={this.uploadWidget} className="image-upload-button" />
       </div>
     );
