@@ -15,7 +15,7 @@ export const extractFragmentName = fragmentText => fragmentText.match(/fragment 
 Register a fragment, including its text, the text of its subfragments, and the fragment object
 
 */
-export const registerFragment = fragmentText => {
+export const registerFragment = fragmentTextSource => {
   // remove comments
   const fragmentText = fragmentTextSource.replace(/\#.*\n/g, '\n');
 
