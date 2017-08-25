@@ -1,5 +1,6 @@
 import Posts from "meteor/vulcan:posts";
 import PostEditor from '../../editor/PostEditor.jsx';
+import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
 
 const formGroups = {
   admin: {
@@ -65,7 +66,7 @@ Posts.addField([
       viewableBy: ['guests'],
       editableBy: ['members'],
       insertableBy: ['members'],
-      control: PostEditor,
+      control: EditorFormComponent,
       blackbox: true,
       order: 25,
     }
@@ -251,7 +252,7 @@ Posts.addField([
 
   /**
     algoliaIndexAt: The last time at which the post has been indexed in Algolia's search Index.
-    Undefined if it is has not been indexed. 
+    Undefined if it is has not been indexed.
   */
 
   {

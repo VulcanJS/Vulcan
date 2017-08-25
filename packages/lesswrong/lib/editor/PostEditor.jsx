@@ -4,6 +4,7 @@ import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 import { Trash, DisplayModeToggle, Toolbar } from 'ory-editor-ui'
 import withEditor from './withEditor.jsx'
 import { IntercomAPI } from 'react-intercom';
+import { isEmpty } from '../modules/utils.js';
 
 const placeholderContent = {
     id: '2',
@@ -60,20 +61,22 @@ class PostEditor extends Component {
   constructor(props) {
     super(props);
     const editor = this.props.editor;
+    const fieldName = this.props.name;
     const document = this.props.document;
     console.log("PostEditor document", document);
+    let state = document && document[fieldName]
 
-    if (document && document.content) {
+    if (document && document[fieldName] && !_.isEmpty(document[fieldName])) {
       // Perform deep copy on content to avoid Slate bug when passing
       // in frozen or immutable objects
-      const state = JSON.parse(JSON.stringify(document.content));
+      state = JSON.parse(JSON.stringify(document[fieldName]));
       editor.trigger.editable.add(state)
     // } else if (document && document.htmlBody) {
     //   console.log("Found old html content, importing to Ory...");
     //   console.log("Ory Translation: ", htmlToOry(document.htmlBody));
     //   editor.trigger.editable.add(htmlToOry(document.htmlBody));
     } else {
-      editor.trigger.editable.add(placeholderContent);
+      editor.trigger.editable.add(createEmptyState());
     }
 
   }
@@ -83,7 +86,8 @@ class PostEditor extends Component {
     //Add function for resetting form to form submit callbacks
     const fieldName = this.props.name;
     const checkForEmpty = (data) => {
-      if (this.isEditorEmpty(data[fieldName])) {
+      console.log("Check for empty called", data);
+      if (isEmpty(data[fieldName])) {
         console.log("Submitted empty editor component, resetting state");
         data[fieldName] = null;
       }
@@ -93,10 +97,21 @@ class PostEditor extends Component {
   }
 
   isEditorEmpty = (state) => {
-    const slateState = state && state.cells && state.cells[0] && state.cells[0].content && state.cells[0].content.state
-    const blocks = slateState && slateState.serialized && slateState.serialized.nodes && _.filter(slateState.serialized.nodes, (b) => (b.kind == "block"))
-    const textState = blocks && _.filter(blocks, (b) => _.filter(b.nodes, (b2) => b2.kind == "text" && b2.text != "").length)
-    return textState;
+    const flatState = flatten(state);
+    let hasContent = false;
+    console.log("FlatState", flatState);
+    Object.keys(flatState).forEach((key) => {
+      if (flatState[key] && flatState[key].kind == "text" && flatState[key].text && flatState[key].text != "") {
+        hasContent = true;
+      }
+    })
+    // const slateState = state && state.cells && state.cells[0] && state.cells[0].content && state.cells[0].content.state
+    // console.log("slateState", slateState);
+    // const blocks = slateState && slateState.serialized && slateState.serialized.nodes && _.filter(slateState.serialized.nodes, (b) => (b.kind == "block"))
+    // console.log("blocks", blocks);
+    // const textState = blocks && _.filter(blocks, (b) => _.filter(b.nodes, (b2) => b2.kind == "text" && b2.text != "").length)
+    // console.log("textState", textState);
+    return hasContent;
   }
 
   onChange = (state) => {
