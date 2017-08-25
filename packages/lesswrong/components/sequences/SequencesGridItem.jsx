@@ -16,7 +16,7 @@ const SequencesGridItem = ({sequence, currentUser}) => {
     </div>
     <div className="sequences-grid-item-bottom">
       <div className="sequences-grid-item-image">
-        <NoSSR><Image publicId={sequence.gridImageId || "Group_ybgiy6.png"} cloudName="lesswrong-2-0" quality="auto" width={203} height={80} crop="fill" gravity="custom"/></NoSSR>
+        <NoSSR><Image publicId={sequence.gridImageId || "Group_ybgiy6.png"} cloudName="lesswrong-2-0" quality="auto" width={203} height={80} crop="crop" gravity="custom"/></NoSSR>
       </div>
     </div>
   </div>;
