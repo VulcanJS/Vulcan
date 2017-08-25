@@ -46,6 +46,7 @@ class SequencesListEditor extends Component {
     addToSuccessForm((results) => this.resetSequenceIds(results));
   }
   onSortEnd = ({oldIndex, newIndex}) => {
+    console.log("onSortEnd", oldIndex, newIndex, this.state.sequenceIds);
     const fieldName = this.props.name;
     const addValues = this.context.addToAutofilledValues;
     const newIds = arrayMove(this.state.sequenceIds, oldIndex, newIndex);
@@ -65,8 +66,9 @@ class SequencesListEditor extends Component {
   }
   removeSequenceId = (sequenceId) => {
     const newIds = _.without(this.state.sequenceIds, sequenceId);
+    console.log("removeSequenceId", newIds);
     this.setState({
-      sequenceIdss: newIds,
+      sequenceIds: newIds || [],
     })
     const fieldName = this.props.name;
     const addValues = this.context.addToAutofilledValues;
@@ -79,10 +81,18 @@ class SequencesListEditor extends Component {
     return args;
   }
 
+  shouldCancelStart = (e) => {
+    // Cancel sorting if the event target is an `input`, `textarea`, `select`, 'option' or 'svg'
+    const disabledElements = ['input', 'textarea', 'select', 'option', 'button', 'svg'];
+    if (disabledElements.indexOf(e.target.tagName.toLowerCase()) !== -1) {
+      return true; // Return true to cancel sorting
+    }
+  }
+
   render() {
     return <div className="sequences-list-editor">
-      <SortableList items={this.state.sequenceIds} onSortEnd={this.onSortEnd} currentUser={this.props.currentUser} removeItem={this.removeSequenceId} />
-      <Components.SequencesSearchAutoComplete clickAction={this.addSequenceId} />
+      <SortableList items={this.state.sequenceIds} onSortEnd={this.onSortEnd} currentUser={this.props.currentUser} removeItem={this.removeSequenceId} shouldCancelStart={this.shouldCancelStart}/>
+      <Components.SequencesSearchAutoComplete clickAction={this.addSequenceId}/>
     </div>
   }
 }
