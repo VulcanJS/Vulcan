@@ -16,12 +16,14 @@ Register a fragment, including its text, the text of its subfragments, and the f
 
 */
 export const registerFragment = fragmentText => {
+  // remove comments
+  const fragmentText = fragmentTextSource.replace(/\#.*\n/g, '\n');
 
   // extract name from fragment text
   const fragmentName = extractFragmentName(fragmentText);
   
   // extract subFragments from text
-  const matchedSubFragments = fragmentText.match(/\.\.\.([^\s].*)/g) || [];
+  const matchedSubFragments = fragmentText.match(/\.{3}([_A-Za-z][_0-9A-Za-z]*)/g) || [];
   const subFragments = _.unique(matchedSubFragments.map(f => f.replace('...', '')));
   
   // register fragment
