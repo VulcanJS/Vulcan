@@ -224,6 +224,7 @@ Posts.addField([
         fieldName: 'lastVisitedAt',
         type: 'Date',
         resolver: (post, args, context) => {
+          console.log("lastVisitedAt resolver", post.title);
           if(context.currentUser){
             const event = context.LWEvents.findOne({name:'post-view', documentId: post._id, userId: context.currentUser._id});
             return event ? event.createdAt : post.lastVisitDateDefault;

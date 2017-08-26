@@ -122,6 +122,10 @@ import '../components/sequences/BooksItem.jsx';
 
 import '../components/collections/CollectionsCard.jsx';
 
+import '../components/sequences/CoreSequences.jsx';
+import '../components/sequences/HPMOR.jsx';
+import '../components/sequences/Codex.jsx';
+
 
 import '../components/form-components/PostsListEditor.jsx';
 import '../components/form-components/ImageUpload.jsx';

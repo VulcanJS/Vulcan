@@ -78,7 +78,7 @@ class PostsListEditor extends Component {
 
   shouldCancelStart = (e) => {
     // Cancel sorting if the event target is an `input`, `textarea`, `select`, 'option' or 'svg'
-    const disabledElements = ['input', 'textarea', 'select', 'option', 'button', 'svg'];
+    const disabledElements = ['input', 'textarea', 'select', 'option', 'button', 'svg', 'path'];
     if (disabledElements.indexOf(e.target.tagName.toLowerCase()) !== -1) {
       return true; // Return true to cancel sorting
     }

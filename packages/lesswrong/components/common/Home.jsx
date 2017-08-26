@@ -39,9 +39,9 @@ const Home = (props, context) => {
   return (
     <div className="home">
         <Components.Section contentStyle={{marginTop: '-20px'}} title="Recommended Reading">
-          <Components.CollectionsCard collection={testCollections[0]} big={true}/>
-          <Components.CollectionsCard collection={testCollections[1]} float={"left"}/>
-          <Components.CollectionsCard collection={testCollections[2]} float={"right"}/>
+          <Components.CollectionsCard collection={testCollections[0]} big={true} url={"/sequences"}/>
+          <Components.CollectionsCard collection={testCollections[1]} float={"left"} url={"/hpmor"}/>
+          <Components.CollectionsCard collection={testCollections[2]} float={"right"} url={"/codex"}/>
         </Components.Section>
         <Components.Section title="Featured Posts">
           <Components.PostsList terms={featuredPostsTerms} showHeader={false} showLoadMore={false} />

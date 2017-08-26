@@ -9,11 +9,8 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     chapters {
-       posts {
-         title
-         lastVisitedAt
-         baseScore
-       }
+      title
+      postIds
     }
     title
     description
