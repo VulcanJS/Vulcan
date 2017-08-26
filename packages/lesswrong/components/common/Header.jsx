@@ -67,8 +67,8 @@ class Header extends Component {
         <Drawer open={this.state.showNavigation} containerStyle={drawerStyle} >
           <MenuItem containerElement={<Link to={"/"}/>}> HOME </MenuItem>
           <MenuItem containerElement={<Link to={"/sequences"}/>}> SEQUENCES </MenuItem>
-          <MenuItem containerElement={<Link to={"/hpmor"}/>}> HPMOR </MenuItem>
           <MenuItem containerElement={<Link to={"/codex"}/>}> CODEX </MenuItem>
+          <MenuItem containerElement={<Link to={"/hpmor"}/>}> HPMOR </MenuItem>
           <MenuItem containerElement={<Link to={"/library"}/>}> THE LIBRARY </MenuItem>
         </Drawer>
         </header>

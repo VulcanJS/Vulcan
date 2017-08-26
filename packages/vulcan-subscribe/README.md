@@ -43,11 +43,7 @@ This package exports a function called `subscribeMutationsGenerator` that takes 
 
 ```js
 // in my custom package
-<<<<<<< HEAD:packages/vulcan-subscribe/README.md
 import subscribeMutationsGenerator from 'meteor/vulcan:subscribe';
-=======
-import subscribMutationsGenerator from 'meteor/vulcan:subscribe';
->>>>>>> a5d8202f275f856373e90cc30b4d2276d952e50e:packages/vulcan-subscribe/README.md
 import Movies from './collection.js';
 
 // the function creates the code and gives it to the graphql server

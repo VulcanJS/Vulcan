@@ -83,10 +83,12 @@ if(runSeed) {
 
     const currentUser = Users.findOne({_id: "nmk3nLpQE89dMRzzN"});
 
-    const first_sequence = await createSequence(currentUser, "Map and Territory");
+    const first_sequence = await createSequence(currentUser, "Predictably Wrong");
     const first_chapter = await createChapter("","", first_sequence._id);
 
+
     await addPostsToChapter(first_chapter._id, ["RcZCwxFiZzE6X7nsv", "SqF8cHjJv43mvJJzx", "YshRbqZHYFoEMqFAu", "jnZbHi873v9vcpGpZ", "R8cpqD3NA4rZxRdQ4", "Yq6aA4M3JKWaQepPJ", "CPm5LTwHrvBJCa9h5", "sSqoEw9eRP2kPKLCz", "HLqWn5LASfhhArZ7w", "46qnWRSR7L2eyNbMA"]);
+
 
     const col1 = await createCollection(currentUser, "The Sequences");
     const col2 = await createCollection(currentUser, "The Codex");

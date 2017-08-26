@@ -6,7 +6,7 @@ const schema = {
 
   _id: {
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ['guests'],
   },
 
@@ -52,6 +52,7 @@ const schema = {
     editableBy: ['admins'],
     insertableBy: ['admins'],
     control: EditorFormComponent,
+    blackbox: true,
   },
 
   /*
