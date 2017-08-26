@@ -74,6 +74,7 @@ const withListOptions = {
   queryName: 'notificationsListQuery',
   fragmentName: 'notificationsNavFragment',
   limit: 5,
+  totalResolver: false,
 };
 
 const withEditOptions = {
@@ -82,4 +83,4 @@ const withEditOptions = {
 };
 
 
-registerComponent('NotificationsMenu', NotificationsMenu, withList(withListOptions), withEdit(withEditOptions), withCurrentUser);
+registerComponent('NotificationsMenu', NotificationsMenu, [withList, withListOptions], [withEdit, withEditOptions], withCurrentUser);

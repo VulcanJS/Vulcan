@@ -24,6 +24,7 @@ const options = {
   queryName: 'lastPostVisitQuery',
   fragmentName: 'lastEventFragment',
   limit: 1,
+  totalResolver: false, 
 };
 
 replaceComponent('PostsCommentsThread', PostsCommentsThread, [withList, options]);

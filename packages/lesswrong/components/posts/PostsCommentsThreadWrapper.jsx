@@ -25,6 +25,7 @@ const options = {
   queryName: 'commentsListQuery',
   fragmentName: 'CommentsList',
   limit: 0,
+  totalResolver: false,
 };
 
 registerComponent('PostsCommentsThreadWrapper', PostsCommentsThreadWrapper, [withList, options]);

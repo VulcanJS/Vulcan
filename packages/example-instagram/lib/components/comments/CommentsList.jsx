@@ -1,9 +1,9 @@
-/* 
+/*
 
-List of comments. 
+List of comments.
 Wrapped with the "withList" and "withCurrentUser" containers.
 
-All props except currentUser are passed by the withList container. 
+All props except currentUser are passed by the withList container.
 
 */
 
@@ -13,18 +13,18 @@ import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:co
 import Comments from '../../modules/comments/collection.js';
 import CommentsItem from './CommentsItem.jsx';
 
-const CommentsList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
-  
+const CommentsList = ({results = [], currentUser, loading, loadMore, count, totalCount}) =>
+
   <div className="comments-list">
 
-    {loading ? 
+    {loading ?
 
       <Loading /> :
 
       <div className="comments-items">
         {results.map(comment => <CommentsItem key={comment._id} comment={comment} currentUser={currentUser} />)}
       </div>
-      
+
     }
 
   </div>
@@ -32,6 +32,7 @@ const CommentsList = ({results = [], currentUser, loading, loadMore, count, tota
 const options = {
   collection: Comments,
   fragmentName: 'CommentsItemFragment',
+  totalResolver: false,
 };
 
 export default withList(options)(withCurrentUser(CommentsList));

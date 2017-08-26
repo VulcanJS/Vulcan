@@ -30,4 +30,4 @@ const options = {
 }
 
 
-registerComponent("LegacyPostWrapper", LegacyPostWrapper, withRouter, withList(options));
+registerComponent("LegacyPostWrapper", LegacyPostWrapper, withRouter, [withList, options]);

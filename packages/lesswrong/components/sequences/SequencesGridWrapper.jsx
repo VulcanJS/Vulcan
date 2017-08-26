@@ -31,6 +31,7 @@ const SequencesGridWrapper = ({className, loading, currentUser, terms, results, 
 const options = {
   collection: Sequences,
   fragmentName: 'SequencesPageFragment',
+  totalResolver: false,
 }
 
 

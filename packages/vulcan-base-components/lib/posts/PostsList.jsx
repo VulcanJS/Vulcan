@@ -23,10 +23,10 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} terms={terms} />)}
         </div>
-        {showLoadMore ? 
-          hasMore ? 
-            <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> : 
-            <Components.PostsNoMore/> : 
+        {showLoadMore ?
+          hasMore ?
+            <Components.PostsLoadMore loading={loadingMore} loadMore={loadMore} count={count} totalCount={totalCount} /> :
+            <Components.PostsNoMore/> :
           null
         }
       </div>
@@ -76,6 +76,7 @@ const options = {
   collection: Posts,
   queryName: 'postsListQuery',
   fragmentName: 'PostsList',
+  totalResolver: false,
 };
 
 registerComponent('PostsList', PostsList, withCurrentUser, [withList, options]);

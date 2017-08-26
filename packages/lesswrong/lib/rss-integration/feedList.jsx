@@ -34,6 +34,7 @@ const options = {
   queryName: 'userRSSListQuery',
   fragmentName: 'RSSFeedMinimumInfo',
   limit: 10,
+  totalResolver: false,
 };
 
-registerComponent('FeedList', FeedList, withList(options), withCurrentUser);
+registerComponent('FeedList', FeedList, [withList, options], withCurrentUser);

@@ -60,6 +60,7 @@ const options = {
   queryName: 'messagesForConversation',
   fragmentName: 'messageListFragment',
   limit: 50,
+  totalResolver: false,
 };
 
-registerComponent('ConversationWrapper', ConversationWrapper, withList(options), withCurrentUser);
+registerComponent('ConversationWrapper', ConversationWrapper, [withList, options], withCurrentUser);

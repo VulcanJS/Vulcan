@@ -34,6 +34,7 @@ const options = {
   queryName: 'notificationsFullScreenQuery',
   fragmentName: 'notificationsNavFragment',
   limit: 30,
+  totalResolver: false,
 };
 
-registerComponent('NotificationsList', NotificationsList, withList(options), withCurrentUser);
+registerComponent('NotificationsList', NotificationsList, [withList, options], withCurrentUser);

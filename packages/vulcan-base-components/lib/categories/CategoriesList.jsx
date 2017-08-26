@@ -50,10 +50,10 @@ class CategoriesList extends PureComponent {
     const categoriesClone = _.map(categories, category => {
       return {
         ...category, // we don't want to modify the objects we got from props
-        active: currentCategory && category.slug === currentCategory.slug, 
+        active: currentCategory && category.slug === currentCategory.slug,
         expanded: parentCategories && _.contains(_.pluck(parentCategories, 'slug'), category.slug)
       };
-    }); 
+    });
 
     const nestedCategories = Utils.unflatten(categoriesClone, {idProperty: '_id', parentIdProperty: 'parentId'});
 
@@ -118,6 +118,7 @@ const options = {
   fragmentName: 'CategoriesList',
   limit: 0,
   pollInterval: 0,
+  totalResolver: false,
 };
 
 registerComponent('CategoriesList', CategoriesList, withRouter, withApollo, [withList, options]);

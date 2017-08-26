@@ -8,13 +8,27 @@ registerFragment(`
     user {
       ...UsersMinimumInfo
     }
-    chapters {
-      title
-      postIds
-    }
     title
     description
     gridImageId
     bannerImageId
+  }
+`);
+
+registerFragment(`
+  fragment SequencesNavigationFragment on Sequence {
+    _id
+    createdAt
+    title
+    chapters {
+      title
+      posts {
+        _id
+        slug
+        title
+        lastVisitedAt
+        excerpt
+      }
+    }
   }
 `);

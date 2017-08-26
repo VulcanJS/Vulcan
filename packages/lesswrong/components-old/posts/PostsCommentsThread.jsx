@@ -51,6 +51,7 @@ const options = {
   queryName: 'commentsListQuery',
   fragmentName: 'CommentsList',
   limit: 0,
+  totalResolver: false,
 };
 
 registerComponent('PostsCommentsThread', PostsCommentsThread, [withList, options], withCurrentUser);

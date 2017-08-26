@@ -16,7 +16,8 @@ const options = {
   collection: Sequences,
   queryName: 'SequencesGridQuery',
   fragmentName: 'SequencesPageFragment',
+  totalResolver: false,
 }
 
 
-registerComponent('SequencesGrid', SequencesGrid, withList(options));
+registerComponent('SequencesGrid', SequencesGrid, [withList, options]);

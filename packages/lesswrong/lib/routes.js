@@ -10,6 +10,7 @@ addRoute({ name: 'sequencesHome', path: '/library', componentName: 'SequencesHom
 addRoute({ name: 'sequences', path: '/sequences/:_id', componentName: 'SequencesSingle' });
 addRoute({ name: 'sequencesEdit', path: '/sequencesEdit/:_id', componentName: 'SequencesEditForm'});
 addRoute({ name: 'sequencesNew', path: '/sequencesNew', componentName: 'SequencesNewForm'});
+addRoute({ name: 'sequencesPost', path: '/s/:sequenceId/p/:postId', componentName: 'SequencesPost'}); 
 
 
 addRoute({ name: 'chaptersEdit', path: '/chaptersEdit/:_id', componentName: 'ChaptersEditForm'});
@@ -29,6 +30,6 @@ addRoute({ name: 'imageUploadTest', path: '/imageUpload', componentName: 'ImageU
 
 
 
-addRoute({name:'posts.single',   path:'posts/:_id(/:slug)(/:commentId)', componentName: 'PostsSingle'})
+addRoute({name:'posts.single',   path:'posts/:_id(/:slug)(/:commentId)', componentName: 'PostsSingle'});
 
 addRoute({name: 'home', path: '/', componentName: 'Home'});

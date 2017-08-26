@@ -53,7 +53,7 @@ class PostsDailyList extends PureComponent {
     e.preventDefault();
     const numberOfDays = getSetting('numberOfDays', 5);
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
-    
+
     this.props.loadMore({
       ...this.props.terms,
       after: loadMoreAfter,
@@ -71,13 +71,13 @@ class PostsDailyList extends PureComponent {
     const numberOfDays = getSetting('numberOfDays', 5);
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
-    
+
     this.props.loadMoreInc({
       ...this.props.terms,
       before: loadMoreBefore,
       after: loadMoreAfter,
     });
-    
+
     this.setState({
       days: this.state.days + this.props.increment,
       after: loadMoreAfter,
@@ -112,8 +112,9 @@ PostsDailyList.defaultProps = {
 const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
-  fragmentName: 'PostsList',
+  fragmentName: 'LWPostsList',
   limit: 0,
+  totalResolver: false,
 };
 
 registerComponent('PostsDailyList', PostsDailyList, withCurrentUser, [withList, options]);

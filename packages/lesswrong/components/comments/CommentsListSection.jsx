@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import DatePicker from 'material-ui/DatePicker';
+import { withRouter } from 'react-router'
 import { withCurrentUser, Components, registerComponent} from 'meteor/vulcan:core';
 import moment from 'moment';
 
@@ -38,12 +39,16 @@ class CommentsListSection extends Component {
     </div>
 
   render() {
-    const {currentUser, comments, postId} = this.props;
+    const {currentUser, comments, postId, router} = this.props;
+    const currentQuery = (!_.isEmpty(router.location.query) && router.location.query) ||  {view: 'postCommentsTop', limit: 50};
+    console.log("currentQuery: ", currentQuery);
+    const currentLocation = router.location;
     return (
       <Components.Section title="Comments"
         titleComponent= {<div className="posts-page-comments-title-component">
           sorted by<br /> <Components.CommentsViews postId={postId} />
         <div className="posts-page-comments-highlight-select">{this.renderHighlightDateSelector()}</div>
+        {router.location.query && router.location.query.limit && router.location.query.limit != 0 ? <div className="posts-page-comments-load-all-comment">Rendering top 50 comments <a onTouchTap={(() => router.replace({...currentLocation, query: {...currentQuery, limit: 0}}))}>show all</a></div> : <div>All comments loaded</div>}
         </div>}>
         <div className="posts-comments-thread">
           <Components.CommentsList currentUser={currentUser} comments={comments} highlightDate={this.state.highlightDate}/>
@@ -67,4 +72,4 @@ class CommentsListSection extends Component {
   }
 }
 
-registerComponent("CommentsListSection", CommentsListSection, withCurrentUser);
+registerComponent("CommentsListSection", CommentsListSection, withCurrentUser, withRouter);

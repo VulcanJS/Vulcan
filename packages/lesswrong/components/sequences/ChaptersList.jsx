@@ -16,6 +16,7 @@ const options = {
   collection: Chapters,
   queryName: 'chaptersListQuery',
   fragmentName: 'ChaptersFragment',
+  totalResolver: false,
 }
 
-registerComponent('ChaptersList', ChaptersList, withList(options))
+registerComponent('ChaptersList', ChaptersList, [withList, options])

@@ -11,7 +11,26 @@ registerFragment(`
     sequenceId
     postIds
     posts {
-      ...PostsList
+      _id
+      title
+      url
+      slug
+      postedAt
+      createdAt
+      sticky
+      status
+      excerpt
+      viewCount
+      clickCount
+      userId
+      user {
+        ...UsersMinimumInfo
+        __typename
+      }
+      commentCount
+      baseScore
+      score
+      __typename
       lastVisitedAt
     }
   }

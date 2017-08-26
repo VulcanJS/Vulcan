@@ -72,6 +72,7 @@
 
 .highlight-date-selector {
   margin-top: 20px;
+  margin-bottom: 20px;
   .highlight-date-selector-date {
     display: inline-block;
   }
@@ -616,6 +617,35 @@ svg.drag-handle {
   list-style:none;
   position: relative;
   padding: 5px;
+}
+
+.posts-page-comments-load-all-comment {
+  a {
+    @include link-underline(#fff, rgba(0,0,0,0.6), #b4d5f3, rgba(0,0,0,0.3));
+  }
+}
+
+.sequences-navigation-title {
+    display: inline-block;
+    font-size: 22px;
+    vertical-align: middle;
+    font-variant: small-caps;
+    line-height: 24px;
+    height: 42.5px;
+    color: rgba(0,0,0,0.5);
+    margin-top: -10p;
+}
+
+.sequences-navigation-top {
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 5px;
+}
+
+.sequences-navigation-top-left, .sequences-navigation-top-right {
+  .material-icons {
+    color: rgba(0,0,0,0.5) !important;
+  }
 }
 
 

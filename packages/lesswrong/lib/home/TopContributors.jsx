@@ -39,9 +39,10 @@ const usersOptions = {
   queryName: 'usersListQuery',
   fragmentName: 'UsersList',
   limit: 10,
+  totalResolver: false,
 };
 
-registerComponent('UsersList', UsersList, withList(usersOptions), withCurrentUser);
+registerComponent('UsersList', UsersList, [withList, usersOptions], withCurrentUser);
 
 
 class TopContributors extends Component {

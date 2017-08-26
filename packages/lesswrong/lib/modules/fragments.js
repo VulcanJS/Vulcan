@@ -72,7 +72,7 @@ registerFragment(`
 `);
 
 registerFragment(`
-  fragment PostsList on Post {
+  fragment LWPostsList on Post {
     # vulcan:posts
     _id
     title
@@ -104,12 +104,6 @@ registerFragment(`
     commentCount
     lastCommentedAt
     # vulcan:voting
-    upvoters {
-      _id
-    }
-    downvoters {
-      _id
-    }
     upvotes
     downvotes
     baseScore

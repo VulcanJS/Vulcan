@@ -72,7 +72,7 @@ PostsList.contextTypes = {
 const options = {
   collection: Posts,
   queryName: 'postsListQuery',
-  fragmentName: 'PostsList',
+  fragmentName: 'LWPostsList',
   totalResolver: false,
 };
 

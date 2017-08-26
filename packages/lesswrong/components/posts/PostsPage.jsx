@@ -62,7 +62,7 @@ class PostsPage extends Component {
       const post = this.props.document;
       const userId = this.props.currentUser && this.props.currentUser._id;
       const htmlBody = {__html: post.htmlBody};
-      const commentTerms = _.isEmpty(this.props.location && this.props.location.query) ? {view: 'postCommentsTop', limit: 50, postId: post._id}: this.props.location.query;
+      const commentTerms = _.isEmpty(this.props.location && this.props.location.query) ? {view: 'postCommentsTop', limit: 50}: this.props.location.query;
 
       let commentHash = this.props.params.commentId;
       if (commentHash){
@@ -73,6 +73,8 @@ class PostsPage extends Component {
       if (commentHash && commentHash.substring(commentHash.length - 7, commentHash.length) === "context") {
         commentHash = commentHash.slice(0,-7);
       }
+
+      const sequenceId = this.props.params.sequenceId;
 
       return (
         <div className="posts-page">
@@ -85,13 +87,13 @@ class PostsPage extends Component {
               <div className="posts-page-content-header-title">
                 <h1>{post.title}</h1>
               </div>
+              {sequenceId ? <Components.SequencesNavigation documentId={sequenceId} post={post} /> : null}
               <div className="posts-page-content-header-voting">
                 <Components.Vote collection={Posts} document={post} currentUser={this.props.currentUser}/>
               </div>
               <div className="posts-page-content-header-author">
                 <Components.UsersName user={post.user} />
               </div>
-
             </div>
             <div className="posts-page-content-body">
               <div className="posts-page-content-body-metadata">
@@ -124,7 +126,7 @@ class PostsPage extends Component {
             </div>
           </div>
           <div className="posts-page-comments" id="comments">
-            <Components.PostsCommentsThreadWrapper terms={commentTerms} userId={userId} />
+            <Components.PostsCommentsThreadWrapper terms={{...commentTerms, postId: post._id}} userId={userId} />
           </div>
         </div>
       );
@@ -195,6 +197,7 @@ const queryOptions = {
   collection: Posts,
   queryName: 'postsSingleQuery',
   fragmentName: 'LWPostsPage',
+  totalResolver: false, 
 };
 
 const mutationOptions = {

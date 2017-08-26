@@ -36,7 +36,7 @@ const PostsItemWrapper = ({document, loading, ...props}) => {
 
 const options = {
   collection: Posts,
-  fragmentName: 'PostsList',
+  fragmentName: 'LWPostsList',
   totalResolver: false,
 };
 

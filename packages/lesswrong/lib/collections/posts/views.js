@@ -39,6 +39,7 @@ Posts.addView("all_drafts", terms => ({
 
 Posts.addView("featured", terms => ({
   options: {
+    limit: terms.limit || 3,
     sort: {
       featuredPriority: -1,
     }
