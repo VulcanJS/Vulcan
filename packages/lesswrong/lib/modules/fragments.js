@@ -102,9 +102,6 @@ registerFragment(`
     }
     # vulcan:comments
     commentCount
-    commenters {
-      ...UsersMinimumInfo
-    }
     lastCommentedAt
     # vulcan:voting
     upvoters {

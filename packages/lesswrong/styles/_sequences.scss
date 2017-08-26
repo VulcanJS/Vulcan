@@ -182,6 +182,9 @@
     line-height: 1.25;
     margin-left: 10px;
   }
+  .sequences-posts-list {
+    margin-top: -10px;
+  }
 
   .sequences-date {
     font-size: 16px;
@@ -367,7 +370,7 @@ svg.drag-handle {
   margin-left: 20px;
   font-size: 20px;
   line-height: 1.25;
-  margin-bottom: 20px;
+  margin-right: 28px;
 }
 
 .books-item-subtitle {
@@ -375,4 +378,17 @@ svg.drag-handle {
   line-height: 1.1;
   font-style: italic;
   margin-top: 20px;
+}
+
+.books-item-posts {
+  margin-left: 20px;
+  margin-right: 25px;
+  margin-bottom: 30px;
+  .posts-item {
+    &:hover {
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    }
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
 }

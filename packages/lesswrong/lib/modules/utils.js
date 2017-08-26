@@ -25,7 +25,7 @@ export const flatten = function(data) {
 
 export const contentIsEmpty = (content) => {
   console.log("Content Is Empty called", content);
-  return content && content.state && content.state.serialized && content.state.serialized.nodes && content.state.serialized.nodes.length == 1 && content.state.serialized.nodes[0].nodes && content.state.serialized.nodes[0].nodes.length == 1 && content.state.serialized.nodes[0].nodes[0].text == ""
+  return !(content && content.state && content.state.serialized && content.state.serialized.nodes && content.state.serialized.nodes.length == 1 && content.state.serialized.nodes[0].nodes && content.state.serialized.nodes[0].nodes.length == 1 && content.state.serialized.nodes[0].nodes[0].text !== "")
 }
 
 export const isEmpty = ({ cells, rows,

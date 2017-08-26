@@ -37,7 +37,9 @@ class CollectionsPage extends Component {
         <Components.Section titleComponent={canEdit ? <a onTouchTap={this.showEdit}>edit</a> : null}>
           <div className="collections-header">
             <h1 className="collections-title">{collection.title}</h1>
-            <div className="collections-description">{collection.summary}</div>
+            <div className="collections-description">
+              {collection.description ? <Components.ContentRenderer state={collection.description} /> : null}
+            </div>
             <FlatButton backgroundColor="rgba(0,0,0,0.05)" label={startedReading ? "Continue Reading" : "Start Reading"} />
           </div>
         </Components.Section>

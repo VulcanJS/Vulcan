@@ -8,6 +8,13 @@ registerFragment(`
     user {
       ...UsersMinimumInfo
     }
+    chapters {
+       posts {
+         title
+         lastVisitedAt
+         baseScore
+       }
+    }
     title
     description
     gridImageId

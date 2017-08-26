@@ -84,6 +84,25 @@ const schema = {
     insertableBy: ['admins'],
   },
 
+  chaptersDummy: {
+    type: Array,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      fieldName: 'chapters',
+      type: '[Chapter]',
+      resolver: (sequence, args, context) => {
+        const books = context.Chapters.find({sequenceId: sequence._id}, {fields: context.Users.getViewableFields(context.currentUser, context.Chapters)}).fetch();
+        return books;
+      }
+    }
+  },
+
+  'chaptersDummy.$': {
+    type: String,
+    optional: true,
+  },
+
   //Cloudinary image id for the grid Image
 
   gridImageId: {

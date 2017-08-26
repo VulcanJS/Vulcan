@@ -27,6 +27,7 @@ class BooksItem extends Component {
 
   render() {
     const book = this.props.book;
+    console.log("book.posts: ", book.posts);
     if (this.state.edit) {
       return <Components.BooksEditForm
                 documentId={book._id}
@@ -40,6 +41,10 @@ class BooksItem extends Component {
           {book.description ? <div className="books-item-description">
              <Components.ContentRenderer state={book.description} />
             </div> : null}
+
+          {book.posts ? <div className="books-item-posts">
+            <Components.SequencesPostsList posts={book.posts} />
+          </div> : null}
 
           <div className="books-item-sequences">
             <Components.SequencesGrid sequences={book.sequences} className="books-sequences-grid-list" />

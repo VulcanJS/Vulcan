@@ -65,9 +65,8 @@ const schema = {
     resolveAs: {
       fieldName: 'books',
       type: '[Book]',
-      resolver: (sequence, args, context) => {
-        const books = context.Books.find({collectionId: sequence._id}, {fields: context.Users.getViewableFields(context.currentUser, context.Books)}).fetch();
-        console.log("booksDummy resolver: ", books);
+      resolver: (collection, args, context) => {
+        const books = context.Books.find({collectionId: collection._id}, {fields: context.Users.getViewableFields(context.currentUser, context.Books)}).fetch();
         return books;
       }
     }

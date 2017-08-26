@@ -70,11 +70,11 @@ const SequencesHome = ({document, currentUser, loading}) => {
       </Components.Section>
     </div>
     {/* In-progress sequences grid (make a sequencesGrid component w/ flexbox)*/}
-    <div className="sequences-list-progress-sequences">
+    {/*<div className="sequences-list-progress-sequences">
       <Components.Section title="In Progress Sequences">
         <Components.SequencesGridWrapper terms={communitySeqTerms} className="community-sequences-grid" />
       </Components.Section>
-    </div>
+    </div> */}
     {/* Community sequences list (make a sequencesList w/ roll your own list) */}
     <div>
       <div className="sequences-list-community-sequences">

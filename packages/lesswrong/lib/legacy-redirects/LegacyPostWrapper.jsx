@@ -25,7 +25,8 @@ const LegacyPostWrapper = (props) => {
 const options = {
   collection: Posts,
   fragmentName: 'PostUrl',
-  limit: 1
+  limit: 1,
+  totalResolver: false,
 }
 
 
