@@ -42,7 +42,7 @@ class ChaptersItem extends Component {
             </div> : null}
 
           <div className="chapters-item-posts">
-            <Components.SequencesPostsList posts={chapter.posts} />
+            <Components.SequencesPostsList posts={chapter.posts} chapter={chapter} />
           </div>
         </Components.Section>
       </div>

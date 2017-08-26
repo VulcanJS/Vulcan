@@ -64,6 +64,8 @@ const SequencesNavigation = ({document, loading, post, router}) => {
         </div>
       }
     }
+  } else {
+    return <Components.Loading />
   }
 };
 

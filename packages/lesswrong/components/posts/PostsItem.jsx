@@ -45,9 +45,10 @@ class PostsItem extends PureComponent {
 
   render() {
 
-    const {post} = this.props;
+    const {post, chapter} = this.props;
     const read = post.lastVisitedAt;
     const newComments = post.lastVisitedAt < post.lastCommentedAt;
+    const postLink = chapter ? ("/s/" + chapter.sequenceId + "/p/" + post._id) : Posts.getLink(post)
 
     let postClass = "posts-item";
     if (post.sticky) postClass += " posts-sticky";
@@ -73,7 +74,7 @@ class PostsItem extends PureComponent {
         style={paperStyle}
         zDepth={0}
       >
-       <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+       <Link to={postLink} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
          <div className="posts-item-content">
           <div>
             <h3 className="posts-item-title">
