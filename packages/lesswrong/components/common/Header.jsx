@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withCurrentUser, Components, replaceComponent } from 'meteor/vulcan:core';
 import { withRouter } from 'react-router';
-
-import { SearchBox, CurrentRefinements, ClearAll } from 'react-instantsearch/dom';
+import { Link } from 'react-router';
 import NoSSR from 'react-no-ssr';
 
 import AppBar from 'material-ui/AppBar';
@@ -15,7 +14,7 @@ const drawerStyle = {
   boxShadow: "none",
   top: "80px",
   width: "150px",
-  position: "absolute", 
+  position: "absolute",
 }
 
 const appBarStyle = {
@@ -66,8 +65,11 @@ class Header extends Component {
             titleStyle={appBarTitleStyle}
           />
         <Drawer open={this.state.showNavigation} containerStyle={drawerStyle} >
-          <MenuItem> Menu Item 1</MenuItem>
-          <MenuItem> Menu Item 2</MenuItem>
+          <MenuItem containerElement={<Link to={"/"}/>}> HOME </MenuItem>
+          <MenuItem containerElement={<Link to={"/sequences"}/>}> SEQUENCES </MenuItem>
+          <MenuItem containerElement={<Link to={"/hpmor"}/>}> HPMOR </MenuItem>
+          <MenuItem containerElement={<Link to={"/codex"}/>}> CODEX </MenuItem>
+          <MenuItem containerElement={<Link to={"/library"}/>}> THE LIBRARY </MenuItem>
         </Drawer>
         </header>
       </div>

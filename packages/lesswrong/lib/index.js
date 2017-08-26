@@ -31,8 +31,8 @@ import Chapters from './collections/chapters/collection.js';
 import Books from './collections/books/collection.js';
 import Collections from './collections/collections/collection.js';
 
-import './collections/sequences/fragments.js';
 import './collections/chapters/fragments.js';
+import './collections/sequences/fragments.js';
 import './collections/books/fragments.js';
 import './collections/collections/fragments.js';
 

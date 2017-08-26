@@ -106,6 +106,7 @@ import '../components/sequences/SequencesNewForm.jsx';
 import '../components/sequences/SequencesHome.jsx';
 import '../components/sequences/SequencesList.jsx';
 import '../components/sequences/SequencesGrid.jsx';
+import '../components/sequences/SequencesGridWrapper.jsx';
 import '../components/sequences/SequencesListItem.jsx';
 import '../components/sequences/SequencesGridItem.jsx';
 import '../components/sequences/ChaptersItem.jsx';
@@ -120,6 +121,10 @@ import '../components/sequences/BooksEditForm.jsx';
 import '../components/sequences/BooksItem.jsx';
 
 import '../components/collections/CollectionsCard.jsx';
+
+import '../components/sequences/CoreSequences.jsx';
+import '../components/sequences/HPMOR.jsx';
+import '../components/sequences/Codex.jsx';
 
 
 import '../components/form-components/PostsListEditor.jsx';

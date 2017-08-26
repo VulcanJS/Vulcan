@@ -1,5 +1,6 @@
 import Users from 'meteor/vulcan:users'
 import SequencesListEditor from '../../../components/form-components/SequencesListEditor.jsx';
+import PostsListEditor from '../../../components/form-components/PostsListEditor.jsx';
 import EditorFormComponent from '../../editor/EditorFormComponent.jsx';
 
 
@@ -70,6 +71,32 @@ const schema = {
     viewableBy: ['guests'],
     editableBy: ['admins'],
     insertableBy: ['members'],
+  },
+
+  //TODO: Make resolvers more efficient by running `find` query instead of `findOne` query
+
+  postIds: {
+    type: Array,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['members'],
+    insertableBy: ['members'],
+    resolveAs: {
+      fieldName: 'posts',
+      type: '[Post]',
+      resolver: (book, args, context) => {
+        return (_.map(book.postIds, (id) => {
+          return context.Posts.findOne({_id: id}, {fields: context.Users.getViewableFields(context.currentUser, context.Posts)})
+        }))
+      },
+      addOriginalField: true,
+    },
+    control: PostsListEditor,
+  },
+
+  'postIds.$': {
+    type: String,
+    optional: true,
   },
 
   sequenceIds: {

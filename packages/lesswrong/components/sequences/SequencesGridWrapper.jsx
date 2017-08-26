@@ -34,4 +34,4 @@ const options = {
 }
 
 
-registerComponent('SequencesGrid', SequencesGridWrapper, [withList, options] ,withCurrentUser);
+registerComponent('SequencesGridWrapper', SequencesGridWrapper, [withList, options] ,withCurrentUser);

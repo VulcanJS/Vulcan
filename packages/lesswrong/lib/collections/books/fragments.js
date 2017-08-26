@@ -11,6 +11,10 @@ registerFragment(`
     sequences {
       ...SequencesPageFragment
     }
+    postIds
+    posts {
+      ...PostsList
+    }
     collectionId
   }
 `);
