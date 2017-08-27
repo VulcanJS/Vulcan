@@ -5,6 +5,7 @@ registerFragment(`
     _id
     createdAt
     title
+    number
     subtitle
     description
     sequenceIds
