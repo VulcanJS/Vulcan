@@ -109,7 +109,7 @@ const schema = {
 
   sequenceIds: {
     type: Array,
-    optional: false,
+    optional: true,
     viewableBy: ["guests"],
     editableBy: ['members'],
     insertableBy: ['members'],
