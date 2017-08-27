@@ -22,14 +22,18 @@ function editCommentAlgoliaIndex(comment) {
 addCallback("comments.edit.async", editCommentAlgoliaIndex)
 
 function newPostAlgoliaIndex(post) {
-  algoliaDocumentExport([post], Posts, 'test_posts', Posts.toAlgolia, (post) => Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}}))
-  console.log("Indexed new post into Algolia: ", post);
+  if (!post.draft) {
+    algoliaDocumentExport([post], Posts, 'test_posts', Posts.toAlgolia, (post) => Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}}))
+    console.log("Indexed new post into Algolia: ", post);
+  }
 }
 addCallback("posts.new.async", newPostAlgoliaIndex)
 
 function editPostAlgoliaIndex(post) {
-  algoliaDocumentExport([post], Posts, 'test_posts', Posts.toAlgolia, (post) => Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}}))
-  console.log("Updated Algolia index for edited post ", post);
+  if (!post.draft) {
+    algoliaDocumentExport([post], Posts, 'test_posts', Posts.toAlgolia, (post) => Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}}))
+    console.log("Updated Algolia index for edited post ", post);
+  }
 }
 addCallback("posts.edit.async", editPostAlgoliaIndex)
 
