@@ -5,7 +5,7 @@ import LWEvents from "./collections/lwevents/collection.js";
 Comments.addView("postCommentsTop", function (terms) {
   return {
     selector: {postId: terms.postId},
-    options: {sort: {score: -1, postedAt: -1}}
+    options: {sort: {baseScore: -1, postedAt: -1}}
   };
 });
 

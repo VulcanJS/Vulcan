@@ -32,9 +32,9 @@ class CollectionsPage extends Component {
     } else {
       const startedReading = false; //TODO: Check whether user has started reading sequences
       let startReadingLink = "";
-      if (document.books && document.books[0].posts) {
+      if (document.books && document.books[0] && document.books[0].posts) {
         startReadingLink = "/s/" + document._id + "/p/" + document.books[0].posts._id;
-      } else if (document.books && document.books[0].sequences) {
+      } else if (document.books && document.books[0] && document.books[0].sequences) {
         startReadingLink = "/sequences/" + document
       }
       const collection = document;
