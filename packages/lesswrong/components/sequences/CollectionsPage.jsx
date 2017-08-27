@@ -3,6 +3,7 @@ import { Components, withDocument, registerComponent, withCurrentUser } from 'me
 import Users from 'meteor/vulcan:users';
 import Collections from '../../lib/collections/collections/collection.js';
 import FlatButton from 'material-ui/FlatButton';
+import { Link } from 'react-router';
 
 class CollectionsPage extends Component {
   constructor(props) {
@@ -31,12 +32,6 @@ class CollectionsPage extends Component {
                 cancelCallback={this.showCollection} />
     } else {
       const startedReading = false; //TODO: Check whether user has started reading sequences
-      let startReadingLink = "";
-      if (document.books && document.books[0] && document.books[0].posts) {
-        startReadingLink = "/s/" + document._id + "/p/" + document.books[0].posts._id;
-      } else if (document.books && document.books[0] && document.books[0].sequences) {
-        startReadingLink = "/sequences/" + document
-      }
       const collection = document;
       const canEdit = Users.canDo(currentUser, 'collections.edit.all') || (Users.canDo(currentUser, 'collections.edit.own') && Users.owns(currentUser, collection))
       return (<div className="collections-page">
@@ -46,7 +41,7 @@ class CollectionsPage extends Component {
             <div className="collections-description">
               {collection.description ? <Components.ContentRenderer state={collection.description} /> : null}
             </div>
-            <FlatButton backgroundColor="rgba(0,0,0,0.05)" label={startedReading ? "Continue Reading" : "Start Reading"} />
+            <FlatButton backgroundColor="rgba(0,0,0,0.05)" label={startedReading ? "Continue Reading" : "Start Reading"} containerElement={<Link to={document.firstPageLink} />}/>
           </div>
         </Components.Section>
         <div className="collections-page-content">

@@ -9,6 +9,7 @@ registerFragment(`
     }
     title
     description
+    firstPageLink
     gridImageId
     books {
       ...BookPageFragment

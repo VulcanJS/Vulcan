@@ -86,6 +86,13 @@ const schema = {
     insertableBy: ['admins'],
   },
 
+  firstPageLink: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    editableBy: ["admins"],
+    insertableBy: ["admins"],
+  }
 }
 
 
