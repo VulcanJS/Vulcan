@@ -299,6 +299,17 @@ Posts.addField([
     }
   },
 
+  {
+    fieldName: 'userId',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
+      insertableBy: ['admins'],
+    }
+  }
+
 
 
 ]);
