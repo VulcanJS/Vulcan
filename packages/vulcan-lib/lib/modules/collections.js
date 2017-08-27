@@ -195,7 +195,10 @@ export const createCollection = options => {
       const view = collection.views[terms.view];
       parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient));
     }
-
+    //add selector from terms otherwise it will be ignored and never used!!
+    if (terms.selector) {
+      parameters = Utils.deepExtend(true, parameters, terms)
+    }
     // iterate over posts.parameters callbacks
     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
 
