@@ -41,7 +41,6 @@ const RecommendedReadingWrapper = ({document, loading, post, router, nextTitle, 
         } else {
           previousPostLink = "/s/" + document._id + "/p/" + document._id;
         }
-
         return <Components.RecommendedReading sequence={document} chapter={currentChapter} post={post} previousPost={previousPost} nextPost={nextPost} nextTitle={nextTitle} nextLink={nextLink}/>
       }
     }

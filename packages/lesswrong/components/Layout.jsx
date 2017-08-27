@@ -54,7 +54,7 @@ const Layout = ({currentUser, children, currentRoute}) =>
 
         {currentUser ? <Intercom appID="wtb8z7sj"
             user_id={currentUser._id} email={currentUser.email} name={currentUser.displayName}
-        /> : null}
+        /> : <Intercom appID="wtb8z7sj"/>}
 
         {currentUser ? IntercomAPI('update', { "name" : currentUser.displayName, "email" : currentUser.email, "user_id" : currentUser._id, "createdAt" : currentUser.createdAt }) : null}
 

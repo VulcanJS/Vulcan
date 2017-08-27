@@ -69,7 +69,7 @@ class Header extends Component {
           <MenuItem containerElement={<Link to={"/sequences"}/>}> SEQUENCES </MenuItem>
           <MenuItem containerElement={<Link to={"/codex"}/>}> CODEX </MenuItem>
           <MenuItem containerElement={<Link to={"/hpmor"}/>}> HPMOR </MenuItem>
-          <MenuItem containerElement={<Link to={"/library"}/>}> THE LIBRARY </MenuItem>
+          {/*<MenuItem containerElement={<Link to={"/library"}/>}> THE LIBRARY </MenuItem>*/}
         </Drawer>
         </header>
       </div>
