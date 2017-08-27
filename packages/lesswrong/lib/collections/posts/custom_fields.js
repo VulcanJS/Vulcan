@@ -308,8 +308,6 @@ Posts.addField([
       editableBy: ['admins'],
       insertableBy: ['admins'],
     }
-  }
-
-
+  },
 
 ]);
