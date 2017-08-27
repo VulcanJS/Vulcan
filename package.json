@@ -5,7 +5,7 @@
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "sh prestart_lesswrong.sh",
+    "prestart": "bash prestart_lesswrong.sh",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
