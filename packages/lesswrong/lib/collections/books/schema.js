@@ -73,6 +73,14 @@ const schema = {
     insertableBy: ['members'],
   },
 
+  number: {
+    type: Number,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
+  },
+
   //TODO: Make resolvers more efficient by running `find` query instead of `findOne` query
 
   postIds: {

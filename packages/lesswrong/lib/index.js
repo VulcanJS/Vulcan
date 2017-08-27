@@ -31,6 +31,7 @@ import Chapters from './collections/chapters/collection.js';
 import Books from './collections/books/collection.js';
 import Collections from './collections/collections/collection.js';
 
+import './modules/fragments.js';
 import './collections/chapters/fragments.js';
 import './collections/sequences/fragments.js';
 import './collections/books/fragments.js';
@@ -65,7 +66,6 @@ import './collections/comments/custom_fields.js';
 import './i18n-en-us/en_US.js';
 //
 // // General
-import './modules/fragments.js';
 import './modules/callbacks.js';
 
 // Legacy Post Redirect
@@ -83,6 +83,9 @@ import './modules/settings.js';
 // Closed Beta Stuff
 import './closed-beta/configuration.js';
 
+// Algolia Search Integration
+import './search/utils.js';
+import './search/callbacks.js';
 
 //
 export { Conversations, Messages, Notifications, RSSFeeds, Chapters, Sequences, Collections, LWEvents, Books }

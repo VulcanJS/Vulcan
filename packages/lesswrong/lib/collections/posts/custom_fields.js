@@ -263,5 +263,42 @@ Posts.addField([
       optional: true,
       viewableBy: ['guests'],
     }
-  }
+  },
+
+
+  {
+    fieldName: 'nextPageTitle',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
+      insertableBy: ['admins']
+    }
+  },
+
+  {
+    fieldName: 'nextPageLink',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
+      insertableBy: ['admins']
+    }
+  },
+
+  {
+    fieldName: 'collectionTitle',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+      editableBy: ['admins'],
+      insertableBy: ['admins']
+    }
+  },
+
+
+
 ]);

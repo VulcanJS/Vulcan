@@ -22,8 +22,6 @@ class CollectionsPage extends Component {
 
   render() {
     const {document, currentUser, loading} = this.props;
-    const startedReading = false; //TODO: Check whether user has started reading sequences
-    const collection = document;
     if (loading || !document) {
       return <Components.Loading />;
     } else if (this.state.edit) {
@@ -32,6 +30,14 @@ class CollectionsPage extends Component {
                 successCallback={this.showCollection}
                 cancelCallback={this.showCollection} />
     } else {
+      const startedReading = false; //TODO: Check whether user has started reading sequences
+      let startReadingLink = "";
+      if (document.books && document.books[0].posts) {
+        startReadingLink = "/s/" + document._id + "/p/" + document.books[0].posts._id;
+      } else if (document.books && document.books[0].sequences) {
+        startReadingLink = "/sequences/" + document
+      }
+      const collection = document;
       const canEdit = Users.canDo(currentUser, 'collections.edit.all') || (Users.canDo(currentUser, 'collections.edit.own') && Users.owns(currentUser, collection))
       return (<div className="collections-page">
         <Components.Section titleComponent={canEdit ? <a onTouchTap={this.showEdit}>edit</a> : null}>
@@ -45,9 +51,9 @@ class CollectionsPage extends Component {
         </Components.Section>
         <div className="collections-page-content">
           {/* For each book, print a section with a grid of sequences */}
-          {collection.books.map(book => <Components.BooksItem book={book} canEdit={canEdit} />)}
+          {collection.books.map(book => <Components.BooksItem collection={collection} book={book} canEdit={canEdit} />)}
         </div>
-        <Components.BooksNewForm prefilledProps={{collectionId: collection._id}} />
+        {canEdit ? <Components.BooksNewForm prefilledProps={{collectionId: collection._id}} /> : null}
       </div>);
     }
   }

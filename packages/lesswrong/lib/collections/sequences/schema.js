@@ -84,6 +84,14 @@ const schema = {
     insertableBy: ['admins'],
   },
 
+  color: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    editableBy: ['admins'],
+    insertableBy: ['admins'],
+  },
+
   chaptersDummy: {
     type: Array,
     optional: true,

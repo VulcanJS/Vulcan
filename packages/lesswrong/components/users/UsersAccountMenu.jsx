@@ -40,7 +40,7 @@ class UsersAccountMenu extends PureComponent {
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this.handleRequestClose}
         >
-          <Components.AccountsLoginForm formState={state? STATES[state] : STATES.SIGN_UP} />
+          <Components.AccountsLoginForm />
         </Popover>
       </div>
     )

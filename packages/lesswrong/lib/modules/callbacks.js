@@ -1,6 +1,7 @@
 import Notifications from '../collections/notifications/collection.js';
 import Messages from '../collections/messages/collection.js';
 import Conversations from '../collections/conversations/collection.js';
+import Sequences from '../collections/sequences/collection.js';
 import Users from 'meteor/vulcan:users';
 import Posts from 'meteor/vulcan:posts';
 import Comments from 'meteor/vulcan:comments';
@@ -259,6 +260,17 @@ function commentsNewHTMLBodyAndPlaintextBody(comment) {
     const plaintextBody = h2p(html);
     Comments.update(comment._id, {$set: {body: plaintextBody}});
   }
+}
+
+addCallback("comments.new.async", commentsNewHTMLBodyAndPlaintextBody);
+addCallback("comments.edit.async", commentsNewHTMLBodyAndPlaintextBody);
+
+function sequencesNewPlaintextDescription(sequence) {
+  if (sequence.description) {
+    const html = ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={sequence.description} />);
+    const plaintextBody = h2p(html);
+    Sequences.update(sequence._id, {$set: {plaintextDescription: plaintextBody}});
+  } 
 }
 
 addCallback("comments.new.async", commentsNewHTMLBodyAndPlaintextBody);

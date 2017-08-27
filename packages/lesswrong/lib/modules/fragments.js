@@ -113,12 +113,15 @@ registerFragment(`
     feed {
       ...RSSFeedMinimumInfo
     }
+    nextPageTitle
+    nextPageLink
+    collectionTitle
   }
 `);
 
 registerFragment(`
   fragment LWPostsPage on Post {
-    ...PostsList
+    ...LWPostsList
     body
     htmlBody
     content

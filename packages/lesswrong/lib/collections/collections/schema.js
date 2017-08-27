@@ -67,7 +67,7 @@ const schema = {
       fieldName: 'books',
       type: '[Book]',
       resolver: (collection, args, context) => {
-        const books = context.Books.find({collectionId: collection._id}, {fields: context.Users.getViewableFields(context.currentUser, context.Books)}).fetch();
+        const books = context.Books.find({collectionId: collection._id}, {sort: {number: 1}, fields: context.Users.getViewableFields(context.currentUser, context.Books)}).fetch();
         return books;
       }
     }

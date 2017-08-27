@@ -125,11 +125,32 @@ class PostsPage extends Component {
               </div>
             </div>
           </div>
+          {this.renderRecommendedReading()}
           <div className="posts-page-comments" id="comments">
             <Components.PostsCommentsThreadWrapper terms={{...commentTerms, postId: post._id}} userId={userId} />
           </div>
         </div>
       );
+    }
+  }
+
+  renderRecommendedReading = () => {
+    const post = this.props.document;
+    const sequenceId = this.props.params.sequenceId;
+    if (post.nextPageTitle && sequenceId) {
+      return <div className="posts-page-recommended-reading">
+        <Components.RecommendedReadingWrapper documentId={sequenceId} post={post} nextTitle={post.nextPageTitle} nextLink={post.nextPageLink} collectionTitle={post.collectionTitle}/>
+      </div>
+    } else if (post.nextPageTitle) {
+      return <div className="posts-page-recommended-reading">
+        <Components.RecommendedReading post={post} nextTitle={post.nextPageTitle} nextLink={post.nextPageLink} collectionTitle={post.collectionTitle} />
+      </div>
+    } else if (sequenceId) {
+      return <div className="posts-page-recommended-reading">
+        <Components.RecommendedReadingWrapper documentId={sequenceId} post={post}/>
+      </div>
+    } else {
+      return null
     }
   }
 
@@ -197,7 +218,7 @@ const queryOptions = {
   collection: Posts,
   queryName: 'postsSingleQuery',
   fragmentName: 'LWPostsPage',
-  totalResolver: false, 
+  totalResolver: false,
 };
 
 const mutationOptions = {

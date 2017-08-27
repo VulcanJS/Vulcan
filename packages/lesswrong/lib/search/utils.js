@@ -5,15 +5,20 @@ import RSSFeeds from '../collections/rssfeeds/collection.js';
 import Sequences from '../collections/sequences/collection.js';
 import algoliasearch from 'algoliasearch';
 import { getSetting } from 'meteor/vulcan:core';
+import h2p from 'html2plaintext';
+import ReactDOMServer from 'react-dom/server';
+import { Components } from 'meteor/vulcan:core';
+import React from 'react';
 
-const runExport = false;
+const oryToHtml = (content) => {
+  if (content) {
+    return ReactDOMServer.renderToStaticMarkup(<Components.ContentRenderer state={content} />);
+  } else {
+    return null;
+  }
+}
 
-const runPostExport = false;
-const runCommentExport = false;
-const runUserExport = false;
-const runSequenceExport = false;
-
-function commentToAlgoliaComment(comment) {
+Comments.toAlgolia = (comment) => {
   const algoliaComment = {
     objectID: comment._id,
     _id: comment._id,
@@ -42,13 +47,17 @@ function commentToAlgoliaComment(comment) {
   }
   //  Limit comment size to ensure we stay below Algolia search Limit
   // TODO: Actually limit by encoding size as opposed to characters
-  if (comment.body) {
+  if (comment.content) {
+    const html = oryToHtml(comment.content)
+    const plaintextBody = h2p(html);
+    algoliaComment.body = plaintextBody.slice(0, 2000);
+  } else if (comment.body) {
     algoliaComment.body = comment.body.slice(0,2000);
   }
   return [algoliaComment]
 }
 
-function sequenceToAlgoliaSequence(sequence) {
+Sequences.toAlgolia = (sequence) => {
   const algoliaSequence = {
     objectID: sequence._id,
     _id: sequence._id,
@@ -69,13 +78,17 @@ function sequenceToAlgoliaSequence(sequence) {
   }
   //  Limit comment size to ensure we stay below Algolia search Limit
   // TODO: Actually limit by encoding size as opposed to characters
-  if (sequence.plaintextDescription) {
+  if (sequence.description) {
+    const html = oryToHtml(sequence.description);
+    const plaintextBody = h2p(html);
+    algoliaSequence.plaintextDescription = plaintextBody.slice(0, 2000);
+  } else if (sequence.plaintextDescription) {
     algoliaSequence.plaintextDescription = sequence.plaintextDescription.slice(0,2000);
   }
   return [algoliaSequence]
 }
 
-function userToAlgoliaUser(user) {
+Users.toAlgolia = (user) => {
   const algoliaUser = {
     objectID: user._id,
     username: user.username,
@@ -92,7 +105,7 @@ function userToAlgoliaUser(user) {
 }
 
 
-function postToAlgoliaPost(post) {
+Posts.toAlgolia = (post) => {
   const algoliaMetaInfo = {
     _id: post._id,
     userId: post.userId,
@@ -125,8 +138,9 @@ function postToAlgoliaPost(post) {
   let postBatch = [];
   let paragraphCounter =  0;
   let algoliaPost = {};
-  if (post.body) {
-    post.body.split("\n\n").forEach((paragraph) => {
+  const body = (post.content ? h2p(oryToHtml(post.content)) : (post.htmlBody ? h2p(post.htmlBody) : post.body))
+  if (body) {
+    body.split("\n\n").forEach((paragraph) => {
       algoliaPost = {
         ...algoliaMetaInfo,
         objectID: post._id + "_" + paragraphCounter,
@@ -138,11 +152,10 @@ function postToAlgoliaPost(post) {
   } else {
     postBatch.push(_.clone(algoliaMetaInfo));
   }
-  Posts.update(post._id, {$set: {algoliaIndexAt: new Date()}});
   return postBatch;
 }
 
-function algoliaExport(Collection, indexName, exportFunction, selector = {}, updateFunction) {
+export function algoliaCollectionExport(Collection, indexName, exportFunction, selector = {}, updateFunction) {
   const algoliaAppId = getSetting('algoliaAppId');
   const algoliaAdminKey = getSetting('algoliaAdminKey');
   let client = algoliasearch(algoliaAppId, algoliaAdminKey);
@@ -187,94 +200,45 @@ function algoliaExport(Collection, indexName, exportFunction, selector = {}, upd
   console.log("Encountered the following errors: ", totalErrors)
 }
 
-if (runExport){
-  if (runPostExport) algoliaExport(Posts, 'test_posts', postToAlgoliaPost, {baseScore: {$gt: 0}})
-  if (runCommentExport) algoliaExport(Comments, 'test_comments', commentToAlgoliaComment, {baseScore: {$gt: 0}})
-  if (runUserExport) algoliaExport(Users, 'test_users', userToAlgoliaUser)
-  if (runSequenceExport) algoliaExport(Sequences, 'test_sequences', sequenceToAlgoliaSequence)
+export function algoliaDocumentExport(documents, Collection, indexName, exportFunction, updateFunction) {
+  const algoliaAppId = getSetting('algoliaAppId');
+  const algoliaAdminKey = getSetting('algoliaAdminKey');
+  let client = algoliasearch(algoliaAppId, algoliaAdminKey);
+  let algoliaIndex = client.initIndex(indexName);
 
-  // if (runCommentExport) {
-  //   console.log("Exporting Comments...")
-  //   let commentIndex = client.initIndex('test_comments');
-  //
-  //   console.log("Initiated Index connection", commentIndex)
-  //   let exportCommentCount = 0;
-  //   let algoliaComment =  {};
-  //   let exportBatch = [];
-  //   let totalErrors = [];
-  //   Comments.find().fetch().forEach((comment) => {
-  //     if (comment.baseScore > 0) {
-  //       algoliaComment =  commentToAlgoliaComment(comment);
-  //       exportBatch.push(algoliaComment);
-  //       exportCommentCount++;
-  //       if (exportCommentCount % 100 == 0) {
-  //         console.log("Exported n comments: ", exportCommentCount);
-  //         commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-  //           if(error) {
-  //             console.log("Algolia Error: ", error);
-  //             totalErrors.push(error);
-  //           }
-  //           console.log("write operation received: ", content);
-  //           commentIndex.waitTask(content, function contentIndexed() {
-  //             console.log("object " + content + " indexed");
-  //           });
-  //         });
-  //         exportBatch = [];
-  //       }
-  //     }
-  //   })
-  //   console.log("Exporting last n posts ", exportCommentCount);
-  //   commentIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-  //     if(error) {
-  //       console.log("Algolia Error: ", error)
-  //     }
-  //     console.log("write operation received: " + content);
-  //     commentIndex.waitTask(content, function contentIndexed() {
-  //       console.log("object " + content + " indexed");
-  //     });
-  //   });
-  //   console.log("Encountered the following errors: ", totalErrors)
-  // }
-  //
-  // if (runUserExport) {
-  //   console.log("Exporting Users...")
-  //   let userIndex = client.initIndex('test_users');
-  //
-  //   console.log("Initiated Index connection", userIndex)
-  //   let exportUserCount = 0;
-  //   let algoliaUser =  {};
-  //   let exportBatch = [];
-  //   let totalErrors = [];
-  //   Users.find().fetch().forEach((user) => {
-  //     algoliaUser =  userToAlgoliaUser(user);
-  //     exportBatch.push(algoliaUser);
-  //     exportUserCount++;
-  //     if (exportUserCount % 100 == 0) {
-  //       console.log("Exported n users: ", exportUserCount);
-  //       userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-  //         if(error) {
-  //           console.log("Algolia Error: ", error);
-  //           totalErrors.push(error);
-  //         }
-  //         console.log("write operation received: ", content);
-  //         userIndex.waitTask(content, function contentIndexed() {
-  //           console.log("object " + content + " indexed");
-  //         });
-  //       });
-  //       exportBatch = [];
-  //     }
-  //   })
-  //   console.log("Exporting last n users ", exportUserCount);
-  //   userIndex.addObjects(_.map(exportBatch, _.clone), function gotTaskID(error, content) {
-  //     if(error) {
-  //       console.log("Algolia Error: ", error)
-  //     }
-  //     console.log("write operation received: " + content);
-  //     userIndex.waitTask(content, function contentIndexed() {
-  //       console.log("object " + content + " indexed");
-  //     });
-  //   });
-  //   console.log("Encountered the following errors: ", totalErrors)
-  // }
-
+  let importCount = 0;
+  let importBatch = [];
+  let batchContainer = [];
+  let totalErrors = [];
+  documents.forEach((item) => {
+    if (updateFunction) updateFunction(item);
+    batchContainer = exportFunction(item);
+    importBatch = [...importBatch, ...batchContainer];
+    importCount++;
+    if (importCount % 100 == 0) {
+      console.log("Imported n posts: ",  importCount, importBatch.length)
+      algoliaIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
+        if(error) {
+          console.log("Algolia Error: ", error);
+          totalErrors.push(error);
+        }
+        console.log("write operation received: ", content);
+        algoliaIndex.waitTask(content, function contentIndexed() {
+          console.log("object " + content + " indexed");
+        });
+      });
+      importBatch = [];
+    }
+  })
+  console.log("Exporting last n documents ", importCount);
+  algoliaIndex.addObjects(_.map(importBatch, _.clone), function gotTaskID(error, content) {
+    if(error) {
+      console.log("Algolia Error: ", error)
+    }
+    console.log("write operation received: " + content);
+    algoliaIndex.waitTask(content, function contentIndexed() {
+      console.log("object " + content + " indexed");
+    });
+  });
+  console.log("Encountered the following errors: ", totalErrors)
 }

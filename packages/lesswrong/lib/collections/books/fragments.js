@@ -13,7 +13,7 @@ registerFragment(`
     }
     postIds
     posts {
-      ...PostsList
+      ...LWPostsList
     }
     collectionId
   }

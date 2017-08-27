@@ -68,4 +68,17 @@ Users.addField([
       blackbox: true,
     }
   },
+
+  /**
+    algoliaIndexAt: Last time the record was indexed by algolia. Undefined if it hasn't yet been indexed.
+  */
+
+  {
+    fieldName: 'algoliaIndexAt',
+    fieldSchema: {
+      type: Date,
+      optional: true,
+      viewableBy: ['guests']
+    }
+  }
 ]);

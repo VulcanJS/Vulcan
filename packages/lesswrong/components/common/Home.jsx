@@ -1,6 +1,5 @@
-import { Components, registerComponent} from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser} from 'meteor/vulcan:core';
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 const testCollections = [
@@ -49,8 +48,9 @@ const Home = (props, context) => {
         <Components.Section title="Recent Posts"
           titleComponent= {<div className="recent-posts-title-component">
             sorted by<br /> <Components.PostsViews />
-          <div className="new-post-link"><Link to={"/newPost"}> new post </Link></div>
-          </div>}>
+          {props.currentUser ? <div className="new-post-link"><Link to={"/newPost"}> new post </Link></div>
+            : null}
+          </div>} >
           <Components.PostsList terms={recentPostsTerms} showHeader={false} />
         </Components.Section>
 
@@ -61,4 +61,4 @@ const Home = (props, context) => {
   )
 };
 
-registerComponent('Home', Home);
+registerComponent('Home', Home, withCurrentUser);

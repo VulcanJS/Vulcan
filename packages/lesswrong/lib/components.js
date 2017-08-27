@@ -109,6 +109,8 @@ import '../components/sequences/SequencesGrid.jsx';
 import '../components/sequences/SequencesGridWrapper.jsx';
 import '../components/sequences/SequencesListItem.jsx';
 import '../components/sequences/SequencesNavigation.jsx';
+import '../components/sequences/RecommendedReading.jsx';
+import '../components/sequences/RecommendedReadingWrapper.jsx';
 import '../components/sequences/SequencesPost.jsx';
 import '../components/sequences/SequencesGridItem.jsx';
 import '../components/sequences/ChaptersItem.jsx';

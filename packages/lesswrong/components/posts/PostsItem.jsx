@@ -45,7 +45,7 @@ class PostsItem extends PureComponent {
 
   render() {
 
-    const {post, chapter} = this.props;
+    const {post, chapter, inlineCommentCount} = this.props;
     const read = post.lastVisitedAt;
     const newComments = post.lastVisitedAt < post.lastCommentedAt;
     const postLink = chapter ? ("/s/" + chapter.sequenceId + "/p/" + post._id) : Posts.getLink(post)
@@ -86,6 +86,7 @@ class PostsItem extends PureComponent {
               {post.postedAt ? <div className="posts-item-date"> {moment(new Date(post.postedAt)).fromNow()} </div> : null}
               {post.user ? <div className="posts-item-user"><Components.UsersName user={post.user}/></div> : null}
               <div className="posts-item-vote"> <Components.Vote collection={Posts} document={post} currentUser={this.props.currentUser}/> </div>
+              {inlineCommentCount ? <div className="posts-item-comments"> {post.commentCount} comments </div> : null}
               {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
               {this.props.currentUser && this.props.currentUser.isAdmin ? <div className="posts-item-admin"><Components.PostsStats post={post} /></div> : null}
             </div></object>

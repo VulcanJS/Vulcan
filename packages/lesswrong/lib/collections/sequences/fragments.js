@@ -12,6 +12,7 @@ registerFragment(`
     description
     gridImageId
     bannerImageId
+    color
   }
 `);
 
@@ -20,14 +21,24 @@ registerFragment(`
     _id
     createdAt
     title
+    color
     chapters {
+      _id
       title
+      sequenceId
       posts {
         _id
         slug
         title
         lastVisitedAt
         excerpt
+        baseScore
+        score
+        commentCount
+        viewCount
+        clickCount
+        upvotes
+        downvotes
       }
     }
   }
