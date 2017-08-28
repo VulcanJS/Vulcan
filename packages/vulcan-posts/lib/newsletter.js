@@ -24,17 +24,33 @@ VulcanEmail.addEmails({
           title
         }
         PostsList(terms: $terms){
+
           _id
           title
           url
           pageUrl
           linkUrl
+          domain
           htmlBody
           thumbnailUrl
+          commentsCount
+          postedAtFormatted
+
           user{
             pageUrl
             displayName
           }
+
+          comments(limit: 3){
+            user{
+              displayName
+              avatarUrl
+              pageUrl
+            }
+            htmlBody
+            postedAt
+          }
+          
         }
       }
     `,

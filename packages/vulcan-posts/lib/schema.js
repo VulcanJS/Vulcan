@@ -259,11 +259,21 @@ const schema = {
 
   // GraphQL-only fields
 
+  domain: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post, args, context) => {
+        return Utils.getDomain(post.url);
+      },
+    }  
+  },
+
   pageUrl: {
     type: String,
     optional: true,
     resolveAs: {
-      fieldName: 'pageUrl',
       type: 'String',
       resolver: (post, args, context) => {
         return Posts.getPageUrl(post, true);
@@ -275,7 +285,6 @@ const schema = {
     type: String,
     optional: true,
     resolveAs: {
-      fieldName: 'linkUrl',
       type: 'String',
       resolver: (post, args, context) => {
         return post.url ? Utils.getOutgoingUrl(post.url) : Posts.getPageUrl(post, true);
@@ -292,6 +301,36 @@ const schema = {
         return moment(booking.endAt).format('dddd, MMMM Do YYYY');
       }
     }  
+  },
+
+  commentsCount: {
+    type: Number,
+    optional: true,
+    resolveAs: {
+      type: 'Int',
+      resolver: (post, args, { Comments }) => {
+        const commentsCount = Comments.find({ postId: post._id }).count();
+        return commentsCount;
+      },
+    }  
+  },
+
+  comments: {
+    type: Array,
+    optional: true,
+    resolveAs: {
+        arguments: 'limit: Int = 5',
+        type: '[Comment]',
+        resolver: (post, { limit }, { currentUser, Users, Comments }) => {
+          const comments = Comments.find({ postId: post._id }, { limit }).fetch();
+
+          // restrict documents fields
+          const viewableComments = _.filter(comments, comments => Comments.checkAccess(currentUser, comments));
+          const restrictedComments = Users.restrictViewableFields(currentUser, Comments, viewableComments);
+        
+          return restrictedComments;
+        }
+      }
   },
 
 };

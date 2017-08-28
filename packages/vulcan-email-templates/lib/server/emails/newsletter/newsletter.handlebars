@@ -94,7 +94,7 @@
           <img class="post-thumbnail" src="{{thumbnailUrl}}"/>&nbsp;
         {{/if}}
 
-        <a href="{{postLink}}" target="_blank">{{title}}</a>
+        <a href="{{linkUrl}}" target="_blank">{{title}}</a>
       </span>
 
       <div class="post-meta">
@@ -105,7 +105,7 @@
 
         <span class="post-submitted">
           {{#if user.pageUrl}}
-            Submitted by <a href="{{profileUrl}}" class="comment-link" target="_blank">{{user.displayName}}</a>
+            Submitted by <a href="{{user.pageUrl}}" class="comment-link" target="_blank">{{user.displayName}}</a>
           {{else}}
             Submitted by {{user.displayName}}
           {{/if}}
@@ -113,36 +113,36 @@
 
         <span class="post-date">on {{postedAtFormatted}}</span>
         |
-        <a href="{{postPageLink}}" class="comment-link" target="_blank">{{commentCount}} Comments</a>
+        <a href="{{pageUrl}}" class="comment-link" target="_blank">{{commentsCount}} Comments</a>
       </div>
 
 
       {{#if htmlBody}}
         <div class="post-body-excerpt">
           {{htmlBody}}
-          <a href="{{postPageLink}}" class="comment-link" target="_blank">Read more</a>
+          <a href="{{pageUrl}}" class="comment-link" target="_blank">Read more</a>
         </div>
       {{/if}}
 
-      {{#if popularComments}}
+      {{#if comments}}
         <div class="post-comments">
           <div class="post-comments-title">Top Comments</div>
-          {{#each popularComments}}
+          {{#each comments}}
             <div class="post-comment">
               <div class="post-comment-author">
-                {{#if authorAvatarUrl}}
-                  <img class="post-comment-avatar avatar" src="{{authorAvatarUrl}}"/>
+                {{#if user.avatarUrl}}
+                  <img class="post-comment-avatar avatar" src="{{user.avatarUrl}}"/>
                 {{/if}}
                 <span class="post-comment-author-name">
-                  <a href="{{authorProfileUrl}}" class="post-comment-author-link">
-                    {{author}}
+                  <a href="{{user.pageUrl}}" class="post-comment-author-link">
+                    {{user.displayName}}
                   </a>
                 </span>
               </div>
-              <div class="post-comment-body">{{body}}</div>
+              <div class="post-comment-body">{{htmlBody}}</div>
             </div>
           {{/each}}
-          <a class="post-comments-discuss" href="{{postPageLink}}">Discuss</a>
+          <a class="post-comments-discuss" href="{{pageUrl}}">Discuss</a>
         </div>
       {{/if}}
 
