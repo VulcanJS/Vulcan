@@ -56,7 +56,9 @@ class CollectionsPage extends Component {
 
 const options = {
   collection: Collections,
-  fragmentName: 'CollectionsPageFragment'
+  queryName: "CollectionsPageQuery",
+  fragmentName: 'CollectionsPageFragment',
+  totalResolver: false,
 };
 
 registerComponent('CollectionsPage', CollectionsPage, withDocument(options), withCurrentUser);

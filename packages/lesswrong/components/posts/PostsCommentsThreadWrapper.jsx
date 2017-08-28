@@ -22,9 +22,9 @@ const PostsCommentsThreadWrapper = (props, /* context*/) => {
 
 const options = {
   collection: Comments,
-  queryName: 'commentsListQuery',
+  queryName: 'PostCommentsThreadQuery',
   fragmentName: 'CommentsList',
-  limit: 0,
+  limit: 50,
   totalResolver: false,
 };
 

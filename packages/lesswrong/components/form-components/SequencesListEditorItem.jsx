@@ -36,6 +36,7 @@ const SequencesListEditorItem = ({document, loading, ...props}) => {
 
 const options = {
   collection: Sequences,
+  queryName: "SequencesListEditorQuery",
   fragmentName: 'SequencesPageFragment',
 };
 

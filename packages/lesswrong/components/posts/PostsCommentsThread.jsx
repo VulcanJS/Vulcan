@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { withList, Components, replaceComponent} from 'meteor/vulcan:core';
 import LWEvents from '../../lib/collections/lwevents/collection.js';
 
-const PostsCommentsThread = (props) => {
-    const {loading, terms: {postId}, results, comments} = props;
+const PostsCommentsThread = ({loading, terms: {postId}, results, comments}) => {
     if (loading || !results) {
-      return <div className="posts-comments-thread"><Components.Loading/></div>
+      console.log("Loading & Results PostsCommentsThread: ", loading, results);
+      return <div className="posts-comments-thread"><Components.CommentsListSection comments={comments} postId={postId}/></div>
     } else {
       const lastEvent = results && results[0]
       return <div className="posts-comments-thread"><Components.CommentsListSection comments={comments} lastEvent={lastEvent} postId={postId}/></div>
@@ -24,7 +24,7 @@ const options = {
   queryName: 'lastPostVisitQuery',
   fragmentName: 'lastEventFragment',
   limit: 1,
-  totalResolver: false, 
+  totalResolver: false,
 };
 
 replaceComponent('PostsCommentsThread', PostsCommentsThread, [withList, options]);

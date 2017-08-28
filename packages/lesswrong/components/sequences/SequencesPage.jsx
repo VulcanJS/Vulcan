@@ -89,7 +89,9 @@ class SequencesPage extends Component {
 
 const options = {
   collection: Sequences,
-  fragmentName: 'SequencesPageFragment'
+  queryName: "SequencesPageQuery",
+  fragmentName: 'SequencesPageFragment',
+  totalResolver: false,
 };
 
 

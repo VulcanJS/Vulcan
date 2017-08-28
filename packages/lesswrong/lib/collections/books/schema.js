@@ -116,11 +116,16 @@ const schema = {
     resolveAs: {
       fieldName: 'sequences',
       type: '[Sequence]',
-      resolver: (book, args, context) => {
-        return (_.map(book.sequenceIds, (id) =>
-          { return context.Sequences.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Sequences)})
-        }))
+      resolver: async (book, args, {currentUser, Users, Sequences}) => {
+        if (!book.sequenceIds) return [];
+        const sequences = _.compact(await Sequences.loader.loadMany(book.sequenceIds));
+        return Users.restrictViewableFields(currentUser, Sequences, sequences);
       },
+      // resolver: (book, args, context) => {
+      //   return (_.map(book.sequenceIds, (id) =>
+      //     { return context.Sequences.findOne({ _id: id }, { fields: context.Users.getViewableFields(context.currentUser, context.Sequences)})
+      //   }))
+      // },
       addOriginalField: true,
     },
     control: SequencesListEditor,
