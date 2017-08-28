@@ -7,7 +7,7 @@ const testCollections = [
     title: "The Core Sequences",
     id: "dummyId",
     user: {displayName: "EliezerYudkowsky"},
-    summary: "The Core Sequences contain many of the formative ideas behind the Machine Intelligence Research Institute, the Center for Applied Rationality, and substantial parts of the effective altruist community.",
+    summary: "The Core Sequences contain many of the formative ideas behind the Machine Intelligence Research Institute, the Center for Applied Rationality, and substantial parts of the effective altruism community.",
     image: "http://i.imgur.com/dVXiZtw.png",
     color: "#B1D4B4",
     big: true,
