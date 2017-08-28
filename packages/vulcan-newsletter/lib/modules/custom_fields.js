@@ -1,15 +1,5 @@
 import NewsletterSubscribe from '../components/NewsletterSubscribe.jsx';
-import Posts from "meteor/vulcan:posts";
 import Users from 'meteor/vulcan:users';
-
-Posts.addField({
-  fieldName: 'scheduledAt',
-  fieldSchema: {
-    type: Date,
-    optional: true,
-    viewableBy: ['guests'],
-  }
-});
 
 Users.addField([
   {

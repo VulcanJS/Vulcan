@@ -42,6 +42,12 @@ VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
   return doctype+inlinedHTML;
 };
 
+VulcanEmail.generateTextVersion = html => {
+  return htmlToText.fromString(html, {
+    wordwrap: 130
+  });
+}
+
 VulcanEmail.send = (to, subject, html, text) => {
 
   // TODO: limit who can send emails
@@ -53,9 +59,7 @@ VulcanEmail.send = (to, subject, html, text) => {
 
   if (typeof text === 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
-    text = htmlToText.fromString(html, {
-        wordwrap: 130
-    });
+    text = VulcanEmail.generateTextVersion(html);
   }
 
   const email = {
@@ -96,19 +100,25 @@ VulcanEmail.send = (to, subject, html, text) => {
 
 };
 
-VulcanEmail.buildAndSend = async ({ to, emailName, variables }) => {
-
+VulcanEmail.build = async ({ emailName, variables }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
   const result = email.query ? await runQuery(email.query, variables) : {data: {}};
 
   // if email has a data() function, merge its return value with results from the query
-  const emailData = email.data ? {...result.data, ...email.data(variables)} : result.data;
+  const data = email.data ? {...result.data, ...email.data(variables)} : result.data;
 
-  const subject = typeof email.subject === 'function' ? email.subject(emailData) : email.subject;
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(emailData));
+  const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data));
 
-  return VulcanEmail.send(to, subject, html);
+  return { data, subject, html };
+}
+
+VulcanEmail.buildAndSend = async ({ to, emailName, variables }) => {
+
+  const email = VulcanEmail.build({ to, emailName, variables });
+
+  return VulcanEmail.send(to, email.subject, email.html);
 
 };
 

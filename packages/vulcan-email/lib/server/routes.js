@@ -4,8 +4,6 @@ import VulcanEmail from '../namespace.js';
 
 Meteor.startup(function () {
 
-  console.log(VulcanEmail.emails)
-
   _.forEach(VulcanEmail.emails, (email, key) => {
 
     // template live preview routes
@@ -21,9 +19,9 @@ Meteor.startup(function () {
       } else {
 
         // else get test object (sample post, comment, user, etc.)
-        const testVariables = email.testVariables || {};
+        const testVariables = (typeof email.testVariables === 'function' ? email.testVariables() : email.testVariables) || {};
         const result = email.query ? await runQuery(email.query, testVariables) : {data: {}};
-        
+
         // if email has a data() function, merge it with results of query
         const emailTestData = email.data ? {...result.data, ...email.data(testVariables)} : result.data;
         const subject = typeof email.subject === 'function' ? email.subject(emailTestData) : email.subject;

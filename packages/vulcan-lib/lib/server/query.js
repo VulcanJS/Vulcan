@@ -28,7 +28,7 @@ export const runQuery = async (query, variables = {}) => {
 
   if (result.errors) {
     console.log('runQuery error: '+result.errors[0].message);
-    throw new Error(result.errors[0].message); // doesn't work??
+    throw new Error(result.errors[0].message);
   }
 
   return result;

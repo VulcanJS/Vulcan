@@ -64,7 +64,7 @@ if (settings) {
       return unsubscribeSync({email, list_id: listId});
     },
 
-    send({ title, subject, text, html, isTest = false }) {
+    send({ subject, text, html, isTest = false }) {
       const params = {
         from_name: fromName,
         from_email: fromEmail,

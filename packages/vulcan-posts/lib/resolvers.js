@@ -20,7 +20,7 @@ const resolvers = {
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = Posts.getParameters(terms);
-      options.skip = terms.offset;
+      options.skip = terms && terms.offset;
       const posts = Posts.find(selector, options).fetch();
 
       // restrict documents fields

@@ -1,5 +1,7 @@
 import Users from 'meteor/vulcan:users';
 import Posts from './collection.js'
+import moment from 'moment';
+import Newsletters from 'meteor/vulcan:newsletter';
 
 /**
  * @summary Base parameters that will be common to all other view unless specific properties are overwritten
@@ -117,4 +119,28 @@ Posts.addView("userDownvotedPosts", (terms, apolloClient) => {
     selector: {_id: {$in: postsIds}},
     options: {limit: 5, sort: {postedAt: -1}}
   };
+});
+
+/**
+ * @summary Newsletter posts view
+ */
+// create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
+Posts.addView("newsletter", terms => {
+  const lastNewsletter = Newsletters.findOne({}, {sort: {createdAt: -1}});
+
+  // if there is a last newsletter and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
+  const lastWeek = moment().subtract(7, 'days');
+  const lastNewsletterIsAfterLastWeek = lastNewsletter && moment(lastNewsletter.createdAt).isAfter(lastWeek);
+  const after = lastNewsletterIsAfterLastWeek ? lastNewsletter.createdAt : lastWeek.toDate();
+
+  return {
+    selector: {
+      scheduledAt: {$exists: false},
+      postedAt: {$gte: after}
+    },
+    options: {
+      sort: {baseScore: -1},
+      limit: terms.limit
+    }
+  }
 });

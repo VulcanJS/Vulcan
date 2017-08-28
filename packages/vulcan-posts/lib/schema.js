@@ -1,6 +1,7 @@
 import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
 import { Utils } from 'meteor/vulcan:core';
+import moment from 'moment';
 
 /**
  * @summary Posts config namespace
@@ -247,6 +248,15 @@ const schema = {
     },
   },
 
+  /**
+    Used to keep track of when a post has been included in a newsletter
+  */
+  scheduledAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ['admins'],
+  },
+
   // GraphQL-only fields
 
   pageUrl: {
@@ -271,7 +281,18 @@ const schema = {
         return post.url ? Utils.getOutgoingUrl(post.url) : Posts.getPageUrl(post, true);
       },
     }  
-  }
+  },
+
+  postedAtFormatted: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (booking, args, context) => {
+        return moment(booking.endAt).format('dddd, MMMM Do YYYY');
+      }
+    }  
+  },
 
 };
 

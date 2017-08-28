@@ -14,6 +14,7 @@ import './mutations.js';
 import './redux.js';
 import './i18n.js';
 import './admin.js';
+import './newsletter.js';
 
 export { default as AdminUsersPosts } from './components/AdminUsersPosts';
 export default Posts;

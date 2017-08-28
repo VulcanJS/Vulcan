@@ -63,9 +63,8 @@ if (settings) {
       return unsubscribeSync({email});
     },
 
-    send({ title, subject, text, html, isTest = false }) {
+    send({ subject, text, html, isTest = false }) {
       const options = {
-        title,
         subject,
         text,
         html
