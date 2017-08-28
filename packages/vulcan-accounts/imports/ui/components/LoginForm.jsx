@@ -234,7 +234,7 @@ export class AccountsLoginForm extends Tracker.Component {
         break;
     }
     this.setState({ [field]: value });
-    this.setDefaultFieldValues({ [field]: value });
+    this.setDefaultFieldValues({[field]: value });
   }
 
   fields() {
@@ -625,8 +625,9 @@ export class AccountsLoginForm extends Tracker.Component {
       Meteor.loginWithPassword(loginSelector, password, (error, result) => {
         onSubmitHook(error,formState);
         if (error) {
+          console.log(error);
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown', errorId, 'error');
+          this.showMessage(this.context.intl.formatMessage({id: errorId}) || error.reason || error.message || 'accounts.error_unknown', errorId, 'error');
         }
         else {
           loginResultCallback(() => this.state.onSignedInHook());
