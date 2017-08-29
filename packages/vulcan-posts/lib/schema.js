@@ -151,7 +151,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    control: "select",
+    control: 'select',
     onInsert: document => {
       if (document.userId && !document.status) {
         const user = Users.findOne(document.userId);

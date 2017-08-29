@@ -17,6 +17,7 @@ import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
+import { runCallbacks } from '../modules/callbacks.js';
 
 export let executableSchema;
 
@@ -135,6 +136,8 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
 // createApolloServer when server startup
 Meteor.startup(() => {
+
+  runCallbacks('graphql.init.before');
 
   // typeDefs
   const generateTypeDefs = () => [`

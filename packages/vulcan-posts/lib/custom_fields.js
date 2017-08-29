@@ -17,13 +17,12 @@ Users.addField([
     The user's associated posts (GraphQL only)
   */
   {
-    fieldName: "posts",
+    fieldName: 'posts',
     fieldSchema: {
       type: Array,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: {
-        fieldName: 'posts',
         arguments: 'limit: Int = 5',
         type: '[Post]',
         resolver: (user, { limit }, { currentUser, Users, Posts }) => {
