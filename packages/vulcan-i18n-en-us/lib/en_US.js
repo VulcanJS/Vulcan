@@ -12,6 +12,7 @@ addStrings('en', {
   "accounts.error_username_already_exists": "Username already exists",
   "accounts.enter_username_or_email": "Enter username or email",
   "accounts.error_internal_server_error": "Internal server error",
+  "accounts.error_token_expired": "Invalid password reset token",
   "accounts.username_or_email": "Username or email",
   "accounts.enter_username": "Enter username",
   "accounts.username": "Username",
