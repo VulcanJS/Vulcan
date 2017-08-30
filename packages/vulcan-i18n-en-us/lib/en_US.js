@@ -123,6 +123,7 @@ addStrings('en', {
   "users.notifications_users": "New Users Notifications",
   "users.notifications_posts": "New Posts Notifications",
   "users.newsletter_subscribeToNewsletter": "Subscribe to newsletter",
+  "users.users_admin": "Admin",
   "users.admin": "Admin",
   "users.isAdmin": "Admin",
   "users.posts": "Posts",
