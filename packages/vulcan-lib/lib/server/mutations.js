@@ -62,14 +62,16 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
 
   // run onInsert step
-  _.keys(schema).forEach(fieldName => {
+  // note: cannot use forEach with async/await. 
+  // See https://stackoverflow.com/a/37576787/649299
+  for(let fieldName of _.keys(schema)) {
     if (schema[fieldName].onInsert) {
-      const autoValue = schema[fieldName].onInsert(newDocument, currentUser);
+      const autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
       if (autoValue) {
         newDocument[fieldName] = autoValue;
       }
     }
-  });
+  }
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
@@ -127,10 +129,10 @@ export const editMutation = async ({ collection, documentId, set, unset, current
   }
 
   // run onEdit step
-  _.keys(schema).forEach(fieldName => {
+  for(let fieldName of _.keys(schema)) {
 
     if (schema[fieldName].onEdit) {
-      const autoValue = schema[fieldName].onEdit(modifier, document, currentUser);
+      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser);
       if (typeof autoValue !== 'undefined') {
         if (autoValue === null) {
           // if any autoValue returns null, then unset the field
@@ -140,7 +142,7 @@ export const editMutation = async ({ collection, documentId, set, unset, current
         }
       }
     }
-  });
+  }
 
   // run sync callbacks (on mongo modifier)
   modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
@@ -191,11 +193,11 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   }
 
   // run onRemove step
-  _.keys(schema).forEach(fieldName => {
+  for(let fieldName of _.keys(schema)) {
     if (schema[fieldName].onRemove) {
-      schema[fieldName].onRemove(document, currentUser);
+      await schema[fieldName].onRemove(document, currentUser);
     }
-  });
+  }
 
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
