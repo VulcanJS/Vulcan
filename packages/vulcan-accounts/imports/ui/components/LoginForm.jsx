@@ -817,13 +817,15 @@ export class AccountsLoginForm extends Tracker.Component {
     }
 
     this.clearMessages();
+
     if (this.validateField('email', email)) {
       this.setState({ waiting: true });
 
       Accounts.forgotPassword({ email: email }, (error) => {
+        console.log(error)
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          this.showMessage(this.context.intl.formatMessage({id: errorId}) || 'accounts.error_unknown' && errorId, 'error');
+          this.showMessage(errorId, 'error');
         }
         else {
           this.showMessage('accounts.info_email_sent', 'success', 5000);
