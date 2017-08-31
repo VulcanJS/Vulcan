@@ -30,7 +30,7 @@ class App extends PureComponent {
         <div>
           <Components.HeadTags />
           <LayoutComponent {...this.props} currentRoute={currentRoute}>
-            { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+            { this.props.currentUserLoading ? <Components.Loading /> : (this.props.children ? this.props.children : <Components.Welcome />) }
           </LayoutComponent>
         </div>
       </IntlProvider>

@@ -90,8 +90,8 @@ const getFieldValue = (value, typeName) => {
 
 const CardItem = ({label, value, typeName}) => 
   <tr>
-    <td><strong>{label}</strong></td>
-    <td>{getFieldValue(value, typeName)}</td>
+    <td className="datacard-label"><strong>{label}</strong></td>
+    <td className="datacard-value">{getFieldValue(value, typeName)}</td>
   </tr>
 
 const CardEdit = (props, context) =>

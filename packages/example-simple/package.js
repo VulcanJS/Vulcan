@@ -15,6 +15,8 @@ Package.onUse(function (api) {
     
   ]);
 
+  api.addFiles('lib/stylesheets/style.css');
+  
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
 
