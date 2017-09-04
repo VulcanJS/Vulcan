@@ -10,3 +10,4 @@ export * from './posts/index.js';
 
 import './embedly/index.js';
 import './voting/index.js';
+import './email/index.js';

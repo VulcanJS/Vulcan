@@ -1,0 +1,18 @@
+<span class="heading">
+<a href="{{PostsSingle.user.pageUrl}}">{{PostsSingle.user.displayName}}</a>
+has created a new post:
+{{#if PostsSingle.url}}
+  <a href="{{PostsSingle.linkUrl}}" class="action-link">{{PostsSingle.title}}</a>
+{{else}}
+  {{PostsSingle.title}}
+{{/if}}
+</span><br><br>
+
+{{#if PostsSingle.htmlBody}}
+  <div class="post-body">
+  {{{PostsSingle.htmlBody}}}
+  </div>
+  <br>
+{{/if}}
+
+<a href="{{PostsSingle.pageUrl}}">Discuss</a><br><br>

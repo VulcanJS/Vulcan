@@ -17,25 +17,17 @@ Package.onUse(function (api) {
     'vulcan:core@1.7.0',
 
     // vulcan packages
-    // 'vulcan:posts@1.7.0',
-    // 'vulcan:comments@1.7.0',
     'vulcan:voting@1.7.0',
     'vulcan:accounts@1.7.0',
     'vulcan:email',
     'vulcan:forms',
     'vulcan:newsletter',
-    // 'vulcan:notifications',
-    // 'vulcan:getting-started',
-    // 'vulcan:categories',
     'vulcan:events',
     'vulcan:embedly',
+
     // 'vulcan:api',
     // 'vulcan:rss',
     // 'vulcan:subscribe',
-
-    // 'vulcan:base-components',
-    // 'vulcan:base-styles',
-    // 'vulcan:email-templates',
 
   ]);
 
@@ -50,6 +42,20 @@ Package.onUse(function (api) {
     'lib/assets/content/customizing.md',
     'lib/assets/content/getting_help.md',
     'lib/assets/content/removing_getting_started_posts.md',
+
+    'lib/server/email/templates/common/test.handlebars',
+    'lib/server/email/templates/common/wrapper.handlebars',
+    'lib/server/email/templates/comments/newComment.handlebars',
+    'lib/server/email/templates/comments/newReply.handlebars',
+    'lib/server/email/templates/posts/newPendingPost.handlebars',
+    'lib/server/email/templates/posts/newPost.handlebars',
+    'lib/server/email/templates/posts/postApproved.handlebars',
+    'lib/server/email/templates/users/accountApproved.handlebars',
+    'lib/server/email/templates/users/newUser.handlebars',
+    'lib/server/email/templates/newsletter/newsletter.handlebars',
+    'lib/server/email/templates/newsletter/newsletterConfirmation.handlebars',
+    'lib/server/email/templates/newsletter/postItem.handlebars',
+    
   ], ['server']);
 
   api.addFiles([

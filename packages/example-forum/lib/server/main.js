@@ -4,6 +4,8 @@ export * from '../modules/index.js';
 
 // Server
 
+import './email/templates.js';
+
 import './seed/seed_posts.js';
 import './seed/seed_categories.js';
 

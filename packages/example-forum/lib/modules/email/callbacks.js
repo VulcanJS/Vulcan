@@ -35,10 +35,8 @@ function PostsNewNotifications (post) {
 
 }
 
-if (!!Posts) {
-  addCallback('posts.approve.async', PostsApprovedNotification);
-  addCallback('posts.new.async', PostsNewNotifications);
-}
+addCallback("posts.approve.async", PostsApprovedNotification);
+addCallback("posts.new.async", PostsNewNotifications);
 
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {
@@ -54,7 +52,7 @@ function CommentsNewNotifications (comment) {
 
     // 1. Notify author of post (if they have new comment notifications turned on)
     //    but do not notify author of post if they're the ones posting the comment
-    if (Users.getSetting(postAuthor, 'notifications_comments', false) && comment.userId !== postAuthor._id) {
+    if (Users.getSetting(postAuthor, "notifications_comments", false) && comment.userId !== postAuthor._id) {
       createNotification(post.userId, 'newComment', {documentId: comment._id});
       userIdsNotified.push(post.userId);
     }
@@ -71,7 +69,7 @@ function CommentsNewNotifications (comment) {
         const parentCommentAuthor = Users.findOne(parentComment.userId);
 
         // do not notify parent comment author if they have reply notifications turned off
-        if (Users.getSetting(parentCommentAuthor, 'notifications_replies', false)) {
+        if (Users.getSetting(parentCommentAuthor, "notifications_replies", false)) {
           createNotification(parentComment.userId, 'newReply', {documentId: parentComment._id});
           userIdsNotified.push(parentComment.userId);
         }
@@ -82,6 +80,4 @@ function CommentsNewNotifications (comment) {
   }
 }
 
-if (!!Comments) {
-  addCallback('comments.new.async', CommentsNewNotifications);
-}
+addCallback("comments.new.async", CommentsNewNotifications);

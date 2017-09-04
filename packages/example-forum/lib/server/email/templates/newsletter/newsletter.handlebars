@@ -1,0 +1,154 @@
+<style type="text/css">
+  .email-digest{
+  }
+  .digest-date{
+    color: #999;
+    font-weight: normal;
+    font-size: 16px;
+  }
+  .post-item{
+    border-top: 1px solid #ddd;
+  }
+  .post-date{
+    font-size: 13px;
+    color: #999;
+  }
+  .post-title{
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .post-thumbnail{
+    height: 28px;
+    width: 37px;
+    vertical-align: top;
+  }
+  .post-meta{
+    font-size: 13px;
+    color: #999;
+    margin: 5px 0;
+  }
+  .post-meta a{
+    color: #333;
+  }  
+  .post-domain{
+    font-weight: bold;
+  }
+  .post-body-excerpt{
+    font-size: 14px;
+  }
+  .post-body-excerpt p{
+    margin: 0;
+  }
+  .post-comments {
+    margin-top: 10px;
+  }
+  .post-comment {
+    padding: 10px;
+    background: #efefef;
+    margin-bottom: 5px;
+  }
+  .post-comment:last-child {
+    margin-bottom: 0;
+  }
+  .post-comments-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .post-comment-body{
+    font-size: 14px;
+  }
+  .post-comment-author {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  .avatar {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 100%;
+  }
+  .post-comment-author-name {
+    line-height: 20px;
+    vertical-align: middle;
+    font-size: 13px;
+  }
+  .post-comment-author-link {
+    color: black;
+  }
+</style>
+
+<span class="heading">Recently on {{SiteData.title}}</span>
+<span class="digest-date">– {{date}}</span>
+<br><br>
+
+<div class="email-digest">
+  {{#each PostsList}}
+    <div class="post-item">
+      <br >
+
+      <span class="post-title">
+        {{#if thumbnailUrl}}
+          <img class="post-thumbnail" src="{{thumbnailUrl}}"/>&nbsp;
+        {{/if}}
+
+        <a href="{{linkUrl}}" target="_blank">{{title}}</a>
+      </span>
+
+      <div class="post-meta">
+        {{#if domain}}
+          <a class="post-domain" href="">{{domain}}</a>
+          |
+        {{/if}}
+
+        <span class="post-submitted">
+          {{#if user.pageUrl}}
+            Submitted by <a href="{{user.pageUrl}}" class="comment-link" target="_blank">{{user.displayName}}</a>
+          {{else}}
+            Submitted by {{user.displayName}}
+          {{/if}}
+        </span>
+
+        <span class="post-date">on {{postedAtFormatted}}</span>
+        |
+        <a href="{{pageUrl}}" class="comment-link" target="_blank">{{commentsCount}} Comments</a>
+      </div>
+
+
+      {{#if htmlBody}}
+        <div class="post-body-excerpt">
+          {{htmlBody}}
+          <a href="{{pageUrl}}" class="comment-link" target="_blank">Read more</a>
+        </div>
+      {{/if}}
+
+      {{#if comments}}
+        <div class="post-comments">
+          <div class="post-comments-title">Top Comments</div>
+          {{#each comments}}
+            <div class="post-comment">
+              <div class="post-comment-author">
+                {{#if user.avatarUrl}}
+                  <img class="post-comment-avatar avatar" src="{{user.avatarUrl}}"/>
+                {{/if}}
+                <span class="post-comment-author-name">
+                  <a href="{{user.pageUrl}}" class="post-comment-author-link">
+                    {{user.displayName}}
+                  </a>
+                </span>
+              </div>
+              <div class="post-comment-body">{{htmlBody}}</div>
+            </div>
+          {{/each}}
+          <a class="post-comments-discuss" href="{{pageUrl}}">Discuss</a>
+        </div>
+      {{/if}}
+
+      <br>
+      </div>
+
+  {{/each}}
+</div>
+<br>
