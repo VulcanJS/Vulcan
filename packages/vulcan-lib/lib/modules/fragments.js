@@ -21,7 +21,7 @@ export const registerFragment = fragmentTextSource => {
 
   // extract name from fragment text
   const fragmentName = extractFragmentName(fragmentText);
-  
+
   // extract subFragments from text
   const matchedSubFragments = fragmentText.match(/\.{3}([_A-Za-z][_0-9A-Za-z]*)/g) || [];
   const subFragments = _.unique(matchedSubFragments.map(f => f.replace('...', '')));
@@ -29,9 +29,13 @@ export const registerFragment = fragmentTextSource => {
   // register fragment
   Fragments[fragmentName] = {
     fragmentText,
-    subFragments,
-    fragmentObject: getFragmentObject(fragmentText, subFragments)
   }
+
+  // also add subfragments if there are any
+  if(subFragments && subFragments.length) {
+    Fragments[fragmentName].subFragments = subFragments;
+  }
+
 };
 
 /*
@@ -40,15 +44,14 @@ Create gql fragment object from text and subfragments
 
 */
 export const getFragmentObject = (fragmentText, subFragments) => {
-
   // pad the literals array with line returns for each subFragments
-  const literals = [fragmentText, ...subFragments.map(x => '\n')];
+  const literals = subFragments ? [fragmentText, ...subFragments.map(x => '\n')] : [fragmentText];
 
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
-  const gqlArguments = [literals, ...subFragments.map(subFragmentName => {
+  const gqlArguments = subFragments ? [literals, ...subFragments.map(subFragmentName => {
     // return subfragment's gql fragment
     return Fragments[subFragmentName].fragmentObject;
-  })];
+  })] : [literals];
 
   return gql.apply(null, gqlArguments);
 }
@@ -109,7 +112,11 @@ with the same name (but duplicate fragments warning is disabled).
 export const extendFragmentWithProperties = (fragmentName, newProperties) => {
   const fragment = Fragments[fragmentName];
   const fragmentEndPosition = fragment.fragmentText.lastIndexOf('}');
-  const newFragmentText =[fragment.fragmentText.slice(0, fragmentEndPosition), newProperties, fragment.fragmentText.slice(fragmentEndPosition)].join('');
+  const newFragmentText = [
+    fragment.fragmentText.slice(0, fragmentEndPosition), 
+    newProperties, 
+    fragment.fragmentText.slice(fragmentEndPosition)
+  ].join('');
   registerFragment(newFragmentText);
 }
 
@@ -165,7 +172,8 @@ Perform all fragment extensions (called from routing)
 
 */
 export const initializeFragments = () => {
-  // extend fragment text if fragment exists
+
+  // extend fragment texts (if extended fragment exists)
   _.forEach(FragmentsExtensions, (extensions, fragmentName) => {
     if (Fragments[fragmentName]) {
       extensions.forEach(newProperties => {
@@ -173,4 +181,21 @@ export const initializeFragments = () => {
       });
     }
   });
+  
+  // create fragment objects
+
+  // initialize fragments *with no subfragments* first to avoid unresolved dependencies
+  const keysWithoutSubFragments = _.filter(_.keys(Fragments), fragmentName => !Fragments[fragmentName].subFragments);
+  _.forEach(keysWithoutSubFragments, fragmentName => {
+    const fragment = Fragments[fragmentName];
+    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments)
+  });
+
+  // next, initialize fragments that *have* subfragments
+  const keysWithSubFragments = _.filter(_.keys(Fragments), fragmentName => !!Fragments[fragmentName].subFragments);
+  _.forEach(keysWithSubFragments, fragmentName => {
+    const fragment = Fragments[fragmentName];
+    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments)
+  });
+
 }
