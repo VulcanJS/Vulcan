@@ -1,5 +1,6 @@
 export * from './collection.js';
 
+import './fragments.js';
 import './custom_fields.js';
 import './parameters.js';
 import './views.js';

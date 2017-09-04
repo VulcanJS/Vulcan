@@ -14,11 +14,13 @@ accounts-password@1.4.0
 
 ############ Your Packages ############
 
-example-simple
+# example-simple
 # example-movies
 # example-instagram
-# example-forum
+example-forum
 # example-customization
 # example-permissions
 # example-membership
 # example-interfaces
+
+vulcan:debug

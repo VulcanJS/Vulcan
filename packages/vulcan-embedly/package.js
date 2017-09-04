@@ -11,7 +11,6 @@ Package.onUse( function(api) {
 
   api.use([
     'vulcan:core@1.7.0',
-    'vulcan:posts@1.7.0',
     'fourseven:scss@4.5.0'
   ]);
 

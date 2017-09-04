@@ -1,5 +1,5 @@
 import { addCallback, getSetting } from 'meteor/vulcan:core';
-import Embed from '../modules/embed.js';
+import Embed from 'meteor/vulcan:embedly';
 
 const embedProvider = getSetting('embedProvider', 'builtin');
 

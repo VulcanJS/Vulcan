@@ -28,7 +28,7 @@ Package.onUse(function (api) {
     // 'vulcan:getting-started',
     // 'vulcan:categories',
     'vulcan:events',
-    // 'vulcan:embedly',
+    'vulcan:embedly',
     // 'vulcan:api',
     // 'vulcan:rss',
     // 'vulcan:subscribe',
@@ -38,6 +38,19 @@ Package.onUse(function (api) {
     // 'vulcan:email-templates',
 
   ]);
+
+  api.addAssets([
+    'lib/assets/images/stackoverflow.png',
+    'lib/assets/images/telescope.png',
+  ], ['client']);
+
+  api.addAssets([
+    'lib/assets/content/read_this_first.md',
+    'lib/assets/content/deploying.md', 'server',
+    'lib/assets/content/customizing.md', 'server',
+    'lib/assets/content/getting_help.md', 'server', 'server',
+    'lib/assets/content/removing_getting_started_posts.md', 'server',
+  ], ['server']);
 
   api.addFiles([
     // 'lib/stylesheets/bootstrap.css',

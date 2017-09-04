@@ -1,5 +1,3 @@
-import EmbedlyURL from '../components/EmbedlyURL.jsx';
-import Posts from "meteor/vulcan:posts";
 
 Posts.addField([
   {
