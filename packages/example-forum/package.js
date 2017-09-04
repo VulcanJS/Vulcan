@@ -25,10 +25,6 @@ Package.onUse(function (api) {
     'vulcan:events',
     'vulcan:embedly',
 
-    // 'vulcan:api',
-    // 'vulcan:rss',
-    // 'vulcan:subscribe',
-
   ]);
 
   api.addAssets([
