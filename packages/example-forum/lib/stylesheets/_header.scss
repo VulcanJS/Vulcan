@@ -1,0 +1,83 @@
+.header-wrapper{
+  background: $header-bg;
+  margin-bottom: $vmargin;
+}
+
+.header{
+  @include medium-large{
+    @include flex-center;
+    justify-content: space-between;
+  }
+  padding-top: $vmargin;
+  padding-bottom: $vmargin;
+}
+
+.logo{
+  @include small{
+    text-align: center;
+  }
+  @include medium-large{
+    display: flex;
+    align-items: baseline;
+    .logo-text{
+      margin-right: $hmargin;
+    }
+    .logo-image{
+      margin-right: $hmargin;
+      img{
+        max-width: 150px;
+        max-height: 100px;
+      }
+    }
+  }
+  .tagline{
+    font-size: 1.35rem;
+  }
+}
+
+.nav{
+  @include flex-center;
+  @include small{
+    border-top: 1px solid $medium-grey;
+    margin-top: $vmargin;
+    padding-top: $vmargin;
+    justify-content: space-between;
+  }
+  @include medium-large{
+    .nav-user{
+      margin-right: $hmargin;
+    }
+  }
+  .nav-new-post{
+    @include small{
+
+    }
+  }
+}
+
+.users-account-menu, .users-menu{
+  .dropdown-toggle{
+    @include flex-center;
+    padding: 0;
+    background: none;
+    img{
+      margin-right: 5px;
+    }
+  }
+}
+
+.accounts-ui{
+  padding: $vmargin;
+  min-width: 240px;
+  .buttons{
+    .btn{
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: $vmargin;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
+}

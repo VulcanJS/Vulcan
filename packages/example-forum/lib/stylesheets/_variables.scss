@@ -1,0 +1,32 @@
+$hmargin: 10px;
+$vmargin: 15px;
+
+$smaller-font: 0.8rem;
+$small-font: 0.9rem;
+$medium-font: 1rem;
+$large-font: 1.25rem;
+$larger-font: 1.35rem;
+
+$border: 1px solid $light-border;
+
+@mixin activeHover{
+  &:hover{
+    background: $active-color;
+    color: $white;
+    border-color: $active-color;
+    text-decoration: none;
+  }
+}
+
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+}
+
+@mixin border-radius{
+  border-radius: .25rem;
+}
+@mixin border{
+  border: $border;
+}
+
