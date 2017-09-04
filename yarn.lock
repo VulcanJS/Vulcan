@@ -748,9 +748,9 @@ cliui@^2.1.0:
     right-align "^0.1.1"
     wordwrap "0.0.2"
 
-clone@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.2.tgz#260b7a99ebb1edfe247538175f783243cb19d149"
+clone@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.1.tgz#d217d1e961118e3ac9a4b8bba3285553bf647cdb"
 
 clone@~2.1.0:
   version "2.1.0"
@@ -1055,7 +1055,7 @@ deep-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
-deep-extend@0.4.1, deep-extend@^0.4.0, deep-extend@^0.4.1:
+deep-extend@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.1.tgz#efe4113d08085f4e6f9687759810f807469e2253"
 
@@ -1607,6 +1607,10 @@ express@^4.14.0:
 extend@3, extend@^3.0.0, extend@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.0.tgz#5a474353b9f3353ddd8176dfd37b91c83a46f1d4"
+
+extend@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
 
 extsprintf@1.0.2:
   version "1.0.2"
@@ -2470,6 +2474,10 @@ lodash-es@^4.2.0, lodash-es@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
 
+lodash._reinterpolate@~3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
+
 lodash.cond@^4.3.0:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.cond/-/lodash.cond-4.5.2.tgz#f471a1da486be60f6ab955d17115523dd1d255d5"
@@ -2481,6 +2489,14 @@ lodash.find@4.6.0:
 lodash.flatten@^4.2.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
+
+lodash.foreach@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
+
+lodash.isempty@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
 
 lodash.isequal@^4.1.1:
   version "4.5.0"
@@ -2498,6 +2514,10 @@ lodash.memoize@4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
 
+lodash.merge@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
+
 lodash.pick@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
@@ -2506,11 +2526,28 @@ lodash.pickby@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.pickby/-/lodash.pickby-4.6.0.tgz#7dea21d8c18d7703a27c704c15d3b84a67e33aff"
 
+lodash.template@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.template/-/lodash.template-4.4.0.tgz#e73a0385c8355591746e020b99679c690e68fba0"
+  dependencies:
+    lodash._reinterpolate "~3.0.0"
+    lodash.templatesettings "^4.0.0"
+
+lodash.templatesettings@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.templatesettings/-/lodash.templatesettings-4.1.0.tgz#2b4d4e95ba440d915ff08bc899e4553666713316"
+  dependencies:
+    lodash._reinterpolate "~3.0.0"
+
+lodash.without@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.without/-/lodash.without-4.4.0.tgz#3cd4574a00b67bae373a94b748772640507b7aac"
+
 lodash@^3.10.1, lodash@^3.2.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.1.0, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@~4.17.2:
+lodash@^4.0.0, lodash@^4.1.0, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@~4.17.2:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -2592,12 +2629,12 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-message-box@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/message-box/-/message-box-0.0.2.tgz#38ee3de4bcddb0bcb883a7db2468cac81fd76f79"
+message-box@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/message-box/-/message-box-0.1.1.tgz#778565854cd4527d267373fc20124de187298dac"
   dependencies:
-    deep-extend "^0.4.1"
-    handlebars "^4.0.5"
+    lodash.merge "^4.6.0"
+    lodash.template "^4.4.0"
 
 metascraper@^1.0.6:
   version "1.0.6"
@@ -2713,11 +2750,14 @@ moment@^2.10.3, moment@^2.13.0, moment@^2.8.2:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
 
-mongo-object@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mongo-object/-/mongo-object-0.0.1.tgz#8cad470e5925f76b5d79b0988c5918f54904e170"
+mongo-object@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/mongo-object/-/mongo-object-0.0.2.tgz#3dcabaf9146e1afb63a809406146b8544d28964a"
   dependencies:
-    lodash "^4.5.1"
+    lodash.foreach "^4.5.0"
+    lodash.isempty "^4.4.0"
+    lodash.isobject "^3.0.2"
+    lodash.without "^4.4.0"
 
 ms@0.7.1:
   version "0.7.1"
@@ -3605,15 +3645,15 @@ shelljs@^0.7.5:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-simpl-schema@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/simpl-schema/-/simpl-schema-0.2.3.tgz#c1e5728aef88a7afaea7db953a443f1918763adb"
+simpl-schema@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/simpl-schema/-/simpl-schema-0.3.2.tgz#2c75444e9378505ac525219394de063ce4f6f068"
   dependencies:
-    clone "1.0.2"
-    deep-extend "0.4.1"
-    message-box "0.0.2"
-    mongo-object "0.0.1"
-    underscore "1.8.3"
+    clone "^2.1.1"
+    extend "^3.0.1"
+    message-box "^0.1.1"
+    mongo-object "^0.0.2"
+    underscore "^1.8.3"
 
 simple-fmt@~0.1.0:
   version "0.1.0"
@@ -4033,7 +4073,7 @@ underscore.string@^3.2.3:
     sprintf-js "^1.0.3"
     util-deprecate "^1.0.2"
 
-underscore@1.8.3, underscore@^1.8.3:
+underscore@^1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 

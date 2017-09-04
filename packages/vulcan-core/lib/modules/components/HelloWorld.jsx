@@ -49,7 +49,7 @@ const HelloWorld = props =>
 
       <pre style={code}>
         <code dangerouslySetInnerHTML={{__html: escapeHtml(`
-import { registerComponent } from 'meteor/vulcan:lib';
+import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 
 const Home = props => 

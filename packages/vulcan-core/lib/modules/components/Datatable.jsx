@@ -195,9 +195,9 @@ DatatableCell Component
 */
 const DatatableCell = ({ column, document }) => {
   const Component = column.component || Components[column.componentName] || Components.DatatableDefaultCell;
-
+  const columnName = column.name || column;
   return (
-    <td className={`datatable-item-${column.name || column}`}><Component column={column} document={document} /></td>
+    <td className={`datatable-item-${columnName.toLowerCase()}`}><Component column={column} document={document} /></td>
   )
 }
 registerComponent('DatatableCell', DatatableCell);
