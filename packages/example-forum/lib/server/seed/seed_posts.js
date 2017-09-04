@@ -36,7 +36,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
 
   var post = {
     postedAt: postedAt,
-    body: Assets.getText("content/" + slug + ".md"),
+    body: Assets.getText("lib/assets/content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
@@ -44,7 +44,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   };
 
   if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/vulcan_getting-started/content/images/" + thumbnail;
+    post.thumbnailUrl = "/packages/example-forum/lib/assets/images/" + thumbnail;
 
   newMutation({
     collection: Posts, 

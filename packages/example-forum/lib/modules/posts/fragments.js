@@ -20,7 +20,7 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     # vulcan:embedly
-    thumbnailUrl
+    # thumbnailUrl
     # vulcan:categories
     categories {
       ...CategoriesMinimumInfo

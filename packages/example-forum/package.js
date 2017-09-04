@@ -46,10 +46,10 @@ Package.onUse(function (api) {
 
   api.addAssets([
     'lib/assets/content/read_this_first.md',
-    'lib/assets/content/deploying.md', 'server',
-    'lib/assets/content/customizing.md', 'server',
-    'lib/assets/content/getting_help.md', 'server', 'server',
-    'lib/assets/content/removing_getting_started_posts.md', 'server',
+    'lib/assets/content/deploying.md',
+    'lib/assets/content/customizing.md',
+    'lib/assets/content/getting_help.md',
+    'lib/assets/content/removing_getting_started_posts.md',
   ], ['server']);
 
   api.addFiles([
