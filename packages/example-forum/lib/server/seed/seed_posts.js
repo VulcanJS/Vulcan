@@ -3,7 +3,6 @@ import moment from 'moment';
 import Posts from '../../modules/posts/index.js';
 import Comments from '../../modules/comments/index.js';
 import Users from 'meteor/vulcan:users';
-import Events from 'meteor/vulcan:events';
 
 const dummyFlag = {
   fieldName: 'isDummy',

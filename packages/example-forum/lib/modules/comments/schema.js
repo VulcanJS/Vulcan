@@ -119,14 +119,6 @@ const schema = {
     }
   },
   /**
-    Whether the comment is inactive. Inactive comments' scores gets recalculated less often
-  */
-  inactive: {
-    type: Boolean,
-    optional: true,
-    viewableBy: ['guests'],
-  },
-  /**
     The post's `_id`
   */
   postId: {

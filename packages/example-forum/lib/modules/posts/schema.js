@@ -193,14 +193,6 @@ const schema = {
     group: formGroups.admin
   },
   /**
-    Whether the post is inactive. Inactive posts see their score recalculated less often
-  */
-  inactive: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  /**
     Save info for later spam checking on a post. We will use this for the akismet package
   */
   userIP: {
