@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { operateOnItem } from '../vote.js';
+import { operateOnItem } from '../modules/vote.js';
 
 const withVote = component => {
 

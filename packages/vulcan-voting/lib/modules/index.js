@@ -1,11 +1,6 @@
-import './graphql.js';
 import './custom_fields.js';
 import './permissions.js';
-import './scoring.js';
-import './callbacks.js';
 
-import withVote from './containers/withVote.js';
-
-export { withVote };
+export {default as withVote} from '../containers/withVote.js';
 export { hasUpvoted, hasDownvoted } from './helpers.js';
 export { operateOnItem, mutateItem } from './vote.js';

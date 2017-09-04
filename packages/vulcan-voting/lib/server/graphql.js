@@ -1,5 +1,5 @@
 import { addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Utils } from 'meteor/vulcan:core';
-import { mutateItem } from './vote.js';
+import { mutateItem } from '../modules/vote.js';
 
 const voteSchema = `
   type Vote {
