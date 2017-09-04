@@ -26,12 +26,12 @@ registerFragment(`
       }
     }
     # vulcan:voting
-    #upvoters {
-    #  _id
-    #}
-    #downvoters {
-    #  _id
-    #}
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
     #upvotes
     #downvotes
     #baseScore

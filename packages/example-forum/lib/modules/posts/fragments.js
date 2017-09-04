@@ -20,7 +20,7 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     # vulcan:embedly
-    # thumbnailUrl
+    thumbnailUrl
     # vulcan:categories
     categories {
       ...CategoriesMinimumInfo
@@ -31,12 +31,12 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     # vulcan:voting
-    #upvoters {
-    #  _id
-    #}
-    #downvoters {
-    #  _id
-    #}
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
     #upvotes
     #downvotes
     #baseScore

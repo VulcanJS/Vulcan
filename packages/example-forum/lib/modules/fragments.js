@@ -3,14 +3,14 @@ import { registerFragment } from 'meteor/vulcan:core';
 // ------------------------------ Vote ------------------------------ //
 
 // note: fragment used by default on the UsersProfile fragment
-// registerFragment(`
-//   fragment VotedItem on Vote {
-//     # vulcan:voting
-//     itemId
-//     power
-//     votedAt
-//   }
-// `);
+registerFragment(`
+  fragment VotedItem on Vote {
+    # vulcan:voting
+    itemId
+    power
+    votedAt
+  }
+`);
 
 // ------------------------------ Users ------------------------------ //
 
@@ -44,18 +44,18 @@ registerFragment(`
     # vulcan:comments
     commentCount
     # vulcan:voting
-    #downvotedComments {
-    #  ...VotedItem
-    #}
-    #downvotedPosts {
-    #  ...VotedItem
-    #}
-    #upvotedComments {
-    #  ...VotedItem
-    #}
-    #upvotedPosts {
-    #  ...VotedItem
-    #}
+    downvotedComments {
+      ...VotedItem
+    }
+    downvotedPosts {
+      ...VotedItem
+    }
+    upvotedComments {
+      ...VotedItem
+    }
+    upvotedPosts {
+      ...VotedItem
+    }
   }
 `);
 

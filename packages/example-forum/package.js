@@ -19,7 +19,7 @@ Package.onUse(function (api) {
     // vulcan packages
     // 'vulcan:posts@1.7.0',
     // 'vulcan:comments@1.7.0',
-    // 'vulcan:voting@1.7.0',
+    'vulcan:voting@1.7.0',
     'vulcan:accounts@1.7.0',
     'vulcan:email',
     'vulcan:forms',
