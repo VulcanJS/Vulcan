@@ -35,7 +35,7 @@ function PostsNewRateLimit (post, user) {
 
   return post;
 }
-addCallback("posts.new.validate", PostsNewRateLimit);
+addCallback('posts.new.validate', PostsNewRateLimit);
 
 //////////////////////////////////////////////////////
 // posts.new.sync                                   //
@@ -52,66 +52,66 @@ function PostsNewDuplicateLinksCheck (post, user) {
   }
   return post;
 }
-addCallback("posts.new.sync", PostsNewDuplicateLinksCheck);
+addCallback('posts.new.sync', PostsNewDuplicateLinksCheck);
 
 /**
  * @summary Set the post's postedAt if it's going to be approved
  */
-function PostsSetPostedAt (post, user) {
-  if (!post.postedAt && Posts.getDefaultStatus(user) === Posts.config.STATUS_APPROVED) post.postedAt = new Date();
-  return post;
-}
-addCallback("posts.new.sync", PostsSetPostedAt);
+// function PostsSetPostedAt (post, user) {
+//   if (!post.postedAt && Posts.getDefaultStatus(user) === Posts.config.STATUS_APPROVED) post.postedAt = new Date();
+//   return post;
+// }
+// addCallback('posts.new.sync', PostsSetPostedAt);
 
 /**
  * @summary Set the post's isFuture to true if necessary
  */
-function PostsNewSetFuture (post, user) {
-  post.isFuture = post.postedAt && new Date(post.postedAt).getTime() > new Date(post.createdAt).getTime() + 1000; // round up to the second
-  return post;
-}
-addCallback("posts.new.sync", PostsNewSetFuture);
+// function PostsNewSetFuture (post, user) {
+//   post.isFuture = post.postedAt && new Date(post.postedAt).getTime() > new Date(post.createdAt).getTime() + 1000; // round up to the second
+//   return post;
+// }
+// addCallback('posts.new.sync', PostsNewSetFuture);
 
 /**
  * @summary Force sticky to default to false when it's not specified
  */
-function PostsNewSetStickyToFalse (post, user) {
-  if (!post.sticky) {
-    post.sticky = false;
-  }
-  return post;
-}
-addCallback("posts.new.sync", PostsNewSetStickyToFalse);
+// function PostsNewSetStickyToFalse (post, user) {
+//   if (!post.sticky) {
+//     post.sticky = false;
+//   }
+//   return post;
+// }
+// addCallback('posts.new.sync', PostsNewSetStickyToFalse);
 
 
 /**
  * @summary Set the post's slug based on its title
  */
-function PostsNewSlugify (post) {
-  post.slug = Utils.slugify(post.title);
-  return post;
-}
-addCallback("posts.new.sync", PostsNewSlugify);
+// function PostsNewSlugify (post) {
+//   post.slug = Utils.slugify(post.title);
+//   return post;
+// }
+// addCallback('posts.new.sync', PostsNewSlugify);
 
 /**
  * @summary Set the post's HTML content & the excerpt based on its possible body
  */
-function PostsNewHTMLContent (post) {
-  if (post.body) {
-    // excerpt length is configurable via the settings (30 words by default, ~255 characters)
-    const excerptLength = getSetting('postExcerptLength', 30); 
+// function PostsNewHTMLContent (post) {
+//   if (post.body) {
+//     // excerpt length is configurable via the settings (30 words by default, ~255 characters)
+//     const excerptLength = getSetting('postExcerptLength', 30); 
     
-    // extend the post document
-    post = {
-      ...post,
-      htmlBody: Utils.sanitize(marked(post.body)),
-      excerpt: Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength),
-    };
-  }
+//     // extend the post document
+//     post = {
+//       ...post,
+//       htmlBody: Utils.sanitize(marked(post.body)),
+//       excerpt: Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength),
+//     };
+//   }
   
-  return post;
-}
-addCallback("posts.new.sync", PostsNewHTMLContent);
+//   return post;
+// }
+// addCallback('posts.new.sync', PostsNewHTMLContent);
 
 //////////////////////////////////////////////////////
 // posts.new.async                                  //
@@ -123,6 +123,6 @@ addCallback("posts.new.sync", PostsNewHTMLContent);
  */
 function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
-  Users.update({_id: userId}, {$inc: {"postCount": 1}});
+  Users.update({_id: userId}, {$inc: {'postCount': 1}});
 }
-addCallback("posts.new.async", PostsNewIncrementPostCount);
+addCallback('posts.new.async', PostsNewIncrementPostCount);

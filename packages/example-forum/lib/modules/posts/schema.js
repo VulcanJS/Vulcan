@@ -6,8 +6,9 @@ Posts schema
 
 import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
-import { Utils } from 'meteor/vulcan:core';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 import moment from 'moment';
+import marked from 'marked';
 
 /**
  * @summary Posts config namespace
@@ -15,7 +16,7 @@ import moment from 'moment';
  */
 const formGroups = {
   admin: {
-    name: "admin",
+    name: 'admin',
     order: 2
   }
 };
@@ -40,7 +41,7 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['admins'],
-    onInsert: (document, currentUser) => {
+    onInsert: () => {
       return new Date();
     }
   },
@@ -53,8 +54,14 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    control: "datetime",
-    group: formGroups.admin
+    control: 'datetime',
+    group: formGroups.admin,
+    onInsert: (post, currentUser) => {
+      // Set the post's postedAt if it's going to be approved
+      if (!post.postedAt && Posts.getDefaultStatus(currentUser) === Posts.config.STATUS_APPROVED) {
+        return new Date();
+      }
+    }
   },
   /**
     URL
@@ -66,7 +73,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: "url",
+    control: 'url',
     order: 10,
     searchable: true
   },
@@ -80,7 +87,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: "text",
+    control: 'text',
     order: 20,
     searchable: true
   },
@@ -91,6 +98,14 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: (post) => {
+      return Utils.slugify(post.title);
+    },
+    onEdit: (modifier, post) => {
+      if (modifier.$set.title) {
+        return Utils.slugify(modifier.$set.title);
+      }
+    }
   },
   /**
     Post body (markdown)
@@ -102,7 +117,7 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    control: "textarea",
+    control: 'textarea',
     order: 30
   },
   /**
@@ -112,6 +127,16 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: (post) => {
+      if (post.body) {
+        return Utils.sanitize(marked(post.body));
+      }
+    },
+    onEdit: (modifier, post) => {
+      if (modifier.$set.body) {
+        return Utils.sanitize(marked(modifier.$set.body));
+      }
+    }
   },
   /**
    Post Excerpt
@@ -120,7 +145,20 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    searchable: true
+    searchable: true,
+    onInsert: (post) => {
+      if (post.body) {
+        // excerpt length is configurable via the settings (30 words by default, ~255 characters)
+        const excerptLength = getSetting('postExcerptLength', 30); 
+        return Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength);
+      }
+    },
+    onEdit: (modifier, post) => {
+      if (modifier.$set.body) {
+        const excerptLength = getSetting('postExcerptLength', 30); 
+        return Utils.trimHTML(Utils.sanitize(marked(modifier.$set.body)), excerptLength);
+      }
+    }
   },
   /**
     Count of how many times the post's page was viewed
@@ -178,6 +216,28 @@ const schema = {
     type: Boolean,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: (post) => {
+      // Set the post's isFuture to true if necessary
+      if (post.postedAt) {
+        const postTime = new Date(post.postedAt).getTime();
+        const currentTime = new Date().getTime() + 1000;
+        return postTime > currentTime; // round up to the second
+      }
+    },
+    onEdit: (modifier, post) => {
+      // Set the post's isFuture to true if necessary
+      if (modifier.$set.postedAt) {
+        const postTime = new Date(modifier.$set.postedAt).getTime();
+        const currentTime = new Date().getTime() + 1000;
+        if (postTime > currentTime) {
+          // if a post's postedAt date is in the future, set isFuture to true
+          return true;
+        } else if (post.isFuture) {
+          // else if a post has isFuture to true but its date is in the past, set isFuture to false
+          return false;
+        }
+      }
+    }
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -189,8 +249,18 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    control: "checkbox",
-    group: formGroups.admin
+    control: 'checkbox',
+    group: formGroups.admin,
+    onInsert: (post) => {
+      if(!post.sticky) {
+        return false;
+      }
+    },
+    onEdit: (modifier, post) => {
+      if (!modifier.$set.sticky) {
+        return false;
+      }
+    }
   },
   /**
     Save info for later spam checking on a post. We will use this for the akismet package
@@ -230,7 +300,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    control: "select",
+    control: 'select',
     viewableBy: ['guests'],
     insertableBy: ['members'],
     hidden: true,

@@ -1,1 +1,0 @@
-export * from '../modules/comments/collection.js';

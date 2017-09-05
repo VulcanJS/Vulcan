@@ -15,7 +15,7 @@ export const createNotification = (userIds, notificationName, variables) => {
       if (to) {
         VulcanEmail.buildAndSend({ to, emailName, variables });
       } else {
-        console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`); // eslint-disable-line
+        console.log(`// Couldn't send notification: user ${user._id} doesn't have an email`); // eslint-disable-line
       }
     });
   }

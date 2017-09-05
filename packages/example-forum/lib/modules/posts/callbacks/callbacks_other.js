@@ -6,10 +6,10 @@ import Events from 'meteor/vulcan:events';
 // ------------------------------------- posts.remove.sync -------------------------------- //
 
 function PostsRemoveOperations (post) {
-  Users.update({_id: post.userId}, {$inc: {"postCount": -1}});
+  Users.update({_id: post.userId}, {$inc: {'postCount': -1}});
   return post;
 }
-addCallback("posts.remove.sync", PostsRemoveOperations);
+addCallback('posts.remove.sync', PostsRemoveOperations);
 
 // ------------------------------------- posts.approve.async -------------------------------- //
 
@@ -25,7 +25,7 @@ function PostsSetPostedAt (modifier, post) {
   }
   return modifier;
 }
-addCallback("posts.approve.sync", PostsSetPostedAt);
+addCallback('posts.approve.sync', PostsSetPostedAt);
 
 // ------------------------------------- users.remove.async -------------------------------- //
 
@@ -34,10 +34,10 @@ function UsersRemoveDeletePosts (user, options) {
     Posts.remove({userId: user._id});
   } else {
     // not sure if anything should be done in that scenario yet
-    // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
+    // Posts.update({userId: userId}, {$set: {author: '\[deleted\]'}}, {multi: true});
   }
 }
-addCallback("users.remove.async", UsersRemoveDeletePosts);
+addCallback('users.remove.async', UsersRemoveDeletePosts);
 
 
 // /**
