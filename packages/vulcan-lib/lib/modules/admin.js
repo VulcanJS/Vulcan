@@ -7,3 +7,7 @@ export const addAdminColumn = columnOrColumns => {
     AdminColumns.push(columnOrColumns);
   }
 }
+
+export const removeAdminColumn = columnOrColumns => {
+  AdminColumns.pop(columnOrColumns);
+}
