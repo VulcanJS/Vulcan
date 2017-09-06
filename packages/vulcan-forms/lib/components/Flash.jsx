@@ -14,7 +14,7 @@ const Flash = ({message, type}) => {
             <li key={index}>{message.content}</li>
           )}
         </ul>
-        : <span>message.content</span>
+        : <span>{message.content}</span>
       }
     </Alert>
   )

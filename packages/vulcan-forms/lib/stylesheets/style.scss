@@ -155,6 +155,15 @@ div.ReactTags__suggestions mark{
   display: none;
 }
 
+.form-errors{
+  .alert{
+    ul{
+      padding: 0 0 0 20px;
+      margin: 0;
+    }
+  }
+}
+
 .input-error{
   color: #EF1642;
   input, textarea, select{

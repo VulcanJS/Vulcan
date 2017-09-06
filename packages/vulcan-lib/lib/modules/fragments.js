@@ -64,7 +64,7 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
     /*
 
     Exclude a field from the default fragment if
-    1. it has a resolver (unless addOriginalField is true)
+    1. it has a resolver and addOriginalField is false
     2. it has $ in its name
     3. it's not viewable (if onlyViewable option is true)
 

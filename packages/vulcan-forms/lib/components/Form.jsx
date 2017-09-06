@@ -346,7 +346,7 @@ class Form extends Component {
 
           let message;
 
-          if (error.data.errors) { // this error is a "multi-error" with multiple sub-errors
+          if (error.data && error.data.errors) { // this error is a "multi-error" with multiple sub-errors
 
             message = error.data.errors.map(error => {
               return {
