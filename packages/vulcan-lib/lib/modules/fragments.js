@@ -29,6 +29,7 @@ export const registerFragment = fragmentTextSource => {
   // register fragment
   Fragments[fragmentName] = {
     fragmentText,
+    fragmentObject: getFragmentObject(fragmentText, subFragments) // note: fragmentObject will be overwritten later
   }
 
   // also add subfragments if there are any
