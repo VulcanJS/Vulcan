@@ -613,7 +613,7 @@ class Form extends Component {
           this.props.formType === 'edit' && this.props.showRemove
             ? <div>
                 <hr/>
-                <a onClick={this.deleteDocument} className={`${collectionName}-delete-link`}>
+                <a href="javascript:void()" onClick={this.deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
                   <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
                 </a>
               </div>
