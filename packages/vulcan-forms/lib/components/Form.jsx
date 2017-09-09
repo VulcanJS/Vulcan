@@ -75,6 +75,8 @@ class Form extends Component {
     this.setFormState = this.setFormState.bind(this);
     this.getLabel = this.getLabel.bind(this);
     this.getErrorMessage = this.getErrorMessage.bind(this);
+    // version of submitForm that is made available to context, behaves like updateCurrentValues but submits afterwards
+    this.submitFormContext = this.submitFormContext.bind(this);
 
     this.state = {
       disabled: false,
@@ -135,7 +137,7 @@ class Form extends Component {
 
         // convert value type if needed
         if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
-        
+
         // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
         // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
         if (Array.isArray(field.value)) {
@@ -353,9 +355,9 @@ class Form extends Component {
                 content: this.getErrorMessage(error)
               }
             });
-          
+
           } else { // this is a regular error
-            
+
             message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
 
           }
@@ -426,11 +428,22 @@ class Form extends Component {
     this.setState(fn);
   }
 
+  submitFormContext(newValues) {
+    // keep the previous ones and extend (with possible replacement) with new ones
+    this.setState(prevState => ({
+      currentValues: {
+        ...prevState.currentValues,
+        ...newValues,
+      } // Submit form after setState update completed
+    }), () => this.submitForm(this.refs.form.getModel()));
+  }
+
   // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
+      submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
       getAutofilledValues: this.getAutofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
@@ -676,7 +689,8 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
-  getDocument: PropTypes.func
+  getDocument: PropTypes.func,
+  submitForm: PropTypes.func,
 }
 
 module.exports = Form
