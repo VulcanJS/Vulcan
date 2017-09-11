@@ -68,13 +68,13 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
     /*
 
     Exclude a field from the default fragment if
-    1. it has a resolver
+    1. it has a resolver and addOriginalField is false
     2. it has $ in its name
     3. it's not viewable (if onlyViewable option is true)
 
     */
     const field = schema[fieldName];
-    return field.resolveAs || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
+    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
   });
 
   const fragmentText = `

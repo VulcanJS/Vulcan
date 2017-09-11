@@ -123,18 +123,19 @@ export const validateModifier = (modifier, document, collection, context) => {
   });
 
   // 4. check that required fields have a value
-  _.keys(schema).forEach(fieldName => {
+  // note: maybe required fields don't make sense for edit operation?
+  // _.keys(schema).forEach(fieldName => {
 
-    const fieldSchema = schema[fieldName];
+  //   const fieldSchema = schema[fieldName];
 
-    if ((fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
-      validationErrors.push({
-        id: 'app.required_field_missing', 
-        data: {fieldName}
-      });
-    }
+  //   if ((fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
+  //     validationErrors.push({
+  //       id: 'app.required_field_missing', 
+  //       data: {fieldName}
+  //     });
+  //   }
 
-  });
+  // });
 
   // 5. still run SS validation for now for backwards compatibility
   try {

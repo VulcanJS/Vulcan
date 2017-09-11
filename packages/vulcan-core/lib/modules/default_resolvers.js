@@ -14,7 +14,7 @@ export const getDefaultResolvers = collectionName => ({
 
     name: `${collectionName}List`,
 
-    resolver(root, {terms}, context, info) {
+    resolver(root, {terms = {}}, context, info) {
 
       // get currentUser and Users collection from context
       const { currentUser, Users } = context;
