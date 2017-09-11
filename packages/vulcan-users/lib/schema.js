@@ -269,7 +269,6 @@ const schema = {
     viewableBy: ['guests'],
     order: 60,
     resolveAs: {
-      fieldName: 'twitterUsername',
       type: 'String',
       resolver: (user, args, context) => {
         return context.Users.getTwitterName(context.Users.findOne(user._id));
