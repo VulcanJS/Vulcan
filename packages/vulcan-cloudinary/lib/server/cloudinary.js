@@ -1,5 +1,5 @@
 import cloudinary from "cloudinary";
-import Posts from "meteor/vulcan:posts";
+// import Posts from "meteor/vulcan:posts";
 import Users from 'meteor/vulcan:users';
 import { addCallback, Utils, getSetting } from 'meteor/vulcan:core';
 
@@ -52,71 +52,41 @@ const CloudinaryUtils = {
 };
 
 // methods
-Meteor.methods({
-  testCloudinaryUpload: function (thumbnailUrl) {
-    if (Users.isAdmin(Meteor.user())) {
-      thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
-      const data = CloudinaryUtils.uploadImage(thumbnailUrl);
-      console.log(data); // eslint-disable-line
-    }
-  },
-  cachePostThumbnails: function (limit = 20) {
+// Meteor.methods({
+//   testCloudinaryUpload: function (thumbnailUrl) {
+//     if (Users.isAdmin(Meteor.user())) {
+//       thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
+//       const data = CloudinaryUtils.uploadImage(thumbnailUrl);
+//       console.log(data); // eslint-disable-line
+//     }
+//   },
+//   cachePostThumbnails: function (limit = 20) {
 
-    if (Users.isAdmin(Meteor.user())) {
+//     if (Users.isAdmin(Meteor.user())) {
 
-      console.log(`// caching ${limit} thumbnails…`)
+//       console.log(`// caching ${limit} thumbnails…`)
 
-      var postsWithUncachedThumbnails = Posts.find({
-        thumbnailUrl: { $exists: true },
-        originalThumbnailUrl: { $exists: false }
-      }, {sort: {createdAt: -1}, limit: limit});
+//       var postsWithUncachedThumbnails = Posts.find({
+//         thumbnailUrl: { $exists: true },
+//         originalThumbnailUrl: { $exists: false }
+//       }, {sort: {createdAt: -1}, limit: limit});
 
-      postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment((post, index) => {
+//       postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment((post, index) => {
 
-          Meteor.setTimeout(function () {
-          console.log(`// ${index}. Caching thumbnail for post “${post.title}” (_id: ${post._id})`); // eslint-disable-line
+//           Meteor.setTimeout(function () {
+//           console.log(`// ${index}. Caching thumbnail for post “${post.title}” (_id: ${post._id})`); // eslint-disable-line
 
-          const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
-          Posts.update(post._id, {$set:{
-            cloudinaryId: data.cloudinaryId,
-            cloudinaryUrls: data.urls
-          }});
+//           const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
+//           Posts.update(post._id, {$set:{
+//             cloudinaryId: data.cloudinaryId,
+//             cloudinaryUrls: data.urls
+//           }});
 
-        }, index * 1000);
+//         }, index * 1000);
 
-      }));
-    }
-  }
-});
-
-// post submit callback
-function cachePostThumbnailOnSubmit (post) {
-  if (cloudinarySettings) {
-    if (post.thumbnailUrl) {
-
-      const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
-      if (data) {
-        post.cloudinaryId = data.cloudinaryId;
-        post.cloudinaryUrls = data.urls;
-      }
-
-    }
-  }
-  return post;
-}
-addCallback("posts.new.sync", cachePostThumbnailOnSubmit);
-
-function cachePostThumbnailOnEdit (modifier, oldPost) {
-  if (cloudinarySettings) {
-    if (modifier.$set.thumbnailUrl && modifier.$set.thumbnailUrl !== oldPost.thumbnailUrl) {
-      const data = CloudinaryUtils.uploadImage(modifier.$set.thumbnailUrl);
-      modifier.$set.cloudinaryId = data.cloudinaryId;
-      modifier.$set.cloudinaryUrls = data.urls;
-    }
-  }
-  return modifier;
-}
-addCallback("posts.edit.sync", cachePostThumbnailOnEdit);
-
+//       }));
+//     }
+//   }
+// });
 
 export default CloudinaryUtils;

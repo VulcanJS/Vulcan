@@ -10,13 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'vulcan:posts@1.7.0',
     'vulcan:core@1.7.0'
   ]);
-
-  api.addFiles([
-    'lib/custom_fields.js'
-  ], ['client', 'server']);
 
   api.addFiles([
     

@@ -1,8 +1,10 @@
 import Posts from '../collection.js'
+import marked from 'marked';
 import Users from 'meteor/vulcan:users';
-import Events from 'meteor/vulcan:events';
-import { getSetting, runCallbacks, runCallbacksAsync, addCallback } from 'meteor/vulcan:core';
+import { addCallback, getSetting, Utils, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
+import Events from 'meteor/vulcan:events';
+import { createNotification } from '../email/notifications.js';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -40,7 +42,6 @@ addCallback('posts.new.validate', PostsNewRateLimit);
 // posts.new.sync                                   //
 //////////////////////////////////////////////////////
 
-
 /**
  * @summary Check for duplicate links
  */
@@ -57,7 +58,6 @@ addCallback('posts.new.sync', PostsNewDuplicateLinksCheck);
 // posts.new.async                                  //
 //////////////////////////////////////////////////////
 
-
 /**
  * @summary Increment the user's post count
  */
@@ -67,11 +67,32 @@ function PostsNewIncrementPostCount (post) {
 }
 addCallback('posts.new.async', PostsNewIncrementPostCount);
 
+/**
+ * @summary Add new post notification callback on post submit
+ */
+function PostsNewNotifications (post) {
+
+  let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
+  let notifiedUserIds = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
+
+  // remove post author ID from arrays
+  adminIds = _.without(adminIds, post.userId);
+  notifiedUserIds = _.without(notifiedUserIds, post.userId);
+
+  if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
+    // if post is pending, only notify admins
+    createNotification(adminIds, 'newPendingPost', {documentId: post._id});
+  } else if (!!notifiedUserIds.length) {
+    // if post is approved, notify everybody
+    createNotification(notifiedUserIds, 'newPost', {documentId: post._id});
+  }
+
+}
+addCallback("posts.new.async", PostsNewNotifications);
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
 //////////////////////////////////////////////////////
-
 
 /**
  * @summary Check for duplicate links
@@ -83,7 +104,6 @@ function PostsEditDuplicateLinksCheck (modifier, post) {
   return modifier;
 }
 addCallback('posts.edit.sync', PostsEditDuplicateLinksCheck);
-
 
 function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
   if (modifier.$set && Posts.isApproved(modifier.$set) && !Posts.isApproved(post)) {
@@ -104,8 +124,17 @@ function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
 }
 addCallback('posts.edit.async', PostsEditRunPostApprovedAsyncCallbacks);
 
+/**
+ * @summary Add notification callback when a post is approved
+ */
+function PostsApprovedNotification (post) {
+  createNotification(post.userId, 'postApproved', {documentId: post._id});
+}
+addCallback("posts.approve.async", PostsApprovedNotification);
 
-// ------------------------------------- posts.remove.sync -------------------------------- //
+//////////////////////////////////////////////////////
+// posts.remove.sync                                //
+//////////////////////////////////////////////////////
 
 function PostsRemoveOperations (post) {
   Users.update({_id: post.userId}, {$inc: {'postCount': -1}});
@@ -113,7 +142,9 @@ function PostsRemoveOperations (post) {
 }
 addCallback('posts.remove.sync', PostsRemoveOperations);
 
-// ------------------------------------- posts.approve.async -------------------------------- //
+//////////////////////////////////////////////////////
+// posts.approve.sync                               //
+//////////////////////////////////////////////////////
 
 /**
  * @summary set postedAt when a post is approved and it doesn't have a postedAt date
@@ -129,7 +160,9 @@ function PostsSetPostedAt (modifier, post) {
 }
 addCallback('posts.approve.sync', PostsSetPostedAt);
 
-// ------------------------------------- users.remove.async -------------------------------- //
+//////////////////////////////////////////////////////
+// users.remove.async                               //
+//////////////////////////////////////////////////////
 
 function UsersRemoveDeletePosts (user, options) {
   if (options.deletePosts) {
@@ -141,6 +174,9 @@ function UsersRemoveDeletePosts (user, options) {
 }
 addCallback('users.remove.async', UsersRemoveDeletePosts);
 
+//////////////////////////////////////////////////////
+// posts.click.async                                //
+//////////////////////////////////////////////////////
 
 // /**
 //  * @summary Increase the number of clicks on a post
