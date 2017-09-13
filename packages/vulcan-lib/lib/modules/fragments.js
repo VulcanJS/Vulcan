@@ -50,6 +50,9 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
   const gqlArguments = subFragments ? [literals, ...subFragments.map(subFragmentName => {
     // return subfragment's gql fragment
+    if (!Fragments[subFragmentName].fragmentObject) {
+      throw new Error(`Subfragment “${subFragmentName}” of fragment “${extractFragmentName(fragmentText)}” has not been initialized yet.`);
+    }
     return Fragments[subFragmentName].fragmentObject;
   })] : [literals];
 
@@ -176,6 +179,8 @@ Perform all fragment extensions (called from routing)
 */
 export const initializeFragments = () => {
 
+  const errorFragmentKeys = [];
+
   // extend fragment texts (if extended fragment exists)
   _.forEach(FragmentsExtensions, (extensions, fragmentName) => {
     if (Fragments[fragmentName]) {
@@ -198,7 +203,19 @@ export const initializeFragments = () => {
   const keysWithSubFragments = _.filter(_.keys(Fragments), fragmentName => !!Fragments[fragmentName].subFragments);
   _.forEach(keysWithSubFragments, fragmentName => {
     const fragment = Fragments[fragmentName];
-    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments)
+    try {
+      fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments);
+    } catch (error) {
+      // if fragment initialization triggers an error, store fragment and try again later
+      // common error causes include cross-dependencies
+      errorFragmentKeys.push(fragmentName);
+    }
+  });
+
+  // finally, try initializing any fragment that triggered an error again
+  _.forEach(errorFragmentKeys, fragmentName => {
+    const fragment = Fragments[fragmentName];
+    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments);
   });
 
 }
