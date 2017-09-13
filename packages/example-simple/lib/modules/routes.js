@@ -1,5 +1,5 @@
-import { addRoute } from 'meteor/vulcan:core';
+import { addRoute, Components } from 'meteor/vulcan:core';
 
-import MoviesList from '../components/movies/MoviesList.jsx';
+import '../components/movies/MoviesList.jsx';
 
-addRoute({ name: 'movies', path: '/', component: MoviesList });
+addRoute({ name: 'movies', path: '/', componentName: 'MoviesList' });
