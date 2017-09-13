@@ -37,7 +37,7 @@ function addMediaAfterSubmit (post) {
   
   return post;
 }
-addCallback("posts.new.sync", addMediaAfterSubmit);
+addCallback('posts.new.sync', addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   
@@ -66,7 +66,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-addCallback("posts.edit.sync", updateMediaOnEdit);
+addCallback('posts.edit.sync', updateMediaOnEdit);
 
 const regenerateThumbnail = function (post) {
   delete post.thumbnailUrl;

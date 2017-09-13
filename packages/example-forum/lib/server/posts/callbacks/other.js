@@ -1,62 +1,7 @@
-import Posts from '../collection.js'
-import marked from 'marked';
+import Posts from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
-import { addCallback, getSetting, Utils, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
-import { createError } from 'apollo-errors';
+import { addCallback, getSetting, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import Events from 'meteor/vulcan:events';
-import { createNotification } from '../email/notifications.js';
-
-//////////////////////////////////////////////////////
-// posts.new.validate                               //
-//////////////////////////////////////////////////////
-
-/**
- * @summary Rate limiting
- */
-function PostsNewRateLimit (post, user) {
-
-  if(!Users.isAdmin(user)){
-
-    var timeSinceLastPost = Users.timeSinceLast(user, Posts),
-      numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
-      postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
-      maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 5)));
-
-    // check that user waits more than X seconds between posts
-    if(timeSinceLastPost < postInterval){
-      const RateLimitError = createError('posts.rate_limit_error', {message: 'posts.rate_limit_error'});
-      throw new RateLimitError({data: {break: true, value: postInterval-timeSinceLastPost}});
-    }
-    // check that the user doesn't post more than Y posts per day
-    if(numberOfPostsInPast24Hours >= maxPostsPer24Hours){
-      const RateLimitError = createError('posts.max_per_day', {message: 'posts.max_per_day'});
-      throw new RateLimitError({data: {break: true, value: maxPostsPer24Hours}});
-    }
-  }
-
-  return post;
-}
-addCallback('posts.new.validate', PostsNewRateLimit);
-
-//////////////////////////////////////////////////////
-// posts.new.sync                                   //
-//////////////////////////////////////////////////////
-
-/**
- * @summary Check for duplicate links
- */
-function PostsNewDuplicateLinksCheck (post, user) {
-  if(!!post.url && Posts.checkForSameUrl(post.url)) {
-    const DuplicateError = createError('posts.link_already_posted', {message: 'posts.link_already_posted'});
-    throw new DuplicateError({data: {break: true, url: post.url}});
-  }
-  return post;
-}
-addCallback('posts.new.sync', PostsNewDuplicateLinksCheck);
-
-//////////////////////////////////////////////////////
-// posts.new.async                                  //
-//////////////////////////////////////////////////////
 
 /**
  * @summary Increment the user's post count
@@ -68,42 +13,20 @@ function PostsNewIncrementPostCount (post) {
 addCallback('posts.new.async', PostsNewIncrementPostCount);
 
 /**
- * @summary Add new post notification callback on post submit
+ * @summary Run the 'upvote.async' callbacks *once* the item exists in the database
+ * @param {object} item - The item being operated on
+ * @param {object} user - The user doing the operation
+ * @param {object} collection - The collection the item belongs to
  */
-function PostsNewNotifications (post) {
-
-  let adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-  let notifiedUserIds = _.pluck(Users.find({'notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
-
-  // remove post author ID from arrays
-  adminIds = _.without(adminIds, post.userId);
-  notifiedUserIds = _.without(notifiedUserIds, post.userId);
-
-  if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
-    // if post is pending, only notify admins
-    createNotification(adminIds, 'newPendingPost', {documentId: post._id});
-  } else if (!!notifiedUserIds.length) {
-    // if post is approved, notify everybody
-    createNotification(notifiedUserIds, 'newPost', {documentId: post._id});
-  }
-
+function UpvoteAsyncCallbacksAfterDocumentInsert(item, user, collection) {
+  runCallbacksAsync('upvote.async', item, user, collection, 'upvote');
 }
-addCallback("posts.new.async", PostsNewNotifications);
+
+addCallback('posts.new.async', UpvoteAsyncCallbacksAfterDocumentInsert);
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
 //////////////////////////////////////////////////////
-
-/**
- * @summary Check for duplicate links
- */
-function PostsEditDuplicateLinksCheck (modifier, post) {
-  if(post.url !== modifier.$set.url && !!modifier.$set.url) {
-    Posts.checkForSameUrl(modifier.$set.url);
-  }
-  return modifier;
-}
-addCallback('posts.edit.sync', PostsEditDuplicateLinksCheck);
 
 function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
   if (modifier.$set && Posts.isApproved(modifier.$set) && !Posts.isApproved(post)) {
@@ -123,14 +46,6 @@ function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
   }
 }
 addCallback('posts.edit.async', PostsEditRunPostApprovedAsyncCallbacks);
-
-/**
- * @summary Add notification callback when a post is approved
- */
-function PostsApprovedNotification (post) {
-  createNotification(post.userId, 'postApproved', {documentId: post._id});
-}
-addCallback("posts.approve.async", PostsApprovedNotification);
 
 //////////////////////////////////////////////////////
 // posts.remove.sync                                //

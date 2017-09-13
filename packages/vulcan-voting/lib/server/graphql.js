@@ -11,7 +11,7 @@ function CreateVoteableUnionType() {
       votedAt: String
     }
     
-    union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}
+    ${VoteableCollections.length ? `union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}` : ''}
   `;
 
   addGraphQLSchema(voteSchema);

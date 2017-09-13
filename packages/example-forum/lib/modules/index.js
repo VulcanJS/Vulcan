@@ -1,4 +1,4 @@
-
+import './voting.js';
 import './fragments.js';
 import './components.js';
 import './config.js';
@@ -10,6 +10,4 @@ export { default as Categories } from './categories/index.js';
 export { default as Comments }  from './comments/index.js';
 export { default as Posts }  from './posts/index.js';
 
-import './embedly/index.js';
-import './voting/index.js';
 import './notifications/index.js';
