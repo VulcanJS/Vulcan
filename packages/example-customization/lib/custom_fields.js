@@ -1,4 +1,4 @@
-import Posts from "meteor/vulcan:posts";
+import { Posts } from 'meteor/example-forum';
 
 /*
 Let's assign a color to each post (why? cause we want to, that's why).
