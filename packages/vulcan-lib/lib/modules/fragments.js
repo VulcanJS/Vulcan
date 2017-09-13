@@ -28,8 +28,7 @@ export const registerFragment = fragmentTextSource => {
   
   // register fragment
   Fragments[fragmentName] = {
-    fragmentText,
-    fragmentObject: getFragmentObject(fragmentText, subFragments) // note: fragmentObject will be overwritten later
+    fragmentText
   }
 
   // also add subfragments if there are any
@@ -148,7 +147,10 @@ Get actual gql fragment
 */
 export const getFragment = fragmentName => {
   if (!Fragments[fragmentName]) {
-    throw new Error(`Fragment "${fragmentName}" not registered.`)
+    throw new Error(`Fragment "${fragmentName}" not registered.`);
+  }
+  if (!Fragments[fragmentName].fragmentObject) {
+    throw new Error(`Fragment "${fragmentName}" registered, but not initialized.`)
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentObject;  
