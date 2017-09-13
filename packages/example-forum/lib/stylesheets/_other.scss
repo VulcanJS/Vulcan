@@ -1,0 +1,39 @@
+.footer{
+  text-align: center;
+  margin-bottom: $vmargin;
+}
+
+.search-form{
+  .form-group{
+    margin-bottom: 0;
+  }
+}
+
+.modal-form-title{
+  border-bottom: $border;
+  padding-bottom: $vmargin;
+  margin-bottom: $vmargin;
+  line-height: 1;
+}
+
+.input-categories{
+  .col-sm-9{
+    display: flex;
+    flex-wrap: wrap;
+    .checkbox{
+      width: 50%;
+    }
+  }
+}
+
+.private{
+  text-transform: uppercase;
+  font-size: $smaller-font;
+  color: $red;
+}
+
+.dropdown-item.active{
+  a{
+    color: $white;
+  }
+}

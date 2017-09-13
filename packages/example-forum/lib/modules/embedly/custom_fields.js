@@ -1,0 +1,47 @@
+import Posts from '../posts/index.js';
+import { EmbedlyURL } from 'meteor/vulcan:embedly';
+
+Posts.addField([
+  {
+    fieldName: 'url',
+    fieldSchema: {
+      control: EmbedlyURL, // we are just extending the field url, not replacing it
+    }
+  },
+  {
+    fieldName: 'thumbnailUrl',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
+      hidden: true
+    }
+  },
+  {
+    fieldName: 'media',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      blackbox: true,
+      viewableBy: ['guests'],
+    }
+  },
+  {
+    fieldName: 'sourceName',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+    }
+  },
+  {
+    fieldName: 'sourceUrl',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      viewableBy: ['guests'],
+    }
+  }
+]);

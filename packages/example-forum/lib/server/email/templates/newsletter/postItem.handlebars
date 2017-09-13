@@ -1,0 +1,62 @@
+<div class="post-item">
+<br >
+
+<span class="post-title">
+  {{#if thumbnailUrl}}
+    <img class="post-thumbnail" src="{{thumbnailUrl}}"/>&nbsp;
+  {{/if}}
+
+  <a href="{{postLink}}" target="_blank">{{title}}</a>
+</span>
+
+<div class="post-meta">
+  {{#if domain}}
+    <a class="post-domain" href="">{{domain}}</a>
+    |
+  {{/if}}
+
+  <span class="post-submitted">
+    {{#if profileUrl}}
+      Submitted by <a href="{{profileUrl}}" class="comment-link" target="_blank">{{authorName}}</a>
+    {{else}}
+      Submitted by {{authorName}}
+    {{/if}}
+  </span>
+
+  <span class="post-date">on {{date}}</span>
+  |
+  <a href="{{postPageLink}}" class="comment-link" target="_blank">{{commentCount}} Comments</a>
+</div>
+
+
+{{#if body}}
+  <div class="post-body-excerpt">
+    {{body}}
+    <a href="{{postPageLink}}" class="comment-link" target="_blank">Read more</a>
+  </div>
+{{/if}}
+
+{{#if popularComments}}
+  <div class="post-comments">
+    <div class="post-comments-title">Top Comments</div>
+    {{#each popularComments}}
+      <div class="post-comment">
+        <div class="post-comment-author">
+          {{#if authorAvatarUrl}}
+            <img class="post-comment-avatar avatar" src="{{authorAvatarUrl}}"/>
+          {{/if}}
+          <span class="post-comment-author-name">
+            <a href="{{authorProfileUrl}}" class="post-comment-author-link">
+              {{author}}
+            </a>
+          </span>
+        </div>
+        <div class="post-comment-body">{{body}}</div>
+      </div>
+    {{/each}}
+    <a class="post-comments-discuss" href="{{postPageLink}}">Discuss</a>
+  </div>
+{{/if}}
+
+<br>
+</div>

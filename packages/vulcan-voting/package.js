@@ -11,11 +11,9 @@ Package.onUse(function (api) {
 
   api.use([
     'vulcan:core@1.7.0',
-    'vulcan:posts@1.7.0', 
-    'vulcan:comments@1.7.0'
   ], ['client', 'server']);
 
-  api.mainModule("lib/server.js", "server");
-  api.mainModule("lib/client.js", "client");
+  api.mainModule("lib/server/main.js", "server");
+  api.mainModule("lib/client/main.js", "client");
   
 });

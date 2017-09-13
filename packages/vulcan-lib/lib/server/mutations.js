@@ -139,6 +139,8 @@ export const editMutation = async ({ collection, documentId, set, unset, current
           modifier.$unset[fieldName] = true;
         } else {
           modifier.$set[fieldName] = autoValue;
+          // make sure we don't try to unset the same field at the same time
+          delete modifier.$unset[fieldName];
         }
       }
     }

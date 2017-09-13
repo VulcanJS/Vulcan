@@ -1,0 +1,46 @@
+.users-account-menu{
+  .icon{
+    display: none;
+  }
+}
+
+.accounts-ui{
+  .buttons{
+    a{
+      display:block;
+      text-align: center;
+      margin-bottom: $vmargin;
+    }
+  }
+  .password-or-service{
+    text-align: center;
+    margin-bottom: $vmargin;
+  }
+  .social-buttons{
+    @include flex-center;
+    justify-content: space-between;
+    button{
+      margin-right: $hmargin;
+      width: 100%;
+      &.btn-twitter{
+        background: #55acee;
+        border-color: #55acee;
+      }
+      &.btn-facebook{
+        background: #3b5998;
+        border-color: #3b5998;
+      }
+      &:last-child{
+        margin-right: 0 !important;
+      }
+    }
+  }
+}
+
+.password-reset-form{
+  text-align: center;
+}
+
+.change-password-link{
+  margin-bottom: $vmargin;
+}
