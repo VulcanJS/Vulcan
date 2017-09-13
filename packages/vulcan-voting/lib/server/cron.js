@@ -19,7 +19,7 @@ Meteor.startup(function () {
         collection.find({'inactive': {$ne : true}}).forEach(document => {
           updatedDocuments += updateScore({collection, item: document});
         });
-        console.log(`Updated ${updatedDocuments} active documents in collection ${collection.options.collectionName}`)
+        // console.log(`Updated ${updatedDocuments} active documents in collection ${collection.options.collectionName}`)
 
       }, scoreInterval * 1000);
 
@@ -31,7 +31,7 @@ Meteor.startup(function () {
           updatedDocuments += updateScore({collection, item: document});
         });
 
-        console.log(`Updated ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`)
+        // console.log(`Updated ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`)
 
       }, 3600 * 1000);
 
