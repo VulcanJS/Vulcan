@@ -1,1 +1,0 @@
-Vulcan posts package, used internally. 

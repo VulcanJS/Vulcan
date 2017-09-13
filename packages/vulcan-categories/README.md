@@ -1,1 +1,0 @@
-Vulcan tags package, used internally. 
