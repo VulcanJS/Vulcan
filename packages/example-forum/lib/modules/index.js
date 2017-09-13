@@ -12,4 +12,4 @@ export { default as Posts }  from './posts/index.js';
 
 import './embedly/index.js';
 import './voting/index.js';
-import './email/index.js';
+import './notifications/index.js';

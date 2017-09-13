@@ -2,7 +2,7 @@
 
 export * from '../modules/index.js';
 
-export * from '../email/notifications.js';
+export * from './email/notifications.js';
 
 // Server
 
