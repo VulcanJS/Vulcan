@@ -4,8 +4,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { getRenderContext } from './render_context.js';
 
-const context = getRenderContext();
-
 function setToken(loginToken, expires) {
   if (loginToken && expires !== -1) {
     cookie.save('meteor_login_token', loginToken, {
@@ -20,6 +18,7 @@ function setToken(loginToken, expires) {
 }
 
 function resetToken() {
+  const context = getRenderContext();
   const loginToken = global.localStorage['Meteor.loginToken'];
   const loginTokenExpires = new Date(global.localStorage['Meteor.loginTokenExpires']);
 
