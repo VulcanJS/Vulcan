@@ -1,3 +1,15 @@
+/*
+
+Callbacks to:
+
+- Increment a user's post count
+- Run post approved callbacks
+- Update a user's post count
+- Remove a user's posts when it's deleted
+- Track clicks
+
+*/
+
 import Posts from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
@@ -11,18 +23,6 @@ function PostsNewIncrementPostCount (post) {
   Users.update({_id: userId}, {$inc: {'postCount': 1}});
 }
 addCallback('posts.new.async', PostsNewIncrementPostCount);
-
-/**
- * @summary Run the 'upvote.async' callbacks *once* the item exists in the database
- * @param {object} item - The item being operated on
- * @param {object} user - The user doing the operation
- * @param {object} collection - The collection the item belongs to
- */
-function UpvoteAsyncCallbacksAfterDocumentInsert(item, user, collection) {
-  runCallbacksAsync('upvote.async', item, user, collection, 'upvote');
-}
-
-addCallback('posts.new.async', UpvoteAsyncCallbacksAfterDocumentInsert);
 
 //////////////////////////////////////////////////////
 // posts.edit.sync                                  //
@@ -56,24 +56,6 @@ function PostsRemoveOperations (post) {
   return post;
 }
 addCallback('posts.remove.sync', PostsRemoveOperations);
-
-//////////////////////////////////////////////////////
-// posts.approve.sync                               //
-//////////////////////////////////////////////////////
-
-/**
- * @summary set postedAt when a post is approved and it doesn't have a postedAt date
- */
-function PostsSetPostedAt (modifier, post) {
-  if (!modifier.$set.postedAt && !post.postedAt) {
-    modifier.$set.postedAt = new Date();
-    if (modifier.$unset) {
-      delete modifier.$unset.postedAt;
-    }
-  }
-  return modifier;
-}
-addCallback('posts.approve.sync', PostsSetPostedAt);
 
 //////////////////////////////////////////////////////
 // users.remove.async                               //

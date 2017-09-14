@@ -16,3 +16,6 @@ const specificResolvers = {
 
 addGraphQLResolvers(specificResolvers);
 addGraphQLMutation('increasePostViewCount(postId: String): Float');
+
+
+

@@ -4,22 +4,9 @@ import { addCallback, runCallbacksAsync, removeMutation } from 'meteor/vulcan:co
 import Posts from '../../../modules/posts/index.js';
 import Comments from '../../../modules/comments/index.js';
 
-
-//////////////////////////////////////////////////////
-// comments.new.validate                            //
-//////////////////////////////////////////////////////
-
-
 //////////////////////////////////////////////////////
 // comments.new.sync                                //
 //////////////////////////////////////////////////////
-
-
-function CommentsNewGenerateHTMLBody (comment, user) {
-  comment.htmlBody = Utils.sanitize(marked(comment.body));
-  return comment;
-}
-addCallback('comments.new.sync', CommentsNewGenerateHTMLBody);
 
 function CommentsNewOperations (comment) {
 
@@ -57,19 +44,6 @@ function UpvoteAsyncCallbacksAfterDocumentInsert(item, user, collection) {
 }
 
 addCallback('comments.new.async', UpvoteAsyncCallbacksAfterDocumentInsert);
-
-//////////////////////////////////////////////////////
-// comments.edit.sync                               //
-//////////////////////////////////////////////////////
-
-function CommentsEditGenerateHTMLBody (modifier, comment, user) {
-  // if body is being modified, update htmlBody too
-  if (modifier.$set && modifier.$set.body) {
-    modifier.$set.htmlBody = Utils.sanitize(marked(modifier.$set.body));
-  }
-  return modifier;
-}
-addCallback('comments.edit.sync', CommentsEditGenerateHTMLBody);
 
 //////////////////////////////////////////////////////
 // comments.remove.async                            //

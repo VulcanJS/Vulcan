@@ -5,16 +5,8 @@ Callbacks to validate categories and generate category slugs
 
 */
 
-import { addCallback, Utils } from 'meteor/vulcan:core';
-import Posts from '../../modules/posts/collection.js';
+import { addCallback } from 'meteor/vulcan:core';
 import Categories from '../../modules/categories/collection.js';
-
-// add callback that adds categories CSS classes
-function addCategoryClass (postClass, post) {
-  var classArray = _.map(Posts.getCategories(post), function (category){return "category-"+category.slug;});
-  return postClass + " " + classArray.join(' ');
-}
-addCallback("postClass", addCategoryClass);
 
 // ------- Categories Check -------- //
 
@@ -34,35 +26,17 @@ var checkCategories = function (post) {
   }
 };
 
-function postsNewCheckCategories (post) {
+function PostsNewCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-addCallback("posts.new.sync", postsNewCheckCategories);
+addCallback("posts.new.sync", PostsNewCheckCategories);
 
-function postEditCheckCategories (modifier) {
+function PostEditCheckCategories (modifier) {
   checkCategories(modifier.$set);
   return modifier;
 }
-addCallback("posts.edit.sync", postEditCheckCategories);
-
-function categoriesNewGenerateSlug (category) {
-  // if no slug has been provided, generate one
-  const slug = category.slug || Utils.slugify(category.name);
-  category.slug = Utils.getUnusedSlug(Categories, slug);
-  return category;
-}
-addCallback("categories.new.sync", categoriesNewGenerateSlug);
-
-function categoriesEditGenerateSlug (modifier, document) {
-  // if slug is changing
-  if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== document.slug) {
-    const slug = modifier.$set.slug;
-    modifier.$set.slug = Utils.getUnusedSlug(Categories, slug);
-  }
-  return modifier;
-}
-addCallback("categories.edit.sync", categoriesEditGenerateSlug);
+addCallback("posts.edit.sync", PostEditCheckCategories);
 
 // TODO: debug this
 

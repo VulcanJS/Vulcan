@@ -5,6 +5,7 @@ Categories schema
 */
 
 import { Utils } from 'meteor/vulcan:core';
+import Categories from './collection.js';
 
 export function getCategories (apolloClient) {
 
@@ -84,6 +85,18 @@ const schema = {
     viewableBy: ['guests'],
     insertableBy: ['members'],
     editableBy: ['members'],
+    onInsert: category => {
+      // if no slug has been provided, generate one
+      const slug = category.slug || Utils.slugify(category.name);
+      return Utils.getUnusedSlug(Categories, slug);
+    },
+    onEdit: (modifier, category) => {
+      // if slug is changing
+      if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== category.slug) {
+        const slug = modifier.$set.slug;
+        return Utils.getUnusedSlug(Categories, slug);
+      }
+    }
   },
   image: {
     type: String,

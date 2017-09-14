@@ -1,3 +1,9 @@
+/*
+
+Post validation and rate limiting callbacks
+
+*/
+
 import Posts from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting } from 'meteor/vulcan:core';

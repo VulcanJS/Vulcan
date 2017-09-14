@@ -1,3 +1,9 @@
+/*
+
+Callbacks to add media/thumbnail after submit and on edit
+
+*/
+
 import { addCallback, getSetting } from 'meteor/vulcan:core';
 import Embed from 'meteor/vulcan:embedly';
 
@@ -7,7 +13,7 @@ const embedProvider = getSetting('embedProvider', 'builtin');
 // we use a separate server-side API call to set it (and the thumbnail object if it hasn't already been set)
 
 // Async variant that directly modifies the post object with update()
-function addMediaAfterSubmit (post) {
+function AddMediaAfterSubmit (post) {
 
   if(post.url){
 
@@ -37,7 +43,7 @@ function addMediaAfterSubmit (post) {
   
   return post;
 }
-addCallback('posts.new.sync', addMediaAfterSubmit);
+addCallback('posts.new.sync', AddMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   
