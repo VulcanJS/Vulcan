@@ -2,7 +2,7 @@ import { registerFragment } from 'meteor/vulcan:core';
 
 registerFragment(`
   fragment PostsList on Post {
-    # vulcan:posts
+    # posts
     _id
     title
     url
@@ -14,33 +14,33 @@ registerFragment(`
     excerpt
     viewCount
     clickCount
-    # vulcan:users
+    # users
     userId
     user {
       ...UsersMinimumInfo
     }
-    # vulcan:embedly
+    # embedly
     thumbnailUrl
-    # vulcan:categories
+    # categories
     categories {
       ...CategoriesMinimumInfo
     }
-    # vulcan:comments
+    # comments
     commentCount
     commenters {
       ...UsersMinimumInfo
     }
-    # vulcan:voting
+    # voting
     upvoters {
       _id
     }
     downvoters {
       _id
     }
-    #upvotes
-    #downvotes
-    #baseScore
-    #score
+    upvotes
+    downvotes
+    baseScore
+    score
   }
 `);
 
