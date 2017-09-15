@@ -1,6 +1,6 @@
 Package.describe({
-  name: "vulcan:embedly",
-  summary: "Vulcan Embedly module package",
+  name: "vulcan:embed",
+  summary: "Vulcan Embed package",
   version: '1.7.0',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });

@@ -5,7 +5,7 @@ Callbacks to add media/thumbnail after submit and on edit
 */
 
 import { addCallback, getSetting } from 'meteor/vulcan:core';
-import Embed from 'meteor/vulcan:embedly';
+import Embed from 'meteor/vulcan:embed';
 
 const embedProvider = getSetting('embedProvider', 'builtin');
 

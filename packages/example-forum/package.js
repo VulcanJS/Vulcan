@@ -23,7 +23,7 @@ Package.onUse(function (api) {
     'vulcan:forms',
     'vulcan:newsletter',
     'vulcan:events',
-    'vulcan:embedly',
+    'vulcan:embed',
 
   ]);
 

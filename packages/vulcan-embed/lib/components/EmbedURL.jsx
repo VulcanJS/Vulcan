@@ -6,7 +6,7 @@ import FRC from 'formsy-react-components';
 
 const Input = FRC.Input;
 
-class EmbedlyURL extends Component {
+class EmbedURL extends Component {
 
   constructor(props) {
     super(props);
@@ -182,13 +182,13 @@ class EmbedlyURL extends Component {
   }
 }
 
-EmbedlyURL.propTypes = {
+EmbedURL.propTypes = {
   name: PropTypes.string,
   value: PropTypes.any,
   label: PropTypes.string
 }
 
-EmbedlyURL.contextTypes = {
+EmbedURL.contextTypes = {
   updateCurrentValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
   throwError: PropTypes.func,
@@ -202,6 +202,6 @@ const options = {
   args: {url: 'String'},
 }
 
-export default withMutation(options)(EmbedlyURL);
+export default withMutation(options)(EmbedURL);
 
-registerComponent('EmbedlyURL', EmbedlyURL, [withMutation, options]);
+registerComponent('EmbedURL', EmbedURL, [withMutation, options]);
