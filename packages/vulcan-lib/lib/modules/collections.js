@@ -228,7 +228,7 @@ export const createCollection = options => {
     }
 
     // limit number of items to 200 by default
-    const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
     parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
 
     // console.log(parameters);

@@ -8,20 +8,11 @@ import Categories from './index.js';
 import { addCallback, getSetting } from 'meteor/vulcan:core';
 import { getCategories } from './schema.js';
 
-// Category Default Sorting by Ascending order (1, 2, 3..)
-function CategoriesAscOrderSorting(parameters, terms) {
-  parameters.options.sort = {order: 1};
-  
-  return parameters;
-}
-
-addCallback('categories.parameters', CategoriesAscOrderSorting);
-
 // Category Posts Parameters
-// Add a "categories" property to terms which can be used to filter *all* existing Posts views. 
+// Add a 'categories' property to terms which can be used to filter *all* existing Posts views. 
 function PostsCategoryParameter(parameters, terms, apolloClient) {
 
-  const cat = terms.cat || terms["cat[]"];
+  const cat = terms.cat || terms['cat[]'];
   // filter by category if category slugs are provided
   if (cat) {
 
@@ -29,7 +20,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
     let selector = {};
     let slugs;
 
-    if (typeof cat === "string") { // cat is a string
+    if (typeof cat === 'string') { // cat is a string
       selector = {slug: cat};
       slugs = [cat];
     } else if (Array.isArray(cat)) { // cat is an array
@@ -45,7 +36,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
     categories.forEach(function (category) {
       categoriesIds.push(category._id);
       // TODO: find a better way to handle child categories
-      // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
+      // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), '_id'));
     });
 
     const operator = getSetting('categoriesFilter', 'union') === 'union' ? '$in' : '$all';
@@ -55,4 +46,4 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
   return parameters;
 }
 
-addCallback("posts.parameters", PostsCategoryParameter);
+addCallback('posts.parameters', PostsCategoryParameter);

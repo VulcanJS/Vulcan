@@ -13,15 +13,16 @@ import schema from './schema.js';
  */
  const Categories = createCollection({
 
-   collectionName: 'Categories',
+  collectionName: 'Categories',
 
-   typeName: 'Category',
+  typeName: 'Category',
 
-   schema,
+  schema,
 
-   resolvers: getDefaultResolvers('Categories'),
+  resolvers: getDefaultResolvers('Categories'),
 
-   mutations: getDefaultMutations('Categories'),
+  mutations: getDefaultMutations('Categories'),
 
- });
+});
+
 export default Categories;

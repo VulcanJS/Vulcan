@@ -1,7 +1,5 @@
 import cloudinary from "cloudinary";
-// import Posts from "meteor/vulcan:posts";
-import Users from 'meteor/vulcan:users';
-import { addCallback, Utils, getSetting } from 'meteor/vulcan:core';
+import { Utils, getSetting } from 'meteor/vulcan:core';
 
 const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);

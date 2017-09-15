@@ -27,7 +27,7 @@ Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
-  return getSetting("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+  return getSetting('outsideLinksPointTo', 'link') === 'link' ? Posts.getLink(post) : Posts.getPageUrl(post, true);
 };
 
 /**
@@ -35,7 +35,7 @@ Posts.getShareableLink = function (post) {
  * @param {Object} post
  */
 Posts.getLinkTarget = function (post) {
-  return !!post.url ? "_blank" : "";
+  return !!post.url ? '_blank' : '';
 };
 
 /**
@@ -43,7 +43,7 @@ Posts.getLinkTarget = function (post) {
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute = false){
-  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : '';
   return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 
@@ -69,9 +69,9 @@ Posts.getAuthorName = function (post) {
  * @param {Object} user
  */
 Posts.getDefaultStatus = function (user) {
-  const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, "posts.new.approved");
+  const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, 'posts.new.approved');
   if (!getSetting('requirePostsApproval', false) || canPostApproved) {
-    // if user can post straight to "approved", or else post approval is not required
+    // if user can post straight to 'approved', or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {
     return Posts.config.STATUS_PENDING;
@@ -121,7 +121,7 @@ Posts.checkForSameUrl = function (url) {
  * @summary When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne("foo");
+  return Posts.findOne('foo');
 };
 
 /**
@@ -129,7 +129,7 @@ Posts.current = function () {
  * @param {Object} post
  */
 Posts.isVideo = function (post) {
-  return post.media && post.media.type === "video";
+  return post.media && post.media.type === 'video';
 };
 
 /**
@@ -148,7 +148,7 @@ Posts.getThumbnailUrl = (post) => {
  * @param {Object} post
  */
 Posts.getTwitterShareUrl = post => {
-  const via = getSetting("twitterAccount", null) ? `&via=${getSetting("twitterAccount")}` : "";
+  const via = getSetting('twitterAccount', null) ? `&via=${getSetting('twitterAccount')}` : '';
   return `https://twitter.com/intent/tweet?text=${ encodeURIComponent(post.title) }%20${ encodeURIComponent(Posts.getLink(post, true)) }${via}`;
 };
 
@@ -171,7 +171,7 @@ Posts.getEmailShareUrl = post => {
 ${post.title}
 ${Posts.getLink(post, true, false)}
 
-(found via ${getSetting("siteUrl")})
+(found via ${getSetting('siteUrl')})
   `;
   return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 };

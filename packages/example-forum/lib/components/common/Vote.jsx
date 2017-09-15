@@ -47,7 +47,7 @@ class Vote extends PureComponent {
       this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
       // this.stopLoading();
     } else {
-      const voteType = hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
+      const voteType = hasUpvoted(user, document) ? 'cancelUpvote' : 'upvote';
       this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
         // this.stopLoading();
       });
