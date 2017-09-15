@@ -30,7 +30,7 @@ class CategoriesList extends PureComponent {
   getCategoryLink(slug) {
     const categories = this.getCurrentCategoriesArray();
     return {
-      pathname: '/',
+      pathname: Utils.getRoutePath('posts.list'),
       query: {
         ...this.props.location.query,
         cat: categories.includes(slug) ? _.without(categories, slug) : categories.concat([slug])

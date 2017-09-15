@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent, Components, Utils } from 'meteor/vulcan:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
@@ -42,7 +42,7 @@ class SearchForm extends Component{
     const query = data.searchQuery === '' ? routerQuery : {...routerQuery, query: data.searchQuery};
 
     delay(() => {
-      router.push({pathname: "/", query: query});
+      router.push({pathname: Utils.getRoutePath('posts.list'), query: query});
     }, 700 );
 
   }

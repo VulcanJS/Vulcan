@@ -10,6 +10,7 @@ import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { getSetting } from './settings.js';
+import { Routes } from './routes.js';
 
 /**
  * @summary The global namespace for Vulcan utils.
@@ -477,4 +478,8 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
     throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
   }
 
+}
+
+Utils.getRoutePath = routeName => {
+  return Routes[routeName].path;
 }

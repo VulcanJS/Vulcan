@@ -1,4 +1,4 @@
-import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { registerComponent, withCurrentUser, Utils } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
@@ -10,10 +10,10 @@ import Users from 'meteor/vulcan:users';
 
 const PostsViews = (props, context) => {
 
-  let views = ["top", "new", "best"];
-  const adminViews = ["pending", "rejected", "scheduled"];
+  let views = ['top', 'new', 'best'];
+  const adminViews = ['pending', 'rejected', 'scheduled'];
 
-  if (Users.canDo(props.currentUser, "posts.edit.all")) {
+  if (Users.canDo(props.currentUser, 'posts.edit.all')) {
     views = views.concat(adminViews);
   }
 
@@ -24,18 +24,18 @@ const PostsViews = (props, context) => {
       <DropdownButton
         bsStyle="default"
         className="views btn-secondary"
-        title={context.intl.formatMessage({id: "posts.view"})}
+        title={context.intl.formatMessage({id: 'posts.view'})}
         id="views-dropdown"
       >
         {views.map(view =>
-          <LinkContainer key={view} to={{pathname: "/", query: {...query, view: view}}} className="dropdown-item">
+          <LinkContainer key={view} to={{pathname: Utils.getRoutePath('posts.list'), query: {...query, view: view}}} className="dropdown-item">
             <MenuItem>
               <FormattedMessage id={"posts."+view}/>
             </MenuItem>
           </LinkContainer>
         )}
-        <LinkContainer to={"/daily"} className="dropdown-item">
-          <MenuItem className={"bar"}>
+        <LinkContainer to="/daily" className="dropdown-item">
+          <MenuItem className="bar">
             <FormattedMessage id="posts.daily"/>
           </MenuItem>
         </LinkContainer>
@@ -50,7 +50,7 @@ PostsViews.propTypes = {
 };
 
 PostsViews.defaultProps = {
-  defaultView: "top"
+  defaultView: 'top'
 };
 
 PostsViews.contextTypes = {
@@ -58,6 +58,6 @@ PostsViews.contextTypes = {
   intl: intlShape
 };
 
-PostsViews.displayName = "PostsViews";
+PostsViews.displayName = 'PostsViews';
 
 registerComponent('PostsViews', PostsViews, withCurrentUser, withRouter);
