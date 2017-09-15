@@ -1,8 +1,41 @@
 import Categories from '../../modules/categories/index.js';
 import { Utils, newMutation } from 'meteor/vulcan:core';
 
-// Load categories from settings, if there are any
+const dummyFlag = {
+  fieldName: 'isDummy',
+  fieldSchema: {
+    type: Boolean,
+    optional: true,
+    hidden: true
+  }
+}
+Categories.addField(dummyFlag);
 
+const dummyCategories = [
+  {
+    name: 'Test Category 1',
+    description: 'The first test category',
+    order: 4,
+    slug: 'testcat1',
+    isDummy: true
+  },
+  {
+    name: 'Test Category 2',
+    description: 'The second test category',
+    order: 7,
+    slug: 'testcat2',
+    isDummy: true
+  },
+  {
+    name: 'Test Category 3',
+    description: 'The third test category',
+    order: 10,
+    slug: 'testcat3',
+    isDummy: true
+  }
+];
+
+// Load categories from settings, if there are any
 if (Meteor.settings && Meteor.settings.categories) {
   Meteor.settings.categories.forEach(category => {
 
@@ -36,5 +69,15 @@ if (Meteor.settings && Meteor.settings.categories) {
       // Categories.insert(category);
       console.log(`// Creating category “${category.name}”`); // eslint-disable-line
     }
+  });
+} else if (!Categories.find().count()) {
+  console.log('// inserting dummy categories');
+  // else if there are no categories yet, create dummy categories
+  dummyCategories.forEach(category => {
+    newMutation({
+      collection: Categories,
+      document: category, 
+      validate: false,
+    });
   });
 }

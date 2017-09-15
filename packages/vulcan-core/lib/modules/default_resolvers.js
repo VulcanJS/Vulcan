@@ -1,10 +1,10 @@
-import { Utils } from 'meteor/vulcan:core';
-
 /*
 
 Default list, single, and total resolvers
 
 */
+
+import { Utils, debug } from 'meteor/vulcan:core';
 
 export const getDefaultResolvers = collectionName => ({
 
@@ -16,6 +16,9 @@ export const getDefaultResolvers = collectionName => ({
 
     resolver(root, {terms = {}}, context, info) {
 
+      debug(`//--------------- start ${collectionName} list resolver ---------------//`);
+      debug(terms);
+
       // get currentUser and Users collection from context
       const { currentUser, Users } = context;
 
@@ -25,6 +28,9 @@ export const getDefaultResolvers = collectionName => ({
       // get selector and options from terms and perform Mongo query
       let {selector, options} = collection.getParameters(terms, {}, context);
       options.skip = terms.offset;
+
+      debug({ selector, options });
+
       const docs = collection.find(selector, options).fetch();
 
       // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
@@ -35,6 +41,8 @@ export const getDefaultResolvers = collectionName => ({
 
       // prime the cache
       restrictedDocs.forEach(doc => collection.loader.prime(doc._id, doc));
+
+      debug(`//--------------- end ${collectionName} list resolver ---------------//`);
 
       // return results
       return restrictedDocs;
@@ -50,6 +58,9 @@ export const getDefaultResolvers = collectionName => ({
 
     async resolver(root, {documentId, slug}, context) {
 
+      debug(`//--------------- start ${collectionName} single resolver ---------------//`);
+      debug(documentId);
+
       const { currentUser, Users } = context;
       const collection = context[collectionName];
 
@@ -61,6 +72,9 @@ export const getDefaultResolvers = collectionName => ({
       if (collection.checkAccess) {
         Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
       }
+
+      debug(`//--------------- end ${collectionName} single resolver ---------------//`);
+
 
       // filter out disallowed properties and return resulting document
       return Users.restrictViewableFields(currentUser, collection, doc);
@@ -79,6 +93,7 @@ export const getDefaultResolvers = collectionName => ({
       const collection = context[collectionName];
 
       const {selector} = collection.getParameters(terms, {}, context);
+
       return collection.find(selector).count();
     },
   

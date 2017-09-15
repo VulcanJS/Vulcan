@@ -6,6 +6,7 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
+import { debug } from './debug.js';
 
 export const Collections = [];
 
@@ -179,7 +180,7 @@ export const createCollection = options => {
 
   collection.getParameters = (terms = {}, apolloClient, context) => {
 
-    // console.log(terms)
+    // debug(terms);
 
     let parameters = {
       selector: {},
@@ -231,7 +232,7 @@ export const createCollection = options => {
     const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
     parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
 
-    // console.log(parameters);
+    // debug(parameters);
 
     return parameters;
   }

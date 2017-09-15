@@ -2,6 +2,7 @@ import { newMutation } from 'meteor/vulcan:core';
 import moment from 'moment';
 import Posts from '../../modules/posts/index.js';
 import Comments from '../../modules/comments/index.js';
+import Categories from '../../modules/categories/index.js';
 import Users from 'meteor/vulcan:users';
 
 const dummyFlag = {
@@ -131,6 +132,7 @@ Vulcan.removeGettingStartedContent = () => {
   Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
+  Categories.remove({isDummy: true});
   console.log('// Getting started content removed');
 };
 

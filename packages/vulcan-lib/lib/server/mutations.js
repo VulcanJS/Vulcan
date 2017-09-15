@@ -37,6 +37,7 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   debug('//------------------------------------//');
   debug('// newMutation');
   debug(collection._name);
+  debug(`validate: ${validate}`);
   debug(document);
 
   // we don't want to modify the original document

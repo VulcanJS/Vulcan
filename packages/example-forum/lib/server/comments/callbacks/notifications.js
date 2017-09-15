@@ -7,7 +7,6 @@ Comment notification callbacks
 import Users from 'meteor/vulcan:users';
 import { addCallback } from 'meteor/vulcan:core';
 import { createNotification } from '../../email/notifications.js';
-
 import Posts from '../../../modules/posts/index.js';
 import Comments from '../../../modules/comments/index.js';
 
