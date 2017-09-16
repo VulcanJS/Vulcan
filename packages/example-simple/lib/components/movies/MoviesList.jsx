@@ -7,7 +7,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Components, withList, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, withList, withCurrentUser, registerComponent } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';
 
@@ -64,4 +64,4 @@ const options = {
   limit: 5,
 };
 
-export default withList(options)(withCurrentUser(MoviesList));
+registerComponent('MoviesList', MoviesList, withCurrentUser, [withList, options]);
