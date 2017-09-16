@@ -150,7 +150,7 @@ class EmbedURL extends Component {
     loadingStyle.display = this.state.loading ? "block" : "none";
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const {document, control, getEmbedData, ...rest} = this.props; // eslint-disable-line
+    const {document, control, getEmbedData, refFunction, ...rest} = this.props; // eslint-disable-line
 
     return (
       <div className="form-group row embedly-form-group" style={wrapperStyle}>

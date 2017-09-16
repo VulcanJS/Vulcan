@@ -50,20 +50,20 @@ class FormComponent extends PureComponent {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props
       ...rest,
       onBlur: this.handleBlur,
-      ref: (ref) => this.formControl = ref,
+      refFunction: (ref) => this.formControl = ref,
     };
+
+    // for text fields, update character count on change
+    if (!this.props.control || ['number', 'url', 'email', 'textarea', 'text'].includes(this.props.control)) {
+      properties.onChange = this.updateCharacterCount;
+    }
 
     // if control is a React component, use it
     if (typeof this.props.control === 'function') {
 
       return <this.props.control {...properties} document={document} />
 
-    } else { // else pick a predefined component
-
-      // for text fields, update character count on change
-      if (!this.props.control || ['number', 'url', 'email', 'textarea', 'text'].includes(this.props.control)) {
-        properties.onChange = this.updateCharacterCount;
-      }
+    } else if (typeof this.props.control === 'string') { // else pick a predefined component
 
       switch (this.props.control) {
         
@@ -98,10 +98,16 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentDateTime {...properties} />;
         
         case 'text':
-        default:
           return <Components.FormComponentDefault {...properties}/>;
         
+        default: 
+          const CustomComponent = Components[this.props.control];
+          return <CustomComponent {...properties} document={document}/>;
       }
+
+    } else {
+        
+      return <Components.FormComponentDefault {...properties}/>;
 
     }
   }

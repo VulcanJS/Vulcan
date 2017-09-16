@@ -1,11 +1,10 @@
 import Posts from '../posts/index.js';
-import { EmbedURL } from 'meteor/vulcan:embed';
 
 Posts.addField([
   {
     fieldName: 'url',
     fieldSchema: {
-      control: EmbedURL, // we are just extending the field url, not replacing it
+      control: 'EmbedURL', // we are just extending the field url, not replacing it
     }
   },
   {
