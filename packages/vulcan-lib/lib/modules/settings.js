@@ -1,28 +1,38 @@
-export const getSetting = (setting, defaultValue) => {
+import { Utils } from './utils.js';
+
+export const Settings = {};
+
+export const getSetting = (settingName, defaultValue) => {
+
+  let setting;
 
   if (Meteor.isServer) {
     // look in public, private, and root
-    const rootSetting = Meteor.settings && Meteor.settings[setting];
-    const privateSetting = Meteor.settings && Meteor.settings.private && Meteor.settings.private[setting];
-    const publicSetting = Meteor.settings && Meteor.settings.public && Meteor.settings.public[setting];
+    const rootSetting = Utils.getNestedProperty(Meteor.settings, settingName);
+    const privateSetting = Meteor.settings.private && Utils.getNestedProperty(Meteor.settings.private, settingName);
+    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
     
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
-      return {
+      setting = {
         ...defaultValue,
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
       }
     } else {
-      return rootSetting || privateSetting || publicSetting || defaultValue;
+      setting = rootSetting || privateSetting || publicSetting || defaultValue;
     }
 
   } else {
     // look only in public
-    const publicSetting = Meteor.settings && Meteor.settings.public && Meteor.settings.public[setting];
-    return publicSetting || defaultValue;
+    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
+    setting = publicSetting || defaultValue;
   }
+
+  Settings[settingName] = setting;
+
+  return setting;
 
 }
 
