@@ -71,7 +71,7 @@ vulcan:accounts@1.7.0
 vulcan:core@1.7.0
 vulcan:debug@1.7.0
 vulcan:email@1.7.0
-vulcan:embedly@1.7.0
+vulcan:embed@1.7.0
 vulcan:events@1.7.0
 vulcan:forms@1.7.0
 vulcan:i18n@1.7.0
