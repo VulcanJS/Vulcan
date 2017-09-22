@@ -39,18 +39,18 @@ This component takes the `document` as a props. It can trigger any method descri
 ```
 
 ### Extend to other collections than Users, Posts, Categories
-This package export a function called `subscribMutationsGenerator` that takes a collection as an argument and create the associated methods code :
+This package exports a function called `subscribeMutationsGenerator` that takes a collection as an argument and create the associated methods code :
 
 ```js
 // in my custom package
-import subscribMutationsGenerator from 'meteor/vulcan:subscribe';
+import subscribeMutationsGenerator from 'meteor/vulcan:subscribe';
 import Movies from './collection.js';
 
 // the function creates the code and give it to the graphql server
-subscribMutationsGenerator(Movies); 
+subscribeMutationsGenerator(Movies);
 ```
 
-This will creates for you the mutations `moviesSubscribe` & `moviesUnsubscribe` than can be used in the `SubscribeTo` component: 
+This will creates for you the mutations `moviesSubscribe` & `moviesUnsubscribe` than can be used in the `SubscribeTo` component:
 ```jsx
 // in my custom component
 <Components.SubscribeTo document={movie} />
@@ -66,7 +66,5 @@ You'll also need to write the relevant callbacks, custom fields & permissions to
 ### Reusable component to show a list of subscribed items
 
 There was formerly a component that showed a list of subscribed posts. While reducing the depencies to other packages, it broke. It's on the roadmap to re-enable it. Feel free to discuss about it [on the Slack channel](http://slack.telescopeapp.org/) if you want to build it!
-
-![Subscribe all the things](https://cdn.meme.am/instances/500x/70780773.jpg)
 
 Original PR & discussion can be found here: https://github.com/TelescopeJS/Telescope/pull/1425
