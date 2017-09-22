@@ -4,47 +4,54 @@ Categories parameter
 
 */
 
-import Categories from './index.js';
-import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
-import { getCategories } from './schema.js';
+import { addCallback, getSetting, registerSetting, getFragment, runQuery } from 'meteor/vulcan:core';
+import gql from 'graphql-tag';
 
 registerSetting('forum.categoriesFilter', 'union', 'Display posts belonging to all (“intersection”) or at least one of (“union”) the selected categories');
 
 // Category Posts Parameters
 // Add a 'categories' property to terms which can be used to filter *all* existing Posts views. 
-function PostsCategoryParameter(parameters, terms, apolloClient) {
+async function PostsCategoryParameter(parameters, terms, apolloClient) {
 
+  // get category slugs
   const cat = terms.cat || terms['cat[]'];
-  // filter by category if category slugs are provided
-  if (cat) {
+  const categoriesSlugs = Array.isArray(cat) ? cat : [cat];
+  let allCategories = [];
 
-    let categoriesIds = [];
-    let selector = {};
-    let slugs;
+  if (cat.length) {
 
-    if (typeof cat === 'string') { // cat is a string
-      selector = {slug: cat};
-      slugs = [cat];
-    } else if (Array.isArray(cat)) { // cat is an array
-      selector = {slug: {$in: cat}};
-      slugs = cat;
+    // get all categories
+    // note: specify all arguments, see https://github.com/apollographql/apollo-client/issues/2051
+    const query = `
+      query GetCategories($terms: JSON) {
+        CategoriesList(terms: $terms) {
+          _id
+          slug
+        }
+      }
+    `
+
+    if (Meteor.isClient) {
+      // get categories from Redux store
+      allCategories = apolloClient.readQuery({
+        query: gql`${query}`,
+        variables: {terms: {limit: 0, itemsPerPage: 0}}
+      }).CategoriesList;
+    } else {
+      // get categories through GraphQL API using runQuery
+      const results = await runQuery(query);
+      allCategories = results.data.CategoriesList;
     }
 
-    // TODO: use new Apollo imperative API
-    // get all categories passed in terms
-    const categories = Meteor.isClient ? _.filter(getCategories(apolloClient), category => _.contains(slugs, category.slug) ) : Categories.find(selector).fetch();
-    
-    // for each category, add its ID and the IDs of its children to categoriesId array
-    categories.forEach(function (category) {
-      categoriesIds.push(category._id);
-      // TODO: find a better way to handle child categories
-      // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), '_id'));
-    });
+    // get corresponding category ids
+    const categoriesIds = _.pluck(_.filter(allCategories, category => _.contains(categoriesSlugs, category.slug)), '_id');
 
     const operator = getSetting('forum.categoriesFilter', 'union') === 'union' ? '$in' : '$all';
 
-    parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {[operator]: categoriesIds}};
+    // parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {[operator]: categoriesIds}};
+    parameters.selector = {...parameters.selector, categories: {[operator]: categoriesIds}};
   }
+
   return parameters;
 }
 
