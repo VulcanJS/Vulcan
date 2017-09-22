@@ -27,10 +27,10 @@ const resolvers = {
 
     name: 'UsersList',
 
-    resolver(root, {terms}, {currentUser, Users}, info) {
+    async resolver(root, {terms}, {currentUser, Users}, info) {
 
       // get selector and options from terms and perform Mongo query
-      let {selector, options} = Users.getParameters(terms);
+      let {selector, options} = await Users.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       const users = Users.find(selector, options).fetch();
@@ -62,8 +62,8 @@ const resolvers = {
 
     name: 'UsersTotal',
 
-    resolver(root, {terms}, context) {
-      const {selector} = context.Users.getParameters(terms);
+    async resolver(root, {terms}, context) {
+      const {selector} = await context.Users.getParameters(terms);
       return context.Users.find(selector).count();
     },
 
