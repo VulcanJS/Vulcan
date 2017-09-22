@@ -1,5 +1,7 @@
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Embed from '../../modules/embed.js';
+
+registerSetting('embedAPI', null, 'EmbedAPI settings');
 
 const extractBase = 'https://embedapi.com/api/embed';
 const settings = getSetting('embedAPI');

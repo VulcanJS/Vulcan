@@ -1,9 +1,11 @@
 import cloudinary from "cloudinary";
-import { Utils, getSetting } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
+
+registerSetting('cloudinary', null, 'Cloudinary settings');
 
 const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
-const cloudinarySettings = getSetting("cloudinary");
+const cloudinarySettings = getSetting('cloudinary');
 
 Cloudinary.config({
   cloud_name: cloudinarySettings.cloudName,

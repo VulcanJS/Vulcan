@@ -1,8 +1,10 @@
 import RSS from 'rss';
 import Posts from '../modules/posts/index.js';
 import Comments from '../modules/comments/index.js';
-import { Utils, getSetting } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
 import { Picker } from 'meteor/meteorhacks:picker';
+
+registerSetting('forum.RSSLinksPointTo', 'link', 'Where to point RSS links to');
 
 Posts.addView('rss', Posts.views.new); // default to 'new' view for RSS feed
 
@@ -37,7 +39,7 @@ export const servePostRSS = (terms, url) => {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: (getSetting('RSSLinksPointTo', 'link') === 'link') ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: (getSetting('forum.RSSLinksPointTo', 'link') === 'link') ? Posts.getLink(post) : Posts.getPageUrl(post, true)
     };
 
     if (post.thumbnailUrl) {

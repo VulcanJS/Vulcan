@@ -6,8 +6,11 @@ Post validation and rate limiting callbacks
 
 import Posts from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
-import { addCallback, getSetting } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
+
+registerSetting('forum.postInterval', 30, 'How long users should wait between each posts, in seconds');
+registerSetting('forum.maxPostsPerDay', 5, 'Maximum number of posts a user can create in a day');
 
 /**
  * @summary Rate limiting
@@ -18,8 +21,8 @@ function PostsNewRateLimit (post, user) {
 
     var timeSinceLastPost = Users.timeSinceLast(user, Posts),
       numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
-      postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
-      maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 5)));
+      postInterval = Math.abs(parseInt(getSetting('forum.postInterval', 30))),
+      maxPostsPer24Hours = Math.abs(parseInt(getSetting('forum.maxPostsPerDay', 5)));
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval){

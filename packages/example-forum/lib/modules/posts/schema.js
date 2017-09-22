@@ -6,9 +6,11 @@ Posts schema
 
 import Users from 'meteor/vulcan:users';
 import Posts from './collection.js';
-import { Utils, getSetting } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
 import moment from 'moment';
 import marked from 'marked';
+
+registerSetting('forum.postExcerptLength', 30, 'Length of posts excerpts in words');
 
 /**
  * @summary Posts config namespace
@@ -149,13 +151,13 @@ const schema = {
     onInsert: (post) => {
       if (post.body) {
         // excerpt length is configurable via the settings (30 words by default, ~255 characters)
-        const excerptLength = getSetting('postExcerptLength', 30); 
+        const excerptLength = getSetting('forum.postExcerptLength', 30); 
         return Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength);
       }
     },
     onEdit: (modifier, post) => {
       if (modifier.$set.body) {
-        const excerptLength = getSetting('postExcerptLength', 30); 
+        const excerptLength = getSetting('forum.postExcerptLength', 30); 
         return Utils.trimHTML(Utils.sanitize(marked(modifier.$set.body)), excerptLength);
       }
     }

@@ -1,10 +1,15 @@
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletters from '../modules/collection.js';
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 
 const defaultFrequency = [1]; // every monday
 const defaultTime = '00:00'; // GMT
+
+registerSetting('newsletter.frequency', defaultFrequency, 'Which days to send the newsletter on (1 = Monday, 7 = Sunday)');
+registerSetting('newsletter.time', defaultTime, 'Time to send the newsletter on (ex: “16:30”)');
+registerSetting('newsletter.enabledInDev', false, 'Enable the newsletter in development');
+registerSetting('newsletter.enabled', true, 'Enable the newsletter');
 
 SyncedCron.options = {
   log: true,
@@ -18,7 +23,7 @@ const addZero = num => {
 };
 
 var getSchedule = function (parser) {
-  var frequency = getSetting('newsletterFrequency', defaultFrequency);
+  var frequency = getSetting('newsletter.frequency', defaultFrequency);
   var recur = parser.recur();
   var schedule;
 
@@ -32,7 +37,7 @@ var getSchedule = function (parser) {
   }
 
   const offsetInMinutes = new Date().getTimezoneOffset();
-  const GMTtime = moment.duration(getSetting('newsletterTime', defaultTime));
+  const GMTtime = moment.duration(getSetting('newsletter.time', defaultTime));
   const serverTime = GMTtime.subtract(offsetInMinutes, "minutes");
   const serverTimeString = addZero(serverTime.hours()) + ":" + addZero(serverTime.minutes());
 
@@ -61,7 +66,7 @@ var addJob = function () {
     },
     job: function() {
       // only schedule newsletter campaigns in production
-      if (process.env.NODE_ENV === "production" || getSetting("enableNewsletterInDev", false)) {
+      if (process.env.NODE_ENV === 'production' || getSetting('newsletter.enabledInDev', false)) {
         console.log("// Scheduling newsletter…"); // eslint-disable-line
         console.log(new Date()); // eslint-disable-line
         Newsletters.send();
@@ -71,7 +76,7 @@ var addJob = function () {
 };
 
 Meteor.startup(function () {
-  if (getSetting('enableNewsletter', true)) {
+  if (getSetting('newsletter.enabled', true)) {
     addJob();
   }
 });

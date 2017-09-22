@@ -4,10 +4,10 @@ Callbacks to add media/thumbnail after submit and on edit
 
 */
 
-import { addCallback, getSetting } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import Embed from 'meteor/vulcan:embed';
 
-const embedProvider = getSetting('embedProvider', 'builtin');
+const embedProvider = getSetting('embedProvider');
 
 // For security reason, we make the media property non-modifiable by the client and
 // we use a separate server-side API call to set it (and the thumbnail object if it hasn't already been set)

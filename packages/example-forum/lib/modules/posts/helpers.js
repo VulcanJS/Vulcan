@@ -7,7 +7,12 @@ Posts helpers
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/vulcan:users';
-import { Utils, getSetting } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
+
+registerSetting('forum.outsideLinksPointTo', 'link', 'Whether to point RSS links to the linked URL (“link”) or back to the post page (“page”)');
+registerSetting('forum.requirePostsApproval', false, 'Require posts to be approved manually');
+registerSetting('twitterAccount', null, 'Twitter account associated with the app');
+registerSetting('siteUrl', null, 'Main site URL');
 
 //////////////////
 // Link Helpers //
@@ -27,7 +32,7 @@ Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
-  return getSetting('outsideLinksPointTo', 'link') === 'link' ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+  return getSetting('forum.outsideLinksPointTo', 'link') === 'link' ? Posts.getLink(post) : Posts.getPageUrl(post, true);
 };
 
 /**
@@ -70,7 +75,7 @@ Posts.getAuthorName = function (post) {
  */
 Posts.getDefaultStatus = function (user) {
   const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, 'posts.new.approved');
-  if (!getSetting('requirePostsApproval', false) || canPostApproved) {
+  if (!getSetting('forum.requirePostsApproval', false) || canPostApproved) {
     // if user can post straight to 'approved', or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {

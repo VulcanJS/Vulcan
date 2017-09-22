@@ -5,8 +5,10 @@ Categories parameter
 */
 
 import Categories from './index.js';
-import { addCallback, getSetting } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import { getCategories } from './schema.js';
+
+registerSetting('forum.categoriesFilter', 'union', 'Display posts belonging to all (“intersection”) or at least one of (“union”) the selected categories');
 
 // Category Posts Parameters
 // Add a 'categories' property to terms which can be used to filter *all* existing Posts views. 
@@ -39,7 +41,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       // categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), '_id'));
     });
 
-    const operator = getSetting('categoriesFilter', 'union') === 'union' ? '$in' : '$all';
+    const operator = getSetting('forum.categoriesFilter', 'union') === 'union' ? '$in' : '$all';
 
     parameters.selector = Meteor.isClient ? {...parameters.selector, 'categories._id': {$in: categoriesIds}} : {...parameters.selector, categories: {[operator]: categoriesIds}};
   }

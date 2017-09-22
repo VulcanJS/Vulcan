@@ -1,6 +1,6 @@
 import React from 'react'
 import StripeCheckout from 'react-stripe-checkout';
-import { Components, registerComponent, getSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
+import { Components, registerComponent, getSetting, registerSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';

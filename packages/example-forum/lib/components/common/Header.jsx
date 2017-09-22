@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/vulcan:core';
+import { withCurrentUser, getSetting, registerSetting, Components, registerComponent } from 'meteor/vulcan:core';
 
 const Header = (props, context) => {
   
-  const logoUrl = getSetting("logoUrl");
-  const siteTitle = getSetting("title", "My App");
-  const tagline = getSetting("tagline");
+  const logoUrl = getSetting('logoUrl');
+  const siteTitle = getSetting('title', 'My App');
+  const tagline = getSetting('tagline');
 
   return (
     <div className="header-wrapper">

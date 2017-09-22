@@ -1,5 +1,7 @@
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Embed from '../../modules/embed.js';
+
+registerSetting('embedly', null, 'Embedly settings');
 
 const extractBase = 'http://api.embed.ly/1/extract';
 const settings = getSetting('embedly');

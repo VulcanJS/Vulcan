@@ -9,8 +9,10 @@ import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
-import { getSetting } from './settings.js';
+import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
+
+registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
 /**
  * @summary The global namespace for Vulcan utils.
@@ -176,10 +178,6 @@ Utils.getDomain = function(url) {
   }
 };
 
-Utils.invitesEnabled = function() {
-  return getSetting("requireViewInvite") || getSetting("requirePostInvite");
-};
-
 // add http: if missing
 Utils.addHttp = function (url) {
   try {
@@ -289,7 +287,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
 }
 
 Utils.getLogoUrl = () => {
-  const logoUrl = getSetting("logoUrl");
+  const logoUrl = getSetting('logoUrl');
   if (!!logoUrl) {
     const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Posts from '../../modules/posts/index.js';
-import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
+import { withCurrentUser, withList, getSetting, registerSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 
 class PostsDailyList extends PureComponent {
 
@@ -51,7 +51,7 @@ class PostsDailyList extends PureComponent {
   // variant 1: reload everything each time (works with polling)
   loadMoreDays(e) {
     e.preventDefault();
-    const numberOfDays = getSetting('numberOfDays', 5);
+    const numberOfDays = getSetting('forum.numberOfDays', 5);
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     
     this.props.loadMore({
@@ -68,7 +68,7 @@ class PostsDailyList extends PureComponent {
   // variant 2: only load new data (need to disable polling)
   loadMoreDaysInc(e) {
     e.preventDefault();
-    const numberOfDays = getSetting('numberOfDays', 5);
+    const numberOfDays = getSetting('forum.numberOfDays', 5);
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
     
@@ -105,8 +105,8 @@ PostsDailyList.propTypes = {
 };
 
 PostsDailyList.defaultProps = {
-  days: getSetting('numberOfDays', 5),
-  increment: getSetting('numberOfDays', 5)
+  days: getSetting('forum.numberOfDays', 5),
+  increment: getSetting('forum.numberOfDays', 5)
 };
 
 const options = {

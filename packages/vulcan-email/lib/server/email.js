@@ -2,7 +2,19 @@ import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting, runQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Utils, getSetting, registerSetting, runQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+
+registerSetting('secondaryColor', '#444444');
+registerSetting('accentColor', '#DD3416');
+registerSetting('title', 'My App');
+registerSetting('tagline');
+registerSetting('emailFooter');
+registerSetting('logoUrl');
+registerSetting('logoHeight');
+registerSetting('logoWidth');
+registerSetting('defaultEmail', 'noreply@example.com');
+registerSetting('title', 'Vulcan');
+registerSetting('enableDevelopmentEmails', false);
 
 VulcanEmail.templates = {};
 

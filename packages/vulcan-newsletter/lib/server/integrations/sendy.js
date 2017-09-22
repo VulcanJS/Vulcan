@@ -1,6 +1,8 @@
 import Sendy from 'sendy-api'; // see https://github.com/igord/sendy-api
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
+
+registerSetting('sendy', null, 'Sendy settings');
 
 /*
 

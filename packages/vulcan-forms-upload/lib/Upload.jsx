@@ -7,12 +7,14 @@ Note also that an image can be stored as a simple string, or as an array of form
 (each format being itself an object).
 
 */
-import { Components, getSetting, registerComponent } from 'meteor/vulcan:lib';
+import { Components, getSetting, registerSetting, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
 import { FormattedMessage } from 'meteor/vulcan:i18n';
+
+registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
 
 /*
 
@@ -127,7 +129,7 @@ class Upload extends PureComponent {
     });
 
     // request url to cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary').cloudName}/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary.cloudName')}/upload`;
 
     // request body
     const body = new FormData();

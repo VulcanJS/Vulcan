@@ -1,11 +1,13 @@
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import { updateScore } from './scoring.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
+
+registerSetting('voting.scoreUpdateInterval', 60, 'How often to update scores, in seconds');
 
 // TODO use a node cron or at least synced-cron
 Meteor.startup(function () {
   
-  const scoreInterval = parseInt(getSetting('scoreUpdateInterval', 60));
+  const scoreInterval = parseInt(getSetting('voting.scoreUpdateInterval', 60));
 
   if (scoreInterval > 0) {
 

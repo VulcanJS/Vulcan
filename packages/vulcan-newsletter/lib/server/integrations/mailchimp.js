@@ -3,10 +3,12 @@
 // newsletter scheduling with MailChimp
 
 import moment from 'moment';
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
 import { createError } from 'apollo-errors';
+
+registerSetting('mailchimp', null, 'MailChimp settings');
 
 /*
 

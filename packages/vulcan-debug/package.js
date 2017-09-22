@@ -25,22 +25,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/debug.scss'
   ], ['client']);
 
-  api.addFiles([
-    'lib/components.js',
-    'lib/routes.jsx',
-    // 'lib/globals.js'
-  ], ['client', 'server']);
-
-  api.addFiles([
-    'lib/server/methods.js'
-  ], ['server']);
-
-  // api.export([
-  //   'Telescope',
-  //   'Posts',
-  //   'Comments',
-  //   'Users',
-  //   'Categories'
-  // ], ['client', 'server']);
+  api.mainModule("lib/server/main.js", "server");
+  api.mainModule("lib/client/main.js", "client");
 
 });

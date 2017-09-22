@@ -5,7 +5,7 @@ import withCurrentUser from '../containers/withCurrentUser.js';
 import withList from '../containers/withList.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import Button from 'react-bootstrap/lib/Button';
-
+import { getFieldValue } from './Card.jsx';
 /*
 
 Datatable Component
@@ -209,6 +209,6 @@ DatatableDefaultCell Component
 */
 
 const DatatableDefaultCell = ({ column, document }) =>
-  <div>{typeof column === 'string' ? document[column] : document[column.name]}</div>
+  <div>{typeof column === 'string' ? getFieldValue(document[column]) : getFieldValue(document[column.name])}</div>
 
 registerComponent('DatatableDefaultCell', DatatableDefaultCell);

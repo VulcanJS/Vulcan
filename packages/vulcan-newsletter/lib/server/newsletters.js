@@ -2,9 +2,12 @@ import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import Newsletters from '../modules/collection.js';
-import { Utils, getSetting, runCallbacksAsync } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting, runCallbacksAsync } from 'meteor/vulcan:core';
 
-const provider = getSetting('newsletterProvider', 'mailchimp'); // default to MailChimp
+registerSetting('newsletter.provider', 'mailchimp', 'Newsletter provider');
+registerSetting('defaultEmail', null, 'Email newsletter confirmations will be sent to');
+
+const provider = getSetting('newsletter.provider', 'mailchimp'); // default to MailChimp
 
 /*
 

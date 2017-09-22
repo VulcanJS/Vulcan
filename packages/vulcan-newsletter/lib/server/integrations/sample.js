@@ -4,8 +4,10 @@ This is a sample template for future integrations.
 
 */
 
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, regiserSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
+
+regiserSetting('providerName')
 
 /*
 

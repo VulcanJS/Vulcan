@@ -43,14 +43,18 @@ const LimitedString = ({ string }) =>
     }
   </div>
 
-const getFieldValue = (value, typeName) => {
+export const getFieldValue = (value, typeName) => {
   
-  if (!value) {
+  if (typeof value === 'undefined') {
     return ''
   }
 
   if (Array.isArray(value)) {
     typeName = 'Array';
+  }
+
+  if (typeof typeName === 'undefined') {
+    typeName = typeof value;
   }
 
   switch (typeName) {
@@ -60,7 +64,7 @@ const getFieldValue = (value, typeName) => {
     case 'Number':
     case 'number':
     case 'SimpleSchema.Integer':
-      return <code>{value}</code>;
+      return <code>{value.toString()}</code>;
 
     case 'Array':
       return <ol>{value.map((item, index) => <li key={index}>{getFieldValue(item, typeof item)}</li>)}</ol>

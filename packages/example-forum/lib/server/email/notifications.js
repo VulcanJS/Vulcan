@@ -1,6 +1,8 @@
 import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
+
+registerSetting('emailNotifications', true, 'Enable email notifications');
 
 export const createNotification = (userIds, notificationName, variables) => {
 

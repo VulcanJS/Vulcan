@@ -1,4 +1,4 @@
-import { Components, registerComponent, getSetting, Strings } from 'meteor/vulcan:lib';
+import { Components, registerComponent, registerSetting, getSetting, Strings } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape} from 'meteor/vulcan:i18n';

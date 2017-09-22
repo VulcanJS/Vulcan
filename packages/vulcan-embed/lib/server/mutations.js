@@ -1,7 +1,9 @@
-import { addGraphQLMutation, addGraphQLResolvers, getSetting } from 'meteor/vulcan:core';
+import { addGraphQLMutation, addGraphQLResolvers, getSetting, registerSetting } from 'meteor/vulcan:core';
 import Embed from '../modules/embed.js';
 
-const embedProvider = getSetting('embedProvider', 'builtin');
+registerSetting('embedProvider', 'builtin', 'Media embed/metadata provider service');
+
+const embedProvider = getSetting('embedProvider');
 
 addGraphQLMutation('getEmbedData(url: String) : JSON');
 

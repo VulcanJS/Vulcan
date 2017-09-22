@@ -12,8 +12,10 @@ Callbacks to:
 
 import Posts from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
-import { addCallback, getSetting, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import Events from 'meteor/vulcan:events';
+
+registerSetting('forum.trackClickEvents', true, 'Track clicks to posts pages');
 
 /**
  * @summary Increment the user's post count
@@ -89,7 +91,7 @@ Posts.increaseClicks = (post, ip) => {
     }
   };
 
-  if (getSetting('trackClickEvents', true)) {
+  if (getSetting('forum.trackClickEvents', true)) {
     // make sure this IP hasn't previously clicked on this post
     const existingClickEvent = Events.findOne({name: 'click', 'properties.postId': post._id, 'properties.ip': ip});
 

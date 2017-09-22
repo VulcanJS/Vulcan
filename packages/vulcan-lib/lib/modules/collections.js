@@ -3,10 +3,12 @@ import SimpleSchema from 'simpl-schema';
 import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
-import { getSetting } from './settings.js';
+import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
 import { debug } from './debug.js';
+
+registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request');
 
 export const Collections = [];
 

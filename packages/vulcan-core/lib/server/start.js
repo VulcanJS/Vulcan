@@ -1,6 +1,8 @@
 import {Inject} from 'meteor/meteorhacks:inject-initial';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
-import { getSetting } from 'meteor/vulcan:lib';
+import { getSetting, registerSetting } from 'meteor/vulcan:lib';
+
+registerSetting('mailUrl', null, 'The SMTP URL used to send out email');
 
 if (getSetting('mailUrl')) {
   process.env.MAIL_URL = getSetting('mailUrl');
