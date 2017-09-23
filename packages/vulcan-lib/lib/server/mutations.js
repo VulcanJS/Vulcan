@@ -70,7 +70,7 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   for(let fieldName of _.keys(schema)) {
     if (schema[fieldName].onInsert) {
       const autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
-      if (autoValue) {
+      if (typeof autoValue !== 'undefined') {
         newDocument[fieldName] = autoValue;
       }
     }
