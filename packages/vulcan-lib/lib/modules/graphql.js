@@ -194,6 +194,7 @@ export const GraphQLSchema = {
       }
     `
 
+    // TODO: do not generate input types if they're not needed?
     graphQLSchema += `
       input ${collectionName}Input {
         ${inputSchema.length ? inputSchema.join('\n  ') : '_blank: Boolean'}
@@ -202,7 +203,6 @@ export const GraphQLSchema = {
         ${inputSchema.length ? unsetSchema.join('\n  ') : '_blank: Boolean'}
       }
     `
-
     return graphQLSchema;
   }
 };

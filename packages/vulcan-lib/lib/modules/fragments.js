@@ -79,19 +79,24 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
     return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
   });
 
-  const fragmentText = `
-    fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
-      ${fieldNames.map(fieldName => {
-        return fieldName+'\n'
-      }).join('')}
-    }
-  `;
+  if (fieldNames.length) {
+    const fragmentText = `
+      fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
+        ${fieldNames.map(fieldName => {
+          return fieldName+'\n'
+        }).join('')}
+      }
+    `;
 
-  return fragmentText;
+    return fragmentText;
+  } else {
+    return null;
+  }
 
 }
 export const getDefaultFragment = collection => {
-  return gql`${getDefaultFragmentText(collection)}`;
+  const fragmentText = getDefaultFragmentText(collection);
+  return fragmentText ? gql`${fragmentText}` : null;
 }
 /*
 
