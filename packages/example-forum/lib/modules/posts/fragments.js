@@ -31,14 +31,9 @@ registerFragment(`
       ...UsersMinimumInfo
     }
     # voting
-    upvoters {
-      _id
+    currentUserVotes{
+      ...VoteFragment
     }
-    downvoters {
-      _id
-    }
-    upvotes
-    downvotes
     baseScore
     score
   }

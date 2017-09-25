@@ -6,81 +6,93 @@ export const makeVoteable = collection => {
 
   collection.addField([
     /**
-      How many upvotes the document has received
+      The current user's votes on the document, if they exists
     */
     {
-      fieldName: 'upvotes',
+      fieldName: 'currentUserVotes',
       fieldSchema: {
-        type: Number,
+        type: Array,
         optional: true,
-        defaultValue: 0,
         viewableBy: ['guests'],
+        resolveAs: {
+          type: '[Vote]',
+          resolver: async (document, args, { Users, Votes, currentUser }) => {
+            const votes = Votes.find({userId: currentUser._id, itemId: document._id}).fetch();
+            console.log('// currentUserVotes')
+            console.log('// currentUser._id', currentUser._id)
+            console.log('// document._id', document._id)
+            console.log('// votes', votes)
+            if (!votes.length) return null;
+            return votes;
+            // return Users.restrictViewableFields(currentUser, Votes, votes);
+          },
+
+        }
+      }
+    },
+    {
+      fieldName: 'currentUserVotes.$',
+      fieldSchema: {
+        type: Object,
+        optional: true,
+      }
+    },
+    /**
+      All votes on the document
+    */
+    {
+      fieldName: 'allVotes',
+      fieldSchema: {
+        type: Array,
+        optional: true,
+        viewableBy: ['guests'],
+        resolveAs: {
+          type: 'Vote',
+          resolver: async (document, args, { Users, Votes, currentUser }) => {
+            const votes = Votes.find({itemId: document._id}).fetch();
+            if (!votes.length) return null;
+            return votes;
+            // return Users.restrictViewableFields(currentUser, Votes, votes);
+          },
+
+        }
+      }
+    },
+    {
+      fieldName: 'allVotes.$',
+      fieldSchema: {
+        type: Object,
+        optional: true,
       }
     },
     /**
       An array containing the `_id`s of the document's upvoters
     */
     {
-      fieldName: 'upvoters',
+      fieldName: 'voters',
       fieldSchema: {
         type: Array,
         optional: true,
         viewableBy: ['guests'],
         resolveAs: {
-          fieldName: 'upvoters',
           type: '[User]',
           resolver: async (document, args, {currentUser, Users}) => {
-            if (!document.upvoters) return [];
-            const upvoters = await Users.loader.loadMany(document.upvoters);
-            return Users.restrictViewableFields(currentUser, Users, upvoters);
+            const votes = Votes.find({itemId: document._id}).fetch();
+            const votersIds = _.pluck(votes, 'userId');
+            const voters = Users.find({_id: {$in: votersIds}});
+            return voters;
+            // if (!document.upvoters) return [];
+            // const upvoters = await Users.loader.loadMany(document.upvoters);
+            // return Users.restrictViewableFields(currentUser, Users, upvoters);
           },
         },
       }
     },
     {
-      fieldName: 'upvoters.$',
+      fieldName: 'voters.$',
       fieldSchema: {
         type: String,
         optional: true
-      }
-    },
-    /**
-      How many downvotes the document has received
-    */
-    {
-      fieldName: 'downvotes',
-      fieldSchema: {
-        type: Number,
-        optional: true,
-        defaultValue: 0,
-        viewableBy: ['guests'],
-      }
-    },
-    /**
-      An array containing the `_id`s of the document's downvoters
-    */
-    {
-      fieldName: 'downvoters',
-      fieldSchema: {
-        type: Array,
-        optional: true,
-        viewableBy: ['guests'],
-        resolveAs: {
-          fieldName: 'downvoters',
-          type: '[User]',
-          resolver: async (document, args, {currentUser, Users}) => {
-            if (!document.downvoters) return [];
-            const downvoters = await Users.loader.loadMany(document.downvoters);
-            return Users.restrictViewableFields(currentUser, Users, downvoters);
-          },
-        },
-      }
-    },
-    {
-      fieldName: 'downvoters.$',
-      fieldSchema: {
-        type: String,
-        optional: true,
       }
     },
     /**

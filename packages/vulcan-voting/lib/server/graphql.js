@@ -1,20 +1,13 @@
-import { addCallback, addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Utils } from 'meteor/vulcan:core';
-import { mutateItem } from '../modules/vote.js';
+import { addCallback, addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Utils, registerSetting, getSetting } from 'meteor/vulcan:core';
+import { voteOnItem } from '../modules/vote.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
 import { createError } from 'apollo-errors';
+import Votes from '../modules/votes/collection.js';
+
 
 function CreateVoteableUnionType() {
-  const voteSchema = `
-    type Vote {
-      itemId: String
-      power: Float
-      votedAt: String
-    }
-    
-    ${VoteableCollections.length ? `union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}` : ''}
-  `;
-
-  addGraphQLSchema(voteSchema);
+  const voteableSchema = VoteableCollections.length ? `union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}` : '';
+  addGraphQLSchema(voteableSchema);
   return {}
 }
 addCallback('graphql.init.before', CreateVoteableUnionType);
@@ -30,20 +23,55 @@ const resolverMap = {
 
 addGraphQLResolvers(resolverMap);
 
-addGraphQLMutation('vote(documentId: String, voteType: String, collectionName: String) : Voteable');
+addGraphQLMutation('vote(documentId: String, operationType: String, collectionName: String) : Voteable');
 
 const voteResolver = {
   Mutation: {
-    vote(root, {documentId, voteType, collectionName}, context) {
+    async vote(root, {documentId, operationType, collectionName}, context) {
       
+      const { currentUser } = context;
       const collection = context[Utils.capitalize(collectionName)];
-      const document = collection.findOne(documentId);
-      
-      if (context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`)) {
+
+      // query for document being voted on
+      const document = await collection.queryOne(documentId, {
+        fragmentText: `
+          fragment DocumentVoteFragment on ${collection.typeName} {
+              __typename
+              _id
+              currentUserVotes{
+                _id
+                voteType
+                power
+              }
+              baseScore
+            }  
+        `,
+        context
+      });
+
+      if (context.Users.canDo(currentUser, `${collectionName.toLowerCase()}.${operationType}`)) {
+
+        // put document through voteOnItem and get result
+        const voteResult = voteOnItem(collection, document, currentUser, operationType);
         
-        const mutatedDocument = mutateItem(collection, document, context.currentUser, voteType, false);
-        mutatedDocument.__typename = collection.typeName;
-        return mutatedDocument;
+        // get new version of document
+        const newDocument = voteResult.document;
+        newDocument.__typename = collection.typeName;
+
+        // get created or cancelled vote
+        const vote = voteResult.vote;
+
+        if (operationType === 'cancelVote' && vote) {
+          // if a vote has been cancelled, delete it
+          Votes.remove(vote._id);
+        } else {
+          // if a vote has been created, insert it
+          delete vote.__typename;
+          Votes.insert(vote);
+        }
+
+        // in any case, return the document that was voted on
+        return newDocument;
 
       } else {
         

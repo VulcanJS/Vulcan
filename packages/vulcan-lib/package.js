@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'check',
     'http',
     'email',
+    'random',
     'ecmascript@0.8.2',
     'service-configuration',
     'shell-server@0.2.4',

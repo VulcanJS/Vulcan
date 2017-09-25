@@ -47,8 +47,8 @@ class Vote extends PureComponent {
       this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
       // this.stopLoading();
     } else {
-      const voteType = hasUpvoted(user, document) ? 'cancelUpvote' : 'upvote';
-      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
+      const operationType = this.props.document.currentUserVotes.length ? 'cancelVote' : 'upvote';
+      this.props.vote({document, operationType, collection, currentUser: this.props.currentUser}).then(result => {
         // this.stopLoading();
       });
     } 
@@ -77,6 +77,9 @@ class Vote extends PureComponent {
           {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{this.props.document.baseScore || 0}</div>
+          <div>{this.props.document.currentUserVotes ? this.props.document.currentUserVotes.map(vote => 
+            <p key={vote._id}>{vote.votedAt.toString()}, {vote.power}</p>
+          ) : null}</div>
         </a>
       </div>
     )
