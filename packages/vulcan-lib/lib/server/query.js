@@ -10,11 +10,8 @@ import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
 import { getDefaultFragmentText, extractFragmentName } from '../modules/fragments.js';
 
-export const runQuery = async (query, variables = {}) => {
-  
-  const context = {
-    currentUser: {isAdmin: true} // on server, run all queries with full privileges
-  };
+// note: if no context is passed, default to running queries with full admin privileges
+export const runQuery = async (query, variables = {}, context = { currentUser: {isAdmin: true} }) => {
 
   // within the scope of this specific query, 
   // decorate each collection with a new Dataloader object and add it to context
@@ -70,9 +67,9 @@ Meteor.startup(() => {
     const collectionName = collection.options.collectionName;
     const resolverName = `${collectionName}Single`;
 
-    collection.queryOne = async (documentId, {fragmentName, fragmentText}) => {
-      const query = buildQuery(collection, {fragmentName, fragmentText});
-      const result = await runQuery(query, { documentId });
+    collection.queryOne = async (documentId, { fragmentText, context }) => {
+      const query = buildQuery(collection, { fragmentText });
+      const result = await runQuery(query, { documentId }, context);
       return result.data[resolverName];
     }
 
