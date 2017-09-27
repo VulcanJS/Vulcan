@@ -1,70 +1,65 @@
+/*
+
+This variant of the Vote.jsx component implements a loading spinner instead of 
+optimistic response
+
+*/
 import { Components, registerComponent, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withVote, hasUpvoted, hasDownvoted } from 'meteor/vulcan:voting';
-import { /*FormattedMessage,*/ intlShape } from 'meteor/vulcan:i18n';
+import { withVote } from '../containers/withVote.js';
 
 class Vote extends PureComponent {
 
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.hasVoted = this.hasVoted.bind(this);
     this.getActionClass = this.getActionClass.bind(this);
-    // this.startLoading = this.startLoading.bind(this);
-    // this.stopLoading = this.stopLoading.bind(this);
+    this.startLoading = this.startLoading.bind(this);
+    this.stopLoading = this.stopLoading.bind(this);
     this.state = {
       loading: false
     }
   }
 
-  /*
+  startLoading() {
+    this.setState({ loading: true });
+  }
 
-  note: with optimisitc UI, loading functions are not needed
-  also, setState triggers issues when the component is unmounted
-  before the vote mutation returns. 
+  stopLoading() {
+    this.setState({ loading: false });
+  }
 
-  */
-
-  // startLoading() {
-  //   this.setState({ loading: true });
-  // }
-
-  // stopLoading() {
-  //   this.setState({ loading: false });
-  // }
+  hasVoted() {
+    return this.props.document.currentUserVotes && this.props.document.currentUserVotes.length;
+  }
 
   upvote(e) {
     e.preventDefault();
 
-    // this.startLoading();
-
+    this.startLoading();
     const document = this.props.document;
     const collection = this.props.collection;
     const user = this.props.currentUser;
 
     if(!user){
       this.props.flash(this.context.intl.formatMessage({id: 'users.please_log_in'}));
-      // this.stopLoading();
+      this.stopLoading();
     } else {
-      const operationType = this.props.document.currentUserVotes && this.props.document.currentUserVotes.length ? 'cancelVote' : 'upvote';
+      const operationType = this.hasVoted() ? 'cancelVote' : 'upvote';
       this.props.vote({document, operationType, collection, currentUser: this.props.currentUser}).then(result => {
-        // this.stopLoading();
+        this.stopLoading();
       });
     } 
   }
 
   getActionClass() {
-    const document = this.props.document;
-    const user = this.props.currentUser;
 
-    const isUpvoted = hasUpvoted(user, document);
-    const isDownvoted = hasDownvoted(user, document);
     const actionsClass = classNames(
       'vote', 
-      {voted: isUpvoted || isDownvoted},
-      {upvoted: isUpvoted},
-      {downvoted: isDownvoted}
+      {voted: this.hasVoted()},
     );
 
     return actionsClass;
@@ -91,8 +86,4 @@ Vote.propTypes = {
   currentUser: PropTypes.object, // user might not be logged in, so don't make it required
 };
 
-Vote.contextTypes = {
-  intl: intlShape
-};
-
-registerComponent('Vote', Vote, withMessages, withVote);
+registerComponent('Upvote', Vote, withMessages, withVote);

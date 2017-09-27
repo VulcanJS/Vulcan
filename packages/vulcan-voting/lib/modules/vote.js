@@ -1,143 +1,163 @@
-import Users from 'meteor/vulcan:users';
-import { hasUpvoted, hasDownvoted } from './helpers.js';
-import { runCallbacks, runCallbacksAsync, registerSetting, getSetting } from 'meteor/vulcan:core';
-import update from 'immutability-helper';
+import { registerSetting, getSetting } from 'meteor/vulcan:core';
+import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
+import Users from 'meteor/vulcan:users';
 
 registerSetting('voting.maxVotes', 1, 'How many times a user can vote on the same document');
 
-// The equation to determine voting power. Defaults to returning 1 for everybody
-export const getVotePower = (user, operationType) => {
-  return operationType === 'upvote' ? 1 : -1;
-};
+/*
 
-const keepVoteProperties = item => _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');
+Define voting operations
+
+*/
+export const voteOperations = {
+  'upvote': {
+    power: 1,
+    // TODO: refactor voteOptimisticResponse and performVoteOperation code
+    // into extensible, action-specific objects
+    // clientOperation: () => {
+
+    // },
+    // serverOperation: () => {
+
+    // }
+  },
+  'downvote': {
+    power: -1
+  },
+  'adminUpvote': {
+    power: user => Users.isAdmin(user) ? 5 : 1
+  },
+  'cancelVote': {
+
+  }
+}
 
 /*
 
-Runs all the operation and returns an objects without affecting the db.
+Determine a user's voting power for a given operation.
+If power is a function, call it on user
 
 */
-export const voteOnItem = function (collection, document, user, operationType = 'upvote') {
+export const getVotePower = (user, operationType) => {
+  const power = voteOperations[operationType].power;
+  return typeof power === 'function' ? power(user) : power;
+};
+
+/*
+
+Calculate total power of all a user's votes on a document
+
+*/
+export const calculateTotalPower = userVotes => _.pluck(userVotes, 'power').reduce((a, b) => a + b, 0);
+
+/*
+
+Create new vote object
+
+*/
+export const createVote = ({ documentId, collectionName, operationType, user, voteId }) => ({
+  _id: voteId,
+  itemId: documentId,
+  collectionName,
+  userId: user._id,
+  voteType: operationType,
+  power: getVotePower(user, operationType),
+  votedAt: new Date(),
+  __typename: 'Vote'
+});
+
+/*
+
+Optimistic response for votes
+
+*/
+export const voteOptimisticResponse = ({collection, document, user, operationType = 'upvote', voteId}) => {
 
   const collectionName = collection.options.collectionName;
-  let result = {};
 
   // make sure item and user are defined
   if (!document || !user) {
     throw new Error(`Cannot perform operation '${collectionName}.${operationType}'`);
   }
 
-  /*
+  // console.log('// voteOptimisticResponse')
+  // console.log('collectionName: ', collectionName)
+  // console.log('document:', document)
+  // console.log('operationType:', operationType)
 
-  First, handle vote cancellation.
-  Just remove last vote and subtract its power from the base score
+  // create a "lite" version of the document that only contains relevant fields
+  // we do not want to affect the original item directly
+  const newDocument = {
+    _id: document._id,
+    baseScore: document.baseScore || 0,
+    __typename: collection.options.typeName,
+  };
 
-  */
   if (operationType === 'cancelVote') {
 
-     // create a "lite" version of the document that only contains relevant fields
-    const newDocument = {
-      _id: document._id,
-      currentUserVotes: document.currentUserVotes || [],
-      // voters: document.voters || [],
-      baseScore: document.baseScore || 0,
-      __typename: collection.options.typeName,
-    }; // we do not want to affect the original item directly
+    // subtract vote scores
+    newDocument.baseScore -= calculateTotalPower(document.currentUserVotes);
 
-    // if document has votes
-    if (newDocument.currentUserVotes.length) {
-      // remove one vote
-      const cancelledVote = _.last(newDocument.currentUserVotes);
-      newDocument.currentUserVotes = _.initial(newDocument.currentUserVotes);
-      result.vote = cancelledVote;
-
-      // update base score
-      newDocument.baseScore -= cancelledVote.power;
-    }
-
-    // console.log('// voteOnItem')
-    // console.log('collection: ', collectionName)
-    // console.log('document:', document)
-    // console.log('newDocument:', newDocument)
-
-    result.document = newDocument;
+    // clear out all votes
+    newDocument.currentUserVotes = [];
 
   } else {
-  /*
 
-  Next, handle all other vote types (upvote, downvote, etc.)
-  
-  */
+    // create new vote and add it to currentUserVotes array
+    const vote = createVote({ documentId: document._id, collectionName, operationType, user, voteId });
+    newDocument.currentUserVotes = [...document.currentUserVotes, vote];
 
+    // increment baseScore
     const power = getVotePower(user, operationType);
-
-    // create vote object
-    const vote = {
-      _id: Random.id(),
-      itemId: document._id,
-      collectionName,
-      userId: user._id,
-      voteType: operationType,
-      power,
-      votedAt: new Date(),
-      __typename: 'Vote'
-    };
-
-    // create a "lite" version of the document that only contains relevant fields
-    const currentUserVotes = document.currentUserVotes || [];
-    const newDocument = {
-      _id: document._id,
-      currentUserVotes: [...currentUserVotes, vote],
-      // voters: document.voters || [],
-      baseScore: document.baseScore || 0,
-      __typename: collection.options.typeName,
-    }; // we do not want to affect the original item directly
-
-    // update score
     newDocument.baseScore += power;
 
-    // console.log('// voteOnItem')
-    // console.log('collection: ', collectionName)
-    // console.log('document:', document)
-    // console.log('newDocument:', newDocument)
-
-    // make sure item and user are defined, and user can perform the operation
-    if (newDocument.currentUserVotes.length > getSetting('voting.maxVotes')) {
-      throw new Error(`Cannot perform operation '${collectionName}.${operationType}'`);
-    }
-
-    // ------------------------------ Sync Callbacks ------------------------------ //
-
-    // item = runCallbacks(operation, item, user, operation, isClient);
-
-    result = {
-      document: newDocument,
-      vote
-    };
   }
 
-  return result;
-
-};
-
-export const cancelVote = function (collection, document, user, voteType = 'vote') {
-
-};
+  return newDocument;  
+}
 
 /*
 
-Call operateOnItem, update the db with the result, run callbacks.
+Server-side database operation
 
 */
-// export const mutateItem = function (collection, originalItem, user, operation) {
-//   const newItem = operateOnItem(collection, originalItem, user, operation, false);
-//   newItem.inactive = false;
+export const performVoteOperation = ({documentId, operationType, collection, voteId, currentUser}) => {
+  // console.log('// performVoteMutation')
+  // console.log('operationType: ', operationType)
+  // console.log('collectionName: ', collectionName)
+  // console.log('// document: ', collection.findOne(documentId))
+  
+  const power = getVotePower(currentUser, operationType);
+  const userVotes = Votes.find({itemId: documentId, userId: currentUser._id}).fetch();
 
-//   collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
+  if (operationType === 'cancelVote') {
+    
+    // if a vote has been cancelled, delete all votes and subtract their power from base score
+    const scoreTotal = calculateTotalPower(userVotes);
 
-//   // --------------------- Server-Side Async Callbacks --------------------- //
-//   runCallbacksAsync(operation+'.async', newItem, user, collection, operation);
+    // remove vote object
+    Votes.remove({itemId: documentId, userId: currentUser._id});
 
-//   return newItem;
-// }
+    // update document score
+    collection.update({_id: documentId}, {$inc: {baseScore: -scoreTotal }});
+
+  } else {
+
+    if (userVotes.length < getSetting('voting.maxVotes')) {
+
+      // create vote and insert it
+      const vote = createVote({ documentId, collectionName: collection.options.collectionName, operationType, user: currentUser, voteId });
+      delete vote.__typename;
+      Votes.insert(vote);
+
+      // update document score
+      collection.update({_id: documentId}, {$inc: {baseScore: power }});
+
+    } else {
+      const VoteError = createError('voting.maximum_votes_reached', {message: 'voting.maximum_votes_reached'});
+      throw new VoteError();
+    }
+
+  }
+}

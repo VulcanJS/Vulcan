@@ -10,7 +10,6 @@ import '../components/common/FlashMessages.jsx';
 import '../components/common/Newsletter.jsx';
 import '../components/common/NewsletterButton.jsx';
 import '../components/common/SearchForm.jsx';
-import '../components/common/Vote.jsx';
 
 // posts
 

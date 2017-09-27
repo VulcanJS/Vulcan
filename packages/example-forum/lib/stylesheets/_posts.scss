@@ -109,7 +109,7 @@
   }
 }
 
-.upvote-button{
+.vote-button{
   @include border;
   @include border-radius;
   @include flex-center;
@@ -127,7 +127,16 @@
   .voted &{
     color: $light-text;
   }
-  @include activeHover;
+  &.show-downvote{
+    .icon{
+      &:hover{
+        color: $active-color;
+      }
+    }
+  }
+  &.hide-downvote{
+    @include activeHover;
+  }
   &, &:active, &:hover{
     text-decoration: none;
   }
