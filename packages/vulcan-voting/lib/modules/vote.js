@@ -22,11 +22,6 @@ export const addVoteType = (voteType, voteTypeOptions) => {
 addVoteType('upvote', {power: 1, exclusive: true});
 addVoteType('downvote', {power: -1, exclusive: true});
 
-addVoteType('angry', {power: -1, exclusive: true});
-addVoteType('sad', {power: -1, exclusive: true});
-addVoteType('happy', {power: 1, exclusive: true});
-addVoteType('laughing', {power: 1, exclusive: true});
-
 /*
 
 Test if a user has voted on the client
@@ -69,11 +64,12 @@ const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
     _id: document._id,
     baseScore: document.baseScore || 0,
     __typename: collection.options.typeName,
+    currentUserVotes: document.currentUserVotes || []
   };
 
   // create new vote and add it to currentUserVotes array
   const vote = createVote({ document, collectionName: collection.options.collectionName, voteType, user, voteId });
-  newDocument.currentUserVotes = [...document.currentUserVotes, vote];
+  newDocument.currentUserVotes = [...newDocument.currentUserVotes, vote];
 
   // increment baseScore
   newDocument.baseScore += vote.power;
@@ -179,16 +175,24 @@ const getVotePower = ({ user, voteType, document }) => {
 Create new vote object
 
 */
-const createVote = ({ document, collectionName, voteType, user, voteId }) => ({
-  _id: voteId,
-  documentId: document._id,
-  collectionName,
-  userId: user._id,
-  voteType: voteType,
-  power: getVotePower({user, voteType, document}),
-  votedAt: new Date(),
-  __typename: 'Vote'
-});
+const createVote = ({ document, collectionName, voteType, user, voteId }) => {
+  
+  const vote = {
+    documentId: document._id,
+    collectionName,
+    userId: user._id,
+    voteType: voteType,
+    power: getVotePower({user, voteType, document}),
+    votedAt: new Date(),
+    __typename: 'Vote'
+  }
+  
+  // when creating a vote from the server, voteId can sometimes be undefined
+  if (voteId) vote._id = voteId;
+
+  return vote;
+
+};
 
 /*
 
@@ -200,10 +204,10 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
   const collectionName = collection.options.collectionName;
   let returnedDocument;
 
-  console.log('// voteOptimisticResponse')
-  console.log('collectionName: ', collectionName)
-  console.log('document:', document)
-  console.log('voteType:', voteType)
+  // console.log('// voteOptimisticResponse')
+  // console.log('collectionName: ', collectionName)
+  // console.log('document:', document)
+  // console.log('voteType:', voteType)
 
   // make sure item and user are defined
   if (!document || !user || !Users.canDo(user, `${collectionName.toLowerCase()}.${voteType}`)) {
@@ -214,13 +218,13 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
   if (hasVotedClient({document, voteType})) {
 
-    console.log('action: cancel')
+    // console.log('action: cancel')
     returnedDocument = cancelVoteClient(voteOptions);
     // returnedDocument = runCallbacks(`votes.cancel.client`, returnedDocument, collection, user);
 
   } else {
 
-    console.log('action: vote')
+    // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
       clearVotesClient({document, collection, voteType, user, voteId})
@@ -231,7 +235,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
   }
 
-  console.log('returnedDocument:', returnedDocument)
+  // console.log('returnedDocument:', returnedDocument)
 
   return returnedDocument;  
 }
@@ -246,10 +250,10 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
   const collectionName = collection.options.collectionName;
   const document = collection.findOne(documentId);
 
-  console.log('// performVoteMutation')
-  console.log('collectionName: ', collectionName)
-  console.log('document: ', collection.findOne(documentId))
-  console.log('voteType: ', voteType)
+  // console.log('// performVoteMutation')
+  // console.log('collectionName: ', collectionName)
+  // console.log('document: ', collection.findOne(documentId))
+  // console.log('voteType: ', voteType)
   
   const voteOptions = {document, collection, voteType, user, voteId};
 
@@ -260,7 +264,7 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
 
   if (hasVotedServer({document, voteType, user})) {
 
-    console.log('action: cancel')
+    // console.log('action: cancel')
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
     cancelVoteServer(voteOptions);
@@ -268,7 +272,7 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
   
   } else {
   
-    console.log('action: vote')
+    // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
       clearVotesServer(voteOptions)
@@ -283,5 +287,5 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
   const newDocument = collection.findOne(documentId);
   newDocument.__typename = collection.options.typeName;
   return newDocument;
-  
+
 }

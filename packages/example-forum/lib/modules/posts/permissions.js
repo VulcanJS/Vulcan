@@ -15,6 +15,8 @@ const membersActions = [
   'posts.new', 
   'posts.edit.own', 
   'posts.remove.own',
+  'posts.upvote', 
+  'posts.downvote',
 ];
 Users.groups.members.can(membersActions);
 
