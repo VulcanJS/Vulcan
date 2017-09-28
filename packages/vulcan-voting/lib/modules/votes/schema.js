@@ -8,7 +8,7 @@ const schema = {
   /**
     The id of the document that was voted on
   */
-  itemId: {
+  documentId: {
     type: String
   },
 

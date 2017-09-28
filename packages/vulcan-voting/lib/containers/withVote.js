@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { voteOptimisticResponse } from '../modules/vote.js';
+import { performVoteClient } from '../modules/vote.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
 
 export const withVote = component => {
 
   return graphql(gql`
-    mutation vote($documentId: String, $operationType: String, $collectionName: String, $voteId: String) {
-      vote(documentId: $documentId, operationType: $operationType, collectionName: $collectionName, voteId: $voteId) {
+    mutation vote($documentId: String, $voteType: String, $collectionName: String, $voteId: String) {
+      vote(documentId: $documentId, voteType: $voteType, collectionName: $collectionName, voteId: $voteId) {
         ${VoteableCollections.map(collection => `
           ... on ${collection.typeName} {
             __typename
@@ -25,15 +25,14 @@ export const withVote = component => {
     }
   `, {
     props: ({ownProps, mutate}) => ({
-      vote: ({document, operationType, collection, currentUser}) => {
+      vote: ({document, voteType, collection, currentUser, voteId = Random.id()}) => {
 
-        const voteId = Random.id();
-        const newDocument = voteOptimisticResponse({collection, document, user: currentUser, operationType, voteId});
+        const newDocument = performVoteClient({collection, document, user: currentUser, voteType, voteId});
 
         return mutate({ 
           variables: {
             documentId: document._id, 
-            operationType,
+            voteType,
             collectionName: collection.options.collectionName,
             voteId,
           },
