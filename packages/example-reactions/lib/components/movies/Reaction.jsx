@@ -60,6 +60,7 @@ Reaction.propTypes = {
   vote: PropTypes.func.isRequired, // mutate function with callback inside
   currentUser: PropTypes.object, // user might not be logged in, so don't make it required
 };
+
 Reaction.contextTypes = {
   intl: intlShape
 };

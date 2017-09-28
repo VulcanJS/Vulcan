@@ -18,6 +18,8 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
   
   <div style={{maxWidth: '500px', margin: '20px auto'}}>
 
+    <Components.FlashMessages />
+
     <Helmet>
       <link name="bootstrap" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
     </Helmet>
