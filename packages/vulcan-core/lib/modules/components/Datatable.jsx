@@ -57,7 +57,7 @@ class Datatable extends PureComponent {
     return (
       <div className={`datatable datatable-${this.props.collection._name}`}>
         <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} />
-        <DatatableWithList {...this.props} terms={{query: this.state.query}} />
+        <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
       </div>
     )
   }
@@ -106,7 +106,7 @@ DatatableContents Component
 */
 
 const DatatableContents = (props) => {
-  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit} = props;
+  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser} = props;
   
   if (loading) {
     return <Components.Loading />;
@@ -125,7 +125,7 @@ const DatatableContents = (props) => {
           </tr>
         </thead>
         <tbody>
-          {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit}/>)}
+          {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
         </tbody>
       </table>
       <div className="admin-users-load-more">
@@ -146,11 +146,11 @@ registerComponent('DatatableContents', DatatableContents);
 DatatableRow Component
 
 */
-const DatatableRow = ({ collection, columns, document, showEdit }, { intl }) => {
+const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, { intl }) => {
   return (
   <tr className="datatable-item">
 
-    {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} />)}
+    {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} />)}
   
     {showEdit ? 
       <td>
@@ -193,11 +193,11 @@ registerComponent('DatatableEditForm', DatatableEditForm);
 DatatableCell Component
 
 */
-const DatatableCell = ({ column, document }) => {
+const DatatableCell = ({ column, document, currentUser }) => {
   const Component = column.component || Components[column.componentName] || Components.DatatableDefaultCell;
   const columnName = column.name || column;
   return (
-    <td className={`datatable-item-${columnName.toLowerCase()}`}><Component column={column} document={document} /></td>
+    <td className={`datatable-item-${columnName.toLowerCase()}`}><Component column={column} document={document} currentUser={currentUser} /></td>
   )
 }
 registerComponent('DatatableCell', DatatableCell);
