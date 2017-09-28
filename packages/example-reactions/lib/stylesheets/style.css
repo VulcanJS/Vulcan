@@ -1,0 +1,19 @@
+.datacard-label{
+  width: 120px;
+}
+
+.vote-button{
+  display: flex;
+}
+.reaction-button{
+  opacity: 0.4;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.voted-happy .button-happy, 
+.voted-angry .button-angry,
+.voted-sad .button-sad,
+.voted-laughing .button-laughing{
+  opacity: 1;
+}
