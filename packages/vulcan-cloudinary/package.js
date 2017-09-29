@@ -13,14 +13,7 @@ Package.onUse(function (api) {
     'vulcan:core@1.8.0'
   ]);
 
-  api.addFiles([
-    
-  ], ['client']);
-
-  api.addFiles([
-    'lib/server/cloudinary.js'
-  ], ['server']);
-
-  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client/main.js", "client");
+  api.mainModule("lib/server/main.js", "server");
 
 });

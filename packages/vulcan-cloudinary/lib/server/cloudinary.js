@@ -14,7 +14,7 @@ Cloudinary.config({
   secure: true,
 });
 
-const CloudinaryUtils = {
+export const CloudinaryUtils = {
 
   // send an image URL to Cloudinary and get a cloudinary result object in return
   uploadImage(imageUrl) {
@@ -88,5 +88,3 @@ const CloudinaryUtils = {
 //     }
 //   }
 // });
-
-export default CloudinaryUtils;
