@@ -2,7 +2,8 @@ Package.describe({
   name: "vulcan:debug",
   summary: "Vulcan debug package",
   version: '1.8.0',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: "https://github.com/VulcanJS/Vulcan.git",
+  debugOnly: true
 });
 
 Package.onUse(function (api) {
