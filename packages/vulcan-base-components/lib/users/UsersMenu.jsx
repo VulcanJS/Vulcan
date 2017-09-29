@@ -24,9 +24,10 @@ const UsersMenu = ({currentUser, client}) =>
           <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
         </LinkContainer>
 
-        <LinkContainer to={`/admin`}>
-          <MenuItem className="dropdown-item" eventKey="2">Admin</MenuItem>
-        </LinkContainer>
+         { currentUser.isAdmin ?
+          <LinkContainer to={`/admin`}>
+            <MenuItem className="dropdown-item" eventKey="2">Admin</MenuItem>
+          </LinkContainer> : null }
         <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(() => client.resetStore())}><FormattedMessage id="users.log_out"/></MenuItem>
       </Dropdown.Menu>
     </Dropdown>
