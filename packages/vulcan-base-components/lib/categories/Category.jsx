@@ -27,15 +27,14 @@ class Category extends PureComponent {
 
     return (
       <div className="category-menu-item dropdown-item">
-        <LinkContainer to={{pathname:"/", query: newQuery}}>
           <MenuItem
+            href={"?cat="+newQuery.cat}
             eventKey={index+1}
             key={category._id}
           >
             {currentCategorySlug === category.slug ? <Components.Icon name="voted"/> :  null}
             {category.name}
           </MenuItem>
-        </LinkContainer>
         <Components.ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</Components.ShowIf>
       </div>
     )
