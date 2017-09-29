@@ -2,6 +2,7 @@ import { runCallbacksAsync, runCallbacks, addCallback } from 'meteor/vulcan:core
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
+import { recalculateScore } from './scoring.js';
 
 /*
 
@@ -61,10 +62,10 @@ Add a vote of a specific type on the client
 const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
 
   const newDocument = {
-    _id: document._id,
+    ...document,
     baseScore: document.baseScore || 0,
     __typename: collection.options.typeName,
-    currentUserVotes: document.currentUserVotes || []
+    currentUserVotes: document.currentUserVotes || [],
   };
 
   // create new vote and add it to currentUserVotes array
@@ -73,6 +74,7 @@ const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
 
   // increment baseScore
   newDocument.baseScore += vote.power;
+  newDocument.score = recalculateScore(newDocument);
 
   return newDocument;
 }
@@ -84,6 +86,8 @@ Add a vote of a specific type on the server
 */
 const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
 
+  const newDocument = _.clone(document);
+
   // create vote and insert it
   const vote = createVote({ document, collectionName: collection.options.collectionName, voteType, user, voteId });
   delete vote.__typename;
@@ -92,7 +96,10 @@ const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
   // update document score
   collection.update({_id: document._id}, {$inc: {baseScore: vote.power }});
 
-  return vote;
+  newDocument.baseScore += vote.power;
+  newDocument.score = recalculateScore(newDocument);
+
+  return newDocument;
 }
 
 /*
@@ -106,6 +113,7 @@ const cancelVoteClient = ({ document, voteType }) => {
   if (vote) {
     // subtract vote scores
     newDocument.baseScore -= vote.power;
+    newDocument.score = recalculateScore(newDocument);
 
     const newVotes = _.reject(document.currentUserVotes, vote => vote.voteType === voteType);
 
@@ -124,6 +132,7 @@ Clear *all* votes for a given document and user (client)
 const clearVotesClient = ({ document }) => {
   const newDocument = _.clone(document);
   newDocument.baseScore -= calculateTotalPower(document.currentUserVotes);
+  newDocument.score = recalculateScore(newDocument);
   newDocument.currentUserVotes = [];
   return newDocument
 }
@@ -134,11 +143,15 @@ Clear all votes for a given document and user (server)
 
 */
 const clearVotesServer = ({ document, user, collection }) => {
+  const newDocument = _.clone(document);
   const votes = Votes.find({ documentId: document._id, userId: user._id}).fetch();
   if (votes.length) {
     Votes.remove({documentId: document._id});
     collection.update({_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+    newDocument.baseScore -= calculateTotalPower(votes);
+    newDocument.score = recalculateScore(newDocument);
   }
+  return newDocument;
 }
 
 /*
@@ -148,6 +161,8 @@ Cancel votes of a specific type on a given document (server)
 */
 const cancelVoteServer = ({ document, voteType, collection, user }) => {
 
+  const newDocument = _.clone(document);
+
   const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
   
   // remove vote object
@@ -156,7 +171,10 @@ const cancelVoteServer = ({ document, voteType, collection, user }) => {
   // update document score
   collection.update({_id: document._id}, {$inc: {baseScore: -vote.power }});
 
-  return vote;
+  newDocument.baseScore -= vote.power;
+  newDocument.score = recalculateScore(newDocument);
+
+  return newDocument;
 }
 
 /*
@@ -245,15 +263,15 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 Server-side database operation
 
 */
-export const performVoteServer = ({ documentId, voteType = 'upvote', collection, voteId, user }) => {
+export const performVoteServer = ({ documentId, document, voteType = 'upvote', collection, voteId, user }) => {
   
   const collectionName = collection.options.collectionName;
-  const document = collection.findOne(documentId);
+  document = document || collection.findOne(documentId);
 
-  // console.log('// performVoteMutation')
-  // console.log('collectionName: ', collectionName)
-  // console.log('document: ', collection.findOne(documentId))
-  // console.log('voteType: ', voteType)
+  console.log('// performVoteMutation')
+  console.log('collectionName: ', collectionName)
+  console.log('document: ', document)
+  console.log('voteType: ', voteType)
   
   const voteOptions = {document, collection, voteType, user, voteId};
 
@@ -267,7 +285,7 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
     // console.log('action: cancel')
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
-    cancelVoteServer(voteOptions);
+    document = cancelVoteServer(voteOptions);
     // runCallbacksAsync(`votes.cancel.async`, vote, document, collection, user);
   
   } else {
@@ -275,17 +293,17 @@ export const performVoteServer = ({ documentId, voteType = 'upvote', collection,
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      clearVotesServer(voteOptions)
+      document = clearVotesServer(voteOptions)
     }
 
     // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
-    addVoteServer(voteOptions);
+    document = addVoteServer(voteOptions);
     // runCallbacksAsync(`votes.${voteType}.async`, vote, document, collection, user);
   
   }
 
-  const newDocument = collection.findOne(documentId);
-  newDocument.__typename = collection.options.typeName;
-  return newDocument;
+  // const newDocument = collection.findOne(documentId);
+  document.__typename = collection.options.typeName;
+  return document;
 
 }

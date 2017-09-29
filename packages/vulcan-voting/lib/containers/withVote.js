@@ -19,6 +19,7 @@ export const withVote = component => {
               power
             }
             baseScore
+            score
           }
         `).join('\n')}
       }

@@ -12,14 +12,15 @@ import { updateScore } from './scoring.js';
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-function updateItemScore(item, user, collection, operation, context) {
-  updateScore({collection: collection, item: item, forceUpdate: true});
-}
+// function updateItemScore(item, user, collection, operation, context) {
+//   updateScore({collection: collection, item: item, forceUpdate: true});
+// }
 
-addCallback("upvote.async", updateItemScore);
-addCallback("downvote.async", updateItemScore);
-addCallback("cancelUpvote.async", updateItemScore);
-addCallback("cancelDownvote.async", updateItemScore);
+// addCallback("upvote.async", updateItemScore);
+// addCallback("downvote.async", updateItemScore);
+// addCallback("cancelUpvote.async", updateItemScore);
+// addCallback("cancelDownvote.async", updateItemScore);
+
 
 
 /**
@@ -29,48 +30,47 @@ addCallback("cancelDownvote.async", updateItemScore);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-function updateUser(item, user, collection, operation, context) {
+// function updateUser(item, user, collection, operation, context) {
   
-  // uncomment for debug
-  // console.log(item);
-  // console.log(user);
-  // console.log(collection._name);
-  // console.log(operation);
+//   // uncomment for debug
+//   // console.log(item);
+//   // console.log(user);
+//   // console.log(collection._name);
+//   // console.log(operation);
 
-  const update = {};
-  const votePower = getVotePower(user);
-  const vote = {
-    itemId: item._id,
-    votedAt: new Date(),
-    power: votePower
-  };
+//   const update = {};
+//   const votePower = getVotePower(user);
+//   const vote = {
+//     itemId: item._id,
+//     votedAt: new Date(),
+//     power: votePower
+//   };
   
-  const collectionName = Utils.capitalize(collection._name);
+//   const collectionName = Utils.capitalize(collection._name);
 
-  switch (operation) {
-    case "upvote":
-      update.$addToSet = {[`upvoted${collectionName}`]: vote};
-      break;
-    case "downvote":
-      update.$addToSet = {[`downvoted${collectionName}`]: vote};
-      break;
-    case "cancelUpvote":
-      update.$pull = {[`upvoted${collectionName}`]: {itemId: item._id}};
-      break;
-    case "cancelDownvote":
-      update.$pull = {[`downvoted${collectionName}`]: {itemId: item._id}};
-      break;
-  }
+//   switch (operation) {
+//     case "upvote":
+//       update.$addToSet = {[`upvoted${collectionName}`]: vote};
+//       break;
+//     case "downvote":
+//       update.$addToSet = {[`downvoted${collectionName}`]: vote};
+//       break;
+//     case "cancelUpvote":
+//       update.$pull = {[`upvoted${collectionName}`]: {itemId: item._id}};
+//       break;
+//     case "cancelDownvote":
+//       update.$pull = {[`downvoted${collectionName}`]: {itemId: item._id}};
+//       break;
+//   }
 
-  Users.update({_id: user._id}, update);
+//   Users.update({_id: user._id}, update);
 
-}
+// }
 
-addCallback("upvote.async", updateUser);
-addCallback("downvote.async", updateUser);
-addCallback("cancelUpvote.async", updateUser);
-addCallback("cancelDownvote.async", updateUser);
-
+// addCallback("upvote.async", updateUser);
+// addCallback("downvote.async", updateUser);
+// addCallback("cancelUpvote.async", updateUser);
+// addCallback("cancelDownvote.async", updateUser);
 
 /**
  * @summary Update the karma of the item's owner
@@ -79,19 +79,19 @@ addCallback("cancelDownvote.async", updateUser);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-function updateKarma(item, user, collection, operation, context) {
+// function updateKarma(item, user, collection, operation, context) {
 
-  const votePower = getVotePower(user);
-  const karmaAmount = (operation === "upvote" || operation === "cancelDownvote") ? votePower : -votePower;
+//   const votePower = getVotePower(user);
+//   const karmaAmount = (operation === "upvote" || operation === "cancelDownvote") ? votePower : -votePower;
 
-  // only update karma is the operation isn't done by the item's author
-  if (item.userId !== user._id) {
-    Users.update({_id: item.userId}, {$inc: {"karma": karmaAmount}});
-  }
+//   // only update karma is the operation isn't done by the item's author
+//   if (item.userId !== user._id) {
+//     Users.update({_id: item.userId}, {$inc: {"karma": karmaAmount}});
+//   }
 
-}
+// }
 
-addCallback("upvote.async", updateKarma);
-addCallback("downvote.async", updateKarma);
-addCallback("cancelUpvote.async", updateKarma);
-addCallback("cancelDownvote.async", updateKarma);
+// addCallback("upvote.async", updateKarma);
+// addCallback("downvote.async", updateKarma);
+// addCallback("cancelUpvote.async", updateKarma);
+// addCallback("cancelDownvote.async", updateKarma);
