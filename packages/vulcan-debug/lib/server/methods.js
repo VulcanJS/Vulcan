@@ -1,6 +1,6 @@
 // import VulcanEmail from 'meteor/vulcan:email';
 // import Users from 'meteor/vulcan:users';
-// import { getSetting, registerSetting, Utils } from 'meteor/vulcan:core';
+// import { getSetting, registerSetting, Utils } from 'meteor/vulcan:lib';
 
 // registerSetting('defaultEmail');
 

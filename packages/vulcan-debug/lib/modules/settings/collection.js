@@ -1,4 +1,4 @@
-import { createCollection } from 'meteor/vulcan:core';
+import { createCollection } from 'meteor/vulcan:lib';
 import schema from './schema.js';
 import resolvers from './resolvers.js';
 

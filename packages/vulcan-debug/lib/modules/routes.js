@@ -1,4 +1,4 @@
-import { addRoute, getDynamicComponent } from 'meteor/vulcan:core';
+import { addRoute, getDynamicComponent } from 'meteor/vulcan:lib';
 
 addRoute([
   // {name: 'cheatsheet', path: '/cheatsheet', component: import('./components/Cheatsheet.jsx')},

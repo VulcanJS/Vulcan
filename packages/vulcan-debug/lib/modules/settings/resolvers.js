@@ -1,4 +1,4 @@
-import { getAllSettings } from 'meteor/vulcan:core';
+import { getAllSettings } from 'meteor/vulcan:lib';
 
 const resolvers = {
 

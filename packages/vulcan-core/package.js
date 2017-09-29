@@ -13,7 +13,8 @@ Package.onUse(function(api) {
     'vulcan:lib@1.8.0',
     'vulcan:i18n@1.8.0',
     'vulcan:users@1.8.0',
-    'vulcan:routing@1.8.0'
+    'vulcan:routing@1.8.0',
+    'vulcan:debug@1.8.0',
   ]);
 
   api.imply([

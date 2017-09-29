@@ -17,7 +17,7 @@ Package.onUse(function (api) {
 
     // Vulcan packages
 
-    'vulcan:core@1.8.0',
+    'vulcan:lib@1.8.0',
     'vulcan:email@1.8.0',
 
   ]);
