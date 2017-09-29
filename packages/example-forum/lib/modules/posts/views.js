@@ -16,7 +16,7 @@ Posts.addDefaultView(terms => ({
 /**
  * @summary Top view
  */
-Posts.addView("top", terms => ({
+Posts.addView('top', terms => ({
   options: {
     sort: {sticky: -1, score: -1}
   }
@@ -25,7 +25,7 @@ Posts.addView("top", terms => ({
 /**
  * @summary New view
  */
-Posts.addView("new", terms => ({
+Posts.addView('new', terms => ({
   options: {
     sort: {sticky: -1, postedAt: -1}
   }
@@ -34,7 +34,7 @@ Posts.addView("new", terms => ({
 /**
  * @summary Best view
  */
-Posts.addView("best", terms => ({
+Posts.addView('best', terms => ({
   options: {
     sort: {sticky: -1, baseScore: -1}
   }
@@ -43,7 +43,7 @@ Posts.addView("best", terms => ({
 /**
  * @summary Pending view
  */
-Posts.addView("pending", terms => ({
+Posts.addView('pending', terms => ({
   selector: {
     status: Posts.config.STATUS_PENDING
   },
@@ -55,7 +55,7 @@ Posts.addView("pending", terms => ({
 /**
  * @summary Rejected view
  */
-Posts.addView("rejected", terms => ({
+Posts.addView('rejected', terms => ({
   selector: {
     status: Posts.config.STATUS_REJECTED
   },
@@ -67,7 +67,7 @@ Posts.addView("rejected", terms => ({
 /**
  * @summary Scheduled view
  */
-Posts.addView("scheduled", terms => ({
+Posts.addView('scheduled', terms => ({
   selector: {
     status: Posts.config.STATUS_APPROVED,
     isFuture: true
@@ -80,7 +80,7 @@ Posts.addView("scheduled", terms => ({
 /**
  * @summary User posts view
  */
-Posts.addView("userPosts", terms => ({
+Posts.addView('userPosts', terms => ({
   selector: {
     userId: terms.userId,
     status: Posts.config.STATUS_APPROVED,
@@ -97,10 +97,10 @@ Posts.addView("userPosts", terms => ({
 /**
  * @summary User upvoted posts view
  */
-Posts.addView("userUpvotedPosts", (terms, apolloClient) => {
+Posts.addView('userUpvotedPosts', (terms, apolloClient) => {
   var user = apolloClient ? Users.findOneInStore(apolloClient.store, terms.userId) : Users.findOne(terms.userId);
 
-  var postsIds = _.pluck(user.upvotedPosts, "itemId");
+  var postsIds = _.pluck(user.upvotedPosts, 'documentId');
   return {
     selector: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
@@ -110,10 +110,10 @@ Posts.addView("userUpvotedPosts", (terms, apolloClient) => {
 /**
  * @summary User downvoted posts view
  */
-Posts.addView("userDownvotedPosts", (terms, apolloClient) => {
+Posts.addView('userDownvotedPosts', (terms, apolloClient) => {
   var user = apolloClient ? Users.findOneInStore(apolloClient.store, terms.userId) : Users.findOne(terms.userId);
 
-  var postsIds = _.pluck(user.downvotedPosts, "itemId");
+  var postsIds = _.pluck(user.downvotedPosts, 'documentId');
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
     selector: {_id: {$in: postsIds}},
@@ -124,8 +124,8 @@ Posts.addView("userDownvotedPosts", (terms, apolloClient) => {
 /**
  * @summary Newsletter posts view
  */
-// create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
-Posts.addView("newsletter", terms => {
+// create new 'newsletter' view for all posts from the past X days that haven't been scheduled yet
+Posts.addView('newsletter', terms => {
   const lastNewsletter = Newsletters.findOne({}, {sort: {createdAt: -1}});
 
   // if there is a last newsletter and it was sent less than 7 days ago use its date, else default to posts from the last 7 days

@@ -6,7 +6,7 @@ import { registerFragment } from 'meteor/vulcan:core';
 registerFragment(`
   fragment VotedItem on Vote {
     # vulcan:voting
-    itemId
+    documentId
     power
     votedAt
   }
