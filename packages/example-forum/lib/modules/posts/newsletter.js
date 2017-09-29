@@ -8,7 +8,7 @@ import VulcanEmail from 'meteor/vulcan:email';
 import { addCallback } from 'meteor/vulcan:core';
 // email test routes (make available to client & server)
 import Newsletters from 'meteor/vulcan:newsletter';
-import Posts from './collection.js';
+import { Posts } from './collection.js';
 import moment from 'moment';
 
 VulcanEmail.addEmails({

@@ -6,7 +6,7 @@ Callbacks to validate categories and generate category slugs
 */
 
 import { addCallback } from 'meteor/vulcan:core';
-import Categories from '../../modules/categories/collection.js';
+import { Categories } from '../../modules/categories/collection.js';
 
 // ------- Categories Check -------- //
 

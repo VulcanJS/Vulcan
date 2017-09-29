@@ -5,7 +5,7 @@ Posts helpers
 */
 
 import moment from 'moment';
-import Posts from './collection.js';
+import { Posts } from './collection.js';
 import Users from 'meteor/vulcan:users';
 import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
 

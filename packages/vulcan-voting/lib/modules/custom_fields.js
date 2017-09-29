@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 
-import Users from "meteor/vulcan:users";
+import Users from 'meteor/vulcan:users';
+
 /**
  * @summary Vote schema
  * @type {SimpleSchema}

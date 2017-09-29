@@ -1,7 +1,7 @@
 import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Comments from '../../modules/comments/index.js';
+import { Comments } from '../../modules/comments/index.js';
 
 const CommentsEditForm = (props, context) => {
   return (

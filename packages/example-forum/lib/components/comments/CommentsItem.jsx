@@ -2,7 +2,7 @@ import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
-import Comments from '../../modules/comments/index.js';
+import { Comments } from '../../modules/comments/index.js';
 import moment from 'moment';
 
 class CommentsItem extends PureComponent {

@@ -5,7 +5,7 @@ Categories schema
 */
 
 import { Utils } from 'meteor/vulcan:core';
-import Categories from './collection.js';
+import { Categories } from './collection.js';
 
 export function getCategories (apolloClient) {
 

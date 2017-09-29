@@ -4,7 +4,7 @@ Comments views
 
 */
 
-import Comments from './index.js';
+import { Comments } from './index.js';
 
 Comments.addView('postComments', function (terms) {
   return {

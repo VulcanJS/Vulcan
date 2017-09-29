@@ -7,7 +7,7 @@ import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
-import Categories from '../../modules/categories/index.js';
+import { Categories } from '../../modules/categories/index.js';
 import { withApollo } from 'react-apollo';
 
 class CategoriesList extends PureComponent {

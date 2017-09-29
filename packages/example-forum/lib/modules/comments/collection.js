@@ -12,7 +12,7 @@ import Users from 'meteor/vulcan:users';
  * @summary The global namespace for Comments.
  * @namespace Comments
  */
- const Comments = createCollection({
+ export const Comments = createCollection({
 
    collectionName: 'Comments',
 
@@ -35,5 +35,3 @@ Comments.checkAccess = (currentUser, comment) => {
     return true;
   }
 }
-
-export default Comments;

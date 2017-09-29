@@ -1,6 +1,6 @@
 import Users from 'meteor/vulcan:users';
 import { addCallback } from 'meteor/vulcan:core';
-import Comments from '../../../modules/comments/index.js';
+import { Comments } from '../../../modules/comments/index.js';
 
 import { operateOnItem } from 'meteor/vulcan:voting';
 

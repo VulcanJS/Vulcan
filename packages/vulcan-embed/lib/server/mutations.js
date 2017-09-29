@@ -1,5 +1,5 @@
 import { addGraphQLMutation, addGraphQLResolvers, getSetting, registerSetting } from 'meteor/vulcan:core';
-import Embed from '../modules/embed.js';
+import { Embed } from '../modules/embed.js';
 
 registerSetting('embedProvider', 'builtin', 'Media embed/metadata provider service');
 

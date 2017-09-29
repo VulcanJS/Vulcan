@@ -14,5 +14,4 @@ if (typeof SimpleSchema !== "undefined") {
   ]);
 }
 
-import FormWrapper from '../components/FormWrapper.jsx';
-export default FormWrapper;
+export {default as FormWrapper} from '../components/FormWrapper.jsx';

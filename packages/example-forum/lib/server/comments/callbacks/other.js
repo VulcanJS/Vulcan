@@ -1,8 +1,8 @@
 import Users from 'meteor/vulcan:users';
 import { addCallback, runCallbacksAsync, removeMutation } from 'meteor/vulcan:core';
 
-import Posts from '../../../modules/posts/index.js';
-import Comments from '../../../modules/comments/index.js';
+import { Posts } from '../../../modules/posts/index.js';
+import { Comments } from '../../../modules/comments/index.js';
 
 //////////////////////////////////////////////////////
 // comments.new.sync                                //

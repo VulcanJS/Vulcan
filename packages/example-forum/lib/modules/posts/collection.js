@@ -12,7 +12,7 @@ import Users from 'meteor/vulcan:users';
  * @summary The global namespace for Posts.
  * @namespace Posts
  */
-const Posts = createCollection({
+export const Posts = createCollection({
 
   collectionName: 'Posts',
 
@@ -73,5 +73,3 @@ Posts.checkAccess = (currentUser, post) => {
     return Users.canDo(currentUser, `posts.view.${status.label}`);
   }
 }
-
-export default Posts;

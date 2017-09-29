@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { Link } from 'react-router';
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 
 const PostsCommenters = ({post}) => {
   return (

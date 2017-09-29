@@ -4,7 +4,7 @@ Post validation and rate limiting callbacks
 
 */
 
-import Posts from '../../../modules/posts/index.js'
+import { Posts } from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';

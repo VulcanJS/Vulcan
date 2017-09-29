@@ -4,8 +4,8 @@ Comments helpers
 
 */
 
-import Comments from './index.js';
-import Posts from '../posts/index.js';
+import { Comments } from './index.js';
+import { Posts } from '../posts/index.js';
 import Users from 'meteor/vulcan:users';
 
 //////////////////

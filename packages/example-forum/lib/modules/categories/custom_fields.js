@@ -4,7 +4,7 @@ Custom fields on Posts collection
 
 */
 
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 import { getCategoriesAsOptions } from './schema.js';
 
 Posts.addField([

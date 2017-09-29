@@ -1,5 +1,5 @@
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
-import Embed from '../../modules/embed.js';
+import { Embed } from '../../modules/embed.js';
 
 registerSetting('embedly', null, 'Embedly settings');
 

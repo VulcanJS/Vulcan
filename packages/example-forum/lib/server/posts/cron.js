@@ -1,6 +1,6 @@
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 // import moment from 'moment';
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 
 SyncedCron.options = {
   log: true,

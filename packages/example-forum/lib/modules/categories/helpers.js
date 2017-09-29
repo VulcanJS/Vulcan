@@ -1,5 +1,5 @@
-import Posts from '../posts/index.js';
-import Categories from './collection.js';
+import { Posts } from '../posts/index.js';
+import { Categories } from './collection.js';
 import { Utils } from 'meteor/vulcan:core';
 
 /**

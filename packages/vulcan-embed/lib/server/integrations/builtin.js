@@ -12,7 +12,7 @@ with the following properties:
 
 */
 
-import Embed from '../../modules/embed.js';
+import { Embed } from '../../modules/embed.js';
 // import Metascraper from 'metascraper';
 
 Embed.builtin = {

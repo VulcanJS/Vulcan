@@ -1,6 +1,6 @@
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
-import Comments from '../../../modules/comments/index.js';
+import { Comments } from '../../../modules/comments/index.js';
 
 registerSetting('forum.commentInterval', 15, 'How long users should wait in between comments (in seconds)');
 

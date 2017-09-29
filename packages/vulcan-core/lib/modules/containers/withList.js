@@ -45,6 +45,8 @@ import withState from 'recompose/withState';
 
 const withList = (options) => {
 
+  // console.log(options)
+  
   const { collection, limit = 10, pollInterval = 20000, totalResolver = true } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,

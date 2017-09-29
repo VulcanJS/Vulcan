@@ -5,7 +5,7 @@ Posts schema
 */
 
 import Users from 'meteor/vulcan:users';
-import Posts from './collection.js';
+import { Posts } from './collection.js';
 import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
 import moment from 'moment';
 import marked from 'marked';

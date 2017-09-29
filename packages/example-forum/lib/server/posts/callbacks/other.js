@@ -10,7 +10,7 @@ Callbacks to:
 
 */
 
-import Posts from '../../../modules/posts/index.js'
+import { Posts } from '../../../modules/posts/index.js'
 import Users from 'meteor/vulcan:users';
 import { addCallback, getSetting, registerSetting, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import Events from 'meteor/vulcan:events';

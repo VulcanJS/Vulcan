@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 import moment from 'moment';
 
 class PostsItem extends PureComponent {

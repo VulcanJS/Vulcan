@@ -1,7 +1,7 @@
 import { runCallbacksAsync } from 'meteor/vulcan:core';
 import escapeStringRegexp from 'escape-string-regexp';
 import { Picker } from 'meteor/meteorhacks:picker';
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 
 Picker.route('/out', ({ query}, req, res, next) => {
   if(query.url){ // for some reason, query.url doesn't need to be decoded

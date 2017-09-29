@@ -1,5 +1,5 @@
 import React from 'react';
-import Posts from '../../modules/posts/index.js';
+import { Posts } from '../../modules/posts/index.js';
 import { Link } from 'react-router';
 
 const AdminUsersPosts = ({ document: user }) => 

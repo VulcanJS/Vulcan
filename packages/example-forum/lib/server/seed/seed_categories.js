@@ -1,4 +1,4 @@
-import Categories from '../../modules/categories/index.js';
+import { Categories } from '../../modules/categories/index.js';
 import { Utils, newMutation, getSetting } from 'meteor/vulcan:core';
 
 if (getSetting('seedOnStart')) {

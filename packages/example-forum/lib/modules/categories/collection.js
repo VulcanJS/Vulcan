@@ -11,7 +11,7 @@ import schema from './schema.js';
  * @summary The global namespace for Categories.
  * @namespace Categories
  */
- const Categories = createCollection({
+ export const Categories = createCollection({
 
   collectionName: 'Categories',
 
@@ -24,5 +24,3 @@ import schema from './schema.js';
   mutations: getDefaultMutations('Categories'),
 
 });
-
-export default Categories;
