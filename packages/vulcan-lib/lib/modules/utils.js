@@ -479,5 +479,5 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
 }
 
 Utils.getRoutePath = routeName => {
-  return Routes[routeName].path;
+  return Routes[routeName] && Routes[routeName].path;
 }
