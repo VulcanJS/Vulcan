@@ -1,7 +1,7 @@
 import { Categories } from '../../modules/categories/index.js';
 import { Utils, newMutation, getSetting } from 'meteor/vulcan:core';
 
-if (getSetting('seedOnStart')) {
+if (getSetting('forum.seedOnStart')) {
   
   const dummyFlag = {
     fieldName: 'isDummy',

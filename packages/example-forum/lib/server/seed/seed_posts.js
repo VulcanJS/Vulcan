@@ -7,7 +7,7 @@ import Users from 'meteor/vulcan:users';
 
 registerSetting('forum.seedOnStart', true, 'Seed the app with dummy content on startup');
 
-if (getSetting('seedOnStart')) {
+if (getSetting('forum.seedOnStart')) {
 
   const dummyFlag = {
     fieldName: 'isDummy',
