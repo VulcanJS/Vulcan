@@ -121,6 +121,7 @@ VulcanEmail.build = async ({ emailName, variables }) => {
   const data = email.data ? {...result.data, ...email.data(variables)} : result.data;
 
   const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
+  
   const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data));
 
   return { data, subject, html };
@@ -128,8 +129,7 @@ VulcanEmail.build = async ({ emailName, variables }) => {
 
 VulcanEmail.buildAndSend = async ({ to, emailName, variables }) => {
 
-  const email = VulcanEmail.build({ to, emailName, variables });
-
+  const email = await VulcanEmail.build({ to, emailName, variables });
   return VulcanEmail.send(to, email.subject, email.html);
 
 };

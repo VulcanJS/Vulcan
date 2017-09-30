@@ -44,8 +44,8 @@ const LimitedString = ({ string }) =>
   </div>
 
 export const getFieldValue = (value, typeName) => {
-  
-  if (typeof value === 'undefined') {
+
+  if (typeof value === 'undefined' || value === null) {
     return ''
   }
 
