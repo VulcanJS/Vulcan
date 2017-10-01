@@ -122,13 +122,7 @@ class Form extends Component {
         order: fieldSchema.order
       }
 
-      // hide or show the field, a function taking form props as argument & returning a boolean can be used
-      field.hidden = (typeof fieldSchema.hidden === 'function') ? !!fieldSchema.hidden.call(fieldSchema, this.props) : fieldSchema.hidden;
-
-      // add label or internationalized field name if necessary (field not hidden)
-      if (!field.hidden) {
-        field.label = this.getLabel(fieldName);
-      }
+      field.label = this.getLabel(fieldName);
 
       // add value
       if (document[fieldName]){
@@ -212,8 +206,6 @@ class Form extends Component {
 
     });
 
-    // remove fields where hidden is set to true
-    fields = _.reject(fields, field => field.hidden);
     fields = _.sortBy(fields, "order");
 
     // get list of all unique groups (based on their name) used in current fields
@@ -249,14 +241,23 @@ class Form extends Component {
 
   // get relevant fields
   getFieldNames() {
-    const fields = this.props.fields;
+    const { fields, hideFields } = this.props;
+    const schema = this.getSchema();
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(schema, this.props.currentUser, this.getDocument()) : getInsertableFields(schema, this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
       relevantFields = _.intersection(relevantFields, fields);
+    } else {
+      // else if fields is not specified, remove all hidden fields
+      relevantFields = _.reject(relevantFields, fieldName => schema[fieldName].hidden);
+    }
+
+    // if "hideFields" prop is specified, remove its fields
+    if (typeof hideFields !== "undefined" && hideFields.length > 0) {
+      relevantFields = _.difference(relevantFields, hideFields);
     }
 
     return relevantFields;
@@ -617,7 +618,7 @@ class Form extends Component {
 
           <div className="form-submit">
             <Button type="submit" bsStyle="primary">{this.props.submitLabel ? this.props.submitLabel : <FormattedMessage id="forms.submit"/>}</Button>
-            {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>{this.props.cancelLabel ? this.props.cancelLabel : <FormattedMessage id="forms.cancel"/>}</a> : null}
+            {this.props.cancelCallback ? <a className="form-cancel" onClick={(e) => {e.preventDefault(); this.props.cancelCallback(this.getDocument())}}>{this.props.cancelLabel ? this.props.cancelLabel : <FormattedMessage id="forms.cancel"/>}</a> : null}
           </div>
 
         </Formsy.Form>
@@ -655,6 +656,7 @@ Form.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string),
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,

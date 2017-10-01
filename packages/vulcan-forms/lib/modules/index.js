@@ -8,6 +8,7 @@ if (typeof SimpleSchema !== "undefined") {
     'control', // SmartForm control (String or React component)
     'order', // order in the form
     'group', // form fieldset group
+    'hidden',
     'beforeComponent',
     'afterComponent',
     'placeholder',
