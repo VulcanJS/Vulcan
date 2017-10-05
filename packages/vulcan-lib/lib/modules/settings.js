@@ -28,11 +28,15 @@ export const getAllSettings = () => {
 
     settingsObject[key] = {};
 
-    if (rootSettings[key] || privateSettings[key] || publicSettings[key]){
-      settingsObject[key].value = rootSettings[key] || privateSettings[key] || publicSettings[key];
+    if (typeof rootSettings[key] !== 'undefined') {
+      settingsObject[key].value = rootSettings[key];
+    } else if (typeof privateSettings[key] !== 'undefined') {
+      settingsObject[key].value = privateSettings[key];
+    } else if (typeof publicSettings[key] !== 'undefined') {
+      settingsObject[key].value = publicSettings[key];
     }
     
-    if (publicSettings[key]){
+    if (typeof publicSettings[key] !== 'undefined'){
       settingsObject[key].public = true;
     }
 

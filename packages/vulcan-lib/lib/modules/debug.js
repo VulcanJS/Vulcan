@@ -1,7 +1,7 @@
 import { getSetting } from './settings.js';
 
-export const debug = s => {
+export const debug = function() {
   if (getSetting('debug', false)) {
-    console.log(s);
+    console.log.apply(null, arguments);
   }
 }

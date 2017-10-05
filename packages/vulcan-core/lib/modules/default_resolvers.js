@@ -42,6 +42,7 @@ export const getDefaultResolvers = collectionName => ({
       // prime the cache
       restrictedDocs.forEach(doc => collection.loader.prime(doc._id, doc));
 
+      debug(`// ${restrictedDocs.length} documents returned`);
       debug(`//--------------- end ${collectionName} list resolver ---------------//`);
 
       // return results

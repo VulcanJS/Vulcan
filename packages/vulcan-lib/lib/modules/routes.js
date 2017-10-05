@@ -52,10 +52,12 @@ export const extendRoute = (routeName, routeProps) => {
 
   const route = _.findWhere(RoutesTable, {name: routeName});
 
-  RoutesTable[route.name] = {
-    ...route,
-    ...routeProps
-  };
+  if (route) {
+    RoutesTable[route.name] = {
+      ...route,
+      ...routeProps
+    };
+  }
 };
 
 

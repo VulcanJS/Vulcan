@@ -104,13 +104,6 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 
 export const editMutation = async ({ collection, documentId, set, unset, currentUser, validate, context }) => {
 
-  debug('//------------------------------------//');
-  debug('// editMutation');
-  debug(collection._name);
-  debug(documentId);
-  debug(set);
-  debug(unset);
-
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
@@ -120,6 +113,14 @@ export const editMutation = async ({ collection, documentId, set, unset, current
   // get original document from database
   let document = collection.findOne(documentId);
   
+  debug('//------------------------------------//');
+  debug('// editMutation');
+  debug('// collectionName: ', collection._name);
+  debug('// documentId: ', documentId);
+  debug('// set: ', set);
+  debug('// unset: ', unset);
+  debug('// document: ', document);
+
   if (validate) {
 
     const validationErrors = validateModifier(modifier, document, collection, context);
@@ -177,8 +178,8 @@ export const editMutation = async ({ collection, documentId, set, unset, current
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
   debug('// edit mutation finished')
-  debug(modifier)
-  debug(newDocument)
+  debug('// modifier: ', modifier)
+  debug('// newDocument: ', newDocument)
   debug('//------------------------------------//');
 
   return newDocument;

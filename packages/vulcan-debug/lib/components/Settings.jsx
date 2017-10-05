@@ -8,7 +8,9 @@ const SettingName = ({ document }) =>
 
 const SettingsDashboard = props => 
   <div className="settings">
-    <Components.Datatable 
+    <Components.Datatable
+      showSearch={false}
+      showEdit={false}
       collection={Settings} 
       columns={[
         { name: 'name', component: SettingName }, 
