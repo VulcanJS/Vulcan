@@ -114,12 +114,18 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
   // create store
   req.renderContext.store = configureStore(req.renderContext.getReducers, {}, (store) => {
     let chain, newDispatch;
+     
     return next => (action) => {
-      if (!chain) {
-        chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
+      try {
+        if (!chain) {
+          chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
+        }
         newDispatch = compose(...chain)(next)
+        return newDispatch(action);
+      } catch (error) {
+        // console.log(error)
+        return _.identity
       }
-      return newDispatch(action);
     };
   })
 
