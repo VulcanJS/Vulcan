@@ -5,5 +5,8 @@ import './interfaces.js';
 import './categories/collection.js';
 import './categories/views.js';
 
+// Components
+import './components.js';
+
 // Routes
 import './routes.js';

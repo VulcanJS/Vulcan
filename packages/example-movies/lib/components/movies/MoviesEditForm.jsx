@@ -21,4 +21,4 @@ const MoviesEditForm = ({documentId, closeModal}) =>
     }}
   />
 
-export default MoviesEditForm;
+registerComponent('MoviesEditForm', MoviesEditForm);

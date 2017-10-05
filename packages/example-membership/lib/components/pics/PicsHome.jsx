@@ -5,7 +5,7 @@ Pics Home component
 */
 
 import React from 'react';
-import { Components, withCurrentUser } from 'meteor/vulcan:core';
+import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
 import PicsList from './PicsList.jsx';
 import Users from 'meteor/vulcan:users';
 import Button from 'react-bootstrap/lib/Button';
@@ -45,4 +45,4 @@ const PicsHome = ({results = [], currentUser, loading, loadMore, count, totalCou
   
 };
 
-export default withCurrentUser(PicsHome);
+registerComponent('PicsHome', PicsHome, withCurrentUser);

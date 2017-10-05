@@ -8,10 +8,9 @@ All props except currentUser are passed by the withList container.
 */
 
 import React from 'react';
-import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
+import { registerComponent, Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 
 import Comments from '../../modules/comments/collection.js';
-import CommentsItem from './CommentsItem.jsx';
 
 const CommentsList = ({results = [], currentUser, loading, loadMore, count, totalCount, pic}) => 
   
@@ -22,7 +21,7 @@ const CommentsList = ({results = [], currentUser, loading, loadMore, count, tota
       <Loading /> :
 
       <div className="comments-items">
-        {results.map(comment => <CommentsItem key={comment._id} comment={comment} currentUser={currentUser} pic={pic} />)}
+        {results.map(comment => <Components.CommentsItem key={comment._id} comment={comment} currentUser={currentUser} pic={pic} />)}
       </div>
       
     }
@@ -34,4 +33,4 @@ const options = {
   fragmentName: 'CommentsItemFragment',
 };
 
-export default withList(options)(withCurrentUser(CommentsList));
+registerComponent('CommentsList', CommentsList, withCurrentUser, [withList, options]);

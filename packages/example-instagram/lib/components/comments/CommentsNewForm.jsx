@@ -26,4 +26,4 @@ const CommentsNewForm = ({picId}) =>
 
   </div>
 
-export default CommentsNewForm;
+registerComponent('CommentsNewForm', CommentsNewForm);

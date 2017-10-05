@@ -9,7 +9,6 @@ import React from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 import Movies from '../../modules/movies/collection.js';
-import MoviesEditForm from './MoviesEditForm.jsx';
 
 const MoviesItem = ({movie, currentUser}) =>
 
@@ -24,11 +23,11 @@ const MoviesItem = ({movie, currentUser}) =>
 
     {Movies.options.mutations.edit.check(currentUser, movie) ? 
       <Components.ModalTrigger label="Edit Movie">
-        <MoviesEditForm currentUser={currentUser} documentId={movie._id} />
+        <Components.MoviesEditForm currentUser={currentUser} documentId={movie._id} />
       </Components.ModalTrigger>
       : null
     }
 
   </div>
 
-export default MoviesItem;
+registerComponent('MoviesItem', MoviesItem);

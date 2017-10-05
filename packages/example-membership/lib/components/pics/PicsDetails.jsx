@@ -7,8 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React from 'react';
 import Pics from '../../modules/pics/collection.js';
-import { Components, withDocument } from 'meteor/vulcan:core';
-import PicsEditForm from './PicsEditForm.jsx';
+import { registerComponent, Components, withDocument } from 'meteor/vulcan:core';
 
 const PicsDetails = ({loading, document, currentUser}) => {
 
@@ -36,7 +35,7 @@ const PicsDetails = ({loading, document, currentUser}) => {
 
               {Pics.options.mutations.edit.check(currentUser, document) ? 
                 <Components.ModalTrigger component={<Components.Icon name="edit"/>}>
-                  <PicsEditForm currentUser={currentUser} documentId={document._id} />
+                  <Components.PicsEditForm currentUser={currentUser} documentId={document._id} />
                 </Components.ModalTrigger>
                 : null
               }
@@ -58,4 +57,4 @@ const options = {
   fragmentName: 'PicsDetailsFragment',
 };
 
-export default withDocument(options)(PicsDetails);
+registerComponent('PicsDetails', PicsDetails, [withDocument, options]);

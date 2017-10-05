@@ -26,4 +26,4 @@ const MoviesNewForm = ({currentUser}) =>
 
   </div>
 
-export default withCurrentUser(MoviesNewForm);
+registerComponent('MoviesNewForm', MoviesNewForm, withCurrentUser);

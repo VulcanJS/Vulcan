@@ -27,4 +27,4 @@ const PicsNewForm = ({currentUser, closeModal}) =>
 
   </div>
 
-export default withCurrentUser(PicsNewForm);
+registerComponent('PicsNewForm', PicsNewForm);

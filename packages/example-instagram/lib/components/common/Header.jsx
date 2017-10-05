@@ -9,7 +9,7 @@ component (if the "component" prop is specified).
 */
 
 import React from 'react';
-import { Components, withCurrentUser } from 'meteor/vulcan:core';
+import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import PicsNewForm from '../pics/PicsNewForm';
 
@@ -71,4 +71,4 @@ const Header = ({currentUser}) =>
 
   </div>
 
-export default withCurrentUser(Header);
+registerComponent('Header', Header, withCurrentUser);

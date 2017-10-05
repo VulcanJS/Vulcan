@@ -21,4 +21,4 @@ const CategoriesEditForm = ({documentId, closeModal}) =>
     }}
   />
 
-export default CategoriesEditForm;
+registerComponent('CategoriesEditForm', CategoriesEditForm);
