@@ -8,7 +8,7 @@ Package.describe({
 
 Package.onUse(function (api) {
 
-  api.versionsFrom("METEOR@1.0");
+  api.versionsFrom('METEOR@1.5.2');
 
   api.use([
     'vulcan:core@1.8.0',
