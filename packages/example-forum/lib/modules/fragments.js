@@ -43,19 +43,6 @@ registerFragment(`
     postCount
     # vulcan:comments
     commentCount
-    # vulcan:voting
-    downvotedComments {
-      ...VotedItem
-    }
-    downvotedPosts {
-      ...VotedItem
-    }
-    upvotedComments {
-      ...VotedItem
-    }
-    upvotedPosts {
-      ...VotedItem
-    }
   }
 `);
 
