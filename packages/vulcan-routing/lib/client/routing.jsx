@@ -28,14 +28,13 @@ Meteor.startup(() => {
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
 
-  if (indexRoute) {
-    delete indexRoute.path; // delete the '/' path to avoid warning
-  }
+  const indexRouteWithoutPath = _.clone(indexRoute);
+  delete indexRouteWithoutPath.path; // delete path to avoid warning
 
   const AppRoutes = {
     path: '/',
     component: Components.App,
-    indexRoute,
+    indexRoute: indexRouteWithoutPath,
     childRoutes,
   };
 
@@ -67,7 +66,10 @@ Meteor.startup(() => {
           // note: this item is not used in this specific callback: router.onUpdate
           runCallbacks('router.onUpdate', {}, store, apolloClient);
         },
-        render: applyRouterMiddleware(useScroll())
+        render: applyRouterMiddleware(useScroll((prevRouterProps, nextRouterProps) => {
+          // if the action is REPLACE, return false so that we don't jump back to top of page
+          return !(nextRouterProps.location.action === 'REPLACE');
+        }))
       });
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },

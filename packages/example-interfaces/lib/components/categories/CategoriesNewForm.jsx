@@ -32,4 +32,4 @@ const CategoriesNewForm = ({currentUser, closeModal, parentId}) =>
 
   </div>
 
-export default withCurrentUser(CategoriesNewForm);
+registerComponent('CategoriesNewForm', CategoriesNewForm, withCurrentUser);

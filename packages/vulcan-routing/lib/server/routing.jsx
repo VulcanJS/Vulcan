@@ -27,14 +27,16 @@ Meteor.startup(() => {
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
 
-  if (indexRoute) {
-    delete indexRoute.path; // delete the '/' path to avoid warning
+  const indexRouteWithoutPath = _.clone(indexRoute);
+
+  if (indexRouteWithoutPath) {
+    delete indexRouteWithoutPath.path; // delete path to avoid warning
   }
 
   const AppRoutes = {
     path: '/',
     component: Components.App,
-    indexRoute,
+    indexRoute: indexRouteWithoutPath,
     childRoutes,
   };
 

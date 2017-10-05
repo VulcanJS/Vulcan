@@ -10,11 +10,9 @@ VulcanEmail.addEmails({
   customEmail: {
     template: "customEmail",
     path: "/email/custom-email",
-    getProperties() {return {};},
     subject() {
       return "My awesome new email";
-    },
-    getTestObject() {return {};}
+    }
   }
 
 });

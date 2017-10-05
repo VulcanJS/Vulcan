@@ -9,9 +9,6 @@ import React from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 import Categories from '../../modules/categories/collection.js';
-import CategoriesEditForm from './CategoriesEditForm.jsx';
-import CategoriesNewForm from './CategoriesNewForm.jsx';
-import CategoriesList from './CategoriesList.jsx';
 
 const CategoriesItem = ({category, currentUser}) =>
 
@@ -29,7 +26,7 @@ const CategoriesItem = ({category, currentUser}) =>
 
       {Categories.options.mutations.edit.check(currentUser, category) ?
         <Components.ModalTrigger label="Edit" >
-          <CategoriesEditForm currentUser={currentUser} documentId={category._id} />
+          <Components.CategoriesEditForm currentUser={currentUser} documentId={category._id} />
         </Components.ModalTrigger>
         : null
       }
@@ -38,15 +35,15 @@ const CategoriesItem = ({category, currentUser}) =>
 
       {Categories.options.mutations.new.check(currentUser) ?
         <Components.ModalTrigger label={`New child`}>
-          <CategoriesNewForm parentId={category._id}/>
+          <Components.CategoriesNewForm parentId={category._id}/>
         </Components.ModalTrigger>
         : null
       }
 
     </div>
 
-    <CategoriesList terms={{ parentId: category._id, view: 'childrenCategories' }} />
+    <Components.CategoriesList terms={{ parentId: category._id, view: 'childrenCategories' }} />
 
   </div>
 
-export default CategoriesItem;
+registerComponent('CategoriesItem', CategoriesItem);

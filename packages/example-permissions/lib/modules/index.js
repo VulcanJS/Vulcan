@@ -1,11 +1,9 @@
-import { replaceComponent, Utils } from 'meteor/vulcan:core';
+import { Utils } from 'meteor/vulcan:core';
+
+import './components.js';
 import './permissions.js';
 import './pics/collection.js';
 import './comments/collection.js';
-
-import Layout from '../components/common/Layout.jsx';
-replaceComponent('Layout', Layout);
+import './routes.js';
 
 Utils.icons.comment = 'comment';
-
-import './routes.js';

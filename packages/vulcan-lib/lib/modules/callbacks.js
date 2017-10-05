@@ -1,3 +1,5 @@
+import { debug } from './debug.js';
+
 /**
  * @summary Callback hooks provide an easy way to add extra steps to common operations.
  * @namespace Callbacks
@@ -56,10 +58,17 @@ export const runCallbacks = function () {
 
     return callbacks.reduce(function(accumulator, callback) {
 
+      debug(`// Running callback [${callback.name}] on hook [${hook}]`);
+
       const newArguments = [accumulator].concat(args);
       
       try {
         const result = callback.apply(this, newArguments);
+
+        // if callback is only supposed to run once, remove it
+        if (callback.runOnce) {
+          removeCallback(hook, callback.name);
+        }
 
         if (typeof result === 'undefined') {
           // if result of current iteration is undefined, don't pass it on

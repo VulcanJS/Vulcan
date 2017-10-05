@@ -21,4 +21,4 @@ const PicsEditForm = ({documentId, closeModal}) =>
     }}
   />
 
-export default PicsEditForm;
+registerComponent('PicsEditForm', PicsEditForm);

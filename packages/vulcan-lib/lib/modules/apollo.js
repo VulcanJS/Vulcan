@@ -1,9 +1,11 @@
 import ApolloClient, { createNetworkInterface, createBatchingNetworkInterface } from 'apollo-client';
-import 'isomorphic-fetch';
-
+import 'cross-fetch/polyfill';
 import { Meteor } from 'meteor/meteor';
+import { getSetting, registerSetting } from './settings.js';
+import { getFragmentMatcher } from './fragment_matcher.js';
+import { Callbacks, runCallbacks } from './callbacks.js';
 
-import { getSetting } from './settings.js';
+registerSetting('developmentServerIp', Meteor.absoluteUrl(), 'Development server IP');
 
 const defaultNetworkInterfaceConfig = {
   path: '/graphql', // default graphql server endpoint
@@ -74,20 +76,30 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
   return networkInterface;
 };
 
-const meteorClientConfig = networkInterfaceConfig => ({
-  ssrMode: Meteor.isServer,
-  networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
-  queryDeduplication: true, // http://dev.apollodata.com/core/network.html#query-deduplication
-  addTypename: true,
- 
-  // Default to using Mongo _id, must use _id for queries.
-  dataIdFromObject(result) {
-    if (result._id && result.__typename) {
-      const dataId = result.__typename + result._id;
-      return dataId;
-    }
-    return null;
-  },
-});
+const meteorClientConfig = networkInterfaceConfig => {
 
-export const createApolloClient = options => new ApolloClient(meteorClientConfig(options));
+  return {
+    ssrMode: Meteor.isServer,
+    networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
+    queryDeduplication: true, // http://dev.apollodata.com/core/network.html#query-deduplication
+    addTypename: true,
+    fragmentMatcher: getFragmentMatcher(),
+
+    // Default to using Mongo _id, must use _id for queries.
+    dataIdFromObject(result) {
+      if (result._id && result.__typename) {
+        const dataId = result.__typename + result._id;
+        return dataId;
+      }
+      return null;
+    },
+  }
+};
+
+export const createApolloClient = options => {
+
+  runCallbacks('apolloclient.init.before');
+
+  return new ApolloClient(meteorClientConfig(options));
+
+};

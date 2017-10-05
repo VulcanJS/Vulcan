@@ -9,7 +9,10 @@ import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
-import { getSetting } from './settings.js';
+import { getSetting, registerSetting } from './settings.js';
+import { Routes } from './routes.js';
+
+registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
 /**
  * @summary The global namespace for Vulcan utils.
@@ -175,10 +178,6 @@ Utils.getDomain = function(url) {
   }
 };
 
-Utils.invitesEnabled = function() {
-  return getSetting("requireViewInvite") || getSetting("requirePostInvite");
-};
-
 // add http: if missing
 Utils.addHttp = function (url) {
   try {
@@ -258,14 +257,28 @@ _.mixin({
   compactObject : function(object) {
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
-      if(!value && typeof value !== "boolean") {
+      /*
+        
+        Remove a value if:
+        1. it's not a boolean
+        2. it's not a number
+        3. it's undefined
+        4. it's an empty string
+        5. it's null
+        6. it's an empty array
+
+      */
+      if (typeof value === 'boolean' || typeof value === 'number') {
+        return
+      }
+
+      if(value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
         delete clone[key];
       }
     });
     return clone;
   }
 });
-
 
 Utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
@@ -274,7 +287,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
 }
 
 Utils.getLogoUrl = () => {
-  const logoUrl = getSetting("logoUrl");
+  const logoUrl = getSetting('logoUrl');
   if (!!logoUrl) {
     const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website
@@ -463,4 +476,8 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
     throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
   }
 
+}
+
+Utils.getRoutePath = routeName => {
+  return Routes[routeName] && Routes[routeName].path;
 }

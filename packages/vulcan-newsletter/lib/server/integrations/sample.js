@@ -4,8 +4,10 @@ This is a sample template for future integrations.
 
 */
 
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, regiserSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
+
+regiserSetting('providerName')
 
 /*
 
@@ -63,9 +65,8 @@ if (settings) {
       return unsubscribeSync({email});
     },
 
-    send({ title, subject, text, html, isTest = false }) {
+    send({ subject, text, html, isTest = false }) {
       const options = {
-        title,
         subject,
         text,
         html

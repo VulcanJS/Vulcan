@@ -25,12 +25,12 @@ const resolvers = {
 
   list: {
 
-    name: 'usersList',
+    name: 'UsersList',
 
-    resolver(root, {terms}, {currentUser, Users}, info) {
+    async resolver(root, {terms}, {currentUser, Users}, info) {
 
       // get selector and options from terms and perform Mongo query
-      let {selector, options} = Users.getParameters(terms);
+      let {selector, options} = await Users.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       const users = Users.find(selector, options).fetch();
@@ -48,11 +48,11 @@ const resolvers = {
 
   single: {
 
-    name: 'usersSingle',
+    name: 'UsersSingle',
 
     async resolver(root, {documentId, slug}, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
-      const user = documentId ? await Users.loader.load(documentId) : Users.findOne({slug});
+      const user = documentId ? await Users.loader.load(documentId) : (slug ? Users.findOne({slug}): Users.findOne());
       return Users.restrictViewableFields(currentUser, Users, user);
     },
 
@@ -60,10 +60,10 @@ const resolvers = {
 
   total: {
 
-    name: 'usersTotal',
+    name: 'UsersTotal',
 
-    resolver(root, {terms}, context) {
-      const {selector} = context.Users.getParameters(terms);
+    async resolver(root, {terms}, context) {
+      const {selector} = await context.Users.getParameters(terms);
       return context.Users.find(selector).count();
     },
 

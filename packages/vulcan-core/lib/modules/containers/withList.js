@@ -45,6 +45,8 @@ import withState from 'recompose/withState';
 
 const withList = (options) => {
 
+  // console.log(options)
+  
   const { collection, limit = 10, pollInterval = 20000, totalResolver = true } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
@@ -201,7 +203,9 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   let newResults = previousResults;
 
   // get mongo selector and options objects based on current terms
-  const { selector, options } = collection.getParameters(mergedTerms, apolloClient);
+  const result = collection.getParameters(mergedTerms, apolloClient);
+  const { selector, options } = result;
+
   const mingoQuery = Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below

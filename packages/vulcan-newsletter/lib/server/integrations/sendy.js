@@ -1,6 +1,8 @@
 import Sendy from 'sendy-api'; // see https://github.com/igord/sendy-api
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
+
+registerSetting('sendy', null, 'Sendy settings');
 
 /*
 
@@ -64,7 +66,7 @@ if (settings) {
       return unsubscribeSync({email, list_id: listId});
     },
 
-    send({ title, subject, text, html, isTest = false }) {
+    send({ subject, text, html, isTest = false }) {
       const params = {
         from_name: fromName,
         from_email: fromEmail,

@@ -23,4 +23,6 @@ export * from './fragments.js';
 export * from './apollo.js';
 export * from './dynamic_loader.js';
 export * from './admin.js';
+export * from './fragment_matcher.js';
+export * from './debug.js';
 // export * from './resolvers.js';

@@ -7,7 +7,7 @@ Example usage:
 export default withMutation({
   name: 'getEmbedData',
   args: {url: 'String'},
-})(EmbedlyURL);
+})(EmbedURL);
 
 */
 

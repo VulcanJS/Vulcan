@@ -1,43 +1,45 @@
-import VulcanEmail from 'meteor/vulcan:email';
-import Users from 'meteor/vulcan:users';
-import { getSetting, Utils } from 'meteor/vulcan:core';
+// import VulcanEmail from 'meteor/vulcan:email';
+// import Users from 'meteor/vulcan:users';
+// import { getSetting, registerSetting, Utils } from 'meteor/vulcan:lib';
 
-Meteor.methods({
-  "email.test": function (emailName) {
+// registerSetting('defaultEmail');
 
-    const email = VulcanEmail.emails[emailName];
+// Meteor.methods({
+//   "email.test": function (emailName) {
 
-    if(Users.isAdminById(this.userId)){
+//     const email = VulcanEmail.emails[emailName];
 
-      console.log("// testing email ["+emailName+"]"); // eslint-disable-line
-      let html, properties;
+//     if(Users.isAdminById(this.userId)){
 
-      // if email has a custom way of generating its HTML, use it
-      if (typeof email.getTestHTML !== "undefined") {
+//       console.log("// testing email ["+emailName+"]"); // eslint-disable-line
+//       let html, properties;
 
-        html = email.getTestHTML.bind(email)();
+//       // if email has a custom way of generating its HTML, use it
+//       if (typeof email.getTestHTML !== "undefined") {
 
-      } else {
+//         html = email.getTestHTML.bind(email)();
 
-        // else get test object (sample post, comment, user, etc.)
-        const testObject = email.getTestObject();
-        // get test object's email properties
-        properties = email.getProperties(testObject);
+//       } else {
 
-        // then apply email template to properties, and wrap it with buildTemplate
-        html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(properties));
+//         // else get test object (sample post, comment, user, etc.)
+//         const testObject = email.getTestObject();
+//         // get test object's email properties
+//         properties = email.getProperties(testObject);
 
-      }
+//         // then apply email template to properties, and wrap it with buildTemplate
+//         html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(properties));
 
-      // get subject
-      const subject = "[Test] " + email.subject.bind(email)(properties);
+//       }
 
-      VulcanEmail.send (getSetting('defaultEmail'), subject, html)
+//       // get subject
+//       const subject = "[Test] " + email.subject.bind(email)(properties);
 
-      return subject;
+//       VulcanEmail.send (getSetting('defaultEmail'), subject, html)
 
-    } else {
-      throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
-    }
-  }
-});
+//       return subject;
+
+//     } else {
+//       throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
+//     }
+//   }
+// });

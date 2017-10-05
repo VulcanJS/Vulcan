@@ -1,28 +1,106 @@
-export const getSetting = (setting, defaultValue) => {
+import Vulcan from './config.js';
+import { Utils } from './utils.js';
+import flatten from 'flat';
+
+export const Settings = {};
+
+export const getAllSettings = () => {
+
+  const settingsObject = {};
+
+  let rootSettings = _.clone(Meteor.settings);
+  delete rootSettings.public;
+  delete rootSettings.private;
+
+  // root settings & private settings are both private
+  rootSettings = flatten(rootSettings, {safe: true});
+  const privateSettings = flatten(Meteor.settings.private || {}, {safe: true});
+
+  // public settings
+  const publicSettings = flatten(Meteor.settings.public || {}, {safe: true});
+
+  // registered default values
+  const registeredSettings = Settings;
+
+  const allSettingKeys = _.union(_.keys(rootSettings), _.keys(publicSettings), _.keys(privateSettings), _.keys(registeredSettings));
+
+  allSettingKeys.sort().forEach(key => {
+
+    settingsObject[key] = {};
+
+    if (typeof rootSettings[key] !== 'undefined') {
+      settingsObject[key].value = rootSettings[key];
+    } else if (typeof privateSettings[key] !== 'undefined') {
+      settingsObject[key].value = privateSettings[key];
+    } else if (typeof publicSettings[key] !== 'undefined') {
+      settingsObject[key].value = publicSettings[key];
+    }
+    
+    if (typeof publicSettings[key] !== 'undefined'){
+      settingsObject[key].public = true;
+    }
+
+    if (registeredSettings[key]) {
+      if (registeredSettings[key].defaultValue !== null || registeredSettings[key].defaultValue !== undefined) settingsObject[key].defaultValue = registeredSettings[key].defaultValue;
+      if (registeredSettings[key].description) settingsObject[key].description = registeredSettings[key].description;
+    }
+
+  });
+
+  return _.map(settingsObject, (setting, key) => ({name: key, ...setting}));
+}
+
+
+Vulcan.showSettings = () => {
+  return getAllSettings();
+}
+
+export const registerSetting = (settingName, defaultValue, description) => {
+  Settings[settingName] = { defaultValue, description };
+}
+
+export const getSetting = (settingName, settingDefault) => {
+
+  let setting;
+
+  // if a default value has been registered using registerSetting, use it
+  const defaultValue = settingDefault || Settings[settingName] && Settings[settingName].defaultValue;
 
   if (Meteor.isServer) {
     // look in public, private, and root
-    const rootSetting = Meteor.settings && Meteor.settings[setting];
-    const privateSetting = Meteor.settings && Meteor.settings.private && Meteor.settings.private[setting];
-    const publicSetting = Meteor.settings && Meteor.settings.public && Meteor.settings.public[setting];
+    const rootSetting = Utils.getNestedProperty(Meteor.settings, settingName);
+    const privateSetting = Meteor.settings.private && Utils.getNestedProperty(Meteor.settings.private, settingName);
+    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
     
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
-      return {
+      setting = {
+        ...defaultValue,
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
-        ...defaultValue
       }
     } else {
-      return rootSetting || privateSetting || publicSetting || defaultValue;
+      if (typeof rootSetting !== 'undefined') {
+        setting = rootSetting;
+      } else if (typeof privateSetting !== 'undefined') {
+        setting = privateSetting;
+      } else if (typeof publicSetting !== 'undefined') {
+        setting = publicSetting;
+      } else {
+        setting = defaultValue;
+      }
     }
 
   } else {
     // look only in public
-    const publicSetting = Meteor.settings && Meteor.settings.public && Meteor.settings.public[setting];
-    return publicSetting || defaultValue;
+    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
+    setting = publicSetting || defaultValue;
   }
+
+  // Settings[settingName] = {...Settings[settingName], settingValue: setting};
+
+  return setting;
 
 }
 

@@ -6,12 +6,10 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 */
 
 import React from 'react';
-import { Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
+import { registerComponent, Components, withList, withCurrentUser, Loading } from 'meteor/vulcan:core';
 import Helmet from 'react-helmet';
 
 import Movies from '../../modules/movies/collection.js';
-import MoviesItem from './MoviesItem.jsx';
-import MoviesNewForm from './MoviesNewForm.jsx';
 
 const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalCount}) => 
   
@@ -37,11 +35,11 @@ const MoviesList = ({results = [], currentUser, loading, loadMore, count, totalC
         
         {/* new document form */}
 
-        <MoviesNewForm />
+        <Components.MoviesNewForm />
 
         {/* documents list */}
 
-        {results.map(movie => <MoviesItem key={movie._id} movie={movie} currentUser={currentUser} />)}
+        {results.map(movie => <Components.MoviesItem key={movie._id} movie={movie} currentUser={currentUser} />)}
         
         {/* load more */}
 
@@ -61,4 +59,4 @@ const options = {
   limit: 5
 };
 
-export default withList(options)(withCurrentUser(MoviesList));
+registerComponent('MoviesList', MoviesList, withCurrentUser, [withList, options]);

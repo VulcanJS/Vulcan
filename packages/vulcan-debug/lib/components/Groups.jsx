@@ -1,5 +1,5 @@
 import React from 'react';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 
 const Group = ({name, actions}) => {
@@ -37,3 +37,5 @@ const Groups = props => {
 }
 
 registerComponent('Groups', Groups);
+
+export default Groups;

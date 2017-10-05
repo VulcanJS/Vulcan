@@ -3,9 +3,12 @@ import SimpleSchema from 'simpl-schema';
 import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
-import { getSetting } from './settings.js';
+import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
+import { debug } from './debug.js';
+
+registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request');
 
 export const Collections = [];
 
@@ -173,13 +176,14 @@ export const createCollection = options => {
 
   // ------------------------------------- Default Fragment -------------------------------- //
 
-  registerFragment(getDefaultFragmentText(collection));
+  const defaultFragment = getDefaultFragmentText(collection);
+  if (defaultFragment) registerFragment(defaultFragment);
 
   // ------------------------------------- Parameters -------------------------------- //
 
-  collection.getParameters = (terms = {}, apolloClient) => {
+  collection.getParameters = (terms = {}, apolloClient, context) => {
 
-    // console.log(terms)
+    // debug(terms);
 
     let parameters = {
       selector: {},
@@ -193,11 +197,19 @@ export const createCollection = options => {
     // handle view option
     if (terms.view && collection.views[terms.view]) {
       const view = collection.views[terms.view];
-      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient));
+      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient, context));
     }
 
     // iterate over posts.parameters callbacks
-    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient);
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient, context);
+
+    if (Meteor.isClient) {
+      parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.client`, parameters, _.clone(terms), apolloClient);
+    }
+
+    if (Meteor.isServer) {
+      parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
+    }
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
@@ -228,10 +240,10 @@ export const createCollection = options => {
     }
 
     // limit number of items to 200 by default
-    const maxDocuments = getSetting('maxDocumentsPerRequest', 200);
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
     parameters.options.limit = (!terms.limit || terms.limit < 1 || terms.limit > maxDocuments) ? maxDocuments : terms.limit;
 
-    // console.log(parameters);
+    // debug(parameters);
 
     return parameters;
   }

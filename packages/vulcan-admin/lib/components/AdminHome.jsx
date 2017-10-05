@@ -14,8 +14,8 @@ const AdminHome = ({ currentUser }) =>
         options={{
           fragmentName: 'UsersAdmin',
           terms: {view: 'usersAdmin'},
-          limit: 20}
-        }
+          limit: 20
+        }}
         showEdit={true}
       />
     </Components.ShowIf>

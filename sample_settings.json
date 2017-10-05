@@ -1,5 +1,6 @@
 {
   "public": {
+
     "title": "Your site title",
     "tagline":"Your site tagline",
 
@@ -8,62 +9,19 @@
     "logoWidth": "250",
     "faviconUrl": "/favicon.ico",
 
-    "requirePostsApproval":false,
-    "requireViewInvite":false,
-    "requirePostInvite":false,
-    "enableNewsletter":true,
-    "autoSubscribe":false,
-    "emailNotifications":true,
-    "postInterval": 20,
-    "RSSLinksPointTo": "link",
-    "commentInterval": 20,
-    "maxPostsPerDay": 10,
-    "startInvitesCount": 5,
-    "postsPerPage": 10,
-
     "language": "en",
     "locale": "en",
 
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo",
-    "useSegment": false,
-    "segmentWriteKey": "456bar"
+    "googleAnalyticsId":"123foo"
+
   },
 
   "defaultEmail": "hello@world.com",
   "mailUrl": "smtp://username%40yourdomain.mailgun.org:yourpassword123@smtp.mailgun.org:587/",
-  "scoreUpdateInterval": "30",
 
-  "embedlyKey":"123foo",
-  "mailChimpAPIKey": "123foo",
-  "mailChimpListId": "123foo",
-  "newsletterFrequency": [1,2,3,4,5,6,7],
-  "newsletterTime": "14:20",
-  "newsletterExcerptLength": 20,
-  "postExcerptLength": 30,
-
-  "categories": [
-    {
-      "name": "Test Category 1",
-      "description": "The first test category",
-      "order": 4,
-      "slug": "testcat1"
-    },
-    {
-      "name": "Test Category 2",
-      "description": "The second test category",
-      "order": 7,
-      "slug": "testcat2"
-    },
-    {
-      "name": "Test Category 3",
-      "description": "The third test category",
-      "order": 10,
-      "slug": "testcat3"
-    }
-  ],
   "oAuth": {
     "twitter": {
       "consumerKey": "foo",

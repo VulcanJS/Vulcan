@@ -1,46 +1,27 @@
 import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
-import { getSetting, registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent, Components } from 'meteor/vulcan:lib';
+import Settings from '../modules/settings/collection.js';
 
-const renderSetting = key => (
-  <tr key={key}>
-    <td><code>{key}</code></td>
-    <td>{JSON.stringify(getSetting(key))}</td>
-  </tr>
-);
+const SettingName = ({ document }) => 
+  <strong>{document.name}</strong>
 
-const Settings = props => {
-  
-  const publicSettings = Meteor.settings.public;
-  
-  return (
-    <Components.ShowIf check={user => user && user.isAdmin} failureComponent={<FormattedMessage id="app.noPermission" />}>
-      <div className="settings">
-      
-        <h1>Public settings</h1>
-        
-        <div>To access your private settings, have a look at your <code>settings.json</code> file.</div>
-        
-        <div>More info about settings <a href="http://docs.vulcanjs.org/settings.html">in the docs</a></div>
-        
-        <div className="settings-wrapper">
+const SettingsDashboard = props => 
+  <div className="settings">
+    <Components.Datatable
+      showSearch={false}
+      showEdit={false}
+      collection={Settings} 
+      columns={[
+        { name: 'name', component: SettingName }, 
+        'value', 
+        'defaultValue', 
+        'public', 
+        'description'
+      ]}
+    />
+  </div>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <td>Name</td>
-                <td>Value</td>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(publicSettings).filter(key => !Array.isArray(publicSettings[key])).map(renderSetting)}
-            </tbody>
-          </table>
+registerComponent('Settings', SettingsDashboard);
 
-        </div>
-      </div>
-    </Components.ShowIf>
-  );
-}
-
-registerComponent('Settings', Settings);
+export default Settings;

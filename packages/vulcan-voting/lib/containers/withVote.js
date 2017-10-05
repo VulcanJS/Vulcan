@@ -1,59 +1,48 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { operateOnItem } from '../vote.js';
+import { performVoteClient } from '../modules/vote.js';
+import { VoteableCollections } from '../modules/make_voteable.js';
 
-const withVote = component => {
+export const withVote = component => {
 
   return graphql(gql`
-    mutation vote($documentId: String, $voteType: String, $collectionName: String) {
-      vote(documentId: $documentId, voteType: $voteType, collectionName: $collectionName) {
-        ... on Post {
-          _id
-          upvotes
-          upvoters {
+    mutation vote($documentId: String, $voteType: String, $collectionName: String, $voteId: String) {
+      vote(documentId: $documentId, voteType: $voteType, collectionName: $collectionName, voteId: $voteId) {
+        ${VoteableCollections.map(collection => `
+          ... on ${collection.typeName} {
+            __typename
             _id
+            currentUserVotes{
+              _id
+              voteType
+              power
+            }
+            baseScore
+            score
           }
-          downvotes
-          downvoters {
-            _id
-          }
-          baseScore
-        }
-        ... on Comment {
-          _id
-          upvotes
-          upvoters {
-            _id
-          }
-          downvotes
-          downvoters {
-            _id
-          }
-          baseScore
-        }
+        `).join('\n')}
       }
     }
   `, {
     props: ({ownProps, mutate}) => ({
-      vote: ({document, voteType, collection, currentUser}) => {
-        const voteResult = operateOnItem(collection, document, currentUser, voteType, true);
+      vote: ({document, voteType, collection, currentUser, voteId = Random.id()}) => {
+
+        const newDocument = performVoteClient({collection, document, user: currentUser, voteType, voteId});
+
         return mutate({ 
           variables: {
             documentId: document._id, 
             voteType,
-            collectionName: collection._name,
+            collectionName: collection.options.collectionName,
+            voteId,
           },
           optimisticResponse: {
             __typename: 'Mutation',
-            vote: {
-              ...voteResult,
-            },
+            vote: newDocument,
           }
         })
       }
     }),
   })(component);
 }
-
-export default withVote;

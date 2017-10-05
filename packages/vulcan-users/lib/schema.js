@@ -68,7 +68,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['admins'],
     onInsert: () => {
       return new Date();
     }
@@ -94,12 +94,12 @@ const schema = {
     blackbox: true,
     insertableBy: ['guests'],
   },
-  // telescope-specific data, kept for backward compatibility and migration purposes
-  telescope: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
+  // // telescope-specific data, kept for backward compatibility and migration purposes
+  // telescope: {
+  //   type: Object,
+  //   blackbox: true,
+  //   optional: true,
+  // },
   services: {
     type: Object,
     optional: true,
@@ -269,7 +269,6 @@ const schema = {
     viewableBy: ['guests'],
     order: 60,
     resolveAs: {
-      fieldName: 'twitterUsername',
       type: 'String',
       resolver: (user, args, context) => {
         return context.Users.getTwitterName(context.Users.findOne(user._id));
@@ -301,7 +300,21 @@ const schema = {
   'groups.$': {
     type: String,
     optional: true
+  },
+
+  // GraphQL only fields
+
+  pageUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (user, args, context) => {
+        return Users.getProfileUrl(user, true);
+      },
+    }  
   }
+
 };
 
 export default schema;

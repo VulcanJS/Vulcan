@@ -1,0 +1,312 @@
+
+//////////////////////////////////////////////////////
+// Post List                                        //
+//////////////////////////////////////////////////////
+
+.posts-list-header{
+  @include medium-large{
+    @include flex-center;
+    justify-content: space-between;
+  }
+  margin-bottom: $vmargin;
+}
+
+.posts-list-header-categories{
+  @include small{
+    margin: 0 auto;
+    margin-bottom: $vmargin;
+    text-align: center;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
+  }
+}
+
+.posts-views{
+  @include small{
+    margin-bottom: $vmargin;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
+  }
+  a.btn{
+    @include border;
+    // @include border-radius;
+    // padding: 3px 5px;
+    // margin-right: 5px;
+    &.posts-view-inactive{
+      @include activeHover;
+    }
+    &.posts-view-active{
+      background: $light-blue;
+    }
+  }
+}
+
+.posts-list-header{
+  @include medium-large{
+    .search-form, .posts-list-header-categories button, .posts-views button{
+      width: 160px;
+    }
+  }
+}
+
+.posts-list-content{
+  border-top: $border;
+  // padding-top: 15px;
+  // margin-top: 15px;
+  margin-bottom: $vmargin;
+}
+
+.posts-load-more, .comments-load-more{
+  display: block;
+  text-align: center;
+  @include border;
+  @include border-radius;
+  font-size: $large-font;
+  padding: 10px 20px;
+  @include activeHover;
+  width: 100%;
+  background: $white;
+  color: $active-color;
+}
+
+.posts-load-more-loading{
+  padding: 21px 0;
+}
+
+//////////////////////////////////////////////////////
+// Post Item                                        //
+//////////////////////////////////////////////////////
+
+.posts-item{
+  @include medium-large{
+    @include flex-center;
+  }
+  border-bottom: $border;
+  padding: $vmargin 5px;
+  // margin-bottom: 15px;
+  &.posts-sticky{
+    background: $light-yellow;
+
+  }
+}
+
+.posts-item-vote{
+  @include small{
+    float: right;    
+  }
+  @include medium-large{
+    margin-right: $hmargin;
+  }
+}
+
+.vote-button{
+  @include border;
+  @include border-radius;
+  @include flex-center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3px 5px;
+  .icon{
+    text-align: center;
+    display: block;
+  }
+  .vote-count{
+    text-align: center;
+    display: block;
+  }
+  .voted &{
+    color: $light-text;
+  }
+  &.show-downvote{
+    .icon{
+      &:hover{
+        color: $active-color;
+      }
+    }
+  }
+  &.hide-downvote{
+    @include activeHover;
+  }
+  &, &:active, &:hover{
+    text-decoration: none;
+  }
+}
+
+.posts-item-content{
+  flex-grow: 1;
+}
+
+.posts-item-title{
+  @include small{
+    margin-right: 40px;
+    font-size: $large-font;
+    margin-bottom: $vmargin/2;
+  }
+  @include medium-large{
+    @include flex-center;
+    font-size: $larger-font;
+    margin-bottom: 5px;
+  }
+  .posts-item-title-link{
+    @include small{
+      display: block;
+      margin-bottom: $vmargin/2;
+    }
+    color: $black;
+    &, &:active, &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.posts-categories{
+  flex-wrap: wrap;
+  @include medium-large{
+    margin-left: 5px;
+  }
+  @include flex-center;
+  a{
+    display: block;
+    font-size: $small-font;
+    @include border;
+    @include border-radius;
+    margin-right: 5px;
+    padding: 2px 6px;
+    @include activeHover;
+  }
+}
+
+.posts-item-meta{
+  @include medium-large{
+    @include flex-center;
+  }
+  font-size: $small-font;
+  .avatar{
+    margin-right: 5px;
+  }
+  .users-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
+    margin-right: $hmargin;
+  }
+}
+
+.posts-item-user{
+  @include small{
+    margin-bottom: $vmargin/2;
+  }
+  @include flex-center;
+}
+
+.posts-item-date, .posts-item-comments{
+  @include small{
+    margin-bottom: $vmargin/2;
+  }
+  color: $medium-text;
+}
+
+.posts-stats{
+  @include small{
+    margin-bottom: $vmargin/2;
+    display: inline-block;
+  }
+  @include border;
+  @include border-radius;
+  font-size: $smaller-font;
+  .posts-stats-item{
+    border-right: $border;
+    padding: 2px 5px;
+    display: inline-block;
+    &:last-child{
+      border: none;
+    }
+  }
+}
+
+.post-actions{
+  @include flex-center;
+}
+
+.posts-commenters{
+  @include small{
+    display: none;
+  }
+  @include flex-center;
+}
+
+.posts-commenters-avatars{
+  display: flex;
+  .avatar{
+    margin-right: $hmargin;
+  }
+}
+
+.posts-thumbnail{
+  @include small{
+    float: left;
+  }
+  display: block;
+  margin-right: $hmargin;
+  img{
+    display: block;
+    height: 50px;
+    width: auto;
+  }
+}
+
+//////////////////////////////////////////////////////
+// Post Page                                        //
+//////////////////////////////////////////////////////
+
+.posts-page{
+  .posts-item{
+    @include border-radius;
+    border: $border;
+    padding: $hmargin;
+    margin-bottom: $vmargin;
+  }
+}
+
+.posts-page-body{
+  font-size: $large-font;
+  margin-bottom: $hmargin;
+}
+
+//////////////////////////////////////////////////////
+// Other Elements                                   //
+//////////////////////////////////////////////////////
+
+.posts-day{
+  margin-bottom: $vmargin * 2;
+  .posts-load-more{
+    border: none;
+    padding: 0;
+    &:hover{
+      background: inherit;
+      color: inherit;
+      border: inherit;      
+    }
+  }
+  .posts-no-results{
+    margin-top: $vmargin;
+  }
+}
+
+.posts-edit-form-header{
+  @include flex-center;
+  justify-content: space-between;
+}
+
+.posts-edit-form-admin{
+  @include flex-center;
+  justify-content: space-between;
+  margin-bottom: $vmargin * 2;
+}

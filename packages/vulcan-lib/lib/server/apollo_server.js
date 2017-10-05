@@ -17,6 +17,9 @@ import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
+import { runCallbacks } from '../modules/callbacks.js';
+
+export let executableSchema;
 
 // defaults
 const defaultConfig = {
@@ -134,6 +137,8 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 // createApolloServer when server startup
 Meteor.startup(() => {
 
+  runCallbacks('graphql.init.before');
+
   // typeDefs
   const generateTypeDefs = () => [`
     scalar JSON
@@ -157,16 +162,16 @@ Meteor.startup(() => {
 
   GraphQLSchema.finalSchema = typeDefs;
 
-  const schema = makeExecutableSchema({
+  executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
   });
 
   if (process.env.OPTICS_API_KEY) {
-    OpticsAgent.instrumentSchema(schema)
+    OpticsAgent.instrumentSchema(executableSchema)
   }
 
   createApolloServer({
-    schema,
+    schema: executableSchema,
   });
 });

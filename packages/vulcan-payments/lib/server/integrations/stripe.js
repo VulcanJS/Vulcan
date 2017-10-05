@@ -1,4 +1,4 @@
-import { getSetting, newMutation, editMutation, Collections, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
+import { getSetting, registerSetting, newMutation, editMutation, Collections, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 // import express from 'express';
 import Stripe from 'stripe';
 // import { Picker } from 'meteor/meteorhacks:picker';
@@ -6,6 +6,8 @@ import Stripe from 'stripe';
 import Charges from '../../modules/charges/collection.js';
 import Users from 'meteor/vulcan:users';
 import { Products } from '../../modules/products.js';
+
+registerSetting('stripe', null, 'Stripe settings');
 
 const stripeSettings = getSetting('stripe');
 
@@ -114,7 +116,7 @@ export const createCharge = async (args) => {
     // run collection.charge.sync callbacks
     modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc);
 
-    returnDocument = editMutation({
+    returnDocument = await editMutation({
       collection,
       documentId: associatedId,
       set: modifier.$set,

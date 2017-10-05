@@ -18,6 +18,9 @@ export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as Avatar } from './components/Avatar.jsx';
 export { default as Card } from './components/Card.jsx';
 export { default as Datatable } from './components/Datatable.jsx';
+export { default as Flash } from './components/Flash.jsx';
+export { default as HelloWorld } from './components/HelloWorld.jsx';
+export { default as Welcome } from './components/Welcome.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';

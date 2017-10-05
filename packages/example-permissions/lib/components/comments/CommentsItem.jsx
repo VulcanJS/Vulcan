@@ -13,7 +13,6 @@ import React from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 import Comments from '../../modules/comments/collection.js';
-import CommentsEditForm from './CommentsEditForm.jsx';
 
 const CommentsItem = ({comment, currentUser, pic}) =>
 
@@ -25,11 +24,11 @@ const CommentsItem = ({comment, currentUser, pic}) =>
     
     {Comments.options.mutations.edit.check(currentUser, comment, pic) ? 
       <Components.ModalTrigger component={<Components.Icon name="edit" />}>
-        <CommentsEditForm currentUser={currentUser} documentId={comment._id} />
+        <Components.CommentsEditForm currentUser={currentUser} documentId={comment._id} />
       </Components.ModalTrigger>
       : null
     }
 
   </div>
 
-export default CommentsItem;
+registerComponent('CommentsItem', CommentsItem);

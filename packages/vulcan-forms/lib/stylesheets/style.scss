@@ -1,0 +1,184 @@
+$light-grey: #ddd;
+$vmargin: 15px;
+$light-border: $light-grey;
+
+select.form-control{
+  height: 38px;
+}
+
+/* Example Styles for React Tags*/
+div.ReactTags__tags {
+  position: relative;
+}
+
+/* Styles for the input */
+div.ReactTags__tagInput {
+  width: 200px;
+  border-radius: 2px;
+  display: inline-block;
+}
+div.ReactTags__tagInput input, 
+div.ReactTags__tagInput input:focus {
+  // height: 31px;
+  // margin: 0;
+  // font-size: 12px;
+  // width: 100%;
+  // border: 1px solid #eee;
+
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: .25rem;
+}
+
+/* Styles for selected tags */
+div.ReactTags__selected {
+  float: left;
+  display: flex;
+  align-items: center;
+  margin-left: -5px;
+}
+div.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #eee;
+  font-size: 12px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px;
+  // cursor: move;
+  border-radius: 2px;
+}
+div.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Styles for suggestions */
+div.ReactTags__suggestions {
+  position: absolute;
+  z-index: 10;
+}
+div.ReactTags__suggestions ul {
+  list-style-type: none;
+  box-shadow: .05em .01em .5em rgba(0,0,0,.2);
+  background: white;
+  width: 200px;
+  padding: 0;
+}
+div.ReactTags__suggestions li {
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  margin: 0;
+}
+div.ReactTags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+}
+div.ReactTags__suggestions ul li.active {
+  background: #b7cfe0;
+  cursor: pointer;
+}
+
+div.ReactTags__suggestions mark{
+  padding: 0;
+}
+
+.form-section{
+  .form-section-heading{
+    border-bottom: 1px solid $light-border;
+    padding-bottom: $vmargin;
+    margin-bottom: $vmargin;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}
+.control-label{
+  strong{
+    font-weight: normal;
+  }
+}
+
+.search-form{
+  position: relative;
+  .search-form-reset{
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    color: $light-grey;
+  }
+}
+
+.form-input{
+  position: relative;
+  margin-bottom: 1rem;
+}
+.form-group{
+  margin-bottom: 0;
+}
+.form-control-limit{
+  position: absolute;
+  background: white;
+  padding: 5px;
+  top: 5px;
+  right: 5px;
+  color: $light-grey;
+  font-size: 80%;
+  &.danger{
+    color: #EF1642;
+  }
+}
+
+.form-section-heading{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $light-grey;
+}
+
+.form-section-heading-title{
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.form-section-collapsed{
+  display: none;
+}
+
+.form-errors{
+  .alert{
+    ul{
+      padding: 0 0 0 20px;
+      margin: 0;
+    }
+  }
+}
+
+.input-error{
+  color: #EF1642;
+  input, textarea, select{
+    border-color: #EF1642;
+  }
+}
+
+.form-input-errors{
+  color: #EF1642;
+  text-align: right;
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 0.8rem;
+  li{
+    margin: 0;
+  }
+}

@@ -6,18 +6,26 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Button from 'react-bootstrap/lib/Button';
 
-const getLabel = (fieldName, collection, intl) => {
+const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  if (fieldSchema) {
+    return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
+  } else {
+    return fieldName;
+  }
 }
 
-const getTypeName = (fieldName, collection) => {
+const getTypeName = (field, fieldName, collection) => {
   const schema = collection.simpleSchema()._schema;
   const fieldSchema = schema[fieldName];
-  const type = fieldSchema.type.singleType;
-  const typeName = typeof type === 'function' ? type.name : type;
-  return typeName;
+  if (fieldSchema) {
+    const type = fieldSchema.type.singleType;
+    const typeName = typeof type === 'function' ? type.name : type;
+    return typeName;
+  } else {
+    return typeof field;
+  }
 }
 
 const parseImageUrl = value => {
@@ -35,14 +43,18 @@ const LimitedString = ({ string }) =>
     }
   </div>
 
-const getFieldValue = (value, typeName) => {
-  
-  if (!value) {
+export const getFieldValue = (value, typeName) => {
+
+  if (typeof value === 'undefined' || value === null) {
     return ''
   }
 
   if (Array.isArray(value)) {
     typeName = 'Array';
+  }
+
+  if (typeof typeName === 'undefined') {
+    typeName = typeof value;
   }
 
   switch (typeName) {
@@ -52,7 +64,7 @@ const getFieldValue = (value, typeName) => {
     case 'Number':
     case 'number':
     case 'SimpleSchema.Integer':
-      return <code>{value}</code>;
+      return <code>{value.toString()}</code>;
 
     case 'Array':
       return <ol>{value.map((item, index) => <li key={index}>{getFieldValue(item, typeof item)}</li>)}</ol>
@@ -82,8 +94,8 @@ const getFieldValue = (value, typeName) => {
 
 const CardItem = ({label, value, typeName}) => 
   <tr>
-    <td><strong>{label}</strong></td>
-    <td>{getFieldValue(value, typeName)}</td>
+    <td className="datacard-label"><strong>{label}</strong></td>
+    <td className="datacard-value">{getFieldValue(value, typeName)}</td>
   </tr>
 
 const CardEdit = (props, context) =>
@@ -118,7 +130,7 @@ const Card = ({className, collection, document, currentUser, fields}, {intl}) =>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
           {fieldNames.map((fieldName, index) => 
-            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(fieldName, collection)} label={getLabel(fieldName, collection, intl)}/>
+            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(document[fieldName], fieldName, collection)} label={getLabel(document[fieldName], fieldName, collection, intl)}/>
           )}
         </tbody>
       </table>

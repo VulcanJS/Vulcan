@@ -1,1 +1,0 @@
-Vulcan basic React components.

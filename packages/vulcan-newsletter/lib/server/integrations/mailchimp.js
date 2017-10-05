@@ -3,10 +3,12 @@
 // newsletter scheduling with MailChimp
 
 import moment from 'moment';
-import { getSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
 import { createError } from 'apollo-errors';
+
+registerSetting('mailchimp', null, 'MailChimp settings');
 
 /*
 
@@ -79,7 +81,7 @@ if (settings) {
       }
     },
 
-    send({ title, subject, text, html, isTest = false }) {
+    send({ subject, text, html, isTest = false }) {
 
       try {
 
@@ -90,7 +92,6 @@ if (settings) {
             subject: subject,
             from_email: fromEmail,
             from_name: fromName,
-            timewarp: true // NOTE: Sidebar only
           },
           content: {
             html: html,
@@ -104,8 +105,7 @@ if (settings) {
         console.log('// Newsletter created');
         // console.log(campaign)
 
-        // NOTE: Sidebar only, schedule for next day at 9 AM
-        const scheduledMoment = moment().add(1, 'day').startOf('day').hour(9);
+        const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
         const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
 
         const scheduleOptions = {

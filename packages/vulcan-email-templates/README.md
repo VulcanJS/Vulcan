@@ -1,1 +1,0 @@
-Vulcan email templates package. 

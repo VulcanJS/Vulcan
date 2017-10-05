@@ -11,7 +11,7 @@ Note: the Helmet library is used to insert meta tags and link tags in the <head>
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Components } from 'meteor/vulcan:core';
+import { replaceComponent, Components } from 'meteor/vulcan:core';
 
 const links = [
   // note: modal popups won't work with anything above alpha.5. 
@@ -60,4 +60,4 @@ const Layout = ({children}) =>
 
   </div>
 
-export default Layout;
+replaceComponent('Layout', Layout);

@@ -15,8 +15,8 @@ const resolvers = {
 
     name: 'moviesList',
 
-    resolver(root, {terms = {}}, context, info) {
-      let {selector, options} = context.Movies.getParameters(terms, {}, context.currentUser);
+    async resolver(root, {terms = {}}, context, info) {
+      let {selector, options} = await context.Movies.getParameters(terms, {}, context.currentUser);
       return context.Movies.find(selector, options).fetch();
     },
 
@@ -37,8 +37,8 @@ const resolvers = {
     
     name: 'moviesTotal',
     
-    resolver(root, {terms = {}}, context) {
-      const {selector, options} = context.Movies.getParameters(terms, {}, context.currentUser);
+    async resolver(root, {terms = {}}, context) {
+      const {selector, options} = await context.Movies.getParameters(terms, {}, context.currentUser);
       return context.Movies.find(selector, options).count();
     },
   

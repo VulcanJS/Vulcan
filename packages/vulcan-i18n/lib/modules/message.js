@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import { getSetting, Strings } from 'meteor/vulcan:lib';
+import { getSetting, registerSetting, Strings } from 'meteor/vulcan:lib';
 
 const FormattedMessage = ({ id, values, defaultMessage }) => {
   const messages = Strings[getSetting('locale', 'en')] || {};

@@ -2,7 +2,7 @@ import { Components, getRawComponent, replaceComponent } from 'meteor/vulcan:cor
 import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router';
-import Posts from "meteor/vulcan:posts";
+import { Posts } from 'meteor/example-forum';
 import moment from 'moment';
 
 class CustomPostsItem extends getRawComponent('PostsItem') {

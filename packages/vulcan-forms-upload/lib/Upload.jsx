@@ -7,11 +7,14 @@ Note also that an image can be stored as a simple string, or as an array of form
 (each format being itself an object).
 
 */
-import { Components, getSetting, registerComponent } from 'meteor/vulcan:lib';
+import { Components, getSetting, registerSetting, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
+import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
+import { FormattedMessage } from 'meteor/vulcan:i18n';
+
+registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
 
 /*
 
@@ -52,9 +55,12 @@ class Image extends PureComponent {
 
   render() {
     return (
-      <div>
+      <div className="upload-image">
+        <div className="upload-image-contents">
+          <img style={{width: 150}} src={getImageUrl(this.props.image)} />
+          {this.props.image.loading ? <div className="upload-loading"><Components.Loading /></div> : null}
+        </div>
         <a href="javascript:void(0)" onClick={this.clearImage}><Components.Icon name="close"/> Remove image</a>
-        <img style={{height: 120}} src={getImageUrl(this.props.image)} />
       </div>
     )
   }
@@ -74,7 +80,7 @@ class Upload extends PureComponent {
     this.clearImage = this.clearImage.bind(this);
     this.enableMultiple = this.enableMultiple.bind(this);
 
-    const isEmpty = this.enableMultiple() ? props.value.length === 0 : !props.value;
+    const isEmpty = !props.value || (this.enableMultiple() && props.value.length === 0);
     const emptyValue = this.enableMultiple() ? [] : '';
 
     this.state = {
@@ -92,7 +98,7 @@ class Upload extends PureComponent {
 
   */
   componentWillMount() {
-    const isEmpty = this.enableMultiple() ? this.props.value.length === 0 : !this.props.value;
+    const isEmpty = !this.props.value || (this.enableMultiple() && this.props.value.length === 0);
     const emptyValue = this.enableMultiple() ? [] : '';
     this.context.addToAutofilledValues({[this.props.name]: isEmpty ? emptyValue : this.props.value});
   }
@@ -113,16 +119,17 @@ class Upload extends PureComponent {
 
   */
   onDrop(files) {
-    console.log(this)
     
+    const preview = {secure_url: files[0].preview, loading: true};
+
     // set the component in upload mode with the preview
     this.setState({
-      preview: this.enableMultiple ? [...this.state.preview, files[0].preview] : files[0].preview,
+      preview: this.enableMultiple() ? [...this.state.preview, preview] : preview,
       uploading: true,
     });
 
     // request url to cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary').cloudName}/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary.cloudName')}/upload`;
 
     // request body
     const body = new FormData();
@@ -170,7 +177,8 @@ class Upload extends PureComponent {
   render() {
     const { uploading, preview, value } = this.state;
     // show the actual uploaded image or the preview
-    const imageData = preview || value;
+
+    const imageData = this.enableMultiple() ? (preview ? value.concat(preview) : value) : value || preview;
 
     return (
       <div className="form-group row">
@@ -185,13 +193,13 @@ class Upload extends PureComponent {
               activeClassName="dropzone-active"
               rejectClassName="dropzone-reject"
             >
-              <div>Drop an image here, or click to select an image to upload.</div>
+              <div><FormattedMessage id="upload.prompt"/></div>
+              {uploading ? <div className="upload-uploading"><span><FormattedMessage id="upload.uploading"/></span></div> : null}
             </Dropzone>
 
             {imageData ?
               <div className="upload-state">
-                {uploading ? <span>Uploading…</span> : null}
-                <div className="images">
+                <div className="upload-images">
                   {this.enableMultiple() ? 
                     imageData.map((image, index) => <Image clearImage={this.clearImage} key={index} index={index} image={image}/>) : 
                     <Image clearImage={this.clearImage} image={imageData}/>

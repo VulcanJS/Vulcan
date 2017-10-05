@@ -12,6 +12,7 @@ Note: the Helmet library is used to insert meta tags and link tags in the <head>
 import React from 'react';
 import Helmet from 'react-helmet';
 import Header from './Header.jsx';
+import { replaceComponent, Components } from 'meteor/vulcan:core';
 
 // note: modal popups won't work with anything above bootstrap alpha.5. 
 // see https://github.com/twbs/bootstrap/issues/21876#issuecomment-276181539
@@ -26,7 +27,7 @@ const Layout = ({children}) =>
       <link name="font-awesome" rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     </Helmet>
 
-    <Header/>
+    <Components.Header/>
   
     <div className="main">
 
@@ -38,4 +39,4 @@ const Layout = ({children}) =>
 
   </div>
 
-export default Layout;
+replaceComponent('Layout', Layout);

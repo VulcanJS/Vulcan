@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:forms",
   summary: "Form containers for React",
-  version: '1.7.0',
+  version: '1.8.0',
   git: "https://github.com/meteor-utilities/react-form-containers.git"
 });
 
@@ -10,17 +10,18 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.3");
 
   api.use([
-    'vulcan:core@1.7.0',
+    'vulcan:core@1.8.0',
 
     'fourseven:scss@4.5.0'
   ]);
 
   api.addFiles([
-    "lib/style.scss",
-    "lib/datetime.scss"
+    "lib/stylesheets/style.scss",
+    "lib/stylesheets/datetime.scss"
   ], "client");
 
-  api.mainModule("lib/export.js", ["client", "server"]);
+  api.mainModule("lib/client/main.js", ["client"]);
+  api.mainModule("lib/server/main.js", ["server"]);
 
 });
 
@@ -31,5 +32,4 @@ Package.onTest(function(api) {
     'vulcan:forms'
   ]);
 
-  api.mainModule('test.js');
 });

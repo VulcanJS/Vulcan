@@ -7,7 +7,7 @@ import { createCollection, addGraphQLQuery } from 'meteor/vulcan:lib'; // import
  * @summary Vulcan Users namespace
  * @namespace Users
  */
-const Users = createCollection({
+export const Users = createCollection({
 
   collection: Meteor.users,
 

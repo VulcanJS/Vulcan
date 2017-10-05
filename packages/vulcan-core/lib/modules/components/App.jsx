@@ -1,4 +1,4 @@
-import { Components, registerComponent, getSetting, Strings } from 'meteor/vulcan:lib';
+import { Components, registerComponent, registerSetting, getSetting, Strings } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape} from 'meteor/vulcan:i18n';
@@ -30,7 +30,7 @@ class App extends PureComponent {
         <div>
           <Components.HeadTags />
           <LayoutComponent {...this.props} currentRoute={currentRoute}>
-            { this.props.currentUserLoading ? <Components.Loading /> : this.props.children }
+            { this.props.currentUserLoading ? <Components.Loading /> : (this.props.children ? this.props.children : <Components.Welcome />) }
           </LayoutComponent>
         </div>
       </IntlProvider>

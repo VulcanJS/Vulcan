@@ -1,1 +1,0 @@
-Vulcan RSS package, used internally. 

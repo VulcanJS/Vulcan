@@ -2,7 +2,19 @@ import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Utils, getSetting, registerSetting, runQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+
+registerSetting('secondaryColor', '#444444');
+registerSetting('accentColor', '#DD3416');
+registerSetting('title', 'My App');
+registerSetting('tagline');
+registerSetting('emailFooter');
+registerSetting('logoUrl');
+registerSetting('logoHeight');
+registerSetting('logoWidth');
+registerSetting('defaultEmail', 'noreply@example.com');
+registerSetting('title', 'Vulcan');
+registerSetting('enableDevelopmentEmails', false);
 
 VulcanEmail.templates = {};
 
@@ -42,6 +54,12 @@ VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
   return doctype+inlinedHTML;
 };
 
+VulcanEmail.generateTextVersion = html => {
+  return htmlToText.fromString(html, {
+    wordwrap: 130
+  });
+}
+
 VulcanEmail.send = (to, subject, html, text) => {
 
   // TODO: limit who can send emails
@@ -53,9 +71,7 @@ VulcanEmail.send = (to, subject, html, text) => {
 
   if (typeof text === 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
-    text = htmlToText.fromString(html, {
-        wordwrap: 130
-    });
+    text = VulcanEmail.generateTextVersion(html);
   }
 
   const email = {
@@ -96,9 +112,26 @@ VulcanEmail.send = (to, subject, html, text) => {
 
 };
 
-VulcanEmail.buildAndSend = (to, subject, template, properties) => {
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(template)(properties));
-  return VulcanEmail.send (to, subject, html);
+VulcanEmail.build = async ({ emailName, variables }) => {
+  // execute email's GraphQL query
+  const email = VulcanEmail.emails[emailName];
+  const result = email.query ? await runQuery(email.query, variables) : {data: {}};
+
+  // if email has a data() function, merge its return value with results from the query
+  const data = email.data ? {...result.data, ...email.data(variables)} : result.data;
+
+  const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
+  
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data));
+
+  return { data, subject, html };
+}
+
+VulcanEmail.buildAndSend = async ({ to, emailName, variables }) => {
+
+  const email = await VulcanEmail.build({ to, emailName, variables });
+  return VulcanEmail.send(to, email.subject, email.html);
+
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(

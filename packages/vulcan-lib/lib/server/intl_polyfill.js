@@ -4,12 +4,14 @@ intl polyfill. See https://github.com/andyearnshaw/Intl.js/
 
 */
 
-import { getSetting } from '../modules/settings.js';
+import { getSetting, registerSetting } from '../modules/settings.js';
+
+registerSetting('locale', 'en');
 
 var areIntlLocalesSupported = require('intl-locales-supported');
 
 var localesMyAppSupports = [
-  getSetting("locale", "en")
+  getSetting('locale', 'en')
 ];
 
 if (global.Intl) {

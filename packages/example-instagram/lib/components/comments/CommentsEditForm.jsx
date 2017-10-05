@@ -32,4 +32,4 @@ const CommentsEditForm = ({documentId, closeModal}) =>
     }}
   />
 
-export default CommentsEditForm;
+registerComponent('CommentsEditForm', CommentsEditForm);

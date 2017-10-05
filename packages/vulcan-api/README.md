@@ -1,1 +1,0 @@
-Vulcan API package, used internally. 
