@@ -2,6 +2,11 @@
 
 My Reactions
 
+Use Datatable together with userReactedMovies view
+
+Pros: can use Datatable, pagination, withList, etc.
+Cons: setting up view can be complex
+
 */
 
 import React from 'react';

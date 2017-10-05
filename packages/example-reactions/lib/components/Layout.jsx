@@ -35,6 +35,7 @@ const Layout = ({children, currentUser}) =>
       <ul>
         <li><Link to="/">All Movies</Link></li>
         <li><Link to="/my-reactions">My Reactions</Link></li>
+        <li><Link to="/my-reactions2">My Reactions (variant)</Link></li>
       </ul>
 
     </div>

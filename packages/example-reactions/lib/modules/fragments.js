@@ -20,6 +20,11 @@ registerFragment(`
   }
 `);
 
+/*
+
+Used for MyReactions
+
+*/
 registerFragment(`
   fragment UserMoviesVotes on User {
     _id
@@ -29,6 +34,30 @@ registerFragment(`
       collectionName
       power
       documentId
+    }
+  }
+`);
+
+/*
+
+Used for MyReactions2
+
+*/
+registerFragment(`
+  fragment UserReactedMovies on User {
+    _id
+    reactedMovies{
+      _id
+      createdAt
+      name
+      year
+      review
+      currentUserVotes{
+        _id
+        voteType
+        power
+      }
+      baseScore
     }
   }
 `);
