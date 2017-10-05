@@ -56,7 +56,7 @@ class Datatable extends PureComponent {
 
     return (
       <div className={`datatable datatable-${this.props.collection._name}`}>
-        <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} />
+        {this.props.showSearch ? <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} /> : null}
         <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
       </div>
     )
@@ -68,6 +68,12 @@ Datatable.propTypes = {
   columns: PropTypes.array,
   options: PropTypes.object,
   showEdit: PropTypes.bool,
+  showSearch: PropTypes.bool,
+}
+
+Datatable.defaultProps = {
+  showEdit: true,
+  showSearch: true,
 }
 registerComponent('Datatable', Datatable, withCurrentUser);
 
