@@ -81,7 +81,15 @@ export const getSetting = (settingName, settingDefault) => {
         ...publicSetting,
       }
     } else {
-      setting = rootSetting || privateSetting || publicSetting || defaultValue;
+      if (typeof rootSetting !== 'undefined') {
+        setting = rootSetting;
+      } else if (typeof privateSetting !== 'undefined') {
+        setting = privateSetting;
+      } else if (typeof publicSetting !== 'undefined') {
+        setting = publicSetting;
+      } else {
+        setting = defaultValue;
+      }
     }
 
   } else {
