@@ -17,7 +17,7 @@ const PostsList = ({className, results, loading, count, totalCount, loadMore, sh
     const hasMore = totalCount > results.length;
 
     return (
-      <div className={classNames(className, 'posts-list')}>
+      <div className={classNames(className, 'posts-list', `posts-list-${terms.view}`)}>
         {showHeader ? <Components.PostsListHeader/> : null}
         {error ? <Error error={Utils.decodeIntlError(error)} /> : null }
         <div className="posts-list-content">
