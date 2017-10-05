@@ -11,7 +11,7 @@ import { Components, getSetting, registerSetting, registerComponent } from 'mete
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import 'isomorphic-fetch'; // patch for browser which don't have fetch implemented
+import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
