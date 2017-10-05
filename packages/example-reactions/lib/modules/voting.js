@@ -1,5 +1,5 @@
 import { makeVoteable, addVoteType } from 'meteor/vulcan:voting';
-import Movies from './movies/collection.js';
+import Movies from './movies/index.js';
 
 makeVoteable(Movies);
 

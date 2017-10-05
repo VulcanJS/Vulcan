@@ -2,20 +2,28 @@ export const recalculateScore = item => {
 
   // Age Check
 
-  const postedAt = item.postedAt.valueOf();
-  const now = new Date().getTime();
-  const age = now - postedAt;
-  const ageInHours = age / (60 * 60 * 1000);
+  if (item.postedAt) {
 
-  // time decay factor
-  const f = 1.3;
+    const postedAt = item.postedAt.valueOf();
+    const now = new Date().getTime();
+    const age = now - postedAt;
+    const ageInHours = age / (60 * 60 * 1000);
 
-  // use baseScore if defined, if not just use 0
-  const baseScore = item.baseScore || 0;
+    // time decay factor
+    const f = 1.3;
 
-  // HN algorithm
-  const newScore = Math.round((baseScore / Math.pow(ageInHours + 2, f))*1000000)/1000000;
+    // use baseScore if defined, if not just use 0
+    const baseScore = item.baseScore || 0;
 
-  return newScore;
+    // HN algorithm
+    const newScore = Math.round((baseScore / Math.pow(ageInHours + 2, f))*1000000)/1000000;
+
+    return newScore;
+
+  } else {
+
+    return item.baseScore;
+  
+  }
 
 };

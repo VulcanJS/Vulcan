@@ -19,3 +19,16 @@ registerFragment(`
     baseScore
   }
 `);
+
+registerFragment(`
+  fragment UserMoviesVotes on User {
+    _id
+    votes(collectionName: "Movies"){
+      _id
+      voteType
+      collectionName
+      power
+      documentId
+    }
+  }
+`);

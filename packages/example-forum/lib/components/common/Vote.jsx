@@ -11,6 +11,7 @@ class Vote extends PureComponent {
     super();
     this.vote = this.vote.bind(this);
     this.getActionClass = this.getActionClass.bind(this);
+    this.hasVoted = this.hasVoted.bind(this);
   }
 
   vote(e) {
@@ -28,11 +29,15 @@ class Vote extends PureComponent {
     } 
   }
 
+  hasVoted() {
+    return hasVotedClient({document: this.props.document, voteType: 'upvote'})
+  }
+
   getActionClass() {
 
     const actionsClass = classNames(
       'vote-button',
-      {upvoted: hasVotedClient({document: this.props.document, voteType: 'upvote'})},
+      {upvoted: this.hasVoted()},
     );
 
     return actionsClass;

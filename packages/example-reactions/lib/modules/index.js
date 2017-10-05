@@ -1,5 +1,5 @@
 // The Movies collection
-import './movies/collection.js';
+import './movies/index.js';
 
 // Routes
 import './voting.js';
