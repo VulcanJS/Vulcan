@@ -403,6 +403,39 @@ const schema = {
       }
   },
 
+  emailShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getEmailShareUrl(post);
+      }
+    }
+  },
+
+  twitterShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getTwitterShareUrl(post);
+      }
+    }
+  },
+
+  facebookShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getFacebookShareUrl(post);
+      }
+    }
+  },
+  
 };
 
 export default schema;
