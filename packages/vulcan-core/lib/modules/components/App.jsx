@@ -29,6 +29,7 @@ class App extends PureComponent {
       <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
         <div>
           <Components.HeadTags />
+          <Components.HeadComponent />
           <LayoutComponent {...this.props} currentRoute={currentRoute}>
             { this.props.currentUserLoading ? <Components.Loading /> : (this.props.children ? this.props.children : <Components.Welcome />) }
           </LayoutComponent>
