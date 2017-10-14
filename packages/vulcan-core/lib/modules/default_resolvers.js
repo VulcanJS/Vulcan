@@ -74,11 +74,12 @@ export const getDefaultResolvers = collectionName => ({
         Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
       }
 
+      const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
+
       debug(`//--------------- end ${collectionName} single resolver ---------------//`);
 
-
       // filter out disallowed properties and return resulting document
-      return Users.restrictViewableFields(currentUser, collection, doc);
+      return restrictedDoc;
     },
   
   },

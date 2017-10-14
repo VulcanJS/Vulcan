@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.5.2');
 
   api.use([
-    'fourseven:scss',
+    'fourseven:scss@4.5.0',
     'vulcan:core@1.8.0',
     'vulcan:i18n@1.8.0',
   ], ['client', 'server']);

@@ -12,7 +12,6 @@ Package.onUse(function (api) {
 
   api.use([
     'vulcan:core@1.8.0',
-    'vulcan:notifications@1.8.0',
     // dependencies on posts, categories are done with nested imports to reduce explicit dependencies
   ]);
   
