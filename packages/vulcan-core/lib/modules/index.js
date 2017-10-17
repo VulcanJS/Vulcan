@@ -14,7 +14,6 @@ export { default as ShowIf } from "./components/ShowIf.jsx";
 export { default as ModalTrigger } from './components/ModalTrigger.jsx';
 export { default as Error404 } from './components/Error404.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
-export { default as HeadComponent } from './components/HeadComponent.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as Avatar } from './components/Avatar.jsx';
 export { default as Card } from './components/Card.jsx';
