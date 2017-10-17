@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import FormComponent from './FormComponent.jsx';
 import { Components } from 'meteor/vulcan:core';
 import classNames from 'classnames';
+import { registerComponent } from 'meteor/vulcan:core';
 
 class FormGroup extends PureComponent {
 
@@ -40,7 +40,7 @@ class FormGroup extends PureComponent {
       <div className="form-section">
         {this.props.name === 'default' ? null : this.renderHeading()}
         <div className={classNames({'form-section-collapsed': this.state.collapsed && !hasErrors})}>
-          {this.props.fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} />)}
+          {this.props.fields.map(field => <Components.FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} />)}
         </div>
       </div>
     )
@@ -55,4 +55,4 @@ FormGroup.propTypes = {
   updateCurrentValues: PropTypes.func
 }
 
-export default FormGroup;
+registerComponent('FormGroup', FormGroup);

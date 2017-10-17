@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-bootstrap/lib/Alert'
+import { registerComponent } from 'meteor/vulcan:core';
 
 const Flash = ({message, type}) => {
   
@@ -24,4 +25,4 @@ Flash.propTypes = {
   message: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.array.isRequired])
 }
 
-export default Flash;
+registerComponent('FormFlash', Flash);

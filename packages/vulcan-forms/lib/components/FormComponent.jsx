@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 
 class FormComponent extends PureComponent {
 
@@ -156,4 +157,4 @@ FormComponent.contextTypes = {
   intl: intlShape
 };
 
-export default FormComponent;
+registerComponent('FormComponent', FormComponent);
