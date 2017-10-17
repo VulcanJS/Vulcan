@@ -10,13 +10,13 @@ const IntercomWrapper = ({ currentUser }) => {
     return null;
   }
 
-  return <Intercom 
+  return currentUser ? <Intercom 
     appID={appId} 
     email={currentUser.email}
     name={currentUser.displayName}
     _id={currentUser._id}
     profileUrl={currentUser.pageUrl}
-  />;
+  /> : null;
 
 }
 
