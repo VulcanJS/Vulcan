@@ -114,7 +114,7 @@ export const runCallbacksAsync = function () {
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
       callbacks.forEach(function(callback) {
-        // console.log("// "+hook+": running callback ["+callback.name+"] at "+moment().format("hh:mm:ss"))
+        debug(`// Running async callback [${callback.name}] on hook [${hook}]`);
         callback.apply(this, args);
       });
     });

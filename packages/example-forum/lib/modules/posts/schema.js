@@ -367,8 +367,8 @@ const schema = {
     optional: true,
     resolveAs: {
       type: 'String',
-      resolver: (booking, args, context) => {
-        return moment(booking.endAt).format('dddd, MMMM Do YYYY');
+      resolver: (post, args, context) => {
+        return moment(post.postedAt).format('dddd, MMMM Do YYYY');
       }
     }  
   },
