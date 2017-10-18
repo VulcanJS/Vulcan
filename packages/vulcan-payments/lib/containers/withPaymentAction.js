@@ -2,14 +2,14 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 
-export default function withCreateCharge(options) {
+export default function withPaymentAction(options) {
 
   const fragment = options.fragment || getFragment(options.fragmentName);
   const fragmentName = getFragmentName(fragment) || fragmentName;
 
   const mutation = gql`
-    mutation createChargeMutation($token: JSON, $userId: String, $productKey: String, $associatedCollection: String, $associatedId: String, $properties: JSON, $coupon: String) {
-      createChargeMutation(token: $token, userId: $userId, productKey: $productKey, associatedCollection: $associatedCollection, associatedId: $associatedId, properties: $properties, coupon: $coupon) {
+    mutation paymentActionMutation($token: JSON, $userId: String, $productKey: String, $associatedCollection: String, $associatedId: String, $properties: JSON, $coupon: String) {
+      paymentActionMutation(token: $token, userId: $userId, productKey: $productKey, associatedCollection: $associatedCollection, associatedId: $associatedId, properties: $properties, coupon: $coupon) {
         __typename
         ...${fragmentName}
       }
@@ -18,9 +18,9 @@ export default function withCreateCharge(options) {
   `;
 
   return graphql(mutation, {
-    alias: 'withCreateCharge',
+    alias: 'withPaymentAction',
     props: ({ownProps, mutate}) => ({
-      createChargeMutation: (vars) => {
+      paymentActionMutation: (vars) => {
         return mutate({ 
           variables: vars,
         });

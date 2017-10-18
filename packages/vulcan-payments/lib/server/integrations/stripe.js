@@ -1,8 +1,8 @@
 import { getSetting, registerSetting, newMutation, editMutation, Collections, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
-// import express from 'express';
+import express from 'express';
 import Stripe from 'stripe';
-// import { Picker } from 'meteor/meteorhacks:picker';
-// import bodyParser from 'body-parser';
+import { Picker } from 'meteor/meteorhacks:picker';
+import bodyParser from 'body-parser';
 import Charges from '../../modules/charges/collection.js';
 import Users from 'meteor/vulcan:users';
 import { Products } from '../../modules/products.js';
@@ -11,6 +11,10 @@ registerSetting('stripe', null, 'Stripe settings');
 
 const stripeSettings = getSetting('stripe');
 
+// initialize Stripe
+const keySecret = Meteor.isDevelopment ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
+const stripe = new Stripe(keySecret);
+
 const sampleProduct = {
   amount: 10000,
   name: 'My Cool Product',
@@ -18,20 +22,21 @@ const sampleProduct = {
   currency: 'USD',
 }
 
-// returns a promise:
-export const createCharge = async (args) => {
+/*
+
+Create new Stripe charge
+(returns a promise)
+
+*/
+export const performAction = async (args) => {
   
   let collection, document, returnDocument = {};
 
-  const {token, userId, productKey, associatedCollection, associatedId, properties, coupon } = args;
+  const {token, userId, productKey, associatedCollection, associatedId, properties } = args;
 
   if (!stripeSettings) {
     throw new Error('Please fill in your Stripe settings');
   }
-  
-  // initialize Stripe
-  const keySecret = Meteor.isDevelopment ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
-  const stripe = new Stripe(keySecret);
 
   // if an associated collection name and document id have been provided, 
   // get the associated collection and document
@@ -45,24 +50,65 @@ export const createCharge = async (args) => {
   const definedProduct = Products[productKey];
   const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
 
-  let amount = product.amount;
-
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
-  // create Stripe customer
-  const customer = await stripe.customers.create({
-    email: token.email,
-    source: token.id
-  });
+  let customer;
+
+  if (user.stripeCustomerId) {
+    // if user has a stripe id already, retrieve customer from Stripe
+    customer = await stripe.customers.retrieve(user.stripeCustomerId);
+  } else {
+    // else create new Stripe customer
+    customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id
+    });
+
+    // add stripe customer id to user object
+    await editMutation({
+      collection: Users,
+      documentId: user._id,
+      set: {stripeCustomerId: customer.id},
+      validate: false
+    });
+  }
 
   // create metadata object
   const metadata = {
     userId: userId,
     userName: Users.getDisplayName(user),
     userProfile: Users.getProfileUrl(user, true),
+    productKey,
     ...properties
   }
+
+  if (associatedCollection && associatedId) {
+    metadata.associatedCollection = associatedCollection;
+    metadata.associatedId = associatedId;
+  }
+
+  if (product.plan) {
+    // if product has a plan, subscribe user to it
+    returnDocument = await subscribeUser({user, customer, product, collection, document, metadata, args});
+  } else {
+    // else, perform charge
+    returnDocument = await createCharge({user, customer, product, collection, document, metadata, args});
+  }
+
+  return returnDocument;
+}
+
+/*
+
+Create one-time charge. 
+
+*/
+export const createCharge = async ({user, customer, product, collection, document, metadata, args}) => {
+  
+  const {token, userId, productKey, associatedId, properties, coupon } = args;
+
+  let amount = product.amount;
 
   // apply discount coupon and add it to metadata, if there is one
   if (coupon && product.coupons && product.coupons[coupon]) {
@@ -83,19 +129,39 @@ export const createCharge = async (args) => {
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
 
+  return processCharge({collection, document, charge, args})
+
+}
+
+/*
+
+Process charge on Vulcan's side
+
+*/
+export const processCharge = async ({collection, document, charge, args}) => {
+ 
+  let returnDocument = {};
+
+  const {token, userId, productKey, associatedCollection, associatedId, properties, livemode } = args;
+
   // create charge document for storing in our own Charges collection
   const chargeDoc = {
     createdAt: new Date(),
     userId,
-    tokenId: token.id, 
     type: 'stripe',
-    test: !token.livemode,
+    test: !livemode,
     data: charge,
-    ip: token.client_ip,
+    associatedCollection,
+    associatedId,
     properties,
     productKey,
   }
 
+  if (token) {
+    chargeDoc.tokenId = token.id;
+    chargeDoc.test = !token.livemode; // get livemode from token if provided
+    chargeDoc.ip = token.client_ip;
+  }
   // insert
   const chargeSaved = newMutation({
     collection: Charges,
@@ -107,12 +173,14 @@ export const createCharge = async (args) => {
   // update the associated document
   if (collection && document) {
     
+    // note: assume a single document can have multiple successive charges associated to it
     const chargeIds = document.chargeIds ? [...document.chargeIds, chargeSaved._id] : [chargeSaved._id];
 
     let modifier = {
       $set: {chargeIds},
       $unset: {}
     }
+
     // run collection.charge.sync callbacks
     modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc);
 
@@ -135,30 +203,121 @@ export const createCharge = async (args) => {
 
 /*
 
-POST route with Picker
+Create new subscription plan
+
+*/
+export const createPlan = async (options) => {
+  try {
+    await stripe.plans.create(options);
+  } catch (error) {
+    console.log('// Stripe createPlan error')
+    console.log(error)
+  }
+}
+
+/*
+
+Subscribe a user to a Stripe plan
+
+*/
+export const subscribeUser = async ({user, customer, product, collection, document, metadata, args }) => {
+
+  console.log('////////////// subscribeUser')
+  console.log(product)
+
+  try {
+    const subscription = await stripe.subscriptions.create({
+      customer: customer.id,
+      items: [
+        { plan: product.plan },
+      ],
+      metadata,
+    });
+    console.log(subscription)
+  } catch (error) {
+    console.log('// Stripe subscribeUser error')
+    console.log(error)
+  }
+}
+
+
+/*
+
+Webhooks with Picker
 
 */
 
-// Picker.middleware(bodyParser.text());
+// const app = express()
 
-// Picker.route('/charge', function(params, req, res, next) {
 
-//   const body = JSON.parse(req.body);
+// app.post('/stripe', function(req, res) {
+//   // Retrieve the request's body and parse it as JSON
+//   console.log('////////////// stripe webhook')
 
-//   // console.log(body)
+//   var event_json = JSON.parse(req.body);
 
-//   const { token, userId, productKey, associatedCollection, associatedId } = body;
+//   console.log(event_json)
 
-//   createCharge({
-//     token,
-//     userId,
-//     productKey,
-//     associatedCollection,
-//     associatedId,
-//     callback: (charge) => {
-//       // return Stripe charge
-//       res.end(JSON.stringify(charge));
-//     }
-//   });
-
+//   res.send(200);
 // });
+
+Picker.middleware(bodyParser.json());
+
+Picker.route('/stripe', async function(params, req, res, next) {
+
+  console.log('////////////// stripe webhook')
+
+  const body = req.body;
+
+
+   // Retrieve the request's body and parse it as JSON
+   switch (body.type) {
+
+    case 'charge.succeeded':
+
+      console.log('////// charge body')
+      console.log(body)
+
+      const charge = body.data.object;
+
+      try {
+
+        // look up corresponding invoice
+        const invoice = await stripe.invoices.retrieve(body.data.object.invoice);
+        console.log('////// invoice')
+
+        // look up corresponding subscription
+        const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
+        console.log('////// subscription')
+        console.log(subscription)
+
+        const { userId, productKey, associatedCollection, associatedId } = subscription.metadata;
+
+        if (associatedCollection && associatedId) {
+          const collection = _.findWhere(Collections, {_name: associatedCollection});
+          const document = collection.findOne(associatedId);
+
+          const args = {
+            userId, 
+            productKey,
+            associatedCollection,
+            associatedId,
+            livemode: subscription.livemode,
+          }
+
+          processCharge({ collection, document, charge, args});
+
+        }      
+      } catch (error) {
+        console.log('// Stripe webhook error')
+        console.log(error)
+      }
+
+      break;
+
+   }
+
+  res.statusCode = 200;
+  res.end();
+
+});
