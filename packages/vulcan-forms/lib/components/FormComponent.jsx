@@ -120,6 +120,26 @@ class FormComponent extends PureComponent {
     )
   }
 
+  showClear = () => {
+    return ['datetime', 'select', 'radiogroup'].includes(this.props.control);
+  }
+
+  clearField = (e) => {
+    e.preventDefault();
+    console.log(this.props)
+    const fieldName = this.props.name;
+    // clear value
+    this.props.updateCurrentValues({[fieldName]: null});
+    // add it to unset
+    this.context.addToDeletedValues(fieldName);
+  }
+
+  renderClear() {
+    return (
+      <button className="form-component-clear" title={this.context.intl.formatMessage({id: 'forms.clear_field'})} onClick={this.clearField}><span>✕</span></button>
+    )
+  }
+
   render() {
 
     const hasErrors = this.props.errors && this.props.errors.length;
@@ -130,6 +150,7 @@ class FormComponent extends PureComponent {
         {this.props.beforeComponent ? this.props.beforeComponent : null}
         {this.renderComponent()}
         {hasErrors ? this.renderErrors() : null}
+        {this.showClear() ? this.renderClear() : null}
         {this.props.limit ? <div className={classNames('form-control-limit', {danger: this.state.limit < 10})}>{this.state.limit}</div> : null}
         {this.props.afterComponent ? this.props.afterComponent : null}
       </div>
@@ -153,7 +174,8 @@ FormComponent.propTypes = {
 }
 
 FormComponent.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
+  addToDeletedValues: PropTypes.func,
 };
 
 export default FormComponent;
