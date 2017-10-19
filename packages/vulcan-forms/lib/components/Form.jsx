@@ -160,6 +160,11 @@ class Form extends Component {
       // add options if they exist
       if (fieldSchema.form && fieldSchema.form.options) {
         field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema, this.props) : fieldSchema.form.options;
+      
+        // in case of checkbox groups, check "checked" option to populate value
+        if (!field.value) {
+          field.value = _.where(fieldSchema.form.options, {checked: true}).map(option => option.value);
+        }
       }
 
       if (fieldSchema.form && fieldSchema.form.disabled) {
