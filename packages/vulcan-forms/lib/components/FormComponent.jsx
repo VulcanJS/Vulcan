@@ -137,14 +137,14 @@ class FormComponent extends PureComponent {
 
   renderClear() {
     return (
-      <button className="form-component-clear" title={this.context.intl.formatMessage({id: 'forms.clear_field'})} onClick={this.clearField}><span>✕</span></button>
+      <a href="javascript:void(0)" className="form-component-clear" title={this.context.intl.formatMessage({id: 'forms.clear_field'})} onClick={this.clearField}><span>✕</span></a>
     )
   }
 
   render() {
 
     const hasErrors = this.props.errors && this.props.errors.length;
-    const inputClass = classNames('form-input', `input-${this.props.name}`, {'input-error': hasErrors});
+    const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control || 'default'}`,{'input-error': hasErrors});
 
     return (
       <div className={inputClass}>
