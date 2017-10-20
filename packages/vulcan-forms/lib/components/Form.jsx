@@ -163,7 +163,7 @@ class Form extends Component {
       
         // in case of checkbox groups, check "checked" option to populate value
         if (!field.value) {
-          field.value = _.where(fieldSchema.form.options, {checked: true}).map(option => option.value);
+          field.value = _.where(field.options, {checked: true}).map(option => option.value);
         }
       }
 
