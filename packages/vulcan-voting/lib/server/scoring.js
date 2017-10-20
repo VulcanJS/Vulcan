@@ -10,16 +10,17 @@ Returns how many documents have been updated (1 or 0).
 export const updateScore = ({collection, item, forceUpdate}) => {
 
   // Age Check
-
-  // If for some reason item doesn't have a "postedAt" property, abort
-  // Or, if post has been scheduled in the future, don't update its score
-  if (!item.postedAt || postedAt > now)
-    return 0;
-
-  const postedAt = item.postedAt.valueOf();
+  const postedAt = item && item.postedAt && item.postedAt.valueOf();
   const now = new Date().getTime();
   const age = now - postedAt;
   const ageInHours = age / (60 * 60 * 1000);
+
+  // If for some reason item doesn't have a "postedAt" property, abort
+  // Or, if post has been scheduled in the future, don't update its score
+  if (postedAt || postedAt > now)
+    return 0;
+
+
 
   // For performance reasons, the database is only updated if the difference between the old score and the new score
   // is meaningful enough. To find out, we calculate the "power" of a single vote after n days.
