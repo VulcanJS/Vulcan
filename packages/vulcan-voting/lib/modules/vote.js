@@ -1,4 +1,4 @@
-import { runCallbacksAsync, runCallbacks, addCallback } from 'meteor/vulcan:core';
+import { debug, runCallbacksAsync, runCallbacks, addCallback } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
@@ -268,10 +268,10 @@ export const performVoteServer = ({ documentId, document, voteType = 'upvote', c
   const collectionName = collection.options.collectionName;
   document = document || collection.findOne(documentId);
 
-  console.log('// performVoteMutation')
-  console.log('collectionName: ', collectionName)
-  console.log('document: ', document)
-  console.log('voteType: ', voteType)
+  debug('// performVoteMutation')
+  debug('collectionName: ', collectionName)
+  debug('document: ', document)
+  debug('voteType: ', voteType)
   
   const voteOptions = {document, collection, voteType, user, voteId};
 

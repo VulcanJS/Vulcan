@@ -102,6 +102,7 @@ export const makeVoteable = collection => {
         optional: true,
         defaultValue: 0,
         viewableBy: ['guests'],
+        onInsert: () => 0
       }
     },
     /**
@@ -114,6 +115,7 @@ export const makeVoteable = collection => {
         optional: true,
         defaultValue: 0,
         viewableBy: ['guests'],
+        onInsert: () => 0
       }
     },
     /**
