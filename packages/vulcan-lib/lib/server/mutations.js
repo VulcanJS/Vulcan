@@ -83,12 +83,17 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   // }
 
   // run sync callbacks
+  newDocument = await runCallbacks(`${collectionName}.new.before`, newDocument, currentUser);
   newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 
   // add _id to document
   newDocument._id = collection.insert(newDocument);
 
+  // run any post-operation sync callbacks
+  newDocument = await runCallbacks(`${collectionName}.new.after`, newDocument, currentUser);
+
   // get fresh copy of document from db
+  // TODO: not needed?
   const insertedDocument = collection.findOne(newDocument._id);
 
   // run async callbacks
@@ -154,6 +159,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
 
   // run sync callbacks (on mongo modifier)
+  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser);
   modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
 
   // remove empty modifiers
@@ -168,12 +174,15 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   collection.update(documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
-  const newDocument = collection.findOne(documentId);
+  let newDocument = collection.findOne(documentId);
 
   // clear cache if needed
   if (collection.loader) {
     collection.loader.clear(documentId);
   }
+
+  // run any post-operation sync callbacks
+  newDocument = await runCallbacks(`${collectionName}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
