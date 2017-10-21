@@ -220,6 +220,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
     }
   }
 
+  await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
   collection.remove(documentId);

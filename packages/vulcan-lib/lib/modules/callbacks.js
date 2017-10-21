@@ -1,10 +1,25 @@
 import { debug } from './debug.js';
 
 /**
+ * @summary A list of all registered callback hooks
+ */
+export const CallbackHooks = [];
+
+/**
  * @summary Callback hooks provide an easy way to add extra steps to common operations.
  * @namespace Callbacks
  */
 export const Callbacks = {};
+
+
+/**
+ * @summary Register a callback
+ * @param {String} hook - The name of the hook
+ * @param {Function} callback - The callback function
+ */
+export const registerCallback = function (callback) {
+  CallbackHooks.push(callback);
+};
 
 /**
  * @summary Add a callback function to a hook
