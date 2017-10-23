@@ -24,11 +24,11 @@ function copySync(origin,target){
 const chalk = require('chalk');
 
 //Vulkan letters
-console.log(chalk.gray(' ___  ___ '));
-console.log(chalk.gray(' '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.gray(String.fromCharCode(92)+'/')+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/'));
-console.log(chalk.gray('  '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/    Vulcan.js'));
-console.log(chalk.gray('   '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.yellowBright('/')+chalk.gray('/    The full-stack React+GraphQL framework'));
-console.log(chalk.gray('    ──     '));
+console.log(chalk.gray(' ___    ___ '));
+console.log(chalk.gray(' '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.gray(String.fromCharCode(92)+'  /')+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/'));
+console.log(chalk.gray('  '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.gray(String.fromCharCode(92))+chalk.gray('/')+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/    Vulcan.js'));
+console.log(chalk.gray('   '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/    The full-stack React+GraphQL framework'));
+console.log(chalk.gray('    ────     '));
 
 
 var os = require('os');
