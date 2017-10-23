@@ -1,15 +1,16 @@
 {
   "name": "Vulcan",
-  "version": "1.2.0",
+  "version": "1.8.0",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "sh prestart_vulcan.sh",
+    "prestart": "node prestart_vulcan.js",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
+    "chalk": "2.2.0",    
     "analytics-node": "^2.1.1",
     "apollo-client": "^1.2.2",
     "apollo-errors": "^1.4.0",
