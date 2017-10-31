@@ -54,26 +54,7 @@ export const performAction = async (args) => {
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
-  let customer;
-
-  if (user.stripeCustomerId) {
-    // if user has a stripe id already, retrieve customer from Stripe
-    customer = await stripe.customers.retrieve(user.stripeCustomerId);
-  } else {
-    // else create new Stripe customer
-    customer = await stripe.customers.create({
-      email: token.email,
-      source: token.id
-    });
-
-    // add stripe customer id to user object
-    await editMutation({
-      collection: Users,
-      documentId: user._id,
-      set: {stripeCustomerId: customer.id},
-      validate: false
-    });
-  }
+  const customer = await getCustomer(user, token.id);
 
   // create metadata object
   const metadata = {
@@ -98,6 +79,41 @@ export const performAction = async (args) => {
   }
 
   return returnDocument;
+}
+
+/*
+
+Retrieve or create a Stripe customer
+
+*/
+export const getCustomer = async (user, id) => {
+
+  let customer;
+
+  try {
+    
+    // try retrieving customer from Stripe
+    customer = await stripe.customers.retrieve(user.stripeCustomerId);
+
+  } catch (error) {
+    
+    // if user doesn't have a stripeCustomerId; or if id doesn't match up with Stripe
+    // create new customer object
+    const customerOptions = { email: user.email };
+    if (id) { customerOptions.source = id; }
+    customer = await stripe.customers.create(customerOptions);
+
+    // add stripe customer id to user object
+    await editMutation({
+      collection: Users,
+      documentId: user._id,
+      set: {stripeCustomerId: customer.id},
+      validate: false
+    });
+    
+  }
+
+  return customer;
 }
 
 /*
@@ -222,11 +238,19 @@ Subscribe a user to a Stripe plan
 
 */
 export const subscribeUser = async ({user, customer, product, collection, document, metadata, args }) => {
-
-  console.log('////////////// subscribeUser')
-  console.log(product)
-
   try {
+    // if product has an initial cost, 
+    // create an invoice item and attach it to the customer first
+    // see https://stripe.com/docs/subscriptions/invoices#adding-invoice-items
+    if (product.initialAmount) {
+      const initialInvoiceItem = await stripe.invoiceItems.create({
+        customer: customer.id,
+        amount: product.initialAmount,
+        currency: product.currency,
+        description: product.initialAmountDescription,
+      });
+    }
+
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [
@@ -234,7 +258,7 @@ export const subscribeUser = async ({user, customer, product, collection, docume
       ],
       metadata,
     });
-    console.log(subscription)
+
   } catch (error) {
     console.log('// Stripe subscribeUser error')
     console.log(error)
