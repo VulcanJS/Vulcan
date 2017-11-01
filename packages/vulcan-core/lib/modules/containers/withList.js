@@ -106,7 +106,8 @@ const withList = (options) => {
         options({terms, paginationTerms, client: apolloClient}) {
           // get terms from options, then props, then pagination
           const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
-          return {
+
+          const graphQLOptions = {
             variables: {
               terms: mergedTerms,
             },
@@ -119,6 +120,12 @@ const withList = (options) => {
             
             },
           };
+
+          if (options.fetchPolicy) {
+            graphQLOptions.fetchPolicy = options.fetchPolicy
+          }
+          
+          return graphQLOptions;
         },
 
         // define props returned by graphql HoC
@@ -130,7 +137,8 @@ const withList = (options) => {
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
                 loading = props.data.loading,
-                error = props.data.error;
+                error = props.data.error,
+                propertyName = options.propertyName || 'results';
 
           if (error) {
             console.log(error);
@@ -140,7 +148,7 @@ const withList = (options) => {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
             loading: networkStatus === 1,
-            results,
+            [ propertyName ]: results,
             totalCount,
             refetch,
             networkStatus,

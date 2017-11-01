@@ -136,6 +136,7 @@ class FormWrapper extends PureComponent {
       queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
       fragment: this.getFragments().queryFragment,
+      fetchPolicy: 'network-only' // we always want to load a fresh copy of the document
     };
 
     // options for withNew, withEdit, and withRemove HoCs

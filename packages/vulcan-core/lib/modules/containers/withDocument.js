@@ -33,17 +33,24 @@ export default function withDocument (options) {
     alias: 'withDocument',
     
     options(ownProps) {
-      return {
+      const graphQLOptions = {
         variables: { documentId: ownProps.documentId, slug: ownProps.slug },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
+
+      if (options.fetchPolicy) {
+        graphQLOptions.fetchPolicy = options.fetchPolicy;
+      }
+
+      return graphQLOptions;
     },
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
+      const propertyName = options.propertyName || 'document';
       return {
         loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),
-        document: data[singleResolverName],
+        [ propertyName ]: data[singleResolverName],
         fragmentName,
         fragment,
       };
