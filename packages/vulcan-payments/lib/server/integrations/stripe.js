@@ -220,20 +220,6 @@ export const processCharge = async ({collection, document, charge, args}) => {
 
 /*
 
-Create new subscription plan
-
-*/
-export const createPlan = async (options) => {
-  try {
-    await stripe.plans.create(options);
-  } catch (error) {
-    console.log('// Stripe createPlan error')
-    console.log(error)
-  }
-}
-
-/*
-
 Subscribe a user to a Stripe plan
 
 */

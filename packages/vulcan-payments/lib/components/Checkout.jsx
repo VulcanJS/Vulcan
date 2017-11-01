@@ -72,7 +72,8 @@ class Checkout extends React.Component {
     const definedProduct = Products[productKey];
     const product = typeof definedProduct === 'function' ? definedProduct(this.props.associatedDocument) : definedProduct || sampleProduct;
 
-    let amount = product.amount;
+    // if product has initial amount, add it to amount (for subscription products)
+    let amount = product.initialAmount ? product.initialAmount + product.amount : product.amount;
 
     if (coupon && product.coupons && product.coupons[coupon]) {
       amount -= product.coupons[coupon];
