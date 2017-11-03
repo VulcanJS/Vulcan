@@ -153,8 +153,12 @@ class Form extends Component {
       }
 
       // replace empty value, which has not been prefilled, by the default value from the schema
-      if (fieldSchema.defaultValue && field.value === "") {
+      // keep defaultValue for backwards compatibility even though it doesn't actually work
+      if (fieldSchema.defaultValue && (typeof field.value === 'undefined' || field.value === '')) {
         field.value = fieldSchema.defaultValue;
+      }
+      if (fieldSchema.default && (typeof field.value === 'undefined' || field.value === '')) {
+        field.value = fieldSchema.default;
       }
 
       // add options if they exist

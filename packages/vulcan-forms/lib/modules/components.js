@@ -7,6 +7,7 @@ import '../components/bootstrap/Number.jsx';
 import '../components/bootstrap/Radiogroup.jsx';
 import '../components/bootstrap/Select.jsx';
 import '../components/bootstrap/Textarea.jsx';
+import '../components/bootstrap/Time.jsx';
 import '../components/bootstrap/Url.jsx';
 
 import '../components/Flash.jsx';

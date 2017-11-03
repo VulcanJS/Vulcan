@@ -98,6 +98,9 @@ class FormComponent extends PureComponent {
         case 'datetime':
           return <Components.FormComponentDateTime {...properties} />;
         
+        case 'time':
+          return <Components.FormComponentTime {...properties} />;
+        
         case 'text':
           return <Components.FormComponentDefault {...properties}/>;
         
