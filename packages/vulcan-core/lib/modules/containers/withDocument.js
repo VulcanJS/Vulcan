@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getSetting, getFragment, getFragmentName } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
   
-  const { collection, pollInterval = 20000 } = options,
+  const { collection, pollInterval = getSetting('pollInterval', 20000) } = options,
         queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
 
