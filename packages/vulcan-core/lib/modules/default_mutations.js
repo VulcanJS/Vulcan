@@ -165,28 +165,28 @@ const registerCollectionCallbacks = collectionName => {
 
   registerCallback({
     name: `${collectionName}.edit.validate`, 
-    arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being inserted'}, {currentUser: 'The current user'}, {validationErrors: 'An object that can be used to accumulate validation errors'}], 
+    arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being edited'}, {currentUser: 'The current user'}, {validationErrors: 'An object that can be used to accumulate validation errors'}], 
     runs: 'sync', 
     returns: 'modifier',
     description: `Validate a document before update (can be skipped when updating directly on server).`
   });
   registerCallback({
     name: `${collectionName}.edit.before`, 
-    arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being inserted'}, {currentUser: 'The current user'}], 
+    arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being edited'}, {currentUser: 'The current user'}], 
     runs: 'sync', 
     returns: 'modifier',
     description: `Perform operations on a document before it's updated in the database.`
   });
   registerCallback({
     name: `${collectionName}.edit.after`, 
-    arguments: [{document: 'The document being inserted'}, {currentUser: 'The current user'}], 
+    arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being edited'}, {currentUser: 'The current user'}], 
     runs: 'sync', 
     returns: 'document',
     description: `Perform operations on a document after it's updated in the database but *before* the mutation returns it.`
   });
   registerCallback({
     name: `${collectionName}.edit.async`, 
-    arguments: [{document: 'The document being updated'}, {currentUser: 'The current user'}, {collection: 'The collection the document belongs to'}], 
+    arguments: [{newDocument: 'The document after the edit', document: 'The document before the edit'}, {currentUser: 'The current user'}, {collection: 'The collection the document belongs to'}], 
     runs: 'async', 
     returns: null,
     description: `Perform operations on a document after it's updated in the database asynchronously.`
@@ -207,7 +207,7 @@ const registerCollectionCallbacks = collectionName => {
     description: `Perform operations on a document before it's removed from the database.`
   });
   registerCallback({
-    name: `${collectionName}.new.async`, 
+    name: `${collectionName}.remove.async`, 
     arguments: [{document: 'The document being removed'}, {currentUser: 'The current user'}, {collection: 'The collection the document belongs to'}], 
     runs: 'async', 
     returns: null,

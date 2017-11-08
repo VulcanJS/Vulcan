@@ -47,7 +47,6 @@ export const validateDocument = (document, collection, context) => {
 
     const fieldSchema = schema[fieldName];
 
-    
     if ((fieldSchema.required || !fieldSchema.optional) && typeof document[fieldName] === 'undefined') {
       validationErrors.push({
         id: 'app.required_field_missing', 
@@ -56,7 +55,7 @@ export const validateDocument = (document, collection, context) => {
     }
 
   });
-
+  
   // 5. still run SS validation for now for backwards compatibility
   try {
     collection.simpleSchema().validate(document);
@@ -123,19 +122,20 @@ export const validateModifier = (modifier, document, collection, context) => {
   });
 
   // 4. check that required fields have a value
-  // note: maybe required fields don't make sense for edit operation?
-  // _.keys(schema).forEach(fieldName => {
+  // when editing, we only want to require fields that are actually part of the form
+  // so we make sure required keys are present in the $unset object
+  _.keys(schema).forEach(fieldName => {
 
-  //   const fieldSchema = schema[fieldName];
+    const fieldSchema = schema[fieldName];
 
-  //   if ((fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
-  //     validationErrors.push({
-  //       id: 'app.required_field_missing', 
-  //       data: {fieldName}
-  //     });
-  //   }
+    if (unset[fieldName] && (fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
+      validationErrors.push({
+        id: 'app.required_field_missing', 
+        data: {fieldName}
+      });
+    }
 
-  // });
+  });
 
   // 5. still run SS validation for now for backwards compatibility
   try {

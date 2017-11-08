@@ -123,9 +123,9 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   debug('// editMutation');
   debug('// collectionName: ', collection._name);
   debug('// documentId: ', documentId);
-  debug('// set: ', set);
-  debug('// unset: ', unset);
-  debug('// document: ', document);
+  // debug('// set: ', set);
+  // debug('// unset: ', unset);
+  // debug('// document: ', document);
 
   if (validate) {
 
@@ -134,6 +134,8 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
 
     if (validationErrors.length) {
+      console.log('// validationErrors')
+      console.log(validationErrors)
       const EditDocumentValidationError = createError('app.validation_error', {message: 'app.edit_document_validation_error'});
       throw new EditDocumentValidationError({data: {break: true, errors: validationErrors}});
     }
@@ -189,7 +191,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
 
   debug('// edit mutation finished')
   debug('// modifier: ', modifier)
-  debug('// newDocument: ', newDocument)
+  debug('// edited document: ', newDocument)
   debug('//------------------------------------//');
 
   return newDocument;
