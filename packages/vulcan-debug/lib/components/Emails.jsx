@@ -1,20 +1,15 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-// import Button from 'reactstrap/lib/Button';
 import VulcanEmail from 'meteor/vulcan:email';
 
 class Email extends PureComponent {
 
-  constructor() {
-    super();
-    this.sendTest = this.sendTest.bind(this);
-    this.state = {
-      loading: false
-    }
-  }
+  state = {
+    loading: false
+  };
 
-  sendTest() {
+  sendTest = () => {
     this.setState({loading: true});
 
     // TODO fix this
@@ -26,7 +21,7 @@ class Email extends PureComponent {
     //     Messages.flash(`Test email sent (“${result}”).`, "success");
     //   }
     // });
-  }
+  };
 
   render() {
     
