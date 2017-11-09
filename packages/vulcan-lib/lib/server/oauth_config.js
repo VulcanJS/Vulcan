@@ -1,4 +1,6 @@
-const services = Meteor.settings.oAuth;
+import { getSetting } from '../modules/settings.js';
+
+const services = getSetting('oAuth');
 
 if (services) {
   _.keys(services).forEach(serviceName => {
