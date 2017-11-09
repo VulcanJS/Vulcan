@@ -123,6 +123,11 @@ Meteor.startup(function () {
   if (!Users.find().count()) {
     createDummyUsers();
   }
+
+  while (  Users.find().count() < 3 ) {
+    Meteor._sleepForMs(500);
+  };
+
   if (!Pics.find().count()) {
     createDummyPics();
   }
