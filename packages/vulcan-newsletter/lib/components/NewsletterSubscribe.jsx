@@ -1,4 +1,4 @@
-import { Components, withMessages } from 'meteor/vulcan:core';
+import { Components, withMessages, registerComponent } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -68,5 +68,7 @@ NewsletterSubscribe.contextTypes = {
   intl: intlShape
 };
 
-module.exports = withMessages(NewsletterSubscribe);
-export default withMessages(NewsletterSubscribe);
+registerComponent('NewsletterSubscribe', NewsletterSubscribe, withMessages);
+
+// module.exports = withMessages(NewsletterSubscribe);
+// export default withMessages(NewsletterSubscribe);
