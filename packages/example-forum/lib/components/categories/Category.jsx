@@ -27,7 +27,7 @@ class Category extends PureComponent {
 
     return (
       <div className="category-menu-item dropdown-item">
-        <LinkContainer to={{pathname:"/", query: newQuery}}>
+        <LinkContainer to={{ pathname:"/", query: newQuery }}>
           <MenuItem
             eventKey={index+1}
             key={category._id}

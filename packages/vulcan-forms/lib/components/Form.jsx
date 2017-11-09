@@ -619,9 +619,13 @@ class Form extends Component {
           disabled={this.state.disabled}
           ref="form"
         >
+
           {this.renderErrors()}
+        
           {fieldGroups.map(group => <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
-  
+    
+          {this.props.repeatErrors && this.renderErrors()}
+
           <Components.FormSubmit submitLabel={this.props.submitLabel}
                                  cancelLabel={this.props.cancelLabel}
                                  cancelCallback={this.props.cancelCallback}
@@ -661,6 +665,7 @@ Form.propTypes = {
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  repeatErrors: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
@@ -674,7 +679,8 @@ Form.propTypes = {
 }
 
 Form.defaultProps = {
-  layout: "horizontal",
+  layout: 'horizontal',
+  repeatErrors: false,
 }
 
 Form.contextTypes = {
