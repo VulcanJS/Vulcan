@@ -6,18 +6,13 @@ import { intlShape } from 'meteor/vulcan:i18n';
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    
-    this.handleSuccessCallback = this.handleSuccessCallback.bind(this);
-    
-    // note: we double bang (!!) the value to force a boolean (undefined/"" transformed to false)
-    this.state = {
-      label: !!props.value ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
-      mutationName: !!props.value ? 'removeUserNewsletter' : 'addUserNewsletter',
-      currentValue: !!props.value,
-    };
-  }
+  static displayName = 'NewsletterSubscribe';
+
+  state = {
+    label: !!this.props.value ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
+    mutationName: !!this.props.value ? 'removeUserNewsletter' : 'addUserNewsletter',
+    currentValue: !!this.props.value,
+  };
 
   // initiate SmartForm with the newsletter setting value
   componentDidMount() {
@@ -25,7 +20,7 @@ class NewsletterSubscribe extends PureComponent {
     this.context.addToAutofilledValues({[this.props.name]: !!this.props.value});
   }
   
-  handleSuccessCallback(result) {
+  handleSuccessCallback = (result) => {
     try {
       this.setState(
         // update the state of this component
