@@ -1,3 +1,5 @@
-export { EmbedURL } from '../components/EmbedURL.jsx';
+import EmbedURL from '../components/EmbedURL.jsx';
+
+export { EmbedURL };
 
 export * from './embed.js';
