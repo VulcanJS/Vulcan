@@ -170,13 +170,15 @@ class Form extends Component {
           field.value = _.where(field.options, {checked: true}).map(option => option.value);
         }
       }
-
-      if (fieldSchema.form && fieldSchema.form.disabled) {
-        field.disabled = typeof fieldSchema.form.disabled === "function" ? fieldSchema.form.disabled.call(fieldSchema) : fieldSchema.form.disabled;
-      }
-
-      if (fieldSchema.form && fieldSchema.form.help) {
-        field.help = typeof fieldSchema.form.help === "function" ? fieldSchema.form.help.call(fieldSchema) : fieldSchema.form.help;
+      
+      if (fieldSchema.form) {
+        for (const prop in fieldSchema.form) {
+          if (prop !== 'prefill' && prop !== 'options' && fieldSchema.form.hasOwnProperty(prop)) {
+            field[prop] = typeof fieldSchema.form[prop] === "function" ?
+              fieldSchema.form[prop].call(fieldSchema) :
+              fieldSchema.form[prop];
+          }
+        }
       }
 
       // add limit
