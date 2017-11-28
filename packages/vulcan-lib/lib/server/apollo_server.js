@@ -1,25 +1,33 @@
-import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { makeExecutableSchema } from 'graphql-tools';
 import deepmerge from 'deepmerge';
-import OpticsAgent from 'optics-agent'
 import DataLoader from 'dataloader';
 import { formatError } from 'apollo-errors';
-
+import compression from 'compression';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
+import { Engine } from 'apollo-engine';
 
 import { GraphQLSchema } from '../modules/graphql.js';
 import { Utils } from '../modules/utils.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
 
+import { getSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
 
 export let executableSchema;
+
+const engineApiKey = getSetting('apolloEngine.apiKey');
+let engine;
+if (engineApiKey) {
+  engine = new Engine({ engineConfig: { apiKey: engineApiKey } });
+  engine.start();
+}
 
 // defaults
 const defaultConfig = {
@@ -55,10 +63,13 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   config.configServer(graphQLServer);
 
-  // Use Optics middleware
-  if (process.env.OPTICS_API_KEY) {
-    graphQLServer.use(OpticsAgent.middleware());
+  // Use Engine middleware
+  if (engineApiKey) {
+    graphQLServer.use(engine.expressMiddleware());
   }
+
+  // compression
+  graphQLServer.use(compression());
 
   // GraphQL endpoint
   graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
@@ -80,10 +91,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context = {};
     }
 
-    // Add Optics to GraphQL context object
-    if (process.env.OPTICS_API_KEY) {
-      options.context.opticsContext = OpticsAgent.context(req);
-    }
+    // enable tracing and caching
+    options.tracing = true;
+    options.cacheControl = true;
 
     // Get the token from the header
     if (req.headers.authorization) {
@@ -166,10 +176,6 @@ Meteor.startup(() => {
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
   });
-
-  if (process.env.OPTICS_API_KEY) {
-    OpticsAgent.instrumentSchema(executableSchema)
-  }
 
   createApolloServer({
     schema: executableSchema,
