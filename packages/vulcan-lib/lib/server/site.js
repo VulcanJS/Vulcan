@@ -5,6 +5,7 @@ const siteSchema = `
   type Site {
     title: String
     url: String
+    logoUrl: String
   }
 `;
 addGraphQLSchema(siteSchema);
@@ -12,7 +13,11 @@ addGraphQLSchema(siteSchema);
 const siteResolvers = {
   Query: {
     SiteData(root, args, context) {
-      return {title: getSetting('title'), url: getSetting('siteUrl', Meteor.absoluteUrl())}
+      return {
+      	title: getSetting('title'), 
+      	url: getSetting('siteUrl', Meteor.absoluteUrl()),
+      	logoUrl: getSetting('logoUrl'),
+      }
     }
   }
 };

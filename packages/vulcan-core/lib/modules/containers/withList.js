@@ -131,12 +131,14 @@ const withList = (options) => {
         // define props returned by graphql HoC
         props(props) {
 
+          // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
                 // results = Utils.convertDates(collection, props.data[listResolverName]),
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
-                loading = props.data.loading,
+                loading = props.data.networkStatus === 1,
+                loadingMore = props.data.networkStatus === 2,
                 error = props.data.error,
                 propertyName = options.propertyName || 'results';
 
@@ -147,7 +149,8 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading: networkStatus === 1,
+            loading,
+            loadingMore,
             [ propertyName ]: results,
             totalCount,
             refetch,

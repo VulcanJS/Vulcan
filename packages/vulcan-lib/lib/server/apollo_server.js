@@ -22,10 +22,52 @@ import { runCallbacks } from '../modules/callbacks.js';
 
 export let executableSchema;
 
+// see https://github.com/apollographql/apollo-cache-control
+
 const engineApiKey = getSetting('apolloEngine.apiKey');
+const engineConfig = { 
+  apiKey: engineApiKey,
+  // "origins": [
+  //   {
+  //     "http": {
+  //       "url": "http://localhost:3000/graphql"
+  //     }
+  //   }
+  // ],
+  // "stores": [
+  //   {
+  //     "name": "embeddedCache",
+  //     "inMemory": {
+  //       "cacheSize": 10485760
+  //     }
+  //   }
+  // ],
+  // "sessionAuth": {
+  //   "store": "embeddedCache",
+  //   "header": "Authorization"
+  // },
+  // "frontends": [
+  //   {
+  //     "host": "127.0.0.1",
+  //     "port": 3000,
+  //     "endpoint": "/graphql"
+  //   }
+  // ],
+  // "queryCache": {
+  //   "publicFullQueryStore": "embeddedCache",
+  //   "privateFullQueryStore": "embeddedCache"
+  // },
+  // "reporting": {
+  //   "endpointUrl": "https://engine-report.apollographql.com",
+  //   "debugReports": true
+  // },
+  // "logging": {
+  //   "level": "DEBUG"
+  // }
+};
 let engine;
 if (engineApiKey) {
-  engine = new Engine({ engineConfig: { apiKey: engineApiKey } });
+  engine = new Engine({ engineConfig });
   engine.start();
 }
 
