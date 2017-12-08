@@ -10,7 +10,6 @@ Meteor.startup(function () {
     Picker.route(email.path, async (params, req, res) => {
 
       let html;
-
       // if email has a custom way of generating test HTML, use it
       if (typeof email.getTestHTML !== "undefined") {
 
@@ -20,14 +19,20 @@ Meteor.startup(function () {
 
         // else get test object (sample post, comment, user, etc.)
         const testVariables = (typeof email.testVariables === 'function' ? email.testVariables() : email.testVariables) || {};
-        const result = email.query ? await runQuery(email.query, testVariables) : {data: {}};
+        // merge test variables with params from URL
+        const variables = {...testVariables, ...params};
+
+        const result = email.query ? await runQuery(email.query, variables) : {data: {}};
 
         // if email has a data() function, merge it with results of query
-        const emailTestData = email.data ? {...result.data, ...email.data(testVariables)} : result.data;
+        const emailTestData = email.data ? {...result.data, ...email.data(variables)} : result.data;
         const subject = typeof email.subject === 'function' ? email.subject(emailTestData) : email.subject;
 
+        const template = VulcanEmail.getTemplate(email.template);
+        const htmlContent = template(emailTestData)
+
         // then apply email template to properties, and wrap it with buildTemplate
-        html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(emailTestData));
+        html = VulcanEmail.buildTemplate(htmlContent, emailTestData);
 
         html += `
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
