@@ -24,10 +24,12 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       async resolver(root, {terms = {}}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} list resolver ---------------//`);
+        debug(resolverOptions);
         debug(terms);
 
         if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         // get currentUser and Users collection from context
@@ -74,7 +76,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         debug(documentId);
 
         if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         const { currentUser, Users } = context;
@@ -108,7 +111,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       async resolver(root, {terms}, context, { cacheControl }) {
         
         if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         const collection = context[collectionName];
