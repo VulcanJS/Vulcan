@@ -8,10 +8,17 @@ import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
 import { debug } from './debug.js';
 
+import './mongoCollection';
+import Sqlz from './sqlzCollection';
+
 registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request');
 
 export const Collections = [];
 
+/* ****** THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE ****** */
+/* ******    Please review './mongoCollection'    ****** */
+let THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE;
+if ( THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE ) {
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
  * initialize or replace the schema, or some fields, to extend the current schema
@@ -96,13 +103,32 @@ Mongo.Collection.prototype.helpers = function(helpers) {
     self._helpers.prototype[key] = helper;
   });
 };
+}
+/* ****** ABOVE_SECTION_MOVED_OUT_TO_SEPARATE_FILE ****** */
+
+const getCollectionByType = ( options ) => {
+
+  const { collectionName, ormCollection, dbCollectionName } = options;
+
+  if ( collectionName === 'Users' ) return Meteor.users;
+
+  const name = dbCollectionName ? dbCollectionName : collectionName.toLowerCase();
+  if ( ormCollection ) {
+    return new Sqlz.Collection( name, ormCollection );
+  }
+
+  return new Mongo.Collection( name );
+
+};
+
+
 
 export const createCollection = options => {
 
-  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
+  const {collectionName, typeName, schema, ormCollection, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+  const collection = getCollectionByType( options );
 
   // decorate collection with options
   collection.options = options;
@@ -228,7 +254,7 @@ export const createCollection = options => {
     }
 
     if(terms.query) {
-        
+
       const query = escapeStringRegexp(terms.query);
 
       const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
