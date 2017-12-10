@@ -254,7 +254,7 @@ export const createCollection = options => {
     }
 
     if(terms.query) {
-
+        
       const query = escapeStringRegexp(terms.query);
 
       const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
