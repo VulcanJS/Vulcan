@@ -16,6 +16,7 @@ registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request')
 export const Collections = [];
 
 /* ****** THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE ****** */
+/* ******    Please review './mongoCollection'    ****** */
 let THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE;
 if ( THIS_SECTION_MOVED_OUT_TO_SEPARATE_FILE ) {
 /**
