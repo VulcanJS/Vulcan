@@ -1,19 +1,10 @@
 #!/usr/bin/env node
 
 //Functions
-const fs         = require('fs');
-const path       = require("path");
-
-var wrk_dir = '.';
-function setWorkDirectory() {
-  if ( path.basename( process.argv[1], '.js') === 'main' ) {
-    wrk_dir = '../../../../..';
-  }
-}
-
+var fs         = require('fs');
 function existsSync(filePath){
   try{
-    fs.statSync(wrk_dir + '/' + filePath);
+    fs.statSync(filePath);
   }catch(err){
     if(err.code == 'ENOENT') return false;
   }
@@ -22,7 +13,7 @@ function existsSync(filePath){
 
 function copySync(origin,target){
   try{
-    fs.writeFileSync(wrk_dir + '/' + target, fs.readFileSync(wrk_dir + '/' + origin));
+    fs.writeFileSync(target, fs.readFileSync(origin));
   }catch(err){
     if(err.code == 'ENOENT') return false;
   }
@@ -66,7 +57,6 @@ console.log("Vulcan requires Meteor but it's not installed. Trying to Install...
   }
 } else {
 //Check exist file settings and create if not exist
-setWorkDirectory();
 if (!existsSync("settings.json")) {
   console.log(">  "+chalk.bold.yellow("Creating your own settings.json file...\n"));
   if (!copySync("sample_settings.json","settings.json")) {
