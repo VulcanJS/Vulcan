@@ -1,8 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-//import Sequelize from 'sequelize';
-
-const LG = (msg) => console.log('Within %s...\n  |%s', module.id, msg);
-const MRK = () => console.log('.....................');
 
 var self = {};
 const Sqlz = {};
@@ -25,28 +21,9 @@ Sqlz.Collection = class Collection {
     }
 
     self = Sqlz.Collection.prototype;
-    console.log('\n\n--- Vulcan modules/sqlzCollection ---');
-    console.log('            FIXME constructor()');
-    console.log(' ormCollection ', ormCollection );
 
     self._name = name;
     self._collection = ormCollection;
-
-    // console.log(' Name ', self._name);
-    // console.log(' Collection ', self._collection);
-    // console.log('-----------------||--------------------');
-
-    // self.asynchFindOne = ( key ) => {
-    //   return self._collection.findAndCountAll( key );
-    // }
-
-    // self.parmsFindOne = null;
-    // function* genFindOne() {
-    //   console.log(` gen next parms ::::::: %s`, self.parmsFindOne );
-    //   yield self.asynchFindOne( self.parmsFindOne );
-    // }
-
-    // self.generatorFindOne = genFindOne;
 
     return Object.assign( {}, self, );
 
@@ -57,8 +34,6 @@ Sqlz.Cursor = class Cursor extends Array {
   constructor(x) {
     super(x);
   }
-
-  // fetch() { return this[0].map( ii => ii.dataValues )  }
 
   fetch() { return this[0].map( ii => ii.dataValues ); }
 
@@ -77,26 +52,14 @@ Sqlz.Collection.prototype.find = ( key ) => {
 
 
 Sqlz.Collection.prototype.findOne = ( _key ) => {
-  // console.log('--- Vulcan modules/sqlzCollection --- findOne()');
-  // console.log(_key);
 
   const rslt = Promise.await(
     self._collection.findOne( { where: _key } )
   );
 
-  // console.log(rslt.dataValues.name);
-  // console.log('----------------------------------->>\n');
   return rslt;
 
 }
-
-// const sqlz = new Sqlz.Collection("piggy");
-
-// console.log ('  Sqlz.Collection.prototype ', Sqlz.Collection.prototype);
-// console.log ('  ****************************************************** ' );
-
-// console.log ('  sqlz.prototype ', sqlz);
-// console.log ('  ****************************************************** ' );
 
 
 Sqlz.Collection.prototype.count = () => {
@@ -114,12 +77,7 @@ Sqlz.Collection.prototype.insert = ( spec ) => {
     self._collection.create( spec )
   );
 
-  // console.log(rslt.dataValues._id);
-  // console.log('----------------------------------->>\n');
   return rslt.dataValues._id;
-
-
-
 }
 
 /**
@@ -134,6 +92,11 @@ Sqlz.Collection.prototype.attachSchema = function (schemaOrFields) {
     this.simpleSchema().extend(schemaOrFields)
   }
 }
+
+
+/* ****** NOTHING_BELOW_THIS_LINE_HAS_BEEN_TESTED_YET ****** */
+let NOTHING_BELOW_THIS_LINE_HAS_BEEN_TESTED_YET;
+if ( NOTHING_BELOW_THIS_LINE_HAS_BEEN_TESTED_YET ) {
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
@@ -206,5 +169,7 @@ Sqlz.Collection.prototype.helpers = function(helpers) {
     self._helpers.prototype[key] = helper;
   });
 };
+}
+/* ****** NOTHING_ABOVE_THIS_LINE_HAS_BEEN_TESTED_YET ****** */
 
 export default Sqlz;

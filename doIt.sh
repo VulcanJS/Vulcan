@@ -13,10 +13,13 @@ EOF
 echo rsync -aP --exclude-from=${EXCL} ${BASE} ${RAMDSK}
 rsync -aP --exclude-from=${EXCL} ${BASE} ${RAMDSK}
 
-# rm -fr ./node_modules;
-# rm -fr ./.meteor/local;
-# rm -fr ./.meteor/versions;
-# rm -fr package-lock.json;
+rm -fr ./node_modules;
+rm -fr ./.meteor/local;
+rm -fr package-lock.json;
+exit
+
+rm -fr ./.meteor/versions;
+
 
 meteor reset;
 
