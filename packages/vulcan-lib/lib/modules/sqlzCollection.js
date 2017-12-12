@@ -1,5 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
+const LG = (ln, msg) => console.log('Within %s @ %s ...\n  | %s', module.id, ln, msg);
+const MRK = (chr, cnt) => console.log(chr.repeat(cnt));
+
 var self = {};
 const Sqlz = {};
 
@@ -25,9 +28,21 @@ Sqlz.Collection = class Collection {
     self._name = name;
     self._collection = ormCollection;
 
+    let attrs = ormCollection.prototype.rawAttributes;
+    self._dateFields = Object.keys(attrs).filter( elm => {
+      return attrs[elm].type.toString() === `DATETIME`
+    });
+
     return Object.assign( {}, self, );
 
   }
+}
+
+const fixDates = element => {
+  self._dateFields.forEach( ky => {
+    element[ky] = new Date(element[ky]);
+  })
+  return element;
 }
 
 Sqlz.Cursor = class Cursor extends Array {
@@ -35,26 +50,37 @@ Sqlz.Cursor = class Cursor extends Array {
     super(x);
   }
 
-  fetch() { return this[0].map( ii => ii.dataValues ); }
+  fetch() {
+    let rslt = this[0].map( ii => {
+      return fixDates(ii.dataValues);
+    });
+    return rslt;
+  }
+
+  count() {
+    return this[0].length;
+  }
 
 }
 
-Sqlz.Collection.prototype.find = ( key ) => {
+Sqlz.Collection.prototype.find = ( _key ) => {
 
+  // LG(69, 'FIND OPERATION ');
   const rslt = Promise.await(
-    self._resultSet = self._collection.findAndCountAll(  key ? key : {}  )
+    self._resultSet = self._collection.findAndCountAll(  _key ? _key : {}  )
   );
 
   self._cursor = new Sqlz.Cursor(rslt.rows);
-
   return self._cursor;
 }
 
 
 Sqlz.Collection.prototype.findOne = ( _key ) => {
 
+  // LG(69, 'FINDONE OPERATION');
+  let key = ( typeof _key === `string` ) ? { _id: _key } : _key;
   const rslt = Promise.await(
-    self._collection.findOne( { where: _key } )
+    self._collection.findOne( { where: key } )
   );
 
   return rslt;
@@ -78,6 +104,21 @@ Sqlz.Collection.prototype.insert = ( spec ) => {
   );
 
   return rslt.dataValues._id;
+}
+
+Sqlz.Collection.prototype.update = ( _selector, _newValues ) => {
+  // console.log('--- Vulcan modules/sqlzCollection ---');
+  // console.log('            FIXME update()', _newValues['$set']);
+  // console.log('            FIXME update()', typeof _selector);
+  // console.log('-------------------------------------');
+
+  let selector = ( typeof _selector === `string` ) ? { _id: _selector } : _selector;
+  const rslt = Promise.await(
+    self._collection.update( _newValues['$set'], { where: selector } )
+  );
+
+  console.log( `got back '_id' array : `, rslt );
+  return rslt;
 }
 
 /**
