@@ -76,7 +76,7 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
-    // resolve any array field with resolveAs as fieldName{_id}
+    // resolve any array field with resolveAs as fieldName{_id} -> why?
     /* 
     - string field with no resolver -> fieldName
     - string field with a resolver  -> fieldName
@@ -84,9 +84,9 @@ class FormWrapper extends PureComponent {
     - array field with a resolver   -> fieldName{_id}
     */
     const mapFieldNameToField = fieldName => {
-      const field = this.getSchema()[fieldName]
+      const field = this.getSchema()[fieldName];
       return field.resolveAs && field.type.definitions[0].type === Array
-        ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
+        ? `${fieldName}` // if it's a custom resolver, add a basic query to its _id
         : fieldName; // else just ask for the field name
     }
     queryFields = queryFields.map(mapFieldNameToField);
@@ -137,7 +137,8 @@ class FormWrapper extends PureComponent {
       queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
       fragment: this.getFragments().queryFragment,
-      fetchPolicy: 'network-only' // we always want to load a fresh copy of the document
+      fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+      enableCache: false,    
     };
 
     // options for withNew, withEdit, and withRemove HoCs
