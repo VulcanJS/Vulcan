@@ -14,7 +14,7 @@ accounts-password@1.4.0
 
 ############ Your Packages ############
 
-example-simple
+# example-simple
 # example-movies
 # example-instagram
 # example-forum
@@ -23,5 +23,6 @@ example-simple
 # example-membership
 # example-interfaces
 # example-reactions
+example-adhoc-route
 
 vulcan:debug

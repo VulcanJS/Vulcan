@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import moment from 'moment';
 
 const LG = (ln, msg) => console.log('Within %s @ %s ...\n  | %s', module.id, ln, msg);
 const MRK = (chr, cnt) => console.log(chr.repeat(cnt));
@@ -63,11 +64,11 @@ Sqlz.Cursor = class Cursor extends Array {
 
 }
 
-Sqlz.Collection.prototype.find = ( _key ) => {
+Sqlz.Collection.prototype.find = ( _selector ) => {
 
-  // LG(69, 'FIND OPERATION ');
+  let key = _selector ? _selector : {};
   const rslt = Promise.await(
-    self._resultSet = self._collection.findAndCountAll(  _key ? _key : {}  )
+    self._resultSet = self._collection.findAndCountAll( key )
   );
 
   self._cursor = new Sqlz.Cursor(rslt.rows);
@@ -75,12 +76,20 @@ Sqlz.Collection.prototype.find = ( _key ) => {
 }
 
 
-Sqlz.Collection.prototype.findOne = ( _key ) => {
+Sqlz.Collection.prototype.findOne = ( _selector ) => {
 
-  // LG(69, 'FINDONE OPERATION');
-  let key = ( typeof _key === `string` ) ? { _id: _key } : _key;
+  let key = ( typeof _selector === `string` ) ? { _id: _selector } : _selector;
+  let options = { where: key };
+
+  if( Object.keys(key).find( i => i === 'deletedAt') ) {
+    if( ! moment( key.deletedAt, moment.ISO_8601).isValid() ) {
+      throw new Error(`Invalid date format. Date '${key.deletedAt}' must be formatted as ISO8601`);
+    }
+    options.paranoid = false;
+  };
+
   const rslt = Promise.await(
-    self._collection.findOne( { where: key } )
+    self._collection.findOne( options )
   );
 
   return rslt;
@@ -91,14 +100,10 @@ Sqlz.Collection.prototype.findOne = ( _key ) => {
 Sqlz.Collection.prototype.count = () => {
   console.log('--- Vulcan modules/sqlzCollection ---');
   console.log('            FIXME count()');
-  console.log('-------------------------------------');
+  console.log('-------  not implemented  -----------');
 }
 
 Sqlz.Collection.prototype.insert = ( spec ) => {
-  // console.log('--- Vulcan modules/sqlzCollection ---');
-  // console.log('            FIXME insert()', spec);
-  // console.log('-------------------------------------');
-
   const rslt = Promise.await(
     self._collection.create( spec )
   );
@@ -107,11 +112,6 @@ Sqlz.Collection.prototype.insert = ( spec ) => {
 }
 
 Sqlz.Collection.prototype.update = ( _selector, _newValues ) => {
-  // console.log('--- Vulcan modules/sqlzCollection ---');
-  // console.log('            FIXME update()', _newValues['$set']);
-  // console.log('            FIXME update()', typeof _selector);
-  // console.log('-------------------------------------');
-
   let selector = ( typeof _selector === `string` ) ? { _id: _selector } : _selector;
   const rslt = Promise.await(
     self._collection.update( _newValues['$set'], { where: selector } )
@@ -119,6 +119,18 @@ Sqlz.Collection.prototype.update = ( _selector, _newValues ) => {
 
   console.log( `got back '_id' array : `, rslt );
   return rslt;
+}
+
+Sqlz.Collection.prototype.remove = ( _selector ) => {
+
+  let selector = { _id: _selector };
+  const rslt = Promise.await(
+    self._collection.destroy( { where: selector } )
+  );
+
+  console.log( `got back '_id' array : `, rslt );
+  return _selector;
+
 }
 
 /**
