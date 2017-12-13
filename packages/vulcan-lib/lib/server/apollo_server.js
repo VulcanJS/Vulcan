@@ -34,14 +34,14 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  // "stores": [
-  //   {
-  //     "name": "embeddedCache",
-  //     "inMemory": {
-  //       "cacheSize": 10485760
-  //     }
-  //   }
-  // ],
+  "stores": [
+    {
+      "name": "vulcanCache",
+      "inMemory": {
+        "cacheSize": 20000000
+      }
+    }
+  ],
   // "sessionAuth": {
   //   "store": "embeddedCache",
   //   "header": "Authorization"
@@ -50,13 +50,16 @@ const engineConfig = {
   //   {
   //     "host": "127.0.0.1",
   //     "port": 3000,
-  //     "endpoint": "/graphql"
+  //     "endpoint": "/graphql",
+  //     "extensions": {
+  //       "strip": []
+  //     }
   //   }
   // ],
-  // "queryCache": {
-  //   "publicFullQueryStore": "embeddedCache",
-  //   "privateFullQueryStore": "embeddedCache"
-  // },
+  "queryCache": {
+    "publicFullQueryStore": "vulcanCache",
+    "privateFullQueryStore": "vulcanCache"
+  },
   // "reporting": {
   //   "endpointUrl": "https://engine-report.apollographql.com",
   //   "debugReports": true

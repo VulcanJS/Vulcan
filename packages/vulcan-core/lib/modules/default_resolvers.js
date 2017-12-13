@@ -7,7 +7,6 @@ Default list, single, and total resolvers
 import { Utils, debug } from 'meteor/vulcan:core';
 
 const defaultOptions = {
-  enableCache: false,
   cacheMaxAge: 300
 }
 
@@ -21,13 +20,15 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
       name: `${collectionName}List`,
 
-      async resolver(root, {terms = {}}, context, { cacheControl }) {
+      async resolver(root, {terms = {}, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} list resolver ---------------//`);
+        debug(resolverOptions);
         debug(terms);
 
-        if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+        if (cacheControl && enableCache) {
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         // get currentUser and Users collection from context
@@ -68,13 +69,15 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       
       name: `${collectionName}Single`,
 
-      async resolver(root, {documentId, slug}, context, { cacheControl }) {
+      async resolver(root, {documentId, slug, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} single resolver ---------------//`);
+        debug(resolverOptions);
         debug(documentId);
 
-        if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+        if (cacheControl && enableCache) {
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         const { currentUser, Users } = context;
@@ -105,10 +108,11 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       
       name: `${collectionName}Total`,
       
-      async resolver(root, {terms}, context, { cacheControl }) {
+      async resolver(root, {terms, enableCache}, context, { cacheControl }) {
         
-        if (cacheControl && resolverOptions.enableCache) {
-          cacheControl.setCacheHint({ maxAge: resolverOptions.cacheMaxAge });
+        if (cacheControl && enableCache) {
+          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({ maxAge });
         }
 
         const collection = context[collectionName];

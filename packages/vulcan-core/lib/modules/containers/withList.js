@@ -47,7 +47,7 @@ const withList = (options) => {
 
   // console.log(options)
   
-  const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true } = options,
+  const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true, enableCache = false } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
@@ -66,9 +66,9 @@ const withList = (options) => {
 
   // build graphql query from options
   const query = gql`
-    query ${queryName}($terms: JSON) {
-      ${totalResolver ? `${totalResolverName}(terms: $terms)` : ``}
-      ${listResolverName}(terms: $terms) {
+    query ${queryName}($terms: JSON, $enableCache: Boolean) {
+      ${totalResolver ? `${totalResolverName}(terms: $terms, enableCache: $enableCache)` : ``}
+      ${listResolverName}(terms: $terms, enableCache: $enableCache) {
         __typename
         ...${fragmentName}
       }
@@ -110,6 +110,7 @@ const withList = (options) => {
           const graphQLOptions = {
             variables: {
               terms: mergedTerms,
+              enableCache,
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,

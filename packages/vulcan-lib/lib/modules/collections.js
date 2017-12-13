@@ -161,17 +161,17 @@ export const createCollection = options => {
       const queryResolvers = {};
       // list
       if (resolvers.list) { // e.g. ""
-        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${typeName}]`);
+        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int, enableCache: Boolean): [${typeName}]`);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
-        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String): ${typeName}`);
+        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String, enableCache: Boolean): ${typeName}`);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
-        addGraphQLQuery(`${resolvers.total.name}(terms: JSON): Int`);
+        addGraphQLQuery(`${resolvers.total.name}(terms: JSON, enableCache: Boolean): Int`);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
       addGraphQLResolvers({ Query: { ...queryResolvers } });
