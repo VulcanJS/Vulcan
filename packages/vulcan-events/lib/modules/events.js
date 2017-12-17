@@ -25,5 +25,5 @@ export const addIdentifyFunction = func => {
 };
 
 export const addPageFunction = func => {
-  addCallback('router.onUpdate', func);
+  addCallback('router.onUpdate', (empty, route) => func(route));
 };

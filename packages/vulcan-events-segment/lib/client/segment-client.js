@@ -11,7 +11,7 @@ import {
 Track Page
 
 */
-function segmentTrackPage(empty, route) {
+function segmentTrackPage(route) {
   const { name, path } = route;
   const properties = {
     url: Utils.getSiteUrl().slice(0, -1) + path,

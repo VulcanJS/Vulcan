@@ -36,7 +36,7 @@ class App extends PureComponent {
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.currentUser) {
+    if (!this.props.currentUser && nextProps.currentUser) {
       runCallbacks('events.identify', nextProps.currentUser);
     }
   }
