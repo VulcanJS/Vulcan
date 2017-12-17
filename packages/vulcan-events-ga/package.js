@@ -1,6 +1,6 @@
 Package.describe({
-  name: "vulcan:events",
-  summary: "Vulcan event tracking package",
+  name: "vulcan:events-ga",
+  summary: "Vulcan Google Analytics event tracking package",
   version: '1.8.0',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });

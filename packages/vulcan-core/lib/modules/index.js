@@ -22,6 +22,7 @@ export { default as Datatable } from './components/Datatable.jsx';
 export { default as Flash } from './components/Flash.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
+export { default as RouterHook } from './components/RouterHook.jsx';
 
 export { default as withMessages } from "./containers/withMessages.js";
 export { default as withList } from './containers/withList.js';
