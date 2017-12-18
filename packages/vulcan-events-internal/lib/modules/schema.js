@@ -1,9 +1,18 @@
 const schema = {
   createdAt: {
     type: Date,
+    optional: true,
+    onInsert: () => {
+      return new Date()
+    }
   },
   name: {
     type: String,
+    insertableBy: ['guests'],
+  },
+  userId: {
+    type: String,
+    optional: true,
   },
   description: {
     type: String,
@@ -22,6 +31,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
+    insertableBy: ['guests'],
   },
 };
 
