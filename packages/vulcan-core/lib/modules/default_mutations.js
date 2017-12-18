@@ -186,7 +186,7 @@ const registerCollectionCallbacks = collectionName => {
   });
   registerCallback({
     name: `${collectionName}.edit.async`, 
-    arguments: [{newDocument: 'The document after the edit', document: 'The document before the edit'}, {currentUser: 'The current user'}, {collection: 'The collection the document belongs to'}], 
+    arguments: [{newDocument: 'The document after the edit'}, {document: 'The document before the edit'}, {currentUser: 'The current user'}, {collection: 'The collection the document belongs to'}], 
     runs: 'async', 
     returns: null,
     description: `Perform operations on a document after it's updated in the database asynchronously.`

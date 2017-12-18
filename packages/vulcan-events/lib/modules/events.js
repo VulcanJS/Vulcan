@@ -7,18 +7,18 @@ export const trackFunctions = [];
 export const addInitFunction = f => {
   initFunctions.push(f);
   // execute init function as soon as possible
-  f();  
+  f();
 };
 
 export const addTrackFunction = f => {
   trackFunctions.push(f);
 };
 
-export const track = (eventName, eventProperties) => {
-  trackFunctions.forEach(f => {
-    f(eventName, eventProperties);
-  });
-}
+export const track = async (eventName, eventProperties, currentUser) => {
+  for (let f of trackFunctions) {
+    await f(eventName, eventProperties, currentUser);
+  }
+};
 
 export const addIdentifyFunction = f => {
   addCallback('events.identify', f);
@@ -31,7 +31,7 @@ export const addPageFunction = f => {
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
   const descriptor = Object.create(null); // no inherited properties
   descriptor.value = f.name;
-  Object.defineProperty(f2, 'name', descriptor)
+  Object.defineProperty(f2, 'name', descriptor);
 
   addCallback('router.onUpdate', f2);
 };

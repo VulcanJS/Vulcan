@@ -98,7 +98,7 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
+  await runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
 
   debug('// new mutation finished:');
   debug(newDocument);
@@ -187,7 +187,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   newDocument = await runCallbacks(`${collectionName}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
-  runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
+  await runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
   debug('// edit mutation finished')
   debug('// modifier: ', modifier)
@@ -232,7 +232,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
     collection.loader.clear(documentId);
   }
 
-  runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
+  await runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 
   return document;
 }
