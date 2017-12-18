@@ -152,6 +152,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       );
 
       if (user) {
+
+        // identify user to any server-side analytics providers
+        runCallbacks('events.identify', user);
+
         const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
         const expiresAt = Accounts._tokenExpiration(loginToken.when);
         const isExpired = expiresAt < new Date();
