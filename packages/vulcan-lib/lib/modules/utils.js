@@ -11,6 +11,7 @@ import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
+import { isAbsolute } from 'path';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -288,7 +289,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
 
 Utils.getLogoUrl = () => {
   const logoUrl = getSetting('logoUrl');
-  if (!!logoUrl) {
+  if (logoUrl) {
     const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website
     return logoUrl.indexOf('://') > -1 ? logoUrl : prefix + logoUrl;
