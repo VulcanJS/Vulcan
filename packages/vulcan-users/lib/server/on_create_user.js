@@ -8,7 +8,7 @@ function onCreateUserCallback (options, user) {
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
 
-  options = runCallbacks(`users.new.pre_validate`, options);
+  options = runCallbacks(`users.new.validate.before`, options);
 
   // validate options since they can't be trusted
   Users.simpleSchema().validate(options);
