@@ -169,7 +169,7 @@ class Upload extends PureComponent {
     const newValue = this.enableMultiple() ? removeNthItem(this.state.value, index): '';
     this.context.addToAutofilledValues({[this.props.name]: newValue});
     this.setState({
-      preview: newValue,
+      preview: '',
       value: newValue,
     });
   }
