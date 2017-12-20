@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'vulcan:core@1.8.0',
+    'vulcan:events@1.8.0',
   ]);
 
   api.mainModule("lib/server/main.js", "server");
