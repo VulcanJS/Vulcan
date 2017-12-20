@@ -50,10 +50,15 @@
     "meteor": true,
     "node": true
   },
+  "ecmaFeatures": {
+    "modules": true,
+    "jsx": true
+  },
   "plugins": [
     "babel",
     "meteor",
-    "react"
+    "react",
+    "prettier"
   ],
   "settings": {
     "import/resolver": "meteor"

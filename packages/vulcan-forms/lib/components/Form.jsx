@@ -361,7 +361,8 @@ class Form extends Component {
 
             message = error.data.errors.map(error => {
               return {
-                content: this.getErrorMessage(error)
+                content: this.getErrorMessage(error),
+                data: error.data,
               }
             });
 

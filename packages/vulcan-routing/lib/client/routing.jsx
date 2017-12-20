@@ -64,7 +64,7 @@ Meteor.startup(() => {
         onUpdate: () => {
           // the first argument is an item to iterate on, needed by vulcan:lib/callbacks
           // note: this item is not used in this specific callback: router.onUpdate
-          runCallbacks('router.onUpdate', {}, store, apolloClient);
+          // runCallbacks('router.onUpdate', {}, store, apolloClient);
         },
         render: applyRouterMiddleware(useScroll((prevRouterProps, nextRouterProps) => {
           // if the action is REPLACE, return false so that we don't jump back to top of page

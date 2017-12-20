@@ -1,7 +1,6 @@
 import { Callbacks } from 'meteor/vulcan:lib';
 
 const schema = {
-
   name: {
     label: 'Name',
     type: String,
@@ -43,21 +42,16 @@ const schema = {
     viewableBy: ['admins'],
     resolveAs: {
       type: '[String]',
-      resolver: (callback) => {
-        console.log('// callback')
-        console.log(callback)
-        console.log(Callbacks[callback.name])
+      resolver: callback => {
         if (Callbacks[callback.name]) {
           const callbacks = Callbacks[callback.name].map(f => f.name);
-          console.log(callbacks)
           return callbacks;
         } else {
           return [];
         }
-      }
-    }
-  }
-
+      },
+    },
+  },
 };
 
 export default schema;

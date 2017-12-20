@@ -87,7 +87,7 @@ export const runCallbacks = function () {
 
         if (typeof result === 'undefined') {
           // if result of current iteration is undefined, don't pass it on
-          console.log(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
+          debug(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
           return accumulator
         } else {
           return result;
