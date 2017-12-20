@@ -28,6 +28,10 @@ class HeadTags extends PureComponent {
 
     // add site url base if the image is stored locally
     if (!!image && image.indexOf('//') === -1) {
+      // remove starting slash from image path if needed
+      if (image.charAt(0) === '/') {
+        image = image.slice(1);
+      }
       image = Utils.getSiteUrl() + image;
     }
 
