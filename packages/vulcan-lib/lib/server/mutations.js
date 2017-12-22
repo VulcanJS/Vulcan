@@ -219,6 +219,11 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   if (collection.loader) {
     collection.loader.clear(documentId);
   }
+  //Set options to delete Posts and Comments when a user gets deleted
+  if(collectionName == 'users') {
+    currentUser.deletePosts = true;
+    currentUser.deleteComments = true;
+  }
 
   runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 
