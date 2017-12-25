@@ -60,10 +60,12 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 
   }
   
-  // check if userId field is in the schema and add it to document if needed
-  const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
-  if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
-
+  // if user is logged in, check if userId field is in the schema and add it to document if needed
+  if (currentUser) {
+    const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
+    if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
+  }
+  
   // run onInsert step
   // note: cannot use forEach with async/await. 
   // See https://stackoverflow.com/a/37576787/649299
@@ -236,3 +238,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
 
   return document;
 }
+
+export const newMutator = newMutation;
+export const editMutator = editMutation;
+export const removeMutator = removeMutation;
