@@ -127,10 +127,14 @@ Utils.getDateRange = function(pageNumber) {
 //////////////////////////
 
 /**
- * @summary Returns the user defined site URL or Meteor.absoluteUrl
+ * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
 Utils.getSiteUrl = function () {
-  return getSetting('siteUrl', Meteor.absoluteUrl());
+  const url = getSetting('siteUrl', Meteor.absoluteUrl());
+  if (url.slice(-1) !== '/') {
+    url += '/';
+  }
+  return url;
 };
 
 /**
