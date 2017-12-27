@@ -84,7 +84,6 @@ Meteor.startup(function () {
     console.log('// creating dummy movies');
     seedData.forEach(document => {
       newMutation({
-        action: 'movies.new',
         collection: Movies,
         document: document, 
         currentUser: currentUser,
