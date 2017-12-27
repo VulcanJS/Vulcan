@@ -28,7 +28,7 @@ Identify User
 
 */
 function segmentIdentify(currentUser) {
-  window.analytics.identify(currentUser.userId, {
+  window.analytics.identify(currentUser._id, {
     email: currentUser.email,
     pageUrl: currentUser.pageUrl,
   });
