@@ -23,7 +23,7 @@ function copySync(origin,target){
 //Add Definition Colors
 const chalk = require('chalk');
 
-//Vulkan letters
+//Vulcan letters
 console.log(chalk.gray(' ___    ___ '));
 console.log(chalk.gray(' '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.gray(String.fromCharCode(92)+'  /')+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/'));
 console.log(chalk.gray('  '+String.fromCharCode(92))+chalk.redBright(String.fromCharCode(92))+chalk.dim.yellow(String.fromCharCode(92))+chalk.gray(String.fromCharCode(92))+chalk.gray('/')+chalk.dim.yellow('/')+chalk.yellowBright('/')+chalk.gray('/    Vulcan.js'));

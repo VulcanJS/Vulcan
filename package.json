@@ -5,7 +5,6 @@
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "node prestart_vulcan.js",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
