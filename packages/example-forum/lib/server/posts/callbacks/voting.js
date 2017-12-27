@@ -17,4 +17,4 @@ function PostsNewUpvoteOwnPost(post) {
   return {...post, ...performVoteServer({ document: post, voteType: 'upvote', collection: Posts, user: postAuthor })};
 }
 
-addCallback('posts.new.async', PostsNewUpvoteOwnPost);
+addCallback('posts.new.after', PostsNewUpvoteOwnPost);

@@ -1,22 +1,26 @@
 {
   "name": "Vulcan",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "sh prestart_vulcan.sh",
+    "prestart": "node prestart_vulcan.js",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
     "analytics-node": "^2.1.1",
     "apollo-client": "^1.2.2",
+    "apollo-engine": "^0.5.4",
     "apollo-errors": "^1.4.0",
+    "apollo-server-express": "^1.2.0",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.18.2",
+    "chalk": "2.2.0",
     "classnames": "^2.2.3",
+    "compression": "^1.7.1",
     "cookie-parser": "^1.4.3",
     "cross-fetch": "^0.0.8",
     "crypto-js": "^3.1.9-1",
@@ -30,7 +34,6 @@
     "graphql": "^0.9.6",
     "graphql-anywhere": "^3.0.1",
     "graphql-date": "^1.0.2",
-    "graphql-server-express": "^0.6.0",
     "graphql-tag": "^2.0.0",
     "graphql-tools": "^0.10.1",
     "graphql-type-json": "^0.1.4",
@@ -54,7 +57,7 @@
     "react": "^15.6.1",
     "react-addons-pure-render-mixin": "^15.4.1",
     "react-apollo": "^1.1.1",
-    "react-bootstrap": "^0.30.7",
+    "react-bootstrap": "^0.31.3",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^0.4.6",
     "react-datetime": "^2.3.2",

@@ -112,10 +112,12 @@ DatatableContents Component
 */
 
 const DatatableContents = (props) => {
-  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser} = props;
+  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState} = props;
   
   if (loading) {
     return <Components.Loading />;
+  } else if (!results.length) {
+    return emptyState || null;
   }
 
   const isLoadingMore = networkStatus === 2;
@@ -123,26 +125,26 @@ const DatatableContents = (props) => {
 
   return (
     <div className="datatable-list">
-      <table className="table">
-        <thead>
-          <tr>
-            {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
-            {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
-        </tbody>
-      </table>
-      <div className="admin-users-load-more">
-        {hasMore ? 
-          isLoadingMore ? 
-            <Components.Loading/> 
-            : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button> 
-          : null
-        }
+        <table className="table">
+          <thead>
+            <tr>
+              {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
+              {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
+          </tbody>
+        </table>
+        <div className="admin-users-load-more">
+          {hasMore ? 
+            isLoadingMore ? 
+              <Components.Loading/> 
+              : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button> 
+            : null
+          }
+        </div>
       </div>
-    </div>
   )
 }
 registerComponent('DatatableContents', DatatableContents);

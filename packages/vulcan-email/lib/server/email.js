@@ -24,7 +24,7 @@ VulcanEmail.addTemplates = templates => {
 
 VulcanEmail.getTemplate = templateName => Handlebars.compile(
   VulcanEmail.templates[templateName], 
-  { noEscape: true}
+  { noEscape: true, strict: true}
 );
 
 VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
@@ -46,9 +46,7 @@ VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
   };
 
   const emailHTML = VulcanEmail.getTemplate("wrapper")(emailProperties);
-
   const inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
-
   const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 
   return doctype+inlinedHTML;
@@ -122,7 +120,7 @@ VulcanEmail.build = async ({ emailName, variables }) => {
 
   const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
   
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data));
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data);
 
   return { data, subject, html };
 }

@@ -76,7 +76,7 @@ var addJob = function () {
 };
 
 Meteor.startup(function () {
-  if (getSetting('newsletter.enabled', true)) {
+  if (getSetting('newsletter.enabled', false)) {
     addJob();
   }
 });

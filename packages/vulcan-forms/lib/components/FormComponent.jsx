@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 
 class FormComponent extends PureComponent {
 
@@ -97,6 +98,9 @@ class FormComponent extends PureComponent {
         case 'datetime':
           return <Components.FormComponentDateTime {...properties} />;
         
+        case 'time':
+          return <Components.FormComponentTime {...properties} />;
+        
         case 'text':
           return <Components.FormComponentDefault {...properties}/>;
         
@@ -120,16 +124,37 @@ class FormComponent extends PureComponent {
     )
   }
 
+  showClear = () => {
+    return ['datetime', 'select', 'radiogroup'].includes(this.props.control);
+  }
+
+  clearField = (e) => {
+    e.preventDefault();
+    console.log(this.props)
+    const fieldName = this.props.name;
+    // clear value
+    this.props.updateCurrentValues({[fieldName]: null});
+    // add it to unset
+    this.context.addToDeletedValues(fieldName);
+  }
+
+  renderClear() {
+    return (
+      <a href="javascript:void(0)" className="form-component-clear" title={this.context.intl.formatMessage({id: 'forms.clear_field'})} onClick={this.clearField}><span>✕</span></a>
+    )
+  }
+
   render() {
 
     const hasErrors = this.props.errors && this.props.errors.length;
-    const inputClass = classNames('form-input', `input-${this.props.name}`, {'input-error': hasErrors});
+    const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control || 'default'}`,{'input-error': hasErrors});
 
     return (
       <div className={inputClass}>
         {this.props.beforeComponent ? this.props.beforeComponent : null}
         {this.renderComponent()}
         {hasErrors ? this.renderErrors() : null}
+        {this.showClear() ? this.renderClear() : null}
         {this.props.limit ? <div className={classNames('form-control-limit', {danger: this.state.limit < 10})}>{this.state.limit}</div> : null}
         {this.props.afterComponent ? this.props.afterComponent : null}
       </div>
@@ -153,7 +178,8 @@ FormComponent.propTypes = {
 }
 
 FormComponent.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
+  addToDeletedValues: PropTypes.func,
 };
 
-export default FormComponent;
+registerComponent('FormComponent', FormComponent);

@@ -35,6 +35,13 @@ import { withDocument } from 'meteor/vulcan:core';
 
 class FormWrapper extends PureComponent {
 
+  constructor(props) {
+    super(props);
+    // instantiate the wrapped component in constructor, not in render
+    // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
+    this.FormComponent = this.getComponent();
+  }
+
   // return the current schema based on either the schema or collection prop
   getSchema() {
     return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
@@ -69,7 +76,7 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
-    // resolve any array field with resolveAs as fieldName{_id}
+    // resolve any array field with resolveAs as fieldName{_id} -> why?
     /* 
     - string field with no resolver -> fieldName
     - string field with a resolver  -> fieldName
@@ -77,9 +84,9 @@ class FormWrapper extends PureComponent {
     - array field with a resolver   -> fieldName{_id}
     */
     const mapFieldNameToField = fieldName => {
-      const field = this.getSchema()[fieldName]
+      const field = this.getSchema()[fieldName];
       return field.resolveAs && field.type.definitions[0].type === Array
-        ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
+        ? `${fieldName}` // if it's a custom resolver, add a basic query to its _id
         : fieldName; // else just ask for the field name
     }
     queryFields = queryFields.map(mapFieldNameToField);
@@ -108,13 +115,7 @@ class FormWrapper extends PureComponent {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    // prevent extra re-renderings for unknown reasons
-    // re-render only if the document selector changes
-    return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
-  }
-
-  render() {
+  getComponent() {
 
     // console.log(this)
 
@@ -136,6 +137,8 @@ class FormWrapper extends PureComponent {
       queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
       fragment: this.getFragments().queryFragment,
+      fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+      enableCache: false,    
     };
 
     // options for withNew, withEdit, and withRemove HoCs
@@ -179,6 +182,16 @@ class FormWrapper extends PureComponent {
       return <WrappedComponent {...childProps} {...parentProps} />;
     
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    // prevent extra re-renderings for unknown reasons
+    // re-render only if the document selector changes
+    return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
+  }
+
+  render() {
+    return this.FormComponent;
   }
 }
 

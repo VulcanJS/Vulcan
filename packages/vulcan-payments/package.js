@@ -1,14 +1,14 @@
 Package.describe({
   name: 'vulcan:payments',
   summary: "Vulcan payments package",
-  version: '1.8.0',
+  version: '1.8.1',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core@1.8.0',
+    'vulcan:core@1.8.1',
 
     'fourseven:scss@4.5.4',
   ]);

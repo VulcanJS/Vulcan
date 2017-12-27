@@ -1,4 +1,5 @@
 $light-grey: #ddd;
+$medium-grey: #bbb;
 $vmargin: 15px;
 $light-border: $light-grey;
 
@@ -180,5 +181,36 @@ div.ReactTags__suggestions mark{
   font-size: 0.8rem;
   li{
     margin: 0;
+  }
+}
+
+.form-component-select, .form-component-datetime{
+  .col-sm-9{
+    padding-right: 40px;
+  }
+}
+
+.form-component-clear{
+  position: absolute;
+  top: 11px;
+  right: 0px;
+  background: $light-grey;
+  color: #fff;
+  border-radius: 100%;
+  height: 16px;
+  width: 16px;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span{
+    font-size: 8px;
+    display: block;
+    line-height: 1;
+  }
+  &:hover{
+    text-decoration: none;
+    background: $medium-grey;
+    color: #fff;
   }
 }

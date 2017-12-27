@@ -96,7 +96,7 @@ Posts.increaseClicks = (post, ip) => {
     const existingClickEvent = Events.findOne({name: 'click', 'properties.postId': post._id, 'properties.ip': ip});
 
     if(!existingClickEvent) {
-      Events.log(clickEvent);
+      // Events.log(clickEvent); // Sidebar only: don't log event
       return Posts.update(post._id, { $inc: { clickCount: 1 }});
     }
   } else {
@@ -113,3 +113,13 @@ function PostsClickTracking(post, ip) {
 // in our server-side route /out -> sending an event would create a new anonymous 
 // user: the free limit of 1,000 unique users per month would be reached quickly
 addCallback('posts.click.async', PostsClickTracking);
+
+//////////////////////////////////////////////////////
+// posts.approve.sync                              //
+//////////////////////////////////////////////////////
+
+function PostsApprovedSetPostedAt (modifier, post) {
+  modifier.postedAt = new Date();
+  return modifier;
+}
+addCallback('posts.approve.sync', PostsApprovedSetPostedAt);

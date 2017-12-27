@@ -25,12 +25,9 @@ This component expects:
 import { Components, Utils, runCallbacks } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import Button from 'react-bootstrap/lib/Button';
-import Flash from "./Flash.jsx";
-import FormGroup from "./FormGroup.jsx";
-import { flatten, deepValue, getEditableFields, getInsertableFields } from '../modules/utils.js';
+import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 
 /*
 
@@ -156,21 +153,32 @@ class Form extends Component {
       }
 
       // replace empty value, which has not been prefilled, by the default value from the schema
-      if (fieldSchema.defaultValue && field.value === "") {
+      // keep defaultValue for backwards compatibility even though it doesn't actually work
+      if (fieldSchema.defaultValue && (typeof field.value === 'undefined' || field.value === '')) {
         field.value = fieldSchema.defaultValue;
+      }
+      if (fieldSchema.default && (typeof field.value === 'undefined' || field.value === '')) {
+        field.value = fieldSchema.default;
       }
 
       // add options if they exist
       if (fieldSchema.form && fieldSchema.form.options) {
         field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema, this.props) : fieldSchema.form.options;
+      
+        // in case of checkbox groups, check "checked" option to populate value
+        if (!field.value) {
+          field.value = _.where(field.options, {checked: true}).map(option => option.value);
+        }
       }
-
-      if (fieldSchema.form && fieldSchema.form.disabled) {
-        field.disabled = typeof fieldSchema.form.disabled === "function" ? fieldSchema.form.disabled.call(fieldSchema) : fieldSchema.form.disabled;
-      }
-
-      if (fieldSchema.form && fieldSchema.form.help) {
-        field.help = typeof fieldSchema.form.help === "function" ? fieldSchema.form.help.call(fieldSchema) : fieldSchema.form.help;
+      
+      if (fieldSchema.form) {
+        for (const prop in fieldSchema.form) {
+          if (prop !== 'prefill' && prop !== 'options' && fieldSchema.form.hasOwnProperty(prop)) {
+            field[prop] = typeof fieldSchema.form[prop] === "function" ?
+              fieldSchema.form[prop].call(fieldSchema) :
+              fieldSchema.form[prop];
+          }
+        }
       }
 
       // add limit
@@ -353,7 +361,8 @@ class Form extends Component {
 
             message = error.data.errors.map(error => {
               return {
-                content: this.getErrorMessage(error)
+                content: this.getErrorMessage(error),
+                data: error.data,
               }
             });
 
@@ -362,8 +371,8 @@ class Form extends Component {
             message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
 
           }
-
-          return <Flash key={index} message={message} type="error"/>
+  
+          return <Components.FormFlash key={index} message={message} type="error"/>;
         })}
       </div>
     )
@@ -613,26 +622,25 @@ class Form extends Component {
           disabled={this.state.disabled}
           ref="form"
         >
-          {this.renderErrors()}
-          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
 
-          <div className="form-submit">
-            <Button type="submit" bsStyle="primary">{this.props.submitLabel ? this.props.submitLabel : <FormattedMessage id="forms.submit"/>}</Button>
-            {this.props.cancelCallback ? <a className="form-cancel" onClick={(e) => {e.preventDefault(); this.props.cancelCallback(this.getDocument())}}>{this.props.cancelLabel ? this.props.cancelLabel : <FormattedMessage id="forms.cancel"/>}</a> : null}
-          </div>
+          {this.renderErrors()}
+        
+          {fieldGroups.map(group => <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
+    
+          {this.props.repeatErrors && this.renderErrors()}
+
+          <Components.FormSubmit submitLabel={this.props.submitLabel}
+                                 cancelLabel={this.props.cancelLabel}
+                                 cancelCallback={this.props.cancelCallback}
+                                 document={this.getDocument()}
+                                 deleteDocument={(this.props.formType === 'edit'
+                                   && this.props.showRemove
+                                   && this.deleteDocument)
+                                 || null}
+                                 collectionName={collectionName}
+          />
 
         </Formsy.Form>
-
-        {
-          this.props.formType === 'edit' && this.props.showRemove
-            ? <div>
-                <hr/>
-                <a href="javascript:void()" onClick={this.deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
-                  <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
-                </a>
-              </div>
-            : null
-        }
       </div>
     )
   }
@@ -660,6 +668,7 @@ Form.propTypes = {
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  repeatErrors: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
@@ -673,7 +682,8 @@ Form.propTypes = {
 }
 
 Form.defaultProps = {
-  layout: "horizontal",
+  layout: 'horizontal',
+  repeatErrors: false,
 }
 
 Form.contextTypes = {
