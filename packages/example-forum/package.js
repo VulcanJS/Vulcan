@@ -19,11 +19,11 @@ Package.onUse(function (api) {
     // vulcan packages
     'vulcan:voting@1.8.1',
     'vulcan:accounts@1.8.1',
-    'vulcan:email',
-    'vulcan:forms',
-    'vulcan:newsletter',
-    'vulcan:events',
-    'vulcan:embed',
+    'vulcan:email@1.8.1',
+    'vulcan:forms@1.8.1',
+    'vulcan:newsletter@1.8.1',
+    'vulcan:events@1.8.1',
+    'vulcan:embed@1.8.1',
 
   ]);
 

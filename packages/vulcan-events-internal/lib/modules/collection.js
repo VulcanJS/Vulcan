@@ -4,15 +4,15 @@ import Users from 'meteor/vulcan:users';
 
 const Events = createCollection({
 
-  collectionName: 'Events',
+  collectionName: 'AnalyticsEvents',
 
-  typeName: 'Event',
+  typeName: 'AnalyticsEvent',
 
   schema,
 
-  resolvers: getDefaultResolvers('Events'),
+  resolvers: getDefaultResolvers('AnalyticsEvents'),
 
-  mutations: getDefaultMutations('Events', {
+  mutations: getDefaultMutations('AnalyticsEvents', {
     newCheck: () => true,
     editCheck: () => false,
     removeCheck: () => false
