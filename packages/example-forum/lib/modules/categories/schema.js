@@ -7,36 +7,18 @@ Categories schema
 import { Utils } from 'meteor/vulcan:core';
 import { Categories } from './collection.js';
 
-export function getCategories (apolloClient) {
-
-  // get the current data of the store
-  const apolloData = apolloClient.store.getState().apollo.data;
-  
-  // filter these data based on their typename: we are interested in the categories data
-  let categories = _.filter(apolloData, (object, key) => {
-    return object.__typename === 'Category'
-  });
-
-  // order categories
-  categories = _.sortBy(categories, cat => cat.order);
-  
-  return categories;
+export function getCategoriesAsOptions (categories) {
+  // give the form component (here: checkboxgroup) exploitable data
+  return categories.map(category => ({
+    value: category._id,
+    label: category.name,
+    // slug: category.slug, // note: it may be used to look up from prefilled props
+  }));
 }
 
-export function getCategoriesAsOptions (apolloClient) {
+export function getCategoriesAsNestedOptions (categories) {
   // give the form component (here: checkboxgroup) exploitable data
-  return getCategories(apolloClient).map(function (category) {
-    return {
-      value: category._id,
-      label: category.name,
-      // slug: category.slug, // note: it may be used to look up from prefilled props
-    };
-  });
-}
-
-export function getCategoriesAsNestedOptions (apolloClient) {
-  // give the form component (here: checkboxgroup) exploitable data
-  const formattedCategories = getCategories(apolloClient).map(function (category) {
+  const formattedCategories = categories.map(function (category) {
     return {
       value: category._id,
       label: category.name,
@@ -122,9 +104,17 @@ const schema = {
       },
       addOriginalField: true
     },
-    form: {
-      options: formProps => getCategoriesAsOptions(formProps.client)
-    }
+    options: props => {
+      return getCategoriesAsOptions(props.data.CategoriesList);
+    },
+    query: `
+      CategoriesList{
+        _id
+        name
+        slug
+        order
+      }
+    `,
   }
 };
 
