@@ -18,7 +18,6 @@ Posts.addField([
       editableBy: ['members'],
       viewableBy: ['guests'],
       form: {
-        noselect: true,
         type: 'bootstrap-category',
         order: 50,
         options: formProps => getCategoriesAsOptions(formProps.client),
