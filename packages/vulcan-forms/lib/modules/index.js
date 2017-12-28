@@ -12,6 +12,9 @@ if (typeof SimpleSchema !== "undefined") {
     'beforeComponent',
     'afterComponent',
     'placeholder',
+    'options',
+    'query',
+    'fieldProperties',
   ]);
 }
 

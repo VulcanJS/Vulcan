@@ -76,22 +76,6 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
-    // resolve any array field with resolveAs as fieldName{_id} -> why?
-    /* 
-    - string field with no resolver -> fieldName
-    - string field with a resolver  -> fieldName
-    - array field with no resolver  -> fieldName
-    - array field with a resolver   -> fieldName{_id}
-    */
-    const mapFieldNameToField = fieldName => {
-      const field = this.getSchema()[fieldName];
-      return field.resolveAs && field.type.definitions[0].type === Array
-        ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
-        : fieldName; // else just ask for the field name
-    }
-    queryFields = queryFields.map(mapFieldNameToField);
-    mutationFields = mutationFields.map(mapFieldNameToField);
-
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.props.collection.typeName} {
@@ -107,11 +91,29 @@ class FormWrapper extends PureComponent {
       }
     `
 
+    // default to generated fragments
+    let queryFragment = generatedQueryFragment;
+    let mutationFragment = generatedMutationFragment;
+
+    // if queryFragment or mutationFragment props are specified, accept either fragment object or fragment string
+    if (this.props.queryFragment) {
+      queryFragment = typeof this.props.queryFragment === 'string' ? gql`${this.props.queryFragment}` : this.props.queryFragment;
+    }
+    if (this.props.mutationFragment) {
+      mutationFragment = typeof this.props.mutationFragment === 'string' ? gql`${this.props.mutationFragment}` : this.props.mutationFragment;
+    }
+
+    // if any field specifies extra queries, add them
+    const extraQueries = _.compact(queryFields.map(fieldName => {
+      const field = this.getSchema()[fieldName];
+      return field.query
+    }));
+
     // get query & mutation fragments from props or else default to same as generatedFragment
-    // note: mutationFragment should probably always be specified in props
     return {
-      queryFragment: this.props.queryFragment || generatedQueryFragment,
-      mutationFragment: this.props.mutationFragment || generatedMutationFragment,
+      queryFragment,
+      mutationFragment,
+      extraQueries,
     };
   }
 
@@ -126,6 +128,8 @@ class FormWrapper extends PureComponent {
     // props received from parent component (i.e. <Components.SmartForm/> call)
     const parentProps = this.props;
 
+    const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
+
     // props to pass on to child component (i.e. <Form />)
     const childProps = {
       formType: this.getFormType(),
@@ -136,7 +140,8 @@ class FormWrapper extends PureComponent {
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
-      fragment: this.getFragments().queryFragment,
+      fragment: queryFragment,
+      extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
       enableCache: false,    
     };
@@ -144,7 +149,7 @@ class FormWrapper extends PureComponent {
     // options for withNew, withEdit, and withRemove HoCs
     const mutationOptions = {
       collection: this.props.collection,
-      fragment: this.getFragments().mutationFragment,
+      fragment: mutationFragment,
     };
 
     // if this is an edit from, load the necessary data using the withDocument HoC

@@ -12,6 +12,14 @@ export const extractFragmentName = fragmentText => fragmentText.match(/fragment 
 
 /*
 
+Get a query resolver's name from its text
+
+*/
+export const extractResolverName = resolverText => resolverText.trim().substr(0, resolverText.trim().indexOf('{'));
+
+
+/*
+
 Register a fragment, including its text, the text of its subfragments, and the fragment object
 
 */
