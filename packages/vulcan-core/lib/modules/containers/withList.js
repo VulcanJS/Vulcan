@@ -47,7 +47,7 @@ const withList = (options) => {
 
   // console.log(options)
   
-  const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true, enableCache = false } = options,
+  const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true, enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
@@ -72,6 +72,7 @@ const withList = (options) => {
         __typename
         ...${fragmentName}
       }
+      ${extraQueries || ''}
     }
     ${fragment}
   `;
@@ -191,7 +192,8 @@ const withList = (options) => {
 
             fragmentName,
             fragment,
-            ...props.ownProps // pass on the props down to the wrapped component
+            ...props.ownProps, // pass on the props down to the wrapped component
+            data: props.data,
           };
         },
       }
