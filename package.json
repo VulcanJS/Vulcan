@@ -1,11 +1,10 @@
 {
   "name": "Vulcan",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
-    "prestart": "node prestart_vulcan.js",
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
@@ -102,9 +101,7 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {
-        "browsers": [
-          "last 2 versions"
-        ]
+        "browsers": ["last 2 versions"]
       }
     }
   }

@@ -77,7 +77,15 @@ const schema = {
     editableBy: ['members'],
     control: 'url',
     order: 10,
-    searchable: true
+    searchable: true,
+    form: {
+      query: `
+        SiteData{
+          logoUrl
+          title
+        }
+      `,
+    },
   },
   /**
     Title
@@ -210,9 +218,7 @@ const schema = {
       }
     },
     form: {
-      noselect: true,
       options: () => Posts.statuses,
-      group: 'admin'
     },
     group: formGroups.admin
   },

@@ -9,7 +9,7 @@ const defaultTime = '00:00'; // GMT
 registerSetting('newsletter.frequency', defaultFrequency, 'Which days to send the newsletter on (1 = Monday, 7 = Sunday)');
 registerSetting('newsletter.time', defaultTime, 'Time to send the newsletter on (ex: “16:30”)');
 registerSetting('newsletter.enabledInDev', false, 'Enable the newsletter in development');
-registerSetting('newsletter.enabled', true, 'Enable the newsletter');
+registerSetting('newsletter.enabled', false, 'Enable the newsletter');
 
 SyncedCron.options = {
   log: true,

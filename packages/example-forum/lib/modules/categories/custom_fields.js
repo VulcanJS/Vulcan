@@ -9,7 +9,7 @@ import { getCategoriesAsOptions } from './schema.js';
 
 Posts.addField([
   {
-    fieldName: 'categories',
+    fieldName: 'categoriesIds',
     fieldSchema: {
       type: Array,
       control: 'checkboxgroup',
@@ -17,12 +17,17 @@ Posts.addField([
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
-      form: {
-        noselect: true,
-        type: 'bootstrap-category',
-        order: 50,
-        options: formProps => getCategoriesAsOptions(formProps.client),
+      options: props => {
+        return getCategoriesAsOptions(props.data.CategoriesList);
       },
+      query: `
+        CategoriesList{
+          _id
+          name
+          slug
+          order
+        }
+      `,
       resolveAs: {
         fieldName: 'categories',
         type: '[Category]',
@@ -30,12 +35,13 @@ Posts.addField([
           if (!post.categories) return [];
           const categories = _.compact(await Categories.loader.loadMany(post.categories));
           return Users.restrictViewableFields(currentUser, Categories, categories);
-        }
+        },
+        addOriginalField: true,
       }
     }
   },
   {
-    fieldName: 'categories.$',
+    fieldName: 'categoriesIds.$',
     fieldSchema: {
       type: String,
       optional: true

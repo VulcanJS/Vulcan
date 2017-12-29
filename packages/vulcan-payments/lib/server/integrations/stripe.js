@@ -1,4 +1,4 @@
-import { getSetting, registerSetting, newMutation, editMutation, Collections, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
+import { getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import express from 'express';
 import Stripe from 'stripe';
 import { Picker } from 'meteor/meteorhacks:picker';
@@ -146,7 +146,7 @@ export const createCharge = async ({user, customer, product, collection, documen
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
 
-  return processCharge({collection, document, charge, args})
+  return processCharge({collection, document, charge, args, user})
 
 }
 
@@ -155,7 +155,7 @@ export const createCharge = async ({user, customer, product, collection, documen
 Process charge on Vulcan's side
 
 */
-export const processCharge = async ({collection, document, charge, args}) => {
+export const processCharge = async ({collection, document, charge, args, user}) => {
  
   let returnDocument = {};
 
@@ -199,7 +199,7 @@ export const processCharge = async ({collection, document, charge, args}) => {
     }
 
     // run collection.charge.sync callbacks
-    modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc);
+    modifier = runCallbacks(`${collection._name}.charge.sync`, modifier, document, chargeDoc, user);
 
     returnDocument = await editMutation({
       collection,
@@ -213,7 +213,7 @@ export const processCharge = async ({collection, document, charge, args}) => {
 
   }
 
-  runCallbacksAsync(`${collection._name}.charge.async`, returnDocument, chargeDoc);
+  runCallbacksAsync(`${collection._name}.charge.async`, returnDocument, chargeDoc, user);
 
   return returnDocument;
 }
@@ -431,3 +431,25 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(app), {name: 'stripe_endpoint', 
 //   res.end();
 
 // });
+
+Meteor.startup(() => {
+  Collections.forEach(c => {
+    collectionName = c._name.toLowerCase();
+
+    registerCallback({
+      name: `${collectionName}.charge.sync`, 
+      description: `Modify the modifier used to add charge ids to the charge's associated document.`,      
+      arguments: [{modifier: 'The modifier'}, {document: 'The associated document'}, {charge: 'The charge'}, {currentUser: 'The current user'}], 
+      runs: 'sync', 
+      returns: 'modifier',
+    });
+
+    registerCallback({
+      name: `${collectionName}.charge.sync`, 
+      description: `Perform operations after the charge has succeeded.`,      
+      arguments: [{document: 'The associated document'}, {charge: 'The charge'}, {currentUser: 'The current user'}], 
+      runs: 'async', 
+    });
+    
+  })
+})

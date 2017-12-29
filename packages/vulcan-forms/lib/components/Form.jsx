@@ -144,8 +144,9 @@ class Form extends Component {
       }
 
       // replace value by prefilled value if value is empty
-      if (fieldSchema.form && fieldSchema.form.prefill) {
-        const prefilledValue = typeof fieldSchema.form.prefill === "function" ? fieldSchema.form.prefill.call(fieldSchema) : fieldSchema.form.prefill;
+      const prefill = fieldSchema.prefill || fieldSchema.form && fieldSchema.form.prefill;
+      if (prefill) {
+        const prefilledValue = typeof prefill === "function" ? prefill.call(fieldSchema) : prefill;
         if (!!prefilledValue && !field.value) {
           field.prefilledValue = prefilledValue;
           field.value = prefilledValue;
@@ -162,8 +163,9 @@ class Form extends Component {
       }
 
       // add options if they exist
-      if (fieldSchema.form && fieldSchema.form.options) {
-        field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema, this.props) : fieldSchema.form.options;
+      const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
+      if (fieldOptions) {
+        field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
       
         // in case of checkbox groups, check "checked" option to populate value
         if (!field.value) {
@@ -171,12 +173,15 @@ class Form extends Component {
         }
       }
       
-      if (fieldSchema.form) {
-        for (const prop in fieldSchema.form) {
-          if (prop !== 'prefill' && prop !== 'options' && fieldSchema.form.hasOwnProperty(prop)) {
-            field[prop] = typeof fieldSchema.form[prop] === "function" ?
-              fieldSchema.form[prop].call(fieldSchema) :
-              fieldSchema.form[prop];
+      // add any properties specified in fieldProperties or form as extra props passed on
+      // to the form component
+      const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
+      if (fieldProperties) {
+        for (const prop in fieldProperties) {
+          if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
+            field[prop] = typeof fieldProperties[prop] === "function" ?
+            fieldProperties[prop].call(fieldSchema) :
+            fieldProperties[prop];
           }
         }
       }
