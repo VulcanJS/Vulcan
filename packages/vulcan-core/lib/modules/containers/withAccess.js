@@ -12,7 +12,7 @@ export default function withAccess (options) {
 
       // if there are any groups defined check if user belongs, else just check if user exists
       canAcces = currentUser => {
-        return groups ? currentUser && Users.isMemberOf(props.currentUser, groups) : currentUser;
+        return groups ? currentUser && Users.isMemberOf(currentUser, groups) : currentUser;
       }
 
       // redirect on constructor if user cannot access
