@@ -51,7 +51,6 @@
     "meteor-node-stubs": "^0.2.3",
     "mingo": "^0.8.1",
     "moment": "^2.13.0",
-    "optics-agent": "^1.0.5",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-addons-pure-render-mixin": "^15.4.1",
@@ -101,7 +100,9 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {
-        "browsers": ["last 2 versions"]
+        "browsers": [
+          "last 2 versions"
+        ]
       }
     }
   }
