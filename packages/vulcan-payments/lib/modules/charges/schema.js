@@ -57,6 +57,7 @@ const schema = {
 
   data: {
     type: Object,
+    viewableBy: ['guests'],
     blackbox: true,
   },
 
@@ -75,6 +76,7 @@ const schema = {
   createdAtFormatted: {
     type: String,
     optional: true,
+    viewableBy: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -86,6 +88,7 @@ const schema = {
   stripeChargeUrl: {
     type: String,
     optional: true,
+    viewableBy: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
