@@ -7,6 +7,7 @@ export default function withAccess (options) {
   
   const { groups, redirect } = options;
 
+  // we return a function that takes a component and itself returns a component
   return WrappedComponent => {
     class AccessComponent extends PureComponent {
 
