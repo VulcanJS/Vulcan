@@ -64,11 +64,14 @@ Posts.statuses = [
 ];
 
 Posts.checkAccess = (currentUser, post) => {
-  if (Users.isAdmin(currentUser) || Users.owns(currentUser, post)) { // admins can always see everything, users can always see their own posts
+  if (!Users.getUser(post.userId)) {
+    return false;
+  }
+  else if (Users.isAdmin(currentUser) || Users.owns(currentUser, post)) { // admins can always see everything, users can always see their own posts
     return true;
   } else if (post.isFuture) {
     return false;
-  } else { 
+  } else {
     const status = _.findWhere(Posts.statuses, {value: post.status});
     return Users.canDo(currentUser, `posts.view.${status.label}`);
   }
