@@ -129,7 +129,11 @@ export const GraphQLSchema = {
 
       const fieldType = getGraphQLType(schema, fieldName);
 
-      if (fieldName.indexOf('$') === -1) { // skip fields containing "$" in their name
+      // only include fields that are viewable/insertable/editable and don't contain "$" in their name
+      // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
+      if ((field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
+
+        const fieldDescription = field.description ? `# ${field.description}` : '';
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
