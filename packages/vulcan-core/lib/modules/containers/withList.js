@@ -4,7 +4,7 @@
 
 Paginated items container
 
-Options: 
+Options:
 
   - queryName: an arbitrary name for the query
   - collection: the collection to fetch the documents from
@@ -14,7 +14,7 @@ Options:
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   - terms: an object that defines which documents to fetch
 
-Props Received: 
+Props Received:
 
   - terms: an object that defines which documents to fetch
 
@@ -31,9 +31,9 @@ Terms object can have the following properties:
   - query: String # search query
   - postId: String
   - limit: String
-         
+
 */
-     
+
 import React, { PropTypes, Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -46,7 +46,7 @@ import withState from 'recompose/withState';
 const withList = (options) => {
 
   // console.log(options)
-  
+
   const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true, enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
@@ -80,7 +80,7 @@ const withList = (options) => {
   return compose(
 
     // wrap component with Apollo HoC to give it access to the store
-    withApollo, 
+    withApollo,
 
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
@@ -88,10 +88,10 @@ const withList = (options) => {
       // get initial limit from props, or else options
       const paginationLimit = props.terms && props.terms.limit || limit;
       const paginationTerms = {
-        limit: paginationLimit, 
-        itemsPerPage: paginationLimit, 
+        limit: paginationLimit,
+        itemsPerPage: paginationLimit,
       };
-      
+
       return paginationTerms;
     }),
 
@@ -102,7 +102,7 @@ const withList = (options) => {
 
       {
         alias: 'withList',
-        
+
         // graphql query options
         options({terms, paginationTerms, client: apolloClient}) {
           // get terms from options, then props, then pagination
@@ -119,14 +119,14 @@ const withList = (options) => {
 
               // see queryReducer function defined below
               return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
-            
+
             },
           };
 
           if (options.fetchPolicy) {
             graphQLOptions.fetchPolicy = options.fetchPolicy
           }
-          
+
           return graphQLOptions;
         },
 
@@ -164,7 +164,7 @@ const withList = (options) => {
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
               const newTerms = typeof providedTerms === 'undefined' ? { /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms, limit: results.length + props.ownProps.paginationTerms.itemsPerPage } : providedTerms;
-              
+
               props.ownProps.setPaginationTerms(newTerms);
             },
 
@@ -174,7 +174,7 @@ const withList = (options) => {
 
               // get terms passed as argument or else just default to incrementing the offset
               const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length } : providedTerms;
-              
+
               return props.data.fetchMore({
                 variables: { terms: newTerms }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
@@ -307,7 +307,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
       newResults = reorderResults(newResults, options.sort);
       break;
 
-    default: 
+    default:
       // console.log('** no action **')
       return previousResults;
   }
