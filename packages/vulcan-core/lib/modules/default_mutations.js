@@ -20,6 +20,8 @@ export const getDefaultMutations = (collectionName, options = {}) => {
       
       name: `${collectionName}New`,
       
+      description: `Mutation for inserting new ${collectionName} documents`,
+
       // check function called on a user to see if they can perform the operation
       check(user, document) {
         if (options.newCheck) {
@@ -55,6 +57,8 @@ export const getDefaultMutations = (collectionName, options = {}) => {
     edit: {
       
       name: `${collectionName}Edit`,
+      
+      description: `Mutation for editing a ${collectionName} document`,
       
       // check function called on a user and document to see if they can perform the operation
       check(user, document) {
@@ -98,6 +102,8 @@ export const getDefaultMutations = (collectionName, options = {}) => {
     remove: {
 
       name: `${collectionName}Remove`,
+      
+      description: `Mutation for deleting a ${collectionName} document`,
       
       check(user, document) {
         if (options.removeCheck) {

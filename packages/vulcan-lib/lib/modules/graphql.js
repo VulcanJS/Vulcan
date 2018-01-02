@@ -84,14 +84,14 @@ export const GraphQLSchema = {
 
   // queries
   queries: [],
-  addQuery(query) {
-    this.queries.push(query);
+  addQuery(query, description) {
+    this.queries.push({ query, description });
   },
 
   // mutations
   mutations: [],
-  addMutation(mutation) {
-    this.mutations.push(mutation);
+  addMutation(mutation, description) {
+    this.mutations.push({ mutation, description });
   },
 
   // add resolvers
@@ -122,7 +122,7 @@ export const GraphQLSchema = {
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
     const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
-    let mainSchema = [], inputSchema = [], unsetSchema = [];
+    let mainSchema = [], inputSchema = [], unsetSchema = [], graphQLSchema = '';
 
     _.forEach(schema, (field, fieldName) => {
       // console.log(field, fieldName)
@@ -157,13 +157,19 @@ export const GraphQLSchema = {
 
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
-            mainSchema.push(`${fieldName}: ${fieldType}`);
+            mainSchema.push(
+`${fieldDescription}
+${fieldName}: ${fieldType}
+`);
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
-            mainSchema.push(`${fieldName}: ${fieldType}`);
+            mainSchema.push(
+`${fieldDescription}
+${fieldName}: ${fieldType}
+`);
           }
         }
 
@@ -188,21 +194,36 @@ export const GraphQLSchema = {
     const { interfaces = [] } = collection.options;
     const graphQLInterfaces = interfaces.length ? `implements ${interfaces.join(`, `)} ` : '';
 
-    let graphQLSchema = `
-      type ${mainTypeName} ${graphQLInterfaces}{
-        ${mainSchema.join('\n  ')}
-      }
-    `
+    const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`
 
-    // TODO: do not generate input types if they're not needed?
-    graphQLSchema += `
-      input ${collectionName}Input {
-        ${inputSchema.length ? inputSchema.join('\n  ') : '_blank: Boolean'}
-      }
-      input ${collectionName}Unset {
-        ${inputSchema.length ? unsetSchema.join('\n  ') : '_blank: Boolean'}
-      }
-    `
+    if (mainSchema.length) {
+
+      graphQLSchema += 
+`# ${description}
+type ${mainTypeName} ${graphQLInterfaces}{
+  ${mainSchema.join('\n  ')}
+}
+`
+    }
+
+    if (inputSchema.length) {
+      graphQLSchema += 
+`# ${description} (input type)
+input ${collectionName}Input {
+  ${inputSchema.join('\n  ')}
+}
+`
+    }
+
+    if (unsetSchema.length) {
+      graphQLSchema += 
+`# ${description} (unset input type)
+input ${collectionName}Unset {
+  ${unsetSchema.join('\n  ')}
+}
+`
+    }
+
     return graphQLSchema;
   }
 };

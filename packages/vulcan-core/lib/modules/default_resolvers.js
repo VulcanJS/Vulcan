@@ -20,6 +20,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
       name: `${collectionName}List`,
 
+      description: `A list of ${collectionName} documents matching a set of query terms`,
+      
       async resolver(root, {terms = {}, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} list resolver ---------------//`);
@@ -69,6 +71,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       
       name: `${collectionName}Single`,
 
+      description: `A single ${collectionName} document fetched by ID or slug`,
+
       async resolver(root, {documentId, slug, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} single resolver ---------------//`);
@@ -107,6 +111,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     total: {
       
       name: `${collectionName}Total`,
+
+      description: `The total count of ${collectionName} documents matching a set of query terms`,
       
       async resolver(root, {terms, enableCache}, context, { cacheControl }) {
         

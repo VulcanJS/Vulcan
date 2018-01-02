@@ -21,6 +21,8 @@ export const Users = createCollection({
 
   mutations,
 
+  description: 'A user object'
+
 });
 
 addGraphQLQuery(`currentUser: User`);

@@ -128,24 +128,23 @@ export const createCollection = options => {
     // add collection to list of dynamically generated GraphQL schemas
     addGraphQLCollection(collection);
 
-
     // ------------------------------------- Queries -------------------------------- //
 
     if (resolvers) {
       const queryResolvers = {};
       // list
       if (resolvers.list) { // e.g. ""
-        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int, enableCache: Boolean): [${typeName}]`);
+        addGraphQLQuery(`${resolvers.list.name}(terms: JSON, offset: Int, limit: Int, enableCache: Boolean): [${typeName}]`, resolvers.list.description);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
-        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String, enableCache: Boolean): ${typeName}`);
+        addGraphQLQuery(`${resolvers.single.name}(documentId: String, slug: String, enableCache: Boolean): ${typeName}`, resolvers.single.description);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
-        addGraphQLQuery(`${resolvers.total.name}(terms: JSON, enableCache: Boolean): Int`);
+        addGraphQLQuery(`${resolvers.total.name}(terms: JSON, enableCache: Boolean): Int`, resolvers.total.description);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
       addGraphQLResolvers({ Query: { ...queryResolvers } });
@@ -157,17 +156,17 @@ export const createCollection = options => {
       const mutationResolvers = {};
       // new
       if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-        addGraphQLMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`);
+        addGraphQLMutation(`${mutations.new.name}(document: ${collectionName}Input) : ${typeName}`, mutations.new.description);
         mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
       }
       // edit
       if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-        addGraphQLMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`);
+        addGraphQLMutation(`${mutations.edit.name}(documentId: String, set: ${collectionName}Input, unset: ${collectionName}Unset) : ${typeName}`, mutations.edit.description);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-        addGraphQLMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`);
+        addGraphQLMutation(`${mutations.remove.name}(documentId: String) : ${typeName}`, mutations.remove.description);
         mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
