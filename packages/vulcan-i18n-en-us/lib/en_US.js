@@ -3,6 +3,7 @@ import { addStrings } from 'meteor/vulcan:core';
 addStrings('en', {
 
   "accounts.error_emailRequired": "Email required",
+  "accounts.error_email_already_exists": "Email already exists",
   "accounts.error_invalid_email": "Invalid email",
   "accounts.error_minchar": "Your password is too short",
   "accounts.error_username_required": "Username required",
@@ -41,7 +42,7 @@ addStrings('en', {
   "forms.select_option": "-- select option --",
   "forms.delete": "Delete",
   "forms.delete_confirm": "Delete document?",
-  
+
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
   "users.profile_completed": "Profile completed.",
@@ -124,10 +125,10 @@ addStrings('en', {
   "app.required_field_missing": "{fieldName} is required.",
   "app.field_is_too_long": "{fieldName} cannot exceed {limit} characters.",
   "app.schema_validation_error": "Schema validation error",
-  
+
   "cards.edit": "Edit",
   "datatable.edit": "Edit",
-  
+
   "admin": "Admin",
   "notifications": "Notifications",
 });
