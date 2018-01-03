@@ -167,8 +167,8 @@ class Form extends Component {
       if (fieldOptions) {
         field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
       
-        // in case of checkbox groups, check "checked" option to populate value
-        if (!field.value) {
+        // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
+        if (!field.value && this.getFormType() === 'new') {
           field.value = _.where(field.options, {checked: true}).map(option => option.value);
         }
       }
