@@ -127,6 +127,7 @@ addStrings('en', {
   "app.schema_validation_error": "Schema validation error",
 
   "cards.edit": "Edit",
+  "datatable.new": "New",
   "datatable.edit": "Edit",
 
   "admin": "Admin",

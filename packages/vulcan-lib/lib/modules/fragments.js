@@ -58,7 +58,7 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
   const gqlArguments = subFragments ? [literals, ...subFragments.map(subFragmentName => {
     // return subfragment's gql fragment
-    if (!Fragments[subFragmentName].fragmentObject) {
+    if (!Fragments[subFragmentName] || !Fragments[subFragmentName].fragmentObject) {
       throw new Error(`Subfragment “${subFragmentName}” of fragment “${extractFragmentName(fragmentText)}” has not been initialized yet.`);
     }
     return Fragments[subFragmentName].fragmentObject;
