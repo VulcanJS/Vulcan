@@ -182,7 +182,7 @@ class FormWrapper extends PureComponent {
     
     } else {
 
-      if (extraQueries) {
+      if (extraQueries && extraQueries.length) {
 
         const extraQueriesHoC = graphql(gql`
           query formNewExtraQuery {
