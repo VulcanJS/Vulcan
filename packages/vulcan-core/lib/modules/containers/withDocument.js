@@ -47,7 +47,7 @@ export default function withDocument (options) {
     },
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
-
+      
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
@@ -57,6 +57,11 @@ export default function withDocument (options) {
         fragment,
         data,
       };
+
+      if (data.error) {
+        // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+        props.error = data.error.graphQLErrors[0];
+      }
 
       return props;
     },
