@@ -187,7 +187,7 @@ EmbedURL.propTypes = {
   name: PropTypes.string,
   value: PropTypes.any,
   label: PropTypes.string
-}
+};
 
 EmbedURL.contextTypes = {
   updateCurrentValues: PropTypes.func,
@@ -196,12 +196,12 @@ EmbedURL.contextTypes = {
   clearForm: PropTypes.func,
   getDocument: PropTypes.func,
   intl: intlShape
-}
+};
 
 const options = {
   name: 'getEmbedData',
   args: {url: 'String'},
-}
+};
 
 export default withMutation(options)(EmbedURL);
 

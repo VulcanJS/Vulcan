@@ -57,13 +57,13 @@ console.log("Vulcan requires Meteor but it's not installed. Trying to Install...
   }
 } else {
 //Check exist file settings and create if not exist
-if (!existsSync("settings.json")) {
-  console.log(">  "+chalk.bold.yellow("Creating your own settings.json file...\n"));
-  if (!copySync("sample_settings.json","settings.json")) {
-    console.log(">  "+chalk.bold.red("Error Creating your own settings.json file...check files and permissions\n"));
-    process.exit(-1);
-  }
-}
+// if (!existsSync("settings.json")) {
+//   console.log(">  "+chalk.bold.yellow("Creating your own settings.json file...\n"));
+//   if (!copySync("sample_settings.json","settings.json")) {
+//     console.log(">  "+chalk.bold.red("Error Creating your own settings.json file...check files and permissions\n"));
+//     process.exit(-1);
+//   }
+// }
 
   console.log(">  "+chalk.bold.yellow("Happy hacking with Vulcan!"));
   console.log(">  "+chalk.dim.yellow("The docs are available at: ")+chalk.redBright("http://docs.vulcanjs.org"));
