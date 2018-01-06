@@ -12,7 +12,7 @@ const PostsNewButton = (props, context) => {
     <Components.ModalTrigger size={size} title={context.intl.formatMessage({ id: 'posts.new_post' })} component={button}>
       <Components.PostsNewForm />
     </Components.ModalTrigger>
-  )
+  );
 }
 
 PostsNewButton.displayName = 'PostsNewButton';

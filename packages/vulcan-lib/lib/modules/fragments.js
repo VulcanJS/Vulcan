@@ -33,7 +33,7 @@ export const registerFragment = fragmentTextSource => {
   // extract subFragments from text
   const matchedSubFragments = fragmentText.match(/\.{3}([_A-Za-z][_0-9A-Za-z]*)/g) || [];
   const subFragments = _.unique(matchedSubFragments.map(f => f.replace('...', '')));
-  
+
   // register fragment
   Fragments[fragmentName] = {
     fragmentText
@@ -57,6 +57,10 @@ export const getFragmentObject = (fragmentText, subFragments) => {
 
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
   const gqlArguments = subFragments ? [literals, ...subFragments.map(subFragmentName => {
+    // Understand which fragment is actually missing
+    if (!Fragments[subFragmentName]) {
+      throw new Error(`Subfragment “${subFragmentName}” has not been registered, yet.`);
+    }
     // return subfragment's gql fragment
     if (!Fragments[subFragmentName] || !Fragments[subFragmentName].fragmentObject) {
       throw new Error(`Subfragment “${subFragmentName}” of fragment “${extractFragmentName(fragmentText)}” has not been initialized yet.`);
@@ -65,7 +69,7 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   })] : [literals];
 
   return gql.apply(null, gqlArguments);
-}
+};
 
 /*
 
@@ -110,7 +114,7 @@ export const getDefaultFragment = collection => {
 
 Queue a fragment to be extended with additional properties.
 
-Note: can be used even before the fragment has been registered. 
+Note: can be used even before the fragment has been registered.
 
 */
 export const extendFragment = (fragmentName, newProperties) => {
@@ -129,8 +133,8 @@ export const extendFragmentWithProperties = (fragmentName, newProperties) => {
   const fragment = Fragments[fragmentName];
   const fragmentEndPosition = fragment.fragmentText.lastIndexOf('}');
   const newFragmentText = [
-    fragment.fragmentText.slice(0, fragmentEndPosition), 
-    newProperties, 
+    fragment.fragmentText.slice(0, fragmentEndPosition),
+    newProperties,
     fragment.fragmentText.slice(fragmentEndPosition)
   ].join('');
   registerFragment(newFragmentText);
@@ -146,7 +150,7 @@ Note: can only be called *after* a fragment is registered
 export const removeFromFragment = (fragmentName, propertyName) => {
   const fragment = Fragments[fragmentName];
   const newFragmentText = fragment.fragmentText.replace(propertyName, '');
-  registerFragment(newFragmentText);  
+  registerFragment(newFragmentText);
 }
 
 /*
@@ -169,7 +173,7 @@ export const getFragment = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" registered, but not initialized.`)
   }
   // return fragment object created by gql
-  return Fragments[fragmentName].fragmentObject;  
+  return Fragments[fragmentName].fragmentObject;
 }
 
 /*
@@ -182,7 +186,7 @@ export const getFragmentText = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`)
   }
   // return fragment object created by gql
-  return Fragments[fragmentName].fragmentText;  
+  return Fragments[fragmentName].fragmentText;
 }
 
 /*
@@ -202,7 +206,7 @@ export const initializeFragments = () => {
       });
     }
   });
-  
+
   // create fragment objects
 
   // initialize fragments *with no subfragments* first to avoid unresolved dependencies

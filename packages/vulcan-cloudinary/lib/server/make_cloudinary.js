@@ -16,6 +16,7 @@ export const makeCloudinary = ({collection, fieldName}) => {
       if (document[fieldName]) {
 
         const data = CloudinaryUtils.uploadImage(document[fieldName]);
+        console.info('CloudinaryUtils.uploadImage => ', data);
         if (data) {
           document.cloudinaryId = data.cloudinaryId;
           document.cloudinaryUrls = data.urls;
@@ -38,5 +39,4 @@ export const makeCloudinary = ({collection, fieldName}) => {
     return modifier;
   }
   addCallback(`${collection.options.collectionName.toLowerCase()}.edit.sync`, cacheImageOnEdit);
-
-}
+};

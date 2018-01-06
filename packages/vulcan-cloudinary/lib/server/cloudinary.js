@@ -34,6 +34,9 @@ export const CloudinaryUtils = {
 
   // generate signed URL for each format based off public_id
   getUrls(cloudinaryId) {
+    if (!cloudinarySettings.formats) {
+      throw new Error('Please provide Cloudinary formats to your settings file.');
+    }
     return cloudinarySettings.formats.map(format => {
       const url = Cloudinary.url(cloudinaryId, {
         width: format.width,
