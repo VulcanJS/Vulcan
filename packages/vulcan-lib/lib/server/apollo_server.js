@@ -207,12 +207,18 @@ Meteor.startup(() => {
     ${GraphQLSchema.getAdditionalSchemas()}
 
     type Query {
-      ${GraphQLSchema.queries.join('\n')}
+      ${GraphQLSchema.queries.map(q => (
+`${q.description ? `# ${q.description}` : ''}
+${q.query}
+`)).join('\n')}
     }
 
     ${GraphQLSchema.mutations.length > 0 ? `
     type Mutation {
-      ${GraphQLSchema.mutations.join('\n')}
+      ${GraphQLSchema.mutations.map(m => (
+`${m.description ? `# ${m.description}` : ''}
+${m.mutation}
+`)).join('\n')}
     }
     ` : ''}
   `];

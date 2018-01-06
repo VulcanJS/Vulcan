@@ -77,7 +77,15 @@ const schema = {
     editableBy: ['members'],
     control: 'url',
     order: 10,
-    searchable: true
+    searchable: true,
+    form: {
+      query: `
+        SiteData{
+          logoUrl
+          title
+        }
+      `,
+    },
   },
   /**
     Title

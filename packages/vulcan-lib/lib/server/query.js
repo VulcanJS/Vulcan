@@ -8,7 +8,7 @@ import { executableSchema } from './apollo_server.js';
 import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
-import { getDefaultFragmentText, extractFragmentName } from '../modules/fragments.js';
+import { getDefaultFragmentText, extractFragmentName, getFragmentText } from '../modules/fragments.js';
 
 // note: if no context is passed, default to running queries with full admin privileges
 export const runQuery = async (query, variables = {}, context = { currentUser: {isAdmin: true} }) => {
@@ -37,7 +37,7 @@ Given a collection and a fragment, build a query to fetch one document.
 If no fragment is passed, default to default fragment
 
 */
-export const buildQuery = (collection, {fragmentText}) => {
+export const buildQuery = (collection, {fragmentName, fragmentText}) => {
 
   const collectionName = collection.options.collectionName;
   const resolverName = `${collectionName}Single`;
@@ -45,8 +45,17 @@ export const buildQuery = (collection, {fragmentText}) => {
   const defaultFragmentName = `${collectionName}DefaultFragment`;
   const defaultFragmentText = getDefaultFragmentText(collection, { onlyViewable: false });
 
-  const name = fragmentText ? extractFragmentName(fragmentText) : defaultFragmentName;
-  const text = fragmentText ? fragmentText : defaultFragmentText;
+  // default to default name and text
+  let name = defaultFragmentName;
+  let text = defaultFragmentText;
+
+  if (fragmentName) { // if fragmentName is passed, use that to get name and text
+    name = fragmentName;
+    text = getFragmentText(fragmentName);
+  } else if (fragmentText) { // if fragmentText is passed, use that to get name and text
+    name = extractFragmentName(fragmentText);
+    text = fragmentText;
+  }
 
   const query = `
     query ${resolverName}Query ($documentId: String){
@@ -67,8 +76,8 @@ Meteor.startup(() => {
     const collectionName = collection.options.collectionName;
     const resolverName = `${collectionName}Single`;
 
-    collection.queryOne = async (documentId, { fragmentText, context }) => {
-      const query = buildQuery(collection, { fragmentText });
+    collection.queryOne = async (documentId, { fragmentName, fragmentText, context }) => {
+      const query = buildQuery(collection, { fragmentName, fragmentText });
       const result = await runQuery(query, { documentId }, context);
       return result.data[resolverName];
     }

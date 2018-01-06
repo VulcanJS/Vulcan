@@ -68,7 +68,13 @@ export const RouterClient = {
       if (typeof options.renderHook === 'function') {
         options.renderHook(app, rootElement);
       } else {
-        ReactDOM.render(app, rootElement);
+        // ReactDOM.hydrate() may not be defined for everyone, it will now use
+        // hydrate if it is defined or fallback to render
+        if (typeof ReactDOM.hydrate === "function") {
+          ReactDOM.hydrate(app, rootElement);
+        } else {
+          ReactDOM.render(app, rootElement);
+        }
       }
 
       const collectorEl = document.getElementById(options.styleCollectorId || 'css-style-collector-data');

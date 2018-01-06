@@ -1,11 +1,12 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getSetting, getFragment, getFragmentName } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
-  
-  const { collection, pollInterval = getSetting('pollInterval', 20000), enableCache = false } = options,
+    
+  const { collection, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
 
@@ -27,6 +28,7 @@ export default function withDocument (options) {
         __typename
         ...${fragmentName}
       }
+      ${extraQueries || ''}
     }
     ${fragment}
   `, {
@@ -46,14 +48,23 @@ export default function withDocument (options) {
     },
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
+      
       const propertyName = options.propertyName || 'document';
-      return {
+      const props = {
         loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),
         [ propertyName ]: data[singleResolverName],
         fragmentName,
         fragment,
+        data,
       };
+
+      if (data.error) {
+        // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+        props.error = data.error.graphQLErrors[0];
+      }
+
+      return props;
     },
   });
 }

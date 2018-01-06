@@ -5,6 +5,7 @@ Default list, single, and total resolvers
 */
 
 import { Utils, debug } from 'meteor/vulcan:core';
+import { createError } from 'apollo-errors';
 
 const defaultOptions = {
   cacheMaxAge: 300
@@ -20,6 +21,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
       name: `${collectionName}List`,
 
+      description: `A list of ${collectionName} documents matching a set of query terms`,
+      
       async resolver(root, {terms = {}, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} list resolver ---------------//`);
@@ -69,6 +72,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       
       name: `${collectionName}Single`,
 
+      description: `A single ${collectionName} document fetched by ID or slug`,
+
       async resolver(root, {documentId, slug, enableCache = false}, context, { cacheControl }) {
 
         debug(`//--------------- start ${collectionName} single resolver ---------------//`);
@@ -85,6 +90,11 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         // don't use Dataloader if doc is selected by slug
         const doc = documentId ? await collection.loader.load(documentId) : (slug ? collection.findOne({slug}) : collection.findOne());
+
+        if (!doc) {
+          const MissingDocumentError = createError('app.missing_document', {message: 'app.missing_document'});
+          throw new MissingDocumentError({data: {documentId, slug}});
+        }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
@@ -107,6 +117,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     total: {
       
       name: `${collectionName}Total`,
+
+      description: `The total count of ${collectionName} documents matching a set of query terms`,
       
       async resolver(root, {terms, enableCache}, context, { cacheControl }) {
         

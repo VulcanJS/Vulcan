@@ -33,6 +33,7 @@ SimpleSchema.extendOptions([
   'limit',
   'searchable',
   'default',
+  'description',
 ]);
 
 export default Vulcan;

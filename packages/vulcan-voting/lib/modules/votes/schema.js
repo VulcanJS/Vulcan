@@ -9,21 +9,24 @@ const schema = {
     The id of the document that was voted on
   */
   documentId: {
-    type: String
+    type: String,
+    viewableBy: ['guests'],
   },
 
   /**
     The name of the collection the document belongs to
   */
   collectionName: {
-    type: String
+    type: String,
+    viewableBy: ['guests'],
   },
 
   /**
     The id of the user that voted
   */
   userId: {
-    type: String
+    type: String,
+    viewableBy: ['guests'],
   },
 
   /**
@@ -31,7 +34,8 @@ const schema = {
   */
   voteType: {
     type: String,
-    optional: true
+    optional: true,
+    viewableBy: ['guests'],
   },
 
   /**
@@ -39,7 +43,8 @@ const schema = {
   */
   power: {
     type: Number,
-    optional: true
+    optional: true,
+    viewableBy: ['guests'],
   },
   
   /**
@@ -47,7 +52,8 @@ const schema = {
   */
   votedAt: {
     type: Date,
-    optional: true
+    optional: true,
+    viewableBy: ['guests'],
   }
 
 };
