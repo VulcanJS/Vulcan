@@ -1,6 +1,7 @@
 import { Components, registerComponent, Utils, getSetting } from 'meteor/vulcan:core';
 import { withMutation } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import FRC from 'formsy-react-components';
 
