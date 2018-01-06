@@ -22,6 +22,14 @@
   "defaultEmail": "hello@world.com",
   "mailUrl": "smtp://username%40yourdomain.mailgun.org:yourpassword123@smtp.mailgun.org:587/",
 
+  "newsletter": {
+    "frequency": [1,2,3,4,5,6,7],
+    "time": "14:20",
+    "enabledInDev": false,
+    "enable": true,
+    "provider": "mailchimp"
+  },
+
   "oAuth": {
     "twitter": {
       "consumerKey": "foo",

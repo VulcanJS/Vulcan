@@ -1,20 +1,15 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
 import VulcanEmail from 'meteor/vulcan:email';
 
 class Email extends PureComponent {
 
-  constructor() {
-    super();
-    this.sendTest = this.sendTest.bind(this);
-    this.state = {
-      loading: false
-    }
-  }
+  state = {
+    loading: false
+  };
 
-  sendTest() {
+  sendTest = () => {
     this.setState({loading: true});
 
     // TODO fix this
@@ -26,7 +21,7 @@ class Email extends PureComponent {
     //     Messages.flash(`Test email sent (“${result}”).`, "success");
     //   }
     // });
-  }
+  };
 
   render() {
     
@@ -40,7 +35,7 @@ class Email extends PureComponent {
         <td><a href={email.path.replace(':_id?', '').replace(':documentId?', '')} target="_blank">{email.path}</a></td>
         <td>
           <div className={this.state.loading ? "test-email loading" : "test-email"}>
-            <Button disabled={this.state.loading} onClick={this.sendTest} bsStyle="primary">Send Test</Button>
+            <button type="button" disabled={this.state.loading} onClick={this.sendTest}>Send Test</button>
             {this.state.loading ? <Components.Loading color="white"/> : null}
           </div>
         </td>
