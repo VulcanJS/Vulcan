@@ -68,7 +68,7 @@ export const RouterClient = {
       if (typeof options.renderHook === 'function') {
         options.renderHook(app, rootElement);
       } else {
-        ReactDOM.render(app, rootElement);
+        ReactDOM.hydrate(app, rootElement);
       }
 
       const collectorEl = document.getElementById(options.styleCollectorId || 'css-style-collector-data');
