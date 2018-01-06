@@ -24,7 +24,7 @@ component is also added to wait for withDocument's loading prop to be false)
 
 */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo, compose } from 'react-apollo';
@@ -34,7 +34,7 @@ import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
 import { graphql } from 'react-apollo';
 
-class FormWrapper extends Component {
+class FormWrapper extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -216,12 +216,6 @@ class FormWrapper extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    // prevent extra re-renderings for unknown reasons
-    // re-render only if the document selector changes
-    return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
-  }
-
   render() {
     return this.FormComponent;
   }
@@ -264,14 +258,6 @@ FormWrapper.defaultProps = {
 FormWrapper.contextTypes = {
   closeCallback: PropTypes.func,
   intl: intlShape
-}
-
-FormWrapper.childContextTypes = {
-  autofilledValues: PropTypes.object,
-  addToAutofilledValues: PropTypes.func,
-  updateCurrentValues: PropTypes.func,
-  throwError: PropTypes.func,
-  getDocument: PropTypes.func
 }
 
 registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
