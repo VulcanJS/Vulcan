@@ -114,6 +114,7 @@ addStrings('en', {
 
   "app.loading": "Loading…",
   "app.404": "Sorry, we couldn't find what you were looking for.",
+  "app.missing_document":  "Sorry, we couldn't find the document you were looking for.",
   "app.powered_by": "Built with VulcanJS",
   "app.or": "Or",
   "app.noPermission": "Sorry, you do not have the permission to do this at this time.",
@@ -127,6 +128,7 @@ addStrings('en', {
   "app.schema_validation_error": "Schema validation error",
 
   "cards.edit": "Edit",
+  "datatable.new": "New",
   "datatable.edit": "Edit",
 
   "admin": "Admin",

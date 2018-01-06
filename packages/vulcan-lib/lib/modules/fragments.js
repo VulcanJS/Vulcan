@@ -62,7 +62,7 @@ export const getFragmentObject = (fragmentText, subFragments) => {
       throw new Error(`Subfragment “${subFragmentName}” has not been registered, yet.`);
     }
     // return subfragment's gql fragment
-    if (!Fragments[subFragmentName].fragmentObject) {
+    if (!Fragments[subFragmentName] || !Fragments[subFragmentName].fragmentObject) {
       throw new Error(`Subfragment “${subFragmentName}” of fragment “${extractFragmentName(fragmentText)}” has not been initialized yet.`);
     }
     return Fragments[subFragmentName].fragmentObject;

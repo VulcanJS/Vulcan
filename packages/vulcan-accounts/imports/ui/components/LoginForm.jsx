@@ -647,7 +647,7 @@ export class AccountsLoginForm extends Tracker.Component {
           }
         }
         else {
-          loginResultCallback(() => this.state.onSignedInHook());
+          loginResultCallback(() => this.state.onSignedInHook(this.props));
           this.setState({
             formState: STATES.PROFILE,
             password: null,
@@ -718,7 +718,7 @@ export class AccountsLoginForm extends Tracker.Component {
         this.setState({ formState: STATES.PROFILE });
         this.clearDefaultFieldValues();
         loginResultCallback(() => {
-          Meteor.setTimeout(() => this.state.onSignedInHook(), 100);
+          Meteor.setTimeout(() => this.state.onSignedInHook(this.props), 100);
         });
       }
     });

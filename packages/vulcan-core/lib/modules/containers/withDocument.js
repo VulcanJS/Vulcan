@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getSetting, getFragment, getFragmentName } from 'meteor/vulcan:core';
@@ -47,7 +48,7 @@ export default function withDocument (options) {
     },
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
-
+      
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
@@ -57,6 +58,11 @@ export default function withDocument (options) {
         fragment,
         data,
       };
+
+      if (data.error) {
+        // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+        props.error = data.error.graphQLErrors[0];
+      }
 
       return props;
     },

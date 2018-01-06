@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 function trackInternal(eventName, eventProperties) {
   const { apolloClient, store } = getRenderContext();
   const mutation = gql`
-    mutation EventsNew($document: EventsInput) {
-      EventsNew(document: $document) {
+    mutation AnalyticsEventsNew($document: AnalyticsEventsInput) {
+      AnalyticsEventsNew(document: $document) {
         name
         createdAt
       }

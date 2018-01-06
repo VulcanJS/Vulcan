@@ -5,6 +5,7 @@ Default list, single, and total resolvers
 */
 
 import { Utils, debug } from 'meteor/vulcan:core';
+import { createError } from 'apollo-errors';
 
 const defaultOptions = {
   cacheMaxAge: 300
@@ -89,6 +90,11 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         // don't use Dataloader if doc is selected by slug
         const doc = documentId ? await collection.loader.load(documentId) : (slug ? collection.findOne({slug}) : collection.findOne());
+
+        if (!doc) {
+          const MissingDocumentError = createError('app.missing_document', {message: 'app.missing_document'});
+          throw new MissingDocumentError({data: {documentId, slug}});
+        }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
