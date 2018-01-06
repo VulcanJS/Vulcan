@@ -1,5 +1,6 @@
 import { Components, registerComponent, getSetting, registerSetting } from 'meteor/vulcan:core';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 registerSetting('forum.numberOfDays', 5, 'Number of days to display in Daily view');
