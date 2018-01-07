@@ -71,12 +71,12 @@ export const runCallbacks = function () {
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
-    return callbacks.reduce(function(accumulator, callback) {
+    return callbacks.reduce(function (accumulator, callback) {
 
-      debug(`// Running callback [${callback.name}] on hook [${hook}]`);
+      debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${hook}]\x1b[0m`);
 
       const newArguments = [accumulator].concat(args);
-      
+
       try {
         const result = callback.apply(this, newArguments);
 
@@ -94,7 +94,7 @@ export const runCallbacks = function () {
         }
 
       } catch (error) {
-        console.log(`// error at callback [${callback.name}] in hook [${hook}]`);
+        console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${hook}]\x1b[0m`);
         console.log(error);
         if (error.break || error.data && error.data.break) {
           throw error;
@@ -128,8 +128,8 @@ export const runCallbacksAsync = function () {
     // use defer to avoid holding up client
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
-      callbacks.forEach(function(callback) {
-        debug(`// Running async callback [${callback.name}] on hook [${hook}]`);
+      callbacks.forEach(function (callback) {
+        debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
         callback.apply(this, args);
       });
     });
