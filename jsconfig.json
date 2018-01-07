@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6"
+  },
+  "include": [
+    "packages/**/*"
+  ],
+  "exclude": [
+    "packages/_buffer",
+    "packages/_boilerplate-generator"
+  ],
+  "typeAcquisition": {
+    "enable": true
+  },
+}
