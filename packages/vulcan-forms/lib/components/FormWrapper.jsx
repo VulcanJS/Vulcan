@@ -144,7 +144,7 @@ class FormWrapper extends PureComponent {
       fragment: queryFragment,
       extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
-      enableCache: false,    
+      enableCache: false,
     };
 
     // options for withNew, withEdit, and withRemove HoCs
@@ -157,9 +157,9 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return loading ? 
-        <Components.Loading /> : 
-        <Form 
+      return loading ?
+        <Components.Loading /> :
+        <Form
           document={document}
           loading={loading}
           {...childProps}
@@ -179,7 +179,7 @@ class FormWrapper extends PureComponent {
       )(Loader);
 
       return <WrappedComponent documentId={this.props.documentId} slug={this.props.slug} />
-    
+
     } else {
 
       if (extraQueries && extraQueries.length) {
@@ -188,23 +188,23 @@ class FormWrapper extends PureComponent {
           query formNewExtraQuery {
             ${extraQueries}
           }`, {
-          alias: 'withExtraQueries',
-          props: returnedProps => {
-            const { ownProps, data } = returnedProps;
-            console.log(data)
-            const props = {
-              loading: data.loading,
-              data,
-            };
-            return props;
-          },
-        });
+            alias: 'withExtraQueries',
+            props: returnedProps => {
+              const { ownProps, data } = returnedProps;
+              console.log(data)
+              const props = {
+                loading: data.loading,
+                data,
+              };
+              return props;
+            },
+          });
 
         WrappedComponent = compose(
           extraQueriesHoC,
           withNew(mutationOptions)
         )(Loader);
-        
+
       } else {
         WrappedComponent = compose(
           withNew(mutationOptions)
@@ -212,14 +212,8 @@ class FormWrapper extends PureComponent {
       }
 
       return <WrappedComponent {...childProps} {...parentProps} />;
-    
-    }
-  }
 
-  shouldComponentUpdate(nextProps) {
-    // prevent extra re-renderings for unknown reasons
-    // re-render only if the document selector changes
-    return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
+    }
   }
 
   render() {
@@ -264,14 +258,6 @@ FormWrapper.defaultProps = {
 FormWrapper.contextTypes = {
   closeCallback: PropTypes.func,
   intl: intlShape
-}
-
-FormWrapper.childContextTypes = {
-  autofilledValues: PropTypes.object,
-  addToAutofilledValues: PropTypes.func,
-  updateCurrentValues: PropTypes.func,
-  throwError: PropTypes.func,
-  getDocument: PropTypes.func
 }
 
 registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
