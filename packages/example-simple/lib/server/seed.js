@@ -1,6 +1,7 @@
 /*
 
-Seed the database with some dummy content. 
+server/seed.js #tutorial-step-5 - 
+This is a file to seed the database with some dummy content. 
 
 */
 
