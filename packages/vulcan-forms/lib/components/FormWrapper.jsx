@@ -158,7 +158,7 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return loading ?
+      return (!document && loading) ?
         <Components.Loading /> :
         <Form
           document={document}

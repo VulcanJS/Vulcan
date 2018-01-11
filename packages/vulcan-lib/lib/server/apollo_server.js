@@ -22,10 +22,12 @@ import { runCallbacks } from '../modules/callbacks.js';
 
 export let executableSchema;
 
-// see https://github.com/apollographql/apollo-cache-control
+registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
 
+// see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
-const engineConfig = { 
+const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
+const engineConfig = {
   apiKey: engineApiKey,
   // "origins": [
   //   {
@@ -64,9 +66,9 @@ const engineConfig = {
   //   "endpointUrl": "https://engine-report.apollographql.com",
   //   "debugReports": true
   // },
-  // "logging": {
-  //   "level": "DEBUG"
-  // }
+  "logging": {
+    "level": engineLogLevel
+  }
 };
 let engine;
 if (engineApiKey) {
@@ -83,7 +85,7 @@ const defaultConfig = {
   graphiqlOptions: {
     passHeader: "'Authorization': localStorage['Meteor.loginToken']", // eslint-disable-line quotes
   },
-  configServer: (graphQLServer) => {},
+  configServer: (graphQLServer) => { },
 };
 
 const defaultOptions = {
@@ -208,7 +210,7 @@ Meteor.startup(() => {
 
     type Query {
       ${GraphQLSchema.queries.map(q => (
-`${q.description ? `# ${q.description}` : ''}
+      `${q.description ? `# ${q.description}` : ''}
 ${q.query}
 `)).join('\n')}
     }
@@ -216,7 +218,7 @@ ${q.query}
     ${GraphQLSchema.mutations.length > 0 ? `
     type Mutation {
       ${GraphQLSchema.mutations.map(m => (
-`${m.description ? `# ${m.description}` : ''}
+        `${m.description ? `# ${m.description}` : ''}
 ${m.mutation}
 `)).join('\n')}
     }
