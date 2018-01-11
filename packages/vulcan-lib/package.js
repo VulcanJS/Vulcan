@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Vulcan libraries.',
-  version: '1.8.2',
+  version: '1.8.3',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
