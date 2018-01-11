@@ -15,7 +15,7 @@ import { GraphQLSchema } from '../modules/graphql.js';
 import { Utils } from '../modules/utils.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
 
-import { getSetting } from '../modules/settings.js';
+import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
