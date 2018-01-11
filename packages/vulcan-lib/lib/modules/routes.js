@@ -120,6 +120,17 @@ export const getRoute = name => {
   return routeDef;
 }
 
+export const getChildRoute = (name, index) => {
+  const routeDef = RoutesTable[name]['childRoutes'][index];
+
+  // components should be loaded by now (populateComponentsApp function), we can grab the component in the lookup table and assign it to the route
+  if (!routeDef.component && routeDef.componentName) {
+    routeDef.component = getComponent(routeDef.componentName);
+  }
+
+  return routeDef;
+}
+
 /**
  * Populate the lookup table for routes to be callable
  * ℹ️ Called once on app startup
@@ -127,6 +138,12 @@ export const getRoute = name => {
 export const populateRoutesApp = () => {
   // loop over each component in the list
   Object.keys(RoutesTable).map(name => {
+    // loop over child routes if available
+    if(typeof RoutesTable[name]['childRoutes'] !== typeof undefined){
+      RoutesTable[name]['childRoutes'].map((item, index) => {
+        RoutesTable[name]['childRoutes'][index] = getChildRoute(name, index);
+      });
+    }
 
     // populate an entry in the lookup table
     Routes[name] = getRoute(name);
