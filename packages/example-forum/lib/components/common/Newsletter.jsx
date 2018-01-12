@@ -17,7 +17,7 @@ class Newsletter extends PureComponent {
     this.dismissBanner = this.dismissBanner.bind(this);
 
     this.state = {
-      showBanner: showBanner(props.currentUser)
+      showBanner: false
     };
   }
 
@@ -25,6 +25,12 @@ class Newsletter extends PureComponent {
     if (nextProps.currentUser) {
       this.setState({showBanner: showBanner(nextProps.currentUser)});
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      showBanner: showBanner(this.props.currentUser)
+    });
   }
 
   async subscribeEmail(data) {
