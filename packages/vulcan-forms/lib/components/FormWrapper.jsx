@@ -145,6 +145,7 @@ class FormWrapper extends PureComponent {
       extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
       enableCache: false,
+      pollInterval: 0, // no polling, only load data once
     };
 
     // options for withNew, withEdit, and withRemove HoCs
@@ -157,7 +158,7 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return loading ?
+      return (!document && loading) ?
         <Components.Loading /> :
         <Form
           document={document}
