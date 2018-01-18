@@ -52,7 +52,7 @@ export class AccountsLoginForm extends Tracker.Component {
     // Set inital state.
     this.state = {
       messages: [],
-      waiting: true,
+      waiting: false,
       formState: props.formState ? props.formState : (currentUser ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
       onSignedInHook: resetStoreAndThen(postLogInAndThen(props.onSignedInHook || Accounts.ui._options.onSignedInHook)),
