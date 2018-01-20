@@ -63,7 +63,7 @@ class HeadTags extends PureComponent {
 
           {Head.meta.map((tag, index) => <meta key={index} {...tag}/>)}
           {Head.link.map((tag, index) => <link key={index} {...tag}/>)}
-          {Head.script.map((tag, index) => <script key={index} {...tag}>{contents}</script>)}
+          {Head.script.map((tag, index) => <script key={index} {...tag}>{tag.contents}</script>)}
 
         </Helmet>
 
