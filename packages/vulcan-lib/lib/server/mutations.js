@@ -119,6 +119,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   let modifier = {$set: set, $unset: unset};
 
   // get original document from database
+  // TODO: avoid fetching document a second time if possible
   let document = collection.findOne(documentId);
   
   debug('//------------------------------------//');

@@ -74,6 +74,7 @@ Datatable.propTypes = {
 }
 
 Datatable.defaultProps = {
+  showNew: true,
   showEdit: true,
   showSearch: true,
 }
