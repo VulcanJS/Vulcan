@@ -43,10 +43,6 @@ class FormWrapper extends PureComponent {
     this.FormComponent = this.getComponent(props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.FormComponent = this.getComponent(nextProps);
-  }
-
   // return the current schema based on either the schema or collection prop
   getSchema() {
     return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
@@ -130,12 +126,7 @@ class FormWrapper extends PureComponent {
     };
   }
 
-  /*
-
-  Note: parentProps are props received from parent component (i.e. <Components.SmartForm/> call)
-  
-  */
-  getComponent(parentProps) {
+  getComponent() {
 
     let WrappedComponent;
 
@@ -176,7 +167,6 @@ class FormWrapper extends PureComponent {
           document={document}
           loading={loading}
           {...childProps}
-          {...parentProps}
           {...props}
         />;
     };
@@ -223,13 +213,15 @@ class FormWrapper extends PureComponent {
         )(Form);
       }
 
-      return <WrappedComponent {...childProps} {...parentProps} />;
+      return <WrappedComponent {...childProps} />;
 
     }
   }
 
   render() {
-    return this.FormComponent;
+    const component = this.FormComponent;
+    const componentWithParentProps = React.cloneElement(component, this.props);
+    return componentWithParentProps;
   }
 }
 
