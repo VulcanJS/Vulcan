@@ -49,16 +49,28 @@ export class AccountsLoginForm extends Tracker.Component {
       }
     }
 
+    const doNothing = () => {};
+
+    const defaultHooks = {
+      onPreSignUpHook: props.redirect ? Accounts.ui._options.onPreSignUpHook : doNothing,
+      onPostSignUpHook: props.redirect ? Accounts.ui._options.onPostSignUpHook : doNothing,
+      onEnrollAccountHook: props.redirect ? Accounts.ui._options.onEnrollAccountHook : doNothing,
+      onResetPasswordHook: props.redirect ? Accounts.ui._options.onResetPasswordHook : doNothing,
+      onVerifyEmailHook: props.redirect ? Accounts.ui._options.onVerifyEmailHook : doNothing,
+      onSignedInHook: props.redirect ? Accounts.ui._options.onSignedInHook : doNothing,
+      onSignedOutHook: props.redirect ? Accounts.ui._options.onSignedOutHook : doNothing,
+    };
+
     // Set inital state.
     this.state = {
       messages: [],
       waiting: false,
       formState: props.formState ? props.formState : (currentUser ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
-      onSignedInHook: resetStoreAndThen(postLogInAndThen(props.onSignedInHook || Accounts.ui._options.onSignedInHook)),
-      onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || Accounts.ui._options.onSignedOutHook),
-      onPreSignUpHook: props.onPreSignUpHook || Accounts.ui._options.onPreSignUpHook,
-      onPostSignUpHook: resetStoreAndThen(postLogInAndThen(props.onPostSignUpHook || Accounts.ui._options.onPostSignUpHook)),
+      onSignedInHook: resetStoreAndThen(postLogInAndThen(props.onSignedInHook || defaultHooks.onSignedInHook)),
+      onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || defaultHooks.onSignedOutHook),
+      onPreSignUpHook: props.onPreSignUpHook || defaultHooks.onPreSignUpHook,
+      onPostSignUpHook: resetStoreAndThen(postLogInAndThen(props.onPostSignUpHook || defaultHooks.onPostSignUpHook)),
     };
   }
 
@@ -733,7 +745,10 @@ export class AccountsLoginForm extends Tracker.Component {
       password,
       formState,
       onSubmitHook
-    } = this.state;
+    } = this.state;
+
+    const self = this;
+
     let error = false;
     this.clearMessages();
 
@@ -792,13 +807,13 @@ export class AccountsLoginForm extends Tracker.Component {
         }
         else {
           onSubmitHook(null, formState);
-          this.setState({ formState: STATES.PROFILE, password: null });
+          self.setState({ formState: STATES.PROFILE, password: null });
           let currentUser = Accounts.user();
-          loginResultCallback(this.state.onPostSignUpHook.bind(this, _options, currentUser));
-          this.clearDefaultFieldValues();
+          loginResultCallback(self.state.onPostSignUpHook.bind(self, _options, currentUser));
+          self.clearDefaultFieldValues();
         }
 
-        this.setState({ waiting: false });
+        self.setState({ waiting: false });
       });
     };
     if (!error) {
@@ -973,6 +988,7 @@ AccountsLoginForm.propTypes = {
 AccountsLoginForm.defaultProps = {
   showSignInLink: true,
   showSignUpLink: true,
+  redirect: true,
 }
 
 AccountsLoginForm.contextTypes = {
