@@ -1,25 +1,80 @@
-import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { makeExecutableSchema } from 'graphql-tools';
 import deepmerge from 'deepmerge';
-import OpticsAgent from 'optics-agent'
 import DataLoader from 'dataloader';
 import { formatError } from 'apollo-errors';
-
+import compression from 'compression';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
+import { Engine } from 'apollo-engine';
 
 import { GraphQLSchema } from '../modules/graphql.js';
 import { Utils } from '../modules/utils.js';
 import { webAppConnectHandlersUse } from './meteor_patch.js';
 
+import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
 
 export let executableSchema;
+
+registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
+
+// see https://github.com/apollographql/apollo-cache-control
+const engineApiKey = getSetting('apolloEngine.apiKey');
+const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
+const engineConfig = {
+  apiKey: engineApiKey,
+  // "origins": [
+  //   {
+  //     "http": {
+  //       "url": "http://localhost:3000/graphql"
+  //     }
+  //   }
+  // ],
+  "stores": [
+    {
+      "name": "vulcanCache",
+      "inMemory": {
+        "cacheSize": 20000000
+      }
+    }
+  ],
+  // "sessionAuth": {
+  //   "store": "embeddedCache",
+  //   "header": "Authorization"
+  // },
+  // "frontends": [
+  //   {
+  //     "host": "127.0.0.1",
+  //     "port": 3000,
+  //     "endpoint": "/graphql",
+  //     "extensions": {
+  //       "strip": []
+  //     }
+  //   }
+  // ],
+  "queryCache": {
+    "publicFullQueryStore": "vulcanCache",
+    "privateFullQueryStore": "vulcanCache"
+  },
+  // "reporting": {
+  //   "endpointUrl": "https://engine-report.apollographql.com",
+  //   "debugReports": true
+  // },
+  "logging": {
+    "level": engineLogLevel
+  }
+};
+let engine;
+if (engineApiKey) {
+  engine = new Engine({ engineConfig });
+  engine.start();
+}
 
 // defaults
 const defaultConfig = {
@@ -30,7 +85,7 @@ const defaultConfig = {
   graphiqlOptions: {
     passHeader: "'Authorization': localStorage['Meteor.loginToken']", // eslint-disable-line quotes
   },
-  configServer: (graphQLServer) => {},
+  configServer: (graphQLServer) => { },
 };
 
 const defaultOptions = {
@@ -55,10 +110,13 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   config.configServer(graphQLServer);
 
-  // Use Optics middleware
-  if (process.env.OPTICS_API_KEY) {
-    graphQLServer.use(OpticsAgent.middleware());
+  // Use Engine middleware
+  if (engineApiKey) {
+    graphQLServer.use(engine.expressMiddleware());
   }
+
+  // compression
+  graphQLServer.use(compression());
 
   // GraphQL endpoint
   graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
@@ -80,10 +138,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context = {};
     }
 
-    // Add Optics to GraphQL context object
-    if (process.env.OPTICS_API_KEY) {
-      options.context.opticsContext = OpticsAgent.context(req);
-    }
+    // enable tracing and caching
+    options.tracing = true;
+    options.cacheControl = true;
 
     // Get the token from the header
     if (req.headers.authorization) {
@@ -97,6 +154,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       );
 
       if (user) {
+
+        // identify user to any server-side analytics providers
+        runCallbacks('events.identify', user);
+
         const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
         const expiresAt = Accounts._tokenExpiration(loginToken.when);
         const isExpired = expiresAt < new Date();
@@ -148,12 +209,18 @@ Meteor.startup(() => {
     ${GraphQLSchema.getAdditionalSchemas()}
 
     type Query {
-      ${GraphQLSchema.queries.join('\n')}
+      ${GraphQLSchema.queries.map(q => (
+      `${q.description ? `# ${q.description}` : ''}
+${q.query}
+`)).join('\n')}
     }
 
     ${GraphQLSchema.mutations.length > 0 ? `
     type Mutation {
-      ${GraphQLSchema.mutations.join('\n')}
+      ${GraphQLSchema.mutations.map(m => (
+        `${m.description ? `# ${m.description}` : ''}
+${m.mutation}
+`)).join('\n')}
     }
     ` : ''}
   `];
@@ -166,10 +233,6 @@ Meteor.startup(() => {
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
   });
-
-  if (process.env.OPTICS_API_KEY) {
-    OpticsAgent.instrumentSchema(executableSchema)
-  }
 
   createApolloServer({
     schema: executableSchema,

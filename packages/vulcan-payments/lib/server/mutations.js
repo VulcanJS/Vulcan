@@ -1,16 +1,16 @@
 import { addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Collections, addCallback } from 'meteor/vulcan:core';
 // import Users from 'meteor/vulcan:users';
-import { createCharge } from '../server/integrations/stripe.js';
+import { performAction } from '../server/integrations/stripe.js';
 
 const resolver = {
   Mutation: {
-    async createChargeMutation(root, args, context) {
-      return await createCharge(args);
+    async paymentActionMutation(root, args, context) {
+      return await performAction(args);
     },
   },
 };
 addGraphQLResolvers(resolver);
-addGraphQLMutation('createChargeMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON, coupon: String) : Chargeable');
+addGraphQLMutation('paymentActionMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON, coupon: String) : Chargeable');
 
 function CreateChargeableUnionType() {
   const chargeableSchema = `

@@ -77,7 +77,15 @@ const schema = {
     editableBy: ['members'],
     control: 'url',
     order: 10,
-    searchable: true
+    searchable: true,
+    form: {
+      query: `
+        SiteData{
+          logoUrl
+          title
+        }
+      `,
+    },
   },
   /**
     Title
@@ -198,16 +206,19 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins'],
     control: 'select',
-    onInsert: document => {
-      if (document.userId && !document.status) {
-        const user = Users.findOne(document.userId);
-        return Posts.getDefaultStatus(user);
+    onInsert: (document, currentUser) => {
+      if (!document.status) {
+        return Posts.getDefaultStatus(currentUser);
+      }
+    },
+    onEdit: (modifier, document, currentUser) => {
+      // if for some reason post status has been removed, give it default status
+      if (modifier.$unset && modifier.$unset.status) {
+        return Posts.getDefaultStatus(currentUser);
       }
     },
     form: {
-      noselect: true,
       options: () => Posts.statuses,
-      group: 'admin'
     },
     group: formGroups.admin
   },
@@ -367,8 +378,8 @@ const schema = {
     optional: true,
     resolveAs: {
       type: 'String',
-      resolver: (booking, args, context) => {
-        return moment(booking.endAt).format('dddd, MMMM Do YYYY');
+      resolver: (post, args, context) => {
+        return moment(post.postedAt).format('dddd, MMMM Do YYYY');
       }
     }  
   },
@@ -403,6 +414,39 @@ const schema = {
       }
   },
 
+  emailShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getEmailShareUrl(post);
+      }
+    }
+  },
+
+  twitterShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getTwitterShareUrl(post);
+      }
+    }
+  },
+
+  facebookShareUrl: {
+    type: String,
+    optional: true,
+    resolveAs: {
+      type: 'String',
+      resolver: (post) => {
+        return Posts.getFacebookShareUrl(post);
+      }
+    }
+  },
+  
 };
 
 export default schema;

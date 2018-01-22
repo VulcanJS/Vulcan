@@ -34,11 +34,12 @@ Terms object can have the following properties:
          
 */
      
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getSetting, getFragment, getFragmentName } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
@@ -47,7 +48,7 @@ const withList = (options) => {
 
   // console.log(options)
   
-  const { collection, limit = 10, pollInterval = 20000, totalResolver = true } = options,
+  const { collection, limit = 10, pollInterval = getSetting('pollInterval', 20000), totalResolver = true, enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}ListQuery`,
         listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
@@ -66,12 +67,13 @@ const withList = (options) => {
 
   // build graphql query from options
   const query = gql`
-    query ${queryName}($terms: JSON) {
-      ${totalResolver ? `${totalResolverName}(terms: $terms)` : ``}
-      ${listResolverName}(terms: $terms) {
+    query ${queryName}($terms: JSON, $enableCache: Boolean) {
+      ${totalResolver ? `${totalResolverName}(terms: $terms, enableCache: $enableCache)` : ``}
+      ${listResolverName}(terms: $terms, enableCache: $enableCache) {
         __typename
         ...${fragmentName}
       }
+      ${extraQueries || ''}
     }
     ${fragment}
   `;
@@ -106,9 +108,11 @@ const withList = (options) => {
         options({terms, paginationTerms, client: apolloClient}) {
           // get terms from options, then props, then pagination
           const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
-          return {
+
+          const graphQLOptions = {
             variables: {
               terms: mergedTerms,
+              enableCache,
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
@@ -119,18 +123,27 @@ const withList = (options) => {
             
             },
           };
+
+          if (options.fetchPolicy) {
+            graphQLOptions.fetchPolicy = options.fetchPolicy
+          }
+          
+          return graphQLOptions;
         },
 
         // define props returned by graphql HoC
         props(props) {
 
+          // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
                 // results = Utils.convertDates(collection, props.data[listResolverName]),
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
-                loading = props.data.loading,
-                error = props.data.error;
+                loading = props.data.networkStatus === 1,
+                loadingMore = props.data.networkStatus === 2,
+                error = props.data.error,
+                propertyName = options.propertyName || 'results';
 
           if (error) {
             console.log(error);
@@ -139,8 +152,9 @@ const withList = (options) => {
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
-            loading: networkStatus === 1,
-            results,
+            loading,
+            loadingMore,
+            [ propertyName ]: results,
             totalCount,
             refetch,
             networkStatus,
@@ -179,7 +193,8 @@ const withList = (options) => {
 
             fragmentName,
             fragment,
-            ...props.ownProps // pass on the props down to the wrapped component
+            ...props.ownProps, // pass on the props down to the wrapped component
+            data: props.data,
           };
         },
       }

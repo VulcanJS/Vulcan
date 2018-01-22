@@ -9,7 +9,8 @@ import { performVoteServer } from 'meteor/vulcan:voting';
  */
 function CommentsNewUpvoteOwnComment(comment) {
   var commentAuthor = Users.findOne(comment.userId);
-  return {...comment, ...performVoteServer({ document: comment, voteType: 'upvote', collection: Comments, user: commentAuthor })};
+  const votedComent = performVoteServer({ document: comment, voteType: 'upvote', collection: Comments, user: commentAuthor })
+  return {...comment, ...votedComent};
 }
 
-addCallback('comments.new.async', CommentsNewUpvoteOwnComment);
+addCallback('comments.new.after', CommentsNewUpvoteOwnComment);

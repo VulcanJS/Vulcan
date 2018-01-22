@@ -2,6 +2,7 @@ export const Head = {
   meta: [],
   link: [],
   script: [],
+  components: [],
 }
 
 export const removeFromHeadTags = (type, name)=>{

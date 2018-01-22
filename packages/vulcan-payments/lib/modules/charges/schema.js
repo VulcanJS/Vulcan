@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 const schema = {
 
@@ -24,6 +25,16 @@ const schema = {
   
   // custom properties
 
+  associatedCollection: {
+    type: String,
+    optional: true,
+  },
+
+  associatedId: {
+    type: String,
+    optional: true,
+  },
+
   tokenId: {
     type: String,
     optional: false,
@@ -46,6 +57,7 @@ const schema = {
 
   data: {
     type: Object,
+    viewableBy: ['guests'],
     blackbox: true,
   },
 
@@ -57,6 +69,32 @@ const schema = {
   ip: {
     type: String,
     optional: true,
+  },
+
+  // GraphQL only
+
+  createdAtFormatted: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return moment(charge.createdAt).format('dddd, MMMM Do YYYY');
+      }
+    }  
+  },
+
+  stripeChargeUrl: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return `https://dashboard.stripe.com/payments/${charge.data.id}`;
+      }
+    } 
   },
 
 };

@@ -7,12 +7,12 @@ Package.onUse(function (api) {
   api.use([
 
     // vulcan core
-    'vulcan:core',
+    'vulcan:core@1.8.5',
 
     // vulcan packages
-    'vulcan:voting',
-    'vulcan:forms',
-    'vulcan:accounts',
+    'vulcan:voting@1.8.5',
+    'vulcan:forms@1.8.5',
+    'vulcan:accounts@1.8.5',
     
   ]);
 

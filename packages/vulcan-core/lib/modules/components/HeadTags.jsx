@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { registerComponent, Utils, getSetting, registerSetting, Head } from 'meteor/vulcan:lib';
+import { compose } from 'react-apollo';
 
 registerSetting('logoUrl', null, 'Absolute URL for the logo image');
 registerSetting('title', 'My App', 'App title');
@@ -13,9 +14,9 @@ registerSetting('faviconUrl', '/img/favicon.ico', 'Favicon absolute URL');
 class HeadTags extends PureComponent {
   render() {
 
-    const url = !!this.props.url ? this.props.url : Utils.getSiteUrl();
-    const title = !!this.props.title ? this.props.title : getSetting('title', 'My App');
-    const description = !!this.props.description ? this.props.description : getSetting('tagline') || getSetting('description');
+    const url = this.props.url || Utils.getSiteUrl();
+    const title = this.props.title || getSetting('title', 'My App');
+    const description = this.props.description || getSetting('tagline') || getSetting('description');
 
     // default image meta: logo url, else site image defined in settings
     let image = !!getSetting('siteImage') ? getSetting('siteImage'): getSetting('logoUrl');
@@ -27,6 +28,10 @@ class HeadTags extends PureComponent {
 
     // add site url base if the image is stored locally
     if (!!image && image.indexOf('//') === -1) {
+      // remove starting slash from image path if needed
+      if (image.charAt(0) === '/') {
+        image = image.slice(1);
+      }
       image = Utils.getSiteUrl() + image;
     }
 
@@ -58,9 +63,21 @@ class HeadTags extends PureComponent {
 
           {Head.meta.map((tag, index) => <meta key={index} {...tag}/>)}
           {Head.link.map((tag, index) => <link key={index} {...tag}/>)}
-          {Head.script.map((tag, index) => <script key={index} {...tag}/>)}
+          {Head.script.map((tag, index) => <script key={index} {...tag}>{tag.contents}</script>)}
 
         </Helmet>
+
+        {Head.components.map((componentOrArray, index) => {
+          let HeadComponent;
+          if (Array.isArray(componentOrArray)) {
+            const [component, ...hocs] = componentOrArray;
+            HeadComponent = compose(...hocs)(component);
+          } else {
+            HeadComponent = componentOrArray;
+          }
+          return <HeadComponent key={index} />
+        })}
+        
       </div>
     );
   }

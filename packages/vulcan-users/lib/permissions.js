@@ -251,7 +251,7 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
  * @param {Object} field - The field being edited or inserted
  */
 Users.canInsertField = function (user, field) {
-  if (user && field.insertableBy) {
+  if (field.insertableBy) {
     return typeof field.insertableBy === 'function' ? field.insertableBy(user) : Users.isMemberOf(user, field.insertableBy)
   }
   return false;
@@ -263,7 +263,7 @@ Users.canInsertField = function (user, field) {
  * @param {Object} field - The field being edited or inserted
  */
 Users.canEditField = function (user, field, document) {
-  if (user && field.editableBy) {
+  if (field.editableBy) {
     return typeof field.editableBy === 'function' ? field.editableBy(user, document) : Users.isMemberOf(user, field.editableBy)
   }
   return false;

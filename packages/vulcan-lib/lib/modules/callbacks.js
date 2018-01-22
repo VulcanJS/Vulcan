@@ -1,10 +1,25 @@
 import { debug } from './debug.js';
 
 /**
+ * @summary A list of all registered callback hooks
+ */
+export const CallbackHooks = [];
+
+/**
  * @summary Callback hooks provide an easy way to add extra steps to common operations.
  * @namespace Callbacks
  */
 export const Callbacks = {};
+
+
+/**
+ * @summary Register a callback
+ * @param {String} hook - The name of the hook
+ * @param {Function} callback - The callback function
+ */
+export const registerCallback = function (callback) {
+  CallbackHooks.push(callback);
+};
 
 /**
  * @summary Add a callback function to a hook
@@ -56,12 +71,12 @@ export const runCallbacks = function () {
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
-    return callbacks.reduce(function(accumulator, callback) {
+    return callbacks.reduce(function (accumulator, callback) {
 
-      debug(`// Running callback [${callback.name}] on hook [${hook}]`);
+      debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${hook}]\x1b[0m`);
 
       const newArguments = [accumulator].concat(args);
-      
+
       try {
         const result = callback.apply(this, newArguments);
 
@@ -72,14 +87,14 @@ export const runCallbacks = function () {
 
         if (typeof result === 'undefined') {
           // if result of current iteration is undefined, don't pass it on
-          console.log(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
+          // debug(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
           return accumulator
         } else {
           return result;
         }
 
       } catch (error) {
-        console.log(`// error at callback [${callback.name}] in hook [${hook}]`);
+        console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${hook}]\x1b[0m`);
         console.log(error);
         if (error.break || error.data && error.data.break) {
           throw error;
@@ -113,8 +128,8 @@ export const runCallbacksAsync = function () {
     // use defer to avoid holding up client
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
-      callbacks.forEach(function(callback) {
-        // console.log("// "+hook+": running callback ["+callback.name+"] at "+moment().format("hh:mm:ss"))
+      callbacks.forEach(function (callback) {
+        debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
         callback.apply(this, args);
       });
     });

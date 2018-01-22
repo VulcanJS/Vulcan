@@ -104,6 +104,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
+    viewableBy: ['guests'],
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -307,6 +308,7 @@ const schema = {
   pageUrl: {
     type: String,
     optional: true,
+    viewableBy: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (user, args, context) => {

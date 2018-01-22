@@ -4,7 +4,7 @@ import { Components, registerComponent, getSetting, registerSetting, withCurrent
 import Users from 'meteor/vulcan:users';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
-import withCreateCharge from '../containers/withCreateCharge.js';
+import withPaymentAction from '../containers/withPaymentAction.js';
 import { Products } from '../modules/products.js';
 
 const stripeSettings = getSetting('stripe');
@@ -22,7 +22,7 @@ class Checkout extends React.Component {
 
   onToken(token) {
 
-    const {createChargeMutation, productKey, associatedCollection, associatedDocument, callback, properties, currentUser, flash, coupon} = this.props;
+    const {paymentActionMutation, productKey, associatedCollection, associatedDocument, callback, properties, currentUser, flash, coupon} = this.props;
 
     this.setState({ loading: true });
 
@@ -36,7 +36,7 @@ class Checkout extends React.Component {
       coupon,
     }
 
-    createChargeMutation(args).then(response => {
+    paymentActionMutation(args).then(response => {
 
       // not needed because we just unmount the whole component:
       this.setState({ loading: false });
@@ -72,7 +72,8 @@ class Checkout extends React.Component {
     const definedProduct = Products[productKey];
     const product = typeof definedProduct === 'function' ? definedProduct(this.props.associatedDocument) : definedProduct || sampleProduct;
 
-    let amount = product.amount;
+    // if product has initial amount, add it to amount (for subscription products)
+    let amount = product.initialAmount ? product.initialAmount + product.amount : product.amount;
 
     if (coupon && product.coupons && product.coupons[coupon]) {
       amount -= product.coupons[coupon];
@@ -109,7 +110,7 @@ Checkout.contextTypes = {
 
 const WrappedCheckout = (props) => {
   const { fragment, fragmentName } = props;
-  const WrappedCheckout = withCreateCharge({fragment, fragmentName})(Checkout);
+  const WrappedCheckout = withPaymentAction({fragment, fragmentName})(Checkout);
   return <WrappedCheckout {...props}/>;
 }
 

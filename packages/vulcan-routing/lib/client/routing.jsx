@@ -8,10 +8,8 @@ import { Meteor } from 'meteor/meteor';
 import {
   Components,
   addRoute,
-  addReducer, addMiddleware,
   Routes, populateComponentsApp, populateRoutesApp, runCallbacks, initializeFragments,
   getRenderContext,
-  dynamicLoader,
 } from 'meteor/vulcan:lib';
 
 import { RouterClient } from './router.jsx';
@@ -53,24 +51,26 @@ Meteor.startup(() => {
       context.addReducer({ apollo: apolloClientReducer });
       context.store.reload();
       context.store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
+      runCallbacks('router.client.rehydrate', { initialState, store: context.store});
     },
     historyHook(newHistory) {
-      const { history } = getRenderContext();
+      let { history } = getRenderContext();
+      history = runCallbacks('router.client.history', history, { newHistory });
       return history;
     },
     wrapperHook(appGenerator) {
       const { apolloClient, store } = getRenderContext();
-      const app = appGenerator({
+      const app = runCallbacks('router.client.wrapper', appGenerator({
         onUpdate: () => {
           // the first argument is an item to iterate on, needed by vulcan:lib/callbacks
           // note: this item is not used in this specific callback: router.onUpdate
-          runCallbacks('router.onUpdate', {}, store, apolloClient);
+          // runCallbacks('router.onUpdate', {}, store, apolloClient);
         },
         render: applyRouterMiddleware(useScroll((prevRouterProps, nextRouterProps) => {
           // if the action is REPLACE, return false so that we don't jump back to top of page
           return !(nextRouterProps.location.action === 'REPLACE');
         }))
-      });
+      }));
       return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
   };

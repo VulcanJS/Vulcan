@@ -11,6 +11,7 @@ import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
+import { isAbsolute } from 'path';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -126,10 +127,14 @@ Utils.getDateRange = function(pageNumber) {
 //////////////////////////
 
 /**
- * @summary Returns the user defined site URL or Meteor.absoluteUrl
+ * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
 Utils.getSiteUrl = function () {
-  return getSetting('siteUrl', Meteor.absoluteUrl());
+  const url = getSetting('siteUrl', Meteor.absoluteUrl());
+  if (url.slice(-1) !== '/') {
+    url += '/';
+  }
+  return url;
 };
 
 /**
@@ -288,7 +293,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
 
 Utils.getLogoUrl = () => {
   const logoUrl = getSetting('logoUrl');
-  if (!!logoUrl) {
+  if (logoUrl) {
     const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website
     return logoUrl.indexOf('://') > -1 ? logoUrl : prefix + logoUrl;

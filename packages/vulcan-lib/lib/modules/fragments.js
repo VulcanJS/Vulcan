@@ -12,6 +12,14 @@ export const extractFragmentName = fragmentText => fragmentText.match(/fragment 
 
 /*
 
+Get a query resolver's name from its text
+
+*/
+export const extractResolverName = resolverText => resolverText.trim().substr(0, resolverText.trim().indexOf('{'));
+
+
+/*
+
 Register a fragment, including its text, the text of its subfragments, and the fragment object
 
 */
@@ -50,7 +58,7 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   // the gql function expects an array of literals as first argument, and then sub-fragments as other arguments
   const gqlArguments = subFragments ? [literals, ...subFragments.map(subFragmentName => {
     // return subfragment's gql fragment
-    if (!Fragments[subFragmentName].fragmentObject) {
+    if (!Fragments[subFragmentName] || !Fragments[subFragmentName].fragmentObject) {
       throw new Error(`Subfragment “${subFragmentName}” of fragment “${extractFragmentName(fragmentText)}” has not been initialized yet.`);
     }
     return Fragments[subFragmentName].fragmentObject;

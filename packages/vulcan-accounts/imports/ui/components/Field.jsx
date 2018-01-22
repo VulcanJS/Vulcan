@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import { registerComponent } from 'meteor/vulcan:core';
 
+const autocompleteValues = {
+  'username': 'username',
+  'usernameOrEmail': 'email',
+  'email': 'email',
+  'password': 'current-password'
+}
+
 export class AccountsField extends PureComponent {
   constructor(props) {
     super(props);
@@ -51,9 +58,12 @@ export class AccountsField extends PureComponent {
     if (type == 'notice') {
       return <div className={ className }>{ label }</div>;
     }
+    
+    const autoComplete = autocompleteValues[id];
+
     return mount ? (
       <div className={ className } style={{marginBottom: '10px'}}>
-        <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } autoComplete={autoComplete }/>
         {message && (
           <span className={['message', message.type].join(' ').trim()}>
             {message.message}</span>

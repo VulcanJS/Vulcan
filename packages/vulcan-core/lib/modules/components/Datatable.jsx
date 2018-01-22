@@ -56,7 +56,8 @@ class Datatable extends PureComponent {
 
     return (
       <div className={`datatable datatable-${this.props.collection._name}`}>
-        {this.props.showSearch ? <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} /> : null}
+        {this.props.showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} />}
+        {this.props.showNew && <Components.NewButton collection={this.props.collection}/>}
         <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
       </div>
     )
@@ -68,10 +69,12 @@ Datatable.propTypes = {
   columns: PropTypes.array,
   options: PropTypes.object,
   showEdit: PropTypes.bool,
+  showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
 }
 
 Datatable.defaultProps = {
+  showNew: true,
   showEdit: true,
   showSearch: true,
 }
@@ -89,11 +92,11 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
   /*
 
   use either:
-  
+
   1. the column name translation
   2. the column name label in the schema (if the column name matches a schema field)
   3. the raw column name.
-  
+
   */
   const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
   return <th>{formattedLabel}</th>;
@@ -112,10 +115,12 @@ DatatableContents Component
 */
 
 const DatatableContents = (props) => {
-  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser} = props;
-  
+  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState} = props;
+
   if (loading) {
     return <Components.Loading />;
+  } else if (!results.length) {
+    return emptyState || null;
   }
 
   const isLoadingMore = networkStatus === 2;
@@ -123,26 +128,26 @@ const DatatableContents = (props) => {
 
   return (
     <div className="datatable-list">
-      <table className="table">
-        <thead>
-          <tr>
-            {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
-            {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
-        </tbody>
-      </table>
-      <div className="admin-users-load-more">
-        {hasMore ? 
-          isLoadingMore ? 
-            <Components.Loading/> 
-            : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button> 
-          : null
-        }
+        <table className="table">
+          <thead>
+            <tr>
+              {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column}/>)}
+              {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
+          </tbody>
+        </table>
+        <div className="admin-users-load-more">
+          {hasMore ?
+            isLoadingMore ?
+              <Components.Loading/>
+              : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            : null
+          }
+        </div>
       </div>
-    </div>
   )
 }
 registerComponent('DatatableContents', DatatableContents);
@@ -157,11 +162,11 @@ const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, 
   <tr className="datatable-item">
 
     {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} />)}
-  
-    {showEdit ? 
+
+    {showEdit ?
       <td>
-        <Components.ModalTrigger 
-          label={intl.formatMessage({id: 'datatable.edit'})} 
+        <Components.ModalTrigger
+          label={intl.formatMessage({id: 'datatable.edit'})}
           component={<Button bsStyle="primary"><FormattedMessage id="datatable.edit" /></Button>}
         >
           <Components.DatatableEditForm collection={collection} document={document} />
@@ -183,15 +188,32 @@ DatatableEditForm Component
 
 */
 const DatatableEditForm = ({ collection, document, closeModal }) =>
-  <Components.SmartForm 
+  <Components.SmartForm
     collection={collection}
     documentId={document._id}
     showRemove={true}
     successCallback={document => {
       closeModal();
     }}
+    removeSuccessCallback={document => {
+      closeModal();
+    }}
   />
 registerComponent('DatatableEditForm', DatatableEditForm);
+
+/*
+
+DatatableNewForm Component
+
+*/
+const DatatableNewForm = ({ collection, closeModal }) =>
+  <Components.SmartForm 
+    collection={collection}
+    successCallback={document => {
+      closeModal();
+    }}
+  />
+registerComponent('DatatableNewForm', DatatableNewForm);
 
 
 /*

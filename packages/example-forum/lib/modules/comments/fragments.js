@@ -25,6 +25,12 @@ registerFragment(`
         ...UsersMinimumInfo
       }
     }
-    # vulcan:voting
+    # voting
+    currentUserVotes{
+      ...VoteFragment
+    }
+    baseScore
+    score
   }
 `);
+
