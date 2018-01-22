@@ -5,6 +5,7 @@ vulcan:core
 ############ Language Packages ############
 
 vulcan:i18n-en-us
+# vulcan:i18n-es-es
 
 ############ Accounts Packages ############
 
