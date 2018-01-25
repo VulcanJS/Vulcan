@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withCurrentUser, getSetting, registerSetting, Components, registerComponent } from 'meteor/vulcan:core';
+import { Posts } from '../../modules/posts/index.js';
 
-const Header = (props, context) => {
+const Header = (props) => {
   
   const logoUrl = getSetting('logoUrl');
   const siteTitle = getSetting('title', 'My App');
@@ -25,7 +26,9 @@ const Header = (props, context) => {
           </div>
 
           <div className="nav-new-post">
-            <Components.PostsNewButton/>
+            <Components.ShowIf check={Posts.options.mutations.new.check}>
+              <Components.PostsNewButton/>
+            </Components.ShowIf>
           </div>
 
         </div>
