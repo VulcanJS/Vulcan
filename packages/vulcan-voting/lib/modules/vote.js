@@ -93,8 +93,8 @@ const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
   delete vote.__typename;
   Votes.insert(vote);
 
-  // update document score
-  collection.update({_id: document._id}, {$inc: {baseScore: vote.power }});
+  // update document score & set item as active
+  collection.update({_id: document._id}, {$inc: {baseScore: -vote.power }, $set: {inactive: false, score: newDocument.score}});
 
   newDocument.baseScore += vote.power;
   newDocument.score = recalculateScore(newDocument);
@@ -119,7 +119,7 @@ const cancelVoteClient = ({ document, voteType }) => {
 
     // clear out vote of this type
     newDocument.currentUserVotes = newVotes;
-  
+
   }
   return newDocument;
 }
@@ -146,7 +146,7 @@ const clearVotesServer = ({ document, user, collection }) => {
   const newDocument = _.clone(document);
   const votes = Votes.find({ documentId: document._id, userId: user._id}).fetch();
   if (votes.length) {
-    Votes.remove({documentId: document._id});
+    Votes.remove({documentId: document._id, userId: user._id});
     collection.update({_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
     newDocument.baseScore -= calculateTotalPower(votes);
     newDocument.score = recalculateScore(newDocument);
@@ -164,7 +164,7 @@ const cancelVoteServer = ({ document, voteType, collection, user }) => {
   const newDocument = _.clone(document);
 
   const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
-  
+
   // remove vote object
   Votes.remove({_id: vote._id});
 
@@ -194,7 +194,7 @@ Create new vote object
 
 */
 const createVote = ({ document, collectionName, voteType, user, voteId }) => {
-  
+
   const vote = {
     documentId: document._id,
     collectionName,
@@ -204,7 +204,7 @@ const createVote = ({ document, collectionName, voteType, user, voteId }) => {
     votedAt: new Date(),
     __typename: 'Vote'
   }
-  
+
   // when creating a vote from the server, voteId can sometimes be undefined
   if (voteId) vote._id = voteId;
 
@@ -255,7 +255,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
   // console.log('returnedDocument:', returnedDocument)
 
-  return returnedDocument;  
+  return returnedDocument;
 }
 
 /*
@@ -264,7 +264,7 @@ Server-side database operation
 
 */
 export const performVoteServer = ({ documentId, document, voteType = 'upvote', collection, voteId, user }) => {
-  
+
   const collectionName = collection.options.collectionName;
   document = document || collection.findOne(documentId);
 
@@ -272,7 +272,7 @@ export const performVoteServer = ({ documentId, document, voteType = 'upvote', c
   debug('collectionName: ', collectionName)
   debug('document: ', document)
   debug('voteType: ', voteType)
-  
+
   const voteOptions = {document, collection, voteType, user, voteId};
 
   if (!document || !user || !Users.canDo(user, `${collectionName.toLowerCase()}.${voteType}`)) {
@@ -287,9 +287,9 @@ export const performVoteServer = ({ documentId, document, voteType = 'upvote', c
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
     document = cancelVoteServer(voteOptions);
     // runCallbacksAsync(`votes.cancel.async`, vote, document, collection, user);
-  
+
   } else {
-  
+
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
@@ -299,7 +299,7 @@ export const performVoteServer = ({ documentId, document, voteType = 'upvote', c
     // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
     document = addVoteServer(voteOptions);
     // runCallbacksAsync(`votes.${voteType}.async`, vote, document, collection, user);
-  
+
   }
 
   // const newDocument = collection.findOne(documentId);
