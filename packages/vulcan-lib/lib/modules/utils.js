@@ -9,11 +9,9 @@ import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
-import { getSetting, registerSetting } from './settings.js';
+import { getSetting } from './settings.js';
 import { Routes } from './routes.js';
 import { isAbsolute } from 'path';
-
-registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
 /**
  * @summary The global namespace for Vulcan utils.
