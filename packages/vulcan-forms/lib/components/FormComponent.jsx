@@ -67,7 +67,7 @@ class FormComponent extends PureComponent {
     } else if (typeof this.props.control === 'string') { // else pick a predefined component
 
       switch (this.props.control) {
-        
+
         case 'number':
           return <Components.FormComponentNumber {...properties}/>;
 
@@ -81,29 +81,40 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentTextarea {...properties}/>;
 
         case 'checkbox':
+          properties.value = properties.value || false;
           return <Components.FormComponentCheckbox {...properties} />;
 
         case 'checkboxgroup':
+          if (!Array.isArray(properties.value)) {
+            properties.value = [properties.value];
+          }
           return <Components.FormComponentCheckboxGroup {...properties} />;
 
         case 'radiogroup':
           // not sure why, but onChange needs to be specified here
           properties.onChange = (name, value) => {this.props.updateCurrentValues({[name]: value})};
           return <Components.FormComponentRadioGroup {...properties} />;
-        
+
         case 'select':
-          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...properties.options];
+          const optionsAsStrings = properties.options.map(({ value, label }) => ({
+            value: value.toString(),
+            label,
+          }));
+          if (!properties.multiple && Array.isArray(properties.value) && properties.value.length === 0) {
+            properties.value = '';
+          }
+          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...optionsAsStrings];
           return <Components.FormComponentSelect {...properties} />;
-        
+
         case 'datetime':
           return <Components.FormComponentDateTime {...properties} />;
-        
+
         case 'time':
           return <Components.FormComponentTime {...properties} />;
-        
+
         case 'text':
           return <Components.FormComponentDefault {...properties}/>;
-        
+
         default: 
           const CustomComponent = Components[this.props.control];
           return <CustomComponent {...properties} document={document}/>;
