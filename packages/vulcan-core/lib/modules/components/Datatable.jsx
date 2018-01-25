@@ -6,6 +6,7 @@ import withList from '../containers/withList.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import Button from 'react-bootstrap/lib/Button';
 import { getFieldValue } from './Card.jsx';
+
 /*
 
 Datatable Component
@@ -54,10 +55,11 @@ class Datatable extends PureComponent {
 
     const DatatableWithList = withList(options)(Components.DatatableContents);
 
+    const canInsert = this.props.collection.options && this.props.collection.options.mutations && this.props.collection.options.mutations.new && this.props.collection.options.mutations.new.check(this.props.currentUser);
+
     return (
       <div className={`datatable datatable-${this.props.collection._name}`}>
-        {this.props.showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={this.state.value} onChange={this.updateQuery} />}
-        {this.props.showNew && <Components.NewButton collection={this.props.collection}/>}
+        <Components.DatatableAbove {...this.props} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
         <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
       </div>
     )
@@ -80,6 +82,19 @@ Datatable.defaultProps = {
 }
 registerComponent('Datatable', Datatable, withCurrentUser);
 
+
+/*
+
+DatatableAbove Component
+
+*/
+const DatatableAbove = ({ showSearch, showNew, canInsert, collection, value, updateQuery }) => 
+  <div className="datatable-above">
+    {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
+    {showNew && canInsert && <Components.NewButton collection={collection}/>}
+  </div>
+registerComponent('DatatableAbove', DatatableAbove);
+  
 /*
 
 DatatableHeader Component
@@ -158,12 +173,15 @@ DatatableRow Component
 
 */
 const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, { intl }) => {
+
+  const canEdit = collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
+
   return (
   <tr className="datatable-item">
 
     {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} />)}
 
-    {showEdit ?
+    {showEdit && canEdit ?
       <td>
         <Components.ModalTrigger
           label={intl.formatMessage({id: 'datatable.edit'})}
