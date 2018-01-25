@@ -15,7 +15,11 @@
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo"
+    "googleAnalyticsId": "123foo",
+
+    "intercom": {
+      "widgetUrl": "https://widget.intercom.io/widget/icygo7se"
+    }
 
   },
 
