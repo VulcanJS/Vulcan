@@ -136,39 +136,39 @@ export const createCollection = options => {
       if (resolvers.list) { // e.g. ""
         addGraphQLQuery(
 `${resolvers.list.name}(
-  # A JSON object that contains the query terms used to fetch data
-  terms: JSON, 
-  # How much to offset the results by
-  offset: Int, 
-  # A limit for the query
-  limit: Int, 
-  # Whether to enable caching for this query
-  enableCache: Boolean
-): [${typeName}]`, resolvers.list.description);
+    # A JSON object that contains the query terms used to fetch data
+    terms: JSON, 
+    # How much to offset the results by
+    offset: Int, 
+    # A limit for the query
+    limit: Int, 
+    # Whether to enable caching for this query
+    enableCache: Boolean
+  ): [${typeName}]`, resolvers.list.description);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
       if (resolvers.single) {
         addGraphQLQuery(
 `${resolvers.single.name}(
-  # The document's unique ID
-  documentId: String, 
-  # A unique slug identifying the document
-  slug: String, 
-  # Whether to enable caching for this query
-  enableCache: Boolean
-): ${typeName}`, resolvers.single.description);
+    # The document's unique ID
+    documentId: String, 
+    # A unique slug identifying the document
+    slug: String, 
+    # Whether to enable caching for this query
+    enableCache: Boolean
+  ): ${typeName}`, resolvers.single.description);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
       if (resolvers.total) {
         addGraphQLQuery(
 `${resolvers.total.name}(
-  # A JSON object that contains the query terms used to fetch data
-  terms: JSON,
-  # Whether to enable caching for this query
-  enableCache: Boolean
-): Int`, resolvers.total.description);
+    # A JSON object that contains the query terms used to fetch data
+    terms: JSON,
+    # Whether to enable caching for this query
+    enableCache: Boolean
+  ): Int`, resolvers.total.description);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
       addGraphQLResolvers({ Query: { ...queryResolvers } });
@@ -182,31 +182,31 @@ export const createCollection = options => {
       if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
         addGraphQLMutation(
 `${mutations.new.name}(
-  # The document to insert
-  document: ${collectionName}Input
-) : ${typeName}`, mutations.new.description);
+    # The document to insert
+    document: ${collectionName}Input
+  ) : ${typeName}`, mutations.new.description);
         mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
       }
       // edit
       if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
         addGraphQLMutation(
 `${mutations.edit.name}(
-  # The unique ID of the document to edit
-  documentId: String, 
-  # An array of fields to insert
-  set: ${collectionName}Input, 
-  # An array of fields to delete
-  unset: ${collectionName}Unset
-) : ${typeName}`, mutations.edit.description);
+    # The unique ID of the document to edit
+    documentId: String, 
+    # An array of fields to insert
+    set: ${collectionName}Input, 
+    # An array of fields to delete
+    unset: ${collectionName}Unset
+  ) : ${typeName}`, mutations.edit.description);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
         addGraphQLMutation(
 `${mutations.remove.name}(
-  # The unique ID of the document to delete
-  documentId: String
-) : ${typeName}`, mutations.remove.description);
+    # The unique ID of the document to delete
+    documentId: String
+  ) : ${typeName}`, mutations.remove.description);
         mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
       }
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
@@ -248,6 +248,11 @@ export const createCollection = options => {
 
     if (Meteor.isServer) {
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
+    }
+
+    // if there is no sort, default to sorting by createdAt descending
+    if (!parameters.options.sort) {
+      parameters.options.sort = { createdAt: -1 };
     }
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort

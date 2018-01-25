@@ -2,13 +2,11 @@ import { addGraphQLSchema, addGraphQLResolvers, addGraphQLQuery } from '../modul
 import { Utils } from '../modules/utils';
 import { getSetting, registerSetting } from '../modules/settings.js';
 
-const siteSchema = `
-  type Site {
-    title: String
-    url: String
-    logoUrl: String
-  }
-`;
+const siteSchema = `type Site {
+  title: String
+  url: String
+  logoUrl: String
+}`;
 addGraphQLSchema(siteSchema);
 
 const siteResolvers = {

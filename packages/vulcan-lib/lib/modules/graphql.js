@@ -67,7 +67,7 @@ export const GraphQLSchema = {
   getCollectionsSchemas() {
     const collectionsSchemas = this.collections.map(collection => {
       return this.generateSchema(collection);
-    }).join('\n');
+    }).join('');
     return collectionsSchemas;
   },
 
@@ -78,7 +78,7 @@ export const GraphQLSchema = {
   },
   // get extra schemas defined manually
   getAdditionalSchemas() {
-    const additionalSchemas = this.schemas.join('\n');
+    const additionalSchemas = this.schemas.join('');
     return additionalSchemas;
   },
 
@@ -133,7 +133,8 @@ export const GraphQLSchema = {
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
       if ((field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
 
-        const fieldDescription = field.description ? `# ${field.description}` : '';
+        const fieldDescription = field.description ? `# ${field.description}
+  ` : '';
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
@@ -162,18 +163,14 @@ export const GraphQLSchema = {
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(
-`${fieldDescription}
-${fieldName}: ${fieldType}
-`);
+`${fieldDescription}${fieldName}: ${fieldType}`);
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
             mainSchema.push(
-`${fieldDescription}
-${fieldName}: ${fieldType}
-`);
+`${fieldDescription}${fieldName}: ${fieldType}`);
           }
         }
 
@@ -207,6 +204,7 @@ ${fieldName}: ${fieldType}
 type ${mainTypeName} ${graphQLInterfaces}{
   ${mainSchema.join('\n  ')}
 }
+
 `
     }
 
@@ -216,6 +214,7 @@ type ${mainTypeName} ${graphQLInterfaces}{
 input ${collectionName}Input {
   ${inputSchema.join('\n  ')}
 }
+
 `
     }
 
@@ -225,6 +224,7 @@ input ${collectionName}Input {
 input ${collectionName}Unset {
   ${unsetSchema.join('\n  ')}
 }
+
 `
     }
 

@@ -202,28 +202,28 @@ Meteor.startup(() => {
 
   // typeDefs
   const generateTypeDefs = () => [`
-    scalar JSON
-    scalar Date
+scalar JSON
+scalar Date
 
-    ${GraphQLSchema.getCollectionsSchemas()}
-    ${GraphQLSchema.getAdditionalSchemas()}
+${GraphQLSchema.getCollectionsSchemas()}${GraphQLSchema.getAdditionalSchemas()}
 
-    type Query {
-      ${GraphQLSchema.queries.map(q => (
-      `${q.description ? `# ${q.description}` : ''}
-${q.query}
+type Query {
+
+${GraphQLSchema.queries.map(q => (
+    `${q.description ? `  # ${q.description}
+` : ''}  ${q.query}
+  `)).join('\n')}
+}
+
+${GraphQLSchema.mutations.length > 0 ? `type Mutation {
+
+${GraphQLSchema.mutations.map(m => (
+`${m.description ? `  # ${m.description}
+` : ''}  ${m.mutation}
 `)).join('\n')}
-    }
-
-    ${GraphQLSchema.mutations.length > 0 ? `
-    type Mutation {
-      ${GraphQLSchema.mutations.map(m => (
-        `${m.description ? `# ${m.description}` : ''}
-${m.mutation}
-`)).join('\n')}
-    }
-    ` : ''}
-  `];
+}
+` : ''}
+`];
 
   const typeDefs = generateTypeDefs();
 
