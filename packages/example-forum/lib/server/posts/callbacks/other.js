@@ -83,13 +83,13 @@ addCallback('users.remove.async', UsersRemoveDeletePosts);
 //  * @param {string} ip – the IP of the current user
 //  */
 Posts.increaseClicks = (post, ip) => {
-  const clickEvent = {
-    name: 'click',
-    properties: {
-      postId: post._id,
-      ip: ip
-    }
-  };
+  // const clickEvent = {
+  //   name: 'click',
+  //   properties: {
+  //     postId: post._id,
+  //     ip: ip
+  //   }
+  // };
 
   if (getSetting('forum.trackClickEvents', true)) {
     // make sure this IP hasn't previously clicked on this post

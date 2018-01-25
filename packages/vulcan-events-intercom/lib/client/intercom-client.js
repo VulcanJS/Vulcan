@@ -1,5 +1,10 @@
-import { getSetting, addCallback, Utils } from 'meteor/vulcan:core';
-import { addPageFunction, addInitFunction, addIdentifyFunction, addTrackFunction } from 'meteor/vulcan:events';
+import { getSetting, /* addCallback, Utils */ } from 'meteor/vulcan:core';
+import {
+  // addPageFunction,
+  addInitFunction,
+  addIdentifyFunction,
+  // addTrackFunction,
+} from 'meteor/vulcan:events';
 
 /*
 
@@ -7,6 +12,7 @@ Identify User
 
 */
 function intercomIdentify(currentUser) {
+  // eslint-disable-next-line no-undef
   intercomSettings = {
     app_id: getSetting('intercom.appId'),
     name: currentUser.displayName,
@@ -20,6 +26,7 @@ function intercomIdentify(currentUser) {
     var ic = w.Intercom;
     if (typeof ic === 'function') {
       ic('reattach_activator');
+      // eslint-disable-next-line no-undef
       ic('update', intercomSettings);
     } else {
       var d = document;
@@ -31,6 +38,7 @@ function intercomIdentify(currentUser) {
         i.q.push(args);
       };
       w.Intercom = i;
+      // eslint-disable-next-line no-inner-declarations
       function l() {
         var s = d.createElement('script');
         s.type = 'text/javascript';
@@ -73,6 +81,7 @@ function intercomInit() {
     var ic = w.Intercom;
     if (typeof ic === 'function') {
       ic('reattach_activator');
+      // eslint-disable-next-line no-undef
       ic('update', intercomSettings);
     } else {
       var d = document;
@@ -84,6 +93,7 @@ function intercomInit() {
         i.q.push(args);
       };
       w.Intercom = i;
+      // eslint-disable-next-line no-inner-declarations
       function l() {
         var s = d.createElement('script');
         s.type = 'text/javascript';

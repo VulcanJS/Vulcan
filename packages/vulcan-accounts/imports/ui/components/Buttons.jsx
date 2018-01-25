@@ -13,6 +13,6 @@ export class Buttons extends React.Component {
       </div>
     );
   }
-};
+}
 
 registerComponent('AccountsButtons', Buttons);

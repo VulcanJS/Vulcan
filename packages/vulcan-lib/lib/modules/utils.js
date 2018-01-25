@@ -11,7 +11,6 @@ import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { getSetting } from './settings.js';
 import { Routes } from './routes.js';
-import { isAbsolute } from 'path';
 
 /**
  * @summary The global namespace for Vulcan utils.
@@ -128,7 +127,7 @@ Utils.getDateRange = function(pageNumber) {
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
 Utils.getSiteUrl = function () {
-  const url = getSetting('siteUrl', Meteor.absoluteUrl());
+  let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) !== '/') {
     url += '/';
   }

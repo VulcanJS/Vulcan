@@ -1,10 +1,9 @@
 import { addTrackFunction } from 'meteor/vulcan:events';
-import { ApolloClient } from 'apollo-client';
 import { getRenderContext } from 'meteor/vulcan:lib';
 import gql from 'graphql-tag';
 
 function trackInternal(eventName, eventProperties) {
-  const { apolloClient, store } = getRenderContext();
+  const { apolloClient } = getRenderContext();
   const mutation = gql`
     mutation AnalyticsEventsNew($document: AnalyticsEventsInput) {
       AnalyticsEventsNew(document: $document) {

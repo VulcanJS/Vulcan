@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withCurrentUser, getSetting, registerSetting, Components, registerComponent } from 'meteor/vulcan:core';
+import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/vulcan:core';
 import { Posts } from '../../modules/posts/index.js';
 
 const Header = (props) => {

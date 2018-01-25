@@ -31,9 +31,12 @@ Picker.route('/out', ({ query}, req, res, next) => {
         res.end(`Invalid URL: ${query.url}`);
       }
     } catch (error) {
-      console.log('// /out error')
-      console.log(error)
-      console.log(query)
+      // eslint-disable-next-line no-console
+      console.log('// /out error');
+      // eslint-disable-next-line no-console
+      console.log(error);
+      // eslint-disable-next-line no-console
+      console.log(query);
     }
   } else {
     res.end("Please provide a URL");

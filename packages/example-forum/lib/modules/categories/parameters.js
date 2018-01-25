@@ -4,7 +4,7 @@ Categories parameter
 
 */
 
-import { addCallback, getSetting, registerSetting, getFragment, runQuery } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { Categories } from './collection.js';
 

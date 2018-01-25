@@ -1,5 +1,4 @@
 import { addGraphQLResolvers } from 'meteor/vulcan:lib';
-import Users from './collection.js';
 
 const specificResolvers = {
   Query: {

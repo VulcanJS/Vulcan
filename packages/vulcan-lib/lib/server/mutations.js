@@ -137,8 +137,10 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
 
     if (validationErrors.length) {
-      console.log('// validationErrors')
-      console.log(validationErrors)
+      // eslint-disable-next-line no-console
+      console.log('// validationErrors');
+      // eslint-disable-next-line no-console
+      console.log(validationErrors);
       const EditDocumentValidationError = createError('app.validation_error', {message: 'app.edit_document_validation_error'});
       throw new EditDocumentValidationError({data: {break: true, errors: validationErrors}});
     }

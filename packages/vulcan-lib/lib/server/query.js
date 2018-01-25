@@ -24,6 +24,7 @@ export const runQuery = async (query, variables = {}, context = { currentUser: {
   const result = await graphql(executableSchema, query, {}, context, variables);
 
   if (result.errors) {
+    // eslint-disable-next-line no-console
     console.log('runQuery error: '+result.errors[0].message);
     throw new Error(result.errors[0].message);
   }

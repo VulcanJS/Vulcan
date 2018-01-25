@@ -1,3 +1,5 @@
+import Votes from './votes/collection.js';
+
 export const VoteableCollections = [];
 
 export const makeVoteable = collection => {

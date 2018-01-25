@@ -1,6 +1,13 @@
 import Intercom from 'intercom-client';
-import { getSetting, addCallback, Utils } from 'meteor/vulcan:core';
-import { addPageFunction, addUserFunction, addInitFunction, addIdentifyFunction, addTrackFunction } from 'meteor/vulcan:events';
+import { getSetting, /* addCallback, Utils */ } from 'meteor/vulcan:core';
+import {
+  // addPageFunction,
+  addUserFunction,
+  // addInitFunction,
+  // addIdentifyFunction,
+  addTrackFunction,
+} from 'meteor/vulcan:events';
+import Users from 'meteor/vulcan:users';
 
 const token = getSetting('intercom.accessToken');
 
@@ -17,6 +24,7 @@ if (!token) {
   New User
 
   */
+  // eslint-disable-next-line no-inner-declarations
   function intercomNewUser(user) {
     intercomClient.users.create({
       email: user.email,
@@ -34,6 +42,7 @@ if (!token) {
   Track Event
 
   */
+  // eslint-disable-next-line no-inner-declarations
   function intercomTrackServer(eventName, eventProperties, currentUser) {
     intercomClient.events.create({
       event_name: eventName,

@@ -154,6 +154,7 @@ const withList = (options) => {
                 propertyName = options.propertyName || 'results';
 
           if (error) {
+            // eslint-disable-next-line no-console
             console.log(error);
           }
 

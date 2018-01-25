@@ -1,7 +1,4 @@
-import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-
-import { Utils } from '../modules/index.js';
 
 // clever webAppConnectHandlersUse
 export const webAppConnectHandlersUse = (name, route, fn, options) => {

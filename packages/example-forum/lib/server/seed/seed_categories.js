@@ -69,10 +69,12 @@ if (getSetting('forum.seedOnStart')) {
         });
         
         // Categories.insert(category);
+        // eslint-disable-next-line no-console
         console.log(`// Creating category “${category.name}”`); // eslint-disable-line
       }
     });
   } else if (!Categories.find().count()) {
+    // eslint-disable-next-line no-console
     console.log('// inserting dummy categories');
     // else if there are no categories yet, create dummy categories
     dummyCategories.forEach(category => {
