@@ -276,11 +276,13 @@ export const createCollection = options => {
       const query = escapeStringRegexp(terms.query);
 
       const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
-      parameters = Utils.deepExtend(true, parameters, {
-        selector: {
-          $or: searchableFieldNames.map(fieldName => ({[fieldName]: {$regex: query, $options: 'i'}}))
-        }
-      });
+      if (searchableFieldNames.length) {
+        parameters = Utils.deepExtend(true, parameters, {
+          selector: {
+            $or: searchableFieldNames.map(fieldName => ({[fieldName]: {$regex: query, $options: 'i'}}))
+          }
+        });
+      }
     }
 
     // limit number of items to 200 by default
