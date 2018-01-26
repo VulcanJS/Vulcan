@@ -119,10 +119,10 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />
 
-const Card = ({className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
+const Card = ({className, collection, document, currentUser, fields}, {intl}) => {
 
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canEdit = showEdit && currentUser && collection.options.mutations.edit.check(currentUser, document);
+  const canEdit = currentUser && collection.options.mutations.edit.check(currentUser, document);
 
   return (
     <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>
@@ -146,7 +146,6 @@ Card.propTypes = {
   document: PropTypes.object,
   currentUser: PropTypes.object,
   fields: PropTypes.array,
-  showEdit: PropTypes.bool
 }
 
 Card.contextTypes = {
