@@ -1,0 +1,1 @@
+Vulcan i18n es_ES package.
