@@ -28,7 +28,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo, compose } from 'react-apollo';
-import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove, getFragment } from 'meteor/vulcan:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
@@ -40,7 +40,7 @@ class FormWrapper extends PureComponent {
     super(props);
     // instantiate the wrapped component in constructor, not in render
     // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
-    this.FormComponent = this.getComponent();
+    this.FormComponent = this.getComponent(props);
   }
 
   // return the current schema based on either the schema or collection prop
@@ -104,6 +104,14 @@ class FormWrapper extends PureComponent {
       mutationFragment = typeof this.props.mutationFragment === 'string' ? gql`${this.props.mutationFragment}` : this.props.mutationFragment;
     }
 
+    // same with queryFragmentName and mutationFragmentName
+    if (this.props.queryFragmentName) {
+      queryFragment = getFragment(this.props.queryFragmentName);
+    }
+    if (this.props.mutationFragmentName) {
+      mutationFragment = getFragment(this.props.mutationFragmentName);
+    }
+
     // if any field specifies extra queries, add them
     const extraQueries = _.compact(queryFields.map(fieldName => {
       const field = this.getSchema()[fieldName];
@@ -120,14 +128,9 @@ class FormWrapper extends PureComponent {
 
   getComponent() {
 
-    // console.log(this)
-
     let WrappedComponent;
 
     const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
-
-    // props received from parent component (i.e. <Components.SmartForm/> call)
-    const parentProps = this.props;
 
     const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
 
@@ -158,13 +161,12 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return loading ?
+      return (!document && loading) ?
         <Components.Loading /> :
         <Form
           document={document}
           loading={loading}
           {...childProps}
-          {...parentProps}
           {...props}
         />;
     };
@@ -192,7 +194,6 @@ class FormWrapper extends PureComponent {
             alias: 'withExtraQueries',
             props: returnedProps => {
               const { ownProps, data } = returnedProps;
-              console.log(data)
               const props = {
                 loading: data.loading,
                 data,
@@ -212,13 +213,15 @@ class FormWrapper extends PureComponent {
         )(Form);
       }
 
-      return <WrappedComponent {...childProps} {...parentProps} />;
+      return <WrappedComponent {...childProps} />;
 
     }
   }
 
   render() {
-    return this.FormComponent;
+    const component = this.FormComponent;
+    const componentWithParentProps = React.cloneElement(component, this.props);
+    return componentWithParentProps;
   }
 }
 
@@ -228,7 +231,9 @@ FormWrapper.propTypes = {
   documentId: PropTypes.string, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
   queryFragment: PropTypes.object,
+  queryFragmentName: PropTypes.string,
   mutationFragment: PropTypes.object,
+  mutationFragmentName: PropTypes.string,
 
   // graphQL
   newMutation: PropTypes.func, // the new mutation

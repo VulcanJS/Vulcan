@@ -78,7 +78,7 @@ class Form extends Component {
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: props.prefilledProps || {},
+      autofilledValues: {},
       deletedValues: [],
       currentValues: {}
     };
@@ -280,9 +280,10 @@ class Form extends Component {
   // - if its value is currently being inputted, use that
   // - else if its value is provided by the autofilledValues object, use that
   // - else if its value was provided by the db, use that (i.e. props.document)
+  // - else if its value was provided by prefilledProps, use that
   getDocument() {
     const currentDocument = _.clone(this.props.document) || {};
-    const document = Object.assign(currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
+    const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
     return document;
   }
 
@@ -544,6 +545,7 @@ class Form extends Component {
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
     data = {
+      ...this.props.prefilledProps, // ex: can be values passed from the form's parent component
       ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
