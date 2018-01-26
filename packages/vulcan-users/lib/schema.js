@@ -1,6 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import Users from './collection.js';
-import { Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { Utils, getCollection } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit: 
@@ -23,7 +22,7 @@ const adminGroup = {
 };
 
 const ownsOrIsAdmin = (user, document) => {
-  return Users.owns(user, document) || Users.isAdmin(user);
+  return getCollection('Users').owns(user, document) || getCollection('Users').isAdmin(user);
 };
 
 /**
@@ -84,7 +83,7 @@ const schema = {
     group: adminGroup,
     onInsert: user => {
       // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+      const realUsersCount = getCollection('Users').find({'isDummy': {$ne: true}}).count();
       return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },
@@ -182,7 +181,7 @@ const schema = {
     viewableBy: ['guests'],
     onInsert: user => {
       if (user.email) {
-        return Users.avatar.hash(user.email);
+        return getCollection('Users').avatar.hash(user.email);
       }
     }
   },
@@ -203,7 +202,7 @@ const schema = {
     resolveAs: {
       fieldName: 'avatarUrl',
       type: 'String',
-      resolver: async (user, args, context) => {
+      resolver: async (user, args, { Users }) => {
         if (user.avatarUrl) {
           return user.avatarUrl;
         } else {
@@ -242,7 +241,7 @@ const schema = {
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const basicSlug = Utils.slugify(user.displayName);
-      return Utils.getUnusedSlug(Users, basicSlug);
+      return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     }
   },
   /**
@@ -271,8 +270,8 @@ const schema = {
     order: 60,
     resolveAs: {
       type: 'String',
-      resolver: (user, args, context) => {
-        return context.Users.getTwitterName(context.Users.findOne(user._id));
+      resolver: (user, args, { Users }) => {
+        return Users.getTwitterName(Users.findOne(user._id));
       },
     },
     onInsert: user => {
@@ -293,7 +292,7 @@ const schema = {
     viewableBy: ['guests'],
     form: {
       options: function () {
-        const groups = _.without(_.keys(Users.groups), "guests", "members", "admins");
+        const groups = _.without(_.keys(getCollection('Users').groups), "guests", "members", "admins");
         return groups.map(group => {return {value: group, label: group};});
       }
     },
@@ -311,7 +310,7 @@ const schema = {
     viewableBy: ['guests'],
     resolveAs: {
       type: 'String',
-      resolver: (user, args, context) => {
+      resolver: (user, args, { Users }) => {
         return Users.getProfileUrl(user, true);
       },
     }  

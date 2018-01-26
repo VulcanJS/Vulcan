@@ -12,6 +12,7 @@ import getSlug from 'speakingurl';
 import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
 import { isAbsolute } from 'path';
+import { getCollection } from './collections.js';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -169,6 +170,10 @@ Utils.getUnusedSlug = function (collection, slug) {
   }
 
   return slug+suffix;
+};
+
+Utils.getUnusedSlugByCollectionName = function (collectionName, slug) {
+  return Utils.getUnusedSlug(getCollection(collectionName), slug);
 };
 
 Utils.getShortUrl = function(post) {

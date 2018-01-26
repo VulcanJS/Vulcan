@@ -12,6 +12,8 @@ registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request')
 
 export const Collections = [];
 
+export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
+
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
  * initialize or replace the schema, or some fields, to extend the current schema
