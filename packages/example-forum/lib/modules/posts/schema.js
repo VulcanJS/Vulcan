@@ -400,18 +400,18 @@ const schema = {
     type: Array,
     optional: true,
     resolveAs: {
-        arguments: 'limit: Int = 5',
-        type: '[Comment]',
-        resolver: (post, { limit }, { currentUser, Users, Comments }) => {
-          const comments = Comments.find({ postId: post._id }, { limit }).fetch();
+      arguments: 'limit: Int = 5',
+      type: '[Comment]',
+      resolver: (post, { limit }, { currentUser, Users, Comments }) => {
+        const comments = Comments.find({ postId: post._id }, { limit }).fetch();
 
-          // restrict documents fields
-          const viewableComments = _.filter(comments, comments => Comments.checkAccess(currentUser, comments));
-          const restrictedComments = Users.restrictViewableFields(currentUser, Comments, viewableComments);
-        
-          return restrictedComments;
-        }
+        // restrict documents fields
+        const viewableComments = _.filter(comments, comments => Comments.checkAccess(currentUser, comments));
+        const restrictedComments = Users.restrictViewableFields(currentUser, Comments, viewableComments);
+      
+        return restrictedComments;
       }
+    }
   },
 
   emailShareUrl: {
