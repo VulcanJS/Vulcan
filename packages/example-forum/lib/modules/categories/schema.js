@@ -5,7 +5,6 @@ Categories schema
 */
 
 import { Utils } from 'meteor/vulcan:core';
-import { Categories } from './collection.js';
 
 export function getCategoriesAsOptions (categories) {
   // give the form component (here: checkboxgroup) exploitable data
@@ -70,13 +69,13 @@ const schema = {
     onInsert: category => {
       // if no slug has been provided, generate one
       const slug = category.slug || Utils.slugify(category.name);
-      return Utils.getUnusedSlug(Categories, slug);
+      return Utils.getUnusedSlugByCollectionName('Categories', slug);
     },
     onEdit: (modifier, category) => {
       // if slug is changing
       if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== category.slug) {
         const slug = modifier.$set.slug;
-        return Utils.getUnusedSlug(Categories, slug);
+        return Utils.getUnusedSlugByCollectionName('Categories', slug);
       }
     }
   },
