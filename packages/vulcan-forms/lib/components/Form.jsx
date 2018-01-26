@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import { Components, Utils, runCallbacks } from 'meteor/vulcan:core';
+import { Components, Utils, runCallbacks, getCollection } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -74,6 +74,7 @@ class Form extends Component {
     this.getErrorMessage = this.getErrorMessage.bind(this);
     // version of submitForm that is made available to context, behaves like updateCurrentValues but submits afterwards
     this.submitFormContext = this.submitFormContext.bind(this);
+    this.getCollection = this.getCollection.bind(this);
 
     this.state = {
       disabled: false,
@@ -92,9 +93,13 @@ class Form extends Component {
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
+  getCollection() {
+    return this.props.collection || getCollection(this.props.collectionName);
+  }
+
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
   }
 
   getFieldGroups() {
@@ -140,7 +145,7 @@ class Form extends Component {
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
         fieldSchema.form = fieldSchema.autoform;
-        console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
+        console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.getCollection()._name}' collection`); // eslint-disable-line
       }
 
       // replace value by prefilled value if value is empty
@@ -166,13 +171,13 @@ class Form extends Component {
       const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
       if (fieldOptions) {
         field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
-      
+
         // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
         if (!field.value && this.getFormType() === 'new') {
           field.value = _.where(field.options, {checked: true}).map(option => option.value);
         }
       }
-      
+
       // add any properties specified in fieldProperties or form as extra props passed on
       // to the form component
       const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
@@ -327,7 +332,7 @@ class Form extends Component {
   }
 
   getLabel(fieldName) {
-    return this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
+    return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
   }
 
   getErrorMessage(error) {
@@ -377,7 +382,7 @@ class Form extends Component {
             message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
 
           }
-  
+
           return <Components.FormFlash key={index} message={message} type="error"/>;
         })}
       </div>
@@ -619,7 +624,7 @@ class Form extends Component {
   render() {
 
     const fieldGroups = this.getFieldGroups();
-    const collectionName = this.props.collection._name;
+    const collectionName = this.getCollection()._name;
 
     return (
       <div className={"document-"+this.props.formType}>
@@ -631,9 +636,9 @@ class Form extends Component {
         >
 
           {this.renderErrors()}
-        
+
           {fieldGroups.map(group => <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
-    
+
           {this.props.repeatErrors && this.renderErrors()}
 
           <Components.FormSubmit submitLabel={this.props.submitLabel}
@@ -659,6 +664,14 @@ Form.propTypes = {
 
   // main options
   collection: PropTypes.object,
+  collectionName: (props, propName, componentName) => {
+    if (!props.collection && !props.collectionName) {
+      return new Error(`One of props 'collection' or 'collectionName' was not specified in '${componentName}'.`);
+    }
+    if (!props.collection && typeof props['collectionName'] !== 'string') {
+      return new Error(`Prop collectionName was not of type string in '${componentName}`);
+    }
+  },
   document: PropTypes.object, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
 

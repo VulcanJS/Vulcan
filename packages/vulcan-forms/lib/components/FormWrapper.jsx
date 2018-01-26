@@ -28,7 +28,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo, compose } from 'react-apollo';
-import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove, getFragment } from 'meteor/vulcan:core';
+import {
+  Components,
+  registerComponent,
+  withCurrentUser,
+  Utils,
+  withNew,
+  withEdit,
+  withRemove,
+  getFragment,
+  getCollection,
+} from 'meteor/vulcan:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
@@ -43,9 +53,13 @@ class FormWrapper extends PureComponent {
     this.FormComponent = this.getComponent(props);
   }
 
+  getCollection() {
+    return this.props.collection || getCollection(this.props.collectionName);
+  }
+
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
   }
 
   // if a document is being passed, this is an edit form
@@ -57,7 +71,7 @@ class FormWrapper extends PureComponent {
   // as well as what data to ask for as return value for the mutation
   getFragments() {
 
-    const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
+    const prefix = `${this.getCollection()._name}${Utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
 
     const schema = this.getSchema();
@@ -79,14 +93,14 @@ class FormWrapper extends PureComponent {
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
-      fragment ${fragmentName} on ${this.props.collection.typeName} {
+      fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
         ${queryFields.join('\n')}
       }
     `
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
-      fragment ${fragmentName} on ${this.props.collection.typeName} {
+      fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
         ${mutationFields.join('\n')}
       }
@@ -130,7 +144,7 @@ class FormWrapper extends PureComponent {
 
     let WrappedComponent;
 
-    const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
+    const prefix = `${this.getCollection()._name}${Utils.capitalize(this.getFormType())}`
 
     const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
 
@@ -143,7 +157,7 @@ class FormWrapper extends PureComponent {
     // options for withDocument HoC
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
-      collection: this.props.collection,
+      collection: this.getCollection(),
       fragment: queryFragment,
       extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
@@ -153,7 +167,7 @@ class FormWrapper extends PureComponent {
 
     // options for withNew, withEdit, and withRemove HoCs
     const mutationOptions = {
-      collection: this.props.collection,
+      collection: this.getCollection(),
       fragment: mutationFragment,
     };
 
@@ -227,7 +241,15 @@ class FormWrapper extends PureComponent {
 
 FormWrapper.propTypes = {
   // main options
-  collection: PropTypes.object.isRequired,
+  collection: PropTypes.object,
+  collectionName: (props, propName, componentName) => {
+    if (!props.collection && !props.collectionName) {
+      return new Error(`One of props 'collection' or 'collectionName' was not specified in '${componentName}'.`);
+    }
+    if (!props.collection && typeof props['collectionName'] !== 'string') {
+      return new Error(`Prop collectionName was not of type string in '${componentName}`);
+    }
+  },
   documentId: PropTypes.string, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
   queryFragment: PropTypes.object,
