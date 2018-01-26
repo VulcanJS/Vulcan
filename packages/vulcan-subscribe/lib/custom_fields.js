@@ -1,8 +1,8 @@
-import Users from "meteor/vulcan:users";
+import Users from 'meteor/vulcan:users';
 
 // note: leverage weak dependencies on packages
-const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
-const Categories = Package['vulcan:categories'] ? Package['vulcan:categories'].default : null;
+const Posts = Package['example-forum'] ? Package['example-forum'].Posts : null;
+const Categories = Package['example-forum'] ? Package['example-forum'].Categories : null;
 
 Users.addField([
   {
@@ -11,7 +11,7 @@ Users.addField([
       type: Object,
       optional: true,
       blackbox: true,
-      hidden: true, // never show this
+      hidden: true // never show this
     }
   },
   {
@@ -19,7 +19,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      hidden: true, // never show this,
+      hidden: true // never show this,
     }
   },
   {
@@ -27,7 +27,7 @@ Users.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      hidden: true, // never show this,
+      hidden: true // never show this,
     }
   },
   {
@@ -35,21 +35,20 @@ Users.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      hidden: true, // never show this
+      hidden: true // never show this
     }
   }
 ]);
 
 // check if vulcan:posts exists, if yes, add the custom fields to Posts
 if (!!Posts) {
-
   Posts.addField([
     {
       fieldName: 'subscribers',
       fieldSchema: {
         type: Array,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     },
     {
@@ -57,7 +56,7 @@ if (!!Posts) {
       fieldSchema: {
         type: String,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     },
     {
@@ -65,23 +64,21 @@ if (!!Posts) {
       fieldSchema: {
         type: Number,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     }
   ]);
-
 }
 
 // check if vulcan:categories exists, if yes, add the custom fields to Categories
 if (!!Categories) {
-
   Categories.addField([
     {
       fieldName: 'subscribers',
       fieldSchema: {
         type: Array,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     },
     {
@@ -89,7 +86,7 @@ if (!!Categories) {
       fieldSchema: {
         type: String,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     },
     {
@@ -97,9 +94,8 @@ if (!!Categories) {
       fieldSchema: {
         type: Number,
         optional: true,
-        hidden: true, // never show this
+        hidden: true // never show this
       }
     }
   ]);
-
 }

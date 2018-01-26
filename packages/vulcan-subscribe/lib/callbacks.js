@@ -1,4 +1,4 @@
-import { createNotification } from 'meteor/vulcan:notifications';
+import { createNotification } from 'meteor/example-forum';
 import Users from 'meteor/vulcan:users';
 import { addCallback } from 'meteor/vulcan:core';
 
@@ -6,24 +6,23 @@ import { addCallback } from 'meteor/vulcan:core';
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
 
 // note: leverage weak dependencies on packages
-const Comments = Package['vulcan:comments'] ? Package['vulcan:comments'].default : null;
-const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;
-const Categories = Package['vulcan:categories'] ? Package['vulcan:categories'].default : null;
+const Comments = Package['example-forum'] ? Package['example-forum'].Comments : null;
+const Posts = Package['example-forum'] ? Package['example-forum'].Posts : null;
+const Categories = Package['example-forum'] ? Package['example-forum'].Categories : null;
 
 /**
  * @summary Notify users subscribed to 'another user' whenever another user posts
  */
-function SubscribedCategoriesNotifications (post) {
-
+function SubscribedCategoriesNotifications(post) {
   if (Meteor.isServer && !!post.categories && !!post.categories.length) {
     // get the subscribers of the different categories from the post's categories
     const subscribers = post.categories
-                              // find the category from its id
-                              .map(categoryId => Categories.findOne({_id: categoryId}))
-                              // clean the array if none subscribe to this category
-                              .filter(category => typeof category.subscribers !== 'undefined' || !!category.subscribers)
-                              // build the subscribers list interested in these categories
-                              .reduce((subscribersList, category) => [...subscribersList, ...category.subscribers], []);
+      // find the category from its id
+      .map(categoryId => Categories.findOne({ _id: categoryId }))
+      // clean the array if none subscribe to this category
+      .filter(category => typeof category.subscribers !== 'undefined' || !!category.subscribers)
+      // build the subscribers list interested in these categories
+      .reduce((subscribersList, category) => [...subscribersList, ...category.subscribers], []);
 
     let userIdsNotified = [];
     const notificationData = {
@@ -31,9 +30,9 @@ function SubscribedCategoriesNotifications (post) {
     };
 
     if (!!subscribers && !!subscribers.length) {
-      // remove userIds of users that have already been notified and of post's author 
+      // remove userIds of users that have already been notified and of post's author
       let subscriberIdsToNotify = _.uniq(_.difference(subscribers, userIdsNotified, [post.userId]));
-      
+
       createNotification(subscriberIdsToNotify, 'newPost', notificationData);
 
       userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
@@ -44,10 +43,9 @@ function SubscribedCategoriesNotifications (post) {
 /**
  * @summary Notify users subscribed to the comment's thread
  */
-function SubscribedPostNotifications (comment) {
-    // note: dummy content has disableNotifications set to true
+function SubscribedPostNotifications(comment) {
+  // note: dummy content has disableNotifications set to true
   if (Meteor.isServer && !comment.disableNotifications) {
-
     const post = Posts.findOne(comment.postId);
 
     let userIdsNotified = [];
@@ -70,20 +68,19 @@ function SubscribedPostNotifications (comment) {
 /**
  * @summary Notify users subscribed to 'another user' whenever another user posts
  */
-function SubscribedUsersNotifications (post) {
+function SubscribedUsersNotifications(post) {
   if (Meteor.isServer) {
-
     let userIdsNotified = [];
     const notificationData = {
       post: _.pick(post, '_id', 'userId', 'title', 'url', 'author')
     };
 
-    const user = Users.findOne({_id: post.userId});
+    const user = Users.findOne({ _id: post.userId });
 
     if (!!user.subscribers && !!user.subscribers.length) {
-      // remove userIds of users that have already been notified and of post's author 
+      // remove userIds of users that have already been notified and of post's author
       let subscriberIdsToNotify = _.difference(user.subscribers, userIdsNotified, [user._id]);
-      
+
       createNotification(subscriberIdsToNotify, 'newPost', notificationData);
 
       userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
@@ -92,13 +89,13 @@ function SubscribedUsersNotifications (post) {
 }
 
 if (!!Posts && !!Comments) {
-  addCallback("comments.new.async", SubscribedPostNotifications);
+  addCallback('comments.new.async', SubscribedPostNotifications);
 }
 
 if (!!Posts) {
-  addCallback("posts.new.async", SubscribedUsersNotifications);
+  addCallback('posts.new.async', SubscribedUsersNotifications);
 }
 
 if (!!Posts && !!Categories) {
-  addCallback("posts.new.async", SubscribedCategoriesNotifications);
+  addCallback('posts.new.async', SubscribedCategoriesNotifications);
 }
