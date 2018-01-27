@@ -8,7 +8,7 @@ to check if the user has the proper permissions to actually insert a new picture
 */
 
 import React from 'react';
-import { Components, registerComponent, withCurrentUser, getFragment } from 'meteor/vulcan:core';
+import { Components, registerComponent, getFragment } from 'meteor/vulcan:core';
 
 import Pics from '../../modules/pics/collection.js';
 

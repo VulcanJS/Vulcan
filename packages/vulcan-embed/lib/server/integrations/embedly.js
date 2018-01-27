@@ -14,6 +14,7 @@ if (settings) {
 
   if(!apiKey) {
     // fail silently to still let the post be submitted as usual
+    // eslint-disable-next-line no-console
     console.log("Couldn't find an Embedly API key! Please add it to your Vulcan settings."); // eslint-disable-line
     return null;
   }
@@ -48,8 +49,10 @@ if (settings) {
         return embedlyData;
 
       } catch (error) {
-        console.log('// Embedly error')
-        console.log(error); // eslint-disable-line
+        // eslint-disable-next-line no-console
+        console.log('// Embedly error');
+        // eslint-disable-next-line no-console
+        console.log(error);
         // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
         const errorObject = JSON.parse(error.message.substring(13));
         throw new Error(errorObject.error_message);

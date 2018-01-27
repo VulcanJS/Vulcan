@@ -33,7 +33,8 @@ Users.avatar = {
    * @return {String}        md5 hash of the input
    */
   hash: function (string) {
-    var self = this
+    var self = this;
+    // eslint-disable-next-line babel/new-cap
     return CryptoJS.MD5(self.cleanString(string)).toString()
   },
 

@@ -47,7 +47,7 @@ export default function withDocument (options) {
       return graphQLOptions;
     },
     props: returnedProps => {
-      const { ownProps, data } = returnedProps;
+      const { /* ownProps, */ data } = returnedProps;
       
       const propertyName = options.propertyName || 'document';
       const props = {

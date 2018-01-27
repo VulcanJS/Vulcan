@@ -5,7 +5,8 @@ const DynamicLoading = ({ isLoading, pastDelay, error }) => {
   if (isLoading && pastDelay) {
     return <Components.Loading/>;
   } else if (error && !isLoading) {
-    console.log(error)
+    // eslint-disable-next-line no-console
+    console.log(error);
     return <p>Error!</p>;
   } else {
     return null;

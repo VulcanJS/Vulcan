@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { getSetting, registerSetting, Strings } from 'meteor/vulcan:lib';
+import { getSetting, Strings } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
 

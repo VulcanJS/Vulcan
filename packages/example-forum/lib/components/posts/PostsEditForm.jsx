@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, getFragment, withMessages, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withMessages, withCurrentUser } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Posts } from '../../modules/posts/index.js';
 import Users from "meteor/vulcan:users";

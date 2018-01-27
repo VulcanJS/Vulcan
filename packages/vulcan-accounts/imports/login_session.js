@@ -1,9 +1,6 @@
-import {Accounts} from 'meteor/accounts-base';
-import {
-  STATES,
-  loginResultCallback,
-  getLoginServices
-} from './helpers.js';
+/* eslint-disable meteor/no-session */
+import { Accounts } from 'meteor/accounts-base';
+import { loginResultCallback, getLoginServices } from './helpers.js';
 
 const VALID_KEYS = [
   'dropdownVisible',
@@ -72,12 +69,12 @@ if (Meteor.isClient){
       loginResultCallback(attemptInfo.type, attemptInfo.error);
   });
 
-  let doneCallback;
+  // let doneCallback;
 
   Accounts.onResetPasswordLink(function (token, done) {
     Accounts._loginButtonsSession.set('resetPasswordToken', token);
     Session.set(KEY_PREFIX + 'state', 'resetPasswordToken');
-    doneCallback = done;
+    // doneCallback = done;
 
     Accounts.ui._options.onResetPasswordHook();
   });
@@ -85,7 +82,7 @@ if (Meteor.isClient){
   Accounts.onEnrollmentLink(function (token, done) {
     Accounts._loginButtonsSession.set('enrollAccountToken', token);
     Session.set(KEY_PREFIX + 'state', 'enrollAccountToken');
-    doneCallback = done;
+    // doneCallback = done;
 
     Accounts.ui._options.onEnrollAccountHook();
   });

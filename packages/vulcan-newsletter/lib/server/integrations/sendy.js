@@ -22,8 +22,10 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( SendyAPI.subscribe, SendyAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log('// Sendy API error')
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log('// Sendy API error');
+      // eslint-disable-next-line no-console
+      console.log(error);
       if (error.message === 'Already subscribed.') {
         return {result: 'already-subscribed'}
       }
@@ -35,8 +37,10 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( SendyAPI.unsubscribe, SendyAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log('// Sendy API error')
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log('// Sendy API error');
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   };
 
@@ -45,8 +49,10 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( SendyAPI.createCampaign, SendyAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log('// Sendy API error')
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log('// Sendy API error');
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   };
 

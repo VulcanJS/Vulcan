@@ -11,9 +11,12 @@ const resolver = {
   Mutation: {
     getEmbedData(root, args, context) {
       const data = Embed[embedProvider].getData(args.url);
-      console.log('// getEmbedData')
-      console.log(args)
-      console.log(data)
+      // eslint-disable-next-line no-console
+      console.log('// getEmbedData');
+      // eslint-disable-next-line no-console
+      console.log(args);
+      // eslint-disable-next-line no-console
+      console.log(data);
       return data;
     },
   },

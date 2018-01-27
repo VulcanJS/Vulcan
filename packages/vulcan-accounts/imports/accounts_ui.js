@@ -1,10 +1,5 @@
 import { Accounts } from 'meteor/accounts-base';
-import {
-  redirect,
-  validatePassword,
-  validateEmail,
-  validateUsername,
-} from './helpers.js';
+import { redirect } from './helpers.js';
 
 /**
  * @summary Accounts UI

@@ -1,3 +1,4 @@
+/* global Vulcan */
 import { newMutation, registerSetting, getSetting } from 'meteor/vulcan:core';
 import moment from 'moment';
 import { Posts } from '../../modules/posts/index.js';
@@ -96,6 +97,7 @@ if (getSetting('forum.seedOnStart')) {
   }
 
   var createDummyUsers = function () {
+    // eslint-disable-next-line no-console
     console.log('// inserting dummy users…');
     createUser('Bruce', 'dummyuser1@telescopeapp.org');
     createUser('Arnold', 'dummyuser2@telescopeapp.org');
@@ -103,6 +105,7 @@ if (getSetting('forum.seedOnStart')) {
   };
 
   var createDummyPosts = function () {
+    // eslint-disable-next-line no-console
     console.log('// inserting dummy posts');
 
     createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
@@ -118,6 +121,7 @@ if (getSetting('forum.seedOnStart')) {
   };
 
   var createDummyComments = function () {
+    // eslint-disable-next-line no-console
     console.log('// inserting dummy comments…');
 
     createComment("read_this_first", "Bruce", "What an awesome app!");
@@ -137,6 +141,7 @@ if (getSetting('forum.seedOnStart')) {
     Posts.remove({isDummy: true});
     Comments.remove({isDummy: true});
     Categories.remove({isDummy: true});
+    // eslint-disable-next-line no-console
     console.log('// Getting started content removed');
   };
 

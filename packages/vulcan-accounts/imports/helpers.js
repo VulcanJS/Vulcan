@@ -1,5 +1,9 @@
-let browserHistory
-try { browserHistory = require('react-router').browserHistory } catch(e) {}
+let browserHistory;
+try {
+  browserHistory = require('react-router').browserHistory;
+} catch(e) {
+  // swallow errors
+}
 export const loginButtonsSession = Accounts._loginButtonsSession;
 export const STATES = {
   SIGN_IN: Symbol('SIGN_IN'),
@@ -21,7 +25,7 @@ export function getLoginServices() {
   return _.map(services, function(name){
     return {name: name};
   });
-};
+}
 // Export getLoginServices using old style globals for accounts-base which
 // requires it.
 this.getLoginServices = getLoginServices;
@@ -29,17 +33,17 @@ this.getLoginServices = getLoginServices;
 export function hasPasswordService() {
   // First look for OAuth services.
   return !!Package['accounts-password'];
-};
+}
 
 export function loginResultCallback(service, err) {
   if (!err) {
-
+    // Do nothing
   } else if (err instanceof Accounts.LoginCancelledError) {
-    // do nothing
+    // Do nothing
   } else if (err instanceof ServiceConfiguration.ConfigError) {
-
+    // Do nothing
   } else {
-    //loginButtonsSession.errorMessage(err.reason || "Unknown error");
+    // loginButtonsSession.errorMessage(err.reason || "Unknown error");
   }
 
   if (Meteor.isClient) {
@@ -51,11 +55,11 @@ export function loginResultCallback(service, err) {
       service();
     }
   }
-};
+}
 
 export function passwordSignupFields() {
   return Accounts.ui._options.passwordSignupFields || "USERNAME_AND_EMAIL";
-};
+}
 
 export function validateEmail(email, showMessage, clearMessage) {
   if (passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL" && email === '') {
@@ -80,7 +84,7 @@ export function validatePassword(password = '', showMessage, clearMessage){
     showMessage(errMsg, 'warning', false, 'password');
     return false;
   }
-};
+}
 
 export function validateUsername(username, showMessage, clearMessage, formState) {
   if ( username ) {
