@@ -1,6 +1,11 @@
 import Vulcan from './config.js';
-import { Utils } from './utils.js';
 import flatten from 'flat';
+
+const getNestedProperty = function (obj, desc) {
+  var arr = desc.split(".");
+  while(arr.length && (obj = obj[arr.shift()]));
+  return obj;
+};
 
 export const Settings = {};
 
@@ -68,9 +73,9 @@ export const getSetting = (settingName, settingDefault) => {
 
   if (Meteor.isServer) {
     // look in public, private, and root
-    const rootSetting = Utils.getNestedProperty(Meteor.settings, settingName);
-    const privateSetting = Meteor.settings.private && Utils.getNestedProperty(Meteor.settings.private, settingName);
-    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
+    const rootSetting = getNestedProperty(Meteor.settings, settingName);
+    const privateSetting = Meteor.settings.private && getNestedProperty(Meteor.settings.private, settingName);
+    const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
     
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
@@ -94,7 +99,7 @@ export const getSetting = (settingName, settingDefault) => {
 
   } else {
     // look only in public
-    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
+    const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
     setting = publicSetting || defaultValue;
   }
 
