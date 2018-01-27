@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getSetting, getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getSetting, getFragment, getFragmentName, Collections } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
     
-  const { collection, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options,
+  const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
 
+  const collection = options.collection
+    || Collections.find(({ options: { collectionName: name }}) => name === collectionName );
+        
   let fragment;
 
   if (options.fragment) {

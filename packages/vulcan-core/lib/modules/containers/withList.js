@@ -55,8 +55,10 @@ const withList = (options) => {
     enableCache = false,
     extraQueries,
   } = options;
+  
   const collection = options.collection
     || Collections.find(({ options: { collectionName: name }}) => name === collectionName );
+  
   const queryName = options.queryName || `${collection.options.collectionName}ListQuery`;
   const listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name;
   const totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
