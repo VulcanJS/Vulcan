@@ -5,12 +5,14 @@ import gql from 'graphql-tag';
 import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
-    
+
+  const collection = options.collection || getCollection(collectionName);
+
   const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options,
         queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
         singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
 
-  const collection = options.collection || getCollection(collectionName);
+  // const collection = options.collection || getCollection(collectionName);
         
   let fragment;
 
