@@ -1,6 +1,10 @@
 import Analytics from 'analytics-node';
-import { getSetting, addCallback, Utils } from 'meteor/vulcan:core';
-import { addPageFunction, addInitFunction, addIdentifyFunction, addTrackFunction } from 'meteor/vulcan:events';
+import { getSetting } from 'meteor/vulcan:core';
+import {
+  /* addPageFunction, addInitFunction, */
+  addIdentifyFunction,
+  addTrackFunction,
+} from 'meteor/vulcan:events';
 
 const segmentWriteKey = getSetting('segment.serverKey');
 
@@ -13,6 +17,7 @@ if (segmentWriteKey) {
   Identify User
 
   */
+  // eslint-disable-next-line no-inner-declarations
   function segmentIdentifyServer(currentUser) {
     analytics.identify({
       userId: currentUser._id,
@@ -29,6 +34,7 @@ if (segmentWriteKey) {
   Track Event
 
   */
+  // eslint-disable-next-line no-inner-declarations
   function segmentTrackServer(eventName, eventProperties, currentUser) {
     analytics.track({
       event: eventName,

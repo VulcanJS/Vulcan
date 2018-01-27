@@ -70,6 +70,7 @@ const createUser = function (username, email) {
 }
 
 var createDummyUsers = function () {
+  // eslint-disable-next-line no-console
   console.log('// inserting dummy users…');
   createUser('Bruce', 'dummyuser1@telescopeapp.org');
   createUser('Arnold', 'dummyuser2@telescopeapp.org');
@@ -82,6 +83,7 @@ Meteor.startup(function () {
   }
   const currentUser = Users.findOne(); // just get the first user available
   if (Movies.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
     console.log('// creating dummy movies');
     seedData.forEach(document => {
       newMutation({

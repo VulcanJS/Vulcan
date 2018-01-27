@@ -234,6 +234,7 @@ input ${collectionName}Unset {
 
 Vulcan.getGraphQLSchema = () => {
   const schema = GraphQLSchema.finalSchema[0];
+  // eslint-disable-next-line no-console
   console.log(schema);
   return schema;
 }

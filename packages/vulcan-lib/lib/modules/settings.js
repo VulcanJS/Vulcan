@@ -109,26 +109,4 @@ export const getSetting = (settingName, settingDefault) => {
 
 }
 
-// Settings collection is deprecated
-// getSetting = function (setting, defaultValue) {
-
-//   const collection = Telescope.settings.collection;
-
-//   if (typeof getSettingFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
-
-//     return getSettingFromJSON(setting);
-
-//   } else if (collection && collection.findOne() && typeof collection.findOne()[setting] !== "undefined") { // look in collection
-
-//     return Telescope.settings.collection.findOne()[setting];
-
-//   } else if (typeof defaultValue !== 'undefined') { // fallback to default
-
-//     return  defaultValue;
-
-//   } else { // or return undefined
-
-//     return undefined;
-
-//   }
-// };
+registerSetting('debug', false, 'Enable debug mode (more verbose logging)');

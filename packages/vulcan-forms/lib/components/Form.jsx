@@ -400,7 +400,8 @@ class Form extends Component {
 
     // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
-    console.log(graphQLError)
+    // eslint-disable-next-line no-console
+    console.log(graphQLError);
 
     // add error to state
     this.setState(prevState => ({
@@ -520,8 +521,10 @@ class Form extends Component {
 
     this.setState(prevState => ({disabled: false}));
 
-    console.log("// graphQL Error"); // eslint-disable-line no-console
-    console.log(error); // eslint-disable-line no-console
+    // eslint-disable-next-line no-console
+    console.log("// graphQL Error");
+    // eslint-disable-next-line no-console
+    console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
     runCallbacks(this.failureFormCallbacks, error);
@@ -612,6 +615,7 @@ class Form extends Component {
           if (this.props.refetch) this.props.refetch();
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
     }

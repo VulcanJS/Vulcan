@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';

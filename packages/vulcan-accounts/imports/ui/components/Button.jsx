@@ -8,7 +8,7 @@ export class AccountsButton extends PureComponent {
 
     const {
       label,
-      href = null,
+      // href = null,
       type,
       disabled = false,
       className,
@@ -16,15 +16,15 @@ export class AccountsButton extends PureComponent {
     } = this.props;
 
     return type === 'link' ? 
-      <a href="#" className={ className } onClick={ onClick } style={{marginRight: '10px'}}>{ label }</a> :
+      <a href="#" className={className} onClick={onClick} style={{marginRight: '10px'}}>{label}</a> :
       <Button
         style={{marginRight: '10px'}}
         bsStyle="primary"
-        className={ className }
-        type={ type }
-        disabled={ disabled }
-        onClick={ onClick }>
-        { label }
+        className={className}
+        type={type}
+        disabled={disabled}
+        onClick={onClick}>
+        {label}
       </Button>;
   }
 }

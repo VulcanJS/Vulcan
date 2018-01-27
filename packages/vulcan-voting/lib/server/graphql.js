@@ -1,4 +1,4 @@
-import { addCallback, addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Utils, registerSetting, getSetting } from 'meteor/vulcan:core';
+import { addCallback, addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation } from 'meteor/vulcan:core';
 import { performVoteServer } from '../modules/vote.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
 

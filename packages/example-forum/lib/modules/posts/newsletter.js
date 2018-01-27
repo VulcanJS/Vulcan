@@ -84,8 +84,10 @@ VulcanEmail.addEmails({
 
 function MarkPostsAsScheduled (email) {
   const postsIds = _.pluck(email.data.PostsList, '_id');
+  // eslint-disable-next-line no-console
   console.log(postsIds)
   const updated = Posts.update({_id: {$in: postsIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
+  // eslint-disable-next-line no-console
   console.log(`updated ${updated} posts`)
 }
 addCallback('newsletter.send.async', MarkPostsAsScheduled);

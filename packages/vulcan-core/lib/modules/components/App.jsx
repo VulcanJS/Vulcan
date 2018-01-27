@@ -1,7 +1,6 @@
 import {
   Components,
   registerComponent,
-  registerSetting,
   getSetting,
   Strings,
   runCallbacks,

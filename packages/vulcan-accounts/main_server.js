@@ -3,7 +3,7 @@ import './imports/accounts_ui.js';
 import './imports/components.js';
 import './imports/login_session.js';
 import './imports/routes.js';
-import { redirect, STATES } from './imports/helpers.js';
+import { redirect, STATES } from './imports/helpers.js';
 import './imports/api/server/servicesListPublication.js';
 
 import './imports/ui/components/LoginForm.jsx';

@@ -1,4 +1,4 @@
-import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core';
+import { createCollection, /* getDefaultResolvers, getDefaultMutations */ } from 'meteor/vulcan:core';
 import schema from './schema.js';
 
 const Votes = createCollection({

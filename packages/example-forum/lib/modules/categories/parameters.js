@@ -4,7 +4,7 @@ Categories parameter
 
 */
 
-import { addCallback, getSetting, registerSetting, getFragment, runQuery } from 'meteor/vulcan:core';
+import { addCallback, getSetting, registerSetting } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { Categories } from './collection.js';
 
@@ -25,7 +25,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
     // note: specify all arguments, see https://github.com/apollographql/apollo-client/issues/2051
     const query = `
       query GetCategories($terms: JSON) {
-        CategoriesList(terms: $terms) {
+        CategoriesList(terms: $terms, enableCache: $enableCache) {
           _id
           slug
         }
@@ -36,7 +36,7 @@ function PostsCategoryParameter(parameters, terms, apolloClient) {
       // get categories from Redux store
       allCategories = apolloClient.readQuery({
         query: gql`${query}`,
-        variables: {terms: {limit: 0, itemsPerPage: 0}}
+        variables: {terms: {limit: 0, itemsPerPage: 0}, enableCache: false}
       }).CategoriesList;
     } else {
       // TODO: figure out how to make this async without messing up withList on the client

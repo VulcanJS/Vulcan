@@ -157,6 +157,7 @@ class Upload extends PureComponent {
       // tell vulcanForm to catch the value
       this.context.addToAutofilledValues({[this.props.name]: newValue});
     })
+    // eslint-disable-next-line no-console
     .catch(err => console.log('err', err));
   }
 

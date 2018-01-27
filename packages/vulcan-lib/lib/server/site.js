@@ -1,6 +1,6 @@
 import { addGraphQLSchema, addGraphQLResolvers, addGraphQLQuery } from '../modules/graphql.js';
 import { Utils } from '../modules/utils';
-import { getSetting, registerSetting } from '../modules/settings.js';
+import { getSetting } from '../modules/settings.js';
 
 const siteSchema = `type Site {
   title: String

@@ -60,7 +60,8 @@ export const validateDocument = (document, collection, context) => {
   try {
     collection.simpleSchema().validate(document);
   } catch (error) {
-    console.log(error)
+    // eslint-disable-next-line no-console
+    console.log(error);
     validationErrors.push({
       id: 'app.schema_validation_error',
       data: {message: error.message}
@@ -141,7 +142,8 @@ export const validateModifier = (modifier, document, collection, context) => {
   try {
     collection.simpleSchema().validate({$set: set, $unset: unset}, { modifier: true });
   } catch (error) {
-    console.log(error)
+    // eslint-disable-next-line no-console
+    console.log(error);
     validationErrors.push({
       id: 'app.schema_validation_error',
       data: {message: error.message}

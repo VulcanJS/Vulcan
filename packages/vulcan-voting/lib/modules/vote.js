@@ -1,4 +1,4 @@
-import { debug, runCallbacksAsync, runCallbacks, addCallback } from 'meteor/vulcan:core';
+import { debug, /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
