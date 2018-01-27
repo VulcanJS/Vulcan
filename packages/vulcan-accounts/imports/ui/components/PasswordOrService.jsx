@@ -17,7 +17,7 @@ export class AccountsPasswordOrService extends PureComponent {
 
     if (hasPasswordService() && services.length > 0) {
       return (
-        <div style={ style } className={ className }>
+        <div style={style} className={className}>
           { `${this.context.intl.formatMessage({id: 'accounts.or_use'})} ${ labels.join(' / ') }` }
         </div>
       );

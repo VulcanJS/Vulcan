@@ -42,8 +42,10 @@ Newsletters.subscribeUser = (user, confirm = false) => {
     throw 'User must have an email address';
   }
 
-  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
+  // eslint-disable-next-line no-console
   if (result) {console.log ('-> added')}
   Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
 }
@@ -53,8 +55,10 @@ Newsletters.subscribeUser = (user, confirm = false) => {
  * @param {String} email
  */
 Newsletters.subscribeEmail = (email, confirm = false) => {
-  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
+  // eslint-disable-next-line no-console
   if (result) {console.log ('-> added')}
 }
 
@@ -68,8 +72,9 @@ Newsletters.unsubscribeUser = (user) => {
   if (!email) {
     throw 'User must have an email address';
   }
-  
-  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+
+  // eslint-disable-next-line no-console
+  console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
   Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
 }
@@ -79,7 +84,8 @@ Newsletters.unsubscribeUser = (user) => {
  * @param {String} email
  */
 Newsletters.unsubscribeEmail = (email) => {
-  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
 }
 
@@ -238,8 +244,10 @@ Newsletters.send = async (isTest = false) => {
 
   if(newsletterEmail.isValid(data)){
 
+    // eslint-disable-next-line no-console
     console.log('// Sending newsletter…');
-    console.log('// Subject: '+subject)
+    // eslint-disable-next-line no-console
+    console.log('// Subject: '+subject);
 
     const newsletter = Newsletters[provider].send({ subject, text, html, isTest });
 
@@ -270,7 +278,8 @@ Newsletters.send = async (isTest = false) => {
     }
 
   } else {
-    
+
+    // eslint-disable-next-line no-console
     console.log('No newsletter to schedule today…');
   
   }

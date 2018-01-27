@@ -1,6 +1,6 @@
 import React from 'react'
 import StripeCheckout from 'react-stripe-checkout';
-import { Components, registerComponent, getSetting, registerSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
+import { Components, registerComponent, getSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
@@ -48,8 +48,9 @@ class Checkout extends React.Component {
       }
     
     }).catch(error => {
-    
-      console.log(error)
+
+      // eslint-disable-next-line no-console
+      console.log(error);
       flash(this.context.intl.formatMessage({id: 'payments.error'}), 'error');
     
     });

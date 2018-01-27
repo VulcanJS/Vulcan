@@ -1,8 +1,6 @@
 import { getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import express from 'express';
 import Stripe from 'stripe';
-import { Picker } from 'meteor/meteorhacks:picker';
-import bodyParser from 'body-parser';
 import Charges from '../../modules/charges/collection.js';
 import Users from 'meteor/vulcan:users';
 import { Products } from '../../modules/products.js';
@@ -122,8 +120,8 @@ Create one-time charge.
 
 */
 export const createCharge = async ({user, customer, product, collection, document, metadata, args}) => {
-  
-  const {token, userId, productKey, associatedId, properties, coupon } = args;
+
+  const { /* token, userId, productKey, associatedId, properties, */ coupon } = args;
 
   let amount = product.amount;
 
@@ -229,6 +227,7 @@ export const subscribeUser = async ({user, customer, product, collection, docume
     // create an invoice item and attach it to the customer first
     // see https://stripe.com/docs/subscriptions/invoices#adding-invoice-items
     if (product.initialAmount) {
+      // eslint-disable-next-line no-unused-vars
       const initialInvoiceItem = await stripe.invoiceItems.create({
         customer: customer.id,
         amount: product.initialAmount,
@@ -237,6 +236,7 @@ export const subscribeUser = async ({user, customer, product, collection, docume
       });
     }
 
+    // eslint-disable-next-line no-unused-vars
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [
@@ -246,8 +246,10 @@ export const subscribeUser = async ({user, customer, product, collection, docume
     });
 
   } catch (error) {
-    console.log('// Stripe subscribeUser error')
-    console.log(error)
+    // eslint-disable-next-line no-console
+    console.log('// Stripe subscribeUser error');
+    // eslint-disable-next-line no-console
+    console.log(error);
   }
 }
 
@@ -283,7 +285,8 @@ app.use(addRawBody);
 
 app.post('/stripe', async function(req, res) {
 
-  console.log('////////////// stripe webhook')
+  // eslint-disable-next-line no-console
+  console.log('////////////// stripe webhook');
 
   const sig = req.headers['stripe-signature'];
 
@@ -291,30 +294,38 @@ app.post('/stripe', async function(req, res) {
 
     const event = stripe.webhooks.constructEvent(req.rawBody, sig, stripeSettings.endpointSecret);
 
-    console.log('event ///////////////////')
-    console.log(event)
+    // eslint-disable-next-line no-console
+    console.log('event ///////////////////');
+    // eslint-disable-next-line no-console
+    console.log(event);
 
     switch (event.type) {
 
       case 'charge.succeeded':
 
-        console.log('////// charge succeeded')
+        // eslint-disable-next-line no-console
+        console.log('////// charge succeeded');
 
         const charge = event.data.object;
 
-        console.log(charge)
+        // eslint-disable-next-line no-console
+        console.log(charge);
 
         try {
 
           // look up corresponding invoice
           const invoice = await stripe.invoices.retrieve(charge.invoice);
-          console.log('////// invoice')
-          console.log(invoice)
+          // eslint-disable-next-line no-console
+          console.log('////// invoice');
+          // eslint-disable-next-line no-console
+          console.log(invoice);
 
           // look up corresponding subscription
           const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
-          console.log('////// subscription')
-          console.log(subscription)
+          // eslint-disable-next-line no-console
+          console.log('////// subscription');
+          // eslint-disable-next-line no-console
+          console.log(subscription);
 
           const { userId, productKey, associatedCollection, associatedId } = subscription.metadata;
 
@@ -334,8 +345,10 @@ app.post('/stripe', async function(req, res) {
 
           }      
         } catch (error) {
-          console.log('// Stripe webhook error')
-          console.log(error)
+          // eslint-disable-next-line no-console
+          console.log('// Stripe webhook error');
+          // eslint-disable-next-line no-console
+          console.log(error);
         }
 
         break;
@@ -343,8 +356,10 @@ app.post('/stripe', async function(req, res) {
      }
 
   } catch (error) {
-    console.log('///// Stripe webhook error')
-    console.log(error)
+    // eslint-disable-next-line no-console
+    console.log('///// Stripe webhook error');
+    // eslint-disable-next-line no-console
+    console.log(error);
   }
 
   res.sendStatus(200);
@@ -434,7 +449,7 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(app), {name: 'stripe_endpoint', 
 
 Meteor.startup(() => {
   Collections.forEach(c => {
-    collectionName = c._name.toLowerCase();
+    const collectionName = c._name.toLowerCase();
 
     registerCallback({
       name: `${collectionName}.charge.sync`, 

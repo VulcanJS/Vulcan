@@ -1,4 +1,4 @@
-import { getSetting, addCallback, Utils } from 'meteor/vulcan:core';
+import { getSetting, Utils } from 'meteor/vulcan:core';
 import {
   addPageFunction,
   addInitFunction,
@@ -41,7 +41,7 @@ Track Event
 
 */
 function segmentTrack(eventName, eventProperties) {
-  analytics.track(eventName, eventProperties);
+  window.analytics.track(eventName, eventProperties);
 }
 addTrackFunction(segmentTrack);
 
@@ -55,8 +55,11 @@ function segmentInit() {
     var analytics = (window.analytics = window.analytics || []);
     if (!analytics.initialize)
       if (analytics.invoked)
+        // eslint-disable-next-line no-console
         window.console &&
+          // eslint-disable-next-line no-console
           console.error &&
+          // eslint-disable-next-line no-console
           console.error('Segment snippet included twice.');
       else {
         analytics.invoked = !0;

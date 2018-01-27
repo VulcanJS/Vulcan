@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { STATES } from '../../helpers.js';
 
-class AccountsResetPassword extends PureComponent {
+class AccountsEnrollAccount extends PureComponent {
   componentDidMount() {
     const token = this.props.params.token;
-    Accounts._loginButtonsSession.set('resetPasswordToken', token);
+    Accounts._loginButtonsSession.set('enrollAccountToken', token);
   }
 
   render() {
     if (!this.props.currentUser) {
       return (
         <Components.AccountsLoginForm
-          formState={ STATES.PASSWORD_CHANGE }
+          formState={ STATES.ENROLL_ACCOUNT }
         />
       );
     } else {
@@ -27,15 +27,15 @@ class AccountsResetPassword extends PureComponent {
   }
 }
 
-AccountsResetPassword.contextTypes = {
+AccountsEnrollAccount.contextTypes = {
   intl: intlShape
 }
 
-AccountsResetPassword.propsTypes = {
+AccountsEnrollAccount.propsTypes = {
   currentUser: PropTypes.object,
   params: PropTypes.object,
 };
 
-AccountsResetPassword.displayName = 'AccountsResetPassword';
+AccountsEnrollAccount.displayName = 'AccountsEnrollAccount';
 
-registerComponent('AccountsResetPassword', AccountsResetPassword, withCurrentUser);
+registerComponent('AccountsEnrollAccount', AccountsEnrollAccount, withCurrentUser);

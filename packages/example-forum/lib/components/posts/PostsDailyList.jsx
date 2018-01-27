@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { Posts } from '../../modules/posts/index.js';
-import { withCurrentUser, withList, getSetting, registerSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
+import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/vulcan:core';
 
 class PostsDailyList extends PureComponent {
 

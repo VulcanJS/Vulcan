@@ -207,7 +207,7 @@ class FormWrapper extends PureComponent {
           }`, {
             alias: 'withExtraQueries',
             props: returnedProps => {
-              const { ownProps, data } = returnedProps;
+              const { /* ownProps, */ data } = returnedProps;
               const props = {
                 loading: data.loading,
                 data,

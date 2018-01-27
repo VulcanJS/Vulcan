@@ -15,7 +15,7 @@ class PostsPage extends Component {
       
     } else if (!this.props.document) {
       
-      console.log(`// missing post (_id: ${this.props.documentId})`);
+      // console.log(`// missing post (_id: ${this.props.documentId})`);
       return <div className="posts-page"><FormattedMessage id="app.404"/></div> 
 
     } else {

@@ -8,7 +8,6 @@ import Pics from '../modules/pics/collection.js';
 import Comments from '../modules/comments/collection.js';
 import Users from 'meteor/vulcan:users';
 import { newMutation } from 'meteor/vulcan:core';
-import { Accounts } from 'meteor/accounts-base';
 import moment from 'moment';
 
 const dummyFlag = {
@@ -77,6 +76,7 @@ const createUser = function (username, email) {
 }
 
 var createDummyUsers = function () {
+  // eslint-disable-next-line no-console
   console.log('// inserting dummy users…');
   createUser('Bruce', 'dummyuser1@telescopeapp.org');
   createUser('Arnold', 'dummyuser2@telescopeapp.org');
@@ -84,6 +84,7 @@ var createDummyUsers = function () {
 };
 
 const createDummyPics = function () {
+  // eslint-disable-next-line no-console
   console.log('// creating dummy pics…');
   createPic('cherry_blossoms.jpg', moment().toDate(), `Kyoto's cherry blossoms`, 'Bruce');
   createPic('koyo.jpg', moment().subtract(10, 'minutes').toDate(), `Red maple leaves during Fall.`, 'Arnold');
@@ -97,6 +98,7 @@ const createDummyPics = function () {
 };
 
 const createDummyComments = function () {
+  // eslint-disable-next-line no-console
   console.log('// creating dummy comments');
   createComment('Bruce', 'Great job.');
   createComment('Arnold', 'I would love to go there…');

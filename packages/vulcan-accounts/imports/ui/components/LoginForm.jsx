@@ -1,9 +1,9 @@
+/* eslint-disable meteor/no-session */
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
-import { KEY_PREFIX } from '../../login_session.js';
+import { KEY_PREFIX } from '../../login_session.js';
 import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo } from 'react-apollo';
@@ -25,6 +25,7 @@ export class AccountsLoginForm extends Tracker.Component {
     super(props);
 
     if (props.formState === STATES.SIGN_IN && Package['accounts-password']) {
+      // eslint-disable-next-line no-console
       console.warn('Do not force the state to SIGN_IN on Accounts.ui.LoginForm, it will make it impossible to reset password in your app, this state is also the default state if logged out, so no need to force it.');
     }
 
@@ -259,7 +260,7 @@ export class AccountsLoginForm extends Tracker.Component {
         break;
     }
     this.setState({ [field]: value });
-    this.setDefaultFieldValues({ [field]: value });
+    this.setDefaultFieldValues({ [field]: value });
   }
 
   fields() {
@@ -608,7 +609,7 @@ export class AccountsLoginForm extends Tracker.Component {
       password,
       formState,
       onSubmitHook
-    } = this.state;
+    } = this.state;
     let error = false;
     let loginSelector;
     this.clearMessages();
@@ -650,6 +651,7 @@ export class AccountsLoginForm extends Tracker.Component {
       Meteor.loginWithPassword(loginSelector, password, (error, result) => {
         onSubmitHook(error,formState);
         if (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
           if (this.context.intl.formatMessage({id: errorId})) {
@@ -691,7 +693,7 @@ export class AccountsLoginForm extends Tracker.Component {
   }
 
   oauthSignIn(serviceName) {
-    const { formState, waiting, currentUser, onSubmitHook } = this.state;
+    const { formState, /* waiting, currentUser, */ onSubmitHook } = this.state;
     //Thanks Josh Owens for this one.
     function capitalService() {
       return serviceName.charAt(0).toUpperCase() + serviceName.slice(1);
@@ -715,7 +717,8 @@ export class AccountsLoginForm extends Tracker.Component {
     loginWithService(options, (error) => {
       onSubmitHook(error,formState);
       if (error) {
-        console.log(error)
+        // eslint-disable-next-line no-console
+        console.log(error);
         if (error instanceof Accounts.LoginCancelledError) {
           // do nothing
         } else {
@@ -741,7 +744,7 @@ export class AccountsLoginForm extends Tracker.Component {
     const {
       username = null,
       email = null,
-      usernameOrEmail = null,
+      // usernameOrEmail = null,
       password,
       formState,
       onSubmitHook
@@ -788,6 +791,7 @@ export class AccountsLoginForm extends Tracker.Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
 
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_').replace('.','')}`;
@@ -824,6 +828,7 @@ export class AccountsLoginForm extends Tracker.Component {
         promise.then(SignUp.bind(this, options));
       }
       else {
+        // eslint-disable-next-line babel/new-cap
         SignUp(options);
       }
     }
@@ -835,7 +840,7 @@ export class AccountsLoginForm extends Tracker.Component {
       waiting,
       formState,
       onSubmitHook
-    } = this.state;
+    } = this.state;
 
     if (waiting) {
       return;
@@ -847,7 +852,8 @@ export class AccountsLoginForm extends Tracker.Component {
       this.setState({ waiting: true });
 
       Accounts.forgotPassword({ email: email }, (error) => {
-        console.log(error)
+        // eslint-disable-next-line no-console
+        console.log(error);
         if (error) {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
           this.showMessage(errorId, 'error');
@@ -869,7 +875,7 @@ export class AccountsLoginForm extends Tracker.Component {
       formState,
       onSubmitHook,
       onSignedInHook,
-    } = this.state;
+    } = this.state;
 
     if (!this.validateField('password', newPassword)){
       onSubmitHook('err.minChar',formState);
@@ -916,13 +922,13 @@ export class AccountsLoginForm extends Tracker.Component {
 
   showMessage(messageId, type, clearTimeout, field){
     if (messageId) {
-      this.setState(({ messages = [] }) => {
+      this.setState(({ messages = [] }) => {
         messages.push({
           message: this.context.intl.formatMessage({id: messageId}),
           type,
-          ...(field && { field }),
+          ...(field && { field }),
         });
-        return  { messages };
+        return { messages };
       });
       if (clearTimeout) {
         this.hideMessageTimout = setTimeout(() => {
@@ -934,14 +940,14 @@ export class AccountsLoginForm extends Tracker.Component {
   }
 
   getMessageForField(field) {
-    const { messages = [] } = this.state;
-    return messages.find(({ field:key }) => key === field);
+    const { messages = [] } = this.state;
+    return messages.find(({ field:key }) => key === field);
   }
 
   clearMessage(message) {
     if (message) {
-      this.setState(({ messages = [] }) => ({
-        messages: messages.filter(({ message:a }) => a !== message),
+      this.setState(({ messages = [] }) => ({
+        messages: messages.filter(({ message:a }) => a !== message),
       }));
     }
   }
@@ -962,16 +968,16 @@ export class AccountsLoginForm extends Tracker.Component {
   render() {
     this.oauthButtons();
     // Backwords compatibility with v1.2.x.
-    const { messages = [] } = this.state;
+    const { messages = [] } = this.state;
     const message = {
       deprecated: true,
-      message: messages.map(({ message }) => message).join(', '),
+      message: messages.map(({ message }) => message).join(', '),
     };
 
     return (
       <Components.AccountsForm
         oauthServices={this.oauthButtons()}
-        fields={this.fields()} 
+        fields={this.fields()}
         buttons={this.buttons()}
         {...this.state}
         message={message}

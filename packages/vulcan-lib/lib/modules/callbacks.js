@@ -29,6 +29,7 @@ export const registerCallback = function (callback) {
 export const addCallback = function (hook, callback) {
 
   if (!callback.name) {
+    // eslint-disable-next-line no-console
     console.log(`// Warning! You are adding an unnamed callback to ${hook}. Please use the function foo () {} syntax.`);
   }
 
@@ -94,7 +95,9 @@ export const runCallbacks = function () {
         }
 
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${hook}]\x1b[0m`);
+        // eslint-disable-next-line no-console
         console.log(error);
         if (error.break || error.data && error.data.break) {
           throw error;
