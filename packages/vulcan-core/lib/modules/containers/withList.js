@@ -38,7 +38,7 @@ import React, { Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, getFragment, getFragmentName, Collections } from 'meteor/vulcan:core';
+import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
@@ -56,8 +56,7 @@ const withList = (options) => {
     extraQueries,
   } = options;
   
-  const collection = options.collection
-    || Collections.find(({ options: { collectionName: name }}) => name === collectionName );
+  const collection = options.collection || getCollection(collectionName);
   
   const queryName = options.queryName || `${collection.options.collectionName}ListQuery`;
   const listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name;
