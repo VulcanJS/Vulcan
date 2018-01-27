@@ -15,14 +15,15 @@ export const headTemplate = ({
   ).join('') + '>',
   '<head>',
 
+  head,
+  dynamicHead,
+
   ...(css || []).map(file =>
     template('  <link rel="stylesheet" type="text/css" class="__meteor-css__" href="<%- href %>">')({
       href: bundledJsCssUrlRewriteHook(file.url),
     })
   ),
 
-  head,
-  dynamicHead,
   '</head>',
   '<body>',
 ].join('\n');
