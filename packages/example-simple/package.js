@@ -11,6 +11,7 @@ Package.onUse(function (api) {
     // Here are our dependencies:
 
     // vulcan core
+    'promise',
     'vulcan:core@1.8.5',
 
     // vulcan packages

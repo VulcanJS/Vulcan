@@ -15,7 +15,7 @@ import Users from 'meteor/vulcan:users';
 
 // navigation bar component when the user is logged in
 
-const NavLoggedIn = ({currentUser}) =>
+const NavLoggedIn = ({ currentUser }) =>
 
   <div className="header-nav header-logged-in">
     
@@ -32,9 +32,11 @@ const NavLoggedIn = ({currentUser}) =>
 
       </div>
 
+    <Components.ShowIf check={() => Users.canDo(currentUser, 'pics.new')}>
       <Components.ModalTrigger label="Upload">
         <Components.PicsNewForm />
       </Components.ModalTrigger>
+    </Components.ShowIf>
 
   </div>
 
@@ -59,7 +61,7 @@ const Header = ({currentUser}) =>
     <div className="header">
       
       <h1 className="logo">
-        <img src="/packages/example-instagram/lib/static/vulcanstagram.png" alt="Vulcanstagram"/>
+        <img src="/packages/example-membership/lib/static/vulcanstagram.png" alt="Vulcanstagram"/>
       </h1>
 
       {currentUser ? 

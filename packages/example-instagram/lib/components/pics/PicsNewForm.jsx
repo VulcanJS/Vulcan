@@ -8,23 +8,22 @@ to check if the user has the proper permissions to actually insert a new picture
 */
 
 import React from 'react';
-import { Components, registerComponent, getFragment } from 'meteor/vulcan:core';
+import { Components, registerComponent, getFragment, withAccess } from 'meteor/vulcan:core';
 
 import Pics from '../../modules/pics/collection.js';
 
-const PicsNewForm = ({currentUser, closeModal}) =>
-
+const PicsNewForm = ({currentUser, closeModal}) => (
   <div>
-
-    {Pics.options.mutations.new.check(currentUser) ?
-      <Components.SmartForm 
-        collection={Pics}
-        mutationFragment={getFragment('PicsItemFragment')}
-        successCallback={closeModal}
-      /> :
-      null
-    }
-
+    <Components.SmartForm
+      collection={Pics}
+      mutationFragment={getFragment('PicsItemFragment')}
+      successCallback={closeModal}
+    />
   </div>
+);
 
-registerComponent('PicsNewForm', PicsNewForm);
+const accessOptions = {
+  groups: ['members', 'admins'],
+};
+
+registerComponent('PicsNewForm', PicsNewForm, [withAccess, accessOptions]);

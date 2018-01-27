@@ -5,6 +5,7 @@ A SimpleSchema-compatible JSON schema
 */
 
 import FormsUpload from 'meteor/vulcan:forms-upload';
+import { getSetting } from 'meteor/vulcan:core';
 
 const schema = {
 
@@ -42,13 +43,13 @@ const schema = {
   imageUrl: {
     label: 'Image URL',
     type: String,
-    viewableBy: ['customers'],
+    viewableBy: ['customers', 'admins'],
     insertableBy: ['members'],
     editableBy: ['members'],
     control: FormsUpload, // use the FormsUpload form component
     form: {
       options: {
-        preset: 'vulcanstagram'
+        preset: getSetting('cloudinaryPresets').vulcanstagram
       },
     }
   },

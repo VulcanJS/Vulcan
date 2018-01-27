@@ -6,6 +6,8 @@ Package.onUse(function (api) {
 
   api.use([
 
+    'promise',
+
     // vulcan core
     'vulcan:core@1.8.5',
 

@@ -11,6 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
 
+    'promise',
     'fourseven:scss@4.5.0',
 
     // vulcan core

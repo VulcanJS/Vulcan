@@ -6,7 +6,6 @@ Pics Home component
 
 import React from 'react';
 import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
-import PicsList from './PicsList.jsx';
 import Users from 'meteor/vulcan:users';
 import Button from 'react-bootstrap/lib/Button';
 
@@ -18,7 +17,7 @@ const PicsHome = ({results = [], currentUser, loading, loadMore, count, totalCou
 
         {Users.canDo(currentUser, 'pics.view') ?
 
-          <PicsList /> : 
+          <Components.PicsList /> :
         
           <Components.Checkout
             productKey="membership"
