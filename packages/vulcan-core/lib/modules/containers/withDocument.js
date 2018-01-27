@@ -6,12 +6,12 @@ import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/
 
 export default function withDocument (options) {
     
-  const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options,
-        queryName = options.queryName || `${collection.options.collectionName}SingleQuery`,
-        singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
+  const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
 
   const collection = options.collection || getCollection(collectionName);
-        
+  const queryName = options.queryName || `${collection.options.collectionName}SingleQuery`;
+  const singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
+ 
   let fragment;
 
   if (options.fragment) {
