@@ -9,7 +9,7 @@ import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
-import { getSetting } from './settings.js';
+import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
 import { isAbsolute } from 'path';
 import { getCollection } from './collections.js';

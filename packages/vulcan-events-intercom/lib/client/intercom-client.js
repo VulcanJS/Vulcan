@@ -98,7 +98,7 @@ function intercomInit() {
         var s = d.createElement('script');
         s.type = 'text/javascript';
         s.async = true;
-        s.src = getSetting('intercom.widgetUrl', 'https://widget.intercom.io/widget/icygo7se');
+        s.src = `https://widget.intercom.io/widget/${getSetting('intercom.appId')}`;
         var x = d.getElementsByTagName('script')[0];
         x.parentNode.insertBefore(s, x);
       }
