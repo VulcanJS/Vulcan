@@ -9,6 +9,7 @@
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
     "analytics-node": "^2.1.1",
     "apollo-client": "^1.2.2",
     "apollo-engine": "^0.5.4",
@@ -96,6 +97,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-prettier": "^2.5.0",
     "eslint-plugin-react": "^6.7.1"
   },
   "postcss": {
