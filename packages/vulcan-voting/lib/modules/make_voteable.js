@@ -44,10 +44,10 @@ export const makeVoteable = collection => {
         optional: true,
         viewableBy: ['guests'],
         resolveAs: {
-          type: 'Vote',
+          type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
-            const votes = Votes.find({itemId: document._id}).fetch();
-            if (!votes.length) return null;
+            const votes = Votes.find({ documentId: document._id }).fetch();
+            if (!votes.length) return [];
             return votes;
             // return Users.restrictViewableFields(currentUser, Votes, votes);
           },
