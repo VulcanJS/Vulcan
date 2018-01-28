@@ -135,10 +135,16 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         const { selector } = await collection.getParameters(terms, {}, context);
 
-        return collection.find(selector).count();
-      },
+        const docs = collection.find(selector);
 
-    }
+        // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
+        if (collection.checkAccess) {
+          const { currentUser } = context;
+          return docs.fetch().filter(doc => collection.checkAccess(currentUser, doc)).length;
+        }
+
+        return docs.count();
+      },
   }
 
 };
