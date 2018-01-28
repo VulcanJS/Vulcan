@@ -198,7 +198,7 @@ class Upload extends PureComponent {
               {uploading ? <div className="upload-uploading"><span><FormattedMessage id="upload.uploading"/></span></div> : null}
             </Dropzone>
 
-            {imageData ?
+            {imageData && (Array.isArray(imageData) ? imageData.length > 0 : true) ?
               <div className="upload-state">
                 <div className="upload-images">
                   {this.enableMultiple() ? 

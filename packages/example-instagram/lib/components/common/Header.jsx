@@ -15,28 +15,28 @@ import Users from 'meteor/vulcan:users';
 
 // navigation bar component when the user is logged in
 
-const NavLoggedIn = ({currentUser}) =>
-
+const NavLoggedIn = ({currentUser}) => (
   <div className="header-nav header-logged-in">
-    
-      <div className="header-accounts">
+    <div className="header-accounts">
 
-        Welcome,&nbsp;
-        
-        <Components.ModalTrigger label={Users.getDisplayName(currentUser)} size="small">
-          <div>
-            {Users.isAdmin(currentUser) ? <p>Admin</p> : null}
-            <Components.AccountsLoginForm />
-          </div>
-        </Components.ModalTrigger>
+      Welcome,&nbsp;
 
-      </div>
+      <Components.ModalTrigger label={Users.getDisplayName(currentUser)} size="small">
+        <div>
+          {Users.isAdmin(currentUser) ? <p>Admin</p> : null}
+          <Components.AccountsLoginForm />
+        </div>
+      </Components.ModalTrigger>
 
+    </div>
+
+    <Components.ShowIf check={() => Users.canDo(currentUser, 'pics.new')}>
       <Components.ModalTrigger label="Upload">
         <Components.PicsNewForm />
       </Components.ModalTrigger>
-
+    </Components.ShowIf>
   </div>
+);
 
 // navigation bar component when the user is logged out
 
