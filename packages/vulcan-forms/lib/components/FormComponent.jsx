@@ -107,7 +107,7 @@ class FormComponent extends PureComponent {
           if (!properties.multiple && Array.isArray(properties.value) && properties.value.length === 0) {
             properties.value = '';
           }
-          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...optionsAsStrings];
+          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...properties.options];
           return <Components.FormComponentSelect {...properties} />;
 
         case 'datetime':
