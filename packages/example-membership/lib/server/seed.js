@@ -93,6 +93,11 @@ Meteor.startup(function () {
   if (!Users.find().count()) {
     Promise.await(createDummyUsers());
   }
+
+  while (  Users.find().count() < 3 ) {
+    Meteor._sleepForMs(500);
+  };
+
   if (!Pics.find().count()) {
     Promise.await(createDummyPics());
   }

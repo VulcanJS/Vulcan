@@ -147,6 +147,11 @@ if (getSetting('forum.seedOnStart')) {
     if (!Users.find().count()) {
       Promise.await(createDummyUsers());
     }
+
+    while (  Users.find().count() < 3 ) {
+      Meteor._sleepForMs(500);
+    };
+
     if (!Posts.find().count()) {
       Promise.await(createDummyPosts());
     }

@@ -89,6 +89,11 @@ Meteor.startup(() => {
   if (Users.find().fetch().length === 0) {
     Promise.await(createDummyUsers());
   }
+
+  while (  Users.find().count() < 3 ) {
+    Meteor._sleepForMs(500);
+  };
+
   const currentUser = Users.findOne(); // just get the first user available
   if (Movies.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
