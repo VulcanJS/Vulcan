@@ -24,20 +24,20 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
 
 export default function withNew(options) {
 
+  const { collectionName } = options;
   // get options
-  const { collection } = options,
+  const collection = options.collection || getCollection(collectionName),
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        collectionName = collection.options.collectionName,
         mutationName = collection.options.mutations.new.name;
 
   // wrap component with graphql HoC
   return graphql(gql`
-    mutation ${mutationName}($document: ${collectionName}Input) {
+    mutation ${mutationName}($document: ${collection.options.collectionName}Input) {
       ${mutationName}(document: $document) {
         ...${fragmentName}
       }
