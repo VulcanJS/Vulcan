@@ -25,18 +25,19 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
 
 export default function withEdit(options) {
 
-  const {collection } = options,
+  const { collectionName } = options;
+  // get options
+  const collection = options.collection || getCollection(collectionName),
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        collectionName = collection.options.collectionName,
         mutationName = collection.options.mutations.edit.name;
 
   return graphql(gql`
-    mutation ${mutationName}($documentId: String, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
+    mutation ${mutationName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
       ${mutationName}(documentId: $documentId, set: $set, unset: $unset) {
         ...${fragmentName}
       }

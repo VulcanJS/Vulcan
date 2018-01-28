@@ -23,10 +23,12 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { getCollection } from 'meteor/vulcan:core';
 
 export default function withRemove(options) {
 
-  const { collection } = options,
+  const { collectionName } = options;
+  const collection = options.collection || getCollection(collectionName),
         mutationName = collection.options.mutations.remove.name
 
   return graphql(gql`
