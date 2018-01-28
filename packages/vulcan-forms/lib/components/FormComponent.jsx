@@ -67,7 +67,7 @@ class FormComponent extends PureComponent {
     } else if (typeof this.props.control === 'string') { // else pick a predefined component
 
       switch (this.props.control) {
-        
+
         case 'number':
           return <Components.FormComponentNumber {...properties}/>;
 
@@ -81,29 +81,44 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentTextarea {...properties}/>;
 
         case 'checkbox':
+          // formsy-react-components expects a boolean value for checkbox
+          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox.js#L20
+          properties.value = !!properties.value;
           return <Components.FormComponentCheckbox {...properties} />;
 
         case 'checkboxgroup':
+          // formsy-react-components expects an array value
+          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
+          if (!Array.isArray(properties.value)) {
+            properties.value = [properties.value];
+          }
           return <Components.FormComponentCheckboxGroup {...properties} />;
 
         case 'radiogroup':
-          // not sure why, but onChange needs to be specified here
+          // formsy-react-compnents RadioGroup expects an onChange callback
+          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/radio-group.js#L33
           properties.onChange = (name, value) => {this.props.updateCurrentValues({[name]: value})};
           return <Components.FormComponentRadioGroup {...properties} />;
-        
+
         case 'select':
-          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...properties.options];
+          // a select multiple expects an array of values
+          // a select non-multiple expects a scalar
+          // set the default value to a scalar if the value is an empty array
+          if (!properties.multiple && Array.isArray(properties.value) && properties.value.length === 0) {
+            properties.value = '';
+          }
+          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...optionsAsStrings];
           return <Components.FormComponentSelect {...properties} />;
-        
+
         case 'datetime':
           return <Components.FormComponentDateTime {...properties} />;
-        
+
         case 'time':
           return <Components.FormComponentTime {...properties} />;
-        
+
         case 'text':
           return <Components.FormComponentDefault {...properties}/>;
-        
+
         default: 
           const CustomComponent = Components[this.props.control];
           return <CustomComponent {...properties} document={document}/>;
