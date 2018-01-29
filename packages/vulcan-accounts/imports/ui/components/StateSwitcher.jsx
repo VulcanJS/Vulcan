@@ -96,7 +96,7 @@ export class AccountsStateSwitcher extends React.Component {
       switchToProfile,
     }
     return(
-      <Components.AccountsLoginFormInner {...this.props} formState={this.state.formState} handlers={handlers}/>
+      <Components.AccountsLoginFormInner {..._.omit(this.props, 'formState')} formState={this.state.formState} handlers={handlers}/>
     );
   }
 }
