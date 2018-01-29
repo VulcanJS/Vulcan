@@ -63,7 +63,7 @@ const createUser = async (username, email) => {
     isDummy: true,
   };
   return newMutation({
-    collection: Users, 
+    collection: Users,
     document: user,
     validate: false,
   });
@@ -79,6 +79,7 @@ const createDummyUsers = async () => {
   ]);
 };
 
+// eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
   Users.remove({ 'profile.isDummy': true });
   // eslint-disable-next-line no-console

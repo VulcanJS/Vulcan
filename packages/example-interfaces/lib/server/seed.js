@@ -41,7 +41,7 @@ const seedData = [
     _id: '3yFHQML4D6hKSx4fb',
     name: 'Dry humor',
     parentId: 'jp3zyDPvcjNQvJGWL',
-  },{
+  }, {
     _id: 'E2H9cTEBQt6rkg8uw',
     name: 'Sports',
   }, {
@@ -66,7 +66,7 @@ const createUser = async (username, email) => {
     isDummy: true,
   };
   return newMutation({
-    collection: Users, 
+    collection: Users,
     document: user,
     validate: false,
   });
@@ -82,6 +82,7 @@ const createDummyUsers = async () => {
   ]);
 };
 
+// eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
   Users.remove({ 'profile.isDummy': true });
   // eslint-disable-next-line no-console

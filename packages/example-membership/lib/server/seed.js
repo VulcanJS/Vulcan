@@ -23,18 +23,19 @@ Users.addField(dummyFlag);
 Pics.addField(dummyFlag);
 
 const createPic = async (imageUrl, createdAt, body, username) => {
-  const user = await Users.rawCollection().findOne({username: username});
+  const user = await Users.rawCollection().findOne({ username: username });
   const pic = {
     createdAt,
     imageUrl: `http://vulcanjs.org/photos/${imageUrl}`,
-    body, 
+    body,
     isDummy: true,
     userId: user._id,
   };
+  // eslint-disable-next-line no-console
   console.log(pic);
 
   return newMutation({
-    collection: Pics, 
+    collection: Pics,
     document: pic,
     currentUser: user,
     validate: false,
@@ -49,7 +50,7 @@ const createUser = async (username, email) => {
   };
 
   return newMutation({
-    collection: Users, 
+    collection: Users,
     document: user,
     validate: false,
   });
@@ -81,6 +82,7 @@ const createDummyPics = async () => {
   ]);
 };
 
+// eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
   Users.remove({ 'profile.isDummy': true });
   Pics.remove({ isDummy: true });
