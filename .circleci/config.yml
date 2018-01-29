@@ -19,7 +19,9 @@ jobs:
     working_directory: ~/app
 
     steps:
+      # chackout the code from github
       - checkout
+      # if certain cached files (packages, etc) are presetn, don't redownload them, restore the cached version
       - restore_cache:
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
       - restore_cache:
@@ -41,6 +43,7 @@ jobs:
             else
                 echo "No cached Meteor bin found."
             fi
+      # if there is no cached meteor version, install it
       - run:
           name: install Meteor
           command: |
@@ -67,11 +70,13 @@ jobs:
       - run:
           name: code linting
           command: meteor yarn lint
+      # move meteor bin so it can be properly cached
       - run:
           name: copy meteor bin to build cache
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      # cache meteor& npm packages
       - save_cache:
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
           paths:
