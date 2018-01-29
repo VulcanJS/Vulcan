@@ -34,3 +34,4 @@ export { default as withEdit } from './containers/withEdit.js';
 export { default as withRemove } from './containers/withRemove.js';
 export { default as withCurrentUser } from './containers/withCurrentUser.js';
 export { default as withMutation } from './containers/withMutation.js';
+export { default as withUpsert } from './containers/withMutation.js';

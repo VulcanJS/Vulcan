@@ -96,7 +96,32 @@ export const getDefaultMutations = (collectionName, options = {}) => {
       },
 
     },
-    
+
+    // mutation for upserting a specific document
+    upsert: {
+      name: `${collectionName}Upsert`,
+
+      description: `Mutation for upserting a ${collectionName} document`,
+
+      async mutation(root, { search, set, unset }, context) {
+        const collection = context[collectionName];
+
+        // check if document exists already
+        const existingDocument = collection.findOne(search, { fields: { _id: 1 } });
+
+        if (existingDocument) {
+          const editArgs = {
+            documentId: existingDocument._id,
+            set,
+            unset,
+          };
+          return await collection.options.mutations.edit.mutation(root, editArgs, context);
+        } else {
+          return await collection.options.mutations.new.mutation(root, { document: set }, context);
+        }
+      },
+    },
+
     // mutation for removing a specific document (same checks as edit mutation)
 
     remove: {
