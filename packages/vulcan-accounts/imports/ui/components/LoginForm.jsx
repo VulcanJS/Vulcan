@@ -5,7 +5,7 @@ export class AccountsLoginForm extends React.Component {
 
   render() {
     return(
-      <Components.AccountsStateSwitcher />
+      <Components.AccountsStateSwitcher {...this.props}/>
     );
   }
 }
