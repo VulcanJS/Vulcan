@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:routing",
   summary: "Vulcan router package",
-  version: '1.8.6',
+  version: '1.8.7',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.5.2');
 
   api.use([
-    'vulcan:lib@1.8.6',
+    'vulcan:lib@1.8.7',
   ]);
 
   api.mainModule('lib/server/main.js', 'server');
