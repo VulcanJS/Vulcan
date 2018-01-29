@@ -73,9 +73,11 @@ export const makeVoteable = collection => {
         viewableBy: ['guests'],
         resolveAs: {
           type: '[User]',
-          resolver: async (document, args, {currentUser, Users}) => {
+          resolver: async (document, args, { currentUser, Users }) => {
+            // eslint-disable-next-line no-undef
             const votes = Votes.find({itemId: document._id}).fetch();
             const votersIds = _.pluck(votes, 'userId');
+            // eslint-disable-next-line no-undef
             const voters = Users.find({_id: {$in: votersIds}});
             return voters;
             // if (!document.upvoters) return [];

@@ -145,6 +145,7 @@ class FormComponent extends PureComponent {
 
   clearField = (e) => {
     e.preventDefault();
+    // eslint-disable-next-line no-console
     console.log(this.props)
     const fieldName = this.props.name;
     // clear value

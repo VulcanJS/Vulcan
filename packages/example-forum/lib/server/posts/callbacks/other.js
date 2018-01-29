@@ -20,9 +20,9 @@ registerSetting('forum.trackClickEvents', true, 'Track clicks to posts pages');
 /**
  * @summary Increment the user's post count
  */
-function PostsNewIncrementPostCount (post) {
+function PostsNewIncrementPostCount(post) {
   var userId = post.userId;
-  Users.update({_id: userId}, {$inc: {'postCount': 1}});
+  Users.update({ _id: userId }, { $inc: { 'postCount': 1 } });
 }
 addCallback('posts.new.async', PostsNewIncrementPostCount);
 
@@ -30,7 +30,7 @@ addCallback('posts.new.async', PostsNewIncrementPostCount);
 // posts.edit.sync                                  //
 //////////////////////////////////////////////////////
 
-function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
+function PostsEditRunPostApprovedSyncCallbacks(modifier, post) {
   if (modifier.$set && Posts.isApproved(modifier.$set) && !Posts.isApproved(post)) {
     modifier = runCallbacks('posts.approve.sync', modifier, post);
   }
@@ -42,7 +42,7 @@ addCallback('posts.edit.sync', PostsEditRunPostApprovedSyncCallbacks);
 // posts.edit.async                                 //
 //////////////////////////////////////////////////////
 
-function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
+function PostsEditRunPostApprovedAsyncCallbacks(post, oldPost) {
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
     runCallbacksAsync('posts.approve.async', post);
   }
@@ -53,8 +53,8 @@ addCallback('posts.edit.async', PostsEditRunPostApprovedAsyncCallbacks);
 // posts.remove.sync                                //
 //////////////////////////////////////////////////////
 
-function PostsRemoveOperations (post) {
-  Users.update({_id: post.userId}, {$inc: {'postCount': -1}});
+function PostsRemoveOperations(post) {
+  Users.update({ _id: post.userId }, { $inc: { 'postCount': -1 } });
   return post;
 }
 addCallback('posts.remove.sync', PostsRemoveOperations);
@@ -63,9 +63,9 @@ addCallback('posts.remove.sync', PostsRemoveOperations);
 // users.remove.async                               //
 //////////////////////////////////////////////////////
 
-function UsersRemoveDeletePosts (user, options) {
+function UsersRemoveDeletePosts(user, options) {
   if (options.deletePosts) {
-    Posts.remove({userId: user._id});
+    Posts.remove({ userId: user._id });
   } else {
     // not sure if anything should be done in that scenario yet
     // Posts.update({userId: userId}, {$set: {author: '\[deleted\]'}}, {multi: true});
@@ -83,24 +83,16 @@ addCallback('users.remove.async', UsersRemoveDeletePosts);
 //  * @param {string} ip – the IP of the current user
 //  */
 Posts.increaseClicks = (post, ip) => {
-  const clickEvent = {
-    name: 'click',
-    properties: {
-      postId: post._id,
-      ip: ip
-    }
-  };
-
   if (getSetting('forum.trackClickEvents', true)) {
     // make sure this IP hasn't previously clicked on this post
-    const existingClickEvent = Events.findOne({name: 'click', 'properties.postId': post._id, 'properties.ip': ip});
+    const existingClickEvent = Events.findOne({ name: 'click', 'properties.postId': post._id, 'properties.ip': ip });
 
-    if(!existingClickEvent) {
+    if (!existingClickEvent) {
       // Events.log(clickEvent); // Sidebar only: don't log event
-      return Posts.update(post._id, { $inc: { clickCount: 1 }});
+      return Posts.update(post._id, { $inc: { clickCount: 1 } });
     }
   } else {
-    return Posts.update(post._id, { $inc: { clickCount: 1 }});
+    return Posts.update(post._id, { $inc: { clickCount: 1 } });
   }
 };
 
@@ -118,7 +110,7 @@ addCallback('posts.click.async', PostsClickTracking);
 // posts.approve.sync                              //
 //////////////////////////////////////////////////////
 
-function PostsApprovedSetPostedAt (modifier, post) {
+function PostsApprovedSetPostedAt(modifier, post) {
   modifier.postedAt = new Date();
   return modifier;
 }

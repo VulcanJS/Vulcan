@@ -29,12 +29,12 @@ const createPic = async (imageUrl, createdAt, body, username) => {
   const pic = {
     createdAt,
     imageUrl: `http://vulcanjs.org/photos/${imageUrl}`,
-    body, 
+    body,
     isDummy: true,
     userId: user._id,
   };
   return newMutation({
-    collection: Pics, 
+    collection: Pics,
     document: pic,
     currentUser: user,
     validate: false,
@@ -50,7 +50,7 @@ const createComment = async (username, body) => {
     isDummy: true,
   };
   return newMutation({
-    collection: Comments, 
+    collection: Comments,
     document: comment,
     currentUser: user,
     validate: false,
@@ -64,7 +64,7 @@ const createUser = async (username, email) => {
     isDummy: true,
   };
   return newMutation({
-    collection: Users, 
+    collection: Users,
     document: user,
     validate: false,
   });
@@ -121,6 +121,7 @@ const createDummyComments = async () => {
   ]);
 };
 
+// eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
   Users.remove({ 'profile.isDummy': true });
   Pics.remove({ isDummy: true });
