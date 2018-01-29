@@ -11,8 +11,6 @@ export class AccountsStateSwitcher extends React.Component {
   constructor(props) {
     super(props);
 
-    const currentUser = props.currentUser;
-
     this.state = {
       formState: props.formState
     }
@@ -85,7 +83,7 @@ export class AccountsStateSwitcher extends React.Component {
       cancelResetPassword,
       switchToProfile,
     } = this;
-    
+
     const handlers = {
       switchToSignUp,
       switchToSignIn,
@@ -95,8 +93,8 @@ export class AccountsStateSwitcher extends React.Component {
       cancelResetPassword,
       switchToProfile,
     }
-    return(
-      <Components.AccountsLoginFormInner {...this.props} formState={this.state.formState} handlers={handlers}/>
+    return (
+      <Components.AccountsLoginFormInner {...this.props} formState={this.state.formState} handlers={handlers} />
     );
   }
 }
