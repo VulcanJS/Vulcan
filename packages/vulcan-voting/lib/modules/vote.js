@@ -84,8 +84,9 @@ const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
 Add a vote of a specific type on the server
 
 */
-const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
+const addVoteServer = (voteOptions) => {
 
+  const { document, collection, voteType, user, voteId, updateDocument } = voteOptions;
   const newDocument = _.clone(document);
 
   // create vote and insert it
@@ -93,11 +94,14 @@ const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
   delete vote.__typename;
   Votes.insert(vote);
 
-  // update document score & set item as active
-  collection.update({_id: document._id}, {$inc: {baseScore: -vote.power }, $set: {inactive: false, score: newDocument.score}});
-
-  newDocument.baseScore += vote.power;
+  // initialize baseScore to vote power if not defined yet
+  newDocument.baseScore = document.baseScore ? document.baseScore + vote.power : vote.power;
   newDocument.score = recalculateScore(newDocument);
+
+  if (updateDocument) {
+    // update document score & set item as active
+    collection.update({_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
+  }
 
   return newDocument;
 }
