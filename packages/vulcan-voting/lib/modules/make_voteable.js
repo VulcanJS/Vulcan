@@ -104,7 +104,10 @@ export const makeVoteable = collection => {
         optional: true,
         defaultValue: 0,
         viewableBy: ['guests'],
-        onInsert: () => 0
+        onInsert: document => {
+          // default to 0 if empty
+          return document.baseScore || 0;
+        }
       }
     },
     /**
@@ -117,7 +120,10 @@ export const makeVoteable = collection => {
         optional: true,
         defaultValue: 0,
         viewableBy: ['guests'],
-        onInsert: () => 0
+        onInsert: document => {
+          // default to 0 if empty
+          return document.score || 0;
+        }
       }
     },
     /**
