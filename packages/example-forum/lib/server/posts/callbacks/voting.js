@@ -14,7 +14,7 @@ import { performVoteServer } from 'meteor/vulcan:voting';
  */
 function PostsNewUpvoteOwnPost(post) {
   var postAuthor = Users.findOne(post.userId);
-  return {...post, ...performVoteServer({ document: post, voteType: 'upvote', collection: Posts, user: postAuthor })};
+  return {...post, ...performVoteServer({ document: post, voteType: 'upvote', collection: Posts, user: postAuthor, updateDocument: true })};
 }
 
 addCallback('posts.new.after', PostsNewUpvoteOwnPost);
