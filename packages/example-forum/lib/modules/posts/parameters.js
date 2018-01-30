@@ -9,9 +9,9 @@ import moment from 'moment';
 import { addCallback } from 'meteor/vulcan:core';
 
 // Add 'after' and 'before' properties to terms which can be used to limit posts in time.
-function addTimeParameter (parameters, terms, apolloClient) {
+function PostsAddBeforeAfterParameters (parameters, terms, apolloClient) {
 
-  // console.log('// addTimeParameter')
+  // console.log('// addBeforeAfterParameters')
 
   if (typeof parameters.selector.postedAt === 'undefined') {
 
@@ -86,4 +86,4 @@ function addTimeParameter (parameters, terms, apolloClient) {
 
   return parameters;
 }
-addCallback('posts.parameters', addTimeParameter);
+addCallback('posts.parameters', PostsAddBeforeAfterParameters);
