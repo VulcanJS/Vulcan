@@ -15,7 +15,9 @@
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo"
+    "googleAnalytics": {
+      "apiKey": "foo123"
+    }
 
   },
 

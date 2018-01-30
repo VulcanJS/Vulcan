@@ -202,6 +202,19 @@ export const createCollection = options => {
   ) : ${typeName}`, mutations.edit.description);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }
+      // upsert
+      if (mutations.upsert) { // e.g. "moviesUpsert(search: moviesInput, set: moviesInput, unset: moviesUnset) : Movie"
+        addGraphQLMutation(
+          `${mutations.upsert.name}(
+    # The document to search for (or partial document)
+    search: ${collectionName}Input, 
+    # An array of fields to insert
+    set: ${collectionName}Input, 
+    # An array of fields to delete
+    unset: ${collectionName}Unset
+  ) : ${typeName}`, mutations.upsert.description);
+        mutationResolvers[mutations.upsert.name] = mutations.upsert.mutation.bind(mutations.upsert);
+      }
       // remove
       if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
         addGraphQLMutation(
