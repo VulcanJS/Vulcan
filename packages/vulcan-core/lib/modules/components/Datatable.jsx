@@ -243,7 +243,7 @@ const DatatableCell = ({ column, document, currentUser }) => {
   const Component = column.component || Components[column.componentName] || Components.DatatableDefaultCell;
   const columnName = column.name || column;
   return (
-    <td className={`datatable-item-${columnName.toLowerCase()}`}><Component column={column} document={document} currentUser={currentUser} /></td>
+    <td className={`datatable-item-${columnName.toLowerCase().replace(' ', '-')}`}><Component column={column} document={document} currentUser={currentUser} /></td>
   )
 }
 registerComponent('DatatableCell', DatatableCell);
