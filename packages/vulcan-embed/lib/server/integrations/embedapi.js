@@ -1,4 +1,5 @@
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { HTTP } from 'meteor/http';
 import { Embed } from '../../modules/embed.js';
 
 registerSetting('embedAPI', null, 'EmbedAPI settings');
@@ -24,7 +25,7 @@ if (settings) {
 
       try {
 
-        const result = Meteor.http.get(extractBase, {
+        const result = HTTP.get(extractBase, {
           params: {
             key: apiKey,
             url: url,
