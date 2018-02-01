@@ -207,7 +207,7 @@ export const createCollection = options => {
         addGraphQLMutation(
           `${mutations.upsert.name}(
     # The document to search for (or partial document)
-    search: ${collectionName}Input, 
+    search: JSON, 
     # An array of fields to insert
     set: ${collectionName}Input, 
     # An array of fields to delete
