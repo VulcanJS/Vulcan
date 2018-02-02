@@ -10,6 +10,7 @@ Package.onUse( function(api) {
   api.versionsFrom('1.6.1');
 
   api.use([
+    'http',
     'vulcan:core@1.8.7',
     'fourseven:scss@4.5.0'
   ]);
