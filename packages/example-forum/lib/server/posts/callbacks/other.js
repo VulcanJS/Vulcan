@@ -85,7 +85,12 @@ addCallback('users.remove.async', UsersRemoveDeletePosts);
 Posts.increaseClicks = (post, ip) => {
   if (getSetting('forum.trackClickEvents', true)) {
     // make sure this IP hasn't previously clicked on this post
-    const existingClickEvent = Events.findOne({ name: 'click', 'properties.postId': post._id, 'properties.ip': ip });
+    let existingClickEvent = false;
+    try {
+      existingClickEvent = Events.findOne({name: 'click', 'properties.postId': post._id, 'properties.ip': ip});
+    } catch (error) {
+      console.error(error);
+    }
 
     if (!existingClickEvent) {
       // Events.log(clickEvent); // Sidebar only: don't log event
