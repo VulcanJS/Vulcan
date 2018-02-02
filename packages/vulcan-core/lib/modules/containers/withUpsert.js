@@ -4,7 +4,7 @@
 
  Sample mutation:
 
-  mutation moviesUpsert($search: MoviesInput, $set: MoviesInput, $unset: MoviesUnset) {
+  mutation moviesUpsert($search: JSON, $set: MoviesInput, $unset: MoviesUnset) {
     moviesUpsert(search: $search, set: $set, unset: $unset) {
       ...MoviesUpsertFormFragment
     }
@@ -39,7 +39,7 @@ export default function withUpsert(options) {
   const mutationName = collection.options.mutations.upsert.name;
 
   return graphql(gql`
-    mutation ${mutationName}($search: ${collectionName}Input, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
+    mutation ${mutationName}($search: JSON, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
       ${mutationName}(search: $search, set: $set, unset: $unset) {
         ...${fragmentName}
       }
