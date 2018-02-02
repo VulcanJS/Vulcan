@@ -22,7 +22,6 @@ class CommentsItem extends PureComponent {
   }
 
   replyCancelCallback(event) {
-    event.preventDefault();
     this.setState({showReply: false});
   }
 
@@ -36,7 +35,6 @@ class CommentsItem extends PureComponent {
   }
 
   editCancelCallback(event) {
-    event.preventDefault();
     this.setState({showEdit: false});
   }
 
