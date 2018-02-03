@@ -12,11 +12,11 @@ Package.onUse(function (api) {
 
     // vulcan core
     'promise',
-    'vulcan:core@1.8.7',
+    'vulcan:core@1.8.8',
 
     // vulcan packages
-    'vulcan:forms@1.8.7',
-    'vulcan:accounts@1.8.7',
+    'vulcan:forms@1.8.8',
+    'vulcan:accounts@1.8.8',
     
   ]);
 
