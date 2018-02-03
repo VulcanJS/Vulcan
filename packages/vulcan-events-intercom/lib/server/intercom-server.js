@@ -12,10 +12,10 @@ import Users from 'meteor/vulcan:users';
 const token = getSetting('intercom.accessToken');
 
 if (!token) {
-  throw new Error('Please add your Intercom access token in settings.json');
+  throw new Error('Please add your Intercom access token as intercom.accessToken in settings.json');
 } else {
 
-  const intercomClient = new Intercom.Client({ token });
+  export const intercomClient = new Intercom.Client({ token });
 
   const getDate = () => new Date().valueOf().toString().substr(0,10);
 

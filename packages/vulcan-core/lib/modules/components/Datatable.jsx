@@ -48,27 +48,35 @@ class Datatable extends PureComponent {
 
   render() {
 
-    const options = {
-      collection: this.props.collection,
-      ...this.props.options
+    if (this.props.data) { // static JSON datatable
+
+      return <Components.DatatableContents {...this.props} results={this.props.data}/>;
+            
+    } else { // dynamic datatable with data loading
+      
+      const options = {
+        collection: this.props.collection,
+        ...this.props.options
+      }
+
+      const DatatableWithList = withList(options)(Components.DatatableContents);
+
+      const canInsert = this.props.collection.options && this.props.collection.options.mutations && this.props.collection.options.mutations.new && this.props.collection.options.mutations.new.check(this.props.currentUser);
+
+      return (
+        <div className={`datatable datatable-${this.props.collection._name}`}>
+          <Components.DatatableAbove {...this.props} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
+          <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
+        </div>
+      )
     }
-
-    const DatatableWithList = withList(options)(Components.DatatableContents);
-
-    const canInsert = this.props.collection.options && this.props.collection.options.mutations && this.props.collection.options.mutations.new && this.props.collection.options.mutations.new.check(this.props.currentUser);
-
-    return (
-      <div className={`datatable datatable-${this.props.collection._name}`}>
-        <Components.DatatableAbove {...this.props} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-        <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
-      </div>
-    )
   }
 }
 
 Datatable.propTypes = {
   collection: PropTypes.object,
   columns: PropTypes.array,
+  data: PropTypes.array,
   options: PropTypes.object,
   showEdit: PropTypes.bool,
   showNew: PropTypes.bool,
@@ -101,20 +109,29 @@ DatatableHeader Component
 
 */
 const DatatableHeader = ({ collection, column }, { intl }) => {
-  const schema = collection.simpleSchema()._schema;
+
   const columnName = typeof column === 'string' ? column : column.name;
+  
+  if (collection) {
+    const schema = collection.simpleSchema()._schema;
 
-  /*
+    /*
 
-  use either:
+    use either:
 
-  1. the column name translation
-  2. the column name label in the schema (if the column name matches a schema field)
-  3. the raw column name.
+    1. the column name translation
+    2. the column name label in the schema (if the column name matches a schema field)
+    3. the raw column name.
 
-  */
-  const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
-  return <th className={`datatable-th-${columnName.toLowerCase().replace(/\s/g,'-')}`}>{formattedLabel}</th>;
+    */
+    const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
+    return <th>{formattedLabel}</th>;
+
+  } else {
+    const formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
+    return <th className={`datatable-th-${columnName.toLowerCase().replace(/\s/g,'-')}`}>{formattedLabel}</th>;
+
+  }
 }
 
 DatatableHeader.contextTypes = {
@@ -174,7 +191,7 @@ DatatableRow Component
 */
 const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, { intl }) => {
 
-  const canEdit = collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
+  const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   return (
   <tr className="datatable-item">

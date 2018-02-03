@@ -1,4 +1,5 @@
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { HTTP } from 'meteor/http';
 import { Embed } from '../../modules/embed.js';
 
 registerSetting('embedly', null, 'Embedly settings');
@@ -25,7 +26,7 @@ if (settings) {
 
       try {
 
-        const data = Meteor.http.get(extractBase, {
+        const data = HTTP.get(extractBase, {
           params: {
             key: apiKey,
             url: url,
