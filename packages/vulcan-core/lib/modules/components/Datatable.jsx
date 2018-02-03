@@ -130,7 +130,7 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
   } else {
 
     const formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
-    return <th>{formattedLabel}</th>;
+    return <th className={`datatable-th-${columnName.toLowerCase().replace(/\s/g,'-')}`}>{formattedLabel}</th>;
 
   }
 }
@@ -261,7 +261,7 @@ const DatatableCell = ({ column, document, currentUser }) => {
   const Component = column.component || Components[column.componentName] || Components.DatatableDefaultCell;
   const columnName = column.name || column;
   return (
-    <td className={`datatable-item-${columnName.toLowerCase()}`}><Component column={column} document={document} currentUser={currentUser} /></td>
+    <td className={`datatable-item-${columnName.toLowerCase().replace(/\s/g,'-')}`}><Component column={column} document={document} currentUser={currentUser} /></td>
   )
 }
 registerComponent('DatatableCell', DatatableCell);
