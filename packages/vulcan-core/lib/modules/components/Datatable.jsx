@@ -128,6 +128,7 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
     return <th>{formattedLabel}</th>;
 
   } else {
+
     const formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
     return <th className={`datatable-th-${columnName.toLowerCase().replace(/\s/g,'-')}`}>{formattedLabel}</th>;
 
