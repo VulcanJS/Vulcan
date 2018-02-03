@@ -114,7 +114,7 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
 
   */
   const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
-  return <th>{formattedLabel}</th>;
+  return <th className={`datatable-th-${columnName.toLowerCase().replace(/\s/g,'-')}`}>{formattedLabel}</th>;
 }
 
 DatatableHeader.contextTypes = {
