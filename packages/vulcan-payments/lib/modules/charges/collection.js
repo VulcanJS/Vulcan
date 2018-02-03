@@ -1,9 +1,4 @@
-/*
-
-The main Comments collection definition file.
-
-*/
-
+// The main Charges collection definition file.
 import { createCollection } from 'meteor/vulcan:core';
 import schema from './schema.js';
 
@@ -23,7 +18,7 @@ const Charges = createCollection({
 
 Charges.addDefaultView(terms => {
   return {
-    options: {sort: {createdAt: -1}}
+    options: { sort: { createdAt: -1 } }
   };
 });
 
