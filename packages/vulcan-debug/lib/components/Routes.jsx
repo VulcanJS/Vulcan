@@ -2,12 +2,10 @@ import React from 'react';
 import { registerComponent, Components, Routes } from 'meteor/vulcan:lib';
 import { Link } from 'react-router';
 
-console.log(Object.values(Routes))
-
-const RoutePath = ({ document }) => 
+const RoutePath = ({ document }) =>
   <Link to={document.path}>{document.path}</Link>
 
-const RoutesDashboard = props => 
+const RoutesDashboard = props =>
   <div className="routes">
     <Components.Datatable
       showSearch={false}
@@ -15,12 +13,12 @@ const RoutesDashboard = props =>
       showEdit={false}
       data={Object.values(Routes)}
       columns={[
-        'name', 
+        'name',
         {
           name: 'path',
           component: RoutePath
-        }, 
-        'componentName', 
+        },
+        'componentName',
       ]}
     />
   </div>
