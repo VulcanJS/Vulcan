@@ -8,4 +8,5 @@ addRoute([
   // {name: 'emails', path: '/emails', component: () => getDynamicComponent(import('./components/Emails.jsx'))},
   {name: 'emails', path: '/emails', componentName: 'Emails', layoutName: 'AdminLayout'},
   {name: 'routes', path: '/routes', componentName: 'Routes', layoutName: 'AdminLayout'},
+  {name: 'components', path: '/components', componentName: 'Components', layoutName: 'AdminLayout'},
 ]);
