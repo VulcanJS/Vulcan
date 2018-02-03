@@ -12,7 +12,7 @@ const stripeSettings = getSetting('stripe');
 
 // initialize Stripe
 const keySecret = Meteor.isDevelopment ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
-const stripe = new Stripe(keySecret);
+export const stripe = new Stripe(keySecret);
 
 const sampleProduct = {
   amount: 10000,
