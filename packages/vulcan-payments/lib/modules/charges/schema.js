@@ -15,7 +15,7 @@ const schema = {
     viewableBy: ['guests'],
     onInsert: (document, currentUser) => {
       return new Date();
-    }
+    },
   },
   userId: {
     type: String,

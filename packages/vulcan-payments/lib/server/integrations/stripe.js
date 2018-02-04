@@ -5,6 +5,7 @@ import Charges from '../../modules/charges/collection.js';
 import Users from 'meteor/vulcan:users';
 import { Products } from '../../modules/products.js';
 import { webAppConnectHandlersUse } from 'meteor/vulcan:core';
+import { Promise } from 'meteor/promise';
 
 registerSetting('stripe', null, 'Stripe settings');
 
@@ -19,7 +20,7 @@ const sampleProduct = {
   name: 'My Cool Product',
   description: 'This product is awesome.',
   currency: 'USD',
-}
+};
 
 /*
 
@@ -251,7 +252,47 @@ export const subscribeUser = async ({user, customer, product, collection, docume
     // eslint-disable-next-line no-console
     console.log(error);
   }
-}
+};
+
+// create a stripe plan
+// plan is used as the unique ID and is not needed for creating a plan
+export const createPlan = async ({
+  // Extract all the known properties for the stripe api
+  // Evertying else goes in the metadata field
+  plan: id,
+  currency,
+  interval,
+  name,
+  amount,
+  interval_count,
+  statement_descriptor,
+  ...metadata
+}) => stripe.plans.create({
+  id,
+  currency,
+  interval,
+  name,
+  amount,
+  interval_count,
+  statement_descriptor,
+  ...metadata
+});
+export const retrievePlan = async (planObject) => stripe.plans.retrieve(planObject.plan);
+export const createOrRetrievePlan = async (planObject) => {
+  return retrievePlan(planObject)
+    .catch(error => {
+      // Plan does not exist, create it
+      if (error.statusCode === 404) {
+        // eslint-disable-next-line no-console
+        console.log(`Creating subscription plan ${planObject.plan} for ${(planObject.amount && (planObject.amount / 100).toLocaleString('en-US', { style: 'currency', currency })) || 'free'}`);
+        return createPlan(planObject);
+      }
+      // Something else went wrong
+      // eslint-disable-next-line no-console
+      console.error(error);
+      throw error;
+    });
+};
 
 
 /*
@@ -262,7 +303,7 @@ Webhooks with Express
 
 // see https://github.com/stripe/stripe-node/blob/master/examples/webhook-signing/express.js
 
-const app = express()
+const app = express();
 
 // Add the raw text body of the request to the `request` object
 function addRawBody(req, res, next) {
@@ -466,5 +507,24 @@ Meteor.startup(() => {
       runs: 'async', 
     });
     
-  })
-})
+
+  });
+
+  // Create plans if they don't exist
+  if (stripeSettings.createPlans) {
+    // eslint-disable-next-line no-console
+    console.log('Creating stripe plans...');
+    Promise.awaitAll(Object.keys(Products)
+      // Return the object
+      .map(productKey => {
+        const definedProduct = Products[productKey];
+        const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
+        return product;
+      })
+      // Find only products that have a plan defined
+      .filter(productObject => productObject.plan)
+      .map(planObject => createOrRetrievePlan(planObject)));
+    // eslint-disable-next-line no-console
+    console.log('Finished creating stripe plans.');
+  }
+});

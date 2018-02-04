@@ -32,7 +32,8 @@ As well as the following private setting (can be stored in the setting's root or
     }
   },
   "stripe": {
-    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K"
+    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K",
+    "createPlans": false
   },
 }
 ```
