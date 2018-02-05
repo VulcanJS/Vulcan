@@ -136,6 +136,11 @@ const withList = (options) => {
           if (options.fetchPolicy) {
             graphQLOptions.fetchPolicy = options.fetchPolicy
           }
+
+          // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
+          if (options.notifyOnNetworkStatusChange) {
+            graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange
+          }
           
           return graphQLOptions;
         },
