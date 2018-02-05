@@ -18,7 +18,7 @@ const schema = {
     viewableBy: ['admins'],
   },
 
-  public: {
+  isPublic: {
     label: 'Public',
     type: Boolean,
     viewableBy: ['admins'],

@@ -8,11 +8,17 @@ import { webAppConnectHandlersUse } from 'meteor/vulcan:core';
 import { Promise } from 'meteor/promise';
 
 registerSetting('stripe', null, 'Stripe settings');
+registerSetting('stripe.publishableKey', null, 'Publishable key', true);
+registerSetting('stripe.publishableKeyTest', null, 'Publishable key (test)', true);
+registerSetting('stripe.secretKey', null, 'Secret key');
+registerSetting('stripe.secretKeyTest', null, 'Secret key (test)');
+registerSetting('stripe.endpointSecret', null, 'Endpoint secret for webhook');
+registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments'), true;
 
 const stripeSettings = getSetting('stripe');
 
 // initialize Stripe
-const keySecret = Meteor.isDevelopment ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
+const keySecret = Meteor.isDevelopment || getSetting('stripe.alwaysUseTest') ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
 export const stripe = new Stripe(keySecret);
 
 const sampleProduct = {

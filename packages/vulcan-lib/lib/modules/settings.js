@@ -42,7 +42,7 @@ export const getAllSettings = () => {
     }
     
     if (typeof publicSettings[key] !== 'undefined'){
-      settingsObject[key].public = true;
+      settingsObject[key].isPublic = true;
     }
 
     if (registeredSettings[key]) {
@@ -60,8 +60,8 @@ Vulcan.showSettings = () => {
   return getAllSettings();
 }
 
-export const registerSetting = (settingName, defaultValue, description) => {
-  Settings[settingName] = { defaultValue, description };
+export const registerSetting = (settingName, defaultValue, description, isPublic) => {
+  Settings[settingName] = { defaultValue, description, isPublic };
 }
 
 export const getSetting = (settingName, settingDefault) => {

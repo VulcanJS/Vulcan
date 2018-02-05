@@ -15,8 +15,9 @@ const SettingsDashboard = props =>
         { name: 'name', component: SettingName }, 
         'value', 
         'defaultValue', 
-        'public', 
-        'description'
+        'isPublic', 
+        'description',
+        'serverOnly'
       ]}
     />
   </div>
