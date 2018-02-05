@@ -59,8 +59,6 @@ export const performAction = async (args) => {
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
-  const customer = await getCustomer(user, token.id);
-
   // create metadata object
   const metadata = {
     userId: userId,
@@ -77,10 +75,10 @@ export const performAction = async (args) => {
 
   if (product.plan) {
     // if product has a plan, subscribe user to it
-    returnDocument = await subscribeUser({user, customer, product, collection, document, metadata, args});
+    returnDocument = await subscribeUser(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   } else {
     // else, perform charge
-    returnDocument = await createCharge({user, customer, product, collection, document, metadata, args});
+    returnDocument = await createCharge(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   }
 
   return returnDocument;
@@ -126,9 +124,11 @@ export const getCustomer = async (user, id) => {
 Create one-time charge. 
 
 */
-export const createCharge = async ({user, customer, product, collection, document, metadata, args}) => {
+export const createCharge = async ({user, product, collection, document, metadata, args}) => {
 
-  const { /* token, userId, productKey, associatedId, properties, */ coupon } = args;
+  const { token, /* userId, productKey, associatedId, properties, */ coupon } = args;
+
+  const customer = await getCustomer(user, token);
 
   let amount = product.amount;
 
@@ -150,6 +150,8 @@ export const createCharge = async ({user, customer, product, collection, documen
 
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
+
+  runCallbacksAsync('stripe.charge.async', charge, collection, document, args, user);
 
   return processCharge({collection, document, charge, args, user})
 
@@ -228,8 +230,9 @@ export const processCharge = async ({collection, document, charge, args, user}) 
 Subscribe a user to a Stripe plan
 
 */
-export const subscribeUser = async ({user, customer, product, collection, document, metadata, args }) => {
+export const subscribeUser = async ({user, product, collection, document, metadata, args }) => {
   try {
+    const customer = await getCustomer(user, args.token.id);
     // if product has an initial cost, 
     // create an invoice item and attach it to the customer first
     // see https://stripe.com/docs/subscriptions/invoices#adding-invoice-items
@@ -251,6 +254,8 @@ export const subscribeUser = async ({user, customer, product, collection, docume
       ],
       metadata,
     });
+
+    runCallbacksAsync('stripe.charge.async', subscription, collection, document, args, user);
 
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -514,6 +519,21 @@ Meteor.startup(() => {
     });
     
 
+  });
+
+  registerCallback({
+    name: 'stripe.charge.sync',
+    description: 'Modify any arguments before sending to stripe',
+    arguments: [{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {metadata: 'Metadata about the charge'}, {args: 'Original mutation arguments'}],
+    runs: 'sync',
+    returns: 'The modified arguments to be sent to stripe',
+  });
+
+  registerCallback({
+    name: 'stripe.charge.async',
+    description: 'Perform operations immediately after the stripe charge has completed',
+    arguments: [{charge: 'Charge object returning from stripe'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}, {user: 'The user'}],
+    runs: 'async',
   });
 
   // Create plans if they don't exist
