@@ -507,7 +507,7 @@ Meteor.startup(() => {
     });
 
     registerCallback({
-      name: `${collectionName}.charge.sync`, 
+      name: `${collectionName}.charge.async`,
       description: `Perform operations after the charge has succeeded.`,      
       arguments: [{document: 'The associated document'}, {charge: 'The charge'}, {currentUser: 'The current user'}], 
       runs: 'async', 
