@@ -28,10 +28,10 @@ if (!token) {
   function intercomNewUser(user) {
     intercomClient.users.create({
       email: user.email,
+      user_id: user._id,
       custom_attributes: {
         name: user.displayName,
         profileUrl: Users.getProfileUrl(user, true),
-        _id: user._id,
       }
     });
   }

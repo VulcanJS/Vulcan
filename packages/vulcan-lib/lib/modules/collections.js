@@ -261,7 +261,8 @@ export const createCollection = options => {
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.client`, parameters, _.clone(terms), apolloClient);
     }
 
-    if (Meteor.isServer) {
+    // note: check that context exists to avoid calling this from withList during SSR
+    if (Meteor.isServer && context) {
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
     }
 
