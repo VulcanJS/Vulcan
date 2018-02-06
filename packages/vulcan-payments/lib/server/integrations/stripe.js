@@ -13,12 +13,12 @@ registerSetting('stripe.publishableKeyTest', null, 'Publishable key (test)', tru
 registerSetting('stripe.secretKey', null, 'Secret key');
 registerSetting('stripe.secretKeyTest', null, 'Secret key (test)');
 registerSetting('stripe.endpointSecret', null, 'Endpoint secret for webhook');
-registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments'), true;
+registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments', true);
 
 const stripeSettings = getSetting('stripe');
 
 // initialize Stripe
-const keySecret = Meteor.isDevelopment || getSetting('stripe.alwaysUseTest') ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
+const keySecret = Meteor.isDevelopment || stripeSettings.alwaysUseTest ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
 export const stripe = new Stripe(keySecret);
 
 const sampleProduct = {
@@ -262,7 +262,7 @@ export const subscribeUser = async ({user, customer, product, collection, docume
 
 // create a stripe plan
 // plan is used as the unique ID and is not needed for creating a plan
-export const createPlan = async ({
+const createPlan = async ({
   // Extract all the known properties for the stripe api
   // Evertying else goes in the metadata field
   plan: id,
@@ -283,14 +283,16 @@ export const createPlan = async ({
   statement_descriptor,
   ...metadata
 });
-export const retrievePlan = async (planObject) => stripe.plans.retrieve(planObject.plan);
-export const createOrRetrievePlan = async (planObject) => {
+export const createSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && createPlan(maybePlanObject);
+const retrievePlan = async (planObject) => stripe.plans.retrieve(planObject.plan);
+export const retrieveSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && retrievePlan(maybePlanObject);
+const createOrRetrievePlan = async (planObject) => {
   return retrievePlan(planObject)
     .catch(error => {
       // Plan does not exist, create it
       if (error.statusCode === 404) {
         // eslint-disable-next-line no-console
-        console.log(`Creating subscription plan ${planObject.plan} for ${(planObject.amount && (planObject.amount / 100).toLocaleString('en-US', { style: 'currency', currency })) || 'free'}`);
+        console.log(`Creating subscription plan ${planObject.plan} for ${(planObject.amount && (planObject.amount / 100).toLocaleString('en-US', { style: 'currency', currency: planObject.currency })) || 'free'}`);
         return createPlan(planObject);
       }
       // Something else went wrong
@@ -299,6 +301,7 @@ export const createOrRetrievePlan = async (planObject) => {
       throw error;
     });
 };
+export const createOrRetrieveSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && createOrRetrievePlan(maybePlanObject);
 
 
 /*
@@ -521,15 +524,9 @@ Meteor.startup(() => {
     // eslint-disable-next-line no-console
     console.log('Creating stripe plans...');
     Promise.awaitAll(Object.keys(Products)
-      // Return the object
-      .map(productKey => {
-        const definedProduct = Products[productKey];
-        const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
-        return product;
-      })
-      // Find only products that have a plan defined
-      .filter(productObject => productObject.plan)
-      .map(planObject => createOrRetrievePlan(planObject)));
+      // Filter out function type products and those without a plan defined (non-subscription)
+      .filter(productKey => typeof Products[productKey] === 'object' && Products[productKey].plan)
+      .map(productKey => createOrRetrievePlan(Products[productKey])));
     // eslint-disable-next-line no-console
     console.log('Finished creating stripe plans.');
   }

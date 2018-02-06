@@ -84,7 +84,7 @@ class Checkout extends React.Component {
       <div className={classNames('stripe-checkout', {'checkout-loading': this.state.loading})}>
         <StripeCheckout
           token={this.onToken}
-          stripeKey={Meteor.isDevelopment ? stripeSettings.publishableKeyTest : stripeSettings.publishableKey}
+          stripeKey={Meteor.isDevelopment || stripeSettings.alwaysUseTest ? stripeSettings.publishableKeyTest : stripeSettings.publishableKey}
           ComponentClass="div"
           name={product.name}
           description={product.description}
