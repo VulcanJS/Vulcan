@@ -164,6 +164,17 @@ export const processCharge = async ({collection, document, charge, args, user}) 
  
   let returnDocument = {};
 
+  // make sure charge hasn't already been processed
+  // (could happen with multiple endpoints listening)
+
+  const existingCharge = Charges.findOne({ 'data.id': charge.id });
+
+  if (existingCharge) {
+    // eslint-disable-next-line no-console
+    console.log(`// Charge with Stripe id ${charge.id} already exists in db; aborting processCharge`);
+    return collection && document ? document : {};
+  }
+
   const {token, userId, productKey, associatedCollection, associatedId, properties, livemode } = args;
 
   // create charge document for storing in our own Charges collection
@@ -379,6 +390,11 @@ app.post('/stripe', async function(req, res) {
           if (associatedCollection && associatedId) {
             const collection = _.findWhere(Collections, {_name: associatedCollection});
             const document = collection.findOne(associatedId);
+
+            // make sure document actually exists
+            if (!document) {
+              throw new Error(`Could not find ${associatedCollection} document with id ${associatedId} associated with subscription id ${subscription.id}; Not processing charge.`)
+            }
 
             const args = {
               userId, 
