@@ -13,12 +13,12 @@ registerSetting('stripe.publishableKeyTest', null, 'Publishable key (test)', tru
 registerSetting('stripe.secretKey', null, 'Secret key');
 registerSetting('stripe.secretKeyTest', null, 'Secret key (test)');
 registerSetting('stripe.endpointSecret', null, 'Endpoint secret for webhook');
-registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments'), true;
+registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments', true);
 
 const stripeSettings = getSetting('stripe');
 
 // initialize Stripe
-const keySecret = Meteor.isDevelopment || getSetting('stripe.alwaysUseTest') ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
+const keySecret = Meteor.isDevelopment || stripeSettings.alwaysUseTest ? stripeSettings.secretKeyTest : stripeSettings.secretKey;
 export const stripe = new Stripe(keySecret);
 
 const sampleProduct = {
@@ -59,8 +59,6 @@ export const performAction = async (args) => {
   // get the user performing the transaction
   const user = Users.findOne(userId);
 
-  const customer = await getCustomer(user, token.id);
-
   // create metadata object
   const metadata = {
     userId: userId,
@@ -77,10 +75,10 @@ export const performAction = async (args) => {
 
   if (product.plan) {
     // if product has a plan, subscribe user to it
-    returnDocument = await subscribeUser({user, customer, product, collection, document, metadata, args});
+    returnDocument = await subscribeUser(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   } else {
     // else, perform charge
-    returnDocument = await createCharge({user, customer, product, collection, document, metadata, args});
+    returnDocument = await createCharge(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   }
 
   return returnDocument;
@@ -126,9 +124,11 @@ export const getCustomer = async (user, id) => {
 Create one-time charge. 
 
 */
-export const createCharge = async ({user, customer, product, collection, document, metadata, args}) => {
+export const createCharge = async ({user, product, collection, document, metadata, args}) => {
 
-  const { /* token, userId, productKey, associatedId, properties, */ coupon } = args;
+  const { token, /* userId, productKey, associatedId, properties, */ coupon } = args;
+
+  const customer = await getCustomer(user, token);
 
   let amount = product.amount;
 
@@ -150,6 +150,8 @@ export const createCharge = async ({user, customer, product, collection, documen
 
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
+
+  runCallbacksAsync('stripe.charge.async', charge, collection, document, args, user);
 
   return processCharge({collection, document, charge, args, user})
 
@@ -239,8 +241,9 @@ export const processCharge = async ({collection, document, charge, args, user}) 
 Subscribe a user to a Stripe plan
 
 */
-export const subscribeUser = async ({user, customer, product, collection, document, metadata, args }) => {
+export const subscribeUser = async ({user, product, collection, document, metadata, args }) => {
   try {
+    const customer = await getCustomer(user, args.token.id);
     // if product has an initial cost, 
     // create an invoice item and attach it to the customer first
     // see https://stripe.com/docs/subscriptions/invoices#adding-invoice-items
@@ -263,6 +266,8 @@ export const subscribeUser = async ({user, customer, product, collection, docume
       metadata,
     });
 
+    runCallbacksAsync('stripe.charge.async', subscription, collection, document, args, user);
+
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('// Stripe subscribeUser error');
@@ -273,7 +278,7 @@ export const subscribeUser = async ({user, customer, product, collection, docume
 
 // create a stripe plan
 // plan is used as the unique ID and is not needed for creating a plan
-export const createPlan = async ({
+const createPlan = async ({
   // Extract all the known properties for the stripe api
   // Evertying else goes in the metadata field
   plan: id,
@@ -294,14 +299,16 @@ export const createPlan = async ({
   statement_descriptor,
   ...metadata
 });
-export const retrievePlan = async (planObject) => stripe.plans.retrieve(planObject.plan);
-export const createOrRetrievePlan = async (planObject) => {
+export const createSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && createPlan(maybePlanObject);
+const retrievePlan = async (planObject) => stripe.plans.retrieve(planObject.plan);
+export const retrieveSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && retrievePlan(maybePlanObject);
+const createOrRetrievePlan = async (planObject) => {
   return retrievePlan(planObject)
     .catch(error => {
       // Plan does not exist, create it
       if (error.statusCode === 404) {
         // eslint-disable-next-line no-console
-        console.log(`Creating subscription plan ${planObject.plan} for ${(planObject.amount && (planObject.amount / 100).toLocaleString('en-US', { style: 'currency', currency })) || 'free'}`);
+        console.log(`Creating subscription plan ${planObject.plan} for ${(planObject.amount && (planObject.amount / 100).toLocaleString('en-US', { style: 'currency', currency: planObject.currency })) || 'free'}`);
         return createPlan(planObject);
       }
       // Something else went wrong
@@ -310,6 +317,7 @@ export const createOrRetrievePlan = async (planObject) => {
       throw error;
     });
 };
+export const createOrRetrieveSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && createOrRetrievePlan(maybePlanObject);
 
 
 /*
@@ -523,7 +531,7 @@ Meteor.startup(() => {
     });
 
     registerCallback({
-      name: `${collectionName}.charge.sync`, 
+      name: `${collectionName}.charge.async`,
       description: `Perform operations after the charge has succeeded.`,      
       arguments: [{document: 'The associated document'}, {charge: 'The charge'}, {currentUser: 'The current user'}], 
       runs: 'async', 
@@ -532,20 +540,29 @@ Meteor.startup(() => {
 
   });
 
+  registerCallback({
+    name: 'stripe.charge.sync',
+    description: 'Modify any arguments before sending to stripe',
+    arguments: [{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {metadata: 'Metadata about the charge'}, {args: 'Original mutation arguments'}],
+    runs: 'sync',
+    returns: 'The modified arguments to be sent to stripe',
+  });
+
+  registerCallback({
+    name: 'stripe.charge.async',
+    description: 'Perform operations immediately after the stripe charge has completed',
+    arguments: [{charge: 'Charge object returning from stripe'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}, {user: 'The user'}],
+    runs: 'async',
+  });
+
   // Create plans if they don't exist
   if (stripeSettings.createPlans) {
     // eslint-disable-next-line no-console
     console.log('Creating stripe plans...');
     Promise.awaitAll(Object.keys(Products)
-      // Return the object
-      .map(productKey => {
-        const definedProduct = Products[productKey];
-        const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
-        return product;
-      })
-      // Find only products that have a plan defined
-      .filter(productObject => productObject.plan)
-      .map(planObject => createOrRetrievePlan(planObject)));
+      // Filter out function type products and those without a plan defined (non-subscription)
+      .filter(productKey => typeof Products[productKey] === 'object' && Products[productKey].plan)
+      .map(productKey => createOrRetrievePlan(Products[productKey])));
     // eslint-disable-next-line no-console
     console.log('Finished creating stripe plans.');
   }
