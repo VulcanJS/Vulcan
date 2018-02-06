@@ -76,13 +76,21 @@ export const performAction = async (args) => {
   if (product.plan) {
     // if product has a plan, subscribe user to it
     returnDocument = await subscribeUser(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
+  } else if (product.subscription && product.plan) {
+    // if product has both a plan and a subscription specified, it is a subscription item
+    // https://stripe.com/docs/api/node#create_subscription_item
+    returnDocument = await createSubscriptionItem(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
+  } else if (product.subscription) {
+    // if product has a subscription specified but no plan, it is a invoice item
+    // https://stripe.com/docs/api/node#create_invoiceitem
+    returnDocument = await createInvoiceItem(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   } else {
     // else, perform charge
     returnDocument = await createCharge(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
   }
 
   return returnDocument;
-}
+};
 
 /*
 
@@ -117,7 +125,7 @@ export const getCustomer = async (user, id) => {
   }
 
   return customer;
-}
+};
 
 /*
 
@@ -268,9 +276,93 @@ export const subscribeUser = async ({user, product, collection, document, metada
 
     runCallbacksAsync('stripe.charge.async', subscription, collection, document, args, user);
 
+    return subscription;
+
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('// Stripe subscribeUser error');
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+};
+
+// Add a subscription item to a Stripe plan
+export const createSubscriptionItem = async ({user, product, collection, document, metadata, args }) => {
+  try {
+    const item = {
+      plan: product.plan,
+      subscription: product.subscription,
+      metadata,
+    };
+
+    if (product.prorate) {
+      item.prorate = product.prorate;
+    }
+
+    if (args.properties) {
+      const { quantity, proration_date } = args.properties;
+      if (quantity) {
+        item.quantity = quantity;
+      }
+      if (proration_date) {
+        item.proration_date = proration_date;
+      }
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const invoice_item = await stripe.invoiceItems.create(item);
+
+    runCallbacksAsync('stripe.charge.async', invoice_item, collection, document, args, user);
+
+    return invoice_item;
+
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('// Stripe invoiceItems error');
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+};
+
+// Add a invoice item to a Stripe customer
+export const createInvoiceItem = async ({user, product, collection, document, metadata, args }) => {
+  try {
+    const customer = await getCustomer(user, args.token.id);
+    const item = {
+      currency: product.currency,
+      customer,
+      description: product.description,
+      subscription: product.subscription,
+      metadata,
+    };
+
+    if (product.amount) {
+      item.amount = product.amount;
+    }
+
+    if (args.properties) {
+      const { discountable, invoice, amount } = args.properties;
+      if (![undefined, null].includes(discountable)) {
+        item.discountable = discountable;
+      }
+      if (invoice) {
+        item.invoice = invoice;
+      }
+      if (amount) {
+        item.amount = amount;
+      }
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const subscription_item = await stripe.subscriptionItems.create(item);
+
+    runCallbacksAsync('stripe.charge.async', subscription_item, collection, document, args, user);
+
+    return subscription_item;
+
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('// Stripe subscriptionItems error');
     // eslint-disable-next-line no-console
     console.log(error);
   }

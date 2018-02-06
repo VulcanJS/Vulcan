@@ -32,8 +32,23 @@ As well as the following private setting (can be stored in the setting's root or
     }
   },
   "stripe": {
-    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K",
-    "createPlans": false
+    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K"
+  },
+}
+```
+
+In development (when on your local machine for instance), aka when `Meteor.isDevelopment` is `true`, Vulcan will pull settings from a different key:
+
+```
+{
+  "public": {
+    "stripe": {
+      "publishableTestKey": "pk_test_K0rkFDrT0jj4NqG5Dumr3RaU"
+      }
+    }
+  },
+  "stripe": {
+    "secretTestKey": "sk_test_sfdhj34jdsfxhjs234sd0K"
   },
 }
 ```
@@ -65,7 +80,7 @@ import { addProduct } from 'meteor/vulcan:payments';
 addProduct('membership', {
   'amount': 25000,
   'currency': 'USD',
-  'description': 'Become a paid member.'
+  'description': 'Become a paid member.',
 });
 ```
 
@@ -78,11 +93,187 @@ addProduct('book', book => ({
   'name': book.title,
   'amount': book.price,
   'currency': 'USD',
-  'description': book.description
+  'description': book.description,
 }));
 ```
 
-Make sure you define your products in a location accessible to both client and server, in order to access them both on the front-end to configure Stripe Checkout, and in the back-end to perform the actual charge. 
+Make sure you define your products in a location accessible to both client and server, in order to access them both on the front-end to configure Stripe Checkout, and in the back-end to perform the actual charge.
+
+### Products - Charge
+
+To create a product that follows a charge workflow:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('book', {
+  'amount': 25000,
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+);
+```
+
+Stripe docs for charges: https://stripe.com/docs/api/node#charges
+
+### Products - Subscription
+
+To subscribe a user to a `plan`, you can define your product with a plan.
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('bronze-plan-id', {
+  'plan': 'bronze-plan-id',
+  'interval': 'month',
+  'name': 'Bronze Plan',
+  'amount': 25000,
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+  'statement_descriptor': 'Bronze Plan',
+);
+```
+
+Vulcan can optionally create plans, if they don't already exist, by setting the option in your settings:
+
+```
+{
+  "public": {
+    "stripe": {
+      "publishableKey": "pk_test_K0rkFDrT0jj4NqG5Dumr3RaU"
+      }
+    }
+  },
+  "stripe": {
+    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K",
+    "createPlans": true
+  },
+}
+```
+
+You may also optionally specify an `initialAmount` and `initialAmountDescription` to have an Invoice Item charged to the customer before subscribing them to a `plan`:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('bronze-plan-id', {
+  'plan': 'bronze-plan-id',
+  'interval': 'month',
+  'name': 'Bronze Plan',
+  'amount': 25000,
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+  'statement_descriptor': 'Bronze Plan',
+  'initialAmount': 10000,
+  'initialAmountDescription': 'One time setup fee',
+);
+```
+
+Stripe docs for plans: https://stripe.com/docs/api/node#plans
+Stripe docs for subscriptions: https://stripe.com/docs/api/node#subscriptions
+Stripe docs for invoice items: https://stripe.com/docs/api/node#invoiceitems
+
+### Products - Invoice Item
+
+To create invoice items, define a `subscription` key for your product:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('some-item', {
+  'subscription': 'bronze-plan-id',
+  'amount': 25000,
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+);
+```
+
+You also optionally define the `amount` at runtime instead of statically in the Product definition:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('some-item', {
+  'subscription': 'bronze-plan-id',
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+);
+
+<Components.Checkout 
+    productKey="some-item"
+    associatedCollection={Jobs}
+    associatedId={job._id}
+    callback={setToPaid}
+    button={<Button className="buy-job-button" bsStyle="primary">Complete Payment</Button>}
+    // Pass amount dynamtically at runtime instead of at definition of product
+    properties={{ amount: 25000 }}
+  />
+
+```
+
+Runtime properties you can pass to `properties`:
+
+- `discountable`
+- `invoice`
+- `amount`
+
+Stripe docs for invoice items: https://stripe.com/docs/api/node#invoiceitems
+
+### Products - Subscription Item
+
+To create a subscription item, define both a `plan` and a `subscription` in your product definition:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('bronze-additional-support-id', {
+  'plan': 'bronze-additional-support-id',
+  // This sub-plan subscription will now belong to the primary Bronze Plan subscription
+  'subscription': 'bronze-plan-id',
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+  'interval': 'month',
+  'name': 'Bronze Additional Support Plan',
+  'amount': 25000,
+  'statement_descriptor': 'Bronze Additional Support Plan',
+);
+```
+
+You may optionally specify a `quantity` by passing in via `properties` to the `Checkout` component:
+
+```
+import { addProduct } from 'meteor/vulcan:payments';
+
+addProduct('bronze-additional-support-id', {
+  'plan': 'bronze-additional-support-id',
+  // This sub-plan subscription will now belong to the primary Bronze Plan subscription
+  'subscription': 'bronze-plan-id',
+  'currency': 'USD',
+  'description': 'Become a paid member.',
+  'interval': 'month',
+  'name': 'Bronze Additional Support Plan',
+  'amount': 25000,
+  'statement_descriptor': 'Bronze Additional Support Plan',
+);
+
+
+<Components.Checkout 
+    productKey="bronze-additional-support-id"
+    associatedCollection={Jobs}
+    associatedId={job._id}
+    callback={setToPaid}
+    button={<Button className="buy-job-button" bsStyle="primary">Complete Payment</Button>}
+    // Pass amount dynamtically at runtime instead of at definition of product
+    properties={{ quantity: 2 }}
+  />
+
+```
+
+Runtime properties you can pass to `properties`:
+
+- `quantity`
+- `proration_date`
+
+Stripe docs for subscription items: https://stripe.com/docs/api/node#subscription_items
 
 ## Checkout Component
 
