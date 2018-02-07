@@ -5,7 +5,7 @@ import { getSetting, registerSetting } from './settings.js';
 import { getFragmentMatcher } from './fragment_matcher.js';
 import { runCallbacks } from './callbacks.js';
 
-registerSetting('developmentServerIp', Meteor.absoluteUrl(), 'Development server IP');
+registerSetting('graphQLendpointURL', '/graphql', 'GraphQL endpoint URL');
 
 const defaultNetworkInterfaceConfig = {
   path: '/graphql', // default graphql server endpoint
@@ -24,10 +24,8 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
     path = path.slice(1);
   }
 
-  const uri = Meteor.absoluteUrl(
-    path,
-    { rootUrl: getSetting('developmentServerIp', Meteor.absoluteUrl()) },
-  );
+  const defaultUri = Meteor.absoluteUrl(path);
+  const uri = getSetting('graphQLendpointURL', defaultUri);
 
   // allow the use of a batching network interface; if the options.batchingInterface is not specified, fallback to the standard network interface
   const interfaceToUse = config.batchingInterface ? createBatchingNetworkInterface : createNetworkInterface;
