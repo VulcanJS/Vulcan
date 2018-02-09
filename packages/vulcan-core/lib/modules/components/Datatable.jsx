@@ -151,7 +151,7 @@ const DatatableContents = (props) => {
   const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState} = props;
 
   if (loading) {
-    return <Components.Loading />;
+    return <div className="datatable-list datatable-list-loading"><Components.Loading /></div>;
   } else if (!results.length) {
     return emptyState || null;
   }
@@ -172,7 +172,7 @@ const DatatableContents = (props) => {
             {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
           </tbody>
         </table>
-        <div className="admin-users-load-more">
+        <div className="datatable-list-load-more">
           {hasMore ?
             isLoadingMore ?
               <Components.Loading/>

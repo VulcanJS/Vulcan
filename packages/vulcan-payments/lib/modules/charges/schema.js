@@ -85,6 +85,18 @@ const schema = {
     }  
   },
 
+  createdAtFormattedShort: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return moment(charge.createdAt).format('YYYY/MM/DD');
+      }
+    }  
+  },
+
   stripeChargeUrl: {
     type: String,
     optional: true,
