@@ -10,7 +10,7 @@ registerSetting('graphQLendpointURL', '/graphql', 'GraphQL endpoint URL');
 const defaultNetworkInterfaceConfig = {
   path: '/graphql', // default graphql server endpoint
   opts: {}, // additional fetch options like `credentials` or `headers`
-  useMeteorAccounts: true, // if true, send an eventual Meteor login token to identify the current user with every request
+  authProvider: getSetting('authProvider', 'meteor'), // if 'meteor', send an eventual Meteor login token to identify the current user with every request
   batchingInterface: true, // use a BatchingNetworkInterface by default instead of a NetworkInterface
   batchInterval: 10, // default batch interval
 };
@@ -50,10 +50,31 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
 
   const networkInterface = interfaceToUse(interfaceOptions);
 
-  if (config.useMeteorAccounts) {
+  if (config.authProvider === 'meteor') {
     networkInterface.use([{
       applyBatchMiddleware(request, next) {
         const currentUserToken = Meteor.isClient ? global.localStorage['Meteor.loginToken'] : config.loginToken;
+
+        if (!currentUserToken) {
+          next();
+          return;
+        }
+
+        if (!request.options.headers) {
+          request.options.headers = new Headers();
+        }
+
+        request.options.headers.Authorization = currentUserToken;
+
+        next();
+      },
+    }]);
+  }
+
+  if (config.authProvider === 'auth0') {
+    networkInterface.use([{
+      applyBatchMiddleware(request, next) {
+        const currentUserToken = Meteor.isClient ? global.localStorage['access_token'] : config.loginToken;
 
         if (!currentUserToken) {
           next();

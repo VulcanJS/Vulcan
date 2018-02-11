@@ -1,7 +1,7 @@
 import { createMemoryHistory } from 'react-router';
 import { compose } from 'redux';
 import cookieParser from 'cookie-parser';
-
+import { getSetting } from '../modules/settings.js';
 import { Meteor } from 'meteor/meteor';
 import { DDP } from 'meteor/ddp';
 import { Accounts } from 'meteor/accounts-base';
@@ -76,7 +76,8 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
 
   // init
   const history = createMemoryHistory(req.url);
-  const loginToken = req.cookies && req.cookies.meteor_login_token;
+  const loginToken = getSetting('authProvider', 'meteor') === 'meteor' ? req.cookies && req.cookies.meteor_login_token : req.cookies && req.cookies.access_token;
+
   const apolloClient = createApolloClient({ loginToken: loginToken });
   let actions = {};
   let reducers = { apollo: apolloClient.reducer() };
