@@ -1,5 +1,8 @@
+import { Connectors, getSetting } from 'meteor/vulcan:core'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import Users from 'meteor/vulcan:users';
 import Votes from './votes/collection.js';
+
+const database = getSetting('database', 'mongo');
 
 Users.addField([
   /**
@@ -19,7 +22,7 @@ Users.addField([
           if (args.collectionName) {
             selector.collectionName = args.collectionName;
           }
-          const votes = Votes.find(selector).fetch();
+          const votes = await Connectors[database].find(Votes, selector);
           return votes;
         }
       },

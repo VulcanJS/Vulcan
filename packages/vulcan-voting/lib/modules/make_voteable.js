@@ -1,3 +1,7 @@
+import { Connectors, getSetting } from 'meteor/vulcan:core'; // import from vulcan:lib because vulcan:core isn't loaded yet
+
+const database = getSetting('database', 'mongo');
+
 export const VoteableCollections = [];
 
 export const makeVoteable = collection => {
@@ -18,7 +22,7 @@ export const makeVoteable = collection => {
           type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
             if (!currentUser) return [];
-            const votes = Votes.find({userId: currentUser._id, documentId: document._id}).fetch();
+            const votes = await Connectors[database].find(Votes, {userId: currentUser._id, documentId: document._id});
             if (!votes.length) return [];
             return votes;
             // return Users.restrictViewableFields(currentUser, Votes, votes);
@@ -46,7 +50,7 @@ export const makeVoteable = collection => {
         resolveAs: {
           type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
-            const votes = Votes.find({ documentId: document._id }).fetch();
+            const votes = await Connectors[database].find(Votes, { documentId: document._id });
             if (!votes.length) return [];
             return votes;
             // return Users.restrictViewableFields(currentUser, Votes, votes);
@@ -75,10 +79,10 @@ export const makeVoteable = collection => {
           type: '[User]',
           resolver: async (document, args, { currentUser, Users }) => {
             // eslint-disable-next-line no-undef
-            const votes = Votes.find({itemId: document._id}).fetch();
+            const votes = await Connectors[database].find(Votes, {itemId: document._id});
             const votersIds = _.pluck(votes, 'userId');
             // eslint-disable-next-line no-undef
-            const voters = Users.find({_id: {$in: votersIds}});
+            const voters = await Connectors[database].find(Users, {_id: {$in: votersIds}});
             return voters;
             // if (!document.upvoters) return [];
             // const upvoters = await Users.loader.loadMany(document.upvoters);
