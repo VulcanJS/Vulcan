@@ -210,15 +210,15 @@ Users.getProperty = function (object, property) {
   }
 };
 
-Users.setSetting = (user, settingName, value) => {
-  // all users settings should begin with the prexi : user.setting namespace, so add "" if needed
-  var field = settingName.slice(0,2) === "" ? settingName : "" + settingName;
+// Users.setSetting = (user, settingName, value) => {
+//   // all users settings should begin with the prexi : user.setting namespace, so add "" if needed
+//   var field = settingName.slice(0,2) === "" ? settingName : "" + settingName;
 
-  var modifier = {$set: {}};
-  modifier.$set[field] = value;
+//   var modifier = {$set: {}};
+//   modifier.$set[field] = value;
 
-  Users.update(user._id, modifier);
-}
+//   Users.update(user._id, modifier);
+// }
 
 
 ////////////////////
@@ -240,14 +240,14 @@ Users.getRequiredFields = function () {
   return fields;
 };
 
-Users.adminUsers = function (options) {
-  return this.find({isAdmin : true}, options).fetch();
-};
+// Users.adminUsers = function (options) {
+//   return this.find({isAdmin : true}, options).fetch();
+// };
 
-Users.getCurrentUserEmail = function () {
-  return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
-};
+// Users.getCurrentUserEmail = function () {
+//   return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
+// };
 
-Users.findByEmail = function (email) {
-  return Users.findOne({"email": email});
-};
+// Users.findByEmail = function (email) {
+//   return Users.findOne({"email": email});
+// };

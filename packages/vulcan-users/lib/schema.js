@@ -1,5 +1,7 @@
 import SimpleSchema from 'simpl-schema';
-import { Utils, getCollection } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { Utils, getCollection, Connectors, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+
+const database = getSetting('database', 'mongo');
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit: 
@@ -81,9 +83,9 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
-    onInsert: user => {
+    onInsert: async user => {
       // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = getCollection('Users').find({'isDummy': {$ne: true}}).count();
+      const realUsersCount = await Connectors[database].count(getCollection('Users'), {'isDummy': {$ne: true}});
       return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },

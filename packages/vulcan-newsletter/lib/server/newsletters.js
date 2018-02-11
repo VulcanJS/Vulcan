@@ -2,7 +2,9 @@ import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import Newsletters from '../modules/collection.js';
-import { Utils, getSetting, registerSetting, runCallbacksAsync } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
+
+const database = getSetting('database', 'mongo');
 
 registerSetting('newsletter.provider', 'mailchimp', 'Newsletter provider');
 registerSetting('defaultEmail', null, 'Email newsletter confirmations will be sent to');
@@ -259,7 +261,7 @@ Newsletters.send = async (isTest = false) => {
       const createdAt = new Date();
 
       // log newsletter
-      Newsletters.insert({
+      await Connectors[database].new(Newsletters, {
         createdAt,
         subject,
         html,
