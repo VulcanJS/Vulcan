@@ -4,8 +4,10 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd } from 'meteor/vulcan:core';
+import { Utils, debug, debugGroup, debugGroupEnd, getSetting, Connectors } from 'meteor/vulcan:lib';
 import { createError } from 'apollo-errors';
+
+const database = getSetting('database', 'mongo');
 
 const defaultOptions = {
   cacheMaxAge: 300,
@@ -43,7 +45,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         debug({ selector, options });
 
-        const docs = collection.find(selector, options).fetch();
+        const docs = await Connectors[database].find(collection, selector, options);
 
         // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
         const viewableDocs = collection.checkAccess
@@ -90,7 +92,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         // don't use Dataloader if doc is selected by slug
         const doc = documentId
           ? await collection.loader.load(documentId)
-          : slug ? collection.findOne({ slug }) : collection.findOne();
+          : slug ? await Connectors[database].findOne(collection, { slug }) : await Connectors[database].findOne();
 
         if (!doc) {
           const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
@@ -131,15 +133,9 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         const { selector } = await collection.getParameters(terms, {}, context);
 
-        const docs = collection.find(selector);
+        const total = await Connectors[database].count(collection, selector);
 
-        // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
-        if (collection.checkAccess) {
-          const { currentUser } = context;
-          return docs.fetch().filter(doc => collection.checkAccess(currentUser, doc)).length;
-        }
-
-        return docs.count();
+        return total;
       },
     },
   };
