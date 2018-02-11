@@ -1,4 +1,4 @@
-import { Connectors, getSetting } from 'vulcan:core';
+import { Connectors, getSetting } from 'meteor/vulcan:core';
 import { recalculateScore } from '../modules/scoring.js';
 
 const database = getSetting('database', 'mongo');
