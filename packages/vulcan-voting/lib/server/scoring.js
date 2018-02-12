@@ -53,11 +53,11 @@ export const updateScore = async ({collection, item, forceUpdate}) => {
 
   // only update database if difference is larger than x to avoid unnecessary updates
   if (forceUpdate || scoreDiff > x) {
-    await Connectors[database].edit(collection, item._id, {$set: {score: newScore, inactive: false}});
+    await Connectors[database].update(collection, item._id, {$set: {score: newScore, inactive: false}});
     return 1;
   } else if(ageInHours > n*24) {
     // only set a post as inactive if it's older than n days
-    await Connectors[database].edit(collection, item._id, {$set: {inactive: true}});
+    await Connectors[database].update(collection, item._id, {$set: {inactive: true}});
   }
   return 0;
 };

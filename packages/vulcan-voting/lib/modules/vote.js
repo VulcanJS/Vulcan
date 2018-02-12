@@ -52,7 +52,7 @@ Test if a user has voted on the server
 
 */
 const hasVotedServer = async ({ document, voteType, user }) => {
-  const vote = await Connectors[database].findOne(Votes, {documentId: document._id, userId: user._id, voteType});
+  const vote = await Connectors[database].get(Votes, {documentId: document._id, userId: user._id, voteType});
   return vote;
 }
 
@@ -94,7 +94,7 @@ const addVoteServer = async (voteOptions) => {
   // create vote and insert it
   const vote = createVote({ document, collectionName: collection.options.collectionName, voteType, user, voteId });
   delete vote.__typename;
-  await Connectors[database].new(Votes, vote);
+  await Connectors[database].create(Votes, vote);
 
   // initialize baseScore to vote power if not defined yet
   newDocument.baseScore = document.baseScore ? document.baseScore + vote.power : vote.power;
@@ -102,7 +102,7 @@ const addVoteServer = async (voteOptions) => {
 
   if (updateDocument) {
     // update document score & set item as active
-    await Connectors[database].edit(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
+    await Connectors[database].update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
   }
 
   return newDocument;
@@ -152,9 +152,9 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
   const newDocument = _.clone(document);
   const votes = await Connectors[database].find(Votes, { documentId: document._id, userId: user._id});
   if (votes.length) {
-    await Connectors[database].remove(Votes, {documentId: document._id, userId: user._id});
+    await Connectors[database].delete(Votes, {documentId: document._id, userId: user._id});
     if (updateDocument) {
-      await Connectors[database].edit(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+      await Connectors[database].update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
     }
     newDocument.baseScore -= calculateTotalPower(votes);
     newDocument.score = recalculateScore(newDocument);
@@ -171,14 +171,14 @@ const cancelVoteServer = async ({ document, voteType, collection, user, updateDo
 
   const newDocument = _.clone(document);
 
-  const vote = await Connectors[database].findOne(Votes, {documentId: document._id, userId: user._id, voteType})
+  const vote = await Connectors[database].get(Votes, {documentId: document._id, userId: user._id, voteType})
 
   // remove vote object
-  await Connectors[database].remove(Votes, {_id: vote._id});
+  await Connectors[database].delete(Votes, {_id: vote._id});
 
   if (updateDocument) {
     // update document score
-    await Connectors[database].edit(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
+    await Connectors[database].update(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
   }
 
   newDocument.baseScore -= vote.power;

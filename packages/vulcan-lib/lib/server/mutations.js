@@ -95,14 +95,14 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 
   // add _id to document
-  newDocument._id = await Connectors[database].new(collection, newDocument);
+  newDocument._id = await Connectors[database].create(collection, newDocument);
 
   // run any post-operation sync callbacks
   newDocument = await runCallbacks(`${collectionName}.new.after`, newDocument, currentUser);
 
   // get fresh copy of document from db
   // TODO: not needed?
-  const insertedDocument = await Connectors[database].findOne(collection, newDocument._id);
+  const insertedDocument = await Connectors[database].get(collection, newDocument._id);
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
@@ -126,7 +126,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
 
   // get original document from database
   // TODO: avoid fetching document a second time if possible
-  let document = await Connectors[database].findOne(collection, documentId);
+  let document = await Connectors[database].get(collection, documentId);
   
   debug('//------------------------------------//');
   debug('// editMutation');
@@ -184,10 +184,10 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
   
   // update document
-  await Connectors[database].edit(collection, documentId, modifier, {removeEmptyStrings: false});
+  await Connectors[database].update(collection, documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
-  let newDocument = await Connectors[database].findOne(collection, documentId);
+  let newDocument = await Connectors[database].get(collection, documentId);
 
   // clear cache if needed
   if (collection.loader) {
@@ -219,7 +219,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  let document = await Connectors[database].findOne(collection, documentId);
+  let document = await Connectors[database].get(collection, documentId);
 
   // if document is not trusted, run validation callbacks
   if (validate) {
@@ -236,7 +236,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
-  await Connectors[database].remove(collection, documentId);
+  await Connectors[database].delete(collection, documentId);
 
   // clear cache if needed
   if (collection.loader) {

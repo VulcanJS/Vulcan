@@ -261,7 +261,7 @@ Newsletters.send = async (isTest = false) => {
       const createdAt = new Date();
 
       // log newsletter
-      await Connectors[database].new(Newsletters, {
+      await Connectors[database].create(Newsletters, {
         createdAt,
         subject,
         html,

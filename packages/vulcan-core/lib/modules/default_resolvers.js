@@ -92,7 +92,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         // don't use Dataloader if doc is selected by slug
         const doc = documentId
           ? await collection.loader.load(documentId)
-          : slug ? await Connectors[database].findOne(collection, { slug }) : await Connectors[database].findOne();
+          : slug ? await Connectors[database].get(collection, { slug }) : await Connectors[database].get();
 
         if (!doc) {
           const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });

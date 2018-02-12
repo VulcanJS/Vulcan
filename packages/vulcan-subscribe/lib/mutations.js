@@ -92,7 +92,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   const { collectionName, fields, item, findOperator, updateOperator, updateCount } = subscription;
 
   // Perform the action, eg. operate on the item's collection
-  const result = Connectors[database].edit(collection, {
+  const result = Connectors[database].update(collection, {
     _id: itemId,
     // if it's a subscription, find  where there are not the user (ie. findOperator = $ne), else it will be $in
     [fields.subscribers]: { [findOperator]: user._id }
