@@ -196,6 +196,11 @@ class Form extends Component {
        field.limit = fieldSchema.limit;
       }
 
+      // add description as help prop
+      if (fieldSchema.description) {
+        field.help = fieldSchema.description;
+      }
+
       // add placeholder
       if (fieldSchema.placeholder) {
        field.placeholder = fieldSchema.placeholder;
