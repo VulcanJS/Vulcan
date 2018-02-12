@@ -110,7 +110,7 @@ DatatableHeader Component
 */
 const DatatableHeader = ({ collection, column }, { intl }) => {
 
-  const columnName = typeof column === 'string' ? column : column.name;
+  const columnName = typeof column === 'string' ? column : column.label || column.name;
   
   if (collection) {
     const schema = collection.simpleSchema()._schema;
@@ -172,14 +172,14 @@ const DatatableContents = (props) => {
             {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
           </tbody>
         </table>
-        <div className="datatable-list-load-more">
-          {hasMore ?
-            isLoadingMore ?
-              <Components.Loading/>
-              : <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
-            : null
-          }
-        </div>
+        {hasMore &&
+          <div className="datatable-list-load-more">
+            {isLoadingMore ?
+              <Components.Loading/> :
+              <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            }
+          </div>
+        }
       </div>
   )
 }
@@ -223,7 +223,7 @@ DatatableRow.contextTypes = {
 DatatableEditForm Component
 
 */
-const DatatableEditForm = ({ collection, document, closeModal }) =>
+const DatatableEditForm = ({ collection, document, closeModal , ...properties }) =>
   <Components.SmartForm
     collection={collection}
     documentId={document._id}
@@ -234,6 +234,7 @@ const DatatableEditForm = ({ collection, document, closeModal }) =>
     removeSuccessCallback={document => {
       closeModal();
     }}
+    {...properties}
   />
 registerComponent('DatatableEditForm', DatatableEditForm);
 
@@ -242,12 +243,13 @@ registerComponent('DatatableEditForm', DatatableEditForm);
 DatatableNewForm Component
 
 */
-const DatatableNewForm = ({ collection, closeModal }) =>
+const DatatableNewForm = ({ collection, closeModal, ...properties }) =>
   <Components.SmartForm 
     collection={collection}
     successCallback={document => {
       closeModal();
     }}
+    {...properties}
   />
 registerComponent('DatatableNewForm', DatatableNewForm);
 
