@@ -17,6 +17,7 @@ const FormSubmit = ({
                     }) => (
   <div className="form-submit">
     
+    <div className="text-xs-center">
     <Button type="submit" bsStyle="primary">
       {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
     </Button>
@@ -32,6 +33,7 @@ const FormSubmit = ({
         :
         null
     }
+    </div>
     
     {
       deleteDocument
