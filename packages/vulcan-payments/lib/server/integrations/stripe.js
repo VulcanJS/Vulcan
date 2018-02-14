@@ -146,7 +146,7 @@ export const createCharge = async ({user, product, collection, document, metadat
     currency: product.currency,
     customer: customer.id,
     metadata
-  }
+  };
 
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
@@ -155,7 +155,7 @@ export const createCharge = async ({user, product, collection, document, metadat
 
   return processCharge({collection, document, charge, args, user})
 
-}
+};
 
 /*
 
@@ -190,7 +190,7 @@ export const processCharge = async ({collection, document, charge, args, user}) 
     associatedId,
     properties,
     productKey,
-  }
+  };
 
   if (token) {
     chargeDoc.tokenId = token.id;
@@ -198,7 +198,7 @@ export const processCharge = async ({collection, document, charge, args, user}) 
     chargeDoc.ip = token.client_ip;
   }
   // insert
-  const chargeSaved = newMutation({
+  const chargeSaved = await newMutation({
     collection: Charges,
     document: chargeDoc, 
     validate: false,
