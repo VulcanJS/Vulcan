@@ -81,6 +81,8 @@ Datatable.propTypes = {
   showEdit: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  newFragmentName: PropTypes.string,
+  editFragmentName: PropTypes.string,
 }
 
 Datatable.defaultProps = {
@@ -96,10 +98,10 @@ registerComponent('Datatable', Datatable, withCurrentUser);
 DatatableAbove Component
 
 */
-const DatatableAbove = ({ showSearch, showNew, canInsert, collection, value, updateQuery }) => 
+const DatatableAbove = ({ showSearch, showNew, canInsert, collection, value, updateQuery, newFragmentName }) => 
   <div className="datatable-above">
     {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
-    {showNew && canInsert && <Components.NewButton collection={collection}/>}
+    {showNew && canInsert && <Components.NewButton newFragmentName={newFragmentName} collection={collection}/>}
   </div>
 registerComponent('DatatableAbove', DatatableAbove);
   
@@ -169,7 +171,7 @@ const DatatableContents = (props) => {
             </tr>
           </thead>
           <tbody>
-            {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
+            {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
           </tbody>
         </table>
         {hasMore &&
@@ -190,7 +192,7 @@ registerComponent('DatatableContents', DatatableContents);
 DatatableRow Component
 
 */
-const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, { intl }) => {
+const DatatableRow = ({ collection, columns, document, showEdit, editFragmentName, currentUser }, { intl }) => {
 
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
@@ -205,7 +207,7 @@ const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, 
           label={intl.formatMessage({id: 'datatable.edit'})}
           component={<Button bsStyle="primary"><FormattedMessage id="datatable.edit" /></Button>}
         >
-          <Components.DatatableEditForm collection={collection} document={document} />
+          <Components.DatatableEditForm editFragmentName={editFragmentName} collection={collection} document={document} />
         </Components.ModalTrigger>
       </td>
     : null}
@@ -223,7 +225,7 @@ DatatableRow.contextTypes = {
 DatatableEditForm Component
 
 */
-const DatatableEditForm = ({ collection, document, closeModal , ...properties }) =>
+const DatatableEditForm = ({ collection, document, closeModal, editFragmentName, ...properties }) =>
   <Components.SmartForm
     collection={collection}
     documentId={document._id}
@@ -234,6 +236,7 @@ const DatatableEditForm = ({ collection, document, closeModal , ...properties })
     removeSuccessCallback={document => {
       closeModal();
     }}
+    mutationFragmentName={editFragmentName}
     {...properties}
   />
 registerComponent('DatatableEditForm', DatatableEditForm);
@@ -243,12 +246,13 @@ registerComponent('DatatableEditForm', DatatableEditForm);
 DatatableNewForm Component
 
 */
-const DatatableNewForm = ({ collection, closeModal, ...properties }) =>
+const DatatableNewForm = ({ collection, closeModal, newFragmentName, ...properties }) =>
   <Components.SmartForm 
     collection={collection}
     successCallback={document => {
       closeModal();
     }}
+    mutationFragmentName={newFragmentName}
     {...properties}
   />
 registerComponent('DatatableNewForm', DatatableNewForm);
