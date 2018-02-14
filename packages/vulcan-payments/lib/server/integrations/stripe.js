@@ -1,4 +1,4 @@
-import { getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
+import { debug, debugGroup, debugGroupEnd, getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import express from 'express';
 import Stripe from 'stripe';
 import Charges from '../../modules/charges/collection.js';
@@ -164,6 +164,12 @@ Process charge on Vulcan's side
 */
 export const processCharge = async ({collection, document, charge, args, user}) => {
  
+  debug('');
+  debugGroup(`--------------- start\x1b[35m processCharge \x1b[0m ---------------`);
+  debug(`Collection: ${collection.options.collectionName}`);
+  debug(`documentId: ${document._id}`);
+  debug(`Charge: ${charge}`);
+  
   let returnDocument = {};
 
   // make sure charge hasn't already been processed
@@ -232,6 +238,10 @@ export const processCharge = async ({collection, document, charge, args, user}) 
   }
 
   runCallbacksAsync(`${collection._name}.charge.async`, returnDocument, chargeDoc, user);
+
+  debugGroupEnd();
+  debug(`--------------- end\x1b[35m processCharge \x1b[0m ---------------`);
+  debug('');
 
   return returnDocument;
 }
