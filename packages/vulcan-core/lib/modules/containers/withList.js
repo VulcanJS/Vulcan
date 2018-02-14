@@ -114,7 +114,7 @@ const withList = (options) => {
         alias: 'withList',
         
         // graphql query options
-        options({terms, paginationTerms, client: apolloClient}) {
+        options({terms, paginationTerms, client: apolloClient, currentUser}) {
           // get terms from options, then props, then pagination
           const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
 
@@ -122,6 +122,7 @@ const withList = (options) => {
             variables: {
               terms: mergedTerms,
               enableCache,
+              currentUser,
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
