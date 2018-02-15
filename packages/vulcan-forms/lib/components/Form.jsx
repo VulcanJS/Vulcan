@@ -127,7 +127,7 @@ class Form extends Component {
       field.label = this.getLabel(fieldName);
 
       // add value
-      if (document[fieldName]){
+      if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null){
 
         field.value = document[fieldName];
 
