@@ -97,12 +97,12 @@ DatatableAbove Component
 
 */
 const DatatableAbove = (props) => {
-  const { showSearch, showNew, canInsert, value, updateQuery } = props;
+  const { showSearch, showNew, canInsert, value, updateQuery, options } = props;
 
   return (
     <div className="datatable-above">
       {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
-      {showNew && canInsert && <Components.NewButton {...props}/>}
+      {showNew && canInsert && <Components.NewButton {...props} mutationFragmentName={options && options.fragmentName} />}
     </div>
   )
 }
@@ -198,7 +198,7 @@ DatatableRow Component
 */
 const DatatableRow = (props, { intl }) => {
 
-  const { collection, columns, document, showEdit, editFragmentName, currentUser } = props;
+  const { collection, columns, document, showEdit, currentUser, options } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   return (
@@ -208,12 +208,7 @@ const DatatableRow = (props, { intl }) => {
 
     {showEdit && canEdit ?
       <td>
-        <Components.ModalTrigger
-          label={intl.formatMessage({id: 'datatable.edit'})}
-          component={<Button bsStyle="primary"><FormattedMessage id="datatable.edit" /></Button>}
-        >
-          <Components.DatatableEditForm {...props} />
-        </Components.ModalTrigger>
+        <Components.EditButton {...props} mutationFragmentName={options && options.fragmentName}/>
       </td>
     : null}
 
@@ -225,41 +220,6 @@ registerComponent('DatatableRow', DatatableRow);
 DatatableRow.contextTypes = {
   intl: intlShape
 };
-/*
-
-DatatableEditForm Component
-
-*/
-const DatatableEditForm = ({ collection, document, closeModal, options, ...properties }) =>
-  <Components.SmartForm
-    collection={collection}
-    documentId={document._id}
-    showRemove={true}
-    successCallback={document => {
-      closeModal();
-    }}
-    removeSuccessCallback={document => {
-      closeModal();
-    }}
-    mutationFragmentName={options.fragmentName}
-  />
-registerComponent('DatatableEditForm', DatatableEditForm);
-
-/*
-
-DatatableNewForm Component
-
-*/
-const DatatableNewForm = ({ collection, closeModal, options, ...props }) =>
-  <Components.SmartForm 
-    collection={collection}
-    successCallback={document => {
-      closeModal();
-    }}
-    mutationFragmentName={options.fragmentName}
-  />
-registerComponent('DatatableNewForm', DatatableNewForm);
-
 
 /*
 
@@ -280,7 +240,6 @@ registerComponent('DatatableCell', DatatableCell);
 DatatableDefaultCell Component
 
 */
-
 const DatatableDefaultCell = ({ column, document }) =>
   <div>{typeof column === 'string' ? getFieldValue(document[column]) : getFieldValue(document[column.name])}</div>
 

@@ -8,7 +8,7 @@ const NewButton = ({ collection, bsStyle = 'primary', ...props }, {intl}) =>
     label={intl.formatMessage({id: 'datatable.new'})} 
     component={<Button bsStyle={bsStyle}><FormattedMessage id="datatable.new" /></Button>}
   >
-    <Components.DatatableNewForm collection={collection} {...props} />
+    <Components.NewForm collection={collection} {...props} />
   </Components.ModalTrigger>
 
 NewButton.contextTypes = {
@@ -18,3 +18,18 @@ NewButton.contextTypes = {
 NewButton.displayName = 'NewButton';
 
 registerComponent('NewButton', NewButton);
+
+/*
+
+NewForm Component
+
+*/
+const NewForm = ({ collection, closeModal, options, ...props }) =>
+  <Components.SmartForm
+    {...props}
+    collection={collection}
+    successCallback={document => {
+      closeModal();
+    }}
+  />
+registerComponent('NewForm', NewForm);
