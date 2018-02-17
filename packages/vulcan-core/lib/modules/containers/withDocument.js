@@ -38,7 +38,7 @@ export default function withDocument (options) {
     
     options(ownProps) {
       const graphQLOptions = {
-        variables: { documentId: ownProps.documentId, slug: ownProps.slug, enableCache },
+        variables: { documentId: ownProps.documentId, slug: ownProps.slug, enableCache, currentUser: ownProps.currentUser },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
 

@@ -96,11 +96,16 @@ registerComponent('Datatable', Datatable, withCurrentUser);
 DatatableAbove Component
 
 */
-const DatatableAbove = ({ showSearch, showNew, canInsert, collection, value, updateQuery }) => 
-  <div className="datatable-above">
-    {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
-    {showNew && canInsert && <Components.NewButton collection={collection}/>}
-  </div>
+const DatatableAbove = (props) => {
+  const { showSearch, showNew, canInsert, value, updateQuery, options } = props;
+
+  return (
+    <div className="datatable-above">
+      {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
+      {showNew && canInsert && <Components.NewButton {...props} mutationFragmentName={options && options.fragmentName} />}
+    </div>
+  )
+}
 registerComponent('DatatableAbove', DatatableAbove);
   
 /*
@@ -148,6 +153,7 @@ DatatableContents Component
 */
 
 const DatatableContents = (props) => {
+
   const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState} = props;
 
   if (loading) {
@@ -169,7 +175,7 @@ const DatatableContents = (props) => {
             </tr>
           </thead>
           <tbody>
-            {results.map((document, index) => <Components.DatatableRow collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
+            {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
           </tbody>
         </table>
         {hasMore &&
@@ -190,8 +196,9 @@ registerComponent('DatatableContents', DatatableContents);
 DatatableRow Component
 
 */
-const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, { intl }) => {
+const DatatableRow = (props, { intl }) => {
 
+  const { collection, columns, document, showEdit, currentUser, options } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   return (
@@ -201,12 +208,7 @@ const DatatableRow = ({ collection, columns, document, showEdit, currentUser }, 
 
     {showEdit && canEdit ?
       <td>
-        <Components.ModalTrigger
-          label={intl.formatMessage({id: 'datatable.edit'})}
-          component={<Button bsStyle="primary"><FormattedMessage id="datatable.edit" /></Button>}
-        >
-          <Components.DatatableEditForm collection={collection} document={document} />
-        </Components.ModalTrigger>
+        <Components.EditButton {...props} mutationFragmentName={options && options.fragmentName}/>
       </td>
     : null}
 
@@ -218,41 +220,6 @@ registerComponent('DatatableRow', DatatableRow);
 DatatableRow.contextTypes = {
   intl: intlShape
 };
-/*
-
-DatatableEditForm Component
-
-*/
-const DatatableEditForm = ({ collection, document, closeModal , ...properties }) =>
-  <Components.SmartForm
-    collection={collection}
-    documentId={document._id}
-    showRemove={true}
-    successCallback={document => {
-      closeModal();
-    }}
-    removeSuccessCallback={document => {
-      closeModal();
-    }}
-    {...properties}
-  />
-registerComponent('DatatableEditForm', DatatableEditForm);
-
-/*
-
-DatatableNewForm Component
-
-*/
-const DatatableNewForm = ({ collection, closeModal, ...properties }) =>
-  <Components.SmartForm 
-    collection={collection}
-    successCallback={document => {
-      closeModal();
-    }}
-    {...properties}
-  />
-registerComponent('DatatableNewForm', DatatableNewForm);
-
 
 /*
 
@@ -273,7 +240,6 @@ registerComponent('DatatableCell', DatatableCell);
 DatatableDefaultCell Component
 
 */
-
 const DatatableDefaultCell = ({ column, document }) =>
   <div>{typeof column === 'string' ? getFieldValue(document[column]) : getFieldValue(document[column.name])}</div>
 

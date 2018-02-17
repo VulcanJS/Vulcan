@@ -1,4 +1,4 @@
-import { getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
+import { debug, debugGroup, debugGroupEnd, getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import express from 'express';
 import Stripe from 'stripe';
 import Charges from '../../modules/charges/collection.js';
@@ -60,7 +60,7 @@ export const performAction = async (args) => {
   const user = Users.findOne(userId);
 
   // create metadata object
-  const metadata = {
+  let metadata = {
     userId: userId,
     userName: Users.getDisplayName(user),
     userProfile: Users.getProfileUrl(user, true),
@@ -73,12 +73,14 @@ export const performAction = async (args) => {
     metadata.associatedId = associatedId;
   }
 
+  metadata = await runCallbacks('stripe.charge.sync', metadata, user, product, collection, document, args);
+
   if (product.plan) {
     // if product has a plan, subscribe user to it
-    returnDocument = await subscribeUser(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
+    returnDocument = await createSubscription({ user, product, collection, document, metadata, args });
   } else {
     // else, perform charge
-    returnDocument = await createCharge(runCallbacks('stripe.charge.sync', {user, product, collection, document, metadata, args}));
+    returnDocument = await createCharge({ user, product, collection, document, metadata, args });
   }
 
   return returnDocument;
@@ -146,7 +148,7 @@ export const createCharge = async ({user, product, collection, document, metadat
     currency: product.currency,
     customer: customer.id,
     metadata
-  }
+  };
 
   // create Stripe charge
   const charge = await stripe.charges.create(chargeData);
@@ -155,7 +157,7 @@ export const createCharge = async ({user, product, collection, document, metadat
 
   return processCharge({collection, document, charge, args, user})
 
-}
+};
 
 /*
 
@@ -164,6 +166,12 @@ Process charge on Vulcan's side
 */
 export const processCharge = async ({collection, document, charge, args, user}) => {
  
+  debug('');
+  debugGroup(`--------------- start\x1b[35m processCharge \x1b[0m ---------------`);
+  debug(`Collection: ${collection.options.collectionName}`);
+  debug(`documentId: ${document._id}`);
+  debug(`Charge: ${charge}`);
+  
   let returnDocument = {};
 
   // make sure charge hasn't already been processed
@@ -190,7 +198,7 @@ export const processCharge = async ({collection, document, charge, args, user}) 
     associatedId,
     properties,
     productKey,
-  }
+  };
 
   if (token) {
     chargeDoc.tokenId = token.id;
@@ -198,7 +206,7 @@ export const processCharge = async ({collection, document, charge, args, user}) 
     chargeDoc.ip = token.client_ip;
   }
   // insert
-  const chargeSaved = newMutation({
+  const chargeSaved = await newMutation({
     collection: Charges,
     document: chargeDoc, 
     validate: false,
@@ -233,6 +241,10 @@ export const processCharge = async ({collection, document, charge, args, user}) 
 
   runCallbacksAsync(`${collection._name}.charge.async`, returnDocument, chargeDoc, user);
 
+  debugGroupEnd();
+  debug(`--------------- end\x1b[35m processCharge \x1b[0m ---------------`);
+  debug('');
+
   return returnDocument;
 }
 
@@ -241,7 +253,10 @@ export const processCharge = async ({collection, document, charge, args, user}) 
 Subscribe a user to a Stripe plan
 
 */
-export const subscribeUser = async ({user, product, collection, document, metadata, args }) => {
+export const createSubscription = async ({user, product, collection, document, metadata, args }) => {
+
+  let returnDocument = document;
+
   try {
     const customer = await getCustomer(user, args.token.id);
     // if product has an initial cost, 
@@ -266,11 +281,37 @@ export const subscribeUser = async ({user, product, collection, document, metada
       metadata,
     });
 
-    runCallbacksAsync('stripe.charge.async', subscription, collection, document, args, user);
+    // if an associated collection and id have been provided, 
+    // update the associated document
+    if (collection && document) {
+
+      let modifier = {
+        $set: {},
+        $unset: {}
+      }
+
+      // run collection.subscribe.sync callbacks
+      modifier = runCallbacks(`${collection._name}.subscribe.sync`, modifier, document, subscription, user);
+
+      returnDocument = await editMutation({
+        collection,
+        documentId: document._id,
+        set: modifier.$set,
+        unset: modifier.$unset,
+        validate: false
+      });
+
+      returnDocument.__typename = collection.typeName;
+
+    }
+
+    runCallbacksAsync('stripe.subscribe.async', subscription, collection, returnDocument, args, user);
+    
+    return returnDocument;
 
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('// Stripe subscribeUser error');
+    console.log('// Stripe createSubscription error');
     // eslint-disable-next-line no-console
     console.log(error);
   }
@@ -536,14 +577,28 @@ Meteor.startup(() => {
       arguments: [{document: 'The associated document'}, {charge: 'The charge'}, {currentUser: 'The current user'}], 
       runs: 'async', 
     });
-    
+
+    registerCallback({
+      name: `${collectionName}.subscribe.sync`, 
+      description: `Modify the modifier used to modify the subscription's associated document.`,      
+      arguments: [{modifier: 'The modifier'}, {document: 'The associated document'}, {subscription: 'The subscription'}, {currentUser: 'The current user'}], 
+      runs: 'sync', 
+      returns: 'modifier',
+    });
+
+    registerCallback({
+      name: `${collectionName}.subscribe.async`,
+      description: `Perform operations after the subscription has succeeded.`,      
+      arguments: [{subscription: 'The subscription'}, {collection: 'The associated collection'}, {document: 'The associated document'}, {args: 'The arguments'}, {currentUser: 'The current user'}], 
+      runs: 'async', 
+    });
 
   });
 
   registerCallback({
     name: 'stripe.charge.sync',
-    description: 'Modify any arguments before sending to stripe',
-    arguments: [{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {metadata: 'Metadata about the charge'}, {args: 'Original mutation arguments'}],
+    description: 'Modify any metadata before sending the charge to stripe',
+    arguments: [{metadata: 'Metadata about the charge'}, {user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
     runs: 'sync',
     returns: 'The modified arguments to be sent to stripe',
   });

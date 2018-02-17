@@ -92,7 +92,7 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
-        return moment(charge.createdAt).format('YYYY/MM/DD');
+        return moment(charge.createdAt).format('YYYY/MM/DD, hh:mm');
       }
     }  
   },

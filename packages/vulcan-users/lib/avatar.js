@@ -1,5 +1,5 @@
 import Users from './collection.js';
-import CryptoJS from 'crypto-js';
+import md5 from 'crypto-js/md5';
 
 Users.avatar = {
 
@@ -35,7 +35,7 @@ Users.avatar = {
   hash: function (string) {
     var self = this;
     // eslint-disable-next-line babel/new-cap
-    return CryptoJS.MD5(self.cleanString(string)).toString()
+    return md5(self.cleanString(string)).toString()
   },
 
   /**
