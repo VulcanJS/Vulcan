@@ -4,7 +4,7 @@ Default mutations
 
 */
 
-import { registerCallback, newMutation, editMutation, removeMutation, Utils } from 'meteor/vulcan:lib';
+import { registerCallback, newMutator, editMutator, removeMutator, Utils } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 
 export const getDefaultMutations = (collectionName, options = {}) => {
@@ -40,8 +40,8 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         // check if current user can pass check function; else throw error
         Utils.performCheck(this.check, context.currentUser, document);
 
-        // pass document to boilerplate newMutation function
-        return await newMutation({
+        // pass document to boilerplate newMutator function
+        return await newMutator({
           collection,
           document: document, 
           currentUser: context.currentUser,
@@ -83,8 +83,8 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         // check if user can perform operation; if not throw error
         Utils.performCheck(this.check, context.currentUser, document);
 
-        // call editMutation boilerplate function
-        return await editMutation({
+        // call editMutator boilerplate function
+        return await editMutator({
           collection, 
           documentId: documentId, 
           set: set, 
@@ -146,7 +146,7 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         const document = collection.findOne(documentId);
         Utils.performCheck(this.check, context.currentUser, document, context);
 
-        return await removeMutation({
+        return await removeMutator({
           collection, 
           documentId: documentId, 
           currentUser: context.currentUser,
