@@ -52,6 +52,10 @@ const schema = {
       },
     },
   },
+  
+  'hooks.$': {
+    type: Object,
+  }
 };
 
 export default schema;

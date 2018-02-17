@@ -24,7 +24,7 @@ VulcanEmail.addTemplates = templates => {
 };
 
 VulcanEmail.getTemplate = templateName => Handlebars.compile(
-  VulcanEmail.templates[templateName], 
+  VulcanEmail.templates[templateName],
   { noEscape: true, strict: true}
 );
 
@@ -59,7 +59,7 @@ VulcanEmail.generateTextVersion = html => {
   });
 }
 
-VulcanEmail.send = (to, subject, html, text) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors) => {
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -95,6 +95,7 @@ VulcanEmail.send = (to, subject, html, text) => {
     } catch (error) {
       console.log("// error while sending email:"); // eslint-disable-line
       console.log(error); // eslint-disable-line
+      if (throwErrors) throw error;
     }
 
   } else {
