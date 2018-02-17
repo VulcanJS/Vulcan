@@ -1,4 +1,4 @@
-import Users from '../collection.js';
+import Users from '../modules/index.js';
 import { runCallbacks, runCallbacksAsync, Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 function onCreateUserCallback (options, user) {
