@@ -77,7 +77,7 @@ export const performAction = async (args) => {
 
   if (product.plan) {
     // if product has a plan, subscribe user to it
-    returnDocument = await subscribeUser({ user, product, collection, document, metadata, args });
+    returnDocument = await createSubscription({ user, product, collection, document, metadata, args });
   } else {
     // else, perform charge
     returnDocument = await createCharge({ user, product, collection, document, metadata, args });
@@ -253,7 +253,7 @@ export const processCharge = async ({collection, document, charge, args, user}) 
 Subscribe a user to a Stripe plan
 
 */
-export const subscribeUser = async ({user, product, collection, document, metadata, args }) => {
+export const createSubscription = async ({user, product, collection, document, metadata, args }) => {
 
   let returnDocument = document;
 
@@ -311,7 +311,7 @@ export const subscribeUser = async ({user, product, collection, document, metada
 
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('// Stripe subscribeUser error');
+    console.log('// Stripe createSubscription error');
     // eslint-disable-next-line no-console
     console.log(error);
   }
