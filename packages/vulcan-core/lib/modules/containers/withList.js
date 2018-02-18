@@ -122,7 +122,6 @@ const withList = (options) => {
             variables: {
               terms: mergedTerms,
               enableCache,
-              currentUser,
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
