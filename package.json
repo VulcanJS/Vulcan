@@ -77,7 +77,7 @@
     "rss": "^1.2.1",
     "sanitize-html": "^1.16.3",
     "sendy-api": "^0.1.0",
-    "simpl-schema": "^0.3.2",
+    "simpl-schema": "^1.4.2",
     "speakingurl": "^9.0.0",
     "stripe": "^4.23.1",
     "styled-components": "^2.1.1",
