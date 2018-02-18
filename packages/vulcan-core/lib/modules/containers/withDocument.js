@@ -25,7 +25,7 @@ export default function withDocument (options) {
   const fragmentName = getFragmentName(fragment);
 
   return graphql(gql`
-    query ${queryName}($documentId: String, $slug: String, $enableCache: Boolean, $extraTerms: JSON) {
+    query ${queryName}($documentId: String, $slug: String, $enableCache: Boolean) {
       ${singleResolverName}(documentId: $documentId, slug: $slug, enableCache: $enableCache) {
         __typename
         ...${fragmentName}
@@ -36,19 +36,9 @@ export default function withDocument (options) {
   `, {
     alias: 'withDocument',
     
-    options({ documentId, currentUser, slug }) {
+    options(ownProps) {
       const graphQLOptions = {
-        variables: { 
-          documentId, 
-          slug, 
-          enableCache, 
-          currentUser,
-          extraTerms: {
-            documentId,
-            currentUser,
-            view: `${collectionName}ExtraQueryView`,
-          }
-        },
+        variables: { documentId: ownProps.documentId, slug: ownProps.slug, enableCache, currentUser: ownProps.currentUser },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
 

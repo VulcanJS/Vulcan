@@ -144,9 +144,7 @@ class FormWrapper extends PureComponent {
 
     let WrappedComponent;
 
-    const collectionName = this.getCollection().options.name;
-
-    const prefix = `${collectionName}${Utils.capitalize(this.getFormType())}`
+    const prefix = `${this.getCollection()._name}${Utils.capitalize(this.getFormType())}`
 
     const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
 
@@ -204,22 +202,10 @@ class FormWrapper extends PureComponent {
       if (extraQueries && extraQueries.length) {
 
         const extraQueriesHoC = graphql(gql`
-          query formNewExtraQuery($extraTerms: JSON) {
+          query formNewExtraQuery {
             ${extraQueries}
           }`, {
             alias: 'withExtraQueries',
-            options({ documentId, currentUser }) {
-              const graphQLOptions = {
-                variables: { 
-                  extraTerms: {
-                    documentId,
-                    currentUser,
-                    view: `${collectionName}ExtraQueryView`,
-                  }
-                },
-              };
-              return graphQLOptions;
-            },
             props: returnedProps => {
               const { /* ownProps, */ data } = returnedProps;
               const props = {
