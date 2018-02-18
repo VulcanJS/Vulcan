@@ -272,8 +272,8 @@ const schema = {
     order: 60,
     resolveAs: {
       type: 'String',
-      resolver: (user, args, { Users }) => {
-        return Users.getTwitterName(Users.findOne(user._id));
+      resolver: async (user, args, { Users }) => {
+        return Users.getTwitterName(await Connectors[database].get(Users, user._id));
       },
     },
     onInsert: user => {

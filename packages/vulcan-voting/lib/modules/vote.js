@@ -280,7 +280,7 @@ return an updated document without performing any database operations on it.
 export const performVoteServer = async ({ documentId, document, voteType = 'upvote', collection, voteId, user, updateDocument = true }) => {
 
   const collectionName = collection.options.collectionName;
-  document = document || collection.findOne(documentId);
+  document = document || await Connectors[database].get(collection, documentId);
 
   debug('');
   debugGroup(`--------------- start \x1b[35mperformVoteServer\x1b[0m  ---------------`);

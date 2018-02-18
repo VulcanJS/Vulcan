@@ -1,5 +1,7 @@
-import { newMutation, editMutation, removeMutation, Utils } from 'meteor/vulcan:lib';
+import { newMutation, editMutation, removeMutation, Utils, Connectors, getSetting } from 'meteor/vulcan:lib';
 import Users from './collection'; // circular dependency?
+
+const database = getSetting('database', 'mongo');
 
 const performCheck = (mutation, user, document) => {
   if (!mutation.check(user, document)) throw new Error(Utils.encodeIntlError({id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"`}));
@@ -40,9 +42,9 @@ const mutations = {
       return Users.owns(user, document) ? Users.canDo(user, 'users.edit.own') : Users.canDo(user, `users.edit.all`);
     },
 
-    mutation(root, {documentId, set, unset}, context) {
+    async mutation(root, {documentId, set, unset}, context) {
 
-      const document = context.Users.findOne(documentId);
+      const document = await Connectors[database].get(context.Users, documentId);
       performCheck(this, context.currentUser, document);
 
       return editMutation({
@@ -67,9 +69,9 @@ const mutations = {
       return Users.owns(user, document) ? Users.canDo(user, 'users.remove.own') : Users.canDo(user, `users.remove.all`);
     },
     
-    mutation(root, {documentId}, context) {
+    async mutation(root, {documentId}, context) {
 
-      const document = context.Users.findOne(documentId);
+      const document = await Connectors[database].get(context.Users, documentId);
       performCheck(this, context.currentUser, document);
 
       return removeMutation({

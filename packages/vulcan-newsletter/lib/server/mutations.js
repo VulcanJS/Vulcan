@@ -1,6 +1,8 @@
 import Newsletters from "../modules/collection.js";
 import Users from 'meteor/vulcan:users';
-import { addGraphQLMutation, addGraphQLResolvers, Utils } from 'meteor/vulcan:core';
+import { addGraphQLMutation, addGraphQLResolvers, Utils, getSetting, Connectors } from 'meteor/vulcan:core';
+
+const database = getSetting('database', 'mongo');
 
 addGraphQLMutation('sendNewsletter : JSON');
 addGraphQLMutation('testNewsletter : JSON');
@@ -10,38 +12,38 @@ addGraphQLMutation('removeUserNewsletter(userId: String) : JSON');
 
 const resolver = {
   Mutation: {
-    sendNewsletter(root, args, context) {
+    async sendNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) {
-        return Newsletters.send();
+        return await Newsletters.send();
       } else {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
     },
-    testNewsletter(root, args, context) {
+    async testNewsletter(root, args, context) {
       if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
-        return Newsletters.send(true);
+        return await Newsletters.send(true);
     },
-    addUserNewsletter(root, {userId}, context) {
+    async addUserNewsletter(root, {userId}, context) {
 
       const currentUser = context.currentUser;
-      const user = Users.findOne({_id: userId});
+      const user = await Connectors[database].get(Users, userId);
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
-      return Newsletters.subscribeUser(user, false);
+      return await Newsletters.subscribeUser(user, false);
     },
-    addEmailNewsletter(root, {email}, context) {
-      return Newsletters.subscribeEmail(email, true);
+    async addEmailNewsletter(root, {email}, context) {
+      return await Newsletters.subscribeEmail(email, true);
     },
-    removeUserNewsletter(root, { userId }, context) {
+    async removeUserNewsletter(root, { userId }, context) {
       const currentUser = context.currentUser;
-      const user = Users.findOne({_id: userId});
+      const user = await Connectors[database].get(Users, userId);
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
       
       try {
-        return Newsletters.unsubscribeUser(user);
+        return await Newsletters.unsubscribeUser(user);
       } catch (error) {
         const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: "newsletter.subscription_failed"}) : error.message
         throw new Error(errorMessage);

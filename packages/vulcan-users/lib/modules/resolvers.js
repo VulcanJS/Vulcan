@@ -1,11 +1,13 @@
-import { addGraphQLResolvers } from 'meteor/vulcan:lib';
+import { addGraphQLResolvers, Connectors, getSetting } from 'meteor/vulcan:lib';
+
+const database = getSetting('database');
 
 const specificResolvers = {
   Query: {
-    currentUser(root, args, context) {
+    async currentUser(root, args, context) {
       let user = null;
       if (context && context.userId) {
-        user = context.Users.findOne(context.userId);
+        user = await Connectors[database].get(context.Users, context.userId);
 
         if (user.services) {
           Object.keys(user.services).forEach((key) => {
@@ -26,13 +28,13 @@ const resolvers = {
 
     name: 'UsersList',
 
-    async resolver(root, {terms}, {currentUser, Users}, info) {
+    async resolver(root, { terms = {} }, {currentUser, Users}, info) {
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = await Users.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
-      const users = Users.find(selector, options).fetch();
+      const users = await Connectors[database].find(Users, selector, options);
 
       // restrict documents fields
       const restrictedUsers = Users.restrictViewableFields(currentUser, Users, users);
@@ -49,9 +51,9 @@ const resolvers = {
 
     name: 'UsersSingle',
 
-    async resolver(root, {documentId, slug}, {currentUser, Users}) {
+    async resolver(root, { documentId, slug }, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
-      const user = documentId ? await Users.loader.load(documentId) : (slug ? Users.findOne({slug}): Users.findOne());
+      const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors[database].get(Users, {slug}): await Connectors[database].get(Users));
       return Users.restrictViewableFields(currentUser, Users, user);
     },
 
@@ -61,9 +63,9 @@ const resolvers = {
 
     name: 'UsersTotal',
 
-    async resolver(root, {terms}, context) {
-      const {selector} = await context.Users.getParameters(terms);
-      return context.Users.find(selector).count();
+    async resolver(root, { terms = {} }, { Users }) {
+      const {selector} = await Users.getParameters(terms);
+      return await Connectors[database].count(Users, selector);
     },
 
   }
