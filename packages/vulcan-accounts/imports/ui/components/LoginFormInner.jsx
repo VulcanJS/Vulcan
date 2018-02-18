@@ -1,12 +1,12 @@
 /* eslint-disable meteor/no-session */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Tracker from 'tracker-component';
 import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
 import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo } from 'react-apollo';
+import TrackerComponent from './TrackerComponent.jsx';
 
 import {
   STATES,
@@ -20,7 +20,7 @@ import {
   capitalize
 } from '../../helpers.js';
 
-export class AccountsLoginFormInner extends Tracker.Component {
+export class AccountsLoginFormInner extends TrackerComponent {
   constructor(props) {
     super(props);
 
