@@ -42,12 +42,15 @@ Meteor.startup(() => {
       const context = getRenderContext();
       context.initialState = initialState;
       const apolloClientReducer = (state = {}, action) => {
-        if (initialState && initialState.apollo && !_.isEmpty(initialState.apollo.data) && _.isEmpty(state.data)) {
-          state = initialState.apollo
-        }
-        const newState = context.apolloClient.reducer()(state, action);
-        return newState;
-      }
+        console.log(state);
+        // if (initialState && initialState.apollo && !_.isEmpty(initialState.apollo.data) && _.isEmpty(state.data)) {
+        //   state = initialState.apollo
+        // }
+        // const newState = context.apolloClient.extract();
+        // const newState = context.apolloClient.reducer()(state, action);
+        // TODO: Check if any of the reducer makes any sense in the future?
+        return context.apolloClient.extract();
+      };
       context.addReducer({ apollo: apolloClientReducer });
       context.store.reload();
       context.store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
@@ -71,7 +74,8 @@ Meteor.startup(() => {
           return !(nextRouterProps.location.action === 'REPLACE');
         }))
       }));
-      return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
+      return <ApolloProvider client={apolloClient}>{app}</ApolloProvider>;
+      // return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
     },
   };
 

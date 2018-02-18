@@ -79,8 +79,8 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
   const loginToken = req.cookies && req.cookies.meteor_login_token;
   const apolloClient = createApolloClient({ loginToken: loginToken });
   let actions = {};
-  let reducers = { apollo: apolloClient.reducer() };
-  let middlewares = [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')];
+  // let reducers = { apollo: apolloClient.reducer ? apolloClient.reducer() : {} };
+  // let middlewares = apolloClient.middleware ? [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')] : null;
 
   // renderContext object
   req.renderContext = {
@@ -95,32 +95,36 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
       return { ...getActions(), ...actions };
     },
     addReducer(addedReducer) { // context.addReducer: add reducer to renderContext
-      reducers = { ...reducers, ...addedReducer };
+      const reducers = { ...addedReducer };
+      // reducers = { ...reducers, ...addedReducer };
       return this.getReducers();
     },
     getReducers() { // SSR reducers = server reducers + renderContext reducers
-      return { ...getReducers(), ...reducers };
+      return { ...getReducers() };
+      // return { ...getReducers(), ...reducers };
     },
     addMiddleware(middlewareOrMiddlewareArray) { // context.addMiddleware: add middleware to renderContext
       const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
-      middlewares = [...middlewares, ...addedMiddleware];
+      const middlewares = [...addedMiddleware];
+      // middlewares = [...middlewares, ...addedMiddleware];
       return this.getMiddlewares();
     },
     getMiddlewares() { // SSR middlewares = server middlewares + renderContext middlewares
-      return [...getMiddlewares(), ...middlewares];
+      return [...getMiddlewares()];
+      // return [...getMiddlewares(), ...middlewares];
     },
   };
 
   // create store
   req.renderContext.store = configureStore(req.renderContext.getReducers, {}, (store) => {
     let chain, newDispatch;
-     
+
     return next => (action) => {
       try {
         if (!chain) {
           chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
         }
-        newDispatch = compose(...chain)(next)
+        newDispatch = compose(...chain)(next);
         return newDispatch(action);
       } catch (error) {
         // console.log(error)

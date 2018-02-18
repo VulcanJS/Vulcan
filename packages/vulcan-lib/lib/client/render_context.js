@@ -15,8 +15,8 @@ export const initContext = () => {
   const history = browserHistory;
   const loginToken = global.localStorage['Meteor.loginToken'];
   const apolloClient = createApolloClient();
-  addReducer({ apollo: apolloClient.reducer() });
-  addMiddleware(apolloClient.middleware());
+  addReducer({ apollo: apolloClient.store });
+  // addMiddleware(apolloClient.middleware());
 
   // init context
   context = {
@@ -37,24 +37,23 @@ export const initContext = () => {
     return next => (action) => {
       if (!chain) {
         chain = context.getMiddlewares().map(middleware => middleware(store));
-        newDispatch = compose(...chain)(next)
+        newDispatch = compose(...chain)(next);
       }
       return newDispatch(action);
     };
-  })
-}
+  });
+};
 
 // render context object
-export const renderContext = { 
+export const renderContext = {
   get: () => {
 
     if (typeof context === 'undefined') {
       initContext();
     }
 
-    return context
-
-  } 
+    return context;
+  }
 };
 
 // render context get function
