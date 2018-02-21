@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { getSetting, Strings } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
+String.prototype.replaceAll = function(search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 export default class IntlProvider extends Component{
   
@@ -15,7 +19,7 @@ export default class IntlProvider extends Component{
     let message = messages[id] || defaultMessage;
     if (values) {
       _.forEach(values, (value, key) => {
-        message = message.replace(`{${key}}`, value);
+        message = message.replaceAll(`{${key}}`, value);
       });
     }
     return message;
