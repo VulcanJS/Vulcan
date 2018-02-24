@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:lib';
+import { registerComponent, Components, getCollection } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -54,17 +54,18 @@ class Datatable extends PureComponent {
             
     } else { // dynamic datatable with data loading
       
+      const collection = this.props.collection || getCollection(this.props.collectionName);
       const options = {
-        collection: this.props.collection,
+        collection,
         ...this.props.options
       }
 
       const DatatableWithList = withList(options)(Components.DatatableContents);
 
-      const canInsert = this.props.collection.options && this.props.collection.options.mutations && this.props.collection.options.mutations.new && this.props.collection.options.mutations.new.check(this.props.currentUser);
+      const canInsert = collection.options && collection.options.mutations && collection.options.mutations.new && collection.options.mutations.new.check(this.props.currentUser);
 
       return (
-        <div className={`datatable datatable-${this.props.collection._name}`}>
+        <div className={`datatable datatable-${collection.options.collectionName}`}>
           <Components.DatatableAbove {...this.props} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
           <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
         </div>
