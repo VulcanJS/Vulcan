@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
 import Button from 'react-bootstrap/lib/Button';
+import { Link } from 'react-router';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection.simpleSchema()._schema;
@@ -71,18 +72,7 @@ export const getFieldValue = (value, typeName) => {
 
     case 'Object':
     case 'object':
-      return (
-        <table className="table table-bordered">
-          <tbody>
-            {_.map(value, (value, key) => 
-              <tr key={key}>
-                <td><strong>{key}</strong></td>
-                <td>{getFieldValue(value, typeof value)}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )
+      return getObject(value);
 
     case 'Date':
       return moment(new Date(value)).format('dddd, MMMM Do YYYY, h:mm:ss');
@@ -90,6 +80,37 @@ export const getFieldValue = (value, typeName) => {
     default:
       return parseImageUrl(value);
   }  
+}
+
+const getObject = object => {
+
+  if (object.__typename === 'User') {
+
+    const user = object;
+
+    return (
+      <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
+        <Components.Avatar size="small" user={user} link />
+        <Link to={user.pageUrl}>{user.displayName}</Link>
+      </div>
+    )
+
+  } else {
+
+    return (
+      <table className="table table-bordered">
+        <tbody>
+          {_.map(object, (value, key) => 
+            <tr key={key}>
+              <td><strong>{key}</strong></td>
+              <td>{getFieldValue(value, typeof value)}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    )
+
+  }
 }
 
 const CardItem = ({label, value, typeName}) => 
