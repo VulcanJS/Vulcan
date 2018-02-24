@@ -2,7 +2,8 @@
 /* See https://github.com/studiointeract/tracker-component
 /* This is essentially the same component made by studiointeract
 /* but modified to work correctly with modern React.
-/* Only change as of this writing is to setState()
+/* Only change as of this writing is to remove setState() and let
+/* super handle that.
 /****************************************************************/
 import React from 'react';
 
@@ -28,25 +29,6 @@ class TrackerComponent extends React.Component {
 
   subscriptionsReady() {
     return !Object.keys(this.__subs).some(id => !this.__subs[id].ready());
-  }
-
-  setState(state){
-    // Originally, this function was like so:
-    //
-    //     if (!this._reactInternalInstance)
-    //       return this.state = Object.assign({}, this.state, state);
-    //     else
-    //       return super.setState.apply(this, arguments);
-    //
-    // But this didn't work well with new React releases.
-    // _reactInternalInstance was always undefined and super.setState was never getting called.
-    // This resulted in states never persistently updating and setState callbacks never called.
-    // There may be some mysterious reason this was originally written this way hence I'm keeping
-    // it here for reference for when we find out it's broken.
-
-    const newState = Object.assign({}, this.state, state);
-    this.state = newState;
-    return super.setState(newState);
   }
 
   componentWillUnmount() {

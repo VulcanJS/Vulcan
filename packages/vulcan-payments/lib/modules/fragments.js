@@ -5,6 +5,7 @@ registerFragment(`
     _id
     createdAt
     createdAtFormatted
+    createdAtFormattedShort
     user{
       _id
       slug
@@ -26,8 +27,9 @@ registerFragment(`
     #   _id
     #  pageUrl
     # }
-    
+
     properties
+    stripeId
     stripeChargeUrl
   }
 `);

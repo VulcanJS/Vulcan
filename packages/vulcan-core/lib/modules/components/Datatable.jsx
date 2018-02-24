@@ -1,4 +1,4 @@
-import { registerComponent, Components, getCollection } from 'meteor/vulcan:lib';
+import { registerComponent, Components, getCollection, Utils } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -66,8 +66,8 @@ class Datatable extends PureComponent {
 
       return (
         <div className={`datatable datatable-${collection.options.collectionName}`}>
-          <Components.DatatableAbove {...this.props} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-          <DatatableWithList {...this.props} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
+          <Components.DatatableAbove {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
+          <DatatableWithList {...this.props} collection={collection} terms={{query: this.state.query}} currentUser={this.props.currentUser}/>
         </div>
       )
     }
@@ -130,7 +130,9 @@ const DatatableHeader = ({ collection, column }, { intl }) => {
     3. the raw column name.
 
     */
-    const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage: schema[columnName] ? schema[columnName].label : columnName });
+    const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
+    const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage });
+
     return <th>{formattedLabel}</th>;
 
   } else {

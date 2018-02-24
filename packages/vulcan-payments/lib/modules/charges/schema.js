@@ -119,6 +119,18 @@ const schema = {
     }  
   },
 
+  stripeId: {
+    type: String,
+    optional: true,
+    viewableBy: ['admins'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return charge.data && charge.data.id;
+      }
+    } 
+  },
+
   stripeChargeUrl: {
     type: String,
     optional: true,
@@ -132,7 +144,7 @@ const schema = {
   },
 
   // doesn't work yet
-  
+
   // associatedDocument: {
   //   type: Object,
   //   viewableBy: ['admins'],

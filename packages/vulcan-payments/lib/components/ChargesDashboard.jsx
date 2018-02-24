@@ -6,6 +6,9 @@ import { registerComponent, Components } from 'meteor/vulcan:lib';
 //   <Link to={document.pageUrl}>{document._id}</Link>
 // }
 
+const StripeId = ({ document }) => 
+  <a href={document.stripeChargeUrl} target="_blank">{document.stripeId}</a>
+
 const ChargesDashboard = props => 
   <div className="charges">
     <Components.Datatable
@@ -16,14 +19,17 @@ const ChargesDashboard = props =>
         fragmentName: 'ChargeFragment'
       }}
       columns={[
-        'createdAtFormatted', 
+        'createdAtFormattedShort', 
         'user', 
         'type', 
         'source',
         'productKey',
         'test',
         'properties',
-        'stripeChargeUrl',
+        {
+          name: 'stripeId',
+          component: StripeId
+        },
       ]}
     />
   </div>
