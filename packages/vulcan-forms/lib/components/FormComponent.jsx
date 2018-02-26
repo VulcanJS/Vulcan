@@ -163,7 +163,7 @@ class FormComponent extends PureComponent {
   render() {
 
     const hasErrors = this.props.errors && this.props.errors.length;
-    const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control || 'default'}`,{'input-error': hasErrors});
+    const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control.componentName || 'default'}`,{'input-error': hasErrors});
 
     return (
       <div className={inputClass}>
