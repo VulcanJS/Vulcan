@@ -16,6 +16,8 @@ const FormSubmit = ({
                       classes
                     }) => (
   <div className="form-submit">
+
+    <hr/>
     
     <Button type="submit" bsStyle="primary">
       {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
@@ -36,13 +38,10 @@ const FormSubmit = ({
     {
       deleteDocument
         ?
-        <div>
-          <hr/>
-          <a href="javascript:void()" onClick={deleteDocument}
-             className={`delete-link ${collectionName}-delete-link`}>
-            <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
-          </a>
-        </div>
+        <a href="javascript:void()" onClick={deleteDocument}
+           className={`delete-link ${collectionName}-delete-link`}>
+          <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
+        </a>
         :
         null
     }
