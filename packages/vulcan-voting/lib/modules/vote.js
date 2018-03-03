@@ -167,11 +167,11 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
 Cancel votes of a specific type on a given document (server)
 
 */
-const cancelVoteServer = async ({ document, voteType, collection, user, updateDocument }) => {
+const cancelVoteServer = async (existingVote, { document, voteType, collection, user, updateDocument }) => {
 
   const newDocument = _.clone(document);
 
-  const vote = await Connectors[database].get(Votes, {documentId: document._id, userId: user._id, voteType})
+  const vote = existingVote;
 
   // remove vote object
   await Connectors[database].delete(Votes, {_id: vote._id});
@@ -295,12 +295,14 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
     throw new VoteError();
   }
 
-  if (hasVotedServer({document, voteType, user})) {
+  const existingVote = await hasVotedServer({document, voteType, user});
+
+  if (existingVote) {
 
     // console.log('action: cancel')
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
-    document = await cancelVoteServer(voteOptions);
+    document = await cancelVoteServer(existingVote, voteOptions);
     // runCallbacksAsync(`votes.cancel.async`, vote, document, collection, user);
 
   } else {
