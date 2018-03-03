@@ -12,7 +12,6 @@ addStrings('es', {
   "accounts.error_unknown": "Error desconocido",
   "accounts.error_user_not_found": "Usuario no encontrado",
   "accounts.error_username_already_exists": "El nombre de usuario ya existe",
-  "accounts.error_incorrect_password": "El nombre de usuario o password no coinciden",
   "accounts.enter_username_or_email": "Ingresar nombre de usuario o correo electrónico",
   "accounts.error_internal_server_error": "Error interno del servidor",
   "accounts.error_token_expired": "Token de restablecimiento de contraseña inválido",
