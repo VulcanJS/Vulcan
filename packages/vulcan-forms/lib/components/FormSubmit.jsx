@@ -19,33 +19,38 @@ const FormSubmit = ({
 
     <hr/>
     
-    <Button type="submit" bsStyle="primary">
-      {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
-    </Button>
-    
-    {
-      cancelCallback
-        ?
-        <a className="form-cancel" onClick={(e) => {
-          e.preventDefault();
-          cancelCallback(document);
-        }}>{cancelLabel ? cancelLabel :
-          <FormattedMessage id="forms.cancel"/>}</a>
-        :
-        null
-    }
-    
-    {
-      deleteDocument
-        ?
-        <a href="javascript:void()" onClick={deleteDocument}
-           className={`delete-link ${collectionName}-delete-link`}>
-          <Components.Icon name="close"/> <FormattedMessage id="forms.delete"/>
-        </a>
-        :
-        null
-    }
-  
+    <div className='row'>
+      <div className='col-xs-6'>
+        {
+          deleteDocument
+            ?
+            <a href="javascript:void()" onClick={deleteDocument}
+               className={`btn btn-outline-danger delete-link ${collectionName}-delete-link`}>
+              <Components.Icon name="trash"/> <FormattedMessage id="forms.delete"/>
+            </a>
+            :
+            null
+        }
+      </div>
+      <div className='col-xs-6'>        
+        {
+          cancelCallback
+            ?
+            <a className="form-cancel" onClick={(e) => {
+              e.preventDefault();
+              cancelCallback(document);
+            }}>{cancelLabel ? cancelLabel :
+              <FormattedMessage id="forms.cancel"/>}</a>
+            :
+            null
+        }
+      
+        <Button type="submit" bsStyle="primary">
+          {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
+        </Button>
+      
+      /div>
+    </div>
   </div>
 );
 
