@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { getCollection } from 'meteor/vulcan:core';
 
 const schema = {
 
