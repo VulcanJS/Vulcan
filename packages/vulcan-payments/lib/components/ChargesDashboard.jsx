@@ -19,7 +19,10 @@ const ChargesDashboard = props =>
         fragmentName: 'ChargeFragment'
       }}
       columns={[
-        'createdAtFormattedShort', 
+        {
+          name: 'createdAtFormattedShort', 
+          label: 'Created At',
+        },
         'user', 
         'type', 
         'source',
