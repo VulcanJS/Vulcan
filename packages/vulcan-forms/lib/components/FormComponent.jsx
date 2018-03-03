@@ -140,7 +140,7 @@ class FormComponent extends PureComponent {
   }
 
   showClear = () => {
-    return ['datetime', 'select', 'radiogroup'].includes(this.props.control);
+    return ['datetime', 'time', 'select', 'radiogroup'].includes(this.props.control);
   }
 
   clearField = (e) => {
