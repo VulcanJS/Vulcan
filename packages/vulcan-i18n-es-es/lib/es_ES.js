@@ -2,7 +2,8 @@ import { addStrings } from 'meteor/vulcan:core';
 
 addStrings('es', {
 
-  "accounts.error_emailRequired": "Se requiere correo electrónico",
+  "accounts.error_incorrect_password": "Contraseña Incorrecta",
+  "accounts.error_email_required": "Se requiere correo electrónico",
   "accounts.error_email_already_exists": "El correo electrónico ya existe",
   "accounts.error_invalid_email": "Correo electrónico no válido",
   "accounts.error_minchar": "Su contraseña es muy corta",
