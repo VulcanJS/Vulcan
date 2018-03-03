@@ -1,6 +1,6 @@
-import { Connectors } from '../connectors.js';
+import { DatabaseConnectors } from '../connectors.js';
 
-Connectors.mongo = {
+DatabaseConnectors.mongo = {
   get: async (collection, selector = {}, options = {}) => {
     return await collection.findOne(selector, options);
   },

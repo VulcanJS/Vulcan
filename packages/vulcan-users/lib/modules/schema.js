@@ -1,7 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { Utils, getCollection, Connectors, getSetting } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
-
-const database = getSetting('database', 'mongo');
+import { Utils, getCollection, Connectors } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit: 
@@ -85,7 +83,7 @@ const schema = {
     group: adminGroup,
     onInsert: async user => {
       // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = await Connectors[database].count(getCollection('Users'), {'isDummy': {$ne: true}});
+      const realUsersCount = await Connectors.count(getCollection('Users'), {'isDummy': {$ne: true}});
       return (!user.isDummy && realUsersCount === 0) ? true : false;
     }
   },
@@ -273,7 +271,7 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: async (user, args, { Users }) => {
-        return Users.getTwitterName(await Connectors[database].get(Users, user._id));
+        return Users.getTwitterName(await Connectors.get(Users, user._id));
       },
     },
     onInsert: user => {

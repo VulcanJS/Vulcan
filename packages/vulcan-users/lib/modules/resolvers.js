@@ -1,13 +1,11 @@
-import { addGraphQLResolvers, Connectors, getSetting } from 'meteor/vulcan:lib';
-
-const database = getSetting('database');
+import { addGraphQLResolvers, Connectors } from 'meteor/vulcan:lib';
 
 const specificResolvers = {
   Query: {
     async currentUser(root, args, context) {
       let user = null;
       if (context && context.userId) {
-        user = await Connectors[database].get(context.Users, context.userId);
+        user = await Connectors.get(context.Users, context.userId);
 
         if (user.services) {
           Object.keys(user.services).forEach((key) => {
@@ -34,7 +32,7 @@ const resolvers = {
       let {selector, options} = await Users.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
-      const users = await Connectors[database].find(Users, selector, options);
+      const users = await Connectors.find(Users, selector, options);
 
       // restrict documents fields
       const restrictedUsers = Users.restrictViewableFields(currentUser, Users, users);
@@ -53,7 +51,7 @@ const resolvers = {
 
     async resolver(root, { documentId, slug }, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
-      const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors[database].get(Users, {slug}): await Connectors[database].get(Users));
+      const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors.get(Users, {slug}): await Connectors.get(Users));
       return Users.restrictViewableFields(currentUser, Users, user);
     },
 
@@ -65,7 +63,7 @@ const resolvers = {
 
     async resolver(root, { terms = {} }, { Users }) {
       const {selector} = await Users.getParameters(terms);
-      return await Connectors[database].count(Users, selector);
+      return await Connectors.count(Users, selector);
     },
 
   }

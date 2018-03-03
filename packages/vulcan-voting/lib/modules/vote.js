@@ -1,10 +1,8 @@
-import { Connectors, getSetting, debug, debugGroup, debugGroupEnd /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
+import { Connectors, debug, debugGroup, debugGroupEnd /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
 import { recalculateScore } from './scoring.js';
-
-const database = getSetting('database', 'mongo');
 
 /*
 
@@ -52,7 +50,7 @@ Test if a user has voted on the server
 
 */
 const hasVotedServer = async ({ document, voteType, user }) => {
-  const vote = await Connectors[database].get(Votes, {documentId: document._id, userId: user._id, voteType});
+  const vote = await Connectors.get(Votes, {documentId: document._id, userId: user._id, voteType});
   return vote;
 }
 
@@ -94,7 +92,7 @@ const addVoteServer = async (voteOptions) => {
   // create vote and insert it
   const vote = createVote({ document, collectionName: collection.options.collectionName, voteType, user, voteId });
   delete vote.__typename;
-  await Connectors[database].create(Votes, vote);
+  await Connectors.create(Votes, vote);
 
   // initialize baseScore to vote power if not defined yet
   newDocument.baseScore = document.baseScore ? document.baseScore + vote.power : vote.power;
@@ -102,7 +100,7 @@ const addVoteServer = async (voteOptions) => {
 
   if (updateDocument) {
     // update document score & set item as active
-    await Connectors[database].update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
+    await Connectors.update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
   }
 
   return newDocument;
@@ -150,11 +148,11 @@ Clear all votes for a given document and user (server)
 */
 const clearVotesServer = async ({ document, user, collection, updateDocument }) => {
   const newDocument = _.clone(document);
-  const votes = await Connectors[database].find(Votes, { documentId: document._id, userId: user._id});
+  const votes = await Connectors.find(Votes, { documentId: document._id, userId: user._id});
   if (votes.length) {
-    await Connectors[database].delete(Votes, {documentId: document._id, userId: user._id});
+    await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
     if (updateDocument) {
-      await Connectors[database].update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
     }
     newDocument.baseScore -= calculateTotalPower(votes);
     newDocument.score = recalculateScore(newDocument);
@@ -174,11 +172,11 @@ const cancelVoteServer = async (existingVote, { document, voteType, collection, 
   const vote = existingVote;
 
   // remove vote object
-  await Connectors[database].delete(Votes, {_id: vote._id});
+  await Connectors.delete(Votes, {_id: vote._id});
 
   if (updateDocument) {
     // update document score
-    await Connectors[database].update(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
+    await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
   }
 
   newDocument.baseScore -= vote.power;
@@ -280,7 +278,7 @@ return an updated document without performing any database operations on it.
 export const performVoteServer = async ({ documentId, document, voteType = 'upvote', collection, voteId, user, updateDocument = true }) => {
 
   const collectionName = collection.options.collectionName;
-  document = document || await Connectors[database].get(collection, documentId);
+  document = document || await Connectors.get(collection, documentId);
 
   debug('');
   debugGroup(`--------------- start \x1b[35mperformVoteServer\x1b[0m  ---------------`);

@@ -6,8 +6,6 @@ import Users from 'meteor/vulcan:users';
 import { Products } from '../../modules/products.js';
 import { Promise } from 'meteor/promise';
 
-const database = getSetting('database', 'mongo');
-
 registerSetting('stripe', null, 'Stripe settings');
 registerSetting('stripe.publishableKey', null, 'Publishable key', true);
 registerSetting('stripe.publishableKeyTest', null, 'Publishable key (test)', true);
@@ -49,7 +47,7 @@ export const performAction = async (args) => {
   // get the associated collection and document
   if (associatedCollection && associatedId) {
     collection = _.findWhere(Collections, {_name: associatedCollection});
-    document = await Connectors[database].get(collection, associatedId);
+    document = await Connectors.get(collection, associatedId);
   }
 
   // get the product from Products (either object or function applied to doc)
@@ -58,7 +56,7 @@ export const performAction = async (args) => {
   const product = typeof definedProduct === 'function' ? definedProduct(document) : definedProduct || sampleProduct;
 
   // get the user performing the transaction
-  const user = await Connectors[database].get(Users, userId);
+  const user = await Connectors.get(Users, userId);
 
   // create metadata object
   let metadata = {
@@ -298,7 +296,7 @@ export const processEvent = async ({collection, document, stripeObject, args, us
   // make sure charge hasn't already been processed
   // (could happen with multiple endpoints listening)
 
-  const existingCharge = await Connectors[database].get(Charges, { 'data.id': stripeObject.id });
+  const existingCharge = await Connectors.get(Charges, { 'data.id': stripeObject.id });
 
   if (existingCharge) {
     // eslint-disable-next-line no-console
@@ -449,7 +447,7 @@ app.post('/stripe', async function(req, res) {
 
           if (associatedCollection && associatedId) {
             const collection = _.findWhere(Collections, {_name: associatedCollection});
-            const document = await Connectors[database].get(collection, associatedId);
+            const document = await Connectors.get(collection, associatedId);
 
             // make sure document actually exists
             if (!document) {

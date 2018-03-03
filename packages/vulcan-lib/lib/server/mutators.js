@@ -30,11 +30,9 @@ to the client.
 import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
 import { createError } from 'apollo-errors';
 import { validateDocument, validateModifier } from '../modules/validation.js';
-import { getSetting, registerSetting } from '../modules/settings.js';
+import { registerSetting } from '../modules/settings.js';
 import { debug } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
-
-const database = getSetting('database', 'mongo');
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
@@ -95,14 +93,14 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 
   // add _id to document
-  newDocument._id = await Connectors[database].create(collection, newDocument);
+  newDocument._id = await Connectors.create(collection, newDocument);
 
   // run any post-operation sync callbacks
   newDocument = await runCallbacks(`${collectionName}.new.after`, newDocument, currentUser);
 
   // get fresh copy of document from db
   // TODO: not needed?
-  const insertedDocument = await Connectors[database].get(collection, newDocument._id);
+  const insertedDocument = await Connectors.get(collection, newDocument._id);
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
@@ -126,7 +124,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
 
   // get original document from database
   // TODO: avoid fetching document a second time if possible
-  let document = await Connectors[database].get(collection, documentId);
+  let document = await Connectors.get(collection, documentId);
   
   debug('//------------------------------------//');
   debug('// editMutation');
@@ -184,10 +182,10 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
   
   // update document
-  await Connectors[database].update(collection, documentId, modifier, {removeEmptyStrings: false});
+  await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
-  let newDocument = await Connectors[database].get(collection, documentId);
+  let newDocument = await Connectors.get(collection, documentId);
 
   // clear cache if needed
   if (collection.loader) {
@@ -219,7 +217,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  let document = await Connectors[database].get(collection, documentId);
+  let document = await Connectors.get(collection, documentId);
 
   // if document is not trusted, run validation callbacks
   if (validate) {
@@ -236,7 +234,7 @@ export const removeMutation = async ({ collection, documentId, currentUser, vali
   await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
-  await Connectors[database].delete(collection, documentId);
+  await Connectors.delete(collection, documentId);
 
   // clear cache if needed
   if (collection.loader) {

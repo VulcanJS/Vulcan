@@ -1,8 +1,6 @@
 import Newsletters from "../modules/collection.js";
 import Users from 'meteor/vulcan:users';
-import { addGraphQLMutation, addGraphQLResolvers, Utils, getSetting, Connectors } from 'meteor/vulcan:core';
-
-const database = getSetting('database', 'mongo');
+import { addGraphQLMutation, addGraphQLResolvers, Utils, Connectors } from 'meteor/vulcan:core';
 
 addGraphQLMutation('sendNewsletter : JSON');
 addGraphQLMutation('testNewsletter : JSON');
@@ -26,7 +24,7 @@ const resolver = {
     async addUserNewsletter(root, {userId}, context) {
 
       const currentUser = context.currentUser;
-      const user = await Connectors[database].get(Users, userId);
+      const user = await Connectors.get(Users, userId);
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
@@ -37,7 +35,7 @@ const resolver = {
     },
     async removeUserNewsletter(root, { userId }, context) {
       const currentUser = context.currentUser;
-      const user = await Connectors[database].get(Users, userId);
+      const user = await Connectors.get(Users, userId);
       if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
       }
