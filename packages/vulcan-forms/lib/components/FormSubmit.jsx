@@ -45,7 +45,7 @@ const FormSubmit = ({
             null
         }
       
-        <Button type="submit" bsStyle="primary">
+        <Button type="submit" bsStyle="primary" className="pull-right">
           {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
         </Button>
       
