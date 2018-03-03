@@ -81,11 +81,6 @@ const schema = {
     editableBy: ['admins'],
     viewableBy: ['guests'],
     group: adminGroup,
-    onInsert: async user => {
-      // if this is not a dummy account, and is the first user ever, make them an admin
-      const realUsersCount = await Connectors.count(getCollection('Users'), {'isDummy': {$ne: true}});
-      return (!user.isDummy && realUsersCount === 0) ? true : false;
-    }
   },
   profile: {
     type: Object,
@@ -203,6 +198,9 @@ const schema = {
       fieldName: 'avatarUrl',
       type: 'String',
       resolver: async (user, args, { Users }) => {
+ 
+        if (_.isEmpty(user)) return null;
+
         if (user.avatarUrl) {
           return user.avatarUrl;
         } else {
@@ -211,6 +209,7 @@ const schema = {
           const fullUser = await Users.loader.load(user._id);
           return Users.avatar.getUrl(fullUser);
         }
+        
       }
     }
   },

@@ -1,6 +1,7 @@
 import Users from '../modules/index.js';
 import { runCallbacks, runCallbacksAsync, Utils } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
+// TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
 function onCreateUserCallback (options, user) {
 
   const schema = Users.simpleSchema()._schema;
@@ -28,15 +29,18 @@ function onCreateUserCallback (options, user) {
   user = runCallbacks(`users.new.validate`, user);
 
   // run onInsert step
-  _.keys(schema).forEach(fieldName => {
+  // note: cannot use forEach with async/await. 
+  // note 2: don't use async/await here for now. TODO: fix this. 
+  // See https://stackoverflow.com/a/37576787/649299
+  for(let fieldName of _.keys(schema)) {
     if (!user[fieldName] && schema[fieldName].onInsert) {
       const autoValue = schema[fieldName].onInsert(user, options);
-      if (autoValue) {
+      if (typeof autoValue !== 'undefined') {
         user[fieldName] = autoValue;
       }
     }
-  });
-  
+  }
+
   user = runCallbacks("users.new.sync", user);
 
   runCallbacksAsync("users.new.async", user);
@@ -45,7 +49,6 @@ function onCreateUserCallback (options, user) {
   if (Users.hasCompletedProfile(user)) {
     runCallbacksAsync("users.profileCompleted.async", user);
   }
-
   return user;
 }
 
