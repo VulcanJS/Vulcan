@@ -27,9 +27,7 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         if (options.newCheck) {
           return options.newCheck(user, document);
         }
-        // if user is not logged in, disallow operation
-        if (!user) return false;
-        // else, check if they can perform "foo.new" operation (e.g. "movies.new")
+        // check if they can perform "foo.new" operation (e.g. "movies.new")
         return Users.canDo(user, `${collectionName.toLowerCase()}.new`);
       },
       
