@@ -622,6 +622,8 @@ export class AccountsLoginFormInner extends TrackerComponent {
     let loginSelector;
     this.clearMessages();
 
+    const self = this;
+
     if (usernameOrEmail !== null) {
       if (!this.validateField('username', usernameOrEmail)) {
         if (this.state.formState == STATES.SIGN_UP) {
@@ -663,19 +665,19 @@ export class AccountsLoginFormInner extends TrackerComponent {
           console.log(error);
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
           if (this.context.intl.formatMessage({id: errorId})) {
-            this.showMessage(errorId);
+            self.showMessage(errorId);
           } else {
-            this.showMessage('accounts.error_unknown');
+            self.showMessage('accounts.error_unknown');
           }
         }
         else {
           loginResultCallback(() => this.state.onSignedInHook(this.props));
-          this.props.handlers.switchToProfile();
+          self.props.handlers.switchToProfile();
           // this.setState({
           //   formState: STATES.PROFILE,
           //   password: null,
           // });
-          this.clearDefaultFieldValues();
+          self.clearDefaultFieldValues();
         }
       });
     }
@@ -703,6 +705,9 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
   oauthSignIn(serviceName) {
     const { formState, /* waiting, currentUser, */ onSubmitHook } = this.state;
+
+    const self = this;
+
     //Thanks Josh Owens for this one.
     function capitalService() {
       return serviceName.charAt(0).toUpperCase() + serviceName.slice(1);
@@ -732,16 +737,16 @@ export class AccountsLoginFormInner extends TrackerComponent {
           // do nothing
         } else {
           const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
-          if (this.context.intl.formatMessage({id: errorId})) {
-            this.showMessage(errorId);
+          if (self.context.intl.formatMessage({id: errorId})) {
+            self.showMessage(errorId);
           } else {
-            this.showMessage('accounts.error_unknown');
+            self.showMessage('accounts.error_unknown');
           }
         }
       } else {
-        this.props.handlers.switchToProfile();
+        self.props.handlers.switchToProfile();
         // this.setState({ formState: STATES.PROFILE });
-        this.clearDefaultFieldValues();
+        self.clearDefaultFieldValues();
         loginResultCallback(() => {
           Meteor.setTimeout(() => this.state.onSignedInHook(this.props), 100);
         });
@@ -821,7 +826,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         }
         else {
           onSubmitHook(null, formState);
-          this.props.handlers.switchToProfile();
+          self.props.handlers.switchToProfile();
           // self.setState({ formState: STATES.PROFILE, password: null });
           let currentUser = Accounts.user();
           loginResultCallback(self.state.onPostSignUpHook.bind(self, _options, currentUser));
