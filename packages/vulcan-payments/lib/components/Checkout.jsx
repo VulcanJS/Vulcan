@@ -113,7 +113,7 @@ Checkout.contextTypes = {
 Checkout.propTypes = {
   productKey: PropTypes.string,
   currentUser: PropTypes.object, 
-  button: PropTypes.func, 
+  button: PropTypes.object, 
   coupon: PropTypes.string,
   associatedDocument: PropTypes.object,
   customAmount: PropTypes.number,

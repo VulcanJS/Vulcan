@@ -74,8 +74,8 @@ export const performAction = async (args) => {
 
   metadata = await runCallbacks('stripe.charge.sync', metadata, user, product, collection, document, args);
 
-  if (product.plan) {
-    // if product has a plan, subscribe user to it
+  if (product.type === 'subscription') {
+    // if product is a subscription product, subscribe user to its plan
     returnDocument = await createSubscription({ user, product, collection, document, metadata, args });
   } else {
     // else, perform charge

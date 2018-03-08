@@ -28,6 +28,7 @@ registerFragment(`
     #  pageUrl
     # }
 
+    amount
     properties
     stripeId
     stripeChargeUrl

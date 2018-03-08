@@ -13,19 +13,4 @@ accounts-password@1.5.0
 # accounts-twitter
 # accounts-facebook
 
-############ Your Packages ############
-
-#tutorial-step-1 - You can follow along with the video here: http://docs.vulcanjs.org/example-simple.html
-# This is where you enable packages. 
-
-example-simple
-# example-movies
-# example-instagram
-# example-forum
-# example-customization
-# example-permissions
-# example-membership
-# example-interfaces
-# example-reactions
-
 vulcan:debug

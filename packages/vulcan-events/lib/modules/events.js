@@ -20,7 +20,7 @@ export const track = async (eventName, eventProperties, currentUser) => {
       await f(eventName, eventProperties, currentUser);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(`// ${f.name} track error`);
+      console.log(`// ${f.name} track error for event ${eventName}`);
       // eslint-disable-next-line no-console
       console.log(error);
     }

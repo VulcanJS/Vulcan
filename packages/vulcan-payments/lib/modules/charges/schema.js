@@ -94,6 +94,16 @@ const schema = {
 
   // GraphQL only
 
+  amount: {
+    type: Number,
+    optional: true,
+    viewableBy: ['admins'],
+    resolveAs: {
+      type: 'Int',
+      resolver: charge => charge.data.amount,
+    }  
+  },
+
   createdAtFormatted: {
     type: String,
     optional: true,
