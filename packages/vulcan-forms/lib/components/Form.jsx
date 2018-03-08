@@ -274,7 +274,10 @@ class Form extends Component {
       relevantFields = _.intersection(relevantFields, fields);
     } else {
       // else if fields is not specified, remove all hidden fields
-      relevantFields = _.reject(relevantFields, fieldName => schema[fieldName].hidden);
+      relevantFields = _.reject(relevantFields, fieldName => {
+        const hidden = schema[fieldName].hidden;
+        return typeof hidden === 'function' ? hidden(this.props) : hidden;
+      });
     }
 
     // if "hideFields" prop is specified, remove its fields
