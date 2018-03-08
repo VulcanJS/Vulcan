@@ -27,7 +27,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import { getEditableFields, getInsertableFields } from '../modules/utils.js';
+import { getEditableFields, getInsertableFields, isEmptyValue } from '../modules/utils.js';
 
 /*
 
@@ -158,24 +158,23 @@ class Form extends Component {
         }
       }
 
-      // replace empty value, which has not been prefilled, by the default value from the schema
-      // keep defaultValue for backwards compatibility even though it doesn't actually work
-      if (fieldSchema.defaultValue && (typeof field.value === 'undefined' || field.value === '')) {
-        field.value = fieldSchema.defaultValue;
-      }
-      if (fieldSchema.default && (typeof field.value === 'undefined' || field.value === '')) {
-        field.value = fieldSchema.default;
-      }
-
       // add options if they exist
       const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
       if (fieldOptions) {
         field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
 
         // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-        if (!field.value && this.getFormType() === 'new') {
-          field.value = _.where(field.options, {checked: true}).map(option => option.value);
+        const checkedValues = _.where(field.options, {checked: true}).map(option => option.value);
+        if (checkedValues.length && !field.value && this.getFormType() === 'new') {
+          field.value = checkedValues
         }
+      }
+
+      // replace empty value, which has not been prefilled, by the default value from the schema
+      // keep defaultValue for backwards compatibility even though it doesn't actually work
+      if (isEmptyValue(field.value)) {
+        if (fieldSchema.defaultValue) field.value = fieldSchema.defaultValue;
+        if (fieldSchema.default) field.value = fieldSchema.default;
       }
 
       // add any properties specified in fieldProperties or form as extra props passed on

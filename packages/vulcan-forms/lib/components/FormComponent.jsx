@@ -4,6 +4,7 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
+import { isEmptyValue } from '../modules/utils';
 
 class FormComponent extends PureComponent {
 
@@ -101,13 +102,18 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentRadioGroup {...properties} />;
 
         case 'select':
-          // a select multiple expects an array of values
-          // a select non-multiple expects a scalar
-          // set the default value to a scalar if the value is an empty array
-          if (!properties.multiple && Array.isArray(properties.value) && properties.value.length === 0) {
-            properties.value = '';
-          }
-          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...properties.options];
+
+          const noneOption = {
+            label: this.context.intl.formatMessage({id: 'forms.select_option'}), 
+            value: '', 
+            disabled: true
+          };
+
+          properties.options = [noneOption, ...properties.options];
+          return <Components.FormComponentSelect {...properties} />;
+
+        case 'selectmultiple':
+          properties.multiple = true;
           return <Components.FormComponentSelect {...properties} />;
 
         case 'datetime':
@@ -145,8 +151,6 @@ class FormComponent extends PureComponent {
 
   clearField = (e) => {
     e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log(this.props)
     const fieldName = this.props.name;
     // clear value
     this.props.updateCurrentValues({[fieldName]: null});
