@@ -12,3 +12,4 @@ export * from '../modules/index.js';
 export * from './mutators.js';
 export * from './render_context.js';
 export * from './inject_data.js';
+export * from './utils.js';
