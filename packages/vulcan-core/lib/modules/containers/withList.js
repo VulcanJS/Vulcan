@@ -236,7 +236,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   const result = collection.getParameters(mergedTerms, apolloClient);
   const { selector, options } = result;
 
-  const mingoQuery = Mingo.Query(selector);
+  const mingoQuery = new Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below
   const removeFromResults = (results, document) => {
