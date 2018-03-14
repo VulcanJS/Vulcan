@@ -27,7 +27,7 @@ class FormComponent extends PureComponent {
 
   handleBlur() {
     // see https://facebook.github.io/react/docs/more-about-refs.html
-    if (this.formControl !== null) {
+    if (this.formControl && this.formControl.getValue) {
       this.props.updateCurrentValues({[this.props.name]: this.formControl.getValue()});
     }
   }
