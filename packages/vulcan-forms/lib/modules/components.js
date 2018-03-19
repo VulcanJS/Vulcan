@@ -9,6 +9,7 @@ import '../components/bootstrap/Select.jsx';
 import '../components/bootstrap/Textarea.jsx';
 import '../components/bootstrap/Time.jsx';
 import '../components/bootstrap/Url.jsx';
+import '../components/bootstrap/Date.jsx';
 
 import '../components/Flash.jsx';
 import '../components/FormComponent.jsx';
