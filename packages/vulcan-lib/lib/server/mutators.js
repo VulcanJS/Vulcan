@@ -151,11 +151,17 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
 
   }
 
+  // get a "preview" of the new document
+  let newDocument = { ...document, ...modifier.$set};
+  Object.keys(modifier.$unset).forEach(fieldName => {
+    delete newDocument[fieldName];
+  });
+
   // run onEdit step
   for(let fieldName of _.keys(schema)) {
 
     if (schema[fieldName].onEdit) {
-      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser);
+      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
       if (typeof autoValue !== 'undefined') {
         if (autoValue === null) {
           // if any autoValue returns null, then unset the field
@@ -170,8 +176,8 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
 
   // run sync callbacks (on mongo modifier)
-  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser);
-  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
+  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument);
+  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser, newDocument);
 
   // remove empty modifiers
   if (_.isEmpty(modifier.$set)) {
@@ -185,7 +191,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
-  let newDocument = await Connectors.get(collection, documentId);
+  newDocument = await Connectors.get(collection, documentId);
 
   // clear cache if needed
   if (collection.loader) {

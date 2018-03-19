@@ -18,7 +18,8 @@ import { Utils, getCollection, Connectors } from 'meteor/vulcan:lib'; // import 
 ///////////////////////////////////////
 
 const adminGroup = {
-  name: "admin",
+  name: 'admin',
+  order: 100,
 };
 
 const ownsOrIsAdmin = (user, document) => {
@@ -289,6 +290,7 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins'],
     viewableBy: ['guests'],
+    group: adminGroup,
     form: {
       options: function () {
         const groups = _.without(_.keys(getCollection('Users').groups), "guests", "members", "admins");
