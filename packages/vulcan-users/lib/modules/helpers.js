@@ -248,6 +248,6 @@ Users.getRequiredFields = function () {
 //   return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
 // };
 
-// Users.findByEmail = function (email) {
-//   return Users.findOne({"email": email});
-// };
+Users.findByEmail = function (email) {
+  return Users.findOne({"email": email});
+};
