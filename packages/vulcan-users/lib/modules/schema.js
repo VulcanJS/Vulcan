@@ -315,6 +315,18 @@ const schema = {
         return Users.getProfileUrl(user, true);
       },
     }  
+  },
+
+  editUrl: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (user, args, { Users }) => {
+        return Users.getEditUrl(user, true);
+      },
+    }  
   }
 
 };
