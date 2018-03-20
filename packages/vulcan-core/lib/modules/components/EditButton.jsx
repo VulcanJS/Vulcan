@@ -3,12 +3,12 @@ import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const EditButton = ({ collection, document, bsStyle = 'primary', ...props }, {intl}) =>
+const EditButton = ({ style = 'primary', size, ...props }, {intl}) =>
   <Components.ModalTrigger 
     label={intl.formatMessage({id: 'datatable.edit'})} 
-    component={<Button bsStyle={bsStyle}><FormattedMessage id="datatable.edit" /></Button>}
+    component={<Button bsSize={size} bsStyle={style}><FormattedMessage id="datatable.edit" /></Button>}
   >
-    <Components.EditForm collection={collection} document={document} {...props} />
+    <Components.EditForm {...props} />
   </Components.ModalTrigger>
 
 EditButton.contextTypes = {
@@ -24,17 +24,14 @@ registerComponent('EditButton', EditButton);
 EditForm Component
 
 */
-const EditForm = ({ collection, document, closeModal, options, ...props }) =>
+const EditForm = ({ closeModal, ...props }) =>
   <Components.SmartForm
-    {...props}
-    collection={collection}
-    documentId={document._id}
-    showRemove={true}
     successCallback={document => {
       closeModal();
     }}
     removeSuccessCallback={document => {
       closeModal();
     }}
+    {...props}
   />
 registerComponent('EditForm', EditForm);

@@ -82,6 +82,8 @@ Datatable.propTypes = {
   showEdit: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  newFormOptions: PropTypes.object,
+  editFormOptions: PropTypes.object,
 }
 
 Datatable.defaultProps = {
@@ -98,12 +100,12 @@ DatatableAbove Component
 
 */
 const DatatableAbove = (props) => {
-  const { showSearch, showNew, canInsert, value, updateQuery, options } = props;
+  const { showSearch, showNew, canInsert, value, updateQuery, options, newFormOptions } = props;
 
   return (
     <div className="datatable-above">
       {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
-      {showNew && canInsert && <Components.NewButton {...props} mutationFragmentName={options && options.fragmentName} />}
+      {showNew && canInsert && <Components.NewButton {...props} mutationFragmentName={options && options.fragmentName} {...newFormOptions}/>}
     </div>
   )
 }
@@ -201,7 +203,7 @@ DatatableRow Component
 */
 const DatatableRow = (props, { intl }) => {
 
-  const { collection, columns, document, showEdit, currentUser, options } = props;
+  const { collection, columns, document, showEdit, currentUser, options, editFormOptions } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   return (
@@ -211,7 +213,7 @@ const DatatableRow = (props, { intl }) => {
 
     {showEdit && canEdit ?
       <td>
-        <Components.EditButton {...props} mutationFragmentName={options && options.fragmentName}/>
+        <Components.EditButton {...props} mutationFragmentName={options && options.fragmentName} {...editFormOptions}/>
       </td>
     : null}
 

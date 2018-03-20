@@ -3,10 +3,10 @@ import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const NewButton = ({ collection, bsStyle = 'primary', ...props }, {intl}) =>
+const NewButton = ({ collection, size, style = 'primary', ...props }, {intl}) =>
   <Components.ModalTrigger 
     label={intl.formatMessage({id: 'datatable.new'})} 
-    component={<Button bsStyle={bsStyle}><FormattedMessage id="datatable.new" /></Button>}
+    component={<Button bsStyle={style} bsSize={size}><FormattedMessage id="datatable.new" /></Button>}
   >
     <Components.NewForm collection={collection} {...props} />
   </Components.ModalTrigger>
@@ -24,12 +24,11 @@ registerComponent('NewButton', NewButton);
 NewForm Component
 
 */
-const NewForm = ({ collection, closeModal, options, ...props }) =>
+const NewForm = ({ closeModal, ...props }) =>
   <Components.SmartForm
-    {...props}
-    collection={collection}
     successCallback={document => {
       closeModal();
     }}
+    {...props}
   />
 registerComponent('NewForm', NewForm);
