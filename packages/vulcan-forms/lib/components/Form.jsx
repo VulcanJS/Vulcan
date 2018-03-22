@@ -508,7 +508,7 @@ class Form extends Component {
     if (typeof this.refs.form !== 'undefined') {
       let clearCurrentValues = false;
       // reset form if this is a new document form
-      if (this.props.formType === "new") {
+      if (this.getFormType() === "new") {
         this.refs.form.reset();
         clearCurrentValues = true;
       }
@@ -576,7 +576,7 @@ class Form extends Component {
       data = this.props.submitCallback(data);
     }
 
-    if (this.props.formType === "new") { // new document form
+    if (this.getFormType() === "new") { // new document form
 
       // remove any empty properties
       let document = _.compactObject(data);
@@ -638,7 +638,7 @@ class Form extends Component {
     const collectionName = this.getCollection()._name;
 
     return (
-      <div className={"document-"+this.props.formType}>
+      <div className={"document-"+this.getFormType()}>
         <Formsy.Form
           onSubmit={this.submitForm}
           onKeyDown={this.formKeyDown}
@@ -656,7 +656,7 @@ class Form extends Component {
                                  cancelLabel={this.props.cancelLabel}
                                  cancelCallback={this.props.cancelCallback}
                                  document={this.getDocument()}
-                                 deleteDocument={(this.props.formType === 'edit'
+                                 deleteDocument={(this.getFormType() === 'edit'
                                    && this.props.showRemove
                                    && this.deleteDocument)
                                  || null}
@@ -715,6 +715,7 @@ Form.propTypes = {
 Form.defaultProps = {
   layout: 'horizontal',
   repeatErrors: false,
+  showRemove: true,
 }
 
 Form.contextTypes = {

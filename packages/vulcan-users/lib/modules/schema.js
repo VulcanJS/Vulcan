@@ -99,7 +99,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
-    viewableBy: ['guests'],
+    viewableBy: ownsOrIsAdmin,
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique

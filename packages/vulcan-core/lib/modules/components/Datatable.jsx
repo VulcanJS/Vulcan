@@ -100,12 +100,12 @@ DatatableAbove Component
 
 */
 const DatatableAbove = (props) => {
-  const { showSearch, showNew, canInsert, value, updateQuery, options, newFormOptions } = props;
+  const { collection, currentUser, showSearch, showNew, canInsert, value, updateQuery, options, newFormOptions } = props;
 
   return (
     <div className="datatable-above">
       {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
-      {showNew && canInsert && <Components.NewButton {...props} mutationFragmentName={options && options.fragmentName} {...newFormOptions}/>}
+      {showNew && canInsert && <Components.NewButton collection={collection} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} {...newFormOptions}/>}
     </div>
   )
 }
@@ -213,7 +213,7 @@ const DatatableRow = (props, { intl }) => {
 
     {showEdit && canEdit ?
       <td>
-        <Components.EditButton {...props} mutationFragmentName={options && options.fragmentName} {...editFormOptions}/>
+        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} {...editFormOptions}/>
       </td>
     : null}
 
