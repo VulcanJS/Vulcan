@@ -44,7 +44,7 @@ class FormComponent extends PureComponent {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, nestedSchema, nestedFields, datatype, ...rest } = this.props; // eslint-disable-line
 
     const properties = {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props
@@ -62,6 +62,9 @@ class FormComponent extends PureComponent {
     } else if (typeof this.props.control === 'string') { // else pick a predefined component
 
       switch (this.props.control) {
+
+        case 'nested': 
+          return <Components.FormNested updateCurrentValues={updateCurrentValues} nestedSchema={nestedSchema} nestedFields={nestedFields} {...properties}/>;
 
         case 'number':
           return <Components.FormComponentNumber {...properties}/>;

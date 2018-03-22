@@ -18,7 +18,7 @@ const getGraphQLType = (schema, fieldName) => {
 
   const field = schema[fieldName];
   const type = field.type.singleType;
-  const typeName = typeof type === 'function' ? type.name : type;
+  const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
   switch (typeName) {
 

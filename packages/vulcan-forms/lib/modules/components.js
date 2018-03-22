@@ -13,6 +13,7 @@ import '../components/bootstrap/Date.jsx';
 
 import '../components/Flash.jsx';
 import '../components/FormComponent.jsx';
+import '../components/FormNested.jsx';
 import '../components/FormGroup.jsx';
 import '../components/FormSubmit.jsx';
 import '../components/FormWrapper.jsx';

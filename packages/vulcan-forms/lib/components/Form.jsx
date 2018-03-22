@@ -102,130 +102,154 @@ class Form extends Component {
     return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
   }
 
+  createField = (fieldName, fieldSchema, document) => {
+
+    // console.log('// createField')
+    // console.log(fieldName)
+    // console.log(fieldSchema)
+    // console.log(document)
+
+    fieldSchema.name = fieldName;
+
+    // intialize properties
+    let field = {
+      name: fieldName,
+      datatype: fieldSchema.type,
+      control: fieldSchema.control,
+      layout: this.props.layout,
+      order: fieldSchema.order
+    }
+
+    // nested fields: set control to "nested"
+    if (fieldSchema.type.singleType === Array) {
+      field.control = 'nested';
+      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type;
+      field.nestedFields = this.getFieldNames(field.nestedSchema).map((subFieldName, index) => {
+
+        const subFieldSchema = field.nestedSchema[subFieldName];
+        const subDocument = document[fieldName][index][subFieldName];
+
+        return this.createField(subFieldName, subFieldSchema, subDocument);
+      })
+      
+    }
+    
+    field.label = this.getLabel(fieldName);
+
+    // add value
+    if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null){
+
+      field.value = document[fieldName];
+
+      // convert value type if needed
+      if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
+
+      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
+      if (Array.isArray(field.value)) {
+        field.value = field.value.map(item => item._id || item);
+      }
+
+    }
+
+    // backward compatibility from 'autoform' to 'form'
+    if (fieldSchema.autoform) {
+      fieldSchema.form = fieldSchema.autoform;
+      console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.getCollection()._name}' collection`); // eslint-disable-line
+    }
+
+    // replace value by prefilled value if value is empty
+    const prefill = fieldSchema.prefill || fieldSchema.form && fieldSchema.form.prefill;
+    if (prefill) {
+      const prefilledValue = typeof prefill === "function" ? prefill.call(fieldSchema) : prefill;
+      if (!!prefilledValue && !field.value) {
+        field.prefilledValue = prefilledValue;
+        field.value = prefilledValue;
+      }
+    }
+
+    // add options if they exist
+    const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
+    if (fieldOptions) {
+      field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
+
+      // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
+      const checkedValues = _.where(field.options, {checked: true}).map(option => option.value);
+      if (checkedValues.length && !field.value && this.getFormType() === 'new') {
+        field.value = checkedValues
+      }
+    }
+
+    // replace empty value, which has not been prefilled, by the default value from the schema
+    // keep defaultValue for backwards compatibility even though it doesn't actually work
+    if (isEmptyValue(field.value)) {
+      if (fieldSchema.defaultValue) field.value = fieldSchema.defaultValue;
+      if (fieldSchema.default) field.value = fieldSchema.default;
+    }
+
+    // add any properties specified in fieldProperties or form as extra props passed on
+    // to the form component
+    const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
+    if (fieldProperties) {
+      for (const prop in fieldProperties) {
+        if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
+          field[prop] = typeof fieldProperties[prop] === "function" ?
+          fieldProperties[prop].call(fieldSchema) :
+          fieldProperties[prop];
+        }
+      }
+    }
+
+    // add limit
+    if (fieldSchema.limit) {
+     field.limit = fieldSchema.limit;
+    }
+
+    // add description as help prop
+    if (fieldSchema.description) {
+      field.help = fieldSchema.description;
+    }
+
+    // add placeholder
+    if (fieldSchema.placeholder) {
+     field.placeholder = fieldSchema.placeholder;
+    }
+
+    if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
+    if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
+
+    // add group
+    if (fieldSchema.group) {
+      field.group = fieldSchema.group;
+    }
+
+    // add document
+    field.document = this.getDocument();
+
+    // add error state
+    const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
+    if (validationError) {
+      const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
+      if (fieldErrors) {
+        field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
+      }
+    }
+    return field;
+
+  }
+
   getFieldGroups() {
 
     const schema = this.getSchema();
     const document = this.getDocument();
-
+    
     // build fields array by iterating over the list of field names
-    let fields = this.getFieldNames().map(fieldName => {
+    let fields = this.getFieldNames(schema).map(fieldName => {
+      
 
       // get schema for the current field
       const fieldSchema = schema[fieldName];
-
-      fieldSchema.name = fieldName;
-
-      // intialize properties
-      let field = {
-        name: fieldName,
-        datatype: fieldSchema.type,
-        control: fieldSchema.control,
-        layout: this.props.layout,
-        order: fieldSchema.order
-      }
-
-      field.label = this.getLabel(fieldName);
-
-      // add value
-      if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null){
-
-        field.value = document[fieldName];
-
-        // convert value type if needed
-        if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
-
-        // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-        // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-        if (Array.isArray(field.value)) {
-          field.value = field.value.map(item => item._id || item);
-        }
-
-      }
-
-      // backward compatibility from 'autoform' to 'form'
-      if (fieldSchema.autoform) {
-        fieldSchema.form = fieldSchema.autoform;
-        console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.getCollection()._name}' collection`); // eslint-disable-line
-      }
-
-      // replace value by prefilled value if value is empty
-      const prefill = fieldSchema.prefill || fieldSchema.form && fieldSchema.form.prefill;
-      if (prefill) {
-        const prefilledValue = typeof prefill === "function" ? prefill.call(fieldSchema) : prefill;
-        if (!!prefilledValue && !field.value) {
-          field.prefilledValue = prefilledValue;
-          field.value = prefilledValue;
-        }
-      }
-
-      // add options if they exist
-      const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
-      if (fieldOptions) {
-        field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
-
-        // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-        const checkedValues = _.where(field.options, {checked: true}).map(option => option.value);
-        if (checkedValues.length && !field.value && this.getFormType() === 'new') {
-          field.value = checkedValues
-        }
-      }
-
-      // replace empty value, which has not been prefilled, by the default value from the schema
-      // keep defaultValue for backwards compatibility even though it doesn't actually work
-      if (isEmptyValue(field.value)) {
-        if (fieldSchema.defaultValue) field.value = fieldSchema.defaultValue;
-        if (fieldSchema.default) field.value = fieldSchema.default;
-      }
-
-      // add any properties specified in fieldProperties or form as extra props passed on
-      // to the form component
-      const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
-      if (fieldProperties) {
-        for (const prop in fieldProperties) {
-          if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
-            field[prop] = typeof fieldProperties[prop] === "function" ?
-            fieldProperties[prop].call(fieldSchema) :
-            fieldProperties[prop];
-          }
-        }
-      }
-
-      // add limit
-      if (fieldSchema.limit) {
-       field.limit = fieldSchema.limit;
-      }
-
-      // add description as help prop
-      if (fieldSchema.description) {
-        field.help = fieldSchema.description;
-      }
-
-      // add placeholder
-      if (fieldSchema.placeholder) {
-       field.placeholder = fieldSchema.placeholder;
-      }
-
-      if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
-      if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
-
-      // add group
-      if (fieldSchema.group) {
-        field.group = fieldSchema.group;
-      }
-
-      // add document
-      field.document = this.getDocument();
-
-      // add error state
-      const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
-      if (validationError) {
-        const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
-        if (fieldErrors) {
-          field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
-        }
-      }
-      return field;
-
+      return this.createField(fieldName, fieldSchema, document)
     });
 
     fields = _.sortBy(fields, "order");
@@ -262,9 +286,9 @@ class Form extends Component {
   }
 
   // get relevant fields
-  getFieldNames() {
+  getFieldNames(schema) {
+    
     const { fields, hideFields } = this.props;
-    const schema = this.getSchema();
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields = this.getFormType() === "edit" ? getEditableFields(schema, this.props.currentUser, this.getDocument()) : getInsertableFields(schema, this.props.currentUser);
@@ -339,7 +363,7 @@ class Form extends Component {
   }
 
   getLabel(fieldName) {
-    return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
+    return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName] && this.getSchema()[fieldName].label});
   }
 
   getErrorMessage(error) {
@@ -569,7 +593,7 @@ class Form extends Component {
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
 
-    const fields = this.getFieldNames();
+    const fields = this.getFieldNames(this.getSchema());
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
