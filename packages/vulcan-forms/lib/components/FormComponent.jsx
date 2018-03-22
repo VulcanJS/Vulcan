@@ -23,7 +23,12 @@ class FormComponent extends PureComponent {
   }
 
   handleChange = (name, value) => {
-    this.props.updateCurrentValues({[name]: value});
+    // console.log(name)
+    // console.log(this.props.parentFieldName)
+    // console.log(this.props.itemIndex)
+    const updateObject = this.props.parentFieldName && typeof this.props.itemIndex !== 'undefined' ? {[`${this.props.parentFieldName}.${this.props.itemIndex}.${name}`] : value} : {[name]: value};
+    this.props.updateCurrentValues(updateObject);
+
     // for text fields, update character count on change
     if (!this.props.control || ['number', 'url', 'email', 'textarea', 'text'].includes(this.props.control)) {
       this.updateCharacterCount(name, value);
@@ -44,7 +49,7 @@ class FormComponent extends PureComponent {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, nestedSchema, nestedFields, datatype, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, nestedSchema, nestedFields, datatype, parentFieldName, itemIndex, ...rest } = this.props; // eslint-disable-line
 
     const properties = {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props

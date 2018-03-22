@@ -216,5 +216,17 @@ div.ReactTags__suggestions mark{
 }
 
 .form-nested-item{
-  border-left: 4px solid $light-grey;
+  border: 1px solid $light-grey;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.form-nested-item-inner{
+  flex: 1;
+}
+.form-nested-item-remove{
+  margin-left: 10px;
 }

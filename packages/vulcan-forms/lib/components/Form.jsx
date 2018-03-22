@@ -28,6 +28,8 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import { getEditableFields, getInsertableFields, isEmptyValue } from '../modules/utils.js';
+import dot from 'dot-object';
+import deepmerge from 'deepmerge';
 
 /*
 
@@ -63,7 +65,6 @@ class Form extends Component {
     this.addToFailureForm = this.addToFailureForm.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearForm = this.clearForm.bind(this);
-    this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     this.getDocument = this.getDocument.bind(this);
@@ -88,26 +89,41 @@ class Form extends Component {
     this.successFormCallbacks = [];
     this.failureFormCallbacks = [];
   }
-
+  
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
+  fieldSchemas = {}
+  
   getCollection() {
     return this.props.collection || getCollection(this.props.collectionName);
   }
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : this.getCollection().simpleSchema()._schema;
   }
 
-  createField = (fieldName, fieldSchema, document) => {
+  getValue = (fieldName, document) => {
+    // console.log('getValue')
+    // console.log(fieldName)
+    // console.log(document)
+    if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null) {
+      return document[fieldName];
+    }
+    return null;
+  }  
+  
+  createField = (fieldName, fieldSchema, document, parentFieldName) => {
 
     // console.log('// createField')
     // console.log(fieldName)
     // console.log(fieldSchema)
     // console.log(document)
+
+    // store fieldSchema object in this.fieldSchemas
+    this.fieldSchemas[fieldName] = fieldSchema;
 
     fieldSchema.name = fieldName;
 
@@ -120,26 +136,33 @@ class Form extends Component {
       order: fieldSchema.order
     }
 
+    // if field has a parent field and index, pass them on
+    if (parentFieldName) {
+      field.parentFieldName = parentFieldName;
+    }
+
     // nested fields: set control to "nested"
     if (fieldSchema.type.singleType === Array) {
       field.control = 'nested';
-      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type;
+      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type._schema; // TODO: do this better
       field.nestedFields = this.getFieldNames(field.nestedSchema).map((subFieldName, index) => {
 
         const subFieldSchema = field.nestedSchema[subFieldName];
         const subDocument = document[fieldName][index][subFieldName];
-
-        return this.createField(subFieldName, subFieldSchema, subDocument);
+        
+        return this.createField(subFieldName, subFieldSchema, subDocument, fieldName);
       })
       
     }
     
     field.label = this.getLabel(fieldName);
 
-    // add value
-    if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null){
+    const fieldValue = this.getValue(fieldName, document);
 
-      field.value = document[fieldName];
+    // add value
+    if (fieldValue){
+
+      field.value = fieldValue;
 
       // convert value type if needed
       if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
@@ -234,6 +257,7 @@ class Form extends Component {
         field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
       }
     }
+
     return field;
 
   }
@@ -319,7 +343,13 @@ class Form extends Component {
   // - else if its value was provided by prefilledProps, use that
   getDocument() {
     const currentDocument = _.clone(this.props.document) || {};
-    const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
+    // const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
+    const document = deepmerge.all([
+      this.props.prefilledProps, 
+      currentDocument, 
+      this.state.autofilledValues, 
+      this.state.currentValues
+    ]);
     return document;
   }
 
@@ -344,26 +374,28 @@ class Form extends Component {
   }
 
   // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
-  updateCurrentValues(newValues) {
+  updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
-    this.setState(prevState => ({
-      currentValues: {
-        ...prevState.currentValues,
-        ...newValues,
-      }
-    }));
+    this.setState(prevState => {
+      // const newState = _.clone(prevState)
+      Object.keys(newValues).forEach(key => {
+        const path = key;
+        const value = newValues[key];
+        dot.str(path, value, prevState.currentValues)
+      });
+      return prevState
+    });
   }
 
   // key down handler
   formKeyDown(event) {
-
     if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
       this.submitForm(this.refs.form.getModel());
     }
   }
 
   getLabel(fieldName) {
-    return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName] && this.getSchema()[fieldName].label});
+    return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.fieldSchemas[fieldName].label});
   }
 
   getErrorMessage(error) {
@@ -738,6 +770,7 @@ Form.propTypes = {
 
 Form.defaultProps = {
   layout: 'horizontal',
+  prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
 }
