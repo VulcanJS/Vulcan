@@ -30,7 +30,7 @@ class FormComponent extends PureComponent {
     }
   }
 
-  handleChangeDebounced = debounce(this.handleChange, 500)
+  handleChangeDebounced = debounce(this.handleChange, 500, { leading: true })
 
   updateCharacterCount = (name, value) => {
     if (this.props.limit) {
@@ -49,6 +49,7 @@ class FormComponent extends PureComponent {
     const properties = {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props
       ...rest,
+      onBlur: this.handleChange,
       onChange: this.handleChangeDebounced,
       document,
     };
