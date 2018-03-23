@@ -341,16 +341,28 @@ class Form extends Component {
   // - else if its value is provided by the autofilledValues object, use that
   // - else if its value was provided by the db, use that (i.e. props.document)
   // - else if its value was provided by prefilledProps, use that
+  // - finally, remove all values that should be deleted
   getDocument() {
     const currentDocument = _.clone(this.props.document) || {};
     // const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
-    const document = deepmerge.all([
+    let document = deepmerge.all([
       this.props.prefilledProps, 
       currentDocument, 
       this.state.autofilledValues, 
       this.state.currentValues
     ]);
+
     return document;
+  }
+
+  // like getDocument, but cross-reference with getFieldNames() to only return fields that actually need to be submitted
+  getData() {
+    // only keep relevant fields
+    // run data object through submitForm callbacks
+    const fields = this.getFieldNames(this.getSchema());
+    let data = _.pick(this.getDocument(), ...fields);
+    data = runCallbacks(this.submitFormCallbacks, data);
+    return data;
   }
 
   // NOTE: this is not called anymore since we're updating on blur, not on change
@@ -381,7 +393,14 @@ class Form extends Component {
       Object.keys(newValues).forEach(key => {
         const path = key;
         const value = newValues[key];
-        dot.str(path, value, prevState.currentValues)
+        if (value === null) {
+          // delete value
+          // dot.str(path, prevState.currentValues, true);
+          console.log(`deleting! ${path}`)
+          this.addToDeletedValues(path);
+        } else {
+          dot.str(path, value, prevState.currentValues);
+        }
       });
       return prevState
     });
@@ -605,6 +624,8 @@ class Form extends Component {
   // submit form handler
   submitForm(data) {
 
+    // note: we can discard the data collected by Formsy because all the data we need is already available via getDocument()
+
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
       return;
@@ -612,18 +633,15 @@ class Form extends Component {
 
     // clear errors and disable form while it's submitting
     this.setState(prevState => ({errors: [], disabled: true}));
+    console.log(data)
+    console.log(this.getDocument())
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
-    data = {
-      ...this.props.prefilledProps, // ex: can be values passed from the form's parent component
-      ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
-      ...data, // original data generated thanks to Formsy
-      ...this.state.currentValues, // ex: can be values from DateTime component
-    };
+    // data = deepmerge(this.getDocument(), data);
+    data = this.getData();
 
-    // run data object through submitForm callbacks
-    data = runCallbacks(this.submitFormCallbacks, data);
+    // console.log(data)
 
     const fields = this.getFieldNames(this.getSchema());
 

@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import Button from 'react-bootstrap/lib/Button';
 
-const FormNestedItem = ({ nestedFields, name, subDocument, removeItem, ...props }) => {
+const FormNestedItem = ({ isDeleted, nestedFields, name, subDocument, removeItem, ...props }) => {
   return (
-    <div className="form-nested-item">
+    <div className={`form-nested-item ${isDeleted ? 'form-nested-item-deleted' : ''}`}>
       <div className="form-nested-item-inner">
         {nestedFields.map((field, i) => {
-          const value = subDocument[field.name];
+          const value = subDocument && subDocument[field.name];
           return <Components.FormComponent key={i} {...props} {...field} value={value} />;
         })}
       </div>
@@ -21,6 +21,7 @@ const FormNestedItem = ({ nestedFields, name, subDocument, removeItem, ...props 
           ✖️
         </Button>
       </div>
+      <div className="form-nested-item-deleted-overlay"/>
     </div>
   );
 };
@@ -28,12 +29,20 @@ const FormNestedItem = ({ nestedFields, name, subDocument, removeItem, ...props 
 registerComponent('FormNestedItem', FormNestedItem);
 
 class FormNested extends PureComponent {
-  addItem = name => {
-    alert(`adding ${name}!`);
+
+  state = {
+    deletedItems : []
+  }
+
+  addItem = () => {
+    this.props.updateCurrentValues({[`${this.props.name}.${this.props.value.length}`] : {}});
   };
 
-  removeItem = name => {
-    alert(`removing ${name}!`);
+  removeItem = index => {
+    this.setState({
+      deletedItems: [...this.state.deletedItems, index]
+    })
+    this.props.updateCurrentValues({[`${this.props.name}.${index}`] : null});
   };
 
   render() {
@@ -43,13 +52,11 @@ class FormNested extends PureComponent {
         <div className="col-sm-9">
           {this.props.value &&
             this.props.value.map((subDocument, i) => (
-              <FormNestedItem key={i} itemIndex={i} {...this.props} subDocument={subDocument} removeItem={this.removeItem} />
+              <FormNestedItem key={i} isDeleted={this.state.deletedItems.includes(i)} itemIndex={i} {...this.props} subDocument={subDocument} removeItem={() => {this.removeItem(i)}} />
             ))}
           <Button
             bsStyle="success"
-            onClick={() => {
-              this.addItem(name);
-            }}
+            onClick={this.addItem}
           >
             ➕
           </Button>
