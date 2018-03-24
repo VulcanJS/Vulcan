@@ -23,9 +23,6 @@ class FormComponent extends PureComponent {
   }
 
   handleChange = (name, value) => {
-    // console.log(name)
-    // console.log(this.props.parentFieldName)
-    // console.log(this.props.itemIndex)
     const updateObject = this.props.parentFieldName && typeof this.props.itemIndex !== 'undefined' ? {[`${this.props.parentFieldName}.${this.props.itemIndex}.${name}`] : value} : {[name]: value};
     this.props.updateCurrentValues(updateObject);
 
@@ -35,6 +32,12 @@ class FormComponent extends PureComponent {
     }
   }
 
+  /*
+
+  Note: not currently used because when function is debounced
+  some changes might not register if the user submits form too soon
+
+  */
   handleChangeDebounced = debounce(this.handleChange, 500, { leading: true })
 
   updateCharacterCount = (name, value) => {
@@ -55,7 +58,7 @@ class FormComponent extends PureComponent {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props
       ...rest,
       onBlur: this.handleChange,
-      onChange: this.handleChangeDebounced,
+      onChange: this.handleChange,
       document,
     };
 

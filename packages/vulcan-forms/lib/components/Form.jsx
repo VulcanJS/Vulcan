@@ -22,14 +22,25 @@ This component expects:
 
 */
 
-import { Components, Utils, runCallbacks, getCollection } from 'meteor/vulcan:core';
+import { Components, runCallbacks, getCollection } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import { getEditableFields, getInsertableFields, isEmptyValue } from '../modules/utils.js';
-import dot from 'dot-object';
 import deepmerge from 'deepmerge';
+import cloneDeep from 'lodash/cloneDeep';
+import set from 'lodash/set';
+import unset from 'lodash/unset';
+import compact from 'lodash/compact';
+import update from 'lodash/update';
+
+// unsetCompact
+const unsetCompact = (object, path) => {
+  const parentPath = path.slice(0,path.lastIndexOf('.'))
+  unset(object, path); 
+  update(object, parentPath, compact);
+}
 
 /*
 
@@ -106,9 +117,6 @@ class Form extends Component {
   }
 
   getValue = (fieldName, document) => {
-    // console.log('getValue')
-    // console.log(fieldName)
-    // console.log(document)
     if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null) {
       return document[fieldName];
     }
@@ -117,11 +125,11 @@ class Form extends Component {
   
   createField = (fieldName, fieldSchema, document, parentFieldName) => {
 
-    // console.log('// createField')
-    // console.log(fieldName)
+    // console.log('// createField', fieldName)
     // console.log(fieldSchema)
     // console.log(document)
-
+    // console.log('-> nested: ', fieldSchema.type.singleType === Array)
+    
     // store fieldSchema object in this.fieldSchemas
     this.fieldSchemas[fieldName] = fieldSchema;
 
@@ -140,23 +148,10 @@ class Form extends Component {
     if (parentFieldName) {
       field.parentFieldName = parentFieldName;
     }
-
-    // nested fields: set control to "nested"
-    if (fieldSchema.type.singleType === Array) {
-      field.control = 'nested';
-      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type._schema; // TODO: do this better
-      field.nestedFields = this.getFieldNames(field.nestedSchema).map((subFieldName, index) => {
-
-        const subFieldSchema = field.nestedSchema[subFieldName];
-        const subDocument = document[fieldName][index][subFieldName];
-        
-        return this.createField(subFieldName, subFieldSchema, subDocument, fieldName);
-      })
-      
-    }
     
     field.label = this.getLabel(fieldName);
 
+    // note: for nested fields, value will be null here and set by FormNested later
     const fieldValue = this.getValue(fieldName, document);
 
     // add value
@@ -169,9 +164,10 @@ class Form extends Component {
 
       // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
       // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-      if (Array.isArray(field.value)) {
-        field.value = field.value.map(item => item._id || item);
-      }
+      // if (Array.isArray(field.value)) {
+      //   field.value = field.value.map(item => item._id || item);
+      // }
+      // TODO: not needed anymore?
 
     }
 
@@ -256,6 +252,20 @@ class Form extends Component {
       if (fieldErrors) {
         field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
       }
+    }
+
+    // nested fields: set control to "nested"
+    if (fieldSchema.type.singleType === Array) {
+      field.control = 'nested';
+      // get nested schema
+      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type._schema; // TODO: do this better
+      
+      // for each nested field, get field object by calling createField recursively
+      field.nestedFields = this.getFieldNames(field.nestedSchema).map((subFieldName) => {
+        const subFieldSchema = field.nestedSchema[subFieldName];
+        return this.createField(subFieldName, subFieldSchema, document, fieldName);
+      });
+
     }
 
     return field;
@@ -357,11 +367,24 @@ class Form extends Component {
 
   // like getDocument, but cross-reference with getFieldNames() to only return fields that actually need to be submitted
   getData() {
+
     // only keep relevant fields
-    // run data object through submitForm callbacks
     const fields = this.getFieldNames(this.getSchema());
-    let data = _.pick(this.getDocument(), ...fields);
+    let data = cloneDeep(_.pick(this.getDocument(), ...fields));
+
+    // console.log('getData')
+    // console.log(data)
+    // remove any deleted values
+    // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
+    this.state.deletedValues.forEach(path => {
+      console.log(path)
+      unsetCompact(data, path);
+    });
+
+    // console.log(data)
+    // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
+
     return data;
   }
 
@@ -395,11 +418,10 @@ class Form extends Component {
         const value = newValues[key];
         if (value === null) {
           // delete value
-          // dot.str(path, prevState.currentValues, true);
-          console.log(`deleting! ${path}`)
           this.addToDeletedValues(path);
         } else {
-          dot.str(path, value, prevState.currentValues);
+          set(prevState.currentValues, path, value);
+          // dot.str(path, value, prevState.currentValues);
         }
       });
       return prevState
@@ -432,11 +454,12 @@ class Form extends Component {
   // --------------------------------------------------------------------- //
 
   // clear and re-enable the form
-  // by default, clear errors and keep current values
-  clearForm({ clearErrors = true, clearCurrentValues = false}) {
+  // by default, clear errors and keep current values and deleted values
+  clearForm({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false}) {
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
+      deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
       disabled: false,
     }));
   }
@@ -551,6 +574,7 @@ class Form extends Component {
       getAutofilledValues: this.getAutofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
+      deletedValues: this.state.deletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
       setFormState: this.setFormState,
@@ -587,7 +611,7 @@ class Form extends Component {
         this.refs.form.reset();
         clearCurrentValues = true;
       }
-      this.clearForm({clearErrors: true, clearCurrentValues});
+      this.clearForm({clearErrors: true, clearCurrentValues, clearDeletedValues: true});
     }
 
     // run document through mutation success callbacks
@@ -633,8 +657,6 @@ class Form extends Component {
 
     // clear errors and disable form while it's submitting
     this.setState(prevState => ({errors: [], disabled: true}));
-    console.log(data)
-    console.log(this.getDocument())
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
@@ -670,6 +692,9 @@ class Form extends Component {
 
       // add all keys to delete (minus those that have data associated)
       unsetKeys = _.unique(unsetKeys.concat(_.difference(this.state.deletedValues, setKeys)));
+
+      // only keep unset keys that correspond to a field (get rid of nested keys)
+      unsetKeys = _.intersection(unsetKeys, this.getFieldNames(this.getSchema()));
 
       // build mutation arguments object
       const args = {documentId: document._id, set: set, unset: {}};
@@ -801,6 +826,7 @@ Form.childContextTypes = {
   getAutofilledValues: PropTypes.func,
   addToAutofilledValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
+  deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
   addToFailureForm: PropTypes.func,
   addToSuccessForm: PropTypes.func,

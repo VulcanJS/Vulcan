@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import Button from 'react-bootstrap/lib/Button';
 
@@ -7,7 +8,8 @@ const FormNestedItem = ({ isDeleted, nestedFields, name, subDocument, removeItem
     <div className={`form-nested-item ${isDeleted ? 'form-nested-item-deleted' : ''}`}>
       <div className="form-nested-item-inner">
         {nestedFields.map((field, i) => {
-          const value = subDocument && subDocument[field.name];
+          // note: default value to '' to avoid uncontrolled component error
+          const value = subDocument && subDocument[field.name] || '';
           return <Components.FormComponent key={i} {...props} {...field} value={value} />;
         })}
       </div>
@@ -30,19 +32,22 @@ registerComponent('FormNestedItem', FormNestedItem);
 
 class FormNested extends PureComponent {
 
-  state = {
-    deletedItems : []
-  }
-
   addItem = () => {
     this.props.updateCurrentValues({[`${this.props.name}.${this.props.value.length}`] : {}});
   };
 
   removeItem = index => {
-    this.setState({
-      deletedItems: [...this.state.deletedItems, index]
-    })
     this.props.updateCurrentValues({[`${this.props.name}.${index}`] : null});
+  };
+
+  /*
+
+  Go through this.context.deletedValues and see if any value matches both the current field
+  and the given index (ex: if we want to know if the second address is deleted, we
+  look for the presence of 'addresses.1')
+  */
+  isDeleted = index => {
+    return this.context.deletedValues.includes(`${this.props.name}.${index}`);
   };
 
   render() {
@@ -52,7 +57,7 @@ class FormNested extends PureComponent {
         <div className="col-sm-9">
           {this.props.value &&
             this.props.value.map((subDocument, i) => (
-              <FormNestedItem key={i} isDeleted={this.state.deletedItems.includes(i)} itemIndex={i} {...this.props} subDocument={subDocument} removeItem={() => {this.removeItem(i)}} />
+              !this.isDeleted(i) && <FormNestedItem key={i} itemIndex={i} {...this.props} subDocument={subDocument} removeItem={() => {this.removeItem(i)}} />
             ))}
           <Button
             bsStyle="success"
@@ -64,6 +69,10 @@ class FormNested extends PureComponent {
       </div>
     );
   }
+}
+
+FormNested.contextTypes = {
+  deletedValues: PropTypes.array
 }
 
 registerComponent('FormNested', FormNested);
