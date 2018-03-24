@@ -59,60 +59,30 @@ class Form extends Component {
   // ----------------------------- Constructor --------------------------- //
   // --------------------------------------------------------------------- //
 
-  constructor(props) {
-    super(props);
-    this.submitForm = this.submitForm.bind(this);
-    this.updateState = this.updateState.bind(this);
-    // this.methodCallback = this.methodCallback.bind(this);
-    this.newMutationSuccessCallback = this.newMutationSuccessCallback.bind(this);
-    this.editMutationSuccessCallback = this.editMutationSuccessCallback.bind(this);
-    this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
-    this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
-    this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
-    this.getAutofilledValues = this.getAutofilledValues.bind(this);
-    this.addToDeletedValues = this.addToDeletedValues.bind(this);
-    this.addToSubmitForm = this.addToSubmitForm.bind(this);
-    this.addToSuccessForm = this.addToSuccessForm.bind(this);
-    this.addToFailureForm = this.addToFailureForm.bind(this);
-    this.throwError = this.throwError.bind(this);
-    this.clearForm = this.clearForm.bind(this);
-    this.formKeyDown = this.formKeyDown.bind(this);
-    this.deleteDocument = this.deleteDocument.bind(this);
-    this.getDocument = this.getDocument.bind(this);
-    // a debounced version of seState that only updates state every 500 ms (not used)
-    this.debouncedSetState = _.debounce(this.setState, 500);
-    this.setFormState = this.setFormState.bind(this);
-    this.getLabel = this.getLabel.bind(this);
-    this.getErrorMessage = this.getErrorMessage.bind(this);
-    // version of submitForm that is made available to context, behaves like updateCurrentValues but submits afterwards
-    this.submitFormContext = this.submitFormContext.bind(this);
-    this.getCollection = this.getCollection.bind(this);
+  submitFormCallbacks = [];
+  successFormCallbacks = [];
+  failureFormCallbacks = [];
 
-    this.state = {
-      disabled: false,
-      errors: [],
-      autofilledValues: {},
-      deletedValues: [],
-      currentValues: {}
-    };
+  state = {
+    disabled: false,
+    errors: [],
+    autofilledValues: {},
+    deletedValues: [],
+    currentValues: {}
+  };
 
-    this.submitFormCallbacks = [];
-    this.successFormCallbacks = [];
-    this.failureFormCallbacks = [];
-  }
-  
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
   fieldSchemas = {}
   
-  getCollection() {
+  getCollection = () => {
     return this.props.collection || getCollection(this.props.collectionName);
   }
 
   // return the current schema based on either the schema or collection prop
-  getSchema() {
+  getSchema = () => {
     return this.props.schema ? this.props.schema : this.getCollection().simpleSchema()._schema;
   }
 
@@ -272,7 +242,7 @@ class Form extends Component {
 
   }
 
-  getFieldGroups() {
+  getFieldGroups = () => {
 
     const schema = this.getSchema();
     const document = this.getDocument();
@@ -315,12 +285,12 @@ class Form extends Component {
   }
 
   // if a document is being passed, this is an edit form
-  getFormType() {
+  getFormType = () => {
     return this.props.document ? "edit" : "new";
   }
 
   // get relevant fields
-  getFieldNames(schema) {
+  getFieldNames = (schema) => {
     
     const { fields, hideFields } = this.props;
 
@@ -352,7 +322,7 @@ class Form extends Component {
   // - else if its value was provided by the db, use that (i.e. props.document)
   // - else if its value was provided by prefilledProps, use that
   // - finally, remove all values that should be deleted
-  getDocument() {
+  getDocument = () => {
     const currentDocument = _.clone(this.props.document) || {};
     // const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
     let document = deepmerge.all([
@@ -366,7 +336,7 @@ class Form extends Component {
   }
 
   // like getDocument, but cross-reference with getFieldNames() to only return fields that actually need to be submitted
-  getData() {
+  getData = () => {
 
     // only keep relevant fields
     const fields = this.getFieldNames(this.getSchema());
@@ -377,7 +347,6 @@ class Form extends Component {
     // remove any deleted values
     // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
     this.state.deletedValues.forEach(path => {
-      console.log(path)
       unsetCompact(data, path);
     });
 
@@ -390,7 +359,7 @@ class Form extends Component {
 
   // NOTE: this is not called anymore since we're updating on blur, not on change
   // whenever the form changes, update its state
-  updateState(e) {
+  updateState = (e) => {
     // e can sometimes be event, sometims be currentValue
     // see https://github.com/christianalfoni/formsy-react/issues/203
     if (e.stopPropagation) {
@@ -409,7 +378,7 @@ class Form extends Component {
   }
 
   // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
-  updateCurrentValues = newValues => {
+  updateCurrentValues = (newValues) => {
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
       // const newState = _.clone(prevState)
@@ -429,17 +398,17 @@ class Form extends Component {
   }
 
   // key down handler
-  formKeyDown(event) {
+  formKeyDown = (event) => {
     if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
       this.submitForm(this.refs.form.getModel());
     }
   }
 
-  getLabel(fieldName) {
+  getLabel = (fieldName) => {
     return this.context.intl.formatMessage({id: this.getCollection()._name+"."+fieldName, defaultMessage: this.fieldSchemas[fieldName].label});
   }
 
-  getErrorMessage(error) {
+  getErrorMessage = (error) => {
     if (error.data.fieldName) {
       // if error has a corresponding field name, "labelify" that field name
       const fieldName = this.getLabel(error.data.fieldName);
@@ -455,7 +424,7 @@ class Form extends Component {
 
   // clear and re-enable the form
   // by default, clear errors and keep current values and deleted values
-  clearForm({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false}) {
+  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false}) => {
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
@@ -465,7 +434,7 @@ class Form extends Component {
   }
 
   // render errors
-  renderErrors() {
+  renderErrors = () => {
 
     return (
       <div className="form-errors">
@@ -501,7 +470,7 @@ class Form extends Component {
   // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
-  throwError(error) {
+  throwError = (error) => {
 
     // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
@@ -515,7 +484,7 @@ class Form extends Component {
   }
 
   // add something to autofilled values
-  addToAutofilledValues(property) {
+  addToAutofilledValues = (property) => {
     this.setState(prevState => ({
       autofilledValues: {
         ...prevState.autofilledValues,
@@ -525,37 +494,37 @@ class Form extends Component {
   }
 
   // get autofilled values
-  getAutofilledValues() {
+  getAutofilledValues = () => {
     return this.state.autofilledValues;
   }
 
   // add something to deleted values
-  addToDeletedValues(name) {
+  addToDeletedValues = (name) => {
     this.setState(prevState => ({
       deletedValues: [...prevState.deletedValues, name]
     }));
   }
 
   // add a callback to the form submission
-  addToSubmitForm(callback) {
+  addToSubmitForm = (callback) => {
     this.submitFormCallbacks.push(callback);
   }
 
   // add a callback to form submission success
-  addToSuccessForm(callback) {
+  addToSuccessForm = (callback) => {
     this.successFormCallbacks.push(callback);
   }
 
   // add a callback to form submission failure
-  addToFailureForm(callback) {
+  addToFailureForm = (callback) => {
     this.failureFormCallbacks.push(callback);
   }
 
-  setFormState(fn) {
+  setFormState = (fn) => {
     this.setState(fn);
   }
 
-  submitFormContext(newValues) {
+  submitFormContext = (newValues) => {
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => ({
       currentValues: {
@@ -566,7 +535,7 @@ class Form extends Component {
   }
 
   // pass on context to all child components
-  getChildContext() {
+  getChildContext = () => {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
@@ -588,15 +557,15 @@ class Form extends Component {
   // ------------------------------- Method ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  newMutationSuccessCallback(result) {
+  newMutationSuccessCallback = (result) => {
     this.mutationSuccessCallback(result, 'new');
   }
 
-  editMutationSuccessCallback(result) {
+  editMutationSuccessCallback = (result) => {
     this.mutationSuccessCallback(result, 'edit');
   }
 
-  mutationSuccessCallback(result, mutationType) {
+  mutationSuccessCallback = (result, mutationType) => {
 
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 
@@ -623,7 +592,7 @@ class Form extends Component {
   }
 
   // catch graphql errors
-  mutationErrorCallback(error) {
+  mutationErrorCallback = (error) => {
 
     this.setState(prevState => ({disabled: false}));
 
@@ -646,7 +615,7 @@ class Form extends Component {
   }
 
   // submit form handler
-  submitForm(data) {
+  submitForm = (data) => {
 
     // note: we can discard the data collected by Formsy because all the data we need is already available via getDocument()
 
@@ -707,7 +676,7 @@ class Form extends Component {
 
   }
 
-  deleteDocument() {
+  deleteDocument = () => {
     const document = this.getDocument();
     const documentId = this.props.document._id;
     const documentTitle = document.title || document.name || '';
