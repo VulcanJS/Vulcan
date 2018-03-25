@@ -4,23 +4,19 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 import Button from 'react-bootstrap/lib/Button';
 
 const FormNestedItem = (
-  { isDeleted, nestedFields, name, path, subDocument, removeItem, itemIndex, ...props },
+  { nestedFields, name, path, removeItem, itemIndex, ...props },
   { errors }
 ) => {
   return (
-    <div className={`form-nested-item ${isDeleted ? 'form-nested-item-deleted' : ''}`}>
+    <div className="form-nested-item">
       <div className="form-nested-item-inner">
         {nestedFields.map((field, i) => {
-          // note: default value to '' to avoid uncontrolled component error
-          let value = (subDocument && subDocument[field.name]) || '';
-          if (props.control === 'number') value = Number(value);
           return (
             <Components.FormComponent
               key={i}
               {...props}
               {...field}
               path={`${path}.${field.name}`}
-              value={value}
               itemIndex={itemIndex}
             />
           );
@@ -67,6 +63,7 @@ class FormNested extends PureComponent {
   };
 
   render() {
+    const { value, ...rest } = this.props;
     return (
       <div className="form-group row form-nested">
         <label className="control-label col-sm-3">{this.props.label}</label>
@@ -76,10 +73,9 @@ class FormNested extends PureComponent {
               (subDocument, i) =>
                 !this.isDeleted(i) && (
                   <FormNestedItem
-                    {...this.props}
+                    {...rest}
                     key={i}
                     itemIndex={i}
-                    subDocument={subDocument}
                     path={`${this.props.path}.${i}`}
                     removeItem={() => {
                       this.removeItem(i);

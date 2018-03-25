@@ -135,6 +135,7 @@ addStrings('en', {
   "admin": "Admin",
   "notifications": "Notifications",
 
-  "errors.expectedType": `Expected a field of type {dataType}, got “{value}” instead.`,
+  "errors.expectedType": `Expected a field “{name}” of type {dataType}, got “{value}” instead.`,
   "errors.required": `Field “{name}” is required.`,
+  "errors.maxString": `Field “{name}” is limited to {max} characters.`,
 });

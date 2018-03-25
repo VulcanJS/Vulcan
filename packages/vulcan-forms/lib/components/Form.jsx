@@ -55,6 +55,18 @@ const unsetCompact = (object, path) => {
 
 class Form extends Component {
   
+  constructor(props){
+    super(props);
+
+    this.state = {
+      disabled: false,
+      errors: [],
+      autofilledValues: {},
+      deletedValues: [],
+      currentValues: {},
+    };
+  }
+
   submitFormCallbacks = [];
   successFormCallbacks = [];
   failureFormCallbacks = [];
@@ -66,13 +78,6 @@ class Form extends Component {
   */
   fieldSchemas = {};
 
-  state = {
-    disabled: false,
-    errors: [],
-    autofilledValues: {},
-    deletedValues: [],
-    currentValues: {},
-  };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
@@ -107,27 +112,34 @@ class Form extends Component {
 
   /*
 
+  Get the document initially passed as props
+
+  */
+  getInitialDocument = () => {
+    return deepmerge.all([
+      this.props.prefilledProps,
+      this.props.document,
+    ]);
+  };
+
+  /*
+
   Get the current document (for edit forms)
 
   for each field, we apply the following logic:
-  - if its value is currently being inputted, use that
-  - else if its value is provided by the autofilledValues object, use that
-  - else if its value was provided by the db, use that (i.e. props.document)
-  - else if its value was provided by prefilledProps, use that
-  - finally, remove all values that should be deleted
+  - if its value was provided by prefilledProps, use that
+  - unless its value was provided by the db (i.e. props.document)
+  - unless if its value is provided by the autofilledValues object
+  - unless its value is currently being inputted
 
   */
   getDocument = () => {
-    const currentDocument = _.clone(this.props.document) || {};
-    // const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
-    let document = deepmerge.all([
+    return deepmerge.all([
       this.props.prefilledProps,
-      currentDocument,
+      this.props.document,
       this.state.autofilledValues,
       this.state.currentValues,
     ]);
-
-    return document;
   };
 
   /*
@@ -229,13 +241,6 @@ class Form extends Component {
 
     field.label = this.getLabel(fieldName);
 
-    // note: for nested fields, value will be null here and set by FormNested later
-    const fieldValue = this.getValue(fieldName, fieldSchema, document);
-    // add value
-    if (fieldValue) {
-      field.value = fieldValue;
-    }
-
     // backward compatibility from 'autoform' to 'form'
     if (fieldSchema.autoform) {
       fieldSchema.form = fieldSchema.autoform;
@@ -313,7 +318,7 @@ class Form extends Component {
     }
 
     // add document
-    field.document = this.getDocument();
+    field.document = this.getInitialDocument();
 
     // add any relevant errors
     // const fieldErrors = _.filter(this.state.errors, error => error.data.name === fieldName);
@@ -345,7 +350,7 @@ class Form extends Component {
   */
   getFieldGroups = () => {
     const schema = this.getSchema();
-    const document = this.getDocument();
+    const document = this.getInitialDocument();
 
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames(schema).map(fieldName => {
@@ -399,7 +404,7 @@ class Form extends Component {
     // get all editable/insertable fields (depending on current form type)
     let relevantFields =
       this.getFormType() === 'edit'
-        ? getEditableFields(schema, this.props.currentUser, this.getDocument())
+        ? getEditableFields(schema, this.props.currentUser, this.getInitialDocument())
         : getInsertableFields(schema, this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
@@ -531,14 +536,17 @@ class Form extends Component {
       getAutofilledValues: this.getAutofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
-      deletedValues: this.state.deletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
+      getInitialDocument: this.getInitialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
       addToFailureForm: this.addToFailureForm,
       errors: this.state.errors,
+      currentValues: this.state.currentValues,
+      autofilledValues: this.state.autofilledValues,
+      deletedValues: this.state.deletedValues,
     };
   };
 
@@ -554,7 +562,7 @@ class Form extends Component {
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
-      // const newState = _.clone(prevState)
+      const newState = cloneDeep(prevState);
       Object.keys(newValues).forEach(key => {
         const path = key;
         const value = newValues[key];
@@ -562,10 +570,10 @@ class Form extends Component {
           // delete value
           this.addToDeletedValues(path);
         } else {
-          set(prevState.currentValues, path, value);
+          set(newState.currentValues, path, value);
         }
       });
-      return prevState;
+      return newState;
     });
   };
 
@@ -846,9 +854,12 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  getInitialDocument: PropTypes.func,
   getDocument: PropTypes.func,
   submitForm: PropTypes.func,
   errors: PropTypes.array,
+  currentValues: PropTypes.object,
+  autofilledValues: PropTypes.object,
 };
 
 module.exports = Form;
