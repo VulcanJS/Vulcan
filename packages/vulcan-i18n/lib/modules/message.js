@@ -6,10 +6,10 @@ String.prototype.replaceAll = function(search, replacement) {
   return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-const FormattedMessage = ({ id, values, defaultMessage, html = false }) => {
+const FormattedMessage = ({ id, values, defaultMessage = '', html = false }) => {
   const messages = Strings[getSetting('locale', 'en')] || {};
   let message = messages[id] || defaultMessage;
-  if (values) {
+  if (message && values) {
     _.forEach(values, (value, key) => {
       message = message.replaceAll(`{${key}}`, value);
     });

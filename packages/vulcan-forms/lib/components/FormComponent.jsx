@@ -52,7 +52,7 @@ class FormComponent extends PureComponent {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, nestedSchema, nestedFields, datatype, parentFieldName, itemIndex, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, nestedSchema, nestedFields, datatype, parentFieldName, itemIndex, path, ...rest } = this.props; // eslint-disable-line
 
     const properties = {
       value: '', // default value, will be overridden by `rest` if real value has been passed down through props
@@ -72,7 +72,7 @@ class FormComponent extends PureComponent {
       switch (this.props.control) {
 
         case 'nested': 
-          return <Components.FormNested updateCurrentValues={updateCurrentValues} nestedSchema={nestedSchema} nestedFields={nestedFields} {...properties}/>;
+          return <Components.FormNested path={path} updateCurrentValues={updateCurrentValues} nestedSchema={nestedSchema} nestedFields={nestedFields} datatype={datatype} {...properties}/>;
 
         case 'number':
           return <Components.FormComponentNumber {...properties}/>;
@@ -145,12 +145,9 @@ class FormComponent extends PureComponent {
     }
   }
 
-  renderErrors = () => {
-    return (
-      <ul className='form-input-errors'>
-        {this.props.errors.map((error, index) => <li key={index}>{error.message}</li>)}
-      </ul>
-    )
+  getErrors = () => {
+    const fieldErrors = this.context.errors.filter(error => error.data.name === this.props.path);
+    return fieldErrors;
   }
 
   showClear = () => {
@@ -175,14 +172,14 @@ class FormComponent extends PureComponent {
 
   render() {
 
-    const hasErrors = this.props.errors && this.props.errors.length;
+    const hasErrors = this.getErrors() && this.getErrors().length;
     const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control || 'default'}`,{'input-error': hasErrors});
 
     return (
       <div className={inputClass}>
         {this.props.beforeComponent ? this.props.beforeComponent : null}
         {this.renderComponent()}
-        {hasErrors ? this.renderErrors() : null}
+        {hasErrors ? <Components.FieldErrors errors={this.getErrors()}/> : null}
         {this.showClear() ? this.renderClear() : null}
         {this.props.limit ? <div className={classNames('form-control-limit', {danger: this.state.limit < 10})}>{this.state.limit}</div> : null}
         {this.props.afterComponent ? this.props.afterComponent : null}
@@ -209,6 +206,7 @@ FormComponent.propTypes = {
 FormComponent.contextTypes = {
   intl: intlShape,
   addToDeletedValues: PropTypes.func,
+  errors: PropTypes.array,
 };
 
 registerComponent('FormComponent', FormComponent);

@@ -12,6 +12,8 @@ import '../components/bootstrap/Url.jsx';
 import '../components/bootstrap/Date.jsx';
 
 import '../components/Flash.jsx';
+import '../components/FieldErrors.jsx';
+import '../components/FormErrors.jsx';
 import '../components/FormComponent.jsx';
 import '../components/FormNested.jsx';
 import '../components/FormGroup.jsx';

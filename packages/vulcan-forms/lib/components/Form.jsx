@@ -164,25 +164,49 @@ class Form extends Component {
   Get a field's value in a document // TODO: maybe not needed?
 
   */
-  getValue = (fieldName, document) => {
+  getValue = (fieldName, fieldSchema, document) => {
     if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null) {
-      return document[fieldName];
+
+      let value = document[fieldName];
+      // convert value type if needed
+      if (fieldSchema.type.definitions[0].type === Number) value = Number(value);
+
+      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
+      // if (Array.isArray(field.value)) {
+      //   field.value = field.value.map(item => item._id || item);
+      // }
+      // TODO: not needed anymore?
+
+      return value;
     }
     return null;
   };
 
   /*
 
+  Given an array field, get its nested schema
+
+  */
+  getNestedSchema = (fieldName) => {
+    const arrayItemSchema = this.getSchema()[`${fieldName}.$`];
+    return arrayItemSchema && arrayItemSchema.type.definitions[0].type._schema;
+  }
+  /*
+
   Given a field's name, its schema, document, and parent, create the 
   complete field object to be passed to the component
 
   */
-  createField = (fieldName, fieldSchema, document, parentFieldName) => {
-    // console.log('// createField', fieldName)
+  createField = (fieldName, fieldSchema, document, parentFieldName, parentPath) => {
+
+    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
+    
+    // console.log('// createField', fieldPath)
     // console.log(fieldSchema)
     // console.log(document)
-    // console.log('-> nested: ', fieldSchema.type.singleType === Array)
-
+    // console.log('-> nested: ', !!this.getNestedSchema(fieldName))
+    
     // store fieldSchema object in this.fieldSchemas
     this.fieldSchemas[fieldName] = fieldSchema;
 
@@ -191,6 +215,7 @@ class Form extends Component {
     // intialize properties
     let field = {
       name: fieldName,
+      path: fieldPath,
       datatype: fieldSchema.type,
       control: fieldSchema.control,
       layout: this.props.layout,
@@ -205,21 +230,10 @@ class Form extends Component {
     field.label = this.getLabel(fieldName);
 
     // note: for nested fields, value will be null here and set by FormNested later
-    const fieldValue = this.getValue(fieldName, document);
-
+    const fieldValue = this.getValue(fieldName, fieldSchema, document);
     // add value
     if (fieldValue) {
       field.value = fieldValue;
-
-      // convert value type if needed
-      if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
-
-      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-      // if (Array.isArray(field.value)) {
-      //   field.value = field.value.map(item => item._id || item);
-      // }
-      // TODO: not needed anymore?
     }
 
     // backward compatibility from 'autoform' to 'form'
@@ -301,25 +315,23 @@ class Form extends Component {
     // add document
     field.document = this.getDocument();
 
-    // add error state
-    const validationError = _.findWhere(this.state.errors, { name: 'app.validation_error' });
-    if (validationError) {
-      const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
-      if (fieldErrors) {
-        field.errors = fieldErrors.map(error => ({ ...error, message: this.getErrorMessage(error) }));
-      }
-    }
+    // add any relevant errors
+    // const fieldErrors = _.filter(this.state.errors, error => error.data.name === fieldName);
+    // if (fieldErrors) {
+    //   field.errors = fieldErrors.map(error => ({ ...error, message: this.getErrorMessage(error) }));
+    // }
 
     // nested fields: set control to "nested"
-    if (fieldSchema.type.singleType === Array) {
+    const nestedSchema = this.getNestedSchema(fieldName);
+
+    if (nestedSchema) {
+      field.nestedSchema = nestedSchema;
       field.control = 'nested';
       // get nested schema
-      field.nestedSchema = this.getSchema()[`${fieldName}.$`].type.definitions[0].type._schema; // TODO: do this better
-
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames(field.nestedSchema).map(subFieldName => {
         const subFieldSchema = field.nestedSchema[subFieldName];
-        return this.createField(subFieldName, subFieldSchema, document, fieldName);
+        return this.createField(subFieldName, subFieldSchema, document, fieldName, fieldPath);
       });
     }
 
@@ -435,41 +447,7 @@ class Form extends Component {
     }
   };
 
-  /*
   
-  Render errors
-
-  */
-  renderErrors = () => {
-    return (
-      <div className="form-errors">
-        {this.state.errors.map((error, index) => {
-          let message;
-
-          if (error.data && error.data.errors) {
-            // this error is a "multi-error" with multiple sub-errors
-
-            message = error.data.errors.map(error => {
-              return {
-                content: this.getErrorMessage(error),
-                data: error.data,
-              };
-            });
-          } else {
-            // this is a regular error
-
-            message = {
-              content:
-                error.message ||
-                this.context.intl.formatMessage({ id: error.id, defaultMessage: error.id }, error.data),
-            };
-          }
-
-          return <Components.FormFlash key={index} message={message} type="error" />;
-        })}
-      </div>
-    );
-  };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
@@ -486,7 +464,7 @@ class Form extends Component {
 
     // add error to state
     this.setState(prevState => ({
-      errors: [...prevState.errors, graphQLError],
+      errors: [...prevState.errors, ...graphQLError.data.errors],
     }));
   };
 
@@ -560,6 +538,7 @@ class Form extends Component {
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
       addToFailureForm: this.addToFailureForm,
+      errors: this.state.errors,
     };
   };
 
@@ -584,7 +563,6 @@ class Form extends Component {
           this.addToDeletedValues(path);
         } else {
           set(prevState.currentValues, path, value);
-          // dot.str(path, value, prevState.currentValues);
         }
       });
       return prevState;
@@ -783,7 +761,7 @@ class Form extends Component {
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
-          {this.renderErrors()}
+          <Components.FormErrors errors={this.state.errors}/>
 
           {fieldGroups.map(group => (
             <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />
@@ -870,6 +848,7 @@ Form.childContextTypes = {
   clearForm: PropTypes.func,
   getDocument: PropTypes.func,
   submitForm: PropTypes.func,
+  errors: PropTypes.array,
 };
 
 module.exports = Form;

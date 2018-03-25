@@ -130,9 +130,9 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   debug('// editMutation');
   debug('// collectionName: ', collection._name);
   debug('// documentId: ', documentId);
-  // debug('// set: ', set);
-  // debug('// unset: ', unset);
-  // debug('// document: ', document);
+  debug('// set: ', set);
+  debug('// unset: ', unset);
+  debug('// document: ', document);
 
   if (validate) {
 

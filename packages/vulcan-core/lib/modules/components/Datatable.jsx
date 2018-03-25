@@ -84,6 +84,7 @@ Datatable.propTypes = {
   showSearch: PropTypes.bool,
   newFormOptions: PropTypes.object,
   editFormOptions: PropTypes.object,
+  emptyState: PropTypes.object,
 }
 
 Datatable.defaultProps = {
