@@ -34,6 +34,7 @@ import set from 'lodash/set';
 import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
+import { convertSchema } from '../modules/schema_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
@@ -54,8 +55,7 @@ const unsetCompact = (object, path) => {
 */
 
 class Form extends Component {
-  
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -65,18 +65,15 @@ class Form extends Component {
       deletedValues: [],
       currentValues: {},
     };
+
+    this.schema = convertSchema(props.collection.simpleSchema());
+    // Also store all field schemas (including nested schemas) in a flat structure
+    this.fieldSchemas = convertSchema(props.collection.simpleSchema(), true);
   }
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
   failureFormCallbacks = [];
-
-  /*
-
-  Store all field schemas (including nested schemas) in a flat structure
-
-  */
-  fieldSchemas = {};
 
 
   // --------------------------------------------------------------------- //
@@ -92,13 +89,8 @@ class Form extends Component {
     return this.props.collection || getCollection(this.props.collectionName);
   };
 
-  /*
-  
-  Return the current schema based on either the schema or collection prop
-
-  */
-  getSchema = () => {
-    return this.props.schema ? this.props.schema : this.getCollection().simpleSchema()._schema;
+  getFieldProperty = (fieldName, propertyName, fieldSchema) => {
+    return fieldSchema.get(fieldName, propertyName); // TODO
   };
 
   /*
@@ -116,10 +108,7 @@ class Form extends Component {
 
   */
   getInitialDocument = () => {
-    return deepmerge.all([
-      this.props.prefilledProps,
-      this.props.document,
-    ]);
+    return deepmerge.all([this.props.prefilledProps, this.props.document]);
   };
 
   /*
@@ -152,7 +141,7 @@ class Form extends Component {
   */
   getData = () => {
     // only keep relevant fields
-    const fields = this.getFieldNames(this.getSchema());
+    const fields = this.getFieldNames();
     let data = cloneDeep(_.pick(this.getDocument(), ...fields));
 
     // remove any deleted values
@@ -178,7 +167,6 @@ class Form extends Component {
   */
   getValue = (fieldName, fieldSchema, document) => {
     if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null) {
-
       let value = document[fieldName];
       // convert value type if needed
       if (fieldSchema.type.definitions[0].type === Number) value = Number(value);
@@ -195,32 +183,22 @@ class Form extends Component {
     return null;
   };
 
-  /*
 
-  Given an array field, get its nested schema
-
-  */
-  getNestedSchema = (fieldName) => {
-    const arrayItemSchema = this.getSchema()[`${fieldName}.$`];
-    return arrayItemSchema && arrayItemSchema.type.definitions[0].type._schema;
-  }
   /*
 
   Given a field's name, its schema, document, and parent, create the 
   complete field object to be passed to the component
 
   */
-  createField = (fieldName, fieldSchema, document, parentFieldName, parentPath) => {
-
+  createField = (fieldName, schema, parentFieldName, parentPath) => {
     const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
     
-    // console.log('// createField', fieldPath)
-    // console.log(fieldSchema)
-    // console.log(document)
-    // console.log('-> nested: ', !!this.getNestedSchema(fieldName))
-    
-    // store fieldSchema object in this.fieldSchemas
-    this.fieldSchemas[fieldName] = fieldSchema;
+    // console.log('// createField', fieldPath);
+
+    const fieldSchema = schema[fieldName];
+
+    // console.log(fieldSchema);
+    // console.log('-> nested: ', !!fieldSchema.schema);
 
     fieldSchema.name = fieldName;
 
@@ -244,6 +222,7 @@ class Form extends Component {
     // backward compatibility from 'autoform' to 'form'
     if (fieldSchema.autoform) {
       fieldSchema.form = fieldSchema.autoform;
+      // eslint-disable-next-line no-console
       console.warn(
         `Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${
           this.getCollection()._name
@@ -295,8 +274,14 @@ class Form extends Component {
     }
 
     // add limit
-    if (fieldSchema.limit) {
-      field.limit = fieldSchema.limit;
+    // TODO: doesn't work for nested fields because this.getCollection().simpleSchema() doesn't return nested schema
+    const limit =
+      fieldSchema.limit ||
+      this.getCollection()
+        .simpleSchema()
+        .get(fieldName, 'max');
+    if (limit) {
+      field.limit = limit;
     }
 
     // add description as help prop
@@ -327,16 +312,15 @@ class Form extends Component {
     // }
 
     // nested fields: set control to "nested"
-    const nestedSchema = this.getNestedSchema(fieldName);
+    const nestedSchema = fieldSchema.schema;
 
     if (nestedSchema) {
       field.nestedSchema = nestedSchema;
       field.control = 'nested';
       // get nested schema
       // for each nested field, get field object by calling createField recursively
-      field.nestedFields = this.getFieldNames(field.nestedSchema).map(subFieldName => {
-        const subFieldSchema = field.nestedSchema[subFieldName];
-        return this.createField(subFieldName, subFieldSchema, document, fieldName, fieldPath);
+      field.nestedFields = this.getFieldNames(nestedSchema).map(subFieldName => {
+        return this.createField(subFieldName, nestedSchema, fieldName, fieldPath);
       });
     }
 
@@ -349,14 +333,10 @@ class Form extends Component {
 
   */
   getFieldGroups = () => {
-    const schema = this.getSchema();
-    const document = this.getInitialDocument();
-
     // build fields array by iterating over the list of field names
-    let fields = this.getFieldNames(schema).map(fieldName => {
+    let fields = this.getFieldNames().map(fieldName => {
       // get schema for the current field
-      const fieldSchema = schema[fieldName];
-      return this.createField(fieldName, fieldSchema, document);
+      return this.createField(fieldName, this.schema);
     });
 
     fields = _.sortBy(fields, 'order');
@@ -398,7 +378,7 @@ class Form extends Component {
   Get a list of the fields to be included in the current form
 
   */
-  getFieldNames = schema => {
+  getFieldNames = (schema = this.schema) => {
     const { fields, hideFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
@@ -451,8 +431,6 @@ class Form extends Component {
       return this.context.intl.formatMessage({ id: error.id, defaultMessage: error.id }, error.data);
     }
   };
-
-  
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
@@ -680,7 +658,7 @@ class Form extends Component {
 
     // console.log(data)
 
-    const fields = this.getFieldNames(this.getSchema());
+    const fields = this.getFieldNames();
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
@@ -713,7 +691,7 @@ class Form extends Component {
       unsetKeys = _.unique(unsetKeys.concat(_.difference(this.state.deletedValues, setKeys)));
 
       // only keep unset keys that correspond to a field (get rid of nested keys)
-      unsetKeys = _.intersection(unsetKeys, this.getFieldNames(this.getSchema()));
+      unsetKeys = _.intersection(unsetKeys, this.getFieldNames());
 
       // build mutation arguments object
       const args = { documentId: document._id, set: set, unset: {} };
@@ -769,7 +747,7 @@ class Form extends Component {
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
-          <Components.FormErrors errors={this.state.errors}/>
+          <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
             <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />

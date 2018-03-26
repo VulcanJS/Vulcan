@@ -59,7 +59,7 @@ class FormWrapper extends PureComponent {
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : this.getCollection().simpleSchema()._schema;
   }
 
   // if a document is being passed, this is an edit form
