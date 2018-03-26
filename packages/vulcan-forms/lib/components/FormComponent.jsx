@@ -47,7 +47,7 @@ class FormComponent extends PureComponent {
   */
   handleChangeDebounced = debounce(this.handleChange, 500, { leading: true });
 
-  updateCharacterCount = (value) => {
+  updateCharacterCount = value => {
     const characterCount = value ? value.length : 0;
     this.setState({
       charsRemaining: this.props.max - characterCount,
@@ -65,13 +65,14 @@ class FormComponent extends PureComponent {
 
     // note: value has to default to '' to make component controlled
     let value = get(c.getDocument(), p.path) || '';
-
+    
     // replace empty value, which has not been prefilled, by the default value from the schema
     // keep defaultValue for backwards compatibility even though it doesn't actually work
     if (isEmptyValue(value)) {
       if (p.defaultValue) value = p.defaultValue;
       if (p.default) value = p.default;
     }
+    
     return value;
   };
 
@@ -80,10 +81,10 @@ class FormComponent extends PureComponent {
   Whether to keep track of and show remaining chars
 
   */
-  showCharsRemaining = (props) => {
+  showCharsRemaining = props => {
     const p = props || this.props;
     return p.max && ['url', 'email', 'textarea', 'text'].includes(this.getType(p));
-  }
+  };
 
   /*
 
@@ -101,7 +102,7 @@ class FormComponent extends PureComponent {
   based on form field type
 
   */
-  getType = (props) => {
+  getType = props => {
     const p = props || this.props;
     const fieldType = p.datatype && p.datatype[0].type;
     const autoType =
@@ -112,19 +113,16 @@ class FormComponent extends PureComponent {
   renderComponent() {
     const {
       control,
-      updateCurrentValues,
       beforeComponent,
       afterComponent,
-      nestedSchema,
-      nestedFields,
-      datatype,
       options,
-      path,
       name,
       label,
       form,
       formType,
     } = this.props;
+
+    const value = this.getValue();
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -133,11 +131,12 @@ class FormComponent extends PureComponent {
       options,
       label,
       onChange: this.handleChange,
-      value: this.getValue(),
+      value,
       ...form,
     };
 
-    const properties = { ...this.props, inputProperties };
+    // note: we also pass value on props directly
+    const properties = { ...this.props, value, errors: this.getErrors(), inputProperties };
 
     // if control is a React component, use it
     if (typeof control === 'function') {
@@ -148,16 +147,7 @@ class FormComponent extends PureComponent {
 
       switch (this.getType()) {
         case 'nested':
-          return (
-            <Components.FormNested
-              path={path}
-              updateCurrentValues={updateCurrentValues}
-              nestedSchema={nestedSchema}
-              nestedFields={nestedFields}
-              datatype={datatype}
-              {...properties}
-            />
-          );
+          return  <Components.FormNested {...properties} />;
 
         case 'number':
           return <Components.FormComponentNumber {...properties} />;
@@ -243,12 +233,7 @@ class FormComponent extends PureComponent {
 
   clearField = e => {
     e.preventDefault();
-    const fieldName = this.props.name;
-    // clear value
-    this.context.updateCurrentValues({ [fieldName]: null });
-    // add it to unset
-    // TODO: not needed anymore?
-    // this.context.addToDeletedValues(fieldName);
+    this.context.updateCurrentValues({ [this.props.path]: null });
   };
 
   renderClear() {
@@ -268,12 +253,9 @@ class FormComponent extends PureComponent {
     const { beforeComponent, afterComponent, max, name, control } = this.props;
 
     const hasErrors = this.getErrors() && this.getErrors().length;
-    const inputClass = classNames(
-      'form-input',
-      `input-${name}`,
-      `form-component-${control || 'default'}`,
-      { 'input-error': hasErrors }
-    );
+    const inputClass = classNames('form-input', `input-${name}`, `form-component-${control || 'default'}`, {
+      'input-error': hasErrors,
+    });
 
     return (
       <div className={inputClass}>
@@ -281,7 +263,11 @@ class FormComponent extends PureComponent {
         {this.renderComponent()}
         {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
         {this.showClear() ? this.renderClear() : null}
-        {this.showCharsRemaining() && <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>{this.state.charsRemaining}</div>}
+        {this.showCharsRemaining() && (
+          <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>
+            {this.state.charsRemaining}
+          </div>
+        )}
         {afterComponent ? afterComponent : null}
       </div>
     );
@@ -298,8 +284,10 @@ FormComponent.propTypes = {
   options: PropTypes.any,
   control: PropTypes.any,
   datatype: PropTypes.any,
+  path: PropTypes.string,
   disabled: PropTypes.bool,
-  updateCurrentValues: PropTypes.func,
+  nestedSchema: PropTypes.object,
+  nestedFields: PropTypes.array,
 };
 
 FormComponent.contextTypes = {
