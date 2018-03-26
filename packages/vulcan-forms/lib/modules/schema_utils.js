@@ -5,29 +5,34 @@ If flatten = true, will create a flat object instead of nested tree
 
 */
 export const convertSchema = (schema, flatten = false) => {
-  let jsonSchema = {};
-  Object.keys(schema._schema).forEach(fieldName => {
-    // exclude array fields
-    if (fieldName.includes('$')) {
-      return
-    }
-
-    // extract schema
-    jsonSchema[fieldName] = getFieldSchema(fieldName, schema);
+  if (schema._schema) {
+    let jsonSchema = {};
     
-    // check for existence of nested schema on corresponding array field
-    const subSchema = getNestedSchema(fieldName, schema);
-    // if nested schema exists, call convertSchema recursively
-    if (subSchema){
-      const convertedSubSchema = convertSchema(subSchema);
-      if (flatten) {
-        jsonSchema = {...jsonSchema, ...convertedSubSchema};
-      } else {
-        jsonSchema[fieldName].schema = convertedSubSchema;
+    Object.keys(schema._schema).forEach(fieldName => {
+      // exclude array fields
+      if (fieldName.includes('$')) {
+        return;
       }
-    }
-  });
-  return jsonSchema;
+
+      // extract schema
+      jsonSchema[fieldName] = getFieldSchema(fieldName, schema);
+
+      // check for existence of nested schema on corresponding array field
+      const subSchema = getNestedSchema(fieldName, schema);
+      // if nested schema exists, call convertSchema recursively
+      if (subSchema) {
+        const convertedSubSchema = convertSchema(subSchema);
+        if (flatten) {
+          jsonSchema = { ...jsonSchema, ...convertedSubSchema };
+        } else {
+          jsonSchema[fieldName].schema = convertedSubSchema;
+        }
+      }
+    });
+    return jsonSchema;
+  } else {
+    return null;
+  }
 };
 
 /*
@@ -38,9 +43,9 @@ Get a JSON object representing a field's schema
 export const getFieldSchema = (fieldName, schema) => {
   let fieldSchema = {};
   schemaProperties.forEach(property => {
-    const value = schema.get(fieldName, property);
-    if (value) {
-      fieldSchema[property] = value;
+    const propertyValue = schema.get(fieldName, property);
+    if (propertyValue) {
+      fieldSchema[property] = propertyValue;
     }
   });
   return fieldSchema;
@@ -105,7 +110,6 @@ export const schemaProperties = [
   'fieldProperties',
 ];
 
-
 export const formProperties = [
   'optional',
   'required',
@@ -126,6 +130,7 @@ export const formProperties = [
   'form', // form placeholder
   'control', // SmartForm control (String or React component)
   'order', // position in the form
+  'group', // form fieldset group
   'limit',
   'default',
   'description',

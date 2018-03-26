@@ -449,8 +449,6 @@ class Form extends Component {
   */
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
-    console.log('// updateCurrentValues')
-    console.log(newValues)
     this.setState(prevState => {
       const newState = cloneDeep(prevState);
       Object.keys(newValues).forEach(key => {
@@ -465,8 +463,6 @@ class Form extends Component {
         }
       });
       return newState;
-    }, () => {
-      console.log(this.state.currentValues)
     });
   };
 
