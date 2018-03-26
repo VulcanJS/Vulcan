@@ -63,7 +63,9 @@ class FormNested extends PureComponent {
   };
 
   render() {
-    const { value, ...rest } = this.props;
+    // do not pass FormNested's own value and control props down
+    const properties = _.omit(this.props, 'value', 'control');
+
     return (
       <div className="form-group row form-nested">
         <label className="control-label col-sm-3">{this.props.label}</label>
@@ -73,7 +75,7 @@ class FormNested extends PureComponent {
               (subDocument, i) =>
                 !this.isDeleted(i) && (
                   <FormNestedItem
-                    {...rest}
+                    {...properties}
                     key={i}
                     itemIndex={i}
                     path={`${this.props.path}.${i}`}
