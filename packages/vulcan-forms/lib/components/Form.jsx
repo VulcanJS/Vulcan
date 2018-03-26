@@ -72,7 +72,7 @@ class Form extends Component {
     this.flatSchema = convertSchema(props.collection.simpleSchema(), true);
 
     // the initial document passed as props
-    this.initialDocument = merge(this.props.prefilledProps, this.props.document);
+    this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
 
   }
 
@@ -123,6 +123,7 @@ class Form extends Component {
   */
   getDocument = () => {
     const document = merge(
+      {},
       this.initialDocument,
       this.state.autofilledValues,
       this.state.currentValues,
