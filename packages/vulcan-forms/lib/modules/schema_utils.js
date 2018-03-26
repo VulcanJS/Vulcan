@@ -97,10 +97,38 @@ export const schemaProperties = [
   'searchable',
   'default',
   'description',
+  'beforeComponent',
+  'afterComponent',
+  'placeholder',
+  'options',
+  'query',
+  'fieldProperties',
+];
+
+
+export const formProperties = [
+  'optional',
+  'required',
+  'min',
+  'max',
+  'exclusiveMin',
+  'exclusiveMax',
+  'minCount',
+  'maxCount',
+  'allowedValues',
+  'regEx',
+  'blackbox',
+  'trim',
+  'custom',
+  'defaultValue',
+  'autoValue',
+  'mustComplete', // mustComplete: true means the field is required to have a complete profile
+  'form', // form placeholder
   'control', // SmartForm control (String or React component)
-  'order', // order in the form
-  'group', // form fieldset group
-  'hidden',
+  'order', // position in the form
+  'limit',
+  'default',
+  'description',
   'beforeComponent',
   'afterComponent',
   'placeholder',

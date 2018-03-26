@@ -40,7 +40,7 @@ class FormGroup extends PureComponent {
       <div className="form-section">
         {this.props.name === 'default' ? null : this.renderHeading()}
         <div className={classNames({'form-section-collapsed': this.state.collapsed && !hasErrors})}>
-          {this.props.fields.map(field => <Components.FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} />)}
+          {this.props.fields.map(field => <Components.FormComponent key={field.name} {...field} updateCurrentValues={this.props.updateCurrentValues} formType={this.props.formType}/>)}
         </div>
       </div>
     )

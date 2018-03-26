@@ -6,6 +6,8 @@ import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import debounce from 'lodash.debounce';
 import get from 'lodash/get';
+import { isEmptyValue } from '../modules/utils.js';
+import { formProperties } from '../modules/schema_utils';
 
 class FormComponent extends PureComponent {
   constructor(props, context) {
@@ -21,12 +23,16 @@ class FormComponent extends PureComponent {
   }
 
   handleChange = (name, value) => {
-    // if this is a number field, convert value before sending it up to Form
-    if (this.getType() === 'number') {
-      value = Number(value);
+
+    if (!!value) {
+      // if this is a number field, convert value before sending it up to Form
+      if (this.getType() === 'number') {
+        value = Number(value);
+      }
+      this.context.updateCurrentValues({ [this.props.path]: value });
+    } else {
+      this.context.updateCurrentValues({ [this.props.path]: null });
     }
-    
-    this.context.updateCurrentValues({ [this.props.path]: value });
 
     // for text fields, update character count on change
     if (['number', 'url', 'email', 'textarea', 'text'].includes(this.getType())) {
@@ -59,7 +65,17 @@ class FormComponent extends PureComponent {
   getValue = (props, context) => {
     const p = props || this.props;
     const c = context || this.context;
-    return get(c.getDocument(), p.path);
+
+    // note: value has to default to '' to make component controlled
+    let value = get(c.getDocument(), p.path) || '';
+
+    // replace empty value, which has not been prefilled, by the default value from the schema
+    // keep defaultValue for backwards compatibility even though it doesn't actually work
+    if (isEmptyValue(value)) {
+      if (this.props.defaultValue) value = this.props.defaultValue;
+      if (this.props.default) value = this.props.default;
+    }
+    return value;
   };
 
   /*
@@ -99,6 +115,8 @@ class FormComponent extends PureComponent {
       parentFieldName,
       itemIndex,
       path,
+      formType,
+      optional,
       ...rest
     } = this.props; // eslint-disable-line
 
@@ -152,6 +170,12 @@ class FormComponent extends PureComponent {
           // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
           if (!Array.isArray(properties.value)) {
             properties.value = [properties.value];
+          }
+
+          // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
+          const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
+          if (checkedValues.length && !properties.value && this.props.formType === 'new') {
+            properties.value = checkedValues;
           }
           return <Components.FormComponentCheckboxGroup {...properties} />;
 

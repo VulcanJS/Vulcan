@@ -27,14 +27,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import { getEditableFields, getInsertableFields, isEmptyValue } from '../modules/utils.js';
-import deepmerge from 'deepmerge';
+import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
-import { convertSchema } from '../modules/schema_utils';
+import merge from 'lodash/merge';
+import { convertSchema, formProperties } from '../modules/schema_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
@@ -66,9 +66,14 @@ class Form extends Component {
       currentValues: {},
     };
 
+    // convert SimpleSchema schema into JSON object
     this.schema = convertSchema(props.collection.simpleSchema());
     // Also store all field schemas (including nested schemas) in a flat structure
-    this.fieldSchemas = convertSchema(props.collection.simpleSchema(), true);
+    this.flatSchema = convertSchema(props.collection.simpleSchema(), true);
+
+    // the initial document passed as props
+    this.initialDocument = merge(this.props.prefilledProps, this.props.document);
+
   }
 
   submitFormCallbacks = [];
@@ -89,10 +94,6 @@ class Form extends Component {
     return this.props.collection || getCollection(this.props.collectionName);
   };
 
-  getFieldProperty = (fieldName, propertyName, fieldSchema) => {
-    return fieldSchema.get(fieldName, propertyName); // TODO
-  };
-
   /*
   
   If a document is being passed, this is an edit form
@@ -107,9 +108,7 @@ class Form extends Component {
   Get the document initially passed as props
 
   */
-  getInitialDocument = () => {
-    return deepmerge.all([this.props.prefilledProps, this.props.document]);
-  };
+
 
   /*
 
@@ -123,12 +122,13 @@ class Form extends Component {
 
   */
   getDocument = () => {
-    return deepmerge.all([
-      this.props.prefilledProps,
-      this.props.document,
+    const document = merge(
+      this.initialDocument,
       this.state.autofilledValues,
       this.state.currentValues,
-    ]);
+    );
+    
+    return document;
   };
 
   /*
@@ -159,173 +159,6 @@ class Form extends Component {
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
-
-  /*
-
-  Get a field's value in a document // TODO: maybe not needed?
-
-  */
-  getValue = (fieldName, fieldSchema, document) => {
-    if (typeof document[fieldName] !== 'undefined' && document[fieldName] !== null) {
-      let value = document[fieldName];
-      // convert value type if needed
-      if (fieldSchema.type.definitions[0].type === Number) value = Number(value);
-
-      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-      // if (Array.isArray(field.value)) {
-      //   field.value = field.value.map(item => item._id || item);
-      // }
-      // TODO: not needed anymore?
-
-      return value;
-    }
-    return null;
-  };
-
-
-  /*
-
-  Given a field's name, its schema, document, and parent, create the 
-  complete field object to be passed to the component
-
-  */
-  createField = (fieldName, schema, parentFieldName, parentPath) => {
-    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
-    
-    // console.log('// createField', fieldPath);
-
-    const fieldSchema = schema[fieldName];
-
-    // console.log(fieldSchema);
-    // console.log('-> nested: ', !!fieldSchema.schema);
-
-    fieldSchema.name = fieldName;
-
-    // intialize properties
-    let field = {
-      name: fieldName,
-      path: fieldPath,
-      datatype: fieldSchema.type,
-      control: fieldSchema.control,
-      layout: this.props.layout,
-      order: fieldSchema.order,
-    };
-
-    // if field has a parent field and index, pass them on
-    if (parentFieldName) {
-      field.parentFieldName = parentFieldName;
-    }
-
-    field.label = this.getLabel(fieldName);
-
-    // backward compatibility from 'autoform' to 'form'
-    if (fieldSchema.autoform) {
-      fieldSchema.form = fieldSchema.autoform;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${
-          this.getCollection()._name
-        }' collection`
-      ); // eslint-disable-line
-    }
-
-    // replace value by prefilled value if value is empty
-    const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
-    if (prefill) {
-      const prefilledValue = typeof prefill === 'function' ? prefill.call(fieldSchema) : prefill;
-      if (!!prefilledValue && !field.value) {
-        field.prefilledValue = prefilledValue;
-        field.value = prefilledValue;
-      }
-    }
-
-    // add options if they exist
-    const fieldOptions = fieldSchema.options || (fieldSchema.form && fieldSchema.form.options);
-    if (fieldOptions) {
-      field.options = typeof fieldOptions === 'function' ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
-
-      // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-      const checkedValues = _.where(field.options, { checked: true }).map(option => option.value);
-      if (checkedValues.length && !field.value && this.getFormType() === 'new') {
-        field.value = checkedValues;
-      }
-    }
-
-    // replace empty value, which has not been prefilled, by the default value from the schema
-    // keep defaultValue for backwards compatibility even though it doesn't actually work
-    if (isEmptyValue(field.value)) {
-      if (fieldSchema.defaultValue) field.value = fieldSchema.defaultValue;
-      if (fieldSchema.default) field.value = fieldSchema.default;
-    }
-
-    // add any properties specified in fieldProperties or form as extra props passed on
-    // to the form component
-    const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
-    if (fieldProperties) {
-      for (const prop in fieldProperties) {
-        if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
-          field[prop] =
-            typeof fieldProperties[prop] === 'function'
-              ? fieldProperties[prop].call(fieldSchema)
-              : fieldProperties[prop];
-        }
-      }
-    }
-
-    // add limit
-    // TODO: doesn't work for nested fields because this.getCollection().simpleSchema() doesn't return nested schema
-    const limit =
-      fieldSchema.limit ||
-      this.getCollection()
-        .simpleSchema()
-        .get(fieldName, 'max');
-    if (limit) {
-      field.limit = limit;
-    }
-
-    // add description as help prop
-    if (fieldSchema.description) {
-      field.help = fieldSchema.description;
-    }
-
-    // add placeholder
-    if (fieldSchema.placeholder) {
-      field.placeholder = fieldSchema.placeholder;
-    }
-
-    if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
-    if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
-
-    // add group
-    if (fieldSchema.group) {
-      field.group = fieldSchema.group;
-    }
-
-    // add document
-    field.document = this.getInitialDocument();
-
-    // add any relevant errors
-    // const fieldErrors = _.filter(this.state.errors, error => error.data.name === fieldName);
-    // if (fieldErrors) {
-    //   field.errors = fieldErrors.map(error => ({ ...error, message: this.getErrorMessage(error) }));
-    // }
-
-    // nested fields: set control to "nested"
-    const nestedSchema = fieldSchema.schema;
-
-    if (nestedSchema) {
-      field.nestedSchema = nestedSchema;
-      field.control = 'nested';
-      // get nested schema
-      // for each nested field, get field object by calling createField recursively
-      field.nestedFields = this.getFieldNames(nestedSchema).map(subFieldName => {
-        return this.createField(subFieldName, nestedSchema, fieldName, fieldPath);
-      });
-    }
-
-    return field;
-  };
 
   /*
 
@@ -384,7 +217,7 @@ class Form extends Component {
     // get all editable/insertable fields (depending on current form type)
     let relevantFields =
       this.getFormType() === 'edit'
-        ? getEditableFields(schema, this.props.currentUser, this.getInitialDocument())
+        ? getEditableFields(schema, this.props.currentUser, this.initialDocument)
         : getInsertableFields(schema, this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
@@ -406,6 +239,83 @@ class Form extends Component {
     return relevantFields;
   };
 
+
+  /*
+
+  Given a field's name, the containing schema, and parent, create the 
+  complete field object to be passed to the component
+
+  */
+  createField = (fieldName, schema, parentFieldName, parentPath) => {
+
+    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
+    const fieldSchema = schema[fieldName];
+
+    // intialize properties
+    let field = {
+      ..._.pick(fieldSchema, formProperties),
+      document: this.initialDocument,
+      name: fieldName,
+      path: fieldPath,
+      datatype: fieldSchema.type,
+      layout: this.props.layout,
+    };
+
+    // if field has a parent field, pass it on
+    if (parentFieldName) {
+      field.parentFieldName = parentFieldName;
+    }
+
+    field.label = this.getLabel(fieldName);
+
+    // // replace value by prefilled value if value is empty
+    // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
+    // if (prefill) {
+    //   const prefilledValue = typeof prefill === 'function' ? prefill.call(fieldSchema) : prefill;
+    //   if (!!prefilledValue && !field.value) {
+    //     field.prefilledValue = prefilledValue;
+    //     field.value = prefilledValue;
+    //   }
+    // }
+
+    // if options are a function, call it
+    if (typeof field.options === 'function') {
+      field.options = field.options.call(fieldSchema, this.props);
+    }
+
+    // add any properties specified in fieldProperties or form as extra props passed on
+    // to the form component
+    const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
+    if (fieldProperties) {
+      for (const prop in fieldProperties) {
+        if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
+          field[prop] =
+            typeof fieldProperties[prop] === 'function'
+              ? fieldProperties[prop].call(fieldSchema)
+              : fieldProperties[prop];
+        }
+      }
+    }
+
+    // add description as help prop
+    if (fieldSchema.description) {
+      field.help = fieldSchema.description;
+    }
+
+    // nested fields: set control to "nested"
+    if (fieldSchema.schema) {
+      field.nestedSchema = fieldSchema.schema;
+      field.control = 'nested';
+      // get nested schema
+      // for each nested field, get field object by calling createField recursively
+      field.nestedFields = this.getFieldNames(field.nestedSchema).map(subFieldName => {
+        return this.createField(subFieldName, field.nestedSchema, fieldName, fieldPath);
+      });
+    }
+
+    return field;
+  };
+
   /*
 
   Get a field's label
@@ -414,7 +324,7 @@ class Form extends Component {
   getLabel = fieldName => {
     return this.context.intl.formatMessage({
       id: this.getCollection()._name + '.' + fieldName,
-      defaultMessage: this.fieldSchemas[fieldName].label,
+      defaultMessage: this.flatSchema[fieldName].label,
     });
   };
 
@@ -432,10 +342,6 @@ class Form extends Component {
     }
   };
 
-  // --------------------------------------------------------------------- //
-  // ------------------------------- Context ----------------------------- //
-  // --------------------------------------------------------------------- //
-
   // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
@@ -450,6 +356,10 @@ class Form extends Component {
       errors: [...prevState.errors, ...graphQLError.data.errors],
     }));
   };
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Context ----------------------------- //
+  // --------------------------------------------------------------------- //
 
   // add something to autofilled values
   addToAutofilledValues = property => {
@@ -516,7 +426,7 @@ class Form extends Component {
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
-      getInitialDocument: this.getInitialDocument,
+      initialDocument: this.initialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
@@ -539,6 +449,8 @@ class Form extends Component {
   */
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
+    console.log('// updateCurrentValues')
+    console.log(newValues)
     this.setState(prevState => {
       const newState = cloneDeep(prevState);
       Object.keys(newValues).forEach(key => {
@@ -546,12 +458,15 @@ class Form extends Component {
         const value = newValues[key];
         if (value === null) {
           // delete value
+          unset(newState.currentValues, path);
           this.addToDeletedValues(path);
         } else {
           set(newState.currentValues, path, value);
         }
       });
       return newState;
+    }, () => {
+      console.log(this.state.currentValues)
     });
   };
 
@@ -653,7 +568,6 @@ class Form extends Component {
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
-    // data = deepmerge(this.getDocument(), data);
     data = this.getData();
 
     // console.log(data)
@@ -750,7 +664,7 @@ class Form extends Component {
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />
+            <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} formType={this.getFormType()}/>
           ))}
 
           {this.props.repeatErrors && this.renderErrors()}
@@ -832,7 +746,7 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
-  getInitialDocument: PropTypes.func,
+  initialDocument: PropTypes.object,
   getDocument: PropTypes.func,
   submitForm: PropTypes.func,
   errors: PropTypes.array,
