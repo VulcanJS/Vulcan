@@ -39,7 +39,6 @@ import {
   getFragment,
   getCollection,
 } from 'meteor/vulcan:core';
-import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
 import { graphql } from 'react-apollo';
@@ -177,7 +176,7 @@ class FormWrapper extends PureComponent {
       const { document, loading } = props;
       return loading ?
         <Components.Loading /> :
-        <Form
+        <Components.Form
           document={document}
           loading={loading}
           {...childProps}
@@ -224,7 +223,7 @@ class FormWrapper extends PureComponent {
       } else {
         WrappedComponent = compose(
           withNew(mutationOptions)
-        )(Form);
+        )(Components.Form);
       }
 
       return <WrappedComponent {...childProps} />;

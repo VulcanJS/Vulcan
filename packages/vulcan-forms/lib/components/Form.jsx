@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import { Components, runCallbacks, getCollection } from 'meteor/vulcan:core';
+import { registerComponent, Components, runCallbacks, getCollection } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -73,13 +73,11 @@ class Form extends Component {
 
     // the initial document passed as props
     this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
-
   }
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
   failureFormCallbacks = [];
-
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
@@ -109,7 +107,6 @@ class Form extends Component {
 
   */
 
-
   /*
 
   Get the current document (for edit forms)
@@ -122,13 +119,8 @@ class Form extends Component {
 
   */
   getDocument = () => {
-    const document = merge(
-      {},
-      this.initialDocument,
-      this.state.autofilledValues,
-      this.state.currentValues,
-    );
-    
+    const document = merge({}, this.initialDocument, this.state.autofilledValues, this.state.currentValues);
+
     return document;
   };
 
@@ -240,7 +232,6 @@ class Form extends Component {
     return relevantFields;
   };
 
-
   /*
 
   Given a field's name, the containing schema, and parent, create the 
@@ -248,7 +239,6 @@ class Form extends Component {
 
   */
   createField = (fieldName, schema, parentFieldName, parentPath) => {
-
     const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
     const fieldSchema = schema[fieldName];
 
@@ -284,17 +274,14 @@ class Form extends Component {
       field.options = field.options.call(fieldSchema, this.props);
     }
 
-    // add any properties specified in fieldProperties or form as extra props passed on
-    // to the form component
-    const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
-    if (fieldProperties) {
-      for (const prop in fieldProperties) {
-        if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
-          field[prop] =
-            typeof fieldProperties[prop] === 'function'
-              ? fieldProperties[prop].call(fieldSchema)
-              : fieldProperties[prop];
-        }
+    // add any properties specified in fieldSchema.form as extra props passed on
+    // to the form component, calling them if they are functions
+    if (fieldSchema.form) {
+      for (const prop in fieldSchema.form) {
+        field[prop] =
+          typeof fieldSchema.form[prop] === 'function'
+            ? fieldSchema.form[prop].call(fieldSchema, this.props)
+            : fieldSchema.form[prop];
       }
     }
 
@@ -661,7 +648,12 @@ class Form extends Component {
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} formType={this.getFormType()}/>
+            <Components.FormGroup
+              key={group.name}
+              {...group}
+              updateCurrentValues={this.updateCurrentValues}
+              formType={this.getFormType()}
+            />
           ))}
 
           {this.props.repeatErrors && this.renderErrors()}
@@ -752,3 +744,5 @@ Form.childContextTypes = {
 };
 
 module.exports = Form;
+
+registerComponent('Form', Form);

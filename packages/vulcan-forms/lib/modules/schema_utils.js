@@ -80,8 +80,6 @@ export const schemaProperties = [
   'custom',
   'defaultValue',
   'autoValue',
-  'private',
-  'editable', // editable: true means the field can be edited by the document's owner
   'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'profile', // profile: true means the field is shown on user profiles
@@ -98,9 +96,7 @@ export const schemaProperties = [
   'insertableBy',
   'editableBy',
   'resolveAs',
-  'limit',
   'searchable',
-  'default',
   'description',
   'beforeComponent',
   'afterComponent',
@@ -131,8 +127,6 @@ export const formProperties = [
   'control', // SmartForm control (String or React component)
   'order', // position in the form
   'group', // form fieldset group
-  'limit',
-  'default',
   'description',
   'beforeComponent',
   'afterComponent',

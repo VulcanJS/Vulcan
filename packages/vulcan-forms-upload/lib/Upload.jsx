@@ -110,7 +110,7 @@ class Upload extends PureComponent {
 
   */
   enableMultiple() {
-    return this.props.datatype.definitions[0].type === Array;
+    return this.props.datatype && this.props.datatype[0].type === Array;
   }
 
   /*

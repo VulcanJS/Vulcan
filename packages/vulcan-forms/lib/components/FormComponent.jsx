@@ -7,7 +7,6 @@ import { registerComponent } from 'meteor/vulcan:core';
 import debounce from 'lodash.debounce';
 import get from 'lodash/get';
 import { isEmptyValue } from '../modules/utils.js';
-import { formProperties } from '../modules/schema_utils';
 
 class FormComponent extends PureComponent {
   constructor(props, context) {
@@ -15,15 +14,15 @@ class FormComponent extends PureComponent {
 
     const value = this.getValue(props, context);
 
-    if (props.limit) {
+    if (this.showCharsRemaining(props)) {
+      const characterCount = value ? value.length : 0;
       this.state = {
-        limit: value ? props.limit - value.length : props.limit,
+        charsRemaining: props.max - characterCount,
       };
     }
   }
 
   handleChange = (name, value) => {
-
     if (!!value) {
       // if this is a number field, convert value before sending it up to Form
       if (this.getType() === 'number') {
@@ -35,7 +34,7 @@ class FormComponent extends PureComponent {
     }
 
     // for text fields, update character count on change
-    if (['number', 'url', 'email', 'textarea', 'text'].includes(this.getType())) {
+    if (this.showCharsRemaining()) {
       this.updateCharacterCount(value);
     }
   };
@@ -49,12 +48,10 @@ class FormComponent extends PureComponent {
   handleChangeDebounced = debounce(this.handleChange, 500, { leading: true });
 
   updateCharacterCount = (value) => {
-    if (this.props.limit) {
-      const characterCount = value ? value.length : 0;
-      this.setState({
-        limit: this.props.limit - characterCount,
-      });
-    }
+    const characterCount = value ? value.length : 0;
+    this.setState({
+      charsRemaining: this.props.max - characterCount,
+    });
   };
 
   /*
@@ -72,11 +69,21 @@ class FormComponent extends PureComponent {
     // replace empty value, which has not been prefilled, by the default value from the schema
     // keep defaultValue for backwards compatibility even though it doesn't actually work
     if (isEmptyValue(value)) {
-      if (this.props.defaultValue) value = this.props.defaultValue;
-      if (this.props.default) value = this.props.default;
+      if (p.defaultValue) value = p.defaultValue;
+      if (p.default) value = p.default;
     }
     return value;
   };
+
+  /*
+
+  Whether to keep track of and show remaining chars
+
+  */
+  showCharsRemaining = (props) => {
+    const p = props || this.props;
+    return p.max && ['url', 'email', 'textarea', 'text'].includes(this.getType(p));
+  }
 
   /*
 
@@ -94,43 +101,48 @@ class FormComponent extends PureComponent {
   based on form field type
 
   */
-  getType = () => {
-    return this.props.control || 'text';
+  getType = (props) => {
+    const p = props || this.props;
+    const fieldType = p.datatype && p.datatype[0].type;
+    const autoType =
+      fieldType === Number ? 'number' : fieldType === Boolean ? 'checkbox' : fieldType === Date ? 'date' : 'text';
+    return p.control || autoType;
   };
 
   renderComponent() {
-    // see https://facebook.github.io/react/warnings/unknown-prop.html
     const {
       control,
-      group,
       updateCurrentValues,
-      document,
       beforeComponent,
       afterComponent,
-      limit,
-      errors,
       nestedSchema,
       nestedFields,
       datatype,
-      parentFieldName,
-      itemIndex,
+      options,
       path,
+      name,
+      label,
+      form,
       formType,
-      optional,
-      ...rest
-    } = this.props; // eslint-disable-line
+    } = this.props;
 
-    const properties = {
-      ...rest,
-      // onBlur: this.handleChange,
+    // these properties are whitelisted so that they can be safely passed to the actual form input
+    // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
+    const inputProperties = {
+      name,
+      options,
+      label,
       onChange: this.handleChange,
-      document,
       value: this.getValue(),
+      ...form,
     };
 
+    const properties = { ...this.props, inputProperties };
+
     // if control is a React component, use it
-    if (typeof this.props.control === 'function') {
-      return <this.props.control {...properties} />;
+    if (typeof control === 'function') {
+      const ControlComponent = control;
+      return <ControlComponent {...properties} />;
     } else {
       // else pick a predefined component
 
@@ -174,7 +186,7 @@ class FormComponent extends PureComponent {
 
           // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
           const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
-          if (checkedValues.length && !properties.value && this.props.formType === 'new') {
+          if (checkedValues.length && !properties.value && formType === 'new') {
             properties.value = checkedValues;
           }
           return <Components.FormComponentCheckboxGroup {...properties} />;
@@ -215,7 +227,7 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentDefault {...properties} />;
 
         default:
-          const CustomComponent = Components[this.props.control];
+          const CustomComponent = Components[control];
           return CustomComponent ? (
             <CustomComponent {...properties} />
           ) : (
@@ -253,24 +265,24 @@ class FormComponent extends PureComponent {
   }
 
   render() {
+    const { beforeComponent, afterComponent, max, name, control } = this.props;
+
     const hasErrors = this.getErrors() && this.getErrors().length;
     const inputClass = classNames(
       'form-input',
-      `input-${this.props.name}`,
-      `form-component-${this.props.control || 'default'}`,
+      `input-${name}`,
+      `form-component-${control || 'default'}`,
       { 'input-error': hasErrors }
     );
 
     return (
       <div className={inputClass}>
-        {this.props.beforeComponent ? this.props.beforeComponent : null}
+        {beforeComponent ? beforeComponent : null}
         {this.renderComponent()}
         {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
         {this.showClear() ? this.renderClear() : null}
-        {this.props.limit ? (
-          <div className={classNames('form-control-limit', { danger: this.state.limit < 10 })}>{this.state.limit}</div>
-        ) : null}
-        {this.props.afterComponent ? this.props.afterComponent : null}
+        {this.showCharsRemaining() && <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>{this.state.charsRemaining}</div>}
+        {afterComponent ? afterComponent : null}
       </div>
     );
   }

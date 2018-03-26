@@ -14,28 +14,26 @@ Vulcan.VERSION = '1.8.11';
 // ------------------------------------- Schemas -------------------------------- //
 
 SimpleSchema.extendOptions([
-  'private',
-  'editable',  // editable: true means the field can be edited by the document's owner
   'hidden',     // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
-  'profile', // profile: true means the field is shown on user profiles
-  'template', // legacy template used to display the field; backward compatibility (not used anymore)
-  'form', // form placeholder
-  'autoform', // legacy form placeholder; backward compatibility (not used anymore)
+  'form', // extra form properties
   'control', // SmartForm control (String or React component)
   'order', // position in the form
   'group', // form fieldset group
   'onInsert', // field insert callback
   'onEdit', // field edit callback
   'onRemove', // field remove callback
-  'viewableBy',
-  'insertableBy',
-  'editableBy',
-  'resolveAs',
-  'limit',
-  'searchable',
-  'default',
-  'description',
+  'viewableBy', // who can view the field
+  'insertableBy', // who can insert the field
+  'editableBy', // who can edit the field
+  'resolveAs', // field-level resolver
+  'searchable', // whether a field is searchable
+  'description', // description/help
+  'beforeComponent', // before form component
+  'afterComponent', // after form component
+  'placeholder', // form field placeholder value
+  'options', // form options
+  'query', // field-specific data loading query
 ]);
 
 // eslint-disable-next-line no-undef
