@@ -9,10 +9,10 @@ import get from 'lodash/get';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends PureComponent {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    const value = this.getValue(props, context);
+    const value = this.getValue(props);
 
     if (this.showCharsRemaining(props)) {
       const characterCount = value ? value.length : 0;
@@ -56,21 +56,19 @@ class FormComponent extends PureComponent {
 
   /*
 
-  Get value from Form state through context
+  Get value from Form state through document and currentValues props
 
   */
-  getValue = (props, context) => {
+  getValue = (props) => {
     const p = props || this.props;
-    const c = context || this.context;
-
-    // note: value has to default to '' to make component controlled
-    let value = get(c.getDocument(), p.path) || '';
+    const { document, currentValues, defaultValue } = p;
     
+    // note: value has to default to '' to make component controlled
+    let value = currentValues[p.path] || get(document, p.path) || '';
+
     // replace empty value, which has not been prefilled, by the default value from the schema
-    // keep defaultValue for backwards compatibility even though it doesn't actually work
     if (isEmptyValue(value)) {
-      if (p.defaultValue) value = p.defaultValue;
-      if (p.default) value = p.default;
+      if (defaultValue) value = defaultValue;
     }
     
     return value;
@@ -137,7 +135,7 @@ class FormComponent extends PureComponent {
 
     // note: we also pass value on props directly
     const properties = { ...this.props, value, errors: this.getErrors(), inputProperties };
-
+    
     // if control is a React component, use it
     if (typeof control === 'function') {
       const ControlComponent = control;
@@ -294,7 +292,6 @@ FormComponent.contextTypes = {
   intl: intlShape,
   addToDeletedValues: PropTypes.func,
   errors: PropTypes.array,
-  currentValues: PropTypes.object,
   autofilledValues: PropTypes.object,
   deletedValues: PropTypes.array,
   getDocument: PropTypes.func,
