@@ -238,16 +238,21 @@ div.ReactTags__suggestions mark{
   }
 }
 
-.form-nested-item-deleted{
-  opacity: 0.3;
-  .form-nested-item-deleted-overlay{
-    display: block;
-  }
-}
-
 .form-nested-item-inner{
   flex: 1;
 }
 .form-nested-item-remove{
   margin-left: 10px;
+}
+.form-nested-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg{
+    display:block;
+    path{
+      fill: rgba(255,255,255,0.7);
+      stroke: rgba(255,255,255,0.7);
+    }
+  }
 }

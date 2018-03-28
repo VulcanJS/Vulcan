@@ -4,50 +4,6 @@ import { Components } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const IconRight = ({ width = 24, height = 24 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={width}
-    height={height}
-    viewBox="0 0 24 24"
-  >
-    <polyline
-      fill="none"
-      stroke="#000"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeMiterlimit="10"
-      points="5.5,23.5 18.5,12 5.5,0.5"
-      id="Outline_Icons"
-    />
-    <rect fill="none" width="24" height="24" id="Frames-24px" />
-  </svg>
-);
-
-registerComponent('IconRight', IconRight);
-
-const IconDown = ({ width = 24, height = 24 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={width}
-    height={height}
-    viewBox="0 0 24 24"
-  >
-    <polyline
-      fill="none"
-      stroke="#000"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeMiterlimit="10"
-      points="0.501,5.5 12.001,18.5 23.501,5.5"
-      id="Outline_Icons"
-    />
-    <rect fill="none" width="24" height="24" id="Frames-24px" />
-  </svg>
-);
-
-registerComponent('IconDown', IconDown);
-
 class FormGroup extends PureComponent {
   constructor(props) {
     super(props);
@@ -112,3 +68,47 @@ FormGroup.propTypes = {
 };
 
 registerComponent('FormGroup', FormGroup);
+
+const IconRight = ({ width = 24, height = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+  >
+    <polyline
+      fill="none"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      points="5.5,23.5 18.5,12 5.5,0.5"
+      id="Outline_Icons"
+    />
+    <rect fill="none" width="24" height="24" id="Frames-24px" />
+  </svg>
+);
+
+registerComponent('IconRight', IconRight);
+
+const IconDown = ({ width = 24, height = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+  >
+    <polyline
+      fill="none"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      points="0.501,5.5 12.001,18.5 23.501,5.5"
+      id="Outline_Icons"
+    />
+    <rect fill="none" width="24" height="24" id="Frames-24px" />
+  </svg>
+);
+
+registerComponent('IconDown', IconDown);

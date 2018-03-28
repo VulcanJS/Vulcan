@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import Button from 'react-bootstrap/lib/Button';
 
-const FormNestedItem = (
-  { nestedFields, name, path, removeItem, itemIndex, ...props },
-  { errors }
-) => {
+const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...props }, { errors }) => {
   return (
     <div className="form-nested-item">
       <div className="form-nested-item-inner">
@@ -24,12 +21,14 @@ const FormNestedItem = (
       </div>
       <div className="form-nested-item-remove">
         <Button
+          className="form-nested-button"
           bsStyle="danger"
+          bsSize="small"
           onClick={() => {
             removeItem(name);
           }}
         >
-          ✖️
+          <Components.IconRemove height={12} width={12} />
         </Button>
       </div>
       <div className="form-nested-item-deleted-overlay" />
@@ -85,8 +84,8 @@ class FormNested extends PureComponent {
                   />
                 )
             )}
-          <Button bsStyle="success" onClick={this.addItem}>
-            ➕
+          <Button bsSize="small" bsStyle="success" onClick={this.addItem} className="form-nested-button">
+            <Components.IconAdd height={12} width={12} />
           </Button>
         </div>
       </div>
@@ -99,3 +98,19 @@ FormNested.contextTypes = {
 };
 
 registerComponent('FormNested', FormNested);
+
+const IconAdd = ({ width = 24, height = 24 }) => (
+  <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    <path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z" />
+  </svg>
+);
+
+registerComponent('IconAdd', IconAdd);
+
+const IconRemove = ({ width = 24, height = 24 }) => (
+  <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    <path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z" />
+  </svg>
+);
+
+registerComponent('IconRemove', IconRemove);
