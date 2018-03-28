@@ -104,10 +104,10 @@ const getObject = object => {
     return (
       <table className="table table-bordered">
         <tbody>
-          {_.map(object, (value, key) => 
+          {_.without(Object.keys(object), '__typename').map(key => 
             <tr key={key}>
               <td><strong>{key}</strong></td>
-              <td>{getFieldValue(value, typeof value)}</td>
+              <td>{getFieldValue(object[key], typeof object[key])}</td>
             </tr>
           )}
         </tbody>

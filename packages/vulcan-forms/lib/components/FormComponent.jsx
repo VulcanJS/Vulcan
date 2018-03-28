@@ -59,10 +59,10 @@ class FormComponent extends PureComponent {
   Get value from Form state through document and currentValues props
 
   */
-  getValue = (props) => {
+  getValue = props => {
     const p = props || this.props;
     const { document, currentValues, defaultValue } = p;
-    
+
     // note: value has to default to '' to make component controlled
     let value = currentValues[p.path] || get(document, p.path) || '';
 
@@ -70,7 +70,7 @@ class FormComponent extends PureComponent {
     if (isEmptyValue(value)) {
       if (defaultValue) value = defaultValue;
     }
-    
+
     return value;
   };
 
@@ -109,16 +109,7 @@ class FormComponent extends PureComponent {
   };
 
   renderComponent() {
-    const {
-      control,
-      beforeComponent,
-      afterComponent,
-      options,
-      name,
-      label,
-      form,
-      formType,
-    } = this.props;
+    const { control, beforeComponent, afterComponent, options, name, label, form, formType } = this.props;
 
     const value = this.getValue();
 
@@ -135,7 +126,7 @@ class FormComponent extends PureComponent {
 
     // note: we also pass value on props directly
     const properties = { ...this.props, value, errors: this.getErrors(), inputProperties };
-    
+
     // if control is a React component, use it
     if (typeof control === 'function') {
       const ControlComponent = control;
@@ -145,7 +136,7 @@ class FormComponent extends PureComponent {
 
       switch (this.getType()) {
         case 'nested':
-          return  <Components.FormNested {...properties} />;
+          return <Components.FormNested {...properties} />;
 
         case 'number':
           return <Components.FormComponentNumber {...properties} />;
@@ -194,12 +185,12 @@ class FormComponent extends PureComponent {
             value: '',
             disabled: true,
           };
-          console.log(properties.options)
-          properties.options = [noneOption, ...properties.options];
+          properties.inputProperties.options = [noneOption, ...properties.inputProperties.options];
+
           return <Components.FormComponentSelect {...properties} />;
 
         case 'selectmultiple':
-          properties.multiple = true;
+          properties.inputProperties.multiple = true;
           return <Components.FormComponentSelect {...properties} />;
 
         case 'datetime':
