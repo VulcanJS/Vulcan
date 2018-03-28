@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DateTimePicker from 'react-datetime';
 import { registerComponent } from 'meteor/vulcan:core';
 
-class Date extends PureComponent {
+class DateComponent extends PureComponent {
   
   constructor(props) {
     super(props);
@@ -11,14 +11,14 @@ class Date extends PureComponent {
   }
 
   // when the datetime picker has mounted, SmartForm will catch the date value (no formsy mixin in this component)
-  componentDidMount() {
-    if (this.props.value) {
-      this.updateDate(this.props.value);
-    }
-  }
+  // componentDidMount() {
+  //   if (this.props.value) {
+  //     this.updateDate(this.props.value);
+  //   }
+  // }
 
   updateDate(date) {
-    this.context.updateCurrentValues({[this.props.name]: date});
+    this.context.updateCurrentValues({[this.props.path]: date});
   }
 
   render() {
@@ -42,7 +42,7 @@ class Date extends PureComponent {
   }
 }
 
-Date.propTypes = {
+DateComponent.propTypes = {
   control: PropTypes.any,
   datatype: PropTypes.any,
   group: PropTypes.any,
@@ -51,10 +51,10 @@ Date.propTypes = {
   value: PropTypes.any,
 };
 
-Date.contextTypes = {
+DateComponent.contextTypes = {
   updateCurrentValues: PropTypes.func,
 };
 
-export default Date;
+export default DateComponent;
 
-registerComponent('FormComponentDate', Date);
+registerComponent('FormComponentDate', DateComponent);

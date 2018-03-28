@@ -40,26 +40,30 @@ export const validateDocument = (document, collection, context) => {
   });
 
   // 4. check that required fields have a value
-  _.keys(schema).forEach(fieldName => {
-    const fieldSchema = schema[fieldName];
+  // _.keys(schema).forEach(fieldName => {
+  //   const fieldSchema = schema[fieldName];
 
-    if ((fieldSchema.required || !fieldSchema.optional) && typeof document[fieldName] === 'undefined') {
-      validationErrors.push({
-        id: 'app.required_field_missing',
-        data: { fieldName },
-      });
-    }
-  });
+  //   if ((fieldSchema.required || !fieldSchema.optional) && typeof document[fieldName] === 'undefined') {
+  //     validationErrors.push({
+  //       id: 'app.required_field_missing',
+  //       data: { fieldName },
+  //     });
+  //   }
+  // });
 
   // 5. still run SS validation for now for backwards compatibility
-  try {
-    collection.simpleSchema().validate(document);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-    validationErrors.push({
-      id: 'app.schema_validation_error',
-      data: { message: error.message },
+  const validationContext = collection.simpleSchema().newContext();
+  validationContext.validate(document);
+
+  if (!validationContext.isValid()) {
+    const errors = validationContext.validationErrors();
+    errors.forEach(error => {
+      // eslint-disable-next-line no-console
+      // console.log(error);
+      validationErrors.push({
+        id: 'app.schema_validation_error',
+        data: error,
+      });
     });
   }
 
@@ -133,9 +137,6 @@ export const validateModifier = (modifier, document, collection, context) => {
 
   if (!validationContext.isValid()) {
     const errors = validationContext.validationErrors();
-    console.log('// validationContext');
-    console.log(validationContext.isValid());
-    console.log(errors);
     errors.forEach(error => {
       // eslint-disable-next-line no-console
       // console.log(error);

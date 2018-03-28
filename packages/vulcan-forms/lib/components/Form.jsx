@@ -651,6 +651,7 @@ class Form extends Component {
             <Components.FormGroup
               key={group.name}
               {...group}
+              errors={this.state.errors}
               currentValues={this.state.currentValues}
               updateCurrentValues={this.updateCurrentValues}
               formType={this.getFormType()}
