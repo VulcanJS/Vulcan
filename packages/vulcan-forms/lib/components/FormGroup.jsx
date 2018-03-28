@@ -32,7 +32,11 @@ class FormGroup extends PureComponent {
   }
 
   render() {
-    const hasErrors = _.some(this.props.fields, field => field.errors && field.errors.length);
+
+    // if at least one of the fields in the group has an error, the group as a whole has an error
+    const hasErrors = _.some(this.props.fields, field => {
+      return !!this.props.errors.filter(error => error.data.name === field.path).length
+    });
 
     return (
       <div className="form-section">
@@ -45,6 +49,7 @@ class FormGroup extends PureComponent {
               updateCurrentValues={this.props.updateCurrentValues}
               formType={this.props.formType}
               currentValues={this.props.currentValues}
+              errors={this.props.errors}
             />
           ))}
         </div>

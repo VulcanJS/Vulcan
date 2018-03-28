@@ -90,7 +90,7 @@ class FormComponent extends PureComponent {
 
   */
   getErrors = () => {
-    const fieldErrors = this.context.errors.filter(error => error.data.name === this.props.path);
+    const fieldErrors = this.props.errors.filter(error => error.data.name === this.props.path);
     return fieldErrors;
   };
 
@@ -194,7 +194,7 @@ class FormComponent extends PureComponent {
             value: '',
             disabled: true,
           };
-
+          console.log(properties.options)
           properties.options = [noneOption, ...properties.options];
           return <Components.FormComponentSelect {...properties} />;
 
@@ -285,7 +285,8 @@ FormComponent.propTypes = {
   path: PropTypes.string,
   disabled: PropTypes.bool,
   nestedSchema: PropTypes.object,
-  nestedFields: PropTypes.array,
+  currentValues: PropTypes.object,
+  errors: PropTypes.array,
 };
 
 FormComponent.contextTypes = {
