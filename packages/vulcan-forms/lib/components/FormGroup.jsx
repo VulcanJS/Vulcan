@@ -4,6 +4,50 @@ import { Components } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 import { registerComponent } from 'meteor/vulcan:core';
 
+const IconRight = ({ width = 24, height = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+  >
+    <polyline
+      fill="none"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      points="5.5,23.5 18.5,12 5.5,0.5"
+      id="Outline_Icons"
+    />
+    <rect fill="none" width="24" height="24" id="Frames-24px" />
+  </svg>
+);
+
+registerComponent('IconRight', IconRight);
+
+const IconDown = ({ width = 24, height = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+  >
+    <polyline
+      fill="none"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      points="0.501,5.5 12.001,18.5 23.501,5.5"
+      id="Outline_Icons"
+    />
+    <rect fill="none" width="24" height="24" id="Frames-24px" />
+  </svg>
+);
+
+registerComponent('IconDown', IconDown);
+
 class FormGroup extends PureComponent {
   constructor(props) {
     super(props);
@@ -25,7 +69,7 @@ class FormGroup extends PureComponent {
       <div className="form-section-heading" onClick={this.toggle}>
         <h3 className="form-section-heading-title">{this.props.label}</h3>
         <span className="form-section-heading-toggle">
-          {this.state.collapsed ? <Components.Icon name="expand" /> : <Components.Icon name="collapse" />}
+          {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
         </span>
       </div>
     );
