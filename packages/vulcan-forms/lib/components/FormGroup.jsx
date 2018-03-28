@@ -93,6 +93,7 @@ class FormGroup extends PureComponent {
               updateCurrentValues={this.props.updateCurrentValues}
               formType={this.props.formType}
               currentValues={this.props.currentValues}
+              deletedValues={this.props.deletedValues}
               errors={this.props.errors}
             />
           ))}

@@ -6,6 +6,7 @@ import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import debounce from 'lodash.debounce';
 import get from 'lodash/get';
+import merge from 'lodash/merge';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends PureComponent {
@@ -60,15 +61,27 @@ class FormComponent extends PureComponent {
 
   */
   getValue = props => {
+    let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue } = p;
+    const { document, currentValues, defaultValue, path } = p;
+    const documentValue = get(document, path);
+    const currentValue = currentValues[path];
+    const isDeleted = p.deletedValues.includes(path);
 
-    // note: value has to default to '' to make component controlled
-    let value = currentValues[p.path] || get(document, p.path) || '';
-
-    // replace empty value, which has not been prefilled, by the default value from the schema
-    if (isEmptyValue(value)) {
-      if (defaultValue) value = defaultValue;
+    if (isDeleted) {
+      value = '';
+    } else {
+      if (typeof documentValue === 'object' || typeof currentValue === 'object') {
+        // for object, use lodash's merge
+        value = merge(documentValue, currentValue);
+      } else {
+        // note: value has to default to '' to make component controlled
+        value = currentValue || documentValue || '';
+      }
+      // replace empty value, which has not been prefilled, by the default value from the schema
+      if (isEmptyValue(value)) {
+        if (defaultValue) value = defaultValue;
+      }
     }
 
     return value;

@@ -445,9 +445,11 @@ class Form extends Component {
         if (value === null) {
           // delete value
           unset(newState.currentValues, path);
-          this.addToDeletedValues(path);
+          newState.deletedValues = [...prevState.deletedValues, path];
         } else {
+          // in case value had previously been deleted, "undelete" it
           set(newState.currentValues, path, value);
+          newState.deletedValues = _.without(prevState.deletedValues, path);
         }
       });
       return newState;
@@ -653,6 +655,7 @@ class Form extends Component {
               {...group}
               errors={this.state.errors}
               currentValues={this.state.currentValues}
+              deletedValues={this.state.deletedValues}
               updateCurrentValues={this.updateCurrentValues}
               formType={this.getFormType()}
             />
