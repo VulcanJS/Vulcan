@@ -67,13 +67,15 @@ class FormComponent extends PureComponent {
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
-
+    
     if (isDeleted) {
       value = '';
     } else {
       if (typeof documentValue === 'object' || typeof currentValue === 'object') {
         // for object, use lodash's merge
-        value = merge(documentValue, currentValue);
+        // if one of the two values is an array, use [] as merge seed to force result to be an array as well
+        const mergeSeed = Array.isArray(documentValue) || Array.isArray(currentValue) ? [] : {};
+        value = merge(mergeSeed, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
         value = currentValue || documentValue || '';
