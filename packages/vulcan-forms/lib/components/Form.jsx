@@ -66,9 +66,9 @@ class Form extends Component {
     };
 
     // convert SimpleSchema schema into JSON object
-    this.schema = convertSchema(props.collection.simpleSchema());
+    this.schema = convertSchema(this.getCollection().simpleSchema());
     // Also store all field schemas (including nested schemas) in a flat structure
-    this.flatSchema = convertSchema(props.collection.simpleSchema(), true);
+    this.flatSchema = convertSchema(this.getCollection().simpleSchema(), true);
 
     // the initial document passed as props
     this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
