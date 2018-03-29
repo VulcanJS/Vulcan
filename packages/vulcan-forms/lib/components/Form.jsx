@@ -61,7 +61,6 @@ class Form extends Component {
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: {},
       deletedValues: [],
       currentValues: {},
     };
@@ -114,12 +113,11 @@ class Form extends Component {
   for each field, we apply the following logic:
   - if its value was provided by prefilledProps, use that
   - unless its value was provided by the db (i.e. props.document)
-  - unless if its value is provided by the autofilledValues object
   - unless its value is currently being inputted
 
   */
   getDocument = () => {
-    const document = merge({}, this.initialDocument, this.state.autofilledValues, this.state.currentValues);
+    const document = merge({}, this.initialDocument, this.state.currentValues);
 
     return document;
   };
@@ -334,35 +332,26 @@ class Form extends Component {
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
   throwError = error => {
-    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-    const graphQLError = error.graphQLErrors[0];
+    let formErrors = [];
+    // if this is one or more GraphQL errors, extract them
+    if (error.graphQLErrors) {
+      // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+      const graphQLError = error.graphQLErrors[0];
+      formErrors = graphQLError.data.errors;
+    } else {
+      formErrors = [error];
+    }
     // eslint-disable-next-line no-console
-    console.log(graphQLError);
-
-    // add error to state
+    console.log(formErrors);
+    // add error(s) to state
     this.setState(prevState => ({
-      errors: [...prevState.errors, ...graphQLError.data.errors],
+      errors: [...prevState.errors, ...formErrors],
     }));
   };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
-
-  // add something to autofilled values
-  addToAutofilledValues = property => {
-    this.setState(prevState => ({
-      autofilledValues: {
-        ...prevState.autofilledValues,
-        ...property,
-      },
-    }));
-  };
-
-  // get autofilled values
-  getAutofilledValues = () => {
-    return this.state.autofilledValues;
-  };
 
   // add something to deleted values
   addToDeletedValues = name => {
@@ -409,8 +398,6 @@ class Form extends Component {
       throwError: this.throwError,
       clearForm: this.clearForm,
       submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
-      getAutofilledValues: this.getAutofilledValues,
-      addToAutofilledValues: this.addToAutofilledValues,
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
@@ -421,7 +408,6 @@ class Form extends Component {
       addToFailureForm: this.addToFailureForm,
       errors: this.state.errors,
       currentValues: this.state.currentValues,
-      autofilledValues: this.state.autofilledValues,
       deletedValues: this.state.deletedValues,
     };
   };
@@ -729,8 +715,6 @@ Form.contextTypes = {
 };
 
 Form.childContextTypes = {
-  getAutofilledValues: PropTypes.func,
-  addToAutofilledValues: PropTypes.func,
   addToDeletedValues: PropTypes.func,
   deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
@@ -745,7 +729,6 @@ Form.childContextTypes = {
   submitForm: PropTypes.func,
   errors: PropTypes.array,
   currentValues: PropTypes.object,
-  autofilledValues: PropTypes.object,
 };
 
 module.exports = Form;

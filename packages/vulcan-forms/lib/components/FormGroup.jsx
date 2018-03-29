@@ -35,7 +35,7 @@ class FormGroup extends PureComponent {
 
     // if at least one of the fields in the group has an error, the group as a whole has an error
     const hasErrors = _.some(this.props.fields, field => {
-      return !!this.props.errors.filter(error => error.data.name === field.path).length
+      return !!this.props.errors.filter(error => error.data && error.data.name && error.data.name === field.path).length
     });
 
     return (

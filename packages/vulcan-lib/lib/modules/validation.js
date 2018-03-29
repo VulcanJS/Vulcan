@@ -22,18 +22,18 @@ export const validateDocument = (document, collection, context) => {
     // 1. check that the current user has permission to insert each field
     if (!fieldSchema || !Users.canInsertField(currentUser, fieldSchema)) {
       validationErrors.push({
-        id: 'app.disallowed_property_detected',
-        fieldName,
+        id: 'errors.disallowed_property_detected',
+        data: {name: fieldName},
       });
     }
 
     // 2. check field lengths
-    if (fieldSchema.limit && value.length > fieldSchema.limit) {
-      validationErrors.push({
-        id: 'app.field_is_too_long',
-        data: { fieldName, limit: fieldSchema.limit },
-      });
-    }
+    // if (fieldSchema.limit && value.length > fieldSchema.limit) {
+    //   validationErrors.push({
+    //     id: 'errors.field_is_too_long',
+    //     data: { fieldName, limit: fieldSchema.limit },
+    //   });
+    // }
 
     // 3. check that fields have the proper type
     // TODO
@@ -61,7 +61,7 @@ export const validateDocument = (document, collection, context) => {
       // eslint-disable-next-line no-console
       // console.log(error);
       validationErrors.push({
-        id: 'app.schema_validation_error',
+        id: `errors.${error.type}`,
         data: error,
       });
     });
@@ -95,27 +95,27 @@ export const validateModifier = (modifier, document, collection, context) => {
     var field = schema[fieldName];
     if (!field || !Users.canEditField(currentUser, field, document)) {
       validationErrors.push({
-        id: 'app.disallowed_property_detected',
+        id: 'errors.disallowed_property_detected',
         data: {name: fieldName},
       });
     }
   });
 
   // Check validity of set modifier
-  _.forEach(set, (value, fieldName) => {
-    const fieldSchema = schema[fieldName];
+  // _.forEach(set, (value, fieldName) => {
+  //   const fieldSchema = schema[fieldName];
 
-    // 2. check field lengths
-    if (fieldSchema.limit && value.length > fieldSchema.limit) {
-      validationErrors.push({
-        id: 'app.field_is_too_long',
-        data: { name: fieldName, limit: fieldSchema.limit },
-      });
-    }
+  //   // 2. check field lengths
+  //   if (fieldSchema.limit && value.length > fieldSchema.limit) {
+  //     validationErrors.push({
+  //       id: 'app.field_is_too_long',
+  //       data: { name: fieldName, limit: fieldSchema.limit },
+  //     });
+  //   }
 
-    // 3. check that fields have the proper type
-    // TODO
-  });
+  //   // 3. check that fields have the proper type
+  //   // TODO
+  // });
 
   // // 4. check that required fields have a value
   // // when editing, we only want to require fields that are actually part of the form
@@ -141,7 +141,7 @@ export const validateModifier = (modifier, document, collection, context) => {
       // eslint-disable-next-line no-console
       // console.log(error);
       validationErrors.push({
-        id: 'app.schema_validation_error',
+        id: `errors.${error.type}`,
         data: error,
       });
     });

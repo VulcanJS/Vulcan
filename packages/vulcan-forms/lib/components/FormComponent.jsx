@@ -24,15 +24,11 @@ class FormComponent extends PureComponent {
   }
 
   handleChange = (name, value) => {
-    if (!!value) {
-      // if this is a number field, convert value before sending it up to Form
-      if (this.getType() === 'number') {
-        value = Number(value);
-      }
-      this.context.updateCurrentValues({ [this.props.path]: value });
-    } else {
-      this.context.updateCurrentValues({ [this.props.path]: null });
+    // if this is a number field, convert value before sending it up to Form
+    if (this.getType() === 'number') {
+      value = Number(value);
     }
+    this.context.updateCurrentValues({ [this.props.path]: value });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -63,7 +59,7 @@ class FormComponent extends PureComponent {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue, path } = p;
+    const { document, currentValues, defaultValue, path, datatype } = p;
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
@@ -71,11 +67,12 @@ class FormComponent extends PureComponent {
     if (isDeleted) {
       value = '';
     } else {
-      if (typeof documentValue === 'object' || typeof currentValue === 'object') {
-        // for object, use lodash's merge
-        // if one of the two values is an array, use [] as merge seed to force result to be an array as well
-        const mergeSeed = Array.isArray(documentValue) || Array.isArray(currentValue) ? [] : {};
-        value = merge(mergeSeed, documentValue, currentValue);
+      if (datatype[0].type === Array) {
+        // for object and arrays, use lodash's merge
+        // if field type is array, use [] as merge seed to force result to be an array as well
+        value = merge([], documentValue, currentValue);
+      } else if (datatype[0].type === Object) {
+        value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
         value = currentValue || documentValue || '';
@@ -168,20 +165,19 @@ class FormComponent extends PureComponent {
         case 'checkbox':
           // formsy-react-components expects a boolean value for checkbox
           // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox.js#L20
-          properties.value = !!properties.value;
+          properties.inputProperties.value = !!properties.inputProperties.value;
           return <Components.FormComponentCheckbox {...properties} />;
 
         case 'checkboxgroup':
           // formsy-react-components expects an array value
           // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
-          if (!Array.isArray(properties.value)) {
-            properties.value = [properties.value];
+          if (!Array.isArray(properties.inputProperties.value)) {
+            properties.inputProperties.value = [properties.inputProperties.value];
           }
-
           // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
           const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
-          if (checkedValues.length && !properties.value && formType === 'new') {
-            properties.value = checkedValues;
+          if (checkedValues.length && !properties.inputProperties.value && formType === 'new') {
+            properties.inputProperties.value = checkedValues;
           }
           return <Components.FormComponentCheckboxGroup {...properties} />;
 
@@ -299,7 +295,6 @@ FormComponent.contextTypes = {
   intl: intlShape,
   addToDeletedValues: PropTypes.func,
   errors: PropTypes.array,
-  autofilledValues: PropTypes.object,
   deletedValues: PropTypes.array,
   getDocument: PropTypes.func,
   updateCurrentValues: PropTypes.func,
