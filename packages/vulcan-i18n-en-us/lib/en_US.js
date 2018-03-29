@@ -124,9 +124,6 @@ addStrings('en', {
   "app.disallowed_property_detected": "Disallowed property detected: {value}",
   "app.something_bad_happened": "Something bad happened...",
   "app.embedly_not_authorized": "Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API",
-  "app.required_field_missing": "{fieldName} is required.",
-  "app.field_is_too_long": "{fieldName} cannot exceed {limit} characters.",
-  "app.schema_validation_error": "Schema validation error",
 
   "cards.edit": "Edit",
   "datatable.new": "New",
