@@ -26,15 +26,8 @@ const getImageUrl = imageOrImageArray => {
   const image = Array.isArray(imageOrImageArray) ? imageOrImageArray[0] : imageOrImageArray;
   // if image is an object, return secure_url; else return image itself
   const imageUrl = typeof image === 'string' ? image : image.secure_url;
-  return imageUrl
-}
-
-/*
-
-Remove the nth item from an array
-
-*/
-const removeNthItem = (array, n) => [..._.first(array, n), ..._.rest(array, n+1)];
+  return imageUrl;
+};
 
 /*
 
@@ -42,7 +35,6 @@ Display a single image
 
 */
 class Image extends PureComponent {
-
   constructor() {
     super();
     this.clearImage = this.clearImage.bind(this);
@@ -57,12 +49,18 @@ class Image extends PureComponent {
     return (
       <div className="upload-image">
         <div className="upload-image-contents">
-          <img style={{width: 150}} src={getImageUrl(this.props.image)} />
-          {this.props.image.loading ? <div className="upload-loading"><Components.Loading /></div> : null}
+          <img style={{ width: 150 }} src={getImageUrl(this.props.image)} />
+          {this.props.image.loading ? (
+            <div className="upload-loading">
+              <Components.Loading />
+            </div>
+          ) : null}
         </div>
-        <a href="javascript:void(0)" onClick={this.clearImage}><Components.Icon name="close"/> Remove image</a>
+        <a href="javascript:void(0)" onClick={this.clearImage}>
+          <Components.Icon name="close" /> Remove image
+        </a>
       </div>
-    )
+    );
   }
 }
 
@@ -72,35 +70,13 @@ Cloudinary Image Upload component
 
 */
 class Upload extends PureComponent {
-
   constructor(props, context) {
     super(props);
-
-    this.onDrop = this.onDrop.bind(this);
-    this.clearImage = this.clearImage.bind(this);
-    this.enableMultiple = this.enableMultiple.bind(this);
-
-    const isEmpty = !props.value || (this.enableMultiple() && props.value.length === 0);
-    const emptyValue = this.enableMultiple() ? [] : '';
 
     this.state = {
       preview: '',
       uploading: false,
-      value: isEmpty ? emptyValue : props.value,
-    }
-
-  }
-
-  /*
-
-  Add to autofilled values so SmartForms doesn't think the field is empty
-  if the user submits the form without changing it
-
-  */
-  componentWillMount() {
-    const isEmpty = !this.props.value || (this.enableMultiple() && this.props.value.length === 0);
-    const emptyValue = this.enableMultiple() ? [] : '';
-    this.context.addToAutofilledValues({[this.props.name]: isEmpty ? emptyValue : this.props.value});
+    };
   }
 
   /*
@@ -109,18 +85,17 @@ class Upload extends PureComponent {
   multiple image uploads or not
 
   */
-  enableMultiple() {
+  enableMultiple = () => {
     return this.props.datatype && this.props.datatype[0].type === Array;
-  }
+  };
 
   /*
 
   When an image is uploaded
 
   */
-  onDrop(files) {
-    
-    const preview = {secure_url: files[0].preview, loading: true};
+  onDrop = files => {
+    const preview = { secure_url: files[0].preview, loading: true };
 
     // set the component in upload mode with the preview
     this.setState({
@@ -141,52 +116,65 @@ class Upload extends PureComponent {
       method: 'POST',
       body,
     })
-    .then(res => res.json()) // json-ify the readable strem
-    .then(body => {
-      // use the https:// url given by cloudinary; or eager property if using transformations
-      const imageUrl = body.eager ? body.eager : body.secure_url;
-      const newValue = this.enableMultiple() ? [...this.state.value, imageUrl] : imageUrl;
+      .then(res => res.json()) // json-ify the readable strem
+      .then(body => {
+        // use the https:// url given by cloudinary; or eager property if using transformations
+        const imageObject = body.eager ? body.eager : body.secure_url;
 
-      // set the uploading status to false
-      this.setState({
-        preview: '',
-        uploading: false,
-        value: newValue,
-      });
+        // set the uploading status to false
+        this.setState({
+          preview: '',
+          uploading: false,
+        });
 
-      // tell vulcanForm to catch the value
-      this.context.addToAutofilledValues({[this.props.name]: newValue});
-    })
-    // eslint-disable-next-line no-console
-    .catch(err => console.log('err', err));
-  }
+        const updateObject = this.enableMultiple() ? { [`${this.props.path}.${this.getImages().length}`]: imageObject } : { [this.props.path]: imageObject};
+        
+        // tell vulcanForm to catch the value
+        this.context.updateCurrentValues(updateObject);
+      })
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('err', err));
+  };
+  
+  isDeleted = index => {
+    return this.context.deletedValues.includes(`${this.props.path}.${index}`);
+  };
 
   /*
 
   Remove the image at `index` (or just remove image if no index is passed)
 
   */
-  clearImage(index) {
-    const newValue = this.enableMultiple() ? removeNthItem(this.state.value, index): '';
-    this.context.addToAutofilledValues({[this.props.name]: newValue});
-    this.setState({
-      preview: null,
-      value: newValue,
-    });
-  }
+  clearImage = index => {
+    if (this.enableMultiple()) {
+      this.context.addToDeletedValues(`${this.props.path}.${index}`);
+    } else {
+      this.context.addToDeletedValues(this.props.path);
+    }
+  };
+
+  getImages = () => {
+    const { preview } = this.state;
+    const { value } = this.props;
+    // show the actual uploaded image(s) and/or the preview
+    if (this.enableMultiple()) {
+      return preview ? [...value, preview] : value;
+    } else {
+      return preview ? [preview] : [value];
+    }
+  };
 
   render() {
-    const { uploading, preview, value } = this.state;
-    
-    // show the actual uploaded image or the preview
-    const imageData = this.enableMultiple() ? (preview ? value.concat(preview) : value) : value || preview;
+    const { uploading } = this.state;
+    const images = this.getImages();
 
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <div className="upload-field">
-            <Dropzone ref="dropzone"
+            <Dropzone
+              ref="dropzone"
               multiple={this.enableMultiple()}
               onDrop={this.onDrop}
               accept="image/*"
@@ -194,20 +182,27 @@ class Upload extends PureComponent {
               activeClassName="dropzone-active"
               rejectClassName="dropzone-reject"
             >
-              <div><FormattedMessage id="upload.prompt"/></div>
-              {uploading ? <div className="upload-uploading"><span><FormattedMessage id="upload.uploading"/></span></div> : null}
+              <div>
+                <FormattedMessage id="upload.prompt" />
+              </div>
+              {uploading && (
+                <div className="upload-uploading">
+                  <span>
+                    <FormattedMessage id="upload.uploading" />
+                  </span>
+                </div>
+              )}
             </Dropzone>
 
-            {imageData && (Array.isArray(imageData) ? imageData.length > 0 : true) ?
+            {!!images.length && (
               <div className="upload-state">
                 <div className="upload-images">
-                  {this.enableMultiple() ? 
-                    imageData.map((image, index) => <Image clearImage={this.clearImage} key={index} index={index} image={image}/>) : 
-                    <Image clearImage={this.clearImage} image={imageData}/>
-                  }
+                  {images.map((image, index) => (
+                    !this.isDeleted(index) && image && <Image clearImage={this.clearImage} key={index} index={index} image={image} />
+                  ))}
                 </div>
               </div>
-            : null}
+            )}
           </div>
         </div>
       </div>
@@ -218,11 +213,13 @@ class Upload extends PureComponent {
 Upload.propTypes = {
   name: PropTypes.string,
   value: PropTypes.any,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 Upload.contextTypes = {
-  addToAutofilledValues: PropTypes.func,
+  updateCurrentValues: PropTypes.func,
+  addToDeletedValues: PropTypes.func,
+  deletedValues: PropTypes.array,
 };
 
 registerComponent('Upload', Upload);
