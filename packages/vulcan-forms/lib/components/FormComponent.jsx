@@ -18,7 +18,7 @@ class FormComponent extends PureComponent {
     if (this.showCharsRemaining(props)) {
       const characterCount = value ? value.length : 0;
       this.state = {
-        charsRemaining: props.max - characterCount,
+        charsRemaining: this.props.max - characterCount > 0 ? this.props.max - characterCount : 0
       };
     }
   }
@@ -47,7 +47,7 @@ class FormComponent extends PureComponent {
   updateCharacterCount = value => {
     const characterCount = value ? value.length : 0;
     this.setState({
-      charsRemaining: this.props.max - characterCount,
+      charsRemaining: this.props.max - characterCount > 0 ? this.props.max - characterCount : 0
     });
   };
 
