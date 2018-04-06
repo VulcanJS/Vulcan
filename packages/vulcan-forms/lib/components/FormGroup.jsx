@@ -46,11 +46,13 @@ class FormGroup extends PureComponent {
             <Components.FormComponent
               key={field.name}
               {...field}
-              updateCurrentValues={this.props.updateCurrentValues}
-              formType={this.props.formType}
-              currentValues={this.props.currentValues}
-              deletedValues={this.props.deletedValues}
               errors={this.props.errors}
+              throwError={this.props.throwError}
+              currentValues={this.props.currentValues}
+              updateCurrentValues={this.props.updateCurrentValues}
+              deletedValues={this.props.deletedValues}
+              addToDeletedValues={this.props.addToDeletedValues}
+              formType={this.props.formType}
             />
           ))}
         </div>

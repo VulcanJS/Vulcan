@@ -24,11 +24,15 @@ class FormComponent extends PureComponent {
   }
 
   handleChange = (name, value) => {
+    // if value is an empty string, delete the field
+    if (value === '') {
+      value = null;
+    }
     // if this is a number field, convert value before sending it up to Form
     if (this.getType() === 'number') {
       value = Number(value);
     }
-    this.context.updateCurrentValues({ [this.props.path]: value });
+    this.props.updateCurrentValues({ [this.props.path]: value });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -63,7 +67,7 @@ class FormComponent extends PureComponent {
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
-    
+
     if (isDeleted) {
       value = '';
     } else {
@@ -121,7 +125,21 @@ class FormComponent extends PureComponent {
   };
 
   renderComponent() {
-    const { control, beforeComponent, afterComponent, options, name, label, form, formType } = this.props;
+    const {
+      control,
+      beforeComponent,
+      afterComponent,
+      options,
+      name,
+      label,
+      form,
+      formType,
+      throwError,
+      updateCurrentValues,
+      currentValues,
+      addToDeletedValues,
+      deletedValues,
+    } = this.props;
 
     const value = this.getValue();
 
@@ -137,7 +155,17 @@ class FormComponent extends PureComponent {
     };
 
     // note: we also pass value on props directly
-    const properties = { ...this.props, value, errors: this.getErrors(), inputProperties };
+    const properties = {
+      ...this.props,
+      value,
+      errors: this.getErrors(), // only get errors for the current field
+      throwError,
+      inputProperties,
+      currentValues,
+      updateCurrentValues,
+      deletedValues,
+      addToDeletedValues,
+    };
 
     // if control is a React component, use it
     if (typeof control === 'function') {
@@ -233,7 +261,7 @@ class FormComponent extends PureComponent {
 
   clearField = e => {
     e.preventDefault();
-    this.context.updateCurrentValues({ [this.props.path]: null });
+    this.props.updateCurrentValues({ [this.props.path]: null });
   };
 
   renderClear() {
@@ -288,16 +316,15 @@ FormComponent.propTypes = {
   disabled: PropTypes.bool,
   nestedSchema: PropTypes.object,
   currentValues: PropTypes.object,
+  deletedValues: PropTypes.array,
+  updateCurrentValues: PropTypes.func,
   errors: PropTypes.array,
+  addToDeletedValues: PropTypes.func,
 };
 
 FormComponent.contextTypes = {
   intl: intlShape,
-  addToDeletedValues: PropTypes.func,
-  errors: PropTypes.array,
-  deletedValues: PropTypes.array,
   getDocument: PropTypes.func,
-  updateCurrentValues: PropTypes.func,
 };
 
 registerComponent('FormComponent', FormComponent);

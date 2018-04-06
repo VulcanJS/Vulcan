@@ -318,16 +318,6 @@ class Form extends Component {
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  getErrorMessage = error => {
-    if (error.data.fieldName) {
-      // if error has a corresponding field name, "labelify" that field name
-      const fieldName = this.getLabel(error.data.fieldName);
-      return this.context.intl.formatMessage({ id: error.id, defaultMessage: error.id }, { ...error.data, fieldName });
-    } else {
-      return this.context.intl.formatMessage({ id: error.id, defaultMessage: error.id }, error.data);
-    }
-  };
-
   // add error to form state
   // from "GraphQL Error: You have an error [error_code]"
   // to { content: "You have an error", type: "error" }
@@ -640,9 +630,11 @@ class Form extends Component {
               key={group.name}
               {...group}
               errors={this.state.errors}
+              throwError={this.throwError}
               currentValues={this.state.currentValues}
-              deletedValues={this.state.deletedValues}
               updateCurrentValues={this.updateCurrentValues}
+              deletedValues={this.state.deletedValues}
+              addToDeletedValues={this.addToDeletedValues}
               formType={this.getFormType()}
             />
           ))}
