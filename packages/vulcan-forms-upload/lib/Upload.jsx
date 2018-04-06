@@ -47,14 +47,14 @@ class Image extends PureComponent {
 
   render() {
     return (
-      <div className="upload-image">
+      <div className={`upload-image ${this.props.loading ? 'upload-image-loading' : ''}`}>
         <div className="upload-image-contents">
           <img style={{ width: 150 }} src={getImageUrl(this.props.image)} />
-          {this.props.image.loading ? (
+          {this.props.loading && (
             <div className="upload-loading">
               <Components.Loading />
             </div>
-          ) : null}
+          )}
         </div>
         <a href="javascript:void(0)" onClick={this.clearImage}>
           <Components.Icon name="close" /> Remove image
@@ -127,15 +127,17 @@ class Upload extends PureComponent {
           uploading: false,
         });
 
-        const updateObject = this.enableMultiple() ? { [`${this.props.path}.${this.getImages().length}`]: imageObject } : { [this.props.path]: imageObject};
-        
+        const updateObject = this.enableMultiple()
+          ? { [`${this.props.path}.${this.getImages().length}`]: imageObject }
+          : { [this.props.path]: imageObject };
+
         // tell vulcanForm to catch the value
         this.context.updateCurrentValues(updateObject);
       })
       // eslint-disable-next-line no-console
       .catch(err => console.log('err', err));
   };
-  
+
   isDeleted = index => {
     return this.context.deletedValues.includes(`${this.props.path}.${index}`);
   };
@@ -197,9 +199,11 @@ class Upload extends PureComponent {
             {!!images.length && (
               <div className="upload-state">
                 <div className="upload-images">
-                  {images.map((image, index) => (
-                    !this.isDeleted(index) && image && <Image clearImage={this.clearImage} key={index} index={index} image={image} />
-                  ))}
+                  {images.map(
+                    (image, index) =>
+                      !this.isDeleted(index) &&
+                      image && <Image clearImage={this.clearImage} key={index} index={index} image={image} loading={image.loading}/>
+                  )}
                 </div>
               </div>
             )}
