@@ -204,11 +204,13 @@ DatatableRow Component
 */
 const DatatableRow = (props, { intl }) => {
 
-  const { collection, columns, document, showEdit, currentUser, options, editFormOptions } = props;
+  const { collection, columns, document, showEdit, currentUser, options, editFormOptions, rowClass } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
+  const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
+
   return (
-  <tr className="datatable-item">
+  <tr className={`datatable-item ${row}`}>
 
     {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} />)}
 
