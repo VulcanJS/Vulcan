@@ -18,9 +18,32 @@ const schema = {
     viewableBy: ['admins'],
   },
 
+  // iterator: {
+  //   label: 'Iterator',
+  //   type: String,
+  //   viewableBy: ['admins'],
+  // },
+
+  // options: {
+  //   label: 'Options',
+  //   type: Array,
+  //   viewableBy: ['admins'],
+  // },
+
+  // 'options.$': {
+  //   type: Object,
+  //   viewableBy: ['admins'],
+  // },
+
   runs: {
     label: 'Runs',
     type: String,
+    viewableBy: ['admins'],
+  },
+
+  newSyntax: {
+    label: 'New Syntax',
+    type: Boolean,
     viewableBy: ['admins'],
   },
 

@@ -9,12 +9,12 @@ export const addProduct = (productKey, product, productType = 'product') => {
   if (typeof product === 'function') {
     productWithType = document => {
       const returnValue = product(document);
-      returnValue.type = 'subscription';
+      returnValue.type = productType;
       return returnValue;
     }
   } else {
     productWithType = product;
-    productWithType.type = 'subscription';
+    productWithType.type = productType;
   }
 
   Products[productKey] = productWithType;

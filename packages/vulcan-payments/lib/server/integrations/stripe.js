@@ -1,6 +1,8 @@
 /*
 
-Stripe charge lifecycly
+Stripe charge lifecycle
+
+### From a GraphQL Mutation ###
 
 1. paymentActionMutation GraphQL mutation is received
 
@@ -25,6 +27,13 @@ Stripe charge lifecycly
 
   -> [stripe.process.sync] callback
   -> [stripe.process.async] callback
+
+### From a Stripe Webhook ###
+
+1. `/stripe` endpoint is triggered
+
+2. processAction is called
+
 */
 
 import { webAppConnectHandlersUse, debug, debugGroup, debugGroupEnd, getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
