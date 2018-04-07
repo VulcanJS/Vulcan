@@ -202,7 +202,10 @@ class Form extends Component {
   Get a list of the fields to be included in the current form
 
   */
-  getFieldNames = ({ schema = this.schema, excludeHiddenFields = true }) => {
+  getFieldNames = (args = {}) => {
+
+    const { schema = this.schema, excludeHiddenFields = true } = args;
+
     const { fields, hideFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
