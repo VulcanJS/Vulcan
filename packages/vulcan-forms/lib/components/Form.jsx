@@ -132,7 +132,7 @@ class Form extends Component {
   */
   getData = () => {
     // only keep relevant fields
-    const fields = this.getFieldNames();
+    const fields = this.getFieldNames({ excludeHiddenFields: false });
     let data = cloneDeep(_.pick(this.getDocument(), ...fields));
 
     // remove any deleted values
@@ -202,7 +202,7 @@ class Form extends Component {
   Get a list of the fields to be included in the current form
 
   */
-  getFieldNames = (schema = this.schema) => {
+  getFieldNames = ({ schema = this.schema, excludeHiddenFields = true }) => {
     const { fields, hideFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
@@ -214,17 +214,18 @@ class Form extends Component {
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
       relevantFields = _.intersection(relevantFields, fields);
-    } else {
-      // else if fields is not specified, remove all hidden fields
+    }
+    // if "hideFields" prop is specified, remove its fields
+    if (typeof hideFields !== 'undefined' && hideFields.length > 0) {
+      relevantFields = _.difference(relevantFields, hideFields);
+    }
+
+    // remove all hidden fields
+    if (excludeHiddenFields) {
       relevantFields = _.reject(relevantFields, fieldName => {
         const hidden = schema[fieldName].hidden;
         return typeof hidden === 'function' ? hidden(this.props) : hidden;
       });
-    }
-
-    // if "hideFields" prop is specified, remove its fields
-    if (typeof hideFields !== 'undefined' && hideFields.length > 0) {
-      relevantFields = _.difference(relevantFields, hideFields);
     }
 
     return relevantFields;
@@ -294,7 +295,7 @@ class Form extends Component {
       field.control = 'nested';
       // get nested schema
       // for each nested field, get field object by calling createField recursively
-      field.nestedFields = this.getFieldNames(field.nestedSchema).map(subFieldName => {
+      field.nestedFields = this.getFieldNames({ schema: field.nestedSchema }).map(subFieldName => {
         return this.createField(subFieldName, field.nestedSchema, fieldName, fieldPath);
       });
     }
