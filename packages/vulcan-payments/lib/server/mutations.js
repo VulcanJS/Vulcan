@@ -1,11 +1,11 @@
 import { addGraphQLSchema, addGraphQLResolvers, addGraphQLMutation, Collections, addCallback } from 'meteor/vulcan:core';
 // import Users from 'meteor/vulcan:users';
-import { performAction } from '../server/integrations/stripe.js';
+import { receiveAction } from '../server/integrations/stripe.js';
 
 const resolver = {
   Mutation: {
     async paymentActionMutation(root, args, context) {
-      return await performAction(args);
+      return await receiveAction(args);
     },
   },
 };
