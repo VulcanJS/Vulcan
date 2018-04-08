@@ -331,7 +331,7 @@ class Form extends Component {
     if (error.graphQLErrors) {
       // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
       const graphQLError = error.graphQLErrors[0];
-      formErrors = graphQLError.data.errors;
+      formErrors = graphQLError.data && graphQLError.data.errors;
     } else {
       formErrors = [error];
     }

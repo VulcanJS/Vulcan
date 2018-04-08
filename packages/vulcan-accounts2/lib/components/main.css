@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
+.navigation a {
+  display: block;
+  color: #000;
+  text-decoration: underline;
+}
+
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+
+.navigation {
+  list-style-type: none;
+  margin-bottom:: 1em;
+  padding: 0;
+}
+
+input {
+  font-size: 1em;
+  font-family: Inconsolata;
+}
