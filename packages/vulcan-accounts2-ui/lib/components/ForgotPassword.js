@@ -1,8 +1,9 @@
 import React from 'react'
-import { resetPassword, forgotPassword } from 'meteor-apollo-accounts'
-import { ApolloClient, Notification } from './index'
+import { resetPassword, forgotPassword } from 'meteor/vulcan:accounts2'
+import { withApollo } from 'react-apollo';
+import { registerComponent, withMessages } from 'meteor/vulcan:core';
 
-class RecoverPassword extends React.Component {
+class ForgotPassword extends React.Component {
 
   async reset(event){
     event.preventDefault()
@@ -14,13 +15,13 @@ class RecoverPassword extends React.Component {
 
     if(newPassword === repeatPassword){
       try {
-        const response = await resetPassword({ newPassword, token }, ApolloClient)
-        Notification.success(response)
+        const response = await resetPassword({ newPassword, token }, this.props.client)
+        this.props.flash(response, 'success')
       } catch (error) {
-        Notification.error(error)
+        this.props.flash(error)
       }
     }else{
-      Notification.error('Passwords do not match.')      
+      this.props.flash('Passwords do not match.')      
     }
   }
 
@@ -31,10 +32,10 @@ class RecoverPassword extends React.Component {
     email = email.value
 
     try {
-      const response = await forgotPassword({ email }, ApolloClient)
-      Notification.success(response)
+      const response = await forgotPassword({ email }, this.props.client)
+      this.props.flash(response, 'success')
     } catch (error) {
-      Notification.error(error)
+      this.props.flash(error)
     }
   }
 
@@ -79,4 +80,4 @@ class RecoverPassword extends React.Component {
   }
 }
 
-export default RecoverPassword
+registerComponent('AccountsForgotPassword', ForgotPassword, withMessages, withApollo);

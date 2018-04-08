@@ -1,9 +1,0 @@
-# babel
-.babelrc
-
-# uncompiled code
-src/
-
-# misc
-.DS_Store
-npm-debug.log

@@ -1,8 +1,9 @@
-import './Login'
-import './RecoverPassword'
-import './Register'
+import './Login';
+import './Logout';
+import './ForgotPassword';
+import './Register';
 // import './Profile'
-import './EmailVerification'
-import './ChangePassword'
+import './EmailVerification';
+import './ChangePassword';
 // import './SocialLogin'
-
+import './AccountsUI';

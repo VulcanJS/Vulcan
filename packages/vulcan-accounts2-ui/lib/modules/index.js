@@ -1,1 +1,2 @@
 import '../components';
+import './routes';
