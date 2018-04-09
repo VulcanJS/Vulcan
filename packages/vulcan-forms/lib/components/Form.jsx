@@ -322,21 +322,40 @@ class Form extends Component {
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // add error to form state
-  // from "GraphQL Error: You have an error [error_code]"
-  // to { content: "You have an error", type: "error" }
+  /*
+
+  Convert GraphQL error into SmartForm-compatible error
+
+  */
+  convertError = error => ({
+    id: error.id, 
+    path: error.data.name,
+    data: error.data,
+  });
+
+  /*
+  
+  Add error to form state
+
+  Errors can have the following properties:
+    - id: used as an internationalization key, for example `errors.required`
+    - path: for field-specific errors, the path of the field with the issue
+    - data: additional data. Will be passed to vulcan-i18n as values
+
+  */
   throwError = error => {
-    let formErrors = [];
-    // if this is one or more GraphQL errors, extract them
+    let formErrors = [error];
+    // if this is one or more GraphQL errors, extract and convert them
     if (error.graphQLErrors) {
       // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
       const graphQLError = error.graphQLErrors[0];
-      formErrors = graphQLError.data.errors;
-    } else {
-      formErrors = [error];
+      formErrors = graphQLError.data && graphQLError.data.errors;
+      formErrors = formErrors.map(this.convertError);
     }
+
     // eslint-disable-next-line no-console
     console.log(formErrors);
+
     // add error(s) to state
     this.setState(prevState => ({
       errors: [...prevState.errors, ...formErrors],

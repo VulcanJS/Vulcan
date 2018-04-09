@@ -106,7 +106,7 @@ class FormComponent extends PureComponent {
 
   */
   getErrors = () => {
-    const fieldErrors = this.props.errors.filter(error => error.data.name === this.props.path);
+    const fieldErrors = this.props.errors.filter(error => error.path === this.props.path);
     return fieldErrors;
   };
 
@@ -281,7 +281,8 @@ class FormComponent extends PureComponent {
     const { beforeComponent, afterComponent, max, name, control } = this.props;
 
     const hasErrors = this.getErrors() && this.getErrors().length;
-    const inputClass = classNames('form-input', `input-${name}`, `form-component-${control || 'default'}`, {
+    const controlName = typeof control === 'function' ? control.name : control;
+    const inputClass = classNames('form-input', `input-${name}`, `form-component-${controlName || 'default'}`, {
       'input-error': hasErrors,
     });
 
