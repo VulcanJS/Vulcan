@@ -441,7 +441,7 @@ class Form extends Component {
       Object.keys(newValues).forEach(key => {
         const path = key;
         const value = newValues[key];
-        if (value === null) {
+        if (value === null || value === '') {
           // delete value
           unset(newState.currentValues, path);
           newState.deletedValues = [...prevState.deletedValues, path];
