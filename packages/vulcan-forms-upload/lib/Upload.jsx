@@ -70,19 +70,18 @@ Cloudinary Image Upload component
 
 */
 class Upload extends PureComponent {
-  constructor(props, context) {
-    super(props);
 
-    this.state = {
-      preview: '',
-      uploading: false,
-    };
-  }
+  state = { uploading: false }
+
+  count = this.props.value.length;
 
   /*
 
   Check the field's type to decide if the component should handle
-  multiple image uploads or not
+  multiple image uploads or not.
+
+  For multiple images, the component expects an array of images; 
+  for single images it expects a single image object.
 
   */
   enableMultiple = () => {
@@ -95,51 +94,73 @@ class Upload extends PureComponent {
 
   */
   onDrop = files => {
-    const preview = { secure_url: files[0].preview, loading: true };
+    const promises = [];
 
-    // set the component in upload mode with the preview
+    // set the component in upload mode
     this.setState({
-      preview: this.enableMultiple() ? [...this.state.preview, preview] : preview,
       uploading: true,
     });
 
     // request url to cloudinary
     const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary.cloudName')}/upload`;
 
-    // request body
-    const body = new FormData();
-    body.append('file', files[0]);
-    body.append('upload_preset', this.props.options.preset);
+    // trigger a request for each file
+    files.forEach((file, index) => {
 
-    // post request to cloudinary
-    fetch(cloudinaryUrl, {
-      method: 'POST',
-      body,
-    })
-      .then(res => res.json()) // json-ify the readable strem
-      .then(body => {
-        // use the https:// url given by cloudinary; or eager property if using transformations
-        const imageObject = body.eager ? body.eager : body.secure_url;
+      // figure out update path for current image
+      const updateIndex = this.count + index;
+      const updatePath = this.enableMultiple() ? `${this.props.path}.${updateIndex}` : this.props.path;
 
-        // set the uploading status to false
-        this.setState({
-          preview: '',
-          uploading: false,
-        });
+      // build preview object
+      const previewObject = { secure_url: file.preview, loading: true, preview: true };
 
-        const updateObject = this.enableMultiple()
-          ? { [`${this.props.path}.${this.getImages().length}`]: imageObject }
-          : { [this.props.path]: imageObject };
+      // update current values using preview object
+      this.props.updateCurrentValues({ [updatePath]: previewObject });
 
-        // tell vulcanForm to catch the value
-        this.context.updateCurrentValues(updateObject);
-      })
-      // eslint-disable-next-line no-console
-      .catch(err => console.log('err', err));
+      // request body
+      const body = new FormData();
+      body.append('file', file);
+      body.append('upload_preset', this.props.options.preset);
+
+      // post request to cloudinary
+      promises.push(
+        fetch(cloudinaryUrl, {
+          method: 'POST',
+          body,
+        })
+          .then(res => res.json()) // json-ify the readable strem
+          .then(body => {
+            if (body.error) {
+              // eslint-disable-next-line no-console
+              console.log(body.error);
+              this.props.throwError({ id: 'upload.error', path: this.props.path, message: body.error.message });
+              return null;
+            } else {
+              // use the https:// url given by cloudinary; or eager property if using transformations
+              const imageObject = body.eager ? body.eager : body.secure_url;
+              this.props.updateCurrentValues({ [updatePath]: imageObject });
+              return imageObject;
+            }
+          })
+          .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+            this.props.throwError({ id: 'upload.error', path: this.props.path, message: error.message });
+          })
+      );
+    });
+
+    Promise.all(promises).then(values => {
+      // console.log(values);
+      // set the uploading status to false
+      this.setState({
+        uploading: false,
+      });
+    });
   };
 
   isDeleted = index => {
-    return this.context.deletedValues.includes(`${this.props.path}.${index}`);
+    return this.props.deletedValues.includes(`${this.props.path}.${index}`);
   };
 
   /*
@@ -149,27 +170,21 @@ class Upload extends PureComponent {
   */
   clearImage = index => {
     if (this.enableMultiple()) {
-      this.context.addToDeletedValues(`${this.props.path}.${index}`);
+      this.props.addToDeletedValues(`${this.props.path}.${index}`);
     } else {
-      this.context.addToDeletedValues(this.props.path);
+      this.props.addToDeletedValues(this.props.path);
     }
   };
 
   getImages = () => {
-    const { preview } = this.state;
-    const { value } = this.props;
-    // show the actual uploaded image(s) and/or the preview
-    if (this.enableMultiple()) {
-      return preview ? [...value, preview] : value;
-    } else {
-      return preview ? [preview] : [value];
-    }
+    // show the actual uploaded image(s)
+    return this.enableMultiple() ? this.props.value : [this.props.value];
   };
+
 
   render() {
     const { uploading } = this.state;
     const images = this.getImages();
-
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
@@ -183,6 +198,7 @@ class Upload extends PureComponent {
               className="dropzone-base"
               activeClassName="dropzone-active"
               rejectClassName="dropzone-reject"
+              disabled={this.state.uploading}
             >
               <div>
                 <FormattedMessage id="upload.prompt" />
@@ -202,7 +218,16 @@ class Upload extends PureComponent {
                   {images.map(
                     (image, index) =>
                       !this.isDeleted(index) &&
-                      image && <Image clearImage={this.clearImage} key={index} index={index} image={image} loading={image.loading}/>
+                      image && (
+                        <Image
+                          clearImage={this.clearImage}
+                          key={index}
+                          index={index}
+                          image={image}
+                          loading={image.loading}
+                          preview={image.preview}
+                        />
+                      )
                   )}
                 </div>
               </div>
@@ -218,12 +243,6 @@ Upload.propTypes = {
   name: PropTypes.string,
   value: PropTypes.any,
   label: PropTypes.string,
-};
-
-Upload.contextTypes = {
-  updateCurrentValues: PropTypes.func,
-  addToDeletedValues: PropTypes.func,
-  deletedValues: PropTypes.array,
 };
 
 registerComponent('Upload', Upload);
