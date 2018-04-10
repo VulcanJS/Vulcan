@@ -74,6 +74,8 @@ class Form extends Component {
     this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
   }
 
+  defaultValues = {};
+
   submitFormCallbacks = [];
   successFormCallbacks = [];
   failureFormCallbacks = [];
@@ -108,16 +110,11 @@ class Form extends Component {
 
   /*
 
-  Get the current document (for edit forms)
-
-  for each field, we apply the following logic:
-  - if its value was provided by prefilledProps, use that
-  - unless its value was provided by the db (i.e. props.document)
-  - unless its value is currently being inputted
+  Get the current document
 
   */
   getDocument = () => {
-    const document = merge({}, this.initialDocument, this.state.currentValues);
+    const document = merge({}, this.initialDocument, this.defaultValues, this.state.currentValues);
 
     return document;
   };
@@ -146,6 +143,15 @@ class Form extends Component {
 
     return data;
   };
+
+  /*
+
+
+
+  */
+  getDefaultValues = () => {
+
+  }
 
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
@@ -253,6 +259,10 @@ class Form extends Component {
       datatype: fieldSchema.type,
       layout: this.props.layout,
     };
+
+    if (field.defaultValue) {
+      set(this.defaultValues, fieldPath, field.defaultValue);
+    }
 
     // if field has a parent field, pass it on
     if (parentFieldName) {
