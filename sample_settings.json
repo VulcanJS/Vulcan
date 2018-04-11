@@ -24,6 +24,23 @@
   "defaultEmail": "hello@world.com",
   "mailUrl": "smtp://username%40yourdomain.mailgun.org:yourpassword123@smtp.mailgun.org:587/",
 
+\\if you are using newsletter feature and wanted to use mailchimp for newsletter, you might need to add this like below 
+"newsletter": {
+  "enabled":true,
+  "enabledInDev":true,
+  "autoSubscribe":false,
+  "frequency": [3,6],
+  "time": "00:00",
+  "provider": "mailchimp"
+},
+
+"mailchimp": {
+  "apiKey": "dummy4sdsfsdsfdsff",
+  "listId": "ec9013e28d",
+  "fromName": "from name",
+  "fromEmail": "anyname@example.com"
+},
+
   "oAuth": {
     "twitter": {
       "consumerKey": "foo",
