@@ -2,6 +2,7 @@ import { addStrings } from 'meteor/vulcan:core';
 
 addStrings('fr', {
 
+  "accounts.error_incorrect_password": "Mot de passe invalide",
   "accounts.error_email_required": "Email requis",
   "accounts.error_email_already_exists": "Email déjà utilisé",
   "accounts.error_invalid_email": "Email invalide",
