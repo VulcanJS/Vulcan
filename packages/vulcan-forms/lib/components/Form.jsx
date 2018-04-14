@@ -258,6 +258,7 @@ class Form extends Component {
       path: fieldPath,
       datatype: fieldSchema.type,
       layout: this.props.layout,
+      input: fieldSchema.input || fieldSchema.control,
     };
 
     if (field.defaultValue) {
@@ -288,12 +289,14 @@ class Form extends Component {
 
     // add any properties specified in fieldSchema.form as extra props passed on
     // to the form component, calling them if they are functions
-    if (fieldSchema.form) {
-      for (const prop in fieldSchema.form) {
+    const inputProperties = fieldSchema.form || fieldSchema.inputProperties;
+    if (inputProperties) {
+      for (const prop in inputProperties) {
+        const property = inputProperties[prop];
         field[prop] =
-          typeof fieldSchema.form[prop] === 'function'
-            ? fieldSchema.form[prop].call(fieldSchema, this.props)
-            : fieldSchema.form[prop];
+          typeof property === 'function'
+            ? property.call(fieldSchema, this.props)
+            : property;
       }
     }
 
@@ -302,10 +305,10 @@ class Form extends Component {
       field.help = fieldSchema.description;
     }
 
-    // nested fields: set control to "nested"
+    // nested fields: set formInput to "nested"
     if (fieldSchema.schema) {
       field.nestedSchema = fieldSchema.schema;
-      field.control = 'nested';
+      field.formInput = 'nested';
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({ schema: field.nestedSchema }).map(subFieldName => {
@@ -333,17 +336,6 @@ class Form extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-
-  Convert GraphQL error into SmartForm-compatible error
-
-  */
-  convertError = error => ({
-    id: error.id, 
-    path: error.data.name,
-    data: error.data,
-  });
-
-  /*
   
   Add error to form state
 
@@ -351,6 +343,7 @@ class Form extends Component {
     - id: used as an internationalization key, for example `errors.required`
     - path: for field-specific errors, the path of the field with the issue
     - data: additional data. Will be passed to vulcan-i18n as values
+    - message: if id cannot be used as i81n key, message will be used
 
   */
   throwError = error => {
@@ -360,7 +353,6 @@ class Form extends Component {
       // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
       const graphQLError = error.graphQLErrors[0];
       formErrors = graphQLError.data && graphQLError.data.errors;
-      formErrors = formErrors.map(this.convertError);
     }
 
     // eslint-disable-next-line no-console

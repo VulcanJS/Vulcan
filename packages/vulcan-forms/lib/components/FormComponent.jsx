@@ -112,7 +112,7 @@ class FormComponent extends PureComponent {
 
   /*
 
-  Get form control type, either based on control props, or by guessing
+  Get form input type, either based on input props, or by guessing
   based on form field type
 
   */
@@ -121,18 +121,17 @@ class FormComponent extends PureComponent {
     const fieldType = p.datatype && p.datatype[0].type;
     const autoType =
       fieldType === Number ? 'number' : fieldType === Boolean ? 'checkbox' : fieldType === Date ? 'date' : 'text';
-    return p.control || autoType;
+    return p.input || autoType;
   };
 
   renderComponent() {
     const {
-      control,
+      input,
       beforeComponent,
       afterComponent,
       options,
       name,
       label,
-      form,
       formType,
       throwError,
       updateCurrentValues,
@@ -152,7 +151,7 @@ class FormComponent extends PureComponent {
       label,
       onChange: this.handleChange,
       value,
-      ...form,
+      ...this.props.inputProperties,
     };
 
     // note: we also pass value on props directly
@@ -169,10 +168,10 @@ class FormComponent extends PureComponent {
       clearFieldErrors,
     };
 
-    // if control is a React component, use it
-    if (typeof control === 'function') {
-      const ControlComponent = control;
-      return <ControlComponent {...properties} />;
+    // if input is a React component, use it
+    if (typeof input === 'function') {
+      const InputComponent = input;
+      return <InputComponent {...properties} />;
     } else {
       // else pick a predefined component
 
@@ -247,7 +246,7 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentDefault {...properties} />;
 
         default:
-          const CustomComponent = Components[control];
+          const CustomComponent = Components[input];
           return CustomComponent ? (
             <CustomComponent {...properties} />
           ) : (
@@ -258,7 +257,7 @@ class FormComponent extends PureComponent {
   }
 
   showClear = () => {
-    return ['datetime', 'time', 'select', 'radiogroup'].includes(this.props.control);
+    return ['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input);
   };
 
   clearField = e => {
@@ -280,11 +279,11 @@ class FormComponent extends PureComponent {
   }
 
   render() {
-    const { beforeComponent, afterComponent, max, name, control } = this.props;
+    const { beforeComponent, afterComponent, name, input } = this.props;
 
     const hasErrors = this.getErrors() && this.getErrors().length;
-    const controlName = typeof control === 'function' ? control.name : control;
-    const inputClass = classNames('form-input', `input-${name}`, `form-component-${controlName || 'default'}`, {
+    const inputName = typeof input === 'function' ? input.name : input;
+    const inputClass = classNames('form-input', `input-${name}`, `form-component-${inputName || 'default'}`, {
       'input-error': hasErrors,
     });
 
@@ -313,7 +312,7 @@ FormComponent.propTypes = {
   placeholder: PropTypes.string,
   prefilledValue: PropTypes.any,
   options: PropTypes.any,
-  control: PropTypes.any,
+  input: PropTypes.any,
   datatype: PropTypes.any,
   path: PropTypes.string,
   disabled: PropTypes.bool,

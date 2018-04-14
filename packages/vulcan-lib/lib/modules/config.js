@@ -17,7 +17,9 @@ SimpleSchema.extendOptions([
   'hidden',     // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
-  'control', // SmartForm control (String or React component)
+  'inputProperties', // extra form properties
+  'input', // SmartForm control (String or React component)
+  'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
   'group', // form fieldset group
   'onInsert', // field insert callback

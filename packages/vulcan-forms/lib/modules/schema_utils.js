@@ -83,10 +83,11 @@ export const schemaProperties = [
   'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'profile', // profile: true means the field is shown on user profiles
-  'template', // legacy template used to display the field; backward compatibility (not used anymore)
   'form', // form placeholder
-  'autoform', // legacy form placeholder; backward compatibility (not used anymore)
+  'inputProperties', // form placeholder
   'control', // SmartForm control (String or React component)
+  'input', // SmartForm control (String or React component)
+  'autoform', // legacy form placeholder; backward compatibility (not used anymore)
   'order', // position in the form
   'group', // form fieldset group
   'onInsert', // field insert callback
@@ -124,7 +125,9 @@ export const formProperties = [
   'autoValue',
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // form placeholder
+  'inputProperties', // form placeholder
   'control', // SmartForm control (String or React component)
+  'input', // SmartForm control (String or React component)
   'order', // position in the form
   'group', // form fieldset group
   'description',

@@ -62,6 +62,7 @@ export const validateDocument = (document, collection, context) => {
       // console.log(error);
       validationErrors.push({
         id: `errors.${error.type}`,
+        path: error.name,
         data: error,
       });
     });
@@ -142,6 +143,7 @@ export const validateModifier = (modifier, document, collection, context) => {
       // console.log(error);
       validationErrors.push({
         id: `errors.${error.type}`,
+        path: error.name,
         data: error,
       });
     });
