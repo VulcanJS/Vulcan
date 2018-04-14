@@ -372,6 +372,16 @@ class Form extends Component {
     }));
   };
 
+  /*
+
+  Clear errors for a field
+
+  */
+  clearFieldErrors = path => {
+    const errors = this.state.errors.filter(error => error.path !== path);
+    this.setState({ errors });
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -668,6 +678,7 @@ class Form extends Component {
               updateCurrentValues={this.updateCurrentValues}
               deletedValues={this.state.deletedValues}
               addToDeletedValues={this.addToDeletedValues}
+              clearFieldErrors={this.clearFieldErrors}
               formType={this.getFormType()}
             />
           ))}

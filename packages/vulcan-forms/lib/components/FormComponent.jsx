@@ -139,6 +139,7 @@ class FormComponent extends PureComponent {
       currentValues,
       addToDeletedValues,
       deletedValues,
+      clearFieldErrors,
     } = this.props;
 
     const value = this.getValue();
@@ -165,6 +166,7 @@ class FormComponent extends PureComponent {
       updateCurrentValues,
       deletedValues,
       addToDeletedValues,
+      clearFieldErrors,
     };
 
     // if control is a React component, use it
