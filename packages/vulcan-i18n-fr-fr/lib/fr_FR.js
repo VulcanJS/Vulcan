@@ -2,6 +2,7 @@ import { addStrings } from 'meteor/vulcan:core';
 
 addStrings('fr', {
 
+  "accounts.error_incorrect_password": "Mot de passe invalide",
   "accounts.error_email_required": "Email requis",
   "accounts.error_email_already_exists": "Email déjà utilisé",
   "accounts.error_invalid_email": "Email invalide",
@@ -29,13 +30,13 @@ addStrings('fr', {
   "accounts.new_password": "Nouveau mot de passe",
   "accounts.forgot_password": "Mot de passe oublié",
   "accounts.sign_up": "Inscription",
-  "accounts.sign_in": "Connection",
+  "accounts.sign_in": "Connexion",
   "accounts.sign_out": "Se déconnecter",
   "accounts.cancel": "Annuler",
   "accounts.or_use": "ou utiliser",
   "accounts.info_email_sent": "Email envoyé.",
   "accounts.info_password_changed": "Mot de passe changé.",
-  "accounts.logging_in": "Connection en cours…",
+  "accounts.logging_in": "Connexion en cours…",
 
   "forms.submit": "Envoyer",
   "forms.cancel": "Annuler",
@@ -52,7 +53,7 @@ addStrings('fr', {
   "users.edit_success": "Utilisateur “{name}” modifié",
   "users.log_in": "Se connecter",
   "users.sign_up": "S'inscrire",
-  "users.sign_up_log_in": "Inscription / Connection",
+  "users.sign_up_log_in": "Inscription / Connexion",
   "users.log_out": "Se déconnecter",
   "users.bio": "Bio",
   "users.displayName": "Nom d'affichage",
