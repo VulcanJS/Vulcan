@@ -206,6 +206,11 @@ class Upload extends PureComponent {
   getImages = (args = {}) => {
     const { includePreviews = true, includeDeleted = false } = args;
     let images = this.props.value;
+  
+    // if images is not array, make it one (for backwards compatibility)
+    if (!Array.isArray(images)) {
+      images = [images];
+    }
     // remove previews if needed
     images = includePreviews ? images : images.filter(image => !image.preview);
     // remove deleted images
