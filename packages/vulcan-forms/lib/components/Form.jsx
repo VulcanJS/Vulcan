@@ -43,6 +43,19 @@ const unsetCompact = (object, path) => {
   update(object, parentPath, compact);
 };
 
+const computeStateFromProps = (nextProps) => {
+  const collection = nextProps.collection || getCollection(nextProps.collectionName);
+  const schema = collection.simpleSchema();
+  return {
+    // convert SimpleSchema schema into JSON object
+    schema: convertSchema(schema),
+    // Also store all field schemas (including nested schemas) in a flat structure
+    flatSchema: convertSchema(schema, true),
+    // the initial document passed as props
+    initialDocument: merge({}, nextProps.prefilledProps, nextProps.document),
+  };
+};
+
 /*
 
 1. Constructor
@@ -63,15 +76,8 @@ class Form extends Component {
       errors: [],
       deletedValues: [],
       currentValues: {},
+      ...computeStateFromProps(props),
     };
-
-    // convert SimpleSchema schema into JSON object
-    this.schema = convertSchema(this.getCollection().simpleSchema());
-    // Also store all field schemas (including nested schemas) in a flat structure
-    this.flatSchema = convertSchema(this.getCollection().simpleSchema(), true);
-
-    // the initial document passed as props
-    this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
   }
 
   defaultValues = {};
@@ -94,7 +100,6 @@ class Form extends Component {
   };
 
   /*
-  
   If a document is being passed, this is an edit form
 
   */
@@ -114,18 +119,17 @@ class Form extends Component {
 
   */
   getDocument = () => {
-    const document = merge({}, this.initialDocument, this.defaultValues, this.state.currentValues);
+    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues);
 
     return document;
   };
 
   /*
-  
-  Like getDocument, but cross-reference with getFieldNames() 
+
+  Like getDocument, but cross-reference with getFieldNames()
   to only return fields that actually need to be submitted
 
-  Also remove any deleted values. 
-  
+  Also remove any deleted values.
   */
   getData = () => {
     // only keep relevant fields
@@ -143,7 +147,6 @@ class Form extends Component {
 
     return data;
   };
-  
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -157,7 +160,7 @@ class Form extends Component {
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
       // get schema for the current field
-      return this.createField(fieldName, this.schema);
+      return this.createField(fieldName, this.state.schema);
     });
 
     fields = _.sortBy(fields, 'order');
@@ -195,19 +198,18 @@ class Form extends Component {
   };
 
   /*
-  
   Get a list of the fields to be included in the current form
 
   */
   getFieldNames = (args = {}) => {
-    const { schema = this.schema, excludeHiddenFields = true } = args;
+    const { schema = this.state.schema, excludeHiddenFields = true } = args;
 
     const { fields, hideFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields =
       this.getFormType() === 'edit'
-        ? getEditableFields(schema, this.props.currentUser, this.initialDocument)
+        ? getEditableFields(schema, this.props.currentUser, this.state.initialDocument)
         : getInsertableFields(schema, this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
@@ -231,8 +233,7 @@ class Form extends Component {
   };
 
   /*
-
-  Given a field's name, the containing schema, and parent, create the 
+  Given a field's name, the containing schema, and parent, create the
   complete field object to be passed to the component
 
   */
@@ -243,7 +244,7 @@ class Form extends Component {
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
-      document: this.initialDocument,
+      document: this.state.initialDocument,
       name: fieldName,
       path: fieldPath,
       datatype: fieldSchema.type,
@@ -308,13 +309,13 @@ class Form extends Component {
 
   /*
 
-  Get a field's label
+   Get a field's label
 
-  */
+   */
   getLabel = fieldName => {
     return this.context.intl.formatMessage({
       id: this.getCollection()._name + '.' + fieldName,
-      defaultMessage: this.flatSchema[fieldName].label,
+      defaultMessage: this.state.flatSchema[fieldName].label,
     });
   };
 
@@ -323,7 +324,7 @@ class Form extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-  
+
   Add error to form state
 
   Errors can have the following properties:
@@ -424,7 +425,7 @@ class Form extends Component {
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
-      initialDocument: this.initialDocument,
+      initialDocument: this.state.initialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
@@ -439,10 +440,12 @@ class Form extends Component {
   // ------------------------------ Lifecycle ---------------------------- //
   // --------------------------------------------------------------------- //
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return computeStateFromProps(nextProps);
+  }
+
   /*
-  
-  Manually update the current values of one or more fields(i.e. on change or blur). 
-  
+  Manually update the current values of one or more fields(i.e. on change or blur).
   */
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
@@ -465,8 +468,7 @@ class Form extends Component {
     });
   };
 
-  /* 
-  
+  /*
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
@@ -481,7 +483,6 @@ class Form extends Component {
   };
 
   /*
-  
   Key down handler
 
   */
@@ -545,8 +546,8 @@ class Form extends Component {
     // if (this.props.errorCallback) this.props.errorCallback(document, error);
   };
 
-  /* 
-  
+  /*
+
   Submit form handler
 
   */
