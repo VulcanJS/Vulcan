@@ -62,8 +62,8 @@ class FormNested extends PureComponent {
   };
 
   render() {
-    // do not pass FormNested's own value and control props down
-    const properties = _.omit(this.props, 'value', 'control');
+    // do not pass FormNested's own value, control and inputProperties props down
+    const properties = _.omit(this.props, 'value', 'control', 'inputProperties');
 
     return (
       <div className="form-group row form-nested">
