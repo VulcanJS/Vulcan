@@ -142,6 +142,11 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     options.tracing = true;
     options.cacheControl = true;
 
+    options.fieldResolver = () => {
+      console.log('// fieldResolver')
+      console.log(arguments)
+    }
+
     // Get the token from the header
     if (req.headers.authorization) {
       const token = req.headers.authorization;
