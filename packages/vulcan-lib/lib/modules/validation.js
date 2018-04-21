@@ -63,7 +63,7 @@ export const validateDocument = (document, collection, context) => {
       validationErrors.push({
         id: `errors.${error.type}`,
         path: error.name,
-        data: error,
+        properties: error,
       });
     });
   }

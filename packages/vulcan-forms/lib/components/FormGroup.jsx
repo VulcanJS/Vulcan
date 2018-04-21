@@ -31,17 +31,17 @@ class FormGroup extends PureComponent {
     );
   }
 
-  render() {
+  // if at least one of the fields in the group has an error, the group as a whole has an error
+  hasErrors = () => _.some(this.props.fields, field => {
+    return !!this.props.errors.filter(error => error.path === field.path).length
+  });
 
-    // if at least one of the fields in the group has an error, the group as a whole has an error
-    const hasErrors = _.some(this.props.fields, field => {
-      return !!this.props.errors.filter(error => error.data && error.data.name && error.data.name === field.path).length
-    });
+  render() {
 
     return (
       <div className="form-section">
         {this.props.name === 'default' ? null : this.renderHeading()}
-        <div className={classNames({ 'form-section-collapsed': this.state.collapsed && !hasErrors })}>
+        <div className={classNames({ 'form-section-collapsed': this.state.collapsed && !this.hasErrors() })}>
           {this.props.fields.map(field => (
             <Components.FormComponent
               key={field.name}

@@ -143,16 +143,7 @@ class Form extends Component {
 
     return data;
   };
-
-  /*
-
-
-
-  */
-  getDefaultValues = () => {
-
-  }
-
+  
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -209,7 +200,6 @@ class Form extends Component {
 
   */
   getFieldNames = (args = {}) => {
-
     const { schema = this.schema, excludeHiddenFields = true } = args;
 
     const { fields, hideFields } = this.props;
@@ -293,10 +283,7 @@ class Form extends Component {
     if (inputProperties) {
       for (const prop in inputProperties) {
         const property = inputProperties[prop];
-        field[prop] =
-          typeof property === 'function'
-            ? property.call(fieldSchema, this.props)
-            : property;
+        field[prop] = typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
       }
     }
 
@@ -342,9 +329,9 @@ class Form extends Component {
   Errors can have the following properties:
     - id: used as an internationalization key, for example `errors.required`
     - path: for field-specific errors, the path of the field with the issue
-    - data: additional data. Will be passed to vulcan-i18n as values
+    - properties: additional data. Will be passed to vulcan-i18n as values
     - message: if id cannot be used as i81n key, message will be used
-
+    
   */
   throwError = error => {
     let formErrors = [error];
@@ -352,7 +339,18 @@ class Form extends Component {
     if (error.graphQLErrors) {
       // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
       const graphQLError = error.graphQLErrors[0];
-      formErrors = graphQLError.data && graphQLError.data.errors;
+      if (graphQLError.data) {
+        if (graphQLError.data.errors) {
+          // there are multiple errors on the data.errors object
+          formErrors = graphQLError.data && graphQLError.data.errors;
+        } else {
+          // there is only one error
+          formErrors = [graphQLError.data];
+        }
+      } else {
+        // there is no data object, just use raw error
+        formErrors = [graphQLError];
+      }
     }
 
     // eslint-disable-next-line no-console
@@ -372,7 +370,7 @@ class Form extends Component {
   clearFieldErrors = path => {
     const errors = this.state.errors.filter(error => error.path !== path);
     this.setState({ errors });
-  }
+  };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
