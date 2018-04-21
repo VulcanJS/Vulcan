@@ -16,10 +16,17 @@ class App extends PureComponent {
     if (props.currentUser) {
       runCallbacks('events.identify', props.currentUser);
     }
+    this.state = {
+      locale: getSetting('locale', 'en')
+    }
   }
 
-  getLocale() {
-    return getSetting('locale', 'en');
+  getLocale = () => {
+    return this.state.locale;
+  }
+
+  setLocale = (locale) => {
+    this.setState({ locale });
   }
 
   getChildContext() {
@@ -31,6 +38,8 @@ class App extends PureComponent {
     const { intl } = intlProvider.getChildContext();
     return {
       intl: intl,
+      getLocale: this.getLocale,
+      setLocale: this.setLocale,
     };
   }
 
@@ -51,7 +60,7 @@ class App extends PureComponent {
         locale={this.getLocale()}
         messages={Strings[this.getLocale()]}
       >
-        <div>
+        <div className={`locale-${this.getLocale()}`}>
           <Components.HeadTags />
           <Components.RouterHook currentRoute={currentRoute} />
           <LayoutComponent {...this.props} currentRoute={currentRoute}>
@@ -75,6 +84,8 @@ App.propTypes = {
 
 App.childContextTypes = {
   intl: intlShape,
+  setLocale: PropTypes.func,
+  getLocale: PropTypes.func,
 };
 
 App.displayName = 'App';
