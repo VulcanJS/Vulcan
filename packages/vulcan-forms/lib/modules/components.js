@@ -1,4 +1,3 @@
-import '../components/Flash.jsx';
 import '../components/FieldErrors.jsx';
 import '../components/FormErrors.jsx';
 import '../components/FormComponent.jsx';
