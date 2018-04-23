@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, Components } from 'meteor/vulcan:core';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
-import Alert from 'react-bootstrap/lib/Alert';
 
 const FormErrors = ({ errors }) => (
   <div className="form-errors">
     {!!errors.length && (
-      <Alert className="flash-message" bsStyle="danger">
+      <Components.Alert className="flash-message" variant="danger">
         <ul>
           {errors.map((error, index) => (
             <li key={index}>
@@ -21,7 +20,7 @@ const FormErrors = ({ errors }) => (
             </li>
           ))}
         </ul>
-      </Alert>
+      </Components.Alert>
     )}
   </div>
 );

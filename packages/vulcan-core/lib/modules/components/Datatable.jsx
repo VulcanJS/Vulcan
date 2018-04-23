@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withList from '../containers/withList.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import Button from 'react-bootstrap/lib/Button';
 import { getFieldValue } from './Card.jsx';
 
 /*
@@ -188,7 +187,7 @@ const DatatableContents = (props) => {
           <div className="datatable-list-load-more">
             {isLoadingMore ?
               <Components.Loading/> :
-              <Button bsStyle="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+              <Components.Button variant="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Components.Button>
             }
           </div>
         }

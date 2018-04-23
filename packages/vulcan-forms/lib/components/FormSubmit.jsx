@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
-import Button from 'react-bootstrap/lib/Button';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const FormSubmit = ({
@@ -15,9 +14,9 @@ const FormSubmit = ({
   classes,
 }) => (
   <div className="form-submit">
-    <Button type="submit" bsStyle="primary">
+    <Components.Button type="submit" variant="primary">
       {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" />}
-    </Button>
+    </Components.Button>
 
     {cancelCallback ? (
       <a

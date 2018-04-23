@@ -2,7 +2,6 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMessages from '../containers/withMessages.js';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/lib/Alert'
 
 class Flash extends PureComponent {
 
@@ -26,9 +25,9 @@ class Flash extends PureComponent {
     flashType = flashType === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
 
     return (
-      <Alert className="flash-message" bsStyle={flashType} onDismiss={this.dismissFlash}>
+      <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
         {this.props.message.content}
-      </Alert>
+      </Components.Alert>
     )
   }
 }

@@ -142,10 +142,11 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     options.tracing = true;
     options.cacheControl = true;
 
-    options.fieldResolver = () => {
-      console.log('// fieldResolver')
-      console.log(arguments)
-    }
+    // note: custom default resolver doesn't currently work
+    // see https://github.com/apollographql/apollo-server/issues/716
+    // options.fieldResolver = (source, args, context, info) => {
+    //   return source[info.fieldName];
+    // }
 
     // Get the token from the header
     if (req.headers.authorization) {
