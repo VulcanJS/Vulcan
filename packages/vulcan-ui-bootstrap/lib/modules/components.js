@@ -15,3 +15,6 @@ import '../components/forms/FormControl'; // note: only used by old accounts pac
 import '../components/ui/Button.jsx';
 import '../components/ui/Alert.jsx';
 import '../components/ui/ModalTrigger.jsx';
+import '../components/ui/TooltipTrigger.jsx';
+import '../components/ui/Dropdown.jsx';
+import '../components/ui/Table.jsx';

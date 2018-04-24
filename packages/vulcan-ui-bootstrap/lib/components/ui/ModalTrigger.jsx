@@ -32,7 +32,8 @@ class ModalTrigger extends PureComponent {
 
   render() {
 
-    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.openModal }) : <a href="#" onClick={this.openModal}>{this.props.label}</a>;
+    let triggerComponent = this.props.trigger || this.props.component;
+    triggerComponent = triggerComponent ? React.cloneElement(triggerComponent, { onClick: this.openModal }) : <a href="javascript:void(0)" onClick={this.openModal}>{this.props.label}</a>;
     const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
 
     return (
@@ -58,7 +59,8 @@ class ModalTrigger extends PureComponent {
 ModalTrigger.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
-  component: PropTypes.object,
+  component: PropTypes.object, // keep for backwards compatibility
+  trigger: PropTypes.object,
   size: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 }
