@@ -83,9 +83,9 @@ class FormNested extends PureComponent {
                   />
                 )
             )}
-          <Button bsSize="small" bsStyle="success" onClick={this.addItem} className="form-nested-button">
+          <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
-          </Button>
+          </Components.Button>
         </div>
       </div>
     );
