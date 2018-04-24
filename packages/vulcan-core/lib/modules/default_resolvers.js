@@ -24,7 +24,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         debug('');
         debugGroup(`--------------- start \x1b[35m${collectionName} list\x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        console.log(`Terms: ${JSON.stringify(terms)}`);
+        debug(`Terms: ${JSON.stringify(terms)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
