@@ -198,10 +198,18 @@ class FormComponent extends PureComponent {
           return <Components.FormComponentCheckbox {...properties} />;
 
         case 'checkboxgroup':
-          // formsy-react-components expects an array value
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
-          if (!Array.isArray(properties.inputProperties.value)) {
+          // Convert complex objects into list of _id
+          if (Array.isArray(properties.inputProperties.value)) {
+            const value = properties.inputProperties.value[0];
+            if (![null, undefined].includes(value) && typeof value === 'object' && value._id) {
+              properties.inputProperties.value = properties.inputProperties.value.map(({ _id }) => _id);
+              properties.value = properties.inputProperties.value;
+            }
+          } else {
+            // formsy-react-components expects an array value
+            // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
             properties.inputProperties.value = [properties.inputProperties.value];
+            properties.value = properties.inputProperties.value;
           }
           // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
           const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
