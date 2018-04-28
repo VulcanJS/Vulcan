@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { Components, registerComponent, getSetting, withCurrentUser, withMessages } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 import withPaymentAction from '../containers/withPaymentAction.js';
 import { Products } from '../modules/products.js';
@@ -45,14 +44,14 @@ class Checkout extends React.Component {
       if (callback) {
         callback(response);
       }else{
-        flash(this.context.intl.formatMessage({id: 'payments.payment_succeeded'}), 'success');
+        flash({id: 'payments.payment_succeeded', type: 'success'});
       }
     
     }).catch(error => {
 
       // eslint-disable-next-line no-console
       console.log(error);
-      flash(this.context.intl.formatMessage({id: 'payments.error'}), 'error');
+      flash({id: 'payments.error', type: 'error'});
     
     });
 
@@ -105,10 +104,6 @@ class Checkout extends React.Component {
     )
   }
 }
-
-Checkout.contextTypes = {
-  intl: intlShape
-};
 
 Checkout.propTypes = {
   productKey: PropTypes.string,

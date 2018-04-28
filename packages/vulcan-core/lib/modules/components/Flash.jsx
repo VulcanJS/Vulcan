@@ -2,6 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMessages from '../containers/withMessages.js';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
 class Flash extends PureComponent {
 
@@ -19,14 +20,33 @@ class Flash extends PureComponent {
     this.props.clear(this.props.message._id);
   }
 
+  getProperties = () => {
+    const { errorObject } = this.props;
+    if (typeof errorObject === 'string') {
+      // if error is a string, use it as message
+      return {
+        message: errorObject,
+        type: 'error'
+      }
+    } else {
+      // else return full error object after internationalizing message
+      const { id, message, properties } = errorObject;
+      const translatedMessage = this.context.intl.formatMessage({ id, defaultMessage: message }, properties);
+      return {
+        ...errorObject,
+        message: translatedMessage,
+      };
+    }
+  }
+
   render() {
 
-    let flashType = this.props.message.flashType;
-    flashType = flashType === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
+    const { message, type } = this.getProperties();
+    const flashType = type === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
 
     return (
       <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
-        {this.props.message.content}
+        {message}
       </Components.Alert>
     )
   }
@@ -35,6 +55,10 @@ class Flash extends PureComponent {
 Flash.propTypes = {
   message: PropTypes.object.isRequired
 }
+
+Flash.contextTypes = {
+  intl: intlShape
+};
 
 registerComponent('Flash', Flash);
 

@@ -1,7 +1,7 @@
 import { Components, registerComponent, withMutation, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends PureComponent {
@@ -21,15 +21,13 @@ class NewsletterSubscribe extends PureComponent {
 
     try {
 
-      const mutationResult = await mutation({userId: user._id});
+      await mutation({userId: user._id});
 
       updateCurrentValues({ [path]: !this.isSubscribed() });
       
       // display a nice message to the client
-      this.props.flash(this.context.intl.formatMessage({ id: 'newsletter.subscription_updated' }), 'success');
+      this.props.flash({ id: 'newsletter.subscription_updated', type: 'success'});
       
-      console.log(mutationResult)
-
     } catch(error) {
       throwError(error);
     }
@@ -53,10 +51,6 @@ class NewsletterSubscribe extends PureComponent {
     )
   }
 }
-
-NewsletterSubscribe.contextTypes = {
-  intl: intlShape
-};
 
 const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};
 const removeOptions = {name: 'removeUserNewsletter', args: {userId: 'String'}};
