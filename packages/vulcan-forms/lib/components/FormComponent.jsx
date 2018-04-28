@@ -133,12 +133,18 @@ class FormComponent extends PureComponent {
       name,
       label,
       formType,
-      throwError,
-      updateCurrentValues,
-      currentValues,
-      addToDeletedValues,
-      deletedValues,
-      clearFieldErrors,
+      /* 
+      
+      note: following properties will be passed as part of `...this.props` in `properties`:
+
+      */
+      // throwError,
+      // updateCurrentValues,
+      // currentValues,
+      // addToDeletedValues,
+      // deletedValues,
+      // clearFieldErrors,
+      // currentUser,
     } = this.props;
 
     const value = this.getValue();
@@ -159,13 +165,7 @@ class FormComponent extends PureComponent {
       ...this.props,
       value,
       errors: this.getErrors(), // only get errors for the current field
-      throwError,
       inputProperties,
-      currentValues,
-      updateCurrentValues,
-      deletedValues,
-      addToDeletedValues,
-      clearFieldErrors,
     };
 
     // if input is a React component, use it

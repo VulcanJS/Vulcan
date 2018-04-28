@@ -26,4 +26,5 @@ export * from './admin.js';
 export * from './fragment_matcher.js';
 export * from './debug.js';
 export * from './startup.js';
+export * from './errors.js';
 // export * from './resolvers.js';

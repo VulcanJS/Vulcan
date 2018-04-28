@@ -54,6 +54,7 @@ class FormGroup extends PureComponent {
               addToDeletedValues={this.props.addToDeletedValues}
               clearFieldErrors={this.props.clearFieldErrors}
               formType={this.props.formType}
+              currentUser={this.props.currentUser}
             />
           ))}
         </div>

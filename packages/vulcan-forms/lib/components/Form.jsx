@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import { registerComponent, Components, runCallbacks, getCollection } from 'meteor/vulcan:core';
+import { registerComponent, Components, runCallbacks, getCollection, getErrors } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -335,24 +335,7 @@ class Form extends Component {
     
   */
   throwError = error => {
-    let formErrors = [error];
-    // if this is one or more GraphQL errors, extract and convert them
-    if (error.graphQLErrors) {
-      // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-      const graphQLError = error.graphQLErrors[0];
-      if (graphQLError.data) {
-        if (graphQLError.data.errors) {
-          // there are multiple errors on the data.errors object
-          formErrors = graphQLError.data && graphQLError.data.errors;
-        } else {
-          // there is only one error
-          formErrors = [graphQLError.data];
-        }
-      } else {
-        // there is no data object, just use raw error
-        formErrors = [graphQLError];
-      }
-    }
+    let formErrors = getErrors(error);
 
     // eslint-disable-next-line no-console
     console.log(formErrors);
@@ -671,6 +654,7 @@ class Form extends Component {
               addToDeletedValues={this.addToDeletedValues}
               clearFieldErrors={this.clearFieldErrors}
               formType={this.getFormType()}
+              currentUser={this.props.currentUser}
             />
           ))}
 
