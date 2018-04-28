@@ -1,4 +1,3 @@
-import NewsletterSubscribe from '../components/NewsletterSubscribe.jsx';
 import Users from 'meteor/vulcan:users';
 
 Users.addField([
@@ -12,12 +11,12 @@ Users.addField([
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
-      control: NewsletterSubscribe,
+      control: 'NewsletterSubscribe',
       group: {
         name: "newsletter",
         label: "Newsletter",
         order: 3
-      }
+      },
     }
   },
 ]);

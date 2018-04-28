@@ -36,7 +36,7 @@ send
  * @param {Object} user
  * @param {Boolean} confirm
  */
-Newsletters.subscribeUser = (user, confirm = false) => {
+Newsletters.subscribeUser = async (user, confirm = false) => {
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
@@ -47,7 +47,7 @@ Newsletters.subscribeUser = (user, confirm = false) => {
   const result = Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
   if (result) {console.log ('-> added')}
-  Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: true}});
 }
 
 /**
@@ -67,7 +67,7 @@ Newsletters.subscribeEmail = (email, confirm = false) => {
  * @summary Unsubscribe a user from the newsletter
  * @param {Object} user
  */
-Newsletters.unsubscribeUser = (user) => {
+Newsletters.unsubscribeUser = async (user) => {
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
@@ -76,7 +76,7 @@ Newsletters.unsubscribeUser = (user) => {
   // eslint-disable-next-line no-console
   console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
-  Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: false}}); 
 }
 
 /**
@@ -284,3 +284,10 @@ Newsletters.send = async (isTest = false) => {
   
   }
 }
+
+Meteor.startup(() => {
+  if(!Newsletters[provider]) {
+    // eslint-disable-next-line no-console
+    console.log(`// Warning: please configure your settings for ${provider} support, or else disable the vulcan:newsletter package.`);
+  }
+});
