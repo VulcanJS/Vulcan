@@ -11,7 +11,7 @@ const AdminUsersActions = ({ document: user, removeMutation }) =>{
     }
   }
 
-  return <Components.Button bsStyle="primary" onClick={deleteHandler}>Delete</Components.Button>
+  return <Components.Button variant="primary" onClick={deleteHandler}>Delete</Components.Button>
 }
 
 const removeOptions = {
