@@ -25,7 +25,8 @@ export const runQuery = async (query, variables = {}, context = { currentUser: {
 
   if (result.errors) {
     // eslint-disable-next-line no-console
-    console.log('runQuery error: '+result.errors[0].message);
+    console.error(`runQuery error: ${result.errors[0].message}`);
+    console.error(result.errors);
     throw new Error(result.errors[0].message);
   }
 
