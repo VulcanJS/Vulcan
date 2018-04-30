@@ -2,6 +2,11 @@ import React from 'react';
 import { CheckboxGroup } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const CheckboxGroupComponent = ({refFunction, inputProperties, ...properties}) => <CheckboxGroup {...inputProperties} ref={refFunction} />
+class CheckboxGroupComponent {
+  render() {
+    const { refFunction, inputProperties, ...properties } = this.props;
+    return <CheckboxGroup {...inputProperties} ref={refFunction} />;
+  }
+}
 
 registerComponent('FormComponentCheckboxGroup', CheckboxGroupComponent);

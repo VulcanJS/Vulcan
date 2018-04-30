@@ -2,6 +2,11 @@ import React from 'react';
 import { Input } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const NumberComponent = ({refFunction, inputProperties, ...properties}) => <Input {...inputProperties} ref={refFunction} type="number" />
+class NumberComponent extends React.PureComponent {
+  render() {
+    const {refFunction, inputProperties, ...properties} = this.props;
+    return <Input ref={refFunction} {...inputProperties} type="number"/>;
+  }
+}
 
 registerComponent('FormComponentNumber', NumberComponent);

@@ -2,6 +2,11 @@ import React from 'react';
 import { Input } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const Default = ({refFunction, inputProperties, ...properties}) => <Input {...inputProperties} ref={refFunction} type="text" />
+class Default extends React.PureComponent {
+  render() {
+    const {refFunction, inputProperties, ...properties} = this.props;
+    return <Input {...inputProperties} ref={refFunction} type='text' />;
+  }
+}
 
 registerComponent('FormComponentDefault', Default);
