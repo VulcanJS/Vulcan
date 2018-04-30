@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
@@ -9,7 +9,7 @@ import get from 'lodash/get';
 import merge from 'lodash/merge';
 import { isEmptyValue } from '../modules/utils.js';
 
-class FormComponent extends PureComponent {
+class FormComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +21,15 @@ class FormComponent extends PureComponent {
         charsRemaining: props.max - characterCount,
       };
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { currentValues, deletedValues, errors } = nextProps;
+    const { path } = this.props;
+    const hasChanged = currentValues[path] && currentValues[path] !== this.props.currentValues[path];
+    const hasError = !!errors[path];
+    const hasBeenDeleted = deletedValues.includes(path) && !this.props.deletedValues.includes(path)
+    return hasChanged || hasError || hasBeenDeleted;
   }
 
   handleChange = (name, value) => {
@@ -148,6 +157,7 @@ class FormComponent extends PureComponent {
     } = this.props;
 
     const value = this.getValue();
+    const errors = this.getErrors();
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -164,7 +174,7 @@ class FormComponent extends PureComponent {
     const properties = {
       ...this.props,
       value,
-      errors: this.getErrors(), // only get errors for the current field
+      errors, // only get errors for the current field
       inputProperties,
     };
 
