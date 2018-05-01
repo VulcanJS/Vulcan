@@ -9,7 +9,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-const TooltipTrigger = ({ children, trigger, placement = 'top', rest }) => {
+const TooltipTrigger = ({ children, trigger, placement = 'top', ...rest }) => {
   const tooltip = <Tooltip id="tooltip">{children}</Tooltip>;
 
   return (
