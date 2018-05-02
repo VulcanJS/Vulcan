@@ -621,7 +621,10 @@ class Form extends Component {
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({ documentId, documentTitle });
           if (this.props.refetch) this.props.refetch();
         })
-        .catch(error => this.mutationErrorCallback(document, error));
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
     }
   };
 
