@@ -1,24 +1,6 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
-/* 
-
-Use a Proxy so that missing components trigger a meaningful error instead of a random
-one about toLowerCase()
-
-See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-
-*/
-const handler = {
-  get: function(obj, prop) {
-    if (prop in obj) {
-      return obj[prop];
-    } else {
-      throw new Error(`// Component ${prop} is not registered`)
-    }
-  }
-};
-
-export const Components = new Proxy({}, handler); // will be populated on startup (see vulcan:routing)
+export const Components = {}; // will be populated on startup (see vulcan:routing)
 export const ComponentsTable = {} // storage for infos about components
 
 /**
