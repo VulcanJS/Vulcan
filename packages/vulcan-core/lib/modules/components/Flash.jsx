@@ -21,19 +21,19 @@ class Flash extends PureComponent {
   }
 
   getProperties = () => {
-    const { errorObject } = this.props;
-    if (typeof errorObject === 'string') {
+    const messageObject = this.props.message;
+    if (typeof messageObject === 'string') {
       // if error is a string, use it as message
       return {
-        message: errorObject,
+        message: messageObject,
         type: 'error'
       }
     } else {
       // else return full error object after internationalizing message
-      const { id, message, properties } = errorObject;
+      const { id, message, properties } = messageObject;
       const translatedMessage = this.context.intl.formatMessage({ id, defaultMessage: message }, properties);
       return {
-        ...errorObject,
+        ...messageObject,
         message: translatedMessage,
       };
     }
@@ -42,7 +42,7 @@ class Flash extends PureComponent {
   render() {
 
     const { message, type } = this.getProperties();
-    const flashType = type === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
+    const flashType = type === 'error' ? 'danger' : type; // if flashType is "error", use "danger" instead
 
     return (
       <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
@@ -72,7 +72,7 @@ const FlashMessages = ({messages, clear, markAsSeen}) => {
   );
 }
 
-FlashMessages.displayName = "FlashMessages";
+FlashMessages.displayName = 'FlashMessages';
 
 registerComponent('FlashMessages', FlashMessages, withMessages);
 
