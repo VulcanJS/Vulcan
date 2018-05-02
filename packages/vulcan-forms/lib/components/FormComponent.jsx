@@ -23,14 +23,14 @@ class FormComponent extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { currentValues, deletedValues, errors } = nextProps;
-    const { path } = this.props;
-    const hasChanged = currentValues[path] && currentValues[path] !== this.props.currentValues[path];
-    const hasError = !!errors[path];
-    const hasBeenDeleted = deletedValues.includes(path) && !this.props.deletedValues.includes(path)
-    return hasChanged || hasError || hasBeenDeleted;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { currentValues, deletedValues, errors } = nextProps;
+  //   const { path } = this.props;
+  //   const hasChanged = currentValues[path] && currentValues[path] !== this.props.currentValues[path];
+  //   const hasError = !!errors[path];
+  //   const hasBeenDeleted = deletedValues.includes(path) && !this.props.deletedValues.includes(path)
+  //   return hasChanged || hasError || hasBeenDeleted;
+  // }
 
   handleChange = (name, value) => {
     // if value is an empty string, delete the field
