@@ -594,7 +594,7 @@ class Form extends Component {
       this.props
         .editMutation(args)
         .then(this.editMutationSuccessCallback)
-        .catch(this.mutationErrorCallback);
+        .catch(error => this.mutationErrorCallback(document, error));
     }
   };
 
@@ -621,10 +621,7 @@ class Form extends Component {
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({ documentId, documentTitle });
           if (this.props.refetch) this.props.refetch();
         })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
+        .catch(error => this.mutationErrorCallback(document, error));
     }
   };
 
