@@ -34,6 +34,9 @@ import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
 import merge from 'lodash/merge';
+import find from 'lodash/find';
+import isEqualWith from 'lodash/isEqualWith';
+
 import { convertSchema, formProperties } from '../modules/schema_utils';
 
 // unsetCompact
@@ -119,7 +122,18 @@ class Form extends Component {
 
   */
   getDocument = () => {
-    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues);
+    const deletedValues = {};
+    this.state.deletedValues.forEach(path => {
+      set(deletedValues, path, null)
+    });
+    
+    const document = merge(
+      {}, 
+      this.state.initialDocument, 
+      this.defaultValues, 
+      this.state.currentValues, 
+      deletedValues
+    );
 
     return document;
   };
@@ -404,6 +418,8 @@ class Form extends Component {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
+      refetchForm: this.refetchForm,
+      isChanged: this.isChanged,
       submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
@@ -450,7 +466,45 @@ class Form extends Component {
       return newState;
     });
   };
-
+  
+  handleRouteLeave = () => {
+    if (this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?'
+      });
+      return message;
+    }
+  };
+  
+  componentDidMount = () => {
+    const routes = this.props.router.routes;
+    const currentRoute = routes[routes.length-1];
+    
+    this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+  };
+  
+  
+  isChanged = () => {
+    const initialDocument = this.state.initialDocument;
+    const changedDocument = this.getDocument();
+    
+    const changedValue = find(changedDocument, (value, key, collection) => {
+      return !isEqualWith(value, initialDocument[key], (objValue, othValue) => {
+        if (!objValue && !othValue) return true;
+      });
+    });
+    
+    return typeof changedValue !== 'undefined';
+  };
+  
+  // refetch document from the database (in case document was updated by another process)
+  refetchForm = () => {
+    if (this.props.data && this.props.data.refetch) {
+      this.props.data.refetch();
+    }
+  };
+  
   /*
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
@@ -663,7 +717,9 @@ class Form extends Component {
           <Components.FormSubmit
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
+            revertLabel={this.props.revertLabel}
             cancelCallback={this.props.cancelCallback}
+            revertCallback={this.props.revertCallback}
             document={this.getDocument()}
             deleteDocument={(this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null}
             collectionName={collectionName}
@@ -701,6 +757,7 @@ Form.propTypes = {
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  revertLabel: PropTypes.string,
   repeatErrors: PropTypes.bool,
 
   // callbacks
@@ -709,6 +766,7 @@ Form.propTypes = {
   removeSuccessCallback: PropTypes.func,
   errorCallback: PropTypes.func,
   cancelCallback: PropTypes.func,
+  revertCallback: PropTypes.func,
 
   currentUser: PropTypes.object,
   client: PropTypes.object,
@@ -735,6 +793,8 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  refetchForm: PropTypes.func,
+  isChanged: PropTypes.func,
   initialDocument: PropTypes.object,
   getDocument: PropTypes.func,
   submitForm: PropTypes.func,

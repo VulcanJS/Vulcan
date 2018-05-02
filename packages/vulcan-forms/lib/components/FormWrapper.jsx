@@ -27,6 +27,7 @@ component is also added to wait for withDocument's loading prop to be false)
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import { withRouter } from 'react-router'
 import { withApollo, compose } from 'react-apollo';
 import {
   Components,
@@ -273,6 +274,7 @@ FormWrapper.propTypes = {
   removeSuccessCallback: PropTypes.func,
   errorCallback: PropTypes.func,
   cancelCallback: PropTypes.func,
+  revertCallback: PropTypes.func,
 
   currentUser: PropTypes.object,
   client: PropTypes.object,
@@ -287,4 +289,4 @@ FormWrapper.contextTypes = {
   intl: intlShape
 }
 
-registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
+registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo, withRouter);

@@ -1,35 +1,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
-import debounce from 'lodash.debounce';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
-    const value = this.getValue(props);
+    this.state = {};
+  }
 
-    if (this.showCharsRemaining(props)) {
-      const characterCount = value ? value.length : 0;
-      this.state = {
-        charsRemaining: props.max - characterCount,
-      };
+  componentWillMount () {
+    if (this.showCharsRemaining()) {
+      const value = this.getValue();
+      this.updateCharacterCount(value);
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
+    // allow custom controls to determine if they should update
+    if (!['nested', 'number', 'url', 'email', 'textarea', 'checkbox', 
+      'checkboxgroup', 'radiogroup', 'select', 'selectmultiple', 'datetime', 
+      'date', 'time', 'text'].includes(this.getType(nextProps))) {
+      return true;
+    }
+    
+    // getHidden allows controls to show/hide based on the value of other form fields
+    if (nextProps.form && typeof nextProps.form.getHidden === 'function') {
+      return true;
+    }
+    
     const { currentValues, deletedValues, errors } = nextProps;
     const { path } = this.props;
-    const hasChanged = currentValues[path] && currentValues[path] !== this.props.currentValues[path];
-    const hasError = !!errors[path];
-    const hasBeenDeleted = deletedValues.includes(path) && !this.props.deletedValues.includes(path)
-    return hasChanged || hasError || hasBeenDeleted;
+    
+    const valueChanged = currentValues[path] !== this.props.currentValues[path];
+    const errorChanged = this.getErrors(errors) !== this.getErrors();
+    const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
+    const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
+    return valueChanged || errorChanged || deleteChanged || charsChanged;
   }
 
   handleChange = (name, value) => {
@@ -49,18 +61,11 @@ class FormComponent extends Component {
     }
   };
 
-  /*
-
-  Note: not currently used because when function is debounced
-  some changes might not register if the user submits form too soon
-
-  */
-  handleChangeDebounced = debounce(this.handleChange, 500, { leading: true });
-
   updateCharacterCount = value => {
     const characterCount = value ? value.length : 0;
     this.setState({
       charsRemaining: this.props.max - characterCount,
+      charsCount: characterCount,
     });
   };
 
@@ -114,8 +119,9 @@ class FormComponent extends Component {
   Get errors from Form state through context
 
   */
-  getErrors = () => {
-    const fieldErrors = this.props.errors.filter(error => error.path === this.props.path);
+  getErrors = (errors) => {
+    errors = errors || this.props.errors;
+    const fieldErrors = errors.filter(error => error.path === this.props.path);
     return fieldErrors;
   };
 
@@ -129,20 +135,25 @@ class FormComponent extends Component {
     const p = props || this.props;
     const fieldType = p.datatype && p.datatype[0].type;
     const autoType =
-      fieldType === Number ? 'number' : fieldType === Boolean ? 'checkbox' : fieldType === Date ? 'date' : 'text';
+      fieldType === Number ? 'number' :
+        fieldType === Boolean ? 'checkbox' : 
+          fieldType === Date ? 
+            'date' : 
+            'text';
     return p.input || autoType;
   };
 
-  renderComponent() {
+  renderComponent = () => {
     const {
       input,
-      beforeComponent,
-      afterComponent,
       options,
       name,
       label,
+      help,
+      placeholder,
       formType,
-      /* 
+      form,
+      /*
       
       note: following properties will be passed as part of `...this.props` in `properties`:
 
@@ -158,6 +169,7 @@ class FormComponent extends Component {
 
     const value = this.getValue();
     const errors = this.getErrors();
+    const document = this.context.getDocument();
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -165,8 +177,13 @@ class FormComponent extends Component {
       name,
       options,
       label,
+      help,
+      placeholder,
       onChange: this.handleChange,
       value,
+      errors,
+      document,
+      ...form,
       ...this.props.inputProperties,
     };
 
@@ -174,7 +191,8 @@ class FormComponent extends Component {
     const properties = {
       ...this.props,
       value,
-      errors, // only get errors for the current field
+      errors,
+      document,
       inputProperties,
     };
 
@@ -213,8 +231,10 @@ class FormComponent extends Component {
           if (!Array.isArray(properties.inputProperties.value)) {
             properties.inputProperties.value = [properties.inputProperties.value];
           }
-          // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-          const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
+          // in case of checkbox groups, check "checked" option to populate value if this is a "new
+          // document" form
+          const checkedValues = _.where(properties.options, { checked: true })
+          .map(option => option.value);
           if (checkedValues.length && !properties.inputProperties.value && formType === 'new') {
             properties.inputProperties.value = checkedValues;
           }
@@ -264,54 +284,94 @@ class FormComponent extends Component {
           );
       }
     }
-  }
-
-  showClear = () => {
-    return ['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input);
   };
 
-  clearField = e => {
-    e.preventDefault();
+  clearField = event => {
+    event.preventDefault();
+    event.stopPropagation();
     this.props.updateCurrentValues({ [this.props.path]: null });
+    if (this.showCharsRemaining()) {
+      this.updateCharacterCount(null);
+    }
   };
 
-  renderClear() {
+  renderClear = () => {
+    if (['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input)) {
+      return (
+        <a
+          href="javascript:void(0)"
+          className="form-component-clear"
+          title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
+          onClick={this.clearField}
+        >
+          <span>✕</span>
+        </a>
+      );
+    }
+  };
+  
+  renderExtraComponent = extraComponent => {
+    if (!extraComponent) return null;
+    
+    const value = this.getValue();
+    
+    // these properties are whitelisted so that they can be safely passed to the actual form input
+    // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
+    const inputProperties = {
+      name: this.props.name,
+      options: this.props.options,
+      label: this.props.label,
+      onChange: this.handleChange,
+      value,
+      ...this.props.form,
+    };
+    
+    // note: we also pass value on props directly
+    const properties = {
+      ...this.props,
+      value,
+      errors: this.getErrors(),
+      inputProperties,
+    };
+    
+    if (typeof extraComponent === 'string') {
+      const ExtraComponent = Components[extraComponent];
+      return <ExtraComponent {...properties} />;
+    } else {
+      return extraComponent;
+    }
+  }
+
+  render () {
+    const { inputClassName, name, input, beforeComponent, afterComponent, help, max, getHidden } = this.props;
+
+    if (typeof getHidden === 'function') {
+      const document = this.context.getDocument();
+      if (getHidden.call({document})) {
+        return null;
+      }
+    }
+
     return (
-      <a
-        href="javascript:void(0)"
-        className="form-component-clear"
-        title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
-        onClick={this.clearField}
-      >
-        <span>✕</span>
-      </a>
+      <Components.FormComponentUi
+        inputClassName={inputClassName}
+        name={name}
+        input={input}
+        beforeComponent={beforeComponent}
+        afterComponent={afterComponent}
+        renderExtraComponent={this.renderExtraComponent}
+        renderComponent={this.renderComponent}
+        renderClear={this.renderClear}
+        getErrors={this.getErrors}
+        help={help}
+        showCharsRemaining={this.showCharsRemaining}
+        charsRemaining={this.state.charsRemaining}
+        charsCount={this.state.charsCount}
+        charsMax={max}
+      />
     );
   }
 
-  render() {
-    const { beforeComponent, afterComponent, name, input } = this.props;
-
-    const hasErrors = this.getErrors() && this.getErrors().length;
-    const inputName = typeof input === 'function' ? input.name : input;
-    const inputClass = classNames('form-input', `input-${name}`, `form-component-${inputName || 'default'}`, {
-      'input-error': hasErrors,
-    });
-
-    return (
-      <div className={inputClass}>
-        {beforeComponent ? beforeComponent : null}
-        {this.renderComponent()}
-        {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
-        {this.showClear() ? this.renderClear() : null}
-        {this.showCharsRemaining() && (
-          <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>
-            {this.state.charsRemaining}
-          </div>
-        )}
-        {afterComponent ? afterComponent : null}
-      </div>
-    );
-  }
 }
 
 FormComponent.propTypes = {
@@ -336,7 +396,7 @@ FormComponent.propTypes = {
 
 FormComponent.contextTypes = {
   intl: intlShape,
-  getDocument: PropTypes.func,
+  getDocument: PropTypes.func.isRequired,
 };
 
 registerComponent('FormComponent', FormComponent);

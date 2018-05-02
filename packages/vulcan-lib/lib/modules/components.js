@@ -1,4 +1,5 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
+import React from 'react';
 
 export const Components = {}; // will be populated on startup (see vulcan:routing)
 export const ComponentsTable = {} // storage for infos about components
@@ -12,9 +13,9 @@ export const ComponentsTable = {} // storage for infos about components
  * @param {...Function} hocs The HOCs to compose with the raw component.
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
- * 
+ *
  * @returns Structure of a component in the list:
  *
  * ComponentsTable.Foo = {
@@ -29,7 +30,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('// registering component');
   // console.log(name);
   // console.log('raw component', rawComponent);
-  // console.log('higher order components', hocs); 
+  // console.log('higher order components', hocs);
 
   // store the component in the table
   ComponentsTable[name] = {
@@ -82,7 +83,7 @@ export const populateComponentsApp = () => {
 };
 
 /**
- * Replace a Vulcan component with the same name with a new component or 
+ * Replace a Vulcan component with the same name with a new component or
  * an extension of the raw component and one or more optional higher order components.
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *
@@ -92,7 +93,7 @@ export const populateComponentsApp = () => {
  * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
  export const replaceComponent = (name, newComponent, ...newHocs) => {
@@ -106,9 +107,33 @@ export const populateComponentsApp = () => {
   // console.log('new hocs', newHocs);
   // console.log('previous hocs', previousComponent.hocs);
 
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
 };
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
-}
+};
+
+/**
+ * Returns an instance of the given component name of function
+ * @param {string|function} component  A component or registered component name
+ * @param {Object} [props]  Optional properties to pass to the component
+ */
+//eslint-disable-next-line react/display-name
+export const instantiateComponent = (component, props) => {
+  if (!component) {
+    return null;
+  } else if (typeof component === 'string') {
+    const Component = getComponent(component);
+    return <Component {...props}/>
+  } else if (typeof component === 'function' && component.prototype && component.prototype.isReactComponent) {
+    const Component = component;
+    return <Component {...props}/>
+  } else if (typeof component === 'function') {
+    return component(props);
+  } else {
+    return component;
+  }
+};
+
+
