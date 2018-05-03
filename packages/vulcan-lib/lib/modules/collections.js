@@ -198,7 +198,9 @@ export const createCollection = options => {
     # An array of fields to insert
     set: ${collectionName}Input, 
     # An array of fields to delete
-    unset: ${collectionName}Unset
+    unset: ${collectionName}Unset,
+    # Fields to match on when doing update
+    selector: JSON
   ) : ${typeName}`, mutations.edit.description);
         mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
       }

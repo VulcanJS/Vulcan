@@ -114,7 +114,7 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 }
 
 
-export const editMutation = async ({ collection, documentId, set = {}, unset = {}, currentUser, validate, context }) => {
+export const editMutation = async ({ collection, documentId, set = {}, unset = {}, selector, currentUser, validate, context }) => {
 
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
@@ -132,13 +132,14 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   debug('// documentId: ', documentId);
   debug('// set: ', set);
   debug('// unset: ', unset);
+  debug('// selector: ', selector);
   debug('// document: ', document);
 
   if (validate) {
 
     const validationErrors = validateModifier(modifier, document, collection, context);
 
-    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
+    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors, selector);
 
     if (validationErrors.length) {
       // eslint-disable-next-line no-console
@@ -161,7 +162,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   for(let fieldName of _.keys(schema)) {
 
     if (schema[fieldName].onEdit) {
-      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
+      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument, selector);
       if (typeof autoValue !== 'undefined') {
         if (autoValue === null) {
           // if any autoValue returns null, then unset the field
@@ -176,8 +177,8 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
 
   // run sync callbacks (on mongo modifier)
-  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument);
-  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser, newDocument);
+  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument, selector);
+  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser, newDocument, selector);
 
   // remove empty modifiers
   if (_.isEmpty(modifier.$set)) {
@@ -188,7 +189,7 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   }
   
   // update document
-  await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
+  await Connectors.update(collection, selector || documentId, modifier, {removeEmptyStrings: false});
 
   // get fresh copy of document from db
   newDocument = await Connectors.get(collection, documentId);
@@ -204,9 +205,9 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   // run async callbacks
   await runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
-  debug('// edit mutation finished')
-  debug('// modifier: ', modifier)
-  debug('// edited document: ', newDocument)
+  debug('// edit mutation finished');
+  debug('// modifier: ', modifier);
+  debug('// edited document: ', newDocument);
   debug('//------------------------------------//');
 
   return newDocument;

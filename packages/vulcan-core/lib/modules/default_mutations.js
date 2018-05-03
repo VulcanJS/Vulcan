@@ -71,7 +71,7 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         return Users.owns(user, document) ? Users.canDo(user, `${collectionName.toLowerCase()}.edit.own`) : Users.canDo(user, `${collectionName.toLowerCase()}.edit.all`);
       },
 
-      async mutation(root, {documentId, set, unset}, context) {
+      async mutation(root, { documentId, set, unset, selector }, context) {
 
         const collection = context[collectionName];
 
@@ -84,9 +84,10 @@ export const getDefaultMutations = (collectionName, options = {}) => {
         // call editMutator boilerplate function
         return await editMutator({
           collection, 
-          documentId: documentId, 
-          set: set, 
-          unset: unset, 
+          documentId: documentId,
+          set: set,
+          unset: unset,
+          selector: selector,
           currentUser: context.currentUser,
           validate: true,
           context,

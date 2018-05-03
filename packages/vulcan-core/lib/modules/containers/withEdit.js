@@ -37,8 +37,8 @@ export default function withEdit(options) {
         mutationName = collection.options.mutations.edit.name;
 
   return graphql(gql`
-    mutation ${mutationName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
-      ${mutationName}(documentId: $documentId, set: $set, unset: $unset) {
+    mutation ${mutationName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset, $selector: JSON) {
+      ${mutationName}(documentId: $documentId, set: $set, unset: $unset, selector: $selector) {
         ...${fragmentName}
       }
     }
@@ -49,7 +49,7 @@ export default function withEdit(options) {
       editMutation: (args) => {
         const { documentId, set, unset } = args;
         return mutate({ 
-          variables: { documentId, set, unset }
+          variables: { documentId, set, unset, selector }
           // note: updateQueries is not needed for editing documents
         });
       }
