@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMessages from '../containers/withMessages.js';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 class Flash extends PureComponent {
 
@@ -21,19 +21,19 @@ class Flash extends PureComponent {
   }
 
   getProperties = () => {
-    const messageObject = this.props.message;
-    if (typeof messageObject === 'string') {
+    const errorObject = this.props.message;
+    if (typeof errorObject === 'string') {
       // if error is a string, use it as message
       return {
-        message: messageObject,
+        message: errorObject,
         type: 'error'
       }
     } else {
       // else return full error object after internationalizing message
-      const { id, message, properties } = messageObject;
+      const { id, message, properties } = errorObject;
       const translatedMessage = this.context.intl.formatMessage({ id, defaultMessage: message }, properties);
       return {
-        ...messageObject,
+        ...errorObject,
         message: translatedMessage,
       };
     }
