@@ -1,6 +1,10 @@
 export const detectLocale = () => {
   var lang
 
+  if (typeof navigator === 'undefined') {
+    return null;
+  }
+
   if (navigator.languages && navigator.languages.length) {
     // latest versions of Chrome and Firefox set this correctly
     lang = navigator.languages[0]

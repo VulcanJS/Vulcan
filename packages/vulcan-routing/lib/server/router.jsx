@@ -111,6 +111,8 @@ function sendSSRHtml(options, req, res, next, renderProps) {
 
   req.dynamicBody += `<${options.rootElementType || 'div'} id="${options.rootElement || 'react-app'}"${rootElementAttributes}>${html || ''}</${options.rootElementType || 'div'}>`;
 
+  console.log(req.headers['accept-language'])
+
   if (typeof options.htmlHook === 'function') {
     const { dynamicHead, dynamicBody } = options.htmlHook(req, res, req.dynamicHead, req.dynamicBody);
     req.dynamicHead = dynamicHead;
