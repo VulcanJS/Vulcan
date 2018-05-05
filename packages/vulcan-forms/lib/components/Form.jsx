@@ -22,7 +22,10 @@ This component expects:
 
 */
 
-import { registerComponent, Components, runCallbacks, getCollection, getErrors } from 'meteor/vulcan:core';
+import {
+  registerComponent, Components, runCallbacks, getCollection,
+  getErrors, registerSetting, getSetting, Utils
+} from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -38,6 +41,9 @@ import find from 'lodash/find';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
+
+registerSetting('forms.warnUnsavedChanges', false,
+  'Warn user about unsaved changes before leaving route', true);
 
 // unsetCompact
 const unsetCompact = (object, path) => {
@@ -71,7 +77,7 @@ const computeStateFromProps = (nextProps) => {
 */
 
 class Form extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -124,7 +130,7 @@ class Form extends Component {
   getDocument = () => {
     const deletedValues = {};
     this.state.deletedValues.forEach(path => {
-      set(deletedValues, path, null)
+      set(deletedValues, path, null);
     });
     
     const document = merge(
@@ -237,9 +243,10 @@ class Form extends Component {
 
     // remove all hidden fields
     if (excludeHiddenFields) {
+      const document = this.getDocument();
       relevantFields = _.reject(relevantFields, fieldName => {
         const hidden = schema[fieldName].hidden;
-        return typeof hidden === 'function' ? hidden(this.props) : hidden;
+        return typeof hidden === 'function' ? hidden({ ...this.props, document }) : hidden;
       });
     }
 
@@ -420,7 +427,9 @@ class Form extends Component {
       clearForm: this.clearForm,
       refetchForm: this.refetchForm,
       isChanged: this.isChanged,
-      submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
+      submitForm: this.submitFormContext, //Change in name because we already have a function
+                                          // called submitForm, but no reason for the user to know
+                                          // about that
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
@@ -444,7 +453,9 @@ class Form extends Component {
   }
 
   /*
+  
   Manually update the current values of one or more fields(i.e. on change or blur).
+  
   */
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
@@ -467,6 +478,11 @@ class Form extends Component {
     });
   };
   
+  /*
+  
+  Warn the user if there are unsaved changes
+  
+  */
   handleRouteLeave = () => {
     if (this.isChanged()) {
       const message = this.context.intl.formatMessage({
@@ -477,14 +493,28 @@ class Form extends Component {
     }
   };
   
+  /*
+  
+  Install a route leave hook to warn the user if there are unsaved changes
+  
+  */
   componentDidMount = () => {
-    const routes = this.props.router.routes;
-    const currentRoute = routes[routes.length-1];
-    
-    this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      const routes = this.props.router.routes;
+      const currentRoute = routes[routes.length - 1];
+      this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+    }
   };
   
+  /*
   
+  Returns true if there are any differences between the initial document and the current one
+  
+  */
   isChanged = () => {
     const initialDocument = this.state.initialDocument;
     const changedDocument = this.getDocument();
@@ -498,7 +528,11 @@ class Form extends Component {
     return typeof changedValue !== 'undefined';
   };
   
-  // refetch document from the database (in case document was updated by another process)
+  /*
+  
+  Refetch the document from the database (in case it was updated by another process or to reset the form)
+  
+  */
   refetchForm = () => {
     if (this.props.data && this.props.data.refetch) {
       this.props.data.refetch();
@@ -506,20 +540,30 @@ class Form extends Component {
   };
   
   /*
+  
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
   */
-  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false }) => {
+  clearForm = ({
+                 clearErrors = true,
+                 clearCurrentValues = false,
+                 clearDeletedValues = false,
+                 document,
+               }) => {
+    document = document ? merge({}, this.props.prefilledProps, document) : null;
+    
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
+      initialDocument: document ? document : prevState.initialDocument,
       disabled: false,
     }));
   };
 
   /*
+
   Key down handler
 
   */
@@ -543,15 +587,11 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted (we are in an async callback, everything can happen!)
+    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted 
+    // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
-      let clearCurrentValues = false;
-      // reset form if this is a new document form
-      if (this.getFormType() === 'new') {
-        this.refs.form.reset();
-        clearCurrentValues = true;
-      }
-      this.clearForm({ clearErrors: true, clearCurrentValues, clearDeletedValues: true });
+      this.refs.form.reset();
+      this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
     // run document through mutation success callbacks
@@ -578,6 +618,8 @@ class Form extends Component {
       this.throwError(error);
     }
 
+    Utils.scrollIntoView('.flash-message');
+    
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists
     // if (this.props.errorCallback) this.props.errorCallback(document, error);
@@ -687,14 +729,14 @@ class Form extends Component {
   // ----------------------------- Render -------------------------------- //
   // --------------------------------------------------------------------- //
 
-  render() {
+  render () {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
 
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
-          <Components.FormErrors errors={this.state.errors} />
+          <Components.FormErrors errors={this.state.errors}/>
 
           {fieldGroups.map(group => (
             <Components.FormGroup
@@ -759,6 +801,7 @@ Form.propTypes = {
   cancelLabel: PropTypes.string,
   revertLabel: PropTypes.string,
   repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,

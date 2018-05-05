@@ -266,7 +266,13 @@ FormWrapper.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string),
   showRemove: PropTypes.bool,
+  submitLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
+  revertLabel: PropTypes.string,
+  repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
