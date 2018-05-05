@@ -602,7 +602,7 @@ class Form extends Component {
   };
 
   // catch graphql errors
-  mutationErrorCallback = error => {
+  mutationErrorCallback = (document, error) => {
     this.setState(prevState => ({ disabled: false }));
 
     // eslint-disable-next-line no-console
@@ -617,12 +617,11 @@ class Form extends Component {
       // add error to state
       this.throwError(error);
     }
-
-    Utils.scrollIntoView('.flash-message');
     
-    // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists
-    // if (this.props.errorCallback) this.props.errorCallback(document, error);
+    if (this.props.errorCallback) this.props.errorCallback(document, error);
+  
+    Utils.scrollIntoView('.flash-message');
   };
 
   /*
@@ -663,7 +662,7 @@ class Form extends Component {
       this.props
         .newMutation({ document })
         .then(this.newMutationSuccessCallback)
-        .catch(this.mutationErrorCallback);
+        .catch(error => this.mutationErrorCallback(document, error));
     } else {
       // edit document form
 
@@ -691,7 +690,7 @@ class Form extends Component {
       this.props
         .editMutation(args)
         .then(this.editMutationSuccessCallback)
-        .catch(this.mutationErrorCallback);
+        .catch(error => this.mutationErrorCallback(document, error));
     }
   };
 

@@ -11,6 +11,8 @@ import getSlug from 'speakingurl';
 import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
 import { getCollection } from './collections.js';
+import set from 'lodash/set';
+import get from 'lodash/get';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -341,11 +343,11 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
   if (typeof parent === "undefined") {
     // if there is no parent, we're at the root level
     // so we return all root nodes (i.e. nodes with no parent)
-    children = _.filter(array, node => !node[parentIdProperty]);
+    children = _.filter(array, node => !get(node, parentIdProperty));
   } else {
     // if there *is* a parent, we return all its child nodes
     // (i.e. nodes whose parentId is equal to the parent's id.)
-    children = _.filter(array, node => node[parentIdProperty] === parent[idProperty]);
+    children = _.filter(array, node => get(node, parentIdProperty) === get(parent, idProperty));
   }
 
   // if we found children, we keep on iterating
@@ -356,7 +358,7 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
       tree = children;
     } else {
       // else, we add the children to the parent as the "childrenResults" property
-      parent[childrenProperty] = children;
+      set(parent, childrenProperty, children);
     }
 
     // we call the function on each child

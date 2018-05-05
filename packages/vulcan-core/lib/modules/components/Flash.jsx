@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMessages from '../containers/withMessages.js';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 class Flash extends PureComponent {
 
@@ -21,7 +21,7 @@ class Flash extends PureComponent {
   }
 
   getProperties = () => {
-    const { errorObject } = this.props;
+    const errorObject = this.props.message;
     if (typeof errorObject === 'string') {
       // if error is a string, use it as message
       return {
@@ -42,7 +42,7 @@ class Flash extends PureComponent {
   render() {
 
     const { message, type } = this.getProperties();
-    const flashType = type === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
+    const flashType = type === 'error' ? 'danger' : type; // if flashType is "error", use "danger" instead
 
     return (
       <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
@@ -72,7 +72,7 @@ const FlashMessages = ({messages, clear, markAsSeen}) => {
   );
 }
 
-FlashMessages.displayName = "FlashMessages";
+FlashMessages.displayName = 'FlashMessages';
 
 registerComponent('FlashMessages', FlashMessages, withMessages);
 
