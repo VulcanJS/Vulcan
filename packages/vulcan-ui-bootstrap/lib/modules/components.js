@@ -20,3 +20,6 @@ import '../components/ui/ModalTrigger.jsx';
 import '../components/ui/TooltipTrigger.jsx';
 import '../components/ui/Dropdown.jsx';
 import '../components/ui/Table.jsx';
+
+import '../components/upload/UploadImage.jsx';
+import '../components/upload/UploadInner.jsx';

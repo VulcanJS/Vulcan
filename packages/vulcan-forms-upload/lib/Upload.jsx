@@ -14,60 +14,10 @@ but the array item itself is not deleted. The entire array is then cleaned when 
 import { Components, getSetting, registerSetting, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Dropzone from 'react-dropzone';
 import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import set from 'lodash/set';
 
 registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
-
-/*
-
-Get a URL from an image or an array of images
-
-*/
-const getImageUrl = imageOrImageArray => {
-  // if image is actually an array of formats, use first format
-  const image = Array.isArray(imageOrImageArray) ? imageOrImageArray[0] : imageOrImageArray;
-  // if image is an object, return secure_url; else return image itself
-  const imageUrl = typeof image === 'string' ? image : image.secure_url;
-  return imageUrl;
-};
-
-/*
-
-Display a single image
-
-*/
-class Image extends PureComponent {
-  constructor() {
-    super();
-    this.clearImage = this.clearImage.bind(this);
-  }
-
-  clearImage(e) {
-    e.preventDefault();
-    this.props.clearImage(this.props.index);
-  }
-
-  render() {
-    return (
-      <div className={`upload-image ${this.props.loading ? 'upload-image-loading' : ''} ${this.props.error ? 'upload-image-error' : ''}`}>
-        <div className="upload-image-contents">
-          <img style={{ width: 150 }} src={getImageUrl(this.props.image)} />
-          {this.props.loading && (
-            <div className="upload-loading">
-              <Components.Loading />
-            </div>
-          )}
-        </div>
-        <a href="javascript:void(0)" onClick={this.clearImage}>
-          <Components.Icon name="close" /> Remove image
-        </a>
-      </div>
-    );
-  }
-}
 
 /*
 
@@ -78,7 +28,17 @@ class Upload extends PureComponent {
 
   constructor(props, context) {
     super(props);
-
+  
+    this.onDrop = this.onDrop.bind(this);
+    
+    this.arrayField = props.datatype[0].type === Array;
+    this.maxCount = typeof this.props.maxCount === 'number' ?
+        this.props.maxCount :
+        this.arrayField ?
+          1000 :
+          1;
+    this.enableMultiple = this.maxCount !== 1;
+      
     // add callback to clean any preview or error values
     context.addToSubmitForm(data => {
       // keep only "real" images
@@ -93,21 +53,20 @@ class Upload extends PureComponent {
 
   /*
 
-  Check the field's type to decide if the component should handle
-  multiple image uploads or not. Default to yes.
-
-  */
-  enableMultiple = () => {
-    return this.props.maxCount !== 1;
-  };
-
-  /*
-
   Whether to disable the dropzone. 
 
   */
   isDisabled = () => {
-    return this.state.uploading || this.props.maxCount <= this.getImages({ includeDeleted: false }).length;
+    return this.state.uploading || this.maxCount <= this.getImages({ includeDeleted: false }).length;
+  };
+  
+  /*
+  
+  Return path to an image by index (when maxCount is 1, index is always 0)
+  
+  */
+  getImagePath = index => {
+    return this.arrayField ? `${this.props.path}.${index}` : this.props.path;
   };
 
   /*
@@ -133,7 +92,7 @@ class Upload extends PureComponent {
     files.forEach((file, index) => {
       // figure out update path for current image
       const updateIndex = imagesCount + index;
-      const updatePath = `${this.props.path}.${updateIndex}`;
+      const updatePath = this.getImagePath(updateIndex);
 
       // build preview object
       const previewObject = { secure_url: file.preview, loading: true, preview: true };
@@ -186,7 +145,7 @@ class Upload extends PureComponent {
   };
 
   isDeleted = index => {
-    return this.props.deletedValues.includes(`${this.props.path}.${index}`);
+    return this.props.deletedValues.includes(this.getImagePath(index));
   };
 
   /*
@@ -195,7 +154,9 @@ class Upload extends PureComponent {
 
   */
   clearImage = index => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null });
+    const path = this.getImagePath(index);
+    
+    this.props.updateCurrentValues({ [path]: null });
   };
 
   /*
@@ -209,7 +170,7 @@ class Upload extends PureComponent {
   
     // if images is not array, make it one (for backwards compatibility)
     if (!Array.isArray(images)) {
-      images = [images];
+      images = images ? [images] : [];
     }
     // remove previews if needed
     images = includePreviews ? images : images.filter(image => !image.preview);
@@ -219,58 +180,20 @@ class Upload extends PureComponent {
   };
 
   render() {
-    const { uploading } = this.state;
-    const images = this.getImages({ includeDeleted: true });
     return (
-      <div className={`form-group row ${this.isDisabled() ? 'upload-disabled' : ''}`}>
-        <label className="control-label col-sm-3">{this.props.label}</label>
-        <div className="col-sm-9">
-          <div className="upload-field">
-            <Dropzone
-              ref="dropzone"
-              multiple={this.enableMultiple()}
-              onDrop={this.onDrop}
-              accept="image/*"
-              className="dropzone-base"
-              activeClassName="dropzone-active"
-              rejectClassName="dropzone-reject"
-              disabled={this.isDisabled()}
-            >
-              <div>
-                <FormattedMessage id="upload.prompt" />
-              </div>
-              {uploading && (
-                <div className="upload-uploading">
-                  <span>
-                    <FormattedMessage id="upload.uploading" />
-                  </span>
-                </div>
-              )}
-            </Dropzone>
-
-            {!!images.length && (
-              <div className="upload-state">
-                <div className="upload-images">
-                  {images.map(
-                    (image, index) =>
-                      !this.isDeleted(index) && (
-                        <Image
-                          clearImage={this.clearImage}
-                          key={index}
-                          index={index}
-                          image={image}
-                          loading={image.loading}
-                          preview={image.preview}
-                          error={image.error}
-                        />
-                      )
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <Components.UploadInner
+        uploading={this.state.uploading}
+        images={this.getImages({ includeDeleted: true })}
+        disabled={this.isDisabled()}
+        maxCount={this.maxCount}
+        label={this.props.label}
+        help={this.props.help}
+        options={this.props.options}
+        enableMultiple={this.enableMultiple}
+        onDrop={this.onDrop}
+        isDeleted={this.isDeleted}
+        clearImage={this.clearImage}
+      />
     );
   }
 }
@@ -284,6 +207,8 @@ Upload.propTypes = {
 Upload.contextTypes = {
   addToSubmitForm: PropTypes.func,
 };
+
+Upload.displayName = "Upload";
 
 registerComponent('Upload', Upload);
 

@@ -190,7 +190,7 @@ FormComponentInner.propTypes = {
   afterComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   clearField: PropTypes.func.isRequired,
   errors: PropTypes.array.isRequired,
-  help: PropTypes.any,
+  help: PropTypes.node,
   onChange: PropTypes.func.isRequired,
   showCharsRemaining: PropTypes.bool.isRequired,
   charsRemaining: PropTypes.number,
