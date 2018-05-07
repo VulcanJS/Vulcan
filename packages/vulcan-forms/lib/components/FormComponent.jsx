@@ -84,7 +84,7 @@ class FormComponent extends Component {
         // for object and arrays, use lodash's merge
         // if field type is array, use [] as merge seed to force result to be an array as well
         value = merge([], documentValue, currentValue);
-      } else if (datatype[0].type === Object) {
+      } else if (datatype[0].type === Object && !p.intl) { // note: intl fields are Objects but should be treated as Strings
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
@@ -133,15 +133,18 @@ class FormComponent extends Component {
     return p.input || autoType;
   };
 
-  renderComponent() {
+  /*
+
+  Build properties object to pass down to component
+
+  */
+  getComponentProperties = () => {
     const {
-      input,
       beforeComponent,
       afterComponent,
       options,
       name,
       label,
-      formType,
       /* 
       
       note: following properties will be passed as part of `...this.props` in `properties`:
@@ -154,6 +157,8 @@ class FormComponent extends Component {
       // deletedValues,
       // clearFieldErrors,
       // currentUser,
+      // intl,
+      // intlInput,
     } = this.props;
 
     const value = this.getValue();
@@ -178,8 +183,16 @@ class FormComponent extends Component {
       inputProperties,
     };
 
+    return properties;
+  }
+
+  renderComponent() {
+    
+    const { input, formType } = this.props;
+    const properties = this.getComponentProperties();
+
     // if input is a React component, use it
-    if (typeof input === 'function') {
+    if (typeof input === 'function') {  
       const InputComponent = input;
       return <InputComponent {...properties} />;
     } else {
@@ -297,20 +310,25 @@ class FormComponent extends Component {
       'input-error': hasErrors,
     });
 
-    return (
-      <div className={inputClass}>
-        {beforeComponent ? beforeComponent : null}
-        {this.renderComponent()}
-        {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
-        {this.showClear() ? this.renderClear() : null}
-        {this.showCharsRemaining() && (
-          <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>
-            {this.state.charsRemaining}
-          </div>
-        )}
-        {afterComponent ? afterComponent : null}
-      </div>
-    );
+  if (this.props.intlInput){
+    const properties = this.getComponentProperties();
+    return <Components.FormIntl {...properties} />;
+  } else {
+      return (
+        <div className={inputClass}>
+          {beforeComponent ? beforeComponent : null}
+          {this.renderComponent()}
+          {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
+          {this.showClear() ? this.renderClear() : null}
+          {this.showCharsRemaining() && (
+            <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>
+              {this.state.charsRemaining}
+            </div>
+          )}
+          {afterComponent ? afterComponent : null}
+        </div>
+      );
+    }
   }
 }
 

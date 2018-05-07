@@ -20,6 +20,10 @@ const getGraphQLType = (schema, fieldName) => {
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
+  if (field.intl) {
+    return 'IntlString';
+  }
+  
   switch (typeName) {
 
     case 'String':
@@ -141,6 +145,8 @@ export const GraphQLSchema = {
         const fieldDescription = field.description ? `# ${field.description}
   ` : '';
 
+        const fieldDirective = field.intl ? ` @intl` : '';
+
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
 
@@ -157,7 +163,7 @@ export const GraphQLSchema = {
 
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
-            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}`);
+            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}${fieldDirective}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -171,14 +177,14 @@ export const GraphQLSchema = {
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}: ${fieldType}`);
+`${fieldDescription}${fieldName}: ${fieldType}${fieldDirective}`);
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}: ${fieldType}`);
+`${fieldDescription}${fieldName}(locale: String): ${fieldType}${fieldDirective}`);
           }
         }
 

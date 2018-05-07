@@ -252,6 +252,11 @@ class Form extends Component {
       input: fieldSchema.input || fieldSchema.control,
     };
 
+    // if this an intl'd field, use a special intlInput
+    if (fieldSchema.intl) {
+      field.intlInput = true;
+    }
+
     if (field.defaultValue) {
       set(this.defaultValues, fieldPath, field.defaultValue);
     }
