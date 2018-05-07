@@ -78,7 +78,7 @@ export const GraphQLSchema = {
   },
   // get extra schemas defined manually
   getAdditionalSchemas() {
-    const additionalSchemas = this.schemas.join('');
+    const additionalSchemas = this.schemas.join('\n');
     return additionalSchemas;
   },
 
@@ -112,6 +112,11 @@ export const GraphQLSchema = {
     this.context = deepmerge(this.context, object);
   },
 
+  directives: {},
+  addDirective(directive) {
+    this.directives = deepmerge(this.directives, directive);
+  },
+  
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
@@ -249,3 +254,4 @@ export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
+export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);

@@ -211,7 +211,9 @@ Meteor.startup(() => {
 scalar JSON
 scalar Date
 
-${GraphQLSchema.getCollectionsSchemas()}${GraphQLSchema.getAdditionalSchemas()}
+${GraphQLSchema.getAdditionalSchemas()}
+
+${GraphQLSchema.getCollectionsSchemas()}
 
 type Query {
 
@@ -238,6 +240,7 @@ ${GraphQLSchema.mutations.map(m => (
   executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
+    schemaDirectives: GraphQLSchema.directives,
   });
 
   createApolloServer({
