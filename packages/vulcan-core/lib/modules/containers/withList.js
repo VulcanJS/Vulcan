@@ -154,7 +154,7 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
-                loading = props.data.networkStatus === 1,
+                loading = props.data.loading,
                 loadingMore = props.data.networkStatus === 2,
                 error = props.data.error,
                 propertyName = options.propertyName || 'results';
