@@ -15,6 +15,7 @@ const UploadInner = (props) => {
     uploading,
     images,
     disabled,
+    maxCount,
     label,
     options,
     enableMultiple,
@@ -42,7 +43,7 @@ const UploadInner = (props) => {
           >
             <div>
               <div>
-                <FormattedMessage id={`upload.${disabled ? 'maxReached' : 'prompt'}`}
+                <FormattedMessage id={`upload.${disabled && maxCount > 1 ? 'maxReached' : 'prompt'}`}
                                   values={{ maxCount }}/>
               </div>
             </div>
