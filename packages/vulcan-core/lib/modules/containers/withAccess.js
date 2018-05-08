@@ -19,7 +19,7 @@ export default function withAccess (options) {
       // redirect on constructor if user cannot access
       constructor(props) {
         super(props);
-        if(!this.canAccess(props.currentUser)) {
+        if(!this.canAccess(props.currentUser) && typeof redirect === 'string') {
           props.router.push(redirect);
         }
       }
