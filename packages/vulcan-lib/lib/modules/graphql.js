@@ -20,8 +20,9 @@ const getGraphQLType = (schema, fieldName) => {
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
+  // intl fields should be treated as strings
   if (field.intl) {
-    return 'IntlString';
+    return 'String';
   }
   
   switch (typeName) {
