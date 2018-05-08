@@ -14,7 +14,7 @@ import { disableFragmentWarnings } from 'graphql-tag';
 disableFragmentWarnings();
 
 // get GraphQL type for a given schema and field name
-const getGraphQLType = (schema, fieldName) => {
+const getGraphQLType = (schema, fieldName, isInputType) => {
 
   const field = schema[fieldName];
   const type = field.type.singleType;
@@ -22,7 +22,7 @@ const getGraphQLType = (schema, fieldName) => {
 
   // intl fields should be treated as strings
   if (field.intl) {
-    return 'String';
+    return isInputType ? 'JSON': 'String';
   }
   
   switch (typeName) {
@@ -138,6 +138,8 @@ export const GraphQLSchema = {
       // console.log(field, fieldName)
 
       const fieldType = getGraphQLType(schema, fieldName);
+      // note: intl field have a String "normal" type but a JSON input type
+      const fieldInputType = getGraphQLType(schema, fieldName, true);
 
       // only include fields that are viewable/insertable/editable and don't contain "$" in their name
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
@@ -198,7 +200,7 @@ export const GraphQLSchema = {
           const isRequired = '';
 
           // 2. input schema
-          inputSchema.push(`${fieldName}: ${fieldType}${isRequired}`);
+          inputSchema.push(`${fieldName}: ${fieldInputType}${isRequired}`);
 
           // 3. unset schema
           unsetSchema.push(`${fieldName}: Boolean`);
