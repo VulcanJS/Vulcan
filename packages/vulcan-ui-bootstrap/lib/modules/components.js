@@ -10,6 +10,7 @@ import '../components/forms/Textarea.jsx';
 import '../components/forms/Time.jsx';
 import '../components/forms/Date.jsx';
 import '../components/forms/Url.jsx';
+import '../components/forms/FormComponentInner.jsx';
 import '../components/forms/FormControl.jsx'; // note: only used by old accounts package, remove soon?
 
 import '../components/ui/Button.jsx';
@@ -19,3 +20,6 @@ import '../components/ui/ModalTrigger.jsx';
 import '../components/ui/TooltipTrigger.jsx';
 import '../components/ui/Dropdown.jsx';
 import '../components/ui/Table.jsx';
+
+import '../components/upload/UploadImage.jsx';
+import '../components/upload/UploadInner.jsx';

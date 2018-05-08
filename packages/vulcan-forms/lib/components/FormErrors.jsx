@@ -13,7 +13,7 @@ const FormErrors = ({ errors }) => (
               {error.message || (
                 <FormattedMessage
                   id={error.id}
-                  values={{ ...error.properties }}
+                  values={{ ...error.data, ...error.properties }} //keep data for backwards compatibility ? 
                   defaultMessage={JSON.stringify(error)}
                 />
               )}
