@@ -32,6 +32,16 @@ class FormComponent extends Component {
   //   return hasChanged || hasError || hasBeenDeleted;
   // }
 
+  /*
+
+  If a locale (e.g. `en`) is specified for a field (e.g. `name`), its path is `field.locale` (e.g. `name.en`)
+
+  */
+  getPath = (props) => {
+    const p = props || this.props;
+    return p.locale ? `${p.path}.${p.locale}`: p.path;
+  }
+
   handleChange = (name, value) => {
     // if value is an empty string, delete the field
     if (value === '') {
@@ -41,7 +51,8 @@ class FormComponent extends Component {
     if (this.getType() === 'number') {
       value = Number(value);
     }
-    this.props.updateCurrentValues({ [this.props.path]: value });
+
+    this.props.updateCurrentValues({ [this.getPath()]: value });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -72,7 +83,8 @@ class FormComponent extends Component {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue, path, datatype } = p;
+    const { document, currentValues, defaultValue, datatype } = p;
+    const path = this.getPath(p);
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
@@ -80,11 +92,14 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = '';
     } else {
-      if (datatype[0].type === Array) {
+      if (p.locale) {
+         // note: intl fields are of type Object but should be treated as Strings
+         value = currentValue || documentValue || '';
+      } else if (datatype[0].type === Array) {
         // for object and arrays, use lodash's merge
         // if field type is array, use [] as merge seed to force result to be an array as well
         value = merge([], documentValue, currentValue);
-      } else if (datatype[0].type === Object && !p.intl) { // note: intl fields are Objects but should be treated as Strings
+      } else if (datatype[0].type === Object) {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled

@@ -90,16 +90,17 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
-    // add locale = all argument to fields if they're i18n fields
-    queryFields = queryFields.map(fieldName => schema[fieldName].intl ? `${fieldName}(locale: "all")` : fieldName);
+    // for intl fields, alias fooIntl to foo
+    const queryFieldsWithIntl = queryFields.map(f => schema[f].intl ? `${f}: ${f}Intl` : f);
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${queryFields.join('\n')}
+        ${queryFieldsWithIntl.join('\n')}
       }
     `
+
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {

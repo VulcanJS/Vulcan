@@ -203,6 +203,21 @@ export const GraphQLSchema = {
           unsetSchema.push(`${fieldName}: Boolean`);
 
         }
+
+        // if field is i18nized, add special field containing all languages
+        if (field.intl) {
+          const intlFieldName = `${fieldName}Intl`;
+          mainSchema.push(
+`${intlFieldName}: JSON`);
+
+          // add resolver that returns the actual db field without the effetcs of the @intl directive
+          const intlResolver = {
+            [mainTypeName]: {
+              [intlFieldName]: doc => doc[fieldName]
+            }
+          };
+          addGraphQLResolvers(intlResolver);
+        }
       }
     });
 
