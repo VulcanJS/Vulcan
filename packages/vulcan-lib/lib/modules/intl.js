@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import { Strings } from './strings';
 
 /*
 
@@ -20,17 +21,20 @@ export const isIntlField = fieldSchema => {
 /*
 
 Generate custom IntlString SimpleSchema type
-TODO: WIP (languages hardcoded)
 
 */
-const schema = {};
+export const getIntlString = () => {
+  
+  const schema = {};
 
-['en', 'ja'].forEach(locale => {
-  schema[locale] = {
-    type: String,
-    optional: true,
-  };
-});
+  Object.keys(Strings).forEach(locale => {
+    schema[locale] = {
+      type: String,
+      optional: true,
+    };
+  });
 
-export const IntlString = new SimpleSchema(schema);
-IntlString.name = 'IntlString';
+  const IntlString = new SimpleSchema(schema);
+  IntlString.name = 'IntlString';
+  return IntlString;
+}
