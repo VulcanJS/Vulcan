@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import { registerComponent, Components, runCallbacks, getCollection, getErrors } from 'meteor/vulcan:core';
+import { registerComponent, Components, runCallbacks, getCollection, getErrors, isIntlField } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -253,7 +253,7 @@ class Form extends Component {
     };
 
     // if this an intl'd field, use a special intlInput
-    if (fieldSchema.intl) {
+    if (isIntlField(fieldSchema)) {
       field.intlInput = true;
     }
 

@@ -38,6 +38,7 @@ import {
   withRemove,
   getFragment,
   getCollection,
+  isIntlField,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
@@ -91,7 +92,7 @@ class FormWrapper extends PureComponent {
     }
 
     // for intl fields, alias fooIntl to foo
-    const queryFieldsWithIntl = queryFields.map(f => schema[f].intl ? `${f}: ${f}Intl` : f);
+    const queryFieldsWithIntl = queryFields.map(f => isIntlField(schema[f]) ? `${f}: ${f}Intl` : f);
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`

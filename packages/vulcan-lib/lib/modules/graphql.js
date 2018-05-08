@@ -10,6 +10,7 @@ import GraphQLDate from 'graphql-date';
 import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
+import { isIntlField } from './intl.js';
 
 disableFragmentWarnings();
 
@@ -20,8 +21,8 @@ const getGraphQLType = (schema, fieldName, isInputType) => {
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
-  // intl fields should be treated as strings
-  if (field.intl) {
+  // intl fields should be treated as strings (or JSON if in the context of an input type)
+  if (isIntlField(field)) {
     return isInputType ? 'JSON': 'String';
   }
   
@@ -148,7 +149,7 @@ export const GraphQLSchema = {
         const fieldDescription = field.description ? `# ${field.description}
   ` : '';
 
-        const fieldDirective = field.intl ? ` @intl` : '';
+        const fieldDirective = isIntlField(field) ? ` @intl` : '';
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
@@ -208,7 +209,7 @@ export const GraphQLSchema = {
         }
 
         // if field is i18nized, add special field containing all languages
-        if (field.intl) {
+        if (isIntlField(field)) {
           const intlFieldName = `${fieldName}Intl`;
           mainSchema.push(
 `${intlFieldName}: JSON`);

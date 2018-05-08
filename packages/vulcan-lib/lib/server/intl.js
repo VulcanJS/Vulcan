@@ -1,9 +1,8 @@
 // see https://github.com/apollographql/graphql-tools/blob/master/docs/source/schema-directives.md#marking-strings-for-internationalization
 
-import { addGraphQLDirective, addGraphQLSchema, addGraphQLResolvers, addCallback } from 'meteor/vulcan:lib';
+import { addGraphQLDirective, addGraphQLSchema } from '../modules/graphql';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
 import { defaultFieldResolver } from 'graphql';
-import { GraphQLScalarType } from 'graphql';
 
 class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
