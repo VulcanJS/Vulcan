@@ -7,6 +7,8 @@ import { registerComponent } from 'meteor/vulcan:core';
 import debounce from 'lodash.debounce';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
+import find from 'lodash/find';
+import isObjectLike from 'lodash/isObjectLike';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
@@ -95,11 +97,11 @@ class FormComponent extends Component {
       if (p.locale) {
          // note: intl fields are of type Object but should be treated as Strings
          value = currentValue || documentValue || '';
-      } else if (datatype[0].type === Array) {
+      } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
         // for object and arrays, use lodash's merge
         // if field type is array, use [] as merge seed to force result to be an array as well
         value = merge([], documentValue, currentValue);
-      } else if (datatype[0].type === Object) {
+      } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
