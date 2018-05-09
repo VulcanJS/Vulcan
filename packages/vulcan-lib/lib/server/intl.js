@@ -3,6 +3,11 @@
 import { addGraphQLDirective, addGraphQLSchema } from '../modules/graphql';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
 import { defaultFieldResolver } from 'graphql';
+import { Collections } from '../modules/collections';
+import Vulcan from '../modules/config';
+import { isIntlField } from '../modules/intl';
+import { Connectors } from './connectors';
+import pickBy from 'lodash/pickBy';
 
 class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
@@ -25,3 +30,51 @@ class IntlDirective extends SchemaDirectiveVisitor {
 addGraphQLDirective({ intl: IntlDirective });
 
 addGraphQLSchema(`directive @intl on FIELD_DEFINITION`);
+
+const migrateIntlFields = async (defaultLocale) => {
+
+  if (!defaultLocale) {
+    throw new Error(`Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))`);
+  }
+  
+  Collections.forEach(async collection => {
+
+    const schema = collection.simpleSchema()._schema;
+    const intlFields = pickBy(schema, isIntlField);
+    const intlFieldsNames = Object.keys(intlFields);
+    if (intlFieldsNames.length) {
+      console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`);
+
+      const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}.${defaultLocale}`);
+
+      // find all documents with one or more unmigrated intl fields
+      const selector = { $or: intlFieldsWithLocale.map(f => ({[f]: { $exists: false }})) };
+      const documentsToMigrate = await Connectors.find(collection, selector);
+
+      if (documentsToMigrate.length) {
+
+        console.log(`-> found ${documentsToMigrate.length} documents to migrate \n`);
+        documentsToMigrate.forEach(doc => {
+          
+          console.log(`// Migrating document ${doc._id}`);
+          const modifier = { $set: {}};
+
+          intlFieldsNames.forEach(f => {
+            if (doc[f] && !doc[f][defaultLocale]) {
+              console.log(`-> migrating field ${f}: ${doc[f]}`);
+              modifier.$set[f] = { [defaultLocale]: doc[f]}
+            }
+          });
+
+          // update document
+          Connectors.update(collection, {_id: doc._id}, modifier);
+          console.log('\n');
+
+        });
+      }
+
+    }
+  });
+}
+
+Vulcan.migrateIntlFields = migrateIntlFields;

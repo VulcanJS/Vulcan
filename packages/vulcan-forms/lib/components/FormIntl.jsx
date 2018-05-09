@@ -4,8 +4,8 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 class FormIntl extends PureComponent {
   render() {
-    // do not pass FormIntl's own value, input and inputProperties, and intlInput props down
-    const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'intlInput');
+    // do not pass FormIntl's own value, inputProperties, and intlInput props down
+    const properties = _.omit(this.props, 'value', 'inputProperties', 'intlInput');
 
     return (
       <div className="form-intl">
