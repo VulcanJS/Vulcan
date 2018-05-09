@@ -9,6 +9,7 @@ import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
 import { getDefaultFragmentText, extractFragmentName, getFragmentText } from '../modules/fragments.js';
+import { getSetting } from '../modules/settings';
 
 // note: if no context is passed, default to running queries with full admin privileges
 export const runQuery = async (query, variables = {}, context = { currentUser: {isAdmin: true} }) => {
@@ -19,6 +20,8 @@ export const runQuery = async (query, variables = {}, context = { currentUser: {
     collection.loader = new DataLoader(ids => findByIds(collection, ids, context), { cache: true });
     context[collection.options.collectionName] = collection;
   });
+
+  context.locale = getSetting('locale', 'en');
 
   // see http://graphql.org/graphql-js/graphql/#graphql
   const result = await graphql(executableSchema, query, {}, context, variables);

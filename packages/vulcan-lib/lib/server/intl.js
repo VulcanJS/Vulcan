@@ -18,9 +18,10 @@ class IntlDirective extends SchemaDirectiveVisitor {
       const graphQLArguments = args[1];
       const locale = graphQLArguments.locale || context.locale;
       if (typeof fieldValue === 'object') {
-        // intl'd field, return all locales or else current locale
-        return locale === 'all' ? fieldValue : fieldValue[locale];
+        // intl'd field, return current locale
+        return fieldValue[locale];
       } else {
+        // not an object, return field itself
         return fieldValue;
       }
     };
@@ -43,7 +44,7 @@ const migrateIntlFields = async (defaultLocale) => {
     const intlFields = pickBy(schema, isIntlField);
     const intlFieldsNames = Object.keys(intlFields);
     if (intlFieldsNames.length) {
-      console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`);
+      console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`); // eslint-disable-line no-console
 
       const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}.${defaultLocale}`);
 
@@ -53,22 +54,22 @@ const migrateIntlFields = async (defaultLocale) => {
 
       if (documentsToMigrate.length) {
 
-        console.log(`-> found ${documentsToMigrate.length} documents to migrate \n`);
+        console.log(`-> found ${documentsToMigrate.length} documents to migrate \n`); // eslint-disable-line no-console
         documentsToMigrate.forEach(doc => {
-          
-          console.log(`// Migrating document ${doc._id}`);
+
+          console.log(`// Migrating document ${doc._id}`); // eslint-disable-line no-console
           const modifier = { $set: {}};
 
           intlFieldsNames.forEach(f => {
             if (doc[f] && !doc[f][defaultLocale]) {
-              console.log(`-> migrating field ${f}: ${doc[f]}`);
+              console.log(`-> migrating field ${f}: ${doc[f]}`); // eslint-disable-line no-console
               modifier.$set[f] = { [defaultLocale]: doc[f]}
             }
           });
 
           // update document
           Connectors.update(collection, {_id: doc._id}, modifier);
-          console.log('\n');
+          console.log('\n'); // eslint-disable-line no-console
 
         });
       }
