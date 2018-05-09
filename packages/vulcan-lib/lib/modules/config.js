@@ -36,7 +36,6 @@ SimpleSchema.extendOptions([
   'placeholder', // form field placeholder value
   'options', // form options
   'query', // field-specific data loading query
-  'intl', // mark field for i18n
 ]);
 
 // eslint-disable-next-line no-undef

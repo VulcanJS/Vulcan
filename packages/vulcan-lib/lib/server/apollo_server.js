@@ -19,6 +19,7 @@ import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
+import { Locales } from '../modules/intl.js';
 
 export let executableSchema;
 
@@ -183,6 +184,8 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
+    options.context.locale = req.headers.locale || getSetting('locale', 'en');
+    
     // add error formatting from apollo-errors
     options.formatError = formatError;
 

@@ -105,7 +105,6 @@ export const schemaProperties = [
   'options',
   'query',
   'fieldProperties',
-  'intl',
 ];
 
 export const formProperties = [
@@ -138,5 +137,4 @@ export const formProperties = [
   'options',
   'query',
   'fieldProperties',
-  'intl',
 ];

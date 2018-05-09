@@ -1,6 +1,12 @@
 import SimpleSchema from 'simpl-schema';
 import { Strings } from './strings';
 
+export const Locales = [];
+
+export const addLocale = locale => {
+  Locales.push(locale);
+}
+
 /*
 
 Look for type name in a few different places
