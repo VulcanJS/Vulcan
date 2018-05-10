@@ -102,11 +102,11 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = '';
     } else {
-      if (datatype[0].type === Array) {
+      if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
         // for object and arrays, use lodash's merge
         // if field type is array, use [] as merge seed to force result to be an array as well
         value = merge([], documentValue, currentValue);
-      } else if (datatype[0].type === Object) {
+      } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
