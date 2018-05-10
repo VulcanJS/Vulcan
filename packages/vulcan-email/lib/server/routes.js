@@ -1,5 +1,5 @@
 import { Picker } from 'meteor/meteorhacks:picker';
-import { runQuery } from 'meteor/vulcan:lib';
+import { runQuery, Strings, getSetting } from 'meteor/vulcan:lib';
 import VulcanEmail from '../namespace.js';
 
 Meteor.startup(function () {
@@ -28,11 +28,17 @@ Meteor.startup(function () {
         const emailTestData = email.data ? {...result.data, ...email.data(variables)} : result.data;
         const subject = typeof email.subject === 'function' ? email.subject(emailTestData) : email.subject;
 
+        const locale = params.query.locale || getSetting('locale');
+        emailTestData.__ = Strings[locale];
+        
         const template = VulcanEmail.getTemplate(email.template);
         const htmlContent = template(emailTestData)
 
         // then apply email template to properties, and wrap it with buildTemplate
         html = VulcanEmail.buildTemplate(htmlContent, emailTestData);
+
+        // remove Strings object to avoid echoing it out
+        delete emailTestData.__;
 
         html += `
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
