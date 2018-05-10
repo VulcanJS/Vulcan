@@ -64,7 +64,7 @@ Item.propTypes = {
   itemProps: PropTypes.object, // props for the <MenuItem/> component
 };
 
-const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, ...dropdownProps }) => {
+const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, toggleClassName, ...dropdownProps }) => {
   const menuBody = menuContents ? menuContents : menuItems.map((item, index) => {
     if (item === 'divider') {
       return <MenuItem divider key={index} />;
@@ -77,7 +77,7 @@ const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, .
     // if a trigger component has been provided, use it
     return (
       <Dropdown {...dropdownProps}>
-        <Dropdown.Toggle>{trigger}</Dropdown.Toggle>
+        <Dropdown.Toggle className={toggleClassName} >{trigger}</Dropdown.Toggle>
         <Dropdown.Menu>{menuBody}</Dropdown.Menu>
       </Dropdown>
     );
@@ -97,6 +97,7 @@ BootstrapDropdown.propTypes = {
   trigger: PropTypes.object, // component used as menu trigger (the part you click to open the menu)
   menuContents: PropTypes.object, // a component specifying the menu contents
   menuItems: PropTypes.array, // an array of menu items, used if menuContents is not provided
+  toggleClassName: PropTypes.string,
 };
 
 registerComponent('Dropdown', BootstrapDropdown);
