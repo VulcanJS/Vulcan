@@ -21,7 +21,7 @@
         "Juice",
         "Run",
         "AppComposer",
-        "Query",
+        "Query"
       ]
     }],
     "babel/array-bracket-spacing": 0,
