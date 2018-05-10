@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withEdit from '../containers/withEdit.js';
+import { withApollo } from 'react-apollo';
 
 class App extends PureComponent {
   constructor(props) {
@@ -43,12 +44,13 @@ class App extends PureComponent {
     return truncate ? this.state.locale.slice(0,2) : this.state.locale;
   };
 
-  setLocale = locale => {
+  setLocale = async locale => {
     this.setState({ locale });
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
-     this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
+     await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
     }
+    this.props.client.resetStore()
   };
 
   getChildContext() {
@@ -114,6 +116,6 @@ const editOptions = {
   fragmentName: 'UsersCurrent',
 }
 
-registerComponent('App', App, withCurrentUser, [withEdit, editOptions]);
+registerComponent('App', App, withCurrentUser, [withEdit, editOptions], withApollo);
 
 export default App;
