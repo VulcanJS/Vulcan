@@ -42,109 +42,6 @@ class FormComponentInner extends PureComponent {
     };
   };
   
-  renderExtraComponent = (extraComponent) => {
-    if (!extraComponent) return null;
-  
-    const properties = this.getProperties();
-    
-    return instantiateComponent(extraComponent, properties);
-  };
-  
-  
-  renderComponent = () => {
-    const { input, inputType, formType } = this.props;
-    const properties = this.getProperties();
-  
-    // if input is a React component, use it
-    if (typeof input === 'function') {
-      const InputComponent = input;
-      return <InputComponent {...properties} />;
-    } else {
-      // else pick a predefined component
-      
-      switch (inputType) {
-        case 'nested':
-          return <Components.FormNested {...properties} />;
-        
-        case 'number':
-          return <Components.FormComponentNumber {...properties} />;
-        
-        case 'url':
-          return <Components.FormComponentUrl {...properties} />;
-        
-        case 'email':
-          return <Components.FormComponentEmail {...properties} />;
-        
-        case 'textarea':
-          return <Components.FormComponentTextarea {...properties} />;
-        
-        case 'checkbox':
-          // formsy-react-components expects a boolean value for checkbox
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox.js#L20
-          properties.inputProperties.value = !!properties.inputProperties.value;
-          return <Components.FormComponentCheckbox {...properties} />;
-        
-        case 'checkboxgroup':
-          // formsy-react-components expects an array value
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
-          if (!Array.isArray(properties.inputProperties.value)) {
-            properties.inputProperties.value = [properties.inputProperties.value];
-          }
-          // in case of checkbox groups, check "checked" option to populate value if this is a "new
-          // document" form
-          const checkedValues = _.where(properties.options, { checked: true })
-          .map(option => option.value);
-          if (checkedValues.length && !properties.inputProperties.value && formType === 'new') {
-            properties.inputProperties.value = checkedValues;
-          }
-          return <Components.FormComponentCheckboxGroup {...properties} />;
-        
-        case 'radiogroup':
-          // TODO: remove this?
-          // formsy-react-compnents RadioGroup expects an onChange callback
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/radio-group.js#L33
-          // properties.onChange = (name, value) => {
-          //   this.context.updateCurrentValues({ [name]: value });
-          // };
-          return <Components.FormComponentRadioGroup {...properties} />;
-        
-        case 'select':
-          const noneOption = {
-            label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
-            value: '',
-            disabled: true,
-          };
-          properties.inputProperties.options = [noneOption, ...properties.inputProperties.options];
-          
-          return <Components.FormComponentSelect {...properties} />;
-        
-        case 'selectmultiple':
-          properties.inputProperties.multiple = true;
-          return <Components.FormComponentSelect {...properties} />;
-        
-        case 'datetime':
-          return <Components.FormComponentDateTime {...properties} />;
-        
-        case 'date':
-          return <Components.FormComponentDate {...properties} />;
-        
-        case 'time':
-          return <Components.FormComponentTime {...properties} />;
-        
-        case 'text':
-          return <Components.FormComponentDefault {...properties} />;
-        
-        default:
-          const CustomComponent = Components[input];
-          return CustomComponent ? (
-            <CustomComponent {...properties} />
-          ) : (
-            <Components.FormComponentDefault {...properties} />
-          );
-      }
-    }
-  };
-  
   render () {
     const {
       inputClassName,
@@ -155,6 +52,7 @@ class FormComponentInner extends PureComponent {
       errors,
       showCharsRemaining,
       charsRemaining,
+      renderComponent,
     } = this.props;
     
     const hasErrors = errors && errors.length;
@@ -162,11 +60,12 @@ class FormComponentInner extends PureComponent {
     const inputName = typeof input === 'function' ? input.name : input;
     const inputClass = classNames('form-input', inputClassName, `input-${name}`,
       `form-component-${inputName || 'default'}`, { 'input-error': hasErrors, });
+    const properties = this.getProperties();
     
     return (
       <div className={inputClass}>
-        {this.renderExtraComponent(beforeComponent)}
-        {this.renderComponent()}
+        {instantiateComponent(beforeComponent, properties)}
+        {renderComponent(properties)}
         {hasErrors ? <Components.FieldErrors errors={errors}/> : null}
         {this.renderClear()}
         {showCharsRemaining &&
@@ -174,7 +73,7 @@ class FormComponentInner extends PureComponent {
             {charsRemaining}
           </div>
         }
-        {this.renderExtraComponent(afterComponent)}
+        {instantiateComponent(afterComponent, properties)}
       </div>
     );
   }
@@ -196,6 +95,7 @@ FormComponentInner.propTypes = {
   charsRemaining: PropTypes.number,
   charsCount: PropTypes.number,
   charsMax: PropTypes.number,
+  renderComponent: PropTypes.func.isRequired,
 };
 
 FormComponentInner.contextTypes = {

@@ -24,9 +24,7 @@ class FormComponent extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // allow custom controls to determine if they should update
-    if (!['nested', 'number', 'url', 'email', 'textarea', 'checkbox',
-      'checkboxgroup', 'radiogroup', 'select', 'selectmultiple', 'datetime',
-      'date', 'time', 'text'].includes(this.getType(nextProps))) {
+    if (this.isCustomInput(this.getType(nextProps))) {
       return true;
     }
   
@@ -40,6 +38,18 @@ class FormComponent extends Component {
     
     return valueChanged || errorChanged || deleteChanged || charsChanged;
   }
+  
+  /*
+  
+  Returns true if the passed input type is a custom 
+  
+  */
+  isCustomInput = (inputType) => {
+    const isStandardInput = ['nested', 'number', 'url', 'email', 'textarea', 'checkbox',
+      'checkboxgroup', 'radiogroup', 'select', 'selectmultiple', 'datetime',
+      'date', 'time', 'text'].includes(inputType);
+    return !isStandardInput;
+  };
   
   /*
   
@@ -100,14 +110,11 @@ class FormComponent extends Component {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
-        //value = currentValue || documentValue || '';
-        // note: the previous line does not work when a checkbox is 'false' or a number is '0'
-        value = currentValue;
-        if (typeof value === 'undefined' || value === null) {
+        value = '';
+        if (typeof currentValue !== 'undefined' && currentValue !== null) {
+          value = currentValue;
+        } else if (typeof documentValue !== 'undefined' && documentValue !== null) {
           value = documentValue;
-        }
-        if (typeof value === 'undefined' || value === null) {
-          value = '';
         }
       }
       // replace empty value, which has not been prefilled, by the default value from the schema
@@ -116,9 +123,37 @@ class FormComponent extends Component {
       }
     }
 
+    return this.cleanValue(p, value);
+  };
+  
+  
+  /*
+  
+  For some input types apply additional normalization
+  
+  */
+  cleanValue = (props, value) => {
+    const p = props || this.props;
+    
+    if (p.input === 'checkbox') {
+      value = !!value;
+    } else if (p.input === 'checkboxgroup') {
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      // in case of checkbox groups, check "checked" option to populate value 
+      // if this is a "new document" form
+      const checkedValues = _.where(p.options, { checked: true })
+      .map(option => option.value);
+      if (checkedValues.length && !value && p.formType === 'new') {
+        value = checkedValues;
+      }
+    }
+    
     return value;
   };
 
+  
   /*
 
   Whether to keep track of and show remaining chars
@@ -142,8 +177,7 @@ class FormComponent extends Component {
 
   /*
 
-  Get form input type, either based on input props, or by guessing
-  based on form field type
+  Get form input type, either based on input props, or by guessing based on form field type
 
   */
   getType = props => {
@@ -171,7 +205,76 @@ class FormComponent extends Component {
       this.updateCharacterCount(null);
     }
   };
-
+  
+  /*
+  
+  Function passed to FormComponentInner to help with rendering the component
+  
+  */
+  renderComponent = (properties) => {
+    const { input, inputType } = properties;
+    
+    // if input is a React component, use it
+    if (typeof input === 'function') {
+      const InputComponent = input;
+      return <InputComponent {...properties}/>;
+    } else {
+      // else pick a predefined component
+      
+      switch (inputType) {
+        case 'text':
+          return <Components.FormComponentDefault {...properties}/>;
+        
+        case 'nested':
+          return <Components.FormNested {...properties}/>;
+        
+        case 'number':
+          return <Components.FormComponentNumber {...properties}/>;
+        
+        case 'url':
+          return <Components.FormComponentUrl {...properties}/>;
+        
+        case 'email':
+          return <Components.FormComponentEmail {...properties}/>;
+        
+        case 'textarea':
+          return <Components.FormComponentTextarea {...properties}/>;
+        
+        case 'checkbox':
+          return <Components.FormComponentCheckbox {...properties}/>;
+        
+        case 'checkboxgroup':
+          return <Components.FormComponentCheckboxGroup {...properties}/>;
+        
+        case 'radiogroup':
+          return <Components.FormComponentRadioGroup {...properties}/>;
+        
+        case 'select':
+          return <Components.FormComponentSelect {...properties}/>;
+        
+        case 'selectmultiple':
+          return <Components.FormComponentSelectMultiple {...properties}/>;
+        
+        case 'datetime':
+          return <Components.FormComponentDateTime {...properties}/>;
+        
+        case 'date':
+          return <Components.FormComponentDate {...properties}/>;
+        
+        case 'time':
+          return <Components.FormComponentTime {...properties}/>;
+        
+        default:
+          const CustomComponent = Components[input];
+          return CustomComponent ? (
+            <CustomComponent {...properties}/>
+          ) : (
+            <Components.FormComponentDefault {...properties}/>
+          );
+      }
+    }
+  };
+  
   render () {
     return (
       <Components.FormComponentInner
@@ -184,6 +287,7 @@ class FormComponent extends Component {
         showCharsRemaining={!!this.showCharsRemaining()}
         onChange={this.handleChange}
         clearField={this.clearField}
+        renderComponent={this.renderComponent}
       />
     );
   }
