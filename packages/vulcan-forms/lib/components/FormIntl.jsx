@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, Locales } from 'meteor/vulcan:core';
 
 class FormIntl extends PureComponent {
   render() {
@@ -9,9 +9,9 @@ class FormIntl extends PureComponent {
 
     return (
       <div className="form-intl">
-        {['en', 'ja'].map(locale => (
-          <div className={`form-intl-${locale}`} key={locale}>
-            <Components.FormComponent {...properties} label={`${this.props.label} (${locale})`} locale={locale} />
+        {Locales.map(locale => (
+          <div className={`form-intl-${locale.id}`} key={locale.id}>
+            <Components.FormComponent {...properties} label={`${this.props.label} (${locale.label})`} locale={locale.id} />
           </div>
         ))}
       </div>

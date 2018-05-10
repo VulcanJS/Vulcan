@@ -3,7 +3,7 @@ import { Strings } from './strings';
 
 export const Locales = [];
 
-export const addLocale = locale => {
+export const registerLocale = locale => {
   Locales.push(locale);
 }
 
