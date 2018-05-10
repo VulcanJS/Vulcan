@@ -11,7 +11,7 @@ class FormIntl extends PureComponent {
       <div className="form-intl">
         {Locales.map(locale => (
           <div className={`form-intl-${locale.id}`} key={locale.id}>
-            <Components.FormComponent {...properties} label={`${this.props.label} (${locale.label})`} locale={locale.id} />
+            <Components.FormComponent {...properties} label={`${this.props.label} (${locale.id})`} locale={locale.id} />
           </div>
         ))}
       </div>

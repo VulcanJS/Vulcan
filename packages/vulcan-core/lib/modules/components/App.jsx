@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
+import withEdit from '../containers/withEdit.js';
 
 class App extends PureComponent {
   constructor(props) {
@@ -44,6 +45,10 @@ class App extends PureComponent {
 
   setLocale = locale => {
     this.setState({ locale });
+    // if user is logged in, change their `locale` profile property
+    if (this.props.currentUser) {
+     this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
+    }
   };
 
   getChildContext() {
@@ -104,6 +109,11 @@ App.childContextTypes = {
 
 App.displayName = 'App';
 
-registerComponent('App', App, withCurrentUser);
+const editOptions = {
+  collectionName: 'Users',
+  fragmentName: 'UsersCurrent',
+}
+
+registerComponent('App', App, withCurrentUser, [withEdit, editOptions]);
 
 export default App;
