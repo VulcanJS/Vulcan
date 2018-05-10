@@ -1,46 +1,60 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'meteor/vulcan:i18n';
-import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
-import debounce from 'lodash.debounce';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 import find from 'lodash/find';
 import isObjectLike from 'lodash/isObjectLike';
+import isEqual from 'lodash/isEqual';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
-  constructor(props) {
+  
+  constructor (props) {
     super(props);
 
-    const value = this.getValue(props);
+    this.state = {};
+  }
 
-    if (this.showCharsRemaining(props)) {
-      const characterCount = value ? value.length : 0;
-      this.state = {
-        charsRemaining: props.max - characterCount,
-      };
+  componentWillMount () {
+    if (this.showCharsRemaining()) {
+      const value = this.getValue();
+      this.updateCharacterCount(value);
     }
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { currentValues, deletedValues, errors } = nextProps;
-  //   const { path } = this.props;
-  //   const hasChanged = currentValues[path] && currentValues[path] !== this.props.currentValues[path];
-  //   const hasError = !!errors[path];
-  //   const hasBeenDeleted = deletedValues.includes(path) && !this.props.deletedValues.includes(path)
-  //   return hasChanged || hasError || hasBeenDeleted;
-  // }
-
+  shouldComponentUpdate (nextProps, nextState) {
+    // allow custom controls to determine if they should update
+    if (!['nested', 'number', 'url', 'email', 'textarea', 'checkbox',
+      'checkboxgroup', 'radiogroup', 'select', 'selectmultiple', 'datetime',
+      'date', 'time', 'text'].includes(this.getType(nextProps))) {
+      return true;
+    }
+  
+    const { currentValues, deletedValues, errors } = nextProps;
+    const { path } = this.props;
+  
+    const valueChanged = currentValues[path] !== this.props.currentValues[path];
+    const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
+    const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
+    const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
+    
+    return valueChanged || errorChanged || deleteChanged || charsChanged;
+  }
+  
+  /*
+  
+  Function passed to form controls (always controlled) to update their value
+  
+  */
   handleChange = (name, value) => {
     // if value is an empty string, delete the field
     if (value === '') {
       value = null;
     }
     // if this is a number field, convert value before sending it up to Form
-    if (this.getType() === 'number') {
+    if (this.getType() === 'number' && value != null) {
       value = Number(value);
     }
     this.props.updateCurrentValues({ [this.props.path]: value });
@@ -52,17 +66,15 @@ class FormComponent extends Component {
   };
 
   /*
-
-  Note: not currently used because when function is debounced
-  some changes might not register if the user submits form too soon
-
+  
+  Updates the state of charsCount and charsRemaining as the users types
+  
   */
-  handleChangeDebounced = debounce(this.handleChange, 500, { leading: true });
-
   updateCharacterCount = value => {
     const characterCount = value ? value.length : 0;
     this.setState({
       charsRemaining: this.props.max - characterCount,
+      charsCount: characterCount,
     });
   };
 
@@ -90,7 +102,15 @@ class FormComponent extends Component {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
-        value = currentValue || documentValue || '';
+        //value = currentValue || documentValue || '';
+        // note: the previous line does not work when a checkbox is 'false' or a number is '0'
+        value = currentValue;
+        if (typeof value === 'undefined' || value === null) {
+          value = documentValue;
+        }
+        if (typeof value === 'undefined' || value === null) {
+          value = '';
+        }
       }
       // replace empty value, which has not been prefilled, by the default value from the schema
       if (isEmptyValue(value)) {
@@ -116,8 +136,9 @@ class FormComponent extends Component {
   Get errors from Form state through context
 
   */
-  getErrors = () => {
-    const fieldErrors = this.props.errors.filter(error => error.path === this.props.path);
+  getErrors = (errors) => {
+    errors = errors || this.props.errors;
+    const fieldErrors = errors.filter(error => error.path === this.props.path);
     return fieldErrors;
   };
 
@@ -131,194 +152,49 @@ class FormComponent extends Component {
     const p = props || this.props;
     const fieldType = p.datatype && p.datatype[0].type;
     const autoType =
-      fieldType === Number ? 'number' : fieldType === Boolean ? 'checkbox' : fieldType === Date ? 'date' : 'text';
+      fieldType === Number ? 'number' :
+        fieldType === Boolean ? 'checkbox' : 
+          fieldType === Date ? 
+            'date' : 
+            'text';
     return p.input || autoType;
   };
 
-  renderComponent() {
-    const {
-      input,
-      beforeComponent,
-      afterComponent,
-      options,
-      name,
-      label,
-      formType,
-      /* 
-      
-      note: following properties will be passed as part of `...this.props` in `properties`:
-
-      */
-      // throwError,
-      // updateCurrentValues,
-      // currentValues,
-      // addToDeletedValues,
-      // deletedValues,
-      // clearFieldErrors,
-      // currentUser,
-    } = this.props;
-
-    const value = this.getValue();
-    const errors = this.getErrors();
-
-    // these properties are whitelisted so that they can be safely passed to the actual form input
-    // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
-    const inputProperties = {
-      name,
-      options,
-      label,
-      onChange: this.handleChange,
-      value,
-      ...this.props.inputProperties,
-    };
-
-    // note: we also pass value on props directly
-    const properties = {
-      ...this.props,
-      value,
-      errors, // only get errors for the current field
-      inputProperties,
-    };
-
-    // if input is a React component, use it
-    if (typeof input === 'function') {
-      const InputComponent = input;
-      return <InputComponent {...properties} />;
-    } else {
-      // else pick a predefined component
-
-      switch (this.getType()) {
-        case 'nested':
-          return <Components.FormNested {...properties} />;
-
-        case 'number':
-          return <Components.FormComponentNumber {...properties} />;
-
-        case 'url':
-          return <Components.FormComponentUrl {...properties} />;
-
-        case 'email':
-          return <Components.FormComponentEmail {...properties} />;
-
-        case 'textarea':
-          return <Components.FormComponentTextarea {...properties} />;
-
-        case 'checkbox':
-          // formsy-react-components expects a boolean value for checkbox
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox.js#L20
-          properties.inputProperties.value = !!properties.inputProperties.value;
-          return <Components.FormComponentCheckbox {...properties} />;
-
-        case 'checkboxgroup':
-          // formsy-react-components expects an array value
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/checkbox-group.js#L42
-          if (!Array.isArray(properties.inputProperties.value)) {
-            properties.inputProperties.value = [properties.inputProperties.value];
-          }
-          // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-          const checkedValues = _.where(properties.options, { checked: true }).map(option => option.value);
-          if (checkedValues.length && !properties.inputProperties.value && formType === 'new') {
-            properties.inputProperties.value = checkedValues;
-          }
-          return <Components.FormComponentCheckboxGroup {...properties} />;
-
-        case 'radiogroup':
-          // TODO: remove this?
-          // formsy-react-compnents RadioGroup expects an onChange callback
-          // https://github.com/twisty/formsy-react-components/blob/v0.11.1/src/radio-group.js#L33
-          // properties.onChange = (name, value) => {
-          //   this.context.updateCurrentValues({ [name]: value });
-          // };
-          return <Components.FormComponentRadioGroup {...properties} />;
-
-        case 'select':
-          const noneOption = {
-            label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
-            value: '',
-            disabled: true,
-          };
-          properties.inputProperties.options = [noneOption, ...properties.inputProperties.options];
-
-          return <Components.FormComponentSelect {...properties} />;
-
-        case 'selectmultiple':
-          properties.inputProperties.multiple = true;
-          return <Components.FormComponentSelect {...properties} />;
-
-        case 'datetime':
-          return <Components.FormComponentDateTime {...properties} />;
-
-        case 'date':
-          return <Components.FormComponentDate {...properties} />;
-
-        case 'time':
-          return <Components.FormComponentTime {...properties} />;
-
-        case 'text':
-          return <Components.FormComponentDefault {...properties} />;
-
-        default:
-          const CustomComponent = Components[input];
-          return CustomComponent ? (
-            <CustomComponent {...properties} />
-          ) : (
-            <Components.FormComponentDefault {...properties} />
-          );
-      }
-    }
-  }
-
-  showClear = () => {
-    return ['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input);
-  };
-
-  clearField = e => {
-    e.preventDefault();
+  /*
+  
+  Function passed to form controls to clear their contents (set their value to null)
+  
+  */
+  clearField = event => {
+    event.preventDefault();
+    event.stopPropagation();
     this.props.updateCurrentValues({ [this.props.path]: null });
+    if (this.showCharsRemaining()) {
+      this.updateCharacterCount(null);
+    }
   };
 
-  renderClear() {
+  render () {
     return (
-      <a
-        href="javascript:void(0)"
-        className="form-component-clear"
-        title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
-        onClick={this.clearField}
-      >
-        <span>✕</span>
-      </a>
+      <Components.FormComponentInner
+        {...this.props}
+        {...this.state}
+        inputType={this.getType()}
+        value={this.getValue()}
+        errors={this.getErrors()}
+        document={this.context.getDocument()}
+        showCharsRemaining={!!this.showCharsRemaining()}
+        onChange={this.handleChange}
+        clearField={this.clearField}
+      />
     );
   }
 
-  render() {
-    const { beforeComponent, afterComponent, name, input } = this.props;
-
-    const hasErrors = this.getErrors() && this.getErrors().length;
-    const inputName = typeof input === 'function' ? input.name : input;
-    const inputClass = classNames('form-input', `input-${name}`, `form-component-${inputName || 'default'}`, {
-      'input-error': hasErrors,
-    });
-
-    return (
-      <div className={inputClass}>
-        {beforeComponent ? beforeComponent : null}
-        {this.renderComponent()}
-        {hasErrors ? <Components.FieldErrors errors={this.getErrors()} /> : null}
-        {this.showClear() ? this.renderClear() : null}
-        {this.showCharsRemaining() && (
-          <div className={classNames('form-control-limit', { danger: this.state.charsRemaining < 10 })}>
-            {this.state.charsRemaining}
-          </div>
-        )}
-        {afterComponent ? afterComponent : null}
-      </div>
-    );
-  }
 }
 
 FormComponent.propTypes = {
   document: PropTypes.object,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.any,
   placeholder: PropTypes.string,
@@ -326,19 +202,21 @@ FormComponent.propTypes = {
   options: PropTypes.any,
   input: PropTypes.any,
   datatype: PropTypes.any,
-  path: PropTypes.string,
+  path: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   nestedSchema: PropTypes.object,
-  currentValues: PropTypes.object,
-  deletedValues: PropTypes.array,
-  updateCurrentValues: PropTypes.func,
-  errors: PropTypes.array,
+  currentValues: PropTypes.object.isRequired,
+  deletedValues: PropTypes.array.isRequired,
+  throwError: PropTypes.func.isRequired,
+  updateCurrentValues: PropTypes.func.isRequired,
+  errors: PropTypes.array.isRequired,
   addToDeletedValues: PropTypes.func,
+  clearFieldErrors: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
 };
 
 FormComponent.contextTypes = {
-  intl: intlShape,
-  getDocument: PropTypes.func,
+  getDocument: PropTypes.func.isRequired,
 };
 
 registerComponent('FormComponent', FormComponent);
