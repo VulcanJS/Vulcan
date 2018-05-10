@@ -1,7 +1,7 @@
-import { Components, registerComponent, getSetting, Strings, runCallbacks } from 'meteor/vulcan:lib';
+import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { IntlProvider, intlShape, detectLocale } from 'meteor/vulcan:i18n';
+import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
 
 class App extends PureComponent {

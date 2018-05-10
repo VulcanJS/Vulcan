@@ -1,3 +1,8 @@
+/*
+
+Helper to detect current browser locale
+
+*/
 export const detectLocale = () => {
   var lang
 
