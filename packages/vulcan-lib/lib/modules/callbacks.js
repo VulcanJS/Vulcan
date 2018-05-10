@@ -1,4 +1,5 @@
 import { debug } from './debug.js';
+import { Utils } from './utils';
 
 /**
  * @summary A list of all registered callback hooks
@@ -67,15 +68,15 @@ export const runCallbacks = function () {
   const item = arguments[1];
   // successive arguments are passed to each iteration
   const args = Array.prototype.slice.call(arguments).slice(2);
+  // flag used to detect the callback that initiated the async context
+  let asyncContext = false;
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
-    return callbacks.reduce(function (accumulator, callback) {
-
+    const runCallback = (accumulator, callback) => {
       debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-
       const newArguments = [accumulator].concat(args);
 
       try {
@@ -89,7 +90,7 @@ export const runCallbacks = function () {
         if (typeof result === 'undefined') {
           // if result of current iteration is undefined, don't pass it on
           // debug(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
-          return accumulator
+          return accumulator;
         } else {
           return result;
         }
@@ -104,6 +105,30 @@ export const runCallbacks = function () {
         }
         // pass the unchanged accumulator to the next iteration of the loop
         return accumulator;
+      }
+    };
+
+    return callbacks.reduce(function (accumulator, callback, index) {
+      if (Utils.isPromise(accumulator)) {
+        if (!asyncContext) {
+          debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callbacks[index-1].name}]\x1b[0m`);
+          asyncContext = true;
+        }
+        return new Promise((resolve, reject) => {
+          accumulator
+            .then(result => {
+              try {
+                // run this callback once we have the previous value
+                resolve(runCallback(result, callback));
+              } catch (error) {
+                // error will be thrown only for breaking errors, so throw it up in the promise chain
+                reject(error);
+              }
+            })
+            .catch(reject);
+        });
+      } else {
+        return runCallback(accumulator, callback);
       }
     }, item);
 
