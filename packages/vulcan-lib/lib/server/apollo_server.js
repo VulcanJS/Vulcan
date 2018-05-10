@@ -123,7 +123,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
     let options;
     let user = null;
-
+    
     if (typeof givenOptions === 'function') {
       options = givenOptions(req);
     } else {
@@ -184,7 +184,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
-    options.context.locale = req.headers.locale || getSetting('locale', 'en');
+    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
     
     // add error formatting from apollo-errors
     options.formatError = formatError;

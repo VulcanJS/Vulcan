@@ -23,7 +23,7 @@ class App extends PureComponent {
 
     if (currentUser && currentUser.locale) {
       // 1. if user is logged in, check for their preferred locale
-      userLocale = currentUser;
+      userLocale = currentUser.locale;
     } else if (cookies && cookies.get('locale')) {
       // 2. else, look for a cookie
       userLocale = cookies.get('locale');
