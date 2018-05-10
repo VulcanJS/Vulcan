@@ -24,7 +24,7 @@ This component expects:
 
 import {
   registerComponent, Components, runCallbacks, getCollection,
-  getErrors, registerSetting, getSetting, Utils
+  getErrors, getSetting, Utils
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -41,9 +41,6 @@ import find from 'lodash/find';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
-
-registerSetting('forms.warnUnsavedChanges', false,
-  'Warn user about unsaved changes before leaving route', true);
 
 // unsetCompact
 const unsetCompact = (object, path) => {
@@ -621,6 +618,7 @@ class Form extends Component {
     // run error callback if it exists
     if (this.props.errorCallback) this.props.errorCallback(document, error);
   
+    // scroll back up to show error messages
     Utils.scrollIntoView('.flash-message');
   };
 
