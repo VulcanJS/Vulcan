@@ -4,6 +4,7 @@ import { addGraphQLDirective, addGraphQLSchema } from '../modules/graphql';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
 import { defaultFieldResolver } from 'graphql';
 import { Collections } from '../modules/collections';
+import { getSetting } from '../modules/settings';
 import Vulcan from '../modules/config';
 import { isIntlField } from '../modules/intl';
 import { Connectors } from './connectors';
@@ -17,9 +18,10 @@ class IntlDirective extends SchemaDirectiveVisitor {
       const context = args[2];
       const graphQLArguments = args[1];
       const locale = graphQLArguments.locale || context.locale;
+      const defaultLocale = getSetting('locale');
       if (typeof fieldValue === 'object') {
-        // intl'd field, return current locale
-        return fieldValue[locale];
+        // intl'd field, return current locale or default locale
+        return fieldValue[locale] ? fieldValue[locale] : fieldValue[defaultLocale];
       } else {
         // not an object, return field itself
         return fieldValue;
