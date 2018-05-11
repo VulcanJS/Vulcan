@@ -38,7 +38,7 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
   let menuComponent;
 
   if (component) {
-    const menuComponent = React.cloneElement(component, componentProps);
+    menuComponent = React.cloneElement(component, componentProps);
   } else if (labelId) {
     menuComponent = <FormattedMessage id={labelId} />;
   } else {

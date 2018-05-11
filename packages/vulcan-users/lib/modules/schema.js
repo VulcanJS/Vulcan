@@ -125,19 +125,6 @@ const schema = {
     searchable: true
   },
   /**
-    Bio (Markdown version)
-  */
-  bio: {
-    type: String,
-    optional: true,
-    control: "textarea",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-    order: 30,
-    searchable: true
-  },
-  /**
     The user's email. Modifiable.
   */
   email: {
@@ -215,22 +202,6 @@ const schema = {
     }
   },
   /**
-    The HTML version of the bio field
-  */
-  htmlBio: {
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-  },
-  /**
-    The user's karma
-  */
-  karma: {
-    type: Number,
-    optional: true,
-    viewableBy: ['guests'],
-  },
-  /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
   slug: {
@@ -243,19 +214,6 @@ const schema = {
       const basicSlug = Utils.slugify(user.displayName);
       return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     }
-  },
-  /**
-    A link to the user's homepage
-  */
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    optional: true,
-    control: "text",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-    order: 50,
   },
     /**
     The user's Twitter username

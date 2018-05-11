@@ -6,6 +6,7 @@ import '../components/forms/Email.jsx';
 import '../components/forms/Number.jsx';
 import '../components/forms/Radiogroup.jsx';
 import '../components/forms/Select.jsx';
+import '../components/forms/SelectMultiple.jsx';
 import '../components/forms/Textarea.jsx';
 import '../components/forms/Time.jsx';
 import '../components/forms/Date.jsx';
