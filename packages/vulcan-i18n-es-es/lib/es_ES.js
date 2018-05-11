@@ -43,6 +43,8 @@ addStrings('es', {
   "forms.select_option": "-- seleccionar opción --",
   "forms.delete": "Eliminar",
   "forms.delete_confirm": "¿Eliminar documento?",
+  "forms.revert": "Revert", // TODO: translate
+  "forms.confirm_discard": "Discard changes?", // TODO: translate
 
   "users.profile": "Perfil",
   "users.complete_profile": "Complete su perfil",

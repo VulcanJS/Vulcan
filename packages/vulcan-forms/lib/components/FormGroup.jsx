@@ -67,8 +67,16 @@ FormGroup.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   order: PropTypes.number,
-  fields: PropTypes.array,
-  updateCurrentValues: PropTypes.func,
+  fields: PropTypes.array.isRequired,
+  errors: PropTypes.array.isRequired,
+  throwError: PropTypes.func.isRequired,
+  currentValues: PropTypes.object.isRequired,
+  updateCurrentValues: PropTypes.func.isRequired,
+  deletedValues: PropTypes.array.isRequired,
+  addToDeletedValues: PropTypes.func.isRequired,
+  clearFieldErrors: PropTypes.func.isRequired,
+  formType: PropTypes.string.isRequired,
+  currentUser: PropTypes.object,
 };
 
 registerComponent('FormGroup', FormGroup);
