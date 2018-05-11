@@ -23,8 +23,14 @@ This component expects:
 */
 
 import {
-  registerComponent, Components, runCallbacks, getCollection,
-  getErrors, getSetting, Utils, isIntlField
+  registerComponent,
+  Components,
+  runCallbacks,
+  getCollection,
+  getErrors,
+  getSetting,
+  Utils,
+  isIntlField,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -49,7 +55,7 @@ const unsetCompact = (object, path) => {
   update(object, parentPath, compact);
 };
 
-const computeStateFromProps = (nextProps) => {
+const computeStateFromProps = nextProps => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
   const schema = collection.simpleSchema();
   return {
@@ -74,7 +80,7 @@ const computeStateFromProps = (nextProps) => {
 */
 
 class Form extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -129,14 +135,8 @@ class Form extends Component {
     this.state.deletedValues.forEach(path => {
       set(deletedValues, path, null);
     });
-    
-    const document = merge(
-      {}, 
-      this.state.initialDocument, 
-      this.defaultValues, 
-      this.state.currentValues, 
-      deletedValues
-    );
+
+    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues, deletedValues);
 
     return document;
   };
@@ -430,8 +430,8 @@ class Form extends Component {
       refetchForm: this.refetchForm,
       isChanged: this.isChanged,
       submitForm: this.submitFormContext, //Change in name because we already have a function
-                                          // called submitForm, but no reason for the user to know
-                                          // about that
+      // called submitForm, but no reason for the user to know
+      // about that
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
@@ -479,7 +479,7 @@ class Form extends Component {
       return newState;
     });
   };
-  
+
   /*
   
   Warn the user if there are unsaved changes
@@ -489,12 +489,12 @@ class Form extends Component {
     if (this.isChanged()) {
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
-        defaultMessage: 'Are you sure you want to discard your changes?'
+        defaultMessage: 'Are you sure you want to discard your changes?',
       });
       return message;
     }
   };
-  
+
   /*
   
   Install a route leave hook to warn the user if there are unsaved changes
@@ -511,7 +511,7 @@ class Form extends Component {
       this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
     }
   };
-  
+
   /*
   
   Returns true if there are any differences between the initial document and the current one
@@ -520,16 +520,16 @@ class Form extends Component {
   isChanged = () => {
     const initialDocument = this.state.initialDocument;
     const changedDocument = this.getDocument();
-    
+
     const changedValue = find(changedDocument, (value, key, collection) => {
       return !isEqualWith(value, initialDocument[key], (objValue, othValue) => {
         if (!objValue && !othValue) return true;
       });
     });
-    
+
     return typeof changedValue !== 'undefined';
   };
-  
+
   /*
   
   Refetch the document from the database (in case it was updated by another process or to reset the form)
@@ -540,21 +540,16 @@ class Form extends Component {
       this.props.data.refetch();
     }
   };
-  
+
   /*
   
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
   */
-  clearForm = ({
-                 clearErrors = true,
-                 clearCurrentValues = false,
-                 clearDeletedValues = false,
-                 document,
-               }) => {
+  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false, document }) => {
     document = document ? merge({}, this.props.prefilledProps, document) : null;
-    
+
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
@@ -589,7 +584,7 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted 
+    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
       this.refs.form.reset();
@@ -619,10 +614,10 @@ class Form extends Component {
       // add error to state
       this.throwError(error);
     }
-    
+
     // run error callback if it exists
     if (this.props.errorCallback) this.props.errorCallback(document, error);
-  
+
     // scroll back up to show error messages
     Utils.scrollIntoView('.flash-message');
   };
@@ -731,14 +726,14 @@ class Form extends Component {
   // ----------------------------- Render -------------------------------- //
   // --------------------------------------------------------------------- //
 
-  render () {
+  render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
 
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
-          <Components.FormErrors errors={this.state.errors}/>
+          <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
             <Components.FormGroup
