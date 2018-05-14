@@ -144,11 +144,12 @@ export const runCallbacks = function () {
 };
 
 /**
- * @summary Successively run all of a hook's callbacks on an item, in async mode (only works on server)
+ * @summary Run all of a hook's callbacks on an item in parallel (only works on server)
  * @param {String} hook - First argument: the name of the hook
- * @param {Any} args - Other arguments will be passed to each successive iteration
+ * @param {Any} args - Other arguments will be passed to each callback
+ * @return {Promise<Object>} Callbacks results keyed by callbacks names
  */
-export const runCallbacksAsync = function () {
+export const runCallbacksAsync = async function() {
 
   // the first argument is the name of the hook or an array of functions
   var hook = arguments[0];
@@ -159,15 +160,16 @@ export const runCallbacksAsync = function () {
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
 
-    // use defer to avoid holding up client
-    Meteor.defer(function () {
-      // run all post submit server callbacks on post object successively
-      callbacks.forEach(function (callback) {
+    const results = await Promise.all(
+      callbacks.map(callback => {
         debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-        callback.apply(this, args);
-      });
-    });
-
+        return callback.apply(this, args);
+      }),
+    );
+    return results.reduce(
+      (accumulator, result, index) => ({ ...accumulator, [callbacks[index].name]: result }),
+      {},
+    );
   }
 
 };
