@@ -56,9 +56,9 @@ export const removeCallback = function (hookName, callbackName) {
 /**
  * @summary Successively run all of a hook's callbacks on an item
  * @param {String} hook - First argument: the name of the hook
- * @param {Object} item - Second argument: the post, comment, modifier, etc. on which to run the callbacks
+ * @param {Any|Promise<Any>} item - Second argument: the post, comment, modifier, etc. on which to run the callbacks
  * @param {Any} args - Other arguments will be passed to each successive iteration
- * @returns {Object} Returns the item after it's been through all the callbacks for this hook
+ * @returns {Any|Promise<Any>} Returns the item after it's been through all the callbacks for this hook
  */
 export const runCallbacks = function () {
 
