@@ -614,7 +614,7 @@ Meteor.startup(() => {
     name: 'stripe.receive.sync',
     description: `Modify any metadata before calling Stripe's API`,
     arguments: [{metadata: 'Metadata about the action'},{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
-    runs: 'sync',
+    runs: 'async',
     newSyntax: true,
     returns: 'The modified metadata to be sent to Stripe',
   });
@@ -623,7 +623,7 @@ Meteor.startup(() => {
     name: 'stripe.receive.async',
     description: `Run after calling Stripe's API`,
     arguments: [{metadata: 'Metadata about the charge'}, {user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
-    runs: 'sync',
+    runs: 'async',
     newSyntax: true,
   });
 
@@ -647,7 +647,7 @@ Meteor.startup(() => {
     name: 'stripe.process.sync',
     description: 'Modify any metadata before sending the charge to stripe',
     arguments: [{modifier: 'The modifier object used to update the associated collection'}, {collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: `Charge document returned by Stripe's API`}, {user: 'The user'}],
-    runs: 'sync',
+    runs: 'async',
     returns: 'The modified arguments to be sent to stripe',
   });
 
