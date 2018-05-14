@@ -99,6 +99,9 @@ export const runCallbacks = function () {
           if (registeredHook && registeredHook.runs === 'sync') {
             console.log(`// Warning! Async callback [${callback.name}] executed in sync hook [${hook}], its value is being skipped.`);
             return accumulator;
+          } else if (!asyncContext) {
+            debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callback.name}]\x1b[0m`);
+            asyncContext = true;
           }
         }
         return result;
@@ -115,12 +118,8 @@ export const runCallbacks = function () {
       }
     };
 
-    return callbacks.reduce(function (accumulator, callback, index) {
+    return callbacks.reduce(function (accumulator, callback) {
       if (Utils.isPromise(accumulator)) {
-        if (!asyncContext) {
-          debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callbacks[index-1].name}]\x1b[0m`);
-          asyncContext = true;
-        }
         return new Promise((resolve, reject) => {
           accumulator
             .then(result => {
