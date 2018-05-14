@@ -73,17 +73,19 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
     next();
     return;
   }
-
+  
   // init
   const history = createMemoryHistory(req.url);
   const loginToken = req.cookies && req.cookies.meteor_login_token;
-  const apolloClient = createApolloClient({ loginToken: loginToken });
+  const locale = req.cookies && req.cookies.locale;
+  const apolloClient = createApolloClient({ loginToken, locale });
   let actions = {};
   let reducers = { apollo: apolloClient.reducer() };
   let middlewares = [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')];
 
   // renderContext object
   req.renderContext = {
+    locale,
     history,
     loginToken,
     apolloClient,

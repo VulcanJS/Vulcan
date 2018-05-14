@@ -5,6 +5,7 @@ import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withEdit from '../containers/withEdit.js';
 import { withApollo } from 'react-apollo';
+import { withCookies } from 'react-cookie';
 
 class App extends PureComponent {
   constructor(props) {
@@ -21,7 +22,7 @@ class App extends PureComponent {
     let userLocale = '';
     const { currentUser, cookies } = this.props;
     const availableLocales = Object.keys(Strings);
-
+    
     if (currentUser && currentUser.locale) {
       // 1. if user is logged in, check for their preferred locale
       userLocale = currentUser.locale;
@@ -46,6 +47,7 @@ class App extends PureComponent {
 
   setLocale = async locale => {
     this.setState({ locale });
+    this.props.cookies.set('locale', locale);
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
      await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
@@ -116,6 +118,6 @@ const editOptions = {
   fragmentName: 'UsersCurrent',
 }
 
-registerComponent('App', App, withCurrentUser, [withEdit, editOptions], withApollo);
+registerComponent('App', App, withCurrentUser, [withEdit, editOptions], withApollo, withCookies);
 
 export default App;

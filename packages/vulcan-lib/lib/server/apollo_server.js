@@ -19,7 +19,8 @@ import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
-import { Locales } from '../modules/intl.js';
+import cookiesMiddleware from 'universal-cookie-express';
+import Cookies from 'universal-cookie';
 
 export let executableSchema;
 
@@ -116,14 +117,17 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     graphQLServer.use(engine.expressMiddleware());
   }
 
+  // cookies
+  graphQLServer.use(cookiesMiddleware());
+  
   // compression
   graphQLServer.use(compression());
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
+  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req, res, next, foo) => {
     let options;
     let user = null;
-    
+
     if (typeof givenOptions === 'function') {
       options = givenOptions(req);
     } else {
@@ -175,6 +179,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
         }
       }
     }
+
 
     // merge with custom context
     options.context = deepmerge(options.context, GraphQLSchema.context);
