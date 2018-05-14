@@ -64,12 +64,16 @@ export const runCallbacks = function () {
 
   // the first argument is the name of the hook or an array of functions
   const hook = arguments[0];
-  // the second argument is the item on which to iterate
-  const item = arguments[1];
+  // find registered hook
+  const registeredHook = CallbackHooks.find(({ name }) => name === hook);
+  // the second argument is the item on which to iterate; wrap it with promise if hook is async
+  const item = registeredHook && registeredHook.runs === 'async'
+    ? Promise.resolve(arguments[1])
+    : arguments[1];
   // successive arguments are passed to each iteration
   const args = Array.prototype.slice.call(arguments).slice(2);
   // flag used to detect the callback that initiated the async context
-  let asyncContext = false;
+  let asyncContext = Utils.isPromise(item);
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
