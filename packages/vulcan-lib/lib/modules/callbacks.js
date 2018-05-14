@@ -95,10 +95,13 @@ export const runCallbacks = function () {
           // if result of current iteration is undefined, don't pass it on
           // debug(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
           return accumulator;
-        } else {
-          return result;
+        } else if (Utils.isPromise(result)) {
+          if (registeredHook && registeredHook.runs === 'sync') {
+            console.log(`// Warning! Async callback [${callback.name}] executed in sync hook [${hook}], its value is being skipped.`);
+            return accumulator;
+          }
         }
-
+        return result;
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${hook}]\x1b[0m`);
