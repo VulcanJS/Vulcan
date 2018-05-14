@@ -43,7 +43,9 @@ addStrings('en', {
   "forms.select_option": "-- select option --",
   "forms.delete": "Delete",
   "forms.delete_confirm": "Delete document?",
-
+  "forms.revert": "Revert",
+  "forms.confirm_discard": "Discard changes?",
+  
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
   "users.profile_completed": "Profile completed.",

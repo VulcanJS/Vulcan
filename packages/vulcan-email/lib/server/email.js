@@ -3,7 +3,7 @@ import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting, registerSetting, runQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Utils, getSetting, registerSetting, runQuery, Strings } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 
 registerSetting('secondaryColor', '#444444');
 registerSetting('accentColor', '#DD3416');
@@ -28,7 +28,7 @@ VulcanEmail.getTemplate = templateName => Handlebars.compile(
   { noEscape: true, strict: true}
 );
 
-VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
+VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}, locale) => {
 
   const emailProperties = {
     secondaryColor: getSetting('secondaryColor', '#444444'),
@@ -43,7 +43,7 @@ VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}) => {
     logoUrl: getSetting('logoUrl'),
     logoHeight: getSetting('logoHeight'),
     logoWidth: getSetting('logoWidth'),
-    ...optionalProperties
+    ...optionalProperties,
   };
 
   const emailHTML = VulcanEmail.getTemplate("wrapper")(emailProperties);
@@ -112,24 +112,26 @@ VulcanEmail.send = (to, subject, html, text, throwErrors) => {
 
 };
 
-VulcanEmail.build = async ({ emailName, variables }) => {
+VulcanEmail.build = async ({ emailName, variables, locale }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
-  const result = email.query ? await runQuery(email.query, variables) : {data: {}};
+  const result = email.query ? await runQuery(email.query, variables, { locale }) : {data: {}};
 
   // if email has a data() function, merge its return value with results from the query
   const data = email.data ? {...result.data, ...email.data(variables)} : result.data;
 
   const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
-  
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data);
+
+  data.Strings = Strings[locale];
+
+  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data, locale);
 
   return { data, subject, html };
 }
 
-VulcanEmail.buildAndSend = async ({ to, emailName, variables }) => {
+VulcanEmail.buildAndSend = async ({ to, emailName, variables, locale = getSetting('locale') }) => {
 
-  const email = await VulcanEmail.build({ to, emailName, variables });
+  const email = await VulcanEmail.build({ to, emailName, variables, locale });
   return VulcanEmail.send(to, email.subject, email.html);
 
 };

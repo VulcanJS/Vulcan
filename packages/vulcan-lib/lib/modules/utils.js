@@ -113,6 +113,15 @@ Utils.scrollPageTo = function(selector) {
   $('body').scrollTop($(selector).offset().top);
 };
 
+Utils.scrollIntoView = function (selector) {
+  if (!document) return;
+  
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView();
+  }
+};
+
 Utils.getDateRange = function(pageNumber) {
   var now = moment(new Date());
   var dayToDisplay=now.subtract(pageNumber-1, 'days');

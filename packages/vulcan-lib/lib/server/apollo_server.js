@@ -19,6 +19,8 @@ import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
+import cookiesMiddleware from 'universal-cookie-express';
+import Cookies from 'universal-cookie';
 
 export let executableSchema;
 
@@ -115,11 +117,14 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     graphQLServer.use(engine.expressMiddleware());
   }
 
+  // cookies
+  graphQLServer.use(cookiesMiddleware());
+  
   // compression
   graphQLServer.use(compression());
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
+  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req, res, next, foo) => {
     let options;
     let user = null;
 
@@ -175,6 +180,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       }
     }
 
+
     // merge with custom context
     options.context = deepmerge(options.context, GraphQLSchema.context);
 
@@ -183,6 +189,8 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
+    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
+    
     // add error formatting from apollo-errors
     options.formatError = formatError;
 
@@ -211,7 +219,9 @@ Meteor.startup(() => {
 scalar JSON
 scalar Date
 
-${GraphQLSchema.getCollectionsSchemas()}${GraphQLSchema.getAdditionalSchemas()}
+${GraphQLSchema.getAdditionalSchemas()}
+
+${GraphQLSchema.getCollectionsSchemas()}
 
 type Query {
 
@@ -238,6 +248,7 @@ ${GraphQLSchema.mutations.map(m => (
   executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
+    schemaDirectives: GraphQLSchema.directives,
   });
 
   createApolloServer({

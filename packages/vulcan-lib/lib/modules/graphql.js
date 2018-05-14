@@ -10,16 +10,22 @@ import GraphQLDate from 'graphql-date';
 import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
+import { isIntlField } from './intl.js';
 
 disableFragmentWarnings();
 
 // get GraphQL type for a given schema and field name
-const getGraphQLType = (schema, fieldName) => {
+const getGraphQLType = (schema, fieldName, isInputType) => {
 
   const field = schema[fieldName];
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
+  // intl fields should be treated as strings (or JSON if in the context of an input type)
+  if (isIntlField(field)) {
+    return isInputType ? 'JSON': 'String';
+  }
+  
   switch (typeName) {
 
     case 'String':
@@ -78,7 +84,7 @@ export const GraphQLSchema = {
   },
   // get extra schemas defined manually
   getAdditionalSchemas() {
-    const additionalSchemas = this.schemas.join('');
+    const additionalSchemas = this.schemas.join('\n');
     return additionalSchemas;
   },
 
@@ -112,6 +118,11 @@ export const GraphQLSchema = {
     this.context = deepmerge(this.context, object);
   },
 
+  directives: {},
+  addDirective(directive) {
+    this.directives = deepmerge(this.directives, directive);
+  },
+  
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
@@ -128,6 +139,8 @@ export const GraphQLSchema = {
       // console.log(field, fieldName)
 
       const fieldType = getGraphQLType(schema, fieldName);
+      // note: intl field have a String "normal" type but a JSON input type
+      const fieldInputType = getGraphQLType(schema, fieldName, true);
 
       // only include fields that are viewable/insertable/editable and don't contain "$" in their name
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
@@ -135,6 +148,8 @@ export const GraphQLSchema = {
 
         const fieldDescription = field.description ? `# ${field.description}
   ` : '';
+
+        const fieldDirective = isIntlField(field) ? ` @intl` : '';
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
@@ -152,7 +167,7 @@ export const GraphQLSchema = {
 
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
-            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}`);
+            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}${fieldDirective}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -166,14 +181,14 @@ export const GraphQLSchema = {
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}: ${fieldType}`);
+`${fieldDescription}${fieldName}: ${fieldType}${fieldDirective}`);
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}: ${fieldType}`);
+`${fieldDescription}${fieldName}(locale: String): ${fieldType}${fieldDirective}`);
           }
         }
 
@@ -186,11 +201,26 @@ export const GraphQLSchema = {
           const isRequired = '';
 
           // 2. input schema
-          inputSchema.push(`${fieldName}: ${fieldType}${isRequired}`);
+          inputSchema.push(`${fieldName}: ${fieldInputType}${isRequired}`);
 
           // 3. unset schema
           unsetSchema.push(`${fieldName}: Boolean`);
 
+        }
+
+        // if field is i18nized, add special field containing all languages
+        if (isIntlField(field)) {
+          const intlFieldName = `${fieldName}Intl`;
+          mainSchema.push(
+`${intlFieldName}: JSON`);
+
+          // add resolver that returns the actual db field without the effetcs of the @intl directive
+          const intlResolver = {
+            [mainTypeName]: {
+              [intlFieldName]: doc => doc[fieldName]
+            }
+          };
+          addGraphQLResolvers(intlResolver);
         }
       }
     });
@@ -249,3 +279,4 @@ export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
+export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);

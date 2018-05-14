@@ -17,5 +17,6 @@ registerFragment(`
     services
     avatarUrl
     pageUrl
+    locale
   }
 `);

@@ -45,6 +45,8 @@ addStrings('fr', {
   "forms.delete_confirm": "Supprimer le document?",
   "forms.next": "Suivant",
   "forms.previous": "Précédent",
+  "forms.revert": "Revert", // TODO: translate
+  "forms.confirm_discard": "Discard changes?", // TODO: translate
 
   "users.profile": "Profil",
   "users.complete_profile": "Complétez votre profil",
