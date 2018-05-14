@@ -119,7 +119,7 @@ export const receiveAction = async (args) => {
     returnDocument = await createCharge({ user, product, collection, document, metadata, args });
   }
 
-  runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
+  await runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
 
   return returnDocument;
 }
@@ -385,7 +385,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
     }
 
     // run collection.charge.sync callbacks
-    modifier = runCallbacks(`stripe.process.sync`, modifier, {collection, document, chargeDoc, user});
+    modifier = await runCallbacks(`stripe.process.sync`, modifier, {collection, document, chargeDoc, user});
 
     returnDocument = await editMutation({
       collection,
@@ -399,7 +399,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
 
   }
 
-  runCallbacksAsync(`stripe.process.async`, {collection, returnDocument, chargeDoc, user});
+  await runCallbacksAsync(`stripe.process.async`, {collection, returnDocument, chargeDoc, user});
 
   debugGroupEnd();
   debug(`--------------- end\x1b[35m processAction \x1b[0m ---------------`);
