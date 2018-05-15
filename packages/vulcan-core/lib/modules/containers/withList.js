@@ -154,7 +154,8 @@ const withList = (options) => {
                 results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus,
-                loading = props.data.loading,
+                loadingInitial = props.data.networkStatus === 1,
+                loading = props.data.networkStatus === 1,
                 loadingMore = props.data.networkStatus === 2,
                 error = props.data.error,
                 propertyName = options.propertyName || 'results';
@@ -168,6 +169,7 @@ const withList = (options) => {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
             // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
             loading,
+            loadingInitial,
             loadingMore,
             [ propertyName ]: results,
             totalCount,
