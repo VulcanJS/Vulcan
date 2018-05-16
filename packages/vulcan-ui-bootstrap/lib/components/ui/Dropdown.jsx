@@ -57,14 +57,14 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
 Item.propTypes = {
   index: PropTypes.number, // index
   to: PropTypes.any, // a string or object, used to generate the router path for the menu item
-  id: PropTypes.string, // an i18n id for the item label
+  labelId: PropTypes.string, // an i18n id for the item label
   label: PropTypes.string, // item label string, used if id is not provided
   component: PropTypes.object, // a component to use as menu item
   componentProps: PropTypes.object, // props passed to the component
   itemProps: PropTypes.object, // props for the <MenuItem/> component
 };
 
-const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, ...dropdownProps }) => {
+const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant = 'dropdown', ...dropdownProps }) => {
   const menuBody = menuContents ? menuContents : menuItems.map((item, index) => {
     if (item === 'divider') {
       return <MenuItem divider key={index} />;
@@ -73,21 +73,27 @@ const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, .
     }
   });
 
-  if (trigger) {
-    // if a trigger component has been provided, use it
-    return (
-      <Dropdown {...dropdownProps}>
-        <Dropdown.Toggle>{trigger}</Dropdown.Toggle>
-        <Dropdown.Menu>{menuBody}</Dropdown.Menu>
-      </Dropdown>
-    );
+  if (variant === 'flat') {
+    
+    return menuBody;
+
   } else {
-    // else default to DropdownButton
-    return (
-      <DropdownButton title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
-        {menuBody}
-      </DropdownButton>
-    );
+    if (trigger) {
+      // if a trigger component has been provided, use it
+      return (
+        <Dropdown {...dropdownProps}>
+          <Dropdown.Toggle>{trigger}</Dropdown.Toggle>
+          <Dropdown.Menu>{menuBody}</Dropdown.Menu>
+        </Dropdown>
+      );
+    } else {
+      // else default to DropdownButton
+      return (
+        <DropdownButton title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
+          {menuBody}
+        </DropdownButton>
+      );
+    }
   }
 };
 
@@ -97,6 +103,7 @@ BootstrapDropdown.propTypes = {
   trigger: PropTypes.object, // component used as menu trigger (the part you click to open the menu)
   menuContents: PropTypes.object, // a component specifying the menu contents
   menuItems: PropTypes.array, // an array of menu items, used if menuContents is not provided
+  variant: PropTypes.string, // dropdown (default) or flat
 };
 
 registerComponent('Dropdown', BootstrapDropdown);

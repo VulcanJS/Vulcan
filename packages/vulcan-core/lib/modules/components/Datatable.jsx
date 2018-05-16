@@ -207,6 +207,7 @@ const DatatableRow = (props, { intl }) => {
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
+  const modalProps = { title: <code>{document._id}</code> };
 
   return (
   <tr className={`datatable-item ${row}`}>
@@ -215,7 +216,7 @@ const DatatableRow = (props, { intl }) => {
 
     {showEdit && canEdit ?
       <td>
-        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} {...editFormOptions}/>
+        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={modalProps} {...editFormOptions}/>
       </td>
     : null}
 
