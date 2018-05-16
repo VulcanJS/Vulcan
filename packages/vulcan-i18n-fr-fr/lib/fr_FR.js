@@ -45,8 +45,8 @@ addStrings('fr', {
   "forms.delete_confirm": "Supprimer le document?",
   "forms.next": "Suivant",
   "forms.previous": "Précédent",
-  "forms.revert": "Revert", // TODO: translate
-  "forms.confirm_discard": "Discard changes?", // TODO: translate
+  "forms.revert": "Retour",
+  "forms.confirm_discard": "Supprimer les modifications ?",
 
   "users.profile": "Profil",
   "users.complete_profile": "Complétez votre profil",
@@ -120,7 +120,7 @@ addStrings('fr', {
   "app.loading": "Chargement…",
   "app.404": "Désolé, ce contenu n'est pas disponible.",
   "app.missing_document":  "Désolé, nous n'avons pas trouvé le document que vous cherchiez",
-  "app.powered_by": "Construit avec VulcanJS",
+  "app.powered_by": "Construit avec Vulcan.js",
   "app.or": "Ou",
   "app.noPermission": "Désolé, vous n'êtes pas autorisé à faire cette action pour le moment",
   "app.operation_not_allowed": 'Désolé, vous n\'avez pas les droits pour faire l\'opération "{value}"',
