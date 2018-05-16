@@ -124,7 +124,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   graphQLServer.use(compression());
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req, res, next, foo) => {
+  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
     let options;
     let user = null;
 
@@ -188,6 +188,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     Collections.forEach(collection => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
+
+    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
+    // console.log('// apollo_server.js locale:', req.headers.locale);
 
     options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
     

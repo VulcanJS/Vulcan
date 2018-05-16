@@ -59,7 +59,7 @@
     "react-apollo": "^1.4.15",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-datetimepicker": "0.0.22",
-    "react-cookie": "^0.4.6",
+    "react-cookie": "^2.1.4",
     "react-datetime": "^2.11.1",
     "react-dom": "^16.2.0",
     "react-dropzone": "^3.12.2",

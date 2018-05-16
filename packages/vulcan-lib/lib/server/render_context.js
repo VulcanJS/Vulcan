@@ -78,6 +78,7 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
   const history = createMemoryHistory(req.url);
   const loginToken = req.cookies && req.cookies.meteor_login_token;
   const locale = req.cookies && req.cookies.locale;
+  // console.log('// render_context.js locale:', locale);
   const apolloClient = createApolloClient({ loginToken, locale });
   let actions = {};
   let reducers = { apollo: apolloClient.reducer() };
