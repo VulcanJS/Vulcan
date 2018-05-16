@@ -43,7 +43,9 @@ addStrings('en', {
   "forms.select_option": "-- select option --",
   "forms.delete": "Delete",
   "forms.delete_confirm": "Delete document?",
-
+  "forms.revert": "Revert",
+  "forms.confirm_discard": "Discard changes?",
+  
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
   "users.profile_completed": "Profile completed.",
@@ -116,7 +118,7 @@ addStrings('en', {
   "app.loading": "Loading…",
   "app.404": "Sorry, we couldn't find what you were looking for.",
   "app.missing_document":  "Sorry, we couldn't find the document you were looking for.",
-  "app.powered_by": "Built with VulcanJS",
+  "app.powered_by": "Built with Vulcan.js",
   "app.or": "Or",
   "app.noPermission": "Sorry, you do not have the permission to do this at this time.",
   "app.operation_not_allowed": 'Sorry, you don\'t have the rights to perform the operation "{value}"',

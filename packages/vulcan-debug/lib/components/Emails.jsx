@@ -1,7 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
 import VulcanEmail from 'meteor/vulcan:email';
 
 class Email extends PureComponent {
@@ -40,7 +39,7 @@ class Email extends PureComponent {
         <td><a href={email.path.replace(':_id?', '').replace(':documentId?', '')} target="_blank">{email.path}</a></td>
         <td>
           <div className={this.state.loading ? "test-email loading" : "test-email"}>
-            <Button disabled={this.state.loading} onClick={this.sendTest} bsStyle="primary">Send Test</Button>
+            <Components.Button disabled={this.state.loading} onClick={this.sendTest} variant="primary">Send Test</Components.Button>
             {this.state.loading ? <Components.Loading color="white"/> : null}
           </div>
         </td>

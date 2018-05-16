@@ -1,12 +1,14 @@
-import cookie from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 import { Meteor } from 'meteor/meteor';
 
 import { getRenderContext } from './render_context.js';
 
+const cookie = new Cookies();
+
 function setToken(loginToken, expires) {
   if (loginToken && expires !== -1) {
-    cookie.save('meteor_login_token', loginToken, {
+    cookie.set('meteor_login_token', loginToken, {
       path: '/',
       expires,
     });

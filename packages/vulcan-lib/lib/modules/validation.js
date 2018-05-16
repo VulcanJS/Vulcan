@@ -23,7 +23,7 @@ export const validateDocument = (document, collection, context) => {
     if (!fieldSchema || !Users.canInsertField(currentUser, fieldSchema)) {
       validationErrors.push({
         id: 'errors.disallowed_property_detected',
-        data: {name: fieldName},
+        properties: { name: fieldName },
       });
     }
 
@@ -62,7 +62,8 @@ export const validateDocument = (document, collection, context) => {
       // console.log(error);
       validationErrors.push({
         id: `errors.${error.type}`,
-        data: error,
+        path: error.name,
+        properties: error,
       });
     });
   }
@@ -96,7 +97,7 @@ export const validateModifier = (modifier, document, collection, context) => {
     if (!field || !Users.canEditField(currentUser, field, document)) {
       validationErrors.push({
         id: 'errors.disallowed_property_detected',
-        data: {name: fieldName},
+        properties: { name: fieldName },
       });
     }
   });
@@ -142,7 +143,8 @@ export const validateModifier = (modifier, document, collection, context) => {
       // console.log(error);
       validationErrors.push({
         id: `errors.${error.type}`,
-        data: error,
+        path: error.name,
+        properties: error,
       });
     });
   }

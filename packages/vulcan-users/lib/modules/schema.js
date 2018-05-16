@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { Utils, getCollection, Connectors } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit: 
@@ -83,6 +83,16 @@ const schema = {
     viewableBy: ['guests'],
     group: adminGroup,
   },
+  locale: {
+    type: String,
+    label: "Preferred Language",
+    optional: true,
+    control: 'select',
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
+    options: () => Locales.map(({ id, label }) => ({ value: id, label })),
+  },
   profile: {
     type: Object,
     optional: true,
@@ -122,19 +132,6 @@ const schema = {
       if (user.username) return user.username;
       return undefined;
     },
-    searchable: true
-  },
-  /**
-    Bio (Markdown version)
-  */
-  bio: {
-    type: String,
-    optional: true,
-    control: "textarea",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-    order: 30,
     searchable: true
   },
   /**
@@ -215,22 +212,6 @@ const schema = {
     }
   },
   /**
-    The HTML version of the bio field
-  */
-  htmlBio: {
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-  },
-  /**
-    The user's karma
-  */
-  karma: {
-    type: Number,
-    optional: true,
-    viewableBy: ['guests'],
-  },
-  /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
   slug: {
@@ -243,19 +224,6 @@ const schema = {
       const basicSlug = Utils.slugify(user.displayName);
       return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     }
-  },
-  /**
-    A link to the user's homepage
-  */
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    optional: true,
-    control: "text",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
-    order: 50,
   },
     /**
     The user's Twitter username

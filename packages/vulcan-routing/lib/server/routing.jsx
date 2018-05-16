@@ -1,6 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
+import { CookiesProvider } from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -50,7 +51,7 @@ Meteor.startup(() => {
       store.reload();
       store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
       const app = runCallbacks('router.server.wrapper', appGenerator(), { req, res, store, apolloClient });
-      return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
+      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{app}</CookiesProvider></ApolloProvider>;
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });

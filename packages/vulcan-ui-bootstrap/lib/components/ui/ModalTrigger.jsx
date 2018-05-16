@@ -1,7 +1,6 @@
-import { registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal'
 
 class ModalTrigger extends PureComponent {
 
@@ -22,49 +21,38 @@ class ModalTrigger extends PureComponent {
     this.setState({modalIsOpen: false});
   }
 
-  renderHeader() {
-    return (
-      <Modal.Header closeButton>
-        <Modal.Title>{this.props.title}</Modal.Title>
-      </Modal.Header>
-    )
-  }
-
   render() {
 
-    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.openModal }) : <a href="#" onClick={this.openModal}>{this.props.label}</a>;
+    let triggerComponent = this.props.trigger || this.props.component;
+    triggerComponent = triggerComponent ? React.cloneElement(triggerComponent, { onClick: this.openModal }) : <a href="javascript:void(0)" onClick={this.openModal}>{this.props.label}</a>;
     const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
 
     return (
       <div className="modal-trigger">
         {triggerComponent}
-        <Modal
+        <Components.Modal
+          size={this.props.size}
           className={this.props.className}
-          bsSize={this.props.size}
           show={this.state.modalIsOpen}
           onHide={this.closeModal}
           dialogClassName={this.props.dialogClassName}
+          title={this.props.title}
+          {...this.props.modalProps}
         >
-          {this.props.title ? this.renderHeader() : null}
-          <Modal.Body>
-            {childrenComponent}
-          </Modal.Body>
-        </Modal>
+          {childrenComponent}
+        </Components.Modal>
       </div>
-    )
+    );
   }
 }
 
 ModalTrigger.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
-  component: PropTypes.object,
+  component: PropTypes.object, // keep for backwards compatibility
+  trigger: PropTypes.object,
   size: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-}
-
-ModalTrigger.defaultProps = {
-  size: 'large'
 }
 
 registerComponent('ModalTrigger', ModalTrigger);

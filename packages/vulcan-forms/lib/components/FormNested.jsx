@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import Button from 'react-bootstrap/lib/Button';
 
 const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...props }, { errors }) => {
   return (
@@ -20,16 +19,16 @@ const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...pr
         })}
       </div>
       <div className="form-nested-item-remove">
-        <Button
+        <Components.Button
           className="form-nested-button"
-          bsStyle="danger"
-          bsSize="small"
+          variant="danger"
+          size="small"
           onClick={() => {
             removeItem(name);
           }}
         >
           <Components.IconRemove height={12} width={12} />
-        </Button>
+        </Components.Button>
       </div>
       <div className="form-nested-item-deleted-overlay" />
     </div>
@@ -62,8 +61,8 @@ class FormNested extends PureComponent {
   };
 
   render() {
-    // do not pass FormNested's own value and control props down
-    const properties = _.omit(this.props, 'value', 'control');
+    // do not pass FormNested's own value, input and inputProperties props down
+    const properties = _.omit(this.props, 'value', 'input', 'inputProperties');
 
     return (
       <div className="form-group row form-nested">
@@ -84,9 +83,9 @@ class FormNested extends PureComponent {
                   />
                 )
             )}
-          <Button bsSize="small" bsStyle="success" onClick={this.addItem} className="form-nested-button">
+          <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
-          </Button>
+          </Components.Button>
         </div>
       </div>
     );

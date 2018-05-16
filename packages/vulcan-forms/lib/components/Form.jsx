@@ -22,7 +22,16 @@ This component expects:
 
 */
 
-import { registerComponent, Components, runCallbacks, getCollection } from 'meteor/vulcan:core';
+import {
+  registerComponent,
+  Components,
+  runCallbacks,
+  getCollection,
+  getErrors,
+  getSetting,
+  Utils,
+  isIntlField,
+} from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -34,6 +43,9 @@ import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
 import merge from 'lodash/merge';
+import find from 'lodash/find';
+import isEqualWith from 'lodash/isEqualWith';
+
 import { convertSchema, formProperties } from '../modules/schema_utils';
 
 // unsetCompact
@@ -41,6 +53,19 @@ const unsetCompact = (object, path) => {
   const parentPath = path.slice(0, path.lastIndexOf('.'));
   unset(object, path);
   update(object, parentPath, compact);
+};
+
+const computeStateFromProps = nextProps => {
+  const collection = nextProps.collection || getCollection(nextProps.collectionName);
+  const schema = collection.simpleSchema();
+  return {
+    // convert SimpleSchema schema into JSON object
+    schema: convertSchema(schema),
+    // Also store all field schemas (including nested schemas) in a flat structure
+    flatSchema: convertSchema(schema, true),
+    // the initial document passed as props
+    initialDocument: merge({}, nextProps.prefilledProps, nextProps.document),
+  };
 };
 
 /*
@@ -63,16 +88,11 @@ class Form extends Component {
       errors: [],
       deletedValues: [],
       currentValues: {},
+      ...computeStateFromProps(props),
     };
-
-    // convert SimpleSchema schema into JSON object
-    this.schema = convertSchema(this.getCollection().simpleSchema());
-    // Also store all field schemas (including nested schemas) in a flat structure
-    this.flatSchema = convertSchema(this.getCollection().simpleSchema(), true);
-
-    // the initial document passed as props
-    this.initialDocument = merge({}, this.props.prefilledProps, this.props.document);
   }
+
+  defaultValues = {};
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
@@ -92,7 +112,6 @@ class Form extends Component {
   };
 
   /*
-  
   If a document is being passed, this is an edit form
 
   */
@@ -108,27 +127,26 @@ class Form extends Component {
 
   /*
 
-  Get the current document (for edit forms)
-
-  for each field, we apply the following logic:
-  - if its value was provided by prefilledProps, use that
-  - unless its value was provided by the db (i.e. props.document)
-  - unless its value is currently being inputted
+  Get the current document
 
   */
   getDocument = () => {
-    const document = merge({}, this.initialDocument, this.state.currentValues);
+    const deletedValues = {};
+    this.state.deletedValues.forEach(path => {
+      set(deletedValues, path, null);
+    });
+
+    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues, deletedValues);
 
     return document;
   };
 
   /*
-  
-  Like getDocument, but cross-reference with getFieldNames() 
+
+  Like getDocument, but cross-reference with getFieldNames()
   to only return fields that actually need to be submitted
 
-  Also remove any deleted values. 
-  
+  Also remove any deleted values.
   */
   getData = () => {
     // only keep relevant fields
@@ -146,7 +164,6 @@ class Form extends Component {
 
     return data;
   };
-
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -160,7 +177,7 @@ class Form extends Component {
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
       // get schema for the current field
-      return this.createField(fieldName, this.schema);
+      return this.createField(fieldName, this.state.schema);
     });
 
     fields = _.sortBy(fields, 'order');
@@ -198,20 +215,18 @@ class Form extends Component {
   };
 
   /*
-  
   Get a list of the fields to be included in the current form
 
   */
   getFieldNames = (args = {}) => {
-
-    const { schema = this.schema, excludeHiddenFields = true } = args;
+    const { schema = this.state.schema, excludeHiddenFields = true } = args;
 
     const { fields, hideFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields =
       this.getFormType() === 'edit'
-        ? getEditableFields(schema, this.props.currentUser, this.initialDocument)
+        ? getEditableFields(schema, this.props.currentUser, this.state.initialDocument)
         : getInsertableFields(schema, this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
@@ -225,9 +240,10 @@ class Form extends Component {
 
     // remove all hidden fields
     if (excludeHiddenFields) {
+      const document = this.getDocument();
       relevantFields = _.reject(relevantFields, fieldName => {
         const hidden = schema[fieldName].hidden;
-        return typeof hidden === 'function' ? hidden(this.props) : hidden;
+        return typeof hidden === 'function' ? hidden({ ...this.props, document }) : hidden;
       });
     }
 
@@ -235,8 +251,7 @@ class Form extends Component {
   };
 
   /*
-
-  Given a field's name, the containing schema, and parent, create the 
+  Given a field's name, the containing schema, and parent, create the
   complete field object to be passed to the component
 
   */
@@ -247,12 +262,22 @@ class Form extends Component {
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
-      document: this.initialDocument,
+      document: this.state.initialDocument,
       name: fieldName,
       path: fieldPath,
       datatype: fieldSchema.type,
       layout: this.props.layout,
+      input: fieldSchema.input || fieldSchema.control,
     };
+
+    // if this an intl'd field, use a special intlInput
+    if (isIntlField(fieldSchema)) {
+      field.intlInput = true;
+    }
+
+    if (field.defaultValue) {
+      set(this.defaultValues, fieldPath, field.defaultValue);
+    }
 
     // if field has a parent field, pass it on
     if (parentFieldName) {
@@ -278,12 +303,11 @@ class Form extends Component {
 
     // add any properties specified in fieldSchema.form as extra props passed on
     // to the form component, calling them if they are functions
-    if (fieldSchema.form) {
-      for (const prop in fieldSchema.form) {
-        field[prop] =
-          typeof fieldSchema.form[prop] === 'function'
-            ? fieldSchema.form[prop].call(fieldSchema, this.props)
-            : fieldSchema.form[prop];
+    const inputProperties = fieldSchema.form || fieldSchema.inputProperties;
+    if (inputProperties) {
+      for (const prop in inputProperties) {
+        const property = inputProperties[prop];
+        field[prop] = typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
       }
     }
 
@@ -292,10 +316,10 @@ class Form extends Component {
       field.help = fieldSchema.description;
     }
 
-    // nested fields: set control to "nested"
+    // nested fields: set input to "nested"
     if (fieldSchema.schema) {
       field.nestedSchema = fieldSchema.schema;
-      field.control = 'nested';
+      field.input = 'nested';
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({ schema: field.nestedSchema }).map(subFieldName => {
@@ -308,13 +332,13 @@ class Form extends Component {
 
   /*
 
-  Get a field's label
+   Get a field's label
 
-  */
+   */
   getLabel = fieldName => {
     return this.context.intl.formatMessage({
       id: this.getCollection()._name + '.' + fieldName,
-      defaultMessage: this.flatSchema[fieldName].label,
+      defaultMessage: this.state.flatSchema[fieldName].label,
     });
   };
 
@@ -322,25 +346,37 @@ class Form extends Component {
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // add error to form state
-  // from "GraphQL Error: You have an error [error_code]"
-  // to { content: "You have an error", type: "error" }
+  /*
+
+  Add error to form state
+
+  Errors can have the following properties:
+    - id: used as an internationalization key, for example `errors.required`
+    - path: for field-specific errors, the path of the field with the issue
+    - properties: additional data. Will be passed to vulcan-i18n as values
+    - message: if id cannot be used as i81n key, message will be used
+    
+  */
   throwError = error => {
-    let formErrors = [];
-    // if this is one or more GraphQL errors, extract them
-    if (error.graphQLErrors) {
-      // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-      const graphQLError = error.graphQLErrors[0];
-      formErrors = graphQLError.data && graphQLError.data.errors;
-    } else {
-      formErrors = [error];
-    }
+    let formErrors = getErrors(error);
+
     // eslint-disable-next-line no-console
     console.log(formErrors);
+
     // add error(s) to state
     this.setState(prevState => ({
       errors: [...prevState.errors, ...formErrors],
     }));
+  };
+
+  /*
+
+  Clear errors for a field
+
+  */
+  clearFieldErrors = path => {
+    const errors = this.state.errors.filter(error => error.path !== path);
+    this.setState({ errors });
   };
 
   // --------------------------------------------------------------------- //
@@ -391,11 +427,15 @@ class Form extends Component {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
-      submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
+      refetchForm: this.refetchForm,
+      isChanged: this.isChanged,
+      submitForm: this.submitFormContext, //Change in name because we already have a function
+      // called submitForm, but no reason for the user to know
+      // about that
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
-      initialDocument: this.initialDocument,
+      initialDocument: this.state.initialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
@@ -410,9 +450,13 @@ class Form extends Component {
   // ------------------------------ Lifecycle ---------------------------- //
   // --------------------------------------------------------------------- //
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return computeStateFromProps(nextProps);
+  }
+
   /*
   
-  Manually update the current values of one or more fields(i.e. on change or blur). 
+  Manually update the current values of one or more fields(i.e. on change or blur).
   
   */
   updateCurrentValues = newValues => {
@@ -436,23 +480,87 @@ class Form extends Component {
     });
   };
 
-  /* 
+  /*
+  
+  Warn the user if there are unsaved changes
+  
+  */
+  handleRouteLeave = () => {
+    if (this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?',
+      });
+      return message;
+    }
+  };
+
+  /*
+  
+  Install a route leave hook to warn the user if there are unsaved changes
+  
+  */
+  componentDidMount = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      const routes = this.props.router.routes;
+      const currentRoute = routes[routes.length - 1];
+      this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+    }
+  };
+
+  /*
+  
+  Returns true if there are any differences between the initial document and the current one
+  
+  */
+  isChanged = () => {
+    const initialDocument = this.state.initialDocument;
+    const changedDocument = this.getDocument();
+
+    const changedValue = find(changedDocument, (value, key, collection) => {
+      return !isEqualWith(value, initialDocument[key], (objValue, othValue) => {
+        if (!objValue && !othValue) return true;
+      });
+    });
+
+    return typeof changedValue !== 'undefined';
+  };
+
+  /*
+  
+  Refetch the document from the database (in case it was updated by another process or to reset the form)
+  
+  */
+  refetchForm = () => {
+    if (this.props.data && this.props.data.refetch) {
+      this.props.data.refetch();
+    }
+  };
+
+  /*
   
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
   */
-  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false }) => {
+  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false, document }) => {
+    document = document ? merge({}, this.props.prefilledProps, document) : null;
+
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
+      initialDocument: document ? document : prevState.initialDocument,
       disabled: false,
     }));
   };
 
   /*
-  
+
   Key down handler
 
   */
@@ -476,15 +584,11 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted (we are in an async callback, everything can happen!)
+    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
+    // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
-      let clearCurrentValues = false;
-      // reset form if this is a new document form
-      if (this.getFormType() === 'new') {
-        this.refs.form.reset();
-        clearCurrentValues = true;
-      }
-      this.clearForm({ clearErrors: true, clearCurrentValues, clearDeletedValues: true });
+      this.refs.form.reset();
+      this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
     // run document through mutation success callbacks
@@ -495,7 +599,7 @@ class Form extends Component {
   };
 
   // catch graphql errors
-  mutationErrorCallback = error => {
+  mutationErrorCallback = (document, error) => {
     this.setState(prevState => ({ disabled: false }));
 
     // eslint-disable-next-line no-console
@@ -511,13 +615,15 @@ class Form extends Component {
       this.throwError(error);
     }
 
-    // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists
-    // if (this.props.errorCallback) this.props.errorCallback(document, error);
+    if (this.props.errorCallback) this.props.errorCallback(document, error);
+
+    // scroll back up to show error messages
+    Utils.scrollIntoView('.flash-message');
   };
 
-  /* 
-  
+  /*
+
   Submit form handler
 
   */
@@ -554,7 +660,7 @@ class Form extends Component {
       this.props
         .newMutation({ document })
         .then(this.newMutationSuccessCallback)
-        .catch(this.mutationErrorCallback);
+        .catch(error => this.mutationErrorCallback(document, error));
     } else {
       // edit document form
 
@@ -582,7 +688,7 @@ class Form extends Component {
       this.props
         .editMutation(args)
         .then(this.editMutationSuccessCallback)
-        .catch(this.mutationErrorCallback);
+        .catch(error => this.mutationErrorCallback(document, error));
     }
   };
 
@@ -639,7 +745,9 @@ class Form extends Component {
               updateCurrentValues={this.updateCurrentValues}
               deletedValues={this.state.deletedValues}
               addToDeletedValues={this.addToDeletedValues}
+              clearFieldErrors={this.clearFieldErrors}
               formType={this.getFormType()}
+              currentUser={this.props.currentUser}
             />
           ))}
 
@@ -648,7 +756,9 @@ class Form extends Component {
           <Components.FormSubmit
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
+            revertLabel={this.props.revertLabel}
             cancelCallback={this.props.cancelCallback}
+            revertCallback={this.props.revertCallback}
             document={this.getDocument()}
             deleteDocument={(this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null}
             collectionName={collectionName}
@@ -686,7 +796,9 @@ Form.propTypes = {
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  revertLabel: PropTypes.string,
   repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
@@ -694,6 +806,7 @@ Form.propTypes = {
   removeSuccessCallback: PropTypes.func,
   errorCallback: PropTypes.func,
   cancelCallback: PropTypes.func,
+  revertCallback: PropTypes.func,
 
   currentUser: PropTypes.object,
   client: PropTypes.object,
@@ -720,6 +833,8 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  refetchForm: PropTypes.func,
+  isChanged: PropTypes.func,
   initialDocument: PropTypes.object,
   getDocument: PropTypes.func,
   submitForm: PropTypes.func,

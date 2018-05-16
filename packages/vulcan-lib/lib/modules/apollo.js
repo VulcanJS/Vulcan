@@ -50,6 +50,8 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
 
   const networkInterface = interfaceToUse(interfaceOptions);
 
+  // console.log('// apollo.js locale:', config.locale);
+
   if (config.useMeteorAccounts) {
     networkInterface.use([{
       applyBatchMiddleware(request, next) {
@@ -65,6 +67,7 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
         }
 
         request.options.headers.Authorization = currentUserToken;
+        request.options.headers.locale = config.locale;
 
         next();
       },

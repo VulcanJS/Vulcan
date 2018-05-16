@@ -1,31 +1,22 @@
 import React, { Component } from 'react';
-import { getSetting, Strings } from 'meteor/vulcan:lib';
+import { Strings } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
-String.prototype.replaceAll = function(search, replacement) {
-  var target = this;
-  return target.replace(new RegExp(search, 'g'), replacement);
-};
-
 export default class IntlProvider extends Component{
-  
-  constructor(){
-    super();
-    this.formatMessage = this.formatMessage.bind(this);
-  }
 
-  formatMessage({ id, defaultMessage }, values) {
-    const messages = Strings[getSetting('locale', 'en')] || {};
+  formatMessage = ({ id, defaultMessage }, values) => {
+    const messages = Strings[this.props.locale] || {};
     let message = messages[id] || defaultMessage;
     if (values) {
       _.forEach(values, (value, key) => {
+        // note: see replaceAll definition in vulcan:lib/utils
         message = message.replaceAll(`{${key}}`, value);
       });
     }
     return message;
   }
 
-  formatStuff(something) {
+  formatStuff = (something) => {
     return something;
   }
 

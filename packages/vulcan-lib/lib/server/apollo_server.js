@@ -19,6 +19,8 @@ import { getSetting, registerSetting } from '../modules/settings.js';
 import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
+import cookiesMiddleware from 'universal-cookie-express';
+import Cookies from 'universal-cookie';
 
 export let executableSchema;
 
@@ -115,6 +117,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     graphQLServer.use(engine.expressMiddleware());
   }
 
+  // cookies
+  graphQLServer.use(cookiesMiddleware());
+  
   // compression
   graphQLServer.use(compression());
 
@@ -141,6 +146,12 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     // enable tracing and caching
     options.tracing = true;
     options.cacheControl = true;
+
+    // note: custom default resolver doesn't currently work
+    // see https://github.com/apollographql/apollo-server/issues/716
+    // options.fieldResolver = (source, args, context, info) => {
+    //   return source[info.fieldName];
+    // }
 
     // Get the token from the header
     if (req.headers.authorization) {
@@ -169,6 +180,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       }
     }
 
+
     // merge with custom context
     options.context = deepmerge(options.context, GraphQLSchema.context);
 
@@ -177,6 +189,11 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
+    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
+    // console.log('// apollo_server.js locale:', req.headers.locale);
+
+    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
+    
     // add error formatting from apollo-errors
     options.formatError = formatError;
 
@@ -205,7 +222,9 @@ Meteor.startup(() => {
 scalar JSON
 scalar Date
 
-${GraphQLSchema.getCollectionsSchemas()}${GraphQLSchema.getAdditionalSchemas()}
+${GraphQLSchema.getAdditionalSchemas()}
+
+${GraphQLSchema.getCollectionsSchemas()}
 
 type Query {
 
@@ -232,6 +251,7 @@ ${GraphQLSchema.mutations.map(m => (
   executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
+    schemaDirectives: GraphQLSchema.directives,
   });
 
   createApolloServer({

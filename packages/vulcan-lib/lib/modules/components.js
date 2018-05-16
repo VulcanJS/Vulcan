@@ -1,4 +1,5 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
+import React from 'react';
 
 export const Components = {}; // will be populated on startup (see vulcan:routing)
 export const ComponentsTable = {} // storage for infos about components
@@ -112,3 +113,27 @@ export const populateComponentsApp = () => {
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
 }
+
+/**
+ * Returns an instance of the given component name of function
+ * @param {string|function} component  A component or registered component name
+ * @param {Object} [props]  Optional properties to pass to the component
+ */
+//eslint-disable-next-line react/display-name
+export const instantiateComponent = (component, props) => {
+  if (!component) {
+    return null;
+  } else if (typeof component === 'string') {
+    const Component = getComponent(component);
+    return <Component {...props}/>
+  } else if (typeof component === 'function' && component.prototype && component.prototype.isReactComponent) {
+    const Component = component;
+    return <Component {...props}/>
+  } else if (typeof component === 'function') {
+    return component(props);
+  } else {
+    return component;
+  }
+};
+
+

@@ -27,6 +27,7 @@ component is also added to wait for withDocument's loading prop to be false)
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import { withRouter } from 'react-router'
 import { withApollo, compose } from 'react-apollo';
 import {
   Components,
@@ -38,6 +39,7 @@ import {
   withRemove,
   getFragment,
   getCollection,
+  isIntlField,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
@@ -90,13 +92,17 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
+    // for intl fields, alias fooIntl to foo
+    const queryFieldsWithIntl = queryFields.map(f => isIntlField(schema[f]) ? `${f}: ${f}Intl` : f);
+
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${queryFields.join('\n')}
+        ${queryFieldsWithIntl.join('\n')}
       }
     `
+
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
@@ -265,7 +271,13 @@ FormWrapper.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string),
   showRemove: PropTypes.bool,
+  submitLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
+  revertLabel: PropTypes.string,
+  repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
@@ -273,6 +285,7 @@ FormWrapper.propTypes = {
   removeSuccessCallback: PropTypes.func,
   errorCallback: PropTypes.func,
   cancelCallback: PropTypes.func,
+  revertCallback: PropTypes.func,
 
   currentUser: PropTypes.object,
   client: PropTypes.object,
@@ -287,4 +300,4 @@ FormWrapper.contextTypes = {
   intl: intlShape
 }
 
-registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
+registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo, withRouter);
