@@ -119,7 +119,7 @@ export const receiveAction = async (args) => {
     returnDocument = await createCharge({ user, product, collection, document, metadata, args });
   }
 
-  await runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
+  runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
 
   return returnDocument;
 }
@@ -385,7 +385,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
     }
 
     // run collection.charge.sync callbacks
-    modifier = await runCallbacks(`stripe.process.sync`, modifier, {collection, document, chargeDoc, user});
+    modifier = runCallbacks(`stripe.process.sync`, modifier, {collection, document, chargeDoc, user});
 
     returnDocument = await editMutation({
       collection,
@@ -399,7 +399,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
 
   }
 
-  await runCallbacksAsync(`stripe.process.async`, {collection, returnDocument, chargeDoc, user});
+  runCallbacksAsync(`stripe.process.async`, {collection, returnDocument, chargeDoc, user});
 
   debugGroupEnd();
   debug(`--------------- end\x1b[35m processAction \x1b[0m ---------------`);
@@ -614,7 +614,7 @@ Meteor.startup(() => {
     name: 'stripe.receive.sync',
     description: `Modify any metadata before calling Stripe's API`,
     arguments: [{metadata: 'Metadata about the action'},{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
-    runs: 'async',
+    runs: 'sync',
     newSyntax: true,
     returns: 'The modified metadata to be sent to Stripe',
   });
@@ -623,7 +623,7 @@ Meteor.startup(() => {
     name: 'stripe.receive.async',
     description: `Run after calling Stripe's API`,
     arguments: [{metadata: 'Metadata about the charge'}, {user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
-    runs: 'async',
+    runs: 'sync',
     newSyntax: true,
   });
 
@@ -647,7 +647,7 @@ Meteor.startup(() => {
     name: 'stripe.process.sync',
     description: 'Modify any metadata before sending the charge to stripe',
     arguments: [{modifier: 'The modifier object used to update the associated collection'}, {collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: `Charge document returned by Stripe's API`}, {user: 'The user'}],
-    runs: 'async',
+    runs: 'sync',
     returns: 'The modified arguments to be sent to stripe',
   });
 

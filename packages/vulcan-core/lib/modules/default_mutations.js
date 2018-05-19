@@ -173,14 +173,14 @@ const registerCollectionCallbacks = collectionName => {
   registerCallback({
     name: `${collectionName}.new.before`, 
     arguments: [{document: 'The document being inserted'}, {currentUser: 'The current user'}], 
-    runs: 'async',
+    runs: 'sync', 
     returns: 'document',
     description: `Perform operations on a new document before it's inserted in the database.`
   });
   registerCallback({
     name: `${collectionName}.new.after`, 
     arguments: [{document: 'The document being inserted'}, {currentUser: 'The current user'}], 
-    runs: 'async',
+    runs: 'sync', 
     returns: 'document',
     description: `Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.`
   });
@@ -202,14 +202,14 @@ const registerCollectionCallbacks = collectionName => {
   registerCallback({
     name: `${collectionName}.edit.before`, 
     arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being edited'}, {currentUser: 'The current user'}], 
-    runs: 'async',
+    runs: 'sync', 
     returns: 'modifier',
     description: `Perform operations on a document before it's updated in the database.`
   });
   registerCallback({
     name: `${collectionName}.edit.after`, 
     arguments: [{modifier: 'The MongoDB modifier'}, {document: 'The document being edited'}, {currentUser: 'The current user'}], 
-    runs: 'async',
+    runs: 'sync', 
     returns: 'document',
     description: `Perform operations on a document after it's updated in the database but *before* the mutation returns it.`
   });
@@ -231,7 +231,7 @@ const registerCollectionCallbacks = collectionName => {
   registerCallback({
     name: `${collectionName}.remove.before`, 
     arguments: [{document: 'The document being removed'}, {currentUser: 'The current user'}], 
-    runs: 'async',
+    runs: 'sync', 
     returns: null,
     description: `Perform operations on a document before it's removed from the database.`
   });

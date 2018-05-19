@@ -56,24 +56,20 @@ export const removeCallback = function (hookName, callbackName) {
 /**
  * @summary Successively run all of a hook's callbacks on an item
  * @param {String} hook - First argument: the name of the hook
- * @param {Any|Promise<Any>} item - Second argument: the post, comment, modifier, etc. on which to run the callbacks
+ * @param {Object} item - Second argument: the post, comment, modifier, etc. on which to run the callbacks
  * @param {Any} args - Other arguments will be passed to each successive iteration
- * @returns {Any|Promise<Any>} Returns the item after it's been through all the callbacks for this hook
+ * @returns {Object} Returns the item after it's been through all the callbacks for this hook
  */
 export const runCallbacks = function () {
 
   // the first argument is the name of the hook or an array of functions
   const hook = arguments[0];
-  // find registered hook
-  const registeredHook = CallbackHooks.find(({ name }) => name === hook);
-  // the second argument is the item on which to iterate; wrap it with promise if hook is async
-  const item = registeredHook && registeredHook.runs === 'async'
-    ? Promise.resolve(arguments[1])
-    : arguments[1];
+  // the second argument is the item on which to iterate
+  const item = arguments[1];
   // successive arguments are passed to each iteration
   const args = Array.prototype.slice.call(arguments).slice(2);
   // flag used to detect the callback that initiated the async context
-  let asyncContext = Utils.isPromise(item);
+  let asyncContext = false;
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
@@ -95,16 +91,10 @@ export const runCallbacks = function () {
           // if result of current iteration is undefined, don't pass it on
           // debug(`// Warning: Sync callback [${callback.name}] in hook [${hook}] didn't return a result!`)
           return accumulator;
-        } else if (Utils.isPromise(result)) {
-          if (registeredHook && registeredHook.runs === 'sync') {
-            console.log(`// Warning! Async callback [${callback.name}] executed in sync hook [${hook}], its value is being skipped.`);
-            return accumulator;
-          } else if (!asyncContext) {
-            debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callback.name}]\x1b[0m`);
-            asyncContext = true;
-          }
+        } else {
+          return result;
         }
-        return result;
+
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${hook}]\x1b[0m`);
@@ -118,8 +108,12 @@ export const runCallbacks = function () {
       }
     };
 
-    return callbacks.reduce(function (accumulator, callback) {
+    return callbacks.reduce(function (accumulator, callback, index) {
       if (Utils.isPromise(accumulator)) {
+        if (!asyncContext) {
+          debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callbacks[index-1].name}]\x1b[0m`);
+          asyncContext = true;
+        }
         return new Promise((resolve, reject) => {
           accumulator
             .then(result => {
@@ -144,12 +138,11 @@ export const runCallbacks = function () {
 };
 
 /**
- * @summary Run all of a hook's callbacks on an item in parallel (only works on server)
+ * @summary Successively run all of a hook's callbacks on an item, in async mode (only works on server)
  * @param {String} hook - First argument: the name of the hook
- * @param {Any} args - Other arguments will be passed to each callback
- * @return {Promise<Object>} Callbacks results keyed by callbacks names
+ * @param {Any} args - Other arguments will be passed to each successive iteration
  */
-export const runCallbacksAsync = async function() {
+export const runCallbacksAsync = function () {
 
   // the first argument is the name of the hook or an array of functions
   var hook = arguments[0];
@@ -160,16 +153,15 @@ export const runCallbacksAsync = async function() {
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
 
-    const results = await Promise.all(
-      callbacks.map(callback => {
+    // use defer to avoid holding up client
+    Meteor.defer(function () {
+      // run all post submit server callbacks on post object successively
+      callbacks.forEach(function (callback) {
         debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-        return callback.apply(this, args);
-      }),
-    );
-    return results.reduce(
-      (accumulator, result, index) => ({ ...accumulator, [callbacks[index].name]: result }),
-      {},
-    );
+        callback.apply(this, args);
+      });
+    });
+
   }
 
 };
