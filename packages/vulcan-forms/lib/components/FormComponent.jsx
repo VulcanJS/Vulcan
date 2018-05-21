@@ -42,12 +42,12 @@ class FormComponent extends Component {
 
   /*
 
-  If a locale (e.g. `en`) is specified for a field (e.g. `name`), its path is `field.locale` (e.g. `name.en`)
+  If this is an intl input, get _intl field instead
 
   */
   getPath = props => {
     const p = props || this.props;
-    return p.locale ? `${p.path}.${p.locale}` : p.path;
+    return p.intlInput ? `${p.path}_intl` : p.path;
   };
 
   /*
@@ -90,7 +90,8 @@ class FormComponent extends Component {
       value = Number(value);
     }
 
-    this.props.updateCurrentValues({ [this.getPath()]: value });
+    const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
+    this.props.updateCurrentValues({ [this.getPath()]: updateValue });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -120,7 +121,8 @@ class FormComponent extends Component {
     let value;
     const p = props || this.props;
     const { document, currentValues, defaultValue, datatype } = p;
-    const path = this.getPath(p);
+    // for intl field fetch the actual field value by adding .value to the path
+    const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);

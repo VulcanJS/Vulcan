@@ -6,26 +6,32 @@ import { defaultFieldResolver } from 'graphql';
 import { Collections } from '../modules/collections';
 import { getSetting } from '../modules/settings';
 import Vulcan from '../modules/config';
-import { isIntlField } from '../modules/intl';
+import { isIntlField, getLocaleString } from '../modules/intl';
 import { Connectors } from './connectors';
 import pickBy from 'lodash/pickBy';
 
+const intlValueSchemas = 
+`type IntlValue {
+  locale: String
+  value: String
+}
+input IntlValueInput{
+  locale: String
+  value: String
+}`;
+addGraphQLSchema(intlValueSchemas);
+
 class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
-    const { resolve = defaultFieldResolver } = field;
+    const { resolve = defaultFieldResolver, name } = field; 
     field.resolve = async function (...args) {
+      const [ doc, graphQLArguments, context ] = args;
       const fieldValue = await resolve.apply(this, args);
-      const context = args[2];
-      const graphQLArguments = args[1];
       const locale = graphQLArguments.locale || context.locale;
       const defaultLocale = getSetting('locale');
-      if (typeof fieldValue === 'object') {
-        // intl'd field, return current locale or default locale
-        return fieldValue[locale] ? fieldValue[locale] : fieldValue[defaultLocale];
-      } else {
-        // not an object, return field itself
-        return fieldValue;
-      }
+      const intlField = doc[`${name}_intl`];
+      // Return string in requested or default language, or else field's original value
+      return intlField && getLocaleString(intlField, locale, defaultLocale) || fieldValue;
     };
   }
 }
@@ -45,10 +51,11 @@ const migrateIntlFields = async (defaultLocale) => {
     const schema = collection.simpleSchema()._schema;
     const intlFields = pickBy(schema, isIntlField);
     const intlFieldsNames = Object.keys(intlFields);
+
     if (intlFieldsNames.length) {
       console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`); // eslint-disable-line no-console
 
-      const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}.${defaultLocale}`);
+      const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
 
       // find all documents with one or more unmigrated intl fields
       const selector = { $or: intlFieldsWithLocale.map(f => ({[f]: { $exists: false }})) };
@@ -60,15 +67,15 @@ const migrateIntlFields = async (defaultLocale) => {
         documentsToMigrate.forEach(doc => {
 
           console.log(`// Migrating document ${doc._id}`); // eslint-disable-line no-console
-          const modifier = { $set: {}};
+          const modifier = { $push: {}};
 
           intlFieldsNames.forEach(f => {
-            if (doc[f] && !doc[f][defaultLocale]) {
-              console.log(`-> migrating field ${f}: ${doc[f]}`); // eslint-disable-line no-console
-              modifier.$set[f] = { [defaultLocale]: doc[f]}
+            if (doc[f] && !doc[`${f}_intl`]) {
+              const translationObject = { locale: defaultLocale, string: doc[f] };
+              console.log(`-> Adding field ${f}_intl: ${JSON.stringify(translationObject)} `); // eslint-disable-line no-console
+              modifier.$push[`${f}_intl`] = translationObject;
             }
           });
-
           // update document
           Connectors.update(collection, {_id: doc._id}, modifier);
           console.log('\n'); // eslint-disable-line no-console

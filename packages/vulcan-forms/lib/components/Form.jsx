@@ -150,7 +150,8 @@ class Form extends Component {
   */
   getData = () => {
     // only keep relevant fields
-    const fields = this.getFieldNames({ excludeHiddenFields: false });
+    // for intl fields, make sure we look in foo_intl and not foo
+    const fields = this.getFieldNames({ excludeHiddenFields: false, replaceIntlFields: true });
     let data = cloneDeep(_.pick(this.getDocument(), ...fields));
 
     // remove any deleted values
@@ -219,7 +220,7 @@ class Form extends Component {
 
   */
   getFieldNames = (args = {}) => {
-    const { schema = this.state.schema, excludeHiddenFields = true } = args;
+    const { schema = this.state.schema, excludeHiddenFields = true, replaceIntlFields = false } = args;
 
     const { fields, hideFields } = this.props;
 
@@ -245,6 +246,11 @@ class Form extends Component {
         const hidden = schema[fieldName].hidden;
         return typeof hidden === 'function' ? hidden({ ...this.props, document }) : hidden;
       });
+    }
+
+    // replace intl fields
+    if (replaceIntlFields) {
+      relevantFields = relevantFields.map(fieldName => isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName);
     }
 
     return relevantFields;
