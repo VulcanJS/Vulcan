@@ -84,7 +84,14 @@ const migrateIntlFields = async (defaultLocale) => {
       const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
 
       // find all documents with one or more unmigrated intl fields
-      const selector = { $or: intlFieldsWithLocale.map(f => ({[f]: { $exists: false }})) };
+      const selector = { 
+        $or: intlFieldsNames.map(f => {
+          return {$and: [
+            {[`${f}`]: { $exists: true }},
+            {[`${f}_intl`]: { $exists: false }}
+          ]};
+        })
+      };
       const documentsToMigrate = await Connectors.find(collection, selector);
 
       if (documentsToMigrate.length) {
@@ -97,16 +104,22 @@ const migrateIntlFields = async (defaultLocale) => {
 
           intlFieldsNames.forEach(f => {
             if (doc[f] && !doc[`${f}_intl`]) {
-              const translationObject = { locale: defaultLocale, string: doc[f] };
+              const translationObject = { locale: defaultLocale, value: doc[f] };
               console.log(`-> Adding field ${f}_intl: ${JSON.stringify(translationObject)} `); // eslint-disable-line no-console
               modifier.$push[`${f}_intl`] = translationObject;
             }
           });
-          // update document
-          Connectors.update(collection, {_id: doc._id}, modifier);
+
+          if (!_.isEmpty(modifier.$push)) {
+            // update document
+            const n = Connectors.update(collection, {_id: doc._id}, modifier);
+            console.log(`-> migrated ${n} documents \n`); // eslint-disable-line no-console
+          }
           console.log('\n'); // eslint-disable-line no-console
 
         });
+      } else {
+        console.log (`-> found no documents to migrate.`); // eslint-disable-line no-console
       }
 
     }

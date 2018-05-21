@@ -650,7 +650,7 @@ class Form extends Component {
 
     // console.log(data)
 
-    const fields = this.getFieldNames();
+    const fields = this.getFieldNames({ replaceIntlFields: true });
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
