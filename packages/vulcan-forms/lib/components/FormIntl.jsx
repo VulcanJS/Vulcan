@@ -6,14 +6,13 @@ class FormIntl extends PureComponent {
 
   /*
 
-  If translations already exist, try to make sure they're loaded and stored in the same order.
-  If not, use order of Locales array.
-  
+  Note: ideally we'd try to make sure to return the right path no matter
+  the order translations are stored in, but in practice we can't guarantee it
+  so we just use the order of the Locales array.
+
   */
   getLocalePath = (locale, defaultIndex) => {
-    const translations = this.props.value;
-    const index = translations && !!translations.length ? translations.findIndex(t => t.locale === locale) : defaultIndex;
-    return `${this.props.path}_intl.${index}`;
+    return `${this.props.path}_intl.${defaultIndex}`;
   }
 
   render() {
