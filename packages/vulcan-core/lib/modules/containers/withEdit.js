@@ -25,7 +25,7 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:lib';
 
 export default function withEdit(options) {
 

@@ -9,23 +9,29 @@ import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
 import { getDefaultFragmentText, extractFragmentName, getFragmentText } from '../modules/fragments.js';
+import { getSetting } from '../modules/settings';
+import merge from 'lodash/merge';
 
 // note: if no context is passed, default to running queries with full admin privileges
-export const runQuery = async (query, variables = {}, context = { currentUser: {isAdmin: true} }) => {
+export const runQuery = async (query, variables = {}, context ) => {
+
+  const defaultContext = { currentUser: {isAdmin: true}, locale: getSetting('locale') };
+  const queryContext = merge(defaultContext, context);
 
   // within the scope of this specific query, 
   // decorate each collection with a new Dataloader object and add it to context
   Collections.forEach(collection => {
-    collection.loader = new DataLoader(ids => findByIds(collection, ids, context), { cache: true });
-    context[collection.options.collectionName] = collection;
+    collection.loader = new DataLoader(ids => findByIds(collection, ids, queryContext), { cache: true });
+    queryContext[collection.options.collectionName] = collection;
   });
 
   // see http://graphql.org/graphql-js/graphql/#graphql
-  const result = await graphql(executableSchema, query, {}, context, variables);
+  const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
     // eslint-disable-next-line no-console
     console.error(`runQuery error: ${result.errors[0].message}`);
+    // eslint-disable-next-line no-console
     console.error(result.errors);
     throw new Error(result.errors[0].message);
   }

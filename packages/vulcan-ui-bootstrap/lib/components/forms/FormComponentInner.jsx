@@ -4,9 +4,7 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
-
 class FormComponentInner extends PureComponent {
-  
   renderClear = () => {
     if (['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input)) {
       return (
@@ -21,10 +19,10 @@ class FormComponentInner extends PureComponent {
       );
     }
   };
-  
+
   getProperties = () => {
     const { name, options, label, onChange, value } = this.props;
-  
+
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
     const inputProperties = {
@@ -35,14 +33,14 @@ class FormComponentInner extends PureComponent {
       value,
       ...this.props.inputProperties,
     };
-  
+
     return {
       ...this.props,
       inputProperties,
     };
   };
-  
-  render () {
+
+  render() {
     const {
       inputClassName,
       name,
@@ -53,33 +51,39 @@ class FormComponentInner extends PureComponent {
       showCharsRemaining,
       charsRemaining,
       renderComponent,
+      intlInput,
     } = this.props;
-    
-    const hasErrors = errors && errors.length;
-    
-    const inputName = typeof input === 'function' ? input.name : input;
-    const inputClass = classNames('form-input', inputClassName, `input-${name}`,
-      `form-component-${inputName || 'default'}`, { 'input-error': hasErrors, });
-    const properties = this.getProperties();
-    
-    return (
-      <div className={inputClass}>
-        {instantiateComponent(beforeComponent, properties)}
-        {renderComponent(properties)}
-        {hasErrors ? <Components.FieldErrors errors={errors}/> : null}
-        {this.renderClear()}
-        {showCharsRemaining &&
-          <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>
-            {charsRemaining}
-          </div>
-        }
-        {instantiateComponent(afterComponent, properties)}
-      </div>
-    );
-  }
-  
-}
 
+    const hasErrors = errors && errors.length;
+
+    const inputName = typeof input === 'function' ? input.name : input;
+    const inputClass = classNames(
+      'form-input',
+      inputClassName,
+      `input-${name}`,
+      `form-component-${inputName || 'default'}`,
+      { 'input-error': hasErrors }
+    );
+    const properties = this.getProperties();
+
+    if (intlInput) {
+      return <Components.FormIntl {...properties} />;
+    } else {
+      return (
+        <div className={inputClass}>
+          {instantiateComponent(beforeComponent, properties)}
+          {renderComponent(properties)}
+          {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
+          {this.renderClear()}
+          {showCharsRemaining && (
+            <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
+          )}
+          {instantiateComponent(afterComponent, properties)}
+        </div>
+      );
+    }
+  }
+}
 
 FormComponentInner.propTypes = {
   inputClassName: PropTypes.string,
@@ -103,6 +107,5 @@ FormComponentInner.contextTypes = {
 };
 
 FormComponentInner.displayName = 'FormComponentInner';
-
 
 registerComponent('FormComponentInner', FormComponentInner);

@@ -4,53 +4,77 @@ import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
+import find from 'lodash/find';
+import isObjectLike from 'lodash/isObjectLike';
 import isEqual from 'lodash/isEqual';
 import { isEmptyValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
-  
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {};
   }
 
-  componentWillMount () {
+  componentWillMount() {
     if (this.showCharsRemaining()) {
       const value = this.getValue();
       this.updateCharacterCount(value);
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     // allow custom controls to determine if they should update
     if (this.isCustomInput(this.getType(nextProps))) {
       return true;
     }
-  
+
     const { currentValues, deletedValues, errors } = nextProps;
     const { path } = this.props;
-  
+
     const valueChanged = currentValues[path] !== this.props.currentValues[path];
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
-    
+
     return valueChanged || errorChanged || deleteChanged || charsChanged;
   }
-  
+
+  /*
+
+  If a locale (e.g. `en`) is specified for a field (e.g. `name`), its path is `field.locale` (e.g. `name.en`)
+
+  */
+  getPath = props => {
+    const p = props || this.props;
+    return p.locale ? `${p.path}.${p.locale}` : p.path;
+  };
+
   /*
   
   Returns true if the passed input type is a custom 
   
   */
-  isCustomInput = (inputType) => {
-    const isStandardInput = ['nested', 'number', 'url', 'email', 'textarea', 'checkbox',
-      'checkboxgroup', 'radiogroup', 'select', 'selectmultiple', 'datetime',
-      'date', 'time', 'text'].includes(inputType);
+  isCustomInput = inputType => {
+    const isStandardInput = [
+      'nested',
+      'number',
+      'url',
+      'email',
+      'textarea',
+      'checkbox',
+      'checkboxgroup',
+      'radiogroup',
+      'select',
+      'selectmultiple',
+      'datetime',
+      'date',
+      'time',
+      'text',
+    ].includes(inputType);
     return !isStandardInput;
   };
-  
+
   /*
   
   Function passed to form controls (always controlled) to update their value
@@ -65,7 +89,8 @@ class FormComponent extends Component {
     if (this.getType() === 'number' && value != null) {
       value = Number(value);
     }
-    this.props.updateCurrentValues({ [this.props.path]: value });
+
+    this.props.updateCurrentValues({ [this.getPath()]: value });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -94,7 +119,8 @@ class FormComponent extends Component {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue, path, datatype } = p;
+    const { document, currentValues, defaultValue, datatype } = p;
+    const path = this.getPath(p);
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
@@ -102,11 +128,14 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = '';
     } else {
-      if (datatype[0].type === Array) {
+      if (p.locale) {
+        // note: intl fields are of type Object but should be treated as Strings
+        value = currentValue || documentValue || '';
+      } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
         // for object and arrays, use lodash's merge
         // if field type is array, use [] as merge seed to force result to be an array as well
         value = merge([], documentValue, currentValue);
-      } else if (datatype[0].type === Object) {
+      } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
         value = merge({}, documentValue, currentValue);
       } else {
         // note: value has to default to '' to make component controlled
@@ -125,8 +154,7 @@ class FormComponent extends Component {
 
     return this.cleanValue(p, value);
   };
-  
-  
+
   /*
   
   For some input types apply additional normalization
@@ -134,26 +162,24 @@ class FormComponent extends Component {
   */
   cleanValue = (props, value) => {
     const p = props || this.props;
-    
+
     if (p.input === 'checkbox') {
       value = !!value;
     } else if (p.input === 'checkboxgroup') {
       if (!Array.isArray(value)) {
         value = [value];
       }
-      // in case of checkbox groups, check "checked" option to populate value 
+      // in case of checkbox groups, check "checked" option to populate value
       // if this is a "new document" form
-      const checkedValues = _.where(p.options, { checked: true })
-      .map(option => option.value);
+      const checkedValues = _.where(p.options, { checked: true }).map(option => option.value);
       if (checkedValues.length && !value && p.formType === 'new') {
         value = checkedValues;
       }
     }
-    
+
     return value;
   };
 
-  
   /*
 
   Whether to keep track of and show remaining chars
@@ -169,7 +195,7 @@ class FormComponent extends Component {
   Get errors from Form state through context
 
   */
-  getErrors = (errors) => {
+  getErrors = errors => {
     errors = errors || this.props.errors;
     const fieldErrors = errors.filter(error => error.path === this.props.path);
     return fieldErrors;
@@ -184,11 +210,7 @@ class FormComponent extends Component {
     const p = props || this.props;
     const fieldType = p.datatype && p.datatype[0].type;
     const autoType =
-      fieldType === Number ? 'number' :
-        fieldType === Boolean ? 'checkbox' : 
-          fieldType === Date ? 
-            'date' : 
-            'text';
+      fieldType === Number ? 'number' : fieldType === Boolean ? 'checkbox' : fieldType === Date ? 'date' : 'text';
     return p.input || autoType;
   };
 
@@ -205,77 +227,77 @@ class FormComponent extends Component {
       this.updateCharacterCount(null);
     }
   };
-  
+
   /*
   
   Function passed to FormComponentInner to help with rendering the component
   
   */
-  renderComponent = (properties) => {
+  renderComponent = properties => {
     const { input, inputType } = properties;
-    
+
     // if input is a React component, use it
     if (typeof input === 'function') {
       const InputComponent = input;
-      return <InputComponent {...properties}/>;
+      return <InputComponent {...properties} />;
     } else {
       // else pick a predefined component
-      
+
       switch (inputType) {
         case 'text':
-          return <Components.FormComponentDefault {...properties}/>;
-        
+          return <Components.FormComponentDefault {...properties} />;
+
         case 'nested':
-          return <Components.FormNested {...properties}/>;
-        
+          return <Components.FormNested {...properties} />;
+
         case 'number':
-          return <Components.FormComponentNumber {...properties}/>;
-        
+          return <Components.FormComponentNumber {...properties} />;
+
         case 'url':
-          return <Components.FormComponentUrl {...properties}/>;
-        
+          return <Components.FormComponentUrl {...properties} />;
+
         case 'email':
-          return <Components.FormComponentEmail {...properties}/>;
-        
+          return <Components.FormComponentEmail {...properties} />;
+
         case 'textarea':
-          return <Components.FormComponentTextarea {...properties}/>;
-        
+          return <Components.FormComponentTextarea {...properties} />;
+
         case 'checkbox':
-          return <Components.FormComponentCheckbox {...properties}/>;
-        
+          return <Components.FormComponentCheckbox {...properties} />;
+
         case 'checkboxgroup':
-          return <Components.FormComponentCheckboxGroup {...properties}/>;
-        
+          return <Components.FormComponentCheckboxGroup {...properties} />;
+
         case 'radiogroup':
-          return <Components.FormComponentRadioGroup {...properties}/>;
-        
+          return <Components.FormComponentRadioGroup {...properties} />;
+
         case 'select':
-          return <Components.FormComponentSelect {...properties}/>;
-        
+          return <Components.FormComponentSelect {...properties} />;
+
         case 'selectmultiple':
-          return <Components.FormComponentSelectMultiple {...properties}/>;
-        
+          return <Components.FormComponentSelectMultiple {...properties} />;
+
         case 'datetime':
-          return <Components.FormComponentDateTime {...properties}/>;
-        
+          return <Components.FormComponentDateTime {...properties} />;
+
         case 'date':
-          return <Components.FormComponentDate {...properties}/>;
-        
+          return <Components.FormComponentDate {...properties} />;
+
         case 'time':
-          return <Components.FormComponentTime {...properties}/>;
-        
+          return <Components.FormComponentTime {...properties} />;
+
         default:
           const CustomComponent = Components[input];
           return CustomComponent ? (
-            <CustomComponent {...properties}/>
+            <CustomComponent {...properties} />
           ) : (
-            <Components.FormComponentDefault {...properties}/>
+            <Components.FormComponentDefault {...properties} />
           );
       }
     }
   };
-  
-  render () {
+
+  render() {
     return (
       <Components.FormComponentInner
         {...this.props}
@@ -291,7 +313,6 @@ class FormComponent extends Component {
       />
     );
   }
-
 }
 
 FormComponent.propTypes = {

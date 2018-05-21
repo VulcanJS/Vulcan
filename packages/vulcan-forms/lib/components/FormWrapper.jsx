@@ -39,6 +39,7 @@ import {
   withRemove,
   getFragment,
   getCollection,
+  isIntlField,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';
@@ -91,13 +92,17 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
+    // for intl fields, alias fooIntl to foo
+    const queryFieldsWithIntl = queryFields.map(f => isIntlField(schema[f]) ? `${f}: ${f}Intl` : f);
+
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${queryFields.join('\n')}
+        ${queryFieldsWithIntl.join('\n')}
       }
     `
+
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {

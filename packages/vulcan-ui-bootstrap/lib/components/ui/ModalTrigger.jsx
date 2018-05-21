@@ -37,6 +37,7 @@ class ModalTrigger extends PureComponent {
           onHide={this.closeModal}
           dialogClassName={this.props.dialogClassName}
           title={this.props.title}
+          {...this.props.modalProps}
         >
           {childrenComponent}
         </Components.Modal>

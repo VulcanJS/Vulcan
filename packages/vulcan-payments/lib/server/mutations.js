@@ -13,9 +13,7 @@ addGraphQLResolvers(resolver);
 addGraphQLMutation('paymentActionMutation(token: JSON, userId: String, productKey: String, associatedCollection: String, associatedId: String, properties: JSON, coupon: String) : Chargeable');
 
 function CreateChargeableUnionType() {
-  const chargeableSchema = `
-    union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}
-  `;
+  const chargeableSchema = `union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}`;
   addGraphQLSchema(chargeableSchema);
   return {}
 }

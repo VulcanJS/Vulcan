@@ -187,15 +187,17 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
     delete modifier.$unset;
   }
   
-  // update document
-  await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
+  if (!_.isEmpty(modifier)) {
+    // update document
+    await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
 
-  // get fresh copy of document from db
-  newDocument = await Connectors.get(collection, documentId);
+    // get fresh copy of document from db
+    newDocument = await Connectors.get(collection, documentId);
 
-  // clear cache if needed
-  if (collection.loader) {
-    collection.loader.clear(documentId);
+    // clear cache if needed
+    if (collection.loader) {
+      collection.loader.clear(documentId);
+    }
   }
 
   // run any post-operation sync callbacks
