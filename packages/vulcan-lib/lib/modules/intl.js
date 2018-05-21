@@ -44,14 +44,3 @@ export const getIntlString = () => {
   IntlString.name = 'IntlString';
   return IntlString;
 }
-
-/*
-
-Take an array of translations, a locale, and a default locale, and return a matching string
-
-*/
-export const getLocaleString = (translations, locale, defaultLocale) => {
-  const localeObject = translations.find(translation => translation.locale === locale);
-  const defaultLocaleObject = translations.find(translation => translation.locale === defaultLocale);
-  return localeObject && localeObject.string || defaultLocaleObject && defaultLocaleObject.string;
-};

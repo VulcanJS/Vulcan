@@ -6,10 +6,15 @@ import { defaultFieldResolver } from 'graphql';
 import { Collections } from '../modules/collections';
 import { getSetting } from '../modules/settings';
 import Vulcan from '../modules/config';
-import { isIntlField, getLocaleString } from '../modules/intl';
+import { isIntlField } from '../modules/intl';
 import { Connectors } from './connectors';
 import pickBy from 'lodash/pickBy';
 
+/*
+
+Create GraphQL types
+
+*/
 const intlValueSchemas = 
 `type IntlValue {
   locale: String
@@ -21,6 +26,22 @@ input IntlValueInput{
 }`;
 addGraphQLSchema(intlValueSchemas);
 
+/*
+
+Take an array of translations, a locale, and a default locale, and return a matching string
+
+*/
+const getLocaleString = (translations, locale, defaultLocale) => {
+  const localeObject = translations.find(translation => translation.locale === locale);
+  const defaultLocaleObject = translations.find(translation => translation.locale === defaultLocale);
+  return localeObject && localeObject.value || defaultLocaleObject && defaultLocaleObject.value;
+};
+
+/*
+
+GraphQL @intl directive resolver
+
+*/
 class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
     const { resolve = defaultFieldResolver, name } = field; 
@@ -40,6 +61,11 @@ addGraphQLDirective({ intl: IntlDirective });
 
 addGraphQLSchema(`directive @intl on FIELD_DEFINITION`);
 
+/*
+
+Migration function
+
+*/
 const migrateIntlFields = async (defaultLocale) => {
 
   if (!defaultLocale) {
