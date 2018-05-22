@@ -500,7 +500,23 @@ class Form extends Component {
       return message;
     }
   };
-
+  
+  //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+  //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
+  handlePageLeave = (event) => {
+    if(this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?'
+      });
+      if (event) {
+        event.returnValue = message;
+      }
+      
+      return message;
+    }
+  };
+  
   /*
   
   Install a route leave hook to warn the user if there are unsaved changes
@@ -515,9 +531,26 @@ class Form extends Component {
       const routes = this.props.router.routes;
       const currentRoute = routes[routes.length - 1];
       this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+      
+      //check for closing the browser with unsaved changes
+      window.onbeforeunload = this.handlePageLeave;
     }
   };
 
+  /*
+  Remove the closing browser check on component unmount
+  see https://gist.github.com/mknabe/bfcb6db12ef52323954a28655801792d
+  */
+  componentWillUnmount = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      window.onbeforeunload = undefined; //undefined instead of null to support IE
+    }
+  };
+  
   /*
   
   Returns true if there are any differences between the initial document and the current one
