@@ -51,8 +51,14 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 // unsetCompact
 const unsetCompact = (object, path) => {
   const parentPath = path.slice(0, path.lastIndexOf('.'));
+  
   unset(object, path);
-  update(object, parentPath, compact);
+
+  // note: we only want to compact arrays, not objects
+  const compactIfArray = x => Array.isArray(x) ? compact(x) : x;
+
+  update(object, parentPath, compactIfArray);
+
 };
 
 const computeStateFromProps = nextProps => {
