@@ -66,13 +66,14 @@ class FormComponentInner extends PureComponent {
     );
     const properties = this.getProperties();
 
+    const FormInput = this.props.formInput;
     if (intlInput) {
       return <Components.FormIntl {...properties} />;
     } else {
       return (
         <div className={inputClass}>
           {instantiateComponent(beforeComponent, properties)}
-          {renderComponent(properties)}
+          <FormInput {...properties}/>
           {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
           {this.renderClear()}
           {showCharsRemaining && (
@@ -99,7 +100,7 @@ FormComponentInner.propTypes = {
   charsRemaining: PropTypes.number,
   charsCount: PropTypes.number,
   charsMax: PropTypes.number,
-  renderComponent: PropTypes.func.isRequired,
+  inputComponent: PropTypes.func,
 };
 
 FormComponentInner.contextTypes = {

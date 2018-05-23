@@ -21,11 +21,6 @@ const getGraphQLType = (schema, fieldName, isInputType) => {
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
 
-  // intl fields should be treated as strings (or JSON if in the context of an input type)
-  if (isIntlField(field)) {
-    return isInputType ? 'JSON': 'String';
-  }
-  
   switch (typeName) {
 
     case 'String':
@@ -150,6 +145,7 @@ export const GraphQLSchema = {
   ` : '';
 
         const fieldDirective = isIntlField(field) ? ` @intl` : '';
+        const fieldArguments = isIntlField(field) ? `(locale: String)` : '';
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
@@ -167,7 +163,8 @@ export const GraphQLSchema = {
 
             // if resolveAs is an object, first push its type definition
             // include arguments if there are any
-            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}${fieldDirective}`);
+            // note: resolved fields are not internationalized
+            mainSchema.push(`${resolverName}${field.resolveAs.arguments ? `(${field.resolveAs.arguments})` : ''}: ${fieldGraphQLType}`);
 
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
@@ -181,14 +178,14 @@ export const GraphQLSchema = {
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}: ${fieldType}${fieldDirective}`);
+`${fieldDescription}${fieldName}${fieldArguments}: ${fieldType}${fieldDirective}`);
           }
 
         } else {
           // try to guess GraphQL type
           if (fieldType) {
             mainSchema.push(
-`${fieldDescription}${fieldName}(locale: String): ${fieldType}${fieldDirective}`);
+`${fieldDescription}${fieldName}${fieldArguments}: ${fieldType}${fieldDirective}`);
           }
         }
 
@@ -208,19 +205,11 @@ export const GraphQLSchema = {
 
         }
 
-        // if field is i18nized, add special field containing all languages
+        // if field is i18nized, add foo_intl field containing all languages
         if (isIntlField(field)) {
-          const intlFieldName = `${fieldName}Intl`;
-          mainSchema.push(
-`${intlFieldName}: JSON`);
-
-          // add resolver that returns the actual db field without the effetcs of the @intl directive
-          const intlResolver = {
-            [mainTypeName]: {
-              [intlFieldName]: doc => doc[fieldName]
-            }
-          };
-          addGraphQLResolvers(intlResolver);
+          mainSchema.push(`${fieldName}_intl: [IntlValue]`);
+          inputSchema.push(`${fieldName}_intl: [IntlValueInput]`);
+          unsetSchema.push(`${fieldName}_intl: Boolean`);
         }
       }
     });

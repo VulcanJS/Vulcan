@@ -2,7 +2,7 @@
 
 # Vulcan
 
-[Version 1.10.0](https://github.com/VulcanJS/Vulcan/releases)
+[Version 1.10.1](https://github.com/VulcanJS/Vulcan/releases)
 
 Vulcan is a React+GraphQL framework for Meteor. 
 

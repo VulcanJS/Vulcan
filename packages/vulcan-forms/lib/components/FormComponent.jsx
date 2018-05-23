@@ -42,12 +42,12 @@ class FormComponent extends Component {
 
   /*
 
-  If a locale (e.g. `en`) is specified for a field (e.g. `name`), its path is `field.locale` (e.g. `name.en`)
+  If this is an intl input, get _intl field instead
 
   */
   getPath = props => {
     const p = props || this.props;
-    return p.locale ? `${p.path}.${p.locale}` : p.path;
+    return p.intlInput ? `${p.path}_intl` : p.path;
   };
 
   /*
@@ -90,7 +90,8 @@ class FormComponent extends Component {
       value = Number(value);
     }
 
-    this.props.updateCurrentValues({ [this.getPath()]: value });
+    const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
+    this.props.updateCurrentValues({ [this.getPath()]: updateValue });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -120,7 +121,8 @@ class FormComponent extends Component {
     let value;
     const p = props || this.props;
     const { document, currentValues, defaultValue, datatype } = p;
-    const path = this.getPath(p);
+    // for intl field fetch the actual field value by adding .value to the path
+    const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
     const currentValue = currentValues[path];
     const isDeleted = p.deletedValues.includes(path);
@@ -233,66 +235,59 @@ class FormComponent extends Component {
   Function passed to FormComponentInner to help with rendering the component
   
   */
-  renderComponent = properties => {
-    const { input, inputType } = properties;
+  getFormInput = () => {
+    const inputType = this.getType();
 
     // if input is a React component, use it
-    if (typeof input === 'function') {
-      const InputComponent = input;
-      return <InputComponent {...properties} />;
+    if (typeof this.props.input === 'function') {
+      const InputComponent = this.props.input;
+      return InputComponent;
     } else {
       // else pick a predefined component
 
       switch (inputType) {
         case 'text':
-          return <Components.FormComponentDefault {...properties} />;
-
-        case 'nested':
-          return <Components.FormNested {...properties} />;
+          return Components.FormComponentDefault;
 
         case 'number':
-          return <Components.FormComponentNumber {...properties} />;
+          return Components.FormComponentNumber;
 
         case 'url':
-          return <Components.FormComponentUrl {...properties} />;
+          return Components.FormComponentUrl;
 
         case 'email':
-          return <Components.FormComponentEmail {...properties} />;
+          return Components.FormComponentEmail;
 
         case 'textarea':
-          return <Components.FormComponentTextarea {...properties} />;
+          return Components.FormComponentTextarea;
 
         case 'checkbox':
-          return <Components.FormComponentCheckbox {...properties} />;
+          return Components.FormComponentCheckbox;
 
         case 'checkboxgroup':
-          return <Components.FormComponentCheckboxGroup {...properties} />;
+          return Components.FormComponentCheckboxGroup;
 
         case 'radiogroup':
-          return <Components.FormComponentRadioGroup {...properties} />;
+          return Components.FormComponentRadioGroup;
 
         case 'select':
-          return <Components.FormComponentSelect {...properties} />;
+          return Components.FormComponentSelect;
 
         case 'selectmultiple':
-          return <Components.FormComponentSelectMultiple {...properties} />;
+          return Components.FormComponentSelectMultiple;
 
         case 'datetime':
-          return <Components.FormComponentDateTime {...properties} />;
+          return Components.FormComponentDateTime;
 
         case 'date':
-          return <Components.FormComponentDate {...properties} />;
+          return Components.FormComponentDate;
 
         case 'time':
-          return <Components.FormComponentTime {...properties} />;
+          return Components.FormComponentTime;
 
         default:
-          const CustomComponent = Components[input];
-          return CustomComponent ? (
-            <CustomComponent {...properties} />
-          ) : (
-            <Components.FormComponentDefault {...properties} />
-          );
+          const CustomComponent = Components[this.props.input];
+          return CustomComponent ? CustomComponent : Components.FormComponentDefault;
       }
     }
   };
@@ -309,7 +304,7 @@ class FormComponent extends Component {
         showCharsRemaining={!!this.showCharsRemaining()}
         onChange={this.handleChange}
         clearField={this.clearField}
-        renderComponent={this.renderComponent}
+        formInput={this.getFormInput()}
       />
     );
   }

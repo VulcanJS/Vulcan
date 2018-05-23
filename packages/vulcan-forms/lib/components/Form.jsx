@@ -51,8 +51,14 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 // unsetCompact
 const unsetCompact = (object, path) => {
   const parentPath = path.slice(0, path.lastIndexOf('.'));
+  
   unset(object, path);
-  update(object, parentPath, compact);
+
+  // note: we only want to compact arrays, not objects
+  const compactIfArray = x => Array.isArray(x) ? compact(x) : x;
+
+  update(object, parentPath, compactIfArray);
+
 };
 
 const computeStateFromProps = nextProps => {
@@ -150,7 +156,8 @@ class Form extends Component {
   */
   getData = () => {
     // only keep relevant fields
-    const fields = this.getFieldNames({ excludeHiddenFields: false });
+    // for intl fields, make sure we look in foo_intl and not foo
+    const fields = this.getFieldNames({ excludeHiddenFields: false, replaceIntlFields: true });
     let data = cloneDeep(_.pick(this.getDocument(), ...fields));
 
     // remove any deleted values
@@ -219,7 +226,7 @@ class Form extends Component {
 
   */
   getFieldNames = (args = {}) => {
-    const { schema = this.state.schema, excludeHiddenFields = true } = args;
+    const { schema = this.state.schema, excludeHiddenFields = true, replaceIntlFields = false } = args;
 
     const { fields, hideFields } = this.props;
 
@@ -245,6 +252,11 @@ class Form extends Component {
         const hidden = schema[fieldName].hidden;
         return typeof hidden === 'function' ? hidden({ ...this.props, document }) : hidden;
       });
+    }
+
+    // replace intl fields
+    if (replaceIntlFields) {
+      relevantFields = relevantFields.map(fieldName => isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName);
     }
 
     return relevantFields;
@@ -494,7 +506,23 @@ class Form extends Component {
       return message;
     }
   };
-
+  
+  //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+  //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
+  handlePageLeave = (event) => {
+    if(this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?'
+      });
+      if (event) {
+        event.returnValue = message;
+      }
+      
+      return message;
+    }
+  };
+  
   /*
   
   Install a route leave hook to warn the user if there are unsaved changes
@@ -509,9 +537,26 @@ class Form extends Component {
       const routes = this.props.router.routes;
       const currentRoute = routes[routes.length - 1];
       this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+      
+      //check for closing the browser with unsaved changes
+      window.onbeforeunload = this.handlePageLeave;
     }
   };
 
+  /*
+  Remove the closing browser check on component unmount
+  see https://gist.github.com/mknabe/bfcb6db12ef52323954a28655801792d
+  */
+  componentWillUnmount = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      window.onbeforeunload = undefined; //undefined instead of null to support IE
+    }
+  };
+  
   /*
   
   Returns true if there are any differences between the initial document and the current one
@@ -644,7 +689,7 @@ class Form extends Component {
 
     // console.log(data)
 
-    const fields = this.getFieldNames();
+    const fields = this.getFieldNames({ replaceIntlFields: true });
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {

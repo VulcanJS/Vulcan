@@ -6,6 +6,7 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
+import { isIntlField } from './intl.js';
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
@@ -125,6 +126,24 @@ export const createCollection = options => {
 
   // add views
   collection.views = [];
+
+  // generate foo_intl fields
+  Object.keys(schema).forEach(fieldName => {
+    const fieldSchema = schema[fieldName];
+    if (fieldSchema.type && fieldSchema.type.name === 'IntlString') {
+      // make non-intl field optional
+      schema[fieldName].optional = true;
+
+      schema[`${fieldName}_intl`] = {
+        ...schema[fieldName], // copy properties from regular field
+        type: Array,
+      }
+      schema[`${fieldName}_intl.$`] = {
+        type: Object,
+        blackbox: true,
+      }
+    }
+  });
 
   if (schema) {
     // attach schema to collection
