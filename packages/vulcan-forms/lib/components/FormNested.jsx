@@ -57,13 +57,12 @@ class FormNested extends PureComponent {
   look for the presence of 'addresses.1')
   */
   isDeleted = index => {
-    return this.context.deletedValues.includes(`${this.props.path}.${index}`);
+    return this.props.deletedValues.includes(`${this.props.path}.${index}`);
   };
 
   render() {
     // do not pass FormNested's own value, input and inputProperties props down
-    const properties = _.omit(this.props, 'value', 'input', 'inputProperties');
-
+    const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
     return (
       <div className="form-group row form-nested">
         <label className="control-label col-sm-3">{this.props.label}</label>
@@ -91,10 +90,6 @@ class FormNested extends PureComponent {
     );
   }
 }
-
-FormNested.contextTypes = {
-  deletedValues: PropTypes.array,
-};
 
 registerComponent('FormNested', FormNested);
 

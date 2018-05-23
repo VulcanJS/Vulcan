@@ -52,6 +52,7 @@ class FormComponentInner extends PureComponent {
       charsRemaining,
       renderComponent,
       intlInput,
+      nestedInput,
     } = this.props;
 
     const hasErrors = errors && errors.length;
@@ -67,8 +68,11 @@ class FormComponentInner extends PureComponent {
     const properties = this.getProperties();
 
     const FormInput = this.props.formInput;
+
     if (intlInput) {
       return <Components.FormIntl {...properties} />;
+    } else if (nestedInput){
+      return <Components.FormNested {...properties} />;
     } else {
       return (
         <div className={inputClass}>

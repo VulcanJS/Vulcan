@@ -331,7 +331,7 @@ class Form extends Component {
     // nested fields: set input to "nested"
     if (fieldSchema.schema) {
       field.nestedSchema = fieldSchema.schema;
-      field.input = 'nested';
+      field.nestedInput = true;
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({ schema: field.nestedSchema }).map(subFieldName => {
