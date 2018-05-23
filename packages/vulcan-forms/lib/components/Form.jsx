@@ -44,6 +44,7 @@ import compact from 'lodash/compact';
 import update from 'lodash/update';
 import merge from 'lodash/merge';
 import find from 'lodash/find';
+import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
@@ -158,7 +159,7 @@ class Form extends Component {
     // only keep relevant fields
     // for intl fields, make sure we look in foo_intl and not foo
     const fields = this.getFieldNames({ excludeHiddenFields: false, replaceIntlFields: true });
-    let data = cloneDeep(_.pick(this.getDocument(), ...fields));
+    let data = pick(this.getDocument(), ...fields);
 
     // remove any deleted values
     // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
@@ -723,6 +724,8 @@ class Form extends Component {
 
       // only keep unset keys that correspond to a field (get rid of nested keys)
       unsetKeys = _.intersection(unsetKeys, this.getFieldNames());
+
+      unsetKeys = unsetKeys.filter(key => !key.includes('.'));
 
       // build mutation arguments object
       const args = { documentId: document._id, set: set, unset: {} };

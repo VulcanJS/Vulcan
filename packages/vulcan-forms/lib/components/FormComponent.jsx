@@ -32,7 +32,7 @@ class FormComponent extends Component {
     const { currentValues, deletedValues, errors } = nextProps;
     const { path } = this.props;
 
-    const valueChanged = currentValues[path] !== this.props.currentValues[path];
+    const valueChanged = get(currentValues, path) !== get(this.props.currentValues, path);
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
@@ -124,7 +124,7 @@ class FormComponent extends Component {
     // for intl field fetch the actual field value by adding .value to the path
     const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
-    const currentValue = currentValues[path];
+    const currentValue = get(currentValues, path);
     const isDeleted = p.deletedValues.includes(path);
 
     if (isDeleted) {
