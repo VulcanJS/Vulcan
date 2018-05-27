@@ -1,6 +1,3 @@
-import SimpleSchema from 'simpl-schema';
-
-
 /*
 
 Convert a nested SimpleSchema schema into a JSON object
@@ -21,24 +18,15 @@ export const convertSchema = (schema, flatten = false) => {
       jsonSchema[fieldName] = getFieldSchema(fieldName, schema);
 
       // check for existence of nested schema on corresponding array field
-      const arraySubSchema = getArraySubSchema(fieldName, schema);
+      const subSchema = getNestedSchema(fieldName, schema);
       // if nested schema exists, call convertSchema recursively
-      if (arraySubSchema) {
-        const convertedArraySubSchema = convertSchema(arraySubSchema);
+      if (subSchema) {
+        const convertedSubSchema = convertSchema(subSchema);
         if (flatten) {
-          jsonSchema = { ...jsonSchema, ...convertedArraySubSchema };
+          jsonSchema = { ...jsonSchema, ...convertedSubSchema };
         } else {
-          jsonSchema[fieldName].schema = convertedArraySubSchema;
+          jsonSchema[fieldName].schema = convertedSubSchema;
         }
-      }
-
-      // check if the type of this field is a nested schema
-      const objectSubSchema = getObjectSubSchema(fieldName, schema);
-      if (objectSubSchema) {
-        let convertedObjectSubSchema = convertSchema(objectSubSchema);
-        const mergedSubSchema = mergeSubSchemaWithParent(convertedObjectSubSchema, jsonSchema, fieldName);
-        jsonSchema = { ...jsonSchema, ...mergedSubSchema };
-        delete jsonSchema[fieldName];
       }
     });
     return jsonSchema;
@@ -68,36 +56,10 @@ export const getFieldSchema = (fieldName, schema) => {
 Given an array field, get its nested schema
 
 */
-export const getArraySubSchema = (fieldName, schema) => {
+export const getNestedSchema = (fieldName, schema) => {
   const arrayItemSchema = schema._schema[`${fieldName}.$`];
-  return arrayItemSchema && arrayItemSchema.type.definitions[0].type;
-};
-
-/*
-
-Given an object field, get its sub schema
-
-*/
-export const getObjectSubSchema = (fieldName, schema) => {
-  const objectItemSchema = schema._schema[fieldName].type.definitions[0].type;
-  if (SimpleSchema.isSimpleSchema(objectItemSchema)) {
-    return objectItemSchema;
-  }
-};
-
-/*
-
-Given a subschema, prefixes the field names with the parent's, and merges the parent's values
-into each child (this way field properties like 'editableBy' and 'group' can be set on the parent
-for all children, and can still be overridden by children.
-
-*/
-export const mergeSubSchemaWithParent = (schema, jsonSchema, parentName) => {
-  const merged = {};
-  for (const key in schema) {
-    merged[`${parentName}.${key}`] = Object.assign({}, jsonSchema[parentName], schema[key]);
-  }
-  return merged;
+  const nestedSchema = arrayItemSchema && arrayItemSchema.type.definitions[0].type;
+  return nestedSchema;
 };
 
 export const schemaProperties = [
