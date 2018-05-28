@@ -207,6 +207,11 @@ class Upload extends PureComponent {
     const { includePreviews = true, includeDeleted = false } = args;
     let images = this.props.value;
   
+    // if images is an empty string, null, etc. just return an empty array
+    if (!images) {
+      return [];
+    }
+
     // if images is not array, make it one (for backwards compatibility)
     if (!Array.isArray(images)) {
       images = [images];
