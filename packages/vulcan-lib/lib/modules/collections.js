@@ -136,6 +136,7 @@ export const createCollection = options => {
 
       schema[`${fieldName}_intl`] = {
         ...schema[fieldName], // copy properties from regular field
+        hidden: true,
         type: Array,
       }
       schema[`${fieldName}_intl.$`] = {
