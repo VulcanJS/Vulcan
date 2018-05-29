@@ -12,12 +12,7 @@ Package.onUse( function(api) {
   api.use([
     'vulcan:core@1.10.1',
     'vulcan:forms@1.10.1',
-    'fourseven:scss@4.5.0'
   ]);
-
-  api.addFiles([
-    "lib/Upload.scss"
-  ], "client");
 
   api.mainModule("lib/modules.js", ["client", "server"]);
 
