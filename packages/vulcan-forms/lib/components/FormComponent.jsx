@@ -148,8 +148,8 @@ class FormComponent extends Component {
           value = documentValue;
         }
       }
-      // replace empty value, which has not been prefilled, by the default value from the schema
-      if (isEmptyValue(value)) {
+      // replace empty value, which has not been prefilled, by the default value from the schema – for new forms only
+      if (isEmptyValue(value) && p.formType === 'new') {
         if (defaultValue) value = defaultValue;
       }
     }
