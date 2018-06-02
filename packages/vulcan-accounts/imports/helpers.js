@@ -65,6 +65,7 @@ export function validateEmail(email, showMessage, clearMessage) {
   if (passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL" && email === '') {
     return true;
   }
+  // LESSWRONG: I feel like we fixed some kind of bug here, with empty email addresses
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
   } else if (!email || email.length === 0) {
