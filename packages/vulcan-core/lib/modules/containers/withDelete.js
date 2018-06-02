@@ -4,9 +4,9 @@ Generic mutation wrapper to remove a document from a collection.
 
 Sample mutation: 
 
-  mutation moviesRemove($documentId: String) {
-    moviesEdit(documentId: $documentId) {
-      ...MoviesRemoveFormFragment
+  mutation deleteMovie($documentId: String) {
+    deleteMovie(documentId: $documentId) {
+      ...MovieFormFragment
     }
   }
 
@@ -16,7 +16,7 @@ Arguments:
 
 Child Props:
 
-  - removeMutation(documentId)
+  - deleteMovie(documentId)
   
 */
 
@@ -25,11 +25,12 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getCollection } from 'meteor/vulcan:core';
 
-export default function withRemove(options) {
+export default function withDelete(options) {
 
   const { collectionName } = options;
   const collection = options.collection || getCollection(collectionName),
-        mutationName = collection.options.mutations.remove.name
+        mutationName = collection.options.mutations.delete.name,
+        typeName = collection.options.typeName;
 
   return graphql(gql`
     mutation ${mutationName}($documentId: String) {
@@ -38,8 +39,14 @@ export default function withRemove(options) {
       }
     }
   `, {
-    alias: 'withRemove',
+    alias: `withDelete${typeName}`,
     props: ({ ownProps, mutate }) => ({
+      [`delete${typeName}`]: ({ documentId }) => {
+        return mutate({ 
+          variables: { documentId }
+        });
+      },
+      // OpenCRUD backwards compatibility
       removeMutation: ({ documentId }) => {
         return mutate({ 
           variables: { documentId }

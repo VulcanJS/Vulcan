@@ -4,9 +4,9 @@ Generic mutation wrapper to edit a document in a collection.
 
 Sample mutation: 
 
-  mutation moviesEdit($documentId: String, $set: MoviesInput, $unset: MoviesUnset) {
-    moviesEdit(documentId: $documentId, set: $set, unset: $unset) {
-      ...MoviesEditFormFragment
+  mutation updateMovie($documentId: String, $set: MoviesInput, $unset: MoviesUnset) {
+    updateMovie(documentId: $documentId, set: $set, unset: $unset) {
+      ...MovieFormFragment
     }
   }
 
@@ -18,7 +18,7 @@ Arguments:
 
 Child Props:
 
-  - editMutation(documentId, set, unset)
+  - updateMovie(documentId, set, unset)
   
 */
 
@@ -27,14 +27,15 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:lib';
 
-export default function withEdit(options) {
+export default function withUpdate(options) {
 
   const { collectionName } = options;
   // get options
   const collection = options.collection || getCollection(collectionName),
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        mutationName = collection.options.mutations.edit.name;
+        mutationName = collection.options.mutations.update.name,
+        typeName = collection.options.typeName;
 
   return graphql(gql`
     mutation ${mutationName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
@@ -44,8 +45,16 @@ export default function withEdit(options) {
     }
     ${fragment}
   `, {
-    alias: 'withEdit',
+    alias: `withUpdate${typeName}`,
     props: ({ ownProps, mutate }) => ({
+      [`update${typeName}`]: (args) => {
+        const { documentId, set, unset } = args;
+        return mutate({ 
+          variables: { documentId, set, unset }
+          // note: updateQueries is not needed for editing documents
+        });
+      },
+      // OpenCRUD backwards compatibility
       editMutation: (args) => {
         const { documentId, set, unset } = args;
         return mutate({ 

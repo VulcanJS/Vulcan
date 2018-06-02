@@ -9,20 +9,28 @@ import { createError } from 'apollo-errors';
 
 const defaultOptions = {
   cacheMaxAge: 300,
+  legacy: false,
 };
 
+// note: for some reason changing resolverOptions to "options" throws error
 export const getDefaultResolvers = (collectionName, resolverOptions = defaultOptions) => {
+
+  // TODO: find more reliable way to get type name from collection name
+  const typeName = collectionName.slice(0, -1);
+  
   return {
     // resolver for returning a list of documents based on a set of query terms
 
     list: {
-      name: `${collectionName}List`,
 
-      description: `A list of ${collectionName} documents matching a set of query terms`,
+      name: resolverOptions.legacy ? `${typeName}List` : `${typeName}s`,
+
+      description: `A list of ${typeName} documents matching a set of query terms`,
 
       async resolver(root, { terms = {}, enableCache = false }, context, { cacheControl }) {
+        
         debug('');
-        debugGroup(`--------------- start \x1b[35m${collectionName} list\x1b[0m resolver ---------------`);
+        debugGroup(`--------------- start \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -58,7 +66,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         debug(`\x1b[33m=> ${restrictedDocs.length} documents returned\x1b[0m`);
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${collectionName} list\x1b[0m resolver ---------------`);
+        debug(`--------------- end \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
         debug('');
 
         // return results
@@ -69,13 +77,13 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     // resolver for returning a single document queried based on id or slug
 
     single: {
-      name: `${collectionName}Single`,
+      name: resolverOptions.legacy ? `${typeName}Single` : `${typeName}`,
 
-      description: `A single ${collectionName} document fetched by ID or slug`,
+      description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { documentId, slug, enableCache = false }, context, { cacheControl }) {
         debug('');
-        debugGroup(`--------------- start \x1b[35m${collectionName} single\x1b[0m resolver ---------------`);
+        debugGroup(`--------------- start \x1b[35m${typeName} single\x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`DocumentId: ${documentId}, Slug: ${slug}`);
 
@@ -106,7 +114,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${collectionName} single\x1b[0m resolver ---------------`);
+        debug(`--------------- end \x1b[35m${typeName} single\x1b[0m resolver ---------------`);
         debug('');
 
         // filter out disallowed properties and return resulting document
@@ -117,9 +125,9 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     // resolver for returning the total number of documents matching a set of query terms
 
     total: {
-      name: `${collectionName}Total`,
+      name: resolverOptions.legacy ? `${typeName}Total` : `total${typeName}s`,
 
-      description: `The total count of ${collectionName} documents matching a set of query terms`,
+      description: `The total count of ${typeName} documents matching a set of query terms`,
 
       async resolver(root, { terms, enableCache }, context, { cacheControl }) {
         if (cacheControl && enableCache) {

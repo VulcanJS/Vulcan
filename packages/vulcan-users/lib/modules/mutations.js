@@ -1,4 +1,4 @@
-import { newMutation, editMutation, removeMutation, Utils, Connectors } from 'meteor/vulcan:lib';
+import { createMutator, updateMutator, deleteMutator, Utils, Connectors } from 'meteor/vulcan:lib';
 import Users from './collection'; // TODO: circular dependency?
 
 const performCheck = (mutation, user, document) => {
@@ -7,9 +7,9 @@ const performCheck = (mutation, user, document) => {
 
 const mutations = {
 
-  new: {
+  create: {
     
-    name: 'usersNew',
+    name: 'createUser',
     
     check(user, document) {
       if (!user) return false;
@@ -20,7 +20,7 @@ const mutations = {
       
       performCheck(this, context.currentUser, document);
 
-      return newMutation({
+      return createMutator({
         collection: context.Users,
         document: document, 
         currentUser: context.currentUser,
@@ -31,9 +31,9 @@ const mutations = {
 
   },
 
-  edit: {
+  update: {
     
-    name: 'usersEdit',
+    name: 'updateUser',
     
     check(user, document) {
       if (!user || !document) return false;
@@ -45,7 +45,7 @@ const mutations = {
       const document = await Connectors.get(context.Users, documentId);
       performCheck(this, context.currentUser, document);
 
-      return editMutation({
+      return updateMutator({
         collection: context.Users, 
         documentId: documentId, 
         set: set, 
@@ -58,9 +58,9 @@ const mutations = {
 
   },
   
-  remove: {
+  delete: {
 
-    name: 'usersRemove',
+    name: 'deleteUser',
     
     check(user, document) {
       if (!user || !document) return false;
@@ -72,7 +72,7 @@ const mutations = {
       const document = await Connectors.get(context.Users, documentId);
       performCheck(this, context.currentUser, document);
 
-      return removeMutation({
+      return deleteMutator({
         collection: context.Users, 
         documentId: documentId, 
         currentUser: context.currentUser,

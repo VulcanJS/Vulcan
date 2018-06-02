@@ -6,7 +6,6 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { isIntlField } from './intl.js';
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
@@ -166,7 +165,7 @@ export const createCollection = options => {
     if (resolvers) {
       const queryResolvers = {};
       // list
-      if (resolvers.list) { // e.g. ""
+      if (resolvers.list) {
         addGraphQLQuery(
 `${resolvers.list.name}(
     # A JSON object that contains the query terms used to fetch data
@@ -211,30 +210,30 @@ export const createCollection = options => {
 
     if (mutations) {
       const mutationResolvers = {};
-      // new
-      if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
+      // create
+      if (mutations.create) { // e.g. "createMovie(document: moviesInput) : Movie"
         addGraphQLMutation(
-`${mutations.new.name}(
-    # The document to insert
+`${mutations.create.name}(
+    # The document to create
     document: ${collectionName}Input
-  ) : ${typeName}`, mutations.new.description);
-        mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
+  ) : ${typeName}`, mutations.create.description);
+        mutationResolvers[mutations.create.name] = mutations.create.mutation.bind(mutations.create);
       }
-      // edit
-      if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
+      // update
+      if (mutations.update) { // e.g. "updateMovie(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
         addGraphQLMutation(
-`${mutations.edit.name}(
-    # The unique ID of the document to edit
+`${mutations.update.name}(
+    # The unique ID of the document to update
     documentId: String, 
     # An array of fields to insert
     set: ${collectionName}Input, 
     # An array of fields to delete
     unset: ${collectionName}Unset
-  ) : ${typeName}`, mutations.edit.description);
-        mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
+  ) : ${typeName}`, mutations.update.description);
+        mutationResolvers[mutations.update.name] = mutations.update.mutation.bind(mutations.update);
       }
       // upsert
-      if (mutations.upsert) { // e.g. "moviesUpsert(search: moviesInput, set: moviesInput, unset: moviesUnset) : Movie"
+      if (mutations.upsert) { // e.g. "upsertMovie(search: moviesInput, set: moviesInput, unset: moviesUnset) : Movie"
         addGraphQLMutation(
           `${mutations.upsert.name}(
     # The document to search for (or partial document)
@@ -246,14 +245,14 @@ export const createCollection = options => {
   ) : ${typeName}`, mutations.upsert.description);
         mutationResolvers[mutations.upsert.name] = mutations.upsert.mutation.bind(mutations.upsert);
       }
-      // remove
-      if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
+      // delete
+      if (mutations.delete) { // e.g. "deleteMovie(documentId: String) : Movie"
         addGraphQLMutation(
-`${mutations.remove.name}(
+`${mutations.delete.name}(
     # The unique ID of the document to delete
     documentId: String
-  ) : ${typeName}`, mutations.remove.description);
-        mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
+  ) : ${typeName}`, mutations.delete.description);
+        mutationResolvers[mutations.delete.name] = mutations.delete.mutation.bind(mutations.delete);
       }
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
     }
