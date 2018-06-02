@@ -665,7 +665,6 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     if (!error) {
       Meteor.loginWithPassword(loginSelector, password, (error, result) => {
-        onSubmitHook(error,formState);
         if (error) {
           // eslint-disable-next-line no-console
           console.log(error);
