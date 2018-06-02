@@ -52,7 +52,7 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 // unsetCompact
 const unsetCompact = (object, path) => {
   const parentPath = path.slice(0, path.lastIndexOf('.'));
-  
+
   unset(object, path);
 
   // note: we only want to compact arrays, not objects
@@ -368,7 +368,7 @@ class Form extends Component {
     - path: for field-specific errors, the path of the field with the issue
     - properties: additional data. Will be passed to vulcan-i18n as values
     - message: if id cannot be used as i81n key, message will be used
-    
+
   */
   throwError = error => {
     let formErrors = getErrors(error);
@@ -468,9 +468,9 @@ class Form extends Component {
   }
 
   /*
-  
+
   Manually update the current values of one or more fields(i.e. on change or blur).
-  
+
   */
   updateCurrentValues = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
@@ -494,9 +494,9 @@ class Form extends Component {
   };
 
   /*
-  
+
   Warn the user if there are unsaved changes
-  
+
   */
   handleRouteLeave = () => {
     if (this.isChanged()) {
@@ -507,7 +507,7 @@ class Form extends Component {
       return message;
     }
   };
-  
+
   //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
   //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
   handlePageLeave = (event) => {
@@ -519,15 +519,15 @@ class Form extends Component {
       if (event) {
         event.returnValue = message;
       }
-      
+
       return message;
     }
   };
-  
+
   /*
-  
+
   Install a route leave hook to warn the user if there are unsaved changes
-  
+
   */
   componentDidMount = () => {
     let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
@@ -538,7 +538,7 @@ class Form extends Component {
       const routes = this.props.router.routes;
       const currentRoute = routes[routes.length - 1];
       this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
-      
+
       //check for closing the browser with unsaved changes
       window.onbeforeunload = this.handlePageLeave;
     }
@@ -557,11 +557,11 @@ class Form extends Component {
       window.onbeforeunload = undefined; //undefined instead of null to support IE
     }
   };
-  
+
   /*
-  
+
   Returns true if there are any differences between the initial document and the current one
-  
+
   */
   isChanged = () => {
     const initialDocument = this.state.initialDocument;
@@ -577,9 +577,9 @@ class Form extends Component {
   };
 
   /*
-  
+
   Refetch the document from the database (in case it was updated by another process or to reset the form)
-  
+
   */
   refetchForm = () => {
     if (this.props.data && this.props.data.refetch) {
@@ -588,7 +588,7 @@ class Form extends Component {
   };
 
   /*
-  
+
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
@@ -799,7 +799,7 @@ class Form extends Component {
             />
           ))}
 
-          {this.props.repeatErrors && this.renderErrors()}
+          {this.props.repeatErrors && <Components.FormErrors errors={this.state.errors} />}
 
           <Components.FormSubmit
             submitLabel={this.props.submitLabel}
