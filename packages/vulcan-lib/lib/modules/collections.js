@@ -304,7 +304,7 @@ export const createCollection = options => {
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
-    if (!(parameters.options.sort && parameters.options.sort._id)) {
+    if (!(parameters.options.sort && typeof parameters.options.sort._id !== undefined)) {
       parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
     }
 
