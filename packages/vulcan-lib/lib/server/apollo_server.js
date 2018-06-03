@@ -9,7 +9,7 @@ import compression from 'compression';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
-import { Engine } from 'apollo-engine';
+import { ApolloEngine } from 'apollo-engine';
 
 import { GraphQLSchema } from '../modules/graphql.js';
 import { Utils } from '../modules/utils.js';
@@ -23,6 +23,8 @@ import cookiesMiddleware from 'universal-cookie-express';
 import Cookies from 'universal-cookie';
 
 import timber from 'timber';
+import cors from 'cors';
+
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
@@ -48,10 +50,10 @@ const engineConfig = {
       }
     }
   ],
-  // "sessionAuth": {
-  //   "store": "embeddedCache",
-  //   "header": "Authorization"
-  // },
+  "sessionAuth": {
+    "store": "vulcanCache",
+    "header": "Authorization"
+  },
   // "frontends": [
   //   {
   //     "host": "127.0.0.1",
@@ -74,11 +76,6 @@ const engineConfig = {
     "level": engineLogLevel
   }
 };
-let engine;
-if (engineApiKey) {
-  engine = new Engine({ engineConfig });
-  engine.start();
-}
 
 // defaults
 const defaultConfig = {
@@ -114,22 +111,45 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   config.configServer(graphQLServer);
 
-  // Use Engine middleware
-  if (engineApiKey) {
-    graphQLServer.use(engine.expressMiddleware());
-  }
 
   // cookies
   graphQLServer.use(cookiesMiddleware());
   
   // compression
   graphQLServer.use(compression());
+  // function customDetection(req){
+  //   var ipAddress;
+  //   ipAddress = req.connection.remoteAddress.replace(/\//g, '.');
+  //   console.info("ipAddress: ", ipAddress);
+  //   return ipAddress;
+  // }
+
   // LESSWRONG: Timber logging integration
   if (timberApiKey) {
     //eslint-disable-next-line no-console
     console.info("Starting timber integration")
     graphQLServer.use(timber.middlewares.express())
   }
+
+
+  // LESSWRONG: ACTIVATE IP FILTER
+  // graphQLServer.use(IpFilter(["127.0.0.1"], {detectIp: customDetection}));
+
+  // LESSWRONG: USE CORS TO ALLOW MULTIPLE URLS
+  graphQLServer.use(cors({origin:[
+    "http://lesswrong.com",
+    "https://lesswrong.com",
+    "http://www.lesswrong.com",
+    "https://www.lesswrong.com",
+    "http://lesserwrong.com",
+    "https://lesserwrong.com",
+    "http://www.lesserwrong.com",
+    "https://www.lesserwrong.com",
+    "http://lessestwrong.com",
+    "https://lessestwrong.com",
+    "http://www.lessestwrong.com",
+    "https://www.lessestwrong.com",
+  ]}))
 
   // GraphQL endpoint
   graphQLServer.use(config.path, bodyParser.json({limit: '5mb'}), graphqlExpress(async (req) => {
@@ -218,6 +238,14 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     name: 'graphQLServerMiddleware_bindEnvironment',
     order: 30,
   });
+
+  // Use Engine middleware
+  if (engineApiKey) {
+    let engine = new ApolloEngine({ ...engineConfig });
+    engine.meteorListen(WebApp)
+  }
+
+
 };
 
 // createApolloServer when server startup
