@@ -82,7 +82,7 @@ if (engineApiKey) {
 const defaultConfig = {
   path: '/graphql',
   maxAccountsCacheSizeInMB: 1,
-  graphiql: Meteor.isDevelopment,
+  graphiql: true,
   graphiqlPath: '/graphiql',
   graphiqlOptions: {
     passHeader: "'Authorization': localStorage['Meteor.loginToken']", // eslint-disable-line quotes
