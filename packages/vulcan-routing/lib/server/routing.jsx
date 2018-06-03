@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { CookiesProvider } from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
+
+class UserAgentProvider extends Component {
+  getChildContext() {
+    return { userAgent: this.props.userAgent }
+  }
+
+  render() {
+    const { children } = this.props
+    return React.cloneElement(children, {
+      ...this.props,
+    })
+  }
+}
+
+UserAgentProvider.childContextTypes = {
+  userAgent: PropTypes.string,
+}
 
 import {
   Components,
@@ -23,7 +41,7 @@ Meteor.startup(() => {
   initializeFragments();
   populateComponentsApp();
   populateRoutesApp();
-  
+
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
 
@@ -51,7 +69,7 @@ Meteor.startup(() => {
       store.reload();
       store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
       const app = runCallbacks('router.server.wrapper', appGenerator(), { req, res, store, apolloClient });
-      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{app}</CookiesProvider></ApolloProvider>;
+      return <UserAgentProvider userAgent={req.headers['user-agent']}><ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{app}</CookiesProvider></ApolloProvider></UserAgentProvider>;
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });

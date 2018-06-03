@@ -7,6 +7,8 @@ import { RoutePolicy } from 'meteor/routepolicy';
 
 import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:lib';
 
+
+
 function isAppUrl(req) {
   const url = req.url;
   if (url === '/favicon.ico' || url === '/robots.txt') {
@@ -36,13 +38,15 @@ function generateSSRData(options, req, res, renderProps) {
 
   try {
     req.css = '';
-
     renderProps = {
+      userAgent: req.headers['user-agent'],
       ...renderProps,
       ...options.props,
     };
 
-    const appGenerator = addProps => <RouterContext {...renderProps} {...addProps} />;
+    const appGenerator = addProps => {
+      return <RouterContext {...renderProps} {...addProps} />
+    };
 
     let app;
     if (typeof options.wrapperHook === 'function') {
