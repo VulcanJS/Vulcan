@@ -65,11 +65,11 @@ Meteor.startup(() => {
         onUpdate: () => {
           // the first argument is an item to iterate on, needed by vulcan:lib/callbacks
           // note: this item is not used in this specific callback: router.onUpdate
-          // runCallbacks('router.onUpdate', {}, store, apolloClient);
+          runCallbacks('router.onUpdate', {}, store, apolloClient);
         },
         render: applyRouterMiddleware(useScroll((prevRouterProps, nextRouterProps) => {
-          // if the action is REPLACE, return false so that we don't jump back to top of page
-          return !(nextRouterProps.location.action === 'REPLACE');
+          // if the action is REPLACE, or this is the initialization of the router, return false so that we don't jump back to top of page
+          return !(nextRouterProps.location.action === 'REPLACE' || !prevRouterProps);
         }))
       }));
       return <ApolloProvider store={store} client={apolloClient}><CookiesProvider>{app}</CookiesProvider></ApolloProvider>;
