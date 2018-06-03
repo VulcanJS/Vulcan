@@ -8,4 +8,4 @@ export const dynamicLoader = componentImport => loadable({
   // serverSideRequirePath: adminPath
 });
 
-export const getDynamicComponent = componentImport => React.createElement(dynamicLoader(componentImport));
+export const getDynamicComponent = (componentImport, props) => React.createElement(dynamicLoader(componentImport), props);
