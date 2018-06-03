@@ -51,7 +51,7 @@
       const newEmail = modifier.$set.email;
 
       // check for existing emails and throw error if necessary
-      const userWithSameEmail = Users.findByEmail(newEmail);
+      const userWithSameEmail = Users.findOne({email: newEmail});
       if (userWithSameEmail && userWithSameEmail._id !== user._id) {
         throw new Error(Utils.encodeIntlError({id:"users.email_already_taken", value: newEmail}));
       }
