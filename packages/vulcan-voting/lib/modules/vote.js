@@ -240,7 +240,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
     throw new Error(`Cannot perform operation '${collectionName.toLowerCase()}.${voteType}'`);
   }
 
-  const voteOptions = {document, collection, voteType, user, voteId};
+  let voteOptions = {document, collection, voteType, user, voteId};
 
   if (hasVotedClient({document, voteType})) {
 
@@ -253,7 +253,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      clearVotesClient({document, collection, voteType, user, voteId})
+      voteOptions.document = clearVotesClient({document, collection, voteType, user, voteId})
     }
 
     returnedDocument = addVoteClient(voteOptions);
