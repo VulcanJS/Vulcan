@@ -56,9 +56,10 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 
     // run validation callbacks
     newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser, validationErrors);
-  
+
+    // LESSWRONG - added custom message (showing all validation errors instead of a generic message)
     if (validationErrors.length) {
-      const NewDocumentValidationError = createError('app.validation_error', {message: 'app.new_document_validation_error'});
+      const NewDocumentValidationError = createError('app.validation_error', {message: JSON.stringify(validationErrors)});
       throw new NewDocumentValidationError({data: {break: true, errors: validationErrors}});
     }
 
@@ -140,12 +141,13 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
 
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
 
+    // LESSWRONG - added custom message (showing all validation errors instead of a generic message)
     if (validationErrors.length) {
-      // eslint-disable-next-line no-console
-      console.log('// validationErrors');
-      // eslint-disable-next-line no-console
-      console.log(validationErrors);
-      const EditDocumentValidationError = createError('app.validation_error', {message: 'app.edit_document_validation_error'});
+      //eslint-disable-next-line no-console
+      console.error('// validationErrors')
+      //eslint-disable-next-line no-console
+      console.error(validationErrors)
+      const EditDocumentValidationError = createError('app.validation_error', {message: JSON.stringify(validationErrors)});
       throw new EditDocumentValidationError({data: {break: true, errors: validationErrors}});
     }
 
