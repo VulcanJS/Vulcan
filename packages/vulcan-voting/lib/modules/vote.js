@@ -102,8 +102,7 @@ const addVoteServer = async (voteOptions) => {
     // update document score & set item as active
     await Connectors.update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
   }
-
-  return newDocument;
+  return {newDocument, vote};
 }
 
 /*
@@ -151,6 +150,9 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
   const votes = await Connectors.find(Votes, { documentId: document._id, userId: user._id});
   if (votes.length) {
     await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
+    votes.forEach((vote)=> {
+      runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
+    })
     if (updateDocument) {
       await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
     }
@@ -165,12 +167,10 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
 Cancel votes of a specific type on a given document (server)
 
 */
-const cancelVoteServer = async (existingVote, { document, voteType, collection, user, updateDocument }) => {
+const cancelVoteServer = async ({ document, voteType, collection, user, updateDocument }) => {
 
   const newDocument = _.clone(document);
-
-  const vote = existingVote;
-
+  const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
   // remove vote object
   await Connectors.delete(Votes, {_id: vote._id});
 
@@ -182,7 +182,7 @@ const cancelVoteServer = async (existingVote, { document, voteType, collection, 
   newDocument.baseScore -= vote.power;
   newDocument.score = recalculateScore(newDocument);
 
-  return newDocument;
+  return {newDocument, vote};
 }
 
 /*
@@ -300,8 +300,9 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
     // console.log('action: cancel')
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
-    document = await cancelVoteServer(existingVote, voteOptions);
-    // runCallbacksAsync(`votes.cancel.async`, vote, document, collection, user);
+    let voteDocTuple = await cancelVoteServer(voteOptions);
+    document = voteDocTuple.newDocument;
+    runCallbacksAsync(`votes.cancel.async`, voteDocTuple, collection, user);
 
   } else {
 
@@ -312,9 +313,9 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
     }
 
     // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
-    document = await addVoteServer(voteOptions);
-    // runCallbacksAsync(`votes.${voteType}.async`, vote, document, collection, user);
-
+    let voteDocTuple = await addVoteServer({...voteOptions, document}); //Make sure to pass the new document to addVoteServer
+    document = voteDocTuple.newDocument;
+    runCallbacksAsync(`votes.${voteType}.async`, voteDocTuple, collection, user);
   }
 
   debug('document after vote: ', document);
