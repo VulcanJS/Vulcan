@@ -43,7 +43,7 @@ Meteor.startup(function () {
 
         debug(`[vulcan:voting] Updated scores for ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`)
 
-      }, 3600 * 1000);
+      }, 3600 * 24 * 1000);
 
     });
   }
