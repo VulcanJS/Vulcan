@@ -76,8 +76,9 @@ export const createMutator = async ({ collection, document, currentUser, validat
   // note: cannot use forEach with async/await. 
   // See https://stackoverflow.com/a/37576787/649299
   for(let fieldName of _.keys(schema)) {
-    if (schema[fieldName].onInsert) {
-      const autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
+    const onCreate = schema[fieldName].onCreate || schema[fieldName].onInsert; // OpenCRUD backwards compatibility
+    if (onCreate) {
+      const autoValue = await onCreate(newDocument, currentUser);
       if (typeof autoValue !== 'undefined') {
         newDocument[fieldName] = autoValue;
       }
@@ -170,9 +171,9 @@ export const updateMutator = async ({ collection, documentId, set = {}, unset = 
 
   // run onEdit step
   for(let fieldName of _.keys(schema)) {
-
-    if (schema[fieldName].onEdit) {
-      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
+    const onUpdate = schema[fieldName].onUpdate || schema[fieldName].onEdit; // OpenCRUD backwards compatibility
+    if (onUpdate) {
+      const autoValue = await onUpdate(modifier, document, currentUser, newDocument);
       if (typeof autoValue !== 'undefined') {
         if (autoValue === null) {
           // if any autoValue returns null, then unset the field
@@ -254,8 +255,9 @@ export const deleteMutator = async ({ collection, documentId, currentUser, valid
 
   // run onRemove step
   for(let fieldName of _.keys(schema)) {
-    if (schema[fieldName].onRemove) {
-      await schema[fieldName].onRemove(document, currentUser);
+    const onDelete = schema[fieldName].onDelete || schema[fieldName].onRemove; // OpenCRUD backwards compatibility
+    if (onDelete) {
+      await onDelete(document, currentUser);
     }
   }
 

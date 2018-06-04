@@ -1,6 +1,8 @@
 /* ------------------------------------- Main Type ------------------------------------- */
 
-/* 
+/*
+
+The main type
 
 type Movie{
   _id: String
@@ -20,6 +22,8 @@ type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : 
 /* ------------------------------------- Selector Types ------------------------------------- */
 
 /*
+
+The selector type is used to query for one or more documents
 
 type MovieSelectorInput {
   AND: [MovieSelectorInput]
@@ -46,6 +50,8 @@ export const selectorInputTemplate = ({ typeName }) =>
 
 /*
 
+The unique selector type is used to query for exactly one document
+
 type MovieSelectorUniqueInput {
   _id: String
   slug: String
@@ -58,6 +64,8 @@ export const selectorUniqueInputTemplate = ({ typeName }) =>
 `;
 
 /*
+
+The orderBy type defines which fields a query can be ordered by
 
 enum MovieOrderByInput {
   title
@@ -74,6 +82,8 @@ export const orderByInputTemplate = ({ typeName }) =>
 
 /*
 
+A query for a single document
+
 movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
@@ -81,6 +91,8 @@ export const singleQueryTemplate = ({ typeName }) => `${typeName}(input: Single$
 
 
 /*
+
+A query for multiple documents
 
 movies(input: MultiMovieInput) : MultiMovieOutput
 
@@ -90,6 +102,8 @@ export const multiQueryTemplate = ({ typeName }) => `${typeName}s(input: Multi${
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
 /*
+
+The argument type when querying for multiple documents
 
 type MultiMovieInput {
   terms: JSON
@@ -121,6 +135,8 @@ export const multiInputTemplate = ({ typeName }) =>
 
 /*
 
+The argument type when querying for a single document
+
 type SingleMovieInput {
   documentId: String
   slug: String
@@ -142,6 +158,8 @@ export const singleInputTemplate = ({ typeName }) =>
 
 /*
 
+The type for the return value when querying for multiple documents
+
 type MultiMovieOuput{
   data: [Movie]
   totalCount: Int
@@ -155,6 +173,8 @@ export const MultiOutputTemplate = ({ typeName }) =>
 }`;
 
 /*
+
+The type for the return value when querying for a single document
 
 type SingleMovieOuput{
   data: Movie
@@ -170,6 +190,8 @@ export const singleOutputTemplate = ({ typeName }) =>
 
 /*
 
+Mutation for creating a new document
+
 createMovie(input: CreateMovieInput) : MovieOutput
 
 */
@@ -177,6 +199,8 @@ export const createMutationTemplate = ({ typeName }) =>
 `create${typeName}(input: Create${typeName}Input) : Create${typeName}Output`;
 
 /*
+
+Mutation for updating an existing document
 
 updateMovie(input: UpdateMovieInput) : MovieOutput
 
@@ -186,6 +210,8 @@ export const updateMutationTemplate = ({ typeName }) =>
 
 /*
 
+Mutation for updating an existing document; or creating it if it doesn't exist yet
+
 upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
@@ -193,6 +219,8 @@ export const upsertMutationTemplate = ({ typeName }) =>
 `upsert${typeName}(input: Upsert${typeName}Input) : Upsert${typeName}Output`;
 
 /*
+
+Mutation for deleting an existing document
 
 deleteMovie(input: DeleteMovieInput) : MovieOutput
 
@@ -203,6 +231,8 @@ export const deleteMutationTemplate = ({ typeName }) =>
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 
 /*
+
+Type for create mutation input argument
 
 type CreateMovieInput {
   data: CreateMovieDataInput!
@@ -215,6 +245,8 @@ export const createInputTemplate = ({ typeName }) =>
 }`;
 
 /*
+
+Type for update mutation input argument 
 
 type UpdateMovieInput {
   selector: MovieSelectorUniqueInput!
@@ -229,6 +261,8 @@ export const updateInputTemplate = ({ typeName }) =>
 }`;
 
 /*
+
+Type for upsert mutation input argument
 
 Note: upsertInputTemplate uses same data type as updateInputTemplate
 
@@ -246,6 +280,8 @@ export const upsertInputTemplate = ({ typeName }) =>
 
 /*
 
+Type for delete mutation input argument
+
 type DeleteMovieInput {
   selector: MovieSelectorUniqueInput!
 }
@@ -258,6 +294,8 @@ export const deleteInputTemplate = ({ typeName }) =>
 
 /*
 
+Type for the create mutation input argument's data property
+
 type CreateMovieDataInput {
   title: String
   description: String
@@ -266,10 +304,12 @@ type CreateMovieDataInput {
 */
 export const createDataInputTemplate = ({ typeName }) =>
 `
-  # TODO
+  # TODO: get fields that are insertable
 `;
 
 /*
+
+Type for the update mutation input argument's data property
 
 type UpdateMovieDataInput {
   title: String
@@ -279,12 +319,14 @@ type UpdateMovieDataInput {
 */
 export const updateDataInputTemplate = ({ typeName }) =>
 `
-  # TODO
+  # TODO: get fields that are editable
 `;
 
 /* ------------------------------------- Mutation Output Type ------------------------------------- */
 
 /*
+
+Type for the return value of all mutations
 
 type MovieOutput {
   data: Movie

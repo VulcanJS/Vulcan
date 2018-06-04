@@ -22,12 +22,25 @@ SimpleSchema.extendOptions([
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
   'group', // form fieldset group
-  'onInsert', // field insert callback
-  'onEdit', // field edit callback
-  'onRemove', // field remove callback
-  'viewableBy', // who can view the field
-  'insertableBy', // who can insert the field
-  'editableBy', // who can edit the field
+  
+  'onCreate', // field insert callback
+  'onInsert', // field insert callback (OpenCRUD backwards compatibility)
+
+  'onUpdate', // field edit callback
+  'onEdit', // field edit callback (OpenCRUD backwards compatibility)
+
+  'onDelete', // field remove callback
+  'onRemove', // field remove callback (OpenCRUD backwards compatibility)
+
+  'readBy', // who can view the field
+  'viewableBy', // who can view the field (OpenCRUD backwards compatibility)
+
+  'createBy', // who can insert the field
+  'insertableBy', // who can insert the field (OpenCRUD backwards compatibility)
+
+  'updateBy', // who can edit the field
+  'editableBy', // who can edit the field (OpenCRUD backwards compatibility)
+
   'resolveAs', // field-level resolver
   'searchable', // whether a field is searchable
   'description', // description/help
