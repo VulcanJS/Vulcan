@@ -128,6 +128,7 @@ type ListMovieOuput{
 export const listOutputTemplate = ({ typeName }) => 
 `type List${typeName}Output{
   data: [${typeName}]
+  totalCount: Int
 }`
 
 /*
