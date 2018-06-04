@@ -1,8 +1,8 @@
-import { Connectors, debug, debugGroup, debugGroupEnd /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
+import { Connectors, debug, debugGroup, debugGroupEnd, runCallbacksAsync } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
-import { recalculateScore } from './scoring.js';
+import { recalculateScore, recalculateBaseScore } from './scoring.js';
 
 /*
 
@@ -94,8 +94,8 @@ const addVoteServer = async (voteOptions) => {
   delete vote.__typename;
   await Connectors.create(Votes, vote);
 
-  // initialize baseScore to vote power if not defined yet
-  newDocument.baseScore = document.baseScore ? document.baseScore + vote.power : vote.power;
+  // LESSWRONG – recalculateBaseScore
+  newDocument.baseScore = recalculateBaseScore(newDocument)
   newDocument.score = recalculateScore(newDocument);
 
   if (updateDocument) {
@@ -154,9 +154,9 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
       runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
     })
     if (updateDocument) {
-      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: recalculateBaseScore(document) }});
     }
-    newDocument.baseScore -= calculateTotalPower(votes);
+    newDocument.baseScore = recalculateBaseScore(newDocument);
     newDocument.score = recalculateScore(newDocument);
   }
   return newDocument;
@@ -173,15 +173,21 @@ const cancelVoteServer = async ({ document, voteType, collection, user, updateDo
   const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
   // remove vote object
   await Connectors.delete(Votes, {_id: vote._id});
+  newDocument.baseScore = recalculateBaseScore(newDocument);
+  newDocument.score = recalculateScore(newDocument);
 
   if (updateDocument) {
     // update document score
-    await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
+    await Connectors.update(
+      collection,
+      {_id: document._id},
+      {$set: {
+        inactive: false,
+        score: newDocument.score,
+        baseScore: newDocument.baseScore
+      }}
+    );
   }
-
-  newDocument.baseScore -= vote.power;
-  newDocument.score = recalculateScore(newDocument);
-
   return {newDocument, vote};
 }
 
