@@ -61,13 +61,17 @@ export const updateScore = async ({collection, item, forceUpdate}) => {
 };
 
 export const batchUpdateScore = async (collection, inactive = false, forceUpdate = false) => {
-  // n =  number of days after which a single vote will not have a big enough effect to trigger a score update
+  // INACTIVITY_THRESHOLD_DAYS =  number of days after which a single vote will not have a big enough effect to trigger a score update
   //      and posts can become inactive
-  const n = 30;
-  // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
-  const x = 1/Math.pow(n*24+2,1.3);
+  const INACTIVITY_THRESHOLD_DAYS = 30;
   // time decay factor
-  const f = 1.3
+  const TIME_DECAY_FACTOR = 1.15; //LW: Set this to 1.15 from 1.3 for LW purposes (want slower decay)
+  // Basescore bonuses for various categories
+  const FRONTPAGE_BONUS = 10;
+  const FEATURED_BONUS = 10;
+  // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
+  const x = 1/Math.pow(INACTIVITY_THRESHOLD_DAYS*24+2,TIME_DECAY_FACTOR);
+
   const itemsPromise = collection.rawCollection().aggregate([
     {
       $match: {
@@ -76,6 +80,21 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           {postedAt: {$lte: new Date()}},
           {inactive: inactive ? true : {$ne: true}}
         ]
+      }
+    },
+    {
+      $project: {
+        postedAt: 1,
+        score: 1,
+        frontpageDate: 1,
+        curatedDate: 1,
+        baseScore: { // Add optional bonuses to baseScore of posts
+          $add: [
+            "$baseScore",
+            {$cond: {if: "$frontpageDate", then: FRONTPAGE_BONUS, else: 0}},
+            {$cond: {if: "$curatedDate", then: FEATURED_BONUS, else: 0}}
+          ]
+        },
       }
     },
     {
@@ -101,7 +120,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
                       2
                     ]
                   },
-                  f
+                  TIME_DECAY_FACTOR
                 ]
               }
             ]
@@ -128,7 +147,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
               },
               60 * 60 * 1000 //Difference in hours
             ]},
-            n*24]
+            INACTIVITY_THRESHOLD_DAYS*24]
         }
       }
     },
