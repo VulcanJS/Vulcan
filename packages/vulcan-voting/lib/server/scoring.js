@@ -18,7 +18,7 @@ export const updateScore = async ({collection, item, forceUpdate}) => {
 
   // If for some reason item doesn't have a "postedAt" property, abort
   // Or, if post has been scheduled in the future, don't update its score
-  if (postedAt || postedAt > now)
+  if (!postedAt || postedAt > now)
     return 0;
 
 
