@@ -18,8 +18,6 @@ export const getDefaultMutations = (typeName, options = { legacy: false }) => {
 
     create: {
       
-      name: options.legacy ? `${typeName}New` : `create${Utils.capitalize(typeName)}`,
-      
       description: `Mutation for creating new ${typeName} documents`,
 
       // check function called on a user to see if they can perform the operation
@@ -53,8 +51,6 @@ export const getDefaultMutations = (typeName, options = { legacy: false }) => {
     // mutation for editing a specific document
 
     update: {
-      
-      name: options.legacy ? `${typeName}Edit` : `update${Utils.capitalize(typeName)}`,
       
       description: `Mutation for updating a ${typeName} document`,
       
@@ -97,7 +93,6 @@ export const getDefaultMutations = (typeName, options = { legacy: false }) => {
 
     // mutation for upserting a specific document
     upsert: {
-      name: options.legacy ? `${typeName}Upsert` : `upsert${Utils.capitalize(typeName)}`,
 
       description: `Mutation for upserting a ${typeName} document`,
 
@@ -124,8 +119,6 @@ export const getDefaultMutations = (typeName, options = { legacy: false }) => {
 
     delete: {
 
-      name: options.legacy ? `${typeName}Remove` : `delete${Utils.capitalize(typeName)}`,
-      
       description: `Mutation for deleting a ${typeName} document`,
       
       check(user, document) {

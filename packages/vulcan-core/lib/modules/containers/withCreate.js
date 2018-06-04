@@ -33,13 +33,12 @@ export default function withCreate(options) {
   const collection = options.collection || getCollection(collectionName),
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        mutationName = collection.options.mutations.create.name,
         typeName = collection.options.typeName;
 
   // wrap component with graphql HoC
   return graphql(gql`
-    mutation ${mutationName}($document: ${collection.options.collectionName}Input) {
-      ${mutationName}(document: $document) {
+    mutation create${typeName}($document: ${collection.options.collectionName}Input) {
+      create${typeName}(document: $document) {
         ...${fragmentName}
       }
     }

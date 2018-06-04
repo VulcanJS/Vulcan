@@ -29,12 +29,11 @@ export default function withDelete(options) {
 
   const { collectionName } = options;
   const collection = options.collection || getCollection(collectionName),
-        mutationName = collection.options.mutations.delete.name,
         typeName = collection.options.typeName;
 
   return graphql(gql`
-    mutation ${mutationName}($documentId: String) {
-      ${mutationName}(documentId: $documentId) {
+    mutation delete${typeName}($documentId: String) {
+      delete${typeName}(documentId: $documentId) {
         _id
       }
     }

@@ -29,24 +29,22 @@ import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core'
 
 export default function withUpsert(options) {
 
-  let { collection, collectionName } = options;
-  if (!collection) {
-    collection = getCollection(collectionName);
-  }
-  const fragment = options.fragment || getFragment(options.fragmentName);
-  const fragmentName = getFragmentName(fragment);
-  collectionName = collection.options.collectionName;
-  const mutationName = collection.options.mutations.upsert.name;
+  const { collectionName } = options;
+  // get options
+  const collection = options.collection || getCollection(collectionName),
+        fragment = options.fragment || getFragment(options.fragmentName),
+        fragmentName = getFragmentName(fragment),
+        typeName = collection.options.typeName;
 
   return graphql(gql`
-    mutation ${mutationName}($search: JSON, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
-      ${mutationName}(search: $search, set: $set, unset: $unset) {
+    mutation upsert${typeName}($search: JSON, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
+      upsert${typeName}(search: $search, set: $set, unset: $unset) {
         ...${fragmentName}
       }
     }
     ${fragment}
   `, {
-    alias: 'withUpsert',
+    alias: `withUpsert${typeName}`,
     props: ({ ownProps, mutate }) => ({
       upsertMutation: ({ search, set, unset }) => {
         return mutate({

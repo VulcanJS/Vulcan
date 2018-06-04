@@ -34,12 +34,11 @@ export default function withUpdate(options) {
   const collection = options.collection || getCollection(collectionName),
         fragment = options.fragment || getFragment(options.fragmentName),
         fragmentName = getFragmentName(fragment),
-        mutationName = collection.options.mutations.update.name,
         typeName = collection.options.typeName;
 
   return graphql(gql`
-    mutation ${mutationName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
-      ${mutationName}(documentId: $documentId, set: $set, unset: $unset) {
+    mutation update${typeName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
+      update${typeName}(documentId: $documentId, set: $set, unset: $unset) {
         ...${fragmentName}
       }
     }

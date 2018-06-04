@@ -1,11 +1,13 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
+import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext, addGraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
+import { listQueryTemplate, singleQueryTemplate, totalQueryTemplate, createMutationTemplate, updateMutationTemplate, updateInputTemplate, upsertMutationTemplate, deleteMutationTemplate, deleteInputTemplate, upsertInputTemplate, createInputTemplate } from './graphql_templates';
+
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
@@ -165,42 +167,18 @@ export const createCollection = options => {
     if (resolvers) {
       const queryResolvers = {};
       // list
-      if (resolvers.list) {
-        addGraphQLQuery(
-`${resolvers.list.name}(
-    # A JSON object that contains the query terms used to fetch data
-    terms: JSON, 
-    # How much to offset the results by
-    offset: Int, 
-    # A limit for the query
-    limit: Int, 
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): [${typeName}]`, resolvers.list.description);
+      if (resolvers.list) { // e.g. "movies(input: ListMovieInput) : [Movie]"
+        addGraphQLQuery(listQueryTemplate({ typeName }), resolvers.list.description);
         queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
       }
       // single
-      if (resolvers.single) {
-        addGraphQLQuery(
-`${resolvers.single.name}(
-    # The document's unique ID
-    documentId: String, 
-    # A unique slug identifying the document
-    slug: String, 
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): ${typeName}`, resolvers.single.description);
+      if (resolvers.single) { // e.g. "movie(input: SingleMovieInput) : Movie"
+        addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
         queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
       }
       // total
-      if (resolvers.total) {
-        addGraphQLQuery(
-`${resolvers.total.name}(
-    # A JSON object that contains the query terms used to fetch data
-    terms: JSON,
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): Int`, resolvers.total.description);
+      if (resolvers.total) { // e.g. "totalMovies(input: TotalMovieInput) : Int"
+        addGraphQLQuery(totalQueryTemplate({ typeName }), resolvers.total.description);
         queryResolvers[resolvers.total.name] = resolvers.total.resolver;
       }
       addGraphQLResolvers({ Query: { ...queryResolvers } });
@@ -211,48 +189,33 @@ export const createCollection = options => {
     if (mutations) {
       const mutationResolvers = {};
       // create
-      if (mutations.create) { // e.g. "createMovie(document: moviesInput) : Movie"
-        addGraphQLMutation(
-`${mutations.create.name}(
-    # The document to create
-    document: ${collectionName}Input
-  ) : ${typeName}`, mutations.create.description);
-        mutationResolvers[mutations.create.name] = mutations.create.mutation.bind(mutations.create);
+      if (mutations.create) { // e.g. "createMovie(input: CreateMovieInput) : Movie"
+        addGraphQLMutation(createMutationTemplate({ typeName }), mutations.create.description);
+        mutationResolvers[`create${typeName}`] = mutations.create.mutation.bind(mutations.create);
+        // create input type
+        addGraphQLSchema(createInputTemplate({ typeName }));
       }
       // update
-      if (mutations.update) { // e.g. "updateMovie(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-        addGraphQLMutation(
-`${mutations.update.name}(
-    # The unique ID of the document to update
-    documentId: String, 
-    # An array of fields to insert
-    set: ${collectionName}Input, 
-    # An array of fields to delete
-    unset: ${collectionName}Unset
-  ) : ${typeName}`, mutations.update.description);
-        mutationResolvers[mutations.update.name] = mutations.update.mutation.bind(mutations.update);
+      if (mutations.update) { // e.g. "updateMovie(input: UpdateMovieInput) : Movie"
+        addGraphQLMutation(updateMutationTemplate({ typeName }), mutations.update.description);
+        mutationResolvers[`update${typeName}`] = mutations.update.mutation.bind(mutations.update);
+        // update input type
+        addGraphQLSchema(updateInputTemplate({ typeName }));
+  
       }
       // upsert
-      if (mutations.upsert) { // e.g. "upsertMovie(search: moviesInput, set: moviesInput, unset: moviesUnset) : Movie"
-        addGraphQLMutation(
-          `${mutations.upsert.name}(
-    # The document to search for (or partial document)
-    search: JSON, 
-    # An array of fields to insert
-    set: ${collectionName}Input, 
-    # An array of fields to delete
-    unset: ${collectionName}Unset
-  ) : ${typeName}`, mutations.upsert.description);
+      if (mutations.upsert) { // e.g. "upsertMovie(input: UpsertMovieInput) : Movie"
+        addGraphQLMutation(upsertMutationTemplate({ typeName }), mutations.upsert.description);
         mutationResolvers[mutations.upsert.name] = mutations.upsert.mutation.bind(mutations.upsert);
+        // upsert input type
+        addGraphQLSchema(upsertInputTemplate({ typeName }));
       }
       // delete
-      if (mutations.delete) { // e.g. "deleteMovie(documentId: String) : Movie"
-        addGraphQLMutation(
-`${mutations.delete.name}(
-    # The unique ID of the document to delete
-    documentId: String
-  ) : ${typeName}`, mutations.delete.description);
-        mutationResolvers[mutations.delete.name] = mutations.delete.mutation.bind(mutations.delete);
+      if (mutations.delete) { // e.g. "deleteMovie(input: DeleteMovieInput) : Movie"
+        addGraphQLMutation(deleteMutationTemplate({ typeName }), mutations.delete.description);
+        mutationResolvers[`delete${typeName}`] = mutations.delete.mutation.bind(mutations.delete);
+        // delete input type
+        addGraphQLSchema(deleteInputTemplate({ typeName }));
       }
       addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
     }
