@@ -36,7 +36,8 @@ SimpleSchema.extendOptions([
   'placeholder', // form field placeholder value
   'options', // form options
   'query', // field-specific data loading query
-  'indexable', // field can be used as an index when querying for data
+  'selectable', // field can be used as part of a selector when querying for data
+  'orderable', // field can be used to order results when querying for data
 ]);
 
 // eslint-disable-next-line no-undef

@@ -1,4 +1,3 @@
-
 /* ------------------------------------- Main Type ------------------------------------- */
 
 /* 
@@ -14,70 +13,85 @@ type Movie{
 export const mainTypeTemplate = ({ typeName, description, interfaces }) =>
 `# ${description}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : ''}{
-
+  # TODO: generate fields and their type from JavaScript schema
 }
-`
+`;
 
 /* ------------------------------------- Selector Types ------------------------------------- */
 
 /*
 
 type MovieSelectorInput {
-  genre: String
+  AND: [MovieSelectorInput]
+  OR: [MovieSelectorInput]
+  id: String
+  id_not: String
+  id_in: [String!]
+  id_not_in: [String!]
+  ...
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  ...
 }
 
-*/
-export const selectorInputTemplate = ({ typeName }) => 
-`
+see https://www.opencrud.org/#sec-Data-types
 
+*/
+export const selectorInputTemplate = ({ typeName }) =>
 `
+  # TODO: get fields that can be used as part of a selector
+`;
 
 /*
 
 type MovieSelectorUniqueInput {
   _id: String
+  slug: String
 }
 
 */
-export const selectorUniqueInputTemplate = ({ typeName }) => 
+export const selectorUniqueInputTemplate = ({ typeName }) =>
 `
+  # TODO: get fields that can be used as part of a selector
+`;
 
+/*
+
+enum MovieOrderByInput {
+  title
+  createdAt
+}
+
+*/
+export const orderByInputTemplate = ({ typeName }) =>
 `
+  # TODO: get fields that can be ordered
+`;
 
 /* ------------------------------------- Query Types ------------------------------------- */
 
 /*
 
-movies(input: ListMovieInput) : [Movie]
+movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
-export const listQueryTemplate = ({ typeName }) => `${typeName}s(input: List${typeName}Input): [${typeName}]`
+export const singleQueryTemplate = ({ typeName }) => `${typeName}(input: Single${typeName}Input): Single${typeName}Output`;
+
 
 /*
 
-movie(input: SingleMovieInput) : Movie
+movies(input: MultiMovieInput) : MultiMovieOutput
 
 */
-export const singleQueryTemplate = ({ typeName }) => `${typeName}(input: Single${typeName}Input): ${typeName}`
-
-/*
-
-totalMovies(input: TotalMovieInput) : Int
-
-*/
-export const totalQueryTemplate = ({ typeName }) =>
-`total${typeName}(
-  # A JSON object that contains the query terms used to fetch data
-  terms: JSON,
-  # Whether to enable caching for this query
-  enableCache: Boolean
-): Int`
+export const multiQueryTemplate = ({ typeName }) => `${typeName}s(input: Multi${typeName}Input): Multi${typeName}Output`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
 /*
 
-type ListMovieInput {
+type MultiMovieInput {
   terms: JSON
   offset: Int
   limit: Int
@@ -85,8 +99,8 @@ type ListMovieInput {
 }
 
 */
-export const listInputTemplate = ({ typeName }) => 
-`type List${typeName}Input {
+export const multiInputTemplate = ({ typeName }) =>
+`type Multi${typeName}Input {
   # A JSON object that contains the query terms used to fetch data
   terms: JSON, 
   # How much to offset the results by
@@ -95,7 +109,15 @@ export const listInputTemplate = ({ typeName }) =>
   limit: Int, 
   # Whether to enable caching for this query
   enableCache: Boolean
-}`
+  # OpenCRUD fields
+  where: ${typeName}SelectorInput
+  orderBy: ${typeName}OrderByInput
+  skip: Int
+  after: String
+  before: String
+  first: Int
+  last: Int
+}`;
 
 /*
 
@@ -106,7 +128,7 @@ type SingleMovieInput {
 }
 
 */
-export const singleInputTemplate = ({ typeName }) => 
+export const singleInputTemplate = ({ typeName }) =>
 `type Single${typeName}Input {
   # The document's unique ID
   documentId: String, 
@@ -114,22 +136,23 @@ export const singleInputTemplate = ({ typeName }) =>
   slug: String, 
   # Whether to enable caching for this query
   enableCache: Boolean
-}`
+}`;
 
 /* ------------------------------------- Query Output Types ------------------------------------- */
 
 /*
 
-type ListMovieOuput{
+type MultiMovieOuput{
   data: [Movie]
+  totalCount: Int
 }
 
 */
-export const listOutputTemplate = ({ typeName }) => 
-`type List${typeName}Output{
+export const MultiOutputTemplate = ({ typeName }) =>
+`type Multi${typeName}Output{
   data: [${typeName}]
   totalCount: Int
-}`
+}`;
 
 /*
 
@@ -138,40 +161,44 @@ type SingleMovieOuput{
 }
 
 */
-export const singleOutputTemplate = ({ typeName }) => 
+export const singleOutputTemplate = ({ typeName }) =>
 `type Single${typeName}Output{
   data: ${typeName}
-}`
+}`;
 
 /* ------------------------------------- Mutation Types ------------------------------------- */
 
 /*
 
-createMovie(input: CreateMovieInput) : CreateMovieOutput
+createMovie(input: CreateMovieInput) : MovieOutput
 
 */
-export const createMutationTemplate = ({ typeName }) => `create${typeName}(input: Create${typeName}Input) : Create${typeName}Output`
+export const createMutationTemplate = ({ typeName }) =>
+`create${typeName}(input: Create${typeName}Input) : Create${typeName}Output`;
 
 /*
 
-updateMovie(input: UpdateMovieInput) : UpdateMovieOutput
+updateMovie(input: UpdateMovieInput) : MovieOutput
 
 */
-export const updateMutationTemplate = ({ typeName }) => `update${typeName}(input: Update${typeName}Input) : Update${typeName}Output`
+export const updateMutationTemplate = ({ typeName }) =>
+`update${typeName}(input: Update${typeName}Input) : Update${typeName}Output`;
 
 /*
 
-upsertMovie(input: UpsertMovieInput) : UpsertMovieOutput
+upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
-export const upsertMutationTemplate = ({ typeName }) => `upsert${typeName}(input: Upsert${typeName}Input) : Upsert${typeName}Output`
+export const upsertMutationTemplate = ({ typeName }) =>
+`upsert${typeName}(input: Upsert${typeName}Input) : Upsert${typeName}Output`;
 
 /*
 
-deleteMovie(input: DeleteMovieInput) : DeleteMovieOutput
+deleteMovie(input: DeleteMovieInput) : MovieOutput
 
 */
-export const deleteMutationTemplate = ({ typeName }) => `delete${typeName}(input: Delete${typeName}Input) : Delete${typeName}Output`
+export const deleteMutationTemplate = ({ typeName }) =>
+`delete${typeName}(input: Delete${typeName}Input) : Delete${typeName}Output`;
 
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 
@@ -185,7 +212,7 @@ type CreateMovieInput {
 export const createInputTemplate = ({ typeName }) =>
 `type Create${typeName}Input{
   data: Create${typeName}DataInput!
-}`
+}`;
 
 /*
 
@@ -195,11 +222,11 @@ type UpdateMovieInput {
 }
 
 */
-export const updateInputTemplate = ({ typeName }) => 
+export const updateInputTemplate = ({ typeName }) =>
 `type Update${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
-}`
+}`;
 
 /*
 
@@ -215,7 +242,7 @@ export const upsertInputTemplate = ({ typeName }) =>
 `type Upsert${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
-}`
+}`;
 
 /*
 
@@ -227,7 +254,7 @@ type DeleteMovieInput {
 export const deleteInputTemplate = ({ typeName }) =>
 `type Delete${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
-}`
+}`;
 
 /*
 
@@ -237,10 +264,10 @@ type CreateMovieDataInput {
 }
 
 */
-export const createDataInputTemplate = ({ typeName }) => 
+export const createDataInputTemplate = ({ typeName }) =>
 `
-
-`
+  # TODO
+`;
 
 /*
 
@@ -250,59 +277,21 @@ type UpdateMovieDataInput {
 }
 
 */
-export const updateDataInputTemplate = ({ typeName }) => 
+export const updateDataInputTemplate = ({ typeName }) =>
 `
+  # TODO
+`;
 
-`
-
-/* ------------------------------------- Mutation Output Types ------------------------------------- */
+/* ------------------------------------- Mutation Output Type ------------------------------------- */
 
 /*
 
-type CreateMovieOutput {
+type MovieOutput {
   data: Movie
 }
 
 */
-export const createOutputTemplate = ({ typeName }) => 
-`type Create${typeName}Output{
+export const mutationOutputTemplate = ({ typeName }) =>
+`type ${typeName}Output{
   data: ${typeName}
-}`
-
-/*
-
-type UpdateMovieOutput {
-  data: Movie
-}
-
-*/
-export const updateOutputTemplate = ({ typeName }) => 
-`type Update${typeName}Output{
-  data: ${typeName}
-}`
-
-/*
-
-type UpsertMovieOutput {
-  data: Movie
-}
-
-*/
-export const upsertOutputTemplate = ({ typeName }) => 
-`type Upsert${typeName}Output{
-  data: ${typeName}
-}`
-
-/*
-
-type DeleteMovieOutput {
-  data: Movie
-}
-
-*/
-export const deleteOutputTemplate = ({ typeName }) => 
-`type Delete${typeName}Output{
-  data: ${typeName}
-}`
-
-
+}`;
