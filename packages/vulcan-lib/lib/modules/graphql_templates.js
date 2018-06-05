@@ -1,3 +1,29 @@
+export const convertToGraphQL = fields => {
+  return fields.map(fieldTemplate).join('\n');
+}
+
+export const arrayToGraphQL = fields => fields.map(f => `${f.name}: ${f.type}`).join(', ');
+
+/*
+
+For backwards-compatibility reasons, args can either be a string or an array of objects
+
+*/
+export const getArguments = args => {
+  if (Array.isArray(args) && args.length > 0) {
+    return `(${arrayToGraphQL(args)})`;
+  } else if (typeof args === 'string') {
+    return `(${args})`;
+  } else {
+    return '';
+  }
+}
+
+/* ------------------------------------- Generic Field Template ------------------------------------- */
+
+export const fieldTemplate = ({ name, type, args, directive, description, required }) =>
+`${description ?  `# ${description}\n` : ''}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive}`;
+
 /* ------------------------------------- Main Type ------------------------------------- */
 
 /*
@@ -12,10 +38,10 @@ type Movie{
 }
 
 */
-export const mainTypeTemplate = ({ typeName, description, interfaces }) =>
+export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
 `# ${description}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : ''}{
-  # TODO: generate fields and their type from JavaScript schema
+  ${convertToGraphQL(fields)}
 }
 `;
 
@@ -43,10 +69,10 @@ type MovieSelectorInput {
 see https://www.opencrud.org/#sec-Data-types
 
 */
-export const selectorInputTemplate = ({ typeName }) =>
-`
-  # TODO: get fields that can be used as part of a selector
-`;
+export const selectorInputTemplate = ({ typeName, fields }) =>
+`type ${typeName}SelectorInput {
+  ${convertToGraphQL(fields)}
+}`;
 
 /*
 
@@ -58,10 +84,10 @@ type MovieSelectorUniqueInput {
 }
 
 */
-export const selectorUniqueInputTemplate = ({ typeName }) =>
-`
-  # TODO: get fields that can be used as part of a selector
-`;
+export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
+`type ${typeName}SelectorUniqueInput {
+  ${convertToGraphQL(fields)}
+}`;
 
 /*
 
@@ -73,10 +99,10 @@ enum MovieOrderByInput {
 }
 
 */
-export const orderByInputTemplate = ({ typeName }) =>
-`
-  # TODO: get fields that can be ordered
-`;
+export const orderByInputTemplate = ({ typeName, fields }) =>
+`enum ${typeName}OrderByInput {
+  ${fields.join('\n')}
+}`;
 
 /* ------------------------------------- Query Types ------------------------------------- */
 
@@ -166,7 +192,7 @@ type MultiMovieOuput{
 }
 
 */
-export const MultiOutputTemplate = ({ typeName }) =>
+export const multiOutputTemplate = ({ typeName }) =>
 `type Multi${typeName}Output{
   data: [${typeName}]
   totalCount: Int
@@ -302,10 +328,10 @@ type CreateMovieDataInput {
 }
 
 */
-export const createDataInputTemplate = ({ typeName }) =>
-`
-  # TODO: get fields that are insertable
-`;
+export const createDataInputTemplate = ({ typeName, fields }) =>
+`type Create${typeName}DataInput {
+  ${convertToGraphQL(fields)}
+}`;
 
 /*
 
@@ -317,10 +343,10 @@ type UpdateMovieDataInput {
 }
 
 */
-export const updateDataInputTemplate = ({ typeName }) =>
-`
-  # TODO: get fields that are editable
-`;
+export const updateDataInputTemplate = ({ typeName, fields }) =>
+`type Update${typeName}DataInput {
+  ${convertToGraphQL(fields)}
+}`;
 
 /* ------------------------------------- Mutation Output Type ------------------------------------- */
 
