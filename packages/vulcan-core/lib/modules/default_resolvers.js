@@ -23,11 +23,11 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
     multi: {
 
-      name: resolverOptions.legacy ? `${typeName}List` : `${typeName}s`,
-
       description: `A list of ${typeName} documents matching a set of query terms`,
 
-      async resolver(root, { terms = {}, enableCache = false }, context, { cacheControl }) {
+      async resolver(root, { input = {} }, context, { cacheControl }) {
+        
+        const { terms = {}, enableCache = false } = input;
         
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
@@ -80,11 +80,13 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     // resolver for returning a single document queried based on id or slug
 
     single: {
-      name: resolverOptions.legacy ? `${typeName}Single` : `${typeName}`,
 
       description: `A single ${typeName} document fetched by ID or slug`,
 
-      async resolver(root, { documentId, slug, enableCache = false }, context, { cacheControl }) {
+      async resolver(root, { input = {} }, context, { cacheControl }) {
+
+        const { documentId, slug, enableCache = false } = input;
+
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} single\x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
@@ -124,6 +126,6 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         return { result: restrictedDoc };
       },
     },
-    
+
   };
 };

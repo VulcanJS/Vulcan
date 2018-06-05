@@ -110,17 +110,19 @@ export default function withMulti (options) {
 
           const graphQLOptions = {
             variables: {
-              terms: mergedTerms,
-              enableCache,
+              input: {
+                terms: mergedTerms,
+                enableCache,
+              }
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
-            // reducer: (previousResults, action) => {
+            reducer: (previousResults, action) => {
 
-            //   // see queryReducer function defined below
-            //   return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
+              // see queryReducer function defined below
+              return queryReducer(previousResults, action, collection, mergedTerms, resolverName, apolloClient);
 
-            // },
+            },
           };
 
           if (options.fetchPolicy) {
@@ -140,8 +142,8 @@ export default function withMulti (options) {
           // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
             // results = Utils.convertDates(collection, props.data[listResolverName]),
-            results = props.data[resolverName].results,
-            totalCount = props.data[resolverName].totalCount,
+            results = props.data[resolverName] && props.data[resolverName].results,
+            totalCount = props.data[resolverName] && props.data[resolverName].totalCount,
             networkStatus = props.data.networkStatus,
             loadingInitial = props.data.networkStatus === 1,
             loading = props.data.networkStatus === 1,
@@ -225,9 +227,7 @@ const queryReducer = (
   action,
   collection,
   mergedTerms,
-  listResolverName,
-  totalResolverName,
-  queryName,
+  resolverName,
   apolloClient
 ) => {
   // if collection has no mutations defined, just return previous results
@@ -249,30 +249,32 @@ const queryReducer = (
 
   // function to remove a document from a results object, used by edit and remove cases below
   const removeFromResults = (results, document) => {
-    const listWithoutDocument = results[listResolverName].filter(doc => doc._id !== document._id);
+    const listWithoutDocument = results[resolverName].filter(doc => doc._id !== document._id);
+    const currentTotalCount = results[resolverName].totalCount;
     const newResults = update(results, {
-      [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
-      [totalResolverName]: { $set: results[totalResolverName] - 1 }, // ex: postsListTotal
+      [resolverName]: { $set: {results: listWithoutDocument, totalCount: currentTotalCount - 1} }
     });
     return newResults;
   };
 
   // add document to a results object
   const addToResults = (results, document) => {
-    return update(results, {
-      [listResolverName]: { $unshift: [document] },
-      [totalResolverName]: { $set: results[totalResolverName] + 1 },
+    const listWithDocument = [...results[resolverName], document];
+    const currentTotalCount = results[resolverName].totalCount;
+    const newResults = update(results, {
+      [resolverName]: { $set: {results: listWithDocument, totalCount: currentTotalCount + 1} }
     });
+    return newResults;
   };
 
   // reorder results according to a sort
   const reorderResults = (results, sort) => {
-    const list = results[listResolverName];
+    const list = results[resolverName];
     // const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
     const convertedList = list;
     const cursor = mingoQuery.find(convertedList);
     const sortedList = cursor.sort(sort).all();
-    results[listResolverName] = sortedList;
+    results[resolverName].results = sortedList;
     return results;
   };
 
@@ -302,7 +304,7 @@ const queryReducer = (
       const editedDocument = action.result.data[editMutationName];
       if (mingoQuery.test(editedDocument)) {
         // edited document belongs to the list
-        if (!_.findWhere(previousResults[listResolverName], { _id: editedDocument._id })) {
+        if (!_.findWhere(previousResults[resolverName], { _id: editedDocument._id })) {
           // if document wasn't already in list, add it
           newResults = addToResults(previousResults, editedDocument);
         }
@@ -335,7 +337,6 @@ const queryReducer = (
 
   // copy over arrays explicitely to ensure new sort is taken into account
   return {
-    [listResolverName]: [...newResults[listResolverName]],
-    [totalResolverName]: newResults[totalResolverName],
+    [resolverName]: { results: [...newResults[resolverName].results], totalCount: newResults[resolverName].totalCount },
   };
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getSetting, getFragment, getFragmentName, getCollection, singleClientTemplate } from 'meteor/vulcan:lib';
+import { getSetting, getFragment, getFragmentName, getCollection, singleClientTemplate, Utils } from 'meteor/vulcan:lib';
 
 export default function withSingle(options) {
 
@@ -15,7 +15,7 @@ export default function withSingle(options) {
 
   const collection = options.collection || getCollection(collectionName);
   const typeName = collection.options.typeName;
-  const resolverName = typeName;
+  const resolverName = Utils.camelCaseify(typeName);
 
   let fragment;
 
@@ -37,9 +37,11 @@ export default function withSingle(options) {
     options({ documentId, slug }) {
       const graphQLOptions = {
         variables: {
-          documentId: documentId,
-          slug: slug,
-          enableCache,
+          input: {
+            documentId: documentId,
+            slug: slug,
+            enableCache,
+          }
         },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
@@ -57,7 +59,7 @@ export default function withSingle(options) {
       const props = {
         loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),
-        [propertyName]: data[resolverName].result,
+        [propertyName]: data[resolverName] && data[resolverName].result,
         fragmentName,
         fragment,
         data,
