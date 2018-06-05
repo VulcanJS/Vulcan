@@ -21,7 +21,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
   return {
     // resolver for returning a list of documents based on a set of query terms
 
-    list: {
+    multi: {
 
       name: resolverOptions.legacy ? `${typeName}List` : `${typeName}s`,
 
@@ -124,25 +124,25 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
     // resolver for returning the total number of documents matching a set of query terms
 
-    total: {
-      name: resolverOptions.legacy ? `${typeName}Total` : `total${typeName}s`,
+    // total: {
+    //   name: resolverOptions.legacy ? `${typeName}Total` : `total${typeName}s`,
 
-      description: `The total count of ${typeName} documents matching a set of query terms`,
+    //   description: `The total count of ${typeName} documents matching a set of query terms`,
 
-      async resolver(root, { terms, enableCache }, context, { cacheControl }) {
-        if (cacheControl && enableCache) {
-          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
-          cacheControl.setCacheHint({ maxAge });
-        }
+    //   async resolver(root, { terms, enableCache }, context, { cacheControl }) {
+    //     if (cacheControl && enableCache) {
+    //       const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+    //       cacheControl.setCacheHint({ maxAge });
+    //     }
 
-        const collection = context[collectionName];
+    //     const collection = context[collectionName];
 
-        const { selector } = await collection.getParameters(terms, {}, context);
+    //     const { selector } = await collection.getParameters(terms, {}, context);
 
-        const total = await Connectors.count(collection, selector);
+    //     const total = await Connectors.count(collection, selector);
 
-        return total;
-      },
-    },
+    //     return total;
+    //   },
+    // },
   };
 };

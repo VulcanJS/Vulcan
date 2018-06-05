@@ -1,5 +1,5 @@
-export const convertToGraphQL = fields => {
-  return fields.map(fieldTemplate).join('\n');
+export const convertToGraphQL = (fields, indentation) => {
+  return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
 }
 
 export const arrayToGraphQL = fields => fields.map(f => `${f.name}: ${f.type}`).join(', ');
@@ -21,8 +21,8 @@ export const getArguments = args => {
 
 /* ------------------------------------- Generic Field Template ------------------------------------- */
 
-export const fieldTemplate = ({ name, type, args, directive, description, required }) =>
-`${description ?  `# ${description}\n` : ''}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive}`;
+export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
+`${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
@@ -41,7 +41,7 @@ type Movie{
 export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
 `# ${description}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : ''}{
-  ${convertToGraphQL(fields)}
+${convertToGraphQL(fields, '  ')}
 }
 `;
 
@@ -70,8 +70,10 @@ see https://www.opencrud.org/#sec-Data-types
 
 */
 export const selectorInputTemplate = ({ typeName, fields }) =>
-`type ${typeName}SelectorInput {
-  ${convertToGraphQL(fields)}
+`input ${typeName}SelectorInput {
+  AND: [${typeName}SelectorInput]
+  OR: [${typeName}SelectorInput]
+${convertToGraphQL(fields, '  ')}
 }`;
 
 /*
@@ -85,8 +87,9 @@ type MovieSelectorUniqueInput {
 
 */
 export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
-`type ${typeName}SelectorUniqueInput {
-  ${convertToGraphQL(fields)}
+`input ${typeName}SelectorUniqueInput {
+  foobar: String
+${convertToGraphQL(fields, '  ')}
 }`;
 
 /*
@@ -101,7 +104,8 @@ enum MovieOrderByInput {
 */
 export const orderByInputTemplate = ({ typeName, fields }) =>
 `enum ${typeName}OrderByInput {
-  ${fields.join('\n')}
+  foobar
+  ${fields.join('\n  ')}
 }`;
 
 /* ------------------------------------- Query Types ------------------------------------- */
@@ -129,6 +133,27 @@ export const multiQueryTemplate = ({ typeName }) => `${typeName}s(input: Multi${
 
 /*
 
+The argument type when querying for a single document
+
+type SingleMovieInput {
+  documentId: String
+  slug: String
+  enableCache: Boolean
+}
+
+*/
+export const singleInputTemplate = ({ typeName }) =>
+`input Single${typeName}Input {
+  # The document's unique ID
+  documentId: String, 
+  # A unique slug identifying the document
+  slug: String, 
+  # Whether to enable caching for this query
+  enableCache: Boolean
+}`;
+
+/*
+
 The argument type when querying for multiple documents
 
 type MultiMovieInput {
@@ -140,7 +165,7 @@ type MultiMovieInput {
 
 */
 export const multiInputTemplate = ({ typeName }) =>
-`type Multi${typeName}Input {
+`input Multi${typeName}Input {
   # A JSON object that contains the query terms used to fetch data
   terms: JSON, 
   # How much to offset the results by
@@ -159,28 +184,21 @@ export const multiInputTemplate = ({ typeName }) =>
   last: Int
 }`;
 
+/* ------------------------------------- Query Output Types ------------------------------------- */
+
 /*
 
-The argument type when querying for a single document
+The type for the return value when querying for a single document
 
-type SingleMovieInput {
-  documentId: String
-  slug: String
-  enableCache: Boolean
+type SingleMovieOuput{
+  data: Movie
 }
 
 */
-export const singleInputTemplate = ({ typeName }) =>
-`type Single${typeName}Input {
-  # The document's unique ID
-  documentId: String, 
-  # A unique slug identifying the document
-  slug: String, 
-  # Whether to enable caching for this query
-  enableCache: Boolean
+export const singleOutputTemplate = ({ typeName }) =>
+`type Single${typeName}Output{
+  data: ${typeName}
 }`;
-
-/* ------------------------------------- Query Output Types ------------------------------------- */
 
 /*
 
@@ -198,20 +216,6 @@ export const multiOutputTemplate = ({ typeName }) =>
   totalCount: Int
 }`;
 
-/*
-
-The type for the return value when querying for a single document
-
-type SingleMovieOuput{
-  data: Movie
-}
-
-*/
-export const singleOutputTemplate = ({ typeName }) =>
-`type Single${typeName}Output{
-  data: ${typeName}
-}`;
-
 /* ------------------------------------- Mutation Types ------------------------------------- */
 
 /*
@@ -222,7 +226,7 @@ createMovie(input: CreateMovieInput) : MovieOutput
 
 */
 export const createMutationTemplate = ({ typeName }) =>
-`create${typeName}(input: Create${typeName}Input) : Create${typeName}Output`;
+`create${typeName}(input: Create${typeName}Input) : ${typeName}Output`;
 
 /*
 
@@ -232,7 +236,7 @@ updateMovie(input: UpdateMovieInput) : MovieOutput
 
 */
 export const updateMutationTemplate = ({ typeName }) =>
-`update${typeName}(input: Update${typeName}Input) : Update${typeName}Output`;
+`update${typeName}(input: Update${typeName}Input) : ${typeName}Output`;
 
 /*
 
@@ -242,7 +246,7 @@ upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
 export const upsertMutationTemplate = ({ typeName }) =>
-`upsert${typeName}(input: Upsert${typeName}Input) : Upsert${typeName}Output`;
+`upsert${typeName}(input: Upsert${typeName}Input) : ${typeName}Output`;
 
 /*
 
@@ -252,7 +256,7 @@ deleteMovie(input: DeleteMovieInput) : MovieOutput
 
 */
 export const deleteMutationTemplate = ({ typeName }) =>
-`delete${typeName}(input: Delete${typeName}Input) : Delete${typeName}Output`;
+`delete${typeName}(input: Delete${typeName}Input) : ${typeName}Output`;
 
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 
@@ -266,7 +270,7 @@ type CreateMovieInput {
 
 */
 export const createInputTemplate = ({ typeName }) =>
-`type Create${typeName}Input{
+`input Create${typeName}Input{
   data: Create${typeName}DataInput!
 }`;
 
@@ -281,7 +285,7 @@ type UpdateMovieInput {
 
 */
 export const updateInputTemplate = ({ typeName }) =>
-`type Update${typeName}Input{
+`input Update${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -299,7 +303,7 @@ type UpsertMovieInput {
 
 */
 export const upsertInputTemplate = ({ typeName }) =>
-`type Upsert${typeName}Input{
+`input Upsert${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -314,7 +318,7 @@ type DeleteMovieInput {
 
 */
 export const deleteInputTemplate = ({ typeName }) =>
-`type Delete${typeName}Input{
+`input Delete${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
 }`;
 
@@ -329,8 +333,8 @@ type CreateMovieDataInput {
 
 */
 export const createDataInputTemplate = ({ typeName, fields }) =>
-`type Create${typeName}DataInput {
-  ${convertToGraphQL(fields)}
+`input Create${typeName}DataInput {
+${convertToGraphQL(fields, '  ')}
 }`;
 
 /*
@@ -344,8 +348,8 @@ type UpdateMovieDataInput {
 
 */
 export const updateDataInputTemplate = ({ typeName, fields }) =>
-`type Update${typeName}DataInput {
-  ${convertToGraphQL(fields)}
+`input Update${typeName}DataInput {
+${convertToGraphQL(fields, '  ')}
 }`;
 
 /* ------------------------------------- Mutation Output Type ------------------------------------- */

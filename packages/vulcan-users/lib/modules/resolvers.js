@@ -22,9 +22,7 @@ addGraphQLResolvers(specificResolvers);
 
 const resolvers = {
 
-  list: {
-
-    name: 'UsersList',
+  multi: {
 
     async resolver(root, { terms = {} }, {currentUser, Users}, info) {
 
@@ -47,8 +45,6 @@ const resolvers = {
 
   single: {
 
-    name: 'UsersSingle',
-
     async resolver(root, { documentId, slug }, {currentUser, Users}) {
       // don't use Dataloader if user is selected by slug
       const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors.get(Users, {slug}): await Connectors.get(Users));
@@ -57,16 +53,16 @@ const resolvers = {
 
   },
 
-  total: {
+  // total: {
 
-    name: 'UsersTotal',
+  //   name: 'UsersTotal',
 
-    async resolver(root, { terms = {} }, { Users }) {
-      const {selector} = await Users.getParameters(terms);
-      return await Connectors.count(Users, selector);
-    },
+  //   async resolver(root, { terms = {} }, { Users }) {
+  //     const {selector} = await Users.getParameters(terms);
+  //     return await Connectors.count(Users, selector);
+  //   },
 
-  }
+  // }
 };
 
 export default resolvers;
