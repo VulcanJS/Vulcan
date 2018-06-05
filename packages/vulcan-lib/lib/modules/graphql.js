@@ -274,7 +274,7 @@ export const GraphQLSchema = {
 
     schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
 
-    const graphQLSchema = schemaFragments.join('\n');
+    const graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
 
     // console.log(graphQLSchema)
 

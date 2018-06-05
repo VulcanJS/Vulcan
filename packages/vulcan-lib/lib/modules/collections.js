@@ -170,13 +170,13 @@ export const createCollection = options => {
       // single
       if (resolvers.single) { 
         addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
-        queryResolvers[typeName] = resolvers.single.resolver.bind(resolvers.single);
+        queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(resolvers.single);
       }
 
       // multi
       if (resolvers.multi) { 
         addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-        queryResolvers[`${typeName}s`] = resolvers.multi.resolver.bind(resolvers.multi);
+        queryResolvers[`${Utils.camelCaseify(typeName)}s`] = resolvers.multi.resolver.bind(resolvers.multi);
       }
       addGraphQLResolvers({ Query: { ...queryResolvers } });
     }

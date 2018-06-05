@@ -1,3 +1,5 @@
+import { Utils } from './utils';
+
 export const convertToGraphQL = (fields, indentation) => {
   return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
 }
@@ -117,7 +119,7 @@ A query for a single document
 movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
-export const singleQueryTemplate = ({ typeName }) => `${typeName}(input: Single${typeName}Input): Single${typeName}Output`;
+export const singleQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(typeName)}(input: Single${typeName}Input): Single${typeName}Output`;
 
 
 /*
@@ -127,7 +129,7 @@ A query for multiple documents
 movies(input: MultiMovieInput) : MultiMovieOutput
 
 */
-export const multiQueryTemplate = ({ typeName }) => `${typeName}s(input: Multi${typeName}Input): Multi${typeName}Output`;
+export const multiQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(typeName)}s(input: Multi${typeName}Input): Multi${typeName}Output`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
