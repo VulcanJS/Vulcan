@@ -23,34 +23,37 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getCollection } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection, deleteClientTemplate } from 'meteor/vulcan:core';
 
 export default function withDelete(options) {
 
   const { collectionName } = options;
   const collection = options.collection || getCollection(collectionName),
-        typeName = collection.options.typeName;
+        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
+        fragmentName = getFragmentName(fragment),
+        typeName = collection.options.typeName,
+        query = gql`${deleteClientTemplate({ typeName, fragmentName })}${fragment}`;
 
-  return graphql(gql`
-    mutation delete${typeName}($documentId: String) {
-      delete${typeName}(documentId: $documentId) {
-        _id
-      }
-    }
-  `, {
+  return graphql(query, {
     alias: `withDelete${typeName}`,
     props: ({ ownProps, mutate }) => ({
-      [`delete${typeName}`]: ({ documentId }) => {
+
+      [`delete${typeName}`]: (args) => {
+        const { selector } = args;
         return mutate({ 
-          variables: { documentId }
+          variables: { input: { selector } }
         });
       },
+
       // OpenCRUD backwards compatibility
-      removeMutation: ({ documentId }) => {
+      removeMutation: (args) => {
+        const { documentId } = args;
+        const selector = { documentId };
         return mutate({ 
-          variables: { documentId }
+          variables: { input: { selector } }
         });
       },
+
     }),
   });
 

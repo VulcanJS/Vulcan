@@ -25,32 +25,45 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection, upsertClientTemplate } from 'meteor/vulcan:core';
+import clone from 'lodash/clone';
 
 export default function withUpsert(options) {
 
   const { collectionName } = options;
   // get options
   const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName),
+        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
         fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName;
+        typeName = collection.options.typeName,
+        query = gql`${upsertClientTemplate({ typeName, fragmentName })}${fragment}`;
 
-  return graphql(gql`
-    mutation upsert${typeName}($search: JSON, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
-      upsert${typeName}(search: $search, set: $set, unset: $unset) {
-        ...${fragmentName}
-      }
-    }
-    ${fragment}
-  `, {
+  return graphql(query, {
     alias: `withUpsert${typeName}`,
     props: ({ ownProps, mutate }) => ({
-      upsertMutation: ({ search, set, unset }) => {
-        return mutate({
-          variables: { search, set, unset }
+
+      [`upsert${typeName}`]: (args) => {
+        const { selector, data } = args;
+        return mutate({ 
+          variables: { input: { selector, data } }
+          // note: updateQueries is not needed for editing documents
+        });
+      },
+
+      // OpenCRUD backwards compatibility
+      upsertMutation: (args) => {
+        const { search, set, unset } = args;
+        const selector = { search };
+        const data = clone(set);
+        Object.keys(unset).forEach(fieldName => {
+          data[fieldName] = null;
+        });
+        return mutate({ 
+          variables: { input: { selector, data } }
+          // note: updateQueries is not needed for editing documents
         });
       }
+
     }),
   });
 

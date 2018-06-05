@@ -1,5 +1,4 @@
 import { Utils } from './utils';
-import { getFragmentName } from './fragments';
 
 export const convertToGraphQL = (fields, indentation) => {
   return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
@@ -221,23 +220,23 @@ export const multiOutputTemplate = ({ typeName }) =>
 
 /* ------------------------------------- Query Queries ------------------------------------- */
 
-export const singleClientTemplate = ({ typeName, fragment, extraQueries }) =>
+export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
 `query Single${typeName}Query($input: Single${typeName}Input) {
   ${Utils.camelCaseify(typeName)}(input: $input) {
     __typename
     result {
-      ...${getFragmentName(fragment)}
+      ...${fragmentName}
     }
   }
   ${extraQueries ? extraQueries : ''}
 }`;
 
-export const multiClientTemplate = ({ typeName, fragment, extraQueries }) =>
+export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
 `query Multi${typeName}Query($input: Multi${typeName}Input) {
   ${Utils.camelCaseify(typeName)}s(input: $input) {
     __typename
     results {
-      ...${getFragmentName(fragment)}
+      ...${fragmentName}
     }
     totalCount
   }
@@ -397,3 +396,31 @@ export const mutationOutputTemplate = ({ typeName }) =>
 }`;
 
 /* ------------------------------------- Mutation Queries ------------------------------------- */
+
+export const createClientTemplate = ({ typeName, fragmentName }) =>
+`mutation create${typeName}($input: Create${typeName}Input) {
+  create${typeName}(input: $input) {
+    ...${fragmentName}
+  }
+}`;
+
+export const updateClientTemplate = ({ typeName, fragmentName }) =>
+`mutation update${typeName}($input: Update${typeName}Input) {
+  update${typeName}(input: $input) {
+    ...${fragmentName}
+  }
+}`;
+
+export const upsertClientTemplate = ({ typeName, fragmentName }) =>
+`mutation upsert${typeName}($input: Upsert${typeName}Input) {
+  upsert${typeName}(input: $input) {
+    ...${fragmentName}
+  }
+}`;
+
+export const deleteClientTemplate = ({ typeName, fragmentName }) =>
+`mutation delete${typeName}($input: Delete${typeName}Input) {
+  delete${typeName}(input: $input) {
+    ...${fragmentName}
+  }
+}`;

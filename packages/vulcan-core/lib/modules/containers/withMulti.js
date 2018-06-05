@@ -78,7 +78,7 @@ export default function withMulti (options) {
   const fragmentName = getFragmentName(fragment);
 
   // build graphql query from options
-  const query = gql`${multiClientTemplate({ typeName, fragment, extraQueries })}${fragment}`;
+  const query = gql`${multiClientTemplate({ typeName, fragmentName, extraQueries })}${fragment}`;
 
   return compose(
     // wrap component with Apollo HoC to give it access to the store

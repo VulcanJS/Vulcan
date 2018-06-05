@@ -29,7 +29,7 @@ export default function withSingle(options) {
 
   const fragmentName = getFragmentName(fragment);
 
-  const query = gql`${singleClientTemplate({ typeName, fragment, extraQueries })}${fragment}`;
+  const query = gql`${singleClientTemplate({ typeName, fragmentName, extraQueries })}${fragment}`;
 
   return graphql(query, {
     alias: `with${typeName}`,

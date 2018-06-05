@@ -25,39 +25,39 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getCollection } from 'meteor/vulcan:lib';
+import { getFragment, getFragmentName, getCollection, updateClientTemplate } from 'meteor/vulcan:lib';
+import clone from 'lodash/clone';
 
 export default function withUpdate(options) {
 
   const { collectionName } = options;
   // get options
   const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName),
+        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
         fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName;
+        typeName = collection.options.typeName,
+        query = gql`${updateClientTemplate({ typeName, fragmentName })}${fragment}`;
 
-  return graphql(gql`
-    mutation update${typeName}($documentId: String, $set: ${collection.options.collectionName}Input, $unset: ${collection.options.collectionName}Unset) {
-      update${typeName}(documentId: $documentId, set: $set, unset: $unset) {
-        ...${fragmentName}
-      }
-    }
-    ${fragment}
-  `, {
+  return graphql(query, {
     alias: `withUpdate${typeName}`,
     props: ({ ownProps, mutate }) => ({
       [`update${typeName}`]: (args) => {
-        const { documentId, set, unset } = args;
+        const { selector, data } = args;
         return mutate({ 
-          variables: { documentId, set, unset }
+          variables: { input: { selector, data } }
           // note: updateQueries is not needed for editing documents
         });
       },
       // OpenCRUD backwards compatibility
       editMutation: (args) => {
         const { documentId, set, unset } = args;
+        const selector = { documentId };
+        const data = clone(set);
+        Object.keys(unset).forEach(fieldName => {
+          data[fieldName] = null;
+        });
         return mutate({ 
-          variables: { documentId, set, unset }
+          variables: { input: { selector, data } }
           // note: updateQueries is not needed for editing documents
         });
       }
