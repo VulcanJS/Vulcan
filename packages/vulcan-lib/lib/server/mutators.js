@@ -33,10 +33,11 @@ import { validateDocument, validateModifier } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
+import pickBy from 'lodash/pickBy';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
-export const createMutator = async ({ collection, document, currentUser, validate, context }) => {
+export const createMutator = async ({ collection, document, data, currentUser, validate, context }) => {
 
   debug('//------------------------------------//');
   debug('// createMutator');
@@ -45,7 +46,7 @@ export const createMutator = async ({ collection, document, currentUser, validat
   debug(document);
 
   // we don't want to modify the original document
-  let newDocument = Object.assign({}, document);
+  let newDocument = Object.assign({}, document || data);
 
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
@@ -120,18 +121,22 @@ export const createMutator = async ({ collection, document, currentUser, validat
   debug(newDocument);
   debug('//------------------------------------//');
 
-  return newDocument;
+  return { data: newDocument };
 }
 
 
-export const updateMutator = async ({ collection, documentId, set = {}, unset = {}, currentUser, validate, context }) => {
+export const updateMutator = async ({ collection, documentId, data, set = {}, unset = {}, currentUser, validate, context }) => {
 
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   // build mongo modifier from arguments
-  let modifier = {$set: set, $unset: unset};
-
+  let modifier = {};
+  if (data) {
+    modifier = { $set: pickBy(data, f => f !== null), $unset: Object.keys(pickBy(data, f => f === null)).map(f => ({[f]: true})) };
+  } else {
+    modifier = { $set: set, $unset: unset }
+  }
   // get original document from database
   // TODO: avoid fetching document a second time if possible
   let document = await Connectors.get(collection, documentId);
@@ -140,8 +145,7 @@ export const updateMutator = async ({ collection, documentId, set = {}, unset = 
   debug('// updateMutator');
   debug('// collectionName: ', collection._name);
   debug('// documentId: ', documentId);
-  debug('// set: ', set);
-  debug('// unset: ', unset);
+  debug('// modifier: ', modifier);
   debug('// document: ', document);
 
   if (validate) {
@@ -230,7 +234,7 @@ export const updateMutator = async ({ collection, documentId, set = {}, unset = 
   debug('// updated document: ', newDocument)
   debug('//------------------------------------//');
 
-  return newDocument;
+  return { data: newDocument };
 }
 
 export const deleteMutator = async ({ collection, documentId, currentUser, validate, context }) => {
@@ -278,7 +282,7 @@ export const deleteMutator = async ({ collection, documentId, currentUser, valid
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 
-  return document;
+  return { data: document };
 }
 
 // OpenCRUD backwards compatibility

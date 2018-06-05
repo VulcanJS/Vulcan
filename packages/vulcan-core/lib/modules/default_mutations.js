@@ -31,7 +31,8 @@ export const getDefaultMutations = (
         return Users.canDo(user, `${typeName.toLowerCase()}.new`);
       },
 
-      async mutation(root, { document }, context) {
+      async mutation(root, { input }, context) {
+        const { data } = input;
         const collection = context[typeName];
 
         // check if current user can pass check function; else throw error
@@ -40,7 +41,7 @@ export const getDefaultMutations = (
         // pass document to boilerplate newMutator function
         return await createMutator({
           collection,
-          document: document,
+          data,
           currentUser: context.currentUser,
           validate: true,
           context,
@@ -70,7 +71,10 @@ export const getDefaultMutations = (
           : Users.canDo(user, `${typeName.toLowerCase()}.edit.all`);
       },
 
-      async mutation(root, { documentId, set, unset }, context) {
+      async mutation(root, { input }, context) {
+
+        const { selector, data } = input;
+        const { documentId } = selector;
         const collection = context[typeName];
 
         // get entire unmodified document from database
@@ -82,9 +86,8 @@ export const getDefaultMutations = (
         // call editMutator boilerplate function
         return await updateMutator({
           collection,
-          documentId: documentId,
-          set: set,
-          unset: unset,
+          documentId,
+          data,
           currentUser: context.currentUser,
           validate: true,
           context,
@@ -97,21 +100,18 @@ export const getDefaultMutations = (
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
 
-      async mutation(root, { search, set, unset }, context) {
+      async mutation(root, { input }, context) {
+
+        const { selector, data } = input;
         const collection = context[typeName];
 
         // check if document exists already
-        const existingDocument = await Connectors.get(collection, search, { fields: { _id: 1 } });
+        const existingDocument = await Connectors.get(collection, selector, { fields: { _id: 1 } });
 
         if (existingDocument) {
-          const editArgs = {
-            documentId: existingDocument._id,
-            set,
-            unset,
-          };
-          return await collection.options.mutations.update.mutation(root, editArgs, context);
+          return await collection.options.mutations.update.mutation(root, { selector, data }, context);
         } else {
-          return await collection.options.mutations.create.mutation(root, { document: set }, context);
+          return await collection.options.mutations.create.mutation(root, { data }, context);
         }
       },
     };
@@ -133,7 +133,9 @@ export const getDefaultMutations = (
           : Users.canDo(user, `${typeName.toLowerCase()}.remove.all`);
       },
 
-      async mutation(root, { documentId }, context) {
+      async mutation(root, { input }, context) {
+        const { selector } = input;
+        const { documentId } = selector;
         const collection = context[typeName];
 
         const document = await Connectors.get(collection, documentId);

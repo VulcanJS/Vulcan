@@ -90,7 +90,8 @@ type MovieSelectorUniqueInput {
 */
 export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
 `input ${typeName}SelectorUniqueInput {
-  foobar: String
+  documentId: String
+  slug: String
 ${convertToGraphQL(fields, '  ')}
 }`;
 
@@ -400,27 +401,35 @@ export const mutationOutputTemplate = ({ typeName }) =>
 export const createClientTemplate = ({ typeName, fragmentName }) =>
 `mutation create${typeName}($input: Create${typeName}Input) {
   create${typeName}(input: $input) {
-    ...${fragmentName}
+    data {
+      ...${fragmentName}
+    }
   }
 }`;
 
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
 `mutation update${typeName}($input: Update${typeName}Input) {
   update${typeName}(input: $input) {
-    ...${fragmentName}
+    data {
+      ...${fragmentName}
+    }
   }
 }`;
 
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
 `mutation upsert${typeName}($input: Upsert${typeName}Input) {
   upsert${typeName}(input: $input) {
-    ...${fragmentName}
+    data {
+      ...${fragmentName}
+    }
   }
 }`;
 
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
 `mutation delete${typeName}($input: Delete${typeName}Input) {
   delete${typeName}(input: $input) {
-    ...${fragmentName}
+    data {
+      ...${fragmentName}
+    }
   }
 }`;
