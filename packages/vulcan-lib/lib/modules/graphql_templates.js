@@ -1,4 +1,5 @@
 import { Utils } from './utils';
+import { getFragmentName } from './fragments';
 
 export const convertToGraphQL = (fields, indentation) => {
   return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
@@ -193,13 +194,13 @@ export const multiInputTemplate = ({ typeName }) =>
 The type for the return value when querying for a single document
 
 type SingleMovieOuput{
-  data: Movie
+  result: Movie
 }
 
 */
 export const singleOutputTemplate = ({ typeName }) =>
 `type Single${typeName}Output{
-  data: ${typeName}
+  result: ${typeName}
 }`;
 
 /*
@@ -207,15 +208,40 @@ export const singleOutputTemplate = ({ typeName }) =>
 The type for the return value when querying for multiple documents
 
 type MultiMovieOuput{
-  data: [Movie]
+  results: [Movie]
   totalCount: Int
 }
 
 */
 export const multiOutputTemplate = ({ typeName }) =>
 `type Multi${typeName}Output{
-  data: [${typeName}]
+  results: [${typeName}]
   totalCount: Int
+}`;
+
+/* ------------------------------------- Query Queries ------------------------------------- */
+
+export const singleClientTemplate = ({ typeName, fragment, extraQueries }) =>
+`query Single${typeName}Query($input: Single${typeName}Input) {
+  ${Utils.camelCaseify(typeName)}(input: $input) {
+    __typename
+    result {
+      ...${getFragmentName(fragment)}
+    }
+  }
+  ${extraQueries ? extraQueries : ''}
+}`;
+
+export const multiClientTemplate = ({ typeName, fragment, extraQueries }) =>
+`query Multi${typeName}Query($input: Multi${typeName}Input) {
+  ${Utils.camelCaseify(typeName)}s(input: $input) {
+    __typename
+    results {
+      ...${getFragmentName(fragment)}
+    }
+    totalCount
+  }
+  ${extraQueries ? extraQueries : ''}
 }`;
 
 /* ------------------------------------- Mutation Types ------------------------------------- */
@@ -369,3 +395,5 @@ export const mutationOutputTemplate = ({ typeName }) =>
 `type ${typeName}Output{
   data: ${typeName}
 }`;
+
+/* ------------------------------------- Mutation Queries ------------------------------------- */

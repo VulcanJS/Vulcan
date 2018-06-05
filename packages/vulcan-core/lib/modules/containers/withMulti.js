@@ -33,34 +33,37 @@ Terms object can have the following properties:
   - limit: String
          
 */
-     
+
 import React, { Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
+import {
+  getSetting,
+  getFragment,
+  getFragmentName,
+  getCollection,
+  Utils,
+  multiClientTemplate,
+} from 'meteor/vulcan:lib';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 
-const withList = (options) => {
-
+export default function withMulti (options) {
   // console.log(options)
-  
+
   const {
     collectionName,
     limit = 10,
     pollInterval = getSetting('pollInterval', 20000),
-    totalResolver = true,
     enableCache = false,
     extraQueries,
   } = options;
-  
+
   const collection = options.collection || getCollection(collectionName);
-  
-  const queryName = options.queryName || `${collection.options.collectionName}ListQuery`;
-  const listResolverName = collection.options.resolvers.list && collection.options.resolvers.list.name;
-  const totalResolverName = collection.options.resolvers.total && collection.options.resolvers.total.name;
+  const typeName = collection.options.typeName;
+  const resolverName = `${Utils.camelCaseify(typeName)}s`;
 
   let fragment;
 
@@ -75,48 +78,35 @@ const withList = (options) => {
   const fragmentName = getFragmentName(fragment);
 
   // build graphql query from options
-  const query = gql`
-    query ${queryName}($terms: JSON, $enableCache: Boolean) {
-      ${totalResolver ? `${totalResolverName}(terms: $terms, enableCache: $enableCache)` : ``}
-      ${listResolverName}(terms: $terms, enableCache: $enableCache) {
-        __typename
-        ...${fragmentName}
-      }
-      ${extraQueries || ''}
-    }
-    ${fragment}
-  `;
+  const query = gql`${multiClientTemplate({ typeName, fragment, extraQueries })}${fragment}`;
 
   return compose(
-
     // wrap component with Apollo HoC to give it access to the store
-    withApollo, 
+    withApollo,
 
     // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
-
       // get initial limit from props, or else options
-      const paginationLimit = props.terms && props.terms.limit || limit;
+      const paginationLimit = (props.terms && props.terms.limit) || limit;
       const paginationTerms = {
-        limit: paginationLimit, 
-        itemsPerPage: paginationLimit, 
+        limit: paginationLimit,
+        itemsPerPage: paginationLimit,
       };
-      
+
       return paginationTerms;
     }),
 
     // wrap component with graphql HoC
     graphql(
-
       query,
 
       {
-        alias: 'withList',
-        
+        alias: `with${typeName}s`,
+
         // graphql query options
-        options({terms, paginationTerms, client: apolloClient, currentUser}) {
+        options({ terms, paginationTerms, client: apolloClient, currentUser }) {
           // get terms from options, then props, then pagination
-          const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
+          const mergedTerms = { ...options.terms, ...terms, ...paginationTerms };
 
           const graphQLOptions = {
             variables: {
@@ -125,40 +115,39 @@ const withList = (options) => {
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
-            reducer: (previousResults, action) => {
+            // reducer: (previousResults, action) => {
 
-              // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
-            
-            },
+            //   // see queryReducer function defined below
+            //   return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient);
+
+            // },
           };
 
           if (options.fetchPolicy) {
-            graphQLOptions.fetchPolicy = options.fetchPolicy
+            graphQLOptions.fetchPolicy = options.fetchPolicy;
           }
 
           // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
           if (options.notifyOnNetworkStatusChange) {
-            graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange
+            graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
           }
-          
+
           return graphQLOptions;
         },
 
         // define props returned by graphql HoC
         props(props) {
-
           // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
-                // results = Utils.convertDates(collection, props.data[listResolverName]),
-                results = props.data[listResolverName],
-                totalCount = props.data[totalResolverName],
-                networkStatus = props.data.networkStatus,
-                loadingInitial = props.data.networkStatus === 1,
-                loading = props.data.networkStatus === 1,
-                loadingMore = props.data.networkStatus === 2,
-                error = props.data.error,
-                propertyName = options.propertyName || 'results';
+            // results = Utils.convertDates(collection, props.data[listResolverName]),
+            results = props.data[resolverName].results,
+            totalCount = props.data[resolverName].totalCount,
+            networkStatus = props.data.networkStatus,
+            loadingInitial = props.data.networkStatus === 1,
+            loading = props.data.networkStatus === 1,
+            loadingMore = props.data.networkStatus === 2,
+            error = props.data.error,
+            propertyName = options.propertyName || 'results';
 
           if (error) {
             // eslint-disable-next-line no-console
@@ -171,7 +160,7 @@ const withList = (options) => {
             loading,
             loadingInitial,
             loadingMore,
-            [ propertyName ]: results,
+            [propertyName]: results,
             totalCount,
             refetch,
             networkStatus,
@@ -181,18 +170,26 @@ const withList = (options) => {
             // regular load more (reload everything)
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
-              const newTerms = typeof providedTerms === 'undefined' ? { /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms, limit: results.length + props.ownProps.paginationTerms.itemsPerPage } : providedTerms;
-              
+              const newTerms =
+                typeof providedTerms === 'undefined'
+                  ? {
+                      /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms,
+                      limit: results.length + props.ownProps.paginationTerms.itemsPerPage,
+                    }
+                  : providedTerms;
+
               props.ownProps.setPaginationTerms(newTerms);
             },
 
             // incremental loading version (only load new content)
             // note: not compatible with polling
             loadMoreInc(providedTerms) {
-
               // get terms passed as argument or else just default to incrementing the offset
-              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length } : providedTerms;
-              
+              const newTerms =
+                typeof providedTerms === 'undefined'
+                  ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length }
+                  : providedTerms;
+
               return props.data.fetchMore({
                 variables: { terms: newTerms }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
@@ -201,9 +198,12 @@ const withList = (options) => {
                     return previousResults;
                   }
                   const newResults = {};
-                  newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
+                  newResults[resolverName] = [
+                    ...previousResults[resolverName],
+                    ...fetchMoreResult.data[resolverName],
+                  ];
                   // return the previous results "augmented" with more
-                  return {...previousResults, ...newResults};
+                  return { ...previousResults, ...newResults };
                 },
               });
             },
@@ -217,12 +217,19 @@ const withList = (options) => {
       }
     )
   );
-}
-
+};
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName, apolloClient) => {
-
+const queryReducer = (
+  previousResults,
+  action,
+  collection,
+  mergedTerms,
+  listResolverName,
+  totalResolverName,
+  queryName,
+  apolloClient
+) => {
   // if collection has no mutations defined, just return previous results
   if (!collection.options.mutations) {
     return previousResults;
@@ -245,19 +252,18 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
     const listWithoutDocument = results[listResolverName].filter(doc => doc._id !== document._id);
     const newResults = update(results, {
       [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
-      [totalResolverName]: { $set: results[totalResolverName] - 1 } // ex: postsListTotal
+      [totalResolverName]: { $set: results[totalResolverName] - 1 }, // ex: postsListTotal
     });
     return newResults;
-  }
+  };
 
   // add document to a results object
   const addToResults = (results, document) => {
-
     return update(results, {
       [listResolverName]: { $unshift: [document] },
-      [totalResolverName]: { $set: results[totalResolverName] + 1 }
+      [totalResolverName]: { $set: results[totalResolverName] + 1 },
     });
-  }
+  };
 
   // reorder results according to a sort
   const reorderResults = (results, sort) => {
@@ -268,7 +274,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
     const sortedList = cursor.sort(sort).all();
     results[listResolverName] = sortedList;
     return results;
-  }
+  };
 
   // console.log('// withList reducer');
   // console.log('queryName: ', queryName);
@@ -280,7 +286,6 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   // console.log('action: ', action);
 
   switch (action.operationName) {
-
     case newMutationName:
       // if new document belongs to current list (based on view selector), add it
       const newDocument = action.result.data[newMutationName];
@@ -297,7 +302,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
       const editedDocument = action.result.data[editMutationName];
       if (mingoQuery.test(editedDocument)) {
         // edited document belongs to the list
-        if (!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id})) {
+        if (!_.findWhere(previousResults[listResolverName], { _id: editedDocument._id })) {
           // if document wasn't already in list, add it
           newResults = addToResults(previousResults, editedDocument);
         }
@@ -319,7 +324,7 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
       // console.log('removedDocument: ', removedDocument)
       break;
 
-    default: 
+    default:
       // console.log('** no action **')
       return previousResults;
   }
@@ -332,8 +337,5 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   return {
     [listResolverName]: [...newResults[listResolverName]],
     [totalResolverName]: newResults[totalResolverName],
-  }
-
-}
-
-export default withList;
+  };
+};

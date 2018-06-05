@@ -69,8 +69,11 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         debug(`--------------- end \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
         debug('');
 
+        // get total count of documents matching the selector
+        const totalCount = await Connectors.count(collection, selector);
+
         // return results
-        return restrictedDocs;
+        return { results: restrictedDocs, totalCount };
       },
     },
 
@@ -118,31 +121,9 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         debug('');
 
         // filter out disallowed properties and return resulting document
-        return restrictedDoc;
+        return { result: restrictedDoc };
       },
     },
-
-    // resolver for returning the total number of documents matching a set of query terms
-
-    // total: {
-    //   name: resolverOptions.legacy ? `${typeName}Total` : `total${typeName}s`,
-
-    //   description: `The total count of ${typeName} documents matching a set of query terms`,
-
-    //   async resolver(root, { terms, enableCache }, context, { cacheControl }) {
-    //     if (cacheControl && enableCache) {
-    //       const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
-    //       cacheControl.setCacheHint({ maxAge });
-    //     }
-
-    //     const collection = context[collectionName];
-
-    //     const { selector } = await collection.getParameters(terms, {}, context);
-
-    //     const total = await Connectors.count(collection, selector);
-
-    //     return total;
-    //   },
-    // },
+    
   };
 };
