@@ -36,7 +36,7 @@ export const getDefaultMutations = (
         const collection = context[typeName];
 
         // check if current user can pass check function; else throw error
-        Utils.performCheck(this.check, context.currentUser, document);
+        Utils.performCheck(this.check, context.currentUser, data);
 
         // pass document to boilerplate newMutator function
         return await createMutator({

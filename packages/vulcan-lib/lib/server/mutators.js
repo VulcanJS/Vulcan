@@ -43,7 +43,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   debug('// createMutator');
   debug(collection._name);
   debug(`validate: ${validate}`);
-  debug(document);
+  debug(document || data);
 
   // we don't want to modify the original document
   let newDocument = Object.assign({}, document || data);

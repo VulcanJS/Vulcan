@@ -38,19 +38,12 @@ import React, { Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import {
-  getSetting,
-  getFragment,
-  getFragmentName,
-  getCollection,
-  Utils,
-  multiClientTemplate,
-} from 'meteor/vulcan:lib';
+import { getSetting, getFragment, getFragmentName, getCollection, Utils, multiClientTemplate } from 'meteor/vulcan:lib';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 
-export default function withMulti (options) {
+export default function withMulti(options) {
   // console.log(options)
 
   const {
@@ -78,7 +71,10 @@ export default function withMulti (options) {
   const fragmentName = getFragmentName(fragment);
 
   // build graphql query from options
-  const query = gql`${multiClientTemplate({ typeName, fragmentName, extraQueries })}${fragment}`;
+  const query = gql`
+    ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${fragment}
+  `;
 
   return compose(
     // wrap component with Apollo HoC to give it access to the store
@@ -113,15 +109,21 @@ export default function withMulti (options) {
               input: {
                 terms: mergedTerms,
                 enableCache,
-              }
+              },
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
             reducer: (previousResults, action) => {
-
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, mergedTerms, resolverName, apolloClient);
-
+              return queryReducer(
+                typeName,
+                previousResults,
+                action,
+                collection,
+                mergedTerms,
+                resolverName,
+                apolloClient
+              );
             },
           };
 
@@ -200,10 +202,7 @@ export default function withMulti (options) {
                     return previousResults;
                   }
                   const newResults = {};
-                  newResults[resolverName] = [
-                    ...previousResults[resolverName],
-                    ...fetchMoreResult.data[resolverName],
-                  ];
+                  newResults[resolverName] = [...previousResults[resolverName], ...fetchMoreResult.data[resolverName]];
                   // return the previous results "augmented" with more
                   return { ...previousResults, ...newResults };
                 },
@@ -219,25 +218,14 @@ export default function withMulti (options) {
       }
     )
   );
-};
+}
 
 // define query reducer separately
-const queryReducer = (
-  previousResults,
-  action,
-  collection,
-  mergedTerms,
-  resolverName,
-  apolloClient
-) => {
+const queryReducer = (typeName, previousResults, action, collection, mergedTerms, resolverName, apolloClient) => {
   // if collection has no mutations defined, just return previous results
   if (!collection.options.mutations) {
     return previousResults;
   }
-
-  const newMutationName = collection.options.mutations.new && collection.options.mutations.new.name;
-  const editMutationName = collection.options.mutations.edit && collection.options.mutations.edit.name;
-  const removeMutationName = collection.options.mutations.remove && collection.options.mutations.remove.name;
 
   let newResults = previousResults;
 
@@ -248,49 +236,47 @@ const queryReducer = (
   const mingoQuery = new Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below
-  const removeFromResults = (results, document) => {
-    const listWithoutDocument = results[resolverName].filter(doc => doc._id !== document._id);
-    const currentTotalCount = results[resolverName].totalCount;
-    const newResults = update(results, {
-      [resolverName]: { $set: {results: listWithoutDocument, totalCount: currentTotalCount - 1} }
+  const removeFromResults = (data, document) => {
+    const listWithoutDocument = data[resolverName].results.filter(doc => doc._id !== document._id);
+    const currentTotalCount = data[resolverName].totalCount;
+    const newResults = update(data, {
+      [resolverName]: { $set: { results: listWithoutDocument, totalCount: currentTotalCount - 1 } },
     });
     return newResults;
   };
 
   // add document to a results object
-  const addToResults = (results, document) => {
-    const listWithDocument = [...results[resolverName], document];
-    const currentTotalCount = results[resolverName].totalCount;
-    const newResults = update(results, {
-      [resolverName]: { $set: {results: listWithDocument, totalCount: currentTotalCount + 1} }
+  const addToResults = (data, document) => {
+    const listWithDocument = [...data[resolverName].results, document];
+    const currentTotalCount = data[resolverName].totalCount;
+    const newResults = update(data, {
+      [resolverName]: { $set: { results: listWithDocument, totalCount: currentTotalCount + 1 } },
     });
     return newResults;
   };
 
   // reorder results according to a sort
-  const reorderResults = (results, sort) => {
-    const list = results[resolverName];
+  const reorderResults = (data, sort) => {
+    const list = data[resolverName].results;
     // const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
     const convertedList = list;
     const cursor = mingoQuery.find(convertedList);
     const sortedList = cursor.sort(sort).all();
-    results[resolverName].results = sortedList;
-    return results;
+    data[resolverName].results = sortedList;
+    return data;
   };
 
   // console.log('// withList reducer');
-  // console.log('queryName: ', queryName);
   // console.log('terms: ', mergedTerms);
   // console.log('selector: ', selector);
   // console.log('options: ', options);
   // console.log('previousResults: ', previousResults);
-  // console.log('previous titles: ', _.pluck(previousResults[listResolverName], 'title'))
   // console.log('action: ', action);
 
   switch (action.operationName) {
-    case newMutationName:
+    case `create${typeName}`:
       // if new document belongs to current list (based on view selector), add it
-      const newDocument = action.result.data[newMutationName];
+      const newDocument = action.result.data[`create${typeName}`].data;
       if (mingoQuery.test(newDocument)) {
         newResults = addToResults(previousResults, newDocument);
         newResults = reorderResults(newResults, options.sort);
@@ -300,11 +286,11 @@ const queryReducer = (
       // console.log('belongs to list: ', mingoQuery.test(newDocument))
       break;
 
-    case editMutationName:
-      const editedDocument = action.result.data[editMutationName];
+    case `update${typeName}`:
+      const editedDocument = action.result.data[`update${typeName}`].data;
       if (mingoQuery.test(editedDocument)) {
         // edited document belongs to the list
-        if (!_.findWhere(previousResults[resolverName], { _id: editedDocument._id })) {
+        if (!_.findWhere(previousResults[resolverName].results, { _id: editedDocument._id })) {
           // if document wasn't already in list, add it
           newResults = addToResults(previousResults, editedDocument);
         }
@@ -316,11 +302,11 @@ const queryReducer = (
       // console.log('** edit **')
       // console.log('editedDocument: ', editedDocument)
       // console.log('belongs to list: ', mingoQuery.test(editedDocument))
-      // console.log('exists in list: ', !!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id}))
+      // console.log('exists in list: ', !!_.findWhere(previousResults[resolverName].results, {_id: editedDocument._id}))
       break;
 
-    case removeMutationName:
-      const removedDocument = action.result.data[removeMutationName];
+    case `delete${typeName}`:
+      const removedDocument = action.result.data[`delete${typeName}`].data;
       newResults = removeFromResults(previousResults, removedDocument);
       // console.log('** remove **')
       // console.log('removedDocument: ', removedDocument)
@@ -332,11 +318,14 @@ const queryReducer = (
   }
 
   // console.log('newResults: ', newResults)
-  // console.log('new titles: ', _.pluck(newResults[listResolverName], 'title'))
   // console.log('\n\n')
 
   // copy over arrays explicitely to ensure new sort is taken into account
   return {
-    [resolverName]: { results: [...newResults[resolverName].results], totalCount: newResults[resolverName].totalCount },
+    [resolverName]: {
+      results: [...newResults[resolverName].results],
+      totalCount: newResults[resolverName].totalCount,
+      __typename: `Multi${typeName}Output`,
+    },
   };
 };
