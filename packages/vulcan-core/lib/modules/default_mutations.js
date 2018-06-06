@@ -16,7 +16,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
   if (options.create) {
     // mutation for inserting a new document
 
-    mutations.create = {
+    const createMutation = {
       description: `Mutation for creating new ${typeName} documents`,
 
       // check function called on a user to see if they can perform the operation
@@ -45,12 +45,15 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         });
       },
     };
+    mutations.create = createMutation;
+    // OpenCRUD backwards compatibility
+    mutations.new = createMutation;
   }
 
   if (options.update) {
     // mutation for editing a specific document
 
-    mutations.update = {
+    const updateMutation = {
       description: `Mutation for updating a ${typeName} document`,
 
       // check function called on a user and document to see if they can perform the operation
@@ -90,6 +93,9 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         });
       },
     };
+    mutations.update = updateMutation;
+    // OpenCRUD backwards compatibility
+    mutations.edit = updateMutation;
   }
   if (options.upsert) {
     // mutation for upserting a specific document
@@ -114,7 +120,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
   if (options.delete) {
     // mutation for removing a specific document (same checks as edit mutation)
 
-    mutations.delete = {
+    const deleteMutation = {
       description: `Mutation for deleting a ${typeName} document`,
 
       check(user, document) {
@@ -145,6 +151,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         });
       },
     };
+
+    mutations.delete = deleteMutation;
+    // OpenCRUD backwards compatibility
+    mutations.remove = deleteMutation;
   }
 
   return mutations;
