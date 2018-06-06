@@ -38,8 +38,10 @@ export default function withSingle(options) {
       const graphQLOptions = {
         variables: {
           input: {
-            documentId: documentId,
-            slug: slug,
+            selector: {
+              documentId: documentId,
+              slug: slug,
+            },
             enableCache,
           }
         },

@@ -11,7 +11,7 @@ import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 import { isIntlField } from './intl.js';
-import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDataInputTemplate, updateInputTemplate, updateDataInputTemplate, orderByInputTemplate, selectorUniqueInputTemplate, deleteInputTemplate, upsertInputTemplate, multiInputTemplate, singleInputTemplate, multiOutputTemplate, singleOutputTemplate, mutationOutputTemplate } from './graphql_templates.js';
+import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDataInputTemplate, updateInputTemplate, updateDataInputTemplate, orderByInputTemplate, selectorUniqueInputTemplate, deleteInputTemplate, upsertInputTemplate, singleInputTemplate, multiInputTemplate, multiOutputTemplate, singleOutputTemplate, mutationOutputTemplate } from './graphql_templates.js';
 
 disableFragmentWarnings();
 

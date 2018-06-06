@@ -79,7 +79,8 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { documentId, slug, enableCache = false } = input;
+        const { selector, enableCache = false } = input;
+        const { documentId, slug } = selector;
 
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} single\x1b[0m resolver ---------------`);

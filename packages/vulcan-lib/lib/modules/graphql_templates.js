@@ -147,10 +147,7 @@ type SingleMovieInput {
 */
 export const singleInputTemplate = ({ typeName }) =>
 `input Single${typeName}Input {
-  # The document's unique ID
-  documentId: String, 
-  # A unique slug identifying the document
-  slug: String, 
+  selector: ${typeName}SelectorUniqueInput
   # Whether to enable caching for this query
   enableCache: Boolean
 }`;
