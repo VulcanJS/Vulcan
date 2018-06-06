@@ -159,7 +159,7 @@ export const GraphQLSchema = {
             fields.mainType.push({
               description: field.resolveAs.description,
               name: resolverName,
-              arguments: field.resolveAs.arguments,
+              args: field.resolveAs.arguments,
               type: fieldGraphQLType,
             });
 
@@ -176,7 +176,7 @@ export const GraphQLSchema = {
             fields.mainType.push({
               description: fieldDescription,
               name: fieldName,
-              arguments: fieldArguments,
+              args: fieldArguments,
               type: fieldType,
               directive: fieldDirective,
             });
@@ -188,7 +188,7 @@ export const GraphQLSchema = {
             fields.mainType.push({
               description: fieldDescription,
               name: fieldName,
-              arguments: fieldArguments,
+              args: fieldArguments,
               type: fieldType,
               directive: fieldDirective,
             });
@@ -225,7 +225,6 @@ export const GraphQLSchema = {
         }
       }
     });
-
     return fields;
   },
 
@@ -241,7 +240,6 @@ export const GraphQLSchema = {
     const schema = collection.simpleSchema()._schema;
 
     const fields = this.getFields(schema, typeName);
-    // console.log(fields)
 
     const { interfaces = [] } = collection.options;
 

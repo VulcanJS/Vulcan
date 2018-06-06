@@ -9,26 +9,22 @@ import { createError } from 'apollo-errors';
 
 const defaultOptions = {
   cacheMaxAge: 300,
-  legacy: false,
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
 export const getDefaultResolvers = (collectionName, resolverOptions = defaultOptions) => {
-
   // TODO: find more reliable way to get type name from collection name
   const typeName = collectionName.slice(0, -1);
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
     multi: {
-
       description: `A list of ${typeName} documents matching a set of query terms`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        
         const { terms = {}, enableCache = false } = input;
-        
+
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
@@ -80,11 +76,9 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
     // resolver for returning a single document queried based on id or slug
 
     single: {
-
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-
         const { documentId, slug, enableCache = false } = input;
 
         debug('');
@@ -103,7 +97,9 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         // don't use Dataloader if doc is selected by slug
         const doc = documentId
           ? await collection.loader.load(documentId)
-          : slug ? await Connectors.get(collection, { slug }) : await Connectors.get(collection);
+          : slug
+            ? await Connectors.get(collection, { slug })
+            : await Connectors.get(collection);
 
         if (!doc) {
           const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
@@ -126,6 +122,5 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         return { result: restrictedDoc };
       },
     },
-
   };
 };

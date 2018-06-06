@@ -7,10 +7,7 @@ Default mutations
 import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 
-export const getDefaultMutations = (
-  typeName,
-  options = { legacy: false, create: true, update: true, upsert: true, delete: true }
-) => {
+export const getDefaultMutations = (typeName, options = { create: true, update: true, upsert: true, delete: true }) => {
   // register callbacks for documentation purposes
   registerCollectionCallbacks(typeName);
 
@@ -72,7 +69,6 @@ export const getDefaultMutations = (
       },
 
       async mutation(root, { input }, context) {
-
         const { selector, data } = input;
         const { documentId } = selector;
         const collection = context[typeName];
@@ -101,7 +97,6 @@ export const getDefaultMutations = (
       description: `Mutation for upserting a ${typeName} document`,
 
       async mutation(root, { input }, context) {
-
         const { selector, data } = input;
         const collection = context[typeName];
 
