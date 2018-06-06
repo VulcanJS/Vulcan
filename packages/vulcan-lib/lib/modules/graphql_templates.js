@@ -221,25 +221,60 @@ export const multiOutputTemplate = ({ typeName }) =>
 
 /* ------------------------------------- Query Queries ------------------------------------- */
 
-export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query Single${typeName}Query($input: Single${typeName}Input) {
-  ${Utils.camelCaseify(typeName)}(input: $input) {
+
+/*
+
+Single query used on the client
+
+query singleMovieQuery($input: SingleMovieInput) {
+  movie(input: $input) {
+    result {
+      _id
+      name
+      __typename
+    }
     __typename
+  }
+}
+
+*/
+export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
+`query single${typeName}Query($input: Single${typeName}Input) {
+  ${Utils.camelCaseify(typeName)}(input: $input) {
     result {
       ...${fragmentName}
     }
+    __typename
   }
   ${extraQueries ? extraQueries : ''}
 }`;
 
-export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query Multi${typeName}Query($input: Multi${typeName}Input) {
-  ${Utils.camelCaseify(typeName)}s(input: $input) {
+
+/*
+
+Multi query used on the client
+
+mutation multiMovieQuery($input: MultiMovieInput) {
+  movies(input: $input) {
+    results {
+      _id
+      name
+      __typename
+    }
+    totalCount
     __typename
+  }
+}
+
+*/
+export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
+`query multi${typeName}Query($input: Multi${typeName}Input) {
+  ${Utils.camelCaseify(typeName)}s(input: $input) {
     results {
       ...${fragmentName}
     }
     totalCount
+    __typename
   }
   ${extraQueries ? extraQueries : ''}
 }`;
@@ -398,6 +433,22 @@ export const mutationOutputTemplate = ({ typeName }) =>
 
 /* ------------------------------------- Mutation Queries ------------------------------------- */
 
+/*
+
+Create mutation query used on the client
+
+mutation createMovie($input: CreateMovieInput) {
+  createMovie(input: $input) {
+    data {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}
+
+*/
 export const createClientTemplate = ({ typeName, fragmentName }) =>
 `mutation create${typeName}($input: Create${typeName}Input) {
   create${typeName}(input: $input) {
@@ -407,6 +458,22 @@ export const createClientTemplate = ({ typeName, fragmentName }) =>
   }
 }`;
 
+/*
+
+Update mutation query used on the client
+
+mutation updateMovie($input: UpdateMovieInput) {
+  updateMovie(input: $input) {
+    data {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}
+
+*/
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
 `mutation update${typeName}($input: Update${typeName}Input) {
   update${typeName}(input: $input) {
@@ -416,6 +483,22 @@ export const updateClientTemplate = ({ typeName, fragmentName }) =>
   }
 }`;
 
+/*
+
+Upsert mutation query used on the client
+
+mutation upsertMovie($input: UpsertMovieInput) {
+  upsertMovie(input: $input) {
+    data {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}
+
+*/
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
 `mutation upsert${typeName}($input: Upsert${typeName}Input) {
   upsert${typeName}(input: $input) {
@@ -425,6 +508,22 @@ export const upsertClientTemplate = ({ typeName, fragmentName }) =>
   }
 }`;
 
+/*
+
+Delete mutation query used on the client
+
+mutation deleteMovie($input: DeleteMovieInput) {
+  deleteMovie(input: $input) {
+    data {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}
+
+*/
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
 `mutation delete${typeName}($input: Delete${typeName}Input) {
   delete${typeName}(input: $input) {
