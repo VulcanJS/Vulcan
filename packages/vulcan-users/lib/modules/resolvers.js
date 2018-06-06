@@ -72,17 +72,7 @@ const resolvers = {
     },
 
   },
-
-  // total: {
-
-  //   name: 'UsersTotal',
-
-  //   async resolver(root, { terms = {} }, { Users }) {
-  //     const {selector} = await Users.getParameters(terms);
-  //     return await Connectors.count(Users, selector);
-  //   },
-
-  // }
+  
 };
 
 export default resolvers;

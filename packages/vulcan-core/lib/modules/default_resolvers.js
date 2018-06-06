@@ -79,7 +79,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector, enableCache = false } = input;
+        const { selector = {}, enableCache = false } = input;
         const { documentId, slug } = selector;
 
         debug('');

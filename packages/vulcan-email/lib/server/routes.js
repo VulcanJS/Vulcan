@@ -21,8 +21,11 @@ Meteor.startup(function () {
         
         // else get test object (sample post, comment, user, etc.)
         const testVariables = (typeof email.testVariables === 'function' ? email.testVariables() : email.testVariables) || {};
+        // delete params.query so we don't pass it to GraphQL query
+        delete params.query;
         // merge test variables with params from URL
-        const variables = {...testVariables, ...params};
+        // TODO: this is currently hardcoded to work with the SingleXYZInput type, maybe bad idea?      
+        const variables = { input: { selector: { ...testVariables, ...params } } };
 
         const result = email.query ? await runQuery(email.query, variables, { locale }) : {data: {}};
 
