@@ -4,19 +4,25 @@ Generic mutation wrapper to remove a document from a collection.
 
 Sample mutation: 
 
-  mutation deleteMovie($documentId: String) {
-    deleteMovie(documentId: $documentId) {
-      ...MovieFormFragment
+  mutation deleteMovie($input: DeleteMovieInput) {
+    deleteMovie(input: $input) {
+      data {
+        _id
+        name
+        __typename
+      }
+      __typename
     }
   }
 
 Arguments: 
 
-  - documentId: the id of the document to remove
+  - input
+    - input.selector: the id of the document to remove
 
 Child Props:
 
-  - deleteMovie(documentId)
+  - deleteMovie({ selector })
   
 */
 
@@ -25,14 +31,14 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getFragment, getFragmentName, getCollection, deleteClientTemplate } from 'meteor/vulcan:core';
 
-export default function withDelete(options) {
+const withDelete = (options) => {
 
   const { collectionName } = options;
-  const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
-        fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName,
-        query = gql`${deleteClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const collection = options.collection || getCollection(collectionName);
+  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
+  const fragmentName = getFragmentName(fragment);
+  const typeName = collection.options.typeName;
+  const query = gql`${deleteClientTemplate({ typeName, fragmentName })}${fragment}`;
 
   return graphql(query, {
     alias: `withDelete${typeName}`,
@@ -56,5 +62,6 @@ export default function withDelete(options) {
 
     }),
   });
-
 }
+
+export default withDelete;

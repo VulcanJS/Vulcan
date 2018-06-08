@@ -1,26 +1,31 @@
 /*
 
- Generic mutation wrapper to upsert a document in a collection.
+Generic mutation wrapper to upsert a document in a collection. 
 
- Sample mutation:
+Sample mutation: 
 
-  mutation moviesUpsert($search: JSON, $set: MoviesInput, $unset: MoviesUnset) {
-    moviesUpsert(search: $search, set: $set, unset: $unset) {
-      ...MoviesUpsertFormFragment
+  mutation upsertMovie($input: UpsertMovieInput) {
+    upsertMovie(input: $input) {
+      data {
+        _id
+        name
+        __typename
+      }
+      __typename
     }
   }
 
- Arguments:
+Arguments: 
 
- - search: the search fields to match on in the database
- - set: an object containing all the fields to modify and their new values
- - unset: an object containing the fields to unset
+  - input
+    - input.selector: a selector to indicate the document to update
+    - input.data: the document (set a field to `null` to delete it)
 
- Child Props:
+Child Props:
 
- - upsertMutation(search, set, unset)
-
- */
+  - upsertMovie({ selector, data })
+  
+*/
 
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
@@ -28,15 +33,15 @@ import gql from 'graphql-tag';
 import { getFragment, getFragmentName, getCollection, upsertClientTemplate } from 'meteor/vulcan:core';
 import clone from 'lodash/clone';
 
-export default function withUpsert(options) {
+const withUpsert = (options) => {
 
   const { collectionName } = options;
   // get options
-  const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
-        fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName,
-        query = gql`${upsertClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const collection = options.collection || getCollection(collectionName);
+  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
+  const fragmentName = getFragmentName(fragment);
+  const typeName = collection.options.typeName;
+  const query = gql`${upsertClientTemplate({ typeName, fragmentName })}${fragment}`;
 
   return graphql(query, {
     alias: `withUpsert${typeName}`,
@@ -53,7 +58,7 @@ export default function withUpsert(options) {
       // OpenCRUD backwards compatibility
       upsertMutation: (args) => {
         const { search, set, unset } = args;
-        const selector = { search };
+        const selector = search;
         const data = clone(set);
         Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
@@ -68,3 +73,5 @@ export default function withUpsert(options) {
   });
 
 }
+
+export default withUpsert;

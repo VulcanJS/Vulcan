@@ -50,7 +50,7 @@ class App extends PureComponent {
     this.props.cookies.set('locale', locale);
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
-     await this.props.updateUser({ documentId: this.props.currentUser._id, set: { locale }});
+     await this.props.updateUser({ selector: { documentId: this.props.currentUser._id }, data: { locale }});
     }
     this.props.client.resetStore()
   };

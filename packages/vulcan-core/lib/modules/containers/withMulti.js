@@ -26,6 +26,7 @@ Terms object can have the following properties:
   - date: String
   - after: String
   - before: String
+  - enableTotal: Boolean
   - enableCache: Boolean
   - listId: String
   - query: String # search query
@@ -50,6 +51,7 @@ export default function withMulti(options) {
     collectionName,
     limit = 10,
     pollInterval = getSetting('pollInterval', 20000),
+    enableTotal = true,
     enableCache = false,
     extraQueries,
   } = options;
@@ -109,6 +111,7 @@ export default function withMulti(options) {
               input: {
                 terms: mergedTerms,
                 enableCache,
+                enableTotal,
               },
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)

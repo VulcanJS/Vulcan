@@ -21,8 +21,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
 
       // check function called on a user to see if they can perform the operation
       check(user, document) {
-        if (options.newCheck) {
-          return options.newCheck(user, document);
+        // OpenCRUD backwards compatibility
+        const check = options.createCheck || options.newCheck;
+        if (check) {
+          return check(user, document);
         }
         // check if they can perform "foo.new" operation (e.g. "movies.new")
         return Users.canDo(user, `${typeName.toLowerCase()}.new`);
@@ -58,8 +60,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
 
       // check function called on a user and document to see if they can perform the operation
       check(user, document) {
-        if (options.editCheck) {
-          return options.editCheck(user, document);
+        // OpenCRUD backwards compatibility
+        const check = options.updateCheck || options.editCheck;
+        if (check) {
+          return check(user, document);
         }
 
         if (!user || !document) return false;
@@ -73,11 +77,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
 
       async mutation(root, { input }, context) {
         const { selector, data } = input;
-        const { documentId } = selector;
         const collection = context[typeName];
 
         // get entire unmodified document from database
-        const document = await Connectors.get(collection, documentId);
+        const document = await Connectors.get(collection, selector);
 
         // check if user can perform operation; if not throw error
         Utils.performCheck(this.check, context.currentUser, document);
@@ -85,7 +88,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         // call editMutator boilerplate function
         return await updateMutator({
           collection,
-          documentId,
+          selector,
           data,
           currentUser: context.currentUser,
           validate: true,
@@ -124,8 +127,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
       description: `Mutation for deleting a ${typeName} document`,
 
       check(user, document) {
-        if (options.removeCheck) {
-          return options.removeCheck(user, document);
+        // OpenCRUD backwards compatibility
+        const check = options.deleteCheck || options.removeCheck;
+        if (check) {
+          return check(user, document);
         }
 
         if (!user || !document) return false;
@@ -136,15 +141,14 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
 
       async mutation(root, { input }, context) {
         const { selector } = input;
-        const { documentId } = selector;
         const collection = context[typeName];
 
-        const document = await Connectors.get(collection, documentId);
+        const document = await Connectors.get(collection, selector);
         Utils.performCheck(this.check, context.currentUser, document, context);
 
         return await deleteMutator({
           collection,
-          documentId: documentId,
+          selector,
           currentUser: context.currentUser,
           validate: true,
           context,

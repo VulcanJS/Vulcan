@@ -125,7 +125,11 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 }
 
 
-export const updateMutator = async ({ collection, documentId, data, set = {}, unset = {}, currentUser, validate, context }) => {
+export const updateMutator = async ({ collection, selector, data, set = {}, unset = {}, currentUser, validate, context }) => {
+
+  if (!selector) {
+    throw new Error(`You must pass a "selector" argument to updateMutator`);
+  }
 
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
@@ -137,14 +141,15 @@ export const updateMutator = async ({ collection, documentId, data, set = {}, un
   } else {
     modifier = { $set: set, $unset: unset }
   }
+
   // get original document from database
   // TODO: avoid fetching document a second time if possible
-  let document = await Connectors.get(collection, documentId);
+  let document = await Connectors.get(collection, selector);
   
   debug('//------------------------------------//');
   debug('// updateMutator');
   debug('// collectionName: ', collection._name);
-  debug('// documentId: ', documentId);
+  debug('// selector: ', selector);
   debug('// modifier: ', modifier);
   debug('// document: ', document);
 
@@ -208,14 +213,15 @@ export const updateMutator = async ({ collection, documentId, data, set = {}, un
   
   if (!_.isEmpty(modifier)) {
     // update document
-    await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
+    await Connectors.update(collection, selector, modifier, {removeEmptyStrings: false});
 
     // get fresh copy of document from db
-    newDocument = await Connectors.get(collection, documentId);
+    newDocument = await Connectors.get(collection, selector);
 
+    // TODO: add support for caching by other indexes to Dataloader
     // clear cache if needed
-    if (collection.loader) {
-      collection.loader.clear(documentId);
+    if (selector.documentId && collection.loader) {
+      collection.loader.clear(selector.documentId);
     }
   }
 
@@ -237,18 +243,22 @@ export const updateMutator = async ({ collection, documentId, data, set = {}, un
   return { data: newDocument };
 }
 
-export const deleteMutator = async ({ collection, documentId, currentUser, validate, context }) => {
+export const deleteMutator = async ({ collection, selector, currentUser, validate, context }) => {
 
   debug('//------------------------------------//');
   debug('// deleteMutator')
   debug(collection._name)
-  debug(documentId)
+  debug(selector)
   debug('//------------------------------------//');
   
+  if (!selector) {
+    throw new Error(`You must pass a "selector" argument to updateMutator`);
+  }
+
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  let document = await Connectors.get(collection, documentId);
+  let document = await Connectors.get(collection, selector);
 
   // if document is not trusted, run validation callbacks
   if (validate) {
@@ -271,11 +281,12 @@ export const deleteMutator = async ({ collection, documentId, currentUser, valid
   await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
-  await Connectors.delete(collection, documentId);
+  await Connectors.delete(collection, selector);
 
+  // TODO: add support for caching by other indexes to Dataloader
   // clear cache if needed
-  if (collection.loader) {
-    collection.loader.clear(documentId);
+  if (selector.documentId && collection.loader) {
+    collection.loader.clear(selector.documentId);
   }
 
   await runCallbacksAsync(`${collectionName}.delete.async`, document, currentUser, collection);

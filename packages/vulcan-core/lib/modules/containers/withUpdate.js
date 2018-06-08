@@ -1,24 +1,29 @@
 /*
 
-Generic mutation wrapper to edit a document in a collection. 
+Generic mutation wrapper to update a document in a collection. 
 
 Sample mutation: 
 
-  mutation updateMovie($documentId: String, $set: MoviesInput, $unset: MoviesUnset) {
-    updateMovie(documentId: $documentId, set: $set, unset: $unset) {
-      ...MovieFormFragment
+  mutation updateMovie($input: UpdateMovieInput) {
+    updateMovie(input: $input) {
+      data {
+        _id
+        name
+        __typename
+      }
+      __typename
     }
   }
 
 Arguments: 
 
-  - documentId: the id of the document to modify
-  - set: an object containing all the fields to modify and their new values
-  - unset: an object containing the fields to unset
+  - input
+    - input.selector: a selector to indicate the document to update
+    - input.data: the document (set a field to `null` to delete it)
 
 Child Props:
 
-  - updateMovie(documentId, set, unset)
+  - updateMovie({ selector, data })
   
 */
 
@@ -28,15 +33,15 @@ import gql from 'graphql-tag';
 import { getFragment, getFragmentName, getCollection, updateClientTemplate } from 'meteor/vulcan:lib';
 import clone from 'lodash/clone';
 
-export default function withUpdate(options) {
+const withUpdate = (options) => {
 
   const { collectionName } = options;
   // get options
-  const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
-        fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName,
-        query = gql`${updateClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const collection = options.collection || getCollection(collectionName);
+  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
+  const fragmentName = getFragmentName(fragment);
+  const typeName = collection.options.typeName;
+  const query = gql`${updateClientTemplate({ typeName, fragmentName })}${fragment}`;
 
   return graphql(query, {
     alias: `withUpdate${typeName}`,
@@ -65,3 +70,5 @@ export default function withUpdate(options) {
   });
 
 }
+
+export default withUpdate;

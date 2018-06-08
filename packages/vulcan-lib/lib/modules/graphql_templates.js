@@ -174,6 +174,8 @@ export const multiInputTemplate = ({ typeName }) =>
   limit: Int, 
   # Whether to enable caching for this query
   enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
   # OpenCRUD fields
   where: ${typeName}SelectorInput
   orderBy: ${typeName}OrderByInput

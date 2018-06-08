@@ -5,19 +5,25 @@ a related query on the client with the new item and a new total item count.
 
 Sample mutation: 
 
-  mutation updateMovie($document: MoviesInput) {
-    updateMovie(document: $document) {
-      ...MovieFormFragment
+  mutation createMovie($input: CreateMovieInput) {
+    createMovie(input: $input) {
+      data {
+        _id
+        name
+        __typename
+      }
+      __typename
     }
   }
 
 Arguments: 
 
-  - document: the document to insert
+  - input
+    - input.data: the document to insert
 
 Child Props:
 
-  - createMovie(document)
+  - createMovie({ data })
     
 */
 
@@ -26,15 +32,15 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getFragment, getFragmentName, getCollection, createClientTemplate } from 'meteor/vulcan:core';
 
-export default function withCreate(options) {
+const withCreate = (options) => {
 
   const { collectionName } = options;
   // get options
-  const collection = options.collection || getCollection(collectionName),
-        fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`),
-        fragmentName = getFragmentName(fragment),
-        typeName = collection.options.typeName,
-        query = gql`${createClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const collection = options.collection || getCollection(collectionName);
+  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
+  const fragmentName = getFragmentName(fragment);
+  const typeName = collection.options.typeName;
+  const query = gql`${createClientTemplate({ typeName, fragmentName })}${fragment}`;
 
   // wrap component with graphql HoC
   return graphql(query, {
@@ -57,3 +63,5 @@ export default function withCreate(options) {
   });
 
 }
+
+export default withCreate;

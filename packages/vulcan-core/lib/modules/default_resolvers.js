@@ -23,7 +23,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
       description: `A list of ${typeName} documents matching a set of query terms`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { terms = {}, enableCache = false } = input;
+        const { terms = {}, enableCache = false, enableTotal = true } = input;
 
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
@@ -65,11 +65,15 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         debug(`--------------- end \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
         debug('');
 
-        // get total count of documents matching the selector
-        const totalCount = await Connectors.count(collection, selector);
+        const data = { results: restrictedDocs };
+        
+        if (enableTotal) {
+          // get total count of documents matching the selector
+          data.totalCount = await Connectors.count(collection, selector);
+        }
 
         // return results
-        return { results: restrictedDocs, totalCount };
+        return data;
       },
     },
 
