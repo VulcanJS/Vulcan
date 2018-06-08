@@ -40,9 +40,10 @@ export const addPageFunction = f => {
 
   // rename f2 to same name as f
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
-  const descriptor = Object.create(null); // no inherited properties
-  descriptor.value = f.name;
-  Object.defineProperty(f2, 'name', descriptor);
+  // LESSWRONG: DEACTIVATED THIS FOR DEBUGGING PURPOSES
+  // const descriptor = Object.create(null); // no inherited properties
+  // descriptor.value = f.name;
+  // Object.defineProperty(f2, 'name', descriptor);
 
   addCallback('router.onUpdate', f2);
 };
