@@ -35,13 +35,11 @@ const engineApiKey = getSetting('apolloEngine.apiKey');
 const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
 const engineConfig = {
   apiKey: engineApiKey,
-  // "origins": [
-  //   {
-  //     "http": {
-  //       "url": "http://localhost:3000/graphql"
-  //     }
-  //   }
-  // ],
+  "origins": [
+    {
+      requestTimeout: '120s'
+    }
+  ],
   "stores": [
     {
       "name": "vulcanCache",
@@ -114,7 +112,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   // cookies
   graphQLServer.use(cookiesMiddleware());
-  
+
   // compression
   graphQLServer.use(compression());
   // function customDetection(req){
@@ -214,7 +212,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
     options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
-    
+
     // add error formatting from apollo-errors
     options.formatError = formatError;
 
@@ -225,7 +223,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   if (timberApiKey) {
     //eslint-disable-next-line no-console
     console.info("Starting timber integration")
-    graphQLServer.use(timber.middlewares.express())
+    graphQLServer.use(timber.middlewares.express({capture_request_body: true, capture_response_body: true}))
   }
 
   // Start GraphiQL if enabled
