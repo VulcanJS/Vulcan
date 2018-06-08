@@ -1,3 +1,5 @@
+import Users from 'meteor/vulcan:users';
+
 const schema = {
 
   _id: {
@@ -26,7 +28,7 @@ const schema = {
   */
   userId: {
     type: String,
-    viewableBy: ['guests'],
+    viewableBy: Users.owns,
   },
 
   /**
@@ -44,16 +46,16 @@ const schema = {
   power: {
     type: Number,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: Users.owns,
   },
-  
+
   /**
     The vote timestamp
   */
   votedAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: Users.owns,
   }
 
 };

@@ -51,7 +51,6 @@ export const makeVoteable = collection => {
             if (!votes.length) return [];
             return Users.restrictViewableFields(currentUser, Votes, votes);
           },
-
         }
       }
     },
@@ -70,7 +69,7 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        viewableBy: ['sunshineRegiment', 'admins'],
         resolveAs: {
           type: '[User]',
           resolver: async (document, args, { currentUser, Users, Votes }) => {
@@ -128,7 +127,7 @@ export const makeVoteable = collection => {
     /**
       Whether the document is inactive. Inactive documents see their score recalculated less often
     */
-    { 
+    {
       fieldName: 'inactive',
       fieldSchema: {
         type: Boolean,
