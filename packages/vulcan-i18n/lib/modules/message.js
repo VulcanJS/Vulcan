@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { intlShape } from './shape';
 
-const FormattedMessage = ({ id, values, defaultMessage = '', html = false }, { intl }) => {
+const FormattedMessage = ({ id, values, defaultMessage = '', html = false, className = '' }, { intl }) => {
   const message = intl.formatMessage({ id, defaultMessage }, values);
+  const cssClass = `i18n-message ${className}`;
+
   return html ? 
-    <span className="i18n-message" dangerouslySetInnerHTML={{__html: message}}/> :
-    <span className="i18n-message">{message}</span>
+    <span className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :
+    <span className={cssClass}>{message}</span>
 }
 
 FormattedMessage.contextTypes = {
