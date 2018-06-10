@@ -30,7 +30,7 @@ Package.onUse(function(api) {
     // see https://github.com/meteor/meteor/blob/master/packages/meteor-base/package.js
 
     'underscore',
-    // 'hot-code-push',
+    'hot-code-push',
     // 'ddp',
 
     // Other packages
