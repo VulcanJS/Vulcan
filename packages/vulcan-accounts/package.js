@@ -19,6 +19,7 @@ Package.onUse(function(api) {
   api.use('random');
   api.use('email');
   api.use('session');
+  api.use('service-configuration');
 
   api.imply('accounts-base');
 

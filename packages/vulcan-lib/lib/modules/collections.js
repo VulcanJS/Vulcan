@@ -116,8 +116,8 @@ export const createCollection = options => {
   const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
-
+  const collection = collectionName === 'Users' && Meteor.users ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+  
   // decorate collection with options
   collection.options = options;
 
