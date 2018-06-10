@@ -15,6 +15,7 @@ Package.onUse(function (api) {
 
     // Meteor packages
 
+    'underscore',
     'meteor-base',
     'mongo',
     'tracker',
