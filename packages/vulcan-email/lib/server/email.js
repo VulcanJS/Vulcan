@@ -28,8 +28,7 @@ VulcanEmail.getTemplate = templateName => Handlebars.compile(
   { noEscape: true, strict: true}
 );
 
-VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}, locale) => {
-
+VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
   const emailProperties = {
     secondaryColor: getSetting('secondaryColor', '#444444'),
     accentColor: getSetting('accentColor', '#DD3416'),
@@ -43,7 +42,8 @@ VulcanEmail.buildTemplate = (htmlContent, optionalProperties = {}, locale) => {
     logoUrl: getSetting('logoUrl'),
     logoHeight: getSetting('logoHeight'),
     logoWidth: getSetting('logoWidth'),
-    ...optionalProperties,
+    ...data,
+    __: Strings[locale],
   };
 
   const emailHTML = VulcanEmail.getTemplate("wrapper")(emailProperties);
@@ -122,7 +122,7 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
 
   const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
 
-  data.Strings = Strings[locale];
+  data.__ = Strings[locale];
 
   const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data, locale);
 
