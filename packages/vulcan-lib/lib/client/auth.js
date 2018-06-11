@@ -33,26 +33,22 @@ function resetToken() {
   context.loginToken = loginToken;
 }
 
-if (typeof Accounts !== 'undefined') {
+Meteor.startup(() => {
+  resetToken();
+});
 
-  Meteor.startup(() => {
-    resetToken();
-  });
+const originalSetItem = Meteor._localStorage.setItem;
+Meteor._localStorage.setItem = function setItem(key, value) {
+  if (key === 'Meteor.loginToken') {
+    Meteor.defer(resetToken);
+  }
+  originalSetItem.call(Meteor._localStorage, key, value);
+};
 
-  const originalSetItem = Meteor._localStorage.setItem;
-  Meteor._localStorage.setItem = function setItem(key, value) {
-    if (key === 'Meteor.loginToken') {
-      Meteor.defer(resetToken);
-    }
-    originalSetItem.call(Meteor._localStorage, key, value);
-  };
-
-  const originalRemoveItem = Meteor._localStorage.removeItem;
-  Meteor._localStorage.removeItem = function removeItem(key) {
-    if (key === 'Meteor.loginToken') {
-      Meteor.defer(resetToken);
-    }
-    originalRemoveItem.call(Meteor._localStorage, key);
-  };
-
-}
+const originalRemoveItem = Meteor._localStorage.removeItem;
+Meteor._localStorage.removeItem = function removeItem(key) {
+  if (key === 'Meteor.loginToken') {
+    Meteor.defer(resetToken);
+  }
+  originalRemoveItem.call(Meteor._localStorage, key);
+};
