@@ -32,13 +32,13 @@ SimpleSchema.extendOptions([
   'onDelete', // field remove callback
   'onRemove', // field remove callback (OpenCRUD backwards compatibility)
 
-  'readBy', // who can view the field
+  'canRead', // who can view the field
   'viewableBy', // who can view the field (OpenCRUD backwards compatibility)
 
-  'createBy', // who can insert the field
+  'canCreate', // who can insert the field
   'insertableBy', // who can insert the field (OpenCRUD backwards compatibility)
 
-  'updateBy', // who can edit the field
+  'canUpdate', // who can edit the field
   'editableBy', // who can edit the field (OpenCRUD backwards compatibility)
 
   'resolveAs', // field-level resolver
