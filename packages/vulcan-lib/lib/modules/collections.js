@@ -6,7 +6,6 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { isIntlField } from './intl.js';
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
@@ -297,6 +296,11 @@ export const createCollection = options => {
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
     }
 
+    // sort using terms.orderBy (overwrite defaultView's sort)
+    if (terms.orderBy && !_.isEmpty(terms.orderBy)) {
+      parameters.options.sort = terms.orderBy
+    }
+
     // if there is no sort, default to sorting by createdAt descending
     if (!parameters.options.sort) {
       parameters.options.sort = { createdAt: -1 };
@@ -318,7 +322,7 @@ export const createCollection = options => {
       });
     }
 
-    if(terms.query) {
+    if (terms.query) {
         
       const query = escapeStringRegexp(terms.query);
 
