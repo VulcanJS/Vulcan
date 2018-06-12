@@ -6,6 +6,7 @@ import withCurrentUser from '../containers/withCurrentUser.js';
 import withEdit from '../containers/withEdit.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
+import moment from 'moment';
 
 class App extends PureComponent {
   constructor(props) {
@@ -13,9 +14,9 @@ class App extends PureComponent {
     if (props.currentUser) {
       runCallbacks('events.identify', props.currentUser);
     }
-    this.state = {
-      locale: this.initLocale(),
-    };
+    const locale = this.initLocale();
+    this.state = { locale };
+    moment.locale(locale);
   }
 
   initLocale = () => {
@@ -52,6 +53,7 @@ class App extends PureComponent {
     if (this.props.currentUser) {
      await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
     }
+    moment.locale(locale);
     this.props.client.resetStore()
   };
 
