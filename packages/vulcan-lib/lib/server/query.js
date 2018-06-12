@@ -1,6 +1,6 @@
 /*
 
-Run a GraphQL query from the server with the proper context
+Run a GraphQL request from the server with the proper context
 
 */
 import { graphql } from 'graphql';
@@ -12,13 +12,13 @@ import { getDefaultFragmentText, extractFragmentName, getFragmentText } from '..
 import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
 
-// note: if no context is passed, default to running queries with full admin privileges
-export const runQuery = async (query, variables = {}, context ) => {
+// note: if no context is passed, default to running requests with full admin privileges
+export const runGraphQL = async (query, variables = {}, context ) => {
 
   const defaultContext = { currentUser: {isAdmin: true}, locale: getSetting('locale') };
   const queryContext = merge(defaultContext, context);
 
-  // within the scope of this specific query, 
+  // within the scope of this specific request, 
   // decorate each collection with a new Dataloader object and add it to context
   Collections.forEach(collection => {
     collection.loader = new DataLoader(ids => findByIds(collection, ids, queryContext), { cache: true });
@@ -30,7 +30,7 @@ export const runQuery = async (query, variables = {}, context ) => {
 
   if (result.errors) {
     // eslint-disable-next-line no-console
-    console.error(`runQuery error: ${result.errors[0].message}`);
+    console.error(`runGraphQL error: ${result.errors[0].message}`);
     // eslint-disable-next-line no-console
     console.error(result.errors);
     throw new Error(result.errors[0].message);
@@ -38,6 +38,8 @@ export const runQuery = async (query, variables = {}, context ) => {
 
   return result;
 }
+
+export const runQuery = runGraphQL; //backwards compatibility
 
 /*
 
