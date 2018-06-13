@@ -1,4 +1,4 @@
-import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale } from 'meteor/vulcan:lib';
+import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale, hasIntlFields } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
@@ -54,7 +54,9 @@ class App extends PureComponent {
      await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
     }
     moment.locale(locale);
-    this.props.client.resetStore()
+    if (hasIntlFields) {
+      this.props.client.resetStore();
+    }
   };
 
   getChildContext() {

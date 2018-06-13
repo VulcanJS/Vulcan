@@ -11,6 +11,9 @@ const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 
 registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request');
 
+// will be set to `true` if there is one or more intl schema fields
+export let hasIntlFields = false;
+
 export const Collections = [];
 
 export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
@@ -130,6 +133,10 @@ export const createCollection = options => {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (fieldSchema.type && fieldSchema.type.name === 'IntlString') {
+
+      // we have at least one intl field
+      hasIntlFields = true;
+
       // make non-intl field optional
       schema[fieldName].optional = true;
 
