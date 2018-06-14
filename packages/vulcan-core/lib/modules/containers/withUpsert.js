@@ -57,8 +57,7 @@ const withUpsert = (options) => {
 
       // OpenCRUD backwards compatibility
       upsertMutation: (args) => {
-        const { search, set, unset } = args;
-        const selector = search;
+        const { selector, set, unset } = args;
         const data = clone(set);
         Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
