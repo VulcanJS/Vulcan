@@ -52,4 +52,6 @@ function onCreateUserCallback (options, user) {
   return user;
 }
 
-Accounts.onCreateUser(onCreateUserCallback);
+if (typeof Accounts !== 'undefined') {
+  Accounts.onCreateUser(onCreateUserCallback);
+}
