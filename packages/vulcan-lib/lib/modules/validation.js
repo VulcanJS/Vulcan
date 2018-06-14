@@ -1,3 +1,7 @@
+import pickBy from 'lodash/pickBy';
+
+export const dataToModifier = data => ({ $set: pickBy(data, f => f !== null), $unset: Object.keys(pickBy(data, f => f === null)).map(f => ({[f]: true})) });
+
 /*
 
   If document is not trusted, run validation steps:
@@ -101,6 +105,10 @@ export const validateModifier = (modifier, document, collection, context) => {
       });
     }
   });
+
+  export const validateData = (data, document, collection, context) => {
+    return validateModifier(dataToModifier(data), document, collection, context);
+  }
 
   // Check validity of set modifier
   // _.forEach(set, (value, fieldName) => {
