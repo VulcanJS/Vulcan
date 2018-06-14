@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     // Minimal Meteor packages
 
     'meteor@1.9.0',
-    'static-html',
+    'static-html@1.2.2',
     'standard-minifier-css@1.4.1',
     'standard-minifier-js@2.3.4',
     'es5-shim@4.8.0',
