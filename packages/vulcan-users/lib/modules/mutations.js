@@ -13,7 +13,8 @@ const createMutation = {
 
   check(user, document) {
     if (!user) return false;
-    return Users.canDo(user, 'users.new');
+    // OpenCRUD backwards compatibility
+    return Users.canDo(user, ['users.create', 'users.new']);
   },
 
   mutation(root, { document }, context) {
@@ -34,7 +35,8 @@ const updateMutation = {
 
   check(user, document) {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'users.edit.own') : Users.canDo(user, `users.edit.all`);
+    // OpenCRUD backwards compatibility
+    return Users.owns(user, document) ? Users.canDo(user, ['users.update.own', 'users.edit.own']) : Users.canDo(user, [`users.update.all`, `users.edit.all`]);
   },
 
   async mutation(root, { documentId, set, unset }, context) {
@@ -58,7 +60,8 @@ const deleteMutation = {
 
   check(user, document) {
     if (!user || !document) return false;
-    return Users.owns(user, document) ? Users.canDo(user, 'users.remove.own') : Users.canDo(user, `users.remove.all`);
+    // OpenCRUD backwards compatibility
+    return Users.owns(user, document) ? Users.canDo(user, ['users.delete.own', 'users.remove.own']) : Users.canDo(user, [`users.delete.all`, `users.remove.all`]);
   },
 
   async mutation(root, { documentId }, context) {

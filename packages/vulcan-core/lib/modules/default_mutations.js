@@ -27,7 +27,8 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
           return check(user, document);
         }
         // check if they can perform "foo.new" operation (e.g. "movies.new")
-        return Users.canDo(user, `${typeName.toLowerCase()}.new`);
+        // OpenCRUD backwards compatibility
+        return Users.canDo(user, [`${typeName.toLowerCase()}.create`, `${typeName.toLowerCase()}.new`]);
       },
 
       async mutation(root, { input }, context) {
@@ -70,9 +71,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         // check if user owns the document being edited.
         // if they do, check if they can perform "foo.edit.own" action
         // if they don't, check if they can perform "foo.edit.all" action
+        // OpenCRUD backwards compatibility
         return Users.owns(user, document)
-          ? Users.canDo(user, `${typeName.toLowerCase()}.edit.own`)
-          : Users.canDo(user, `${typeName.toLowerCase()}.edit.all`);
+          ? Users.canDo(user, [`${typeName.toLowerCase()}.update.own`, `${typeName.toLowerCase()}.edit.own`])
+          : Users.canDo(user, [`${typeName.toLowerCase()}.update.all`, `${typeName.toLowerCase()}.edit.all`]);
       },
 
       async mutation(root, { input }, context) {
@@ -134,9 +136,10 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
         }
 
         if (!user || !document) return false;
+        // OpenCRUD backwards compatibility
         return Users.owns(user, document)
-          ? Users.canDo(user, `${typeName.toLowerCase()}.remove.own`)
-          : Users.canDo(user, `${typeName.toLowerCase()}.remove.all`);
+          ? Users.canDo(user, [`${typeName.toLowerCase()}.delete.own`, `${typeName.toLowerCase()}.remove.own`])
+          : Users.canDo(user, [`${typeName.toLowerCase()}.delete.all`,  `${typeName.toLowerCase()}.remove.all`]);
       },
 
       async mutation(root, { input }, context) {

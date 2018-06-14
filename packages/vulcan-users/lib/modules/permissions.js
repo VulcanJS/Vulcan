@@ -1,5 +1,6 @@
 import Users from './collection.js';
 import { Utils } from 'meteor/vulcan:lib';
+import intersection from 'lodash/intersection';
 
 /**
  * @summary Users.groups object
@@ -105,16 +106,18 @@ Users.isMemberOf = (user, groupOrGroups) => {
   if (groups.indexOf('admin') !== -1) return Users.isAdmin(user);
 
   // else test for the `groups` field
-  return _.intersection(Users.getGroups(user), groups).length > 0;
+  return intersection(Users.getGroups(user), groups).length > 0;
 };
 
 /**
- * @summary check if a user can perform a specific action
+ * @summary check if a user can perform at least one of the specified actions
  * @param {Object} user
- * @param {String} action
+ * @param {String/Array} action or actions
  */
-Users.canDo = (user, action) => {
-  return Users.isAdmin(user) || Users.getActions(user).indexOf(action) !== -1;
+Users.canDo = (user, actionOrActions) => {
+  const authorizedActions = Users.getActions(user);
+  const actions = Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions];
+  return Users.isAdmin(user) || intersection(authorizedActions, actions).length > 0;
 };
 
 // DEPRECATED
@@ -280,18 +283,27 @@ Users.createGroup("guests"); // non-logged-in users
 Users.createGroup("members"); // regular users
 
 const membersActions = [
+
+  "users.create", 
+  "users.update.own", 
+  // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.own", 
-  "users.remove.own"
+  "users.remove.own",
 ];
 Users.groups.members.can(membersActions);
 
 Users.createGroup("admins"); // admin users
 
 const adminActions = [
+  "users.create", 
+  "users.update.all",
+  "users.delete.all",
+  "settings.update",
+  // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.all",
   "users.remove.all",
-  "settings.edit"
+  "settings.edit",
 ];
 Users.groups.admins.can(adminActions);
