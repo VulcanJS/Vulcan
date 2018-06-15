@@ -4,7 +4,7 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors } from 'meteor/vulcan:lib';
+import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getCollectionName } from 'meteor/vulcan:lib';
 import { createError } from 'apollo-errors';
 
 const defaultOptions = {
@@ -12,9 +12,9 @@ const defaultOptions = {
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
-export const getDefaultResolvers = (collectionName, resolverOptions = defaultOptions) => {
+export const getDefaultResolvers = (typeName, resolverOptions = defaultOptions) => {
   // TODO: find more reliable way to get type name from collection name
-  const typeName = collectionName.slice(0, -1);
+  const collectionName = getCollectionName(typeName);
 
   return {
     // resolver for returning a list of documents based on a set of query terms
@@ -26,7 +26,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
         const { terms = {}, enableCache = false, enableTotal = true } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
+        debugGroup(`--------------- start \x1b[35m${typeName} multi \x1b[0m resolver ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -62,7 +62,7 @@ export const getDefaultResolvers = (collectionName, resolverOptions = defaultOpt
 
         debug(`\x1b[33m=> ${restrictedDocs.length} documents returned\x1b[0m`);
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${typeName} list\x1b[0m resolver ---------------`);
+        debug(`--------------- end \x1b[35m${typeName} multi \x1b[0m resolver ---------------`);
         debug('');
 
         const data = { results: restrictedDocs };

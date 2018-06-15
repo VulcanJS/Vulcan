@@ -55,7 +55,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     const validationErrors = validateDocument(newDocument, collection, context);
 
     // run validation callbacks
-    newDocument = runCallbacks(`${collectionName}.create.validate`, newDocument, { currentUser, validationErrors });
+    newDocument = runCallbacks({ name: `${collectionName}.create.validate`, iterator: newDocument, properties: { currentUser, validationErrors }});
     // OpenCRUD backwards compatibility
     newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser, validationErrors);
     
@@ -95,7 +95,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // }
 
   // run sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.create.before`, newDocument, { currentUser });
+  newDocument = await runCallbacks({ name: `${collectionName}.create.before`, iterator: newDocument, properties: { currentUser }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName}.new.before`, newDocument, currentUser);
   newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
@@ -104,7 +104,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   newDocument._id = await Connectors.create(collection, newDocument);
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.create.after`, newDocument, { currentUser });
+  newDocument = await runCallbacks({ name: `${collectionName}.create.after`, iterator: newDocument, properties: { currentUser }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName}.new.after`, newDocument, currentUser);
 
@@ -114,7 +114,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  await runCallbacksAsync(`${collectionName}.create.async`, { insertedDocument, currentUser, collection });
+  await runCallbacksAsync({ name: `${collectionName}.create.async`, properties: { insertedDocument, currentUser, collection }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
 
@@ -159,7 +159,7 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
 
     if (data) {
       validationErrors =  validateData(data, document, collection, context);
-      data = runCallbacks(`${collectionName}.update.validate`, data, { document, currentUser, validationErrors });
+      data = runCallbacks({ name: `${collectionName}.update.validate`, iterator: data, properties: { document, currentUser, validationErrors }});
     } else {
       // OpenCRUD backwards compatibility
       validationErrors = validateModifier(modifier, document, collection, context);
@@ -205,7 +205,7 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   }
 
   // run sync callbacks (on mongo modifier)
-  data = await runCallbacks(`${collectionName}.update.before`, data, { document, currentUser, newDocument });
+  data = await runCallbacks({ name: `${collectionName}.update.before`, iterator: data, properties: { document, currentUser, newDocument }});
   // OpenCRUD backwards compatibility
   modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument);
   modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser, newDocument);
@@ -232,6 +232,7 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
     newDocument = await Connectors.get(collection, selector);
 
     // TODO: add support for caching by other indexes to Dataloader
+    // https://github.com/VulcanJS/Vulcan/issues/2000
     // clear cache if needed
     if (selector.documentId && collection.loader) {
       collection.loader.clear(selector.documentId);
@@ -239,12 +240,12 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   }
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.update.after`, newDocument, { document, currentUser });
+  newDocument = await runCallbacks({ name: `${collectionName}.update.after`, iterator: newDocument, properties: { document, currentUser }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
-  await runCallbacksAsync(`${collectionName}.update.async`, { newDocument, document, currentUser, collection });
+  await runCallbacksAsync({ name: `${collectionName}.update.async`, properties: { newDocument, document, currentUser, collection }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
@@ -275,7 +276,7 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
 
   // if document is not trusted, run validation callbacks
   if (validate) {
-    document = runCallbacks(`${collectionName}.delete.validate`, document, { currentUser });
+    document = runCallbacks({ name: `${collectionName}.delete.validate`, iterator: document, properties: { currentUser }});
     // OpenCRUD backwards compatibility
     document = runCallbacks(`${collectionName}.remove.validate`, document, currentUser);
   }
@@ -288,7 +289,7 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
     }
   }
 
-  await runCallbacks(`${collectionName}.delete.before`, document, { currentUser });
+  await runCallbacks({ name: `${collectionName}.delete.before`, iterator: document, properties: { currentUser }});
   // OpenCRUD backwards compatibility
   await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
   await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
@@ -301,7 +302,7 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
     collection.loader.clear(selector.documentId);
   }
 
-  await runCallbacksAsync(`${collectionName}.delete.async`, { document, currentUser, collection });
+  await runCallbacksAsync({ name: `${collectionName}.delete.async`, properties: { document, currentUser, collection }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 

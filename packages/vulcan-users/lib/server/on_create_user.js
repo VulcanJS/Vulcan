@@ -9,6 +9,8 @@ function onCreateUserCallback (options, user) {
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
 
+  options = runCallbacks(`user.new.validate.before`, options);
+  // OpenCRUD backwards compatibility
   options = runCallbacks(`users.new.validate.before`, options);
 
   // validate options since they can't be trusted
@@ -26,6 +28,8 @@ function onCreateUserCallback (options, user) {
   user = Object.assign(user, options);
 
   // run validation callbacks
+  user = runCallbacks(`user.new.validate`, user);
+  // OpenCRUD backwards compatibility
   user = runCallbacks(`users.new.validate`, user);
 
   // run onInsert step
@@ -43,10 +47,14 @@ function onCreateUserCallback (options, user) {
 
   user = runCallbacks("users.new.sync", user);
 
+  runCallbacksAsync("user.new.async", user);
+  // OpenCRUD backwards compatibility
   runCallbacksAsync("users.new.async", user);
 
   // check if all required fields have been filled in. If so, run profile completion callbacks
   if (Users.hasCompletedProfile(user)) {
+    runCallbacksAsync("user.profileCompleted.async", user);
+    // OpenCRUD backwards compatibility
     runCallbacksAsync("users.profileCompleted.async", user);
   }
   return user;

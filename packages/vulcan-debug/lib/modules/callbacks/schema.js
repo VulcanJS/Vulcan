@@ -2,18 +2,21 @@ import { Callbacks } from 'meteor/vulcan:lib';
 
 const schema = {
   name: {
-    label: 'Name',
     type: String,
     viewableBy: ['admins'],
   },
 
-  arguments: {
-    label: 'Arguments',
+  iterator: {
+    type: Object,
+    viewableBy: ['admins'],
+  },
+
+  properties: {
     type: Array,
     viewableBy: ['admins'],
   },
 
-  'arguments.$': {
+  'properties.$': {
     type: Object,
     viewableBy: ['admins'],
   },
@@ -36,7 +39,6 @@ const schema = {
   // },
 
   runs: {
-    label: 'Runs',
     type: String,
     viewableBy: ['admins'],
   },
@@ -54,13 +56,11 @@ const schema = {
   },
 
   description: {
-    label: 'Description',
     type: String,
     viewableBy: ['admins'],
   },
 
   hooks: {
-    label: 'Hooks',
     type: Array,
     viewableBy: ['admins'],
     resolveAs: {
