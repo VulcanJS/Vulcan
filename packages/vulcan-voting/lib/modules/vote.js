@@ -167,7 +167,7 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
 Cancel votes of a specific type on a given document (server)
 
 */
-const cancelVoteServer = async ({ document, voteType, collection, user, updateDocument }) => {
+export const cancelVoteServer = async ({ document, voteType, collection, user, updateDocument }) => {
 
   const newDocument = _.clone(document);
   const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
