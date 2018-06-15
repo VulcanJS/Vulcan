@@ -27,17 +27,23 @@ export const ComponentsTable = {} // storage for infos about components
  *
  */
 export const registerComponent = (name, rawComponent, ...hocs) => {
-  // console.log('// registering component');
-  // console.log(name);
-  // console.log('raw component', rawComponent);
-  // console.log('higher order components', hocs); 
 
-  // store the component in the table
-  ComponentsTable[name] = {
-    name,
-    rawComponent,
-    hocs,
-  };
+  if (typeof arguments[0] === 'object') {
+    const { name, component, hocs } = arguments[0];
+    ComponentsTable[name] = {
+      name,
+      rawComponent: component,
+      hocs,
+    };
+  } else {
+    // backwards compatibility
+    // store the component in the table
+    ComponentsTable[name] = {
+      name,
+      rawComponent,
+      hocs,
+    };
+  }
 };
 
 /**
