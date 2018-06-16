@@ -7,10 +7,7 @@ export const dataToModifier = data => ({ $set: pickBy(data, f => f !== null), $u
   If document is not trusted, run validation steps:
 
   1. Check that the current user has permission to edit each field
-  2. Check field lengths
-  3. Check field types
-  4. Check for missing fields
-  5. Run SimpleSchema validation step (for now)
+  2. Run SimpleSchema validation step
 
 */
 export const validateDocument = (document, collection, context) => {
@@ -30,32 +27,9 @@ export const validateDocument = (document, collection, context) => {
         properties: { name: fieldName },
       });
     }
-
-    // 2. check field lengths
-    // if (fieldSchema.limit && value.length > fieldSchema.limit) {
-    //   validationErrors.push({
-    //     id: 'errors.field_is_too_long',
-    //     data: { fieldName, limit: fieldSchema.limit },
-    //   });
-    // }
-
-    // 3. check that fields have the proper type
-    // TODO
   });
 
-  // 4. check that required fields have a value
-  // _.keys(schema).forEach(fieldName => {
-  //   const fieldSchema = schema[fieldName];
-
-  //   if ((fieldSchema.required || !fieldSchema.optional) && typeof document[fieldName] === 'undefined') {
-  //     validationErrors.push({
-  //       id: 'app.required_field_missing',
-  //       data: { fieldName },
-  //     });
-  //   }
-  // });
-
-  // 5. still run SS validation for now for backwards compatibility
+  // 5. run SS validation
   const validationContext = collection.simpleSchema().newContext();
   validationContext.validate(document);
 
@@ -80,10 +54,7 @@ export const validateDocument = (document, collection, context) => {
   If document is not trusted, run validation steps:
 
   1. Check that the current user has permission to insert each field
-  2. Check field lengths
-  3. Check field types
-  4. Check for missing fields
-  5. Run SimpleSchema validation step (for now)
+  2. Run SimpleSchema validation step
   
 */
 export const validateModifier = (modifier, document, collection, context) => {
@@ -106,41 +77,7 @@ export const validateModifier = (modifier, document, collection, context) => {
     }
   });
 
-  export const validateData = (data, document, collection, context) => {
-    return validateModifier(dataToModifier(data), document, collection, context);
-  }
-
-  // Check validity of set modifier
-  // _.forEach(set, (value, fieldName) => {
-  //   const fieldSchema = schema[fieldName];
-
-  //   // 2. check field lengths
-  //   if (fieldSchema.limit && value.length > fieldSchema.limit) {
-  //     validationErrors.push({
-  //       id: 'app.field_is_too_long',
-  //       data: { name: fieldName, limit: fieldSchema.limit },
-  //     });
-  //   }
-
-  //   // 3. check that fields have the proper type
-  //   // TODO
-  // });
-
-  // // 4. check that required fields have a value
-  // // when editing, we only want to require fields that are actually part of the form
-  // // so we make sure required keys are present in the $unset object
-  // _.keys(schema).forEach(fieldName => {
-  //   const fieldSchema = schema[fieldName];
-
-  //   if (unset[fieldName] && (fieldSchema.required || !fieldSchema.optional) && typeof set[fieldName] === 'undefined') {
-  //     validationErrors.push({
-  //       id: 'app.required_field_missing',
-  //       data: { name: fieldName },
-  //     });
-  //   }
-  // });
-
-  // 5. still run SS validation for now for backwards compatibility
+  // 2. run SS validation
   const validationContext = collection.simpleSchema().newContext();
   validationContext.validate({ $set: set, $unset: unset }, { modifier: true });
 
@@ -160,6 +97,9 @@ export const validateModifier = (modifier, document, collection, context) => {
   return validationErrors;
 };
 
+export const validateData = (data, document, collection, context) => {
+  return validateModifier(dataToModifier(data), document, collection, context);
+}
 
 /*
 

@@ -1,3 +1,5 @@
+// TODO: get rid of this?
+
 import Mingo from 'mingo';
 
 Mongo.Collection.prototype.findInStore = function (store, selector = {}, options = {}) {

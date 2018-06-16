@@ -36,7 +36,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
       hocs,
     };
   } else {
-    // backwards compatibility
+    // OpenCRUD backwards compatibility
     // store the component in the table
     ComponentsTable[name] = {
       name,

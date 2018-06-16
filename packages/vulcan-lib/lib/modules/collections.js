@@ -121,7 +121,7 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const {typeName, collectionName = getCollectionName(typeName), schema, resolvers = {}, mutations = {}, generateGraphQLSchema = true, dbCollectionName } = options;
+  const { typeName, collectionName = getCollectionName(typeName), schema, resolvers = {}, mutations = {}, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
   const collection = collectionName === 'Users' && Meteor.users ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());

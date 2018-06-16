@@ -79,7 +79,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     let autoValue;
     if (schema[fieldName].onCreate) {
       autoValue = await schema[fieldName].onCreate({ newDocument, currentUser });
-    } else {
+    } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
       autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
     }
@@ -183,12 +183,12 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
     delete newDocument[fieldName];
   });
 
-  // run onEdit step
+  // run onUpdate step
   for(let fieldName of _.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onUpdate) {
       autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
-    } else {
+    } else if (schema[fieldName].onEdit) {
     // OpenCRUD backwards compatibility
       autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
     }
@@ -283,9 +283,11 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
 
   // run onRemove step
   for(let fieldName of _.keys(schema)) {
-    const onDelete = schema[fieldName].onDelete || schema[fieldName].onRemove; // OpenCRUD backwards compatibility
-    if (onDelete) {
-      await onDelete(document, currentUser);
+    if (schema[fieldName].onDelete) {
+      await schema[fieldName].onDelete({ document, currentUser });
+    } else if (schema[fieldName].onRemove) {
+      // OpenCRUD backwards compatibility
+      await schema[fieldName].onRemove(document, currentUser);
     }
   }
 
