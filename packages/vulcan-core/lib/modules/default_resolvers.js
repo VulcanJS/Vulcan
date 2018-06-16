@@ -4,7 +4,7 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getCollectionName } from 'meteor/vulcan:lib';
+import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
 import { createError } from 'apollo-errors';
 
 const defaultOptions = {
@@ -12,10 +12,21 @@ const defaultOptions = {
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
-export const getDefaultResolvers = (typeName, resolverOptions = defaultOptions) => {
-  // TODO: find more reliable way to get type name from collection name
-  const collectionName = getCollectionName(typeName);
+export function getDefaultResolvers(options) {
 
+  let typeName, collectionName, resolverOptions;
+  if (typeof arguments[0] === 'object') {
+    // new single-argument API
+    typeName = arguments[0].typeName;
+    collectionName = getCollectionName(typeName); // TODO: find more reliable way to get type name from collection name
+    resolverOptions = arguments[0].options || defaultOptions;
+  } else {
+    // OpenCRUD backwards compatibility
+    collectionName = arguments[0];
+    typeName = getTypeName(collectionName);
+    resolverOptions = arguments[1] || defaultOptions;
+  }
+  
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -37,7 +48,7 @@ export const getDefaultResolvers = (typeName, resolverOptions = defaultOptions) 
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-
+        
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
@@ -128,4 +139,4 @@ export const getDefaultResolvers = (typeName, resolverOptions = defaultOptions) 
       },
     },
   };
-};
+}

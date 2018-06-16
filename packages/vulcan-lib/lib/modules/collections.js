@@ -1,12 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext, addGraphQLSchema } from './graphql.js';
+import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { multiQueryTemplate, singleQueryTemplate, createMutationTemplate, updateMutationTemplate, updateInputTemplate, upsertMutationTemplate, deleteMutationTemplate, deleteInputTemplate, upsertInputTemplate, createInputTemplate, mainTypeTemplate } from './graphql_templates';
+import { multiQueryTemplate, singleQueryTemplate, createMutationTemplate, updateMutationTemplate, upsertMutationTemplate, deleteMutationTemplate } from './graphql_templates';
 
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -21,6 +21,8 @@ export const Collections = [];
 export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
 
 export const getCollectionName = typeName => `${typeName}s`;
+
+export const getTypeName = collectionName => collectionName.slice(0,-1);
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to

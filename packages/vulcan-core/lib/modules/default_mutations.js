@@ -4,18 +4,32 @@ Default mutations
 
 */
 
-import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors, getCollectionName } from 'meteor/vulcan:lib';
+import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 
-export const getDefaultMutations = (typeName, options = { create: true, update: true, upsert: true, delete: true }) => {
+const defaultOptions = { create: true, update: true, upsert: true, delete: true };
+
+export function getDefaultMutations (options) {
+  
+  let typeName, collectionName, mutationOptions;
+  if (typeof arguments[0] === 'object') {
+    // new single-argument API
+    typeName = arguments[0].typeName;
+    collectionName = getCollectionName(typeName); // TODO: find more reliable way to get type name from collection name?
+    mutationOptions = arguments[0].options || defaultOptions;
+  } else {
+    // OpenCRUD backwards compatibility
+    collectionName = arguments[0];
+    typeName = getTypeName(collectionName);
+    mutationOptions = arguments[1] || defaultOptions;
+  }
+  
   // register callbacks for documentation purposes
   registerCollectionCallbacks(typeName);
 
-  const collectionName = getCollectionName(typeName);
-
   const mutations = {};
 
-  if (options.create) {
+  if (mutationOptions.create) {
     // mutation for inserting a new document
 
     const createMutation = {
@@ -24,7 +38,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
       // check function called on a user to see if they can perform the operation
       check(user, document) {
         // OpenCRUD backwards compatibility
-        const check = options.createCheck || options.newCheck;
+        const check = mutationOptions.createCheck || mutationOptions.newCheck;
         if (check) {
           return check(user, document);
         }
@@ -55,7 +69,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
     mutations.new = createMutation;
   }
 
-  if (options.update) {
+  if (mutationOptions.update) {
     // mutation for editing a specific document
 
     const updateMutation = {
@@ -64,7 +78,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
       // check function called on a user and document to see if they can perform the operation
       check(user, document) {
         // OpenCRUD backwards compatibility
-        const check = options.updateCheck || options.editCheck;
+        const check = mutationOptions.updateCheck || mutationOptions.editCheck;
         if (check) {
           return check(user, document);
         }
@@ -104,7 +118,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
     // OpenCRUD backwards compatibility
     mutations.edit = updateMutation;
   }
-  if (options.upsert) {
+  if (mutationOptions.upsert) {
     // mutation for upserting a specific document
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
@@ -124,7 +138,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
       },
     };
   }
-  if (options.delete) {
+  if (mutationOptions.delete) {
     // mutation for removing a specific document (same checks as edit mutation)
 
     const deleteMutation = {
@@ -132,7 +146,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
 
       check(user, document) {
         // OpenCRUD backwards compatibility
-        const check = options.deleteCheck || options.removeCheck;
+        const check = mutationOptions.deleteCheck || mutationOptions.removeCheck;
         if (check) {
           return check(user, document);
         }
@@ -167,7 +181,7 @@ export const getDefaultMutations = (typeName, options = { create: true, update: 
   }
 
   return mutations;
-};
+}
 
 const registerCollectionCallbacks = typeName => {
   typeName = typeName.toLowerCase();
