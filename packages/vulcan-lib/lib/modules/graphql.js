@@ -1,3 +1,5 @@
+// TODO: this should not be loaded on the client?
+
 /*
 
 Utilities to generate the app's GraphQL schema
@@ -11,7 +13,7 @@ import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 import { isIntlField } from './intl.js';
-import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDataInputTemplate, updateInputTemplate, updateDataInputTemplate, orderByInputTemplate, selectorUniqueInputTemplate, deleteInputTemplate, upsertInputTemplate, singleInputTemplate, multiInputTemplate, multiOutputTemplate, singleOutputTemplate, mutationOutputTemplate } from './graphql_templates.js';
+import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDataInputTemplate, updateInputTemplate, updateDataInputTemplate, orderByInputTemplate, selectorUniqueInputTemplate, deleteInputTemplate, upsertInputTemplate, singleInputTemplate, multiInputTemplate, multiOutputTemplate, singleOutputTemplate, mutationOutputTemplate, singleQueryTemplate, multiQueryTemplate, createMutationTemplate, updateMutationTemplate, upsertMutationTemplate, deleteMutationTemplate } from './graphql_templates.js';
 
 disableFragmentWarnings();
 
@@ -231,6 +233,8 @@ export const GraphQLSchema = {
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
+    let graphQLSchema = '';
+
     const schemaFragments = [];
 
     const collectionName = collection.options.collectionName;
@@ -241,40 +245,83 @@ export const GraphQLSchema = {
 
     const fields = this.getFields(schema, typeName);
 
-    const { interfaces = [] } = collection.options;
+    const { interfaces = [], resolvers, mutations } = collection.options;
 
     const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`
 
     const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
 
-    schemaFragments.push(mainTypeTemplate({ typeName, description, interfaces, fields: mainType }));
-    schemaFragments.push(deleteInputTemplate({ typeName }));
-    schemaFragments.push(singleInputTemplate({ typeName }));
-    schemaFragments.push(multiInputTemplate({ typeName }));
-    schemaFragments.push(singleOutputTemplate({ typeName }));
-    schemaFragments.push(multiOutputTemplate({ typeName }));
-    schemaFragments.push(mutationOutputTemplate({ typeName }));
+    if (mainType.length){
+      schemaFragments.push(mainTypeTemplate({ typeName, description, interfaces, fields: mainType }));
+      schemaFragments.push(deleteInputTemplate({ typeName }));
+      schemaFragments.push(singleInputTemplate({ typeName }));
+      schemaFragments.push(multiInputTemplate({ typeName }));
+      schemaFragments.push(singleOutputTemplate({ typeName }));
+      schemaFragments.push(multiOutputTemplate({ typeName }));
+      schemaFragments.push(mutationOutputTemplate({ typeName }));
 
-    if (create.length) {
-      schemaFragments.push(createInputTemplate({ typeName }));
-      schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
+      if (create.length) {
+        schemaFragments.push(createInputTemplate({ typeName }));
+        schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
+      }
+
+      if (update.length) {
+        schemaFragments.push(updateInputTemplate({ typeName }));
+        schemaFragments.push(upsertInputTemplate({ typeName }));
+        schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
+      }
+
+      schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
+
+      schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
+
+      schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
+
+      if (!_.isEmpty(resolvers)) {
+        const queryResolvers = {};
+  
+        // single
+        if (resolvers.single) { 
+          addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
+          queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(resolvers.single);
+        }
+  
+        // multi
+        if (resolvers.multi) { 
+          addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
+          queryResolvers[`${Utils.camelCaseify(typeName)}s`] = resolvers.multi.resolver.bind(resolvers.multi);
+        }
+        addGraphQLResolvers({ Query: { ...queryResolvers } });
+      }
+      
+      if (!_.isEmpty(mutations)) {
+        const mutationResolvers = {};
+        // create
+        if (mutations.create) { // e.g. "createMovie(input: CreateMovieInput) : Movie"
+          addGraphQLMutation(createMutationTemplate({ typeName }), mutations.create.description);
+          mutationResolvers[`create${typeName}`] = mutations.create.mutation.bind(mutations.create);
+        }
+        // update
+        if (mutations.update) { // e.g. "updateMovie(input: UpdateMovieInput) : Movie"
+          addGraphQLMutation(updateMutationTemplate({ typeName }), mutations.update.description);
+          mutationResolvers[`update${typeName}`] = mutations.update.mutation.bind(mutations.update);
+    
+        }
+        // upsert
+        if (mutations.upsert) { // e.g. "upsertMovie(input: UpsertMovieInput) : Movie"
+          addGraphQLMutation(upsertMutationTemplate({ typeName }), mutations.upsert.description);
+          mutationResolvers[`upsert${typeName}`] = mutations.upsert.mutation.bind(mutations.upsert);
+        }
+        // delete
+        if (mutations.delete) { // e.g. "deleteMovie(input: DeleteMovieInput) : Movie"
+          addGraphQLMutation(deleteMutationTemplate({ typeName }), mutations.delete.description);
+          mutationResolvers[`delete${typeName}`] = mutations.delete.mutation.bind(mutations.delete);
+        }
+        addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
+      }
+      graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
+
     }
-
-    if (update.length) {
-      schemaFragments.push(updateInputTemplate({ typeName }));
-      schemaFragments.push(upsertInputTemplate({ typeName }));
-      schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
-    }
-
-    schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
-
-    schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
-
-    schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
-
-    const graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
-
-    // console.log(graphQLSchema)
 
     return graphQLSchema;
   }

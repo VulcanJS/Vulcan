@@ -103,11 +103,11 @@ Mongo.Collection.prototype.aggregate = function (pipelines, options) {
 Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
-  if (self._transform && ! self._helpers)
+  if (self._transform && !self._helpers)
     throw new Meteor.Error("Can't apply helpers to '" +
       self._name + "' a transform function already exists!");
 
-  if (! self._helpers) {
+  if (!self._helpers) {
     self._helpers = function Document(doc) { return _.extend(this, doc); };
     self._transform = function(doc) {
       return new self._helpers(doc);
@@ -121,7 +121,7 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const { typeName, collectionName = getCollectionName(typeName), schema, resolvers = {}, mutations = {}, generateGraphQLSchema = true, dbCollectionName } = options;
+  const { typeName, collectionName = getCollectionName(typeName), schema, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
   const collection = collectionName === 'Users' && Meteor.users ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
@@ -169,56 +169,8 @@ export const createCollection = options => {
   addToGraphQLContext(context);
 
   if (generateGraphQLSchema){
-
     // add collection to list of dynamically generated GraphQL schemas
     addGraphQLCollection(collection);
-
-    // ------------------------------------- Queries -------------------------------- //
-
-    if (!_.isEmpty(resolvers)) {
-      const queryResolvers = {};
-
-      // single
-      if (resolvers.single) { 
-        addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
-        queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(resolvers.single);
-      }
-
-      // multi
-      if (resolvers.multi) { 
-        addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-        queryResolvers[`${Utils.camelCaseify(typeName)}s`] = resolvers.multi.resolver.bind(resolvers.multi);
-      }
-      addGraphQLResolvers({ Query: { ...queryResolvers } });
-    }
-
-    // ------------------------------------- Mutations -------------------------------- //
-
-    if (!_.isEmpty(mutations)) {
-      const mutationResolvers = {};
-      // create
-      if (mutations.create) { // e.g. "createMovie(input: CreateMovieInput) : Movie"
-        addGraphQLMutation(createMutationTemplate({ typeName }), mutations.create.description);
-        mutationResolvers[`create${typeName}`] = mutations.create.mutation.bind(mutations.create);
-      }
-      // update
-      if (mutations.update) { // e.g. "updateMovie(input: UpdateMovieInput) : Movie"
-        addGraphQLMutation(updateMutationTemplate({ typeName }), mutations.update.description);
-        mutationResolvers[`update${typeName}`] = mutations.update.mutation.bind(mutations.update);
-  
-      }
-      // upsert
-      if (mutations.upsert) { // e.g. "upsertMovie(input: UpsertMovieInput) : Movie"
-        addGraphQLMutation(upsertMutationTemplate({ typeName }), mutations.upsert.description);
-        mutationResolvers[`upsert${typeName}`] = mutations.upsert.mutation.bind(mutations.upsert);
-      }
-      // delete
-      if (mutations.delete) { // e.g. "deleteMovie(input: DeleteMovieInput) : Movie"
-        addGraphQLMutation(deleteMutationTemplate({ typeName }), mutations.delete.description);
-        mutationResolvers[`delete${typeName}`] = mutations.delete.mutation.bind(mutations.delete);
-      }
-      addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
-    }
   }
 
   // ------------------------------------- Default Fragment -------------------------------- //
