@@ -33,6 +33,7 @@ import { validateDocument, validateModifier, validateData, dataToModifier } from
 import { registerSetting } from '../modules/settings.js';
 import { debug } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
+import pickBy from 'lodash/pickBy';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
@@ -137,10 +138,7 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
 
   // OpenCRUD backwards compatibility
   // build mongo modifier from arguments
-  let modifier = {};
-  if (!data) {
-    modifier = { $set: set, $unset: unset }
-  }
+  let modifier = { $set: set, $unset: unset };
 
   // get original document from database
   // TODO: avoid fetching document a second time if possible
@@ -150,8 +148,9 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   debug('// updateMutator');
   debug('// collectionName: ', collection._name);
   debug('// selector: ', selector);
+  debug('// data: ', data);
   debug('// modifier: ', modifier);
-  debug('// document: ', document);
+  // debug('// document: ', document);
 
   if (validate) {
 
@@ -178,7 +177,10 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   }
 
   // get a "preview" of the new document
-  let newDocument = { ...document, ...modifier.$set};
+  let newDocument = { ...document, ...data};
+  newDocument = pickBy(newDocument, f => f !== null);
+  // OpenCRUD backwards compatibility
+  newDocument = { ...newDocument, ...modifier.$set};
   modifier.$unset && Object.keys(modifier.$unset).forEach(fieldName => {
     delete newDocument[fieldName];
   });
@@ -188,23 +190,26 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
     let autoValue;
     if (schema[fieldName].onUpdate) {
       autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
+      if (typeof autoValue !== 'undefined') {
+        data[fieldName] = autoValue;
+      }
     } else if (schema[fieldName].onEdit) {
-    // OpenCRUD backwards compatibility
+      // OpenCRUD backwards compatibility
       autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
-    }
-    if (typeof autoValue !== 'undefined') {
-      if (autoValue === null) {
-        // if any autoValue returns null, then unset the field
-        modifier.$unset[fieldName] = true;
-      } else {
-        modifier.$set[fieldName] = autoValue;
-        // make sure we don't try to unset the same field at the same time
-        delete modifier.$unset[fieldName];
+      if (typeof autoValue !== 'undefined') {
+        if (autoValue === null) {
+          // if any autoValue returns null, then unset the field
+          modifier.$unset[fieldName] = true;
+        } else {
+          modifier.$set[fieldName] = autoValue;
+          // make sure we don't try to unset the same field at the same time
+          delete modifier.$unset[fieldName];
+        }
       }
     }
   }
 
-  // run sync callbacks (on mongo modifier)
+  // run sync callbacks
   data = await runCallbacks({ name: `${collectionName}.update.before`, iterator: data, properties: { document, currentUser, newDocument }});
   // OpenCRUD backwards compatibility
   modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument);

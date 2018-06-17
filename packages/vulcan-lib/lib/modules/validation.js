@@ -1,6 +1,10 @@
 import pickBy from 'lodash/pickBy';
+import mapValues from 'lodash/mapValues';
 
-export const dataToModifier = data => ({ $set: pickBy(data, f => f !== null), $unset: Object.keys(pickBy(data, f => f === null)).map(f => ({[f]: true})) });
+export const dataToModifier = data => ({ 
+  $set: pickBy(data, f => f !== null), 
+  $unset: mapValues(pickBy(data, f => f === null), () => true),
+});
 
 /*
 
@@ -58,6 +62,7 @@ export const validateDocument = (document, collection, context) => {
   
 */
 export const validateModifier = (modifier, document, collection, context) => {
+  
   const { Users, currentUser } = context;
   const schema = collection.simpleSchema()._schema;
   const set = modifier.$set;
