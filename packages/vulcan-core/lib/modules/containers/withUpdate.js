@@ -58,7 +58,7 @@ const withUpdate = (options) => {
         const { documentId, set, unset } = args;
         const selector = { documentId };
         const data = clone(set);
-        Object.keys(unset).forEach(fieldName => {
+        unset && Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
         });
         return mutate({ 

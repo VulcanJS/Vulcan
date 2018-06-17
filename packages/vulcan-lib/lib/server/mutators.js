@@ -75,7 +75,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // run onInsert step
   // note: cannot use forEach with async/await. 
   // See https://stackoverflow.com/a/37576787/649299
-  for(let fieldName of _.keys(schema)) {
+  for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
       autoValue = await schema[fieldName].onCreate({ newDocument, currentUser });
@@ -179,12 +179,12 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
 
   // get a "preview" of the new document
   let newDocument = { ...document, ...modifier.$set};
-  Object.keys(modifier.$unset).forEach(fieldName => {
+  modifier.$unset && Object.keys(modifier.$unset).forEach(fieldName => {
     delete newDocument[fieldName];
   });
 
   // run onUpdate step
-  for(let fieldName of _.keys(schema)) {
+  for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onUpdate) {
       autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
@@ -282,7 +282,7 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
   }
 
   // run onRemove step
-  for(let fieldName of _.keys(schema)) {
+  for(let fieldName of Object.keys(schema)) {
     if (schema[fieldName].onDelete) {
       await schema[fieldName].onDelete({ document, currentUser });
     } else if (schema[fieldName].onRemove) {

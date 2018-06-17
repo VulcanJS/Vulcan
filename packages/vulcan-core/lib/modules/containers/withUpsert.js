@@ -59,7 +59,7 @@ const withUpsert = (options) => {
       upsertMutation: (args) => {
         const { selector, set, unset } = args;
         const data = clone(set);
-        Object.keys(unset).forEach(fieldName => {
+        unset && Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
         });
         return mutate({ 

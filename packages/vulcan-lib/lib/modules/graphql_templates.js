@@ -90,7 +90,8 @@ type MovieSelectorUniqueInput {
 */
 export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
 `input ${typeName}SelectorUniqueInput {
-  documentId: String
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
   slug: String
 ${convertToGraphQL(fields, '  ')}
 }`;
@@ -139,8 +140,11 @@ export const multiQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(typeNa
 The argument type when querying for a single document
 
 type SingleMovieInput {
-  documentId: String
-  slug: String
+  selector {
+    documentId: String
+    # or `_id: String`
+    # or `slug: String`
+  }
   enableCache: Boolean
 }
 

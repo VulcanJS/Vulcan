@@ -39,8 +39,8 @@ export default function withSingle(options) {
         variables: {
           input: {
             selector: {
-              documentId: documentId,
-              slug: slug,
+              documentId,
+              slug,
             },
             enableCache,
           }
