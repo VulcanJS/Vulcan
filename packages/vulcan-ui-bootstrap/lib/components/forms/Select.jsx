@@ -9,9 +9,8 @@ const SelectComponent = ({refFunction, inputProperties, ...properties}, { intl }
     value: '',
     disabled: true,
   };
-  inputProperties.options = [noneOption, ...inputProperties.options];
-  
-  return <Select {...inputProperties} ref={refFunction}/>
+
+  return <Select {...inputProperties} options={[noneOption, ...inputProperties.options]} ref={refFunction}/>
 };
 
 SelectComponent.contextTypes = {
