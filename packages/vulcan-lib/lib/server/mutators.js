@@ -31,7 +31,7 @@ import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
 import { createError } from 'apollo-errors';
 import { validateDocument, validateModifier, validateData, dataToModifier } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
-import { debug } from '../modules/debug.js';
+import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
 
@@ -39,16 +39,16 @@ registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
 export const createMutator = async ({ collection, document, data, currentUser, validate, context }) => {
 
-  debug('//------------------------------------//');
-  debug('// createMutator');
-  debug(collection._name);
+  const collectionName = collection.options.collectionName;
+
+  debug('');
+  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m create mutator ---------------`);
   debug(`validate: ${validate}`);
   debug(document || data);
 
   // we don't want to modify the original document
   let newDocument = Object.assign({}, document || data);
 
-  const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   if (validate) {
@@ -119,21 +119,25 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
 
-  debug('// createMutator finished:');
+  debug(`\x1b[33m=> created new document: \x1b[0m`);
   debug(newDocument);
-  debug('//------------------------------------//');
+  debugGroupEnd();
+  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m create mutator ---------------`);
+  debug('');
 
   return { data: newDocument };
 }
 
 
-export const updateMutator = async ({ collection, selector, data, set = {}, unset = {}, currentUser, validate, context }) => {
+export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context }) => {
 
+  const collectionName = collection.options.collectionName;
+
+  // OpenCRUD backwards compatibility
   if (!selector) {
-    throw new Error(`You must pass a "selector" argument to updateMutator`);
+    selector = { documentId };
   }
 
-  const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   // OpenCRUD backwards compatibility
@@ -144,13 +148,12 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   // TODO: avoid fetching document a second time if possible
   let document = await Connectors.get(collection, selector);
   
-  debug('//------------------------------------//');
-  debug('// updateMutator');
-  debug('// collectionName: ', collection._name);
+  debug('');
+  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m update mutator ---------------`);
+  debug('// collectionName: ', collectionName);
   debug('// selector: ', selector);
   debug('// data: ', data);
   debug('// modifier: ', modifier);
-  // debug('// document: ', document);
 
   if (validate) {
 
@@ -254,27 +257,29 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
-  debug('// updateMutator finished')
+  debug(`\x1b[33m=> updated document with modifier: \x1b[0m`);
   debug('// modifier: ', modifier)
-  debug('// updated document: ', newDocument)
-  debug('//------------------------------------//');
+  debugGroupEnd();
+  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m update mutator ---------------`);
+  debug('');
 
   return { data: newDocument };
 }
 
-export const deleteMutator = async ({ collection, selector, currentUser, validate, context }) => {
+export const deleteMutator = async ({ collection, selector, documentId, currentUser, validate, context }) => {
 
-  debug('//------------------------------------//');
-  debug('// deleteMutator')
-  debug(collection._name)
-  debug(selector)
-  debug('//------------------------------------//');
+  const collectionName = collection.options.collectionName;
+
+  debug('');
+  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m delete mutator ---------------`);
+  debug('// collectionName: ', collectionName);
+  debug('// selector: ', selector);
   
+  // OpenCRUD backwards compatibility
   if (!selector) {
-    throw new Error(`You must pass a "selector" argument to updateMutator`);
+    selector = { documentId };
   }
 
-  const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   let document = await Connectors.get(collection, selector);
@@ -312,6 +317,10 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
   await runCallbacksAsync({ name: `${collectionName}.delete.async`, properties: { document, currentUser, collection }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
+
+  debugGroupEnd();
+  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m delete mutator ---------------`);
+  debug('');
 
   return { data: document };
 }
