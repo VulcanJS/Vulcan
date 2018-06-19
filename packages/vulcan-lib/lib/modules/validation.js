@@ -6,6 +6,11 @@ export const dataToModifier = data => ({
   $unset: mapValues(pickBy(data, f => f === null), () => true),
 });
 
+export const modifierToData = modifier => ({
+  ...modifier.$set,
+  ...mapValues(modifier.$unset, () => null),
+});
+
 /*
 
   If document is not trusted, run validation steps:
