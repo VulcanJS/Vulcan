@@ -80,7 +80,9 @@ class FormComponent extends Component {
   Function passed to form controls (always controlled) to update their value
   
   */
-  handleChange = (name, value) => {
+  handleChange = (event) => {
+    let value = event.target.value;
+
     // if value is an empty string, delete the field
     if (value === '') {
       value = null;
