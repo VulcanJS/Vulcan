@@ -189,12 +189,22 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canViewField = function (user, field, document) {
-  if (field.viewableBy) {
-    return typeof field.viewableBy === 'function' ? field.viewableBy(user, document) : Users.isMemberOf(user, field.viewableBy)
-  }
-  return false;
-};
+ Users.canViewField = function ( user, field, document) {
+   if (field.viewableBy) {
+     if (typeof field.viewableBy === 'function') {
+       // if viewableBy is a function, execute it with user and document passed. it must return a boolean
+       return field.viewableBy(user, document);
+     } else if (typeof field.viewableBy === 'string') {
+       // if viewableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
+       return Users.isMemberOf(user, field.viewableBy);
+     } else if (Array.isArray(field.viewableBy) && field.viewableBy.length > 0) {
+       // if viewableBy is an array, we do a recursion on every item and return true if one of the items return true
+       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+       return field.viewableBy.reduce((accumulator, currentValue)=> accumulator || Users.canViewField(user, currentValue, document));
+     }
+   }
+   return false;
+ };
 
 /**
  * @summary Get a list of fields viewable by a user
@@ -255,7 +265,17 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
  */
 Users.canInsertField = function (user, field) {
   if (field.insertableBy) {
-    return typeof field.insertableBy === 'function' ? field.insertableBy(user) : Users.isMemberOf(user, field.insertableBy)
+    if (typeof field.insertableBy === 'function') {
+      // if insertableBy is a function, execute it with user and document passed. it must return a boolean
+      return field.insertableBy(user, document);
+    } else if (typeof field.insertableBy === 'string') {
+      // if insertableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, field.insertableBy);
+    } else if (Array.isArray(field.insertableBy) && field.insertableBy.length > 0) {
+      // if insertableBy is an array, we do a recursion on every item and return true if one of the items return true
+      // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+      return field.insertableBy.reduce((accumulator, currentValue)=> accumulator || Users.canInsertField(user, currentValue, document));
+    }
   }
   return false;
 };
@@ -267,7 +287,17 @@ Users.canInsertField = function (user, field) {
  */
 Users.canEditField = function (user, field, document) {
   if (field.editableBy) {
-    return typeof field.editableBy === 'function' ? field.editableBy(user, document) : Users.isMemberOf(user, field.editableBy)
+    if (typeof field.editableBy === 'function') {
+      // if editableBy is a function, execute it with user and document passed. it must return a boolean
+      return field.editableBy(user, document);
+    } else if (typeof field.editableBy === 'string') {
+      // if editableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, field.editableBy);
+    } else if (Array.isArray(field.editableBy) && field.editableBy.length > 0) {
+      // if editableBy is an array, we do a recursion on every item and return true if one of the items return true
+      // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+      return field.editableBy.reduce((accumulator, currentValue)=> accumulator || Users.canEditField(user, currentValue, document));
+    }
   }
   return false;
 };
