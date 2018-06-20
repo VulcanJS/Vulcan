@@ -5,13 +5,13 @@ import gql from 'graphql-tag';
 import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
 
 export default function withDocument (options) {
-    
-  const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
+
+  const { collectionName, pollInterval = getSetting('pollInterval', 0), enableCache = false, extraQueries } = options;
 
   const collection = options.collection || getCollection(collectionName);
   const queryName = options.queryName || `${collection.options.collectionName}SingleQuery`;
   const singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
- 
+
   let fragment;
 
   if (options.fragment) {
@@ -35,13 +35,13 @@ export default function withDocument (options) {
     ${fragment}
   `, {
     alias: 'withDocument',
-    
+
     options({ documentId, slug }) {
       const graphQLOptions = {
-        variables: { 
-          documentId: documentId, 
-          slug: slug, 
-          enableCache, 
+        variables: {
+          documentId: documentId,
+          slug: slug,
+          enableCache,
         },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
@@ -54,7 +54,7 @@ export default function withDocument (options) {
     },
     props: returnedProps => {
       const { /* ownProps, */ data } = returnedProps;
-      
+
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
