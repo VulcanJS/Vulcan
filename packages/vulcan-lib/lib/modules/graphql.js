@@ -321,6 +321,9 @@ export const GraphQLSchema = {
       }
       graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
 
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`)
     }
 
     return graphQLSchema;
