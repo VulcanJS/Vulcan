@@ -35,7 +35,7 @@ import {
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Formsy from 'formsy-react';
+import { Form } from 'formsy-react-components';
 import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
@@ -86,7 +86,7 @@ const computeStateFromProps = nextProps => {
 
 */
 
-class Form extends Component {
+class SmartForm extends Component {
   constructor(props) {
     super(props);
 
@@ -431,7 +431,7 @@ class Form extends Component {
           ...newValues,
         }, // Submit form after setState update completed
       }),
-      () => this.submitForm(this.refs.form.getModel())
+      () => this.submitForm(this.refs.form.formsyForm.getModel())
     );
   };
 
@@ -612,7 +612,7 @@ class Form extends Component {
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
+      this.submitForm(this.refs.form.formsyForm.getModel());
     }
   };
 
@@ -627,8 +627,7 @@ class Form extends Component {
   mutationSuccessCallback = (result, mutationType) => {
 
     this.setState(prevState => ({ disabled: false }));
-    
-    const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
+    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
@@ -636,7 +635,7 @@ class Form extends Component {
     // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
-      this.refs.form.reset();
+      this.refs.form.formsyForm.reset();
       this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
@@ -783,7 +782,7 @@ class Form extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
+        <Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
@@ -814,13 +813,13 @@ class Form extends Component {
             deleteDocument={(this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null}
             collectionName={collectionName}
           />
-        </Formsy.Form>
+        </Form>
       </div>
     );
   }
 }
 
-Form.propTypes = {
+SmartForm.propTypes = {
   // main options
   collection: PropTypes.object,
   collectionName: (props, propName, componentName) => {
@@ -863,18 +862,18 @@ Form.propTypes = {
   client: PropTypes.object,
 };
 
-Form.defaultProps = {
+SmartForm.defaultProps = {
   layout: 'horizontal',
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
 };
 
-Form.contextTypes = {
+SmartForm.contextTypes = {
   intl: intlShape,
 };
 
-Form.childContextTypes = {
+SmartForm.childContextTypes = {
   addToDeletedValues: PropTypes.func,
   deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
@@ -893,6 +892,6 @@ Form.childContextTypes = {
   currentValues: PropTypes.object,
 };
 
-module.exports = Form;
+module.exports = SmartForm;
 
-registerComponent('Form', Form);
+registerComponent('Form', SmartForm);
