@@ -17,13 +17,15 @@ const createMutation = {
     return Users.canDo(user, ['users.create', 'users.new']);
   },
 
-  mutation(root, { document }, context) {
-    performCheck(this, context.currentUser, document);
+  mutation(root, { input }, context) {
+    const { Users, currentUser } = context;
+    const { data } = input;
+    performCheck(this, currentUser, document);
 
     return createMutator({
-      collection: context.Users,
-      document: document,
-      currentUser: context.currentUser,
+      collection: Users,
+      data,
+      currentUser,
       validate: true,
       context,
     });
@@ -39,16 +41,18 @@ const updateMutation = {
     return Users.owns(user, document) ? Users.canDo(user, ['users.update.own', 'users.edit.own']) : Users.canDo(user, [`users.update.all`, `users.edit.all`]);
   },
 
-  async mutation(root, { documentId, set, unset }, context) {
-    const document = await Connectors.get(context.Users, documentId);
-    performCheck(this, context.currentUser, document);
+  async mutation(root, { input }, context) {
+    const { Users, currentUser } = context;
+    const { selector, data } = input;
+
+    const document = await Connectors.get(Users, selector);
+    performCheck(this, currentUser, document);
 
     return updateMutator({
-      collection: context.Users,
-      documentId: documentId,
-      set: set,
-      unset: unset,
-      currentUser: context.currentUser,
+      collection: Users,
+      selector,
+      data,
+      currentUser,
       validate: true,
       context,
     });
@@ -64,14 +68,18 @@ const deleteMutation = {
     return Users.owns(user, document) ? Users.canDo(user, ['users.delete.own', 'users.remove.own']) : Users.canDo(user, [`users.delete.all`, `users.remove.all`]);
   },
 
-  async mutation(root, { documentId }, context) {
-    const document = await Connectors.get(context.Users, documentId);
-    performCheck(this, context.currentUser, document);
+  async mutation(root, { input }, context) {
+
+    const { Users, currentUser } = context;
+    const { selector } = input;
+
+    const document = await Connectors.get(Users, selector);
+    performCheck(this, currentUser, document);
 
     return deleteMutator({
-      collection: context.Users,
-      documentId: documentId,
-      currentUser: context.currentUser,
+      collection: Users,
+      selector,
+      currentUser,
       validate: true,
       context,
     });
