@@ -9,8 +9,10 @@ const SelectComponent = ({refFunction, inputProperties, ...properties}, { intl }
     value: '',
     disabled: true,
   };
-
-  const options = [noneOption, ...inputProperties.options.map(({ label, value }) => ({ label, value: value.toString()}))];
+  let otherOptions = inputProperties.options;
+  // uncomment following to convert options values to strings
+  // otherOptions = otherOptions.map(({ label, value }) => ({ label, value: value.toString()}));
+  const options = [noneOption, ...otherOptions];
   return <Select {...inputProperties} options={options} ref={refFunction}/>
 };
 

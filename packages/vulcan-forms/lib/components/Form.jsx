@@ -35,7 +35,7 @@ import {
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { Form } from 'formsy-react-components';
+import Formsy from 'formsy-react';
 import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
@@ -431,7 +431,7 @@ class SmartForm extends Component {
           ...newValues,
         }, // Submit form after setState update completed
       }),
-      () => this.submitForm(this.refs.form.formsyForm.getModel())
+      () => this.submitForm(this.refs.form.getModel())
     );
   };
 
@@ -612,7 +612,7 @@ class SmartForm extends Component {
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.formsyForm.getModel());
+      this.submitForm(this.refs.form.getModel());
     }
   };
 
@@ -782,7 +782,7 @@ class SmartForm extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
@@ -813,7 +813,7 @@ class SmartForm extends Component {
             deleteDocument={(this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null}
             collectionName={collectionName}
           />
-        </Form>
+        </Formsy.Form>
       </div>
     );
   }
