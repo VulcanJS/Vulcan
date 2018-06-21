@@ -53,9 +53,9 @@ function generateSSRData(options, req, res, renderProps) {
       app = options.wrapperHook(req, res, appGenerator);
     }
 
-    if (options.preRender) {
-      options.preRender(req, res, app);
-    }
+    // if (options.preRender) {
+    //   options.preRender(req, res, app);
+    // }
 
     if (!options.disableSSR) {
       const sheet = new ServerStyleSheet();
