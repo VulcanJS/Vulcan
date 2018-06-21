@@ -189,22 +189,25 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
- Users.canViewField = function ( user, field, document) {
-   if (field.viewableBy) {
-     if (typeof field.viewableBy === 'function') {
-       // if viewableBy is a function, execute it with user and document passed. it must return a boolean
-       return field.viewableBy(user, document);
-     } else if (typeof field.viewableBy === 'string') {
-       // if viewableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
-       return Users.isMemberOf(user, field.viewableBy);
-     } else if (Array.isArray(field.viewableBy) && field.viewableBy.length > 0) {
-       // if viewableBy is an array, we do a recursion on every item and return true if one of the items return true
+ Users.canReadField = function ( user, field, document) {
+   const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
+   if (canRead) {
+     if (typeof canRead === 'function') {
+       // if canRead is a function, execute it with user and document passed. it must return a boolean
+       return canRead(user, document);
+     } else if (typeof canRead === 'string') {
+       // if canRead is just a string, we assume it's the name of a group and pass it to isMemberOf
+       return Users.isMemberOf(user, canRead);
+     } else if (Array.isArray(canRead) && canRead.length > 0) {
+       // if canRead is an array, we do a recursion on every item and return true if one of the items return true
        // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-       return field.viewableBy.reduce((accumulator, currentValue)=> accumulator || Users.canViewField(user, currentValue, document));
+       return canRead.reduce((accumulator, currentValue)=> accumulator || Users.canViewField(user, currentValue, document));
      }
    }
    return false;
  };
+ 
+ Users.canViewField = Users.canReadField; //OpenCRUD backwards compatibility
 
 /**
  * @summary Get a list of fields viewable by a user
@@ -263,44 +266,50 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canInsertField = function (user, field) {
-  if (field.insertableBy) {
-    if (typeof field.insertableBy === 'function') {
-      // if insertableBy is a function, execute it with user and document passed. it must return a boolean
-      return field.insertableBy(user, document);
-    } else if (typeof field.insertableBy === 'string') {
-      // if insertableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
-      return Users.isMemberOf(user, field.insertableBy);
-    } else if (Array.isArray(field.insertableBy) && field.insertableBy.length > 0) {
-      // if insertableBy is an array, we do a recursion on every item and return true if one of the items return true
+Users.canCreateField = function (user, field) {
+  const canCreate = field.canCreate || field.insertableBy; //OpenCRUD backwards compatibility
+  if (canCreate) {
+    if (typeof canCreate === 'function') {
+      // if canCreate is a function, execute it with user and document passed. it must return a boolean
+      return canCreate(user, document);
+    } else if (typeof canCreate === 'string') {
+      // if canCreate is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, canCreate);
+    } else if (Array.isArray(canCreate) && canCreate.length > 0) {
+      // if canCreate is an array, we do a recursion on every item and return true if one of the items return true
       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-      return field.insertableBy.reduce((accumulator, currentValue)=> accumulator || Users.canInsertField(user, currentValue, document));
+      return canCreate.reduce((accumulator, currentValue)=> accumulator || Users.canInsertField(user, currentValue, document));
     }
   }
   return false;
 };
+
+Users.canInsertField = Users.canCreateField; //OpenCRUD backwards compatibility
 
 /** @function
  * Check if a user can edit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canEditField = function (user, field, document) {
-  if (field.editableBy) {
-    if (typeof field.editableBy === 'function') {
-      // if editableBy is a function, execute it with user and document passed. it must return a boolean
-      return field.editableBy(user, document);
-    } else if (typeof field.editableBy === 'string') {
-      // if editableBy is just a string, we assume it's the name of a group and pass it to isMemberOf
-      return Users.isMemberOf(user, field.editableBy);
-    } else if (Array.isArray(field.editableBy) && field.editableBy.length > 0) {
-      // if editableBy is an array, we do a recursion on every item and return true if one of the items return true
+Users.canUpdateField = function (user, field, document) {
+  const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
+  if (canUpdate) {
+    if (typeof canUpdate === 'function') {
+      // if canUpdate is a function, execute it with user and document passed. it must return a boolean
+      return canUpdate(user, document);
+    } else if (typeof canUpdate === 'string') {
+      // if canUpdate is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, canUpdate);
+    } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
+      // if canUpdate is an array, we do a recursion on every item and return true if one of the items return true
       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-      return field.editableBy.reduce((accumulator, currentValue)=> accumulator || Users.canEditField(user, currentValue, document));
+      return canUpdate.reduce((accumulator, currentValue)=> accumulator || Users.canEditField(user, currentValue, document));
     }
   }
   return false;
 };
+
+Users.canEditField = Users.canUpdateField; //OpenCRUD backwards compatibility
 
 ////////////////////
 // Initialize     //
