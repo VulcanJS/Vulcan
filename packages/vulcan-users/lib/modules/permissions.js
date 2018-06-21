@@ -201,14 +201,12 @@ Users.isAdminById = Users.isAdmin;
      } else if (Array.isArray(canRead) && canRead.length > 0) {
        // if canRead is an array, we do a recursion on every item and return true if one of the items return true
        // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-       return canRead.reduce((accumulator, currentValue)=> accumulator || Users.canViewField(user, currentValue, document));
+       return canRead.reduce((accumulator, currentValue)=> accumulator || Users.canReadField(user, currentValue, document));
      }
    }
    return false;
  };
  
- Users.canViewField = Users.canReadField; //OpenCRUD backwards compatibility
-
 /**
  * @summary Get a list of fields viewable by a user
  * @param {Object} user - The user performing the action
@@ -218,7 +216,7 @@ Users.isAdminById = Users.isAdmin;
 Users.getViewableFields = function (user, collection, document) {
   return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
-      return Users.canViewField(user, field, document) ? fieldName : null;
+      return Users.canReadField(user, field, document) ? fieldName : null;
     }
   )));
 }
@@ -278,13 +276,11 @@ Users.canCreateField = function (user, field) {
     } else if (Array.isArray(canCreate) && canCreate.length > 0) {
       // if canCreate is an array, we do a recursion on every item and return true if one of the items return true
       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-      return canCreate.reduce((accumulator, currentValue)=> accumulator || Users.canInsertField(user, currentValue, document));
+      return canCreate.reduce((accumulator, currentValue)=> accumulator || Users.canCreateField(user, currentValue, document));
     }
   }
   return false;
 };
-
-Users.canInsertField = Users.canCreateField; //OpenCRUD backwards compatibility
 
 /** @function
  * Check if a user can edit a field
@@ -303,13 +299,11 @@ Users.canUpdateField = function (user, field, document) {
     } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
       // if canUpdate is an array, we do a recursion on every item and return true if one of the items return true
       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-      return canUpdate.reduce((accumulator, currentValue)=> accumulator || Users.canEditField(user, currentValue, document));
+      return canUpdate.reduce((accumulator, currentValue)=> accumulator || Users.canUpdateField(user, currentValue, document));
     }
   }
   return false;
 };
-
-Users.canEditField = Users.canUpdateField; //OpenCRUD backwards compatibility
 
 ////////////////////
 // Initialize     //
