@@ -635,7 +635,7 @@ class SmartForm extends Component {
     // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
-      this.refs.form.formsyForm.reset();
+      this.refs.form.reset(this.getDocument());
       this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
