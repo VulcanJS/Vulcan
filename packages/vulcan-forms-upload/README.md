@@ -86,7 +86,7 @@ Posts.addField({
     optional: true,
     control: getComponent('Upload'),
     canCreate: ['members'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ['guests'],
     form: {
       options: {
@@ -112,7 +112,7 @@ Users.addField({
     optional: true,
     control: getComponent('Upload'),
     canCreate: ['members'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ['guests'],
     preload: true, // ⚠️ will preload the field for the current user!
     form: {

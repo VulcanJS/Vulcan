@@ -79,7 +79,7 @@ const schema = {
     control: "checkbox",
     optional: true,
     canCreate: ['admins'],
-    editableBy: ['admins'],
+    canUpdate: ['admins'],
     canRead: ['guests'],
     group: adminGroup,
   },
@@ -89,7 +89,7 @@ const schema = {
     optional: true,
     control: 'select',
     canCreate: ['members'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ['guests'],
     options: () => Locales.map(({ id, label }) => ({ value: id, label })),
   },
@@ -119,7 +119,7 @@ const schema = {
     optional: true,
     control: "text",
     canCreate: ['members'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ['guests'],
     order: 10,
     onInsert: (user, options) => {
@@ -144,7 +144,7 @@ const schema = {
     mustComplete: true,
     control: "text",
     canCreate: ['guests'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ownsOrIsAdmin,
     order: 20,
     onInsert: (user) => {
@@ -233,7 +233,7 @@ const schema = {
     optional: true,
     control: "text",
     canCreate: ['members'],
-    editableBy: ['members'],
+    canUpdate: ['members'],
     canRead: ['guests'],
     order: 60,
     resolveAs: {
@@ -256,7 +256,7 @@ const schema = {
     optional: true,
     control: "checkboxgroup",
     canCreate: ['admins'],
-    editableBy: ['admins'],
+    canUpdate: ['admins'],
     canRead: ['guests'],
     group: adminGroup,
     form: {
