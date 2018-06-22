@@ -8,7 +8,7 @@ Users.addField([
       type: Boolean,
       optional: true,
       defaultValue: false,
-      insertableBy: ['members'],
+      canCreate: ['members'],
       editableBy: ['members'],
       canRead: ['guests'],
       control: 'NewsletterSubscribe',

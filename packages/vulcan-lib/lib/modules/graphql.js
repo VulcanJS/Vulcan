@@ -198,14 +198,16 @@ export const GraphQLSchema = {
           }
         }
 
-        if (field.insertableBy) {
+        // OpenCRUD backwards compatibility
+        if (field.canCreate || field.insertableBy) {
           fields.create.push({
             name: fieldName,
             type: fieldType,
             required: !field.optional,
           });
         }
-        if (field.editableBy) {
+        // OpenCRUD backwards compatibility
+        if (field.canUpdate || field.editableBy) {
           fields.update.push({
             name: fieldName,
             type: fieldType,

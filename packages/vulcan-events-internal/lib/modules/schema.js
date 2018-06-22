@@ -10,7 +10,7 @@ const schema = {
   name: {
     type: String,
     canRead: ['guests'],
-    insertableBy: ['guests'],
+    canCreate: ['guests'],
   },
   userId: {
     type: String,
@@ -34,7 +34,7 @@ const schema = {
     optional: true,
     blackbox: true,
     canRead: ['guests'],
-    insertableBy: ['guests'],
+    canCreate: ['guests'],
   },
 };
 

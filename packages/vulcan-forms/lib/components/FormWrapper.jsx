@@ -69,16 +69,19 @@ class FormWrapper extends PureComponent {
   }
 
   getReadableFields() {
+    const schema = this.getSchema();
     // OpenCRUD backwards compatibility
     return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
   }
 
   getCreateableFields() {
+    const schema = this.getSchema();
     // OpenCRUD backwards compatibility
     return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
   }
 
   getUpdatetableFields() {
+    const schema = this.getSchema();
     // OpenCRUD backwards compatibility
     return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
   }
