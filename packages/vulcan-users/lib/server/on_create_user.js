@@ -23,7 +23,7 @@ function onCreateUserCallback(options, user) {
   // check that the current user has permission to insert each option field
   _.keys(options).forEach(fieldName => {
     var field = schema[fieldName];
-    if (!field || !Users.canInsertField(user, field)) {
+    if (!field || !Users.canCreateField(user, field)) {
       throw new Error(Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName }));
     }
   });
