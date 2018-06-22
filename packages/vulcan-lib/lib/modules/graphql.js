@@ -140,7 +140,8 @@ export const GraphQLSchema = {
 
       // only include fields that are viewable/insertable/editable and don't contain "$" in their name
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
-      if ((field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
+      // OpenCRUD backwards compatibility
+      if ((field.canRead || field.canCreate || field.canUpdate || field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
 
         const fieldDescription = field.description;
         const fieldDirective = isIntlField(field) ? `@intl` : '';

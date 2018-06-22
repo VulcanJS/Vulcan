@@ -1,7 +1,7 @@
 const schema = {
   createdAt: {
     type: Date,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     optional: true,
     onInsert: () => {
       return new Date()
@@ -9,7 +9,7 @@ const schema = {
   },
   name: {
     type: String,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     insertableBy: ['guests'],
   },
   userId: {
@@ -33,7 +33,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     insertableBy: ['guests'],
   },
 };

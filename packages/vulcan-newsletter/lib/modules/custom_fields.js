@@ -10,7 +10,7 @@ Users.addField([
       defaultValue: false,
       insertableBy: ['members'],
       editableBy: ['members'],
-      viewableBy: ['guests'],
+      canRead: ['guests'],
       control: 'NewsletterSubscribe',
       group: {
         name: "newsletter",

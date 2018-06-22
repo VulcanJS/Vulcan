@@ -3,66 +3,66 @@ import { Callbacks } from 'meteor/vulcan:lib';
 const schema = {
   name: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   iterator: {
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   properties: {
     type: Array,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   'properties.$': {
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   // iterator: {
   //   label: 'Iterator',
   //   type: String,
-  //   viewableBy: ['admins'],
+  //   canRead: ['admins'],
   // },
 
   // options: {
   //   label: 'Options',
   //   type: Array,
-  //   viewableBy: ['admins'],
+  //   canRead: ['admins'],
   // },
 
   // 'options.$': {
   //   type: Object,
-  //   viewableBy: ['admins'],
+  //   canRead: ['admins'],
   // },
 
   runs: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   newSyntax: {
     label: 'New Syntax',
     type: Boolean,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   returns: {
     label: 'Should Return',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   description: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   hooks: {
     type: Array,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: '[String]',
       resolver: callback => {

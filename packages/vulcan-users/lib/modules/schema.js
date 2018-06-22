@@ -34,12 +34,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
   username: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     insertableBy: ['guests'],
     onInsert: user => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
@@ -68,7 +68,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     onInsert: () => {
       return new Date();
     }
@@ -80,7 +80,7 @@ const schema = {
     optional: true,
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     group: adminGroup,
   },
   locale: {
@@ -90,7 +90,7 @@ const schema = {
     control: 'select',
     insertableBy: ['members'],
     editableBy: ['members'],
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     options: () => Locales.map(({ id, label }) => ({ value: id, label })),
   },
   profile: {
@@ -109,7 +109,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
-    viewableBy: ownsOrIsAdmin,
+    canRead: ownsOrIsAdmin,
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -120,7 +120,7 @@ const schema = {
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     order: 10,
     onInsert: (user, options) => {
       const profileName = Utils.getNestedProperty(user, 'profile.name');
@@ -145,7 +145,7 @@ const schema = {
     control: "text",
     insertableBy: ['guests'],
     editableBy: ['members'],
-    viewableBy: ownsOrIsAdmin,
+    canRead: ownsOrIsAdmin,
     order: 20,
     onInsert: (user) => {
       // look in a few places for the user email
@@ -171,7 +171,7 @@ const schema = {
   emailHash: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     onInsert: user => {
       if (user.email) {
         return getCollection('Users').avatar.hash(user.email);
@@ -181,7 +181,7 @@ const schema = {
   avatarUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     onInsert: user => {
 
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
@@ -217,7 +217,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     order: 40,
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
@@ -234,7 +234,7 @@ const schema = {
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     order: 60,
     resolveAs: {
       type: 'String',
@@ -257,7 +257,7 @@ const schema = {
     control: "checkboxgroup",
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     group: adminGroup,
     form: {
       options: function () {
@@ -276,7 +276,7 @@ const schema = {
   pageUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (user, args, { Users }) => {
@@ -288,7 +288,7 @@ const schema = {
   editUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (user, args, { Users }) => {
