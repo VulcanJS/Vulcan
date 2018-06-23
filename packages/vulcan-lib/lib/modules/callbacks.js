@@ -158,7 +158,7 @@ export const runCallbacksAsync = function () {
   if (typeof arguments[0] === 'object' && arguments.length === 1) {
     const singleArgument = arguments[0];
     hook = singleArgument.name;
-    args = singleArgument.properties;
+    args = [singleArgument.properties]; // wrap in array for apply
   } else {
     // OpenCRUD backwards compatibility
     // the first argument is the name of the hook or an array of functions
