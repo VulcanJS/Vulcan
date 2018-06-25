@@ -37,7 +37,7 @@ export function getDefaultResolvers(options) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} multi \x1b[0m resolver ---------------`);
+        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -73,7 +73,7 @@ export function getDefaultResolvers(options) {
 
         debug(`\x1b[33m=> ${restrictedDocs.length} documents returned\x1b[0m`);
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${typeName} multi \x1b[0m resolver ---------------`);
+        debug(`--------------- end \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
         debug('');
 
         const data = { results: restrictedDocs };
@@ -98,7 +98,7 @@ export function getDefaultResolvers(options) {
         const { documentId, slug } = selector;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} single\x1b[0m resolver ---------------`);
+        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`DocumentId: ${documentId}, Slug: ${slug}`);
 
@@ -131,7 +131,7 @@ export function getDefaultResolvers(options) {
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${typeName} single\x1b[0m resolver ---------------`);
+        debug(`--------------- end \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
         debug('');
 
         // filter out disallowed properties and return resulting document

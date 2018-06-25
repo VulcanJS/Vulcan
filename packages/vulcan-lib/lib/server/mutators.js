@@ -29,7 +29,7 @@ to the client.
 
 import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
 import { createError } from 'apollo-errors';
-import { validateDocument, validateModifier, validateData, dataToModifier, modifierToData } from '../modules/validation.js';
+import { validateDocument, validateData, dataToModifier, modifierToData } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
@@ -42,7 +42,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   const { collectionName, typeName } = collection.options;
 
   debug('');
-  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m create mutator ---------------`);
+  debugGroup(`--------------- start \x1b[36m${collectionName} Create Mutator\x1b[0m ---------------`);
   debug(`validate: ${validate}`);
   debug(document || data);
 
@@ -122,7 +122,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   debug(`\x1b[33m=> created new document: \x1b[0m`);
   debug(newDocument);
   debugGroupEnd();
-  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m create mutator ---------------`);
+  debug(`--------------- end \x1b[36m${collectionName} Create Mutator\x1b[0m ---------------`);
   debug('');
 
   return { data: newDocument };
@@ -148,7 +148,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   let document = await Connectors.get(collection, selector);
   
   debug('');
-  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m update mutator ---------------`);
+  debugGroup(`--------------- start \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
   debug('// collectionName: ', collectionName);
   debug('// selector: ', selector);
   debug('// data: ', data);
@@ -236,7 +236,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   debug(`\x1b[33m=> updated document with modifier: \x1b[0m`);
   debug('// modifier: ', modifier)
   debugGroupEnd();
-  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m update mutator ---------------`);
+  debug(`--------------- end \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
   debug('');
 
   return { data: newDocument };
@@ -247,7 +247,7 @@ export const deleteMutator = async ({ collection, selector, documentId, currentU
   const { collectionName, typeName } = collection.options;
 
   debug('');
-  debugGroup(`--------------- start \x1b[35m${collectionName}\x1b[0m delete mutator ---------------`);
+  debugGroup(`--------------- start \x1b[36m${collectionName} Delete Mutator\x1b[0m ---------------`);
   debug('// collectionName: ', collectionName);
   debug('// selector: ', selector);
   
@@ -295,7 +295,7 @@ export const deleteMutator = async ({ collection, selector, documentId, currentU
   await runCallbacksAsync(`${collectionName.toLowerCase()}.remove.async`, document, currentUser, collection);
 
   debugGroupEnd();
-  debug(`--------------- end \x1b[35m${collectionName}\x1b[0m delete mutator ---------------`);
+  debug(`--------------- end \x1b[36m${collectionName} Delete Mutator\x1b[0m ---------------`);
   debug('');
 
   return { data: document };
