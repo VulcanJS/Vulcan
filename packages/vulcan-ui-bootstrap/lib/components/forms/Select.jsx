@@ -9,7 +9,7 @@ const SelectComponent = ({refFunction, inputProperties, ...properties}, { intl }
     value: '',
     disabled: true,
   };
-  let otherOptions = inputProperties.options;
+  let otherOptions = Array.isArray(inputProperties.options) && inputProperties.options.length ? inputProperties.options : [];
   // uncomment following to convert options values to strings
   // otherOptions = otherOptions.map(({ label, value }) => ({ label, value: value.toString()}));
   const options = [noneOption, ...otherOptions];
