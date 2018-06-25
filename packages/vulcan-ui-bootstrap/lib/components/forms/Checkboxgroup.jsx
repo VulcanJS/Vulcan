@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
+import without from 'lodash/without';
 
 // note: treat checkbox group the same as a nested component, using `path`
 const CheckboxGroupComponent = ({ refFunction, label, path, value, updateCurrentValues, inputProperties }) => (
@@ -16,13 +17,8 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, updateCurrent
         value={value.includes(option.value)}
         ref={refFunction}
         onChange={(name, isChecked) => {
-          // give each individual checkbox its own path
-          const checkboxPath = `${path}.${i}`;
-          if (isChecked) {
-            updateCurrentValues({ [checkboxPath]: option.value });
-          } else {
-            updateCurrentValues({ [checkboxPath]: null });
-          }
+          const newValue = isChecked ? [...value, option.value] : without(value, option.value);
+          updateCurrentValues({ [path]: newValue });
         }}
       />
     ))}
