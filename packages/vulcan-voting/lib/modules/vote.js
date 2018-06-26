@@ -1,4 +1,4 @@
-import { Connectors, debug, debugGroup, debugGroupEnd, runCallbacksAsync } from 'meteor/vulcan:core';
+import { Connectors, debug, debugGroup, debugGroupEnd, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
@@ -263,8 +263,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
     }
 
     returnedDocument = addVoteClient(voteOptions);
-    // returnedDocument = runCallbacks(`votes.${voteType}.client`, returnedDocument, collection, user);
-
+    returnedDocument = runCallbacks(`votes.${voteType}.client`, returnedDocument, collection, user, voteType);
   }
 
   // console.log('returnedDocument:', returnedDocument)
@@ -276,9 +275,9 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
 Server-side database operation
 
-### updateDocument 
+### updateDocument
 if set to true, this will perform its own database updates. If false, will only
-return an updated document without performing any database operations on it. 
+return an updated document without performing any database operations on it.
 
 */
 export const performVoteServer = async ({ documentId, document, voteType = 'bigUpvote', collection, voteId, user, updateDocument = true }) => {
@@ -307,6 +306,7 @@ export const performVoteServer = async ({ documentId, document, voteType = 'bigU
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
     let voteDocTuple = await cancelVoteServer(voteOptions);
+    voteDocTuple = await runCallbacks(`votes.cancel.sync`, voteDocTuple, collection, user);
     document = voteDocTuple.newDocument;
     runCallbacksAsync(`votes.cancel.async`, voteDocTuple, collection, user);
 
@@ -318,8 +318,8 @@ export const performVoteServer = async ({ documentId, document, voteType = 'bigU
       document = await clearVotesServer(voteOptions)
     }
 
-    // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
     let voteDocTuple = await addVoteServer({...voteOptions, document}); //Make sure to pass the new document to addVoteServer
+    voteDocTuple = await runCallbacks(`votes.${voteType}.sync`, voteDocTuple, collection, user);
     document = voteDocTuple.newDocument;
     runCallbacksAsync(`votes.${voteType}.async`, voteDocTuple, collection, user);
   }
