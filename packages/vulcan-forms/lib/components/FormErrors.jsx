@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, Components } from 'meteor/vulcan:core';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const FormErrors = ({ errors }) => (
   <div className="form-errors">
@@ -10,13 +9,7 @@ const FormErrors = ({ errors }) => (
         <ul>
           {errors.map((error, index) => (
             <li key={index}>
-              {error.message || (
-                <FormattedMessage
-                  id={error.id}
-                  values={{ ...error.properties }}
-                  defaultMessage={JSON.stringify(error)}
-                />
-              )}
+              <Components.FormError error={error} context="form" />
             </li>
           ))}
         </ul>
