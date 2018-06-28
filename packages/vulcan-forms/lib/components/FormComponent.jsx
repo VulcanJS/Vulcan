@@ -126,6 +126,8 @@ class FormComponent extends Component {
       defaultValue,
       emptyValue,
       isEmptyValue,
+      shouldMergeValue,
+      mergeValue,
     } = p;
     // for intl field fetch the actual field value by adding .value to the path
     const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
@@ -136,15 +138,9 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = emptyValue;
     } else {
-      if (p.locale) {
-        // note: intl fields are of type Object but should be treated as Strings
-        value = currentValue || documentValue || '';
-      } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
-        // for object and arrays, use lodash's merge
-        // if field type is array, use [] as merge seed to force result to be an array as well
-        value = merge([], documentValue, currentValue);
-      } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
-        value = merge({}, documentValue, currentValue);
+
+      if (shouldMergeValue({ currentValue, documentValue, ...p })) {
+        value = mergeValue({ currentValue, documentValue, ...p });
       } else {
         // note: value has to default to emptyValue to make component controlled
         value = emptyValue;
@@ -340,11 +336,15 @@ FormComponent.propTypes = {
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
   isEmptyValue: PropTypes.func,
+  shouldMergeValue: PropTypes.func,
+  mergeValue: PropTypes.func,
 };
 
 FormComponent.defaultProps = {
   emptyValue: '',
   defaultValue: '',
+  shouldMergeValue: FormUtils.shouldMergeValue,
+  mergeValue: FormUtils.mergeValue,
   isEmptyValue: FormUtils.isEmptyValue,
 };
 
