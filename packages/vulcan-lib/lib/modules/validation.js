@@ -48,14 +48,7 @@ export const validateDocument = (document, collection, context) => {
       // eslint-disable-next-line no-console
       // console.log(error);
       if (error.type.includes('intlError')) {
-        const intlErrors = JSON.parse(error.type.replace('intlError|', ''));
-        intlErrors.forEach(intlError => {
-          validationErrors.push({
-            id: `errors.required`,
-            path: `${intlError.path}.${intlError.index}`,
-            properties: intlError,
-          });
-        });
+        validationErrors = validationErrors.concat(JSON.parse(error.type.replace('intlError|', '')));
       } else {
         validationErrors.push({
           id: `errors.${error.type}`,
@@ -108,14 +101,7 @@ export const validateModifier = (modifier, document, collection, context) => {
       // eslint-disable-next-line no-console
       // console.log(error);
       if (error.type.includes('intlError')) {
-        const intlErrors = JSON.parse(error.type.replace('intlError|', ''));
-        intlErrors.forEach(intlError => {
-          validationErrors.push({
-            id: `errors.required`,
-            path: `${intlError.path}.${intlError.index}`,
-            properties: intlError,
-          });
-        });
+        validationErrors = validationErrors.concat(JSON.parse(error.type.replace('intlError|', '')));
       } else {
         validationErrors.push({
           id: `errors.${error.type}`,
