@@ -124,6 +124,7 @@ class FormComponent extends Component {
       document,
       currentValues,
       defaultValue,
+      emptyValue,
       isEmptyValue,
     } = p;
     // for intl field fetch the actual field value by adding .value to the path
@@ -133,7 +134,7 @@ class FormComponent extends Component {
     const isDeleted = p.deletedValues.includes(path);
 
     if (isDeleted) {
-      value = '';
+      value = emptyValue;
     } else {
       if (p.locale) {
         // note: intl fields are of type Object but should be treated as Strings
@@ -145,8 +146,8 @@ class FormComponent extends Component {
       } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
         value = merge({}, documentValue, currentValue);
       } else {
-        // note: value has to default to '' to make component controlled
-        value = '';
+        // note: value has to default to emptyValue to make component controlled
+        value = emptyValue;
         if (typeof currentValue !== 'undefined' && currentValue !== null) {
           value = currentValue;
         } else if (typeof documentValue !== 'undefined' && documentValue !== null) {
@@ -320,6 +321,8 @@ FormComponent.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.any,
+  emptyValue: PropTypes.any,
+  defaultvalue: PropTypes.any,
   placeholder: PropTypes.string,
   prefilledValue: PropTypes.any,
   options: PropTypes.any,
@@ -340,6 +343,8 @@ FormComponent.propTypes = {
 };
 
 FormComponent.defaultProps = {
+  emptyValue: '',
+  defaultValue: '',
   isEmptyValue: FormUtils.isEmptyValue,
 };
 
