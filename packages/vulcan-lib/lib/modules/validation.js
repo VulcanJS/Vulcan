@@ -63,7 +63,10 @@ export const validateDocument = (document, collection, context) => {
       validationErrors.push({
         id: `errors.${error.type}`,
         path: error.name,
-        properties: error,
+        properties: {
+          collection: collection._name,
+          ...error,
+        },
       });
     });
   }
@@ -144,7 +147,10 @@ export const validateModifier = (modifier, document, collection, context) => {
       validationErrors.push({
         id: `errors.${error.type}`,
         path: error.name,
-        properties: error,
+        properties: {
+          collection: collection._name,
+          ...error,
+        },
       });
     });
   }
