@@ -7,7 +7,7 @@ import merge from 'lodash/merge';
 import find from 'lodash/find';
 import isObjectLike from 'lodash/isObjectLike';
 import isEqual from 'lodash/isEqual';
-import { isEmptyValue } from '../modules/utils.js';
+import * as FormUtils from '../modules/utils.js';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class FormComponent extends Component {
   */
   handleChange = (name, value) => {
     // if value is an empty string, delete the field
-    if (value === '') {
+    if (this.props.isEmptyValue(value)) {
       value = null;
     }
     // if this is a number field, convert value before sending it up to Form
@@ -120,7 +120,12 @@ class FormComponent extends Component {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue, datatype } = p;
+    const {
+      document,
+      currentValues,
+      defaultValue,
+      isEmptyValue,
+    } = p;
     // for intl field fetch the actual field value by adding .value to the path
     const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
@@ -331,6 +336,11 @@ FormComponent.propTypes = {
   addToDeletedValues: PropTypes.func,
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
+  isEmptyValue: PropTypes.func,
+};
+
+FormComponent.defaultProps = {
+  isEmptyValue: FormUtils.isEmptyValue,
 };
 
 FormComponent.contextTypes = {
