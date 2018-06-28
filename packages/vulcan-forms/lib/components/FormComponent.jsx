@@ -293,6 +293,11 @@ class FormComponent extends Component {
   };
 
   render() {
+    if (this.props.intlInput) {
+      return <Components.FormIntl {...this.props} />;
+    } else if (this.props.nestedInput){
+      return <Components.FormNested {...this.props} />;
+    } 
     return (
       <Components.FormComponentInner
         {...this.props}

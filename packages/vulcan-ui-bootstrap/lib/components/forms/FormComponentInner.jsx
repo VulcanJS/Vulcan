@@ -51,8 +51,6 @@ class FormComponentInner extends PureComponent {
       showCharsRemaining,
       charsRemaining,
       renderComponent,
-      intlInput,
-      nestedInput,
     } = this.props;
 
     const hasErrors = errors && errors.length;
@@ -69,24 +67,18 @@ class FormComponentInner extends PureComponent {
 
     const FormInput = this.props.formInput;
 
-    if (intlInput) {
-      return <Components.FormIntl {...properties} />;
-    } else if (nestedInput){
-      return <Components.FormNested {...properties} />;
-    } else {
-      return (
-        <div className={inputClass}>
-          {instantiateComponent(beforeComponent, properties)}
-          <FormInput {...properties}/>
-          {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
-          {this.renderClear()}
-          {showCharsRemaining && (
-            <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
-          )}
-          {instantiateComponent(afterComponent, properties)}
-        </div>
-      );
-    }
+    return (
+      <div className={inputClass}>
+        {instantiateComponent(beforeComponent, properties)}
+        <FormInput {...properties}/>
+        {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
+        {this.renderClear()}
+        {showCharsRemaining && (
+          <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
+        )}
+        {instantiateComponent(afterComponent, properties)}
+      </div>
+    );
   }
 }
 
