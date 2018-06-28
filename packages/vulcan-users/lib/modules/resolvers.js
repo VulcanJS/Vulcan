@@ -39,7 +39,6 @@ const resolvers = {
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = await Users.getParameters(terms);
-      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
       const users = await Connectors.find(Users, selector, options);
 

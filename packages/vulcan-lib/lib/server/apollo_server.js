@@ -26,6 +26,7 @@ import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
+registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
@@ -145,7 +146,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = true;
+    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
