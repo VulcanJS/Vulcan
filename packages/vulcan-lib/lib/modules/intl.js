@@ -33,11 +33,11 @@ export const getIntlString = () => {
   const schema = {
     locale: {
       type: String,
-      optional: false,
+      optional: true,
     },
     value: {
       type: String,
-      optional: false,
+      optional: true,
     }
   };
 
