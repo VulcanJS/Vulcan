@@ -45,7 +45,7 @@ addStrings('en', {
   "forms.delete_confirm": "Delete document?",
   "forms.revert": "Revert",
   "forms.confirm_discard": "Discard changes?",
-  
+
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
   "users.profile_completed": "Profile completed.",
@@ -134,7 +134,7 @@ addStrings('en', {
   "admin": "Admin",
   "notifications": "Notifications",
 
-  "errors.expectedType": `Expected a field “{name}” of type {dataType}, got “{value}” instead.`,
-  "errors.required": `Field “{name}” is required.`,
-  "errors.maxString": `Field “{name}” is limited to {max} characters.`,
+  "errors.expectedType": `Expected a field “{label}” of type {dataType}, got “{value}” instead.`,
+  "errors.required": `Field “{label}” is required.`,
+  "errors.maxString": `Field “{label}” is limited to {max} characters.`,
 });
