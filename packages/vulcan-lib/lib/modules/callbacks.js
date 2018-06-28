@@ -62,12 +62,22 @@ export const removeCallback = function (hookName, callbackName) {
  */
 export const runCallbacks = function () {
 
-  // the first argument is the name of the hook or an array of functions
-  const hook = arguments[0];
-  // the second argument is the item on which to iterate
-  const item = arguments[1];
-  // successive arguments are passed to each iteration
-  const args = Array.prototype.slice.call(arguments).slice(2);
+  let hook, item, args;
+  if (typeof arguments[0] === 'object' && arguments.length === 1) {
+    const singleArgument = arguments[0];
+    hook = singleArgument.name;
+    item = singleArgument.iterator;
+    args = singleArgument.properties;
+  } else {
+    // OpenCRUD backwards compatibility
+    // the first argument is the name of the hook or an array of functions
+    hook = arguments[0];
+    // the second argument is the item on which to iterate
+    item = arguments[1];
+    // successive arguments are passed to each iteration
+    args = Array.prototype.slice.call(arguments).slice(2);
+  }
+
   // flag used to detect the callback that initiated the async context
   let asyncContext = false;
 
@@ -144,10 +154,18 @@ export const runCallbacks = function () {
  */
 export const runCallbacksAsync = function () {
 
-  // the first argument is the name of the hook or an array of functions
-  var hook = arguments[0];
-  // successive arguments are passed to each iteration
-  var args = Array.prototype.slice.call(arguments).slice(1);
+  let hook, args;
+  if (typeof arguments[0] === 'object' && arguments.length === 1) {
+    const singleArgument = arguments[0];
+    hook = singleArgument.name;
+    args = [singleArgument.properties]; // wrap in array for apply
+  } else {
+    // OpenCRUD backwards compatibility
+    // the first argument is the name of the hook or an array of functions
+    hook = arguments[0];
+    // successive arguments are passed to each iteration
+    args = Array.prototype.slice.call(arguments).slice(1);
+  }
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 

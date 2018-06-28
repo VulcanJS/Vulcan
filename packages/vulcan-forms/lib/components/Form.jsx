@@ -86,7 +86,7 @@ const computeStateFromProps = nextProps => {
 
 */
 
-class Form extends Component {
+class SmartForm extends Component {
   constructor(props) {
     super(props);
 
@@ -628,8 +628,7 @@ class Form extends Component {
   mutationSuccessCallback = (result, mutationType) => {
 
     this.setState(prevState => ({ disabled: false }));
-    
-    const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
+    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
@@ -637,7 +636,7 @@ class Form extends Component {
     // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
     if (typeof this.refs.form !== 'undefined') {
-      this.refs.form.reset();
+      this.refs.form.reset(this.getDocument());
       this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
@@ -821,7 +820,7 @@ class Form extends Component {
   }
 }
 
-Form.propTypes = {
+SmartForm.propTypes = {
   // main options
   collection: PropTypes.object,
   collectionName: (props, propName, componentName) => {
@@ -864,18 +863,18 @@ Form.propTypes = {
   client: PropTypes.object,
 };
 
-Form.defaultProps = {
+SmartForm.defaultProps = {
   layout: 'horizontal',
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
 };
 
-Form.contextTypes = {
+SmartForm.contextTypes = {
   intl: intlShape,
 };
 
-Form.childContextTypes = {
+SmartForm.childContextTypes = {
   addToDeletedValues: PropTypes.func,
   deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
@@ -895,6 +894,6 @@ Form.childContextTypes = {
   currentValues: PropTypes.object,
 };
 
-module.exports = Form;
+module.exports = SmartForm;
 
-registerComponent('Form', Form);
+registerComponent('Form', SmartForm);

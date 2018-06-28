@@ -2,25 +2,15 @@ import { getAllSettings } from 'meteor/vulcan:lib';
 
 const resolvers = {
 
-  list: {
-
-    name: 'SettingsList',
+  multi: {
 
     resolver(root, {terms = {}}, context, info) {
-      return getAllSettings();
+      const settings = getAllSettings();
+      return { results: settings, totalCount: settings.length };
     },
 
   },
 
-  total: {
-    
-    name: 'SettingsTotal',
-    
-    resolver(root, {terms = {}}, context) {
-      return getAllSettings().length;
-    },
-  
-  }
 };
 
 export default resolvers;

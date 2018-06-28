@@ -1,11 +1,11 @@
 /*
 
-Generic mutation wrapper to upsert a document in a collection. 
+Generic mutation wrapper to update a document in a collection. 
 
 Sample mutation: 
 
-  mutation upsertMovie($input: UpsertMovieInput) {
-    upsertMovie(input: $input) {
+  mutation updateMovie($input: UpdateMovieInput) {
+    updateMovie(input: $input) {
       data {
         _id
         name
@@ -23,17 +23,17 @@ Arguments:
 
 Child Props:
 
-  - upsertMovie({ selector, data })
+  - updateMovie({ selector, data })
   
 */
 
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getCollection, upsertClientTemplate } from 'meteor/vulcan:core';
+import { getFragment, getFragmentName, getCollection, updateClientTemplate } from 'meteor/vulcan:lib';
 import clone from 'lodash/clone';
 
-const withUpsert = (options) => {
+const withUpdate = (options) => {
 
   const { collectionName } = options;
   // get options
@@ -41,23 +41,22 @@ const withUpsert = (options) => {
   const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
   const fragmentName = getFragmentName(fragment);
   const typeName = collection.options.typeName;
-  const query = gql`${upsertClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const query = gql`${updateClientTemplate({ typeName, fragmentName })}${fragment}`;
 
   return graphql(query, {
-    alias: `withUpsert${typeName}`,
+    alias: `withUpdate${typeName}`,
     props: ({ ownProps, mutate }) => ({
-
-      [`upsert${typeName}`]: (args) => {
+      [`update${typeName}`]: (args) => {
         const { selector, data } = args;
         return mutate({ 
           variables: { input: { selector, data } }
           // note: updateQueries is not needed for editing documents
         });
       },
-
       // OpenCRUD backwards compatibility
-      upsertMutation: (args) => {
-        const { selector, set, unset } = args;
+      editMutation: (args) => {
+        const { documentId, set, unset } = args;
+        const selector = { documentId };
         const data = clone(set);
         unset && Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
@@ -67,10 +66,9 @@ const withUpsert = (options) => {
           // note: updateQueries is not needed for editing documents
         });
       }
-
     }),
   });
 
 }
 
-export default withUpsert;
+export default withUpdate;

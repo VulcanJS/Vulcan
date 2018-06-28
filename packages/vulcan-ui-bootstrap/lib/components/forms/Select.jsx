@@ -9,9 +9,11 @@ const SelectComponent = ({refFunction, inputProperties, ...properties}, { intl }
     value: '',
     disabled: true,
   };
-  inputProperties.options = [noneOption, ...inputProperties.options];
-  
-  return <Select {...inputProperties} ref={refFunction}/>
+  let otherOptions = Array.isArray(inputProperties.options) && inputProperties.options.length ? inputProperties.options : [];
+  // uncomment following to convert options values to strings
+  // otherOptions = otherOptions.map(({ label, value }) => ({ label, value: value.toString()}));
+  const options = [noneOption, ...otherOptions];
+  return <Select {...inputProperties} options={options} ref={refFunction}/>
 };
 
 SelectComponent.contextTypes = {

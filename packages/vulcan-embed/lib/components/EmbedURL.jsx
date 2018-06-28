@@ -59,7 +59,7 @@ class EmbedURL extends Component {
         const result = await this.props.getEmbedData({ url });
 
         // uncomment for debug
-        console.log('Embedly Data', result);
+        // console.log('Embedly Data', result);
 
         // extract the relevant data, for easier consumption
         const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;

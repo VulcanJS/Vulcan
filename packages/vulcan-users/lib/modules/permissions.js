@@ -1,5 +1,6 @@
 import Users from './collection.js';
 import { Utils } from 'meteor/vulcan:lib';
+import intersection from 'lodash/intersection';
 
 /**
  * @summary Users.groups object
@@ -105,16 +106,18 @@ Users.isMemberOf = (user, groupOrGroups) => {
   if (groups.indexOf('admin') !== -1) return Users.isAdmin(user);
 
   // else test for the `groups` field
-  return _.intersection(Users.getGroups(user), groups).length > 0;
+  return intersection(Users.getGroups(user), groups).length > 0;
 };
 
 /**
- * @summary check if a user can perform a specific action
+ * @summary check if a user can perform at least one of the specified actions
  * @param {Object} user
- * @param {String} action
+ * @param {String/Array} action or actions
  */
-Users.canDo = (user, action) => {
-  return Users.isAdmin(user) || Users.getActions(user).indexOf(action) !== -1;
+Users.canDo = (user, actionOrActions) => {
+  const authorizedActions = Users.getActions(user);
+  const actions = Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions];
+  return Users.isAdmin(user) || intersection(authorizedActions, actions).length > 0;
 };
 
 // DEPRECATED
@@ -186,13 +189,24 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canViewField = function (user, field, document) {
-  if (field.viewableBy) {
-    return typeof field.viewableBy === 'function' ? field.viewableBy(user, document) : Users.isMemberOf(user, field.viewableBy)
-  }
-  return false;
-};
-
+ Users.canReadField = function ( user, field, document) {
+   const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
+   if (canRead) {
+     if (typeof canRead === 'function') {
+       // if canRead is a function, execute it with user and document passed. it must return a boolean
+       return canRead(user, document);
+     } else if (typeof canRead === 'string') {
+       // if canRead is just a string, we assume it's the name of a group and pass it to isMemberOf
+       return Users.isMemberOf(user, canRead);
+     } else if (Array.isArray(canRead) && canRead.length > 0) {
+       // if canRead is an array, we do a recursion on every item and return true if one of the items return true
+       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+       return canRead.reduce((accumulator, currentValue)=> accumulator || Users.canReadField(user, currentValue, document));
+     }
+   }
+   return false;
+ };
+ 
 /**
  * @summary Get a list of fields viewable by a user
  * @param {Object} user - The user performing the action
@@ -202,7 +216,7 @@ Users.canViewField = function (user, field, document) {
 Users.getViewableFields = function (user, collection, document) {
   return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
-      return Users.canViewField(user, field, document) ? fieldName : null;
+      return Users.canReadField(user, field, document) ? fieldName : null;
     }
   )));
 }
@@ -250,9 +264,20 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canInsertField = function (user, field) {
-  if (field.insertableBy) {
-    return typeof field.insertableBy === 'function' ? field.insertableBy(user) : Users.isMemberOf(user, field.insertableBy)
+Users.canCreateField = function (user, field) {
+  const canCreate = field.canCreate || field.insertableBy; //OpenCRUD backwards compatibility
+  if (canCreate) {
+    if (typeof canCreate === 'function') {
+      // if canCreate is a function, execute it with user and document passed. it must return a boolean
+      return canCreate(user, document);
+    } else if (typeof canCreate === 'string') {
+      // if canCreate is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, canCreate);
+    } else if (Array.isArray(canCreate) && canCreate.length > 0) {
+      // if canCreate is an array, we do a recursion on every item and return true if one of the items return true
+      // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+      return canCreate.reduce((accumulator, currentValue)=> accumulator || Users.canCreateField(user, currentValue, document));
+    }
   }
   return false;
 };
@@ -262,9 +287,20 @@ Users.canInsertField = function (user, field) {
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canEditField = function (user, field, document) {
-  if (field.editableBy) {
-    return typeof field.editableBy === 'function' ? field.editableBy(user, document) : Users.isMemberOf(user, field.editableBy)
+Users.canUpdateField = function (user, field, document) {
+  const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
+  if (canUpdate) {
+    if (typeof canUpdate === 'function') {
+      // if canUpdate is a function, execute it with user and document passed. it must return a boolean
+      return canUpdate(user, document);
+    } else if (typeof canUpdate === 'string') {
+      // if canUpdate is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return Users.isMemberOf(user, canUpdate);
+    } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
+      // if canUpdate is an array, we do a recursion on every item and return true if one of the items return true
+      // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
+      return canUpdate.reduce((accumulator, currentValue)=> accumulator || Users.canUpdateField(user, currentValue, document));
+    }
   }
   return false;
 };
@@ -280,18 +316,27 @@ Users.createGroup("guests"); // non-logged-in users
 Users.createGroup("members"); // regular users
 
 const membersActions = [
+
+  "users.create", 
+  "users.update.own", 
+  // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.own", 
-  "users.remove.own"
+  "users.remove.own",
 ];
 Users.groups.members.can(membersActions);
 
 Users.createGroup("admins"); // admin users
 
 const adminActions = [
+  "users.create", 
+  "users.update.all",
+  "users.delete.all",
+  "settings.update",
+  // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.all",
   "users.remove.all",
-  "settings.edit"
+  "settings.edit",
 ];
 Users.groups.admins.can(adminActions);

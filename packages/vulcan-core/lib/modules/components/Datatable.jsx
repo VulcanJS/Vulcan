@@ -2,7 +2,7 @@ import { registerComponent, Components, getCollection, Utils } from 'meteor/vulc
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
-import withList from '../containers/withList.js';
+import withList from '../containers/withMulti.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
 

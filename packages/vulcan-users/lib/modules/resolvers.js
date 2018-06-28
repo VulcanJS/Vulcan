@@ -20,13 +20,22 @@ const specificResolvers = {
 
 addGraphQLResolvers(specificResolvers);
 
+const defaultOptions = {
+  cacheMaxAge: 300,
+};
+
 const resolvers = {
 
-  list: {
+  multi: {
 
-    name: 'UsersList',
+    async resolver(root, { input = {} }, {currentUser, Users}, { cacheControl }) {
 
-    async resolver(root, { terms = {} }, {currentUser, Users}, info) {
+      const { terms = {}, enableCache = false } = input;
+
+      if (cacheControl && enableCache) {
+        const maxAge = defaultOptions.cacheMaxAge;
+        cacheControl.setCacheHint({ maxAge });
+      }
 
       // get selector and options from terms and perform Mongo query
       let {selector, options} = await Users.getParameters(terms);
@@ -40,33 +49,30 @@ const resolvers = {
       // prime the cache
       restrictedUsers.forEach(user => Users.loader.prime(user._id, user));
 
-      return restrictedUsers;
+      return { results: restrictedUsers };
     },
 
   },
 
   single: {
 
-    name: 'UsersSingle',
+    async resolver(root, { input = {} }, { currentUser, Users }, { cacheControl }) {
+      
+      const { selector, enableCache = false } = input;
+      const { documentId, slug } = selector;
 
-    async resolver(root, { documentId, slug }, {currentUser, Users}) {
+      if (cacheControl && enableCache) {
+        const maxAge = defaultOptions.cacheMaxAge;
+        cacheControl.setCacheHint({ maxAge });
+      }
+
       // don't use Dataloader if user is selected by slug
       const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors.get(Users, {slug}): await Connectors.get(Users));
-      return Users.restrictViewableFields(currentUser, Users, user);
+      return { result: Users.restrictViewableFields(currentUser, Users, user) };
     },
 
   },
-
-  total: {
-
-    name: 'UsersTotal',
-
-    async resolver(root, { terms = {} }, { Users }) {
-      const {selector} = await Users.getParameters(terms);
-      return await Connectors.count(Users, selector);
-    },
-
-  }
+  
 };
 
 export default resolvers;
