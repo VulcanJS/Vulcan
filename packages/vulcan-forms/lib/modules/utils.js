@@ -1,4 +1,7 @@
 import Users from 'meteor/vulcan:users';
+import merge from 'lodash/merge';
+import find from 'lodash/find';
+import isObjectLike from 'lodash/isObjectLike';
 
 // add support for nested properties
 export const deepValue = function(obj, path){
@@ -64,3 +67,34 @@ export const getEditableFields = function (schema, user, document) {
 };
 
 export const isEmptyValue = value => (typeof value === 'undefined' || value === '' || Array.isArray(value) && value.length === 0);
+
+export const shouldMergeValue = ({
+  locale,
+  currentValue,
+  documentValue,
+  emptyValue,
+  datatype,
+}) =>
+  locale ||
+  Array.isArray(currentValue) && find(datatype, ['type', Array]) ||
+  isObjectLike(currentValue) && find(datatype, ['type', Object]);
+
+export const mergeValue = ({
+  locale,
+  currentValue,
+  documentValue,
+  emptyValue,
+  datatype,
+}) => {
+  if (locale) {
+    // note: intl fields are of type Object but should be treated as Strings
+    return currentValue || documentValue || emptyValue;
+  } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
+    // for object and arrays, use lodash's merge
+    // if field type is array, use [] as merge seed to force result to be an array as well
+    return merge([], documentValue, currentValue);
+  } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
+    return merge({}, documentValue, currentValue);
+  }
+  return currentValue;
+};
