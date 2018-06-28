@@ -196,10 +196,12 @@ class FormComponent extends Component {
 
   Get errors from Form state through context
 
+  Note: we use `includes` to get all errors from nested components, which have longer paths
+
   */
   getErrors = errors => {
     errors = errors || this.props.errors;
-    const fieldErrors = errors.filter(error => error.path === this.props.path);
+    const fieldErrors = errors.filter(error => error.path.includes(this.props.path));
     return fieldErrors;
   };
 

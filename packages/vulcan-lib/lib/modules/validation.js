@@ -47,11 +47,22 @@ export const validateDocument = (document, collection, context) => {
     errors.forEach(error => {
       // eslint-disable-next-line no-console
       // console.log(error);
-      validationErrors.push({
-        id: `errors.${error.type}`,
-        path: error.name,
-        properties: error,
-      });
+      if (error.type.includes('intlError')) {
+        const intlErrors = JSON.parse(error.type.replace('intlError|', ''));
+        intlErrors.forEach(intlError => {
+          validationErrors.push({
+            id: `errors.required`,
+            path: `${intlError.path}.${intlError.index}`,
+            properties: intlError,
+          });
+        });
+      } else {
+        validationErrors.push({
+          id: `errors.${error.type}`,
+          path: error.name,
+          properties: error,
+        });
+      }
     });
   }
 
@@ -96,11 +107,22 @@ export const validateModifier = (modifier, document, collection, context) => {
     errors.forEach(error => {
       // eslint-disable-next-line no-console
       // console.log(error);
-      validationErrors.push({
-        id: `errors.${error.type}`,
-        path: error.name,
-        properties: error,
-      });
+      if (error.type.includes('intlError')) {
+        const intlErrors = JSON.parse(error.type.replace('intlError|', ''));
+        intlErrors.forEach(intlError => {
+          validationErrors.push({
+            id: `errors.required`,
+            path: `${intlError.path}.${intlError.index}`,
+            properties: intlError,
+          });
+        });
+      } else {
+        validationErrors.push({
+          id: `errors.${error.type}`,
+          path: error.name,
+          properties: error,
+        });
+      }
     });
   }
 

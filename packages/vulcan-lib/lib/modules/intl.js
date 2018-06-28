@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import { Strings } from './strings';
 
 export const Locales = [];
 
@@ -31,14 +30,16 @@ Generate custom IntlString SimpleSchema type
 */
 export const getIntlString = () => {
   
-  const schema = {};
-
-  Object.keys(Strings).forEach(locale => {
-    schema[locale] = {
+  const schema = {
+    locale: {
       type: String,
-      optional: true,
-    };
-  });
+      optional: false,
+    },
+    value: {
+      type: String,
+      optional: false,
+    }
+  };
 
   const IntlString = new SimpleSchema(schema);
   IntlString.name = 'IntlString';

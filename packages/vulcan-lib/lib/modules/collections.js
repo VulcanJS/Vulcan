@@ -1,12 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
+import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { multiQueryTemplate, singleQueryTemplate, createMutationTemplate, updateMutationTemplate, upsertMutationTemplate, deleteMutationTemplate } from './graphql_templates';
+import { Locales, getIntlString } from './intl';
 
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -119,6 +119,33 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   });
 };
 
+/*
+
+Custom validation function to check for required locales
+
+See https://github.com/aldeed/simple-schema-js#custom-field-validation
+
+*/
+const validateIntlField = function () {
+  let errors = [];
+
+  // if field is required, go through locales to check which one are required
+  if (!this.definition.optional) {
+    const requiredLocales = Locales.filter(locale => locale.required);
+
+    requiredLocales.forEach((locale, index) => {
+      const strings = this.value;
+      const hasString = strings.some(s => s.locale === locale.id && s.value);
+      if (!hasString) {
+        errors.push({ path: this.key, locale: locale.id, index, name: `${this.key.replace('_intl', '')} (${locale.id})` });
+      }
+    });
+
+  }
+  // hack to work around the fact that custom validation function can only return a single string
+  return `intlError|${JSON.stringify(errors)}`;
+}
+
 export const createCollection = options => {
 
   const { typeName, collectionName = getCollectionName(typeName), schema, generateGraphQLSchema = true, dbCollectionName } = options;
@@ -138,23 +165,23 @@ export const createCollection = options => {
   // generate foo_intl fields
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
-    if (fieldSchema.type && fieldSchema.type.name === 'IntlString') {
+    if (fieldSchema.intl || (fieldSchema.type && fieldSchema.type.name === 'IntlString')) {
 
       // we have at least one intl field
       hasIntlFields = true;
-
-      // make non-intl field optional
-      schema[fieldName].optional = true;
 
       schema[`${fieldName}_intl`] = {
         ...schema[fieldName], // copy properties from regular field
         hidden: true,
         type: Array,
+        custom: validateIntlField,
       }
       schema[`${fieldName}_intl.$`] = {
-        type: Object,
-        blackbox: true,
+        type: getIntlString(),
       }
+
+      // make non-intl field optional
+      schema[fieldName].optional = true;
     }
   });
 
