@@ -3,7 +3,8 @@ import { registerFragment } from 'meteor/vulcan:lib';
 registerFragment(`
   fragment CallbacksFragment on Callback {
     name
-    arguments
+    iterator
+    properties
     runs
     returns
     description

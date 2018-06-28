@@ -48,7 +48,7 @@ export const flatten = function(data) {
 export const getInsertableFields = function (schema, user) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return Users.canInsertField(user, field);
+    return Users.canCreateField(user, field);
   });
   return fields;
 };
@@ -61,7 +61,7 @@ export const getInsertableFields = function (schema, user) {
 export const getEditableFields = function (schema, user, document) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return Users.canEditField(user, field, document);
+    return Users.canUpdateField(user, field, document);
   });
   return fields;
 };

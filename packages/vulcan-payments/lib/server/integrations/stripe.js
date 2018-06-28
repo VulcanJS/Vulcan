@@ -270,6 +270,7 @@ export const createSubscription = async ({user, product, collection, document, m
     console.log('// Stripe createSubscription error');
     // eslint-disable-next-line no-console
     console.log(error);
+    throw error;
   }
 };
 

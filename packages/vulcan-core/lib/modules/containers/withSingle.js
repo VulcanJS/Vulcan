@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/vulcan:core';
+import { getSetting, getFragment, getFragmentName, getCollection, singleClientTemplate, Utils } from 'meteor/vulcan:lib';
 
-export default function withDocument (options) {
-    
-  const { collectionName, pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
+export default function withSingle(options) {
+
+  const {
+    collectionName,
+    pollInterval = getSetting('pollInterval', 20000),
+    enableCache = false,
+    extraQueries,
+  } = options;
 
   const collection = options.collection || getCollection(collectionName);
-  const queryName = options.queryName || `${collection.options.collectionName}SingleQuery`;
-  const singleResolverName = collection.options.resolvers.single && collection.options.resolvers.single.name;
- 
+  const typeName = collection.options.typeName;
+  const resolverName = Utils.camelCaseify(typeName);
+
   let fragment;
 
   if (options.fragment) {
@@ -24,24 +29,21 @@ export default function withDocument (options) {
 
   const fragmentName = getFragmentName(fragment);
 
-  return graphql(gql`
-    query ${queryName}($documentId: String, $slug: String, $enableCache: Boolean) {
-      ${singleResolverName}(documentId: $documentId, slug: $slug, enableCache: $enableCache) {
-        __typename
-        ...${fragmentName}
-      }
-      ${extraQueries || ''}
-    }
-    ${fragment}
-  `, {
-    alias: 'withDocument',
-    
+  const query = gql`${singleClientTemplate({ typeName, fragmentName, extraQueries })}${fragment}`;
+
+  return graphql(query, {
+    alias: `with${typeName}`,
+
     options({ documentId, slug }) {
       const graphQLOptions = {
-        variables: { 
-          documentId: documentId, 
-          slug: slug, 
-          enableCache, 
+        variables: {
+          input: {
+            selector: {
+              documentId,
+              slug,
+            },
+            enableCache,
+          }
         },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
@@ -54,12 +56,12 @@ export default function withDocument (options) {
     },
     props: returnedProps => {
       const { /* ownProps, */ data } = returnedProps;
-      
+
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),
-        [ propertyName ]: data[singleResolverName],
+        [propertyName]: data[resolverName] && data[resolverName].result,
         fragmentName,
         fragment,
         data,

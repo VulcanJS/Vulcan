@@ -68,6 +68,24 @@ class FormWrapper extends PureComponent {
     return this.props.documentId || this.props.slug ? "edit" : "new";
   }
 
+  getReadableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
+  }
+
+  getCreateableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
+  }
+
+  getUpdatetableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
+  }
+
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
   getFragments() {
@@ -75,16 +93,15 @@ class FormWrapper extends PureComponent {
     const prefix = `${this.getCollection()._name}${Utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
 
-    const schema = this.getSchema();
     const fields = this.props.fields;
-    const viewableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].viewableBy);
-    const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableBy);
-    const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableBy);
+    const readableFields = this.getReadableFields();
+    const createableFields = this.getCreateableFields();
+    const updatetableFields = this.getUpdatetableFields();
 
     // get all editable/insertable fields (depending on current form type)
-    let queryFields = this.getFormType() === 'new' ? insertableFields : editableFields;
+    let queryFields = this.getFormType() === 'new' ? createableFields : updatetableFields;
     // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
-    let mutationFields = this.getFormType() === 'new' ? _.unique(insertableFields.concat(viewableFields)) : _.unique(insertableFields.concat(editableFields));
+    let mutationFields = this.getFormType() === 'new' ? _.unique(createableFields.concat(readableFields)) : _.unique(createableFields.concat(updatetableFields));
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {

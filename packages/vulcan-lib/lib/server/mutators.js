@@ -29,25 +29,26 @@ to the client.
 
 import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
 import { createError } from 'apollo-errors';
-import { validateDocument, validateModifier } from '../modules/validation.js';
+import { validateDocument, validateData, dataToModifier, modifierToData } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
-import { debug } from '../modules/debug.js';
+import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
+import pickBy from 'lodash/pickBy';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
-export const newMutation = async ({ collection, document, currentUser, validate, context }) => {
+export const createMutator = async ({ collection, document, data, currentUser, validate, context }) => {
 
-  debug('//------------------------------------//');
-  debug('// newMutation');
-  debug(collection._name);
+  const { collectionName, typeName } = collection.options;
+
+  debug('');
+  debugGroup(`--------------- start \x1b[36m${collectionName} Create Mutator\x1b[0m ---------------`);
   debug(`validate: ${validate}`);
-  debug(document);
+  debug(document || data);
 
   // we don't want to modify the original document
-  let newDocument = Object.assign({}, document);
+  let newDocument = Object.assign({}, document || data);
 
-  const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
   if (validate) {
@@ -55,8 +56,10 @@ export const newMutation = async ({ collection, document, currentUser, validate,
     const validationErrors = validateDocument(newDocument, collection, context);
 
     // run validation callbacks
-    newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser, validationErrors);
-  
+    newDocument = runCallbacks({ name: `${typeName.toLowerCase()}.create.validate`, iterator: newDocument, properties: { currentUser, validationErrors }});
+    // OpenCRUD backwards compatibility
+    newDocument = runCallbacks(`${collectionName.toLowerCase()}.new.validate`, newDocument, currentUser, validationErrors);
+    
     if (validationErrors.length) {
       const NewDocumentValidationError = createError('app.validation_error', {message: 'app.new_document_validation_error'});
       throw new NewDocumentValidationError({data: {break: true, errors: validationErrors}});
@@ -73,12 +76,16 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   // run onInsert step
   // note: cannot use forEach with async/await. 
   // See https://stackoverflow.com/a/37576787/649299
-  for(let fieldName of _.keys(schema)) {
-    if (schema[fieldName].onInsert) {
-      const autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
-      if (typeof autoValue !== 'undefined') {
-        newDocument[fieldName] = autoValue;
-      }
+  for(let fieldName of Object.keys(schema)) {
+    let autoValue;
+    if (schema[fieldName].onCreate) {
+      autoValue = await schema[fieldName].onCreate({ newDocument, currentUser });
+    } else if (schema[fieldName].onInsert) {
+      // OpenCRUD backwards compatibility
+      autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
+    }
+    if (typeof autoValue !== 'undefined') {
+      newDocument[fieldName] = autoValue;
     }
   }
 
@@ -89,14 +96,18 @@ export const newMutation = async ({ collection, document, currentUser, validate,
   // }
 
   // run sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.new.before`, newDocument, currentUser);
-  newDocument = await runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
+  newDocument = await runCallbacks({ name: `${typeName}.create.before`, iterator: newDocument, properties: { currentUser }});
+  // OpenCRUD backwards compatibility
+  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.before`, newDocument, currentUser);
+  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, newDocument, currentUser);
 
   // add _id to document
   newDocument._id = await Connectors.create(collection, newDocument);
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.new.after`, newDocument, currentUser);
+  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.after`, iterator: newDocument, properties: { currentUser }});
+  // OpenCRUD backwards compatibility
+  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, newDocument, currentUser);
 
   // get fresh copy of document from db
   // TODO: not needed?
@@ -104,80 +115,90 @@ export const newMutation = async ({ collection, document, currentUser, validate,
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  await runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
+  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.create.async`, properties: { insertedDocument, currentUser, collection }});
+  // OpenCRUD backwards compatibility
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.new.async`, insertedDocument, currentUser, collection);
 
-  debug('// new mutation finished:');
+  debug(`\x1b[33m=> created new document: \x1b[0m`);
   debug(newDocument);
-  debug('//------------------------------------//');
+  debugGroupEnd();
+  debug(`--------------- end \x1b[36m${collectionName} Create Mutator\x1b[0m ---------------`);
+  debug('');
 
-  return newDocument;
+  return { data: newDocument };
 }
 
 
-export const editMutation = async ({ collection, documentId, set = {}, unset = {}, currentUser, validate, context }) => {
+export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context }) => {
 
-  const collectionName = collection._name;
+  const { collectionName, typeName } = collection.options;
+
+  // OpenCRUD backwards compatibility
+  if (!selector) {
+    selector = { documentId };
+  }
+
   const schema = collection.simpleSchema()._schema;
 
-  // build mongo modifier from arguments
-  let modifier = {$set: set, $unset: unset};
+  // OpenCRUD backwards compatibility
+  data = data || modifierToData({ $set: set, $unset: unset });
 
   // get original document from database
   // TODO: avoid fetching document a second time if possible
-  let document = await Connectors.get(collection, documentId);
+  let document = await Connectors.get(collection, selector);
   
-  debug('//------------------------------------//');
-  debug('// editMutation');
-  debug('// collectionName: ', collection._name);
-  debug('// documentId: ', documentId);
-  debug('// set: ', set);
-  debug('// unset: ', unset);
-  debug('// document: ', document);
+  debug('');
+  debugGroup(`--------------- start \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
+  debug('// collectionName: ', collectionName);
+  debug('// selector: ', selector);
+  debug('// data: ', data);
 
   if (validate) {
 
-    const validationErrors = validateModifier(modifier, document, collection, context);
+    let validationErrors;
 
-    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser, validationErrors);
+    validationErrors =  validateData(data, document, collection, context);
+    runCallbacks({ name: `${typeName.toLowerCase()}.update.validate`, iterator: data, properties: { document, currentUser, validationErrors }});
+    // OpenCRUD backwards compatibility
+    runCallbacks(`${collectionName.toLowerCase()}.edit.validate`, dataToModifier(data), document, currentUser, validationErrors);
 
     if (validationErrors.length) {
       // eslint-disable-next-line no-console
       console.log('// validationErrors');
       // eslint-disable-next-line no-console
       console.log(validationErrors);
-      const EditDocumentValidationError = createError('app.validation_error', {message: 'app.edit_document_validation_error'});
+      const EditDocumentValidationError = createError('app.validation_error', { message: 'app.edit_document_validation_error' });
       throw new EditDocumentValidationError({data: {break: true, errors: validationErrors}});
     }
 
   }
 
   // get a "preview" of the new document
-  let newDocument = { ...document, ...modifier.$set};
-  Object.keys(modifier.$unset).forEach(fieldName => {
-    delete newDocument[fieldName];
-  });
+  let newDocument = { ...document, ...data};
+  newDocument = pickBy(newDocument, f => f !== null);
 
-  // run onEdit step
-  for(let fieldName of _.keys(schema)) {
-
-    if (schema[fieldName].onEdit) {
-      const autoValue = await schema[fieldName].onEdit(modifier, document, currentUser, newDocument);
-      if (typeof autoValue !== 'undefined') {
-        if (autoValue === null) {
-          // if any autoValue returns null, then unset the field
-          modifier.$unset[fieldName] = true;
-        } else {
-          modifier.$set[fieldName] = autoValue;
-          // make sure we don't try to unset the same field at the same time
-          delete modifier.$unset[fieldName];
-        }
-      }
+  // run onUpdate step
+  for(let fieldName of Object.keys(schema)) {
+    let autoValue;
+    if (schema[fieldName].onUpdate) {
+      autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
+    } else if (schema[fieldName].onEdit) {
+      // OpenCRUD backwards compatibility
+      autoValue = await schema[fieldName].onEdit(dataToModifier(data), document, currentUser, newDocument);
+    }
+    if (typeof autoValue !== 'undefined') {
+      data[fieldName] = autoValue;
     }
   }
 
-  // run sync callbacks (on mongo modifier)
-  modifier = await runCallbacks(`${collectionName}.edit.before`, modifier, document, currentUser, newDocument);
-  modifier = await runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser, newDocument);
+  // run sync callbacks
+  data = await runCallbacks({ name: `${typeName.toLowerCase()}.update.before`, iterator: data, properties: { document, currentUser, newDocument }});
+  // OpenCRUD backwards compatibility
+  data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.before`, dataToModifier(data), document, currentUser, newDocument));
+  data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.sync`, dataToModifier(data), document, currentUser, newDocument));
+
+  // update connector requires a modifier, so get it from data
+  const modifier = dataToModifier(data);
 
   // remove empty modifiers
   if (_.isEmpty(modifier.$set)) {
@@ -186,74 +207,104 @@ export const editMutation = async ({ collection, documentId, set = {}, unset = {
   if (_.isEmpty(modifier.$unset)) {
     delete modifier.$unset;
   }
-  
+
   if (!_.isEmpty(modifier)) {
     // update document
-    await Connectors.update(collection, documentId, modifier, {removeEmptyStrings: false});
+    await Connectors.update(collection, selector, modifier, { removeEmptyStrings: false });
 
     // get fresh copy of document from db
-    newDocument = await Connectors.get(collection, documentId);
+    newDocument = await Connectors.get(collection, selector);
 
+    // TODO: add support for caching by other indexes to Dataloader
+    // https://github.com/VulcanJS/Vulcan/issues/2000
     // clear cache if needed
-    if (collection.loader) {
-      collection.loader.clear(documentId);
+    if (selector.documentId && collection.loader) {
+      collection.loader.clear(selector.documentId);
     }
   }
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks(`${collectionName}.edit.after`, newDocument, document, currentUser);
+  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.update.after`, iterator: newDocument, properties: { document, currentUser }});
+  // OpenCRUD backwards compatibility
+  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
-  await runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
+  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties: { newDocument, document, currentUser, collection }});
+  // OpenCRUD backwards compatibility
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.edit.async`, newDocument, document, currentUser, collection);
 
-  debug('// edit mutation finished')
+  debug(`\x1b[33m=> updated document with modifier: \x1b[0m`);
   debug('// modifier: ', modifier)
-  debug('// edited document: ', newDocument)
-  debug('//------------------------------------//');
+  debugGroupEnd();
+  debug(`--------------- end \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
+  debug('');
 
-  return newDocument;
+  return { data: newDocument };
 }
 
-export const removeMutation = async ({ collection, documentId, currentUser, validate, context }) => {
+export const deleteMutator = async ({ collection, selector, documentId, currentUser, validate, context }) => {
 
-  debug('//------------------------------------//');
-  debug('// removeMutation')
-  debug(collection._name)
-  debug(documentId)
-  debug('//------------------------------------//');
+  const { collectionName, typeName } = collection.options;
+
+  debug('');
+  debugGroup(`--------------- start \x1b[36m${collectionName} Delete Mutator\x1b[0m ---------------`);
+  debug('// collectionName: ', collectionName);
+  debug('// selector: ', selector);
   
-  const collectionName = collection._name;
+  // OpenCRUD backwards compatibility
+  if (!selector) {
+    selector = { documentId };
+  }
+
   const schema = collection.simpleSchema()._schema;
 
-  let document = await Connectors.get(collection, documentId);
+  let document = await Connectors.get(collection, selector);
 
   // if document is not trusted, run validation callbacks
   if (validate) {
-    document = runCallbacks(`${collectionName}.remove.validate`, document, currentUser);
+    document = runCallbacks({ name: `${typeName.toLowerCase()}.delete.validate`, iterator: document, properties: { currentUser }});
+    // OpenCRUD backwards compatibility
+    document = runCallbacks(`${collectionName.toLowerCase()}.remove.validate`, document, currentUser);
   }
 
   // run onRemove step
-  for(let fieldName of _.keys(schema)) {
-    if (schema[fieldName].onRemove) {
+  for(let fieldName of Object.keys(schema)) {
+    if (schema[fieldName].onDelete) {
+      await schema[fieldName].onDelete({ document, currentUser });
+    } else if (schema[fieldName].onRemove) {
+      // OpenCRUD backwards compatibility
       await schema[fieldName].onRemove(document, currentUser);
     }
   }
 
-  await runCallbacks(`${collectionName}.remove.before`, document, currentUser);
-  await runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
+  await runCallbacks({ name: `${typeName.toLowerCase()}.delete.before`, iterator: document, properties: { currentUser }});
+  // OpenCRUD backwards compatibility
+  await runCallbacks(`${collectionName.toLowerCase()}.remove.before`, document, currentUser);
+  await runCallbacks(`${collectionName.toLowerCase()}.remove.sync`, document, currentUser);
 
-  await Connectors.delete(collection, documentId);
+  await Connectors.delete(collection, selector);
 
+  // TODO: add support for caching by other indexes to Dataloader
   // clear cache if needed
-  if (collection.loader) {
-    collection.loader.clear(documentId);
+  if (selector.documentId && collection.loader) {
+    collection.loader.clear(selector.documentId);
   }
 
-  await runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
+  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.delete.async`, properties: { document, currentUser, collection }});
+  // OpenCRUD backwards compatibility
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.remove.async`, document, currentUser, collection);
 
-  return document;
+  debugGroupEnd();
+  debug(`--------------- end \x1b[36m${collectionName} Delete Mutator\x1b[0m ---------------`);
+  debug('');
+
+  return { data: document };
 }
 
-export const newMutator = newMutation;
-export const editMutator = editMutation;
-export const removeMutator = removeMutation;
+// OpenCRUD backwards compatibility
+export const newMutation = createMutator;
+export const editMutation = updateMutator;
+export const removeMutation = deleteMutator;
+export const newMutator = createMutator;
+export const editMutator = updateMutator;
+export const removeMutator = deleteMutator;
