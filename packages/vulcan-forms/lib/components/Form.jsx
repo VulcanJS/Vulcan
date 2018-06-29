@@ -48,6 +48,7 @@ import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
+import { getDeletedValues } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
