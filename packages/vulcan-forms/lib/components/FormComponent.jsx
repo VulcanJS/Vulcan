@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
-import merge from 'lodash/merge';
-import find from 'lodash/find';
-import isObjectLike from 'lodash/isObjectLike';
 import isEqual from 'lodash/isEqual';
 import * as FormUtils from '../modules/utils.js';
 
@@ -126,7 +123,6 @@ class FormComponent extends Component {
       defaultValue,
       emptyValue,
       isEmptyValue,
-      shouldMergeValue,
       mergeValue,
     } = p;
     // for intl field fetch the actual field value by adding .value to the path
@@ -138,10 +134,8 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = emptyValue;
     } else {
-
-      if (shouldMergeValue({ currentValue, documentValue, ...p })) {
-        value = mergeValue({ currentValue, documentValue, ...p });
-      } else {
+      value = mergeValue({ currentValue, documentValue, ...p });
+      if (typeof value === 'undefined') {
         // note: value has to default to emptyValue to make component controlled
         value = emptyValue;
         if (typeof currentValue !== 'undefined' && currentValue !== null) {
@@ -343,7 +337,6 @@ FormComponent.propTypes = {
 FormComponent.defaultProps = {
   emptyValue: '',
   defaultValue: '',
-  shouldMergeValue: FormUtils.shouldMergeValue,
   mergeValue: FormUtils.mergeValue,
   isEmptyValue: FormUtils.isEmptyValue,
 };
