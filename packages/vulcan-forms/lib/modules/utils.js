@@ -68,17 +68,6 @@ export const getEditableFields = function (schema, user, document) {
 
 export const isEmptyValue = value => (typeof value === 'undefined' || value === '' || Array.isArray(value) && value.length === 0);
 
-export const shouldMergeValue = ({
-  locale,
-  currentValue,
-  documentValue,
-  emptyValue,
-  datatype,
-}) =>
-  locale ||
-  Array.isArray(currentValue) && find(datatype, ['type', Array]) ||
-  isObjectLike(currentValue) && find(datatype, ['type', Object]);
-
 export const mergeValue = ({
   locale,
   currentValue,
