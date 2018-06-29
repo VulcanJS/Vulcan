@@ -9,7 +9,7 @@ const FormErrors = ({ errors }) => (
         <ul>
           {errors.map((error, index) => (
             <li key={index}>
-              <Components.FormError error={error} context="form" />
+              <Components.FormError error={error} errorContext="form" />
             </li>
           ))}
         </ul>

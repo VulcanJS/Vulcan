@@ -6,7 +6,7 @@ const FieldErrors = ({ errors }) => (
   <ul className="form-input-errors">
     {errors.map((error, index) => (
       <li key={index}>
-        <Components.FormError error={error} context="field" />
+        <Components.FormError error={error} errorContext="field" />
       </li>
     ))}
   </ul>
