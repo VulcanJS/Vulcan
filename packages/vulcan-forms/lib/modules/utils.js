@@ -87,7 +87,6 @@ export const isEmptyValue = value => (typeof value === 'undefined' || value === 
 export const mergeValue = ({
   currentValue,
   documentValue,
-  emptyValue,
   deletedValues: deletedFields,
   name,
   locale,
@@ -95,7 +94,7 @@ export const mergeValue = ({
 }) => {
   if (locale) {
     // note: intl fields are of type Object but should be treated as Strings
-    return currentValue || documentValue || emptyValue;
+    return currentValue || documentValue || '';
   }
 
   // note: retrieve nested deleted values is performed here to avoid skipping

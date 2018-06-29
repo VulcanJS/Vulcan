@@ -4,7 +4,7 @@ import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import * as FormUtils from '../modules/utils.js';
+import { isEmptyValue, mergeValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -79,7 +79,7 @@ class FormComponent extends Component {
   */
   handleChange = (name, value) => {
     // if value is an empty string, delete the field
-    if (this.props.isEmptyValue(value)) {
+    if (value === '') {
       value = null;
     }
     // if this is a number field, convert value before sending it up to Form
@@ -117,14 +117,7 @@ class FormComponent extends Component {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const {
-      document,
-      currentValues,
-      defaultValue,
-      emptyValue,
-      isEmptyValue,
-      mergeValue,
-    } = p;
+    const { document, currentValues, defaultValue } = p;
     // for intl field fetch the actual field value by adding .value to the path
     const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
@@ -132,12 +125,12 @@ class FormComponent extends Component {
     const isDeleted = p.deletedValues.includes(path);
 
     if (isDeleted) {
-      value = emptyValue;
+      value = '';
     } else {
       value = mergeValue({ currentValue, documentValue, ...p });
       if (typeof value === 'undefined') {
-        // note: value has to default to emptyValue to make component controlled
-        value = emptyValue;
+        // note: value has to default to '' to make component controlled
+        value = '';
         if (typeof currentValue !== 'undefined' && currentValue !== null) {
           value = currentValue;
         } else if (typeof documentValue !== 'undefined' && documentValue !== null) {
@@ -311,8 +304,6 @@ FormComponent.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.any,
-  emptyValue: PropTypes.any,
-  defaultvalue: PropTypes.any,
   placeholder: PropTypes.string,
   prefilledValue: PropTypes.any,
   options: PropTypes.any,
@@ -329,16 +320,6 @@ FormComponent.propTypes = {
   addToDeletedValues: PropTypes.func,
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
-  isEmptyValue: PropTypes.func,
-  shouldMergeValue: PropTypes.func,
-  mergeValue: PropTypes.func,
-};
-
-FormComponent.defaultProps = {
-  emptyValue: '',
-  defaultValue: '',
-  mergeValue: FormUtils.mergeValue,
-  isEmptyValue: FormUtils.isEmptyValue,
 };
 
 FormComponent.contextTypes = {
