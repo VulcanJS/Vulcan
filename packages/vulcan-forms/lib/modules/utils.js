@@ -1,8 +1,9 @@
 import Users from 'meteor/vulcan:users';
 import merge from 'lodash/merge';
 import find from 'lodash/find';
-import isObjectLike from 'lodash/isObjectLike';
+import isPlainObject from 'lodash/isPlainObject';
 import set from 'lodash/set';
+import size from 'lodash/size';
 
 import { removePrefix, filterPathsByPrefix } from './path_utils';
 
@@ -71,22 +72,41 @@ export const getEditableFields = function (schema, user, document) {
 
 export const isEmptyValue = value => (typeof value === 'undefined' || value === '' || Array.isArray(value) && value.length === 0);
 
+/**
+ * Merges values. It takes into account the current, original and deleted values,
+ * and the merge produces the proper type for simple objects or arrays.
+ *
+ * @param {Object} props
+ *  Form component props. Only specific properties for this function are documented.
+ * @param {*} props.currentValue
+ *  Current value of the field
+ * @param {*} props.documentValue
+ *  Original value of the field
+ * @return {*|undefined}
+ */
 export const mergeValue = ({
-  locale,
   currentValue,
   documentValue,
   emptyValue,
+  deletedValues: deletedFields,
+  name,
+  locale,
   datatype,
 }) => {
   if (locale) {
     // note: intl fields are of type Object but should be treated as Strings
     return currentValue || documentValue || emptyValue;
-  } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
-    // for object and arrays, use lodash's merge
-    // if field type is array, use [] as merge seed to force result to be an array as well
-    return merge([], documentValue, currentValue);
-  } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
-    return merge({}, documentValue, currentValue);
+  }
+
+  // note: retrieve nested deleted values is performed here to avoid skipping
+  // the merge in case the current field is not in `currentValues` but a nested
+  // property has been removed directly by path
+  const deletedValues = getNestedDeletedValues(name, deletedFields);
+  const hasDeletedValues = !!size(deletedValues);
+  if ((Array.isArray(currentValue) || hasDeletedValues) && find(datatype, ['type', Array])) {
+    return merge([], documentValue, currentValue, deletedValues);
+  } else if ((isPlainObject(currentValue) || hasDeletedValues) && find(datatype, ['type', Object])) {
+    return merge({}, documentValue, currentValue, deletedValues);
   }
   return undefined;
 };
