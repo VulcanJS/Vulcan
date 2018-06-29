@@ -96,5 +96,5 @@ export const mergeValue = ({
   } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
     return merge({}, documentValue, currentValue);
   }
-  return currentValue;
+  return undefined;
 };
