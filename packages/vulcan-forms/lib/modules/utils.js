@@ -83,12 +83,13 @@ export const isEmptyValue = value => (typeof value === 'undefined' || value === 
  * @param {*} props.documentValue
  *  Original value of the field
  * @return {*|undefined}
+ *  Merged value or undefined if no merge was performed
  */
 export const mergeValue = ({
   currentValue,
   documentValue,
   deletedValues: deletedFields,
-  name,
+  path,
   locale,
   datatype,
 }) => {
@@ -100,7 +101,7 @@ export const mergeValue = ({
   // note: retrieve nested deleted values is performed here to avoid skipping
   // the merge in case the current field is not in `currentValues` but a nested
   // property has been removed directly by path
-  const deletedValues = getNestedDeletedValues(name, deletedFields);
+  const deletedValues = getNestedDeletedValues(path, deletedFields);
   const hasDeletedValues = !!size(deletedValues);
   if ((Array.isArray(currentValue) || hasDeletedValues) && find(datatype, ['type', Array])) {
     return merge([], documentValue, currentValue, deletedValues);
