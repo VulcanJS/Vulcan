@@ -139,14 +139,13 @@ class SmartForm extends Component {
 
   */
   getDocument = () => {
-    const deletedValues = {};
-    this.state.deletedValues.forEach(path => {
-      set(deletedValues, path, null);
-    });
-
-    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues, deletedValues);
-
-    return document;
+    return merge(
+      {},
+      this.state.initialDocument,
+      this.defaultValues,
+      this.state.currentValues,
+      getDeletedValues(this.state.deletedValues),
+    );
   };
 
   /*
