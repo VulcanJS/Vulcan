@@ -45,6 +45,9 @@ export default function withEdit(options) {
     ${fragment}
   `, {
     alias: 'withEdit',
+    options: () => ({
+      ssr: false,
+    }),
     props: ({ ownProps, mutate }) => ({
       editMutation: (args) => {
         const { documentId, set, unset } = args;

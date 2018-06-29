@@ -87,9 +87,7 @@ class App extends PureComponent {
           <Components.HeadTags />
           <Components.RouterHook currentRoute={currentRoute} />
           <LayoutComponent {...this.props} currentRoute={currentRoute}>
-            {this.props.currentUserLoading ? (
-              <Components.Loading />
-            ) : this.props.children ? (
+            {this.props.children ? (
               this.props.children
             ) : (
               <Components.Welcome />

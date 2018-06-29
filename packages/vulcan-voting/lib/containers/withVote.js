@@ -26,6 +26,9 @@ export const withVote = component => {
       }
     }
   `, {
+    options: () => ({
+      ssr: false
+    }),
     props: ({ownProps, mutate}) => ({
       vote: ({document, voteType, collection, currentUser, voteId = Random.id()}) => {
 

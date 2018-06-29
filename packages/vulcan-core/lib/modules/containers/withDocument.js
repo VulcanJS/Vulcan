@@ -6,7 +6,7 @@ import { getSetting, getFragment, getFragmentName, getCollection } from 'meteor/
 
 export default function withDocument (options) {
 
-  const { collectionName, pollInterval = getSetting('pollInterval', 0), enableCache = false, extraQueries } = options;
+  const { collectionName, pollInterval = getSetting('pollInterval', 0), enableCache = false, extraQueries, ssr = false } = options;
 
   const collection = options.collection || getCollection(collectionName);
   const queryName = options.queryName || `${collection.options.collectionName}SingleQuery`;
@@ -44,6 +44,7 @@ export default function withDocument (options) {
           enableCache,
         },
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
+        ssr,
       };
 
       if (options.fetchPolicy) {

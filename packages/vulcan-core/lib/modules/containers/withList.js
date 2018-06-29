@@ -54,6 +54,7 @@ const withList = (options) => {
     totalResolver = false,
     enableCache = false,
     extraQueries,
+    ssr = false,
   } = options;
 
   const collection = options.collection || getCollection(collectionName);
@@ -125,6 +126,7 @@ const withList = (options) => {
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
+            ssr,
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below

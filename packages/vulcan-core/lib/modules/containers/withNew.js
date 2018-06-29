@@ -45,6 +45,9 @@ export default function withNew(options) {
     ${fragment}
   `, {
     alias: 'withNew',
+    options: () => ({
+      ssr: false
+    }),
     props: ({ownProps, mutate}) => ({
       newMutation: ({document}) => {
         return mutate({ 

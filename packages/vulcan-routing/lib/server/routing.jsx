@@ -73,7 +73,12 @@ Meteor.startup(() => {
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });
-      return Promise.await(getDataFromTree(app));
+      //eslint-disable-next-line no-console
+      console.time("preRender time: ")
+      const apolloData = Promise.await(getDataFromTree(app));
+      //eslint-disable-next-line no-console
+      console.timeEnd("preRender time: ")
+      return apolloData
     },
     dehydrateHook(req, res) {
       const context = runCallbacks('router.server.dehydrate', getRenderContext(), { req, res });

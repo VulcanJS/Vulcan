@@ -47,6 +47,9 @@ export default function withUpsert(options) {
     ${fragment}
   `, {
     alias: 'withUpsert',
+    options: () => ({
+      ssr: false,
+    }),
     props: ({ ownProps, mutate }) => ({
       upsertMutation: ({ search, set, unset }) => {
         return mutate({
