@@ -48,11 +48,12 @@ import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
+import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
-  const parentPath = path.slice(0, path.lastIndexOf('.'));
-  
+  const parentPath = getParentPath(path);
+
   unset(object, path);
 
   // note: we only want to compact arrays, not objects
