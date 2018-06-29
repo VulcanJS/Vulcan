@@ -2,6 +2,9 @@ import Users from 'meteor/vulcan:users';
 import merge from 'lodash/merge';
 import find from 'lodash/find';
 import isObjectLike from 'lodash/isObjectLike';
+import set from 'lodash/set';
+
+import { removePrefix, filterPathsByPrefix } from './path_utils';
 
 // add support for nested properties
 export const deepValue = function(obj, path){
@@ -87,3 +90,61 @@ export const mergeValue = ({
   }
   return undefined;
 };
+
+/**
+ * Converts a list of field names to an object of deleted values.
+ *
+ * @param {string[]|Object.<string|string>} deletedFields
+ *  List of deleted field names or paths
+ * @param {Object|Array=} accumulator={}
+ *  Value to reduce the values to
+ * @return {Object|Array}
+ *  Deleted values, with the structure defined by taking the received deleted
+ *  fields as paths
+ * @example
+ *  const deletedFields = [
+ *    'field.subField',
+ *    'field.subFieldArray[0]',
+ *    'fieldArray[0]',
+ *    'fieldArray[2].name',
+ *  ];
+ *  getNestedDeletedValues(deletedFields);
+ *  // => { 'field': { 'subField': null, 'subFieldArray': [null] }, 'fieldArray': [null, undefined, { name: null } }
+ */
+export const getDeletedValues = (deletedFields, accumulator = {}) =>
+  deletedFields.reduce(
+    (deletedValues, path) => set(deletedValues, path, null),
+    accumulator,
+  );
+
+/**
+ * Filters the given field names by prefix, removes it from each one of them
+ * and convert the list to an object of deleted values.
+ *
+ * @param {string=} prefix
+ *  Prefix to filter and remove from deleted fields
+ * @param {string[]|Object.<string|string>} deletedFields
+ *  List of deleted field names or paths
+ * @param {Object|Array=} accumulator={}
+ *  Value to reduce the values to
+ * @return {Object.<string, null>}
+ *  Object keyed with the given deleted fields, valued with `null`
+ * @example
+ *  const deletedFields = [
+ *    'field.subField',
+ *    'field.subFieldArray[0]',
+ *    'fieldArray[0]',
+ *    'fieldArray[2].name',
+ *  ];
+ *  getNestedDeletedValues('field', deletedFields);
+ *  // => { 'subField': null, 'subFieldArray': [null] }
+ *  getNestedDeletedValues('fieldArray', deletedFields);
+ *  // => { '0': null, '2': { 'name': null } }
+ *  getNestedDeletedValues('fieldArray', deletedFields, []);
+ *  // => [null, undefined, { 'name': null } ]
+ */
+export const getNestedDeletedValues = (prefix, deletedFields, accumulator = {}) =>
+  getDeletedValues(
+    removePrefix(prefix, filterPathsByPrefix(prefix, deletedFields)),
+    accumulator,
+  );
