@@ -232,7 +232,6 @@ class Upload extends PureComponent {
         <div className="col-sm-9">
           <div className="upload-field">
             <Dropzone
-              ref="dropzone"
               multiple={this.enableMultiple()}
               onDrop={this.onDrop}
               accept="image/*"

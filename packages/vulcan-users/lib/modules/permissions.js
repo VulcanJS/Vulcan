@@ -288,7 +288,7 @@ Users.canCreateField = function (user, field) {
  * @param {Object} field - The field being edited or inserted
  */
 Users.canUpdateField = function (user, field, document) {
-  const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
+  const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
   if (canUpdate) {
     if (typeof canUpdate === 'function') {
       // if canUpdate is a function, execute it with user and document passed. it must return a boolean

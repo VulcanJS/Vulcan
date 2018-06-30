@@ -39,7 +39,6 @@ import {
   withRemove,
   getFragment,
   getCollection,
-  isIntlField,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/vulcan:core';

@@ -269,9 +269,6 @@ export const validateModifierNotUsed = (modifier, document, collection, context)
 
   if (!validationContext.isValid()) {
     const errors = validationContext.validationErrors();
-    console.log('// validationContext');
-    console.log(validationContext.isValid());
-    console.log(errors);
     errors.forEach(error => {
       // eslint-disable-next-line no-console
       // console.log(error);

@@ -79,9 +79,11 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
+      // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onCreate({ newDocument, currentUser });
     } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
+      // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
     }
     if (typeof autoValue !== 'undefined') {
@@ -181,9 +183,11 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onUpdate) {
+      // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
     } else if (schema[fieldName].onEdit) {
       // OpenCRUD backwards compatibility
+      // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onEdit(dataToModifier(data), document, currentUser, newDocument);
     }
     if (typeof autoValue !== 'undefined') {
@@ -270,9 +274,11 @@ export const deleteMutator = async ({ collection, selector, documentId, currentU
   // run onRemove step
   for(let fieldName of Object.keys(schema)) {
     if (schema[fieldName].onDelete) {
+      // eslint-disable-next-line no-await-in-loop
       await schema[fieldName].onDelete({ document, currentUser });
     } else if (schema[fieldName].onRemove) {
       // OpenCRUD backwards compatibility
+      // eslint-disable-next-line no-await-in-loop
       await schema[fieldName].onRemove(document, currentUser);
     }
   }

@@ -99,6 +99,8 @@ class SmartForm extends Component {
       currentValues: {},
       ...computeStateFromProps(props),
     };
+
+    this.form = React.createRef();
   }
 
   defaultValues = {};
@@ -432,7 +434,7 @@ class SmartForm extends Component {
           ...newValues,
         }, // Submit form after setState update completed
       }),
-      () => this.submitForm(this.refs.form.getModel())
+      () => this.submitForm(this.form.getModel())
     );
   };
 
@@ -614,7 +616,7 @@ class SmartForm extends Component {
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
+      this.submitForm(this.form.getModel());
     }
   };
 
@@ -636,8 +638,8 @@ class SmartForm extends Component {
 
     // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
-    if (typeof this.refs.form !== 'undefined') {
-      this.refs.form.reset(this.getDocument());
+    if (typeof this.form !== 'undefined') {
+      this.form.reset(this.getDocument());
       this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
@@ -784,7 +786,7 @@ class SmartForm extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={this.form}>
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
