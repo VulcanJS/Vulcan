@@ -6,7 +6,7 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { Locales, getIntlString } from './intl';
+import { validateIntlField, getIntlString } from './intl';
 
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -118,33 +118,6 @@ Mongo.Collection.prototype.helpers = function(helpers) {
     self._helpers.prototype[key] = helper;
   });
 };
-
-/*
-
-Custom validation function to check for required locales
-
-See https://github.com/aldeed/simple-schema-js#custom-field-validation
-
-*/
-const validateIntlField = function () {
-  let errors = [];
-
-  // if field is required, go through locales to check which one are required
-  if (!this.definition.optional) {
-    const requiredLocales = Locales.filter(locale => locale.required);
-
-    requiredLocales.forEach((locale, index) => {
-      const strings = this.value;
-      const hasString = strings.some(s => s.locale === locale.id && s.value);
-      if (!hasString) {
-        errors.push({ id: 'errors.required', path: `${this.key}.${index}`, properties: { name: `${this.key.replace('_intl', '')} (${locale.id})` }});
-      }
-    });
-
-  }
-  // hack to work around the fact that custom validation function can only return a single string
-  return `intlError|${JSON.stringify(errors)}`;
-}
 
 export const createCollection = options => {
 

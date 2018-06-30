@@ -352,10 +352,9 @@ class SmartForm extends Component {
 
    */
   getLabel = fieldName => {
-    return this.context.intl.formatMessage({
-      id: this.getCollection()._name + '.' + fieldName,
-      defaultMessage: this.state.flatSchema[fieldName].label,
-    });
+    const id = `${this.getCollection().options.collectionName.toLowerCase()}.${fieldName}`;
+    const defaultMessage = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
+    return this.context.intl.formatMessage({ id, defaultMessage });
   };
 
   // --------------------------------------------------------------------- //

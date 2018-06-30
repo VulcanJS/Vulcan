@@ -11,6 +11,7 @@ const FormError = ({ error, errorContext, getLabel }) => error.message || (
       errorContext,
       label: error.properties.name && getLabel(error.properties.name),
       ...error.data, // backwards compatibility
+      // note: for intl fields, the error's label property will overwrite the getLabel label
       ...error.properties,
     }}
     defaultMessage={JSON.stringify(error)}
