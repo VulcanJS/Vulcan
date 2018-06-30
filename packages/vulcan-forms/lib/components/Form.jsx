@@ -356,6 +356,12 @@ class SmartForm extends Component {
     const defaultMessage = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
     return this.context.intl.formatMessage({ id, defaultMessage });
   };
+  
+  getLabelFromPath = path => {
+    const splittedPath = path.split('.');
+    const fieldName = splittedPath[splittedPath.length - 1];
+    return this.getLabel(fieldName);
+  }
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
@@ -374,6 +380,20 @@ class SmartForm extends Component {
   */
   throwError = error => {
     let formErrors = getErrors(error);
+
+  //enhance errors with field label
+  //formErrors should always be an array but it's good to test before a map
+  if (Array.isArray(formErrors)) {
+    const formErrorsLabeled = formErrors.map(error => {
+      //check if the path is defined and is a string
+      if (typeof error.path === 'string') {
+        let labeledError = error;
+        let label = this.getLabelFromPath(error.path);
+        _.extend(labeledError, { properties: { label: label, ...error.properties } });
+        return labeledError;
+      } else return error; //don't label the field if path was not defined
+    });
+  }
 
     // eslint-disable-next-line no-console
     console.log(formErrors);
