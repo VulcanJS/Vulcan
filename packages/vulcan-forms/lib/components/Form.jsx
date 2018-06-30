@@ -782,7 +782,7 @@ class SmartForm extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref="form">
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
@@ -798,6 +798,7 @@ class SmartForm extends Component {
               clearFieldErrors={this.clearFieldErrors}
               formType={this.getFormType()}
               currentUser={this.props.currentUser}
+              disabled={this.state.disabled}
             />
           ))}
 

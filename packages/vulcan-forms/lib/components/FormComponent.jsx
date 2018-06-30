@@ -36,8 +36,9 @@ class FormComponent extends Component {
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
+    const disabledChanged = nextProps.disabled !== this.props.disabled;
 
-    return valueChanged || errorChanged || deleteChanged || charsChanged;
+    return valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
   }
 
   /*

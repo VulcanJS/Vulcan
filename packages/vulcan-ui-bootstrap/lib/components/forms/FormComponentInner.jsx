@@ -21,7 +21,7 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { name, options, label, onChange, value } = this.props;
+    const { name, options, label, onChange, value, disabled } = this.props;
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -31,6 +31,7 @@ class FormComponentInner extends PureComponent {
       label,
       onChange,
       value,
+      disabled,
       ...this.props.inputProperties,
     };
 
