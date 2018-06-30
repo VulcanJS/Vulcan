@@ -84,7 +84,8 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
 
     */
     const field = schema[fieldName];
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
+    // OpenCRUD backwards compatibility
+    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.indexOf('$') !== -1 || options.onlyViewable && !(field.canRead || field.viewableBy);
   });
 
   if (fieldNames.length) {

@@ -21,7 +21,7 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { name, options, label, onChange, value } = this.props;
+    const { name, options, label, onChange, value, disabled } = this.props;
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -31,6 +31,7 @@ class FormComponentInner extends PureComponent {
       label,
       onChange,
       value,
+      disabled,
       ...this.props.inputProperties,
     };
 
@@ -51,8 +52,6 @@ class FormComponentInner extends PureComponent {
       showCharsRemaining,
       charsRemaining,
       renderComponent,
-      intlInput,
-      nestedInput,
     } = this.props;
 
     const hasErrors = errors && errors.length;
@@ -69,24 +68,18 @@ class FormComponentInner extends PureComponent {
 
     const FormInput = this.props.formInput;
 
-    if (intlInput) {
-      return <Components.FormIntl {...properties} />;
-    } else if (nestedInput){
-      return <Components.FormNested {...properties} />;
-    } else {
-      return (
-        <div className={inputClass}>
-          {instantiateComponent(beforeComponent, properties)}
-          <FormInput {...properties}/>
-          {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
-          {this.renderClear()}
-          {showCharsRemaining && (
-            <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
-          )}
-          {instantiateComponent(afterComponent, properties)}
-        </div>
-      );
-    }
+    return (
+      <div className={inputClass}>
+        {instantiateComponent(beforeComponent, properties)}
+        <FormInput {...properties}/>
+        {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
+        {this.renderClear()}
+        {showCharsRemaining && (
+          <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
+        )}
+        {instantiateComponent(afterComponent, properties)}
+      </div>
+    );
   }
 }
 

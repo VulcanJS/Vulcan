@@ -81,7 +81,7 @@ const migrateIntlFields = async (defaultLocale) => {
     if (intlFieldsNames.length) {
       console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`); // eslint-disable-line no-console
 
-      const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
+      // const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
 
       // find all documents with one or more unmigrated intl fields
       const selector = { 

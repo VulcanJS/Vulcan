@@ -146,7 +146,7 @@ const CardEditForm = ({ collection, document, closeModal }) =>
 const Card = ({className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
 
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canEdit = showEdit && currentUser && collection.options.mutations.edit.check(currentUser, document);
+  const canEdit = showEdit && currentUser && collection.options.mutations.update.check(currentUser, document);
 
   return (
     <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>

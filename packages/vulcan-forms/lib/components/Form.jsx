@@ -48,11 +48,13 @@ import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
+import { getDeletedValues } from '../modules/utils';
+import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
-  const parentPath = path.slice(0, path.lastIndexOf('.'));
-  
+  const parentPath = getParentPath(path);
+
   unset(object, path);
 
   // note: we only want to compact arrays, not objects
@@ -86,7 +88,7 @@ const computeStateFromProps = nextProps => {
 
 */
 
-class Form extends Component {
+class SmartForm extends Component {
   constructor(props) {
     super(props);
 
@@ -97,6 +99,8 @@ class Form extends Component {
       currentValues: {},
       ...computeStateFromProps(props),
     };
+
+    this.form = React.createRef();
   }
 
   defaultValues = {};
@@ -138,14 +142,13 @@ class Form extends Component {
 
   */
   getDocument = () => {
-    const deletedValues = {};
-    this.state.deletedValues.forEach(path => {
-      set(deletedValues, path, null);
-    });
-
-    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues, deletedValues);
-
-    return document;
+    return merge(
+      {},
+      this.state.initialDocument,
+      this.defaultValues,
+      this.state.currentValues,
+      getDeletedValues(this.state.deletedValues),
+    );
   };
 
   /*
@@ -349,10 +352,9 @@ class Form extends Component {
 
    */
   getLabel = fieldName => {
-    return this.context.intl.formatMessage({
-      id: this.getCollection()._name + '.' + fieldName,
-      defaultMessage: this.state.flatSchema[fieldName].label,
-    });
+    const id = `${this.getCollection().options.collectionName.toLowerCase()}.${fieldName}`;
+    const defaultMessage = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
+    return this.context.intl.formatMessage({ id, defaultMessage });
   };
 
   // --------------------------------------------------------------------- //
@@ -431,7 +433,7 @@ class Form extends Component {
           ...newValues,
         }, // Submit form after setState update completed
       }),
-      () => this.submitForm(this.refs.form.getModel())
+      () => this.submitForm(this.form.getModel())
     );
   };
 
@@ -448,6 +450,7 @@ class Form extends Component {
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
+      getLabel: this.getLabel,
       initialDocument: this.state.initialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
@@ -612,7 +615,7 @@ class Form extends Component {
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
+      this.submitForm(this.form.getModel());
     }
   };
 
@@ -627,16 +630,15 @@ class Form extends Component {
   mutationSuccessCallback = (result, mutationType) => {
 
     this.setState(prevState => ({ disabled: false }));
-    
-    const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
+    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
     // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
     // (we are in an async callback, everything can happen!)
-    if (typeof this.refs.form !== 'undefined') {
-      this.refs.form.reset();
+    if (typeof this.form !== 'undefined') {
+      this.form.reset(this.getDocument());
       this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
     }
 
@@ -783,7 +785,7 @@ class Form extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} disabled={this.state.disabled} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={this.form}>
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
@@ -799,6 +801,7 @@ class Form extends Component {
               clearFieldErrors={this.clearFieldErrors}
               formType={this.getFormType()}
               currentUser={this.props.currentUser}
+              disabled={this.state.disabled}
             />
           ))}
 
@@ -820,7 +823,7 @@ class Form extends Component {
   }
 }
 
-Form.propTypes = {
+SmartForm.propTypes = {
   // main options
   collection: PropTypes.object,
   collectionName: (props, propName, componentName) => {
@@ -863,18 +866,18 @@ Form.propTypes = {
   client: PropTypes.object,
 };
 
-Form.defaultProps = {
+SmartForm.defaultProps = {
   layout: 'horizontal',
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
 };
 
-Form.contextTypes = {
+SmartForm.contextTypes = {
   intl: intlShape,
 };
 
-Form.childContextTypes = {
+SmartForm.childContextTypes = {
   addToDeletedValues: PropTypes.func,
   deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
@@ -888,11 +891,12 @@ Form.childContextTypes = {
   isChanged: PropTypes.func,
   initialDocument: PropTypes.object,
   getDocument: PropTypes.func,
+  getLabel: PropTypes.func,
   submitForm: PropTypes.func,
   errors: PropTypes.array,
   currentValues: PropTypes.object,
 };
 
-module.exports = Form;
+module.exports = SmartForm;
 
-registerComponent('Form', Form);
+registerComponent('Form', SmartForm);

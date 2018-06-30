@@ -85,9 +85,9 @@ Posts.addField({
     type: String,
     optional: true,
     control: getComponent('Upload'),
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     form: {
       options: {
         preset: getSetting('cloudinaryPresets').posts // this setting refers to the transformation you want to apply to the image
@@ -111,9 +111,9 @@ Users.addField({
     type: String,
     optional: true,
     control: getComponent('Upload'),
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     preload: true, // ⚠️ will preload the field for the current user!
     form: {
       options: {

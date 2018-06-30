@@ -13,6 +13,8 @@ function onCreateUserCallback(options, user) {
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
 
+  options = runCallbacks(`user.new.validate.before`, options);
+  // OpenCRUD backwards compatibility
   options = runCallbacks(`users.new.validate.before`, options);
 
   // validate options since they can't be trusted
@@ -21,7 +23,7 @@ function onCreateUserCallback(options, user) {
   // check that the current user has permission to insert each option field
   _.keys(options).forEach(fieldName => {
     var field = schema[fieldName];
-    if (!field || !Users.canInsertField(user, field)) {
+    if (!field || !Users.canCreateField(user, field)) {
       throw new Error(Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName }));
     }
   });
@@ -30,6 +32,8 @@ function onCreateUserCallback(options, user) {
   user = Object.assign(user, options);
 
   // run validation callbacks
+  user = runCallbacks(`user.new.validate`, user);
+  // OpenCRUD backwards compatibility
   user = runCallbacks(`users.new.validate`, user);
 
   // run onInsert step
@@ -47,11 +51,15 @@ function onCreateUserCallback(options, user) {
 
   user = runCallbacks('users.new.sync', user);
 
-  runCallbacksAsync('users.new.async', user);
+  runCallbacksAsync("user.new.async", user);
+  // OpenCRUD backwards compatibility
+  runCallbacksAsync("users.new.async", user);
 
   // check if all required fields have been filled in. If so, run profile completion callbacks
   if (Users.hasCompletedProfile(user)) {
-    runCallbacksAsync('users.profileCompleted.async', user);
+    runCallbacksAsync("user.profileCompleted.async", user);
+    // OpenCRUD backwards compatibility
+    runCallbacksAsync("users.profileCompleted.async", user);
   }
 
   debug(`Modified User: ${JSON.stringify(user)}`);

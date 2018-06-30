@@ -55,6 +55,7 @@ class FormGroup extends PureComponent {
               clearFieldErrors={this.props.clearFieldErrors}
               formType={this.props.formType}
               currentUser={this.props.currentUser}
+              disabled={this.props.disabled}
             />
           ))}
         </div>
