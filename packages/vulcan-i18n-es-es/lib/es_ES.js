@@ -136,4 +136,8 @@ addStrings('es', {
 
   "admin": "Administrador",
   "notifications": "Notificaciones",
+
+  "errors.expectedType": `Se esperaba un campo “{label}” de tipo {dataType}, se ha recibido “{value}” en su lugar.`,
+  "errors.required": `El campo “{label}” es obligatorio.`,
+  "errors.maxString": `El campo “{label}” está limitado a {max} carácteres.`,
 });

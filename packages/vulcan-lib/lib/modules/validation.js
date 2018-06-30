@@ -47,6 +47,7 @@ export const validateDocument = (document, collection, context) => {
     errors.forEach(error => {
       // eslint-disable-next-line no-console
       // console.log(error);
+<<<<<<< HEAD
       if (error.type.includes('intlError')) {
         validationErrors = validationErrors.concat(JSON.parse(error.type.replace('intlError|', '')));
       } else {
@@ -56,6 +57,16 @@ export const validateDocument = (document, collection, context) => {
           properties: error,
         });
       }
+=======
+      validationErrors.push({
+        id: `errors.${error.type}`,
+        path: error.name,
+        properties: {
+          collection: collection._name,
+          ...error,
+        },
+      });
+>>>>>>> 1433ca96294c4c03d060df0708971e8100945f08
     });
   }
 
@@ -106,7 +117,11 @@ export const validateModifier = (modifier, document, collection, context) => {
         validationErrors.push({
           id: `errors.${error.type}`,
           path: error.name,
-          properties: error,
+          properties: {
+            collectionName: collection.options.collectionName,
+            typeName: collection.options.typeName,
+            ...error,
+          },
         });
       }
     });
