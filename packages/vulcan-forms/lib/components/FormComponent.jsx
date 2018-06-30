@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
-import merge from 'lodash/merge';
-import find from 'lodash/find';
-import isObjectLike from 'lodash/isObjectLike';
 import isEqual from 'lodash/isEqual';
-import { isEmptyValue } from '../modules/utils.js';
+import { isEmptyValue, mergeValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -121,7 +118,7 @@ class FormComponent extends Component {
   getValue = props => {
     let value;
     const p = props || this.props;
-    const { document, currentValues, defaultValue, datatype } = p;
+    const { document, currentValues, defaultValue } = p;
     // for intl field fetch the actual field value by adding .value to the path
     const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
     const documentValue = get(document, path);
@@ -131,16 +128,8 @@ class FormComponent extends Component {
     if (isDeleted) {
       value = '';
     } else {
-      if (p.locale) {
-        // note: intl fields are of type Object but should be treated as Strings
-        value = currentValue || documentValue || '';
-      } else if (Array.isArray(currentValue) && find(datatype, ['type', Array])) {
-        // for object and arrays, use lodash's merge
-        // if field type is array, use [] as merge seed to force result to be an array as well
-        value = merge([], documentValue, currentValue);
-      } else if (isObjectLike(currentValue) && find(datatype, ['type', Object])) {
-        value = merge({}, documentValue, currentValue);
-      } else {
+      value = mergeValue({ currentValue, documentValue, ...p });
+      if (typeof value === 'undefined') {
         // note: value has to default to '' to make component controlled
         value = '';
         if (typeof currentValue !== 'undefined' && currentValue !== null) {

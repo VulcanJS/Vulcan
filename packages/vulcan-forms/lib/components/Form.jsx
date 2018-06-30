@@ -48,11 +48,13 @@ import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
+import { getDeletedValues } from '../modules/utils';
+import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
-  const parentPath = path.slice(0, path.lastIndexOf('.'));
-  
+  const parentPath = getParentPath(path);
+
   unset(object, path);
 
   // note: we only want to compact arrays, not objects
@@ -138,14 +140,13 @@ class SmartForm extends Component {
 
   */
   getDocument = () => {
-    const deletedValues = {};
-    this.state.deletedValues.forEach(path => {
-      set(deletedValues, path, null);
-    });
-
-    const document = merge({}, this.state.initialDocument, this.defaultValues, this.state.currentValues, deletedValues);
-
-    return document;
+    return merge(
+      {},
+      this.state.initialDocument,
+      this.defaultValues,
+      this.state.currentValues,
+      getDeletedValues(this.state.deletedValues),
+    );
   };
 
   /*
