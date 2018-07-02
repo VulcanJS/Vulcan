@@ -351,10 +351,17 @@ class SmartForm extends Component {
    Get a field's label
 
    */
-  getLabel = fieldName => {
-    const id = `${this.getCollection().options.collectionName.toLowerCase()}.${fieldName}`;
-    const defaultMessage = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
-    return this.context.intl.formatMessage({ id, defaultMessage });
+  getLabel = (fieldName, fieldLocale) => {
+    const collectionName = this.getCollection().options.collectionName.toLowerCase();
+    const intlLabel = this.context.intl.formatMessage({ id: `${collectionName}.${fieldName}` });
+    const schemaLabel = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
+    const label = intlLabel || schemaLabel || fieldName;
+    if (fieldLocale) {
+      const intlFieldLocale = this.context.intl.formatMessage({ id: `locales.${fieldLocale}`, defaultMessage: fieldLocale });
+      return `${label} (${intlFieldLocale})`;
+    } else {
+      return label;
+    }
   };
 
   // --------------------------------------------------------------------- //

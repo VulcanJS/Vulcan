@@ -4,19 +4,23 @@ import getContext from 'recompose/getContext';
 import { registerComponent } from 'meteor/vulcan:core';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
-const FormError = ({ error, errorContext, getLabel }) => error.message || (
-  <FormattedMessage
-    id={error.id}
-    values={{
-      errorContext,
-      label: error.properties.name && getLabel(error.properties.name),
-      ...error.data, // backwards compatibility
-      // note: for intl fields, the error's label property will overwrite the getLabel label
-      ...error.properties,
-    }}
-    defaultMessage={JSON.stringify(error)}
-  />
-);
+const FormError = ({ error, errorContext, getLabel }) => {
+  if (error.message) {
+    return error.message;
+  }
+  return (
+    <FormattedMessage
+      id={error.id}
+      values={{
+        errorContext,
+        label: error.properties && getLabel(error.properties.name, error.properties.locale),
+        ...error.data, // backwards compatibility
+        ...error.properties,
+      }}
+      defaultMessage={JSON.stringify(error)}
+    />
+  )
+;}
 
 FormError.defaultProps = {
   errorContext: '', // default context so format message does not complain
