@@ -41,8 +41,8 @@ export default function withMutation({name, args, fragmentName}) {
       }
     `
   }
-
-  return graphql(gql`${mutation}${fragmentName ? fragment : null}`, {
+  
+  return graphql(gql`${mutation}${fragmentName ? fragment : ''}`, {
     alias: 'withMutation',
     props: ({ownProps, mutate}) => ({
       [name]: (vars) => {

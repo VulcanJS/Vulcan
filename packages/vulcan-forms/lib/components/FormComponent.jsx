@@ -191,7 +191,7 @@ class FormComponent extends Component {
   */
   getErrors = errors => {
     errors = errors || this.props.errors;
-    const fieldErrors = errors.filter(error => error.path.includes(this.props.path));
+    const fieldErrors = errors.filter(error => error.path && error.path.includes(this.props.path));
     return fieldErrors;
   };
 

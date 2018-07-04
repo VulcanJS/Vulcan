@@ -99,8 +99,6 @@ class SmartForm extends Component {
       currentValues: {},
       ...computeStateFromProps(props),
     };
-
-    this.form = React.createRef();
   }
 
   defaultValues = {};
@@ -792,7 +790,7 @@ class SmartForm extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={this.form}>
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => {this.form = e;}}>
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
