@@ -292,7 +292,7 @@ export const GraphQLSchema = {
         // multi
         if (resolvers.multi) { 
           addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-          queryResolvers[`${Utils.camelCaseify(typeName)}s`] = resolvers.multi.resolver.bind(resolvers.multi);
+          queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(resolvers.multi);
         }
         addGraphQLResolvers({ Query: { ...queryResolvers } });
       }

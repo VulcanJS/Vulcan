@@ -58,7 +58,7 @@ export default function withMulti(options) {
 
   const collection = options.collection || getCollection(collectionName);
   const typeName = collection.options.typeName;
-  const resolverName = `${Utils.camelCaseify(typeName)}s`;
+  const resolverName = Utils.camelCaseify(Utils.pluralize(typeName));
 
   let fragment;
 
@@ -99,7 +99,7 @@ export default function withMulti(options) {
       query,
 
       {
-        alias: `with${typeName}s`,
+        alias: `with${Utils.pluralize(typeName)}`,
 
         // graphql query options
         options({ terms, paginationTerms, client: apolloClient, currentUser }) {

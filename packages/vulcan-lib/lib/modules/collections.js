@@ -20,7 +20,7 @@ export const Collections = [];
 
 export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
 
-export const getCollectionName = typeName => `${typeName}s`;
+export const getCollectionName = typeName => Utils.pluralize(typeName);
 
 export const getTypeName = collectionName => collectionName.slice(0,-1);
 

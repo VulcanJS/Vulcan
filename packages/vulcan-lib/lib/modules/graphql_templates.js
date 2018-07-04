@@ -131,7 +131,7 @@ A query for multiple documents
 movies(input: MultiMovieInput) : MultiMovieOutput
 
 */
-export const multiQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(typeName)}s(input: Multi${typeName}Input): Multi${typeName}Output`;
+export const multiQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(Utils.pluralize(typeName))}(input: Multi${typeName}Input): Multi${typeName}Output`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
@@ -272,7 +272,7 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 */
 export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
 `query multi${typeName}Query($input: Multi${typeName}Input) {
-  ${Utils.camelCaseify(typeName)}s(input: $input) {
+  ${Utils.camelCaseify(Utils.pluralize(typeName))}(input: $input) {
     results {
       ...${fragmentName}
     }
