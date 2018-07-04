@@ -600,6 +600,8 @@ class SmartForm extends Component {
   Clear and reset the form
   By default, clear errors and keep current values and deleted values
 
+  On form success we'll clear current values too. Note: document includes currentValues
+
   */
   clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false, document }) => {
     document = document ? merge({}, this.props.prefilledProps, document) : null;
@@ -608,7 +610,7 @@ class SmartForm extends Component {
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
-      initialDocument: document ? document : prevState.initialDocument,
+      initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
       disabled: false,
     }));
   };
