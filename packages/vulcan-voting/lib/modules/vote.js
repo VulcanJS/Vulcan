@@ -259,8 +259,8 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      returnedDocument = runCallbacks(`votes.clear.client`, voteOptions.document, collection, user);
-      voteOptions.document = clearVotesClient({document:returnedDocument, collection, voteType, user, voteId})
+      const tempDocument = runCallbacks(`votes.clear.client`, voteOptions.document, collection, user);
+      voteOptions.document = clearVotesClient({document:tempDocument, collection, voteType, user, voteId})
 
     }
     returnedDocument = addVoteClient(voteOptions);
