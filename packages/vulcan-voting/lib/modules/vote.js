@@ -151,6 +151,7 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
   if (votes.length) {
     await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
     votes.forEach((vote)=> {
+      runCallbacks(`votes.cancel.sync`, {newDocument, vote}, collection, user);
       runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
     })
     if (updateDocument) {
