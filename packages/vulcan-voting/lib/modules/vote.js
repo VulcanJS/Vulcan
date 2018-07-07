@@ -155,7 +155,7 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
       runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
     })
     if (updateDocument) {
-      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: recalculateBaseScore(document) }});
+      await Connectors.update(collection, {_id: document._id}, {$set: {baseScore: recalculateBaseScore(document) }});
     }
     newDocument.baseScore = recalculateBaseScore(newDocument);
     newDocument.score = recalculateScore(newDocument);
