@@ -11,13 +11,13 @@ Stripe charge lifecycle
   -> [stripe.receive.sync] callback on metadata object
   -> [stripe.receive.async] callback
 
-// for one-time charges
+| for one-time charges
 
 3. createCharge is called
 
   -> [stripe.charge.async] callback
 
-// for subscriptions
+| for subscriptions
 
 3. createSubscription is called
 
@@ -36,7 +36,7 @@ Stripe charge lifecycle
 
 */
 
-import { webAppConnectHandlersUse, debug, debugGroup, debugGroupEnd, getSetting, registerSetting, newMutation, editMutation, Collections, registerCallback, runCallbacks, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
+import { webAppConnectHandlersUse, debug, debugGroup, debugGroupEnd, getSetting, registerSetting, newMutation, updateMutator, Collections, registerCallback, runCallbacks, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
 import express from 'express';
 import Stripe from 'stripe';
 import Charges from '../../modules/charges/collection.js';
@@ -120,7 +120,9 @@ export const receiveAction = async (args) => {
   }
 
   runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
-
+  console.log('//returnDocument')
+  console.log(product.type)
+  console.log(returnDocument)
   return returnDocument;
 }
 
@@ -147,10 +149,10 @@ export const getCustomer = async (user, id) => {
     customer = await stripe.customers.create(customerOptions);
 
     // add stripe customer id to user object
-    await editMutation({
+    await updateMutator({
       collection: Users,
       documentId: user._id,
-      set: {stripeCustomerId: customer.id},
+      data: { stripeCustomerId: customer.id },
       validate: false
     });
     
@@ -367,11 +369,12 @@ export const processAction = async ({collection, document, stripeObject, args, u
     chargeDoc.ip = token.client_ip;
   }
   // insert
-  const chargeSaved = await newMutation({
+  const chargeSavedData = await newMutation({
     collection: Charges,
     document: chargeDoc, 
     validate: false,
   });
+  const chargeSaved = chargeSavedData.data;
 
   // if an associated collection and id have been provided, 
   // update the associated document
@@ -380,21 +383,19 @@ export const processAction = async ({collection, document, stripeObject, args, u
     // note: assume a single document can have multiple successive charges associated to it
     const chargeIds = document.chargeIds ? [...document.chargeIds, chargeSaved._id] : [chargeSaved._id];
 
-    let modifier = {
-      $set: {chargeIds},
-      $unset: {}
-    }
+    let data = { chargeIds };
 
     // run collection.charge.sync callbacks
-    modifier = runCallbacks(`stripe.process.sync`, modifier, {collection, document, chargeDoc, user});
+    data = await runCallbacks({ name: `stripe.process.sync`, iterator: data, properties: { collection, document, chargeDoc, user }});
 
-    returnDocument = await editMutation({
+    const updateResult = await updateMutator({
       collection,
       documentId: associatedId,
-      set: modifier.$set,
-      unset: modifier.$unset,
+      data,
       validate: false
     });
+
+    returnDocument = updateResult.data;
 
     returnDocument.__typename = collection.typeName;
 

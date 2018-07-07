@@ -34,6 +34,7 @@ import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
+import clone from 'lodash/clone';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
@@ -72,19 +73,26 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
     if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
   }
+
+  /* 
   
-  // run onInsert step
-  // note: cannot use forEach with async/await. 
-  // See https://stackoverflow.com/a/37576787/649299
+  run onCreate step
+
+  note: cannot use forEach with async/await. 
+  See https://stackoverflow.com/a/37576787/649299
+
+  note: clone arguments in case callbacks modify them
+
+  */
   for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onCreate({ newDocument, currentUser });
+      autoValue = await schema[fieldName].onCreate({ newDocument: clone(newDocument), currentUser });
     } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onInsert(newDocument, currentUser);
+      autoValue = await schema[fieldName].onInsert(clone(newDocument), currentUser);
     }
     if (typeof autoValue !== 'undefined') {
       newDocument[fieldName] = autoValue;
@@ -184,11 +192,11 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
     let autoValue;
     if (schema[fieldName].onUpdate) {
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onUpdate({ data, document, currentUser, newDocument });
+      autoValue = await schema[fieldName].onUpdate({ data: clone(data), document, currentUser, newDocument });
     } else if (schema[fieldName].onEdit) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onEdit(dataToModifier(data), document, currentUser, newDocument);
+      autoValue = await schema[fieldName].onEdit(dataToModifier(clone(data)), document, currentUser, newDocument);
     }
     if (typeof autoValue !== 'undefined') {
       data[fieldName] = autoValue;

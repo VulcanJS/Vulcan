@@ -11,6 +11,8 @@ import findByIds from '../modules/findbyids.js';
 import { getDefaultFragmentText, extractFragmentName, getFragmentText } from '../modules/fragments.js';
 import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
+import { singleClientTemplate } from '../modules/graphql_templates';
+import { Utils } from './utils';
 
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context ) => {
@@ -50,7 +52,7 @@ If no fragment is passed, default to default fragment
 export const buildQuery = (collection, {fragmentName, fragmentText}) => {
 
   const collectionName = collection.options.collectionName;
-  const resolverName = `${collectionName}Single`;
+  const typeName = collection.options.typeName;
   
   const defaultFragmentName = `${collectionName}DefaultFragment`;
   const defaultFragmentText = getDefaultFragmentText(collection, { onlyViewable: false });
@@ -67,14 +69,7 @@ export const buildQuery = (collection, {fragmentName, fragmentText}) => {
     text = fragmentText;
   }
 
-  const query = `
-    query ${resolverName}Query ($documentId: String){
-      ${resolverName}(documentId: $documentId){
-        ...${name}
-      }
-    }
-    ${text}
-  `
+  const query = `${singleClientTemplate({ typeName, fragmentName: name })}${text}`;
 
   return query;
 }
@@ -83,13 +78,12 @@ Meteor.startup(() => {
 
   Collections.forEach(collection => {
 
-    const collectionName = collection.options.collectionName;
-    const resolverName = `${collectionName}Single`;
+    const typeName = collection.options.typeName;
 
     collection.queryOne = async (documentId, { fragmentName, fragmentText, context }) => {
       const query = buildQuery(collection, { fragmentName, fragmentText });
       const result = await runQuery(query, { documentId }, context);
-      return result.data[resolverName];
+      return result.data[Utils.camelCaseify(typeName)].result;
     }
 
   });

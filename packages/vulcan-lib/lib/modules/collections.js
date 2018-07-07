@@ -18,7 +18,7 @@ export let hasIntlFields = false;
 
 export const Collections = [];
 
-export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
+export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName || name === collectionName.toLowerCase());
 
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
