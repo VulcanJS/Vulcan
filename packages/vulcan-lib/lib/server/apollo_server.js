@@ -143,7 +143,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   ]}))
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json({limit: '5mb'}), graphqlExpress(async (req) => {
+  graphQLServer.use(config.path, bodyParser.json({limit: '30mb'}), graphqlExpress(async (req) => {
     let options;
     let user = null;
 
