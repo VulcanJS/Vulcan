@@ -151,10 +151,11 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
   if (votes.length) {
     await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
     votes.forEach((vote)=> {
+      runCallbacks(`votes.cancel.sync`, {newDocument, vote}, collection, user);
       runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
     })
     if (updateDocument) {
-      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: recalculateBaseScore(document) }});
+      await Connectors.update(collection, {_id: document._id}, {$set: {baseScore: recalculateBaseScore(document) }});
     }
     newDocument.baseScore = recalculateBaseScore(newDocument);
     newDocument.score = recalculateScore(newDocument);
