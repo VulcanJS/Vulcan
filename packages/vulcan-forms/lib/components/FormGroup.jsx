@@ -45,6 +45,7 @@ class FormGroup extends PureComponent {
           {this.props.fields.map(field => (
             <Components.FormComponent
               key={field.name}
+              disabled={this.props.disabled}
               {...field}
               errors={this.props.errors}
               throwError={this.props.throwError}
@@ -55,7 +56,6 @@ class FormGroup extends PureComponent {
               clearFieldErrors={this.props.clearFieldErrors}
               formType={this.props.formType}
               currentUser={this.props.currentUser}
-              disabled={this.props.disabled}
             />
           ))}
         </div>

@@ -46,6 +46,7 @@ import merge from 'lodash/merge';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
+import uniq from 'lodash/uniq';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { getDeletedValues } from '../modules/utils';
@@ -121,12 +122,49 @@ class SmartForm extends Component {
   };
 
   /*
+
+  Get current typeName
+
+  */
+  getTypeName = () => {
+    return this.getCollection().options.typeName;
+  }
+
+  /*
+
   If a document is being passed, this is an edit form
 
   */
   getFormType = () => {
     return this.props.document ? 'edit' : 'new';
   };
+
+  /*
+
+  Get a list of all insertable fields
+
+  */
+  getInsertableFields = () => {
+    return getInsertableFields(this.state.schema, this.props.currentUser);
+  }
+
+  /*
+
+  Get a list of all editable fields
+  
+  */
+  getEditableFields = () => {
+    return getEditableFields(this.state.schema, this.props.currentUser, this.state.initialDocument)
+  }
+
+  /*
+
+  Get a list of all mutable (insertable/editable depending on current form type) fields
+
+  */
+  getMutableFields = () => {
+    return this.getFormType() === 'edit' ? this.getEditableFields() : this.getInsertableFields();
+  }
 
   /*
 
@@ -155,13 +193,20 @@ class SmartForm extends Component {
   to only return fields that actually need to be submitted
 
   Also remove any deleted values.
+
   */
-  getData = () => {
+  getData = (customArgs) => {
+
+    const args = { excludeHiddenFields: false, replaceIntlFields: true, addExtraFields: false, ...customArgs };
+    
     // only keep relevant fields
     // for intl fields, make sure we look in foo_intl and not foo
-    const fields = this.getFieldNames({ excludeHiddenFields: false, replaceIntlFields: true });
+    const fields = this.getFieldNames(args);
     let data = pick(this.getDocument(), ...fields);
 
+    // remove empty fields
+    data = _.compactObject(data);
+    
     // remove any deleted values
     // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
     this.state.deletedValues.forEach(path => {
@@ -192,7 +237,7 @@ class SmartForm extends Component {
     fields = _.sortBy(fields, 'order');
 
     // get list of all unique groups (based on their name) used in current fields
-    let groups = _.compact(_.unique(_.pluck(fields, 'group'), false, g => g && g.name));
+    let groups = _.compact(uniq(_.pluck(fields, 'group'), false, g => g && g.name));
 
     // for each group, add relevant fields
     groups = groups.map(group => {
@@ -224,27 +269,35 @@ class SmartForm extends Component {
   };
 
   /*
+
   Get a list of the fields to be included in the current form
+
+  Note: when submitting the form (getData()), do not include any extra fields.
 
   */
   getFieldNames = (args = {}) => {
-    const { schema = this.state.schema, excludeHiddenFields = true, replaceIntlFields = false } = args;
+    
+    const { schema = this.state.schema, excludeHiddenFields = true, replaceIntlFields = false, addExtraFields = true } = args;
 
-    const { fields, hideFields } = this.props;
+    const { fields, addFields, } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields =
-      this.getFormType() === 'edit'
-        ? getEditableFields(schema, this.props.currentUser, this.state.initialDocument)
-        : getInsertableFields(schema, this.props.currentUser);
+    let relevantFields = this.getMutableFields();
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
       relevantFields = _.intersection(relevantFields, fields);
     }
-    // if "hideFields" prop is specified, remove its fields
-    if (typeof hideFields !== 'undefined' && hideFields.length > 0) {
-      relevantFields = _.difference(relevantFields, hideFields);
+
+    // if "removeFields" prop is specified, remove its fields
+    const removeFields = this.props.hideFields || this.props.removeFields;
+    if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
+      relevantFields = _.difference(relevantFields, removeFields);
+    }
+
+    // if "addFields" prop is specified, add its fields
+    if (addExtraFields && typeof addFields !== 'undefined' && addFields.length > 0) {
+      relevantFields = relevantFields.concat(addFields);
     }
 
     // remove all hidden fields
@@ -260,6 +313,9 @@ class SmartForm extends Component {
     if (replaceIntlFields) {
       relevantFields = relevantFields.map(fieldName => isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName);
     }
+
+    // remove any duplicates
+    relevantFields = uniq(relevantFields);
 
     return relevantFields;
   };
@@ -317,12 +373,15 @@ class SmartForm extends Component {
 
     // add any properties specified in fieldSchema.form as extra props passed on
     // to the form component, calling them if they are functions
-    const inputProperties = fieldSchema.form || fieldSchema.inputProperties;
-    if (inputProperties) {
-      for (const prop in inputProperties) {
-        const property = inputProperties[prop];
-        field[prop] = typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
-      }
+    const inputProperties = fieldSchema.form || fieldSchema.inputProperties || {};
+    for (const prop in inputProperties) {
+      const property = inputProperties[prop];
+      field[prop] = typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
+    }
+
+    // if field is not creatable/updatable, disable it
+    if (!this.getMutableFields().includes(fieldName)) {
+      field.disabled = true;
     }
 
     // add description as help prop
@@ -698,11 +757,7 @@ class SmartForm extends Component {
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
-    data = this.getData();
-
-    // console.log(data)
-
-    const fields = this.getFieldNames({ replaceIntlFields: true });
+    data = this.getData({ replaceIntlFields: true, addExtraFields: false });
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
@@ -710,43 +765,14 @@ class SmartForm extends Component {
     }
 
     if (this.getFormType() === 'new') {
-      // new document form
-
-      // remove any empty properties
-      let document = _.compactObject(data);
-      // call method with new document
-      this.props
-        .newMutation({ document })
+      // create document form
+      this.props[`create${this.getTypeName()}`]({ data })
         .then(this.newMutationSuccessCallback)
         .catch(error => this.mutationErrorCallback(document, error));
     } else {
-      // edit document form
-
-      const document = this.getDocument();
-
-      // put all keys with data on $set
-      const set = _.compactObject(data);
-
-      // put all keys without data on $unset
-      const setKeys = _.keys(set);
-      let unsetKeys = _.difference(fields, setKeys);
-
-      // add all keys to delete (minus those that have data associated)
-      unsetKeys = _.unique(unsetKeys.concat(_.difference(this.state.deletedValues, setKeys)));
-
-      // only keep unset keys that correspond to a field (get rid of nested keys)
-      unsetKeys = _.intersection(unsetKeys, this.getFieldNames());
-
-      unsetKeys = unsetKeys.filter(key => !key.includes('.'));
-
-      // build mutation arguments object
-      const args = { documentId: document._id, set: set, unset: {} };
-      if (unsetKeys.length > 0) {
-        args.unset = _.object(unsetKeys, unsetKeys.map(() => true));
-      }
-      // call method with _id of document being edited and modifier
-      this.props
-        .editMutation(args)
+      // update document form
+      const documentId = this.getDocument()._id;
+      this.props[`update${this.getTypeName()}`]({ selector: { documentId }, data })
         .then(this.editMutationSuccessCallback)
         .catch(error => this.mutationErrorCallback(document, error));
     }
@@ -853,7 +879,9 @@ SmartForm.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
-  hideFields: PropTypes.arrayOf(PropTypes.string),
+  addFields: PropTypes.arrayOf(PropTypes.string),
+  removeFields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
