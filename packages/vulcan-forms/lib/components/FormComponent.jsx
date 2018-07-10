@@ -277,6 +277,9 @@ class FormComponent extends Component {
         case 'time':
           return Components.FormComponentTime;
 
+        case 'statictext': 
+          return Components.FormComponentStaticText;
+          
         default:
           const CustomComponent = Components[this.props.input];
           return CustomComponent ? CustomComponent : Components.FormComponentDefault;

@@ -11,6 +11,7 @@ import '../components/forms/Textarea.jsx';
 import '../components/forms/Time.jsx';
 import '../components/forms/Date.jsx';
 import '../components/forms/Url.jsx';
+import '../components/forms/StaticText.jsx';
 import '../components/forms/FormComponentInner.jsx';
 import '../components/forms/FormControl.jsx'; // note: only used by old accounts package, remove soon?
 
