@@ -62,7 +62,7 @@ class Datatable extends PureComponent {
 
     if (this.props.data) { // static JSON datatable
 
-      return <Components.DatatableContents {...this.props} results={this.props.data}/>;
+      return <Components.DatatableContents columns={Object.keys(this.props.data[0])} {...this.props} results={this.props.data} showEdit={false} showNew={false} />;
             
     } else { // dynamic datatable with data loading
       
@@ -87,6 +87,7 @@ class Datatable extends PureComponent {
 }
 
 Datatable.propTypes = {
+  title: PropTypes.string,
   collection: PropTypes.object,
   columns: PropTypes.array,
   data: PropTypes.array,
@@ -211,7 +212,8 @@ DatatableContents Component
 
 const DatatableContents = (props) => {
 
-  const {collection, columns, results, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState, toggleSort, currentSort } = props;
+  // if no columns are provided, default to using keys of first array item
+  const { title, collection, results, columns, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState, toggleSort, currentSort } = props;
 
   if (loading) {
     return <div className="datatable-list datatable-list-loading"><Components.Loading /></div>;
@@ -224,29 +226,40 @@ const DatatableContents = (props) => {
 
   return (
     <div className="datatable-list">
-        <table className="table">
-          <thead>
-            <tr>
-              {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column} toggleSort={toggleSort} currentSort={currentSort} />)}
-              {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
-          </tbody>
-        </table>
-        {hasMore &&
-          <div className="datatable-list-load-more">
-            {isLoadingMore ?
-              <Components.Loading/> :
-              <Components.Button variant="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Components.Button>
-            }
-          </div>
-        }
-      </div>
+      {title && <Components.DatatableTitle title={title}/>}
+      <table className="table">
+        <thead>
+          <tr>
+            {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column} toggleSort={toggleSort} currentSort={currentSort} />)}
+            {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
+          </tr>
+        </thead>
+        <tbody>
+          {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
+        </tbody>
+      </table>
+      {hasMore &&
+        <div className="datatable-list-load-more">
+          {isLoadingMore ?
+            <Components.Loading/> :
+            <Components.Button variant="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Components.Button>
+          }
+        </div>
+      }
+    </div>
   )
 }
 registerComponent('DatatableContents', DatatableContents);
+
+/*
+
+DatatableTitle Component
+
+*/
+const DatatableTitle = ({ title }) => 
+  <div className="datatable-title">{title}</div>
+
+registerComponent('DatatableTitle', DatatableTitle);
 
 /*
 
