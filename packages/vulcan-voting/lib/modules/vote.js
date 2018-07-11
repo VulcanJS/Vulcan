@@ -253,7 +253,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
     // console.log('action: cancel')
     returnedDocument = cancelVoteClient(voteOptions);
-    returnedDocument = runCallbacks(`votes.cancel.client`, returnedDocument, collection, user);
+    returnedDocument = runCallbacks(`votes.cancel.client`, returnedDocument, collection, user, voteType);
 
   } else {
 
