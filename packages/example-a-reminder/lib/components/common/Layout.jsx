@@ -11,4 +11,5 @@ const Layout = () => {
   )
 };
 
+registerComponent('Layout', Layout);
 export default Layout;

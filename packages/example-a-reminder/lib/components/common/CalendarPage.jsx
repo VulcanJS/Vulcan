@@ -1,11 +1,31 @@
 import React from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, ModalTrigger, withCurrentUser } from 'meteor/vulcan:core';
 import Calendar from 'react-widgets/lib/Calendar';
 import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import Moment from 'moment';
 
 momentLocalizer(Moment);
 
+const canCreateNewReminder = Reminders.options.mutations.new.check(
+  this.props.currentUser
+);
+
+renderNew() {
+
+  const component = (
+    <div className="add-reminder">
+      <ModalTrigger
+        title="Add Reminder"
+        component={<Button bsStyle="primary">Add Reminder</Button>}
+      >
+        <Components.RemindersNewForm />
+      </ModalTrigger>
+      <hr/>
+    </div>
+  )
+
+  return !!this.props.currentUser ? component : null;
+}
 
 class reminderDayComponent extends React.Component{
   render() {
@@ -26,6 +46,8 @@ const CalendarPage = () => {
       <h1>Calendar</h1>
         <Calendar  defaultValue={new Date()} footer={true} label={"stuff"} dayComponent={reminderDayComponent} />
     </div>
+    {canCreateNewReminder ? this.renderNew() : null}
   )
 }
+
 registerComponent('CalendarPage', CalendarPage);
