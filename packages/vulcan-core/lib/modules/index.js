@@ -13,6 +13,7 @@ export { default as Loading } from "./components/Loading.jsx";
 export { default as ShowIf } from "./components/ShowIf.jsx";
 export { default as NewButton } from './components/NewButton.jsx';
 export { default as EditButton } from './components/EditButton.jsx';
+export { default as MutationButton } from './components/MutationButton.jsx';
 export { default as Error404 } from './components/Error404.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
