@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMutation from '../containers/withMutation';
 
-class MutationButtonWrapper extends PureComponent {
+class MutationButton extends PureComponent {
   constructor(props) {
     super(props);
-    this.button = withMutation(props.mutationOptions)(MutationButton);
+    this.button = withMutation(props.mutationOptions)(MutationButtonInner);
   }
 
   render() {
@@ -14,7 +14,7 @@ class MutationButtonWrapper extends PureComponent {
   }
 }
 
-class MutationButton extends PureComponent {
+class MutationButtonInner extends PureComponent {
 
   state = {
     loading: false,
@@ -23,16 +23,17 @@ class MutationButton extends PureComponent {
   handleClick = e => {
     e.preventDefault();
     this.setState({ loading: true });
-    const mutationName = this.props.mutationOptions.name;
+    const { mutationOptions, mutationArguments, successCallback, errorCallback } = this.props;
+    const mutationName = mutationOptions.name;
     const mutation = this.props[mutationName];
-    mutation(this.props.arguments).then(result => {
+    mutation(mutationArguments).then(result => {
       this.setState({ loading: false });
-      if(this.props.successCallback) {
-        this.props.successCallback(result);
+      if(successCallback) {
+        successCallback(result);
       }
     }).catch(error => {
-      if(this.props.errorCallback) {
-        this.props.errorCallback(error);
+      if(errorCallback) {
+        errorCallback(error);
       }
     });
   };
@@ -46,32 +47,39 @@ class MutationButton extends PureComponent {
     delete rest.mutationOptions;
     delete rest.mutationArguments;
 
-    const wrapperStyle = {
-      position: 'relative',
-    };
-
-    const labelStyle = loading ? { opacity: 0.5 } : {};
-
-    const loadingStyle = loading ? {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    } : { display: 'none'};
-
-    return (
-      <Components.Button onClick={this.handleClick} {...rest}>
-        <span style={wrapperStyle}>
-          <span style={labelStyle}>{label}</span>
-          <span style={loadingStyle}><Components.Loading/></span>
-        </span>
-      </Components.Button>
-    );
+    return <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest}/>;
   }
 }
 
-registerComponent('MutationButton', MutationButtonWrapper);
+registerComponent('MutationButton', MutationButton);
+
+const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
+
+  const wrapperStyle = {
+    position: 'relative',
+  };
+
+  const labelStyle = loading ? { opacity: 0.5 } : {};
+
+  const loadingStyle = loading ? {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  } : { display: 'none'};
+
+  return (
+    <Components.Button onClick={onClick} {...rest}>
+      <span style={wrapperStyle}>
+        <span style={labelStyle}>{label || children}</span>
+        <span style={loadingStyle}><Components.Loading/></span>
+      </span>
+    </Components.Button>
+  );
+}
+
+registerComponent('LoadingButton', LoadingButton);
