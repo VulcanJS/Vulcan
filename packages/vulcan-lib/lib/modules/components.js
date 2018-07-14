@@ -146,4 +146,32 @@ export const instantiateComponent = (component, props) => {
   }
 };
 
-
+/**
+ * Creates a component that will render the registered component with the given name.
+ *
+ * This function  may be useful when in need for some registered component, but in contexts
+ * where they have not yet been initialized, for example at compile time execution. In other
+ * words, when using `Components.ComponentName` is not allowed (because it has not yet been
+ * populated, hence would be `undefined`), then `delayedComponent('ComponentName')` can be
+ * used instead.
+ *
+ * @example Create a container for a registered component
+ *  // SomeContainer.js
+ *  import compose from 'recompose/compose';
+ *  import { delayedComponent } from 'meteor/vulcan:core';
+ *
+ *  export default compose(
+ *    // ...some hocs with container logic
+ *  )(delayedComponent('ComponentName')); // cannot use Components.ComponentName in this context!
+ *
+ * @example {@link dynamicLoader}
+ * @param {String} name Component name
+ * @return {Function}
+ *  Functional component that will render the given registered component
+ */
+export const delayedComponent = name => {
+  return props => {
+    const Component = Components[name] || null;
+    return Component && <Component {...props} />;
+  };
+};
