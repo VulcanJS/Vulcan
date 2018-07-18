@@ -1,7 +1,8 @@
-import { Tinytest } from "meteor/tinytest";
 import FormWrapper from 'meteor/vulcan:forms';
+import expect from "expect"
 
-Tinytest.add('vulcan:forms - initialize', function (test) {
-    // because of compose()
-    test.equal('GraphQL', FormWrapper.name);
-});
+describe('vulcan:forms', function () {
+    it('initialize', function () {
+        expect(FormWrapper.name).toEqual('GraphQL')
+    })
+})
