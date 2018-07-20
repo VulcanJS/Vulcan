@@ -7,12 +7,13 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     formSection: {
       fontFamily: theme.typography.fontFamily,
-      border: `solid 1px ${theme.palette.grey[300]}`,
+      border: `solid 1px ${theme.palette.grey[400]}`,
       marginBottom: theme.spacing.unit,
     },
     formSectionBody: {
       borderTop: `solid 1px ${theme.palette.grey[300]}`,
-      padding: theme.spacing.unit*2
+      padding: theme.spacing.unit,
+      paddingRight: theme.spacing.unit*2
     },
     formSectionHeading: {
       display:"flex",
