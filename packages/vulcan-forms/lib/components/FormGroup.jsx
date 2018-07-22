@@ -1,8 +1,28 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
-import classNames from 'classnames';
 import { registerComponent } from 'meteor/vulcan:core';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    formSection: {
+      fontFamily: theme.typography.fontFamily,
+      border: `solid 1px ${theme.palette.grey[300]}`,
+      marginBottom: theme.spacing.unit,
+    },
+    formSectionBody: {
+      borderTop: `solid 1px ${theme.palette.grey[300]}`,
+      padding: theme.spacing.unit*2
+    },
+    formSectionHeading: {
+      display:"flex",
+      justifyContent: "space-between",
+      paddingTop: theme.spacing.unit*2,
+      paddingRight: theme.spacing.unit*2,
+      paddingBottom: theme.spacing.unit,
+      paddingLeft: theme.spacing.unit*2,
+    },
+})
 
 class FormGroup extends PureComponent {
   constructor(props) {
@@ -21,10 +41,11 @@ class FormGroup extends PureComponent {
   }
 
   renderHeading() {
+    const { classes, label } = this.props
     return (
-      <div className="form-section-heading" onClick={this.toggle}>
-        <h3 className="form-section-heading-title">{this.props.label}</h3>
-        <span className="form-section-heading-toggle">
+      <div className={classes.formSectionHeading} onClick={this.toggle}>
+        <h3 className="form-section-heading-title">{ label }</h3>
+        <span>
           {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
         </span>
       </div>
@@ -37,27 +58,29 @@ class FormGroup extends PureComponent {
   });
 
   render() {
-
+    const { classes, name } = this.props
     return (
-      <div className="form-section">
-        {this.props.name === 'default' ? null : this.renderHeading()}
-        <div className={classNames({ 'form-section-collapsed': this.state.collapsed && !this.hasErrors() })}>
-          {this.props.fields.map(field => (
-            <Components.FormComponent
-              key={field.name}
-              {...field}
-              errors={this.props.errors}
-              throwError={this.props.throwError}
-              currentValues={this.props.currentValues}
-              updateCurrentValues={this.props.updateCurrentValues}
-              deletedValues={this.props.deletedValues}
-              addToDeletedValues={this.props.addToDeletedValues}
-              clearFieldErrors={this.props.clearFieldErrors}
-              formType={this.props.formType}
-              currentUser={this.props.currentUser}
-            />
-          ))}
-        </div>
+      <div className={!(name == "default") && classes.formSection}>
+        { !(this.props.name === 'default') && this.renderHeading()}
+        { (!this.state.collapsed || this.hasErrors()) &&
+          <div className={!(name == "default") && classes.formSectionBody}>
+            {this.props.fields.map(field => (
+              <Components.FormComponent
+                key={field.name}
+                {...field}
+                errors={this.props.errors}
+                throwError={this.props.throwError}
+                currentValues={this.props.currentValues}
+                updateCurrentValues={this.props.updateCurrentValues}
+                deletedValues={this.props.deletedValues}
+                addToDeletedValues={this.props.addToDeletedValues}
+                clearFieldErrors={this.props.clearFieldErrors}
+                formType={this.props.formType}
+                currentUser={this.props.currentUser}
+              />
+            ))}
+          </div>
+        }
       </div>
     );
   }
@@ -79,7 +102,7 @@ FormGroup.propTypes = {
   currentUser: PropTypes.object,
 };
 
-registerComponent('FormGroup', FormGroup);
+registerComponent('FormGroup', FormGroup, withStyles(styles));
 
 const IconRight = ({ width = 24, height = 24 }) => (
   <svg
