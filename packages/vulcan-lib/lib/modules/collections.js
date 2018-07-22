@@ -10,7 +10,7 @@ import { isIntlField } from './intl.js';
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
-registerSetting('maxDocumentsPerRequest', 1000, 'Maximum documents per request');
+registerSetting('maxDocumentsPerRequest', 5000, 'Maximum documents per request');
 
 export const Collections = [];
 
