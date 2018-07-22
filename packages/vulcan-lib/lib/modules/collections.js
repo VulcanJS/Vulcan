@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
-import { runCallbacks } from './callbacks.js';
+import { runCallbacks, runCallbacksAsync } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
@@ -172,6 +172,9 @@ export const createCollection = options => {
     // add collection to list of dynamically generated GraphQL schemas
     addGraphQLCollection(collection);
   }
+
+  runCallbacksAsync({ name: `*.collection`, properties: { options } });
+  runCallbacksAsync({ name: `${collectionName}.collection`, properties: { options } });
 
   // ------------------------------------- Default Fragment -------------------------------- //
 
