@@ -84,7 +84,7 @@ Mongo.Collection.prototype.addView = function (viewName, view) {
 /**
  * @summary Allow mongodb aggregation
  * @param {Array} pipelines mongodb pipeline
- * @param {Object} options mongodb option object 
+ * @param {Object} options mongodb option object
  */
 Mongo.Collection.prototype.aggregate = function (pipelines, options) {
   var coll = this.rawCollection();
@@ -170,11 +170,11 @@ export const createCollection = options => {
         addGraphQLQuery(
 `${resolvers.list.name}(
     # A JSON object that contains the query terms used to fetch data
-    terms: JSON, 
+    terms: JSON,
     # How much to offset the results by
-    offset: Int, 
+    offset: Int,
     # A limit for the query
-    limit: Int, 
+    limit: Int,
     # Whether to enable caching for this query
     enableCache: Boolean
   ): [${typeName}]`, resolvers.list.description);
@@ -185,9 +185,9 @@ export const createCollection = options => {
         addGraphQLQuery(
 `${resolvers.single.name}(
     # The document's unique ID
-    documentId: String, 
+    documentId: String,
     # A unique slug identifying the document
-    slug: String, 
+    slug: String,
     # Whether to enable caching for this query
     enableCache: Boolean
   ): ${typeName}`, resolvers.single.description);
@@ -225,9 +225,9 @@ export const createCollection = options => {
         addGraphQLMutation(
 `${mutations.edit.name}(
     # The unique ID of the document to edit
-    documentId: String, 
+    documentId: String,
     # An array of fields to insert
-    set: ${collectionName}Input, 
+    set: ${collectionName}Input,
     # An array of fields to delete
     unset: ${collectionName}Unset
   ) : ${typeName}`, mutations.edit.description);
@@ -238,9 +238,9 @@ export const createCollection = options => {
         addGraphQLMutation(
           `${mutations.upsert.name}(
     # The document to search for (or partial document)
-    search: JSON, 
+    search: JSON,
     # An array of fields to insert
-    set: ${collectionName}Input, 
+    set: ${collectionName}Input,
     # An array of fields to delete
     unset: ${collectionName}Unset
   ) : ${typeName}`, mutations.upsert.description);
@@ -319,7 +319,7 @@ export const createCollection = options => {
     }
 
     if(terms.query) {
-        
+
       const query = escapeStringRegexp(terms.query);
 
       const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
@@ -333,7 +333,7 @@ export const createCollection = options => {
     }
 
     // limit number of items to 1000 by default
-    const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
+    const maxDocuments = getSetting('maxDocumentsPerRequest', 5000);
     const limit = terms.limit || parameters.options.limit;
     parameters.options.limit = (!limit || limit < 1 || limit > maxDocuments) ? maxDocuments : limit;
 
