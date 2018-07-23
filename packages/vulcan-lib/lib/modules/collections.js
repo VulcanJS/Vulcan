@@ -246,8 +246,8 @@ export const createCollection = options => {
     if (terms.query) {
         
       const query = escapeStringRegexp(terms.query);
-
-      const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
+      const currentSchema = collection.simpleSchema()._schema; 
+      const searchableFieldNames = _.filter(_.keys(currentSchema), fieldName => currentSchema[fieldName].searchable);
       if (searchableFieldNames.length) {
         parameters = Utils.deepExtend(true, parameters, {
           selector: {
