@@ -93,6 +93,8 @@
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
     "chromedriver": "^2.40.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^3.10.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-meteor": "0.0.9",
@@ -101,9 +103,12 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-mocha": "^5.1.0",
     "eslint-plugin-prettier": "^2.5.0",
     "eslint-plugin-react": "^6.7.1",
     "expect": "^23.4.0",
+    "jsdom": "^11.11.0",
+    "jsdom-global": "^3.0.2",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "postcss": {

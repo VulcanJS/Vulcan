@@ -12,18 +12,21 @@
   },
   "rules": {
     "babel/generator-star-spacing": 0,
-    "babel/new-cap": [1, {
-      "capIsNewExceptions": [
-        "Optional",
-        "OneOf",
-        "Maybe",
-        "MailChimpAPI",
-        "Juice",
-        "Run",
-        "AppComposer",
-        "Query"
-      ]
-    }],
+    "babel/new-cap": [
+      1,
+      {
+        "capIsNewExceptions": [
+          "Optional",
+          "OneOf",
+          "Maybe",
+          "MailChimpAPI",
+          "Juice",
+          "Run",
+          "AppComposer",
+          "Query"
+        ]
+      }
+    ],
     "babel/array-bracket-spacing": 0,
     "babel/object-curly-spacing": 0,
     "babel/object-shorthand": 0,
@@ -33,11 +36,14 @@
     "key-spacing": 0,
     "no-extra-boolean-cast": 0,
     "no-undef": 1,
-    "no-unused-vars": [1, {
-      "vars": "all",
-      "args": "none",
-      "varsIgnorePattern": "React|PropTypes|Component"
-    }],
+    "no-unused-vars": [
+      1,
+      {
+        "vars": "all",
+        "args": "none",
+        "varsIgnorePattern": "React|PropTypes|Component"
+      }
+    ],
     "no-console": 1,
     "react/prop-types": 0,
     "meteor/audit-argument-checks": 0,
@@ -49,13 +55,15 @@
     "commonjs": true,
     "es6": true,
     "meteor": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "plugins": [
     "babel",
     "meteor",
     "react",
-    "prettier"
+    "prettier",
+    "mocha"
   ],
   "settings": {
     "import/resolver": "meteor"
