@@ -56,7 +56,7 @@ This project exists thanks to all the people who contribute.
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/vulcan#backer)]
 
-<a href="https://opencollective.com/vulcan#backers" target="_blank"><img src="https://opencollective.com/vulcan/backers.svg?width=890”></a>
+<a href="https://opencollective.com/vulcan#backers" target="_blank"><img src="https://opencollective.com/vulcan/backers.svg?width=890"></a>
 
 ### Sponsors
 
