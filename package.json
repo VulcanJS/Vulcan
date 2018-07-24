@@ -6,7 +6,9 @@
   },
   "scripts": {
     "start": "meteor --settings settings.json",
-    "lint": "eslint --cache --ext .jsx,js packages"
+    "lint": "eslint --cache --ext .jsx,js packages",
+    "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --driver-package meteortesting:mocha --raw-logs",
+    "test": "npm run test-unit"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.38",
@@ -90,6 +92,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
+    "chromedriver": "^2.40.0",
     "eslint": "^3.10.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-meteor": "0.0.9",
@@ -99,7 +102,9 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-prettier": "^2.5.0",
-    "eslint-plugin-react": "^6.7.1"
+    "eslint-plugin-react": "^6.7.1",
+    "expect": "^23.4.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "postcss": {
     "plugins": {
