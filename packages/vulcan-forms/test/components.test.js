@@ -2,9 +2,12 @@
 import 'jsdom-global/register'
 import React from 'react'
 import Form from '../lib/components/Form'
+import FormNested from '../lib/components/FormNested'
 import expect from 'expect'
-import Enzyme, { mount } from 'enzyme'
+import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
+// we must import all the other components, so that "registerComponent" is called
+import "../lib/modules/components"
 
 
 
@@ -89,21 +92,39 @@ describe('vulcan-forms/components', function () {
         const mountWithContext = C => mount(C, {
             context: {
                 intl: {
-                    formatMessage: () => ""
+                    formatMessage: () => "",
+                    formatDate: () => ""
+                }
+            }
+        })
+        const shallowWithContext = C => shallow(C, {
+            context: {
+                intl: {
+                    formatMessage: () => "",
+                    formatDate: () => "",
+                    formatTime: () => ""
                 }
             }
         })
         describe('basic', function () {
-            it('mount', function () {
-                const wrapper = mountWithContext(<Form collection={Addresses} />)
+            it('shallow render', function () {
+                const wrapper = shallowWithContext(<Form collection={Addresses} />)
                 expect(wrapper).toBeDefined()
             })
         })
         describe('nested forms', function () {
-            it('mount', () => {
-                const wrapper = mountWithContext(<Form collection={Customers} />)
+            it('shallow render', () => {
+                const wrapper = shallowWithContext(<Form collection={Customers} />)
                 expect(wrapper).toBeDefined()
             })
+        })
+    })
+
+    describe('FormNested', function () {
+        it('mount', function () {
+            const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
+            expect(wrapper).toBeDefined()
+
         })
     })
 })

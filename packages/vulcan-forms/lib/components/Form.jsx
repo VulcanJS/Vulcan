@@ -380,7 +380,7 @@ class SmartForm extends Component {
     }
 
     // if field is not creatable/updatable, disable it
-    if (!this.getMutableFields().includes(fieldName)) {
+    if (!this.getMutableFields(schema).includes(fieldName)) {
       field.disabled = true;
     }
 

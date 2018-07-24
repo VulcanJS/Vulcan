@@ -7,7 +7,7 @@
   "scripts": {
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages",
-    "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --driver-package meteortesting:mocha --raw-logs",
+    "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
     "test": "npm run test-unit"
   },
   "dependencies": {
