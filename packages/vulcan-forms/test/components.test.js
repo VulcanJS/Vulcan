@@ -76,21 +76,34 @@ const Customers = createCollection({
     mutations: getDefaultMutations('Customers'),
 });
 
+const Addresses = createCollection({
+    collectionName: 'Addresses',
+    typeName: 'Address',
+    schema: addressSchema,
+    resolvers: getDefaultResolvers('Addresses'),
+    mutations: getDefaultMutations('Addresses'),
+})
+
 describe('vulcan-forms/components', function () {
     describe('Form', function () {
-        it('mount', function () {
-            const wrapper = mount(<Form collection={Customers} />, {
-                context: {
-                    intl: { formatMessage: () => "" }
+        const mountWithContext = C => mount(C, {
+            context: {
+                intl: {
+                    formatMessage: () => ""
                 }
-            })
-            expect(wrapper).toBeDefined()
+            }
         })
-        //it('handles arrays with nested schemas', function () {
-        //    const wrapped = mount(<Form
-        //        schema={schema} />
-        //    )
-        //    expect(wrapped).toBeDefined()
-        //})
+        describe('basic', function () {
+            it('mount', function () {
+                const wrapper = mountWithContext(<Form collection={Addresses} />)
+                expect(wrapper).toBeDefined()
+            })
+        })
+        describe('nested forms', function () {
+            it('mount', () => {
+                const wrapper = mountWithContext(<Form collection={Customers} />)
+                expect(wrapper).toBeDefined()
+            })
+        })
     })
 })

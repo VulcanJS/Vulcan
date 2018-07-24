@@ -144,8 +144,8 @@ class SmartForm extends Component {
   Get a list of all insertable fields
 
   */
-  getInsertableFields = () => {
-    return getInsertableFields(this.state.schema, this.props.currentUser);
+  getInsertableFields = (schema) => {
+    return getInsertableFields(schema || this.state.schema, this.props.currentUser);
   }
 
   /*
@@ -153,8 +153,8 @@ class SmartForm extends Component {
   Get a list of all editable fields
   
   */
-  getEditableFields = () => {
-    return getEditableFields(this.state.schema, this.props.currentUser, this.state.initialDocument)
+  getEditableFields = (schema) => {
+    return getEditableFields(schema || this.state.schema, this.props.currentUser, this.state.initialDocument)
   }
 
   /*
@@ -162,8 +162,8 @@ class SmartForm extends Component {
   Get a list of all mutable (insertable/editable depending on current form type) fields
 
   */
-  getMutableFields = () => {
-    return this.getFormType() === 'edit' ? this.getEditableFields() : this.getInsertableFields();
+  getMutableFields = (schema) => {
+    return this.getFormType() === 'edit' ? this.getEditableFields(schema) : this.getInsertableFields(schema);
   }
 
   /*
@@ -198,7 +198,7 @@ class SmartForm extends Component {
   getData = (customArgs) => {
 
     const args = { excludeHiddenFields: false, replaceIntlFields: true, addExtraFields: false, ...customArgs };
-    
+
     // only keep relevant fields
     // for intl fields, make sure we look in foo_intl and not foo
     const fields = this.getFieldNames(args);
@@ -206,7 +206,7 @@ class SmartForm extends Component {
 
     // remove empty fields
     data = _.compactObject(data);
-    
+
     // remove any deleted values
     // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
     this.state.deletedValues.forEach(path => {
@@ -276,13 +276,13 @@ class SmartForm extends Component {
 
   */
   getFieldNames = (args = {}) => {
-    
+
     const { schema = this.state.schema, excludeHiddenFields = true, replaceIntlFields = false, addExtraFields = true } = args;
 
     const { fields, addFields, } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getMutableFields();
+    let relevantFields = this.getMutableFields(schema);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
@@ -574,11 +574,11 @@ class SmartForm extends Component {
       return message;
     }
   };
-  
+
   //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
   //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
   handlePageLeave = (event) => {
-    if(this.isChanged()) {
+    if (this.isChanged()) {
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?'
@@ -586,11 +586,11 @@ class SmartForm extends Component {
       if (event) {
         event.returnValue = message;
       }
-      
+
       return message;
     }
   };
-  
+
   /*
   
   Install a route leave hook to warn the user if there are unsaved changes
@@ -605,7 +605,7 @@ class SmartForm extends Component {
       const routes = this.props.router.routes;
       const currentRoute = routes[routes.length - 1];
       this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
-      
+
       //check for closing the browser with unsaved changes
       window.onbeforeunload = this.handlePageLeave;
     }
@@ -624,7 +624,7 @@ class SmartForm extends Component {
       window.onbeforeunload = undefined; //undefined instead of null to support IE
     }
   };
-  
+
   /*
   
   Returns true if there are any differences between the initial document and the current one
@@ -818,7 +818,7 @@ class SmartForm extends Component {
 
     return (
       <div className={'document-' + this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => {this.form = e;}}>
+        <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => { this.form = e; }}>
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
