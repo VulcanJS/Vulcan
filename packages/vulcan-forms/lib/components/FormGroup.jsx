@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 const styles = theme => ({
     formSection: {
@@ -70,24 +71,23 @@ class FormGroup extends PureComponent {
       <div className={groupStyling && classes.formSection}>
         { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
-          <div className={groupStyling && classes.formSectionBody}>
-            <div className={flexStyle && classes.flex}>
-              {this.props.fields.map(field => (
-                <Components.FormComponent
-                  key={field.name}
-                  {...field}
-                  errors={this.props.errors}
-                  throwError={this.props.throwError}
-                  currentValues={this.props.currentValues}
-                  updateCurrentValues={this.props.updateCurrentValues}
-                  deletedValues={this.props.deletedValues}
-                  addToDeletedValues={this.props.addToDeletedValues}
-                  clearFieldErrors={this.props.clearFieldErrors}
-                  formType={this.props.formType}
-                  currentUser={this.props.currentUser}
-                />
-              ))}
-            </div>
+          <div className={classNames({[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
+            >
+            {this.props.fields.map(field => (
+              <Components.FormComponent
+                key={field.name}
+                {...field}
+                errors={this.props.errors}
+                throwError={this.props.throwError}
+                currentValues={this.props.currentValues}
+                updateCurrentValues={this.props.updateCurrentValues}
+                deletedValues={this.props.deletedValues}
+                addToDeletedValues={this.props.addToDeletedValues}
+                clearFieldErrors={this.props.clearFieldErrors}
+                formType={this.props.formType}
+                currentUser={this.props.currentUser}
+              />
+            ))}
           </div>
         }
       </div>
