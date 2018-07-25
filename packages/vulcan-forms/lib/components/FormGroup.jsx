@@ -23,6 +23,11 @@ const styles = theme => ({
       paddingBottom: theme.spacing.unit,
       paddingLeft: theme.spacing.unit*2,
     },
+    flex: {
+      display: "flex",
+      alignItems: "flex-start",
+      flexWrap: "wrap"
+    }
 })
 
 class FormGroup extends PureComponent {
@@ -59,27 +64,30 @@ class FormGroup extends PureComponent {
   });
 
   render() {
-    const { classes, name } = this.props
+    const { classes, name, defaultStyle, flexStyle} = this.props
+    const groupStyling = !(name == 'default' || defaultStyle)
     return (
-      <div className={!(name == "default") && classes.formSection}>
-        { !(this.props.name === 'default') && this.renderHeading()}
+      <div className={groupStyling && classes.formSection}>
+        { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
-          <div className={!(name == "default") && classes.formSectionBody}>
-            {this.props.fields.map(field => (
-              <Components.FormComponent
-                key={field.name}
-                {...field}
-                errors={this.props.errors}
-                throwError={this.props.throwError}
-                currentValues={this.props.currentValues}
-                updateCurrentValues={this.props.updateCurrentValues}
-                deletedValues={this.props.deletedValues}
-                addToDeletedValues={this.props.addToDeletedValues}
-                clearFieldErrors={this.props.clearFieldErrors}
-                formType={this.props.formType}
-                currentUser={this.props.currentUser}
-              />
-            ))}
+          <div className={groupStyling && classes.formSectionBody}>
+            <div className={flexStyle && classes.flex}>
+              {this.props.fields.map(field => (
+                <Components.FormComponent
+                  key={field.name}
+                  {...field}
+                  errors={this.props.errors}
+                  throwError={this.props.throwError}
+                  currentValues={this.props.currentValues}
+                  updateCurrentValues={this.props.updateCurrentValues}
+                  deletedValues={this.props.deletedValues}
+                  addToDeletedValues={this.props.addToDeletedValues}
+                  clearFieldErrors={this.props.clearFieldErrors}
+                  formType={this.props.formType}
+                  currentUser={this.props.currentUser}
+                />
+              ))}
+            </div>
           </div>
         }
       </div>
