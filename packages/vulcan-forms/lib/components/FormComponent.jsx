@@ -277,9 +277,9 @@ class FormComponent extends Component {
         case 'time':
           return Components.FormComponentTime;
 
-        case 'statictext': 
+        case 'statictext':
           return Components.FormComponentStaticText;
-          
+
         default:
           const CustomComponent = Components[this.props.input];
           return CustomComponent ? CustomComponent : Components.FormComponentDefault;
@@ -290,9 +290,9 @@ class FormComponent extends Component {
   render() {
     if (this.props.intlInput) {
       return <Components.FormIntl {...this.props} />;
-    } else if (this.props.nestedInput){
+    } else if (this.props.nestedInput) {
       return <Components.FormNested {...this.props} />;
-    } 
+    }
     return (
       <Components.FormComponentInner
         {...this.props}
@@ -336,5 +336,7 @@ FormComponent.propTypes = {
 FormComponent.contextTypes = {
   getDocument: PropTypes.func.isRequired,
 };
+
+module.exports = FormComponent
 
 registerComponent('FormComponent', FormComponent);
