@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 const styles = theme => ({
     formSection: {
       fontFamily: theme.typography.fontFamily,
-      border: `solid 1px ${theme.palette.grey[300]}`,
+      border: `solid 1px ${theme.palette.grey[400]}`,
       marginBottom: theme.spacing.unit,
     },
     formSectionBody: {
       borderTop: `solid 1px ${theme.palette.grey[300]}`,
-      padding: theme.spacing.unit*2
+      padding: theme.spacing.unit,
+      paddingRight: theme.spacing.unit*2
     },
     formSectionHeading: {
       display:"flex",
@@ -22,6 +24,11 @@ const styles = theme => ({
       paddingBottom: theme.spacing.unit,
       paddingLeft: theme.spacing.unit*2,
     },
+    flex: {
+      display: "flex",
+      alignItems: "flex-start",
+      flexWrap: "wrap"
+    }
 })
 
 class FormGroup extends PureComponent {
@@ -58,12 +65,14 @@ class FormGroup extends PureComponent {
   });
 
   render() {
-    const { classes, name } = this.props
+    const { classes, name, defaultStyle, flexStyle} = this.props
+    const groupStyling = !(name == 'default' || defaultStyle)
     return (
-      <div className={!(name == "default") && classes.formSection}>
-        { !(this.props.name === 'default') && this.renderHeading()}
+      <div className={groupStyling && classes.formSection}>
+        { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
-          <div className={!(name == "default") && classes.formSectionBody}>
+          <div className={classNames({[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
+            >
             {this.props.fields.map(field => (
               <Components.FormComponent
                 key={field.name}
