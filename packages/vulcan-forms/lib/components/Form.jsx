@@ -625,6 +625,9 @@ class Form extends Component {
   };
 
   mutationSuccessCallback = (result, mutationType) => {
+
+    this.setState(prevState => ({ disabled: false }));
+    
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 
     // for new mutation, run refetch function if it exists

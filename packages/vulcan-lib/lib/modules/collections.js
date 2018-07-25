@@ -6,11 +6,13 @@ import { runCallbacks } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { isIntlField } from './intl.js';
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
 registerSetting('maxDocumentsPerRequest', 5000, 'Maximum documents per request');
+
+// will be set to `true` if there is one or more intl schema fields
+export let hasIntlFields = false;
 
 export const Collections = [];
 
@@ -116,7 +118,7 @@ export const createCollection = options => {
   const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
-  const collection = collectionName === 'Users' ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+  const collection = collectionName === 'Users' && Meteor.users ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
 
   // decorate collection with options
   collection.options = options;
@@ -131,6 +133,10 @@ export const createCollection = options => {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (fieldSchema.type && fieldSchema.type.name === 'IntlString') {
+
+      // we have at least one intl field
+      hasIntlFields = true;
+
       // make non-intl field optional
       schema[fieldName].optional = true;
 
@@ -297,6 +303,11 @@ export const createCollection = options => {
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
     }
 
+    // sort using terms.orderBy (overwrite defaultView's sort)
+    if (terms.orderBy && !_.isEmpty(terms.orderBy)) {
+      parameters.options.sort = terms.orderBy
+    }
+
     // if there is no sort, default to sorting by createdAt descending
     if (!parameters.options.sort) {
       parameters.options.sort = { createdAt: -1 };
@@ -318,7 +329,7 @@ export const createCollection = options => {
       });
     }
 
-    if(terms.query) {
+    if (terms.query) {
 
       const query = escapeStringRegexp(terms.query);
 
