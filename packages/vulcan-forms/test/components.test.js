@@ -1,8 +1,6 @@
 // setup JSDOM server side for testing (necessary for Enzyme to mount)
 import 'jsdom-global/register'
 import React from 'react'
-// we must import all the other components, so that "registerComponent" is called
-import "../lib/modules/components"
 // TODO: should be loaded from Components instead?
 import Form from '../lib/components/Form'
 import FormGroup from "../lib/components/FormGroup"
@@ -11,12 +9,23 @@ import FormNested from '../lib/components/FormNested'
 import expect from 'expect'
 import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
-
-
+import 'meteor/vulcan:users'
 
 // setup enzyme
 // TODO: write a reusable helper and move this to the tests setup
 Enzyme.configure({ adapter: new Adapter() })
+
+// we must import all the other components, so that "registerComponent" is called
+import "../lib/modules/components"
+// and then load them in the app so that <Component.Whatever /> is defined
+import { populateComponentsApp, initializeFragments } from "meteor/vulcan:lib"
+// we need registered fragments to be initialized because populateComponentsApp will run 
+// hocs, like withUpdate, that rely on fragments
+initializeFragments()
+// actually fills the Components object
+populateComponentsApp()
+
+
 
 // fixtures
 import SimpleSchema from "simpl-schema";
@@ -84,6 +93,7 @@ const Addresses = createCollection({
     mutations: getDefaultMutations('Addresses'),
 })
 
+// tests
 describe('vulcan-forms/components', function () {
     describe('Form', function () {
         const context = {
@@ -94,6 +104,7 @@ describe('vulcan-forms/components', function () {
                 formatRelative: () => "",
                 formatNumber: () => "",
                 formatPlural: () => "",
+                formatHTMLMessage: () => ""
             }
 
         }
@@ -151,7 +162,6 @@ describe('vulcan-forms/components', function () {
             })
         })
     })
-
 
     describe('FormComponent', function () {
         const shallowWithContext = C => shallow(C, {
@@ -214,17 +224,28 @@ describe('vulcan-forms/components', function () {
             const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
             expect(wrapper).toBeDefined()
         })
+        describe('array', function () {
+            it('shows a button', function () {
+                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
+                const button = wrapper.find('BootstrapButton')
+                expect(button).toHaveLength(1)
+            })
+            it('shows an add button', function () {
+                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
+                const addButton = wrapper.find('IconAdd')
+                expect(addButton).toHaveLength(1)
+            })
+        })
         describe('nested object', function () {
             it.skip('render a form for the object', function () {
                 const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
                 expect(false).toBe(true)
             })
-            it.skip('does not show any button', function () {
+            it('does not show any button', function () {
                 const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const button = wrapper.find('Components.Button')
+                const button = wrapper.find('BootstrapButton')
                 // TODO: COMPONENTS values are undefined, because in the test env
                 // meteor/vulan:core Components is not set correctly
-                console.log(wrapper.debug())
                 expect(button).toHaveLength(0)
             })
             it('does not show add button', function () {
