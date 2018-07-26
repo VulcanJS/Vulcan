@@ -5,11 +5,11 @@ import React from 'react'
 import Form from '../lib/components/Form'
 import FormGroup from "../lib/components/FormGroup"
 import FormComponent from "../lib/components/FormComponent"
-import FormNested from '../lib/components/FormNested'
+import '../lib/components/FormNestedArray'
 import expect from 'expect'
 import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
-import 'meteor/vulcan:users'
+import { Components } from "meteor/vulcan:core"
 
 // setup enzyme
 // TODO: write a reusable helper and move this to the tests setup
@@ -120,45 +120,43 @@ describe('vulcan-forms/components', function () {
                 expect(wrapper).toBeDefined()
             })
         })
-        describe('nested forms', function () {
-            describe('array', function () {
-                it('shallow render', () => {
-                    const wrapper = shallowWithContext(<Form collection={WithArrays} />)
-                    expect(wrapper).toBeDefined()
-                })
-                it('render a FormGroup for addresses', function () {
-                    const wrapper = shallowWithContext(<Form collection={WithArrays} />)
-                    const formGroup = wrapper.find('FormGroup').find({ name: 'addresses' })
-                    expect(formGroup).toBeDefined()
-                    expect(formGroup).toHaveLength(1)
-                })
+        describe('nested array', function () {
+            it('shallow render', () => {
+                const wrapper = shallowWithContext(<Form collection={WithArrays} />)
+                expect(wrapper).toBeDefined()
             })
-            describe('object', function () {
-                it('shallow render', () => {
-                    const wrapper = shallowWithContext(<Form collection={WithObjects} />)
-                    expect(wrapper).toBeDefined()
-                })
-                it('define one field', () => {
-                    const wrapper = shallowWithContext(<Form collection={WithObjects} />)
-                    const defaultGroup = wrapper.find('FormGroup').first()
-                    const fields = defaultGroup.prop('fields')
-                    expect(fields).toHaveLength(1) // addresses field
-                })
+            it('render a FormGroup for addresses', function () {
+                const wrapper = shallowWithContext(<Form collection={WithArrays} />)
+                const formGroup = wrapper.find('FormGroup').find({ name: 'addresses' })
+                expect(formGroup).toBeDefined()
+                expect(formGroup).toHaveLength(1)
+            })
+        })
+        describe('nested object', function () {
+            it('shallow render', () => {
+                const wrapper = shallowWithContext(<Form collection={WithObjects} />)
+                expect(wrapper).toBeDefined()
+            })
+            it('define one field', () => {
+                const wrapper = shallowWithContext(<Form collection={WithObjects} />)
+                const defaultGroup = wrapper.find('FormGroup').first()
+                const fields = defaultGroup.prop('fields')
+                expect(fields).toHaveLength(1) // addresses field
+            })
 
-                const getFormFields = (wrapper) => {
-                    const defaultGroup = wrapper.find('FormGroup').first()
-                    const fields = defaultGroup.prop('fields')
-                    return fields
-                }
-                const getFirstField = () => {
-                    const wrapper = shallowWithContext(<Form collection={WithObjects} />)
-                    const fields = getFormFields(wrapper)
-                    return fields[0]
-                }
-                it('define the nestedSchema', () => {
-                    const addressField = getFirstField()
-                    expect(addressField.nestedSchema.street).toBeDefined()
-                })
+            const getFormFields = (wrapper) => {
+                const defaultGroup = wrapper.find('FormGroup').first()
+                const fields = defaultGroup.prop('fields')
+                return fields
+            }
+            const getFirstField = () => {
+                const wrapper = shallowWithContext(<Form collection={WithObjects} />)
+                const fields = getFormFields(wrapper)
+                return fields[0]
+            }
+            it('define the nestedSchema', () => {
+                const addressField = getFirstField()
+                expect(addressField.nestedSchema.street).toBeDefined()
             })
         })
     })
@@ -190,6 +188,29 @@ describe('vulcan-forms/components', function () {
             const wrapper = shallowWithContext(<FormComponent {...defaultProps} />)
             expect(wrapper).toBeDefined()
         })
+        describe('nested array', function () {
+            const props = {
+                ...defaultProps,
+                "datatype": [{ type: Array }],
+                "nestedSchema": {
+                    "street": {},
+                    "country": {},
+                    "zipCode": {}
+                },
+                "nestedInput": true,
+                "nestedFields": [
+                    {},
+                    {},
+                    {}
+                ],
+                "currentValues": {},
+            }
+            it('render a FormNestedArray', function () {
+                const wrapper = shallowWithContext(<FormComponent {...props} />)
+                const formNested = wrapper.find('FormNestedArray')
+                expect(formNested).toHaveLength(1)
+            })
+        })
         describe('nested object', function () {
             const props = {
                 ...defaultProps,
@@ -211,53 +232,53 @@ describe('vulcan-forms/components', function () {
                 const wrapper = shallowWithContext(<FormComponent {...props} />)
                 expect(wrapper).toBeDefined()
             })
-            it('render a FormNested', function () {
+            it('render a FormNestedObject', function () {
                 const wrapper = shallowWithContext(<FormComponent {...props} />)
-                const formNested = wrapper.find('FormNested')
+                const formNested = wrapper.find('FormNestedObject')
                 expect(formNested).toHaveLength(1)
             })
         })
     })
 
-    describe('FormNested', function () {
+    describe('FormNestedArray', function () {
         it('shallow render', function () {
-            const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
+            const wrapper = shallow(<Components.FormNestedArray path="foobar" currentValues={{}} />)
             expect(wrapper).toBeDefined()
         })
-        describe('array', function () {
-            it('shows a button', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const button = wrapper.find('BootstrapButton')
-                expect(button).toHaveLength(1)
-            })
-            it('shows an add button', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const addButton = wrapper.find('IconAdd')
-                expect(addButton).toHaveLength(1)
-            })
+        it('shows a button', function () {
+            const wrapper = shallow(<Components.FormNestedArray path="foobar" currentValues={{}} />)
+            const button = wrapper.find('BootstrapButton')
+            expect(button).toHaveLength(1)
         })
-        describe('nested object', function () {
-            it.skip('render a form for the object', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                expect(false).toBe(true)
-            })
-            it('does not show any button', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const button = wrapper.find('BootstrapButton')
-                // TODO: COMPONENTS values are undefined, because in the test env
-                // meteor/vulan:core Components is not set correctly
-                expect(button).toHaveLength(0)
-            })
-            it('does not show add button', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const addButton = wrapper.find('IconAdd')
-                expect(addButton).toHaveLength(0)
-            })
-            it('does not show remove button', function () {
-                const wrapper = shallow(<FormNested path="foobar" currentValues={{}} />)
-                const removeButton = wrapper.find('IconRemove')
-                expect(removeButton).toHaveLength(0)
-            })
+        it('shows an add button', function () {
+            const wrapper = shallow(<Components.FormNestedArray path="foobar" currentValues={{}} />)
+            const addButton = wrapper.find('IconAdd')
+            expect(addButton).toHaveLength(1)
+        })
+    })
+    describe('FormNestedObject', function () {
+        it('shallow render', function () {
+            const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
+            expect(wrapper).toBeDefined()
+        })
+        it.skip('render a form for the object', function () {
+            const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
+            expect(false).toBe(true)
+        })
+        it('does not show any button', function () {
+            const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
+            const button = wrapper.find('BootstrapButton')
+            expect(button).toHaveLength(0)
+        })
+        it('does not show add button', function () {
+            const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
+            const addButton = wrapper.find('IconAdd')
+            expect(addButton).toHaveLength(0)
+        })
+        it('does not show remove button', function () {
+            const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
+            const removeButton = wrapper.find('IconRemove')
+            expect(removeButton).toHaveLength(0)
         })
     })
 })
