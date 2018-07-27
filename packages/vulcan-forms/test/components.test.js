@@ -58,14 +58,11 @@ const arraySchema = {
 };
 const objectSchema = {
     addresses: {
-        type: Object,
+        type: new SimpleSchema(addressSchema),
         viewableBy: ["guests"],
         editableBy: ["quests"],
         insertableBy: ["quests"],
     },
-    "addresses.$": {
-        type: new SimpleSchema(addressSchema)
-    }
 };
 
 // stub collection
@@ -214,7 +211,7 @@ describe('vulcan-forms/components', function () {
         describe('nested object', function () {
             const props = {
                 ...defaultProps,
-                "datatype": [{ type: Object }],
+                "datatype": [{ type: new SimpleSchema({}) }],
                 "nestedSchema": {
                     "street": {},
                     "country": {},

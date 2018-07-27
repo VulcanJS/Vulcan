@@ -5,6 +5,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { isEmptyValue, mergeValue } from '../modules/utils.js';
+import SimpleSchema from 'simpl-schema'
 
 class FormComponent extends Component {
   constructor(props) {
@@ -287,13 +288,22 @@ class FormComponent extends Component {
     }
   };
 
+  getFieldType = () => {
+    return this.props.datatype[0].type
+  }
+  isArrayField = () => {
+    return this.getFieldType() === Array
+  }
+  isObjectField = () => {
+    return this.getFieldType() instanceof SimpleSchema
+  }
   render() {
     if (this.props.intlInput) {
       return <Components.FormIntl {...this.props} />;
     } else if (this.props.nestedInput) {
-      if (this.props.datatype[0].type === Array) {
+      if (this.isArrayField()) {
         return <Components.FormNestedArray {...this.props} />;
-      } else if (this.props.datatype[0].type === Object) {
+      } else if (this.isObjectField()) {
         return <Components.FormNestedObject {...this.props} />;
       }
     }
