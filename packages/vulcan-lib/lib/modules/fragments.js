@@ -167,7 +167,7 @@ export const getFragment = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`);
   }
   if (!Fragments[fragmentName].fragmentObject) {
-    throw new Error(`Fragment "${fragmentName}" registered, but not initialized.`)
+    initializeFragments([fragmentName]);
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentObject;  
