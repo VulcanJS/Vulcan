@@ -35,15 +35,22 @@ const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...pr
   );
 };
 
+
 FormNestedItem.contextTypes = {
   errors: PropTypes.array,
 };
 
+
 registerComponent('FormNestedItem', FormNestedItem);
 
 class FormNested extends PureComponent {
+  getCurrentValue() {
+    return this.props.currentValues[this.props.path] || []
+  }
+
   addItem = () => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${this.props.value.length}`]: {} });
+    const value = this.getCurrentValue()
+    this.props.updateCurrentValues({ [`${this.props.path}.${value.length}`]: {} });
   };
 
   removeItem = index => {
@@ -61,27 +68,27 @@ class FormNested extends PureComponent {
   };
 
   render() {
+    const value = this.getCurrentValue()
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
     return (
       <div className="form-group row form-nested">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          {this.props.value &&
-            this.props.value.map(
-              (subDocument, i) =>
-                !this.isDeleted(i) && (
-                  <FormNestedItem
-                    {...properties}
-                    key={i}
-                    itemIndex={i}
-                    path={`${this.props.path}.${i}`}
-                    removeItem={() => {
-                      this.removeItem(i);
-                    }}
-                  />
-                )
-            )}
+          {value.map(
+            (subDocument, i) =>
+              !this.isDeleted(i) && (
+                <FormNestedItem
+                  {...properties}
+                  key={i}
+                  itemIndex={i}
+                  path={`${this.props.path}.${i}`}
+                  removeItem={() => {
+                    this.removeItem(i);
+                  }}
+                />
+              )
+          )}
           <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
           </Components.Button>
@@ -90,6 +97,14 @@ class FormNested extends PureComponent {
     );
   }
 }
+
+FormNested.propTypes = {
+  currentValues: PropTypes.object,
+  path: PropTypes.string,
+  label: PropTypes.string
+};
+
+module.exports = FormNested
 
 registerComponent('FormNested', FormNested);
 

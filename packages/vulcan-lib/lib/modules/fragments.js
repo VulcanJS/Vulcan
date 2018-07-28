@@ -167,7 +167,7 @@ export const getFragment = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`);
   }
   if (!Fragments[fragmentName].fragmentObject) {
-    throw new Error(`Fragment "${fragmentName}" registered, but not initialized.`)
+    initializeFragments([fragmentName]);
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentObject;  
@@ -188,10 +188,18 @@ export const getFragmentText = fragmentName => {
 
 /*
 
+Get names of non initialized fragments.
+
+*/
+export const getNonInitializedFragmentNames = () =>
+  _.keys(Fragments).filter(name => !Fragments[name].fragmentObject);
+
+/*
+
 Perform all fragment extensions (called from routing)
 
 */
-export const initializeFragments = () => {
+export const initializeFragments = (fragments = getNonInitializedFragmentNames()) => {
 
   const errorFragmentKeys = [];
 
@@ -207,7 +215,7 @@ export const initializeFragments = () => {
   // create fragment objects
 
   // initialize fragments *with no subfragments* first to avoid unresolved dependencies
-  const keysWithoutSubFragments = _.filter(_.keys(Fragments), fragmentName => !Fragments[fragmentName].subFragments);
+  const keysWithoutSubFragments = _.filter(fragments, fragmentName => !Fragments[fragmentName].subFragments);
   _.forEach(keysWithoutSubFragments, fragmentName => {
     const fragment = Fragments[fragmentName];
     fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments)
