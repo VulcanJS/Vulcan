@@ -93,9 +93,12 @@ export const schemaProperties = [
   'onInsert', // field insert callback
   'onEdit', // field edit callback
   'onRemove', // field remove callback
-  'viewableBy',
-  'insertableBy',
-  'editableBy',
+  'canRead',
+  'canCreate',
+  'canUpdate',
+  'viewableBy', // OpenCRUD backwards compatibility
+  'insertableBy', // OpenCRUD backwards compatibility
+  'editableBy', // OpenCRUD backwards compatibility
   'resolveAs',
   'searchable',
   'description',
