@@ -288,16 +288,19 @@ const createPlan = async ({
   amount,
   interval_count,
   statement_descriptor,
-  ...metadata
+  ...metadata,
 }) => stripe.plans.create({
   id,
   currency,
   interval,
-  name,
   amount,
   interval_count,
-  statement_descriptor,
-  ...metadata
+  product: {
+    name,
+    statement_descriptor,
+    metadata,
+  },
+  metadata,
 });
 
 export const createSubscriptionPlan = async (maybePlanObject) => typeof maybePlanObject === 'object' && createPlan(maybePlanObject);
