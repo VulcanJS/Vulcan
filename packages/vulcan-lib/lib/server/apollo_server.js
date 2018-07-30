@@ -207,6 +207,8 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     // go over context and add Dataloader to each collection
     Collections.forEach(collection => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
+      // LESSWRONG: Support for custom loaders
+      options.context[collection.options.collectionName].extraLoaders = null;
     });
 
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
