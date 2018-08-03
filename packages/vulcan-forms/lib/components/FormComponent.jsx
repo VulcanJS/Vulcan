@@ -5,6 +5,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { isEmptyValue, mergeValue } from '../modules/utils.js';
+import SimpleSchema from 'simpl-schema'
 
 class FormComponent extends Component {
   constructor(props) {
@@ -277,9 +278,9 @@ class FormComponent extends Component {
         case 'time':
           return Components.FormComponentTime;
 
-        case 'statictext': 
+        case 'statictext':
           return Components.FormComponentStaticText;
-          
+
         default:
           const CustomComponent = Components[this.props.input];
           return CustomComponent ? CustomComponent : Components.FormComponentDefault;
@@ -287,12 +288,25 @@ class FormComponent extends Component {
     }
   };
 
+  getFieldType = () => {
+    return this.props.datatype[0].type
+  }
+  isArrayField = () => {
+    return this.getFieldType() === Array
+  }
+  isObjectField = () => {
+    return this.getFieldType() instanceof SimpleSchema
+  }
   render() {
     if (this.props.intlInput) {
       return <Components.FormIntl {...this.props} />;
-    } else if (this.props.nestedInput){
-      return <Components.FormNested {...this.props} />;
-    } 
+    } else if (this.props.nestedInput) {
+      if (this.isArrayField()) {
+        return <Components.FormNestedArray {...this.props} />;
+      } else if (this.isObjectField()) {
+        return <Components.FormNestedObject {...this.props} />;
+      }
+    }
     return (
       <Components.FormComponentInner
         {...this.props}
@@ -336,5 +350,7 @@ FormComponent.propTypes = {
 FormComponent.contextTypes = {
   getDocument: PropTypes.func.isRequired,
 };
+
+module.exports = FormComponent
 
 registerComponent('FormComponent', FormComponent);

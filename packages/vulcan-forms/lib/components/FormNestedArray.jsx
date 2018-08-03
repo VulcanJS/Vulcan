@@ -1,49 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
+import "./FormNestedItem"
 
-const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...props }, { errors }) => {
-  return (
-    <div className="form-nested-item">
-      <div className="form-nested-item-inner">
-        {nestedFields.map((field, i) => {
-          return (
-            <Components.FormComponent
-              key={i}
-              {...props}
-              {...field}
-              path={`${path}.${field.name}`}
-              itemIndex={itemIndex}
-            />
-          );
-        })}
-      </div>
-      <div className="form-nested-item-remove">
-        <Components.Button
-          className="form-nested-button"
-          variant="danger"
-          size="small"
-          onClick={() => {
-            removeItem(name);
-          }}
-        >
-          <Components.IconRemove height={12} width={12} />
-        </Components.Button>
-      </div>
-      <div className="form-nested-item-deleted-overlay" />
-    </div>
-  );
-};
-
-
-FormNestedItem.contextTypes = {
-  errors: PropTypes.array,
-};
-
-
-registerComponent('FormNestedItem', FormNestedItem);
-
-class FormNested extends PureComponent {
+class FormNestedArray extends PureComponent {
   getCurrentValue() {
     return this.props.currentValues[this.props.path] || []
   }
@@ -78,7 +38,7 @@ class FormNested extends PureComponent {
           {value.map(
             (subDocument, i) =>
               !this.isDeleted(i) && (
-                <FormNestedItem
+                <Components.FormNestedItem
                   {...properties}
                   key={i}
                   itemIndex={i}
@@ -98,15 +58,15 @@ class FormNested extends PureComponent {
   }
 }
 
-FormNested.propTypes = {
+FormNestedArray.propTypes = {
   currentValues: PropTypes.object,
   path: PropTypes.string,
   label: PropTypes.string
 };
 
-module.exports = FormNested
+module.exports = FormNestedArray
 
-registerComponent('FormNested', FormNested);
+registerComponent('FormNestedArray', FormNestedArray);
 
 const IconAdd = ({ width = 24, height = 24 }) => (
   <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
