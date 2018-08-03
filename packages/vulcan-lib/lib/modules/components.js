@@ -26,8 +26,7 @@ export const ComponentsTable = {} // storage for infos about components
  * }
  *
  */
-export const registerComponent = (name, rawComponent, ...hocs) => {
-
+export function registerComponent(name, rawComponent, ...hocs) {
   if (typeof arguments[0] === 'object') {
     const { name, component, hocs } = arguments[0];
     ComponentsTable[name] = {
