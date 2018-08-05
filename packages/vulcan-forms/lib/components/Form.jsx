@@ -47,6 +47,7 @@ import find from 'lodash/find';
 import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { getDeletedValues } from '../modules/utils';
@@ -207,11 +208,24 @@ class SmartForm extends Component {
     // remove empty fields
     data = _.compactObject(data);
 
-    // remove any deleted values
-    // (deleted nested fields cannot be added to $unset, instead we need to modify their value directly)
+    // handle deleted values
     this.state.deletedValues.forEach(path => {
-      unsetCompact(data, path);
-    });
+      if (path.includes('.')) {
+        /*
+        
+        1. deleted field is a nested field, nested array, or nested array item, remove it in place
+        
+        - Nested field: 'address.city'
+        - Nested array: 'addresses.1'
+        - Nested array item: 'addresses.1.city'
+
+        */
+        unsetCompact(data, path);
+      } else {
+        // 2. deleted field is a root field, set it to `null` so that it's handled on the server
+        set(data, path, null);
+      }
+    });    
 
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
@@ -237,7 +251,7 @@ class SmartForm extends Component {
     fields = _.sortBy(fields, 'order');
 
     // get list of all unique groups (based on their name) used in current fields
-    let groups = _.compact(uniq(_.pluck(fields, 'group'), false, g => g && g.name));
+    let groups = _.compact(uniqBy(_.pluck(fields, 'group'), g => g && g.name));
 
     // for each group, add relevant fields
     groups = groups.map(group => {

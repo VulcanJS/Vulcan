@@ -43,7 +43,7 @@ export function registerComponent(name, rawComponent, ...hocs) {
       hocs,
     };
   }
-};
+}
 
 /**
  * Get a component registered with registerComponent(name, component, ...hocs).
