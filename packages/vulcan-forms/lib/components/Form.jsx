@@ -47,6 +47,7 @@ import find from 'lodash/find';
 import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { getDeletedValues } from '../modules/utils';
@@ -237,7 +238,7 @@ class SmartForm extends Component {
     fields = _.sortBy(fields, 'order');
 
     // get list of all unique groups (based on their name) used in current fields
-    let groups = _.compact(uniq(_.pluck(fields, 'group'), false, g => g && g.name));
+    let groups = _.compact(uniqBy(_.pluck(fields, 'group'), g => g && g.name));
 
     // for each group, add relevant fields
     groups = groups.map(group => {
