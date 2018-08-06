@@ -2,7 +2,9 @@ import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Select } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
-import { getFieldType } from 'meteor/vulcan:forms';
+
+// copied from vulcan:forms/utils.js to avoid extra dependency
+const getFieldType = datatype => datatype[0].type;
 
 const SelectComponent = ({refFunction, inputProperties, datatype, ...properties}, { intl }) => {
   const noneOption = {

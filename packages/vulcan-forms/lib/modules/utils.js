@@ -184,6 +184,8 @@ export const getNullValue = datatype => {
     return false;
   } else if (fieldType === String) {
     return '';
+  } else if (fieldType === Number) {
+    return '';
   } else {
     // normalize to null
     return null;
