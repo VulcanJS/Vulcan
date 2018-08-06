@@ -4,8 +4,8 @@ import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { isEmptyValue, mergeValue } from '../modules/utils.js';
 import SimpleSchema from 'simpl-schema'
+import { isEmptyValue, getNullValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -30,13 +30,18 @@ class FormComponent extends Component {
     const { currentValues, deletedValues, errors } = nextProps;
     const { path } = this.props;
 
+    // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
+    const includesPathOrChildren = deletedValues => deletedValues.some(deletedPath => deletedPath.includes(path));
+
     const valueChanged = get(currentValues, path) !== get(this.props.currentValues, path);
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
-    const deleteChanged = deletedValues.includes(path) !== this.props.deletedValues.includes(path);
+    const deleteChanged = includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
     const disabledChanged = nextProps.disabled !== this.props.disabled;
 
-    return valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
+    const shouldUpdate = valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
+
+    return shouldUpdate;
   }
 
   /*
@@ -116,60 +121,23 @@ class FormComponent extends Component {
   Get value from Form state through document and currentValues props
 
   */
-  getValue = props => {
-    let value;
+  getValue = (props, context) => {
     const p = props || this.props;
-    const { document, currentValues, defaultValue } = p;
-    // for intl field fetch the actual field value by adding .value to the path
-    const path = p.locale ? `${this.getPath(p)}.value` : this.getPath(p);
-    const documentValue = get(document, path);
-    const currentValue = get(currentValues, path);
-    const isDeleted = p.deletedValues.includes(path);
+    const c = context || this.context;
+    const { locale, defaultValue, deletedValues, formType, datatype } = p;
+    const path = locale ? `${this.getPath(p)}.value` : this.getPath(p);
+    const currentDocument = c.getDocument();
+    let value = get(currentDocument, path);
+    // note: force intl fields to be treated like strings
+    const nullValue = locale ? '' : getNullValue(datatype);
 
-    if (isDeleted) {
-      value = '';
-    } else {
-      value = mergeValue({ currentValue, documentValue, ...p });
-      if (typeof value === 'undefined') {
-        // note: value has to default to '' to make component controlled
-        value = '';
-        if (typeof currentValue !== 'undefined' && currentValue !== null) {
-          value = currentValue;
-        } else if (typeof documentValue !== 'undefined' && documentValue !== null) {
-          value = documentValue;
-        }
-      }
-      // replace empty value, which has not been prefilled, by the default value from the schema – for new forms only
-      if (isEmptyValue(value) && p.formType === 'new') {
-        if (defaultValue) value = defaultValue;
-      }
+    // handle deleted & empty value
+    if (deletedValues.includes(path)) {
+      value = nullValue;
+    } else if (isEmptyValue(value)) {
+      // replace empty value by the default value from the schema if it exists – for new forms only
+      value = formType === 'new' && defaultValue ? defaultValue : nullValue;
     }
-
-    return this.cleanValue(p, value);
-  };
-
-  /*
-  
-  For some input types apply additional normalization
-  
-  */
-  cleanValue = (props, value) => {
-    const p = props || this.props;
-
-    if (p.input === 'checkbox') {
-      value = !!value;
-    } else if (p.input === 'checkboxgroup') {
-      if (!Array.isArray(value)) {
-        value = [value];
-      }
-      // in case of checkbox groups, check "checked" option to populate value
-      // if this is a "new document" form
-      const checkedValues = _.where(p.options, { checked: true }).map(option => option.value);
-      if (checkedValues.length && !value && p.formType === 'new') {
-        value = checkedValues;
-      }
-    }
-
     return value;
   };
 
@@ -302,9 +270,9 @@ class FormComponent extends Component {
       return <Components.FormIntl {...this.props} />;
     } else if (this.props.nestedInput) {
       if (this.isArrayField()) {
-        return <Components.FormNestedArray {...this.props} />;
+        return <Components.FormNestedArray {...this.props} value={this.getValue()}/>;
       } else if (this.isObjectField()) {
-        return <Components.FormNestedObject {...this.props} />;
+        return <Components.FormNestedObject {...this.props} value={this.getValue()}/>;
       }
     }
     return (

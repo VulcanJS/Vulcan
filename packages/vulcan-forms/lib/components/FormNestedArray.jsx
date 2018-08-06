@@ -5,7 +5,7 @@ import "./FormNestedItem"
 
 class FormNestedArray extends PureComponent {
   getCurrentValue() {
-    return this.props.currentValues[this.props.path] || []
+    return this.props.value || []
   }
 
   addItem = () => {

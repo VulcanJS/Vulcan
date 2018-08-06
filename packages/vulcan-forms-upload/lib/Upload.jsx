@@ -79,14 +79,17 @@ class Upload extends PureComponent {
   constructor(props, context) {
     super(props);
 
+    const self = this;
+
     // add callback to clean any preview or error values
-    context.addToSubmitForm(data => {
+    function uploadKeepRealImages (data) {
       // keep only "real" images
-      const images = this.getImages({ includePreviews: false, includeDeleted: false});
+      const images = self.getImages({ includePreviews: false, includeDeleted: false});
       // replace images in `data` object with real images
-      set(data, this.props.path, images);
+      set(data, self.props.path, images);
       return data;
-    });
+    }
+    context.addToSubmitForm(uploadKeepRealImages);
 
   }
   state = { uploading: false };
