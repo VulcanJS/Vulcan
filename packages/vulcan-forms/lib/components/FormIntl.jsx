@@ -20,7 +20,7 @@ class FormIntl extends PureComponent {
   render() {
 
     // do not pass FormIntl's own value, inputProperties, and intlInput props down
-    const properties = omit(this.props, 'value', 'inputProperties', 'intlInput');
+    const properties = omit(this.props, 'value', 'inputProperties', 'intlInput', 'nestedInput');
 
     return (
       <div className="form-intl">
