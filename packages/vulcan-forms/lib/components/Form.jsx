@@ -43,11 +43,13 @@ import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
 import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import isEqualWith from 'lodash/isEqualWith';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import isObject from 'lodash/isObject';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { getDeletedValues } from '../modules/utils';
@@ -65,6 +67,27 @@ const unsetCompact = (object, path) => {
   update(object, parentPath, compactIfArray);
 
 };
+
+/*
+
+When merging values, check when old and new arrays should be merged; and when 
+old array should be replaced by new one. 
+
+*/
+const mergeCustomizer = (objValue, srcValue) => {
+  
+  const containsObjects = myArray => myArray.some(e => isObject(e));
+
+  if (Array.isArray(objValue)) {
+    if (containsObjects(objValue)) {
+      // contains at least one object, perform default "smart" merge
+      return undefined;
+    } else {
+      // contains only strings, ints, etc.; replace old array with new
+      return srcValue;
+    }
+  }
+}
 
 const computeStateFromProps = nextProps => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
@@ -179,12 +202,13 @@ class SmartForm extends Component {
 
   */
   getDocument = () => {
-    return merge(
+    return mergeWith(
       {},
       this.state.initialDocument,
       this.defaultValues,
       this.state.currentValues,
       getDeletedValues(this.state.deletedValues),
+      mergeCustomizer,
     );
   };
 
@@ -204,9 +228,6 @@ class SmartForm extends Component {
     // for intl fields, make sure we look in foo_intl and not foo
     const fields = this.getFieldNames(args);
     let data = pick(this.getDocument(), ...fields);
-
-    // remove empty fields
-    data = _.compactObject(data);
 
     // handle deleted values
     this.state.deletedValues.forEach(path => {
