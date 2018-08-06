@@ -70,7 +70,7 @@ export const getEditableFields = function (schema, user, document) {
   return fields;
 };
 
-export const isEmptyValue = value => (typeof value === 'undefined' || value === '' || Array.isArray(value) && value.length === 0);
+export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0);
 
 /**
  * Merges values. It takes into account the current, original and deleted values,
@@ -168,3 +168,24 @@ export const getNestedDeletedValues = (prefix, deletedFields, accumulator = {}) 
     removePrefix(prefix, filterPathsByPrefix(prefix, deletedFields)),
     accumulator,
   );
+
+export const getFieldType = datatype => datatype[0].type;
+/**
+ * Get appropriate null value for various field types
+ * 
+ * @param {Array} datatype 
+ * Field's datatype property
+ */
+export const getNullValue = datatype => {
+  const fieldType = getFieldType(datatype);
+  if (fieldType === Array) {
+    return [];
+  } else if (fieldType === Boolean) {
+    return false;
+  } else if (fieldType === String) {
+    return '';
+  } else {
+    // normalize to null
+    return null;
+  }
+}
