@@ -50,7 +50,7 @@ const withUpsert = (options) => {
       [`upsert${typeName}`]: (args) => {
         const { selector, data } = args;
         return mutate({ 
-          variables: { input: { selector, data } }
+          variables: { selector, data }
           // note: updateQueries is not needed for editing documents
         });
       },
@@ -63,7 +63,7 @@ const withUpsert = (options) => {
           data[fieldName] = null;
         });
         return mutate({ 
-          variables: { input: { selector, data } }
+          variables: { selector, data }
           // note: updateQueries is not needed for editing documents
         });
       }

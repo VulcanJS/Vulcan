@@ -5,8 +5,8 @@ a related query on the client with the new item and a new total item count.
 
 Sample mutation: 
 
-  mutation createMovie($input: CreateMovieInput) {
-    createMovie(input: $input) {
+  mutation createMovie($data: CreateMovieData) {
+    createMovie(data: $data) {
       data {
         _id
         name
@@ -18,8 +18,7 @@ Sample mutation:
 
 Arguments: 
 
-  - input
-    - input.data: the document to insert
+  - data: the document to insert
 
 Child Props:
 
@@ -49,14 +48,14 @@ const withCreate = (options) => {
       [`create${typeName}`]: (args) => {
         const { data } = args;
         return mutate({ 
-          variables: { input: { data } },
+          variables: { data },
         });
       },
       // OpenCRUD backwards compatibility
       newMutation: (args) => {
         const { document } = args;
         return mutate({ 
-          variables: { input: { data: document } },
+          variables: { data: document },
         });
       }
     }),
