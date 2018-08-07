@@ -31,8 +31,13 @@ class FormNestedArray extends PureComponent {
     const value = this.getCurrentValue()
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
+    const { errors, path } = this.props;
+    // only keep errors specific to the nested array (and not its subfields)
+    const nestedArrayErrors = errors.filter(error => error.path && error.path === path);
+    const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
+
     return (
-      <div className="form-group row form-nested">
+      <div className={`form-group row form-nested ${hasErrors ? 'input-error': ''}`}>
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           {value.map(
@@ -52,6 +57,7 @@ class FormNestedArray extends PureComponent {
           <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
           </Components.Button>
+          {hasErrors ? <Components.FieldErrors errors={nestedArrayErrors} /> : null}
         </div>
       </div>
     );
