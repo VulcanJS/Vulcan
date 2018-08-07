@@ -17,6 +17,19 @@ import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; /
 // Anything else..
 ///////////////////////////////////////
 
+const createDisplayName = user => {
+  const profileName = Utils.getNestedProperty(user, 'profile.name');
+  const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
+  const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
+  if (profileName) return profileName;
+  if (twitterName) return twitterName;
+  if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+  if (user.username) return user.username;
+  if (user.email) return user.email.slice(0, user.email.indexOf('@'));
+  return undefined;
+}
+
+
 const adminGroup = {
   name: 'admin',
   order: 100,
@@ -123,14 +136,7 @@ const schema = {
     canRead: ['guests'],
     order: 10,
     onInsert: (user, options) => {
-      const profileName = Utils.getNestedProperty(user, 'profile.name');
-      const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
-      const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
-      if (profileName) return profileName;
-      if (twitterName) return twitterName;
-      if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
-      if (user.username) return user.username;
-      return undefined;
+      return createDisplayName(user);
     },
     searchable: true
   },
@@ -221,7 +227,8 @@ const schema = {
     order: 40,
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
-      const basicSlug = Utils.slugify(user.displayName);
+      const displayName = createDisplayName(user);
+      const basicSlug = Utils.slugify(displayName);
       return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     }
   },
