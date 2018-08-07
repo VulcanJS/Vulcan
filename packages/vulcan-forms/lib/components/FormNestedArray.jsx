@@ -10,7 +10,7 @@ class FormNestedArray extends PureComponent {
 
   addItem = () => {
     const value = this.getCurrentValue()
-    this.props.updateCurrentValues({ [`${this.props.path}.${value.length}`]: {} });
+    this.props.updateCurrentValues({ [`${this.props.path}.${value.length}`]: {} }, { mode: 'merge'});
   };
 
   removeItem = index => {

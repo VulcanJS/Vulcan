@@ -1,5 +1,6 @@
 import Users from '../modules/index.js';
 import { runCallbacks, runCallbacksAsync, Utils, debug, debugGroup, debugGroupEnd } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import clone from 'lodash/clone';
 
 // TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
 function onCreateUserCallback(options, user) {
@@ -36,16 +37,19 @@ function onCreateUserCallback(options, user) {
   // OpenCRUD backwards compatibility
   user = runCallbacks(`users.new.validate`, user);
 
-  // run onInsert step
-  // note: cannot use forEach with async/await.
-  // note 2: don't use async/await here for now. TODO: fix this.
-  // See https://stackoverflow.com/a/37576787/649299
-  for (let fieldName of _.keys(schema)) {
-    if (!user[fieldName] && schema[fieldName].onInsert) {
-      const autoValue = schema[fieldName].onInsert(user, options);
-      if (typeof autoValue !== 'undefined') {
-        user[fieldName] = autoValue;
-      }
+  // run onCreate step
+  for(let fieldName of Object.keys(schema)) {
+    let autoValue;
+    if (schema[fieldName].onCreate) {
+      // eslint-disable-next-line no-await-in-loop
+      autoValue = schema[fieldName].onCreate({ newDocument: clone(user) });
+    } else if (schema[fieldName].onInsert) {
+      // OpenCRUD backwards compatibility
+      // eslint-disable-next-line no-await-in-loop
+      autoValue = schema[fieldName].onInsert(clone(user));
+    }
+    if (typeof autoValue !== 'undefined') {
+      user[fieldName] = autoValue;
     }
   }
 

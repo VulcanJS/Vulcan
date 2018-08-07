@@ -38,6 +38,7 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
 import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import set from 'lodash/set';
 import unset from 'lodash/unset';
 import compact from 'lodash/compact';
@@ -57,37 +58,18 @@ import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
 const unsetCompact = (object, path) => {
-  const parentPath = getParentPath(path);
-
   unset(object, path);
+  compactParent(object, path);
+};
+
+const compactParent = (object, path) => {
+  const parentPath = getParentPath(path);
 
   // note: we only want to compact arrays, not objects
   const compactIfArray = x => Array.isArray(x) ? compact(x) : x;
 
   update(object, parentPath, compactIfArray);
-
 };
-
-/*
-
-When merging values, check when old and new arrays should be merged; and when 
-old array should be replaced by new one. 
-
-*/
-const mergeCustomizer = (objValue, srcValue) => {
-  
-  const containsObjects = myArray => myArray.some(e => isObject(e));
-
-  if (Array.isArray(objValue)) {
-    if (containsObjects(objValue)) {
-      // contains at least one object, perform default "smart" merge
-      return undefined;
-    } else {
-      // contains only strings, ints, etc.; replace old array with new
-      return srcValue;
-    }
-  }
-}
 
 const computeStateFromProps = nextProps => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
@@ -124,6 +106,8 @@ class SmartForm extends Component {
       currentValues: {},
       ...computeStateFromProps(props),
     };
+
+    this.initDocument(props);
   }
 
   defaultValues = {};
@@ -192,9 +176,16 @@ class SmartForm extends Component {
 
   /*
 
-  Get the document initially passed as props
+  Initialize document
 
   */
+  initDocument = ({ prefilledProps, document }) => {
+    this.currentDocument = merge(
+      {},
+      prefilledProps,
+      document,
+    );
+  }
 
   /*
 
@@ -202,14 +193,7 @@ class SmartForm extends Component {
 
   */
   getDocument = () => {
-    return mergeWith(
-      {},
-      this.state.initialDocument,
-      this.defaultValues,
-      this.state.currentValues,
-      getDeletedValues(this.state.deletedValues),
-      mergeCustomizer,
-    );
+    return this.currentDocument;
   };
 
   /*
@@ -229,24 +213,21 @@ class SmartForm extends Component {
     const fields = this.getFieldNames(args);
     let data = pick(this.getDocument(), ...fields);
 
-    // handle deleted values
+    // compact deleted values
     this.state.deletedValues.forEach(path => {
       if (path.includes('.')) {
         /*
         
-        1. deleted field is a nested field, nested array, or nested array item, remove it in place
+        If deleted field is a nested field, nested array, or nested array item, try to compact its parent array
         
         - Nested field: 'address.city'
         - Nested array: 'addresses.1'
         - Nested array item: 'addresses.1.city'
 
         */
-        unsetCompact(data, path);
-      } else {
-        // 2. deleted field is a root field, set it to `null` so that it's handled on the server
-        set(data, path, null);
+       compactParent(data, path);
       }
-    });    
+    });
 
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
@@ -575,7 +556,11 @@ class SmartForm extends Component {
   Manually update the current values of one or more fields(i.e. on change or blur).
   
   */
-  updateCurrentValues = newValues => {
+  updateCurrentValues = (newValues, options = {}) => {
+
+    // default to overwriting old value with new
+    const { mode = 'overwrite' } = options;
+    
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
       const newState = cloneDeep(prevState);
@@ -585,10 +570,22 @@ class SmartForm extends Component {
         if (value === null) {
           // delete value
           unset(newState.currentValues, path);
+          set(this.currentDocument, path, null);
           newState.deletedValues = [...prevState.deletedValues, path];
         } else {
-          // in case value had previously been deleted, "undelete" it
+          // 1. update currentValues
           set(newState.currentValues, path, value);
+
+          // 2. update currentDocument
+          // For arrays and objects, give option to merge instead of overwrite
+          if (mode === 'merge' && (Array.isArray(value) || isObject(value))) {
+            const oldValue = get(this.currentDocument, path);
+            set(this.currentDocument, path, merge(oldValue, value));
+          } else {
+            set(this.currentDocument, path, value);
+          }
+
+          // 3. in case value had previously been deleted, "undelete" it
           newState.deletedValues = _.without(prevState.deletedValues, path);
         }
       });
