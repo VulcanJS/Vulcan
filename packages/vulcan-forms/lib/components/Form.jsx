@@ -53,7 +53,7 @@ import uniqBy from 'lodash/uniqBy';
 import isObject from 'lodash/isObject';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
-import { getDeletedValues } from '../modules/utils';
+import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
 
 // unsetCompact
@@ -74,13 +74,16 @@ const compactParent = (object, path) => {
 const computeStateFromProps = nextProps => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
   const schema = collection.simpleSchema();
+  const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
   return {
     // convert SimpleSchema schema into JSON object
     schema: convertSchema(schema),
     // Also store all field schemas (including nested schemas) in a flat structure
     flatSchema: convertSchema(schema, true),
     // the initial document passed as props
-    initialDocument: merge({}, nextProps.prefilledProps, nextProps.document),
+    initialDocument,
+    // initialize the current document to be the same as the initial document
+    currentDocument: initialDocument,
   };
 };
 
@@ -106,8 +109,6 @@ class SmartForm extends Component {
       currentValues: {},
       ...computeStateFromProps(props),
     };
-
-    this.initDocument(props);
   }
 
   defaultValues = {};
@@ -176,24 +177,11 @@ class SmartForm extends Component {
 
   /*
 
-  Initialize document
-
-  */
-  initDocument = ({ prefilledProps, document }) => {
-    this.currentDocument = merge(
-      {},
-      prefilledProps,
-      document,
-    );
-  }
-
-  /*
-
   Get the current document
 
   */
   getDocument = () => {
-    return this.currentDocument;
+    return this.state.currentDocument;
   };
 
   /*
@@ -567,10 +555,10 @@ class SmartForm extends Component {
       Object.keys(newValues).forEach(key => {
         const path = key;
         const value = newValues[key];
-        if (value === null) {
+        if (isEmptyValue(value)) {
           // delete value
           unset(newState.currentValues, path);
-          set(this.currentDocument, path, null);
+          set(newState.currentDocument, path, null);
           newState.deletedValues = [...prevState.deletedValues, path];
         } else {
           // 1. update currentValues
@@ -579,10 +567,10 @@ class SmartForm extends Component {
           // 2. update currentDocument
           // For arrays and objects, give option to merge instead of overwrite
           if (mode === 'merge' && (Array.isArray(value) || isObject(value))) {
-            const oldValue = get(this.currentDocument, path);
-            set(this.currentDocument, path, merge(oldValue, value));
+            const oldValue = get(newState.currentDocument, path);
+            set(newState.currentDocument, path, merge(oldValue, value));
           } else {
-            set(this.currentDocument, path, value);
+            set(newState.currentDocument, path, value);
           }
 
           // 3. in case value had previously been deleted, "undelete" it
