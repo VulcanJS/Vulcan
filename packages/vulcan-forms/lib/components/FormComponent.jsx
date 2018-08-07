@@ -270,9 +270,9 @@ class FormComponent extends Component {
       return <Components.FormIntl {...this.props} />;
     } else if (this.props.nestedInput) {
       if (this.isArrayField()) {
-        return <Components.FormNestedArray {...this.props} value={this.getValue()}/>;
+        return <Components.FormNestedArray {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
       } else if (this.isObjectField()) {
-        return <Components.FormNestedObject {...this.props} value={this.getValue()}/>;
+        return <Components.FormNestedObject {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
       }
     }
     return (
