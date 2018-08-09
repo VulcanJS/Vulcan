@@ -47,6 +47,7 @@ import merge from 'lodash/merge';
 import mergeWith from 'lodash/mergeWith';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
+import isEqual from 'lodash/isEqual';
 import isEqualWith from 'lodash/isEqualWith';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
@@ -71,11 +72,16 @@ const compactParent = (object, path) => {
   update(object, parentPath, compactIfArray);
 };
 
-const computeStateFromProps = nextProps => {
+const getInitialStateFromProps = (nextProps) => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
   const schema = collection.simpleSchema();
+  // we need to clone object passed from props otherwise they'll be immutable
   const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
   return {
+    disabled: false,
+    errors: [],
+    deletedValues: [],
+    currentValues: {},
     // convert SimpleSchema schema into JSON object
     schema: convertSchema(schema),
     // Also store all field schemas (including nested schemas) in a flat structure
@@ -103,11 +109,7 @@ class SmartForm extends Component {
     super(props);
 
     this.state = {
-      disabled: false,
-      errors: [],
-      deletedValues: [],
-      currentValues: {},
-      ...computeStateFromProps(props),
+      ...getInitialStateFromProps(props),
     };
   }
 
@@ -535,8 +537,17 @@ class SmartForm extends Component {
   // ------------------------------ Lifecycle ---------------------------- //
   // --------------------------------------------------------------------- //
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return computeStateFromProps(nextProps);
+  /*
+
+  When props change, reinitialize state
+
+  // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+  
+  */
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props, nextProps)) {
+      this.setState(getInitialStateFromProps(nextProps));
+    }
   }
 
   /*
@@ -551,7 +562,11 @@ class SmartForm extends Component {
     
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
-      const newState = cloneDeep(prevState);
+      
+      // keep only the relevant properties
+      const { currentValues, currentDocument, deletedValues } = cloneDeep(prevState);
+      const newState = { currentValues, currentDocument, deletedValues, foo: {} };
+
       Object.keys(newValues).forEach(key => {
         const path = key;
         const value = newValues[key];
