@@ -17,12 +17,12 @@ export function getDefaultMutations (options) {
     // new single-argument API
     typeName = arguments[0].typeName;
     collectionName = arguments[0].collectionName || getCollectionName(typeName);
-    mutationOptions = arguments[0].options || defaultOptions;
+    mutationOptions = { ...defaultOptions, ...arguments[0].options };
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
     typeName = getTypeName(collectionName);
-    mutationOptions = arguments[1] || defaultOptions;
+    mutationOptions = { ...defaultOptions, ...arguments[1] };
   }
   
   // register callbacks for documentation purposes

@@ -19,12 +19,12 @@ export function getDefaultResolvers(options) {
     // new single-argument API
     typeName = arguments[0].typeName;
     collectionName = arguments[0].collectionName || getCollectionName(typeName);
-    resolverOptions = arguments[0].options || defaultOptions;
+    resolverOptions = { ...defaultOptions, ...arguments[0].options };
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
     typeName = getTypeName(collectionName);
-    resolverOptions = arguments[1] || defaultOptions;
+    resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
   
   return {
