@@ -16,7 +16,7 @@ export function getDefaultMutations (options) {
   if (typeof arguments[0] === 'object') {
     // new single-argument API
     typeName = arguments[0].typeName;
-    collectionName = getCollectionName(typeName); // TODO: find more reliable way to get type name from collection name?
+    collectionName = arguments[0].collectionName || getCollectionName(typeName);
     mutationOptions = arguments[0].options || defaultOptions;
   } else {
     // OpenCRUD backwards compatibility
