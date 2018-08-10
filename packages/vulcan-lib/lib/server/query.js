@@ -82,7 +82,7 @@ Meteor.startup(() => {
 
     collection.queryOne = async (documentId, { fragmentName, fragmentText, context }) => {
       const query = buildQuery(collection, { fragmentName, fragmentText });
-      const result = await runQuery(query, { documentId }, context);
+      const result = await runQuery(query, { input: { selector: { documentId } } }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
     }
 
