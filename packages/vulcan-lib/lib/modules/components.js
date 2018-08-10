@@ -105,19 +105,29 @@ export const populateComponentsApp = () => {
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export const replaceComponent = (name, newComponent, ...newHocs) => {
-  const previousComponent = ComponentsTable[name];
-  
-  // xxx : throw an error if the previous component doesn't exist
+export function replaceComponent(name, newComponent, ...newHocs) {
+  if (typeof arguments[0] === 'object') {
+    const { name, component, hocs = [] } = arguments[0];
+    const previousComponent = ComponentsTable[name];
+    return registerComponent({name: name, component: component, hocs: [...hocs, ...previousComponent.hocs]});
+  } else {
+    // OpenCRUD backwards compatibility
+    // store the component in the table
 
-  // console.log('// replacing component');
-  // console.log(name);
-  // console.log(newComponent);
-  // console.log('new hocs', newHocs);
-  // console.log('previous hocs', previousComponent.hocs);
+    const previousComponent = ComponentsTable[name];
 
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+    // xxx : throw an error if the previous component doesn't exist
+
+    // console.log('// replacing component');
+    // console.log(name);
+    // console.log(newComponent);
+    // console.log('new hocs', newHocs);
+    // console.log('previous hocs', previousComponent.hocs);
+
+    return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
+  }
 };
+
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
