@@ -6,6 +6,7 @@ Default mutations
 
 import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
+import isEmpty from 'lodash/isEmpty';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
@@ -47,8 +48,7 @@ export function getDefaultMutations (options) {
         return Users.canDo(user, [`${typeName.toLowerCase()}.create`, `${collectionName.toLowerCase()}.new`]);
       },
 
-      async mutation(root, { input }, context) {
-        const { data } = input;
+      async mutation(root, { data }, context) {
         const collection = context[collectionName];
 
         // check if current user can pass check function; else throw error
@@ -93,12 +93,20 @@ export function getDefaultMutations (options) {
           : Users.canDo(user, [`${typeName.toLowerCase()}.update.all`, `${collectionName.toLowerCase()}.edit.all`]);
       },
 
-      async mutation(root, { input }, context) {
-        const { selector, data } = input;
+      async mutation(root, { selector, data }, context) {
+
         const collection = context[collectionName];
+
+        if (isEmpty(selector)) {
+          throw new Error(`Selector cannot be empty`);
+        }
 
         // get entire unmodified document from database
         const document = await Connectors.get(collection, selector);
+  
+        if (!document) {
+          throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
+        }
 
         // check if user can perform operation; if not throw error
         Utils.performCheck(this.check, context.currentUser, document);
@@ -111,6 +119,7 @@ export function getDefaultMutations (options) {
           currentUser: context.currentUser,
           validate: true,
           context,
+          document,
         });
       },
     };
@@ -123,8 +132,7 @@ export function getDefaultMutations (options) {
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
 
-      async mutation(root, { input }, context) {
-        const { selector, data } = input;
+      async mutation(root, { selector, data }, context) {
         const collection = context[collectionName];
 
         // check if document exists already
@@ -158,11 +166,20 @@ export function getDefaultMutations (options) {
           : Users.canDo(user, [`${typeName.toLowerCase()}.delete.all`,  `${collectionName.toLowerCase()}.remove.all`]);
       },
 
-      async mutation(root, { input }, context) {
-        const { selector } = input;
+      async mutation(root, { selector }, context) {
+
         const collection = context[collectionName];
 
+        if (isEmpty(selector)) {
+          throw new Error(`Selector cannot be empty`);
+        }
+
         const document = await Connectors.get(collection, selector);
+          
+        if (!document) {
+          throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
+        }
+
         Utils.performCheck(this.check, context.currentUser, document, context);
 
         return await deleteMutator({
@@ -171,6 +188,7 @@ export function getDefaultMutations (options) {
           currentUser: context.currentUser,
           validate: true,
           context,
+          document,
         });
       },
     };

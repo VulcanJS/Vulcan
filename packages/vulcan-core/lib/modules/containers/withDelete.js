@@ -47,7 +47,7 @@ const withDelete = (options) => {
       [`delete${typeName}`]: (args) => {
         const { selector } = args;
         return mutate({ 
-          variables: { input: { selector } }
+          variables: { selector }
         });
       },
 
@@ -56,7 +56,7 @@ const withDelete = (options) => {
         const { documentId } = args;
         const selector = { documentId };
         return mutate({ 
-          variables: { input: { selector } }
+          variables: { selector }
         });
       },
 

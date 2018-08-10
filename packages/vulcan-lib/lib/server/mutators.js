@@ -35,6 +35,7 @@ import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
 import clone from 'lodash/clone';
+import isEmpty from 'lodash/isEmpty';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
@@ -143,23 +144,25 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 }
 
 
-export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context }) => {
+export const updateMutator = async ({ collection, selector, data, set = {}, unset = {}, currentUser, validate, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
-
-  // OpenCRUD backwards compatibility
-  if (!selector) {
-    selector = { documentId };
-  }
 
   const schema = collection.simpleSchema()._schema;
 
   // OpenCRUD backwards compatibility
   data = data || modifierToData({ $set: set, $unset: unset });
 
-  // get original document from database
-  // TODO: avoid fetching document a second time if possible
-  let document = await Connectors.get(collection, selector);
+  if (isEmpty(selector)) {
+    throw new Error(`Selector cannot be empty`);
+  }
+
+  // get original document from database or arguments
+  document = document || await Connectors.get(collection, selector);
+
+  if (!document) {
+    throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
+  }
   
   debug('');
   debugGroup(`--------------- start \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
@@ -262,7 +265,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   return { data: newDocument };
 }
 
-export const deleteMutator = async ({ collection, selector, documentId, currentUser, validate, context }) => {
+export const deleteMutator = async ({ collection, selector, currentUser, validate, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
 
@@ -270,15 +273,18 @@ export const deleteMutator = async ({ collection, selector, documentId, currentU
   debugGroup(`--------------- start \x1b[36m${collectionName} Delete Mutator\x1b[0m ---------------`);
   debug('// collectionName: ', collectionName);
   debug('// selector: ', selector);
-  
-  // OpenCRUD backwards compatibility
-  if (!selector) {
-    selector = { documentId };
-  }
 
   const schema = collection.simpleSchema()._schema;
 
-  let document = await Connectors.get(collection, selector);
+  if (isEmpty(selector)) {
+    throw new Error(`Selector cannot be empty`);
+  }
+
+  document = document || await Connectors.get(collection, selector);
+
+  if (!document) {
+    throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
+  }
 
   // if document is not trusted, run validation callbacks
   if (validate) {
