@@ -20,8 +20,10 @@ export const Collections = [];
 
 export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName || name === collectionName.toLowerCase());
 
+// TODO: find more reliable way to get collection name from type name?
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
+// TODO: find more reliable way to get type name from collection name?
 export const getTypeName = collectionName => collectionName.slice(0,-1);
 
 /**
