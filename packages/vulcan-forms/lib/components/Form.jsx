@@ -705,6 +705,7 @@ class SmartForm extends Component {
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
+      currentDocument: clearCurrentValues ? {} : prevState.currentDocument,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
       initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
       disabled: false,
