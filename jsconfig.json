@@ -1,6 +1,110 @@
 {
   "compilerOptions": {
-    "target": "ES6"
+    "target": "ES6",
+    "baseUrl": ".",
+    "paths": {
+      "meteor/vulcan:forms-upload": [
+        "packages/vulcan-forms-upload/lib/modules.js"
+      ],
+      "meteor/vulcan:events-intercom": [
+        "packages/vulcan-events-intercom/lib/client/main.js",
+        "packages/vulcan-events-intercom/lib/server/main.js"
+      ],
+      "meteor/vulcan:i18n": [
+        "packages/vulcan-i18n/lib/server/main.js",
+        "packages/vulcan-i18n/lib/client/main.js"
+      ],
+      "meteor/vulcan:email": [
+        "packages/vulcan-email/lib/server.js",
+        "packages/vulcan-email/lib/client.js"
+      ],
+      "meteor/vulcan:subscribe": [
+        "packages/vulcan-subscribe/lib/modules.js",
+        "packages/vulcan-subscribe/lib/modules.js"
+      ],
+      "meteor/vulcan:accounts": [
+        "packages/vulcan-accounts/main_client.js",
+        "packages/vulcan-accounts/main_server.js"
+      ],
+      "meteor/vulcan:ui-bootstrap": [
+        "packages/vulcan-ui-bootstrap/lib/server/main.js",
+        "packages/vulcan-ui-bootstrap/lib/client/main.js"
+      ],
+      "meteor/vulcan:events-internal": [
+        "packages/vulcan-events-internal/lib/server/main.js",
+        "packages/vulcan-events-internal/lib/client/main.js"
+      ],
+      "meteor/buffer": [],
+      "meteor/vulcan:debug": [
+        "packages/vulcan-debug/lib/server/main.js",
+        "packages/vulcan-debug/lib/client/main.js"
+      ],
+      "meteor/vulcan:i18n-en-us": [],
+      "meteor/vulcan:events-segment": [
+        "packages/vulcan-events-segment/lib/server/main.js",
+        "packages/vulcan-events-segment/lib/client/main.js"
+      ],
+      "meteor/vulcan:cloudinary": [
+        "packages/vulcan-cloudinary/lib/client/main.js",
+        "packages/vulcan-cloudinary/lib/server/main.js"
+      ],
+      "meteor/vulcan:users": [
+        "packages/vulcan-users/lib/server/main.js",
+        "packages/vulcan-users/lib/client/main.js"
+      ],
+      "meteor/vulcan:events": [
+        "packages/vulcan-events/lib/server/main.js",
+        "packages/vulcan-events/lib/client/main.js"
+      ],
+      "meteor/vulcan:voting": [
+        "packages/vulcan-voting/lib/server/main.js",
+        "packages/vulcan-voting/lib/client/main.js"
+      ],
+      "meteor/vulcan:events-ga": [
+        "packages/vulcan-events-ga/lib/server/main.js",
+        "packages/vulcan-events-ga/lib/client/main.js"
+      ],
+      "meteor/vulcan:forms-tags": [
+        "packages/vulcan-forms-tags/lib/export.js"
+      ],
+      "meteor/vulcan:admin": [
+        "packages/vulcan-admin/lib/server/main.js",
+        "packages/vulcan-admin/lib/client/main.js"
+      ],
+      "meteor/boilerplate-generator": [
+        "packages/_boilerplate-generator/generator.js"
+      ],
+      "meteor/vulcan:payments": [
+        "packages/vulcan-payments/lib/server/main.js",
+        "packages/vulcan-payments/lib/client/main.js"
+      ],
+      "meteor/vulcan:i18n-es-es": [],
+      "meteor/vulcan:lib": [
+        "packages/vulcan-lib/lib/server/main.js",
+        "packages/vulcan-lib/lib/client/main.js"
+      ],
+      "meteor/vulcan:newsletter": [
+        "packages/vulcan-newsletter/lib/server/main.js",
+        "packages/vulcan-newsletter/lib/client/main.js"
+      ],
+      "meteor/vulcan:routing": [
+        "packages/vulcan-routing/lib/server/main.js",
+        "packages/vulcan-routing/lib/client/main.js"
+      ],
+      "meteor/vulcan:core": [
+        "packages/vulcan-core/lib/server/main.js",
+        "packages/vulcan-core/lib/client/main.js"
+      ],
+      "meteor/vulcan:embed": [
+        "packages/vulcan-embed/lib/client/main.js",
+        "packages/vulcan-embed/lib/server/main.js"
+      ],
+      "meteor/vulcan:i18n-fr-fr": [],
+      "meteor/vulcan:forms": [
+        "packages/vulcan-forms/lib/client/main.js",
+        "packages/vulcan-forms/lib/server/main.js"
+      ]
+    }
   },
   "include": [
     "packages/**/*"
@@ -11,5 +115,5 @@
   ],
   "typeAcquisition": {
     "enable": true
-  },
+  }
 }
