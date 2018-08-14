@@ -17,9 +17,8 @@ const createMutation = {
     return Users.canDo(user, ['users.create', 'users.new']);
   },
 
-  mutation(root, { input }, context) {
+  mutation(root, { data }, context) {
     const { Users, currentUser } = context;
-    const { data } = input;
     performCheck(this, currentUser, document);
 
     return createMutator({
@@ -41,9 +40,8 @@ const updateMutation = {
     return Users.owns(user, document) ? Users.canDo(user, ['users.update.own', 'users.edit.own']) : Users.canDo(user, [`users.update.all`, `users.edit.all`]);
   },
 
-  async mutation(root, { input }, context) {
+  async mutation(root, { selector, data }, context) {
     const { Users, currentUser } = context;
-    const { selector, data } = input;
 
     const document = await Connectors.get(Users, selector);
     performCheck(this, currentUser, document);
@@ -68,10 +66,9 @@ const deleteMutation = {
     return Users.owns(user, document) ? Users.canDo(user, ['users.delete.own', 'users.remove.own']) : Users.canDo(user, [`users.delete.all`, `users.remove.all`]);
   },
 
-  async mutation(root, { input }, context) {
+  async mutation(root, { selector }, context) {
 
     const { Users, currentUser } = context;
-    const { selector } = input;
 
     const document = await Connectors.get(Users, selector);
     performCheck(this, currentUser, document);
