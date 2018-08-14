@@ -1,12 +1,14 @@
 {
   "name": "Vulcan",
-  "version": "1.9.1",
+  "version": "1.11.2",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
     "start": "meteor --settings settings.json",
-    "lint": "eslint --cache --ext .jsx,js packages"
+    "lint": "eslint --cache --ext .jsx,js packages",
+    "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
+    "test": "npm run test-unit"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.38",
@@ -16,7 +18,7 @@
     "apollo-errors": "^1.4.0",
     "apollo-server-express": "^1.2.0",
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^0.8.7",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "chalk": "2.2.0",
     "classnames": "^2.2.3",
@@ -36,7 +38,7 @@
     "graphql-anywhere": "^3.0.1",
     "graphql-date": "^1.0.2",
     "graphql-tag": "^2.0.0",
-    "graphql-tools": "^2.19.0",
+    "graphql-tools": "^3.0.2",
     "graphql-type-json": "^0.1.4",
     "handlebars": "^4.0.5",
     "he": "^1.1.1",
@@ -83,12 +85,16 @@
     "stripe": "^4.23.1",
     "styled-components": "^2.1.1",
     "underscore": "^1.8.3",
+    "universal-cookie-express": "^2.1.5",
     "url": "^0.11.0"
   },
   "private": true,
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
+    "chromedriver": "^2.40.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^3.10.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-meteor": "0.0.9",
@@ -97,8 +103,13 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-mocha": "^5.1.0",
     "eslint-plugin-prettier": "^2.5.0",
-    "eslint-plugin-react": "^6.7.1"
+    "eslint-plugin-react": "^6.7.1",
+    "expect": "^23.4.0",
+    "jsdom": "^11.11.0",
+    "jsdom-global": "^3.0.2",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "postcss": {
     "plugins": {

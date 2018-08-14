@@ -21,7 +21,7 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { name, options, label, onChange, value } = this.props;
+    const { name, options, label, onChange, value, disabled } = this.props;
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -31,6 +31,7 @@ class FormComponentInner extends PureComponent {
       label,
       onChange,
       value,
+      disabled,
       ...this.props.inputProperties,
     };
 
@@ -51,7 +52,6 @@ class FormComponentInner extends PureComponent {
       showCharsRemaining,
       charsRemaining,
       renderComponent,
-      intlInput,
     } = this.props;
 
     const hasErrors = errors && errors.length;
@@ -66,22 +66,20 @@ class FormComponentInner extends PureComponent {
     );
     const properties = this.getProperties();
 
-    if (intlInput) {
-      return <Components.FormIntl {...properties} />;
-    } else {
-      return (
-        <div className={inputClass}>
-          {instantiateComponent(beforeComponent, properties)}
-          {renderComponent(properties)}
-          {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
-          {this.renderClear()}
-          {showCharsRemaining && (
-            <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
-          )}
-          {instantiateComponent(afterComponent, properties)}
-        </div>
-      );
-    }
+    const FormInput = this.props.formInput;
+
+    return (
+      <div className={inputClass}>
+        {instantiateComponent(beforeComponent, properties)}
+        <FormInput {...properties}/>
+        {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
+        {this.renderClear()}
+        {showCharsRemaining && (
+          <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>
+        )}
+        {instantiateComponent(afterComponent, properties)}
+      </div>
+    );
   }
 }
 
@@ -99,7 +97,7 @@ FormComponentInner.propTypes = {
   charsRemaining: PropTypes.number,
   charsCount: PropTypes.number,
   charsMax: PropTypes.number,
-  renderComponent: PropTypes.func.isRequired,
+  inputComponent: PropTypes.func,
 };
 
 FormComponentInner.contextTypes = {

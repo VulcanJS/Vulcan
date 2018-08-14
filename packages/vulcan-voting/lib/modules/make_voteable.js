@@ -15,7 +15,7 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
@@ -44,7 +44,7 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
@@ -72,7 +72,7 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: '[User]',
           resolver: async (document, args, { currentUser, Users }) => {
@@ -105,7 +105,7 @@ export const makeVoteable = collection => {
         type: Number,
         optional: true,
         defaultValue: 0,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         onInsert: document => {
           // default to 0 if empty
           return document.baseScore || 0;
@@ -121,7 +121,7 @@ export const makeVoteable = collection => {
         type: Number,
         optional: true,
         defaultValue: 0,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         onInsert: document => {
           // default to 0 if empty
           return document.score || 0;

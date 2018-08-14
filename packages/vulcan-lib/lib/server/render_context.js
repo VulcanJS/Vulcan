@@ -4,9 +4,10 @@ import cookieParser from 'cookie-parser';
 
 import { Meteor } from 'meteor/meteor';
 import { DDP } from 'meteor/ddp';
-import { Accounts } from 'meteor/accounts-base';
+// import { Accounts } from 'meteor/accounts-base';
 import { RoutePolicy } from 'meteor/routepolicy';
 import { WebApp } from 'meteor/webapp';
+import { _hashLoginToken } from './accounts_helpers';
 
 import {
   createApolloClient,
@@ -51,7 +52,7 @@ const LoginContext = function LoginContext(loginToken) {
     // otherwise a random user will fetched from the db
     let user;
     if (loginToken) {
-      const hashedToken = loginToken && Accounts._hashLoginToken(loginToken);
+      const hashedToken = loginToken && _hashLoginToken(loginToken);
       const query = { 'services.resume.loginTokens.hashedToken': hashedToken };
       const options = { fields: { _id: 1 } };
       user = Meteor.users.findOne(query, options);

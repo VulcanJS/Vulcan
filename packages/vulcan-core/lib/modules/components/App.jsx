@@ -1,11 +1,12 @@
-import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale } from 'meteor/vulcan:lib';
+import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale, hasIntlFields } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
-import withEdit from '../containers/withEdit.js';
+import withUpdate from '../containers/withUpdate.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
+import moment from 'moment';
 
 class App extends PureComponent {
   constructor(props) {
@@ -13,9 +14,9 @@ class App extends PureComponent {
     if (props.currentUser) {
       runCallbacks('events.identify', props.currentUser);
     }
-    this.state = {
-      locale: this.initLocale(),
-    };
+    const locale = this.initLocale();
+    this.state = { locale };
+    moment.locale(locale);
   }
 
   initLocale = () => {
@@ -50,9 +51,12 @@ class App extends PureComponent {
     this.props.cookies.set('locale', locale);
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
-     await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
+     await this.props.updateUser({ selector: { documentId: this.props.currentUser._id }, data: { locale }});
     }
-    this.props.client.resetStore()
+    moment.locale(locale);
+    if (hasIntlFields) {
+      this.props.client.resetStore();
+    }
   };
 
   getChildContext() {
@@ -113,11 +117,11 @@ App.childContextTypes = {
 
 App.displayName = 'App';
 
-const editOptions = {
+const updateOptions = {
   collectionName: 'Users',
   fragmentName: 'UsersCurrent',
 }
 
-registerComponent('App', App, withCurrentUser, [withEdit, editOptions], withApollo, withCookies);
+registerComponent('App', App, withCurrentUser, [withUpdate, updateOptions], withApollo, withCookies);
 
 export default App;

@@ -17,6 +17,19 @@ import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; /
 // Anything else..
 ///////////////////////////////////////
 
+const createDisplayName = user => {
+  const profileName = Utils.getNestedProperty(user, 'profile.name');
+  const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
+  const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
+  if (profileName) return profileName;
+  if (twitterName) return twitterName;
+  if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+  if (user.username) return user.username;
+  if (user.email) return user.email.slice(0, user.email.indexOf('@'));
+  return undefined;
+}
+
+
 const adminGroup = {
   name: 'admin',
   order: 100,
@@ -34,13 +47,13 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
   username: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['guests'],
+    canRead: ['guests'],
+    canCreate: ['guests'],
     onInsert: user => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
@@ -68,7 +81,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     onInsert: () => {
       return new Date();
     }
@@ -78,9 +91,9 @@ const schema = {
     label: "Admin",
     control: "checkbox",
     optional: true,
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    viewableBy: ['guests'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    canRead: ['guests'],
     group: adminGroup,
   },
   locale: {
@@ -88,16 +101,16 @@ const schema = {
     label: "Preferred Language",
     optional: true,
     control: 'select',
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     options: () => Locales.map(({ id, label }) => ({ value: id, label })),
   },
   profile: {
     type: Object,
     optional: true,
     blackbox: true,
-    insertableBy: ['guests'],
+    canCreate: ['guests'],
   },
   // // telescope-specific data, kept for backward compatibility and migration purposes
   // telescope: {
@@ -109,7 +122,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
-    viewableBy: ownsOrIsAdmin,
+    canRead: ownsOrIsAdmin,
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -118,19 +131,12 @@ const schema = {
     type: String,
     optional: true,
     control: "text",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     order: 10,
     onInsert: (user, options) => {
-      const profileName = Utils.getNestedProperty(user, 'profile.name');
-      const twitterName = Utils.getNestedProperty(user, 'services.twitter.screenName');
-      const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
-      if (profileName) return profileName;
-      if (twitterName) return twitterName;
-      if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
-      if (user.username) return user.username;
-      return undefined;
+      return createDisplayName(user);
     },
     searchable: true
   },
@@ -143,9 +149,9 @@ const schema = {
     regEx: SimpleSchema.RegEx.Email,
     mustComplete: true,
     control: "text",
-    insertableBy: ['guests'],
-    editableBy: ['members'],
-    viewableBy: ownsOrIsAdmin,
+    canCreate: ['guests'],
+    canUpdate: ['members'],
+    canRead: ownsOrIsAdmin,
     order: 20,
     onInsert: (user) => {
       // look in a few places for the user email
@@ -171,7 +177,7 @@ const schema = {
   emailHash: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     onInsert: user => {
       if (user.email) {
         return getCollection('Users').avatar.hash(user.email);
@@ -181,7 +187,7 @@ const schema = {
   avatarUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     onInsert: user => {
 
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
@@ -217,11 +223,12 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     order: 40,
     onInsert: user => {
       // create a basic slug from display name and then modify it if this slugs already exists;
-      const basicSlug = Utils.slugify(user.displayName);
+      const displayName = createDisplayName(user);
+      const basicSlug = Utils.slugify(displayName);
       return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     }
   },
@@ -232,9 +239,9 @@ const schema = {
     type: String,
     optional: true,
     control: "text",
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     order: 60,
     resolveAs: {
       type: 'String',
@@ -255,9 +262,9 @@ const schema = {
     type: Array,
     optional: true,
     control: "checkboxgroup",
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    viewableBy: ['guests'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    canRead: ['guests'],
     group: adminGroup,
     form: {
       options: function () {
@@ -276,7 +283,7 @@ const schema = {
   pageUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (user, args, { Users }) => {
@@ -288,7 +295,7 @@ const schema = {
   editUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (user, args, { Users }) => {

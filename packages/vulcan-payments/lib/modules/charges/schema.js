@@ -7,12 +7,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     onInsert: (document, currentUser) => {
       return new Date();
     },
@@ -20,7 +20,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       fieldName: 'user',
       type: 'User',
@@ -34,20 +34,20 @@ const schema = {
   type: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
   
   // custom properties
 
   associatedCollection: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: true,
   },
 
   associatedId: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: true,
   },
 
@@ -58,37 +58,37 @@ const schema = {
 
   productKey: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: true,
   },
 
   source: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: false,
   },
 
   test: {
     type: Boolean,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: true,
   },
 
   data: {
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     blackbox: true,
   },
 
   properties: {
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     blackbox: true,
   },
 
   ip: {
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     optional: true,
   },
 
@@ -97,7 +97,7 @@ const schema = {
   amount: {
     type: Number,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'Int',
       resolver: charge => charge.data.amount,
@@ -107,7 +107,7 @@ const schema = {
   createdAtFormatted: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -119,7 +119,7 @@ const schema = {
   createdAtFormattedShort: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -131,7 +131,7 @@ const schema = {
   stripeId: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -143,7 +143,7 @@ const schema = {
   stripeChargeUrl: {
     type: String,
     optional: true,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -156,7 +156,7 @@ const schema = {
 
   // associatedDocument: {
   //   type: Object,
-  //   viewableBy: ['admins'],
+  //   canRead: ['admins'],
   //   optional: true,
   //   resolveAs: {
   //     type: 'Chargeable',

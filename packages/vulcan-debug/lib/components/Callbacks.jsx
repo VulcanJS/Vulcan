@@ -16,8 +16,8 @@ const CallbacksDashboard = props =>
       }}
       columns={[
         { name: 'name', component: CallbacksName }, 
-        'arguments', 
-        'returns', 
+        'iterator', 
+        'properties', 
         'runs', 
         'description',
         'hooks',

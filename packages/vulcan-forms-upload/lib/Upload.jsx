@@ -79,14 +79,17 @@ class Upload extends PureComponent {
   constructor(props, context) {
     super(props);
 
+    const self = this;
+
     // add callback to clean any preview or error values
-    context.addToSubmitForm(data => {
+    function uploadKeepRealImages (data) {
       // keep only "real" images
-      const images = this.getImages({ includePreviews: false, includeDeleted: false});
+      const images = self.getImages({ includePreviews: false, includeDeleted: false});
       // replace images in `data` object with real images
-      set(data, this.props.path, images);
+      set(data, self.props.path, images);
       return data;
-    });
+    }
+    context.addToSubmitForm(uploadKeepRealImages);
 
   }
   state = { uploading: false };
@@ -207,6 +210,11 @@ class Upload extends PureComponent {
     const { includePreviews = true, includeDeleted = false } = args;
     let images = this.props.value;
   
+    // if images is an empty string, null, etc. just return an empty array
+    if (!images) {
+      return [];
+    }
+
     // if images is not array, make it one (for backwards compatibility)
     if (!Array.isArray(images)) {
       images = [images];
@@ -227,7 +235,6 @@ class Upload extends PureComponent {
         <div className="col-sm-9">
           <div className="upload-field">
             <Dropzone
-              ref="dropzone"
               multiple={this.enableMultiple()}
               onDrop={this.onDrop}
               accept="image/*"

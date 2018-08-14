@@ -138,8 +138,8 @@ addStrings('fr', {
 
   "admin": "Admin",
   "notifications": "Notifications",
-  
-  "errors.expectedType": `Un champ “{name}” de type {dataType} était attendu, “{value}” a été reçu à la place.`,
-  "errors.required": `Le champ “{name}” est requis.`,
-  "errors.maxString": `Le champ “{name}” est limité à {max} caractères.`,
+
+  "errors.expectedType": `Un champ “{label}” de type {dataType} était attendu, “{value}” a été reçu à la place.`,
+  "errors.required": `Le champ “{label}” est requis.`,
+  "errors.maxString": `Le champ “{label}” est limité à {max} caractères.`,
 });

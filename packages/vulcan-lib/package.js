@@ -1,34 +1,45 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Vulcan libraries.',
-  version: '1.10.0',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  version: '1.11.2',
+  git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function (api) {
-
+Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
-  var packages = [
+  // note: if used, accounts-base should be loaded before vulcan:lib
+  api.use('accounts-base', { weak: true });
 
+  var packages = [
     'buffer@0.0.0', // see https://github.com/meteor/meteor/issues/8645
 
-    // Meteor packages
+    // Minimal Meteor packages
 
-    'meteor-base',
+    'meteor@1.9.0',
+    'static-html@1.2.2',
+    'standard-minifier-css@1.4.1',
+    'standard-minifier-js@2.3.4',
+    'es5-shim@4.8.0',
+    'ecmascript@0.11.0',
+    'shell-server@0.3.1',
+    'webapp@1.6.0',
+    'server-render@0.3.1',
+
+    // Other meteor-base package
+    // see https://github.com/meteor/meteor/blob/master/packages/meteor-base/package.js
+
+    'underscore',
+    'hot-code-push',
+    // 'ddp',
+
+    // Other packages
+
     'mongo',
-    'tracker',
-    'service-configuration',
-    'standard-minifiers',
-    'modules',
-    'accounts-base',
     'check',
     'http',
     'email',
     'random',
-    'ecmascript',
-    'service-configuration',
-    'shell-server',
 
     // Third-party packages
 
@@ -42,11 +53,8 @@ Package.onUse(function (api) {
 
   api.imply(packages);
 
-  api.export([
-    'Vulcan'
-  ]);
+  api.export(['Vulcan']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
-
 });

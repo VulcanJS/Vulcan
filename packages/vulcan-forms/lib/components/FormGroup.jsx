@@ -25,7 +25,7 @@ class FormGroup extends PureComponent {
       <div className="form-section-heading" onClick={this.toggle}>
         <h3 className="form-section-heading-title">{this.props.label}</h3>
         <span className="form-section-heading-toggle">
-          {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
+          {this.state.collapsed ? <Components.IconRight height={16} width={16} /> : <Components.IconDown height={16} width={16} />}
         </span>
       </div>
     );
@@ -45,6 +45,7 @@ class FormGroup extends PureComponent {
           {this.props.fields.map(field => (
             <Components.FormComponent
               key={field.name}
+              disabled={this.props.disabled}
               {...field}
               errors={this.props.errors}
               throwError={this.props.throwError}
@@ -78,6 +79,8 @@ FormGroup.propTypes = {
   formType: PropTypes.string.isRequired,
   currentUser: PropTypes.object,
 };
+
+module.exports = FormGroup
 
 registerComponent('FormGroup', FormGroup);
 

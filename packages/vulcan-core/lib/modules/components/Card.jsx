@@ -7,8 +7,8 @@ import moment from 'moment';
 import { Link } from 'react-router';
 
 const getLabel = (field, fieldName, collection, intl) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldSchema = schema[fieldName];
+  const schema = collection && collection.simpleSchema()._schema;
+  const fieldSchema = schema && schema[fieldName];
   if (fieldSchema) {
     return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
   } else {
@@ -17,8 +17,8 @@ const getLabel = (field, fieldName, collection, intl) => {
 }
 
 const getTypeName = (field, fieldName, collection) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldSchema = schema[fieldName];
+  const schema = collection && collection.simpleSchema()._schema;
+  const fieldSchema = schema && schema[fieldName];
   if (fieldSchema) {
     const type = fieldSchema.type.singleType;
     const typeName = typeof type === 'function' ? type.name : type;
@@ -53,6 +53,11 @@ export const getFieldValue = (value, typeName) => {
     return ''
   }
 
+  // JSX element
+  if (React.isValidElement(value)) {
+    return value;
+  }
+
   if (Array.isArray(value)) {
     typeName = 'Array';
   }
@@ -80,9 +85,13 @@ export const getFieldValue = (value, typeName) => {
     case 'Date':
       return moment(new Date(value)).format('dddd, MMMM Do YYYY, h:mm:ss');
 
-    default:
+    case 'String':
+    case 'string':
       return parseImageUrl(value);
-  }  
+
+    default:
+      return value.toString();
+  }
 }
 
 const getObject = object => {
@@ -143,13 +152,14 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />
 
-const Card = ({className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
+const Card = ({title, className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
 
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canEdit = showEdit && currentUser && collection.options.mutations.edit.check(currentUser, document);
+  const canEdit = showEdit && currentUser && collection && collection.options.mutations.update.check(currentUser, document);
 
   return (
-    <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>
+    <div className={classNames(className, 'datacard', collection && `datacard-${collection._name}`)}>
+      {title && <div className="datacard-title">{title}</div>}
       <table className="table table-bordered" style={{maxWidth: '100%'}}>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}

@@ -8,7 +8,7 @@ import { formatError } from 'apollo-errors';
 import compression from 'compression';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Accounts } from 'meteor/accounts-base';
+// import { Accounts } from 'meteor/accounts-base';
 import { Engine } from 'apollo-engine';
 
 import { GraphQLSchema } from '../modules/graphql.js';
@@ -20,11 +20,13 @@ import { Collections } from '../modules/collections.js';
 import findByIds from '../modules/findbyids.js';
 import { runCallbacks } from '../modules/callbacks.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import Cookies from 'universal-cookie';
+// import Cookies from 'universal-cookie';
+import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
 
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
+registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
@@ -144,7 +146,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = true;
+    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
@@ -157,7 +159,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     if (req.headers.authorization) {
       const token = req.headers.authorization;
       check(token, String);
-      const hashedToken = Accounts._hashLoginToken(token);
+      const hashedToken = _hashLoginToken(token);
 
       // Get the user from the database
       user = await Meteor.users.findOne(
@@ -170,7 +172,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
         runCallbacks('events.identify', user);
 
         const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
-        const expiresAt = Accounts._tokenExpiration(loginToken.when);
+        const expiresAt = _tokenExpiration(loginToken.when);
         const isExpired = expiresAt < new Date();
 
         if (!isExpired) {
