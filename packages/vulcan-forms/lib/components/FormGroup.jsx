@@ -11,10 +11,14 @@ const styles = theme => ({
       border: `solid 1px ${theme.palette.grey[400]}`,
       marginBottom: theme.spacing.unit,
     },
+    formSectionFields: {
+      paddingRight: theme.spacing.unit*2,
+      paddingLeft: theme.spacing.unit*2,
+    },
     formSectionBody: {
+      paddingTop: theme.spacing.unit,
+      paddingBottom: theme.spacing.unit,
       borderTop: `solid 1px ${theme.palette.grey[300]}`,
-      padding: theme.spacing.unit,
-      paddingRight: theme.spacing.unit*2
     },
     formSectionHeading: {
       display:"flex",
@@ -71,7 +75,7 @@ class FormGroup extends PureComponent {
       <div className={groupStyling && classes.formSection}>
         { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
-          <div className={classNames({[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
+          <div className={classNames(classes.formSectionFields, {[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
             >
             {this.props.fields.map(field => (
               <Components.FormComponent
