@@ -108,7 +108,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // }
 
   // run sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName}.create.before`, iterator: newDocument, properties: { currentUser }});
+  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.before`, iterator: newDocument, properties: { currentUser }});
   newDocument = await runCallbacks({ name: `*.create.before`, iterator: newDocument, properties: { currentUser }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.before`, newDocument, currentUser);
