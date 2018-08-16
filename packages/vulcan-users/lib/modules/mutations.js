@@ -19,7 +19,7 @@ const createMutation = {
 
   mutation(root, { data }, context) {
     const { Users, currentUser } = context;
-    performCheck(this, currentUser, document);
+    performCheck(this, currentUser, data);
 
     return createMutator({
       collection: Users,
