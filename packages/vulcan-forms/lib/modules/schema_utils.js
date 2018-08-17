@@ -136,6 +136,7 @@ export const schemaProperties = [
   'options',
   'query',
   'fieldProperties',
+  'intl',
 ];
 
 export const formProperties = [

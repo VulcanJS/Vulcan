@@ -498,3 +498,13 @@ Utils.isPromise = value => isFunction(get(value, 'then'));
 Utils.pluralize = s => {
   return s.slice(-1) === 'y' ? `${s.slice(0,-1)}ies` : `${s}s`;
 }
+
+Utils.removeProperty = (obj, propertyName) => {
+  for(prop in obj) {
+    if (prop === propertyName){
+      delete obj[prop];
+    } else if (typeof obj[prop] === 'object') {
+      Utils.removeProperty(obj[prop], propertyName);
+    }
+  }
+}
