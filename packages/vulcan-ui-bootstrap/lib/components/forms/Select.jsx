@@ -4,7 +4,7 @@ import { Select } from 'formsy-react-components';
 import { registerComponent } from 'meteor/vulcan:core';
 
 // copied from vulcan:forms/utils.js to avoid extra dependency
-const getFieldType = datatype => datatype[0].type;
+const getFieldType = datatype => datatype && datatype[0].type;
 
 const SelectComponent = ({refFunction, inputProperties, datatype, ...properties}, { intl }) => {
   const noneOption = {
