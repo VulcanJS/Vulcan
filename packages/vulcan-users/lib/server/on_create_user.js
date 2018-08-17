@@ -52,7 +52,7 @@ function onCreateUserCallback(options, user) {
       user[fieldName] = autoValue;
     }
   }
-
+  user = runCallbacks({ name: 'user.create.before', iterator: user });
   user = runCallbacks('users.new.sync', user);
 
   runCallbacksAsync({name: "user.create.async", properties: {data: user}});
