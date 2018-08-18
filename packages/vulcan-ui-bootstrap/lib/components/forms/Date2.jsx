@@ -13,7 +13,6 @@ class DateComponent2 extends PureComponent {
   }
 
   updateDate = (date) => {
-    console.log(date)
     const { value, path } = this.props;
     let newDate;
     this.setState(date, () => {
@@ -23,7 +22,6 @@ class DateComponent2 extends PureComponent {
           // wait until we have all three values to update the date
           newDate = moment().year(year).month(month).date(day);
           this.props.updateCurrentValues({ [path]: newDate.toDate() });
-          console.log(newDate)
         }
       } else {
         // update current date
@@ -32,7 +30,6 @@ class DateComponent2 extends PureComponent {
         if (month) newDate.month(month);
         if (day) newDate.date(day);
         this.props.updateCurrentValues({ [path]: newDate.toDate() });
-        console.log(newDate)
       }
     });
   }
