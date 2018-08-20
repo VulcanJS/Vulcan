@@ -77,6 +77,9 @@ const getInitialStateFromProps = (nextProps) => {
   const schema = collection.simpleSchema();
   // we need to clone object passed from props otherwise they'll be immutable
   const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
+  // remove all instances of the `__typename` property from document
+  Utils.removeProperty(initialDocument, '__typename');
+
   return {
     disabled: false,
     errors: [],

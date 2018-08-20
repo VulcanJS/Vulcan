@@ -243,6 +243,9 @@ class FormComponent extends Component {
         case 'date':
           return Components.FormComponentDate;
 
+        case 'date2':
+          return Components.FormComponentDate2;
+
         case 'time':
           return Components.FormComponentTime;
 

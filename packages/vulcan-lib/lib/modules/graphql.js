@@ -18,11 +18,15 @@ import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDat
 disableFragmentWarnings();
 
 // get GraphQL type for a given schema and field name
-const getGraphQLType = (schema, fieldName) => {
+const getGraphQLType = (schema, fieldName, isInput = false) => {
 
   const field = schema[fieldName];
   const type = field.type.singleType;
   const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
+
+  if (field.isIntlData) {
+    return isInput ? '[IntlValueInput]' : '[IntlValue]';
+  }
 
   switch (typeName) {
 
@@ -137,6 +141,7 @@ export const GraphQLSchema = {
 
       const field = schema[fieldName];
       const fieldType = getGraphQLType(schema, fieldName);
+      const inputFieldType = getGraphQLType(schema, fieldName, true);
 
       // only include fields that are viewable/insertable/editable and don't contain "$" in their name
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
@@ -202,7 +207,7 @@ export const GraphQLSchema = {
         if (field.canCreate || field.insertableBy) {
           fields.create.push({
             name: fieldName,
-            type: fieldType,
+            type: inputFieldType,
             required: !field.optional,
           });
         }
@@ -210,7 +215,7 @@ export const GraphQLSchema = {
         if (field.canUpdate || field.editableBy) {
           fields.update.push({
             name: fieldName,
-            type: fieldType,
+            type: inputFieldType,
           });
         }
 

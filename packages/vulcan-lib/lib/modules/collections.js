@@ -149,13 +149,19 @@ export const createCollection = options => {
         ...schema[fieldName], // copy properties from regular field
         hidden: true,
         type: Array,
-        custom: validateIntlField,
+        isIntlData: true,
       }
       schema[`${fieldName}_intl.$`] = {
         type: getIntlString(),
       }
 
-      // make non-intl field optional
+      // if original field is required, enable custom validation function instead of `optional` property
+      if (!schema[fieldName].optional) {
+        schema[`${fieldName}_intl`].optional = true;
+        schema[`${fieldName}_intl`].custom = validateIntlField;
+      }
+
+      // make original non-intl field optional
       schema[fieldName].optional = true;
     }
   });
