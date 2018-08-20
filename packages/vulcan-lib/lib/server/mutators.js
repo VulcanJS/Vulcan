@@ -144,13 +144,14 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 }
 
 
-export const updateMutator = async ({ collection, selector, data, set = {}, unset = {}, currentUser, validate, context, document }) => {
+export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
 
   const schema = collection.simpleSchema()._schema;
 
   // OpenCRUD backwards compatibility
+  selector = selector || { _id: documentId };
   data = data || modifierToData({ $set: set, $unset: unset });
 
   if (isEmpty(selector)) {
@@ -265,7 +266,7 @@ export const updateMutator = async ({ collection, selector, data, set = {}, unse
   return { data: newDocument };
 }
 
-export const deleteMutator = async ({ collection, selector, currentUser, validate, context, document }) => {
+export const deleteMutator = async ({ collection, documentId, selector, currentUser, validate, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
 
@@ -275,6 +276,9 @@ export const deleteMutator = async ({ collection, selector, currentUser, validat
   debug('// selector: ', selector);
 
   const schema = collection.simpleSchema()._schema;
+
+  // OpenCRUD backwards compatibility
+  selector = selector || { _id: documentId };
 
   if (isEmpty(selector)) {
     throw new Error(`Selector cannot be empty`);
