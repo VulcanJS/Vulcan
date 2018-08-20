@@ -21,7 +21,7 @@ Users.addField([
             selector.collectionName = args.collectionName;
           }
           const votes = await Connectors.find(Votes, selector);
-          return votes;
+          return Users.restrictViewableFields(user, Votes, votes);
         }
       },
     }
@@ -34,5 +34,3 @@ Users.addField([
     }
   },
 ]);
-
-
