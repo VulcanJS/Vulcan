@@ -97,8 +97,8 @@ export const populateComponentsApp = () => {
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *
  * @param {String} name The name of the component to register.
- * @param {React Component} rawComponent Interchangeable/extendable component.
- * @param {...Function} hocs The HOCs to compose with the raw component.
+ * @param {React Component} newComponent Interchangeable/extendable component.
+ * @param {...Function} newHocs The HOCs to compose with the raw component.
  * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
@@ -108,11 +108,41 @@ export const populateComponentsApp = () => {
 export function replaceComponent(name, newComponent, ...newHocs) {
   if (typeof arguments[0] === 'object') {
     const { name, component, hocs = [] } = arguments[0];
-    const previousComponent = ComponentsTable[name];
-    return registerComponent({name: name, component: component, hocs: [...hocs, ...previousComponent.hocs]});
+    previousComponent = ComponentsTable[name];
+    if (!previousComponent) {
+      console.warn(
+        `Trying to replace non-registered component ${name}. The component is ` +
+          'being registered. If you were trying to replace a component defined by ' +
+          'another package, make sure that you haven\'t misspelled the name. Check ' +
+          'also if the original component is still being registered or that it ' +
+          'hasn\'t been renamed.',
+      );
+      return registerComponent(name, component, ...hocs);
+    }
+    return registerComponent({ name: name, component: component, hocs: hocs.concat(previousComponent.hocs) });
   } else {
-    // OpenCRUD backwards compatibility
-    // store the component in the table
+    previousComponent = ComponentsTable[name];
+
+    if (!previousComponent) {
+      console.warn(
+        `Trying to replace non-registered component ${name}. The component is ` +
+          'being registered. If you were trying to replace a component defined by ' +
+          'another package, make sure that you haven\'t misspelled the name. Check ' +
+          'also if the original component is still being registered or that it ' +
+          'hasn\'t been renamed.',
+      );
+      return registerComponent(name, newComponent, ...newHocs);
+    }
+
+    // console.log('// replacing component');
+    // console.log(name);
+    // console.log(newComponent);
+    // console.log('new hocs', newHocs);
+    // console.log('previous hocs', previousComponent.hocs);
+
+    return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
+  }
+};
 
     const previousComponent = ComponentsTable[name];
 

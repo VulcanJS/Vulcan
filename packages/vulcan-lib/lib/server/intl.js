@@ -97,7 +97,7 @@ const migrateIntlFields = async (defaultLocale) => {
       if (documentsToMigrate.length) {
 
         console.log(`-> found ${documentsToMigrate.length} documents to migrate \n`); // eslint-disable-line no-console
-        documentsToMigrate.forEach(doc => {
+        for (const doc of documentsToMigrate) {
 
           console.log(`// Migrating document ${doc._id}`); // eslint-disable-line no-console
           const modifier = { $push: {}};
@@ -112,12 +112,12 @@ const migrateIntlFields = async (defaultLocale) => {
 
           if (!_.isEmpty(modifier.$push)) {
             // update document
-            const n = Connectors.update(collection, {_id: doc._id}, modifier);
+            const n = await Connectors.update(collection, {_id: doc._id}, modifier);
             console.log(`-> migrated ${n} documents \n`); // eslint-disable-line no-console
           }
           console.log('\n'); // eslint-disable-line no-console
 
-        });
+        }
       } else {
         console.log (`-> found no documents to migrate.`); // eslint-disable-line no-console
       }

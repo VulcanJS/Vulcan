@@ -77,6 +77,9 @@ const getInitialStateFromProps = (nextProps) => {
   const schema = collection.simpleSchema();
   // we need to clone object passed from props otherwise they'll be immutable
   const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
+  // remove all instances of the `__typename` property from document
+  Utils.removeProperty(initialDocument, '__typename');
+
   return {
     disabled: false,
     errors: [],
@@ -705,6 +708,7 @@ class SmartForm extends Component {
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
+      currentDocument: clearCurrentValues ? {} : prevState.currentDocument,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
       initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
       disabled: false,

@@ -108,11 +108,15 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
     
+    const convertFields = field => {
+      return field.slice(-5) === '_intl' ? `${field}{ locale value }`: field;
+    }
+
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${queryFields.join('\n')}
+        ${queryFields.map(convertFields).join('\n')}
       }
     `
 
@@ -120,7 +124,7 @@ class FormWrapper extends PureComponent {
     const generatedMutationFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${mutationFields.join('\n')}
+        ${mutationFields.map(convertFields).join('\n')}
       }
     `
 

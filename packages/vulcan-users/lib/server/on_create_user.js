@@ -14,7 +14,7 @@ function onCreateUserCallback(options, user) {
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
 
-  options = runCallbacks(`user.new.validate.before`, options);
+  options = runCallbacks({name: `user.create.validate.before`, iterator: options});
   // OpenCRUD backwards compatibility
   options = runCallbacks(`users.new.validate.before`, options);
 
@@ -33,7 +33,7 @@ function onCreateUserCallback(options, user) {
   user = Object.assign(user, options);
 
   // run validation callbacks
-  user = runCallbacks(`user.new.validate`, user);
+  user = runCallbacks({name:`user.create.validate`, iterator: user});
   // OpenCRUD backwards compatibility
   user = runCallbacks(`users.new.validate`, user);
 
@@ -52,10 +52,10 @@ function onCreateUserCallback(options, user) {
       user[fieldName] = autoValue;
     }
   }
-
+  user = runCallbacks({ name: 'user.create.before', iterator: user });
   user = runCallbacks('users.new.sync', user);
 
-  runCallbacksAsync("user.new.async", user);
+  runCallbacksAsync({name: "user.create.async", properties: {data: user}});
   // OpenCRUD backwards compatibility
   runCallbacksAsync("users.new.async", user);
 

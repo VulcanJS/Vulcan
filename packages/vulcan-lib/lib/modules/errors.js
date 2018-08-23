@@ -71,9 +71,8 @@ export const getErrors = error => {
 
   // 1. wrap in array
   let errors = [error];
-
   // if this is one or more GraphQL errors, extract and convert them
-  if (error.graphQLErrors) {
+  if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
     if (graphQLError.data && !_.isEmpty(graphQLError.data)) {

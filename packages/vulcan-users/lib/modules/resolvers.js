@@ -30,7 +30,7 @@ const resolvers = {
 
     async resolver(root, { input = {} }, {currentUser, Users}, { cacheControl }) {
 
-      const { terms = {}, enableCache = false } = input;
+      const { terms = {}, enableCache = false, enableTotal = true } = input;
 
       if (cacheControl && enableCache) {
         const maxAge = defaultOptions.cacheMaxAge;
@@ -47,8 +47,15 @@ const resolvers = {
 
       // prime the cache
       restrictedUsers.forEach(user => Users.loader.prime(user._id, user));
+      
+      const data = { results: restrictedUsers };
+      
+      if (enableTotal) {
+        // get total count of documents matching the selector
+        data.totalCount = await Connectors.count(Users, selector);
+      }
 
-      return { results: restrictedUsers };
+      return data;
     },
 
   },

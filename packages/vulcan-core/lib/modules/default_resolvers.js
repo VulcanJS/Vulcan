@@ -18,13 +18,13 @@ export function getDefaultResolvers(options) {
   if (typeof arguments[0] === 'object') {
     // new single-argument API
     typeName = arguments[0].typeName;
-    collectionName = getCollectionName(typeName); // TODO: find more reliable way to get type name from collection name
-    resolverOptions = arguments[0].options || defaultOptions;
+    collectionName = arguments[0].collectionName || getCollectionName(typeName);
+    resolverOptions = { ...defaultOptions, ...arguments[0].options };
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
     typeName = getTypeName(collectionName);
-    resolverOptions = arguments[1] || defaultOptions;
+    resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
   
   return {
