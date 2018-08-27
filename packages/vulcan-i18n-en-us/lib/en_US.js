@@ -37,6 +37,7 @@ addStrings('en', {
   "accounts.info_email_sent": "Email sent.",
   "accounts.info_password_changed": "Password changed.",
   "accounts.logging_in": "Logging in…",
+  "accounts.email_verified": "Your email address has been verified.",
 
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",

@@ -37,6 +37,7 @@ addStrings('es', {
   "accounts.info_email_sent": "Correo electrónico enviado.",
   "accounts.info_password_changed": "Contraseña cambiada.",
   "accounts.logging_in": "Iniciando sesión…",
+  "accounts.email_verified": "Tu dirección de email ha sido verificada.",
 
   "forms.submit": "Enviar",
   "forms.cancel": "Cancelar",
