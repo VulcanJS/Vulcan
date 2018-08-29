@@ -131,9 +131,14 @@ export const createCollection = options => {
   // decorate collection with options
   collection.options = options;
 
-  // add typeName
+  // add typeName if missing
   collection.typeName = typeName;
+  collection.options.typeName = typeName;
 
+  // add collectionName if missing
+  collection.collectionName = collectionName;
+  collection.options.collectionName = collectionName;
+  
   // add views
   collection.views = [];
 
