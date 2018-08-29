@@ -34,14 +34,11 @@ export default function withSingle(options) {
   return graphql(query, {
     alias: `with${typeName}`,
 
-    options({ documentId, slug }) {
+    options({ selector }) {
       const graphQLOptions = {
         variables: {
           input: {
-            selector: {
-              documentId,
-              slug,
-            },
+            selector,
             enableCache,
           }
         },
