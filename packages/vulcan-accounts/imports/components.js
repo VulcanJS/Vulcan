@@ -12,3 +12,4 @@ import './ui/components/PasswordOrService.jsx';
 import './ui/components/SocialButtons.jsx';
 import './ui/components/ResetPassword.jsx';
 import './ui/components/EnrollAccount.jsx';
+import './ui/components/VerifyEmail.jsx';
