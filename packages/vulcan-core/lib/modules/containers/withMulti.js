@@ -1,12 +1,11 @@
 /*
 
-### withList
+### withMulti
 
 Paginated items container
 
 Options: 
 
-  - queryName: an arbitrary name for the query
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
   - fragmentName: the name of the fragment, passed to getFragment

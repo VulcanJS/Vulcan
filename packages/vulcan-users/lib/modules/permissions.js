@@ -306,9 +306,8 @@ Users.createGroup("guests"); // non-logged-in users
 Users.createGroup("members"); // regular users
 
 const membersActions = [
-
-  "users.create", 
-  "users.update.own", 
+  "user.create", 
+  "user.update.own", 
   // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.own", 
@@ -319,10 +318,10 @@ Users.groups.members.can(membersActions);
 Users.createGroup("admins"); // admin users
 
 const adminActions = [
-  "users.create", 
-  "users.update.all",
-  "users.delete.all",
-  "settings.update",
+  "user.create", 
+  "user.update.all",
+  "user.delete.all",
+  "setting.update",
   // OpenCRUD backwards compatibility
   "users.new", 
   "users.edit.all",
