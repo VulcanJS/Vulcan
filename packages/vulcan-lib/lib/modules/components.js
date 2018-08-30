@@ -56,12 +56,16 @@ export const getComponent = (name) => {
   if (!component) {
     throw new Error(`Component ${name} not registered.`)
   }
-  const hocs = component.hocs.map(hoc => {
-    if(!Array.isArray(hoc)) return hoc;
-    const [actualHoc, ...args] = hoc;
-    return actualHoc(...args);
-  });
-  return compose(...hocs)(component.rawComponent)
+  if (component.hocs) {
+    const hocs = component.hocs.map(hoc => {
+      if(!Array.isArray(hoc)) return hoc;
+      const [actualHoc, ...args] = hoc;
+      return actualHoc(...args);
+    });
+    return compose(...hocs)(component.rawComponent);
+  } else {
+    return component.rawComponent;
+  }
 };
 
 /**
