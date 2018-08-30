@@ -72,7 +72,7 @@ class FormGroup extends PureComponent {
     const { classes, name, defaultStyle, flexStyle} = this.props
     const groupStyling = !(name == 'default' || defaultStyle)
     return (
-      <div className={groupStyling && classes.formSection}>
+      <div className={groupStyling ? classes.formSection : undefined}>
         { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
           <div className={classNames(classes.formSectionFields, {[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
