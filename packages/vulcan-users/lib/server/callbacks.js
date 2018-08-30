@@ -62,7 +62,7 @@
         user.emails[0].verified = false;
         modifier.$set.emails = user.emails;
       } else {
-        user.emails = [{address: newEmail, verified: false}];
+        modifier.$set.emails = [{address: newEmail, verified: false}];
       }
 
       // update email hash
