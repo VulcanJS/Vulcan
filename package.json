@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.12.0",
+  "version": "1.12.1",
   "engines": {
     "npm": "^3.0"
   },
@@ -49,6 +49,7 @@
     "intl": "^1.2.4",
     "intl-locales-supported": "^1.0.0",
     "juice": "^1.11.0",
+    "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
     "marked": "^0.3.9",
     "metascraper": "^1.0.6",
