@@ -33,8 +33,8 @@ export default function withSingle(options) {
 
   return graphql(query, {
     alias: `with${typeName}`,
-
-    options({ selector }) {
+      
+    options({ documentId, slug, selector = { documentId, slug } }) { // OpenCrud backwards compatibility
       const graphQLOptions = {
         variables: {
           input: {
