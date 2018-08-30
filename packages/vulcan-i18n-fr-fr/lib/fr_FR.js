@@ -37,6 +37,7 @@ addStrings('fr', {
   "accounts.info_email_sent": "Email envoyé.",
   "accounts.info_password_changed": "Mot de passe changé.",
   "accounts.logging_in": "Connexion en cours…",
+  "accounts.email_verified": "Votre adresse e-mail a été vérifiée.",
 
   "forms.submit": "Envoyer",
   "forms.cancel": "Annuler",
