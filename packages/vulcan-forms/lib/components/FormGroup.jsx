@@ -14,6 +14,10 @@ const styles = theme => ({
     formSectionFields: {
       paddingRight: theme.spacing.unit*2,
       paddingLeft: theme.spacing.unit*2,
+      [theme.breakpoints.down('md')]: {
+        paddingLeft: theme.spacing.unit/2,
+        paddingRight: theme.spacing.unit/2,
+      },
     },
     formSectionBody: {
       paddingTop: theme.spacing.unit,
