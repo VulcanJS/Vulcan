@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:events",
   summary: "Vulcan event tracking package",
-  version: '1.12.2',
+  version: '1.12.3',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
   
   api.use([
-    'vulcan:core@1.12.2',
+    'vulcan:core@1.12.3',
   ]);
 
   api.mainModule("lib/server/main.js", "server");
