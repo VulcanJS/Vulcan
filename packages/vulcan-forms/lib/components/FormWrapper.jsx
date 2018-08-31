@@ -67,22 +67,27 @@ class FormWrapper extends PureComponent {
     return this.props.documentId || this.props.slug ? "edit" : "new";
   }
 
+  // filter out fields with "." or "$"
+  getValidFields() {
+    return Object.keys(this.getSchema()).filter(fieldName => !fieldName.includes('$') && !fieldName.includes('.'));
+  }
+
   getReadableFields() {
     const schema = this.getSchema();
     // OpenCRUD backwards compatibility
-    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
+    return this.getValidFields().filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
   }
 
   getCreateableFields() {
     const schema = this.getSchema();
     // OpenCRUD backwards compatibility
-    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
+    return this.getValidFields().filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
   }
 
   getUpdatetableFields() {
     const schema = this.getSchema();
     // OpenCRUD backwards compatibility
-    return Object.keys(this.getSchema()).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
+    return this.getValidFields().filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
   }
 
   // get fragment used to decide what data to load from the server to populate the form,
