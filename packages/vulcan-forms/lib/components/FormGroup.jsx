@@ -14,6 +14,10 @@ const styles = theme => ({
     formSectionFields: {
       paddingRight: theme.spacing.unit*2,
       paddingLeft: theme.spacing.unit*2,
+      [theme.breakpoints.down('md')]: {
+        paddingLeft: theme.spacing.unit/2,
+        paddingRight: theme.spacing.unit/2,
+      },
     },
     formSectionBody: {
       paddingTop: theme.spacing.unit,
@@ -72,7 +76,7 @@ class FormGroup extends PureComponent {
     const { classes, name, defaultStyle, flexStyle} = this.props
     const groupStyling = !(name == 'default' || defaultStyle)
     return (
-      <div className={groupStyling ? classes.formSection : undefined}>
+      <div className={classNames({[classes.formSection]: groupStyling})}>
         { groupStyling && this.renderHeading()}
         { (!this.state.collapsed || this.hasErrors()) &&
           <div className={classNames(classes.formSectionFields, {[classes.formSectionBody]: groupStyling, [classes.flex]: flexStyle})}
