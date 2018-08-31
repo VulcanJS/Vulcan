@@ -53,7 +53,7 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
-    canCreate: ['guests'],
+    canCreate: ['members'],
     onInsert: user => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
@@ -110,7 +110,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
-    canCreate: ['guests'],
+    canCreate: ['members'],
   },
   // // telescope-specific data, kept for backward compatibility and migration purposes
   // telescope: {
@@ -149,7 +149,7 @@ const schema = {
     regEx: SimpleSchema.RegEx.Email,
     mustComplete: true,
     control: "text",
-    canCreate: ['guests'],
+    canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ownsOrIsAdmin,
     order: 20,
