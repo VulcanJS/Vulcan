@@ -62,6 +62,22 @@ const schema = {
     },
     searchable: true
   },
+  _password: {
+    type: String,
+    label: "Password",
+    optional: true,
+    canRead: [],
+    canCreate: ["admins"],
+    canUpdate: ["admins"],
+    onCreate: ({ newDocument, currentUser }) => {
+   
+      delete newDocument._password // not sure if needed
+      return "" // SHOULD NEVER BE ACTUALLY STORED
+    },
+    inputProperties:{
+      type: "password"
+    }
+  },
   emails: {
     type: Array,
     optional: true,
