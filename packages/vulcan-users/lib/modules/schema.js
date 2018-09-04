@@ -62,6 +62,9 @@ const schema = {
     },
     searchable: true
   },
+  // TODO: this field only concerns the frontend, however SmartForm does 
+  // not allow yet to pass additionnal schema property when generating the form
+  // (version 1.12.3)
   _password: {
     type: String,
     label: "Password",
@@ -70,13 +73,13 @@ const schema = {
     canCreate: ["admins"],
     canUpdate: ["admins"],
     onCreate: ({ newDocument, currentUser }) => {
-   
-      delete newDocument._password // not sure if needed
-      return "" // SHOULD NEVER BE ACTUALLY STORED
+      delete newDocument._password; // not sure if needed
+      return ""; // SHOULD NEVER BE ACTUALLY STORED
     },
-    inputProperties:{
+    inputProperties: {
       type: "password"
     }
+    //min: Accounts.ui._options.minimumPasswordLength
   },
   emails: {
     type: Array,

@@ -56,6 +56,7 @@ import isObject from 'lodash/isObject';
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
+import SimpleSchema from 'simpl-schema'
 
 // unsetCompact
 const unsetCompact = (object, path) => {
@@ -74,7 +75,7 @@ const compactParent = (object, path) => {
 
 const getInitialStateFromProps = (nextProps) => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
-  const schema = collection.simpleSchema();
+  const schema = collection.simpleSchema().extend(nextProps.schema || {});
   // we need to clone object passed from props otherwise they'll be immutable
   const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
   // remove all instances of the `__typename` property from document
