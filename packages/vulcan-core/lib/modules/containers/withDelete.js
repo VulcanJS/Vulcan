@@ -33,12 +33,22 @@ import { getFragment, getFragmentName, getCollection, deleteClientTemplate } fro
 
 const withDelete = (options) => {
 
-  const { collectionName } = options;
+  const collectionName = options.collectionName || options.collection.options.collectionName
   const collection = options.collection || getCollection(collectionName);
-  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
-  const fragmentName = getFragmentName(fragment);
   const typeName = collection.options.typeName;
+
+  let fragment
+  if (options.fragment) {
+    fragment = options.fragment;
+  } else if (options.fragmentName) {
+    fragment = getFragment(options.fragmentName);
+  } else {
+    fragment = getFragment(`${collection.options.collectionName}DefaultFragment`);
+  }
+  const fragmentName = getFragmentName(fragment);
+
   const query = gql`${deleteClientTemplate({ typeName, fragmentName })}${fragment}`;
+
 
   return graphql(query, {
     alias: `withDelete${typeName}`,
@@ -46,7 +56,7 @@ const withDelete = (options) => {
 
       [`delete${typeName}`]: (args) => {
         const { selector } = args;
-        return mutate({ 
+        return mutate({
           variables: { selector }
         });
       },
@@ -55,7 +65,7 @@ const withDelete = (options) => {
       removeMutation: (args) => {
         const { documentId } = args;
         const selector = { documentId };
-        return mutate({ 
+        return mutate({
           variables: { selector }
         });
       },
