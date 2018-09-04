@@ -48,7 +48,7 @@ Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOn
  * @param {Object} user
  */
 Users.getDisplayName = function (user) {
-  if (typeof user === "undefined") {
+  if (!user) {
     return "";
   } else {
     return (user.displayName) ? user.displayName : Users.getUserName(user);
@@ -62,7 +62,7 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Users.
  * @param {Boolean} isAbsolute
  */
 Users.getProfileUrl = function (user, isAbsolute) {
-  if (typeof user === "undefined") {
+  if (!user) {
     return "";
   }
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
@@ -89,7 +89,7 @@ Users.getEditUrl = function (user, isAbsolute) {
  */
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
-  if (typeof user !== "undefined") {
+  if (user) {
     if (user.twitterUsername) {
       return user.twitterUsername;
     } else if(Utils.checkNested(user, 'services', 'twitter', 'screenName')) {
