@@ -42,6 +42,7 @@ import { getSetting, getFragment, getFragmentName, getCollection, Utils, multiCl
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
+import find from 'lodash/find';
 
 export default function withMulti(options) {
   // console.log(options)
@@ -280,7 +281,11 @@ const queryReducer = (typeName, previousResults, action, collection, mergedTerms
       // if new document belongs to current list (based on view selector), add it
       const newDocument = action.result.data[`create${typeName}`].data;
       if (mingoQuery.test(newDocument)) {
-        newResults = addToResults(previousResults, newDocument);
+        if (!find(previousResults[resolverName].results, { _id: newDocument._id })) {
+          // make sure it hasn't been already added despite being a create mutation
+          // as this reducer may be called several times
+          newResults = addToResults(previousResults, newDocument);
+        }
         newResults = reorderResults(newResults, options.sort);
       }
       // console.log('** new **')
@@ -292,7 +297,7 @@ const queryReducer = (typeName, previousResults, action, collection, mergedTerms
       const editedDocument = action.result.data[`update${typeName}`].data;
       if (mingoQuery.test(editedDocument)) {
         // edited document belongs to the list
-        if (!_.findWhere(previousResults[resolverName].results, { _id: editedDocument._id })) {
+        if (!find(previousResults[resolverName].results, { _id: editedDocument._id })) {
           // if document wasn't already in list, add it
           newResults = addToResults(previousResults, editedDocument);
         }
