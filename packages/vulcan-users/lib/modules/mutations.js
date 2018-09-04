@@ -44,6 +44,11 @@ const updateMutation = {
     const { Users, currentUser } = context;
 
     const document = await Connectors.get(Users, selector);
+
+    if (!document) {
+      throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
+    }
+    
     performCheck(this, currentUser, document);
 
     return updateMutator({
@@ -71,6 +76,11 @@ const deleteMutation = {
     const { Users, currentUser } = context;
 
     const document = await Connectors.get(Users, selector);
+
+    if (!document) {
+      throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
+    }
+
     performCheck(this, currentUser, document);
 
     return deleteMutator({
