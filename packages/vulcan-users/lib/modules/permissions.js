@@ -261,7 +261,8 @@ Users.canCreateField = function (user, field) {
       return canCreate(user, document);
     } else if (typeof canCreate === 'string') {
       // if canCreate is just a string, we assume it's the name of a group and pass it to isMemberOf
-      return Users.isMemberOf(user, canCreate);
+      // note: if canCreate is 'guests' then anybody can create it
+      return canCreate === 'guests' || Users.isMemberOf(user, canCreate);
     } else if (Array.isArray(canCreate) && canCreate.length > 0) {
       // if canCreate is an array, we do a recursion on every item and return true if one of the items return true
       return canCreate.some(group => Users.canCreateField(user, { canCreate: group }));
@@ -285,7 +286,8 @@ Users.canUpdateField = function (user, field, document) {
       return canUpdate(user, document);
     } else if (typeof canUpdate === 'string') {
       // if canUpdate is just a string, we assume it's the name of a group and pass it to isMemberOf
-      return Users.isMemberOf(user, canUpdate);
+      // note: if canUpdate is 'guests' then anybody can create it
+      return canUpdate === 'guests' || Users.isMemberOf(user, canUpdate);
     } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
       // if canUpdate is an array, we look at every item and return true if one of the items return true
       return canUpdate.some(group => Users.canUpdateField(user, { canUpdate: group }, document));
