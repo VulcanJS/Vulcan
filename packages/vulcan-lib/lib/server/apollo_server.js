@@ -181,6 +181,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
         }
       }
     }
+    
+    //add the headers to the context
+    options.context.headers = req.headers;
 
 
     // merge with custom context
