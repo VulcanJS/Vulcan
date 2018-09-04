@@ -890,6 +890,9 @@ class SmartForm extends Component {
             document={this.getDocument()}
             deleteDocument={(this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null}
             collectionName={collectionName}
+            currentValues={this.state.currentValues}
+            deletedValues={this.state.deletedValues}
+            errors={this.state.errors}
           />
         </Formsy.Form>
       </div>
