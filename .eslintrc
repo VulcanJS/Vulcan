@@ -34,6 +34,9 @@
     "no-await-in-loop": 1,
     "comma-dangle": 0,
     "key-spacing": 0,
+    "meteor/audit-argument-checks": 0,
+    "no-case-declarations": 0,
+    "no-console": 1,
     "no-extra-boolean-cast": 0,
     "no-undef": 1,
     "no-unused-vars": [
@@ -44,11 +47,12 @@
         "varsIgnorePattern": "React|PropTypes|Component"
       }
     ],
-    "no-console": 1,
-    "react/prop-types": 0,
-    "meteor/audit-argument-checks": 0,
-    "no-case-declarations": 0,
-    "no-useless-escape": 0
+    "no-useless-escape": 0,
+    "quotes": [
+      1,
+      "single"
+    ],
+    "react/prop-types": 0
   },
   "env": {
     "browser": true,

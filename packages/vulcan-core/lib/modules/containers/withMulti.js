@@ -34,24 +34,24 @@ Terms object can have the following properties:
          
 */
 
-import React, { Component } from "react";
-import { withApollo, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import update from "immutability-helper";
-import { getSetting, getFragment, getFragmentName, getCollection, Utils, multiClientTemplate } from "meteor/vulcan:lib";
-import Mingo from "mingo";
-import compose from "recompose/compose";
-import withState from "recompose/withState";
-import find from "lodash/find";
+import React, { Component } from 'react';
+import { withApollo, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import update from 'immutability-helper';
+import { getSetting, Utils, multiClientTemplate } from 'meteor/vulcan:lib';
+import Mingo from 'mingo';
+import compose from 'recompose/compose';
+import withState from 'recompose/withState';
+import find from 'lodash/find';
 
-import { extractCollectionInfo, extractFragmentInfo } from "./handleOptions";
+import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 export default function withMulti(options) {
   // console.log(options)
 
   const {
     limit = 10,
-    pollInterval = getSetting("pollInterval", 20000),
+    pollInterval = getSetting('pollInterval', 20000),
     enableTotal = true,
     enableCache = false,
     extraQueries
@@ -74,7 +74,7 @@ export default function withMulti(options) {
     withApollo,
 
     // wrap component with HoC that manages the terms object via its state
-    withState("paginationTerms", "setPaginationTerms", props => {
+    withState('paginationTerms', 'setPaginationTerms', props => {
       // get initial limit from props, or else options
       const paginationLimit = (props.terms && props.terms.limit) || limit;
       const paginationTerms = {
@@ -145,7 +145,7 @@ export default function withMulti(options) {
             loading = props.data.networkStatus === 1,
             loadingMore = props.data.networkStatus === 2,
             error = props.data.error,
-            propertyName = options.propertyName || "results";
+            propertyName = options.propertyName || 'results';
 
           if (error) {
             // eslint-disable-next-line no-console
@@ -169,11 +169,11 @@ export default function withMulti(options) {
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
               const newTerms =
-                typeof providedTerms === "undefined"
+                typeof providedTerms === 'undefined'
                   ? {
                       /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms,
-                      limit: results.length + props.ownProps.paginationTerms.itemsPerPage
-                    }
+                    limit: results.length + props.ownProps.paginationTerms.itemsPerPage
+                  }
                   : providedTerms;
 
               props.ownProps.setPaginationTerms(newTerms);
@@ -184,7 +184,7 @@ export default function withMulti(options) {
             loadMoreInc(providedTerms) {
               // get terms passed as argument or else just default to incrementing the offset
               const newTerms =
-                typeof providedTerms === "undefined"
+                typeof providedTerms === 'undefined'
                   ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length }
                   : providedTerms;
 

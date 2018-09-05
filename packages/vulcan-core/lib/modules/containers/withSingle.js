@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { getSetting, singleClientTemplate, Utils } from "meteor/vulcan:lib";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { getSetting, singleClientTemplate, Utils } from 'meteor/vulcan:lib';
 
-import { extractCollectionInfo, extractFragmentInfo } from "./handleOptions";
+import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 export default function withSingle(options) {
-  const { pollInterval = getSetting("pollInterval", 20000), enableCache = false, extraQueries } = options;
+  const { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
 
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -43,7 +43,7 @@ export default function withSingle(options) {
     props: returnedProps => {
       const { /* ownProps, */ data } = returnedProps;
 
-      const propertyName = options.propertyName || "document";
+      const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
         // document: Utils.convertDates(collection, data[singleResolverName]),

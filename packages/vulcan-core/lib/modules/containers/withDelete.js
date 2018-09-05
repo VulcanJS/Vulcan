@@ -26,11 +26,11 @@ Child Props:
   
 */
 
-import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { deleteClientTemplate } from "meteor/vulcan:core";
-import { extractCollectionInfo, extractFragmentInfo } from "./handleOptions";
+import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { deleteClientTemplate } from 'meteor/vulcan:core';
+import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withDelete = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
