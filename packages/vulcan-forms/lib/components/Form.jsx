@@ -44,7 +44,6 @@ import unset from 'lodash/unset';
 import compact from 'lodash/compact';
 import update from 'lodash/update';
 import merge from 'lodash/merge';
-import mergeWith from 'lodash/mergeWith';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import isEqual from 'lodash/isEqual';
@@ -52,6 +51,8 @@ import isEqualWith from 'lodash/isEqualWith';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import isObject from 'lodash/isObject';
+import mapValues from 'lodash/mapValues';
+import pickBy from 'lodash/pickBy';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
@@ -72,11 +73,19 @@ const compactParent = (object, path) => {
   update(object, parentPath, compactIfArray);
 };
 
+const getDefaultValues = convertedSchema => {
+  // TODO: make this work with nested schemas, too
+  return pickBy(mapValues(convertedSchema, field => field.defaultValue), value => value);
+}
+
 const getInitialStateFromProps = (nextProps) => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
   const schema = collection.simpleSchema();
-  // we need to clone object passed from props otherwise they'll be immutable
-  const initialDocument = merge({}, nextProps.prefilledProps, nextProps.document);
+  const convertedSchema = convertSchema(schema);
+  const formType = nextProps.document ? 'edit' : 'new';
+  // for new document forms, add default values to initial document
+  const defaultValues = formType === 'new' ? getDefaultValues(convertedSchema) : {};
+  const initialDocument = merge({}, defaultValues, nextProps.prefilledProps, nextProps.document);
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
 
@@ -86,7 +95,7 @@ const getInitialStateFromProps = (nextProps) => {
     deletedValues: [],
     currentValues: {},
     // convert SimpleSchema schema into JSON object
-    schema: convertSchema(schema),
+    schema: convertedSchema,
     // Also store all field schemas (including nested schemas) in a flat structure
     flatSchema: convertSchema(schema, true),
     // the initial document passed as props
