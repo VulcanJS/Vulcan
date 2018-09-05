@@ -129,6 +129,11 @@ describe('vulcan-forms/components', function () {
                 expect(formGroup).toHaveLength(1)
             })
         })
+        const getFormFields = (wrapper) => {
+            const defaultGroup = wrapper.find('FormGroup').first()
+            const fields = defaultGroup.prop('fields')
+            return fields
+        }
         describe('nested object', function () {
             it('shallow render', () => {
                 const wrapper = shallowWithContext(<Form collection={WithObjects} />)
@@ -140,12 +145,6 @@ describe('vulcan-forms/components', function () {
                 const fields = defaultGroup.prop('fields')
                 expect(fields).toHaveLength(1) // addresses field
             })
-
-            const getFormFields = (wrapper) => {
-                const defaultGroup = wrapper.find('FormGroup').first()
-                const fields = defaultGroup.prop('fields')
-                return fields
-            }
             const getFirstField = () => {
                 const wrapper = shallowWithContext(<Form collection={WithObjects} />)
                 const fields = getFormFields(wrapper)
@@ -154,6 +153,52 @@ describe('vulcan-forms/components', function () {
             it('define the nestedSchema', () => {
                 const addressField = getFirstField()
                 expect(addressField.nestedSchema.street).toBeDefined()
+            })
+        })
+        describe('schema extension', function () {
+            const BasicCollection = createCollection({
+                collectionName: 'BasicCollections',
+                typeName: 'BasicCollection',
+                schema: {
+                    name: {
+                        type: String,
+                        label: "Name"
+                    },
+                }
+                //resolvers: getDefaultResolvers('BasicCollections'),
+                //mutations: getDefaultMutations('BasicCollections'),
+            });
+            const additionnalField = {
+                type: String,
+                label: "Lastname"
+            }
+            describe('override existing fields', function () {
+                it('override default props', () => {
+                    const wrapper = shallowWithContext(<Form collection={BasicCollection} schema={{ name: { label: 'NEWNAME' } }} />)
+                    const fields = getFormFields(wrapper)
+                    const nameField = fields[0]
+                    expect(nameField.label).toEqual('NEWNAME')
+                })
+            })
+            describe('addFields', function () {
+                // TODO: adding field does not work
+                it.skip('display additionnal field - insertion', () => {
+                    const wrapper = shallowWithContext(<Form collection={BasicCollection} schema={additionnalField} />)
+                    const fields = getFormFields(wrapper)
+                    expect(fields).toHaveLength(2)
+                })
+                it.skip('display additionnal field - edition', () => {
+                    const wrapper = shallowWithContext(<Form collection={BasicCollection} schema={additionnalField} document={{ name: "John" }} />)
+                    const fields = getFormFields(wrapper)
+                    expect(fields).toHaveLength(2)
+                })
+                it.skip('remove additionnal field before sending data', () => {
+
+                })
+                it.skip('remove additionnal field before fetching data', () => {
+
+                })
+
             })
         })
     })

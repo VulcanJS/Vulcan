@@ -80,7 +80,11 @@ const getDefaultValues = convertedSchema => {
 
 const getInitialStateFromProps = (nextProps) => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
-  const schema = collection.simpleSchema();
+  const collectionSchema = collection.simpleSchema()
+  // merge with schema passed in the props to allow local overrid of existing field
+  // will provoke errors if the user try to add a field however
+  const schema = nextProps.schema ? collectionSchema.extend(nextProps.schema) : collectionSchema;
+
   const convertedSchema = convertSchema(schema);
   const formType = nextProps.document ? 'edit' : 'new';
   // for new document forms, add default values to initial document
