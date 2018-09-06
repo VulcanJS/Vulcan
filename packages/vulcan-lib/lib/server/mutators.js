@@ -89,8 +89,9 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   for(let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
+      // OpenCRUD backwards compatibility: keep both newDocument and data for now, but phase our newDocument eventually
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onCreate({ newDocument: clone(newDocument), currentUser });
+      autoValue = await schema[fieldName].onCreate({ newDocument: clone(newDocument), data: clone(newDocument), currentUser });
     } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop
