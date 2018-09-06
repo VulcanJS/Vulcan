@@ -2,6 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import { withApollo } from 'react-apollo';
 
 
 class AccountsVerifyEmail extends PureComponent {
@@ -26,6 +27,16 @@ class AccountsVerifyEmail extends PureComponent {
           pending: false,
           error: null
         });
+        
+        // Reset the Apollo cache. Unfortunately there isn't
+        // really a more granular way to do this (see
+        // https://github.com/apollographql/apollo-feature-requests/issues/4 ).
+        // For LW2, this ensures that, if you navigate from
+        // the "Your email address has been verified" page
+        // to the "Edit Account" page, you won't see a
+        // widget telling you your address is still
+        // unverified.
+        this.props.client.resetStore();
       }
     });
   }
@@ -60,4 +71,4 @@ AccountsVerifyEmail.propsTypes = {
 
 AccountsVerifyEmail.displayName = 'AccountsEnrollAccount';
 
-registerComponent('AccountsVerifyEmail', AccountsVerifyEmail, withCurrentUser);
+registerComponent('AccountsVerifyEmail', AccountsVerifyEmail, withCurrentUser, withApollo);
