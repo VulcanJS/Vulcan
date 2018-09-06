@@ -227,7 +227,7 @@ class SmartForm extends Component {
         - Nested array item: 'addresses.1.city'
 
         */
-       compactParent(data, path);
+        compactParent(data, path);
       }
     });
 
@@ -572,10 +572,10 @@ class SmartForm extends Component {
 
     // default to overwriting old value with new
     const { mode = 'overwrite' } = options;
-    
+
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
-      
+
       // keep only the relevant properties
       const { currentValues, currentDocument, deletedValues } = cloneDeep(prevState);
       const newState = { currentValues, currentDocument, deletedValues, foo: {} };
@@ -811,7 +811,7 @@ class SmartForm extends Component {
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
-      data = this.props.submitCallback(data);
+      data = this.props.submitCallback(data) || data;
     }
 
     if (this.getFormType() === 'new') {
