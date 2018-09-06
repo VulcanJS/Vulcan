@@ -29,38 +29,38 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getFragment, getFragmentName, getCollection, createClientTemplate } from 'meteor/vulcan:core';
+import { createClientTemplate } from 'meteor/vulcan:core';
+import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
-const withCreate = (options) => {
+const withCreate = options => {
+  const { collectionName, collection } = extractCollectionInfo(options);
+  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
-  const { collectionName } = options;
-  // get options
-  const collection = options.collection || getCollection(collectionName);
-  const fragment = options.fragment || getFragment(options.fragmentName || `${collectionName}DefaultFragment`);
-  const fragmentName = getFragmentName(fragment);
   const typeName = collection.options.typeName;
-  const query = gql`${createClientTemplate({ typeName, fragmentName })}${fragment}`;
+  const query = gql`
+    ${createClientTemplate({ typeName, fragmentName })}
+    ${fragment}
+  `;
 
   // wrap component with graphql HoC
   return graphql(query, {
     alias: `withCreate${typeName}`,
-    props: ({ownProps, mutate}) => ({
-      [`create${typeName}`]: (args) => {
+    props: ({ ownProps, mutate }) => ({
+      [`create${typeName}`]: args => {
         const { data } = args;
-        return mutate({ 
-          variables: { data },
+        return mutate({
+          variables: { data }
         });
       },
       // OpenCRUD backwards compatibility
-      newMutation: (args) => {
+      newMutation: args => {
         const { document } = args;
-        return mutate({ 
-          variables: { data: document },
+        return mutate({
+          variables: { data: document }
         });
       }
-    }),
+    })
   });
-
-}
+};
 
 export default withCreate;
