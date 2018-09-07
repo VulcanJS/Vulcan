@@ -342,42 +342,17 @@ class SmartForm extends Component {
     return relevantFields;
   };
 
-  /*
-  Given a field's name, the containing schema, and parent, create the
-  complete field object to be passed to the component
-
-  */
-  createField = (fieldName, schema, parentFieldName, parentPath) => {
-    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
-    const fieldSchema = schema[fieldName];
-
+  initField = (fieldName, fieldSchema) => {
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
       document: this.state.initialDocument,
       name: fieldName,
-      path: fieldPath,
       datatype: fieldSchema.type,
       layout: this.props.layout,
       input: fieldSchema.input || fieldSchema.control,
     };
-
-    // if this an intl'd field, use a special intlInput
-    if (isIntlField(fieldSchema)) {
-      field.intlInput = true;
-    }
-
-    if (field.defaultValue) {
-      set(this.defaultValues, fieldPath, field.defaultValue);
-    }
-
-    // if field has a parent field, pass it on
-    if (parentFieldName) {
-      field.parentFieldName = parentFieldName;
-    }
-
     field.label = this.getLabel(fieldName);
-
     // // replace value by prefilled value if value is empty
     // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
     // if (prefill) {
@@ -393,6 +368,14 @@ class SmartForm extends Component {
       field.options = field.options.call(fieldSchema, this.props);
     }
 
+    // if this an intl'd field, use a special intlInput
+    if (isIntlField(fieldSchema)) {
+      field.intlInput = true;
+    }
+
+    if (field.defaultValue) {
+      set(this.defaultValues, fieldPath, field.defaultValue);
+    }
     // add any properties specified in fieldSchema.form as extra props passed on
     // to the form component, calling them if they are functions
     const inputProperties = fieldSchema.form || fieldSchema.inputProperties || {};
@@ -401,18 +384,40 @@ class SmartForm extends Component {
       field[prop] = typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
     }
 
-    // if field is not creatable/updatable, disable it
-    if (!this.getMutableFields(schema).includes(fieldName)) {
-      field.disabled = true;
-    }
-
     // add description as help prop
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
-    // field is an array => we keep its definition
+    return field
+  }
+  handleFieldPath = (field, fieldName, parentPath) => {
+    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
+    field.path = fieldPath
+    return field
+  }
+  handleFieldParent = (field, parentFieldName) => {
+    // if field has a parent field, pass it on
+    if (parentFieldName) {
+      field.parentFieldName = parentFieldName;
+    }
+
+    return field
+  }
+  handlePermissions = (field, fieldName, schema) => {
+    // if field is not creatable/updatable, disable it
+    if (!this.getMutableFields(schema).includes(fieldName)) {
+      field.disabled = true;
+    }
+    return field
+  }
+  handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
+    // array field 
     if (fieldSchema.field) {
       field.arrayFieldSchema = fieldSchema.field
+      // create a field that can be exploited by the form
+      field.arrayField = this.createArraySubField(fieldName, field.arrayFieldSchema, schema)
+
+      //field.nestedInput = true
     }
     // nested fields: set input to "nested"
     if (fieldSchema.schema) {
@@ -422,17 +427,44 @@ class SmartForm extends Component {
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({ schema: field.nestedSchema }).map(subFieldName => {
-        return this.createField(subFieldName, field.nestedSchema, fieldName, fieldPath);
+        return this.createField(subFieldName, field.nestedSchema, fieldName, field.path);
       });
     }
-
     return field;
-  };
+  }
+
+
 
   /*
+  Given a field's name, the containing schema, and parent, create the
+  complete field object to be passed to the component
+  
+  */
+  createField = (fieldName, schema, parentFieldName, parentPath) => {
+    const fieldSchema = schema[fieldName]
+    let field = this.initField(fieldName, fieldSchema)
+    field = this.handleFieldPath(field, fieldName, parentPath)
+    field = this.handleFieldParent(field, parentFieldName)
+    field = this.handlePermissions(field, fieldName, schema)
+    field = this.handleFieldChildren(field, fieldName, fieldSchema, schema)
+    return field
+  };
+  createArraySubField = (fieldName, subFieldSchema, schema) => {
+    const subFieldName = `${fieldName}.$`
+    let subField = this.initField(subFieldName, subFieldSchema)
+    // array subfield has the same path and permissions as its parent
+    // so we use parent name (fieldName) and not subfieldName
+    subField = this.handleFieldPath(subField, fieldName)
+    subField = this.handlePermissions(subField, fieldName, schema)
+    // we do not allow nesting yet
+    //subField = this.handleFieldChildren(field, fieldSchema)
+    return subField
+  }
 
+  /*
+  
    Get a field's label
-
+  
    */
   getLabel = (fieldName, fieldLocale) => {
     const collectionName = this.getCollection().options.collectionName.toLowerCase();
@@ -463,9 +495,9 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-
+  
   Add error to form state
-
+  
   Errors can have the following properties:
     - id: used as an internationalization key, for example `errors.required`
     - path: for field-specific errors, the path of the field with the issue
@@ -486,9 +518,9 @@ class SmartForm extends Component {
   };
 
   /*
-
+  
   Clear errors for a field
-
+  
   */
   clearFieldErrors = path => {
     const errors = this.state.errors.filter(error => error.path !== path);
@@ -568,12 +600,12 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-
+  
   When props change, reinitialize state
-
+  
   // TODO: only need to check nextProps.prefilledProps?
   // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-  
+   
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props, nextProps)) {
@@ -582,9 +614,9 @@ class SmartForm extends Component {
   }
 
   /*
-  
+   
   Manually update the current values of one or more fields(i.e. on change or blur).
-  
+   
   */
   updateCurrentValues = (newValues, options = {}) => {
 
@@ -628,9 +660,9 @@ class SmartForm extends Component {
   };
 
   /*
-  
+   
   Warn the user if there are unsaved changes
-  
+   
   */
   handleRouteLeave = () => {
     if (this.isChanged()) {
@@ -659,9 +691,9 @@ class SmartForm extends Component {
   };
 
   /*
-  
+   
   Install a route leave hook to warn the user if there are unsaved changes
-  
+   
   */
   componentDidMount = () => {
     let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
@@ -693,9 +725,9 @@ class SmartForm extends Component {
   };
 
   /*
-  
+   
   Returns true if there are any differences between the initial document and the current one
-  
+   
   */
   isChanged = () => {
     const initialDocument = this.state.initialDocument;
@@ -711,9 +743,9 @@ class SmartForm extends Component {
   };
 
   /*
-  
+   
   Refetch the document from the database (in case it was updated by another process or to reset the form)
-  
+   
   */
   refetchForm = () => {
     if (this.props.data && this.props.data.refetch) {
@@ -757,9 +789,9 @@ class SmartForm extends Component {
   };
 
   /*
-
+  
   Key down handler
-
+  
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
@@ -821,9 +853,9 @@ class SmartForm extends Component {
   };
 
   /*
-
+  
   Submit form handler
-
+  
   */
   submitForm = data => {
     // note: we can discard the data collected by Formsy because all the data we need is already available via getDocument()
@@ -860,9 +892,9 @@ class SmartForm extends Component {
   };
 
   /*
-
+  
   Delete document handler
-
+  
   */
   deleteDocument = () => {
     const document = this.getDocument();
