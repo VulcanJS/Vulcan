@@ -17,15 +17,25 @@ export const convertSchema = (schema, flatten = false) => {
       // extract schema
       jsonSchema[fieldName] = getFieldSchema(fieldName, schema);
 
-      // check for existence of nested schema
-      const subSchema = getNestedSchema(fieldName, schema);
-      // if nested schema exists, call convertSchema recursively
-      if (subSchema) {
-        const convertedSubSchema = convertSchema(subSchema);
-        if (flatten) {
-          jsonSchema = { ...jsonSchema, ...convertedSubSchema };
+      // check for existence of nested field
+      // and get its schema if possible or its type otherwise
+      const subSchemaOrType = getNestedFieldSchemaOrType(fieldName, schema);
+      if (subSchemaOrType) {
+        // if nested field exists, call convertSchema recursively
+        const convertedSubSchema = convertSchema(subSchemaOrType);
+        // nested schema can be a field schema ({type, canRead, etc.}) (convertedSchema will be null)
+        // or a schema on its own with subfields (convertedSchema will return smth)
+        if (!convertedSubSchema) {
+          // subSchema is a simple field in this case (eg array of numbers)
+          jsonSchema[fieldName].field = getFieldSchema(`${fieldName}.$`, schema)
         } else {
-          jsonSchema[fieldName].schema = convertedSubSchema;
+          // subSchema is a full schema with multiple fields (eg array of objects)
+          if (flatten) {
+            jsonSchema = { ...jsonSchema, ...convertedSubSchema };
+          } else {
+            jsonSchema[fieldName].schema = convertedSubSchema;
+          }
+
         }
       }
     });
@@ -55,6 +65,7 @@ export const getFieldSchema = (fieldName, schema) => {
 // type is an array due to the possibility of using SimpleSchema.oneOf
 // right now we support only fields with one type
 export const getSchemaType = schema => schema.type.definitions[0].type
+
 const getArrayNestedSchema = (fieldName, schema) => {
   const arrayItemSchema = schema._schema[`${fieldName}.$`];
   const nestedSchema = arrayItemSchema && getSchemaType(arrayItemSchema)
@@ -76,9 +87,9 @@ const getObjectNestedSchema = (fieldName, schema) => {
 /*
 
 Given an array field, get its nested schema
-
+If the field is not an object, this will return the subfield type instead
 */
-export const getNestedSchema = (fieldName, schema) => {
+export const getNestedFieldSchemaOrType = (fieldName, schema) => {
   const arrayItemSchema = getArrayNestedSchema(fieldName, schema)
   if (!arrayItemSchema) {
     // look for an object schema

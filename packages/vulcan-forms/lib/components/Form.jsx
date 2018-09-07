@@ -410,7 +410,10 @@ class SmartForm extends Component {
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
-
+    // field is an array => we keep its definition
+    if (fieldSchema.field) {
+      field.arrayFieldSchema = fieldSchema.field
+    }
     // nested fields: set input to "nested"
     if (fieldSchema.schema) {
       field.nestedSchema = fieldSchema.schema;
