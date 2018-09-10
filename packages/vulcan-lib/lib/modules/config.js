@@ -50,6 +50,7 @@ SimpleSchema.extendOptions([
   'options', // form options
   'query', // field-specific data loading query
   'selectable', // field can be used as part of a selector when querying for data
+  'unique', // field can be used as part of a selectorUnique when querying for data
   'orderable', // field can be used to order results when querying for data
 
   'intl', // set to `true` to make a field international

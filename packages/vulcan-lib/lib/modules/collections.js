@@ -37,7 +37,7 @@ Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
   } else {
     this.simpleSchema().extend(schemaOrFields)
   }
-}
+};
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
@@ -134,6 +134,8 @@ export const createCollection = options => {
   // add typeName if missing
   collection.typeName = typeName;
   collection.options.typeName = typeName;
+  collection.options.singleResolverName = Utils.camelCaseify(typeName);
+  collection.options.multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
 
   // add collectionName if missing
   collection.collectionName = collectionName;
@@ -158,13 +160,13 @@ export const createCollection = options => {
         hidden: true,
         type: Array,
         isIntlData: true,
-      }
+      };
 
       delete schema[`${fieldName}_intl`].intl;
 
       schema[`${fieldName}_intl.$`] = {
         type: getIntlString(),
-      }
+      };
 
       // if original field is required, enable custom validation function instead of `optional` property
       if (!schema[fieldName].optional) {
@@ -287,9 +289,9 @@ export const createCollection = options => {
     // console.log(parameters);
 
     return parameters;
-  }
+  };
 
   Collections.push(collection);
 
   return collection;
-}
+};
