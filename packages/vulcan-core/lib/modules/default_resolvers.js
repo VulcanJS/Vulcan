@@ -117,7 +117,7 @@ export function getDefaultResolvers(options) {
 
         if (!doc) {
           if (allowNull) {
-            return null;
+            return { result: null };
           } else {
             const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
             throw new MissingDocumentError({ data: { documentId, slug } });
