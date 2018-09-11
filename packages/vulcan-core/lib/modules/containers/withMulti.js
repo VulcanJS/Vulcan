@@ -61,7 +61,7 @@ export default function withMulti(options) {
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
-  const resolverName = Utils.camelCaseify(Utils.pluralize(typeName));
+  const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
   const query = gql`
@@ -189,7 +189,7 @@ export default function withMulti(options) {
                   : providedTerms;
 
               return props.data.fetchMore({
-                variables: { terms: newTerms }, // ??? not sure about 'terms: newTerms'
+                variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
                   // no more post to fetch
                   if (!fetchMoreResult.data) {
