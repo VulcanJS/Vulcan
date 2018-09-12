@@ -711,13 +711,19 @@ class SmartForm extends Component {
   On form success we'll clear current values too. Note: document includes currentValues
 
   */
-  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false, document }) => {
+  clearForm = ({
+    clearErrors = true,
+    clearCurrentValues = false,
+    clearCurrentDocument = clearCurrentValues, // default to clearCurrentValues for backwards compatibility
+    clearDeletedValues = false,
+    document
+  }) => {
     document = document ? merge({}, this.props.prefilledProps, document) : null;
 
     this.setState(prevState => ({
       errors: clearErrors ? [] : prevState.errors,
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
-      currentDocument: clearCurrentValues ? {} : prevState.currentDocument,
+      currentDocument: clearCurrentDocument ? {} : prevState.currentDocument,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
       initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
       disabled: false,
