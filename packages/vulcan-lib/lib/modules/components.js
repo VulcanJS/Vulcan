@@ -27,21 +27,18 @@ export const ComponentsTable = {} // storage for infos about components
  *
  */
 export function registerComponent(name, rawComponent, ...hocs) {
+  // support single-argument syntax
   if (typeof arguments[0] === 'object') {
-    const { name, component, hocs } = arguments[0];
-    ComponentsTable[name] = {
-      name,
-      rawComponent: component,
-      hocs,
-    };
-  } else {
-    // OpenCRUD backwards compatibility
-    // store the component in the table
-    ComponentsTable[name] = {
-      name,
-      rawComponent,
-      hocs,
-    };
+    // note: cannot use `const` because name, components, hocs are already defined
+    // as arguments so destructuring cannot work
+    var { name, component, hocs = [] } = arguments[0];
+    rawComponent = component
+  }
+  // store the component in the table
+  ComponentsTable[name] = {
+    name,
+    rawComponent,
+    hocs,
   }
 }
 
@@ -54,6 +51,7 @@ export function registerComponent(name, rawComponent, ...hocs) {
 export const getComponent = (name) => {
   const component = ComponentsTable[name];
   if (!component) {
+    console.log(ComponentsTable)
     throw new Error(`Component ${name} not registered.`)
   }
   if (component.hocs) {
@@ -110,7 +108,15 @@ export const populateComponentsApp = () => {
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
  export const replaceComponent = (name, newComponent, ...newHocs) => {
+
+  // support single argument syntax
+  if (typeof arguments[0] === 'object') {
+    const { name, component, hocs = [] } = arguments[0];
+    newComponent = component;
+  }
+
   const previousComponent = ComponentsTable[name];
+  const previousHocs = previousComponent && previousComponent.hocs || [];
 
   if (!previousComponent) {
     console.warn(
@@ -120,16 +126,9 @@ export const populateComponentsApp = () => {
       'also if the original component is still being registered or that it ' +
       'hasn\'t been renamed.',
     );
-    return registerComponent(name, newComponent, ...newHocs);
   }
 
-  // console.log('// replacing component');
-  // console.log(name);
-  // console.log(newComponent);
-  // console.log('new hocs', newHocs);
-  // console.log('previous hocs', previousComponent.hocs);
-
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+  return registerComponent(name, newComponent, ...newHocs, ...previousHocs);  
 };
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
