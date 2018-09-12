@@ -169,17 +169,13 @@ export const runCallbacksAsync = function () {
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
-  if (Meteor.isServer && typeof callbacks !== 'undefined' && !!callbacks.length) {
-
-    // use defer to avoid holding up client
-    Meteor.defer(function () {
-      // run all post submit server callbacks on post object successively
-      callbacks.forEach(function (callback) {
+  if (typeof callbacks !== 'undefined' && !!callbacks.length) {
+    return Promise.all(
+      callbacks.map(callback => {
         debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-        callback.apply(this, args);
-      });
-    });
-
+        return callback.apply(this, args);
+      }),
+    );
   }
-
+  return [];
 };
