@@ -125,7 +125,7 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
   
-  // for a given schema, return main type fields, selector fields, 
+  // for a given schema, return main type fields, selector fields,
   // unique selector fields, orderBy fields, creatable fields, and updatable fields
   getFields(schema, typeName) {
     const fields = {
@@ -227,7 +227,17 @@ export const GraphQLSchema = {
         }
 
         if (field.selectable) {
-          // TODO
+          fields.selector.push({
+            name: fieldName,
+            type: inputFieldType,
+          });
+        }
+
+        if (field.selectable && field.unique) {
+          fields.selectorUnique.push({
+            name: fieldName,
+            type: inputFieldType,
+          });
         }
 
         if (field.orderable) {
@@ -289,13 +299,13 @@ export const GraphQLSchema = {
         const queryResolvers = {};
   
         // single
-        if (resolvers.single) { 
+        if (resolvers.single) {
           addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
           queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(resolvers.single);
         }
   
         // multi
-        if (resolvers.multi) { 
+        if (resolvers.multi) {
           addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
           queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(resolvers.multi);
         }

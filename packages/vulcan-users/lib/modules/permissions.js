@@ -205,6 +205,7 @@ Users.isAdminById = Users.isAdmin;
 Users.getViewableFields = function (user, collection, document) {
   return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
+      if (fieldName.indexOf('.$') > -1) return null;
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
   )));
