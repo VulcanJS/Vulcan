@@ -59,7 +59,7 @@ class IntlDirective extends SchemaDirectiveVisitor {
 
 addGraphQLDirective({ intl: IntlDirective });
 
-addGraphQLSchema(`directive @intl on FIELD_DEFINITION`);
+addGraphQLSchema('directive @intl on FIELD_DEFINITION');
 
 /*
 
@@ -69,7 +69,7 @@ Migration function
 const migrateIntlFields = async (defaultLocale) => {
 
   if (!defaultLocale) {
-    throw new Error(`Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))`);
+    throw new Error('Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields(\'en\'))');
   }
   
   Collections.forEach(async collection => {
@@ -112,6 +112,7 @@ const migrateIntlFields = async (defaultLocale) => {
 
           if (!_.isEmpty(modifier.$push)) {
             // update document
+            // eslint-disable-next-line no-await-in-loop
             const n = await Connectors.update(collection, {_id: doc._id}, modifier);
             console.log(`-> migrated ${n} documents \n`); // eslint-disable-line no-console
           }
@@ -119,7 +120,7 @@ const migrateIntlFields = async (defaultLocale) => {
 
         }
       } else {
-        console.log (`-> found no documents to migrate.`); // eslint-disable-line no-console
+        console.log ('-> found no documents to migrate.'); // eslint-disable-line no-console
       }
 
     }

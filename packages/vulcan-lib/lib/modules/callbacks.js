@@ -35,7 +35,7 @@ export const addCallback = function (hook, callback) {
   }
 
   // if callback array doesn't exist yet, initialize it
-  if (typeof Callbacks[hook] === "undefined") {
+  if (typeof Callbacks[hook] === 'undefined') {
     Callbacks[hook] = [];
   }
 
@@ -83,7 +83,7 @@ export const runCallbacks = function () {
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
-  if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
+  if (typeof callbacks !== 'undefined' && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
     const runCallback = (accumulator, callback) => {
       debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${hook}]\x1b[0m`);
@@ -169,7 +169,7 @@ export const runCallbacksAsync = function () {
 
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
-  if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
+  if (Meteor.isServer && typeof callbacks !== 'undefined' && !!callbacks.length) {
 
     // use defer to avoid holding up client
     Meteor.defer(function () {

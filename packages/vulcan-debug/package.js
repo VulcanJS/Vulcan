@@ -1,8 +1,8 @@
 Package.describe({
-  name: "vulcan:debug",
-  summary: "Vulcan debug package",
+  name: 'vulcan:debug',
+  summary: 'Vulcan debug package',
   version: '1.12.4',
-  git: "https://github.com/VulcanJS/Vulcan.git",
+  git: 'https://github.com/VulcanJS/Vulcan.git',
   debugOnly: true
 });
 
@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/debug.scss'
   ], ['client']);
 
-  api.mainModule("lib/server/main.js", "server");
-  api.mainModule("lib/client/main.js", "client");
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });

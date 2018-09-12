@@ -1,8 +1,8 @@
 Package.describe({
-  name: "vulcan:i18n-es-es",
-  summary: "Vulcan i18n package (es_ES)",
+  name: 'vulcan:i18n-es-es',
+  summary: 'Vulcan i18n package (es_ES)',
   version: '1.12.4',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 Package.onUse(function (api) {
@@ -15,5 +15,5 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/es_ES.js'
-  ], ["client", "server"]);
+  ], ['client', 'server']);
 });

@@ -1,4 +1,4 @@
-import { convertSchema, getSchemaType, getNestedSchema } from '../lib/modules/schema_utils.js'
+import { getNestedSchema } from '../lib/modules/schema_utils.js'
 import SimpleSchema from 'simpl-schema'
 import expect from 'expect'
 
@@ -19,7 +19,7 @@ describe('schema_utils', function () {
                 addresses: {
                     type: Array
                 },
-                "addresses.$": {
+                'addresses.$': {
                     // this is due to SimpleSchema objects structure
                     type: addressSimpleSchema
                 }

@@ -1,8 +1,8 @@
 Package.describe({
-  name: "vulcan:routing",
-  summary: "Vulcan router package",
+  name: 'vulcan:routing',
+  summary: 'Vulcan router package',
   version: '1.12.4',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 Package.onUse(function (api) {

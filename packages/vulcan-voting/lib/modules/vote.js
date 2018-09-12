@@ -281,7 +281,7 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
   document = document || await Connectors.get(collection, documentId);
 
   debug('');
-  debugGroup(`--------------- start \x1b[35mperformVoteServer\x1b[0m  ---------------`);
+  debugGroup('--------------- start \x1b[35mperformVoteServer\x1b[0m  ---------------');
   debug('collectionName: ', collectionName);
   debug('document: ', document);
   debug('voteType: ', voteType);
@@ -319,7 +319,7 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
 
   debug('document after vote: ', document);
   debugGroupEnd();
-  debug(`--------------- end \x1b[35m performVoteServer\x1b[0m ---------------`);
+  debug('--------------- end \x1b[35m performVoteServer\x1b[0m ---------------');
   debug('');
 
   // const newDocument = collection.findOne(documentId);

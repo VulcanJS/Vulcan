@@ -98,7 +98,7 @@ export function getDefaultMutations (options) {
         const collection = context[collectionName];
 
         if (isEmpty(selector)) {
-          throw new Error(`Selector cannot be empty`);
+          throw new Error('Selector cannot be empty');
         }
 
         // get entire unmodified document from database
@@ -171,7 +171,7 @@ export function getDefaultMutations (options) {
         const collection = context[collectionName];
 
         if (isEmpty(selector)) {
-          throw new Error(`Selector cannot be empty`);
+          throw new Error('Selector cannot be empty');
         }
 
         const document = await Connectors.get(collection, selector);
@@ -215,7 +215,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'sync',
       returns: 'document',
-      description: `Validate a document before insertion (can be skipped when inserting directly on server).`,
+      description: 'Validate a document before insertion (can be skipped when inserting directly on server).',
     });
     registerCallback({
       name: `${typeName}.create.before`,
@@ -223,7 +223,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ currentUser: 'The current user' }],
       runs: 'sync',
       returns: 'document',
-      description: `Perform operations on a new document before it's inserted in the database.`,
+      description: 'Perform operations on a new document before it\'s inserted in the database.',
     });
     registerCallback({
       name: `${typeName}.create.after`,
@@ -231,7 +231,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ currentUser: 'The current user' }],
       runs: 'sync',
       returns: 'document',
-      description: `Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.`,
+      description: 'Perform operations on a new document after it\'s inserted in the database but *before* the mutation returns it.',
     });
     registerCallback({
       name: `${typeName}.create.async`,
@@ -242,7 +242,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'async',
       returns: null,
-      description: `Perform operations on a new document after it's inserted in the database asynchronously.`,
+      description: 'Perform operations on a new document after it\'s inserted in the database asynchronously.',
     });
   }
   if (options.update) {
@@ -256,7 +256,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'sync',
       returns: 'modifier',
-      description: `Validate a document before update (can be skipped when updating directly on server).`,
+      description: 'Validate a document before update (can be skipped when updating directly on server).',
     });
     registerCallback({
       name: `${typeName}.update.before`,
@@ -267,7 +267,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'sync',
       returns: 'modifier',
-      description: `Perform operations on a document before it's updated in the database.`,
+      description: 'Perform operations on a document before it\'s updated in the database.',
     });
     registerCallback({
       name: `${typeName}.update.after`,
@@ -278,7 +278,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'sync',
       returns: 'document',
-      description: `Perform operations on a document after it's updated in the database but *before* the mutation returns it.`,
+      description: 'Perform operations on a document after it\'s updated in the database but *before* the mutation returns it.',
     });
     registerCallback({
       name: `${typeName}.update.async`,
@@ -290,7 +290,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'async',
       returns: null,
-      description: `Perform operations on a document after it's updated in the database asynchronously.`,
+      description: 'Perform operations on a document after it\'s updated in the database asynchronously.',
     });
   }
   if (options.delete) {
@@ -303,7 +303,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'sync',
       returns: 'document',
-      description: `Validate a document before removal (can be skipped when removing directly on server).`,
+      description: 'Validate a document before removal (can be skipped when removing directly on server).',
     });
     registerCallback({
       name: `${typeName}.delete.before`,
@@ -311,7 +311,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ currentUser: 'The current user' }],
       runs: 'sync',
       returns: null,
-      description: `Perform operations on a document before it's removed from the database.`,
+      description: 'Perform operations on a document before it\'s removed from the database.',
     });
     registerCallback({
       name: `${typeName}.delete.async`,
@@ -322,7 +322,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       ],
       runs: 'async',
       returns: null,
-      description: `Perform operations on a document after it's removed from the database asynchronously.`,
+      description: 'Perform operations on a document after it\'s removed from the database asynchronously.',
     });
   }
 };

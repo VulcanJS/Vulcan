@@ -149,7 +149,7 @@ export const GraphQLSchema = {
       if ((field.canRead || field.canCreate || field.canUpdate || field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
 
         const fieldDescription = field.description;
-        const fieldDirective = isIntlField(field) ? `@intl` : '';
+        const fieldDirective = isIntlField(field) ? '@intl' : '';
         const fieldArguments = isIntlField(field) ? [{ name: 'locale', type: 'String' }] : [];
 
         // if field has a resolveAs, push it to schema
@@ -221,9 +221,9 @@ export const GraphQLSchema = {
 
         // if field is i18nized, add foo_intl field containing all languages
         if (isIntlField(field)) {
-          fields.mainType.push({ name: `${fieldName}_intl`, type: `[IntlValue]` });
-          fields.create.push({ name: `${fieldName}_intl`, type: `[IntlValueInput]` });
-          fields.update.push({ name: `${fieldName}_intl`, type: `[IntlValueInput]` });
+          fields.mainType.push({ name: `${fieldName}_intl`, type: '[IntlValue]' });
+          fields.create.push({ name: `${fieldName}_intl`, type: '[IntlValueInput]' });
+          fields.update.push({ name: `${fieldName}_intl`, type: '[IntlValueInput]' });
         }
 
         if (field.selectable) {
@@ -337,7 +337,7 @@ export const GraphQLSchema = {
         }
         addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
       }
-      graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
+      graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
 
     } else {
       // eslint-disable-next-line no-console

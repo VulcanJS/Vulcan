@@ -1,8 +1,8 @@
 Package.describe({
-  name: "vulcan:events-segment",
-  summary: "Vulcan Segment",
+  name: 'vulcan:events-segment',
+  summary: 'Vulcan Segment',
   version: '1.12.4',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 Package.onUse(function (api) {

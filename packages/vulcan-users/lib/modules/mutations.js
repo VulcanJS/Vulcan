@@ -4,7 +4,7 @@ import Users from './collection'; // TODO: circular dependency?
 const performCheck = (mutation, user, document) => {
   if (!mutation.check(user, document))
     throw new Error(
-      Utils.encodeIntlError({ id: `app.mutation_not_allowed`, value: `"${mutation.name}" on _id "${document._id}"` })
+      Utils.encodeIntlError({ id: 'app.mutation_not_allowed', value: `"${mutation.name}" on _id "${document._id}"` })
     );
 };
 
@@ -37,7 +37,7 @@ const updateMutation = {
   check(user, document) {
     if (!user || !document) return false;
     // OpenCRUD backwards compatibility
-    return Users.owns(user, document) ? Users.canDo(user, ['user.update.own', 'users.edit.own']) : Users.canDo(user, [`user.update.all`, `users.edit.all`]);
+    return Users.owns(user, document) ? Users.canDo(user, ['user.update.own', 'users.edit.own']) : Users.canDo(user, ['user.update.all', 'users.edit.all']);
   },
 
   async mutation(root, { selector, data }, context) {
@@ -68,7 +68,7 @@ const deleteMutation = {
   check(user, document) {
     if (!user || !document) return false;
     // OpenCRUD backwards compatibility
-    return Users.owns(user, document) ? Users.canDo(user, ['user.delete.own', 'users.remove.own']) : Users.canDo(user, [`user.delete.all`, `users.remove.all`]);
+    return Users.owns(user, document) ? Users.canDo(user, ['user.delete.own', 'users.remove.own']) : Users.canDo(user, ['user.delete.all', 'users.remove.all']);
   },
 
   async mutation(root, { selector }, context) {
@@ -116,7 +116,7 @@ registerCallback({
   ],
   runs: 'sync',
   returns: 'document',
-  description: `Validate a document before insertion (can be skipped when inserting directly on server).`,
+  description: 'Validate a document before insertion (can be skipped when inserting directly on server).',
 });
 registerCallback({
   name:'user.create.before',
@@ -128,7 +128,7 @@ registerCallback({
   ],
   runs: 'sync',
   returns: 'document',
-  description: `Perform operations on a new document before it's inserted in the database.`,
+  description: 'Perform operations on a new document before it\'s inserted in the database.',
 });
 registerCallback({
   name:'user.create.after',
@@ -138,7 +138,7 @@ registerCallback({
   ],
   runs: 'sync',
   returns: 'document',
-  description: `Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.`,
+  description: 'Perform operations on a new document after it\'s inserted in the database but *before* the mutation returns it.',
 });
 registerCallback({
   name:'user.create.async',
@@ -150,7 +150,7 @@ registerCallback({
   ],
   runs: 'async',
   returns: 'document',
-  description: `Perform operations on a new document after it's inserted in the database asynchronously.`,
+  description: 'Perform operations on a new document after it\'s inserted in the database asynchronously.',
 });
 registerCallback({
   name: 'user.update.validate',
@@ -172,7 +172,7 @@ registerCallback({
     {newDocument: 'A preview of the future document'},
   ],
   runs: 'sync',
-  description: `Perform operations on a document before it's updated on the database.`,
+  description: 'Perform operations on a document before it\'s updated on the database.',
 });
 registerCallback({
   name: 'user.update.after',
@@ -182,7 +182,7 @@ registerCallback({
     {currentUser: 'The current user'},
   ],
   runs: 'sync',
-  description: `Perform operations on a document after it's updated in the database but *before* the mutation returns it.`
+  description: 'Perform operations on a document after it\'s updated in the database but *before* the mutation returns it.'
 });
 registerCallback({
   name: 'user.update.async',
@@ -193,7 +193,7 @@ registerCallback({
     {collection: 'The Users collection'},
   ],
   runs: 'async',
-  description: `Perform operations on a document after it's updated in the database asynchronously.`
+  description: 'Perform operations on a document after it\'s updated in the database asynchronously.'
 });
 registerCallback({
   name: 'user.delete.validate',
@@ -202,7 +202,7 @@ registerCallback({
     {currentUser: 'The current user'},
   ],
   runs: 'sync',
-  description: `Validate a document before deletion (can be skipped when deleting directly on the server)`
+  description: 'Validate a document before deletion (can be skipped when deleting directly on the server)'
 });
 registerCallback({
   name: 'user.delete.before',
@@ -211,7 +211,7 @@ registerCallback({
     {currentUser: 'The current user'},
   ],
   runs: 'sync',
-  description: `Perform operations on a document before it's deleted from the database`,
+  description: 'Perform operations on a document before it\'s deleted from the database',
 });
 registerCallback({
   name: 'user.delete.async',
@@ -221,5 +221,5 @@ registerCallback({
     {collection: 'The Users collection'},
   ],
   runs: 'async',
-  description: `Perform operations on a document after it's deleted from the database asynchronously.`
+  description: 'Perform operations on a document after it\'s deleted from the database asynchronously.'
 });

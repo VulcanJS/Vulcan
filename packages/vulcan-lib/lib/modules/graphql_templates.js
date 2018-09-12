@@ -1,7 +1,7 @@
 import { Utils } from './utils';
 
 export const convertToGraphQL = (fields, indentation) => {
-  return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
+  return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join('\n') : '';
 };
 
 export const arrayToGraphQL = fields => fields.map(f => `${f.name}: ${f.type}`).join(', ');
@@ -46,7 +46,7 @@ type Movie{
 */
 export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
 `# ${description}
-type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : ''}{
+type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }
 `;

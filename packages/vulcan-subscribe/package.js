@@ -1,8 +1,8 @@
 Package.describe({
-  name: "vulcan:subscribe",
-  summary: "Subscribe to posts, users, etc. to be notified of new activity",
+  name: 'vulcan:subscribe',
+  summary: 'Subscribe to posts, users, etc. to be notified of new activity',
   version: '1.12.4',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 
@@ -21,7 +21,7 @@ Package.onUse(function (api) {
     'vulcan:categories@1.12.4',
   ], {weak: true});
 
-  api.mainModule("lib/modules.js", ["client"]);
-  api.mainModule("lib/modules.js", ["server"]);
+  api.mainModule('lib/modules.js', ['client']);
+  api.mainModule('lib/modules.js', ['server']);
 
 });

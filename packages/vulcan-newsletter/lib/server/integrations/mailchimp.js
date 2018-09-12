@@ -77,7 +77,7 @@ if (settings) {
         const subscribe = callSyncAPI('lists', 'unsubscribe', subscribeOptions);
         return {result: 'unsubscribed', ...subscribe};
       } catch (error) {
-        throw new Error("unsubscribe-failed", error.message);
+        throw new Error('unsubscribe-failed', error.message);
       }
     },
 
@@ -106,7 +106,7 @@ if (settings) {
         // console.log(campaign)
 
         const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
-        const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
+        const scheduledTime = scheduledMoment.format('YYYY-MM-DD HH:mm:ss');
 
         const scheduleOptions = {
           cid: mailchimpNewsletter.id,

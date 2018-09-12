@@ -1,4 +1,4 @@
-import Upload from "./Upload.jsx";
+import Upload from './Upload.jsx';
 
 import './i18n.js';
 

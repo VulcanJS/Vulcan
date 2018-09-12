@@ -46,7 +46,7 @@ VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
     __: Strings[locale],
   };
 
-  const emailHTML = VulcanEmail.getTemplate("wrapper")(emailProperties);
+  const emailHTML = VulcanEmail.getTemplate('wrapper')(emailProperties);
   const inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
   const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 

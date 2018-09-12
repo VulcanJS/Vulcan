@@ -31,6 +31,7 @@ export function registerComponent(name, rawComponent, ...hocs) {
   if (typeof arguments[0] === 'object') {
     // note: cannot use `const` because name, components, hocs are already defined
     // as arguments so destructuring cannot work
+    // eslint-disable-next-line no-redeclare
     var { name, component, hocs = [] } = arguments[0];
     rawComponent = component
   }
@@ -51,7 +52,6 @@ export function registerComponent(name, rawComponent, ...hocs) {
 export const getComponent = (name) => {
   const component = ComponentsTable[name];
   if (!component) {
-    console.log(ComponentsTable)
     throw new Error(`Component ${name} not registered.`)
   }
   if (component.hocs) {
@@ -119,6 +119,7 @@ export const populateComponentsApp = () => {
   const previousHocs = previousComponent && previousComponent.hocs || [];
 
   if (!previousComponent) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Trying to replace non-registered component ${name}. The component is ` +
       'being registered. If you were trying to replace a component defined by ' +

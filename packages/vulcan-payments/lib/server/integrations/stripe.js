@@ -120,9 +120,6 @@ export const receiveAction = async (args) => {
   }
 
   runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
-  console.log('//returnDocument')
-  console.log(product.type)
-  console.log(returnDocument)
   return returnDocument;
 }
 
@@ -332,7 +329,7 @@ Process charges, subscriptions, etc. on Vulcan's side
 export const processAction = async ({collection, document, stripeObject, args, user}) => {
  
   debug('');
-  debugGroup(`--------------- start\x1b[35m processAction \x1b[0m ---------------`);
+  debugGroup('--------------- start\x1b[35m processAction \x1b[0m ---------------');
   debug(`Collection: ${collection.options.collectionName}`);
   debug(`documentId: ${document._id}`);
   debug(`Charge: ${stripeObject}`);
@@ -389,7 +386,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
     let data = { chargeIds };
 
     // run collection.charge.sync callbacks
-    data = await runCallbacks({ name: `stripe.process.sync`, iterator: data, properties: { collection, document, chargeDoc, user }});
+    data = await runCallbacks({ name: 'stripe.process.sync', iterator: data, properties: { collection, document, chargeDoc, user }});
 
     const updateResult = await updateMutator({
       collection,
@@ -404,10 +401,10 @@ export const processAction = async ({collection, document, stripeObject, args, u
 
   }
 
-  runCallbacksAsync(`stripe.process.async`, {collection, returnDocument, chargeDoc, user});
+  runCallbacksAsync('stripe.process.async', {collection, returnDocument, chargeDoc, user});
 
   debugGroupEnd();
-  debug(`--------------- end\x1b[35m processAction \x1b[0m ---------------`);
+  debug('--------------- end\x1b[35m processAction \x1b[0m ---------------');
   debug('');
 
   return returnDocument;
@@ -617,7 +614,7 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.receive.sync',
-    description: `Modify any metadata before calling Stripe's API`,
+    description: 'Modify any metadata before calling Stripe\'s API',
     arguments: [{metadata: 'Metadata about the action'},{user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
     runs: 'sync',
     newSyntax: true,
@@ -626,7 +623,7 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.receive.async',
-    description: `Run after calling Stripe's API`,
+    description: 'Run after calling Stripe\'s API',
     arguments: [{metadata: 'Metadata about the charge'}, {user: 'The user'}, {product: 'Product created with addProduct'}, {collection: 'Associated collection of the charge'}, {document: 'Associated document in collection to the charge'}, {args: 'Original mutation arguments'}],
     runs: 'sync',
     newSyntax: true,
@@ -651,7 +648,7 @@ Meteor.startup(() => {
   registerCallback({
     name: 'stripe.process.sync',
     description: 'Modify any metadata before sending the charge to stripe',
-    arguments: [{modifier: 'The modifier object used to update the associated collection'}, {collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: `Charge document returned by Stripe's API`}, {user: 'The user'}],
+    arguments: [{modifier: 'The modifier object used to update the associated collection'}, {collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: 'Charge document returned by Stripe\'s API'}, {user: 'The user'}],
     runs: 'sync',
     returns: 'The modified arguments to be sent to stripe',
   });
@@ -659,7 +656,7 @@ Meteor.startup(() => {
   registerCallback({
     name: 'stripe.process.async',
     description: 'Modify any metadata before sending the charge to stripe',
-    arguments: [{collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: `Charge document returned by Stripe's API`}, {user: 'The user'}],
+    arguments: [{collection: 'Collection associated to the product'}, {document: 'Associated document'}, {chargeDoc: 'Charge document returned by Stripe\'s API'}, {user: 'The user'}],
     runs: 'async',
     returns: 'The modified arguments to be sent to stripe',
   });

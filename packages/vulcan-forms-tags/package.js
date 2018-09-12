@@ -1,6 +1,6 @@
 Package.describe({
-  name: "vulcan:forms-tags",
-  summary: "Vulcan tag input package",
+  name: 'vulcan:forms-tags',
+  summary: 'Vulcan tag input package',
   version: '1.12.4',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
@@ -14,6 +14,6 @@ Package.onUse( function(api) {
     'vulcan:forms@1.12.4'
   ]);
 
-  api.mainModule("lib/export.js", ["client", "server"]);
+  api.mainModule('lib/export.js', ['client', 'server']);
 
 });

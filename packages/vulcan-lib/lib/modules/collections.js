@@ -106,8 +106,8 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
   if (self._transform && !self._helpers)
-    throw new Meteor.Error("Can't apply helpers to '" +
-      self._name + "' a transform function already exists!");
+    throw new Meteor.Error('Can\'t apply helpers to \'' +
+      self._name + '\' a transform function already exists!');
 
   if (!self._helpers) {
     self._helpers = function Document(doc) { return _.extend(this, doc); };
@@ -153,6 +153,7 @@ export const createCollection = options => {
       hasIntlFields = true;
 
       // remove `intl` to avoid treating new _intl field as a field to internationalize
+      // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];
 
       schema[`${fieldName}_intl`] = {
@@ -194,7 +195,7 @@ export const createCollection = options => {
     addGraphQLCollection(collection);
   }
 
-  runCallbacksAsync({ name: `*.collection`, properties: { options } });
+  runCallbacksAsync({ name: '*.collection', properties: { options } });
   runCallbacksAsync({ name: `${collectionName}.collection`, properties: { options } });
 
   // ------------------------------------- Default Fragment -------------------------------- //
