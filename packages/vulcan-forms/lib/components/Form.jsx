@@ -716,6 +716,7 @@ class SmartForm extends Component {
     clearCurrentValues = false,
     clearCurrentDocument = clearCurrentValues, // default to clearCurrentValues for backwards compatibility
     clearDeletedValues = false,
+    clearInitialDocument = !clearCurrentValues, // default to !clearCurrentValues for backwards compatibility
     document
   }) => {
     document = document ? merge({}, this.props.prefilledProps, document) : null;
@@ -725,7 +726,7 @@ class SmartForm extends Component {
       currentValues: clearCurrentValues ? {} : prevState.currentValues,
       currentDocument: clearCurrentDocument ? {} : prevState.currentDocument,
       deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
-      initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
+      initialDocument: document && clearInitialDocument ? document : prevState.initialDocument,
       disabled: false,
     }));
   };
