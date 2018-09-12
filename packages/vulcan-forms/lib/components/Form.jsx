@@ -747,7 +747,7 @@ class SmartForm extends Component {
   };
 
   editMutationSuccessCallback = result => {
-    this.mutationSuccessCallback(result, 'edit');
+    this.mutationSuccessCallback(result, 'edit', { clearCurrentDocument: false, clearInitialDocument: true });
   };
 
   mutationSuccessCallback = (result, mutationType, options = {}) => {
