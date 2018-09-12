@@ -28,7 +28,7 @@ export const ComponentsTable = {} // storage for infos about components
  */
 export function registerComponent(name, rawComponent, ...hocs) {
   if (typeof arguments[0] === 'object') {
-    const { name, component, hocs } = arguments[0];
+    const { name, component, hocs = [] } = arguments[0];
     ComponentsTable[name] = {
       name,
       rawComponent: component,
@@ -109,28 +109,59 @@ export const populateComponentsApp = () => {
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export const replaceComponent = (name, newComponent, ...newHocs) => {
-  const previousComponent = ComponentsTable[name];
+export function replaceComponent(name, newComponent, ...newHocs) {
+  if (typeof arguments[0] === 'object') {
+    const { name, component, hocs = [] } = arguments[0];
+    previousComponent = ComponentsTable[name];
+    if (!previousComponent) {
+      console.warn(
+        `Trying to replace non-registered component ${name}. The component is ` +
+          'being registered. If you were trying to replace a component defined by ' +
+          'another package, make sure that you haven\'t misspelled the name. Check ' +
+          'also if the original component is still being registered or that it ' +
+          'hasn\'t been renamed.',
+      );
+      return registerComponent(name, component, ...hocs);
+    }
+    return registerComponent({ name: name, component: component, hocs: hocs.concat(previousComponent.hocs) });
+  } else {
+    previousComponent = ComponentsTable[name];
 
-  if (!previousComponent) {
-    console.warn(
-      `Trying to replace non-registered component ${name}. The component is ` +
-      'being registered. If you were trying to replace a component defined by ' +
-      'another package, make sure that you haven\'t misspelled the name. Check ' +
-      'also if the original component is still being registered or that it ' +
-      'hasn\'t been renamed.',
-    );
-    return registerComponent(name, newComponent, ...newHocs);
+    if (!previousComponent) {
+      console.warn(
+        `Trying to replace non-registered component ${name}. The component is ` +
+          'being registered. If you were trying to replace a component defined by ' +
+          'another package, make sure that you haven\'t misspelled the name. Check ' +
+          'also if the original component is still being registered or that it ' +
+          'hasn\'t been renamed.',
+      );
+      return registerComponent(name, newComponent, ...newHocs);
+    }
+
+    // console.log('// replacing component');
+    // console.log(name);
+    // console.log(newComponent);
+    // console.log('new hocs', newHocs);
+    // console.log('previous hocs', previousComponent.hocs);
+
+    return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
   }
-
-  // console.log('// replacing component');
-  // console.log(name);
-  // console.log(newComponent);
-  // console.log('new hocs', newHocs);
-  // console.log('previous hocs', previousComponent.hocs);
-
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
 };
+
+    const previousComponent = ComponentsTable[name];
+
+    // xxx : throw an error if the previous component doesn't exist
+
+    // console.log('// replacing component');
+    // console.log(name);
+    // console.log(newComponent);
+    // console.log('new hocs', newHocs);
+    // console.log('previous hocs', previousComponent.hocs);
+
+    return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);
+  }
+};
+
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
