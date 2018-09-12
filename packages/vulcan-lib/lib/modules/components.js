@@ -107,12 +107,14 @@ export const populateComponentsApp = () => {
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export const replaceComponent = (name, newComponent, ...newHocs) => {
+ export function replaceComponent(name, newComponent, ...newHocs) {
 
   // support single argument syntax
   if (typeof arguments[0] === 'object') {
-    const { name, component, hocs = [] } = arguments[0];
+    // eslint-disable-next-line no-redeclare
+    var { name, component, hocs = [] } = arguments[0];
     newComponent = component;
+    newHocs = hocs;
   }
 
   const previousComponent = ComponentsTable[name];
