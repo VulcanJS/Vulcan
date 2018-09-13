@@ -26,7 +26,7 @@ export function getDefaultResolvers(options) {
     typeName = getTypeName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -48,7 +48,7 @@ export function getDefaultResolvers(options) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-        
+
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
@@ -77,11 +77,13 @@ export function getDefaultResolvers(options) {
         debug('');
 
         const data = { results: restrictedDocs };
-        
+
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
+          data.beforeAccessFilterCount = docs.length // count before filtering (for the "load more" buttons and pagination)
         }
+        console.log('returing results', data)
 
         // return results
         return data;

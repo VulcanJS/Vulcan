@@ -140,6 +140,7 @@ export default function withMulti(options) {
             // results = Utils.convertDates(collection, props.data[listResolverName]),
             results = props.data[resolverName] && props.data[resolverName].results,
             totalCount = props.data[resolverName] && props.data[resolverName].totalCount,
+            beforeAccessFilterCount = props.data[resolverName] && props.data[resolverName].beforeAccessFilterCount,
             networkStatus = props.data.networkStatus,
             loadingInitial = props.data.networkStatus === 1,
             loading = props.data.networkStatus === 1,
@@ -151,6 +152,7 @@ export default function withMulti(options) {
             // eslint-disable-next-line no-console
             console.log(error);
           }
+          console.log(props.data[resolverName], props.data)
 
           return {
             // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
@@ -160,6 +162,7 @@ export default function withMulti(options) {
             loadingMore,
             [propertyName]: results,
             totalCount,
+            beforeAccessFilterCount,
             refetch,
             networkStatus,
             error,
@@ -323,6 +326,7 @@ const queryReducer = (typeName, previousResults, action, collection, mergedTerms
     [resolverName]: {
       results: [...newResults[resolverName].results],
       totalCount: newResults[resolverName].totalCount,
+      beforeAccessFilterCount: newResults[resolverName].beforeAccessFilterCount,
       __typename: `Multi${typeName}Output`
     }
   };
