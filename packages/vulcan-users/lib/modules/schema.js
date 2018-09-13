@@ -2,11 +2,11 @@ import SimpleSchema from 'simpl-schema';
 import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
-// Order for the Schema is as follows. Change as you see fit: 
-// 00. 
+// Order for the Schema is as follows. Change as you see fit:
+// 00.
 // 10. Display Name
 // 20. Email
-// 30. Bio 
+// 30. Bio
 // 40. Slug
 // 50. Website
 // 60. Twitter username
@@ -165,52 +165,52 @@ const schema = {
     searchable: true
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
-  /**
-    A hash of the email, used for Gravatar // TODO: change this when email changes
-  */
-  emailHash: {
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-    onInsert: user => {
-      if (user.email) {
-        return getCollection('Users').avatar.hash(user.email);
-      }
-    }
-  },
-  avatarUrl: {
-    type: String,
-    optional: true,
-    viewableBy: ['guests'],
-    onInsert: user => {
-
-      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
-      const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
-
-      if (twitterAvatar) return twitterAvatar;
-      if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
-      return undefined;
-
-    },
-    resolveAs: {
-      fieldName: 'avatarUrl',
-      type: 'String',
-      resolver: async (user, args, { Users }) => {
- 
-        if (_.isEmpty(user)) return null;
-
-        if (user.avatarUrl) {
-          return user.avatarUrl;
-        } else {
-          // user has already been cleaned up by Users.restrictViewableFields, so we
-          // reload the full user object from the cache to access user.services
-          const fullUser = await Users.loader.load(user._id);
-          return Users.avatar.getUrl(fullUser);
-        }
-        
-      }
-    }
-  },
+  // /**
+  //   A hash of the email, used for Gravatar // TODO: change this when email changes
+  // */
+  // emailHash: {
+  //   type: String,
+  //   optional: true,
+  //   viewableBy: ['guests'],
+  //   onInsert: user => {
+  //     if (user.email) {
+  //       return getCollection('Users').avatar.hash(user.email);
+  //     }
+  //   }
+  // },
+  // avatarUrl: {
+  //   type: String,
+  //   optional: true,
+  //   viewableBy: ['guests'],
+  //   onInsert: user => {
+  //
+  //     const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+  //     const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
+  //
+  //     if (twitterAvatar) return twitterAvatar;
+  //     if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
+  //     return undefined;
+  //
+  //   },
+  //   resolveAs: {
+  //     fieldName: 'avatarUrl',
+  //     type: 'String',
+  //     resolver: async (user, args, { Users }) => {
+  //
+  //       if (_.isEmpty(user)) return null;
+  //
+  //       if (user.avatarUrl) {
+  //         return user.avatarUrl;
+  //       } else {
+  //         // user has already been cleaned up by Users.restrictViewableFields, so we
+  //         // reload the full user object from the cache to access user.services
+  //         const fullUser = await Users.loader.load(user._id);
+  //         return Users.avatar.getUrl(fullUser);
+  //       }
+  //
+  //     }
+  //   }
+  // },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
@@ -282,7 +282,7 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getProfileUrl(user, true);
       },
-    }  
+    }
   },
 
   editUrl: {
@@ -294,7 +294,7 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getEditUrl(user, true);
       },
-    }  
+    }
   }
 
 };
