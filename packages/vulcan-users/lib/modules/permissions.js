@@ -259,7 +259,7 @@ Users.canCreateField = function (user, field) {
   if (canCreate) {
     if (typeof canCreate === 'function') {
       // if canCreate is a function, execute it with user and document passed. it must return a boolean
-      return canCreate(user, document);
+      return canCreate(user);
     } else if (typeof canCreate === 'string') {
       // if canCreate is just a string, we assume it's the name of a group and pass it to isMemberOf
       // note: if canCreate is 'guests' then anybody can create it
