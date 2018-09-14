@@ -120,7 +120,7 @@ export function getDefaultResolvers(options) {
             return { result: null };
           } else {
             const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-            throw new MissingDocumentError({ data: { documentId } });
+            throw new MissingDocumentError({ data: { documentId, selector } });
           }
         }
 
