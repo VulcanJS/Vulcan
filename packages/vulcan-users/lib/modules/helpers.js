@@ -12,13 +12,13 @@ import _ from 'underscore';
  * @param {String} userOrUserId
  */
 Users.getUser = function (userOrUserId) {
-  if (typeof userOrUserId === "undefined") {
+  if (typeof userOrUserId === 'undefined') {
     if (!Meteor.user()) {
       throw new Error();
     } else {
       return Meteor.user();
     }
-  } else if (typeof userOrUserId === "string") {
+  } else if (typeof userOrUserId === 'string') {
     return Users.findOne(userOrUserId);
   } else {
     return userOrUserId;
@@ -48,8 +48,8 @@ Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOn
  * @param {Object} user
  */
 Users.getDisplayName = function (user) {
-  if (typeof user === "undefined") {
-    return "";
+  if (typeof user === 'undefined') {
+    return '';
   } else {
     return (user.displayName) ? user.displayName : Users.getUserName(user);
   }
@@ -62,15 +62,15 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Users.
  * @param {Boolean} isAbsolute
  */
 Users.getProfileUrl = function (user, isAbsolute) {
-  if (typeof user === "undefined") {
-    return "";
+  if (typeof user === 'undefined') {
+    return '';
   }
-  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
+  isAbsolute = typeof isAbsolute === 'undefined' ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : '';
   if (user.slug) {
     return `${prefix}/users/${user.slug}`;
   } else {
-    return "";
+    return '';
   }
 };
 
@@ -89,7 +89,7 @@ Users.getEditUrl = function (user, isAbsolute) {
  */
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
-  if (typeof user !== "undefined") {
+  if (typeof user !== 'undefined') {
     if (user.twitterUsername) {
       return user.twitterUsername;
     } else if(Utils.checkNested(user, 'services', 'twitter', 'screenName')) {
@@ -203,7 +203,7 @@ Users.getProperty = function (object, property) {
   if(array.length > 1){
     var parent = array.shift();
     // if our property is not at this level, call function again one level deeper if we can go deeper, else return undefined
-    return (typeof object[parent] === "undefined") ? undefined : this.getProperty(object[parent], array.join('.'));
+    return (typeof object[parent] === 'undefined') ? undefined : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];
@@ -249,5 +249,5 @@ Users.getRequiredFields = function () {
 // };
 
 Users.findByEmail = function (email) {
-  return Users.findOne({"email": email});
+  return Users.findOne({'email': email});
 };

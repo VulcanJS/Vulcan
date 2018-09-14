@@ -2,7 +2,7 @@ import Vulcan from './config.js';
 import flatten from 'flat';
 
 const getNestedProperty = function (obj, desc) {
-  var arr = desc.split(".");
+  var arr = desc.split('.');
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
 };

@@ -6,11 +6,11 @@ export * from 'meteor/vulcan:lib';
 export * from './default_mutations.js';
 export * from './default_resolvers.js';
 
-export { default as Layout } from "./components/Layout.jsx";
-export { default as App } from "./components/App.jsx";
-export { default as Icon } from "./components/Icon.jsx";
-export { default as Loading } from "./components/Loading.jsx";
-export { default as ShowIf } from "./components/ShowIf.jsx";
+export { default as Layout } from './components/Layout.jsx';
+export { default as App } from './components/App.jsx';
+export { default as Icon } from './components/Icon.jsx';
+export { default as Loading } from './components/Loading.jsx';
+export { default as ShowIf } from './components/ShowIf.jsx';
 export { default as NewButton } from './components/NewButton.jsx';
 export { default as EditButton } from './components/EditButton.jsx';
 export { default as MutationButton } from './components/MutationButton.jsx';
@@ -25,8 +25,8 @@ export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
 export { default as RouterHook } from './components/RouterHook.jsx';
 
-export { default as withAccess } from "./containers/withAccess.js";
-export { default as withMessages } from "./containers/withMessages.js";
+export { default as withAccess } from './containers/withAccess.js';
+export { default as withMessages } from './containers/withMessages.js';
 export { default as withMulti } from './containers/withMulti.js';
 export { default as withSingle } from './containers/withSingle.js';
 export { default as withCreate } from './containers/withCreate.js';

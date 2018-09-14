@@ -50,18 +50,18 @@ Users.getGroups = user => {
 
   if (!user) { // guests user
 
-    userGroups = ["guests"];
+    userGroups = ['guests'];
   
   } else {
   
-    userGroups = ["members"];
+    userGroups = ['members'];
 
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
     } 
     
     if (Users.isAdmin(user)) { // admin
-      userGroups.push("admins");
+      userGroups.push('admins');
     }
 
   }
@@ -205,6 +205,7 @@ Users.isAdminById = Users.isAdmin;
 Users.getViewableFields = function (user, collection, document) {
   return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
+      if (fieldName.indexOf('.$') > -1) return null;
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
   )));
@@ -258,7 +259,7 @@ Users.canCreateField = function (user, field) {
   if (canCreate) {
     if (typeof canCreate === 'function') {
       // if canCreate is a function, execute it with user and document passed. it must return a boolean
-      return canCreate(user, document);
+      return canCreate(user);
     } else if (typeof canCreate === 'string') {
       // if canCreate is just a string, we assume it's the name of a group and pass it to isMemberOf
       // note: if canCreate is 'guests' then anybody can create it
@@ -304,30 +305,30 @@ Users.canUpdateField = function (user, field, document) {
 /**
  * @summary initialize the 3 out-of-the-box groups
  */
-Users.createGroup("guests"); // non-logged-in users
-Users.createGroup("members"); // regular users
+Users.createGroup('guests'); // non-logged-in users
+Users.createGroup('members'); // regular users
 
 const membersActions = [
-  "user.create", 
-  "user.update.own", 
+  'user.create', 
+  'user.update.own', 
   // OpenCRUD backwards compatibility
-  "users.new", 
-  "users.edit.own", 
-  "users.remove.own",
+  'users.new', 
+  'users.edit.own', 
+  'users.remove.own',
 ];
 Users.groups.members.can(membersActions);
 
-Users.createGroup("admins"); // admin users
+Users.createGroup('admins'); // admin users
 
 const adminActions = [
-  "user.create", 
-  "user.update.all",
-  "user.delete.all",
-  "setting.update",
+  'user.create', 
+  'user.update.all',
+  'user.delete.all',
+  'setting.update',
   // OpenCRUD backwards compatibility
-  "users.new", 
-  "users.edit.all",
-  "users.remove.all",
-  "settings.edit",
+  'users.new', 
+  'users.edit.all',
+  'users.remove.all',
+  'settings.edit',
 ];
 Users.groups.admins.can(adminActions);

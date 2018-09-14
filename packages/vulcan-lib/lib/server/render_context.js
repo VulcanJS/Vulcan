@@ -38,7 +38,7 @@ function isAppUrl(req) {
   // we only need to support HTML pages only for browsers
   // Facebook's scraper uses a request header Accepts: */*
   // so allow either
-  const facebookAcceptsHeader = new RegExp("/*\/*/");
+  const facebookAcceptsHeader = new RegExp('/*\/*/');
   return /html/.test(req.headers.accept) || facebookAcceptsHeader.test(req.headers.accept);
 }
 

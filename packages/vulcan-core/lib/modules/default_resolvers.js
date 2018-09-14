@@ -94,7 +94,7 @@ export function getDefaultResolvers(options) {
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector = {}, enableCache = false } = input;
+        const { selector = {}, enableCache = false, allowNull = false } = input;
 
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
@@ -116,8 +116,12 @@ export function getDefaultResolvers(options) {
           : await Connectors.get(collection, selector);
 
         if (!doc) {
-          const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-          throw new MissingDocumentError({ data: { documentId, slug } });
+          if (allowNull) {
+            return { result: null };
+          } else {
+            const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
+            throw new MissingDocumentError({ data: { documentId, selector } });
+          }
         }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document

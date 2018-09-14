@@ -40,11 +40,11 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  "stores": [
+  'stores': [
     {
-      "name": "vulcanCache",
-      "inMemory": {
-        "cacheSize": 20000000
+      'name': 'vulcanCache',
+      'inMemory': {
+        'cacheSize': 20000000
       }
     }
   ],
@@ -62,16 +62,16 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  "queryCache": {
-    "publicFullQueryStore": "vulcanCache",
-    "privateFullQueryStore": "vulcanCache"
+  'queryCache': {
+    'publicFullQueryStore': 'vulcanCache',
+    'privateFullQueryStore': 'vulcanCache'
   },
   // "reporting": {
   //   "endpointUrl": "https://engine-report.apollographql.com",
   //   "debugReports": true
   // },
-  "logging": {
-    "level": engineLogLevel
+  'logging': {
+    'level': engineLogLevel
   }
 };
 let engine;

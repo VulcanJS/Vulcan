@@ -13,8 +13,8 @@ Users.addField([
       canRead: ['guests'],
       control: 'NewsletterSubscribe',
       group: {
-        name: "newsletter",
-        label: "Newsletter",
+        name: 'newsletter',
+        label: 'Newsletter',
         order: 3
       },
     }

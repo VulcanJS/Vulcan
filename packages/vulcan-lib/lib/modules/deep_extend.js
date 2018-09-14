@@ -9,22 +9,22 @@ Utils.deepExtend = function () {
       toString = Object.prototype.toString,
       hasOwn = Object.prototype.hasOwnProperty,
       class2type = {
-        "[object Boolean]": "boolean",
-        "[object Number]": "number",
-        "[object String]": "string",
-        "[object Function]": "function",
-        "[object Array]": "array",
-        "[object Date]": "date",
-        "[object RegExp]": "regexp",
-        "[object Object]": "object"
+        '[object Boolean]': 'boolean',
+        '[object Number]': 'number',
+        '[object String]': 'string',
+        '[object Function]': 'function',
+        '[object Array]': 'array',
+        '[object Date]': 'date',
+        '[object RegExp]': 'regexp',
+        '[object Object]': 'object'
       },
       jQuery = {
         isFunction: function (obj) {
-          return jQuery.type(obj) === "function";
+          return jQuery.type(obj) === 'function';
         },
         isArray: Array.isArray ||
         function (obj) {
-          return jQuery.type(obj) === "array";
+          return jQuery.type(obj) === 'array';
         },
         isWindow: function (obj) {
           return obj !== null && obj === obj.window;
@@ -33,14 +33,14 @@ Utils.deepExtend = function () {
           return !isNaN(parseFloat(obj)) && isFinite(obj);
         },
         type: function (obj) {
-          return obj === null ? String(obj) : class2type[toString.call(obj)] || "object";
+          return obj === null ? String(obj) : class2type[toString.call(obj)] || 'object';
         },
         isPlainObject: function (obj) {
-          if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
+          if (!obj || jQuery.type(obj) !== 'object' || obj.nodeType) {
             return false;
           }
           try {
-            if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
+            if (obj.constructor && !hasOwn.call(obj, 'constructor') && !hasOwn.call(obj.constructor.prototype, 'isPrototypeOf')) {
               return false;
             }
           } catch (e) {
@@ -50,12 +50,12 @@ Utils.deepExtend = function () {
           return key === undefined || hasOwn.call(obj, key);
         }
       };
-    if (typeof target === "boolean") {
+    if (typeof target === 'boolean') {
       deep = target;
       target = arguments[1] || {};
       i = 2;
     }
-    if (typeof target !== "object" && !jQuery.isFunction(target)) {
+    if (typeof target !== 'object' && !jQuery.isFunction(target)) {
       target = {};
     }
     if (length === i) {

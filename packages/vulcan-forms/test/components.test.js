@@ -3,22 +3,21 @@ import 'jsdom-global/register'
 import React from 'react'
 // TODO: should be loaded from Components instead?
 import Form from '../lib/components/Form'
-import FormGroup from "../lib/components/FormGroup"
-import FormComponent from "../lib/components/FormComponent"
+import FormComponent from '../lib/components/FormComponent'
 import '../lib/components/FormNestedArray'
 import expect from 'expect'
 import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
-import { Components } from "meteor/vulcan:core"
+import { Components } from 'meteor/vulcan:core'
 
 // setup enzyme
 // TODO: write a reusable helper and move this to the tests setup
 Enzyme.configure({ adapter: new Adapter() })
 
 // we must import all the other components, so that "registerComponent" is called
-import "../lib/modules/components"
+import '../lib/modules/components'
 // and then load them in the app so that <Component.Whatever /> is defined
-import { populateComponentsApp, initializeFragments } from "meteor/vulcan:lib"
+import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib'
 // we need registered fragments to be initialized because populateComponentsApp will run 
 // hocs, like withUpdate, that rely on fragments
 initializeFragments()
@@ -28,40 +27,40 @@ populateComponentsApp()
 
 
 // fixtures
-import SimpleSchema from "simpl-schema";
+import SimpleSchema from 'simpl-schema';
 const addressGroup = {
-    name: "addresses",
-    label: "Addresses",
+    name: 'addresses',
+    label: 'Addresses',
     order: 10
 };
 const addressSchema = {
     street: {
         type: String,
         optional: true,
-        viewableBy: ["guests"],
-        editableBy: ["quests"],
-        insertableBy: ["quests"],
+        viewableBy: ['guests'],
+        editableBy: ['quests'],
+        insertableBy: ['quests'],
         max: 100 // limit street address to 100 characters
     },
 };
 const arraySchema = {
     addresses: {
         type: Array,
-        viewableBy: ["guests"],
-        editableBy: ["quests"],
-        insertableBy: ["quests"],
+        viewableBy: ['guests'],
+        editableBy: ['quests'],
+        insertableBy: ['quests'],
         group: addressGroup
     },
-    "addresses.$": {
+    'addresses.$': {
         type: new SimpleSchema(addressSchema)
     }
 };
 const objectSchema = {
     addresses: {
         type: new SimpleSchema(addressSchema),
-        viewableBy: ["guests"],
-        editableBy: ["quests"],
-        insertableBy: ["quests"],
+        viewableBy: ['guests'],
+        editableBy: ['quests'],
+        insertableBy: ['quests'],
     },
 };
 
@@ -95,16 +94,17 @@ describe('vulcan-forms/components', function () {
     describe('Form', function () {
         const context = {
             intl: {
-                formatMessage: () => "",
-                formatDate: () => "",
-                formatTime: () => "",
-                formatRelative: () => "",
-                formatNumber: () => "",
-                formatPlural: () => "",
-                formatHTMLMessage: () => ""
+                formatMessage: () => '',
+                formatDate: () => '',
+                formatTime: () => '',
+                formatRelative: () => '',
+                formatNumber: () => '',
+                formatPlural: () => '',
+                formatHTMLMessage: () => ''
             }
 
         }
+        // eslint-disable-next-line no-unused-vars
         const mountWithContext = C => mount(C, {
             context
         })
@@ -165,16 +165,16 @@ describe('vulcan-forms/components', function () {
             }
         })
         const defaultProps = {
-            "disabled": false,
-            "optional": true,
-            "document": {},
-            "name": "meetingPlace",
-            "path": "meetingPlace",
-            "datatype": [{ type: Object }],
-            "layout": "horizontal",
-            "label": "Meeting place",
-            "currentValues": {},
-            "formType": "new",
+            'disabled': false,
+            'optional': true,
+            'document': {},
+            'name': 'meetingPlace',
+            'path': 'meetingPlace',
+            'datatype': [{ type: Object }],
+            'layout': 'horizontal',
+            'label': 'Meeting place',
+            'currentValues': {},
+            'formType': 'new',
             deletedValues: [],
             throwError: () => { },
             updateCurrentValues: () => { },
@@ -188,19 +188,19 @@ describe('vulcan-forms/components', function () {
         describe('nested array', function () {
             const props = {
                 ...defaultProps,
-                "datatype": [{ type: Array }],
-                "nestedSchema": {
-                    "street": {},
-                    "country": {},
-                    "zipCode": {}
+                'datatype': [{ type: Array }],
+                'nestedSchema': {
+                    'street': {},
+                    'country': {},
+                    'zipCode': {}
                 },
-                "nestedInput": true,
-                "nestedFields": [
+                'nestedInput': true,
+                'nestedFields': [
                     {},
                     {},
                     {}
                 ],
-                "currentValues": {},
+                'currentValues': {},
             }
             it('render a FormNestedArray', function () {
                 const wrapper = shallowWithContext(<FormComponent {...props} />)
@@ -211,19 +211,19 @@ describe('vulcan-forms/components', function () {
         describe('nested object', function () {
             const props = {
                 ...defaultProps,
-                "datatype": [{ type: new SimpleSchema({}) }],
-                "nestedSchema": {
-                    "street": {},
-                    "country": {},
-                    "zipCode": {}
+                'datatype': [{ type: new SimpleSchema({}) }],
+                'nestedSchema': {
+                    'street': {},
+                    'country': {},
+                    'zipCode': {}
                 },
-                "nestedInput": true,
-                "nestedFields": [
+                'nestedInput': true,
+                'nestedFields': [
                     {},
                     {},
                     {}
                 ],
-                "currentValues": {},
+                'currentValues': {},
             }
             it('shallow render', function () {
                 const wrapper = shallowWithContext(<FormComponent {...props} />)
@@ -259,6 +259,7 @@ describe('vulcan-forms/components', function () {
             expect(wrapper).toBeDefined()
         })
         it.skip('render a form for the object', function () {
+            // eslint-disable-next-line no-unused-vars
             const wrapper = shallow(<Components.FormNestedObject path="foobar" currentValues={{}} />)
             expect(false).toBe(true)
         })

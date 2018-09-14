@@ -27,21 +27,19 @@ export const ComponentsTable = {} // storage for infos about components
  *
  */
 export function registerComponent(name, rawComponent, ...hocs) {
+  // support single-argument syntax
   if (typeof arguments[0] === 'object') {
-    const { name, component, hocs } = arguments[0];
-    ComponentsTable[name] = {
-      name,
-      rawComponent: component,
-      hocs,
-    };
-  } else {
-    // OpenCRUD backwards compatibility
-    // store the component in the table
-    ComponentsTable[name] = {
-      name,
-      rawComponent,
-      hocs,
-    };
+    // note: cannot use `const` because name, components, hocs are already defined
+    // as arguments so destructuring cannot work
+    // eslint-disable-next-line no-redeclare
+    var { name, component, hocs = [] } = arguments[0];
+    rawComponent = component
+  }
+  // store the component in the table
+  ComponentsTable[name] = {
+    name,
+    rawComponent,
+    hocs,
   }
 }
 
@@ -109,10 +107,21 @@ export const populateComponentsApp = () => {
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export const replaceComponent = (name, newComponent, ...newHocs) => {
+ export function replaceComponent(name, newComponent, ...newHocs) {
+
+  // support single argument syntax
+  if (typeof arguments[0] === 'object') {
+    // eslint-disable-next-line no-redeclare
+    var { name, component, hocs = [] } = arguments[0];
+    newComponent = component;
+    newHocs = hocs;
+  }
+
   const previousComponent = ComponentsTable[name];
+  const previousHocs = previousComponent && previousComponent.hocs || [];
 
   if (!previousComponent) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Trying to replace non-registered component ${name}. The component is ` +
       'being registered. If you were trying to replace a component defined by ' +
@@ -120,16 +129,9 @@ export const populateComponentsApp = () => {
       'also if the original component is still being registered or that it ' +
       'hasn\'t been renamed.',
     );
-    return registerComponent(name, newComponent, ...newHocs);
   }
 
-  // console.log('// replacing component');
-  // console.log(name);
-  // console.log(newComponent);
-  // console.log('new hocs', newHocs);
-  // console.log('previous hocs', previousComponent.hocs);
-
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+  return registerComponent(name, newComponent, ...newHocs, ...previousHocs);  
 };
 
 export const copyHoCs = (sourceComponent, targetComponent) => {

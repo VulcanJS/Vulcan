@@ -37,7 +37,7 @@ Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
   } else {
     this.simpleSchema().extend(schemaOrFields)
   }
-}
+};
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
@@ -106,8 +106,8 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
   if (self._transform && !self._helpers)
-    throw new Meteor.Error("Can't apply helpers to '" +
-      self._name + "' a transform function already exists!");
+    throw new Meteor.Error('Can\'t apply helpers to \'' +
+      self._name + '\' a transform function already exists!');
 
   if (!self._helpers) {
     self._helpers = function Document(doc) { return _.extend(this, doc); };
@@ -134,6 +134,8 @@ export const createCollection = options => {
   // add typeName if missing
   collection.typeName = typeName;
   collection.options.typeName = typeName;
+  collection.options.singleResolverName = Utils.camelCaseify(typeName);
+  collection.options.multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
 
   // add collectionName if missing
   collection.collectionName = collectionName;
@@ -151,6 +153,7 @@ export const createCollection = options => {
       hasIntlFields = true;
 
       // remove `intl` to avoid treating new _intl field as a field to internationalize
+      // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];
 
       schema[`${fieldName}_intl`] = {
@@ -158,13 +161,13 @@ export const createCollection = options => {
         hidden: true,
         type: Array,
         isIntlData: true,
-      }
+      };
 
       delete schema[`${fieldName}_intl`].intl;
 
       schema[`${fieldName}_intl.$`] = {
         type: getIntlString(),
-      }
+      };
 
       // if original field is required, enable custom validation function instead of `optional` property
       if (!schema[fieldName].optional) {
@@ -192,7 +195,7 @@ export const createCollection = options => {
     addGraphQLCollection(collection);
   }
 
-  runCallbacksAsync({ name: `*.collection`, properties: { options } });
+  runCallbacksAsync({ name: '*.collection', properties: { options } });
   runCallbacksAsync({ name: `${collectionName}.collection`, properties: { options } });
 
   // ------------------------------------- Default Fragment -------------------------------- //
@@ -287,9 +290,9 @@ export const createCollection = options => {
     // console.log(parameters);
 
     return parameters;
-  }
+  };
 
   Collections.push(collection);
 
   return collection;
-}
+};

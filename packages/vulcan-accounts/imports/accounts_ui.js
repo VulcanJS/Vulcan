@@ -70,21 +70,21 @@ Accounts.ui.config = function(options) {
 
   _.each(_.keys(options), function (key) {
     if (!_.contains(VALID_KEYS, key))
-      throw new Error("Accounts.ui.config: Invalid key: " + key);
+      throw new Error('Accounts.ui.config: Invalid key: ' + key);
   });
 
   // Deal with `passwordSignupFields`
   if (options.passwordSignupFields) {
     if (_.contains([
-      "USERNAME_AND_EMAIL",
-      "USERNAME_AND_OPTIONAL_EMAIL",
-      "USERNAME_ONLY",
-      "EMAIL_ONLY",
+      'USERNAME_AND_EMAIL',
+      'USERNAME_AND_OPTIONAL_EMAIL',
+      'USERNAME_ONLY',
+      'EMAIL_ONLY',
     ], options.passwordSignupFields)) {
       Accounts.ui._options.passwordSignupFields = options.passwordSignupFields;
     }
     else {
-      throw new Error("Accounts.ui.config: Invalid option for `passwordSignupFields`: " + options.passwordSignupFields);
+      throw new Error('Accounts.ui.config: Invalid option for `passwordSignupFields`: ' + options.passwordSignupFields);
     }
   }
 
@@ -92,10 +92,10 @@ Accounts.ui.config = function(options) {
   if (options.requestPermissions) {
     _.each(options.requestPermissions, function (scope, service) {
       if (Accounts.ui._options.requestPermissions[service]) {
-        throw new Error("Accounts.ui.config: Can't set `requestPermissions` more than once for " + service);
+        throw new Error('Accounts.ui.config: Can\'t set `requestPermissions` more than once for ' + service);
       }
       else if (!(scope instanceof Array)) {
-        throw new Error("Accounts.ui.config: Value for `requestPermissions` must be an array");
+        throw new Error('Accounts.ui.config: Value for `requestPermissions` must be an array');
       }
       else {
         Accounts.ui._options.requestPermissions[service] = scope;
@@ -107,10 +107,10 @@ Accounts.ui.config = function(options) {
   if (options.requestOfflineToken) {
     _.each(options.requestOfflineToken, function (value, service) {
       if (service !== 'google')
-        throw new Error("Accounts.ui.config: `requestOfflineToken` only supported for Google login at the moment.");
+        throw new Error('Accounts.ui.config: `requestOfflineToken` only supported for Google login at the moment.');
 
       if (Accounts.ui._options.requestOfflineToken[service]) {
-        throw new Error("Accounts.ui.config: Can't set `requestOfflineToken` more than once for " + service);
+        throw new Error('Accounts.ui.config: Can\'t set `requestOfflineToken` more than once for ' + service);
       }
       else {
         Accounts.ui._options.requestOfflineToken[service] = value;
@@ -122,10 +122,10 @@ Accounts.ui.config = function(options) {
   if (options.forceApprovalPrompt) {
     _.each(options.forceApprovalPrompt, function (value, service) {
       if (service !== 'google')
-        throw new Error("Accounts.ui.config: `forceApprovalPrompt` only supported for Google login at the moment.");
+        throw new Error('Accounts.ui.config: `forceApprovalPrompt` only supported for Google login at the moment.');
 
       if (Accounts.ui._options.forceApprovalPrompt[service]) {
-        throw new Error("Accounts.ui.config: Can't set `forceApprovalPrompt` more than once for " + service);
+        throw new Error('Accounts.ui.config: Can\'t set `forceApprovalPrompt` more than once for ' + service);
       }
       else {
         Accounts.ui._options.forceApprovalPrompt[service] = value;
@@ -136,7 +136,7 @@ Accounts.ui.config = function(options) {
   // Deal with `requireEmailVerification`
   if (options.requireEmailVerification) {
     if (typeof options.requireEmailVerification != 'boolean') {
-      throw new Error(`Accounts.ui.config: "requireEmailVerification" not a boolean`);
+      throw new Error('Accounts.ui.config: "requireEmailVerification" not a boolean');
     }
     else {
       Accounts.ui._options.requireEmailVerification = options.requireEmailVerification;
@@ -146,7 +146,7 @@ Accounts.ui.config = function(options) {
   // Deal with `minimumPasswordLength`
   if (options.minimumPasswordLength) {
     if (typeof options.minimumPasswordLength != 'number') {
-      throw new Error(`Accounts.ui.config: "minimumPasswordLength" not a number`);
+      throw new Error('Accounts.ui.config: "minimumPasswordLength" not a number');
     }
     else {
       Accounts.ui._options.minimumPasswordLength = options.minimumPasswordLength;
