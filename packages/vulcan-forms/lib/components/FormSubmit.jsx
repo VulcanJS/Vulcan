@@ -40,7 +40,7 @@ const FormSubmit = ({
         className="form-cancel"
         onClick={e => {
           e.preventDefault();
-          clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
+          clearForm();
           revertCallback(document);
         }}
       >
