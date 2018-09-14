@@ -329,9 +329,9 @@ Utils.findIndex = (array, predicate) => {
 // adapted from http://stackoverflow.com/a/22072374/649299
 Utils.unflatten = function(array, options, parent, level=0, tree){
 
-  const { 
-    idProperty = '_id', 
-    parentIdProperty = 'parentId', 
+  const {
+    idProperty = '_id',
+    parentIdProperty = 'parentId',
     childrenProperty = 'childrenResults'
   } = options;
 
@@ -496,7 +496,12 @@ String.prototype.replaceAll = function(search, replacement) {
 Utils.isPromise = value => isFunction(get(value, 'then'));
 
 Utils.pluralize = s => {
-  return s.slice(-1) === 'y' ? `${s.slice(0,-1)}ies` : `${s}s`;
+  const plural = s.slice(-1) === 'y' ?
+    `${s.slice(0, -1)}ies` :
+    s.slice(-1) === 's' ?
+      `${s}es` :
+      `${s}s`;
+  return plural;
 }
 
 Utils.removeProperty = (obj, propertyName) => {
