@@ -749,12 +749,10 @@ class SmartForm extends Component {
   };
 
   editMutationSuccessCallback = result => {
-    this.mutationSuccessCallback(result, 'edit', { clearCurrentDocument: false, clearInitialDocument: true });
+    this.mutationSuccessCallback(result, 'edit', );
   };
 
-  mutationSuccessCallback = (result, mutationType, options = {}) => {
-    const { clearCurrentDocument, clearInitialDocument } = options;
-
+  mutationSuccessCallback = (result, mutationType) => {
     this.setState(prevState => ({ disabled: false }));
     const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
