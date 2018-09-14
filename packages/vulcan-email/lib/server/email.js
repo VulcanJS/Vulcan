@@ -59,23 +59,22 @@ VulcanEmail.generateTextVersion = html => {
   });
 }
 
-VulcanEmail.send = (...args) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
-
-  const oldArgs = ['to', 'subject', 'html', 'text', 'throwErrors'];
-  const options = Utils.argsAsObject(oldArgs, args);
-
-  let {
-    to,
-    cc,
-    bcc,
-    replyTo,
-    subject,
-    html,
-    text,
-    throwErrors,
-  } = options;
+  
+  if(typeof to === 'object'){
+    var {
+      to,
+      cc,
+      bcc,
+      replyTo,
+      subject,
+      html,
+      text,
+      throwErrors,
+    } = to;
+  }
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
