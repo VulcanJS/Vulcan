@@ -31,6 +31,7 @@ import {
   getSetting,
   Utils,
   isIntlField,
+  getComponent,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -119,7 +120,9 @@ const getInitialStateFromProps = (nextProps) => {
 class SmartForm extends Component {
   constructor(props) {
     super(props);
-
+  
+    this.FormGroup = getComponent(props.groupComponent);
+    
     this.state = {
       ...getInitialStateFromProps(props),
     };
@@ -429,7 +432,14 @@ class SmartForm extends Component {
    */
   getLabel = (fieldName, fieldLocale) => {
     const collectionName = this.getCollection().options.collectionName.toLowerCase();
-    const intlLabel = this.context.intl.formatMessage({ id: `${collectionName}.${fieldName}` });
+    const defaultMessage = '|*|*|';
+    let id = `${collectionName}.${fieldName}`;
+    let intlLabel;
+    intlLabel = this.context.intl.formatMessage({ id, defaultMessage });
+    if (intlLabel === defaultMessage) {
+      id = `common.${fieldName}`;
+      intlLabel = this.context.intl.formatMessage({ id });
+    }
     const schemaLabel = this.state.flatSchema[fieldName] && this.state.flatSchema[fieldName].label;
     const label = intlLabel || schemaLabel || fieldName;
     if (fieldLocale) {
@@ -865,14 +875,15 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
-
+    const FormGroup = this.FormGroup;
+  
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => { this.form = e; }}>
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup
+            <FormGroup
               key={group.name}
               {...group}
               errors={this.state.errors}
@@ -941,7 +952,8 @@ SmartForm.propTypes = {
   revertLabel: PropTypes.string,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
-
+  groupComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  
   // callbacks
   submitCallback: PropTypes.func,
   successCallback: PropTypes.func,
@@ -959,6 +971,7 @@ SmartForm.defaultProps = {
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
+  groupComponent: 'FormGroup',
 };
 
 SmartForm.contextTypes = {
