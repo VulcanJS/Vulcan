@@ -85,6 +85,7 @@ class App extends PureComponent {
     return (
       <IntlProvider
         locale={this.getLocale()}
+        key={this.getLocale()}
         messages={Strings[this.getLocale()]}
       >
         <div className={`locale-${this.getLocale()}`}>
