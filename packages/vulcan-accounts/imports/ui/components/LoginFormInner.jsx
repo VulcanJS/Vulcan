@@ -33,20 +33,21 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     const resetStoreAndThen = hook => {
       return () => {
-        props.client.resetStore();
-        hook();
+        props.client.resetStore().then(() => {
+          hook();
+        })
       }
     }
 
     const postLogInAndThen = hook => {
       return () => {
-        props.client.resetStore();
-
-        if(Callbacks['users.postlogin']) { // execute any post-sign-in callbacks
+        props.client.resetStore().then(() => {
+          if(Callbacks['users.postlogin']) { // execute any post-sign-in callbacks
           runCallbacks('users.postlogin');
-        } else { // or else execute the hook
-          hook();
-        }
+          } else { // or else execute the hook
+            hook();
+          }
+        })
       }
     }
 
