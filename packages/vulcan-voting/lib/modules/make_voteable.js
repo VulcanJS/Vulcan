@@ -61,37 +61,37 @@ export const makeVoteable = collection => {
         optional: true,
       }
     },
-    /**
-      An array containing the `_id`s of the document's upvoters
-    */
-    {
-      fieldName: 'voters',
-      fieldSchema: {
-        type: Array,
-        optional: true,
-        viewableBy: ['sunshineRegiment', 'admins'],
-        resolveAs: {
-          type: '[User]',
-          resolver: async (document, args, { currentUser, Users, Votes }) => {
-            // eslint-disable-next-line no-undef
-            const votes = await Connectors.find(Votes, { documentId: document._id});
-            const votersIds = _.pluck(votes, 'userId');
-            // eslint-disable-next-line no-undef
-            const voters = await Connectors.find(Users, {_id: {$in: votersIds}});
-            return Users.restrictViewableFields(currentUser, Users, voters);
-            // if (!document.upvoters) return [];
-            // const upvoters = await Users.loader.loadMany(document.upvoters);
-          },
-        },
-      }
-    },
-    {
-      fieldName: 'voters.$',
-      fieldSchema: {
-        type: String,
-        optional: true
-      }
-    },
+    // /**
+    //   An array containing the `_id`s of the document's upvoters
+    // */
+    // {
+    //   fieldName: 'voters',
+    //   fieldSchema: {
+    //     type: Array,
+    //     optional: true,
+    //     viewableBy: ['sunshineRegiment', 'admins'],
+    //     resolveAs: {
+    //       type: '[User]',
+    //       resolver: async (document, args, { currentUser, Users, Votes }) => {
+    //         // eslint-disable-next-line no-undef
+    //         const votes = await Connectors.find(Votes, { documentId: document._id});
+    //         const votersIds = _.pluck(votes, 'userId');
+    //         // eslint-disable-next-line no-undef
+    //         const voters = await Connectors.find(Users, {_id: {$in: votersIds}});
+    //         return Users.restrictViewableFields(currentUser, Users, voters);
+    //         // if (!document.upvoters) return [];
+    //         // const upvoters = await Users.loader.loadMany(document.upvoters);
+    //       },
+    //     },
+    //   }
+    // },
+    // {
+    //   fieldName: 'voters.$',
+    //   fieldSchema: {
+    //     type: String,
+    //     optional: true
+    //   }
+    // },
     /**
       The document's base score (not factoring in the document's age)
     */

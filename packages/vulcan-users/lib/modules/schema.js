@@ -2,11 +2,11 @@ import SimpleSchema from 'simpl-schema';
 import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
-// Order for the Schema is as follows. Change as you see fit: 
-// 00. 
+// Order for the Schema is as follows. Change as you see fit:
+// 00.
 // 10. Display Name
 // 20. Email
-// 30. Bio 
+// 30. Bio
 // 40. Slug
 // 50. Website
 // 60. Twitter username
@@ -171,7 +171,7 @@ const schema = {
   emailHash: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['admins'],
     onInsert: user => {
       if (user.email) {
         return getCollection('Users').avatar.hash(user.email);
@@ -181,7 +181,7 @@ const schema = {
   avatarUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['admins'],
     onInsert: user => {
 
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
@@ -196,7 +196,7 @@ const schema = {
       fieldName: 'avatarUrl',
       type: 'String',
       resolver: async (user, args, { Users }) => {
- 
+
         if (_.isEmpty(user)) return null;
 
         if (user.avatarUrl) {
@@ -207,7 +207,7 @@ const schema = {
           const fullUser = await Users.loader.load(user._id);
           return Users.avatar.getUrl(fullUser);
         }
-        
+
       }
     }
   },
@@ -282,7 +282,7 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getProfileUrl(user, true);
       },
-    }  
+    }
   },
 
   editUrl: {
@@ -294,7 +294,7 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getEditUrl(user, true);
       },
-    }  
+    }
   }
 
 };
