@@ -59,10 +59,22 @@ VulcanEmail.generateTextVersion = html => {
   });
 }
 
-VulcanEmail.send = (to, subject, html, text, throwErrors) => {
-
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
+  
+  if(typeof to === 'object'){
+    var {
+      to,
+      cc,
+      bcc,
+      replyTo,
+      subject,
+      html,
+      text,
+      throwErrors,
+    } = to;
+  }
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
@@ -76,6 +88,9 @@ VulcanEmail.send = (to, subject, html, text, throwErrors) => {
   const email = {
     from: from,
     to: to,
+    cc: cc,
+    bcc: bcc,
+    replyTo: replyTo,
     subject: subject,
     text: text,
     html: html
@@ -85,8 +100,9 @@ VulcanEmail.send = (to, subject, html, text, throwErrors) => {
 
     console.log('//////// sending email…'); // eslint-disable-line
     console.log('from: '+from); // eslint-disable-line
-    console.log('to: '+to); // eslint-disable-line
-    console.log('subject: '+subject); // eslint-disable-line
+    console.log("cc: " + cc); // eslint-disable-line
+    console.log("bcc: " + bcc); // eslint-disable-line
+    console.log("replyTo: " + replyTo); // eslint-disable-line
     // console.log('html: '+html);
     // console.log('text: '+text);
 
@@ -103,8 +119,9 @@ VulcanEmail.send = (to, subject, html, text, throwErrors) => {
     console.log('//////// sending email (simulation)…'); // eslint-disable-line
     console.log('from: '+from); // eslint-disable-line
     console.log('to: '+to); // eslint-disable-line
-    console.log('subject: '+subject); // eslint-disable-line
-    console.log('Note: emails turned off in development mode. Set "enableDevelopmentEmails" setting to "true" to enable.');
+    console.log("cc: " + cc); // eslint-disable-line
+    console.log("bcc: " + bcc); // eslint-disable-line
+    console.log("replyTo: " + replyTo); // eslint-disable-line
 
   }
 
@@ -129,15 +146,10 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   return { data, subject, html };
 }
 
-VulcanEmail.buildAndSend = async ({ to, emailName, variables, locale = getSetting('locale') }) => {
 
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting("locale") }) => {
   const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send(to, email.subject, email.html);
-
+  return VulcanEmail.send({to, cc, bcc, replyTo, subject: email.subject, html: email.html});
 };
 
-VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(
-  to,
-  subject,
-  VulcanEmail.buildTemplate(html)
-);
+VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));
