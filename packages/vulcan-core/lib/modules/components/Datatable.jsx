@@ -72,14 +72,14 @@ class Datatable extends PureComponent {
         ...this.props.options
       }
 
-      const DatatableWithList = withMulti(options)(Components.DatatableContents);
+      const DatatableWithMulti = withMulti(options)(Components.DatatableContents);
 
       const canInsert = collection.options && collection.options.mutations && collection.options.mutations.new && collection.options.mutations.new.check(this.props.currentUser);
 
       return (
         <div className={`datatable datatable-${collection.options.collectionName}`}>
           <Components.DatatableAbove {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-          <DatatableWithList {...this.props} collection={collection} terms={{query: this.state.query, orderBy: this.state.currentSort }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
+          <DatatableWithMulti {...this.props} collection={collection} terms={{query: this.state.query, orderBy: this.state.currentSort }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
         </div>
       )
     }
