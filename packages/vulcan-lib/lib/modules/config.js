@@ -9,7 +9,7 @@ import SimpleSchema from 'simpl-schema';
 Vulcan = {};
 
 // eslint-disable-next-line no-undef
-Vulcan.VERSION = '1.12.6';
+Vulcan.VERSION = '1.12.7';
 
 // ------------------------------------- Schemas -------------------------------- //
 
