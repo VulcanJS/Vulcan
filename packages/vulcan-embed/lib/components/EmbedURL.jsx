@@ -128,7 +128,7 @@ class EmbedURL extends Component {
     return (
       <div className="embedly-thumbnail">
         <div
-          style={{ width: `${Math.round(60 * this.getDimensions().ratio)}px`, height: `60px` }}
+          style={{ width: `${Math.round(60 * this.getDimensions().ratio)}px`, height: '60px' }}
           onClick={this.editThumbnail}
           className="embedly-thumbnail-placeholder"
         >

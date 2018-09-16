@@ -49,8 +49,8 @@ export class AccountsField extends PureComponent {
       type = 'text',
       onChange,
       // required = false,
-      className = "field",
-      defaultValue = "",
+      className = 'field',
+      defaultValue = '',
       message,
     } = this.props;
     const { mount = true } = this.state;

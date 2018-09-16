@@ -132,7 +132,7 @@ export const populateComponentsApp = () => {
   }
 
   return registerComponent(name, newComponent, ...newHocs, ...previousHocs);  
-};
+}
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);

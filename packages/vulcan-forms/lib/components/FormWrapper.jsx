@@ -64,7 +64,7 @@ class FormWrapper extends PureComponent {
 
   // if a document is being passed, this is an edit form
   getFormType() {
-    return this.props.documentId || this.props.slug ? "edit" : "new";
+    return this.props.documentId || this.props.slug ? 'edit' : 'new';
   }
 
   // filter out fields with "." or "$"
@@ -108,7 +108,7 @@ class FormWrapper extends PureComponent {
     let mutationFields = this.getFormType() === 'new' ? _.unique(createableFields.concat(readableFields)) : _.unique(createableFields.concat(updatetableFields));
 
     // if "fields" prop is specified, restrict list of fields to it
-    if (typeof fields !== "undefined" && fields.length > 0) {
+    if (typeof fields !== 'undefined' && fields.length > 0) {
       queryFields = _.intersection(queryFields, fields);
       mutationFields = _.intersection(mutationFields, fields);
     }
@@ -211,7 +211,7 @@ class FormWrapper extends PureComponent {
           {...props}
         />;
     };
-    Loader.displayName = `withLoader(Form)`;
+    Loader.displayName = 'withLoader(Form)';
 
     // if this is an edit from, load the necessary data using the withSingle HoC
     if (this.getFormType() === 'edit') {

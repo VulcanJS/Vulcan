@@ -58,12 +58,6 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
 
-// unsetCompact
-const unsetCompact = (object, path) => {
-  unset(object, path);
-  compactParent(object, path);
-};
-
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
 

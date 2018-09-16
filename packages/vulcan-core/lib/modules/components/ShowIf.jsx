@@ -15,6 +15,6 @@ ShowIf.propTypes = {
   failureComponent: PropTypes.object,
 };
 
-ShowIf.displayName = "ShowIf";
+ShowIf.displayName = 'ShowIf';
 
 registerComponent('ShowIf', ShowIf, withCurrentUser);

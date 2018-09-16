@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import {
   registerComponent,
   Components,
   ComponentsTable
-} from "meteor/vulcan:lib";
+} from 'meteor/vulcan:lib';
 
 const ComponentHOCs = ({ document }) => (
   <div>
     <ul>
       {document.hocs.map((hoc, i) => (
-        <li key={i}>{typeof hoc.name === "string" ? hoc.name : hoc[0].name}</li>
+        <li key={i}>{typeof hoc.name === 'string' ? hoc.name : hoc[0].name}</li>
       ))}
     </ul>
   </div>
@@ -23,9 +23,9 @@ const ComponentsDashboard = props => (
       showEdit={false}
       data={Object.values(ComponentsTable)}
       columns={[
-        "name",
+        'name',
         {
-          name: "hocs",
+          name: 'hocs',
           component: ComponentHOCs
         }
       ]}
@@ -33,4 +33,4 @@ const ComponentsDashboard = props => (
   </div>
 );
 
-registerComponent("Components", ComponentsDashboard);
+registerComponent('Components', ComponentsDashboard);

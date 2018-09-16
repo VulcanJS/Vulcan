@@ -172,7 +172,7 @@ const Card = ({title, className, collection, document, currentUser, fields, show
   );
 };
 
-Card.displayName = "Card";
+Card.displayName = 'Card';
 
 Card.propTypes = {
   className: PropTypes.string,

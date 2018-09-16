@@ -185,7 +185,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       hint: this.context.intl.formatMessage({id: 'accounts.enter_username_or_email'}),
       label: this.context.intl.formatMessage({id: 'accounts.username_or_email'}),
       required: true,
-      defaultValue: this.state.currentUsername || "",
+      defaultValue: this.state.currentUsername || '',
       onChange: this.handleChange.bind(this, 'usernameOrEmail'),
       message: this.getMessageForField('usernameOrEmail'),
     };
@@ -197,7 +197,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       hint: this.context.intl.formatMessage({id: 'accounts.enter_username'}),
       label: this.context.intl.formatMessage({id: 'accounts.username'}),
       required: true,
-      defaultValue: this.state.currentUsername || "",
+      defaultValue: this.state.currentUsername || '',
       onChange: this.handleChange.bind(this, 'username'),
       message: this.getMessageForField('username'),
     };
@@ -210,7 +210,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       label: this.context.intl.formatMessage({id: 'accounts.email'}),
       type: 'email',
       required: true,
-      defaultValue: this.state.email || "",
+      defaultValue: this.state.email || '',
       onChange: this.handleChange.bind(this, 'email'),
       message: this.getMessageForField('email'),
     };
@@ -223,7 +223,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       label: this.context.intl.formatMessage({id: 'accounts.password'}),
       type: 'password',
       required: true,
-      defaultValue: this.state.password || "",
+      defaultValue: this.state.password || '',
       onChange: this.handleChange.bind(this, 'password'),
       message: this.getMessageForField('password'),
     };
@@ -277,18 +277,18 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     if (hasPasswordService() && formState == STATES.SIGN_IN) {
       if (_.contains([
-        "USERNAME_AND_EMAIL",
-        "USERNAME_AND_OPTIONAL_EMAIL",
+        'USERNAME_AND_EMAIL',
+        'USERNAME_AND_OPTIONAL_EMAIL',
       ], passwordSignupFields())) {
         loginFields.push(this.getUsernameOrEmailField());
       }
 
-      if (passwordSignupFields() === "USERNAME_ONLY") {
+      if (passwordSignupFields() === 'USERNAME_ONLY') {
         loginFields.push(this.getUsernameField());
       }
 
       if (_.contains([
-        "EMAIL_ONLY",
+        'EMAIL_ONLY',
       ], passwordSignupFields())) {
         loginFields.push(this.getEmailField());
       }
@@ -298,21 +298,21 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     if (hasPasswordService() && formState == STATES.SIGN_UP) {
       if (_.contains([
-        "USERNAME_AND_EMAIL",
-        "USERNAME_AND_OPTIONAL_EMAIL",
-        "USERNAME_ONLY",
+        'USERNAME_AND_EMAIL',
+        'USERNAME_AND_OPTIONAL_EMAIL',
+        'USERNAME_ONLY',
       ], passwordSignupFields())) {
         loginFields.push(this.getUsernameField());
       }
 
       if (_.contains([
-        "USERNAME_AND_EMAIL",
-        "EMAIL_ONLY",
+        'USERNAME_AND_EMAIL',
+        'EMAIL_ONLY',
       ], passwordSignupFields())) {
         loginFields.push(this.getEmailField());
       }
 
-      if (_.contains(["USERNAME_AND_OPTIONAL_EMAIL"], passwordSignupFields())) {
+      if (_.contains(['USERNAME_AND_OPTIONAL_EMAIL'], passwordSignupFields())) {
         loginFields.push(Object.assign(this.getEmailField(), {required: false}));
       }
 
@@ -495,7 +495,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
   showForgotPasswordLink() {
     return this.state.formState == STATES.SIGN_IN && hasPasswordService() && _.contains(
-      ["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
+      ['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL', 'EMAIL_ONLY'],
       passwordSignupFields()
     );
   }
@@ -628,7 +628,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     if (usernameOrEmail !== null) {
       if (!this.validateField('username', usernameOrEmail)) {
         if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook("error.accounts.usernameRequired", this.state.formState);
+          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
         }
         error = true;
       }
@@ -638,7 +638,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     } else if (username !== null) {
       if (!this.validateField('username', username)) {
         if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook("error.accounts.usernameRequired", this.state.formState);
+          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
         }
         error = true;
       }
@@ -718,7 +718,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       serviceName = 'meteorDeveloperAccount';
     }
 
-    const loginWithService = Meteor["loginWith" + capitalService()];
+    const loginWithService = Meteor['loginWith' + capitalService()];
 
     let options = {}; // use default scope unless specified
     if (Accounts.ui._options.requestPermissions[serviceName])
@@ -774,7 +774,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     if (username !== null) {
       if ( !this.validateField('username', username) ) {
         if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook("error.accounts.usernameRequired", this.state.formState);
+          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
         }
         error = true;
       } else {
@@ -782,10 +782,10 @@ export class AccountsLoginFormInner extends TrackerComponent {
       }
     } else {
       if (_.contains([
-        "USERNAME_AND_EMAIL",
+        'USERNAME_AND_EMAIL',
       ], passwordSignupFields()) && !this.validateField('username', username) ) {
         if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook("error.accounts.usernameRequired", this.state.formState);
+          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
         }
         error = true;
       }
@@ -798,7 +798,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     }
 
     if (!this.validateField('password', password)) {
-      onSubmitHook("Invalid password", formState);
+      onSubmitHook('Invalid password', formState);
       error = true;
     } else {
       options.password = password;
