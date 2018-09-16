@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import "./FormNestedItem"
 
 class FormNestedArray extends PureComponent {
   getCurrentValue() {
