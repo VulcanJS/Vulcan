@@ -178,7 +178,7 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
- Users.canReadField = function ( user, field, document) {
+ Users.canReadField = function (user, field, document) {
    const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
    if (canRead) {
      if (typeof canRead === 'function') {
@@ -189,9 +189,8 @@ Users.isAdminById = Users.isAdmin;
        return Users.isMemberOf(user, canRead);
      } else if (Array.isArray(canRead) && canRead.length > 0) {
        // if canRead is an array, we do a recursion on every item and return true if one of the items return true
-       // this also makes it possible to use nested arrays, such as ['admins', ['group1', function1, [function2, 'group2'], function3]]
-       return canRead.reduce((accumulator, currentValue)=> accumulator || Users.canReadField(user, currentValue, document));
-     }
+       return canRead.some(group => Users.canReadField(user, { canRead: group }, document));
+    }
    }
    return false;
  };
@@ -267,7 +266,6 @@ Users.canCreateField = function (user, field) {
     } else if (Array.isArray(canCreate) && canCreate.length > 0) {
       // if canCreate is an array, we do a recursion on every item and return true if one of the items return true
       return canCreate.some(group => Users.canCreateField(user, { canCreate: group }));
-
     }
   }
   return false;
