@@ -21,6 +21,7 @@ dump/*
 
 settings.json
 settings.json.not-used
+production.settings.json
 .idea
 
 scratch
