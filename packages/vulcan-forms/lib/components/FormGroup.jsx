@@ -119,7 +119,7 @@ FormGroup.propTypes = {
   currentUser: PropTypes.object,
 };
 
-registerComponent('FormGroup', FormGroup, withStyles(styles));
+registerComponent('FormGroup', FormGroup, withStyles(styles, {name: "FormGroup"}));
 
 const IconRight = ({ width = 24, height = 24 }) => (
   <svg
