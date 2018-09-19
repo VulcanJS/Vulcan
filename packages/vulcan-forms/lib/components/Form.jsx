@@ -923,13 +923,8 @@ class SmartForm extends Component {
 }
 
 export const formComponentsShape = PropTypes.shape({
-  FormComponentInner: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   FormErrors: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   FormGroup: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  FormNested: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  FormNestedDivider: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  FormNestedFoot: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  FormNestedHead: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   FormSubmit: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 });
 
