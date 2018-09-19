@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import get from 'lodash/get';
 import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync } from './callbacks.js';
@@ -72,6 +73,43 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
 
   // add field schema to collection schema
   collection.attachSchema(new SimpleSchema(schema));
+};
+
+/**
+ * @summary Add middleware to a resolved field (or an array of middlewares) to a schema.
+ * @param {Object|Object[]} fieldOrFieldArray
+ */
+Mongo.Collection.prototype.addFieldMiddleware = function (fieldOrFieldArray) {
+
+  const collection = this;
+  const schema = collection.simpleSchema()._schema;
+
+  const fieldMiddlewares = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
+
+  collection.attachSchema(
+    fieldMiddlewares.reduce(
+      (newSchema, { fieldName, fieldMiddleware, middleware = fieldMiddleware }) => {
+        const resolver = get(schema, `${fieldName}.resolveAs.resolver`);
+        if (resolver) {
+          return {
+            ...newSchema,
+            [fieldName]: {
+              resolveAs: {
+                resolver: (...args) => middleware(resolver, ...args),
+              },
+            },
+          };
+        }
+        console.warn(
+          'Trying to add a middleware for the non-existing or non-resolved' +
+          `field ${fieldName} in ${collection.options.collectionName} ` +
+          'collection.',
+        );
+        return newSchema;
+      },
+      {},
+    ),
+  );
 };
 
 /**
