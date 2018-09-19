@@ -59,6 +59,8 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
 
+export const replaceableComponents = ['FormGroup', 'FormSubmit', 'FormErrors'];
+
 // unsetCompact
 const unsetCompact = (object, path) => {
   unset(object, path);
@@ -121,7 +123,12 @@ class SmartForm extends Component {
   constructor(props) {
     super(props);
   
-    this.FormGroup = getComponent(props.groupComponent);
+    const components = {};
+    replaceableComponents.forEach(componentName => {
+      components[componentName] = 
+        getComponent(props.components[componentName] || getSetting(`forms.components.${componentName}`));
+    });
+    this.components = components;
     
     this.state = {
       ...getInitialStateFromProps(props),
@@ -868,12 +875,14 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
-    const FormGroup = this.FormGroup;
+    const FormGroup = this.components.FormGroup;
+    const FormSubmit = this.components.FormSubmit;
+    const FormErrors = this.components.FormErrors;
   
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => { this.form = e; }}>
-          <Components.FormErrors errors={this.state.errors} />
+          <FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
             <FormGroup
@@ -894,7 +903,7 @@ class SmartForm extends Component {
 
           {this.props.repeatErrors && this.renderErrors()}
 
-          <Components.FormSubmit
+          <FormSubmit
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
             revertLabel={this.props.revertLabel}
@@ -912,6 +921,17 @@ class SmartForm extends Component {
     );
   }
 }
+
+export const formComponentsShape = PropTypes.shape({
+  FormComponentInner: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormErrors: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormGroup: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormNested: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormNestedDivider: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormNestedFoot: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormNestedHead: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormSubmit: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+});
 
 SmartForm.propTypes = {
   // main options
@@ -945,7 +965,7 @@ SmartForm.propTypes = {
   revertLabel: PropTypes.string,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
-  groupComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  components: formComponentsShape,
   
   // callbacks
   submitCallback: PropTypes.func,
@@ -964,7 +984,7 @@ SmartForm.defaultProps = {
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
-  groupComponent: 'FormGroup',
+  components: {},
 };
 
 SmartForm.contextTypes = {

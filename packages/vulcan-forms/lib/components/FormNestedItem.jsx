@@ -30,6 +30,7 @@ const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...pr
                             onClick={() => {
                                 removeItem(name);
                             }}
+                            tabIndex="-1"
                         >
                             <Components.IconRemove height={12} width={12} />
                         </Components.Button>
