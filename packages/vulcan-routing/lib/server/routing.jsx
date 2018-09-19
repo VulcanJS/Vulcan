@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { getDataFromTree, ApolloProvider } from 'react-apollo';
+//import { getDataFromTree, ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
+import getDataFromTree from './getDataFromTree';
 import { CookiesProvider } from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
