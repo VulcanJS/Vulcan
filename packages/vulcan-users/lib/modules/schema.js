@@ -232,24 +232,6 @@ const schema = {
       const basicSlug = Utils.slugify(displayName);
       return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
     },
-    onUpdate: ({ data, document, currentUser }) => {
-      // if the slug is updated in the query and different from the original one, format it and then modify it if this slugs already exists
-      if (data.slug && document.slug && data.slug !== document.slug) {
-        const formattedSlug = Utils.slugify(data.slug);
-        // we need to do check that it's different from the original one or getUnusedSlug will think it's used already
-        if (formattedSlug !== document.slug) {
-          return Utils.getUnusedSlugByCollectionName('Users', formattedSlug);
-        } else {
-          return document.slug;
-        }
-      } else if (data.displayName && data.displayName !== document.displayName) {
-        // when the display name is modified, update the slug
-        const slug = Utils.slugify(data.displayName);
-        if (slug !== document.slug) {
-          return Utils.getUnusedSlugByCollectionName('Users', slug);
-        } else return document.slug;
-      } else return document.slug;
-    },
   },
   /**
   The user's Twitter username
