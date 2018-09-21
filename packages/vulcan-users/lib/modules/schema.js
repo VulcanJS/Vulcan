@@ -230,7 +230,8 @@ const schema = {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const displayName = createDisplayName(user);
       const basicSlug = Utils.slugify(displayName);
-      return Utils.getUnusedSlugByCollectionName('Users', basicSlug);
+      //if the basic slug is falsy, use the user id instead to avoid empty slugs
+      return basicSlug ? Utils.getUnusedSlugByCollectionName('Users', basicSlug) : user._id;
     },
   },
   /**

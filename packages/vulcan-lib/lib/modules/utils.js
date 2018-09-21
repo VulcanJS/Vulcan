@@ -169,11 +169,7 @@ Utils.slugify = function (s) {
   return slug;
 };
 
-Utils.getUnusedSlug = function (collection, unSureSlug) {
-  
-  //if the unSureSlug is falsy, replace it with '0'. This avoids the creation of an empty slug, which is bad in the urls.
-  const slug = unSureSlug ? unSureSlug : '0';
-  
+Utils.getUnusedSlug = function (collection, slug) {
   let suffix = '';
   let index = 0;
 
