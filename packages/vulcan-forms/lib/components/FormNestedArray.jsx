@@ -43,15 +43,17 @@ class FormNestedArray extends PureComponent {
           {value.map(
             (subDocument, i) =>
               !this.isDeleted(i) && (
-                <FormComponents.FormNestedItem
-                  {...properties}
-                  key={i}
-                  itemIndex={i}
-                  path={`${this.props.path}.${i}`}
-                  removeItem={() => {
-                    this.removeItem(i);
-                  }}
-                />
+                <React.Fragment key={i}>
+                  <FormComponents.FormNestedItem
+                    {...properties}
+                    itemIndex={i}
+                    path={`${this.props.path}.${i}`}
+                    removeItem={() => {
+                      this.removeItem(i);
+                    }}
+                  />
+                  <FormComponents.FormNestedDivider label={this.props.label} addItem={this.addItem}/>
+                </React.Fragment>
               )
           )}
           <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
