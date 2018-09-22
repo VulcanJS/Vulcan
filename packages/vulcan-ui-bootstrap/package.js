@@ -10,8 +10,14 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'vulcan:lib@1.12.8'
+    'vulcan:lib@1.12.8',
+    'fourseven:scss@4.5.0',
   ]);
+  
+  api.addFiles([
+    'lib/stylesheets/style.scss',
+    'lib/stylesheets/datetime.scss'
+  ], 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
