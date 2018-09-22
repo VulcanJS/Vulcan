@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...props }, { errors }) => {
+  const FormComponents = props.formComponents;
   const isArray = typeof itemIndex !== 'undefined';
   return (
     <div className="form-nested-item">
       <div className="form-nested-item-inner">
         {nestedFields.map((field, i) => {
           return (
-            <Components.FormComponent
+            <FormComponents.FormComponent
               key={i}
               {...props}
               {...field}
