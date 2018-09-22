@@ -37,7 +37,9 @@ class FormNestedArray extends PureComponent {
 
     return (
       <div className={`form-group row form-nested ${hasErrors ? 'input-error': ''}`}>
-        <label className="control-label col-sm-3">{this.props.label}</label>
+        
+        <Components.FormNestedHead label={this.props.label} addItem={this.addItem}/>
+        
         <div className="col-sm-9">
           {value.map(
             (subDocument, i) =>
@@ -55,10 +57,11 @@ class FormNestedArray extends PureComponent {
                 </React.Fragment>
               )
           )}
-          <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
-            <Components.IconAdd height={12} width={12} />
-          </Components.Button>
+  
+          <Components.FormNestedFoot label={this.props.label} addItem={this.addItem}/>
+
           {hasErrors ? <Components.FieldErrors errors={nestedArrayErrors} /> : null}
+          
         </div>
       </div>
     );

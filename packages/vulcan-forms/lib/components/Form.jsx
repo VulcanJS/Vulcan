@@ -31,6 +31,7 @@ import {
   getSetting,
   Utils,
   isIntlField,
+  getComponent,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -57,6 +58,8 @@ import pickBy from 'lodash/pickBy';
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
+
+export const replaceableComponents = ['FormGroup', 'FormSubmit', 'FormErrors'];
 
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
@@ -113,7 +116,14 @@ const getInitialStateFromProps = (nextProps) => {
 class SmartForm extends Component {
   constructor(props) {
     super(props);
-
+  
+    const components = {};
+    replaceableComponents.forEach(componentName => {
+      components[componentName] = 
+        getComponent(props.components[componentName] || getSetting(`forms.components.${componentName}`));
+    });
+    this.components = components;
+    
     this.state = {
       ...getInitialStateFromProps(props),
     };
@@ -870,14 +880,17 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
-
+    const FormGroup = this.components.FormGroup;
+    const FormSubmit = this.components.FormSubmit;
+    const FormErrors = this.components.FormErrors;
+  
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => { this.form = e; }}>
-          <Components.FormErrors errors={this.state.errors} />
+          <FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup
+            <FormGroup
               key={group.name}
               {...group}
               errors={this.state.errors}
@@ -895,7 +908,7 @@ class SmartForm extends Component {
 
           {this.props.repeatErrors && this.renderErrors()}
 
-          <Components.FormSubmit
+          <FormSubmit
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
             revertLabel={this.props.revertLabel}
@@ -913,6 +926,12 @@ class SmartForm extends Component {
     );
   }
 }
+
+export const formComponentsShape = PropTypes.shape({
+  FormErrors: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormGroup: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  FormSubmit: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+});
 
 SmartForm.propTypes = {
   // main options
@@ -941,12 +960,13 @@ SmartForm.propTypes = {
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
-  submitLabel: PropTypes.string,
-  cancelLabel: PropTypes.string,
-  revertLabel: PropTypes.string,
+  submitLabel: PropTypes.node,
+  cancelLabel: PropTypes.node,
+  revertLabel: PropTypes.node,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
-
+  components: formComponentsShape,
+  
   // callbacks
   submitCallback: PropTypes.func,
   successCallback: PropTypes.func,
@@ -964,6 +984,7 @@ SmartForm.defaultProps = {
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
+  components: {},
 };
 
 SmartForm.contextTypes = {
