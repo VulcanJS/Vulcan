@@ -17,15 +17,20 @@ import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Route } from 'react-router-dom';
-import { Switch } from 'react-router'
+import { Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
-const RouteWithLayout = ({layoutName, component, ...rest}) => 
-  <Route exact {...rest} render={(props) => {
-    const layout = layoutName ? Components[layoutName] : Components.Layout;
-    return React.createElement(layout, props, React.createElement(component, props));
-  }
-}/>
+const RouteWithLayout = ({ layoutName, component, ...rest }) => (
+  <Route
+    exact
+    {...rest}
+    render={props => {
+      const layout = layoutName ? Components[layoutName] : Components.Layout;
+      return React.createElement(layout, props, React.createElement(component, props));
+    }}
+  />
+);
 
 class App extends PureComponent {
   constructor(props) {
@@ -98,26 +103,28 @@ class App extends PureComponent {
   }
 
   render() {
-
     const routeNames = Object.keys(Routes);
-    console.log(Routes)
     return (
-      <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <div className={`locale-${this.getLocale()}`}>
-          <Components.HeadTags />
-          {/* <Components.RouterHook currentRoute={currentRoute} /> */}
+      <BrowserRouter>
+        <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
+          <div className={`locale-${this.getLocale()}`}>
+            <Components.HeadTags />
+            {/* <Components.RouterHook currentRoute={currentRoute} /> */}
             {this.props.currentUserLoading ? (
               <Components.Loading />
             ) : routeNames.length ? (
               <Switch>
-                {routeNames.map(key => <RouteWithLayout key={key} {...Routes[key]} />)}
+                {routeNames.map(key => (
+                  <RouteWithLayout key={key} {...Routes[key]} />
+                ))}
                 <Route component={Components.Error404} /> // TODO Apollo2: figure out why this is not working
               </Switch>
             ) : (
               <Components.Welcome />
             )}
-        </div>
-      </IntlProvider>
+          </div>
+        </IntlProvider>
+      </BrowserRouter>
     );
   }
 }
