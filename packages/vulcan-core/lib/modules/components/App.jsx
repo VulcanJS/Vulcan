@@ -1,4 +1,13 @@
-import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale, hasIntlFields } from 'meteor/vulcan:lib';
+import {
+  Components,
+  registerComponent,
+  getSetting,
+  Strings,
+  runCallbacks,
+  detectLocale,
+  hasIntlFields,
+  Routes,
+} from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
@@ -7,6 +16,16 @@ import withUpdate from '../containers/withUpdate.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
+import { Route } from 'react-router-dom';
+import { Switch } from 'react-router'
+
+// see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
+const RouteWithLayout = ({layoutName, component, ...rest}) => 
+  <Route exact {...rest} render={(props) => {
+    const layout = layoutName ? Components[layoutName] : Components.Layout;
+    return React.createElement(layout, props, React.createElement(component, props));
+  }
+}/>
 
 class App extends PureComponent {
   constructor(props) {
@@ -23,7 +42,7 @@ class App extends PureComponent {
     let userLocale = '';
     const { currentUser, cookies } = this.props;
     const availableLocales = Object.keys(Strings);
-    
+
     if (currentUser && currentUser.locale) {
       // 1. if user is logged in, check for their preferred locale
       userLocale = currentUser.locale;
@@ -36,14 +55,16 @@ class App extends PureComponent {
     }
     // if user locale is available, use it; else compare first two chars
     // of user locale with first two chars of available locales
-    const availableLocale = Strings[userLocale] ? userLocale : availableLocales.find(locale => locale.slice(0,2) === userLocale.slice(0,2));
+    const availableLocale = Strings[userLocale]
+      ? userLocale
+      : availableLocales.find(locale => locale.slice(0, 2) === userLocale.slice(0, 2));
 
     // 4. if user-defined locale is available, use it; else default to setting or `en-US`
     return availableLocale ? availableLocale : getSetting('locale', 'en-US');
   };
 
   getLocale = (truncate = false) => {
-    return truncate ? this.state.locale.slice(0,2) : this.state.locale;
+    return truncate ? this.state.locale.slice(0, 2) : this.state.locale;
   };
 
   setLocale = async locale => {
@@ -51,7 +72,7 @@ class App extends PureComponent {
     this.props.cookies.set('locale', locale);
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
-     await this.props.updateUser({ selector: { documentId: this.props.currentUser._id }, data: { locale }});
+      await this.props.updateUser({ selector: { documentId: this.props.currentUser._id }, data: { locale } });
     }
     moment.locale(locale);
     if (hasIntlFields) {
@@ -77,29 +98,24 @@ class App extends PureComponent {
   }
 
   render() {
-    const currentRoute = _.last(this.props.routes);
-    const LayoutComponent = currentRoute.layoutName
-      ? Components[currentRoute.layoutName]
-      : Components.Layout;
 
+    const routeNames = Object.keys(Routes);
+    console.log(Routes)
     return (
-      <IntlProvider
-        locale={this.getLocale()}
-        key={this.getLocale()}
-        messages={Strings[this.getLocale()]}
-      >
+      <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
         <div className={`locale-${this.getLocale()}`}>
           <Components.HeadTags />
-          <Components.RouterHook currentRoute={currentRoute} />
-          <LayoutComponent {...this.props} currentRoute={currentRoute}>
+          {/* <Components.RouterHook currentRoute={currentRoute} /> */}
             {this.props.currentUserLoading ? (
               <Components.Loading />
-            ) : this.props.children ? (
-              this.props.children
+            ) : routeNames.length ? (
+              <Switch>
+                {routeNames.map(key => <RouteWithLayout key={key} {...Routes[key]} />)}
+                <Route component={Components.Error404} /> // TODO Apollo2: figure out why this is not working
+              </Switch>
             ) : (
               <Components.Welcome />
             )}
-          </LayoutComponent>
         </div>
       </IntlProvider>
     );
@@ -121,7 +137,7 @@ App.displayName = 'App';
 const updateOptions = {
   collectionName: 'Users',
   fragmentName: 'UsersCurrent',
-}
+};
 
 registerComponent('App', App, withCurrentUser, [withUpdate, updateOptions], withApollo, withCookies);
 

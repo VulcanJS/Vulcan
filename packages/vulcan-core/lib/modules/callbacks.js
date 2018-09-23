@@ -13,9 +13,9 @@ import { addCallback, getActions } from 'meteor/vulcan:lib';
  * @param {Object} Apollo Client reference instantiated on the current connected client
  */
 function RouterClearMessages(unusedItem, nextRoute, store, apolloClient) {
-  store.dispatch(getActions().messages.clearSeen());
-  
-  return unusedItem;
+  // TODO Apollo2: clear error messages on route change
+  // store.dispatch(getActions().messages.clearSeen());
+  // return unusedItem;
 }
 
 addCallback('router.onUpdate', RouterClearMessages);
