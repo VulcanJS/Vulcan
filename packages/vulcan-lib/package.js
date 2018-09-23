@@ -40,6 +40,7 @@ Package.onUse(function(api) {
     'http',
     'email',
     'random',
+    'apollo',
 
     // Third-party packages
 

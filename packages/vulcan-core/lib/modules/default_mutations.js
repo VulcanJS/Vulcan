@@ -4,7 +4,7 @@ Default mutations
 
 */
 
-import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
+import { registerCallback, createMutator, updateMutator, deleteMutator, Utils, Connectors, getTypeName, getCollectionName, belongsToSet, addToSet, reorderSet, registerWatchedMutation, Collections } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
 
@@ -122,7 +122,42 @@ export function getDefaultMutations (options) {
           document,
         });
       },
+
     };
+
+    registerWatchedMutation('create', typeName, ({ mutation, query }) => {
+
+      const resolverName = Utils.camelCaseify(Utils.pluralize(typeName));
+
+      // get mongo selector and options objects based on current terms
+      const terms = query.variables.input.terms;
+      const collection = Collections.find(c => c.typeName === typeName);
+      const parameters = collection.getParameters(terms, /* apolloClient */);
+      const { selector, options } = parameters;
+      let results = query.result;
+      const document = mutation.result.data[`create${typeName}`].data;
+      
+      if (belongsToSet(document, selector)) {
+        if (!results[resolverName].results.find(item => item._id === document._id )) {
+          // make sure document hasn't been already added as this may be called several times
+          results[resolverName] = addToSet(results[resolverName], document);
+        }
+        results[resolverName] = reorderSet(results[resolverName], options.sort);
+      }
+
+      results[resolverName].__typename = `Multi${typeName}Output`;
+      
+      console.log('// createMovie')
+      console.log(mutation)
+      console.log(query)
+      console.log(collection);
+      console.log(parameters);
+      console.log(results)
+
+      return results;
+
+    });
+
     mutations.update = updateMutation;
     // OpenCRUD backwards compatibility
     mutations.edit = updateMutation;
