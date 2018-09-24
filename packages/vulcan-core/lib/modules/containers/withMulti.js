@@ -34,15 +34,11 @@ Terms object can have the following properties:
          
 */
 
-import React, { Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import update from 'immutability-helper';
 import { getSetting, Utils, multiClientTemplate } from 'meteor/vulcan:lib';
-import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
-import find from 'lodash/find';
 
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
@@ -107,18 +103,6 @@ export default function withMulti(options) {
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
-            reducer: (previousResults, action) => {
-              // see queryReducer function defined below
-              return queryReducer(
-                typeName,
-                previousResults,
-                action,
-                collection,
-                mergedTerms,
-                resolverName,
-                apolloClient
-              );
-            }
           };
 
           if (options.fetchPolicy) {
@@ -213,117 +197,3 @@ export default function withMulti(options) {
     )
   );
 }
-
-// define query reducer separately
-const queryReducer = (typeName, previousResults, action, collection, mergedTerms, resolverName, apolloClient) => {
-  // if collection has no mutations defined, just return previous results
-  if (!collection.options.mutations) {
-    return previousResults;
-  }
-
-  let newResults = previousResults;
-
-  // get mongo selector and options objects based on current terms
-  const result = collection.getParameters(mergedTerms, apolloClient);
-  const { selector, options } = result;
-
-  const mingoQuery = new Mingo.Query(selector);
-
-  // function to remove a document from a results object, used by edit and remove cases below
-  const removeFromResults = (data, document) => {
-    const listWithoutDocument = data[resolverName].results.filter(doc => doc._id !== document._id);
-    const currentTotalCount = data[resolverName].totalCount;
-    const newResults = update(data, {
-      [resolverName]: { $set: { results: listWithoutDocument, totalCount: currentTotalCount - 1 } }
-    });
-    return newResults;
-  };
-
-  // add document to a results object
-  const addToResults = (data, document) => {
-    const listWithDocument = [...data[resolverName].results, document];
-    const currentTotalCount = data[resolverName].totalCount;
-    const newResults = update(data, {
-      [resolverName]: { $set: { results: listWithDocument, totalCount: currentTotalCount + 1 } }
-    });
-    return newResults;
-  };
-
-  // reorder results according to a sort
-  const reorderResults = (data, sort) => {
-    const list = data[resolverName].results;
-    // const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
-    const convertedList = list;
-    const cursor = mingoQuery.find(convertedList);
-    const sortedList = cursor.sort(sort).all();
-    data[resolverName].results = sortedList;
-    return data;
-  };
-
-  // console.log('// withList reducer');
-  // console.log('terms: ', mergedTerms);
-  // console.log('selector: ', selector);
-  // console.log('options: ', options);
-  // console.log('previousResults: ', previousResults);
-  // console.log('action: ', action);
-
-  switch (action.operationName) {
-    case `create${typeName}`:
-      // if new document belongs to current list (based on view selector), add it
-      const newDocument = action.result.data[`create${typeName}`].data;
-      if (mingoQuery.test(newDocument)) {
-        if (!find(previousResults[resolverName].results, { _id: newDocument._id })) {
-          // make sure it hasn't been already added despite being a create mutation
-          // as this reducer may be called several times
-          newResults = addToResults(previousResults, newDocument);
-        }
-        newResults = reorderResults(newResults, options.sort);
-      }
-      // console.log('** new **')
-      // console.log('newDocument: ', newDocument)
-      // console.log('belongs to list: ', mingoQuery.test(newDocument))
-      break;
-
-    case `update${typeName}`:
-      const editedDocument = action.result.data[`update${typeName}`].data;
-      if (mingoQuery.test(editedDocument)) {
-        // edited document belongs to the list
-        if (!find(previousResults[resolverName].results, { _id: editedDocument._id })) {
-          // if document wasn't already in list, add it
-          newResults = addToResults(previousResults, editedDocument);
-        }
-        newResults = reorderResults(newResults, options.sort);
-      } else {
-        // if edited doesn't belong to current list anymore (based on view selector), remove it
-        newResults = removeFromResults(previousResults, editedDocument);
-      }
-      // console.log('** edit **')
-      // console.log('editedDocument: ', editedDocument)
-      // console.log('belongs to list: ', mingoQuery.test(editedDocument))
-      // console.log('exists in list: ', !!_.findWhere(previousResults[resolverName].results, {_id: editedDocument._id}))
-      break;
-
-    case `delete${typeName}`:
-      const removedDocument = action.result.data[`delete${typeName}`].data;
-      newResults = removeFromResults(previousResults, removedDocument);
-      // console.log('** remove **')
-      // console.log('removedDocument: ', removedDocument)
-      break;
-
-    default:
-      // console.log('** no action **')
-      return previousResults;
-  }
-
-  // console.log('newResults: ', newResults)
-  // console.log('\n\n')
-
-  // copy over arrays explicitely to ensure new sort is taken into account
-  return {
-    [resolverName]: {
-      results: [...newResults[resolverName].results],
-      totalCount: newResults[resolverName].totalCount,
-      __typename: `Multi${typeName}Output`
-    }
-  };
-};
