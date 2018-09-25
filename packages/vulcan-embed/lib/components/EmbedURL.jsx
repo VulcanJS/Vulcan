@@ -59,7 +59,7 @@ class EmbedURL extends Component {
         const result = await this.props.getEmbedData({ url });
 
         // uncomment for debug
-        console.log('Embedly Data', result);
+        // console.log('Embedly Data', result);
 
         // extract the relevant data, for easier consumption
         const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;
@@ -128,7 +128,7 @@ class EmbedURL extends Component {
     return (
       <div className="embedly-thumbnail">
         <div
-          style={{ width: `${Math.round(60 * this.getDimensions().ratio)}px`, height: `60px` }}
+          style={{ width: `${Math.round(60 * this.getDimensions().ratio)}px`, height: '60px' }}
           onClick={this.editThumbnail}
           className="embedly-thumbnail-placeholder"
         >

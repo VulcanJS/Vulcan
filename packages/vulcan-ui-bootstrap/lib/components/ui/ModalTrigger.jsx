@@ -3,41 +3,63 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 class ModalTrigger extends PureComponent {
-
   constructor() {
     super();
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
     };
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    this.setState({ modalIsOpen: true });
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({ modalIsOpen: false });
   }
 
   render() {
+    const {
+      trigger,
+      component,
+      children,
+      label,
+      size,
+      className,
+      dialogClassName,
+      title,
+      modalProps,
+      header,
+      footer,
+    } = this.props;
 
-    let triggerComponent = this.props.trigger || this.props.component;
-    triggerComponent = triggerComponent ? React.cloneElement(triggerComponent, { onClick: this.openModal }) : <a href="javascript:void(0)" onClick={this.openModal}>{this.props.label}</a>;
-    const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
+    let triggerComponent = trigger || component;
+    triggerComponent = triggerComponent ? (
+      React.cloneElement(triggerComponent, { onClick: this.openModal })
+    ) : (
+      <a href="javascript:void(0)" onClick={this.openModal}>
+        {label}
+      </a>
+    );
+    const childrenComponent = React.cloneElement(children, { closeModal: this.closeModal });
+    const headerComponent = header && React.cloneElement(header, { closeModal: this.closeModal });
+    const footerComponent = footer && React.cloneElement(footer, { closeModal: this.closeModal });
 
     return (
       <div className="modal-trigger">
         {triggerComponent}
         <Components.Modal
-          size={this.props.size}
-          className={this.props.className}
+          size={size}
+          className={className}
           show={this.state.modalIsOpen}
           onHide={this.closeModal}
-          dialogClassName={this.props.dialogClassName}
-          title={this.props.title}
-          {...this.props.modalProps}
+          dialogClassName={dialogClassName}
+          title={title}
+          header={headerComponent}
+          footer={footerComponent}
+          {...modalProps}
         >
           {childrenComponent}
         </Components.Modal>
@@ -53,7 +75,7 @@ ModalTrigger.propTypes = {
   trigger: PropTypes.object,
   size: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-}
+};
 
 registerComponent('ModalTrigger', ModalTrigger);
 

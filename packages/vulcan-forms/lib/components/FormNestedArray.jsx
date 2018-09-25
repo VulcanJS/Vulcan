@@ -2,48 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
-const FormNestedItem = ({ nestedFields, name, path, removeItem, itemIndex, ...props }, { errors }) => {
-  return (
-    <div className="form-nested-item">
-      <div className="form-nested-item-inner">
-        {nestedFields.map((field, i) => {
-          return (
-            <Components.FormComponent
-              key={i}
-              {...props}
-              {...field}
-              path={`${path}.${field.name}`}
-              itemIndex={itemIndex}
-            />
-          );
-        })}
-      </div>
-      <div className="form-nested-item-remove">
-        <Components.Button
-          className="form-nested-button"
-          variant="danger"
-          size="small"
-          onClick={() => {
-            removeItem(name);
-          }}
-        >
-          <Components.IconRemove height={12} width={12} />
-        </Components.Button>
-      </div>
-      <div className="form-nested-item-deleted-overlay" />
-    </div>
-  );
-};
+class FormNestedArray extends PureComponent {
+  getCurrentValue() {
+    return this.props.value || []
+  }
 
-FormNestedItem.contextTypes = {
-  errors: PropTypes.array,
-};
-
-registerComponent('FormNestedItem', FormNestedItem);
-
-class FormNested extends PureComponent {
   addItem = () => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${this.props.value.length}`]: {} });
+    const value = this.getCurrentValue()
+    this.props.updateCurrentValues({ [`${this.props.path}.${value.length}`]: {} }, { mode: 'merge'});
   };
 
   removeItem = index => {
@@ -61,37 +27,51 @@ class FormNested extends PureComponent {
   };
 
   render() {
+    const value = this.getCurrentValue()
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
+    const { errors, path } = this.props;
+    // only keep errors specific to the nested array (and not its subfields)
+    const nestedArrayErrors = errors.filter(error => error.path && error.path === path);
+    const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
+
     return (
-      <div className="form-group row form-nested">
+      <div className={`form-group row form-nested ${hasErrors ? 'input-error': ''}`}>
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          {this.props.value &&
-            this.props.value.map(
-              (subDocument, i) =>
-                !this.isDeleted(i) && (
-                  <FormNestedItem
-                    {...properties}
-                    key={i}
-                    itemIndex={i}
-                    path={`${this.props.path}.${i}`}
-                    removeItem={() => {
-                      this.removeItem(i);
-                    }}
-                  />
-                )
-            )}
+          {value.map(
+            (subDocument, i) =>
+              !this.isDeleted(i) && (
+                <Components.FormNestedItem
+                  {...properties}
+                  key={i}
+                  itemIndex={i}
+                  path={`${this.props.path}.${i}`}
+                  removeItem={() => {
+                    this.removeItem(i);
+                  }}
+                />
+              )
+          )}
           <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
           </Components.Button>
+          {hasErrors ? <Components.FieldErrors errors={nestedArrayErrors} /> : null}
         </div>
       </div>
     );
   }
 }
 
-registerComponent('FormNested', FormNested);
+FormNestedArray.propTypes = {
+  currentValues: PropTypes.object,
+  path: PropTypes.string,
+  label: PropTypes.string
+};
+
+module.exports = FormNestedArray
+
+registerComponent('FormNestedArray', FormNestedArray);
 
 const IconAdd = ({ width = 24, height = 24 }) => (
   <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">

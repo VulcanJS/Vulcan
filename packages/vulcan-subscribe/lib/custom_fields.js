@@ -1,4 +1,4 @@
-import Users from "meteor/vulcan:users";
+import Users from 'meteor/vulcan:users';
 
 // note: leverage weak dependencies on packages
 const Posts = Package['vulcan:posts'] ? Package['vulcan:posts'].default : null;

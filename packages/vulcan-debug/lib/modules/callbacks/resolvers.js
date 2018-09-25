@@ -2,25 +2,14 @@ import { CallbackHooks } from 'meteor/vulcan:lib';
 
 const resolvers = {
 
-  list: {
-
-    name: 'CallbacksList',
+  multi: {
 
     resolver(root, {terms = {}}, context, info) {
-      return CallbackHooks;
+      return { results: CallbackHooks, totalCount: CallbackHooks.length };
     },
 
   },
 
-  total: {
-    
-    name: 'CallbacksTotal',
-    
-    resolver(root, {terms = {}}, context) {
-      return CallbackHooks.length;
-    },
-  
-  }
 };
 
 export default resolvers;

@@ -13,7 +13,7 @@ class AccountsVerifyEmail extends PureComponent {
       error: null
     }
   }
-  
+
   componentDidMount() {
     const token = this.props.params.token;
     Accounts.verifyEmail(token, (verifyEmailResult) => {
@@ -27,7 +27,7 @@ class AccountsVerifyEmail extends PureComponent {
           pending: false,
           error: null
         });
-        
+
         // Reset the Apollo cache. Unfortunately there isn't
         // really a more granular way to do this (see
         // https://github.com/apollographql/apollo-feature-requests/issues/4 ).
@@ -40,7 +40,7 @@ class AccountsVerifyEmail extends PureComponent {
       }
     });
   }
-  
+
   render() {
     if(this.state.pending) {
       return <Components.Loading />

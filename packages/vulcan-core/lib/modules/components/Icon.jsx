@@ -9,7 +9,7 @@ const Icon = ({ name, iconClass, onClick }) => {
   return <i onClick={onClick} className={c} aria-hidden="true"></i>;
 }
 
-Icon.displayName = "Icon";
+Icon.displayName = 'Icon';
 
 registerComponent('Icon', Icon);
 

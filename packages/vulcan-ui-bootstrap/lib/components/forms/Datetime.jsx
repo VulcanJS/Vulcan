@@ -33,7 +33,7 @@ class DateTime extends PureComponent {
             value={date}
             // newDate argument is a Moment object given by react-datetime
             onChange={newDate => this.updateDate(newDate._d)}
-            format={"x"}
+            format={'x'}
             inputProps={{name: this.props.name}}
           />
         </div>

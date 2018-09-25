@@ -11,7 +11,7 @@ const Loading = props => {
   )
 }
 
-Loading.displayName = "Loading";
+Loading.displayName = 'Loading';
 
 registerComponent('Loading', Loading);
 

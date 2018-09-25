@@ -2,7 +2,7 @@ import Vulcan from './config.js';
 import flatten from 'flat';
 
 const getNestedProperty = function (obj, desc) {
-  var arr = desc.split(".");
+  var arr = desc.split('.');
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
 };
@@ -100,7 +100,7 @@ export const getSetting = (settingName, settingDefault) => {
   } else {
     // look only in public
     const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
-    setting = publicSetting || defaultValue;
+    setting = typeof publicSetting !== 'undefined' ? publicSetting : defaultValue;
   }
 
   // Settings[settingName] = {...Settings[settingName], settingValue: setting};

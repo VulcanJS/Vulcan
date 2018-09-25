@@ -58,10 +58,10 @@ class FormGroup extends PureComponent {
   renderHeading() {
     const { classes, label } = this.props
     return (
-      <div className={classes.formSectionHeading} onClick={this.toggle}>
-        <h3 className="form-section-heading-title">{ label }</h3>
-        <span>
-          {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
+      <div className="form-section-heading" onClick={this.toggle}>
+        <h3 className="form-section-heading-title">{this.props.label}</h3>
+        <span className="form-section-heading-toggle">
+          {this.state.collapsed ? <Components.IconRight height={16} width={16} /> : <Components.IconDown height={16} width={16} />}
         </span>
       </div>
     );
@@ -84,6 +84,7 @@ class FormGroup extends PureComponent {
             {this.props.fields.map(field => (
               <Components.FormComponent
                 key={field.name}
+                disabled={this.props.disabled}
                 {...field}
                 errors={this.props.errors}
                 throwError={this.props.throwError}
@@ -119,6 +120,7 @@ FormGroup.propTypes = {
   currentUser: PropTypes.object,
 };
 
+module.exports = FormGroup
 registerComponent('FormGroup', FormGroup, withStyles(styles, {name: "FormGroup"}));
 
 const IconRight = ({ width = 24, height = 24 }) => (

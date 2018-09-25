@@ -147,7 +147,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
        
        // permission check
        if (!Users.canDo(context.currentUser, `${collectionName}.${action}`)) {
-         throw new Error(Utils.encodeIntlError({id: "app.noPermission"}));
+         throw new Error(Utils.encodeIntlError({id: 'app.noPermission'}));
        }
        
        // do the actual subscription action

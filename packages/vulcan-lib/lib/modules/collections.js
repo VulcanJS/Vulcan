@@ -1,11 +1,13 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addGraphQLQuery, addGraphQLMutation, addGraphQLResolvers, addToGraphQLContext } from './graphql.js';
+import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
-import { runCallbacks } from './callbacks.js';
+import { runCallbacks, runCallbacksAsync } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
+import { validateIntlField, getIntlString, isIntlField } from './intl';
+
 const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
 
@@ -16,7 +18,13 @@ export let hasIntlFields = false;
 
 export const Collections = [];
 
-export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName);
+export const getCollection = name => Collections.find(({ options: { collectionName }}) => name === collectionName || name === collectionName.toLowerCase());
+
+// TODO: find more reliable way to get collection name from type name?
+export const getCollectionName = typeName => Utils.pluralize(typeName);
+
+// TODO: find more reliable way to get type name from collection name?
+export const getTypeName = collectionName => collectionName.slice(0,-1);
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
@@ -29,7 +37,7 @@ Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
   } else {
     this.simpleSchema().extend(schemaOrFields)
   }
-}
+};
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
@@ -97,11 +105,11 @@ Mongo.Collection.prototype.aggregate = function (pipelines, options) {
 Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
-  if (self._transform && ! self._helpers)
-    throw new Meteor.Error("Can't apply helpers to '" +
-      self._name + "' a transform function already exists!");
+  if (self._transform && !self._helpers)
+    throw new Meteor.Error('Can\'t apply helpers to \'' +
+      self._name + '\' a transform function already exists!');
 
-  if (! self._helpers) {
+  if (!self._helpers) {
     self._helpers = function Document(doc) { return _.extend(this, doc); };
     self._transform = function(doc) {
       return new self._helpers(doc);
@@ -115,7 +123,7 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
 export const createCollection = options => {
 
-  const {collectionName, typeName, schema, resolvers, mutations, generateGraphQLSchema = true, dbCollectionName } = options;
+  const { typeName, collectionName = getCollectionName(typeName), schema, generateGraphQLSchema = true, dbCollectionName } = options;
 
   // initialize new Mongo collection
   const collection = collectionName === 'Users' && Meteor.users ? Meteor.users : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
@@ -123,8 +131,15 @@ export const createCollection = options => {
   // decorate collection with options
   collection.options = options;
 
-  // add typeName
+  // add typeName if missing
   collection.typeName = typeName;
+  collection.options.typeName = typeName;
+  collection.options.singleResolverName = Utils.camelCaseify(typeName);
+  collection.options.multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
+
+  // add collectionName if missing
+  collection.collectionName = collectionName;
+  collection.options.collectionName = collectionName;
 
   // add views
   collection.views = [];
@@ -132,23 +147,36 @@ export const createCollection = options => {
   // generate foo_intl fields
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
-    if (fieldSchema.type && fieldSchema.type.name === 'IntlString') {
+    if (isIntlField(fieldSchema)) {
 
       // we have at least one intl field
       hasIntlFields = true;
 
-      // make non-intl field optional
-      schema[fieldName].optional = true;
+      // remove `intl` to avoid treating new _intl field as a field to internationalize
+      // eslint-disable-next-line no-unused-vars
+      const { intl, ...propertiesToCopy } = schema[fieldName];
 
       schema[`${fieldName}_intl`] = {
-        ...schema[fieldName], // copy properties from regular field
+        ...propertiesToCopy, // copy properties from regular field
         hidden: true,
         type: Array,
-      }
+        isIntlData: true,
+      };
+
+      delete schema[`${fieldName}_intl`].intl;
+
       schema[`${fieldName}_intl.$`] = {
-        type: Object,
-        blackbox: true,
+        type: getIntlString(),
+      };
+
+      // if original field is required, enable custom validation function instead of `optional` property
+      if (!schema[fieldName].optional) {
+        schema[`${fieldName}_intl`].optional = true;
+        schema[`${fieldName}_intl`].custom = validateIntlField;
       }
+
+      // make original non-intl field optional
+      schema[fieldName].optional = true;
     }
   });
 
@@ -163,107 +191,12 @@ export const createCollection = options => {
   addToGraphQLContext(context);
 
   if (generateGraphQLSchema){
-
     // add collection to list of dynamically generated GraphQL schemas
     addGraphQLCollection(collection);
-
-    // ------------------------------------- Queries -------------------------------- //
-
-    if (resolvers) {
-      const queryResolvers = {};
-      // list
-      if (resolvers.list) { // e.g. ""
-        addGraphQLQuery(
-`${resolvers.list.name}(
-    # A JSON object that contains the query terms used to fetch data
-    terms: JSON,
-    # How much to offset the results by
-    offset: Int,
-    # A limit for the query
-    limit: Int,
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): [${typeName}]`, resolvers.list.description);
-        queryResolvers[resolvers.list.name] = resolvers.list.resolver.bind(resolvers.list);
-      }
-      // single
-      if (resolvers.single) {
-        addGraphQLQuery(
-`${resolvers.single.name}(
-    # The document's unique ID
-    documentId: String,
-    # A unique slug identifying the document
-    slug: String,
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): ${typeName}`, resolvers.single.description);
-        queryResolvers[resolvers.single.name] = resolvers.single.resolver.bind(resolvers.single);
-      }
-      // total
-      if (resolvers.total) {
-        addGraphQLQuery(
-`${resolvers.total.name}(
-    # A JSON object that contains the query terms used to fetch data
-    terms: JSON,
-    # Whether to enable caching for this query
-    enableCache: Boolean
-  ): Int`, resolvers.total.description);
-        queryResolvers[resolvers.total.name] = resolvers.total.resolver;
-      }
-      addGraphQLResolvers({ Query: { ...queryResolvers } });
-    }
-
-    // ------------------------------------- Mutations -------------------------------- //
-
-    if (mutations) {
-      const mutationResolvers = {};
-      // new
-      if (mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-        addGraphQLMutation(
-`${mutations.new.name}(
-    # The document to insert
-    document: ${collectionName}Input
-  ) : ${typeName}`, mutations.new.description);
-        mutationResolvers[mutations.new.name] = mutations.new.mutation.bind(mutations.new);
-      }
-      // edit
-      if (mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-        addGraphQLMutation(
-`${mutations.edit.name}(
-    # The unique ID of the document to edit
-    documentId: String,
-    # An array of fields to insert
-    set: ${collectionName}Input,
-    # An array of fields to delete
-    unset: ${collectionName}Unset
-  ) : ${typeName}`, mutations.edit.description);
-        mutationResolvers[mutations.edit.name] = mutations.edit.mutation.bind(mutations.edit);
-      }
-      // upsert
-      if (mutations.upsert) { // e.g. "moviesUpsert(search: moviesInput, set: moviesInput, unset: moviesUnset) : Movie"
-        addGraphQLMutation(
-          `${mutations.upsert.name}(
-    # The document to search for (or partial document)
-    search: JSON,
-    # An array of fields to insert
-    set: ${collectionName}Input,
-    # An array of fields to delete
-    unset: ${collectionName}Unset
-  ) : ${typeName}`, mutations.upsert.description);
-        mutationResolvers[mutations.upsert.name] = mutations.upsert.mutation.bind(mutations.upsert);
-      }
-      // remove
-      if (mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-        addGraphQLMutation(
-`${mutations.remove.name}(
-    # The unique ID of the document to delete
-    documentId: String
-  ) : ${typeName}`, mutations.remove.description);
-        mutationResolvers[mutations.remove.name] = mutations.remove.mutation.bind(mutations.remove);
-      }
-      addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
-    }
   }
+
+  runCallbacksAsync({ name: '*.collection', properties: { options } });
+  runCallbacksAsync({ name: `${collectionName}.collection`, properties: { options } });
 
   // ------------------------------------- Default Fragment -------------------------------- //
 
@@ -292,14 +225,20 @@ export const createCollection = options => {
     }
 
     // iterate over posts.parameters callbacks
+    parameters = runCallbacks(`${typeName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient, context);
+    // OpenCRUD backwards compatibility
     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, _.clone(terms), apolloClient, context);
 
     if (Meteor.isClient) {
+      parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.client`, parameters, _.clone(terms), apolloClient);
+      // OpenCRUD backwards compatibility
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.client`, parameters, _.clone(terms), apolloClient);
     }
 
     // note: check that context exists to avoid calling this from withList during SSR
     if (Meteor.isServer && context) {
+      parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
+      // OpenCRUD backwards compatibility
       parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
     }
 
@@ -332,8 +271,8 @@ export const createCollection = options => {
     if (terms.query) {
 
       const query = escapeStringRegexp(terms.query);
-
-      const searchableFieldNames = _.filter(_.keys(schema), fieldName => schema[fieldName].searchable);
+      const currentSchema = collection.simpleSchema()._schema;
+      const searchableFieldNames = _.filter(_.keys(currentSchema), fieldName => currentSchema[fieldName].searchable);
       if (searchableFieldNames.length) {
         parameters = Utils.deepExtend(true, parameters, {
           selector: {
@@ -351,9 +290,9 @@ export const createCollection = options => {
     // console.log(parameters);
 
     return parameters;
-  }
+  };
 
   Collections.push(collection);
 
   return collection;
-}
+};

@@ -29,4 +29,6 @@ export * from './startup.js';
 export * from './errors.js';
 export * from './intl.js';
 export * from './detect_locale.js';
+export * from './graphql_templates.js';
+export * from './validation.js';
 // export * from './resolvers.js';

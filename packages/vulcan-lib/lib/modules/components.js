@@ -26,19 +26,22 @@ export const ComponentsTable = {} // storage for infos about components
  * }
  *
  */
-export const registerComponent = (name, rawComponent, ...hocs) => {
-  // console.log('// registering component');
-  // console.log(name);
-  // console.log('raw component', rawComponent);
-  // console.log('higher order components', hocs); 
-
+export function registerComponent(name, rawComponent, ...hocs) {
+  // support single-argument syntax
+  if (typeof arguments[0] === 'object') {
+    // note: cannot use `const` because name, components, hocs are already defined
+    // as arguments so destructuring cannot work
+    // eslint-disable-next-line no-redeclare
+    var { name, component, hocs = [] } = arguments[0];
+    rawComponent = component
+  }
   // store the component in the table
   ComponentsTable[name] = {
     name,
     rawComponent,
     hocs,
-  };
-};
+  }
+}
 
 /**
  * Get a component registered with registerComponent(name, component, ...hocs).
@@ -51,8 +54,16 @@ export const getComponent = (name) => {
   if (!component) {
     throw new Error(`Component ${name} not registered.`)
   }
-  const hocs = component.hocs.map(hoc => Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc);
-  return compose(...hocs)(component.rawComponent)
+  if (component.hocs) {
+    const hocs = component.hocs.map(hoc => {
+      if(!Array.isArray(hoc)) return hoc;
+      const [actualHoc, ...args] = hoc;
+      return actualHoc(...args);
+    });
+    return compose(...hocs)(component.rawComponent);
+  } else {
+    return component.rawComponent;
+  }
 };
 
 /**
@@ -88,27 +99,40 @@ export const populateComponentsApp = () => {
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *
  * @param {String} name The name of the component to register.
- * @param {React Component} rawComponent Interchangeable/extendable component.
- * @param {...Function} hocs The HOCs to compose with the raw component.
+ * @param {React Component} newComponent Interchangeable/extendable component.
+ * @param {...Function} newHocs The HOCs to compose with the raw component.
  * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export const replaceComponent = (name, newComponent, ...newHocs) => {
+ export function replaceComponent(name, newComponent, ...newHocs) {
+
+  // support single argument syntax
+  if (typeof arguments[0] === 'object') {
+    // eslint-disable-next-line no-redeclare
+    var { name, component, hocs = [] } = arguments[0];
+    newComponent = component;
+    newHocs = hocs;
+  }
+
   const previousComponent = ComponentsTable[name];
-  
-  // xxx : throw an error if the previous component doesn't exist
+  const previousHocs = previousComponent && previousComponent.hocs || [];
 
-  // console.log('// replacing component');
-  // console.log(name);
-  // console.log(newComponent);
-  // console.log('new hocs', newHocs);
-  // console.log('previous hocs', previousComponent.hocs);
+  if (!previousComponent) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Trying to replace non-registered component ${name}. The component is ` +
+      'being registered. If you were trying to replace a component defined by ' +
+      'another package, make sure that you haven\'t misspelled the name. Check ' +
+      'also if the original component is still being registered or that it ' +
+      'hasn\'t been renamed.',
+    );
+  }
 
-  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
-};
+  return registerComponent(name, newComponent, ...newHocs, ...previousHocs);  
+}
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
@@ -136,4 +160,32 @@ export const instantiateComponent = (component, props) => {
   }
 };
 
-
+/**
+ * Creates a component that will render the registered component with the given name.
+ *
+ * This function  may be useful when in need for some registered component, but in contexts
+ * where they have not yet been initialized, for example at compile time execution. In other
+ * words, when using `Components.ComponentName` is not allowed (because it has not yet been
+ * populated, hence would be `undefined`), then `delayedComponent('ComponentName')` can be
+ * used instead.
+ *
+ * @example Create a container for a registered component
+ *  // SomeContainer.js
+ *  import compose from 'recompose/compose';
+ *  import { delayedComponent } from 'meteor/vulcan:core';
+ *
+ *  export default compose(
+ *    // ...some hocs with container logic
+ *  )(delayedComponent('ComponentName')); // cannot use Components.ComponentName in this context!
+ *
+ * @example {@link dynamicLoader}
+ * @param {String} name Component name
+ * @return {Function}
+ *  Functional component that will render the given registered component
+ */
+export const delayedComponent = name => {
+  return props => {
+    const Component = Components[name] || null;
+    return Component && <Component {...props} />;
+  };
+};

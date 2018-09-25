@@ -3,17 +3,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/lib/Modal'
 
-const BootstrapModal = ({ children, size, show, onHide, title, showCloseButton, footerContent, ...rest }) => {
+const BootstrapModal = ({ children, size, show, onHide, title, showCloseButton, header, footer, ...rest }) => {
 
-  const header = title ? <Modal.Header closeButton={showCloseButton}><Modal.Title>{title}</Modal.Title></Modal.Header> : showCloseButton ? <Modal.Header closeButton={showCloseButton}></Modal.Header> : null;
-  const footer = footerContent ? <Modal.Footer>{footerContent}</Modal.Footer> : null;
+  let headerComponent;
+  if (header) {
+    headerComponent = <Modal.Header>{header}</Modal.Header>;
+  } else if (title) {
+    headerComponent = <Modal.Header closeButton={showCloseButton}><Modal.Title>{title}</Modal.Title></Modal.Header>;
+  } else {
+    headerComponent = <Modal.Header closeButton={showCloseButton}></Modal.Header>;
+  }
+
+  const footerComonent = footer ? <Modal.Footer>{footer}</Modal.Footer> : null;
+  
   return (
     <Modal bsSize={size} show={show} onHide={onHide} {...rest}>
-      {header}
+      {headerComponent}
       <Modal.Body>
         {children}
       </Modal.Body>
-      {footer}
+      {footerComonent}
     </Modal>
   );
 };
@@ -24,7 +33,8 @@ BootstrapModal.propTypes = {
   showCloseButton: PropTypes.bool,
   onHide: PropTypes.func,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  footerContent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  header: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  footer: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 }
 
 BootstrapModal.defaultProps = {

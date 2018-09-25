@@ -59,7 +59,7 @@ class IntlDirective extends SchemaDirectiveVisitor {
 
 addGraphQLDirective({ intl: IntlDirective });
 
-addGraphQLSchema(`directive @intl on FIELD_DEFINITION`);
+addGraphQLSchema('directive @intl on FIELD_DEFINITION');
 
 /*
 
@@ -69,7 +69,7 @@ Migration function
 const migrateIntlFields = async (defaultLocale) => {
 
   if (!defaultLocale) {
-    throw new Error(`Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))`);
+    throw new Error('Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields(\'en\'))');
   }
   
   Collections.forEach(async collection => {
@@ -81,7 +81,7 @@ const migrateIntlFields = async (defaultLocale) => {
     if (intlFieldsNames.length) {
       console.log(`### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(', ')} ###\n`); // eslint-disable-line no-console
 
-      const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
+      // const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
 
       // find all documents with one or more unmigrated intl fields
       const selector = { 
@@ -97,7 +97,7 @@ const migrateIntlFields = async (defaultLocale) => {
       if (documentsToMigrate.length) {
 
         console.log(`-> found ${documentsToMigrate.length} documents to migrate \n`); // eslint-disable-line no-console
-        documentsToMigrate.forEach(doc => {
+        for (const doc of documentsToMigrate) {
 
           console.log(`// Migrating document ${doc._id}`); // eslint-disable-line no-console
           const modifier = { $push: {}};
@@ -112,14 +112,15 @@ const migrateIntlFields = async (defaultLocale) => {
 
           if (!_.isEmpty(modifier.$push)) {
             // update document
-            const n = Connectors.update(collection, {_id: doc._id}, modifier);
+            // eslint-disable-next-line no-await-in-loop
+            const n = await Connectors.update(collection, {_id: doc._id}, modifier);
             console.log(`-> migrated ${n} documents \n`); // eslint-disable-line no-console
           }
           console.log('\n'); // eslint-disable-line no-console
 
-        });
+        }
       } else {
-        console.log (`-> found no documents to migrate.`); // eslint-disable-line no-console
+        console.log ('-> found no documents to migrate.'); // eslint-disable-line no-console
       }
 
     }

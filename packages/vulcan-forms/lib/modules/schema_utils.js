@@ -7,7 +7,7 @@ If flatten = true, will create a flat object instead of nested tree
 export const convertSchema = (schema, flatten = false) => {
   if (schema._schema) {
     let jsonSchema = {};
-    
+
     Object.keys(schema._schema).forEach(fieldName => {
       // exclude array fields
       if (fieldName.includes('$')) {
@@ -17,7 +17,7 @@ export const convertSchema = (schema, flatten = false) => {
       // extract schema
       jsonSchema[fieldName] = getFieldSchema(fieldName, schema);
 
-      // check for existence of nested schema on corresponding array field
+      // check for existence of nested schema
       const subSchema = getNestedSchema(fieldName, schema);
       // if nested schema exists, call convertSchema recursively
       if (subSchema) {
@@ -51,15 +51,43 @@ export const getFieldSchema = (fieldName, schema) => {
   return fieldSchema;
 };
 
+
+// type is an array due to the possibility of using SimpleSchema.oneOf
+// right now we support only fields with one type
+export const getSchemaType = schema => schema.type.definitions[0].type
+const getArrayNestedSchema = (fieldName, schema) => {
+  const arrayItemSchema = schema._schema[`${fieldName}.$`];
+  const nestedSchema = arrayItemSchema && getSchemaType(arrayItemSchema)
+  return nestedSchema
+}
+// nested object fields type is of the form "type: new SimpleSchema({...})"
+// so they should possess a "_schema" prop
+const isNestedSchemaField = (fieldSchema) => {
+  const fieldType = getSchemaType(fieldSchema)
+  //console.log('fieldType', typeof fieldType, fieldType._schema)
+  return fieldType && !!fieldType._schema
+}
+const getObjectNestedSchema = (fieldName, schema) => {
+  const fieldSchema = schema._schema[fieldName]
+  if (!isNestedSchemaField(fieldSchema)) return null
+  const nestedSchema = fieldSchema && getSchemaType(fieldSchema)
+  return nestedSchema
+}
 /*
 
 Given an array field, get its nested schema
 
 */
 export const getNestedSchema = (fieldName, schema) => {
-  const arrayItemSchema = schema._schema[`${fieldName}.$`];
-  const nestedSchema = arrayItemSchema && arrayItemSchema.type.definitions[0].type;
-  return nestedSchema;
+  const arrayItemSchema = getArrayNestedSchema(fieldName, schema)
+  if (!arrayItemSchema) {
+    // look for an object schema
+    const objectItemSchema = getObjectNestedSchema(fieldName, schema)
+    // no schema was found
+    if (!objectItemSchema) return null
+    return objectItemSchema
+  }
+  return arrayItemSchema
 };
 
 export const schemaProperties = [
@@ -93,9 +121,12 @@ export const schemaProperties = [
   'onInsert', // field insert callback
   'onEdit', // field edit callback
   'onRemove', // field remove callback
-  'viewableBy',
-  'insertableBy',
-  'editableBy',
+  'canRead',
+  'canCreate',
+  'canUpdate',
+  'viewableBy', // OpenCRUD backwards compatibility
+  'insertableBy', // OpenCRUD backwards compatibility
+  'editableBy', // OpenCRUD backwards compatibility
   'resolveAs',
   'searchable',
   'description',
@@ -105,6 +136,7 @@ export const schemaProperties = [
   'options',
   'query',
   'fieldProperties',
+  'intl',
 ];
 
 export const formProperties = [

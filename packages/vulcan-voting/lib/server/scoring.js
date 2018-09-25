@@ -104,7 +104,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         score: 1,
         newScore: {
           $divide: [
-            "$baseScore",
+            '$baseScore',
               {
                 $pow: [
                   {
@@ -112,7 +112,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
                       {
                         $divide: [
                           {
-                            $subtract: [new Date(), "$postedAt"] // Age in miliseconds
+                            $subtract: [new Date(), '$postedAt'] // Age in miliseconds
                           },
                           60 * 60 * 1000
                         ]
@@ -135,7 +135,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         newScore: 1,
         scoreDiffSignificant: {
           $gt: [
-            {$abs: {$subtract: ["$score", "$newScore"]}},
+            {$abs: {$subtract: ['$score', '$newScore']}},
             x
           ]
         },
@@ -143,7 +143,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           $gt: [
             {$divide: [
               {
-                $subtract: [new Date(), "$postedAt"] // Difference in miliseconds
+                $subtract: [new Date(), '$postedAt'] // Difference in miliseconds
               },
               60 * 60 * 1000 //Difference in hours
             ]},

@@ -23,4 +23,4 @@ const siteResolvers = {
 
 addGraphQLResolvers(siteResolvers);
 
-addGraphQLQuery(`SiteData: Site`);
+addGraphQLQuery('SiteData: Site');
