@@ -941,9 +941,9 @@ SmartForm.propTypes = {
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
-  submitLabel: PropTypes.string,
-  cancelLabel: PropTypes.string,
-  revertLabel: PropTypes.string,
+  submitLabel: PropTypes.node,
+  cancelLabel: PropTypes.node,
+  revertLabel: PropTypes.node,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
 
