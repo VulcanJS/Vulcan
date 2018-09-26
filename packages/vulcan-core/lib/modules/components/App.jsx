@@ -16,14 +16,16 @@ import withUpdate from '../containers/withUpdate.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
-import { Route } from 'react-router-dom';
-import { Switch } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, ...rest }) => (
   <Route
-    exact
+    // NOTE: Switch ignores the "exact" prop of components that 
+    // are not its direct children
+    // Since the render tree is now Switch > RouteWithLayout > Route
+    // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
+    //exact 
     {...rest}
     render={props => {
       const layout = layoutName ? Components[layoutName] : Components.Layout;
@@ -115,13 +117,16 @@ class App extends PureComponent {
             ) : routeNames.length ? (
               <Switch>
                 {routeNames.map(key => (
-                  <RouteWithLayout key={key} {...Routes[key]} />
+                  // NOTE: if we want the exact props to be taken into account
+                  // we have to pass it to the RouteWithLayout, not the underlying Route,
+                  // because it is the direct child of Switch
+                  <RouteWithLayout exact key={key} {...Routes[key]} />
                 ))}
                 <Route component={Components.Error404} /> // TODO Apollo2: figure out why this is not working
               </Switch>
             ) : (
-              <Components.Welcome />
-            )}
+                  <Components.Welcome />
+                )}
           </div>
         </IntlProvider>
       </BrowserRouter>
