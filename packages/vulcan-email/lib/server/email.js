@@ -58,13 +58,13 @@ VulcanEmail.generateTextVersion = html => {
   });
 };
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   if (typeof to === 'object') {
     // eslint-disable-next-line no-redeclare
-    var { to, cc, bcc, replyTo, subject, html, text, throwErrors } = to;
+    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers } = to;
   }
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
@@ -83,6 +83,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
     bcc: bcc,
     replyTo: replyTo,
     subject: subject,
+    headers: headers,
     text: text,
     html: html,
   };
@@ -93,6 +94,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
     console.log('cc: ' + cc); // eslint-disable-line
     console.log('bcc: ' + bcc); // eslint-disable-line
     console.log('replyTo: ' + replyTo); // eslint-disable-line
+    console.log('headers: ' + JSON.stringify(headers)); // eslint-disable-line
     // console.log('html: '+html);
     // console.log('text: '+text);
 
@@ -110,6 +112,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
     console.log('cc: ' + cc); // eslint-disable-line
     console.log('bcc: ' + bcc); // eslint-disable-line
     console.log('replyTo: ' + replyTo); // eslint-disable-line
+    console.log('headers: ' + JSON.stringify(headers)); // eslint-disable-line
   }
 
   return email;
@@ -132,9 +135,9 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   return { data, subject, html };
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale') }) => {
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers }) => {
   const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html });
+  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers });
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));
