@@ -1,6 +1,6 @@
 import React from 'react';
 import { registerComponent, Components, Routes } from 'meteor/vulcan:lib';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const RoutePath = ({ document }) =>
   <Link to={document.path}>{document.path}</Link>

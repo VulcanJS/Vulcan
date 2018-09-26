@@ -10,7 +10,7 @@
  * Example
  * @see https://hackernoon.com/storing-local-state-in-react-with-apollo-link-state-738f6ca45569
  */
-import { withClientState } from 'apollo-state-link'
+import { withClientState } from 'apollo-link-state'
 import cache from '../cache'
 
 const createStateLink = ({ resolvers, defaults }) => {
