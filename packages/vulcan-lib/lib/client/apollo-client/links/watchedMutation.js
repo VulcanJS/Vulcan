@@ -5,7 +5,7 @@
  */
 import WatchedMutationLink from 'apollo-link-watched-mutation';
 import { WatchedMutations } from '../updates';
-import cache from '../updates'
+import cache from '../cache'
 const watchedMutationLink = new WatchedMutationLink(cache, WatchedMutations);
 
 export default watchedMutationLink
