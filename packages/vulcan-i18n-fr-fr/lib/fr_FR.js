@@ -33,7 +33,7 @@ addStrings('fr', {
   'accounts.sign_in': 'Connexion',
   'accounts.sign_out': 'Se déconnecter',
   'accounts.cancel': 'Annuler',
-  'accounts.or_use': 'ou utiliser',
+  'accounts.or_use': 'ou utilisez',
   'accounts.info_email_sent': 'Email envoyé.',
   'accounts.info_password_changed': 'Mot de passe changé.',
   'accounts.logging_in': 'Connexion en cours…',
