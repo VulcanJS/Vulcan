@@ -4,7 +4,7 @@
  * @see https://github.com/haytko/apollo-link-watched-mutation
  */
 import WatchedMutationLink from 'apollo-link-watched-mutation';
-import { WatchedMutations } from '../../modules/updates';
+import { WatchedMutations } from '../updates';
 import cache from '../updates'
 const watchedMutationLink = new WatchedMutationLink(cache, WatchedMutations);
 

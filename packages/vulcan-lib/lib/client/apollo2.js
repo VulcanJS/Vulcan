@@ -5,7 +5,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import WatchedMutationLink from 'apollo-link-watched-mutation';
 import { MeteorAccountsLink } from 'meteor/apollo';
-import { WatchedMutations } from '../modules/updates';
+import { WatchedMutations } from './updates';
 
 const cache = new InMemoryCache();
 
@@ -28,9 +28,9 @@ const meteorAccountsLink = new MeteorAccountsLink();
 
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([
-    watchedMutationLink, 
-    errorLink, 
-    meteorAccountsLink, 
+    watchedMutationLink,
+    errorLink,
+    meteorAccountsLink,
     httpLink
   ]),
   cache,
