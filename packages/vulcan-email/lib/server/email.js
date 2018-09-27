@@ -69,7 +69,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
-  subject = '[' + siteName + '] ' + subject;
+  subject = subject || '[' + siteName + ']';
 
   if (typeof text === 'undefined') {
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
