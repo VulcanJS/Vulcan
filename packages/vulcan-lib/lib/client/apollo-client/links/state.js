@@ -12,38 +12,19 @@
  * @see https://hackernoon.com/storing-local-state-in-react-with-apollo-link-state-738f6ca45569
  */
 import { withClientState } from 'apollo-link-state';
-import cache from '../cache';
-import { getDefaultResolvers } from '../../../../../vulcan-core/lib/client/main';
 
 /**
  * Create a state link
- * We allow to load an existing cache
  */
-const createStateLink = ({ cache: providedCache = cache, resolvers, defaults }) => {
+export const createStateLink = ({ cache, resolvers, defaults, ...otherOptions }) => {
   const stateLink = withClientState({
-    cache: providedCache,
-    defaults,
-    resolvers
+    cache,
+    defaults: defaults || getDefaults(),
+    resolvers: resolvers || getResolvers(),
+    ...otherOptions
   });
   return stateLink;
 };
-const initialStateLink = createStateLink();
-
-let stateLink = initialStateLink;
-export const getStateLink = () => stateLink;
-
-export const reloadStateLink = ({ cache: providedCache }) => {
-  const newStateLink = createStateLink({
-    cache: providedCache,
-    defaults: getDefaults(),
-    resolvers: getResolvers()
-  });
-  stateLink = newStateLink;
-  return newStateLink;
-};
-// TODO: need to find the equivalent of "replaceReducer" for the apolloClient or
-// the stateLink
-//@see https://github.com/apollographql/apollo-link-state/issues/306
 
 // enhancement workflow
 const registeredDefaults = {};
@@ -57,25 +38,14 @@ export const addDefault = ({ name, defaultValue, options = {} }) => {
 export const getDefaults = () => registeredDefaults;
 
 // Mutation are equivalent to a Redux Action + Reducer
-// except it uses GraphQL
+// except it uses GraphQL to retrieve/update data in the cache
 const registeredMutations = {};
 export const addMutation = ({ name, mutation, options = {} }) => {
   registeredMutations[name] = mutation;
   return registeredMutations;
 };
 export const getMutations = () => registeredMutations;
-// Queries are equivalent to Redux concept of selector
-// except it uses GraphQL
-const registeredQueries = {};
-export const addQuery = ({ name, query, options = {} }) => {
-  registeredQueries[name] = query;
-  return registeredQueries;
-};
-export const getQueries = () => registeredQueries;
 
 export const getResolvers = () => ({
-  Mutation: getMutations(),
-  Query: getQueries()
+  Mutation: getMutations()
 });
-
-export default createStateLink({});
