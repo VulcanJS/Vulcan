@@ -7,18 +7,15 @@ HoC that provides access to flash messages stored in Redux state and actions to 
 */
 
 import { registerMutation, registerDefault } from 'meteor/vulcan:lib';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import compose from 'recompose/compose';
 // 1. Define the queries
 // the @client tag tells graphQL that we fetch data from the cache
 
 // read (equivalent to selectors)
 const getMessagesQuery = gql`
-  query getFlashMessages {
-    flashMessages @client {
-      value
-    }
+  query FlashMessage {
+    flashMessages @client
   }
 `;
 // write (equivalent to actions)
@@ -125,24 +122,24 @@ if (Meteor.isClient) {
 const withMessages = compose(
   // equivalent to mapDispatchToProps (map the state-link to the component props, so it can access the mutations)
   graphql(flashQuery, {
-    name: 'flashMessagesFlashMutation' // name in the props
+    name: 'flash' // name in the props
   }),
   graphql(markAsSeenQuery, {
-    name: 'flashMessagesMarkAsSeenMutation'
+    name: 'markAsSeen'
   }),
   graphql(clearQuery, {
-    name: 'flashMessagesClearMutation'
+    name: 'clear'
   }),
   graphql(clearSeenQuery, {
-    name: 'flashMessagesClearSeenMutation'
+    name: 'clearSeen'
   }),
 
   // equivalent to mapStateToProps (map the graphql query to the component props)
   graphql(getMessagesQuery, {
     props: ({ ownProps, data /*: { flashMessages }*/ }) => {
-      console.log(data);
+      console.log(data.flashMessages);
       const { flashMessages } = data;
-      return { ...ownProps, flashMessages: flashMessages };
+      return { ...ownProps, messages: flashMessages };
     }
   })
 );
