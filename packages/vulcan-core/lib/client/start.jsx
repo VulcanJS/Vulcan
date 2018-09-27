@@ -5,11 +5,11 @@ import { ApolloProvider } from 'react-apollo';
 import { CookiesProvider } from 'react-cookie';
 
 import {
-  apolloClient,
+  createApolloClient,
   Components,
   populateComponentsApp,
   populateRoutesApp,
-  initializeFragments,
+  initializeFragments
 } from 'meteor/vulcan:lib';
 
 Meteor.startup(() => {
@@ -17,6 +17,7 @@ Meteor.startup(() => {
   initializeFragments();
   populateComponentsApp();
   populateRoutesApp();
+  const apolloClient = createApolloClient();
 
   // Create the root element
   const rootElement = document.createElement('div');

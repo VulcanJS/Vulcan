@@ -1,3 +1,6 @@
+/**
+ * Helpers to update watched mutations
+ */
 import Mingo from 'mingo';
 
 export const WatchedMutations = {};
@@ -23,7 +26,7 @@ export const belongsToSet = (document, selector) => {
 Test if a document is already in a result set
 
 */
-export const isInSet = (data, document) => data.results.find(item => item._id === document._id )
+export const isInSet = (data, document) => data.results.find(item => item._id === document._id)
 
 /*
 

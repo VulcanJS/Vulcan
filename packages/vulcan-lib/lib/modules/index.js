@@ -32,5 +32,5 @@ export * from './intl.js';
 export * from './detect_locale.js';
 export * from './graphql_templates.js';
 export * from './validation.js';
-export * from './updates.js';
+// export * from './apollo-client/updates.js';
 // export * from './resolvers.js';
