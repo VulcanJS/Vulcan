@@ -73,6 +73,9 @@ const FlashMessages = ({messages, clear, markAsSeen}) => {
 }
 
 FlashMessages.displayName = 'FlashMessages';
+FlashMessages.propTypes = {
+  messages: PropTypes.array.isRequired
+}
 
 registerComponent('FlashMessages', FlashMessages, withMessages);
 
