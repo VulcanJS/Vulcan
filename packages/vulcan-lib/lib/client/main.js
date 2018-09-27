@@ -5,4 +5,4 @@ export * from './mongo_redux.js';
 export * from './render_context.js';
 export * from './inject_data.js';
 
-export * from './apollo-client/apollo2.js';
+export * from './apollo-client';

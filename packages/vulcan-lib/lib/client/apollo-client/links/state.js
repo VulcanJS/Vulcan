@@ -31,7 +31,7 @@ const registeredDefaults = {};
 /**
  * Defaults are default response to queries
  */
-export const addDefault = ({ name, defaultValue, options = {} }) => {
+export const registerDefault = ({ name, defaultValue, options = {} }) => {
   registeredDefaults[name] = defaultValue;
   return registeredDefaults;
 };
@@ -40,7 +40,7 @@ export const getDefaults = () => registeredDefaults;
 // Mutation are equivalent to a Redux Action + Reducer
 // except it uses GraphQL to retrieve/update data in the cache
 const registeredMutations = {};
-export const addMutation = ({ name, mutation, options = {} }) => {
+export const registerMutation = ({ name, mutation, options = {} }) => {
   registeredMutations[name] = mutation;
   return registeredMutations;
 };
