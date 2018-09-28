@@ -53,8 +53,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
 
   // loop over fields and add them to schema (or extend existing fields)
   fieldArray.forEach(function (field) {
-    const newField = {...schema[field.fieldName], ...field.fieldSchema};
-    fieldSchema[field.fieldName] = newField;
+    fieldSchema[field.fieldName] = field.fieldSchema;
   });
 
   // add field schema to collection schema
