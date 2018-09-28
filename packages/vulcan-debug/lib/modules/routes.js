@@ -9,4 +9,5 @@ addRoute([
   {name: 'emails', path: '/emails', componentName: 'Emails', layoutName: 'AdminLayout'},
   {name: 'routes', path: '/routes', componentName: 'Routes', layoutName: 'AdminLayout'},
   {name: 'components', path: '/components', componentName: 'Components', layoutName: 'AdminLayout'},
+  {name: 'I18n', path: '/i18n', componentName: 'I18n', layoutName: 'AdminLayout'},
 ]);
