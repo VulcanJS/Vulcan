@@ -1,19 +1,152 @@
-// /*
+/*
 
-// HoC that provides access to flash messages stored in Redux state and actions to operate on them
+HoC that provides access to flash messages stored in Redux state and actions to operate on them
 
-// */
+     NOTE: the code is voluntary a bit verbose, to provide an example 
+     of the apollo-link-state mutation patterns
+*/
 
-// import { getActions, addAction, addReducer } from 'meteor/vulcan:lib';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { registerMutation, registerDefault } from 'meteor/vulcan:lib';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+// 1. Define the queries
+// the @client tag tells graphQL that we fetch data from the cache
 
-// /*
+// read (equivalent to selectors)
+const getMessagesQuery = gql`
+  query FlashMessage {
+    flashMessages @client
+  }
+`;
+// write (equivalent to actions)
+const flashQuery = gql`
+  mutation flashMessagesFlash($content: JSON) {
+    flashMessagesFlash(content: $content) @client
+  }
+`;
+const markAsSeenQuery = gql`
+  mutation markAsSeenQuery($i: Number) {
+    markAsSeenQuery(i: $i) @client
+  }
+`;
+const clearSeenQuery = gql`
+  mutation clearSeenQuery {
+    clearSeenQuery @client
+  }
+`;
+const clearQuery = gql`
+  mutation clearQuery($i: Number) {
+    clearQuery(i: $i) @client
+  }
+`;
 
-//   Messages actions
+if (Meteor.isClient) {
+  // init the flash message state
+  registerDefault({
+    name: 'flashMessages',
+    defaultValue: []
+  });
+  // mutations (equivalent to reducers)
+  registerMutation({
+    name: 'flashMessagesFlash',
+    mutation: (obj, args, context, info) => {
+      // get relevant values from args
+      const { cache } = context;
+      const { content } = args;
+      // retrieve current state
+      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+      // transform content
+      const flashType = content && typeof content.type !== 'undefined' ? content.type : 'error';
+      const _id = currentFlashMessages.length;
+      const flashMessage = {
+        _id,
+        ...content,
+        type: flashType,
+        seen: false,
+        show: true
+      };
+      // const { } = obj  // the obj param is generally ignored in apollo-state-link
+      // const { } = info // barely needed (external info about the query)
+      // get the current messages
+      // push data
+      const data = {
+        flashMessages: [...currentFlashMessages, flashMessage]
+      };
+      cache.writeData({ data });
+      return null;
+    }
+  });
+  registerMutation({
+    name: 'flashMessagesMarkAsSeen',
+    mutation: (obj, args, context) => {
+      const { cache } = context;
+      const { i } = args;
+      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+      currentFlashMessages[i] = { ...currentFlashMessages[i], seen: true };
+      const data = {
+        flashMessages: currentFlashMessages
+      };
+      cache.writeData({ data });
+      return null;
+    }
+  });
+  registerMutation({
+    name: 'flashMessagesClear',
+    mutation: (obj, args, context) => {
+      const { cache } = context;
+      const { i } = args;
+      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+      currentFlashMessages[i] = { ...currentFlashMessages[i], show: false };
+      const data = {
+        flashMessages: currentFlashMessages
+      };
+      cache.writeData({ data });
+      return null;
+    }
+  });
+  registerMutation({
+    name: 'flashMessagesClearSeen',
+    mutation: (obj, args, context) => {
+      const { cache } = context;
+      const currentFlashMessages = cache.readData({ query: GET_FLASH_MESSAGES });
+      const newValue = currentFlashMessages.map(message => (message.seen ? { ...message, show: false } : message));
+      const data = {
+        flashMessages: newValue
+      };
+      cache.writeData({ data });
+      return null;
+    }
+  });
+}
 
-// */
+const withMessages = compose(
+  // equivalent to mapDispatchToProps (map the state-link to the component props, so it can access the mutations)
+  graphql(flashQuery, {
+    name: 'flash' // name in the props
+  }),
+  graphql(markAsSeenQuery, {
+    name: 'markAsSeen'
+  }),
+  graphql(clearQuery, {
+    name: 'clear'
+  }),
+  graphql(clearSeenQuery, {
+    name: 'clearSeen'
+  }),
 
+  // equivalent to mapStateToProps (map the graphql query to the component props)
+  graphql(getMessagesQuery, {
+    props: ({ ownProps, data /*: { flashMessages }*/ }) => {
+      console.log(data.flashMessages);
+      const { flashMessages } = data;
+      return { ...ownProps, messages: flashMessages };
+    }
+  })
+);
+
+export default withMessages;
+
+// Equivalent in Redux (code used with Apollo v1):
 // addAction({
 //   messages: {
 //     flash(content) {
@@ -41,7 +174,6 @@
 //     },
 //   }
 // });
-
 
 // /*
 
@@ -99,6 +231,3 @@
 // const withMessages = component => connect(mapStateToProps, mapDispatchToProps)(component);
 
 // export default withMessages;
-
-const withMessages = (x) => x;
-export default withMessages;

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 
 class Flash extends PureComponent {
-
   constructor() {
     super();
     this.dismissFlash = this.dismissFlash.bind(this);
@@ -27,34 +26,42 @@ class Flash extends PureComponent {
       return {
         message: errorObject,
         type: 'error'
-      }
+      };
     } else {
       // else return full error object after internationalizing message
       const { id, message, properties } = errorObject;
-      const translatedMessage = this.context.intl.formatMessage({ id, defaultMessage: message }, properties);
+      const translatedMessage = this.context.intl.formatMessage(
+        { id, defaultMessage: message },
+        properties
+      );
       return {
         ...errorObject,
-        message: translatedMessage,
+        message: translatedMessage
       };
     }
-  }
+  };
 
   render() {
-
     const { message, type } = this.getProperties();
     const flashType = type === 'error' ? 'danger' : type; // if flashType is "error", use "danger" instead
 
     return (
-      <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
+      <Components.Alert
+        className="flash-message"
+        variant={flashType}
+        onDismiss={this.dismissFlash}
+      >
         {message}
       </Components.Alert>
-    )
+    );
   }
 }
 
 Flash.propTypes = {
-  message: PropTypes.object.isRequired
-}
+  message: PropTypes.object.isRequired,
+  markAsSeen: PropTypes.func.isRequired,
+  clear: PropTypes.func.isRequired
+};
 
 Flash.contextTypes = {
   intl: intlShape
@@ -62,17 +69,25 @@ Flash.contextTypes = {
 
 registerComponent('Flash', Flash);
 
-const FlashMessages = ({messages, clear, markAsSeen}) => {
+const FlashMessages = ({ messages, clear, markAsSeen }) => {
   return (
     <div className="flash-messages">
-      {messages
-        .filter(message => message.show)
-        .map(message => <Components.Flash key={message._id} message={message} clear={clear} markAsSeen={markAsSeen} />)}
+      {messages.filter(message => message.show).map(message => (
+        <Components.Flash
+          key={message._id}
+          message={message}
+          clear={clear}
+          markAsSeen={markAsSeen}
+        />
+      ))}
     </div>
   );
-}
+};
 
 FlashMessages.displayName = 'FlashMessages';
+FlashMessages.propTypes = {
+  messages: PropTypes.array.isRequired
+};
 
 registerComponent('FlashMessages', FlashMessages, withMessages);
 

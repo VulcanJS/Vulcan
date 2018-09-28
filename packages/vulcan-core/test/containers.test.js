@@ -41,4 +41,14 @@ describe('vulcan-core/containers', function() {
       expect(fragmentName).toEqual(expectedFragmentName);
     });
   });
+
+  describe('withMessages', function() {
+    const WrappedComponent = props => <div />;
+    const apolloClient = null; // TODO: init an apolloClient, that must be available in the context
+    it.skip('pass messages', function() {});
+    it.skip('add a flash message', function() {});
+    it.skip('mark a flash message as seen', function() {});
+    it.skip('hide a flash message as seen', function() {});
+    it.skip('clear seen', function() {});
+  });
 });
