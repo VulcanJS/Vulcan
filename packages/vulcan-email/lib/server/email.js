@@ -23,8 +23,12 @@ VulcanEmail.addTemplates = templates => {
   _.extend(VulcanEmail.templates, templates);
 };
 
-VulcanEmail.getTemplate = templateName =>
-  Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
+VulcanEmail.getTemplate = templateName => {
+  if (!VulcanEmail.templates[templateName]) {
+    throw new Error(`Couldn't find email template named  “${templateName}”`);
+  }
+  return Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
+}
 
 VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
   const emailProperties = {
