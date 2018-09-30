@@ -169,19 +169,6 @@ Utils.slugify = function (s) {
   return slug;
 };
 
-Utils.getUnusedSlug = function (collection, slug) {
-  let suffix = '';
-  let index = 0;
-
-  // test if slug is already in use
-  while (!!collection.findOne({slug: slug+suffix})) {
-    index++;
-    suffix = '-'+index;
-  }
-
-  return slug+suffix;
-};
-
 Utils.getUnusedSlugByCollectionName = function (collectionName, slug) {
   return Utils.getUnusedSlug(getCollection(collectionName), slug);
 };
