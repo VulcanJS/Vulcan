@@ -33,6 +33,7 @@ import {
   isIntlField,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
+import SimpleSchema from 'simpl-schema';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
@@ -74,7 +75,7 @@ const getDefaultValues = convertedSchema => {
 
 const getInitialStateFromProps = (nextProps) => {
   const collection = nextProps.collection || getCollection(nextProps.collectionName);
-  const schema = collection.simpleSchema();
+  const schema = nextProps.schema ? new SimpleSchema(nextProps.schema) : collection.simpleSchema();
   const convertedSchema = convertSchema(schema);
   const formType = nextProps.document ? 'edit' : 'new';
   // for new document forms, add default values to initial document
