@@ -128,3 +128,34 @@ const migrateIntlFields = async (defaultLocale) => {
 }
 
 Vulcan.migrateIntlFields = migrateIntlFields;
+
+/*
+
+Take a header object, and figure out the locale
+
+Also accepts userLocale to indicate the current user's preferred locale
+
+*/
+export const getHeaderLocale = (headers, forceLocale, userLocale) => {
+  
+  let cookieLocale, acceptedLocale;
+
+  // get locale from cookies
+  if (headers['cookie']) {
+    const cookies = {};
+    headers['cookie'].split('; ').forEach(c => { 
+      const cookieArray = c.split('=')
+      cookies[cookieArray[0]] = cookieArray[1];
+    });
+    cookieLocale = cookies.locale;
+  }
+
+  // get locale from accepted-language header
+  if (headers['accept-language']) {
+    const acceptedLanguages = headers['accept-language'].split(',').map(l => l.split(';')[0]);
+    acceptedLocale = acceptedLanguages[0]; // for now only use the highest-priority accepted language
+  }
+
+  return headers.locale || cookieLocale || userLocale || acceptedLocale || getSetting('locale', 'en');
+
+}

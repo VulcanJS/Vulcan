@@ -21,21 +21,24 @@ class App extends PureComponent {
 
   initLocale = () => {
     let userLocale = '';
-    const { currentUser, cookies } = this.props;
+    const { currentUser, cookies, locale } = this.props;
     const availableLocales = Object.keys(Strings);
     const detectedLocale = detectLocale();
-
-    if (currentUser && currentUser.locale) {
-      // 1. if user is logged in, check for their preferred locale
-      userLocale = currentUser.locale;
+    
+    if (locale) {
+      // 1. locale is passed through SSR process
+      // TODO: currently SSR locale is passed through cookies as a hack
+      userLocale = locale;
     } else if (cookies && cookies.get('locale')) {
-      // 2. else, look for a cookie
+      // 2. look for a cookie
       userLocale = cookies.get('locale');
-    } else if (detectedLocale) {
-      // 3. else, check for browser settings
+    } else if (currentUser && currentUser.locale) {
+      // 3. if user is logged in, check for their preferred locale
+      userLocale = currentUser.locale;
+    } else  if (detectedLocale) {
+      // 4. else, check for browser settings
       userLocale = detectedLocale;
     }
-
     // if user locale is available, use it; else compare first two chars
     // of user locale with first two chars of available locales
     const availableLocale = Strings[userLocale] ? userLocale : availableLocales.find(locale => locale.slice(0,2) === userLocale.slice(0,2));

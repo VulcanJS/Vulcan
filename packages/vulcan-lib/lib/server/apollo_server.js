@@ -22,6 +22,7 @@ import { runCallbacks } from '../modules/callbacks.js';
 import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
+import { getHeaderLocale } from './intl.js';
 
 export let executableSchema;
 
@@ -155,6 +156,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     //   return source[info.fieldName];
     // }
 
+    // console.log('// apollo_server.js req.renderContext');
+    // console.log(req.renderContext);
+    // console.log('\n\n');
+    
     // Get the token from the header
     if (req.headers.authorization) {
       const token = req.headers.authorization;
@@ -194,34 +199,16 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
-    let cookieLocale, acceptedLocale;
+    // look for headers either in renderContext (SSR) or req (normal request to the endpoint)
+    const headers = req.renderContext.originalHeaders || req.headers;
 
-    // get locale from cookies
-    if (req.headers['cookie']) {
-      const cookies = {};
-      req.headers['cookie'].split('; ').forEach(c => { 
-        const cookieArray = c.split('=')
-        cookies[cookieArray[0]] = cookieArray[1];
-      });
-      cookieLocale = cookies.locale;
-    }
-
-    // get locale from accepted-language header
-    if (req.headers['accept-language']) {
-      const acceptedLanguages = req.headers['accept-language'].split(',').map(l => l.split(';')[0]);
-      acceptedLocale = acceptedLanguages[0]; // for now only use the highest-priority accepted language
-    }
-
-    options.context.locale = req.headers.locale || cookieLocale || user && user.locale || acceptedLocale || getSetting('locale', 'en');
+    options.context.locale = getHeaderLocale(headers, user && user.locale);
     
-    // console.log('// apollo_server.js headers:');
-    // console.log(req.headers);
-    // console.log('// apollo_server.js headers locale: ', req.headers.locale);
-    // console.log('// apollo_server.js cookie locale: ', cookieLocale);
-    // console.log('// apollo_server.js user locale: ', user && user.locale);
-    // console.log('// apollo_server.js accepted-language locale: ', acceptedLocale);
-    // console.log('// apollo_server.js default locale: ', getSetting('locale', 'en'));
-    // console.log('// apollo_server.js final locale: ', options.context.locale);
+    console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
+    console.log('// apollo_server.js headers:');
+    console.log(headers);
+    console.log('// apollo_server.js final locale: ', options.context.locale);
+    console.log('\n\n');
 
     // add error formatting from apollo-errors
     options.formatError = formatError;
