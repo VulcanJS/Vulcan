@@ -19,11 +19,11 @@ import { Collections } from '../../modules/collections.js';
 import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
 import { GraphQLSchema } from '../../modules/graphql.js';
-import { defaultOptions } from './defaults';
+import { Utils } from '../../modules/utils.js';
 
-const makeOptionsBuilder = givenOptions => {
+const optionsFromContext = (currentOptions, optionsFromReq) => {
   // givenOptions can be either a function of the request or an object
-  const getGivenOptions = req => (typeof givenOptions === 'function' ? givenOptions(req) : givenOptions);
+  const getBaseOptions = req => (optionsFromReq ? { ...currentOptions, ...optionsFromReq(req) } : currentOptions);
   const setupAuthToken = async (options, req) => {
     let user = null;
     // Get the token from the header
@@ -65,9 +65,7 @@ const makeOptionsBuilder = givenOptions => {
     let options;
     let user = null;
 
-    options = getGivenOptions(req);
-    // Merge in the defaults
-    options = { ...defaultOptions, ...options };
+    options = getBaseOptions(req);
 
     if (options.context) {
       // don't mutate the context provided in options
@@ -86,7 +84,7 @@ const makeOptionsBuilder = givenOptions => {
     //   return source[info.fieldName];
     // }
 
-    setupAuthToken(options, req);
+    await setupAuthToken(options, req);
 
     //add the headers to the context
     options.context.headers = req.headers;
@@ -110,4 +108,4 @@ const makeOptionsBuilder = givenOptions => {
   return handleContext;
 };
 
-export default makeOptionsBuilder;
+export default optionsFromContext;

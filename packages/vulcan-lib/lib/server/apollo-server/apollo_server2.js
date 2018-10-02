@@ -7,13 +7,13 @@
 // [ ] remove imports form graphql-tools everywhere
 // [ ] engine: setup could be simplified
 // [ ] switch to graphql playground
-
-// no need to setup an http server anymore
-import { graphiqlExpress } from 'apollo-server-express';
-//import bodyParser from 'body-parser';
+// [ ] update starter package
+// [ ] test
+// [ ] Meteor integration? Login?
 
 import express from 'express';
-import { ApolloServer, makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 
 // now in apollo-server
 //import { makeExecutableSchema } from 'graphql-tools';
@@ -23,7 +23,6 @@ import { check } from 'meteor/check';
 // import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
-import { Utils } from '../../modules/utils.js';
 import { webAppConnectHandlersUse } from '../meteor_patch.js';
 
 import { runCallbacks } from '../../modules/callbacks.js';
@@ -34,23 +33,25 @@ export let executableSchema;
 
 import './settings';
 import { engine, engineApiKey } from './engine';
-import { defaultConfig } from './defaults';
-console.log('defaultConfig', defaultConfig);
-import makeOptionsBuilder from './makeOptionsBuilder';
+import { defaultConfig, defaultOptions } from './defaults';
+import optionsFromContext from './optionsFromContext';
 
 // createApolloServer
-const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
+const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, optionsFromReq }) => {
   const graphiqlOptions = { ...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions };
   const config = { ...defaultConfig, ...givenConfig };
   config.graphiqlOptions = graphiqlOptions;
 
   const app = express();
+  // get the options and merge in defaults
+  const options = { ...defaultOptions, ...givenOptions };
   // given options contains the schema
   const apolloServer = new ApolloServer({
+    ...options,
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
-    context: makeOptionsBuilder(givenOptions)
+    context: optionsFromContext(options, optionsFromReq)
     // TODO: we could split options that actually need the request/result and others
     // (eg schema, formatError, etc.)
   });
@@ -73,16 +74,17 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   apolloServer.applyMiddleware({ app, path: config.path });
 
   // TODO: update with new api
-  if (config.graphiql) {
-    const graphiqlServer = graphiqlExpress({ ...config.graphiqlOptions, endpointURL: config.path });
-    app.use(config.graphiQL, graphiqlServer);
-  }
+  //if (config.graphiql) {
+  //  const graphiqlServer = graphiqlExpress({ ...config.graphiqlOptions, endpointURL: config.path });
+  //  app.use(config.graphiQL, graphiqlServer);
+  //}
 
   // This binds the specified paths to the Express server running Apollo + GraphiQL
-  webAppConnectHandlersUse(Meteor.bindEnvironment(apolloServer), {
-    name: 'graphQLServerMiddleware_bindEnvironment',
-    order: 30
-  });
+  // TODO: not familiar yet with this, but it seems important...
+  //webAppConnectHandlersUse(Meteor.bindEnvironment(apolloServer), {
+  //  name: 'graphQLServerMiddleware_bindEnvironment',
+  //  order: 30
+  //});
 };
 
 // createApolloServer when server startup
@@ -149,6 +151,10 @@ ${GraphQLSchema.mutations
   });
 
   createApolloServer({
-    schema: executableSchema
+    options: {
+      schema: executableSchema
+    }
+    // config: ....
+    // optionsFromReq: ....
   });
 });
