@@ -86,7 +86,6 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
             request.options.headers = new Headers();
           }
           request.options.headers.Authorization = currentUserToken;
-          request.options.headers.locale = config.locale;
           next();
         }
         

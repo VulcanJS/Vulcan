@@ -204,11 +204,11 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
     options.context.locale = getHeaderLocale(headers, user && user.locale);
     
-    console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
-    console.log('// apollo_server.js headers:');
-    console.log(headers);
-    console.log('// apollo_server.js final locale: ', options.context.locale);
-    console.log('\n\n');
+    // console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
+    // console.log('// apollo_server.js headers:');
+    // console.log(headers);
+    // console.log('// apollo_server.js final locale: ', options.context.locale);
+    // console.log('\n\n');
 
     // add error formatting from apollo-errors
     options.formatError = formatError;
