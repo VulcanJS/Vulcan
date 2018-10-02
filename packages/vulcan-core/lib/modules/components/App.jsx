@@ -47,7 +47,7 @@ class App extends PureComponent {
     return availableLocale ? availableLocale : getSetting('locale', 'en-US');
   };
 
-  getLocale = (truncate = false) => {
+  getLocale = (truncate) => {
     return truncate ? this.state.locale.slice(0,2) : this.state.locale;
   };
 
