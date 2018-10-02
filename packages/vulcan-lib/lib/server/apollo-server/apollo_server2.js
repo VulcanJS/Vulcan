@@ -23,7 +23,7 @@ import { check } from 'meteor/check';
 // import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
-import { webAppConnectHandlersUse } from '../meteor_patch.js';
+import { WebApp } from 'meteor/webapp';
 
 import { runCallbacks } from '../../modules/callbacks.js';
 import cookiesMiddleware from 'universal-cookie-express';
@@ -34,15 +34,15 @@ export let executableSchema;
 import './settings';
 import { engine, engineApiKey } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
-import optionsFromContext from './optionsFromContext';
+import computeContext from './computeContext';
 
 // createApolloServer
-const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, optionsFromReq }) => {
+const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
   const graphiqlOptions = { ...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions };
   const config = { ...defaultConfig, ...givenConfig };
   config.graphiqlOptions = graphiqlOptions;
 
-  const app = express();
+  //const app = express();
   // get the options and merge in defaults
   const options = { ...defaultOptions, ...givenOptions };
   // given options contains the schema
@@ -51,27 +51,27 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
-    context: optionsFromContext(options, optionsFromReq)
+    context: computeContext(options.context, contextFromReq)
     // TODO: we could split options that actually need the request/result and others
     // (eg schema, formatError, etc.)
   });
 
   // default function does nothing
   // TODO: what is the correct api with v2?
-  config.configServer({ apolloServer, app });
+  config.configServer({ apolloServer });
 
-  // Use Engine middleware
-  if (engineApiKey) {
-    app.use(engine.expressMiddleware());
-  }
   // setup middleware
-  // cookies
-  app.use(cookiesMiddleware());
-  // compression
-  app.use(compression());
+  // TODO: might not be needed anymore
+  //if (engineApiKey) {
+  //  app.use(engine.expressMiddleware());
+  //}
+  //// TODO: use a graphqlish solution?
+  //app.use(cookiesMiddleware());
+  //// TODO: is it needed?
+  //app.use(compression());
 
-  // setup graphql endpoint
-  apolloServer.applyMiddleware({ app, path: config.path });
+  // connecte apollo with the Meteor app
+  apolloServer.applyMiddleware({ app: WebApp.connectHandlers, path: config.path });
 
   // TODO: update with new api
   //if (config.graphiql) {
@@ -79,8 +79,15 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   //  app.use(config.graphiQL, graphiqlServer);
   //}
 
-  // This binds the specified paths to the Express server running Apollo + GraphiQL
-  // TODO: not familiar yet with this, but it seems important...
+  // connect the meteor app with Express
+  // @see http://www.mhurwi.com/meteor-with-express/
+  //WebApp.connectHandlers.use(app);
+  // setup the end point
+  WebApp.connectHandlers.use(config.path, (req, res) => {
+    if (req.method === 'GET') {
+      res.end();
+    }
+  });
   //webAppConnectHandlersUse(Meteor.bindEnvironment(apolloServer), {
   //  name: 'graphQLServerMiddleware_bindEnvironment',
   //  order: 30
@@ -155,6 +162,6 @@ ${GraphQLSchema.mutations
       schema: executableSchema
     }
     // config: ....
-    // optionsFromReq: ....
+    // contextFromReq: ....
   });
 });

@@ -10,8 +10,7 @@
  * @see https://github.com/apollographql/apollo-server/issues/420
  */
 
-import { formatError } from 'apollo-errors';
-import deepmerge from 'deepmerge';
+//import deepmerge from 'deepmerge';
 import DataLoader from 'dataloader';
 import { getSetting } from '../../modules/settings.js';
 import { _hashLoginToken, _tokenExpiration } from '../accounts_helpers';
@@ -20,11 +19,12 @@ import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
 import { GraphQLSchema } from '../../modules/graphql.js';
 import { Utils } from '../../modules/utils.js';
+import _merge from 'lodash/merge';
 
-const optionsFromContext = (currentOptions, optionsFromReq) => {
+const computeContext = (currentContext, contextFromReq) => {
   // givenOptions can be either a function of the request or an object
-  const getBaseOptions = req => (optionsFromReq ? { ...currentOptions, ...optionsFromReq(req) } : currentOptions);
-  const setupAuthToken = async (options, req) => {
+  const getBaseContext = req => (contextFromReq ? { ...currentContext, ...contextFromReq(req) } : currentContext);
+  const setupAuthToken = async (context, req) => {
     let user = null;
     // Get the token from the header
     if (req.headers.authorization) {
@@ -44,39 +44,34 @@ const optionsFromContext = (currentOptions, optionsFromReq) => {
         const isExpired = expiresAt < new Date();
 
         if (!isExpired) {
-          options.context.userId = user._id;
-          options.context.currentUser = user;
+          context.userId = user._id;
+          context.currentUser = user;
         }
       }
     }
   };
   // go over context and add Dataloader to each collection
-  const setupDataLoader = options => {
+  const setupDataLoader = context => {
     Collections.forEach(collection => {
-      options.context[collection.options.collectionName].loader = new DataLoader(
-        ids => findByIds(collection, ids, options.context),
-        { cache: true }
-      );
+      context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, context), {
+        cache: true
+      });
     });
   };
 
   // create options given the current request
-  const handleContext = async ({ req }) => {
-    let options;
+  const handleReq = async ({ req }) => {
+    let context;
     let user = null;
 
-    options = getBaseOptions(req);
+    context = getBaseContext(req);
 
-    if (options.context) {
+    if (context) {
       // don't mutate the context provided in options
-      options.context = { ...options.context };
+      context = { ...context };
     } else {
-      options.context = {};
+      context = {};
     }
-
-    // enable tracing and caching
-    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
-    options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
     // see https://github.com/apollographql/apollo-server/issues/716
@@ -84,28 +79,26 @@ const optionsFromContext = (currentOptions, optionsFromReq) => {
     //   return source[info.fieldName];
     // }
 
-    await setupAuthToken(options, req);
+    await setupAuthToken(context, req);
 
     //add the headers to the context
-    options.context.headers = req.headers;
+    context.headers = req.headers;
 
     // merge with custom context
-    options.context = deepmerge(options.context, GraphQLSchema.context);
+    // TODO: deemerge created an infinite loop here
+    context = _merge({}, context, GraphQLSchema.context);
 
-    setupDataLoader(options);
+    setupDataLoader(context);
 
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
-    options.context.locale = (user && user.locale) || req.headers.locale || getSetting('locale', 'en');
+    context.locale = (user && user.locale) || req.headers.locale || getSetting('locale', 'en');
 
-    // add error formatting from apollo-errors
-    options.formatError = formatError;
-
-    return options;
+    return context;
   };
 
-  return handleContext;
+  return handleReq;
 };
 
-export default optionsFromContext;
+export default computeContext;

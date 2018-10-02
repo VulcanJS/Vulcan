@@ -1,3 +1,5 @@
+import { getSetting } from '../../modules/settings.js';
+import { formatError } from 'apollo-errors';
 // defaults
 const graphiqlConfig = {
   graphiql: Meteor.isDevelopment,
@@ -10,15 +12,13 @@ export const defaultConfig = {
   path: '/graphql',
   ...graphiqlConfig,
   maxAccountsCacheSizeInMB: 1,
-  configServer: graphQLServer => {}
+  configServer: ({ apolloServer, app }) => {}
 };
 
 export const defaultOptions = {
-  formatError: e => ({
-    message: e.message,
-    locations: e.locations,
-    path: e.path
-  })
+  formatError,
+  tracing: getSetting('apolloTracing', Meteor.isDevelopment),
+  cacheControl: true
 };
 
 if (Meteor.isDevelopment) {
