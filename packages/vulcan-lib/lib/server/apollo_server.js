@@ -26,7 +26,7 @@ import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
-registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
+registerSetting('apolloServer.tracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
@@ -146,7 +146,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
+    options.tracing = getSetting('apolloServer.tracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
@@ -194,11 +194,35 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
-    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
-    // console.log('// apollo_server.js locale:', req.headers.locale);
+    let cookieLocale, acceptedLocale;
 
-    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
+    // get locale from cookies
+    if (req.headers['cookie']) {
+      const cookies = {};
+      req.headers['cookie'].split('; ').forEach(c => { 
+        const cookieArray = c.split('=')
+        cookies[cookieArray[0]] = cookieArray[1];
+      });
+      cookieLocale = cookies.locale;
+    }
+
+    // get locale from accepted-language header
+    if (req.headers['accept-language']) {
+      const acceptedLanguages = req.headers['accept-language'].split(',').map(l => l.split(';')[0]);
+      acceptedLocale = acceptedLanguages[0]; // for now only use the highest-priority accepted language
+    }
+
+    options.context.locale = req.headers.locale || cookieLocale || user && user.locale || acceptedLocale || getSetting('locale', 'en');
     
+    // console.log('// apollo_server.js headers:');
+    // console.log(req.headers);
+    // console.log('// apollo_server.js headers locale: ', req.headers.locale);
+    // console.log('// apollo_server.js cookie locale: ', cookieLocale);
+    // console.log('// apollo_server.js user locale: ', user && user.locale);
+    // console.log('// apollo_server.js accepted-language locale: ', acceptedLocale);
+    // console.log('// apollo_server.js default locale: ', getSetting('locale', 'en'));
+    // console.log('// apollo_server.js final locale: ', options.context.locale);
+
     // add error formatting from apollo-errors
     options.formatError = formatError;
 
