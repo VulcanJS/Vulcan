@@ -6,7 +6,7 @@ HoC that provides access to flash messages stored in Redux state and actions to 
      of the apollo-link-state mutation patterns
 */
 
-import { registerMutation, registerDefault } from 'meteor/vulcan:lib';
+import { registerStateLinkMutation, registerStateLinkDefault } from 'meteor/vulcan:lib';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 // 1. Define the queries
@@ -42,12 +42,12 @@ const clearQuery = gql`
 
 if (Meteor.isClient) {
   // init the flash message state
-  registerDefault({
+  registerStateLinkDefault({
     name: 'flashMessages',
     defaultValue: []
   });
   // mutations (equivalent to reducers)
-  registerMutation({
+  registerStateLinkMutation({
     name: 'flashMessagesFlash',
     mutation: (obj, args, context, info) => {
       // get relevant values from args
@@ -76,7 +76,7 @@ if (Meteor.isClient) {
       return null;
     }
   });
-  registerMutation({
+  registerStateLinkMutation({
     name: 'flashMessagesMarkAsSeen',
     mutation: (obj, args, context) => {
       const { cache } = context;
@@ -90,7 +90,7 @@ if (Meteor.isClient) {
       return null;
     }
   });
-  registerMutation({
+  registerStateLinkMutation({
     name: 'flashMessagesClear',
     mutation: (obj, args, context) => {
       const { cache } = context;
@@ -104,11 +104,11 @@ if (Meteor.isClient) {
       return null;
     }
   });
-  registerMutation({
+  registerStateLinkMutation({
     name: 'flashMessagesClearSeen',
     mutation: (obj, args, context) => {
       const { cache } = context;
-      const currentFlashMessages = cache.readData({ query: GET_FLASH_MESSAGES });
+      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
       const newValue = currentFlashMessages.map(message => (message.seen ? { ...message, show: false } : message));
       const data = {
         flashMessages: newValue
@@ -137,7 +137,6 @@ const withMessages = compose(
   // equivalent to mapStateToProps (map the graphql query to the component props)
   graphql(getMessagesQuery, {
     props: ({ ownProps, data /*: { flashMessages }*/ }) => {
-      console.log(data.flashMessages);
       const { flashMessages } = data;
       return { ...ownProps, messages: flashMessages };
     }
