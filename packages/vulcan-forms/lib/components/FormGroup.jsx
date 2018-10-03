@@ -58,10 +58,10 @@ class FormGroup extends PureComponent {
   renderHeading() {
     const { classes, label } = this.props
     return (
-      <div className="form-section-heading" onClick={this.toggle}>
-        <h3 className="form-section-heading-title">{this.props.label}</h3>
-        <span className="form-section-heading-toggle">
-          {this.state.collapsed ? <Components.IconRight height={16} width={16} /> : <Components.IconDown height={16} width={16} />}
+      <div className={classes.formSectionHeading} onClick={this.toggle}>
+        <h3 className="form-section-heading-title">{ label }</h3>
+        <span>
+          {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
         </span>
       </div>
     );
