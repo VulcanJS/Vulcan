@@ -749,7 +749,7 @@ class SmartForm extends Component {
     // (we are in an async callback, everything can happen!)
     if (this.form) {
       this.form.reset(this.getDocument());
-      this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
+      this.clearForm({ clearErrors: true, clearCurrentValues: false, clearDeletedValues: true, document });
     }
 
     // run document through mutation success callbacks
