@@ -12,6 +12,7 @@
 // [ ] Meteor integration? Login?
 
 import { makeExecutableSchema } from 'apollo-server';
+// we need the express version to get applyMiddleware and connect to Meteor
 import { ApolloServer } from 'apollo-server-express';
 
 // now in apollo-server
@@ -32,7 +33,7 @@ import './settings';
 import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
 import computeContext from './computeContext';
-import getGuiConfig from './gui';
+import getPlaygroundConfig from './playground';
 
 // createApolloServer
 const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
@@ -50,7 +51,9 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
-    context: computeContext(options.context, contextFromReq)
+    context: computeContext(options.context, contextFromReq),
+    // graphql playground (replacement to graphiql), available on the app path
+    playground: getPlaygroundConfig(config)
   });
 
   // default function does nothing
@@ -66,9 +69,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   // connecte apollo with the Meteor app
   apolloServer.applyMiddleware({
     app: WebApp.connectHandlers,
-    path: config.path,
-    // graphql playground (replacement to graphiql), available on the app path
-    gui: getGuiConfig(config)
+    path: config.path
   });
 
   // connect the meteor app with Express
