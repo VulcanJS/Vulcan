@@ -32,7 +32,7 @@ import cookiesMiddleware from 'universal-cookie-express';
 export let executableSchema;
 
 import './settings';
-import { engine, engineApiKey } from './engine';
+import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
 import computeContext from './computeContext';
 
@@ -47,13 +47,12 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   const options = { ...defaultOptions, ...givenOptions };
   // given options contains the schema
   const apolloServer = new ApolloServer({
+    engine: engineConfig,
     ...options,
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
     context: computeContext(options.context, contextFromReq)
-    // TODO: we could split options that actually need the request/result and others
-    // (eg schema, formatError, etc.)
   });
 
   // default function does nothing
@@ -61,10 +60,6 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   config.configServer({ apolloServer });
 
   // setup middleware
-  // TODO: might not be needed anymore
-  //if (engineApiKey) {
-  //  app.use(engine.expressMiddleware());
-  //}
   //// TODO: use a graphqlish solution?
   //app.use(cookiesMiddleware());
   //// TODO: is it needed?
@@ -88,6 +83,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
       res.end();
     }
   });
+  // TODO: previous implementation with a patch. Is it still needed?
   //webAppConnectHandlersUse(Meteor.bindEnvironment(apolloServer), {
   //  name: 'graphQLServerMiddleware_bindEnvironment',
   //  order: 30
