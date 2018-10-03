@@ -11,15 +11,12 @@
 // [ ] test
 // [ ] Meteor integration? Login?
 
-import express from 'express';
 import { makeExecutableSchema } from 'apollo-server';
 import { ApolloServer } from 'apollo-server-express';
 
 // now in apollo-server
 //import { makeExecutableSchema } from 'graphql-tools';
-import compression from 'compression';
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 // import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
@@ -35,6 +32,7 @@ import './settings';
 import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
 import computeContext from './computeContext';
+import getGuiConfig from './gui';
 
 // createApolloServer
 const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
@@ -66,13 +64,12 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   //app.use(compression());
 
   // connecte apollo with the Meteor app
-  apolloServer.applyMiddleware({ app: WebApp.connectHandlers, path: config.path });
-
-  // TODO: update with new api
-  //if (config.graphiql) {
-  //  const graphiqlServer = graphiqlExpress({ ...config.graphiqlOptions, endpointURL: config.path });
-  //  app.use(config.graphiQL, graphiqlServer);
-  //}
+  apolloServer.applyMiddleware({
+    app: WebApp.connectHandlers,
+    path: config.path,
+    // graphql playground (replacement to graphiql), available on the app path
+    gui: getGuiConfig(config)
+  });
 
   // connect the meteor app with Express
   // @see http://www.mhurwi.com/meteor-with-express/
