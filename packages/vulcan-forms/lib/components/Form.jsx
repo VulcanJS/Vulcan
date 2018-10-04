@@ -704,31 +704,36 @@ class SmartForm extends Component {
   };
 
   /**
-   * Clears and resets the form.
+   * Clears form errors and values.
+   *
+   * @example Clear form
+   *  // form will be fully emptied, with exception of prefilled values
+   *  clearForm({ document: {} });
+   *
+   * @example Reset/revert form
+   *  // form will be reverted to its initial state
+   *  clearForm();
+   *
+   * @example Clear with new values
+   *  // form will be cleared but initialized with the new document
+   *  const document = {
+   *    // ... some values
+   *  };
+   *  clearForm({ document });
    *
    * @param {Object=} options
-   * @param {Boolean=} options.clearErrors=true
-   *  Indicates whether to clear form errors or not
-   * @param {Boolean=} options.clearValues=true
-   *  Indicates whether to clear form values or not and reinitialize them to
-   *  their initial values
-   * @param {Object=} options.initialDocument
+   * @param {Object=} options.document
    *  Document to use as new initial document when values are cleared instead of
-   *  the existing one. Only used when `clearValues` is `true`
+   *  the existing one. Note that prefilled props will be merged
    */
-  clearForm = ({
-    clearErrors = true,
-    clearValues = true,
-    initialDocument,
-  } = {}) => {
-    initialDocument = initialDocument ? merge({}, this.props.prefilledProps, initialDocument) : null;
-
+  clearForm = ({ document } = {}) => {
+    document = document ? merge({}, this.props.prefilledProps, document) : null;
     this.setState(prevState => ({
-      errors: clearErrors ? [] : prevState.errors,
-      currentValues: clearValues ? {} : prevState.currentValues,
-      deletedValues: clearValues ? [] : prevState.deletedValues,
-      currentDocument: clearValues ? initialDocument || prevState.initialDocument : prevState.currentDocument,
-      initialDocument: clearValues && initialDocument ? initialDocument : prevState.initialDocument,
+      errors: [],
+      currentValues: {},
+      deletedValues: [],
+      currentDocument: document || prevState.initialDocument,
+      initialDocument: document || prevState.initialDocument,
       disabled: false,
     }));
   };
@@ -763,7 +768,7 @@ class SmartForm extends Component {
     // (we are in an async callback, everything can happen!)
     if (this.form) {
       this.form.reset(this.getDocument());
-      this.clearForm({ initialDocument: mutationType === 'edit' ? document : undefined });
+      this.clearForm({ document: mutationType === 'edit' ? document : undefined });
     }
 
     // run document through mutation success callbacks
