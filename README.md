@@ -50,18 +50,16 @@ You can find the even older, non-React version of Telescope on the [legacy](http
 
 This project exists thanks to all the people who contribute.
 
-<a href="graphs/contributors"><img src="https://opencollective.com/vulcan/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/VulcanJS/Vulcan/graphs/contributors"><img src="https://opencollective.com/vulcan/contributors.svg?width=890&button=false" /></a>
 
 ### Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/vulcan#backer)]
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/vulcan#contribute)]
 
-<a href="https://opencollective.com/vulcan#backers" target="_blank"><img src="https://opencollective.com/vulcan/backers.svg?width=890"></a>
+<a href="https://opencollective.com/vulcan#contributors" target="_blank"><img src="https://opencollective.com/vulcan/backers.svg?width=890"></a>
 
 ### Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/vulcan#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/vulcan#contribute)]
 
-<a href="https://opencollective.com/vulcan/sponsor/0/website" target="_blank"><img src="https://opencollective.com/vulcan/sponsor/0/avatar.svg"></a>
-
-
+<a href="https://opencollective.com/vulcan#contributors" target="_blank"><img src="https://opencollective.com/vulcan/sponsors.svg?width=890"></a>
