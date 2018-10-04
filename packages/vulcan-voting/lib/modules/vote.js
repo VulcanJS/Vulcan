@@ -50,7 +50,7 @@ Test if a user has voted on the server
 
 */
 const hasVotedServer = async ({ document, voteType, user }) => {
-  const vote = await Connectors.get(Votes, {documentId: document._id, userId: user._id, voteType});
+  const vote = await Connectors.get(Votes, {documentId: document._id, userId: user._id, voteType}, {}, true);
   return vote;
 }
 
@@ -100,7 +100,7 @@ const addVoteServer = async (voteOptions) => {
 
   if (updateDocument) {
     // update document score & set item as active
-    await Connectors.update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
+    await Connectors.update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}}, {}, true);
   }
   return {newDocument, vote};
 }
@@ -149,13 +149,13 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
   const newDocument = _.clone(document);
   const votes = await Connectors.find(Votes, { documentId: document._id, userId: user._id});
   if (votes.length) {
-    await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
+    await Connectors.delete(Votes, {documentId: document._id, userId: user._id}, {}, true);
     votes.forEach((vote)=> {
       runCallbacks(`votes.cancel.sync`, {newDocument, vote}, collection, user);
       runCallbacksAsync(`votes.cancel.async`, {newDocument, vote}, collection, user);
     })
     if (updateDocument) {
-      await Connectors.update(collection, {_id: document._id}, {$set: {baseScore: recalculateBaseScore(document) }});
+      await Connectors.update(collection, {_id: document._id}, {$set: {baseScore: recalculateBaseScore(document) }}, {}, true);
     }
     newDocument.baseScore = recalculateBaseScore(newDocument);
     newDocument.score = recalculateScore(newDocument);
@@ -173,7 +173,7 @@ export const cancelVoteServer = async ({ document, voteType, collection, user, u
   const newDocument = _.clone(document);
   const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
   // remove vote object
-  await Connectors.delete(Votes, {_id: vote._id});
+  await Connectors.delete(Votes, {_id: vote._id}, {}, true);
   newDocument.baseScore = recalculateBaseScore(newDocument);
   newDocument.score = recalculateScore(newDocument);
 
@@ -186,7 +186,9 @@ export const cancelVoteServer = async ({ document, voteType, collection, user, u
         inactive: false,
         score: newDocument.score,
         baseScore: newDocument.baseScore
-      }}
+      }},
+      {},
+      true
     );
   }
   return {newDocument, vote};
