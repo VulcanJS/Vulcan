@@ -282,7 +282,7 @@ if set to true, this will perform its own database updates. If false, will only
 return an updated document without performing any database operations on it.
 
 */
-export const performVoteServer = async ({ documentId, document, voteType = 'bigUpvote', collection, voteId, user, updateDocument = true }) => {
+export const performVoteServer = async ({ documentId, document, voteType = 'bigUpvote', collection, voteId = Random.id(), user, updateDocument = true }) => {
 
   const collectionName = collection.options.collectionName;
   document = document || await Connectors.get(collection, documentId);
