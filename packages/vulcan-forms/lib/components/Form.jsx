@@ -709,23 +709,37 @@ class SmartForm extends Component {
     }
   };
 
-  /*
-  
-  Clear and reset the form
-  By default, clear errors and keep current values and deleted values
-
-  On form success we'll clear current values too. Note: document includes currentValues
-
-  */
-  clearForm = ({ clearErrors = true, clearCurrentValues = false, clearDeletedValues = false, document }) => {
+  /**
+   * Clears form errors and values.
+   *
+   * @example Clear form
+   *  // form will be fully emptied, with exception of prefilled values
+   *  clearForm({ document: {} });
+   *
+   * @example Reset/revert form
+   *  // form will be reverted to its initial state
+   *  clearForm();
+   *
+   * @example Clear with new values
+   *  // form will be cleared but initialized with the new document
+   *  const document = {
+   *    // ... some values
+   *  };
+   *  clearForm({ document });
+   *
+   * @param {Object=} options
+   * @param {Object=} options.document
+   *  Document to use as new initial document when values are cleared instead of
+   *  the existing one. Note that prefilled props will be merged
+   */
+  clearForm = ({ document } = {}) => {
     document = document ? merge({}, this.props.prefilledProps, document) : null;
-
     this.setState(prevState => ({
-      errors: clearErrors ? [] : prevState.errors,
-      currentValues: clearCurrentValues ? {} : prevState.currentValues,
-      currentDocument: clearCurrentValues ? {} : prevState.currentDocument,
-      deletedValues: clearDeletedValues ? [] : prevState.deletedValues,
-      initialDocument: document && !clearCurrentValues ? document : prevState.initialDocument,
+      errors: [],
+      currentValues: {},
+      deletedValues: [],
+      currentDocument: document || prevState.initialDocument,
+      initialDocument: document || prevState.initialDocument,
       disabled: false,
     }));
   };
@@ -746,11 +760,10 @@ class SmartForm extends Component {
   };
 
   editMutationSuccessCallback = result => {
-    this.mutationSuccessCallback(result, 'edit');
+    this.mutationSuccessCallback(result, 'edit', );
   };
 
   mutationSuccessCallback = (result, mutationType) => {
-
     this.setState(prevState => ({ disabled: false }));
     const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
@@ -761,7 +774,7 @@ class SmartForm extends Component {
     // (we are in an async callback, everything can happen!)
     if (this.form) {
       this.form.reset(this.getDocument());
-      this.clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true, document });
+      this.clearForm({ document: mutationType === 'edit' ? document : undefined });
     }
 
     // run document through mutation success callbacks
