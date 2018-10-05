@@ -19,6 +19,8 @@ import { ApolloServer } from 'apollo-server-express';
 //import { makeExecutableSchema } from 'graphql-tools';
 import { Meteor } from 'meteor/meteor';
 // import { Accounts } from 'meteor/accounts-base';
+import express from 'express';
+import { express as voyagerMiddleware } from 'graphql-voyager';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
 import { WebApp } from 'meteor/webapp';
@@ -71,6 +73,16 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     app: WebApp.connectHandlers,
     path: config.path
   });
+  
+  //add graphql-voyager 
+  //// TODO: add conditions depending on config
+  // applyMiddleware: https://www.apollographql.com/docs/apollo-server/v2/api/apollo-server.html#Usage
+  // graphql-voyager : https://github.com/APIs-guru/graphql-voyager#express
+  if (Meteor.isDevelopment) {
+    const app = express();
+    app.use('*', voyagerMiddleware({ endpointUrl: '/graphql' }));
+    apolloServer.applyMiddleware({ app, path: '/voyager' });
+  }
 
   // connect the meteor app with Express
   // @see http://www.mhurwi.com/meteor-with-express/
