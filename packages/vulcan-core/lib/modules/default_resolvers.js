@@ -8,12 +8,11 @@ import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCo
 import { createError } from 'apollo-errors';
 
 const defaultOptions = {
-  cacheMaxAge: 300,
+  cacheMaxAge: 300
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
-
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
@@ -26,7 +25,7 @@ export function getDefaultResolvers(options) {
     typeName = getTypeName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -48,11 +47,12 @@ export function getDefaultResolvers(options) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-        
+
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
         // get selector and options from terms and perform Mongo query
+
         let { selector, options } = await collection.getParameters(terms, {}, context);
         options.skip = terms.offset;
 
@@ -77,7 +77,7 @@ export function getDefaultResolvers(options) {
         debug('');
 
         const data = { results: restrictedDocs };
-        
+
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
@@ -85,7 +85,7 @@ export function getDefaultResolvers(options) {
 
         // return results
         return data;
-      },
+      }
     },
 
     // resolver for returning a single document queried based on id or slug
@@ -111,9 +111,7 @@ export function getDefaultResolvers(options) {
 
         // use Dataloader if doc is selected by documentId/_id
         const documentId = selector.documentId || selector._id;
-        const doc = documentId
-          ? await collection.loader.load(documentId)
-          : await Connectors.get(collection, selector);
+        const doc = documentId ? await collection.loader.load(documentId) : await Connectors.get(collection, selector);
 
         if (!doc) {
           if (allowNull) {
@@ -138,7 +136,7 @@ export function getDefaultResolvers(options) {
 
         // filter out disallowed properties and return resulting document
         return { result: restrictedDoc };
-      },
-    },
+      }
+    }
   };
 }

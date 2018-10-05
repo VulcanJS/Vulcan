@@ -1,5 +1,5 @@
 // import './oauth_config.js';
-export * from './apollo_server.js';
+export * from './apollo-server';
 import './intl_polyfill.js';
 import './site.js';
 
