@@ -30,7 +30,8 @@ class FormNestedArray extends PureComponent {
     const value = this.getCurrentValue()
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
-    const { errors, path } = this.props;
+    const { errors, path, formComponents } = this.props;
+    const FormComponents = formComponents;
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(error => error.path && error.path === path);
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
@@ -43,7 +44,7 @@ class FormNestedArray extends PureComponent {
             (subDocument, i) =>
               !this.isDeleted(i) && (
                 <React.Fragment key={i}>
-                  <Components.FormNestedItem
+                  <FormComponents.FormNestedItem
                     {...properties}
                     itemIndex={i}
                     path={`${this.props.path}.${i}`}
@@ -51,14 +52,14 @@ class FormNestedArray extends PureComponent {
                       this.removeItem(i);
                     }}
                   />
-                  <Components.FormNestedDivider label={this.props.label} addItem={this.addItem}/>
+                  <FormComponents.FormNestedDivider label={this.props.label} addItem={this.addItem}/>
                 </React.Fragment>
               )
           )}
           <Components.Button size="small" variant="success" onClick={this.addItem} className="form-nested-button">
             <Components.IconAdd height={12} width={12} />
           </Components.Button>
-          {hasErrors ? <Components.FieldErrors errors={nestedArrayErrors} /> : null}
+          {hasErrors ? <FormComponents.FieldErrors errors={nestedArrayErrors} /> : null}
         </div>
       </div>
     );

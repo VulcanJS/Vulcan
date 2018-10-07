@@ -4,6 +4,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 class FormNestedObject extends PureComponent {
   render() {
+    const FormComponents = this.props.formComponents;
     //const value = this.getCurrentValue()
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _.omit(this.props, 'value', 'input', 'inputProperties', 'nestedInput');
@@ -15,8 +16,8 @@ class FormNestedObject extends PureComponent {
       <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          <Components.FormNestedItem {...properties} path={`${this.props.path}`} />
-          {hasErrors ? <Components.FieldErrors errors={nestedObjectErrors} /> : null}
+          <FormComponents.FormNestedItem {...properties} path={`${this.props.path}`} />
+          {hasErrors ? <FormComponents.FieldErrors errors={nestedObjectErrors} /> : null}
         </div>
       </div>
     );

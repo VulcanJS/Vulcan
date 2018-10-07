@@ -19,6 +19,8 @@ class FormIntl extends PureComponent {
   
   render() {
 
+    const FormComponents = this.props.formComponents;
+
     // do not pass FormIntl's own value, inputProperties, and intlInput props down
     const properties = omit(this.props, 'value', 'inputProperties', 'intlInput', 'nestedInput');
 
@@ -26,7 +28,7 @@ class FormIntl extends PureComponent {
       <div className="form-intl">
         {Locales.map((locale, i) => (
           <div className={`form-intl-${locale.id}`} key={locale.id}>
-            <Components.FormComponent {...properties} label={this.props.getLabel(this.props.name, locale.id)} path={this.getLocalePath(i)} locale={locale.id} />
+            <FormComponents.FormComponent {...properties} label={this.props.getLabel(this.props.name, locale.id)} path={this.getLocalePath(i)} locale={locale.id} />
           </div>
         ))}
       </div>

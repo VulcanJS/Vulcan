@@ -231,6 +231,15 @@ class SmartForm extends Component {
 
     return data;
   };
+
+  /*
+
+  Get form components, in case any has been overwritten for this specific form
+
+  */
+  getFormComponents = () => {
+    return { ...Components, ...this.props.formComponents }
+  }
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -884,14 +893,15 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
+    const FormComponents = this.getFormComponents();
 
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form onSubmit={this.submitForm} onKeyDown={this.formKeyDown} ref={e => { this.form = e; }}>
-          <Components.FormErrors errors={this.state.errors} />
+          <FormComponents.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup
+            <FormComponents.FormGroup
               key={group.name}
               {...group}
               errors={this.state.errors}
@@ -904,12 +914,13 @@ class SmartForm extends Component {
               formType={this.getFormType()}
               currentUser={this.props.currentUser}
               disabled={this.state.disabled}
+              formComponents={FormComponents}
             />
           ))}
 
           {this.props.repeatErrors && this.renderErrors()}
 
-          <Components.FormSubmit
+          <FormComponents.FormSubmit
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
             revertLabel={this.props.revertLabel}
@@ -960,6 +971,7 @@ SmartForm.propTypes = {
   revertLabel: PropTypes.node,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
+  formComponents: PropTypes.object,
 
   // callbacks
   submitCallback: PropTypes.func,

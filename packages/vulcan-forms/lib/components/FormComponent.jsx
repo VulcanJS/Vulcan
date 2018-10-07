@@ -198,6 +198,7 @@ class FormComponent extends Component {
   */
   getFormInput = () => {
     const inputType = this.getType();
+    const FormComponents = this.props.formComponents;
 
     // if input is a React component, use it
     if (typeof this.props.input === 'function') {
@@ -208,53 +209,53 @@ class FormComponent extends Component {
 
       switch (inputType) {
         case 'text':
-          return Components.FormComponentDefault;
+          return FormComponents.FormComponentDefault;
 
         case 'number':
-          return Components.FormComponentNumber;
+          return FormComponents.FormComponentNumber;
 
         case 'url':
-          return Components.FormComponentUrl;
+          return FormComponents.FormComponentUrl;
 
         case 'email':
-          return Components.FormComponentEmail;
+          return FormComponents.FormComponentEmail;
 
         case 'textarea':
-          return Components.FormComponentTextarea;
+          return FormComponents.FormComponentTextarea;
 
         case 'checkbox':
-          return Components.FormComponentCheckbox;
+          return FormComponents.FormComponentCheckbox;
 
         case 'checkboxgroup':
-          return Components.FormComponentCheckboxGroup;
+          return FormComponents.FormComponentCheckboxGroup;
 
         case 'radiogroup':
-          return Components.FormComponentRadioGroup;
+          return FormComponents.FormComponentRadioGroup;
 
         case 'select':
-          return Components.FormComponentSelect;
+          return FormComponents.FormComponentSelect;
 
         case 'selectmultiple':
-          return Components.FormComponentSelectMultiple;
+          return FormComponents.FormComponentSelectMultiple;
 
         case 'datetime':
-          return Components.FormComponentDateTime;
+          return FormComponents.FormComponentDateTime;
 
         case 'date':
-          return Components.FormComponentDate;
+          return FormComponents.FormComponentDate;
 
         case 'date2':
-          return Components.FormComponentDate2;
+          return FormComponents.FormComponentDate2;
 
         case 'time':
-          return Components.FormComponentTime;
+          return FormComponents.FormComponentTime;
 
         case 'statictext':
-          return Components.FormComponentStaticText;
+          return FormComponents.FormComponentStaticText;
 
         default:
-          const CustomComponent = Components[this.props.input];
-          return CustomComponent ? CustomComponent : Components.FormComponentDefault;
+          const CustomComponent = FormComponents[this.props.input];
+          return CustomComponent ? CustomComponent : FormComponents.FormComponentDefault;
       }
     }
   };
@@ -269,17 +270,20 @@ class FormComponent extends Component {
     return this.getFieldType() instanceof SimpleSchema
   }
   render() {
+
+    const FormComponents = this.props.formComponents;
+
     if (this.props.intlInput) {
-      return <Components.FormIntl {...this.props} />;
+      return <FormComponents.FormIntl {...this.props} />;
     } else if (this.props.nestedInput) {
       if (this.isArrayField()) {
-        return <Components.FormNestedArray {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
+        return <FormComponents.FormNestedArray {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
       } else if (this.isObjectField()) {
-        return <Components.FormNestedObject {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
+        return <FormComponents.FormNestedObject {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
       }
     }
     return (
-      <Components.FormComponentInner
+      <FormComponents.FormComponentInner
         {...this.props}
         {...this.state}
         inputType={this.getType()}
@@ -290,6 +294,7 @@ class FormComponent extends Component {
         onChange={this.handleChange}
         clearField={this.clearField}
         formInput={this.getFormInput()}
+        formComponents={FormComponents}
       />
     );
   }
