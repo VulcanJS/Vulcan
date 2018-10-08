@@ -83,6 +83,8 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     WebApp.connectHandlers.use(yourMiddleware)
   */
   if (Meteor.isDevelopment) {
+    // Voyager is a GraphQL schema visual explorer
+    // available on /voyager as a default
     WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
   }
 
@@ -97,20 +99,6 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   * WebApp.connectHandlers.use(app) 
   * or
   * WebApp.connectHandlers.use(config.path, app)
-  */
-
-  /*
-  * Syntax for setting up an additionnal server
-  * eg for 3rd party tools
-  * Uses Apollo but NOT Meteor, it is a totally new server
-  * 
-  * const app = express()
-  * app.use(...)
-  * 
-  * apolloServer.applyMiddleware({
-  *   app,
-  *   path: '/your-app-path'
-  * })
   */
 
   // TODO: previous implementation used a patch. Is it still needed?
