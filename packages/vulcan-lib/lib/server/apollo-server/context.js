@@ -20,6 +20,7 @@ import findByIds from '../../modules/findbyids.js';
 import { GraphQLSchema } from '../../modules/graphql.js';
 import { Utils } from '../../modules/utils.js';
 import _merge from 'lodash/merge';
+import { getUser } from 'meteor/apollo';
 
 /**
  * Called once on server creation
@@ -48,32 +49,45 @@ export const initContext = currentContext => {
 export const computeContextFromReq = (currentContext, contextFromReq) => {
   // givenOptions can be either a function of the request or an object
   const getBaseContext = req => (contextFromReq ? { ...currentContext, ...contextFromReq(req) } : currentContext);
+  // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
   const setupAuthToken = async (context, req) => {
-    let user = null;
-    // Get the token from the header
-    if (req.headers.authorization) {
-      const token = req.headers.authorization;
-      check(token, String);
-      const hashedToken = _hashLoginToken(token);
-
-      // Get the user from the database
-      user = await Meteor.users.findOne({ 'services.resume.loginTokens.hashedToken': hashedToken });
-
-      if (user) {
-        // identify user to any server-side analytics providers
-        runCallbacks('events.identify', user);
-
-        const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
-        const expiresAt = _tokenExpiration(loginToken.when);
-        const isExpired = expiresAt < new Date();
-
-        if (!isExpired) {
-          context.userId = user._id;
-          context.currentUser = user;
-        }
-      }
+    const user = await getUser(req.headers.authorization);
+    if (user) {
+      context.userId = user._id;
+      context.currentUser = user;
+      // identify user to any server-side analytics providers
+      runCallbacks('events.identify', user);
+    } else {
+      context.userId = undefined;
+      context.currentUser = undefined;
     }
   };
+  // Previous implementation
+  // Now meteor/apollo already provide this
+  // Get the token from the header
+  //let user = null
+  //if (req.headers.authorization) {
+  //  const token = req.headers.authorization;
+  //  check(token, String);
+  //  const hashedToken = _hashLoginToken(token);
+  //
+  //      // Get the user from the database
+  //      user = await Meteor.users.findOne({ 'services.resume.loginTokens.hashedToken': hashedToken });
+  //
+  //      if (user) {
+  //        // identify user to any server-side analytics providers
+  //        runCallbacks('events.identify', user);
+  //
+  //        const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
+  //        const expiresAt = _tokenExpiration(loginToken.when);
+  //        const isExpired = expiresAt < new Date();
+  //
+  //        if (!isExpired) {
+  //          context.userId = user._id;
+  //          context.currentUser = user;
+  //        }
+  //      }
+  //}
 
   // create options given the current request
   const handleReq = async ({ req }) => {
