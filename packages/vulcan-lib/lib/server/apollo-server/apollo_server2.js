@@ -3,28 +3,18 @@
  * @see https://www.apollographql.com/docs/apollo-server/migration-two-dot.html
  */
 
-// Migration:
-// [ ] remove imports form graphql-tools everywhere
-// [ ] engine: setup could be simplified
-// [ ] switch to graphql playground
-// [ ] update starter package
-// [ ] test
-// [ ] Meteor integration? Login?
-
 import { makeExecutableSchema } from 'apollo-server';
-// we need the express version to get applyMiddleware and connect to Meteor
+// Meteor WebApp use a Connect server, so we need to
+// use apollo-server-express integration
 import { ApolloServer } from 'apollo-server-express';
 
-// now in apollo-server
-//import { makeExecutableSchema } from 'graphql-tools';
 import { Meteor } from 'meteor/meteor';
-// import { Accounts } from 'meteor/accounts-base';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
 import { WebApp } from 'meteor/webapp';
 
 import { runCallbacks } from '../../modules/callbacks.js';
-import cookiesMiddleware from 'universal-cookie-express';
+// import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 
 export let executableSchema;
@@ -35,53 +25,68 @@ import { defaultConfig, defaultOptions } from './defaults';
 import computeContext from './computeContext';
 import getPlaygroundConfig from './playground';
 
-// createApolloServer
+/**
+ * Options: Apollo server usual options
+ *
+ * Config: a config specific to Vulcan
+ */
 const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
   const graphiqlOptions = { ...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions };
   const config = { ...defaultConfig, ...givenConfig };
   config.graphiqlOptions = graphiqlOptions;
 
-  //const app = express();
   // get the options and merge in defaults
   const options = { ...defaultOptions, ...givenOptions };
   // given options contains the schema
   const apolloServer = new ApolloServer({
     engine: engineConfig,
+    // graphql playground (replacement to graphiql), available on the app path
+    playground: getPlaygroundConfig(config),
     ...options,
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
-    context: computeContext(options.context, contextFromReq),
-    // graphql playground (replacement to graphiql), available on the app path
-    playground: getPlaygroundConfig(config)
+    context: computeContext(options.context, contextFromReq)
   });
 
   // default function does nothing
-  // TODO: what is the correct api with v2?
-  config.configServer({ apolloServer });
+  config.configServer(apolloServer);
 
-  // setup middleware
-  //// TODO: use a graphqlish solution?
-  //app.use(cookiesMiddleware());
-  //// TODO: is it needed?
-  //app.use(compression());
-
-  // connecte apollo with the Meteor app
+  // Provide the Meteor WebApp Connect server instance to Apollo
+  // Apollo will use it instead of its own HTTP server
   apolloServer.applyMiddleware({
+    // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
     app: WebApp.connectHandlers,
     path: config.path
   });
 
-  // connect the meteor app with Express
-  // @see http://www.mhurwi.com/meteor-with-express/
-  //WebApp.connectHandlers.use(app);
+  // WebApp.connectHandlers is a connect server and exposes the same API
+  // you can add middlware as usual
   // setup the end point
   WebApp.connectHandlers.use(config.path, (req, res) => {
     if (req.method === 'GET') {
       res.end();
     }
   });
-  // TODO: previous implementation with a patch. Is it still needed?
+  // Add your own middlewares
+  // For the list of already set middlewares (cookies, compression...), see:
+  // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
+  // TODO: not sure if "config.path" is necessary
+  //WebApp.connectHandlers.use(config.path, /* your middleware */);
+
+  /*
+  * Alternative syntax with Express.
+  * WebApp will use Connect as a default.
+  * Use if Express is needed in addition to connect.  
+  * 
+  * const app = express()
+  * app.use(...)
+  *
+  * WebApp.connectHandlers.use(app) 
+  * 
+  */
+
+  // TODO: previous implementation used a patch. Is it still needed?
   //webAppConnectHandlersUse(Meteor.bindEnvironment(apolloServer), {
   //  name: 'graphQLServerMiddleware_bindEnvironment',
   //  order: 30
