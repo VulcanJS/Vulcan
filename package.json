@@ -62,7 +62,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-addons-pure-render-mixin": "^15.4.1",
-    "react-apollo": "^2.2.1",
+    "react-apollo": "^2.2.4",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^2.1.4",

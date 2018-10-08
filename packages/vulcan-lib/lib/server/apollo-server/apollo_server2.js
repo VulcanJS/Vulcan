@@ -6,6 +6,7 @@
 import { makeExecutableSchema } from 'apollo-server';
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
+//import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
 import { Meteor } from 'meteor/meteor';
@@ -16,7 +17,7 @@ import { WebApp } from 'meteor/webapp';
 import { runCallbacks } from '../../modules/callbacks.js';
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
-import { express as voyagerMiddleware } from 'graphql-voyager';
+import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
 
 export let executableSchema;
@@ -71,24 +72,45 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
       res.end();
     }
   });
-  // Add your own middlewares
-  // For the list of already set middlewares (cookies, compression...), see:
-  // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
-  // TODO: not sure if "config.path" is necessary
-  //WebApp.connectHandlers.use(config.path, /* your middleware */);
-  // Voyager is a schema visualizer
-  WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
+
+  /* Syntax for adding middlewares to /graphql
+     Uses Connect + Meteor + Apollo
+     For the list of already set middlewares (cookies, compression...), see:
+    @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
+
+    It is the easiest pattern and should be used as a default
+
+    WebApp.connectHandlers.use(yourMiddleware)
+  */
+  if (Meteor.isDevelopment) {
+    WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
+  }
 
   /*
-  * Alternative syntax with Express.
-  * WebApp will use Connect as a default.
-  * Use if Express is needed in addition to connect.  
-  * 
+  * Alternative syntax with Express instead of Connect 
+  * Use only if the default server created by WebApp is 
+  * not sufficient 
+  *
   * const app = express()
   * app.use(...)
   *
   * WebApp.connectHandlers.use(app) 
+  * or
+  * WebApp.connectHandlers.use(config.path, app)
+  */
+
+  /*
+  * Syntax for setting up an additionnal server
+  * eg for 3rd party tools
+  * Uses Apollo but NOT Meteor, it is a totally new server
   * 
+  * const app = express()
+  * app.use(...)
+  * 
+  * apolloServer.applyMiddleware({
+  *   app,
+  *   path: '/your-app-path'
+  * })
   */
 
   // TODO: previous implementation used a patch. Is it still needed?

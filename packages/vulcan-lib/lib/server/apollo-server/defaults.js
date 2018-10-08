@@ -5,7 +5,8 @@ import { formatError } from 'apollo-errors';
 export const defaultConfig = {
   path: '/graphql',
   maxAccountsCacheSizeInMB: 1,
-  configServer: apolloServer => {}
+  configServer: apolloServer => {},
+  voyagerPath: '/voyager'
 };
 
 export const defaultOptions = {
