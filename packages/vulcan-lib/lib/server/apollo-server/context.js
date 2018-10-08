@@ -48,7 +48,8 @@ export const initContext = currentContext => {
 // Call on every request
 export const computeContextFromReq = (currentContext, contextFromReq) => {
   // givenOptions can be either a function of the request or an object
-  const getBaseContext = req => (contextFromReq ? { ...currentContext, ...contextFromReq(req) } : currentContext);
+  const getBaseContext = req =>
+    contextFromReq ? { ...currentContext, ...contextFromReq(req) } : { ...currentContext };
   // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
   const setupAuthToken = async (context, req) => {
     const user = await getUser(req.headers.authorization);

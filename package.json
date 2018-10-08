@@ -42,6 +42,7 @@
     "graphql-date": "^1.0.2",
     "graphql-tag": "^2.0.0",
     "graphql-type-json": "^0.1.4",
+    "graphql-voyager": "^1.0.0-rc.26",
     "handlebars": "^4.0.5",
     "he": "^1.1.1",
     "history": "^3.0.0",

@@ -16,6 +16,8 @@ import { WebApp } from 'meteor/webapp';
 import { runCallbacks } from '../../modules/callbacks.js';
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
+import { express as voyagerMiddleware } from 'graphql-voyager';
+import getVoyagerConfig from './voyager';
 
 export let executableSchema;
 
@@ -74,6 +76,8 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
   // TODO: not sure if "config.path" is necessary
   //WebApp.connectHandlers.use(config.path, /* your middleware */);
+  // Voyager is a schema visualizer
+  WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
 
   /*
   * Alternative syntax with Express.
