@@ -22,7 +22,7 @@ export let executableSchema;
 import './settings';
 import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
-import computeContext from './computeContext';
+import { initContext, computeContextFromReq } from './context.js';
 import getPlaygroundConfig from './playground';
 
 /**
@@ -37,6 +37,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
   // get the options and merge in defaults
   const options = { ...defaultOptions, ...givenOptions };
+  const context = initContext(options.context);
   // given options contains the schema
   const apolloServer = new ApolloServer({
     engine: engineConfig,
@@ -46,7 +47,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     // this replace the previous syntax graphqlExpress(async req => { ... })
     // this function takes the context, which contains the current request,
     // and setup the options accordingly ({req}) => { ...; return options }
-    context: computeContext(options.context, contextFromReq)
+    context: computeContextFromReq(context, contextFromReq)
   });
 
   // default function does nothing
