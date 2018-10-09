@@ -191,6 +191,10 @@ class FormComponent extends Component {
     }
   };
 
+  getFormComponents = () => {
+    return { ...Components, ...this.props.formComponents }
+  }
+
   /*
   
   Function passed to FormComponentInner to help with rendering the component
@@ -198,7 +202,7 @@ class FormComponent extends Component {
   */
   getFormInput = () => {
     const inputType = this.getType();
-    const FormComponents = this.props.formComponents;
+    const FormComponents = this.getFormComponents;
 
     // if input is a React component, use it
     if (typeof this.props.input === 'function') {
@@ -271,15 +275,15 @@ class FormComponent extends Component {
   }
   render() {
 
-    const FormComponents = this.props.formComponents;
+    const FormComponents = this.getFormComponents;
 
     if (this.props.intlInput) {
       return <FormComponents.FormIntl {...this.props} />;
     } else if (this.props.nestedInput) {
       if (this.isArrayField()) {
-        return <FormComponents.FormNestedArray {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
+        return <FormComponents.FormNestedArray {...this.props} errors={this.getErrors()} value={this.getValue()} />;
       } else if (this.isObjectField()) {
-        return <FormComponents.FormNestedObject {...this.props} errors={this.getErrors()} value={this.getValue()}/>;
+        return <FormComponents.FormNestedObject {...this.props} errors={this.getErrors()} value={this.getValue()} />;
       }
     }
     return (
