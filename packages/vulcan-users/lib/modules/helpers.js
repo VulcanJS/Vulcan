@@ -12,13 +12,13 @@ import _ from 'underscore';
  * @param {String} userOrUserId
  */
 Users.getUser = function (userOrUserId) {
-  if (typeof userOrUserId === "undefined") {
+  if (typeof userOrUserId === 'undefined') {
     if (!Meteor.user()) {
       throw new Error();
     } else {
       return Meteor.user();
     }
-  } else if (typeof userOrUserId === "string") {
+  } else if (typeof userOrUserId === 'string') {
     return Users.findOne(userOrUserId);
   } else {
     return userOrUserId;
@@ -65,12 +65,12 @@ Users.getProfileUrl = function (user, isAbsolute) {
   if (!user) {
     return "";
   }
-  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
+  isAbsolute = typeof isAbsolute === 'undefined' ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : '';
   if (user.slug) {
     return `${prefix}/users/${user.slug}`;
   } else {
-    return "";
+    return '';
   }
 };
 
@@ -161,7 +161,7 @@ Users.getSetting = function (user = null, settingName, defaultValue = null) {
  * @param {Object} user
  */
 Users.hasCompletedProfile = function (user) {
-  
+
   if (!user) return false;
 
   return _.every(Users.getRequiredFields(), function (fieldName) {
@@ -203,7 +203,7 @@ Users.getProperty = function (object, property) {
   if(array.length > 1){
     var parent = array.shift();
     // if our property is not at this level, call function again one level deeper if we can go deeper, else return undefined
-    return (typeof object[parent] === "undefined") ? undefined : this.getProperty(object[parent], array.join('.'));
+    return (typeof object[parent] === 'undefined') ? undefined : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];
@@ -249,5 +249,5 @@ Users.getRequiredFields = function () {
 // };
 
 Users.findByEmail = function (email) {
-  return Users.findOne({"email": email});
+  return Users.findOne({'email': email});
 };

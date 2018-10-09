@@ -3,7 +3,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 export class AccountsFormMessages extends Component {
   render () {
-    const { messages = [], className = "messages", style = {} } = this.props;
+    const { messages = [], className = 'messages', style = {} } = this.props;
     return messages.length > 0 && (
       <div className={className} style={style}>
         {messages

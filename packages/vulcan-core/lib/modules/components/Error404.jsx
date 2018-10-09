@@ -10,7 +10,7 @@ const Error404 = () => {
   )
 }
 
-Error404.displayName = "Error404";
+Error404.displayName = 'Error404';
 
 registerComponent('Error404', Error404);
 

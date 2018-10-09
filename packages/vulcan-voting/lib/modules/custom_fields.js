@@ -11,7 +11,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: Users.owns,
+      canRead: Users.owns,
       resolveAs: {
         type: '[Vote]',
         arguments: 'collectionName: String',

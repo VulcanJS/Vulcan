@@ -39,11 +39,11 @@ class SubscribeToActionHandler extends PureComponent {
         {id: `${documentType}.${action}d`}, 
         // handle usual name properties
         {name: document.name || document.title || document.displayName}
-      ), "success");
+      ), 'success');
       
 
     } catch(error) {
-      this.props.flash(error.message, "error");
+      this.props.flash(error.message, 'error');
     }
   }
 
@@ -58,7 +58,7 @@ class SubscribeToActionHandler extends PureComponent {
       return null;
     }
 
-    const className = this.props.className ? this.props.className : "";
+    const className = this.props.className ? this.props.className : '';
     
     return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}><FormattedMessage id={action} /></a> : null;
   }

@@ -22,7 +22,7 @@ class Checkout extends React.Component {
 
   onToken(token) {
 
-    const {paymentActionMutation, productKey, associatedCollection, associatedDocument, callback, properties, currentUser, flash, coupon} = this.props;
+    const {paymentActionMutation, productKey, associatedCollection, associatedDocument, callback, successCallback, errorCallback, properties, currentUser, flash, coupon} = this.props;
 
     this.setState({ loading: true });
 
@@ -41,8 +41,10 @@ class Checkout extends React.Component {
       // not needed because we just unmount the whole component:
       this.setState({ loading: false });
 
-      if (callback) {
-        callback(response);
+      // support both names for backwards compatibility
+      const callbackFunction = successCallback || callback;
+      if (callbackFunction) {
+        callbackFunction(response);
       }else{
         flash({id: 'payments.payment_succeeded', type: 'success'});
       }
@@ -51,8 +53,11 @@ class Checkout extends React.Component {
 
       // eslint-disable-next-line no-console
       console.log(error);
-      flash({id: 'payments.error', type: 'error'});
-    
+      if (errorCallback) {
+        errorCallback(error);
+      } else {
+        flash({message: error.message, type: 'error'});
+      }
     });
 
   }

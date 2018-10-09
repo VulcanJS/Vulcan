@@ -29,6 +29,7 @@ import cors from 'cors';
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
+registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const timberApiKey = getSetting('timber.apiKey');
@@ -36,16 +37,18 @@ const engineApiKey = getSetting('apolloEngine.apiKey');
 const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
 const engineConfig = {
   apiKey: engineApiKey,
-  "origins": [
+  // "origins": [
+  //   {
+  //     "http": {
+  //       "url": "http://localhost:3000/graphql"
+  //     }
+  //   }
+  // ],
+  'stores': [
     {
-      requestTimeout: '120s'
-    }
-  ],
-  "stores": [
-    {
-      "name": "vulcanCache",
-      "inMemory": {
-        "cacheSize": 20000000
+      'name': 'vulcanCache',
+      'inMemory': {
+        'cacheSize': 20000000
       }
     }
   ],
@@ -63,16 +66,16 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  "queryCache": {
-    "publicFullQueryStore": "vulcanCache",
-    "privateFullQueryStore": "vulcanCache"
+  'queryCache': {
+    'publicFullQueryStore': 'vulcanCache',
+    'privateFullQueryStore': 'vulcanCache'
   },
   // "reporting": {
   //   "endpointUrl": "https://engine-report.apollographql.com",
   //   "debugReports": true
   // },
-  "logging": {
-    "level": engineLogLevel
+  'logging': {
+    'level': engineLogLevel
   }
 };
 
@@ -164,7 +167,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = true;
+    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
@@ -199,6 +202,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
         }
       }
     }
+
+    //add the headers to the context
+    options.context.headers = req.headers;
 
 
     // merge with custom context

@@ -14,3 +14,4 @@ accounts-password@1.5.1
 # accounts-facebook
 
 vulcan:debug
+meteortesting:mocha

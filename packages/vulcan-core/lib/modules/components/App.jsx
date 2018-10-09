@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
-import withEdit from '../containers/withEdit.js';
+import withUpdate from '../containers/withUpdate.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
@@ -51,7 +51,7 @@ class App extends PureComponent {
     this.props.cookies.set('locale', locale);
     // if user is logged in, change their `locale` profile property
     if (this.props.currentUser) {
-     await this.props.editMutation({ documentId: this.props.currentUser._id, set: { locale }});
+     await this.props.updateUser({ selector: { documentId: this.props.currentUser._id }, data: { locale }});
     }
     moment.locale(locale);
     if (hasIntlFields) {
@@ -85,6 +85,7 @@ class App extends PureComponent {
     return (
       <IntlProvider
         locale={this.getLocale()}
+        key={this.getLocale()}
         messages={Strings[this.getLocale()]}
       >
         <div className={`locale-${this.getLocale()}`}>
@@ -115,11 +116,11 @@ App.childContextTypes = {
 
 App.displayName = 'App';
 
-const editOptions = {
+const updateOptions = {
   collectionName: 'Users',
   fragmentName: 'UsersCurrent',
 }
 
-registerComponent('App', App, withCurrentUser, [withEdit, editOptions], withApollo, withCookies);
+registerComponent('App', App, withCurrentUser, [withUpdate, updateOptions], withApollo, withCookies);
 
 export default App;

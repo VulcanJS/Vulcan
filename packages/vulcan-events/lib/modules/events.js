@@ -17,6 +17,7 @@ export const addTrackFunction = f => {
 export const track = async (eventName, eventProperties, currentUser) => {
   for (let f of trackFunctions) {
     try {
+      // eslint-disable-next-line no-await-in-loop
       await f(eventName, eventProperties, currentUser);
     } catch (error) {
       // eslint-disable-next-line no-console

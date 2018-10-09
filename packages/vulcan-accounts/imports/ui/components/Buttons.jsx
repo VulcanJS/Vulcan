@@ -4,7 +4,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 export class Buttons extends React.Component {
   render () {
-    let { buttons = {}, className = "buttons" } = this.props;
+    let { buttons = {}, className = 'buttons' } = this.props;
     return (
       <div className={ className }>
         {Object.keys(buttons).map((id, i) =>

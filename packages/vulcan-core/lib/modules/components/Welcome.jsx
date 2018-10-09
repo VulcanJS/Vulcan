@@ -19,7 +19,7 @@ const header = {
 }
 
 const code = {
-  border: "1px solid #ccc",
+  border: '1px solid #ccc',
   borderRadius: 3,
   padding: '10px 20px',
   background: 'white',

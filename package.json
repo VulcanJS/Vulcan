@@ -1,12 +1,14 @@
 {
   "name": "Vulcan",
-  "version": "1.11.2",
+  "version": "1.12.8",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
     "start": "meteor --settings settings.json",
-    "lint": "eslint --cache --ext .jsx,js packages"
+    "lint": "eslint --cache --ext .jsx,js packages",
+    "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
+    "test": "npm run test-unit"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.38",
@@ -47,6 +49,7 @@
     "intl": "^1.2.4",
     "intl-locales-supported": "^1.0.0",
     "juice": "^1.11.0",
+    "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
     "marked": "^0.3.9",
     "metascraper": "^1.0.6",
@@ -90,7 +93,10 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
-    "eslint": "^3.10.1",
+    "chromedriver": "^2.40.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-meteor": "0.0.9",
     "eslint-import-resolver-meteor": "^0.3.3",
@@ -98,8 +104,13 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-mocha": "^5.2.0",
     "eslint-plugin-prettier": "^2.5.0",
-    "eslint-plugin-react": "^6.7.1"
+    "eslint-plugin-react": "^6.7.1",
+    "expect": "^23.4.0",
+    "jsdom": "^11.11.0",
+    "jsdom-global": "^3.0.2",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "postcss": {
     "plugins": {

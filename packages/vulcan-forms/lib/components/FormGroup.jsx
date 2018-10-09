@@ -84,6 +84,7 @@ class FormGroup extends PureComponent {
             {this.props.fields.map(field => (
               <Components.FormComponent
                 key={field.name}
+                disabled={this.props.disabled}
                 {...field}
                 errors={this.props.errors}
                 throwError={this.props.throwError}
@@ -119,6 +120,7 @@ FormGroup.propTypes = {
   currentUser: PropTypes.object,
 };
 
+module.exports = FormGroup
 registerComponent('FormGroup', FormGroup, withStyles(styles, {name: "FormGroup"}));
 
 const IconRight = ({ width = 24, height = 24 }) => (

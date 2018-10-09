@@ -37,7 +37,7 @@ import { RouterServer } from './router.jsx';
 
 Meteor.startup(() => {
   // note: route defined here because it "shouldn't be removable"
-  addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
+  addRoute({name:'app.notfound', path:'*', componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
   initializeFragments();
