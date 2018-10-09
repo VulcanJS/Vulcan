@@ -58,9 +58,11 @@
 
       // if user.emails exists, change it too
       if (!!user.emails) {
-        user.emails[0].address = newEmail;
-        user.emails[0].verified = false;
-        modifier.$set.emails = user.emails;
+        if (user.emails[0].address !== newEmail) {
+          user.emails[0].address = newEmail;
+          user.emails[0].verified = false;
+          modifier.$set.emails = user.emails;
+        }
       } else {
         modifier.$set.emails = [{address: newEmail, verified: false}];
       }
