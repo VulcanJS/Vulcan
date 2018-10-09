@@ -14,6 +14,10 @@ class FormComponent extends Component {
     this.state = {};
   }
 
+  static defaultProps = {
+    formComponents: {}
+  }
+
   componentWillMount() {
     if (this.showCharsRemaining()) {
       const value = this.getValue();
@@ -202,7 +206,7 @@ class FormComponent extends Component {
   */
   getFormInput = () => {
     const inputType = this.getType();
-    const FormComponents = this.getFormComponents;
+    const FormComponents = this.getFormComponents();
 
     // if input is a React component, use it
     if (typeof this.props.input === 'function') {
@@ -275,7 +279,7 @@ class FormComponent extends Component {
   }
   render() {
 
-    const FormComponents = this.getFormComponents;
+    const FormComponents = this.getFormComponents();
 
     if (this.props.intlInput) {
       return <FormComponents.FormIntl {...this.props} />;
@@ -330,6 +334,7 @@ FormComponent.propTypes = {
 FormComponent.contextTypes = {
   getDocument: PropTypes.func.isRequired,
 };
+
 
 module.exports = FormComponent
 
