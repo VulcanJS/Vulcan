@@ -7,7 +7,7 @@ import { getSetting, singleClientTemplate, Utils } from 'meteor/vulcan:lib';
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 export default function withSingle(options) {
-  const { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
+  const { pollInterval = getSetting('pollInterval', 0), enableCache = false, extraQueries } = options;
 
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
