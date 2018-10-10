@@ -52,7 +52,7 @@ export function getDefaultMutations (options) {
         const collection = context[collectionName];
 
         // check if current user can pass check function; else throw error
-        Utils.performCheck(this.check, context.currentUser, data);
+        Utils.performCheck(this.check, context.currentUser, data, document._id, `${typeName}.create`, collectionName);
 
         // pass document to boilerplate newMutator function
         return await createMutator({
@@ -109,7 +109,7 @@ export function getDefaultMutations (options) {
         }
 
         // check if user can perform operation; if not throw error
-        Utils.performCheck(this.check, context.currentUser, document);
+        Utils.performCheck(this.check, context.currentUser, document, document._id, `${typeName}.update`, collectionName);
 
         // call editMutator boilerplate function
         return await updateMutator({
@@ -180,7 +180,7 @@ export function getDefaultMutations (options) {
           throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
         }
 
-        Utils.performCheck(this.check, context.currentUser, document, context);
+        Utils.performCheck(this.check, context.currentUser, document, context, document._id, `${typeName}.delete`, collectionName);
 
         return await deleteMutator({
           collection,

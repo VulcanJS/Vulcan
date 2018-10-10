@@ -127,7 +127,7 @@ export function getDefaultResolvers(options) {
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
         if (collection.checkAccess) {
-          Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
+          Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId, `${typeName}.read.single`, collectionName);
         }
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
