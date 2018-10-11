@@ -37,13 +37,11 @@ const engineApiKey = getSetting('apolloEngine.apiKey');
 const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
 const engineConfig = {
   apiKey: engineApiKey,
-  // "origins": [
-  //   {
-  //     "http": {
-  //       "url": "http://localhost:3000/graphql"
-  //     }
-  //   }
-  // ],
+  "origins": [
+    {
+      requestTimeout: "120s"
+    }
+  ],
   'stores': [
     {
       'name': 'vulcanCache',
