@@ -113,16 +113,28 @@ registerComponent('Datatable', Datatable, withCurrentUser);
 DatatableAbove Component
 
 */
-const DatatableAbove = (props) => {
+const DatatableAbove = (props, { intl }) => {
   const { collection, currentUser, showSearch, showNew, canInsert, value, updateQuery, options, newFormOptions } = props;
 
   return (
     <div className="datatable-above">
-      {showSearch && <input className="datatable-search form-control" placeholder="Search…" type="text" name="datatableSearchQuery" value={value} onChange={updateQuery} />}
+      {showSearch && (
+        <input
+          className="datatable-search form-control"
+          placeholder={`${intl.formatMessage({ id: 'datatable.search', defaultMessage: 'Search' })}…`}
+          type="text"
+          name="datatableSearchQuery"
+          value={value}
+          onChange={updateQuery}
+        />
+      )}
       {showNew && canInsert && <Components.NewButton collection={collection} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} {...newFormOptions}/>}
     </div>
   )
 }
+DatatableAbove.contextTypes = {
+  intl: intlShape,
+};
 registerComponent('DatatableAbove', DatatableAbove);
   
 /*
