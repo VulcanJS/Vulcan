@@ -136,7 +136,7 @@ addStrings('fr', {
   'cards.edit': 'Modifier',
   'datatable.new': 'Nouveau',
   'datatable.edit': 'Modifier',
-
+  'datatable.search': 'Rechercher',
   'admin': 'Admin',
   'notifications': 'Notifications',
 
