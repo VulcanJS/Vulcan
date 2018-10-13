@@ -14,13 +14,14 @@ class App extends PureComponent {
     if (props.currentUser) {
       runCallbacks('events.identify', props.currentUser);
     }
-    const locale = this.initLocale();
-    this.state = { locale };
+    const { locale, localeMethod } = this.initLocale();
+    this.state = { locale, localeMethod };
     moment.locale(locale);
   }
 
   initLocale = () => {
     let userLocale = '';
+    let localeMethod = '';
     const { currentUser, cookies, locale } = this.props;
     const availableLocales = Object.keys(Strings);
     const detectedLocale = detectLocale();
@@ -29,22 +30,30 @@ class App extends PureComponent {
       // 1. locale is passed through SSR process
       // TODO: currently SSR locale is passed through cookies as a hack
       userLocale = locale;
+      localeMethod = 'SSR';
     } else if (cookies && cookies.get('locale')) {
       // 2. look for a cookie
       userLocale = cookies.get('locale');
+      localeMethod = 'cookie';
     } else if (currentUser && currentUser.locale) {
       // 3. if user is logged in, check for their preferred locale
       userLocale = currentUser.locale;
+      localeMethod = 'user';
     } else  if (detectedLocale) {
       // 4. else, check for browser settings
       userLocale = detectedLocale;
+      localeMethod = 'browser';
     }
     // if user locale is available, use it; else compare first two chars
     // of user locale with first two chars of available locales
     const availableLocale = Strings[userLocale] ? userLocale : availableLocales.find(locale => locale.slice(0,2) === userLocale.slice(0,2));
 
     // 4. if user-defined locale is available, use it; else default to setting or `en-US`
-    return availableLocale ? availableLocale : getSetting('locale', 'en-US');
+    if (availableLocale) {
+      return { locale: availableLocale, localeMethod }
+    } else {
+      return { locale: getSetting('locale', 'en-US'), localeMethod: 'setting'}
+    }
   };
 
   getLocale = (truncate) => {
@@ -54,8 +63,8 @@ class App extends PureComponent {
   setLocale = async locale => {
     const { cookies, updateUser, client, currentUser } = this.props;
     this.setState({ locale });
-    cookies.remove('locale');
-    cookies.set('locale', locale);
+    cookies.remove('locale', { path: '/' });
+    cookies.set('locale', locale, { path: '/' });
     // if user is logged in, change their `locale` profile property
     if (currentUser) {
       await updateUser({ selector: { documentId: currentUser._id }, data: { locale }});
