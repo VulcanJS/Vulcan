@@ -12,7 +12,7 @@ Package.onUse( function(api) {
   api.use([
     'http',
     'vulcan:core@1.12.8',
-    'fourseven:scss@4.5.0'
+    'fourseven:scss@4.10.0'
   ]);
 
 

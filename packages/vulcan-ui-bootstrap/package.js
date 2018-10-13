@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     'vulcan:lib@1.12.8',
-    'fourseven:scss@4.5.0',
+    'fourseven:scss@4.10.0',
   ]);
   
   api.addFiles([
