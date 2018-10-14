@@ -7,7 +7,7 @@ export default class IntlProvider extends Component{
   formatMessage = ({ id, defaultMessage }, values) => {
     const messages = Strings[this.props.locale] || {};
     let message = messages[id] || defaultMessage;
-    if (values) {
+    if (message && values) {
       _.forEach(values, (value, key) => {
         // note: see replaceAll definition in vulcan:lib/utils
         message = message.replaceAll(`{${key}}`, value);
