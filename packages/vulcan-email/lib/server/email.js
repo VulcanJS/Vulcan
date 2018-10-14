@@ -96,6 +96,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 
   console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
   console.log('from: ' + from); // eslint-disable-line
+  console.log('to: ' + to); // eslint-disable-line
   console.log('cc: ' + cc); // eslint-disable-line
   console.log('bcc: ' + bcc); // eslint-disable-line
   console.log('replyTo: ' + replyTo); // eslint-disable-line

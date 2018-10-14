@@ -33,7 +33,7 @@ function onCreateUserCallback(options, user) {
   user = Object.assign(user, options);
 
   // run validation callbacks
-  user = runCallbacks({name:'user.create.validate', iterator: user});
+  user = runCallbacks({name:'user.create.validate', iterator: user, properties: {} });
   // OpenCRUD backwards compatibility
   user = runCallbacks('users.new.validate', user);
 
@@ -52,7 +52,7 @@ function onCreateUserCallback(options, user) {
       user[fieldName] = autoValue;
     }
   }
-  user = runCallbacks({ name: 'user.create.before', iterator: user });
+  user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {} });
   user = runCallbacks('users.new.sync', user);
 
   runCallbacksAsync({name: 'user.create.async', properties: {data: user}});
