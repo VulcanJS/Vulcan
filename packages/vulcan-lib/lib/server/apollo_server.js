@@ -101,7 +101,6 @@ const defaultConfig = {
 
 const defaultOptions = {
   formatError: e => {
-    console.log("Sending error to sentry:", e)
     Sentry.captureException(e)
     return formatError(e)
   },
