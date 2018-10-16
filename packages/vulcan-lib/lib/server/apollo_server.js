@@ -33,6 +33,16 @@ registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Defau
 
 // see https://github.com/apollographql/apollo-cache-control
 const timberApiKey = getSetting('timber.apiKey');
+const sentryUrl = getSetting('sentry.url');
+const sentryEnvironment = getSetting('sentry.environment')
+
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: sentryUrl, environment: sentryEnvironment });
+if(!sentryUrl) {
+  console.warn("No sentry DNS found, to activate error reporting please set the sentry.url variable in your settings file")
+}
+
+
 const engineApiKey = getSetting('apolloEngine.apiKey');
 const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
 const engineConfig = {
@@ -90,11 +100,11 @@ const defaultConfig = {
 };
 
 const defaultOptions = {
-  formatError: e => ({
-    message: e.message,
-    locations: e.locations,
-    path: e.path,
-  }),
+  formatError: e => {
+    console.log("Sending error to sentry:", e)
+    Sentry.captureException(e)
+    return formatError(e)
+  },
 };
 
 if (Meteor.isDevelopment) {
@@ -109,7 +119,20 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   const graphQLServer = express();
 
+  // LESSWRONG: Setting up Sentry integration from https://docs.sentry.io/platforms/javascript/express/
+  graphQLServer.use(Sentry.Handlers.requestHandler());
+  graphQLServer.use(Sentry.Handlers.errorHandler());
+  // Optional fallthrough error handler
+  graphQLServer.use(function onError(err, req, res, next) {
+      // The error id is attached to `res.sentry` to be returned
+      // and optionally displayed to the user for support.
+      res.statusCode = 500;
+      res.end(res.sentry + '\n');
+  });
+
+
   config.configServer(graphQLServer);
+
 
 
   // cookies
@@ -186,6 +209,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       );
 
       if (user) {
+        //LESSWRONG: Set user in sentry scope
+        Sentry.configureScope((scope) => {
+          scope.setUser({id: user._id, email: user.email, username: user.username});
+        });
 
         // identify user to any server-side analytics providers
         runCallbacks('events.identify', user);
@@ -221,7 +248,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
 
     // add error formatting from apollo-errors
-    options.formatError = formatError;
+    options.formatError = options.formatError || formatError;
 
     return options;
   }));
