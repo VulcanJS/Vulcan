@@ -25,6 +25,7 @@ const styles = theme => ({
       borderTop: `solid 1px ${theme.palette.grey[300]}`,
     },
     formSectionHeading: {
+      cursor: "pointer",
       display:"flex",
       justifyContent: "space-between",
       paddingTop: theme.spacing.unit*2,
