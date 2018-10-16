@@ -76,11 +76,10 @@ Meteor.startup(() => {
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });
-      //eslint-disable-next-line no-console
       const startTime = new Date()
       const apolloData = Promise.await(getDataFromTree(app));
-      //eslint-disable-next-line no-console
       const preRenderTime = new Date() - startTime
+      //eslint-disable-next-line no-console
       console.log("preRender time: ", preRenderTime)
       if (preRenderTime > 3000) {
         Sentry.captureException(new Error("preRender time above 3 seconds"))
