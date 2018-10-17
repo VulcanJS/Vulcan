@@ -26,7 +26,7 @@ export function getDefaultResolvers(options) {
     typeName = getTypeName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -34,7 +34,7 @@ export function getDefaultResolvers(options) {
       description: `A list of ${typeName} documents matching a set of query terms`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { terms = {}, enableCache = false, enableTotal = true } = input;
+        const { terms = {}, enableCache = false, enableTotal = false } = input;
 
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
@@ -48,7 +48,7 @@ export function getDefaultResolvers(options) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-        
+
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
@@ -77,7 +77,7 @@ export function getDefaultResolvers(options) {
         debug('');
 
         const data = { results: restrictedDocs };
-        
+
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
