@@ -52,7 +52,7 @@ export default function withMulti(options) {
   const {
     limit = 10,
     pollInterval = getSetting('pollInterval', 0),
-    enableTotal = true,
+    enableTotal = false,
     enableCache = false,
     extraQueries,
     ssr = false
