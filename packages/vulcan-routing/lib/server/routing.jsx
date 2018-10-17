@@ -7,6 +7,7 @@ import getDataFromTree from './getDataFromTree';
 import { CookiesProvider } from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
+const Sentry = require('@sentry/node');
 
 class UserAgentProvider extends Component {
   getChildContext() {
@@ -75,11 +76,14 @@ Meteor.startup(() => {
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });
-      //eslint-disable-next-line no-console
-      console.time("preRender time: ")
+      const startTime = new Date()
       const apolloData = Promise.await(getDataFromTree(app));
+      const preRenderTime = new Date() - startTime
       //eslint-disable-next-line no-console
-      console.timeEnd("preRender time: ")
+      console.log("preRender time: ", preRenderTime)
+      if (preRenderTime > 3000) {
+        Sentry.captureException(new Error("preRender time above 3 seconds"))
+      }
       return apolloData
     },
     dehydrateHook(req, res) {
