@@ -121,7 +121,7 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
 
   // if email has a data() function, merge its return value with results from the query
-  const data = email.data ? { ...result.data, ...email.data(variables) } : result.data;
+  const data = email.data ? { ...result.data, ...email.data(variables, result.data) } : result.data;
 
   const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
 
