@@ -35,9 +35,10 @@ registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Defau
 const timberApiKey = getSetting('timber.apiKey');
 const sentryUrl = getSetting('sentry.url');
 const sentryEnvironment = getSetting('sentry.environment')
+const sentryRelease = getSetting('sentry.release')
 
 const Sentry = require('@sentry/node');
-Sentry.init({ dsn: sentryUrl, environment: sentryEnvironment });
+Sentry.init({ dsn: sentryUrl, environment: sentryEnvironment, release: sentryRelease });
 if(!sentryUrl) {
   console.warn("No sentry DNS found, to activate error reporting please set the sentry.url variable in your settings file")
 }
