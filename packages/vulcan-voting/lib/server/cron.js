@@ -17,7 +17,7 @@ Meteor.startup(function () {
   SyncedCron.add({
     name: 'updateScoreActiveDocuments',
     schedule(parser) {
-      return parser.text(`every ${scoreInterval} seconds`);
+      return parser.text(`every 30 seconds`);
     },
     job() {
       VoteableCollections.forEach(collection => {
