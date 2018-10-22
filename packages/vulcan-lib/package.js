@@ -18,8 +18,6 @@ Package.onUse(function(api) {
 
     'meteor@1.9.0',
     'static-html@1.2.2',
-    'standard-minifier-css@1.4.1',
-    'standard-minifier-js@2.3.4',
     'es5-shim@4.8.0',
     'ecmascript@0.11.0',
     'shell-server@0.3.1',

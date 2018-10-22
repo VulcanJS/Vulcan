@@ -1,51 +1,39 @@
 import { getSetting, registerSetting, debug } from 'meteor/vulcan:core';
 import { /*updateScore,*/ batchUpdateScore } from './scoring.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
+import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 
 registerSetting('voting.scoreUpdateInterval', 60, 'How often to update scores, in seconds');
+const scoreInterval = parseInt(getSetting('voting.scoreUpdateInterval', 60));
 
-// TODO use a node cron or at least synced-cron
+SyncedCron.options = {
+  log: true,
+  collectionName: 'cronHistory',
+  utc: false,
+  collectionTTL: 172800
+};
+
 Meteor.startup(function () {
-  
-  const scoreInterval = parseInt(getSetting('voting.scoreUpdateInterval'));
-
-  if (scoreInterval > 0) {
-
-    VoteableCollections.forEach(collection => {
-
-      // active items get updated every N seconds
-      Meteor.setInterval(async function () {
-
-        // let updatedDocuments = 0;
-
-        // console.log('tick ('+scoreInterval+')');
-        // collection.find({'inactive': {$ne : true}}).forEach(document => {
-        //   updatedDocuments += updateScore({collection, item: document});
-        // });
-
-        const updatedDocuments = await batchUpdateScore(collection, false, false);
-
-        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} active documents in collection ${collection.options.collectionName}`)
-
-      }, scoreInterval * 1000);
-
-      // inactive items get updated every hour
-      Meteor.setInterval(async function () {
-
-
-        // let updatedDocuments = 0;
-        //
-        // collection.find({'inactive': true}).forEach(document => {
-        //   updatedDocuments += updateScore({collection, item: document});
-        // });
-
-        const updatedDocuments = await batchUpdateScore(collection, true, false);
-
-        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`)
-
-      }, 3600 * 24 * 1000);
-
-    });
-  }
+  SyncedCron.add({
+    name: 'updateScoreActiveDocuments',
+    schedule(parser) {
+      return parser.text(`every 30 seconds`);
+    },
+    job() {
+      VoteableCollections.forEach(collection => {
+        batchUpdateScore(collection, false, false);
+      });
+    }
+  });
+  SyncedCron.add({
+    name: 'updateScoreInactiveDocuments',
+    schedule(parser) {
+      return parser.text('every 24 hours');
+    },
+    job() {
+      VoteableCollections.forEach(collection => {
+        batchUpdateScore(collection, true, false);
+      });
+    }
+  });
 });
-
