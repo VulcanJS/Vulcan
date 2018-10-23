@@ -54,13 +54,27 @@ const arrayOfObjectSchema = {
     type: new SimpleSchema(addressSchema)
   }
 };
-// example with a custom input
+// example with custom inputs for the children
 // ["http://maps/XYZ", "http://maps/foobar"]
 const arrayOfUrlSchema = {
   addresses: {
     type: Array,
     group: addressGroup,
     ...permissions
+  },
+  'addresses.$': {
+    type: String,
+    input: 'url'
+  }
+};
+// example with a fully custom input for the array
+const ArrayInput = () => 'ARRAY INPUT';
+const arrayOfUrlCustomSchema = {
+  addresses: {
+    type: Array,
+    group: addressGroup,
+    ...permissions,
+    input: ArrayInput
   },
   'addresses.$': {
     type: String,
@@ -107,6 +121,7 @@ const createDummyCollection = (typeName, schema) =>
   });
 const ArrayOfObjects = createDummyCollection('ArrayofObject', arrayOfObjectSchema);
 const Objects = createDummyCollection('Object', objectSchema);
+const ArrayOfUrls = createDummyCollection('ArrayOfUrl', arrayOfUrlSchema);
 
 const Addresses = createCollection({
   collectionName: 'Addresses',
@@ -185,6 +200,20 @@ describe('vulcan-forms/components', function() {
         expect(addressField.nestedSchema.street).toBeDefined();
       });
     });
+    describe('array with custom children inputs (e.g array of url)', function() {
+      it('shallow render', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfUrls} />);
+        expect(wrapper).toBeDefined();
+      });
+      it('should handle array subfield input', () => {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfUrls} />);
+        const FormGroup = wrapper.find('FormGroup').first();
+        //console.log(FormGroup.prop('fields'));
+        const fields = FormGroup.prop('fields');
+        expect(fields[0].arrayField).toBeDefined();
+      });
+    });
+    describe('array with a custom input', function() {});
   });
 
   describe('FormComponent (select the components to render and handle state)', function() {
@@ -256,6 +285,9 @@ describe('vulcan-forms/components', function() {
         const formNested = wrapper.find('FormNestedObject');
         expect(formNested).toHaveLength(1);
       });
+    });
+    describe('array of custom inputs (e.g url)', function() {
+      it('shallow render', function() {});
     });
   });
 
