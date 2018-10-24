@@ -21,7 +21,7 @@ Meteor.startup(function () {
     },
     job() {
       VoteableCollections.forEach(collection => {
-        batchUpdateScore(collection, false, false);
+        batchUpdateScore({collection});
       });
     }
   });
@@ -32,7 +32,7 @@ Meteor.startup(function () {
     },
     job() {
       VoteableCollections.forEach(collection => {
-        batchUpdateScore(collection, true, false);
+        batchUpdateScore({collection, inactive: true});
       });
     }
   });
