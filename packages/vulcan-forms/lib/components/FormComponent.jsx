@@ -310,6 +310,7 @@ class FormComponent extends Component {
         return (
           <FormComponents.FormNestedArray
             {...this.props}
+            formComponents={FormComponents}
             errors={this.getErrors()}
             value={this.getValue()}
           />
@@ -318,6 +319,7 @@ class FormComponent extends Component {
         return (
           <FormComponents.FormNestedObject
             {...this.props}
+            formComponents={FormComponents}
             errors={this.getErrors()}
             value={this.getValue()}
           />
