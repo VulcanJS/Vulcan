@@ -89,7 +89,7 @@ export const validateIntlField = function() {
       errors.push({
         id: '',
         path: `${this.key}.${index}`,
-        properties: { label: originalFieldName, locale: locale.id }
+        properties: { name: originalFieldName, locale: locale.id }
       });
     }
   });
