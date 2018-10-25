@@ -214,7 +214,7 @@ export const createCollection = options => {
     };
 
     if (collection.defaultView) {
-      parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient));
+      parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient, context));
     }
 
     // handle view option
