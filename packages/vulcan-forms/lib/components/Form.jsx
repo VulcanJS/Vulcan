@@ -58,6 +58,7 @@ import pickBy from 'lodash/pickBy';
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
+import mergeWithComponents from '../modules/mergeWithComponents';
 
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
@@ -262,9 +263,6 @@ class SmartForm extends Component {
   Get form components, in case any has been overwritten for this specific form
 
   */
-  getFormComponents = () => {
-    return { ...Components, ...this.props.formComponents };
-  };
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -996,7 +994,7 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
-    const FormComponents = this.getFormComponents();
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
     return (
       <div className={'document-' + this.getFormType()}>
