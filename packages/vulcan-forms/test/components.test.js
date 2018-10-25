@@ -67,9 +67,22 @@ const arrayOfUrlSchema = {
     input: 'url'
   }
 };
-// example with a fully custom input for the array
+
+const CustomObjectInput = () => 'OBJECT INPUT';
+const arrayOfCustomObjectSchema = {
+  addresses: {
+    type: Array,
+    group: addressGroup,
+    ...permissions
+  },
+  'addresses.$': {
+    type: new SimpleSchema(addressSchema),
+    input: CustomObjectInput
+  }
+};
+// example with a fully custom input for both the array and its children
 const ArrayInput = () => 'ARRAY INPUT';
-const arrayOfUrlCustomSchema = {
+const arrayFullCustomSchema = {
   addresses: {
     type: Array,
     group: addressGroup,
@@ -119,9 +132,12 @@ const createDummyCollection = (typeName, schema) =>
     resolvers: getDefaultResolvers(typeName + 's'),
     mutations: getDefaultMutations(typeName + 's')
   });
-const ArrayOfObjects = createDummyCollection('ArrayofObject', arrayOfObjectSchema);
+const ArrayOfObjects = createDummyCollection('ArrayOfObject', arrayOfObjectSchema);
 const Objects = createDummyCollection('Object', objectSchema);
 const ArrayOfUrls = createDummyCollection('ArrayOfUrl', arrayOfUrlSchema);
+const ArrayOfCustomObjects = createDummyCollection('ArrayOfCustomObject', arrayOfCustomObjectSchema);
+const ArrayFullCustom = createDummyCollection('ArrayFullCustom', arrayFullCustomSchema);
+const ArrayOfStrings = createDummyCollection('ArrayOfString', arrayOfStringSchema);
 
 const Addresses = createCollection({
   collectionName: 'Addresses',
@@ -142,7 +158,8 @@ describe('vulcan-forms/components', function() {
       formatRelative: () => '',
       formatNumber: () => '',
       formatPlural: () => '',
-      formatHTMLMessage: () => ''
+      formatHTMLMessage: () => '',
+      now: () => ''
     }
   };
   // eslint-disable-next-line no-unused-vars
@@ -154,23 +171,16 @@ describe('vulcan-forms/components', function() {
     shallow(C, {
       context
     });
+
   describe('Form (handle fields computation)', function() {
+    // getters
+    const getArrayFormGroup = wrapper => wrapper.find('FormGroup').find({ name: 'addresses' });
+    const getFields = arrayFormGroup => arrayFormGroup.prop('fields');
+
     describe('basic collection - no nesting', function() {
       it('shallow render', function() {
         const wrapper = shallowWithContext(<Form collection={Addresses} />);
         expect(wrapper).toBeDefined();
-      });
-    });
-    describe('array of objects', function() {
-      it('shallow render', () => {
-        const wrapper = shallowWithContext(<Form collection={ArrayOfObjects} />);
-        expect(wrapper).toBeDefined();
-      });
-      it('render a FormGroup for addresses', function() {
-        const wrapper = shallowWithContext(<Form collection={ArrayOfObjects} />);
-        const formGroup = wrapper.find('FormGroup').find({ name: 'addresses' });
-        expect(formGroup).toBeDefined();
-        expect(formGroup).toHaveLength(1);
       });
     });
     describe('nested object (not in array)', function() {
@@ -200,20 +210,66 @@ describe('vulcan-forms/components', function() {
         expect(addressField.nestedSchema.street).toBeDefined();
       });
     });
+    describe('array of objects', function() {
+      it('shallow render', () => {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfObjects} />);
+        expect(wrapper).toBeDefined();
+      });
+      it('render a FormGroup for addresses', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfObjects} />);
+        const formGroup = wrapper.find('FormGroup').find({ name: 'addresses' });
+        expect(formGroup).toBeDefined();
+        expect(formGroup).toHaveLength(1);
+      });
+      it('passes down the array child fields', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfObjects} />);
+        const formGroup = getArrayFormGroup(wrapper);
+        const fields = getFields(formGroup);
+        const arrayField = fields[0];
+        expect(arrayField.nestedInput).toBe(true);
+        expect(arrayField.nestedFields).toHaveLength(Object.keys(addressSchema).length);
+      });
+    });
     describe('array with custom children inputs (e.g array of url)', function() {
       it('shallow render', function() {
         const wrapper = shallowWithContext(<Form collection={ArrayOfUrls} />);
         expect(wrapper).toBeDefined();
       });
-      it('should handle array subfield input', () => {
+      it('passes down the array item custom input', () => {
         const wrapper = shallowWithContext(<Form collection={ArrayOfUrls} />);
-        const FormGroup = wrapper.find('FormGroup').first();
-        //console.log(FormGroup.prop('fields'));
-        const fields = FormGroup.prop('fields');
-        expect(fields[0].arrayField).toBeDefined();
+        const formGroup = getArrayFormGroup(wrapper);
+        const fields = getFields(formGroup);
+        const arrayField = fields[0];
+        expect(arrayField.arrayField).toBeDefined();
       });
     });
-    describe('array with a custom input', function() {});
+    describe('array of objects with custom children inputs', function() {
+      it('shallow render', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfCustomObjects} />);
+        expect(wrapper).toBeDefined();
+      });
+      // TODO: does not work, schema_utils needs an update
+      it.skip('passes down the custom input', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayOfCustomObjects} />);
+        const formGroup = getArrayFormGroup(wrapper);
+        const fields = getFields(formGroup);
+        const arrayField = fields[0];
+        expect(arrayField.arrayField).toBeDefined();
+      });
+    });
+    describe('array with a fully custom input (array itself and children)', function() {
+      it('shallow render', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayFullCustom} />);
+        expect(wrapper).toBeDefined();
+      });
+      it('passes down the custom input', function() {
+        const wrapper = shallowWithContext(<Form collection={ArrayFullCustom} />);
+        const formGroup = getArrayFormGroup(wrapper);
+        const fields = getFields(formGroup);
+        const arrayField = fields[0];
+        expect(arrayField.arrayField).toBeDefined();
+      });
+    });
   });
 
   describe('FormComponent (select the components to render and handle state)', function() {
