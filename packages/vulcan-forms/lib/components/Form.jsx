@@ -676,6 +676,7 @@ class SmartForm extends Component {
   updateCurrentValues = (newValues, options = {}) => {
     // default to overwriting old value with new
     const { mode = 'overwrite' } = options;
+    const { changeCallback } = this.props;
 
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
@@ -715,6 +716,7 @@ class SmartForm extends Component {
           newState.deletedValues = _.without(prevState.deletedValues, path);
         }
       });
+      if (changeCallback) changeCallback(newState.currentDocument);
       return newState;
     });
   };
@@ -1090,6 +1092,7 @@ SmartForm.propTypes = {
   formComponents: PropTypes.object,
 
   // callbacks
+  changeCallback: PropTypes.func,
   submitCallback: PropTypes.func,
   successCallback: PropTypes.func,
   removeSuccessCallback: PropTypes.func,
