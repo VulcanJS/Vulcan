@@ -1,11 +1,11 @@
 Package.describe({
-  summary: "Generates the boilerplate html from program's manifest",
+  summary: 'Generates the boilerplate html from program\'s manifest',
   version: '1.6.0',
   name: 'boilerplate-generator'
 });
 
 Npm.depends({
-  "combined-stream2": "1.1.2"
+  'combined-stream2': '1.1.2'
 });
 
 Package.onUse(api => {
