@@ -60,7 +60,7 @@ export const updateScore = async ({collection, item, forceUpdate}) => {
   return 0;
 };
 
-export const batchUpdateScore = async (collection, inactive = false, forceUpdate = false) => {
+export const batchUpdateScore = async ({collection, inactive = false, forceUpdate = false}) => {
   // INACTIVITY_THRESHOLD_DAYS =  number of days after which a single vote will not have a big enough effect to trigger a score update
   //      and posts can become inactive
   const INACTIVITY_THRESHOLD_DAYS = 30;
