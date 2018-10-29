@@ -110,12 +110,17 @@ export function getDefaultResolvers(options) {
 
         // use Dataloader if doc is selected by documentId/_id
         const documentId = selector.documentId || selector._id;
-        const doc = documentId ? await collection.loader.load(documentId) : await Connectors.get(collection, selector);
+        // documentId can be undefined, this is NOT a failure case
+        // for example it allows form to have a "edit" and "new" mode withtout
+        // needing to swap the withSingle hoc
+        if (!documentId) return { result: null };
 
+        const doc = await collection.loader.load(documentId);
         if (!doc) {
           if (allowNull) {
             return { result: null };
           } else {
+            // if documentId is provided but no document is found, this is usually a failure case
             const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
             throw new MissingDocumentError({ data: { documentId, selector } });
           }
