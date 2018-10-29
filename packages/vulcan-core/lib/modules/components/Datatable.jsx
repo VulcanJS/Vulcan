@@ -75,11 +75,16 @@ class Datatable extends PureComponent {
       const DatatableWithMulti = withMulti(options)(Components.DatatableContents);
 
       const canInsert = collection.options && collection.options.mutations && collection.options.mutations.new && collection.options.mutations.new.check(this.props.currentUser);
+      
+      // add _id to orderBy when we want to sort a column, to avoid breaking the graphql() hoc;
+      // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
+      // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays {}. So we test on the length of keys for this object.
+      const orderBy = Object.keys(this.state.currentSort).length == 0 ? {} : { ...this.state.currentSort, _id: -1 };
 
       return (
         <div className={`datatable datatable-${collection.options.collectionName}`}>
           <Components.DatatableAbove {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-          <DatatableWithMulti {...this.props} collection={collection} terms={{query: this.state.query, orderBy: this.state.currentSort }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
+          <DatatableWithMulti {...this.props} collection={collection} terms={{query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
         </div>
       )
     }
