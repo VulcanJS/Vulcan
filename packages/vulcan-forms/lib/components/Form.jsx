@@ -37,7 +37,6 @@ import SimpleSchema from 'simpl-schema';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import set from 'lodash/set';
@@ -59,6 +58,11 @@ import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
 import mergeWithComponents from '../modules/mergeWithComponents';
+import {
+  getEditableFields,
+  getInsertableFields
+} from '../modules/fieldsUtils.js';
+import withCollectionProps from './withCollectionProps';
 
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
@@ -1055,19 +1059,9 @@ class SmartForm extends Component {
 
 SmartForm.propTypes = {
   // main options
-  collection: PropTypes.object,
-  collectionName: (props, propName, componentName) => {
-    if (!props.collection && !props.collectionName) {
-      return new Error(
-        `One of props 'collection' or 'collectionName' was not specified in '${componentName}'.`
-      );
-    }
-    if (!props.collection && typeof props['collectionName'] !== 'string') {
-      return new Error(
-        `Prop collectionName was not of type string in '${componentName}`
-      );
-    }
-  },
+  collection: PropTypes.object.isRequired,
+  collectionName: PropTypes.string.isRequired,
+  typeName: PropTypes.string.isRequired,
   document: PropTypes.object, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
 
@@ -1137,4 +1131,8 @@ SmartForm.childContextTypes = {
 
 module.exports = SmartForm;
 
-registerComponent('Form', SmartForm);
+registerComponent({
+  name: 'Form',
+  component: SmartForm,
+  hocs: [withCollectionProps]
+});

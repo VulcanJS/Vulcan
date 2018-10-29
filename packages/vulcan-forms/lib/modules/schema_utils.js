@@ -1,3 +1,28 @@
+/**
+ * Schema converter/getters
+ * @param {*} schema
+ */
+
+// filter out fields with "." or "$"
+export const getValidFields = schema => {
+  return Object.keys(schema).filter(fieldName => !fieldName.includes('$') && !fieldName.includes('.'));
+};
+
+export const getReadableFields = schema => {
+  // OpenCRUD backwards compatibility
+  return getValidFields(schema).filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
+};
+
+export const getCreateableFields = schema => {
+  // OpenCRUD backwards compatibility
+  return getValidFields(schema).filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
+};
+
+export const getUpdateableFields = schema => {
+  // OpenCRUD backwards compatibility
+  return getValidFields(schema).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
+};
+
 /*
 
 Convert a nested SimpleSchema schema into a JSON object
@@ -27,7 +52,7 @@ export const convertSchema = (schema, flatten = false) => {
         // or a schema on its own with subfields (convertedSchema will return smth)
         if (!convertedSubSchema) {
           // subSchema is a simple field in this case (eg array of numbers)
-          jsonSchema[fieldName].field = getFieldSchema(`${fieldName}.$`, schema)
+          jsonSchema[fieldName].field = getFieldSchema(`${fieldName}.$`, schema);
         } else {
           // subSchema is a full schema with multiple fields (eg array of objects)
           if (flatten) {
@@ -35,7 +60,6 @@ export const convertSchema = (schema, flatten = false) => {
           } else {
             jsonSchema[fieldName].schema = convertedSubSchema;
           }
-
         }
       }
     });
@@ -61,44 +85,43 @@ export const getFieldSchema = (fieldName, schema) => {
   return fieldSchema;
 };
 
-
 // type is an array due to the possibility of using SimpleSchema.oneOf
 // right now we support only fields with one type
-export const getSchemaType = schema => schema.type.definitions[0].type
+export const getSchemaType = schema => schema.type.definitions[0].type;
 
 const getArrayNestedSchema = (fieldName, schema) => {
   const arrayItemSchema = schema._schema[`${fieldName}.$`];
-  const nestedSchema = arrayItemSchema && getSchemaType(arrayItemSchema)
-  return nestedSchema
-}
+  const nestedSchema = arrayItemSchema && getSchemaType(arrayItemSchema);
+  return nestedSchema;
+};
 // nested object fields type is of the form "type: new SimpleSchema({...})"
 // so they should possess a "_schema" prop
-const isNestedSchemaField = (fieldSchema) => {
-  const fieldType = getSchemaType(fieldSchema)
+const isNestedSchemaField = fieldSchema => {
+  const fieldType = getSchemaType(fieldSchema);
   //console.log('fieldType', typeof fieldType, fieldType._schema)
-  return fieldType && !!fieldType._schema
-}
+  return fieldType && !!fieldType._schema;
+};
 const getObjectNestedSchema = (fieldName, schema) => {
-  const fieldSchema = schema._schema[fieldName]
-  if (!isNestedSchemaField(fieldSchema)) return null
-  const nestedSchema = fieldSchema && getSchemaType(fieldSchema)
-  return nestedSchema
-}
+  const fieldSchema = schema._schema[fieldName];
+  if (!isNestedSchemaField(fieldSchema)) return null;
+  const nestedSchema = fieldSchema && getSchemaType(fieldSchema);
+  return nestedSchema;
+};
 /*
 
 Given an array field, get its nested schema
 If the field is not an object, this will return the subfield type instead
 */
 export const getNestedFieldSchemaOrType = (fieldName, schema) => {
-  const arrayItemSchema = getArrayNestedSchema(fieldName, schema)
+  const arrayItemSchema = getArrayNestedSchema(fieldName, schema);
   if (!arrayItemSchema) {
     // look for an object schema
-    const objectItemSchema = getObjectNestedSchema(fieldName, schema)
+    const objectItemSchema = getObjectNestedSchema(fieldName, schema);
     // no schema was found
-    if (!objectItemSchema) return null
-    return objectItemSchema
+    if (!objectItemSchema) return null;
+    return objectItemSchema;
   }
-  return arrayItemSchema
+  return arrayItemSchema;
 };
 
 export const schemaProperties = [
@@ -147,7 +170,7 @@ export const schemaProperties = [
   'options',
   'query',
   'fieldProperties',
-  'intl',
+  'intl'
 ];
 
 export const formProperties = [
@@ -179,5 +202,5 @@ export const formProperties = [
   'placeholder',
   'options',
   'query',
-  'fieldProperties',
+  'fieldProperties'
 ];

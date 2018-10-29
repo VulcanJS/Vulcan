@@ -37,12 +37,18 @@ import {
   withNew,
   withUpdate,
   withDelete,
-  getFragment,
-  getCollection
+  getFragment
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withSingle } from 'meteor/vulcan:core';
 import { graphql } from 'react-apollo';
+import {
+  getReadableFields,
+  getCreateableFields,
+  getUpdateableFields
+} from '../modules/schema_utils';
+
+import withCollectionProps from './withCollectionProps';
 
 class FormWrapper extends PureComponent {
   constructor(props) {
@@ -51,16 +57,11 @@ class FormWrapper extends PureComponent {
     // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
     this.FormComponent = this.getComponent(props);
   }
-
-  getCollection() {
-    return this.props.collection || getCollection(this.props.collectionName);
-  }
-
   // return the current schema based on either the schema or collection prop
   getSchema() {
     return this.props.schema
       ? this.props.schema
-      : this.getCollection().simpleSchema()._schema;
+      : this.props.collection.simpleSchema()._schema;
   }
 
   // if a document is being passed, this is an edit form
@@ -68,49 +69,18 @@ class FormWrapper extends PureComponent {
     return this.props.documentId || this.props.slug ? 'edit' : 'new';
   }
 
-  // filter out fields with "." or "$"
-  getValidFields() {
-    return Object.keys(this.getSchema()).filter(
-      fieldName => !fieldName.includes('$') && !fieldName.includes('.')
-    );
-  }
-
-  getReadableFields() {
-    const schema = this.getSchema();
-    // OpenCRUD backwards compatibility
-    return this.getValidFields().filter(
-      fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy
-    );
-  }
-
-  getCreateableFields() {
-    const schema = this.getSchema();
-    // OpenCRUD backwards compatibility
-    return this.getValidFields().filter(
-      fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy
-    );
-  }
-
-  getUpdatetableFields() {
-    const schema = this.getSchema();
-    // OpenCRUD backwards compatibility
-    return this.getValidFields().filter(
-      fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy
-    );
-  }
-
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
   getFragments() {
-    const prefix = `${this.getCollection()._name}${Utils.capitalize(
+    const prefix = `${this.props.collectionName}${Utils.capitalize(
       this.getFormType()
     )}`;
     const fragmentName = `${prefix}FormFragment`;
 
     const fields = this.props.fields;
-    const readableFields = this.getReadableFields();
-    const createableFields = this.getCreateableFields();
-    const updatetableFields = this.getUpdatetableFields();
+    const readableFields = getReadableFields(this.getSchema());
+    const createableFields = getCreateableFields(this.getSchema());
+    const updatetableFields = getUpdateableFields(this.getSchema());
 
     // get all editable/insertable fields (depending on current form type)
     let queryFields =
@@ -133,7 +103,7 @@ class FormWrapper extends PureComponent {
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
-      fragment ${fragmentName} on ${this.getCollection().typeName} {
+      fragment ${fragmentName} on ${this.props.typeName} {
         _id
         ${queryFields.map(convertFields).join('\n')}
       }
@@ -141,7 +111,7 @@ class FormWrapper extends PureComponent {
 
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
-      fragment ${fragmentName} on ${this.getCollection().typeName} {
+      fragment ${fragmentName} on ${this.props.typeName} {
         _id
         ${mutationFields.map(convertFields).join('\n')}
       }
@@ -196,7 +166,7 @@ class FormWrapper extends PureComponent {
   getComponent() {
     let WrappedComponent;
 
-    const prefix = `${this.getCollection()._name}${Utils.capitalize(
+    const prefix = `${this.props.collectionName}${Utils.capitalize(
       this.getFormType()
     )}`;
 
@@ -215,7 +185,7 @@ class FormWrapper extends PureComponent {
     // options for withSingle HoC
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
-      collection: this.getCollection(),
+      collection: this.props.collection,
       fragment: queryFragment,
       extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
@@ -225,7 +195,7 @@ class FormWrapper extends PureComponent {
 
     // options for withNew, withUpdate, and withDelete HoCs
     const mutationOptions = {
-      collection: this.getCollection(),
+      collection: this.props.collection,
       fragment: mutationFragment
     };
 
@@ -303,19 +273,10 @@ class FormWrapper extends PureComponent {
 
 FormWrapper.propTypes = {
   // main options
-  collection: PropTypes.object,
-  collectionName: (props, propName, componentName) => {
-    if (!props.collection && !props.collectionName) {
-      return new Error(
-        `One of props 'collection' or 'collectionName' was not specified in '${componentName}'.`
-      );
-    }
-    if (!props.collection && typeof props['collectionName'] !== 'string') {
-      return new Error(
-        `Prop collectionName was not of type string in '${componentName}`
-      );
-    }
-  },
+  collection: PropTypes.object.isRequired,
+  collectionName: PropTypes.string.isRequired,
+  typeName: PropTypes.string.isRequired,
+
   documentId: PropTypes.string, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
   queryFragment: PropTypes.object,
@@ -362,10 +323,8 @@ FormWrapper.contextTypes = {
   intl: intlShape
 };
 
-registerComponent(
-  'SmartForm',
-  FormWrapper,
-  withCurrentUser,
-  withApollo,
-  withRouter
-);
+registerComponent({
+  name: 'SmartForm',
+  component: FormWrapper,
+  hocs: [withCurrentUser, withApollo, withRouter, withCollectionProps]
+});

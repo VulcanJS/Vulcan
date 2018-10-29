@@ -33,3 +33,5 @@ const groupProps = {
   order: PropTypes.number,
   fields: PropTypes.arrayOf(PropTypes.shape(fieldProps))
 };
+
+const callbacksProps = {};
