@@ -49,6 +49,7 @@ import {
 } from '../modules/schema_utils';
 
 import withCollectionProps from './withCollectionProps';
+import { callbackProps } from './propTypes';
 
 class FormWrapper extends PureComponent {
   constructor(props) {
@@ -302,13 +303,7 @@ FormWrapper.propTypes = {
   warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
-  changeCallback: PropTypes.func,
-  submitCallback: PropTypes.func,
-  successCallback: PropTypes.func,
-  removeSuccessCallback: PropTypes.func,
-  errorCallback: PropTypes.func,
-  cancelCallback: PropTypes.func,
-  revertCallback: PropTypes.func,
+  ...callbackProps,
 
   currentUser: PropTypes.object,
   client: PropTypes.object
