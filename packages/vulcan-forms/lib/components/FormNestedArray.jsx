@@ -2,6 +2,25 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
+// Replaceable layout
+const FormNestedArrayLayout = ({ hasErrors, label, content }) => (
+  <div
+    className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}
+  >
+    <label className="control-label col-sm-3">{label}</label>
+    <div className="col-sm-9">{content}</div>
+  </div>
+);
+FormNestedArrayLayout.propTypes = {
+  hasErrors: PropTypes.bool,
+  label: PropTypes.node,
+  content: PropTypes.node
+};
+registerComponent({
+  name: 'FormNestedArrayLayout',
+  component: FormNestedArrayLayout
+});
+
 class FormNestedArray extends PureComponent {
   getCurrentValue() {
     return this.props.value || [];
@@ -39,7 +58,7 @@ class FormNestedArray extends PureComponent {
       'inputProperties',
       'nestedInput'
     );
-    const { errors, path, formComponents } = this.props;
+    const { errors, path, label, formComponents } = this.props;
     const FormComponents = formComponents;
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(
@@ -48,14 +67,10 @@ class FormNestedArray extends PureComponent {
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
 
     return (
-      <div
-        className={`form-group row form-nested ${
-          hasErrors ? 'input-error' : ''
-        }`}
-      >
-        <label className="control-label col-sm-3">{this.props.label}</label>
-        <div className="col-sm-9">
-          {value.map(
+      <FormComponents.FormNestedArrayLayout
+        label={label}
+        content={[
+          value.map(
             (subDocument, i) =>
               !this.isDeleted(i) && (
                 <React.Fragment key={i}>
@@ -73,20 +88,24 @@ class FormNestedArray extends PureComponent {
                   />
                 </React.Fragment>
               )
-          )}
+          ),
           <Components.Button
+            key="add-button"
             size="small"
             variant="success"
             onClick={this.addItem}
             className="form-nested-button"
           >
             <Components.IconAdd height={12} width={12} />
-          </Components.Button>
-          {hasErrors ? (
-            <FormComponents.FieldErrors errors={nestedArrayErrors} />
-          ) : null}
-        </div>
-      </div>
+          </Components.Button>,
+          hasErrors ? (
+            <FormComponents.FieldErrors
+              key="form-nested-errors"
+              errors={nestedArrayErrors}
+            />
+          ) : null
+        ]}
+      />
     );
   }
 }

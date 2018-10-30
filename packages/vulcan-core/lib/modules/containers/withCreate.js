@@ -30,7 +30,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
-import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 const withCreate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
