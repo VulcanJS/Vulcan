@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import SimpleSchema from 'simpl-schema';
 import { isEmptyValue, getNullValue } from '../modules/utils.js';
+import mergeWithComponents from '../modules/mergeWithComponents';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -13,10 +14,6 @@ class FormComponent extends Component {
 
     this.state = {};
   }
-
-  static defaultProps = {
-    formComponents: {}
-  };
 
   componentWillMount() {
     if (this.showCharsRemaining()) {
@@ -216,10 +213,6 @@ class FormComponent extends Component {
     }
   };
 
-  getFormComponents = () => {
-    return { ...Components, ...this.props.formComponents };
-  };
-
   /*
   
   Function passed to FormComponentInner to help with rendering the component
@@ -227,7 +220,7 @@ class FormComponent extends Component {
   */
   getFormInput = () => {
     const inputType = this.getType();
-    const FormComponents = this.getFormComponents();
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
     // if input is a React component, use it
     if (typeof this.props.input === 'function') {
@@ -301,7 +294,7 @@ class FormComponent extends Component {
     return this.getFieldType() instanceof SimpleSchema;
   };
   render() {
-    const FormComponents = this.getFormComponents();
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
     if (this.props.intlInput) {
       return <FormComponents.FormIntl {...this.props} />;

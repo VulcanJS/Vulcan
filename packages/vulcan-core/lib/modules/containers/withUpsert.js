@@ -33,7 +33,7 @@ import gql from 'graphql-tag';
 import { upsertClientTemplate } from 'meteor/vulcan:core';
 import clone from 'lodash/clone';
 
-import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 const withUpsert = options => {
   const { collectionName, collection } = extractCollectionInfo(options);

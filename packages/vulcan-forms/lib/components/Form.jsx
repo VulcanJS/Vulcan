@@ -37,7 +37,6 @@ import SimpleSchema from 'simpl-schema';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import set from 'lodash/set';
@@ -58,6 +57,13 @@ import pickBy from 'lodash/pickBy';
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
+import mergeWithComponents from '../modules/mergeWithComponents';
+import {
+  getEditableFields,
+  getInsertableFields
+} from '../modules/schema_utils.js';
+import withCollectionProps from './withCollectionProps';
+import { callbackProps } from './propTypes';
 
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
@@ -77,8 +83,7 @@ const getDefaultValues = convertedSchema => {
 };
 
 const getInitialStateFromProps = nextProps => {
-  const collection =
-    nextProps.collection || getCollection(nextProps.collectionName);
+  const collection = nextProps.collection;
   const schema = nextProps.schema
     ? new SimpleSchema(nextProps.schema)
     : collection.simpleSchema();
@@ -143,36 +148,14 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-
-  Get the current collection
-
-  */
-  getCollection = () => {
-    return this.props.collection || getCollection(this.props.collectionName);
-  };
-
-  /*
-
-  Get current typeName
-
-  */
-  getTypeName = () => {
-    return this.getCollection().options.typeName;
-  };
-
-  /*
-
   If a document is being passed, this is an edit form
-
   */
   getFormType = () => {
     return this.props.document ? 'edit' : 'new';
   };
 
   /*
-
   Get a list of all insertable fields
-
   */
   getInsertableFields = schema => {
     return getInsertableFields(
@@ -182,9 +165,7 @@ class SmartForm extends Component {
   };
 
   /*
-
   Get a list of all editable fields
-  
   */
   getEditableFields = schema => {
     return getEditableFields(
@@ -262,9 +243,6 @@ class SmartForm extends Component {
   Get form components, in case any has been overwritten for this specific form
 
   */
-  getFormComponents = () => {
-    return { ...Components, ...this.props.formComponents };
-  };
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -519,7 +497,7 @@ class SmartForm extends Component {
   
    */
   getLabel = (fieldName, fieldLocale) => {
-    const collectionName = this.getCollection().options.collectionName.toLowerCase();
+    const collectionName = this.props.collectionName.toLowerCase();
     const defaultMessage = '|*|*|';
     let id = `${collectionName}.${fieldName}`;
     let intlLabel;
@@ -678,6 +656,7 @@ class SmartForm extends Component {
   updateCurrentValues = (newValues, options = {}) => {
     // default to overwriting old value with new
     const { mode = 'overwrite' } = options;
+    const { changeCallback } = this.props;
 
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
@@ -717,6 +696,7 @@ class SmartForm extends Component {
           newState.deletedValues = _.without(prevState.deletedValues, path);
         }
       });
+      if (changeCallback) changeCallback(newState.currentDocument);
       return newState;
     });
   };
@@ -943,13 +923,13 @@ class SmartForm extends Component {
 
     if (this.getFormType() === 'new') {
       // create document form
-      this.props[`create${this.getTypeName()}`]({ data })
+      this.props[`create${this.props.typeName}`]({ data })
         .then(this.newMutationSuccessCallback)
         .catch(error => this.mutationErrorCallback(document, error));
     } else {
       // update document form
       const documentId = this.getDocument()._id;
-      this.props[`update${this.getTypeName()}`]({
+      this.props[`update${this.props.typeName}`]({
         selector: { documentId },
         data
       })
@@ -995,8 +975,8 @@ class SmartForm extends Component {
 
   render() {
     const fieldGroups = this.getFieldGroups();
-    const collectionName = this.getCollection()._name;
-    const FormComponents = this.getFormComponents();
+    const collectionName = this.props.collectionName;
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
     return (
       <div className={'document-' + this.getFormType()}>
@@ -1055,19 +1035,10 @@ class SmartForm extends Component {
 
 SmartForm.propTypes = {
   // main options
-  collection: PropTypes.object,
-  collectionName: (props, propName, componentName) => {
-    if (!props.collection && !props.collectionName) {
-      return new Error(
-        `One of props 'collection' or 'collectionName' was not specified in '${componentName}'.`
-      );
-    }
-    if (!props.collection && typeof props['collectionName'] !== 'string') {
-      return new Error(
-        `Prop collectionName was not of type string in '${componentName}`
-      );
-    }
-  },
+  collection: PropTypes.object.isRequired,
+  collectionName: PropTypes.string.isRequired,
+  typeName: PropTypes.string.isRequired,
+
   document: PropTypes.object, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
 
@@ -1092,12 +1063,7 @@ SmartForm.propTypes = {
   formComponents: PropTypes.object,
 
   // callbacks
-  submitCallback: PropTypes.func,
-  successCallback: PropTypes.func,
-  removeSuccessCallback: PropTypes.func,
-  errorCallback: PropTypes.func,
-  cancelCallback: PropTypes.func,
-  revertCallback: PropTypes.func,
+  ...callbackProps,
 
   currentUser: PropTypes.object,
   client: PropTypes.object
@@ -1136,4 +1102,8 @@ SmartForm.childContextTypes = {
 
 module.exports = SmartForm;
 
-registerComponent('Form', SmartForm);
+registerComponent({
+  name: 'Form',
+  component: SmartForm,
+  hocs: [withCollectionProps]
+});
