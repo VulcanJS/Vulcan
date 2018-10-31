@@ -4,14 +4,11 @@ import StubCollections from 'meteor/hwillson:stub-collections';
 import expect from 'expect';
 
 describe('vulcan:users/callbacks', function() {
-  before(function() {
+  beforeEach(function() {
     StubCollections.stub(Users);
   });
-  after(function() {
+  afterEach(function() {
     StubCollections.restore();
-  });
-  beforeEach(function() {
-    Users._collection.dropCollection();
   });
   describe('usersMakeAdmin', function() {
     it('makes the first user an admin', function() {
