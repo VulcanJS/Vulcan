@@ -27,7 +27,7 @@ addCallback('users.profileCompleted.sync', hasCompletedProfile);
 // }
 // addCallback("users.new.sync", usersNewAdminUserCreationNotification);
 
-function usersMakeAdmin(user) {
+export function usersMakeAdmin(user) {
   // if this is not a dummy account, and is the first user ever, make them an admin
   // TODO: should use await Connectors.count() instead, but cannot await inside Accounts.onCreateUser. Fix later.
   const realUsersCount = Users.find({ isDummy: { $ne: true } }).count();
