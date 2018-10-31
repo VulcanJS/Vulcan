@@ -32,6 +32,7 @@ class MutationButtonInner extends PureComponent {
         successCallback(result);
       }
     }).catch(error => {
+      this.setState({ loading: false });
       if(errorCallback) {
         errorCallback(error);
       }
