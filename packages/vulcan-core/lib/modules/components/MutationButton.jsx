@@ -47,6 +47,8 @@ class MutationButtonInner extends PureComponent {
     delete rest[mutationName];
     delete rest.mutationOptions;
     delete rest.mutationArguments;
+    delete rest.successCallback;
+    delete rest.errorCallback;
 
     return <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest}/>;
   }
