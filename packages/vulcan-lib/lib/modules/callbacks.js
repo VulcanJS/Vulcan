@@ -170,16 +170,73 @@ export const runCallbacksAsync = function () {
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
   if (Meteor.isServer && typeof callbacks !== 'undefined' && !!callbacks.length) {
+    let pendingDeferredCallbackStart = markCallbackStarted(hook);
 
     // use defer to avoid holding up client
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
       callbacks.forEach(function (callback) {
         debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-        callback.apply(this, args);
+        
+        let pendingAsyncCallback = markCallbackStarted(hook);
+        try {
+          let callbackResult = callback.apply(this, args);
+          if (Utils.isPromise(callbackResult)) {
+            callbackResult
+              .then(
+                result => markCallbackFinished(pendingAsyncCallback),
+                exception => {
+                  markCallbackFinished(pendingAsyncCallback)
+                  throw exception;
+                }
+              )
+          } else {
+            markCallbackFinished(pendingAsyncCallback);
+          }
+        } finally {
+          markCallbackFinished(pendingAsyncCallback);
+        }
       });
+      
+      markCallbackFinished(pendingDeferredCallbackStart);
     });
 
   }
+};
 
+let pendingCallbacks = {};
+let pendingCallbackKey = 0;
+
+function markCallbackStarted(description)
+{
+  let id = pendingCallbackKey++;
+  pendingCallbacks[id] = true;
+  return id;
+}
+
+function markCallbackFinished(id)
+{
+  delete pendingCallbacks[id];
+}
+
+function callbacksArePending()
+{
+  for(let id in pendingCallbacks) {
+    return true;
+  }
+  return false;
+}
+
+export const waitUntilCallbacksFinished = () => {
+  return new Promise(resolve => {
+    function finishOrWait() {
+      if (callbacksArePending()) {
+        Meteor.setTimeout(finishOrWait, 20);
+      } else {
+        resolve();
+      }
+    }
+    
+    finishOrWait();
+  });
 };
