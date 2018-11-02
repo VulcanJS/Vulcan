@@ -40,6 +40,7 @@ const sentryRelease = getSetting('sentry.release')
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: sentryUrl, environment: sentryEnvironment, release: sentryRelease });
 if(!sentryUrl) {
+  // eslint-disable-next-line no-console
   console.warn("No sentry DNS found, to activate error reporting please set the sentry.url variable in your settings file")
 }
 
