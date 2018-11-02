@@ -204,29 +204,26 @@ export const runCallbacksAsync = function () {
   }
 };
 
-let pendingCallbacks = {};
-let pendingCallbackKey = 0;
 
-function markCallbackStarted(description)
-{
-  let id = pendingCallbackKey++;
-  pendingCallbacks[id] = true;
-  return id;
-}
-
-function markCallbackFinished(id)
-{
-  delete pendingCallbacks[id];
-}
-
-function callbacksArePending()
-{
-  for(let id in pendingCallbacks) {
-    return true;
-  }
-  return false;
-}
-
+// For unit tests. Wait (in 20ms incremements) until there are no callbacks
+// in progress. Many database operations trigger asynchronous callbacks to do
+// things like generate notifications and add to search indexes; if you have a
+// unit test that depends on the results of these async callbacks, writing them
+// the naive way would create a race condition. But if you insert an
+// `await waitUntilCallbacksFinished()`, it will wait for all the background
+// processing to finish before proceeding with the rest of the test.
+//
+// This is NOT suitable for production (non-unit-test) use, because if other
+// threads/fibers are doing things which trigger callbacks, it could wait for
+// a long time. It DOES wait for callbacks that were triggered after
+// `waitUntilCallbacksFinished` was called, and that were triggered from
+// unrelated contexts.
+//
+// What this tracks specifically is that all callbacks which were registered
+// with `addCallback` and run with `runCallbacksAsync` have returned. Note that
+// it is possible for a callback to bypass this, by calling a function that
+// should have been await'ed without the await, effectively spawning a new
+// thread which isn't tracked.
 export const waitUntilCallbacksFinished = () => {
   return new Promise(resolve => {
     function finishOrWait() {
@@ -240,3 +237,38 @@ export const waitUntilCallbacksFinished = () => {
     finishOrWait();
   });
 };
+
+// Dictionary of all outstanding callbacks (key is an ID, value is `true`). If
+// there are no outstanding callbacks, this should be an empty dictionary.
+let pendingCallbacks = {};
+
+// ID for a pending callback. Incremements with each call to
+// `markCallbackStarted`.
+let pendingCallbackKey = 0;
+
+// When starting an async callback, assign it an ID, record the fact that it's
+// running, and return the ID.
+function markCallbackStarted(description)
+{
+  if (pendingCallbackKey >= Number.MAX_SAFE_INTEGER)
+    pendingCallbackKey = 0;
+  else
+    pendingCallbackKey++;
+  pendingCallbacks[pendingCallbackKey] = true;
+  return id;
+}
+
+// Record the fact that an async callback with the given ID has finished.
+function markCallbackFinished(id)
+{
+  delete pendingCallbacks[id];
+}
+
+// Return whether there is at least one async callback running.
+function callbacksArePending()
+{
+  for(let id in pendingCallbacks) {
+    return true;
+  }
+  return false;
+}
