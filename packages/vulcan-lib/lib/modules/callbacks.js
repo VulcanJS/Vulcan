@@ -255,7 +255,7 @@ function markCallbackStarted(description)
   else
     pendingCallbackKey++;
   pendingCallbacks[pendingCallbackKey] = true;
-  return id;
+  return pendingCallbackKey;
 }
 
 // Record the fact that an async callback with the given ID has finished.
