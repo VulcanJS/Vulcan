@@ -29,11 +29,11 @@ function walkTree(element, context, visitor) {
     }
     // A stateless functional component or a class
     if (isReactElement(element)) {
+        var child = void 0;
         if (typeof element.type === 'function') {
             var Comp = element.type;
             var props = Object.assign({}, Comp.defaultProps, getProps(element));
             var childContext_1 = context;
-            var child = void 0;
             // Are we are a react class?
             if (isComponentClass(Comp)) {
                 var instance_1 = new Comp(props, context);
@@ -66,6 +66,7 @@ function walkTree(element, context, visitor) {
                     }
                 }
                 else if (instance_1.UNSAFE_componentWillMount) {
+                    // eslint-disable-next-line babel/new-cap
                     instance_1.UNSAFE_componentWillMount();
                 }
                 else if (instance_1.componentWillMount) {
@@ -84,6 +85,7 @@ function walkTree(element, context, visitor) {
                 if (visitor(element, null, context) === false) {
                     return;
                 }
+                // eslint-disable-next-line babel/new-cap
                 child = Comp(props, context);
             }
             if (child) {
@@ -100,7 +102,6 @@ function walkTree(element, context, visitor) {
             if (visitor(element, null, context) === false) {
                 return;
             }
-            var child = void 0;
             if (element.type._context) {
                 // A provider - sets the context value before rendering children
                 element.type._context._currentValue = element.props.value;

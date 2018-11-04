@@ -633,8 +633,8 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     if (usernameOrEmail !== null) {
       if (!this.validateField('username', usernameOrEmail)) {
-        if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
+        if (formState == STATES.SIGN_UP) {
+          onSubmitHook('error.accounts.usernameRequired', formState);
         }
         error = true;
       }
@@ -643,8 +643,8 @@ export class AccountsLoginFormInner extends TrackerComponent {
       }
     } else if (username !== null) {
       if (!this.validateField('username', username)) {
-        if (this.state.formState == STATES.SIGN_UP) {
-          this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
+        if (formState == STATES.SIGN_UP) {
+          onSubmitHook('error.accounts.usernameRequired', formState);
         }
         error = true;
       }

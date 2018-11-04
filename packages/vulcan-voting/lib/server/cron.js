@@ -1,10 +1,14 @@
-import { getSetting, registerSetting, debug } from 'meteor/vulcan:core';
 import { /*updateScore,*/ batchUpdateScore } from './scoring.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 
-registerSetting('voting.scoreUpdateInterval', 60, 'How often to update scores, in seconds');
-const scoreInterval = parseInt(getSetting('voting.scoreUpdateInterval', 60));
+// Setting voting.scoreUpdateInterval removed and replaced with a hard-coded
+// interval because the time-parsing library we use can't handle numbers of
+// seconds >= 60; rather than treat them as minutes (like you'd expect), it
+// treats intervals like "every 100 seconds" as a syntax error.
+//
+//registerSetting('voting.scoreUpdateInterval', 60, 'How often to update scores, in seconds');
+//const scoreInterval = parseInt(getSetting('voting.scoreUpdateInterval', 60));
 
 SyncedCron.options = {
   log: true,
