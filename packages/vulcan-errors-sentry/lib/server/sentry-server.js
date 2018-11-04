@@ -5,6 +5,7 @@ import Sentry from '@sentry/node';
 import { getUserObject } from '../modules/sentry';
 
 const serverDSN = getSetting(serverDSNSetting);
+const environment = getSetting('environment');
 
 /*
 
@@ -14,6 +15,7 @@ Initialize Sentry
 function initSentryForServer() {
   Sentry.init({
     dsn: serverDSN,
+    environment,
   });
 }
 addInitFunction(initSentryForServer);

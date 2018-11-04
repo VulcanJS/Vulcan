@@ -5,6 +5,7 @@ import { clientDSNSetting } from '../modules/settings';
 import { getUserObject } from '../modules/sentry';
 
 const clientDSN = getSetting(clientDSNSetting);
+const environment = getSetting('environment');
 
 /*
 
@@ -14,6 +15,7 @@ Initialize Sentry
 function initSentryForClient() {
   Sentry.init({
     dsn: clientDSN,
+    environment,
   });
 }
 addInitFunction(initSentryForClient);
