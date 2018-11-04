@@ -12,7 +12,7 @@ class Flash extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.markAsSeen(this.props.message._id);
+    this.props.markAsSeen && this.props.markAsSeen(this.props.message._id);
   }
 
   dismissFlash(e) {
@@ -41,19 +41,19 @@ class Flash extends PureComponent {
 
   render() {
 
-    const { message, type } = this.getProperties();
+    const { message, type = 'danger' } = this.getProperties();
     const flashType = type === 'error' ? 'danger' : type; // if flashType is "error", use "danger" instead
 
     return (
       <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
-        {message}
+        <span dangerouslySetInnerHTML={{ __html: message }} />
       </Components.Alert>
     )
   }
 }
 
 Flash.propTypes = {
-  message: PropTypes.object.isRequired
+  message: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired])
 }
 
 Flash.contextTypes = {
