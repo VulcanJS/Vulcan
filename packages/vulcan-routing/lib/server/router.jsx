@@ -59,7 +59,10 @@ function generateSSRData(options, req, res, renderProps) {
 
     if (!options.disableSSR) {
       const sheet = new ServerStyleSheet();
+      const time = new Date()
       html = renderToString(sheet.collectStyles(app));
+      const postTime = new Date() - time
+      console.log("renderToString time: ", postTime) // eslint-disable-line no-console
       styledComponentCss = sheet.getStyleTags();
     } else if (options.loadingScreen) {
       html = options.loadingScreen;

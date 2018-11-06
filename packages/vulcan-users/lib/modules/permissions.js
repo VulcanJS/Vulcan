@@ -163,9 +163,9 @@ Users.owns = function (user, document) {
  * @summary Check if a user is an admin
  * @param {Object|string} userOrUserId - The user or their userId
  */
-Users.isAdmin = function (userOrUserId) {
+Users.isAdmin = function (user) {
   try {
-    var user = Users.getUser(userOrUserId);
+    //LESSWRONG: This function no longer takes a userId, and instead just works if you provide the user object 
     return !!user && !!user.isAdmin;
   } catch (e) {
     return false; // user not logged in
