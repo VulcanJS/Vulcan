@@ -31,14 +31,24 @@ export const runGraphQL = async (query, variables = {}, context ) => {
   const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
-    // eslint-disable-next-line no-console
-    console.error(`runGraphQL error: ${result.errors[0].message}`);
-    // eslint-disable-next-line no-console
-    console.error(result.errors);
+    if (onGraphQLError) {
+      onGraphQLError(result.errors);
+    } else {
+      // eslint-disable-next-line no-console
+      console.error(`runGraphQL error: ${result.errors[0].message}`);
+      // eslint-disable-next-line no-console
+      console.error(result.errors);
+    }
     throw new Error(result.errors[0].message);
   }
 
   return result;
+}
+
+var onGraphQLError = null;
+export function setOnGraphQLError(fn)
+{
+  onGraphQLError = fn;
 }
 
 export const runQuery = runGraphQL; //backwards compatibility
