@@ -7,7 +7,7 @@ This is a sample template for future integrations.
 import { getSetting, regiserSetting } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 
-regiserSetting('providerName')
+regiserSetting('providerName');
 
 /*
 
@@ -19,7 +19,8 @@ const settings = getSetting('providerName');
 
 if (settings) {
 
-  const {server, apiKey, listId, somethingElse } = settings;
+  const {server, apiKey, /* listId, somethingElse */ } = settings;
+  // eslint-disable-next-line no-undef
   const MyProviderAPI = new ProviderAPI(server, apiKey);
 
   const subscribeSync = options => {
@@ -27,7 +28,8 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( MyProviderAPI.subscribe, MyProviderAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   };
 
@@ -36,7 +38,8 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( MyProviderAPI.unsubscribe, MyProviderAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   };
 
@@ -45,7 +48,8 @@ if (settings) {
       const wrapped = Meteor.wrapAsync( MyProviderAPI.send, MyProviderAPI );
       return wrapped( options );
     } catch ( error ) {
-      console.log(error)
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   };
 
@@ -55,7 +59,7 @@ if (settings) {
 
   */
 
-  Newsletters["providerName"] = {
+  Newsletters['providerName'] = {
 
     subscribe(email) {
       return subscribeSync({email});

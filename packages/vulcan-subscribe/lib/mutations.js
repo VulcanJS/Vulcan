@@ -1,5 +1,5 @@
 import Users from 'meteor/vulcan:users';
-import { Utils, addGraphQLMutation, addGraphQLResolvers } from 'meteor/vulcan:core';
+import {Utils, addGraphQLMutation, addGraphQLResolvers, Connectors} from 'meteor/vulcan:core';
 
 /**
  * @summary Verify that the un/subscription can be performed
@@ -11,7 +11,12 @@ import { Utils, addGraphQLMutation, addGraphQLResolvers } from 'meteor/vulcan:co
  */
 const prepareSubscription = (action, collection, itemId, user) => {
   // get item's collection name
-  const collectionName = collection._name.slice(0, 1).toUpperCase() + collection._name.slice(1);
+  const collectionName = collection
+    ._name
+    .slice(0, 1)
+    .toUpperCase() + collection
+    ._name
+    .slice(1);
 
   // get item data
   const item = collection.findOne(itemId);
@@ -41,24 +46,22 @@ const prepareSubscription = (action, collection, itemId, user) => {
   };
 
   // return true if the item has the subscriber's id in its fields
-  const hasSubscribedItem =
-    !!_.deep(item, fields.subscribers) &&
-    _.deep(item, fields.subscribers) &&
-    _.deep(item, fields.subscribers).indexOf(user._id) !== -1;
+  const hasSubscribedItem = !!_.deep(item, fields.subscribers) && _.deep(item, fields.subscribers) && _
+    .deep(item, fields.subscribers)
+    .indexOf(user._id) !== -1;
 
   // assign the right update operator and count depending on the action type
-  const updateQuery =
-    action === 'subscribe'
-      ? {
-          findOperator: '$ne', // where 'IT' isn't...
-          updateOperator: '$addToSet', // ...add 'IT' to the array...
-          updateCount: 1 // ...and log the addition +1
-        }
-      : {
-          findOperator: '$eq', // where 'IT' is...
-          updateOperator: '$pull', // ...remove 'IT' from the array...
-          updateCount: -1 // ...and log the subtraction -1
-        };
+  const updateQuery = action === 'subscribe'
+    ? {
+      findOperator: '$ne', // where 'IT' isn't...
+      updateOperator: '$addToSet', // ...add 'IT' to the array...
+      updateCount: 1 // ...and log the addition +1
+    }
+    : {
+      findOperator: '$eq', // where 'IT' is...
+      updateOperator: '$pull', // ...remove 'IT' from the array...
+      updateCount: -1 // ...and log the subtraction -1
+    };
 
   // return the utility object to pursue
   return {
@@ -83,34 +86,43 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   const subscription = prepareSubscription(action, collection, itemId, user);
 
   // Abort process if the situation matches one of these cases:
-  // - subscription preparation failed (ex: no user, no item, subscriber is author's item, ... see all cases above)
+  // - subscription preparation failed (ex: no user, no item, subscriber is
+  // author's item, ... see all cases above)
   // - the action is subscribe but the user has already subscribed to this item
   // - the action is unsubscribe but the user hasn't subscribed to this item
-  if (
-    !subscription ||
-    (action === 'subscribe' && subscription.hasSubscribedItem) ||
-    (action === 'unsubscribe' && !subscription.hasSubscribedItem)
-  ) {
-    throw Error(Utils.encodeIntlError({ id: 'app.mutation_not_allowed', value: 'Already subscribed' }));
+  if (!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
+    throw Error(Utils.encodeIntlError({id: 'app.mutation_not_allowed', value: 'Already subscribed'}));
   }
 
   // shorthand for useful variables
-  const { collectionName, fields, item, findOperator, updateOperator, updateCount } = subscription;
+  const {
+    collectionName,
+    fields,
+    item,
+    findOperator,
+    updateOperator,
+    updateCount
+  } = subscription;
 
   // Perform the action, eg. operate on the item's collection
-  const result = collection.update(
-    {
-      _id: itemId,
-      // if it's a subscription, find  where there are not the user (ie. findOperator = $ne), else it will be $in
-      [fields.subscribers]: { [findOperator]: user._id }
-    },
-    {
-      // if it's a subscription, add a subscriber (ie. updateOperator = $addToSet), else it will be $pull
-      [updateOperator]: { [fields.subscribers]: user._id },
-      // if it's a subscription, the count is incremented of 1, else decremented of 1
-      $inc: { [fields.subscriberCount]: updateCount }
+  const result = Connectors.update(collection, {
+    _id: itemId,
+    // if it's a subscription, find  where there are not the user (ie. findOperator
+    // = $ne), else it will be $in
+    [fields.subscribers]: {
+      [findOperator]: user._id
     }
-  );
+  }, {
+    // if it's a subscription, add a subscriber (ie. updateOperator = $addToSet),
+    // else it will be $pull
+    [updateOperator]: {
+      [fields.subscribers]: user._id
+    },
+    // if it's a subscription, the count is incremented of 1, else decremented of 1
+    $inc: {
+      [fields.subscriberCount]: updateCount
+    }
+  });
 
   // log the operation on the subscriber if it has succeeded
   if (result > 0) {
@@ -128,20 +140,26 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
     }
 
     // update the user's list of subscribed items
-    Users.update(
-      {
-        _id: user._id
-      },
-      {
-        [updateOperator]: { [`subscribedItems.${collectionName}`]: loggedItem }
+    Users.update({
+      _id: user._id
+    }, {
+      [updateOperator]: {
+        [`subscribedItems.${collectionName}`]: loggedItem
       }
-    );
+    });
 
-    const updatedUser = Users.findOne({ _id: user._id }, { fields: { _id: 1, subscribedItems: 1 } });
+    const updatedUser = Users.findOne({
+      _id: user._id
+    }, {
+      fields: {
+        _id: 1,
+        subscribedItems: 1
+      }
+    });
 
     return updatedUser;
   } else {
-    throw Error(Utils.encodeIntlError({ id: 'app.something_bad_happened' }));
+    throw Error(Utils.encodeIntlError({id: 'app.something_bad_happened'}));
   }
 };
 
@@ -149,17 +167,25 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
  * @summary Generate mutations 'collection.subscribe' & 'collection.unsubscribe' automatically
  * @params {Array[Collections]} collections
  */
-const subscribeMutationsGenerator = collection => {
+const subscribeMutationsGenerator = (collection) => {
+
   // generic mutation function calling the performSubscriptionAction
   const genericMutationFunction = (collectionName, action) => {
     // return the method code
-    return function(root, { documentId }, context) {
-      // extract the current user & the relevant collection from the graphql server context
-      const { currentUser, [Utils.capitalize(collectionName)]: collection } = context;
+    return function (root, {
+      documentId
+    }, context) {
+
+      // extract the current user & the relevant collection from the graphql server
+      // context
+      const {
+        currentUser,
+        [Utils.capitalize(collectionName)]: collection
+      } = context;
 
       // permission check
       if (!Users.canDo(context.currentUser, `${collectionName}.${action}`)) {
-        throw new Error(Utils.encodeIntlError({ id: 'app.noPermission' }));
+        throw new Error(Utils.encodeIntlError({id: 'app.noPermission'}));
       }
 
       // do the actual subscription action
@@ -171,7 +197,7 @@ const subscribeMutationsGenerator = collection => {
 
   // add mutations to the schema
   addGraphQLMutation(`${collectionName}Subscribe(documentId: String): User`),
-    addGraphQLMutation(`${collectionName}Unsubscribe(documentId: String): User`);
+  addGraphQLMutation(`${collectionName}Unsubscribe(documentId: String): User`);
 
   // create an object of the shape expected by mutations resolvers
   addGraphQLResolvers({
@@ -180,22 +206,27 @@ const subscribeMutationsGenerator = collection => {
       [`${collectionName}Unsubscribe`]: genericMutationFunction(collectionName, 'unsubscribe')
     }
   });
+
 };
 
-// Finally. Add the mutations to the Meteor namespace 🖖
-
-// vulcan:users is a dependency of this package, it is alreay imported
+// Finally. Add the mutations to the Meteor namespace 🖖 vulcan:users is a
+// dependency of this package, it is alreay imported
 subscribeMutationsGenerator(Users);
 
 // note: leverage weak dependencies on packages
-const Posts = Package['example-forum'] ? Package['example-forum'].Posts : null;
+const Posts = Package['example-forum']
+  ? Package['example-forum'].Posts
+  : null;
 // check if posts collection exists, if yes, add the mutations to Posts
 if (!!Posts) {
   subscribeMutationsGenerator(Posts);
 }
 
-// check if categories collection exists, if yes, add the mutations to Categories
-const Categories = Package['example-forum'] ? Package['example-forum'].Categories : null;
+// check if categories collection exists, if yes, add the mutations to
+// Categories
+const Categories = Package['example-forum']
+  ? Package['example-forum'].Categories
+  : null;
 if (!!Categories) {
   subscribeMutationsGenerator(Categories);
 }

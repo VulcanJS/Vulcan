@@ -3,31 +3,31 @@ const schema = {
   name: {
     label: 'Name',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   value: {
     label: 'Value',
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   defaultValue: {
     label: 'Default Value',
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
-  public: {
+  isPublic: {
     label: 'Public',
     type: Boolean,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   description: {
     label: 'Description',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
 };

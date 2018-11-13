@@ -1,9 +1,9 @@
-import cloudinary from "cloudinary";
+import cloudinary from 'cloudinary';
 import { Utils, getSetting, registerSetting } from 'meteor/vulcan:core';
 
 registerSetting('cloudinary', null, 'Cloudinary settings');
 
-const Cloudinary = cloudinary.v2;
+export const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
 const cloudinarySettings = getSetting('cloudinary');
 
@@ -40,8 +40,8 @@ export const CloudinaryUtils = {
         height: format.height,
         crop: 'fill',
         sign_url: true,
-        fetch_format: "auto",
-        quality: "auto"
+        fetch_format: 'auto',
+        quality: 'auto'
       });
       return {
         name: format.name,

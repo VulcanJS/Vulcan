@@ -3,13 +3,13 @@ import 'cross-fetch/polyfill';
 import { Meteor } from 'meteor/meteor';
 import { getSetting, registerSetting } from './settings.js';
 import { getFragmentMatcher } from './fragment_matcher.js';
-import { Callbacks, runCallbacks } from './callbacks.js';
+import { runCallbacks } from './callbacks.js';
 
-registerSetting('developmentServerIp', Meteor.absoluteUrl(), 'Development server IP');
+registerSetting('graphQLendpointURL', '/graphql', 'GraphQL endpoint URL');
 
 const defaultNetworkInterfaceConfig = {
   path: '/graphql', // default graphql server endpoint
-  opts: {}, // additional fetch options like `credentials` or `headers`
+  opts: { foo: 'bar' }, // additional fetch options like `credentials` or `headers`; note: for some reason when this is empty additional options can't be added
   useMeteorAccounts: true, // if true, send an eventual Meteor login token to identify the current user with every request
   batchingInterface: true, // use a BatchingNetworkInterface by default instead of a NetworkInterface
   batchInterval: 10, // default batch interval
@@ -18,16 +18,18 @@ const defaultNetworkInterfaceConfig = {
 const createMeteorNetworkInterface = (givenConfig = {}) => {
   const config = { ...defaultNetworkInterfaceConfig, ...givenConfig };
 
+  // console.log('// apollo.js createMeteorNetworkInterface config.headers');
+  // console.log(config.headers); // note: only defined on server
+  // console.log('\n\n');
+
   // absoluteUrl adds a '/', so let's remove it first
   let path = config.path;
   if (path[0] === '/') {
     path = path.slice(1);
   }
 
-  const uri = Meteor.absoluteUrl(
-    path,
-    { rootUrl: getSetting('developmentServerIp', Meteor.absoluteUrl()) },
-  );
+  const defaultUri = Meteor.absoluteUrl(path);
+  const uri = getSetting('graphQLendpointURL', defaultUri);
 
   // allow the use of a batching network interface; if the options.batchingInterface is not specified, fallback to the standard network interface
   const interfaceToUse = config.batchingInterface ? createBatchingNetworkInterface : createNetworkInterface;
@@ -57,18 +59,36 @@ const createMeteorNetworkInterface = (givenConfig = {}) => {
       applyBatchMiddleware(request, next) {
         const currentUserToken = Meteor.isClient ? global.localStorage['Meteor.loginToken'] : config.loginToken;
 
-        if (!currentUserToken) {
+        if (Meteor.isServer) {
+          // handle server use case separetly or else everything breaks
+          if (!request.options.headers) {
+            request.options.headers = new Headers();
+          }
+          request.options.headers = config.headers;
+          // if we're on the server and this request has been originated by a client 
+          // (and not SSR) save the original headers
+          if (config.headers && !config.headers.originalHeaders) {
+            request.options.headers.originalHeaders = JSON.stringify(config.headers);
+          }
+          if (!currentUserToken) {
+            next();
+            return;
+          }
+          request.options.headers.Authorization = currentUserToken;
           next();
-          return;
+        } else {
+          // handle client use case separetly or else everything breaks
+          if (!currentUserToken) {
+            next();
+            return;
+          }
+          if (!request.options.headers) {
+            request.options.headers = new Headers();
+          }
+          request.options.headers.Authorization = currentUserToken;
+          next();
         }
-
-        if (!request.options.headers) {
-          request.options.headers = new Headers();
-        }
-
-        request.options.headers.Authorization = currentUserToken;
-
-        next();
+        
       },
     }]);
   }

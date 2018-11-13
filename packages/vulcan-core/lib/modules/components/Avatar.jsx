@@ -5,8 +5,13 @@ import Users from 'meteor/vulcan:users';
 import { Link } from 'react-router';
 import classNames from 'classnames';
 
-const Avatar = ({className, user, link}) => {
+const Avatar = ({className, user, link, fallback}) => {
 
+  const avatarClassNames = classNames('avatar', className);
+
+  if (!user) {
+    return <div className={avatarClassNames}>{fallback}</div>
+  }
   const avatarUrl = user.avatarUrl || Users.avatar.getUrl(user);
 
   const img = <img alt={Users.getDisplayName(user)} className="avatar-image" src={avatarUrl} title={user.username}/>;
@@ -15,7 +20,7 @@ const Avatar = ({className, user, link}) => {
   const avatar = avatarUrl ? img : initials;
 
   return (
-    <div className={classNames('avatar', className)}>
+    <div className={avatarClassNames}>
       {link ? 
         <Link to={Users.getProfileUrl(user)}>
           <span>{avatar}</span>
@@ -28,7 +33,7 @@ const Avatar = ({className, user, link}) => {
 }
 
 Avatar.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   size: PropTypes.string,
   link: PropTypes.bool
 }

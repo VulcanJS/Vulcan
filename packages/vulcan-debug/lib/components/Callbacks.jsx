@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { registerComponent, Components } from 'meteor/vulcan:lib';
 import Callbacks from '../modules/callbacks/collection.js';
 
@@ -17,8 +16,8 @@ const CallbacksDashboard = props =>
       }}
       columns={[
         { name: 'name', component: CallbacksName }, 
-        'arguments', 
-        'returns', 
+        'iterator', 
+        'properties', 
         'runs', 
         'description',
         'hooks',

@@ -1,9 +1,6 @@
-import {Accounts} from 'meteor/accounts-base';
-import {
-  STATES,
-  loginResultCallback,
-  getLoginServices
-} from './helpers.js';
+/* eslint-disable meteor/no-session */
+import { Accounts } from 'meteor/accounts-base';
+import { loginResultCallback, getLoginServices } from './helpers.js';
 
 const VALID_KEYS = [
   'dropdownVisible',
@@ -31,10 +28,10 @@ const VALID_KEYS = [
 
 export const validateKey = function (key) {
   if (!_.contains(VALID_KEYS, key))
-    throw new Error("Invalid key in loginButtonsSession: " + key);
+    throw new Error('Invalid key in loginButtonsSession: ' + key);
 };
 
-export const KEY_PREFIX = "Meteor.loginButtons.";
+export const KEY_PREFIX = 'Meteor.loginButtons.';
 
 // XXX This should probably be package scope rather than exported
 // (there was even a comment to that effect here from before we had
@@ -44,7 +41,7 @@ Accounts._loginButtonsSession = {
   set: function(key, value) {
     validateKey(key);
     if (_.contains(['errorMessage', 'infoMessage'], key))
-      throw new Error("Don't set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage().");
+      throw new Error('Don\'t set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage().');
 
     this._set(key, value);
   },
@@ -68,16 +65,16 @@ if (Meteor.isClient){
   //
   Accounts.onPageLoadLogin(function (attemptInfo) {
     // Ignore if we have a left over login attempt for a service that is no longer registered.
-    if (_.contains(_.pluck(getLoginServices(), "name"), attemptInfo.type))
+    if (_.contains(_.pluck(getLoginServices(), 'name'), attemptInfo.type))
       loginResultCallback(attemptInfo.type, attemptInfo.error);
   });
 
-  let doneCallback;
+  // let doneCallback;
 
   Accounts.onResetPasswordLink(function (token, done) {
     Accounts._loginButtonsSession.set('resetPasswordToken', token);
     Session.set(KEY_PREFIX + 'state', 'resetPasswordToken');
-    doneCallback = done;
+    // doneCallback = done;
 
     Accounts.ui._options.onResetPasswordHook();
   });
@@ -85,7 +82,7 @@ if (Meteor.isClient){
   Accounts.onEnrollmentLink(function (token, done) {
     Accounts._loginButtonsSession.set('enrollAccountToken', token);
     Session.set(KEY_PREFIX + 'state', 'enrollAccountToken');
-    doneCallback = done;
+    // doneCallback = done;
 
     Accounts.ui._options.onEnrollAccountHook();
   });

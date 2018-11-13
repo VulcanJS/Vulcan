@@ -1,185 +1,369 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'meteor/vulcan:i18n';
-import classNames from 'classnames';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import SimpleSchema from 'simpl-schema';
+import { isEmptyValue, getNullValue } from '../modules/utils.js';
+import mergeWithComponents from '../modules/mergeWithComponents';
 
-class FormComponent extends PureComponent {
-
+class FormComponent extends Component {
   constructor(props) {
     super(props);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.updateCharacterCount = this.updateCharacterCount.bind(this);
-    this.renderErrors = this.renderErrors.bind(this);
 
-    if (props.limit) {
-      this.state = {
-        limit: props.value ? props.limit - props.value.length : props.limit
-      }
+    this.state = {};
+  }
+
+  componentWillMount() {
+    if (this.showCharsRemaining()) {
+      const value = this.getValue();
+      this.updateCharacterCount(value);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.updateCharacterCount(nextProps.name, nextProps.value)
-  }
-
-  handleBlur() {
-    // see https://facebook.github.io/react/docs/more-about-refs.html
-    if (this.formControl !== null) {
-      this.props.updateCurrentValues({[this.props.name]: this.formControl.getValue()});
+  shouldComponentUpdate(nextProps, nextState) {
+    // allow custom controls to determine if they should update
+    if (this.isCustomInput(this.getType(nextProps))) {
+      return true;
     }
+
+    const { currentValues, deletedValues, errors } = nextProps;
+    const { path } = this.props;
+
+    // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
+    const includesPathOrChildren = deletedValues =>
+      deletedValues.some(deletedPath => deletedPath.includes(path));
+
+    const valueChanged =
+      get(currentValues, path) !== get(this.props.currentValues, path);
+    const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
+    const deleteChanged =
+      includesPathOrChildren(deletedValues) !==
+      includesPathOrChildren(this.props.deletedValues);
+    const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
+    const disabledChanged = nextProps.disabled !== this.props.disabled;
+
+    const shouldUpdate =
+      valueChanged ||
+      errorChanged ||
+      deleteChanged ||
+      charsChanged ||
+      disabledChanged;
+
+    return shouldUpdate;
   }
 
-  updateCharacterCount(name, value) {
-    if (this.props.limit) {
-      const characterCount = value ? value.length : 0;
-      this.setState({
-        limit: this.props.limit - characterCount
-      });
+  /*
+
+  If this is an intl input, get _intl field instead
+
+  */
+  getPath = props => {
+    const p = props || this.props;
+    return p.intlInput ? `${p.path}_intl` : p.path;
+  };
+
+  /*
+  
+  Returns true if the passed input type is a custom 
+  
+  */
+  isCustomInput = inputType => {
+    const isStandardInput = [
+      'nested',
+      'number',
+      'url',
+      'email',
+      'textarea',
+      'checkbox',
+      'checkboxgroup',
+      'radiogroup',
+      'select',
+      'selectmultiple',
+      'datetime',
+      'date',
+      'time',
+      'text'
+    ].includes(inputType);
+    return !isStandardInput;
+  };
+
+  /*
+  
+  Function passed to form controls (always controlled) to update their value
+  
+  */
+  handleChange = (name, value) => {
+    // if value is an empty string, delete the field
+    if (value === '') {
+      value = null;
     }
-  }
+    // if this is a number field, convert value before sending it up to Form
+    if (this.getType() === 'number' && value != null) {
+      value = Number(value);
+    }
 
-  renderComponent() {
-
-    // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValues, document, beforeComponent, afterComponent, limit, errors, ...rest } = this.props; // eslint-disable-line
-
-    // const base = typeof this.props.control === 'function' ? this.props : rest;
-
-    const properties = {
-      value: '', // default value, will be overridden by `rest` if real value has been passed down through props
-      ...rest,
-      onBlur: this.handleBlur,
-      refFunction: (ref) => this.formControl = ref,
-    };
+    const updateValue = this.props.locale
+      ? { locale: this.props.locale, value }
+      : value;
+    this.props.updateCurrentValues({ [this.getPath()]: updateValue });
 
     // for text fields, update character count on change
-    if (!this.props.control || ['number', 'url', 'email', 'textarea', 'text'].includes(this.props.control)) {
-      properties.onChange = this.updateCharacterCount;
+    if (this.showCharsRemaining()) {
+      this.updateCharacterCount(value);
     }
+  };
 
-    // if control is a React component, use it
-    if (typeof this.props.control === 'function') {
+  /*
+  
+  Updates the state of charsCount and charsRemaining as the users types
+  
+  */
+  updateCharacterCount = value => {
+    const characterCount = value ? value.length : 0;
+    this.setState({
+      charsRemaining: this.props.max - characterCount,
+      charsCount: characterCount
+    });
+  };
 
-      return <this.props.control {...properties} document={document} />
+  /*
 
-    } else if (typeof this.props.control === 'string') { // else pick a predefined component
+  Get value from Form state through document and currentValues props
 
-      switch (this.props.control) {
-        
+  */
+  getValue = (props, context) => {
+    const p = props || this.props;
+    const c = context || this.context;
+    const { locale, defaultValue, deletedValues, formType, datatype } = p;
+    const path = locale ? `${this.getPath(p)}.value` : this.getPath(p);
+    const currentDocument = c.getDocument();
+    let value = get(currentDocument, path);
+    // note: force intl fields to be treated like strings
+    const nullValue = locale ? '' : getNullValue(datatype);
+
+    // handle deleted & empty value
+    if (deletedValues.includes(path)) {
+      value = nullValue;
+    } else if (isEmptyValue(value)) {
+      // replace empty value by the default value from the schema if it exists – for new forms only
+      value = formType === 'new' && defaultValue ? defaultValue : nullValue;
+    }
+    return value;
+  };
+
+  /*
+
+  Whether to keep track of and show remaining chars
+
+  */
+  showCharsRemaining = props => {
+    const p = props || this.props;
+    return (
+      p.max && ['url', 'email', 'textarea', 'text'].includes(this.getType(p))
+    );
+  };
+
+  /*
+
+  Get errors from Form state through context
+
+  Note: we use `includes` to get all errors from nested components, which have longer paths
+
+  */
+  getErrors = errors => {
+    errors = errors || this.props.errors;
+    const fieldErrors = errors.filter(
+      error => error.path && error.path.includes(this.props.path)
+    );
+    return fieldErrors;
+  };
+
+  /*
+
+  Get form input type, either based on input props, or by guessing based on form field type
+
+  */
+  getType = props => {
+    const p = props || this.props;
+    const fieldType = p.datatype && p.datatype[0].type;
+    const autoType =
+      fieldType === Number
+        ? 'number'
+        : fieldType === Boolean
+          ? 'checkbox'
+          : fieldType === Date
+            ? 'date'
+            : 'text';
+    return p.input || autoType;
+  };
+
+  /*
+  
+  Function passed to form controls to clear their contents (set their value to null)
+  
+  */
+  clearField = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.updateCurrentValues({ [this.props.path]: null });
+    if (this.showCharsRemaining()) {
+      this.updateCharacterCount(null);
+    }
+  };
+
+  /*
+  
+  Function passed to FormComponentInner to help with rendering the component
+  
+  */
+  getFormInput = () => {
+    const inputType = this.getType();
+    const FormComponents = mergeWithComponents(this.props.formComponents);
+
+    // if input is a React component, use it
+    if (typeof this.props.input === 'function') {
+      const InputComponent = this.props.input;
+      return InputComponent;
+    } else {
+      // else pick a predefined component
+
+      switch (inputType) {
+        case 'text':
+          return FormComponents.FormComponentDefault;
+
         case 'number':
-          return <Components.FormComponentNumber {...properties}/>;
+          return FormComponents.FormComponentNumber;
 
         case 'url':
-          return <Components.FormComponentUrl {...properties}/>;
+          return FormComponents.FormComponentUrl;
 
         case 'email':
-          return <Components.FormComponentEmail {...properties}/>;
+          return FormComponents.FormComponentEmail;
 
         case 'textarea':
-          return <Components.FormComponentTextarea {...properties}/>;
+          return FormComponents.FormComponentTextarea;
 
         case 'checkbox':
-          return <Components.FormComponentCheckbox {...properties} />;
+          return FormComponents.FormComponentCheckbox;
 
         case 'checkboxgroup':
-          return <Components.FormComponentCheckboxGroup {...properties} />;
+          return FormComponents.FormComponentCheckboxGroup;
 
         case 'radiogroup':
-          // not sure why, but onChange needs to be specified here
-          properties.onChange = (name, value) => {this.props.updateCurrentValues({[name]: value})};
-          return <Components.FormComponentRadioGroup {...properties} />;
-        
+          return FormComponents.FormComponentRadioGroup;
+
         case 'select':
-          properties.options = [{label: this.context.intl.formatMessage({id: 'forms.select_option'}), disabled: true}, ...properties.options];
-          return <Components.FormComponentSelect {...properties} />;
-        
+          return FormComponents.FormComponentSelect;
+
+        case 'selectmultiple':
+          return FormComponents.FormComponentSelectMultiple;
+
         case 'datetime':
-          return <Components.FormComponentDateTime {...properties} />;
-        
+          return FormComponents.FormComponentDateTime;
+
+        case 'date':
+          return FormComponents.FormComponentDate;
+
+        case 'date2':
+          return FormComponents.FormComponentDate2;
+
         case 'time':
-          return <Components.FormComponentTime {...properties} />;
-        
-        case 'text':
-          return <Components.FormComponentDefault {...properties}/>;
-        
-        default: 
-          const CustomComponent = Components[this.props.control];
-          return <CustomComponent {...properties} document={document}/>;
+          return FormComponents.FormComponentTime;
+
+        case 'statictext':
+          return FormComponents.FormComponentStaticText;
+
+        default:
+          const CustomComponent = FormComponents[this.props.input];
+          return CustomComponent
+            ? CustomComponent
+            : FormComponents.FormComponentDefault;
       }
-
-    } else {
-        
-      return <Components.FormComponentDefault {...properties}/>;
-
     }
-  }
+  };
 
-  renderErrors() {
-    return (
-      <ul className='form-input-errors'>
-        {this.props.errors.map((error, index) => <li key={index}>{error.message}</li>)}
-      </ul>
-    )
-  }
-
-  showClear = () => {
-    return ['datetime', 'select', 'radiogroup'].includes(this.props.control);
-  }
-
-  clearField = (e) => {
-    e.preventDefault();
-    console.log(this.props)
-    const fieldName = this.props.name;
-    // clear value
-    this.props.updateCurrentValues({[fieldName]: null});
-    // add it to unset
-    this.context.addToDeletedValues(fieldName);
-  }
-
-  renderClear() {
-    return (
-      <a href="javascript:void(0)" className="form-component-clear" title={this.context.intl.formatMessage({id: 'forms.clear_field'})} onClick={this.clearField}><span>✕</span></a>
-    )
-  }
-
+  getFieldType = () => {
+    return this.props.datatype[0].type;
+  };
+  isArrayField = () => {
+    return this.getFieldType() === Array;
+  };
+  isObjectField = () => {
+    return this.getFieldType() instanceof SimpleSchema;
+  };
   render() {
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
-    const hasErrors = this.props.errors && this.props.errors.length;
-    const inputClass = classNames('form-input', `input-${this.props.name}`, `form-component-${this.props.control || 'default'}`,{'input-error': hasErrors});
-
+    if (this.props.intlInput) {
+      return <FormComponents.FormIntl {...this.props} />;
+    } else if (!this.props.input && this.props.nestedInput) {
+      if (this.isArrayField()) {
+        return (
+          <FormComponents.FormNestedArray
+            {...this.props}
+            formComponents={FormComponents}
+            errors={this.getErrors()}
+            value={this.getValue()}
+          />
+        );
+      } else if (this.isObjectField()) {
+        return (
+          <FormComponents.FormNestedObject
+            {...this.props}
+            formComponents={FormComponents}
+            errors={this.getErrors()}
+            value={this.getValue()}
+          />
+        );
+      }
+    }
     return (
-      <div className={inputClass}>
-        {this.props.beforeComponent ? this.props.beforeComponent : null}
-        {this.renderComponent()}
-        {hasErrors ? this.renderErrors() : null}
-        {this.showClear() ? this.renderClear() : null}
-        {this.props.limit ? <div className={classNames('form-control-limit', {danger: this.state.limit < 10})}>{this.state.limit}</div> : null}
-        {this.props.afterComponent ? this.props.afterComponent : null}
-      </div>
-    )
+      <FormComponents.FormComponentInner
+        {...this.props}
+        {...this.state}
+        inputType={this.getType()}
+        value={this.getValue()}
+        errors={this.getErrors()}
+        document={this.context.getDocument()}
+        showCharsRemaining={!!this.showCharsRemaining()}
+        onChange={this.handleChange}
+        clearField={this.clearField}
+        formInput={this.getFormInput()}
+        formComponents={FormComponents}
+      />
+    );
   }
-
 }
 
 FormComponent.propTypes = {
   document: PropTypes.object,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.any,
   placeholder: PropTypes.string,
   prefilledValue: PropTypes.any,
   options: PropTypes.any,
-  control: PropTypes.any,
+  input: PropTypes.any,
   datatype: PropTypes.any,
+  path: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  updateCurrentValues: PropTypes.func
-}
+  nestedSchema: PropTypes.object,
+  currentValues: PropTypes.object.isRequired,
+  deletedValues: PropTypes.array.isRequired,
+  throwError: PropTypes.func.isRequired,
+  updateCurrentValues: PropTypes.func.isRequired,
+  errors: PropTypes.array.isRequired,
+  addToDeletedValues: PropTypes.func,
+  clearFieldErrors: PropTypes.func.isRequired,
+  currentUser: PropTypes.object
+};
 
 FormComponent.contextTypes = {
-  intl: intlShape,
-  addToDeletedValues: PropTypes.func,
+  getDocument: PropTypes.func.isRequired
 };
+
+module.exports = FormComponent;
 
 registerComponent('FormComponent', FormComponent);

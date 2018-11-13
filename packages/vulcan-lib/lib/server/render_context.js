@@ -4,9 +4,10 @@ import cookieParser from 'cookie-parser';
 
 import { Meteor } from 'meteor/meteor';
 import { DDP } from 'meteor/ddp';
-import { Accounts } from 'meteor/accounts-base';
+// import { Accounts } from 'meteor/accounts-base';
 import { RoutePolicy } from 'meteor/routepolicy';
 import { WebApp } from 'meteor/webapp';
+import { _hashLoginToken } from './accounts_helpers';
 
 import {
   createApolloClient,
@@ -37,7 +38,7 @@ function isAppUrl(req) {
   // we only need to support HTML pages only for browsers
   // Facebook's scraper uses a request header Accepts: */*
   // so allow either
-  const facebookAcceptsHeader = new RegExp("/*\/*/");
+  const facebookAcceptsHeader = new RegExp('/*\/*/');
   return /html/.test(req.headers.accept) || facebookAcceptsHeader.test(req.headers.accept);
 }
 
@@ -51,7 +52,7 @@ const LoginContext = function LoginContext(loginToken) {
     // otherwise a random user will fetched from the db
     let user;
     if (loginToken) {
-      const hashedToken = loginToken && Accounts._hashLoginToken(loginToken);
+      const hashedToken = loginToken && _hashLoginToken(loginToken);
       const query = { 'services.resume.loginTokens.hashedToken': hashedToken };
       const options = { fields: { _id: 1 } };
       user = Meteor.users.findOne(query, options);
@@ -73,17 +74,24 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
     next();
     return;
   }
-
+  
   // init
   const history = createMemoryHistory(req.url);
   const loginToken = req.cookies && req.cookies.meteor_login_token;
-  const apolloClient = createApolloClient({ loginToken: loginToken });
+  
+  // createApolloClient options will be passed to createMeteorNetworkInterface
+  const apolloClient = createApolloClient({ loginToken, headers: req.headers });
   let actions = {};
   let reducers = { apollo: apolloClient.reducer() };
   let middlewares = [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')];
 
+  // console.log('// render_context.js req.headers');
+  // console.log(req.headers);
+  // console.log('\n\n');
+  
   // renderContext object
   req.renderContext = {
+    originalHeaders: req.headers.originalheaders && JSON.parse(req.headers.originalheaders), // used to pass original client headers to SSR
     history,
     loginToken,
     apolloClient,

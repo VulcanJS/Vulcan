@@ -6,7 +6,7 @@ import { intlShape } from 'meteor/vulcan:i18n';
 
 export class AccountsPasswordOrService extends PureComponent {
   render () {
-    let { className = "password-or-service", style = {} } = this.props;
+    let { className = 'password-or-service', style = {} } = this.props;
     const services = Object.keys(this.props.oauthServices).map(service => {
       return this.props.oauthServices[service].label;
     });
@@ -17,7 +17,7 @@ export class AccountsPasswordOrService extends PureComponent {
 
     if (hasPasswordService() && services.length > 0) {
       return (
-        <div style={ style } className={ className }>
+        <div style={style} className={className}>
           { `${this.context.intl.formatMessage({id: 'accounts.or_use'})} ${ labels.join(' / ') }` }
         </div>
       );

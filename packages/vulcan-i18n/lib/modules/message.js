@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { getSetting, registerSetting, Strings } from 'meteor/vulcan:lib';
+import { intlShape } from './shape';
 
-const FormattedMessage = ({ id, values, defaultMessage }) => {
-  const messages = Strings[getSetting('locale', 'en')] || {};
-  let message = messages[id] || defaultMessage;
-  if (values) {
-    _.forEach(values, (value, key) => {
-      message = message.replace(`{${key}}`, value);
-    });
-  }
-  return <span className="i18n-message">{message}</span>
+const FormattedMessage = ({ id, values, defaultMessage = '', html = false, className = '' }, { intl }) => {
+  const message = intl.formatMessage({ id, defaultMessage }, values);
+  const cssClass = `i18n-message ${className}`;
+
+  return html ? 
+    <span className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :
+    <span className={cssClass}>{message}</span>
+}
+
+FormattedMessage.contextTypes = {
+  intl: intlShape
 }
 
 export default FormattedMessage;

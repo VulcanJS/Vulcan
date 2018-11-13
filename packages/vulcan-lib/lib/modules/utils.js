@@ -7,11 +7,13 @@ Utilities
 import marked from 'marked';
 import urlObject from 'url';
 import moment from 'moment';
-import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { getSetting, registerSetting } from './settings.js';
 import { Routes } from './routes.js';
-import { isAbsolute } from 'path';
+import { getCollection } from './collections.js';
+import set from 'lodash/set';
+import get from 'lodash/get';
+import isFunction from 'lodash/isFunction';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -76,7 +78,7 @@ Utils.trimWords = function(s, numWords) {
 
   var expString = s.split(/\s+/,numWords);
   if(expString.length >= numWords)
-    return expString.join(" ")+"…";
+    return expString.join(' ')+'…';
   return s;
 };
 
@@ -111,6 +113,15 @@ Utils.scrollPageTo = function(selector) {
   $('body').scrollTop($(selector).offset().top);
 };
 
+Utils.scrollIntoView = function (selector) {
+  if (!document) return;
+  
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView();
+  }
+};
+
 Utils.getDateRange = function(pageNumber) {
   var now = moment(new Date());
   var dayToDisplay=now.subtract(pageNumber-1, 'days');
@@ -130,7 +141,7 @@ Utils.getDateRange = function(pageNumber) {
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
 Utils.getSiteUrl = function () {
-  const url = getSetting('siteUrl', Meteor.absoluteUrl());
+  let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) !== '/') {
     url += '/';
   }
@@ -142,7 +153,7 @@ Utils.getSiteUrl = function () {
  * @param {String} url - the URL to redirect
  */
 Utils.getOutgoingUrl = function (url) {
-  return Utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
+  return Utils.getSiteUrl() + 'out?url=' + encodeURIComponent(url);
 };
 
 Utils.slugify = function (s) {
@@ -151,13 +162,12 @@ Utils.slugify = function (s) {
   });
 
   // can't have posts with an "edit" slug
-  if (slug === "edit") {
-    slug = "edit-1";
+  if (slug === 'edit') {
+    slug = 'edit-1';
   }
 
   return slug;
 };
-
 Utils.getUnusedSlug = function (collection, slug) {
   let suffix = "";
   let index = 0;
@@ -169,6 +179,27 @@ Utils.getUnusedSlug = function (collection, slug) {
   }
 
   return slug+suffix;
+};
+
+// Different version, less calls to the db but it cannot be used until we figure out how to use async for onCreate functions
+// Utils.getUnusedSlug = async function (collection, slug) {
+//   let suffix = '';
+//   let index = 0;
+// 
+//   const slugRegex = new RegExp('^' + slug + '-[0-9]+$');
+//   // get all the slugs matching slug or slug-123 in that collection
+//   const results = await collection.find( { slug: { $in: [slug, slugRegex] } }, { fields: { slug: 1, _id: 0 } });
+//   const usedSlugs = results.map(item => item.slug);
+//   // increment the index at the end of the slug until we find an unused one
+//   while (usedSlugs.indexOf(slug + suffix) !== -1) {
+//     index++;
+//     suffix = '-' + index;
+//   }
+//   return slug + suffix;
+// };
+
+Utils.getUnusedSlugByCollectionName = function (collectionName, slug) {
+  return Utils.getUnusedSlug(getCollection(collectionName), slug);
 };
 
 Utils.getShortUrl = function(post) {
@@ -186,8 +217,8 @@ Utils.getDomain = function(url) {
 // add http: if missing
 Utils.addHttp = function (url) {
   try {
-    if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
-      url = "http:"+url;
+    if (url.substring(0, 5) !== 'http:' && url.substring(0, 6) !== 'https:') {
+      url = 'http:'+url;
     }
     return url;
   } catch (error) {
@@ -204,20 +235,6 @@ Utils.cleanUp = function(s) {
 };
 
 Utils.sanitize = function(s) {
-  // console.log('// before sanitization:')
-  // console.log(s)
-  if(Meteor.isServer){
-    s = sanitizeHtml(s, {
-      allowedTags: [
-        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul',
-        'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike',
-        'code', 'hr', 'br', 'div', 'table', 'thead', 'caption',
-        'tbody', 'tr', 'th', 'td', 'pre', 'img'
-      ]
-    });
-    // console.log('// after sanitization:')
-    // console.log(s)
-  }
   return s;
 };
 
@@ -245,14 +262,14 @@ Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 };
 
 Utils.log = function (s) {
-  if(getSetting('debug', false) || process.env.NODE_ENV === "development") {
+  if(getSetting('debug', false) || process.env.NODE_ENV === 'development') {
     console.log(s); // eslint-disable-line
   }
 };
 
 // see http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
 Utils.getNestedProperty = function (obj, desc) {
-  var arr = desc.split(".");
+  var arr = desc.split('.');
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
 };
@@ -328,37 +345,37 @@ Utils.findIndex = (array, predicate) => {
 // adapted from http://stackoverflow.com/a/22072374/649299
 Utils.unflatten = function(array, options, parent, level=0, tree){
 
-  const { 
-    idProperty = '_id', 
-    parentIdProperty = 'parentId', 
+  const {
+    idProperty = '_id',
+    parentIdProperty = 'parentId',
     childrenProperty = 'childrenResults'
   } = options;
 
   level++;
 
-  tree = typeof tree !== "undefined" ? tree : [];
+  tree = typeof tree !== 'undefined' ? tree : [];
 
   let children = [];
 
-  if (typeof parent === "undefined") {
+  if (typeof parent === 'undefined') {
     // if there is no parent, we're at the root level
     // so we return all root nodes (i.e. nodes with no parent)
-    children = _.filter(array, node => !node[parentIdProperty]);
+    children = _.filter(array, node => !get(node, parentIdProperty));
   } else {
     // if there *is* a parent, we return all its child nodes
     // (i.e. nodes whose parentId is equal to the parent's id.)
-    children = _.filter(array, node => node[parentIdProperty] === parent[idProperty]);
+    children = _.filter(array, node => get(node, parentIdProperty) === get(parent, idProperty));
   }
 
   // if we found children, we keep on iterating
   if (!!children.length) {
 
-    if (typeof parent === "undefined") {
+    if (typeof parent === 'undefined') {
       // if we're at the root, then the tree consist of all root nodes
       tree = children;
     } else {
       // else, we add the children to the parent as the "childrenResults" property
-      parent[childrenProperty] = children;
+      set(parent, childrenProperty, children);
     }
 
     // we call the function on each child
@@ -425,7 +442,7 @@ Utils.convertDates = (collection, listOrDocument) => {
   return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
 }
 
-Utils.encodeIntlError = error => typeof error !== "object" ? error : JSON.stringify(error);
+Utils.encodeIntlError = error => typeof error !== 'object' ? error : JSON.stringify(error);
 
 Utils.decodeIntlError = (error, options = {stripped: false}) => {
   try {
@@ -471,18 +488,44 @@ Utils.defineName = (o, name) => {
   return o;
 };
 
-Utils.performCheck = (operation, user, checkedObject, context, documentId) => {
+Utils.performCheck = (operation, user, checkedObject, context, documentId, operationName, collectionName) => {
 
   if (!checkedObject) {
-    throw new Error(Utils.encodeIntlError({id: `app.document_not_found`, value: documentId}))
+    throw new Error(Utils.encodeIntlError({id: 'app.document_not_found', value: documentId}))
   }
 
   if (!operation(user, checkedObject, context)) {
-    throw new Error(Utils.encodeIntlError({id: `app.operation_not_allowed`, value: operation.name}));
+    throw new Error(Utils.encodeIntlError({id: 'app.operation_not_allowed', value: operationName, documentId }));
   }
 
 }
 
 Utils.getRoutePath = routeName => {
   return Routes[routeName] && Routes[routeName].path;
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+Utils.isPromise = value => isFunction(get(value, 'then'));
+
+Utils.pluralize = s => {
+  const plural = s.slice(-1) === 'y' ?
+    `${s.slice(0, -1)}ies` :
+    s.slice(-1) === 's' ?
+      `${s}es` :
+      `${s}s`;
+  return plural;
+}
+
+Utils.removeProperty = (obj, propertyName) => {
+  for(const prop in obj) {
+    if (prop === propertyName){
+      delete obj[prop];
+    } else if (typeof obj[prop] === 'object') {
+      Utils.removeProperty(obj[prop], propertyName);
+    }
+  }
 }

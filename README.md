@@ -1,8 +1,12 @@
 <img src="https://d3vv6lp55qjaqc.cloudfront.net/items/2B3C1z2V2y421p2I0P42/vulcan-logo-noborder.png" width="200">
 
+[![Backers on Open Collective](https://opencollective.com/vulcan/backers/badge.svg)](#backers)
+
+ [![Sponsors on Open Collective](https://opencollective.com/vulcan/sponsors/badge.svg)](#sponsors) 
+
 # Vulcan
 
-[Version 1.8.1](https://github.com/VulcanJS/Vulcan/releases)
+[Version 1.11.2](https://github.com/VulcanJS/Vulcan/releases)
 
 Vulcan is a React+GraphQL framework for Meteor. 
 
@@ -39,3 +43,23 @@ Find more info in the [documentation](http://docs.vulcanjs.org/#Install).
 You can find the older, non-Apollo version of Telescope Nova on the [nova-classic](https://github.com/TelescopeJS/Telescope/tree/nova-classic) branch. 
 
 You can find the even older, non-React version of Telescope on the [legacy](https://github.com/TelescopeJS/Telescope/tree/legacy) branch.
+
+## Credits
+
+### Contributors
+
+This project exists thanks to all the people who contribute.
+
+<a href="https://github.com/VulcanJS/Vulcan/graphs/contributors"><img src="https://opencollective.com/vulcan/contributors.svg?width=890&button=false" /></a>
+
+### Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/vulcan#contribute)]
+
+<a href="https://opencollective.com/vulcan#contributors" target="_blank"><img src="https://opencollective.com/vulcan/backers.svg?width=890"></a>
+
+### Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/vulcan#contribute)]
+
+<a href="https://opencollective.com/vulcan#contributors" target="_blank"><img src="https://opencollective.com/vulcan/sponsors.svg?width=890"></a>

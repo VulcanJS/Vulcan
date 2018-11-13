@@ -1,3 +1,4 @@
+import { Connectors } from 'meteor/vulcan:core';
 import { recalculateScore } from '../modules/scoring.js';
 
 /*
@@ -7,7 +8,7 @@ Update a document's score if necessary.
 Returns how many documents have been updated (1 or 0).
 
 */
-export const updateScore = ({collection, item, forceUpdate}) => {
+export const updateScore = async ({collection, item, forceUpdate}) => {
 
   // Age Check
   const postedAt = item && item.postedAt && item.postedAt.valueOf();
@@ -50,11 +51,11 @@ export const updateScore = ({collection, item, forceUpdate}) => {
 
   // only update database if difference is larger than x to avoid unnecessary updates
   if (forceUpdate || scoreDiff > x) {
-    collection.update(item._id, {$set: {score: newScore, inactive: false}});
+    await Connectors.update(collection, item._id, {$set: {score: newScore, inactive: false}});
     return 1;
   } else if(ageInHours > n*24) {
     // only set a post as inactive if it's older than n days
-    collection.update(item._id, {$set: {inactive: true}});
+    await Connectors.update(collection, item._id, {$set: {inactive: true}});
   }
   return 0;
 };
@@ -84,7 +85,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         score: 1,
         newScore: {
           $divide: [
-            "$baseScore",
+            '$baseScore',
               {
                 $pow: [
                   {
@@ -92,7 +93,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
                       {
                         $divide: [
                           {
-                            $subtract: [new Date(), "$postedAt"] // Age in miliseconds
+                            $subtract: [new Date(), '$postedAt'] // Age in miliseconds
                           },
                           60 * 60 * 1000
                         ]
@@ -115,7 +116,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         newScore: 1,
         scoreDiffSignificant: {
           $gt: [
-            {$abs: {$subtract: ["$score", "$newScore"]}},
+            {$abs: {$subtract: ['$score', '$newScore']}},
             x
           ]
         },
@@ -123,7 +124,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           $gt: [
             {$divide: [
               {
-                $subtract: [new Date(), "$postedAt"] // Difference in miliseconds
+                $subtract: [new Date(), '$postedAt'] // Difference in miliseconds
               },
               60 * 60 * 1000 //Difference in hours
             ]},

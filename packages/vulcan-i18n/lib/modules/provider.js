@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { getSetting, registerSetting, Strings } from 'meteor/vulcan:lib';
+import { getString } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
-
 export default class IntlProvider extends Component{
-  
-  constructor(){
-    super();
-    this.formatMessage = this.formatMessage.bind(this);
+
+  formatMessage = ({ id, defaultMessage }, values) => {
+    return getString({ id, defaultMessage, values, locale: this.props.locale });
   }
 
-  formatMessage({ id, defaultMessage }, values) {
-    const messages = Strings[getSetting('locale', 'en')] || {};
-    let message = messages[id] || defaultMessage;
-    if (values) {
-      _.forEach(values, (value, key) => {
-        message = message.replace(`{${key}}`, value);
-      });
-    }
-    return message;
-  }
-
-  formatStuff(something) {
+  formatStuff = (something) => {
     return something;
   }
 

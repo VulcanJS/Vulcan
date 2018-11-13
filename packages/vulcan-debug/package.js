@@ -1,24 +1,24 @@
 Package.describe({
-  name: "vulcan:debug",
-  summary: "Vulcan debug package",
-  version: '1.8.5',
-  git: "https://github.com/VulcanJS/Vulcan.git",
+  name: 'vulcan:debug',
+  summary: 'Vulcan debug package',
+  version: '1.12.8',
+  git: 'https://github.com/VulcanJS/Vulcan.git',
   debugOnly: true
 });
 
 Package.onUse(function (api) {
 
-  api.versionsFrom('METEOR@1.5.2');
+  api.versionsFrom('1.6.1');
 
   api.use([
 
-    'fourseven:scss@4.5.0',
+    'fourseven:scss@4.10.0',
     'dynamic-import@0.1.1',
 
     // Vulcan packages
 
-    'vulcan:lib@1.8.5',
-    'vulcan:email@1.8.5',
+    'vulcan:lib@1.12.8',
+    'vulcan:email@1.12.8',
 
   ]);
 
@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/debug.scss'
   ], ['client']);
 
-  api.mainModule("lib/server/main.js", "server");
-  api.mainModule("lib/client/main.js", "client");
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });

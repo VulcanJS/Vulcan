@@ -1,0 +1,99 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          # lang settings required for Meteor's Mongo
+          LANG: C.UTF-8
+          LANGUAGE: C.UTF-8
+          LC_ALL: C.UTF-8
+          LC_NUMERIC: en_US.UTF-8
+          METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
+          METEOR_BIN_TMP_FILE: meteor-bin-temp
+
+    working_directory: ~/app
+
+    steps:
+      # chackout the code from github
+      - checkout
+      # if certain cached files (packages, etc) are presetn, don't redownload them, restore the cached version
+      - restore_cache:
+          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+      - restore_cache:
+          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
+      - run:
+          name: install build essentials
+          command: sudo apt-get install -y build-essential
+      - run:
+          name: restore cached meteor bin
+          command: |
+            if [ -e ~/build-temp/meteor-bin ]
+            then
+                echo "Cached Meteor bin found, restoring it"
+                sudo cp ~/build-temp/meteor-bin /usr/local/bin/meteor
+            else
+                echo "No cached Meteor bin found."
+            fi
+      # if there is no cached meteor version, install it
+      - run:
+          name: install Meteor
+          command: |
+            # only install meteor if bin isn't found
+            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+      - run:
+          name: check versions
+          command: |
+            echo "Meteor version:"
+            meteor --version
+            which meteor
+            echo "Meteor node version:"
+            meteor node -v
+            echo "Meteor npm version:"
+            meteor npm -v
+            echo "Java version:"
+            java -version
+      - run: 
+          name: install yarn
+          command: meteor npm i -g yarn
+      - run: 
+          name: install npm packages
+          command: meteor yarn
+      - run:
+          name: code linting
+          command: meteor yarn lint
+      # move meteor bin so it can be properly cached
+      - run:
+          name: copy meteor bin to build cache
+          command: |
+            mkdir -p ~/build-temp
+            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      # cache meteor& npm packages
+      - save_cache:
+          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ~/build-temp
+      - save_cache:
+          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ~/.meteor
+      - save_cache:
+          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - .meteor/
+      - save_cache:
+          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ./node_modules/
+            - ~/.npm/
+
+
+

@@ -1,5 +1,9 @@
-let browserHistory
-try { browserHistory = require('react-router').browserHistory } catch(e) {}
+let browserHistory;
+try {
+  browserHistory = require('react-router').browserHistory;
+} catch (e) {
+  // swallow errors
+}
 export const loginButtonsSession = Accounts._loginButtonsSession;
 export const STATES = {
   SIGN_IN: Symbol('SIGN_IN'),
@@ -12,13 +16,17 @@ export const STATES = {
 
 export function getLoginServices() {
   // First look for OAuth services.
-  const services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
+  const services = Package['accounts-oauth']
+    ? Accounts
+      .oauth
+      .serviceNames()
+    : [];
 
   // Be equally kind to all login services. This also preserves
   // backwards-compatibility.
   services.sort();
 
-  return _.map(services, function(name){
+  return _.map(services, function (name) {
     return {name: name};
   });
 }
@@ -33,21 +41,21 @@ export function hasPasswordService() {
 
 export function loginResultCallback(service, err) {
   if (!err) {
-
+    // Do nothing
   } else if (err instanceof Accounts.LoginCancelledError) {
-    // do nothing
+    // Do nothing
   } else if (err instanceof ServiceConfiguration.ConfigError) {
-
+    // Do nothing
   } else {
-    //loginButtonsSession.errorMessage(err.reason || "Unknown error");
+    // loginButtonsSession.errorMessage(err.reason || "Unknown error");
   }
 
   if (Meteor.isClient) {
-    if (typeof redirect === 'string'){
+    if (typeof redirect === 'string') {
       window.location.href = '/';
     }
 
-    if (typeof service === 'function'){
+    if (typeof service === 'function') {
       service();
     }
   }
@@ -58,36 +66,38 @@ export function passwordSignupFields() {
 }
 
 export function validateEmail(email, showMessage, clearMessage) {
-  if (passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL" && email === '') {
+  if (passwordSignupFields() === 'USERNAME_AND_OPTIONAL_EMAIL' && email === '') {
     return true;
   }
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
   } else if (!email || email.length === 0) {
-    showMessage("accounts.error_email_required", 'warning', false, 'email');
+    showMessage('accounts.error_email_required', 'warning', false, 'email');
     return false;
   } else {
-    showMessage("accounts.error_invalid_email", 'warning', false, 'email');
+    showMessage('accounts.error_invalid_email', 'warning', false, 'email');
     return false;
   }
 }
 
-export function validatePassword(password = '', showMessage, clearMessage){
+export function validatePassword(password = '', showMessage, clearMessage) {
   if (password.length >= Accounts.ui._options.minimumPasswordLength) {
     return true;
   } else {
-    const errMsg = "accounts.error_minchar"
+    const errMsg = 'accounts.error_minchar'
     showMessage(errMsg, 'warning', false, 'password');
     return false;
   }
 }
 
 export function validateUsername(username, showMessage, clearMessage, formState) {
-  if ( username ) {
+  if (username) {
     return true;
   } else {
-    const fieldName = (passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP) ? 'username' : 'usernameOrEmail';
-    showMessage("accounts.error_username_required", 'warning', false, fieldName);
+    const fieldName = (passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP)
+      ? 'username'
+      : 'usernameOrEmail';
+    showMessage('accounts.error_username_required', 'warning', false, fieldName);
     return false;
   }
 }
@@ -98,13 +108,19 @@ export function redirect(redirect) {
       // Run after all app specific redirects, i.e. to the login screen.
       Meteor.setTimeout(() => {
         if (Package['kadira:flow-router']) {
-          Package['kadira:flow-router'].FlowRouter.go(redirect);
+          Package['kadira:flow-router']
+            .FlowRouter
+            .go(redirect);
         } else if (Package['kadira:flow-router-ssr']) {
-          Package['kadira:flow-router-ssr'].FlowRouter.go(redirect);
+          Package['kadira:flow-router-ssr']
+            .FlowRouter
+            .go(redirect);
         } else if (browserHistory) {
           browserHistory.push(redirect);
         } else {
-          window.history.pushState( {} , 'redirect', redirect );
+          window
+            .history
+            .pushState({}, 'redirect', redirect);
         }
       }, 100);
     }
@@ -112,7 +128,13 @@ export function redirect(redirect) {
 }
 
 export function capitalize(string) {
-  return string.replace(/\-/, ' ').split(' ').map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }).join(' ');
+  return string
+    .replace(/\-/, ' ')
+    .split(' ')
+    .map(word => {
+      return word
+        .charAt(0)
+        .toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 }

@@ -1,7 +1,6 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { STATES } from '../../helpers.js';
 

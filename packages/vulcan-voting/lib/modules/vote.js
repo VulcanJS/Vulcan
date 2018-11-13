@@ -1,4 +1,4 @@
-import { debug, runCallbacksAsync, runCallbacks, addCallback } from 'meteor/vulcan:core';
+import { Connectors, debug, debugGroup, debugGroupEnd /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
 import { createError } from 'apollo-errors';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
@@ -49,8 +49,8 @@ const calculateTotalPower = votes => _.pluck(votes, 'power').reduce((a, b) => a 
 Test if a user has voted on the server
 
 */
-const hasVotedServer = ({ document, voteType, user }) => {
-  const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType});
+const hasVotedServer = async ({ document, voteType, user }) => {
+  const vote = await Connectors.get(Votes, {documentId: document._id, userId: user._id, voteType});
   return vote;
 }
 
@@ -84,20 +84,24 @@ const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
 Add a vote of a specific type on the server
 
 */
-const addVoteServer = ({ document, collection, voteType, user, voteId }) => {
+const addVoteServer = async (voteOptions) => {
 
+  const { document, collection, voteType, user, voteId, updateDocument } = voteOptions;
   const newDocument = _.clone(document);
 
   // create vote and insert it
   const vote = createVote({ document, collectionName: collection.options.collectionName, voteType, user, voteId });
   delete vote.__typename;
-  Votes.insert(vote);
+  await Connectors.create(Votes, vote);
 
-  // update document score
-  collection.update({_id: document._id}, {$inc: {baseScore: vote.power }});
-
-  newDocument.baseScore += vote.power;
+  // initialize baseScore to vote power if not defined yet
+  newDocument.baseScore = document.baseScore ? document.baseScore + vote.power : vote.power;
   newDocument.score = recalculateScore(newDocument);
+
+  if (updateDocument) {
+    // update document score & set item as active
+    await Connectors.update(collection, {_id: document._id}, {$set: {inactive: false, baseScore: newDocument.baseScore, score: newDocument.score}});
+  }
 
   return newDocument;
 }
@@ -119,7 +123,7 @@ const cancelVoteClient = ({ document, voteType }) => {
 
     // clear out vote of this type
     newDocument.currentUserVotes = newVotes;
-  
+
   }
   return newDocument;
 }
@@ -142,12 +146,14 @@ const clearVotesClient = ({ document }) => {
 Clear all votes for a given document and user (server)
 
 */
-const clearVotesServer = ({ document, user, collection }) => {
+const clearVotesServer = async ({ document, user, collection, updateDocument }) => {
   const newDocument = _.clone(document);
-  const votes = Votes.find({ documentId: document._id, userId: user._id}).fetch();
+  const votes = await Connectors.find(Votes, { documentId: document._id, userId: user._id});
   if (votes.length) {
-    Votes.remove({documentId: document._id});
-    collection.update({_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+    await Connectors.delete(Votes, {documentId: document._id, userId: user._id});
+    if (updateDocument) {
+      await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -calculateTotalPower(votes) }});
+    }
     newDocument.baseScore -= calculateTotalPower(votes);
     newDocument.score = recalculateScore(newDocument);
   }
@@ -159,17 +165,19 @@ const clearVotesServer = ({ document, user, collection }) => {
 Cancel votes of a specific type on a given document (server)
 
 */
-const cancelVoteServer = ({ document, voteType, collection, user }) => {
+const cancelVoteServer = async (existingVote, { document, voteType, collection, user, updateDocument }) => {
 
   const newDocument = _.clone(document);
 
-  const vote = Votes.findOne({documentId: document._id, userId: user._id, voteType})
-  
-  // remove vote object
-  Votes.remove({_id: vote._id});
+  const vote = existingVote;
 
-  // update document score
-  collection.update({_id: document._id}, {$inc: {baseScore: -vote.power }});
+  // remove vote object
+  await Connectors.delete(Votes, {_id: vote._id});
+
+  if (updateDocument) {
+    // update document score
+    await Connectors.update(collection, {_id: document._id}, {$inc: {baseScore: -vote.power }});
+  }
 
   newDocument.baseScore -= vote.power;
   newDocument.score = recalculateScore(newDocument);
@@ -194,7 +202,7 @@ Create new vote object
 
 */
 const createVote = ({ document, collectionName, voteType, user, voteId }) => {
-  
+
   const vote = {
     documentId: document._id,
     collectionName,
@@ -204,7 +212,7 @@ const createVote = ({ document, collectionName, voteType, user, voteId }) => {
     votedAt: new Date(),
     __typename: 'Vote'
   }
-  
+
   // when creating a vote from the server, voteId can sometimes be undefined
   if (voteId) vote._id = voteId;
 
@@ -255,52 +263,64 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
 
   // console.log('returnedDocument:', returnedDocument)
 
-  return returnedDocument;  
+  return returnedDocument;
 }
 
 /*
 
 Server-side database operation
 
-*/
-export const performVoteServer = ({ documentId, document, voteType = 'upvote', collection, voteId, user }) => {
-  
-  const collectionName = collection.options.collectionName;
-  document = document || collection.findOne(documentId);
+### updateDocument 
+if set to true, this will perform its own database updates. If false, will only
+return an updated document without performing any database operations on it. 
 
-  debug('// performVoteMutation')
-  debug('collectionName: ', collectionName)
-  debug('document: ', document)
-  debug('voteType: ', voteType)
-  
-  const voteOptions = {document, collection, voteType, user, voteId};
+*/
+export const performVoteServer = async ({ documentId, document, voteType = 'upvote', collection, voteId, user, updateDocument = true }) => {
+
+  const collectionName = collection.options.collectionName;
+  document = document || await Connectors.get(collection, documentId);
+
+  debug('');
+  debugGroup('--------------- start \x1b[35mperformVoteServer\x1b[0m  ---------------');
+  debug('collectionName: ', collectionName);
+  debug('document: ', document);
+  debug('voteType: ', voteType);
+
+  const voteOptions = {document, collection, voteType, user, voteId, updateDocument};
 
   if (!document || !user || !Users.canDo(user, `${collectionName.toLowerCase()}.${voteType}`)) {
     const VoteError = createError('voting.no_permission', {message: 'voting.no_permission'});
     throw new VoteError();
   }
 
-  if (hasVotedServer({document, voteType, user})) {
+  const existingVote = await hasVotedServer({document, voteType, user});
+
+  if (existingVote) {
 
     // console.log('action: cancel')
 
     // runCallbacks(`votes.cancel.sync`, document, collection, user);
-    document = cancelVoteServer(voteOptions);
+    document = await cancelVoteServer(existingVote, voteOptions);
     // runCallbacksAsync(`votes.cancel.async`, vote, document, collection, user);
-  
+
   } else {
-  
+
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      document = clearVotesServer(voteOptions)
+      document = await clearVotesServer(voteOptions)
     }
 
     // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
-    document = addVoteServer(voteOptions);
+    document = await addVoteServer(voteOptions);
     // runCallbacksAsync(`votes.${voteType}.async`, vote, document, collection, user);
-  
+
   }
+
+  debug('document after vote: ', document);
+  debugGroupEnd();
+  debug('--------------- end \x1b[35m performVoteServer\x1b[0m ---------------');
+  debug('');
 
   // const newDocument = collection.findOne(documentId);
   document.__typename = collection.options.typeName;

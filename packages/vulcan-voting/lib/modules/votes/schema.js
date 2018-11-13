@@ -2,7 +2,7 @@ const schema = {
 
   _id: {
     type: String,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
 
   /**
@@ -10,7 +10,7 @@ const schema = {
   */
   documentId: {
     type: String,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
 
   /**
@@ -18,7 +18,7 @@ const schema = {
   */
   collectionName: {
     type: String,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
 
   /**
@@ -26,7 +26,7 @@ const schema = {
   */
   userId: {
     type: String,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
 
   /**
@@ -35,7 +35,7 @@ const schema = {
   voteType: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
 
   /**
@@ -44,7 +44,7 @@ const schema = {
   power: {
     type: Number,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
   
   /**
@@ -53,7 +53,7 @@ const schema = {
   votedAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   }
 
 };

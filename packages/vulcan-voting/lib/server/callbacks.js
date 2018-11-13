@@ -1,7 +1,7 @@
-import { addCallback, Utils } from 'meteor/vulcan:core';
-import Users from 'meteor/vulcan:users';
-import { getVotePower } from '../modules/vote.js';
-import { updateScore } from './scoring.js';
+// import { addCallback, Utils } from 'meteor/vulcan:core';
+// import Users from 'meteor/vulcan:users';
+// import { getVotePower } from '../modules/vote.js';
+// import { updateScore } from './scoring.js';
 
 // ----------------------------- vote.async ------------------------------- //
 

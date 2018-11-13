@@ -1,3 +1,5 @@
+import { Connectors } from 'meteor/vulcan:core'; // import from vulcan:lib because vulcan:core isn't loaded yet
+
 export const VoteableCollections = [];
 
 export const makeVoteable = collection => {
@@ -13,12 +15,12 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
             if (!currentUser) return [];
-            const votes = Votes.find({userId: currentUser._id, documentId: document._id}).fetch();
+            const votes = await Connectors.find(Votes, {userId: currentUser._id, documentId: document._id});
             if (!votes.length) return [];
             return votes;
             // return Users.restrictViewableFields(currentUser, Votes, votes);
@@ -42,12 +44,12 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
-          type: 'Vote',
+          type: '[Vote]',
           resolver: async (document, args, { Users, Votes, currentUser }) => {
-            const votes = Votes.find({itemId: document._id}).fetch();
-            if (!votes.length) return null;
+            const votes = await Connectors.find(Votes, { documentId: document._id });
+            if (!votes.length) return [];
             return votes;
             // return Users.restrictViewableFields(currentUser, Votes, votes);
           },
@@ -70,13 +72,15 @@ export const makeVoteable = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: '[User]',
-          resolver: async (document, args, {currentUser, Users}) => {
-            const votes = Votes.find({itemId: document._id}).fetch();
+          resolver: async (document, args, { currentUser, Users }) => {
+            // eslint-disable-next-line no-undef
+            const votes = await Connectors.find(Votes, {itemId: document._id});
             const votersIds = _.pluck(votes, 'userId');
-            const voters = Users.find({_id: {$in: votersIds}});
+            // eslint-disable-next-line no-undef
+            const voters = await Connectors.find(Users, {_id: {$in: votersIds}});
             return voters;
             // if (!document.upvoters) return [];
             // const upvoters = await Users.loader.loadMany(document.upvoters);
@@ -101,8 +105,11 @@ export const makeVoteable = collection => {
         type: Number,
         optional: true,
         defaultValue: 0,
-        viewableBy: ['guests'],
-        onInsert: () => 0
+        canRead: ['guests'],
+        onInsert: document => {
+          // default to 0 if empty
+          return document.baseScore || 0;
+        }
       }
     },
     /**
@@ -114,8 +121,11 @@ export const makeVoteable = collection => {
         type: Number,
         optional: true,
         defaultValue: 0,
-        viewableBy: ['guests'],
-        onInsert: () => 0
+        canRead: ['guests'],
+        onInsert: document => {
+          // default to 0 if empty
+          return document.score || 0;
+        }
       }
     },
     /**

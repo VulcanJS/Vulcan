@@ -14,15 +14,12 @@ export const initContext = () => {
   // init
   const history = browserHistory;
   const loginToken = global.localStorage['Meteor.loginToken'];
-  const apolloClient = createApolloClient();
-  addReducer({ apollo: apolloClient.reducer() });
-  addMiddleware(apolloClient.middleware());
+  let apolloClient;
 
   // init context
   context = {
     history,
     loginToken,
-    apolloClient,
     addAction, // context.addAction same as addAction
     getActions, // context.getActions same as getActions
     addReducer, // context.addReducer same as addReducer
@@ -30,6 +27,19 @@ export const initContext = () => {
     addMiddleware, // context.addMiddleware same as addMiddleware
     getMiddlewares, // context.getMiddlewares same as getMiddlewares
   };
+
+  // defer creation of apolloClient until it is first used
+  Object.defineProperty(context, 'apolloClient', {
+    enumerable: true,
+    get: () => {
+      if (!apolloClient) {
+        apolloClient = createApolloClient();
+        addReducer({ apollo: apolloClient.reducer() });
+        addMiddleware(apolloClient.middleware());
+      }
+      return apolloClient;
+    },
+  });
 
   // init store
   context.store = configureStore(context.getReducers, {}, (store) => {

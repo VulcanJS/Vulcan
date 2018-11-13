@@ -1,72 +1,58 @@
-import { Components, withMessages } from 'meteor/vulcan:core';
+import { Components, registerComponent, withMutation, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'meteor/vulcan:i18n';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends PureComponent {
-
-  constructor(props) {
-    super(props);
-    
-    this.handleSuccessCallback = this.handleSuccessCallback.bind(this);
-    
-    // note: we double bang (!!) the value to force a boolean (undefined/"" transformed to false)
-    this.state = {
-      label: !!props.value ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
-      mutationName: !!props.value ? 'removeUserNewsletter' : 'addUserNewsletter',
-      currentValue: !!props.value,
-    };
-  }
-
-  // initiate SmartForm with the newsletter setting value
-  componentDidMount() {
-    // note: forced boolean value because SmartForm's falsy value are empty double quotes.
-    this.context.addToAutofilledValues({[this.props.name]: !!this.props.value});
-  }
   
-  handleSuccessCallback(result) {
+  // check if fields is true or falsy (no value = not subscribed)
+  isSubscribed = () => {
+    return !!this.props.value;
+  }
+
+  subscribeUnsubscribe = async () => {
+    
+    const { path, updateCurrentValues, throwError } = this.props;
+    
+    const user = this.props.document;
+    const mutationName = this.isSubscribed() ? 'removeUserNewsletter' : 'addUserNewsletter';
+    const mutation = this.props[mutationName];
+
     try {
-      this.setState(
-        // update the state of this component
-        (prevState, props) => ({
-          label: !prevState.currentValue ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
-          mutationName: !prevState.currentValue ? 'removeUserNewsletter' : 'addUserNewsletter',
-          currentValue: !prevState.currentValue,
-        }), 
-        // the asynchronous setState has finished, update the form state related to this field
-        () => this.context.addToAutofilledValues({[this.props.name]: this.state.currentValue})
-      );
+
+      await mutation({userId: user._id});
+
+      updateCurrentValues({ [path]: !this.isSubscribed() });
       
       // display a nice message to the client
-      this.props.flash(this.context.intl.formatMessage({ id: 'newsletter.subscription_updated' }), 'success');
-    } catch(e) {
-      // note: the result didn't have the shape expected, this shouldn't happen unless we change the code of our mailchimp wrapper
-      this.props.flash('Something went wrong... Please contact the administrator to check the state of your newsletter subscription.');
+      this.props.flash({ id: 'newsletter.subscription_updated', type: 'success'});
+      
+    } catch(error) {
+      throwError(error);
     }
   }
   
   render() {
+
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3"></label>
-        <div className="col-sm-9">
-          <Components.NewsletterButton
-            label={this.state.label}
-            mutationName={this.state.mutationName}
-            user={this.props.document}
-            successCallback={this.handleSuccessCallback}
-          />
+          <div className="col-sm-9">
+            <Components.Button
+              className="newsletter-button"
+              onClick={this.subscribeUnsubscribe}
+              variant="primary"
+            >
+              <FormattedMessage id={this.isSubscribed() ? 'newsletter.unsubscribe' : 'newsletter.subscribe'}/>
+            </Components.Button>
         </div>
       </div>
     )
   }
 }
 
-NewsletterSubscribe.contextTypes = {
-  addToAutofilledValues: PropTypes.func,
-  intl: intlShape
-};
+const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};
+const removeOptions = {name: 'removeUserNewsletter', args: {userId: 'String'}};
 
-module.exports = withMessages(NewsletterSubscribe);
-export default withMessages(NewsletterSubscribe);
+registerComponent('NewsletterSubscribe', NewsletterSubscribe, withMutation(addOptions), withMutation(removeOptions), withMessages);

@@ -1,11 +1,7 @@
-/*
-
-The main Comments collection definition file.
-
-*/
-
-import { createCollection } from 'meteor/vulcan:core';
+// The main Charges collection definition file.
+import { createCollection, getDefaultResolvers } from 'meteor/vulcan:core';
 import schema from './schema.js';
+import Users from 'meteor/vulcan:users';
 
 const Charges = createCollection({
 
@@ -15,7 +11,7 @@ const Charges = createCollection({
 
   schema,
   
-  // resolvers,
+  resolvers: getDefaultResolvers('Charges'),
 
   // mutations,
 
@@ -23,8 +19,12 @@ const Charges = createCollection({
 
 Charges.addDefaultView(terms => {
   return {
-    options: {sort: {createdAt: -1}}
+    options: { sort: { createdAt: -1 } }
   };
 });
+
+Charges.checkAccess = (currentUser, charge) => {
+  return Users.isAdmin(currentUser);
+}
 
 export default Charges;

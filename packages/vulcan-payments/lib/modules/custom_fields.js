@@ -6,6 +6,6 @@ Users.addField([
     fieldSchema: {
       type: String,
       optional: true,
-    }
-  }
+    },
+  },
 ]);

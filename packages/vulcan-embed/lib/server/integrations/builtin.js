@@ -50,6 +50,7 @@ const extractMeta = function (params) {
       }
       html = result.content;
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log('catch error', e);
       return META;
     }

@@ -15,18 +15,16 @@ export class AccountsForm extends PureComponent {
 
   render() {
     const {
-      hasPasswordService,
+      // hasPasswordService,
       oauthServices,
       fields,
       buttons,
-      error,
+      // error,
       messages,
       ready = true,
-      className
+      className,
     } = this.props;
-    const _className = classnames("accounts-ui",  {
-        "ready": ready,
-    });
+    const _className = classnames('accounts-ui', { ready }, className);
     return (
       <form
         ref={(ref) => this.form = ref}

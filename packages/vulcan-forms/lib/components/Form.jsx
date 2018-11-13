@@ -22,12 +22,100 @@ This component expects:
 
 */
 
-import { Components, Utils, runCallbacks } from 'meteor/vulcan:core';
+import {
+  registerComponent,
+  Components,
+  runCallbacks,
+  getCollection,
+  getErrors,
+  getSetting,
+  Utils,
+  isIntlField
+} from 'meteor/vulcan:core';
 import React, { Component } from 'react';
+import SimpleSchema from 'simpl-schema';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Formsy from 'formsy-react';
-import { getEditableFields, getInsertableFields } from '../modules/utils.js';
+import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import unset from 'lodash/unset';
+import compact from 'lodash/compact';
+import update from 'lodash/update';
+import merge from 'lodash/merge';
+import find from 'lodash/find';
+import pick from 'lodash/pick';
+import isEqual from 'lodash/isEqual';
+import isEqualWith from 'lodash/isEqualWith';
+import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
+import isObject from 'lodash/isObject';
+import mapValues from 'lodash/mapValues';
+import pickBy from 'lodash/pickBy';
+
+import { convertSchema, formProperties } from '../modules/schema_utils';
+import { isEmptyValue } from '../modules/utils';
+import { getParentPath } from '../modules/path_utils';
+import mergeWithComponents from '../modules/mergeWithComponents';
+import {
+  getEditableFields,
+  getInsertableFields
+} from '../modules/schema_utils.js';
+import withCollectionProps from './withCollectionProps';
+import { callbackProps } from './propTypes';
+
+const compactParent = (object, path) => {
+  const parentPath = getParentPath(path);
+
+  // note: we only want to compact arrays, not objects
+  const compactIfArray = x => (Array.isArray(x) ? compact(x) : x);
+
+  update(object, parentPath, compactIfArray);
+};
+
+const getDefaultValues = convertedSchema => {
+  // TODO: make this work with nested schemas, too
+  return pickBy(
+    mapValues(convertedSchema, field => field.defaultValue),
+    value => value
+  );
+};
+
+const getInitialStateFromProps = nextProps => {
+  const collection = nextProps.collection;
+  const schema = nextProps.schema
+    ? new SimpleSchema(nextProps.schema)
+    : collection.simpleSchema();
+  const convertedSchema = convertSchema(schema);
+  const formType = nextProps.document ? 'edit' : 'new';
+  // for new document forms, add default values to initial document
+  const defaultValues =
+    formType === 'new' ? getDefaultValues(convertedSchema) : {};
+  const initialDocument = merge(
+    {},
+    defaultValues,
+    nextProps.prefilledProps,
+    nextProps.document
+  );
+  // remove all instances of the `__typename` property from document
+  Utils.removeProperty(initialDocument, '__typename');
+
+  return {
+    disabled: false,
+    errors: [],
+    deletedValues: [],
+    currentValues: {},
+    // convert SimpleSchema schema into JSON object
+    schema: convertedSchema,
+    // Also store all field schemas (including nested schemas) in a flat structure
+    flatSchema: convertSchema(schema, true),
+    // the initial document passed as props
+    initialDocument,
+    // initialize the current document to be the same as the initial document
+    currentDocument: initialDocument
+  };
+};
 
 /*
 
@@ -40,466 +128,741 @@ import { getEditableFields, getInsertableFields } from '../modules/utils.js';
 
 */
 
-class Form extends Component {
-
-  // --------------------------------------------------------------------- //
-  // ----------------------------- Constructor --------------------------- //
-  // --------------------------------------------------------------------- //
-
+class SmartForm extends Component {
   constructor(props) {
     super(props);
-    this.submitForm = this.submitForm.bind(this);
-    this.updateState = this.updateState.bind(this);
-    // this.methodCallback = this.methodCallback.bind(this);
-    this.newMutationSuccessCallback = this.newMutationSuccessCallback.bind(this);
-    this.editMutationSuccessCallback = this.editMutationSuccessCallback.bind(this);
-    this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
-    this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
-    this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
-    this.getAutofilledValues = this.getAutofilledValues.bind(this);
-    this.addToDeletedValues = this.addToDeletedValues.bind(this);
-    this.addToSubmitForm = this.addToSubmitForm.bind(this);
-    this.addToSuccessForm = this.addToSuccessForm.bind(this);
-    this.addToFailureForm = this.addToFailureForm.bind(this);
-    this.throwError = this.throwError.bind(this);
-    this.clearForm = this.clearForm.bind(this);
-    this.updateCurrentValues = this.updateCurrentValues.bind(this);
-    this.formKeyDown = this.formKeyDown.bind(this);
-    this.deleteDocument = this.deleteDocument.bind(this);
-    this.getDocument = this.getDocument.bind(this);
-    // a debounced version of seState that only updates state every 500 ms (not used)
-    this.debouncedSetState = _.debounce(this.setState, 500);
-    this.setFormState = this.setFormState.bind(this);
-    this.getLabel = this.getLabel.bind(this);
-    this.getErrorMessage = this.getErrorMessage.bind(this);
-    // version of submitForm that is made available to context, behaves like updateCurrentValues but submits afterwards
-    this.submitFormContext = this.submitFormContext.bind(this);
 
     this.state = {
-      disabled: false,
-      errors: [],
-      autofilledValues: {},
-      deletedValues: [],
-      currentValues: {}
+      ...getInitialStateFromProps(props)
     };
-
-    this.submitFormCallbacks = [];
-    this.successFormCallbacks = [];
-    this.failureFormCallbacks = [];
   }
+
+  defaultValues = {};
+
+  submitFormCallbacks = [];
+  successFormCallbacks = [];
+  failureFormCallbacks = [];
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // return the current schema based on either the schema or collection prop
-  getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
-  }
+  /*
+  If a document is being passed, this is an edit form
+  */
+  getFormType = () => {
+    return this.props.document ? 'edit' : 'new';
+  };
 
-  getFieldGroups() {
+  /*
+  Get a list of all insertable fields
+  */
+  getInsertableFields = schema => {
+    return getInsertableFields(
+      schema || this.state.schema,
+      this.props.currentUser
+    );
+  };
 
-    const schema = this.getSchema();
-    const document = this.getDocument();
+  /*
+  Get a list of all editable fields
+  */
+  getEditableFields = schema => {
+    return getEditableFields(
+      schema || this.state.schema,
+      this.props.currentUser,
+      this.state.initialDocument
+    );
+  };
 
-    // build fields array by iterating over the list of field names
-    let fields = this.getFieldNames().map(fieldName => {
+  /*
 
-      // get schema for the current field
-      const fieldSchema = schema[fieldName];
+  Get a list of all mutable (insertable/editable depending on current form type) fields
 
-      fieldSchema.name = fieldName;
+  */
+  getMutableFields = schema => {
+    return this.getFormType() === 'edit'
+      ? this.getEditableFields(schema)
+      : this.getInsertableFields(schema);
+  };
 
-      // intialize properties
-      let field = {
-        name: fieldName,
-        datatype: fieldSchema.type,
-        control: fieldSchema.control,
-        layout: this.props.layout,
-        order: fieldSchema.order
+  /*
+
+  Get the current document
+
+  */
+  getDocument = () => {
+    return this.state.currentDocument;
+  };
+
+  /*
+
+  Like getDocument, but cross-reference with getFieldNames()
+  to only return fields that actually need to be submitted
+
+  Also remove any deleted values.
+
+  */
+  getData = customArgs => {
+    const args = {
+      excludeHiddenFields: false,
+      replaceIntlFields: true,
+      addExtraFields: false,
+      ...customArgs
+    };
+
+    // only keep relevant fields
+    // for intl fields, make sure we look in foo_intl and not foo
+    const fields = this.getFieldNames(args);
+    let data = pick(this.getDocument(), ...fields);
+
+    // compact deleted values
+    this.state.deletedValues.forEach(path => {
+      if (path.includes('.')) {
+        /*
+        
+        If deleted field is a nested field, nested array, or nested array item, try to compact its parent array
+        
+        - Nested field: 'address.city'
+        - Nested array: 'addresses.1'
+        - Nested array item: 'addresses.1.city'
+
+        */
+        compactParent(data, path);
       }
-
-      field.label = this.getLabel(fieldName);
-
-      // add value
-      if (document[fieldName]){
-
-        field.value = document[fieldName];
-
-        // convert value type if needed
-        if (fieldSchema.type.definitions[0].type === Number) field.value = Number(field.value);
-
-        // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
-        // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
-        if (Array.isArray(field.value)) {
-          field.value = field.value.map(item => item._id || item);
-        }
-
-      }
-
-      // backward compatibility from 'autoform' to 'form'
-      if (fieldSchema.autoform) {
-        fieldSchema.form = fieldSchema.autoform;
-        console.warn(`Vulcan Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
-      }
-
-      // replace value by prefilled value if value is empty
-      const prefill = fieldSchema.prefill || fieldSchema.form && fieldSchema.form.prefill;
-      if (prefill) {
-        const prefilledValue = typeof prefill === "function" ? prefill.call(fieldSchema) : prefill;
-        if (!!prefilledValue && !field.value) {
-          field.prefilledValue = prefilledValue;
-          field.value = prefilledValue;
-        }
-      }
-
-      // replace empty value, which has not been prefilled, by the default value from the schema
-      // keep defaultValue for backwards compatibility even though it doesn't actually work
-      if (fieldSchema.defaultValue && (typeof field.value === 'undefined' || field.value === '')) {
-        field.value = fieldSchema.defaultValue;
-      }
-      if (fieldSchema.default && (typeof field.value === 'undefined' || field.value === '')) {
-        field.value = fieldSchema.default;
-      }
-
-      // add options if they exist
-      const fieldOptions = fieldSchema.options || fieldSchema.form && fieldSchema.form.options;
-      if (fieldOptions) {
-        field.options = typeof fieldOptions === "function" ? fieldOptions.call(fieldSchema, this.props) : fieldOptions;
-      
-        // in case of checkbox groups, check "checked" option to populate value if this is a "new document" form
-        if (!field.value && this.getFormType() === 'new') {
-          field.value = _.where(field.options, {checked: true}).map(option => option.value);
-        }
-      }
-      
-      // add any properties specified in fieldProperties or form as extra props passed on
-      // to the form component
-      const fieldProperties = fieldSchema.fieldProperties || fieldSchema.form;
-      if (fieldProperties) {
-        for (const prop in fieldProperties) {
-          if (prop !== 'prefill' && prop !== 'options' && fieldProperties.hasOwnProperty(prop)) {
-            field[prop] = typeof fieldProperties[prop] === "function" ?
-            fieldProperties[prop].call(fieldSchema) :
-            fieldProperties[prop];
-          }
-        }
-      }
-
-      // add limit
-      if (fieldSchema.limit) {
-       field.limit = fieldSchema.limit;
-      }
-
-      // add placeholder
-      if (fieldSchema.placeholder) {
-       field.placeholder = fieldSchema.placeholder;
-      }
-
-      if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
-      if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
-
-      // add group
-      if (fieldSchema.group) {
-        field.group = fieldSchema.group;
-      }
-
-      // add document
-      field.document = this.getDocument();
-
-      // add error state
-      const validationError = _.findWhere(this.state.errors, {name: 'app.validation_error'});
-      if (validationError) {
-        const fieldErrors = _.filter(validationError.data.errors, error => error.data.fieldName === fieldName);
-        if (fieldErrors) {
-          field.errors = fieldErrors.map(error => ({...error, message: this.getErrorMessage(error)}));
-        }
-      }
-      return field;
-
     });
 
-    fields = _.sortBy(fields, "order");
+    // run data object through submitForm callbacks
+    data = runCallbacks(this.submitFormCallbacks, data);
+
+    return data;
+  };
+
+  /*
+
+  Get form components, in case any has been overwritten for this specific form
+
+  */
+  // --------------------------------------------------------------------- //
+  // -------------------------------- Fields ----------------------------- //
+  // --------------------------------------------------------------------- //
+
+  /*
+
+  Get all field groups
+
+  */
+  getFieldGroups = () => {
+    // build fields array by iterating over the list of field names
+    let fields = this.getFieldNames().map(fieldName => {
+      // get schema for the current field
+      return this.createField(fieldName, this.state.schema);
+    });
+
+    fields = _.sortBy(fields, 'order');
 
     // get list of all unique groups (based on their name) used in current fields
-    let groups = _.compact(_.unique(_.pluck(fields, "group"), false, g => g && g.name));
+    let groups = _.compact(uniqBy(_.pluck(fields, 'group'), g => g && g.name));
 
     // for each group, add relevant fields
     groups = groups.map(group => {
-      group.label = group.label || this.context.intl.formatMessage({id: group.name});
-      group.fields = _.filter(fields, field => {return field.group && field.group.name === group.name});
+      group.label =
+        group.label || this.context.intl.formatMessage({ id: group.name });
+      group.fields = _.filter(fields, field => {
+        return field.group && field.group.name === group.name;
+      });
       return group;
     });
 
     // add default group
-    groups = [{
-      name: "default",
-      label: "default",
-      order: 0,
-      fields: _.filter(fields, field => {return !field.group;})
-    }].concat(groups);
+    groups = [
+      {
+        name: 'default',
+        label: 'default',
+        order: 0,
+        fields: _.filter(fields, field => {
+          return !field.group;
+        })
+      }
+    ].concat(groups);
 
     // sort by order
-    groups = _.sortBy(groups, "order");
+    groups = _.sortBy(groups, 'order');
 
     // console.log(groups);
 
     return groups;
-  }
+  };
 
-  // if a document is being passed, this is an edit form
-  getFormType() {
-    return this.props.document ? "edit" : "new";
-  }
+  /*
 
-  // get relevant fields
-  getFieldNames() {
-    const { fields, hideFields } = this.props;
-    const schema = this.getSchema();
+  Get a list of the fields to be included in the current form
+
+  Note: when submitting the form (getData()), do not include any extra fields.
+
+  */
+  getFieldNames = (args = {}) => {
+    const {
+      schema = this.state.schema,
+      excludeHiddenFields = true,
+      replaceIntlFields = false,
+      addExtraFields = true
+    } = args;
+
+    const { fields, addFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? getEditableFields(schema, this.props.currentUser, this.getDocument()) : getInsertableFields(schema, this.props.currentUser);
+    let relevantFields = this.getMutableFields(schema);
 
     // if "fields" prop is specified, restrict list of fields to it
-    if (typeof fields !== "undefined" && fields.length > 0) {
+    if (typeof fields !== 'undefined' && fields.length > 0) {
       relevantFields = _.intersection(relevantFields, fields);
-    } else {
-      // else if fields is not specified, remove all hidden fields
-      relevantFields = _.reject(relevantFields, fieldName => schema[fieldName].hidden);
     }
 
-    // if "hideFields" prop is specified, remove its fields
-    if (typeof hideFields !== "undefined" && hideFields.length > 0) {
-      relevantFields = _.difference(relevantFields, hideFields);
+    // if "removeFields" prop is specified, remove its fields
+    const removeFields = this.props.hideFields || this.props.removeFields;
+    if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
+      relevantFields = _.difference(relevantFields, removeFields);
     }
+
+    // if "addFields" prop is specified, add its fields
+    if (
+      addExtraFields &&
+      typeof addFields !== 'undefined' &&
+      addFields.length > 0
+    ) {
+      relevantFields = relevantFields.concat(addFields);
+    }
+
+    // remove all hidden fields
+    if (excludeHiddenFields) {
+      const document = this.getDocument();
+      relevantFields = _.reject(relevantFields, fieldName => {
+        const hidden = schema[fieldName].hidden;
+        return typeof hidden === 'function'
+          ? hidden({ ...this.props, document })
+          : hidden;
+      });
+    }
+
+    // replace intl fields
+    if (replaceIntlFields) {
+      relevantFields = relevantFields.map(
+        fieldName =>
+          isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName
+      );
+    }
+
+    // remove any duplicates
+    relevantFields = uniq(relevantFields);
 
     return relevantFields;
-  }
+  };
 
-  // for each field, we apply the following logic:
-  // - if its value is currently being inputted, use that
-  // - else if its value is provided by the autofilledValues object, use that
-  // - else if its value was provided by the db, use that (i.e. props.document)
-  // - else if its value was provided by prefilledProps, use that
-  getDocument() {
-    const currentDocument = _.clone(this.props.document) || {};
-    const document = Object.assign(_.clone(this.props.prefilledProps || {}), currentDocument, _.clone(this.state.autofilledValues), _.clone(this.state.currentValues));
-    return document;
-  }
+  initField = (fieldName, fieldSchema) => {
+    // intialize properties
+    let field = {
+      ..._.pick(fieldSchema, formProperties),
+      document: this.state.initialDocument,
+      name: fieldName,
+      datatype: fieldSchema.type,
+      layout: this.props.layout,
+      input: fieldSchema.input || fieldSchema.control
+    };
+    field.label = this.getLabel(fieldName);
+    // // replace value by prefilled value if value is empty
+    // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
+    // if (prefill) {
+    //   const prefilledValue = typeof prefill === 'function' ? prefill.call(fieldSchema) : prefill;
+    //   if (!!prefilledValue && !field.value) {
+    //     field.prefilledValue = prefilledValue;
+    //     field.value = prefilledValue;
+    //   }
+    // }
 
-  // NOTE: this is not called anymore since we're updating on blur, not on change
-  // whenever the form changes, update its state
-  updateState(e) {
-    // e can sometimes be event, sometims be currentValue
-    // see https://github.com/christianalfoni/formsy-react/issues/203
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else {
-      // get rid of empty fields
-      _.forEach(e, (value, key) => {
-        if (_.isEmpty(value)) {
-          delete e[key];
-        }
+    // if options are a function, call it
+    if (typeof field.options === 'function') {
+      field.options = field.options.call(fieldSchema, this.props);
+    }
+
+    // if this an intl'd field, use a special intlInput
+    if (isIntlField(fieldSchema)) {
+      field.intlInput = true;
+    }
+
+    // add any properties specified in fieldSchema.form as extra props passed on
+    // to the form component, calling them if they are functions
+    const inputProperties =
+      fieldSchema.form || fieldSchema.inputProperties || {};
+    for (const prop in inputProperties) {
+      const property = inputProperties[prop];
+      field[prop] =
+        typeof property === 'function'
+          ? property.call(fieldSchema, this.props)
+          : property;
+    }
+
+    // add description as help prop
+    if (fieldSchema.description) {
+      field.help = fieldSchema.description;
+    }
+    return field;
+  };
+  handleFieldPath = (field, fieldName, parentPath) => {
+    const fieldPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
+    field.path = fieldPath;
+    if (field.defaultValue) {
+      set(this.defaultValues, fieldPath, field.defaultValue);
+    }
+    return field;
+  };
+  handleFieldParent = (field, parentFieldName) => {
+    // if field has a parent field, pass it on
+    if (parentFieldName) {
+      field.parentFieldName = parentFieldName;
+    }
+
+    return field;
+  };
+  handlePermissions = (field, fieldName, schema) => {
+    // if field is not creatable/updatable, disable it
+    if (!this.getMutableFields(schema).includes(fieldName)) {
+      field.disabled = true;
+    }
+    return field;
+  };
+  handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
+    // array field
+    if (fieldSchema.field) {
+      field.arrayFieldSchema = fieldSchema.field;
+      // create a field that can be exploited by the form
+      field.arrayField = this.createArraySubField(
+        fieldName,
+        field.arrayFieldSchema,
+        schema
+      );
+
+      //field.nestedInput = true
+    }
+    // nested fields: set input to "nested"
+    if (fieldSchema.schema) {
+      field.nestedSchema = fieldSchema.schema;
+      field.nestedInput = true;
+
+      // get nested schema
+      // for each nested field, get field object by calling createField recursively
+      field.nestedFields = this.getFieldNames({
+        schema: field.nestedSchema
+      }).map(subFieldName => {
+        return this.createField(
+          subFieldName,
+          field.nestedSchema,
+          fieldName,
+          field.path
+        );
       });
-      this.setState(prevState => ({
-        currentValues: e
-      }));
     }
-  }
+    return field;
+  };
 
-  // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
-  updateCurrentValues(newValues) {
-    // keep the previous ones and extend (with possible replacement) with new ones
-    this.setState(prevState => ({
-      currentValues: {
-        ...prevState.currentValues,
-        ...newValues,
+  /*
+  Given a field's name, the containing schema, and parent, create the
+  complete field object to be passed to the component
+  
+  */
+  createField = (fieldName, schema, parentFieldName, parentPath) => {
+    const fieldSchema = schema[fieldName];
+    let field = this.initField(fieldName, fieldSchema);
+    field = this.handleFieldPath(field, fieldName, parentPath);
+    field = this.handleFieldParent(field, parentFieldName);
+    field = this.handlePermissions(field, fieldName, schema);
+    field = this.handleFieldChildren(field, fieldName, fieldSchema, schema);
+    return field;
+  };
+  createArraySubField = (fieldName, subFieldSchema, schema) => {
+    const subFieldName = `${fieldName}.$`;
+    let subField = this.initField(subFieldName, subFieldSchema);
+    // array subfield has the same path and permissions as its parent
+    // so we use parent name (fieldName) and not subfieldName
+    subField = this.handleFieldPath(subField, fieldName);
+    subField = this.handlePermissions(subField, fieldName, schema);
+    // we do not allow nesting yet
+    //subField = this.handleFieldChildren(field, fieldSchema)
+    return subField;
+  };
+
+  /*
+  
+   Get a field's label
+  
+   */
+  getLabel = (fieldName, fieldLocale) => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    const defaultMessage = '|*|*|';
+    let id = `${collectionName}.${fieldName}`;
+    let intlLabel;
+    intlLabel = this.context.intl.formatMessage({ id, defaultMessage });
+    if (intlLabel === defaultMessage) {
+      id = `global.${fieldName}`;
+      intlLabel = this.context.intl.formatMessage({ id });
+      if (intlLabel === defaultMessage) {
+        id = fieldName;
+        intlLabel = this.context.intl.formatMessage({ id });
       }
-    }));
-  }
-
-  // key down handler
-  formKeyDown(event) {
-
-    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
     }
-  }
-
-  getLabel(fieldName) {
-    return this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName, defaultMessage: this.getSchema()[fieldName].label});
-  }
-
-  getErrorMessage(error) {
-    if (error.data.fieldName) {
-      // if error has a corresponding field name, "labelify" that field name
-      const fieldName = this.getLabel(error.data.fieldName);
-      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, {...error.data, fieldName});
+    const schemaLabel =
+      this.state.flatSchema[fieldName] &&
+      this.state.flatSchema[fieldName].label;
+    const label = intlLabel || schemaLabel || fieldName;
+    if (fieldLocale) {
+      const intlFieldLocale = this.context.intl.formatMessage({
+        id: `locales.${fieldLocale}`,
+        defaultMessage: fieldLocale
+      });
+      return `${label} (${intlFieldLocale})`;
     } else {
-      return this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data);
+      return label;
     }
-  }
+  };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // clear and re-enable the form
-  // by default, clear errors and keep current values
-  clearForm({ clearErrors = true, clearCurrentValues = false}) {
-    this.setState(prevState => ({
-      errors: clearErrors ? [] : prevState.errors,
-      currentValues: clearCurrentValues ? {} : prevState.currentValues,
-      disabled: false,
-    }));
-  }
-
-  // render errors
-  renderErrors() {
-
-    return (
-      <div className="form-errors">
-        {this.state.errors.map((error, index) => {
-
-          let message;
-
-          if (error.data && error.data.errors) { // this error is a "multi-error" with multiple sub-errors
-
-            message = error.data.errors.map(error => {
-              return {
-                content: this.getErrorMessage(error),
-                data: error.data,
-              }
-            });
-
-          } else { // this is a regular error
-
-            message = {content: error.message || this.context.intl.formatMessage({id: error.id, defaultMessage: error.id}, error.data)}
-
-          }
+  /*
   
-          return <Components.FormFlash key={index} message={message} type="error"/>;
-        })}
-      </div>
-    )
-  }
+  Add error to form state
+  
+  Errors can have the following properties:
+    - id: used as an internationalization key, for example `errors.required`
+    - path: for field-specific errors, the path of the field with the issue
+    - properties: additional data. Will be passed to vulcan-i18n as values
+    - message: if id cannot be used as i81n key, message will be used
+    
+  */
+  throwError = error => {
+    let formErrors = getErrors(error);
+
+    // eslint-disable-next-line no-console
+    console.log(formErrors);
+
+    // add error(s) to state
+    this.setState(prevState => ({
+      errors: [...prevState.errors, ...formErrors]
+    }));
+  };
+
+  /*
+  
+  Clear errors for a field
+  
+  */
+  clearFieldErrors = path => {
+    const errors = this.state.errors.filter(error => error.path !== path);
+    this.setState({ errors });
+  };
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  // add error to form state
-  // from "GraphQL Error: You have an error [error_code]"
-  // to { content: "You have an error", type: "error" }
-  throwError(error) {
-
-    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-    const graphQLError = error.graphQLErrors[0];
-    console.log(graphQLError)
-
-    // add error to state
-    this.setState(prevState => ({
-      errors: [...prevState.errors, graphQLError]
-    }));
-  }
-
-  // add something to autofilled values
-  addToAutofilledValues(property) {
-    this.setState(prevState => ({
-      autofilledValues: {
-        ...prevState.autofilledValues,
-        ...property
-      }
-    }));
-  }
-
-  // get autofilled values
-  getAutofilledValues() {
-    return this.state.autofilledValues;
-  }
-
   // add something to deleted values
-  addToDeletedValues(name) {
+  addToDeletedValues = name => {
     this.setState(prevState => ({
       deletedValues: [...prevState.deletedValues, name]
     }));
-  }
+  };
 
   // add a callback to the form submission
-  addToSubmitForm(callback) {
+  addToSubmitForm = callback => {
     this.submitFormCallbacks.push(callback);
-  }
+  };
 
   // add a callback to form submission success
-  addToSuccessForm(callback) {
+  addToSuccessForm = callback => {
     this.successFormCallbacks.push(callback);
-  }
+  };
 
   // add a callback to form submission failure
-  addToFailureForm(callback) {
+  addToFailureForm = callback => {
     this.failureFormCallbacks.push(callback);
-  }
+  };
 
-  setFormState(fn) {
+  setFormState = fn => {
     this.setState(fn);
-  }
+  };
 
-  submitFormContext(newValues) {
+  submitFormContext = newValues => {
     // keep the previous ones and extend (with possible replacement) with new ones
-    this.setState(prevState => ({
-      currentValues: {
-        ...prevState.currentValues,
-        ...newValues,
-      } // Submit form after setState update completed
-    }), () => this.submitForm(this.refs.form.getModel()));
-  }
+    this.setState(
+      prevState => ({
+        currentValues: {
+          ...prevState.currentValues,
+          ...newValues
+        } // Submit form after setState update completed
+      }),
+      () => this.submitForm(this.form.getModel())
+    );
+  };
 
   // pass on context to all child components
-  getChildContext() {
+  getChildContext = () => {
     return {
       throwError: this.throwError,
       clearForm: this.clearForm,
-      submitForm: this.submitFormContext, //Change in name because we already have a function called submitForm, but no reason for the user to know about that
-      getAutofilledValues: this.getAutofilledValues,
-      addToAutofilledValues: this.addToAutofilledValues,
+      refetchForm: this.refetchForm,
+      isChanged: this.isChanged,
+      submitForm: this.submitFormContext, //Change in name because we already have a function
+      // called submitForm, but no reason for the user to know
+      // about that
       addToDeletedValues: this.addToDeletedValues,
       updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
+      getLabel: this.getLabel,
+      initialDocument: this.state.initialDocument,
       setFormState: this.setFormState,
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
       addToFailureForm: this.addToFailureForm,
+      errors: this.state.errors,
+      currentValues: this.state.currentValues,
+      deletedValues: this.state.deletedValues
     };
+  };
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------ Lifecycle ---------------------------- //
+  // --------------------------------------------------------------------- //
+
+  /*
+  
+  When props change, reinitialize state
+  
+  // TODO: only need to check nextProps.prefilledProps?
+  // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+   
+  */
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props, nextProps)) {
+      this.setState(getInitialStateFromProps(nextProps));
+    }
   }
 
-  // --------------------------------------------------------------------- //
-  // ------------------------------- Method ------------------------------ //
-  // --------------------------------------------------------------------- //
+  /*
+   
+  Manually update the current values of one or more fields(i.e. on change or blur).
+   
+  */
+  updateCurrentValues = (newValues, options = {}) => {
+    // default to overwriting old value with new
+    const { mode = 'overwrite' } = options;
+    const { changeCallback } = this.props;
 
-  newMutationSuccessCallback(result) {
+    // keep the previous ones and extend (with possible replacement) with new ones
+    this.setState(prevState => {
+      // keep only the relevant properties
+      const { currentValues, currentDocument, deletedValues } = cloneDeep(
+        prevState
+      );
+      const newState = {
+        currentValues,
+        currentDocument,
+        deletedValues,
+        foo: {}
+      };
+
+      Object.keys(newValues).forEach(key => {
+        const path = key;
+        const value = newValues[key];
+        if (isEmptyValue(value)) {
+          // delete value
+          unset(newState.currentValues, path);
+          set(newState.currentDocument, path, null);
+          newState.deletedValues = [...prevState.deletedValues, path];
+        } else {
+          // 1. update currentValues
+          set(newState.currentValues, path, value);
+
+          // 2. update currentDocument
+          // For arrays and objects, give option to merge instead of overwrite
+          if (mode === 'merge' && (Array.isArray(value) || isObject(value))) {
+            const oldValue = get(newState.currentDocument, path);
+            set(newState.currentDocument, path, merge(oldValue, value));
+          } else {
+            set(newState.currentDocument, path, value);
+          }
+
+          // 3. in case value had previously been deleted, "undelete" it
+          newState.deletedValues = _.without(prevState.deletedValues, path);
+        }
+      });
+      if (changeCallback) changeCallback(newState.currentDocument);
+      return newState;
+    });
+  };
+
+  /*
+   
+  Warn the user if there are unsaved changes
+   
+  */
+  handleRouteLeave = () => {
+    if (this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?'
+      });
+      return message;
+    }
+  };
+
+  //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+  //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
+  handlePageLeave = event => {
+    if (this.isChanged()) {
+      const message = this.context.intl.formatMessage({
+        id: 'forms.confirm_discard',
+        defaultMessage: 'Are you sure you want to discard your changes?'
+      });
+      if (event) {
+        event.returnValue = message;
+      }
+
+      return message;
+    }
+  };
+
+  /*
+   
+  Install a route leave hook to warn the user if there are unsaved changes
+   
+  */
+  componentDidMount = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      const routes = this.props.router.routes;
+      const currentRoute = routes[routes.length - 1];
+      this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+
+      //check for closing the browser with unsaved changes
+      window.onbeforeunload = this.handlePageLeave;
+    }
+  };
+
+  /*
+  Remove the closing browser check on component unmount
+  see https://gist.github.com/mknabe/bfcb6db12ef52323954a28655801792d
+  */
+  componentWillUnmount = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    if (warnUnsavedChanges) {
+      window.onbeforeunload = undefined; //undefined instead of null to support IE
+    }
+  };
+
+  /*
+   
+  Returns true if there are any differences between the initial document and the current one
+   
+  */
+  isChanged = () => {
+    const initialDocument = this.state.initialDocument;
+    const changedDocument = this.getDocument();
+
+    const changedValue = find(changedDocument, (value, key, collection) => {
+      return !isEqualWith(value, initialDocument[key], (objValue, othValue) => {
+        if (!objValue && !othValue) return true;
+      });
+    });
+
+    return typeof changedValue !== 'undefined';
+  };
+
+  /*
+   
+  Refetch the document from the database (in case it was updated by another process or to reset the form)
+   
+  */
+  refetchForm = () => {
+    if (this.props.data && this.props.data.refetch) {
+      this.props.data.refetch();
+    }
+  };
+
+  /**
+   * Clears form errors and values.
+   *
+   * @example Clear form
+   *  // form will be fully emptied, with exception of prefilled values
+   *  clearForm({ document: {} });
+   *
+   * @example Reset/revert form
+   *  // form will be reverted to its initial state
+   *  clearForm();
+   *
+   * @example Clear with new values
+   *  // form will be cleared but initialized with the new document
+   *  const document = {
+   *    // ... some values
+   *  };
+   *  clearForm({ document });
+   *
+   * @param {Object=} options
+   * @param {Object=} options.document
+   *  Document to use as new initial document when values are cleared instead of
+   *  the existing one. Note that prefilled props will be merged
+   */
+  clearForm = ({ document } = {}) => {
+    document = document ? merge({}, this.props.prefilledProps, document) : null;
+    this.setState(prevState => ({
+      errors: [],
+      currentValues: {},
+      deletedValues: [],
+      currentDocument: document || prevState.initialDocument,
+      initialDocument: document || prevState.initialDocument,
+      disabled: false
+    }));
+  };
+
+  /*
+  
+  Key down handler
+  
+  */
+  formKeyDown = event => {
+    if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+      this.submitForm(this.form.getModel());
+    }
+  };
+
+  newMutationSuccessCallback = result => {
     this.mutationSuccessCallback(result, 'new');
-  }
+  };
 
-  editMutationSuccessCallback(result) {
+  editMutationSuccessCallback = result => {
     this.mutationSuccessCallback(result, 'edit');
-  }
+  };
 
-  mutationSuccessCallback(result, mutationType) {
-
-    const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
+  mutationSuccessCallback = (result, mutationType) => {
+    this.setState(prevState => ({ disabled: false }));
+    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted (we are in an async callback, everything can happen!)
-    if (typeof this.refs.form !== 'undefined') {
-      let clearCurrentValues = false;
-      // reset form if this is a new document form
-      if (this.props.formType === "new") {
-        this.refs.form.reset();
-        clearCurrentValues = true;
-      }
-      this.clearForm({clearErrors: true, clearCurrentValues});
+    // call the clear form method (i.e. trigger setState) only if the form has not been unmounted
+    // (we are in an async callback, everything can happen!)
+    if (this.form) {
+      this.form.reset(this.getDocument());
+      this.clearForm({
+        document: mutationType === 'edit' ? document : undefined
+      });
     }
 
     // run document through mutation success callbacks
@@ -507,16 +870,16 @@ class Form extends Component {
 
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
-
-  }
+  };
 
   // catch graphql errors
-  mutationErrorCallback(error) {
+  mutationErrorCallback = (document, error) => {
+    this.setState(prevState => ({ disabled: false }));
 
-    this.setState(prevState => ({disabled: false}));
-
-    console.log("// graphQL Error"); // eslint-disable-line no-console
-    console.log(error); // eslint-disable-line no-console
+    // eslint-disable-next-line no-console
+    console.log('// graphQL Error');
+    // eslint-disable-next-line no-console
+    console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
     runCallbacks(this.failureFormCallbacks, error);
@@ -526,13 +889,20 @@ class Form extends Component {
       this.throwError(error);
     }
 
-    // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists
-    // if (this.props.errorCallback) this.props.errorCallback(document, error);
-  }
+    if (this.props.errorCallback) this.props.errorCallback(document, error);
 
-  // submit form handler
-  submitForm(data) {
+    // scroll back up to show error messages
+    Utils.scrollIntoView('.flash-message');
+  };
+
+  /*
+  
+  Submit form handler
+  
+  */
+  submitForm = data => {
+    // note: we can discard the data collected by Formsy because all the data we need is already available via getDocument()
 
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
@@ -540,125 +910,135 @@ class Form extends Component {
     }
 
     // clear errors and disable form while it's submitting
-    this.setState(prevState => ({errors: [], disabled: true}));
+    this.setState(prevState => ({ errors: [], disabled: true }));
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as SmartForm's getDocument method
-    data = {
-      ...this.props.prefilledProps, // ex: can be values passed from the form's parent component
-      ...this.state.autofilledValues, // ex: can be values from NewsletterSubscribe component
-      ...data, // original data generated thanks to Formsy
-      ...this.state.currentValues, // ex: can be values from DateTime component
-    };
-
-    // run data object through submitForm callbacks
-    data = runCallbacks(this.submitFormCallbacks, data);
-
-    const fields = this.getFieldNames();
+    data = this.getData({ replaceIntlFields: true, addExtraFields: false });
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
-      data = this.props.submitCallback(data);
+      data = this.props.submitCallback(data) || data;
     }
 
-    if (this.props.formType === "new") { // new document form
-
-      // remove any empty properties
-      let document = _.compactObject(data);
-      // call method with new document
-      this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
-
-    } else { // edit document form
-
-      const document = this.getDocument();
-
-      // put all keys with data on $set
-      const set = _.compactObject(data);
-
-      // put all keys without data on $unset
-      const setKeys = _.keys(set);
-      let unsetKeys = _.difference(fields, setKeys);
-
-      // add all keys to delete (minus those that have data associated)
-      unsetKeys = _.unique(unsetKeys.concat(_.difference(this.state.deletedValues, setKeys)));
-
-      // build mutation arguments object
-      const args = {documentId: document._id, set: set, unset: {}};
-      if (unsetKeys.length > 0) {
-        args.unset = _.object(unsetKeys, unsetKeys.map(() => true));
-      }
-      // call method with _id of document being edited and modifier
-      this.props.editMutation(args).then(this.editMutationSuccessCallback).catch(this.mutationErrorCallback);
+    if (this.getFormType() === 'new') {
+      // create document form
+      this.props[`create${this.props.typeName}`]({ data })
+        .then(this.newMutationSuccessCallback)
+        .catch(error => this.mutationErrorCallback(document, error));
+    } else {
+      // update document form
+      const documentId = this.getDocument()._id;
+      this.props[`update${this.props.typeName}`]({
+        selector: { documentId },
+        data
+      })
+        .then(this.editMutationSuccessCallback)
+        .catch(error => this.mutationErrorCallback(document, error));
     }
+  };
 
-  }
-
-  deleteDocument() {
+  /*
+  
+  Delete document handler
+  
+  */
+  deleteDocument = () => {
     const document = this.getDocument();
     const documentId = this.props.document._id;
     const documentTitle = document.title || document.name || '';
 
-    const deleteDocumentConfirm = this.context.intl.formatMessage({id: 'forms.delete_confirm'}, {title: documentTitle});
+    const deleteDocumentConfirm = this.context.intl.formatMessage(
+      { id: 'forms.delete_confirm' },
+      { title: documentTitle }
+    );
 
     if (window.confirm(deleteDocumentConfirm)) {
-      this.props.removeMutation({documentId})
-        .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
-          if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
+      this.props
+        .removeMutation({ documentId })
+        .then(mutationResult => {
+          // the mutation result looks like {data:{collectionRemove: null}} if succeeded
+          if (this.props.removeSuccessCallback)
+            this.props.removeSuccessCallback({ documentId, documentTitle });
           if (this.props.refetch) this.props.refetch();
         })
-        .catch((error) => {
+        .catch(error => {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
     }
-  }
+  };
 
   // --------------------------------------------------------------------- //
-  // ------------------------- Lifecycle Hooks --------------------------- //
+  // ----------------------------- Render -------------------------------- //
   // --------------------------------------------------------------------- //
 
   render() {
-
     const fieldGroups = this.getFieldGroups();
-    const collectionName = this.props.collection._name;
+    const collectionName = this.props.collectionName;
+    const FormComponents = mergeWithComponents(this.props.formComponents);
 
     return (
-      <div className={"document-"+this.props.formType}>
+      <div className={'document-' + this.getFormType()}>
         <Formsy.Form
           onSubmit={this.submitForm}
           onKeyDown={this.formKeyDown}
-          disabled={this.state.disabled}
-          ref="form"
+          ref={e => {
+            this.form = e;
+          }}
         >
+          <FormComponents.FormErrors errors={this.state.errors} />
 
-          {this.renderErrors()}
-        
-          {fieldGroups.map(group => <Components.FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
-    
+          {fieldGroups.map(group => (
+            <FormComponents.FormGroup
+              key={group.name}
+              {...group}
+              errors={this.state.errors}
+              throwError={this.throwError}
+              currentValues={this.state.currentValues}
+              updateCurrentValues={this.updateCurrentValues}
+              deletedValues={this.state.deletedValues}
+              addToDeletedValues={this.addToDeletedValues}
+              clearFieldErrors={this.clearFieldErrors}
+              formType={this.getFormType()}
+              currentUser={this.props.currentUser}
+              disabled={this.state.disabled}
+              formComponents={FormComponents}
+            />
+          ))}
+
           {this.props.repeatErrors && this.renderErrors()}
 
-          <Components.FormSubmit submitLabel={this.props.submitLabel}
-                                 cancelLabel={this.props.cancelLabel}
-                                 cancelCallback={this.props.cancelCallback}
-                                 document={this.getDocument()}
-                                 deleteDocument={(this.props.formType === 'edit'
-                                   && this.props.showRemove
-                                   && this.deleteDocument)
-                                 || null}
-                                 collectionName={collectionName}
+          <FormComponents.FormSubmit
+            submitLabel={this.props.submitLabel}
+            cancelLabel={this.props.cancelLabel}
+            revertLabel={this.props.revertLabel}
+            cancelCallback={this.props.cancelCallback}
+            revertCallback={this.props.revertCallback}
+            document={this.getDocument()}
+            deleteDocument={
+              (this.getFormType() === 'edit' &&
+                this.props.showRemove &&
+                this.deleteDocument) ||
+              null
+            }
+            collectionName={collectionName}
+            currentValues={this.state.currentValues}
+            deletedValues={this.state.deletedValues}
+            errors={this.state.errors}
           />
-
         </Formsy.Form>
       </div>
-    )
+    );
   }
-
-
 }
 
-Form.propTypes = {
-
+SmartForm.propTypes = {
   // main options
-  collection: PropTypes.object,
+  collection: PropTypes.object.isRequired,
+  collectionName: PropTypes.string.isRequired,
+  typeName: PropTypes.string.isRequired,
+
   document: PropTypes.object, // if a document is passed, this will be an edit form
   schema: PropTypes.object, // usually not needed
 
@@ -671,36 +1051,38 @@ Form.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
-  hideFields: PropTypes.arrayOf(PropTypes.string),
+  addFields: PropTypes.arrayOf(PropTypes.string),
+  removeFields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
-  submitLabel: PropTypes.string,
-  cancelLabel: PropTypes.string,
+  submitLabel: PropTypes.node,
+  cancelLabel: PropTypes.node,
+  revertLabel: PropTypes.node,
   repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
+  formComponents: PropTypes.object,
 
   // callbacks
-  submitCallback: PropTypes.func,
-  successCallback: PropTypes.func,
-  removeSuccessCallback: PropTypes.func,
-  errorCallback: PropTypes.func,
-  cancelCallback: PropTypes.func,
+  ...callbackProps,
 
   currentUser: PropTypes.object,
-  client: PropTypes.object,
-}
+  client: PropTypes.object
+};
 
-Form.defaultProps = {
+SmartForm.defaultProps = {
   layout: 'horizontal',
+  prefilledProps: {},
   repeatErrors: false,
-}
+  showRemove: true
+};
 
-Form.contextTypes = {
+SmartForm.contextTypes = {
   intl: intlShape
-}
+};
 
-Form.childContextTypes = {
-  getAutofilledValues: PropTypes.func,
-  addToAutofilledValues: PropTypes.func,
+SmartForm.childContextTypes = {
   addToDeletedValues: PropTypes.func,
+  deletedValues: PropTypes.array,
   addToSubmitForm: PropTypes.func,
   addToFailureForm: PropTypes.func,
   addToSuccessForm: PropTypes.func,
@@ -708,8 +1090,20 @@ Form.childContextTypes = {
   setFormState: PropTypes.func,
   throwError: PropTypes.func,
   clearForm: PropTypes.func,
+  refetchForm: PropTypes.func,
+  isChanged: PropTypes.func,
+  initialDocument: PropTypes.object,
   getDocument: PropTypes.func,
+  getLabel: PropTypes.func,
   submitForm: PropTypes.func,
-}
+  errors: PropTypes.array,
+  currentValues: PropTypes.object
+};
 
-module.exports = Form
+module.exports = SmartForm;
+
+registerComponent({
+  name: 'Form',
+  component: SmartForm,
+  hocs: [withCollectionProps]
+});

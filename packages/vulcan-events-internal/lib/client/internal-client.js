@@ -1,20 +1,17 @@
 import { addTrackFunction } from 'meteor/vulcan:events';
-import { ApolloClient } from 'apollo-client';
-import { getRenderContext } from 'meteor/vulcan:lib';
+import { getRenderContext, getFragment, createClientTemplate } from 'meteor/vulcan:lib';
 import gql from 'graphql-tag';
 
 function trackInternal(eventName, eventProperties) {
-  const { apolloClient, store } = getRenderContext();
-  const mutation = gql`
-    mutation AnalyticsEventsNew($document: AnalyticsEventsInput) {
-      AnalyticsEventsNew(document: $document) {
-        name
-        createdAt
-      }
-    }
-  `;
+  const { apolloClient } = getRenderContext();
+
+  const fragmentName = 'AnalyticsEventFragment';
+  const fragment = getFragment(fragmentName);
+
+  const mutation = gql`${createClientTemplate({ typeName: 'AnalyticsEvent', fragmentName })}${fragment}`;
+
   const variables = {
-    document: {
+    data: {
       name: eventName,
       properties: eventProperties,
     },

@@ -1,20 +1,52 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const EditButton = ({ collection, document, bsStyle = 'primary' }, {intl}) =>
-  <Components.ModalTrigger 
-    label={intl.formatMessage({id: 'datatable.edit'})} 
-    component={<Button bsStyle={bsStyle}><FormattedMessage id="datatable.edit" /></Button>}
+const EditButton = ({ style = 'primary', size, showId, modalProps, ...props }, { intl }) => (
+  <Components.ModalTrigger
+    label={intl.formatMessage({ id: 'datatable.edit' })}
+    component={
+      <Components.Button size={size} variant={style}>
+        <FormattedMessage id="datatable.edit" />
+      </Components.Button>
+    }
+    modalProps={modalProps}
   >
-    <Components.DatatableEditForm collection={collection} document={document} />
+    <Components.EditForm {...props} />
   </Components.ModalTrigger>
+);
 
 EditButton.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
 };
 
 EditButton.displayName = 'EditButton';
 
 registerComponent('EditButton', EditButton);
+
+/*
+
+EditForm Component
+
+*/
+const EditForm = ({ closeModal, successCallback, removeSuccessCallback, ...props }) => {
+
+  const success = successCallback
+    ? () => {
+        successCallback();
+        closeModal();
+      }
+    : closeModal;
+
+  const remove = removeSuccessCallback
+    ? () => {
+        removeSuccessCallback();
+        closeModal();
+      }
+    : closeModal;
+
+  return (
+    <Components.SmartForm successCallback={success} removeSuccessCallback={remove} {...props} />
+  );
+};
+registerComponent('EditForm', EditForm);

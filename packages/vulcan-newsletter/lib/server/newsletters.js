@@ -2,7 +2,7 @@ import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import Newsletters from '../modules/collection.js';
-import { Utils, getSetting, registerSetting, runCallbacksAsync } from 'meteor/vulcan:core';
+import { Utils, getSetting, registerSetting, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
 
 registerSetting('newsletter.provider', 'mailchimp', 'Newsletter provider');
 registerSetting('defaultEmail', null, 'Email newsletter confirmations will be sent to');
@@ -36,16 +36,18 @@ send
  * @param {Object} user
  * @param {Boolean} confirm
  */
-Newsletters.subscribeUser = (user, confirm = false) => {
+Newsletters.subscribeUser = async (user, confirm = false) => {
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
   }
 
-  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
+  // eslint-disable-next-line no-console
   if (result) {console.log ('-> added')}
-  Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: true}});
 }
 
 /**
@@ -53,8 +55,10 @@ Newsletters.subscribeUser = (user, confirm = false) => {
  * @param {String} email
  */
 Newsletters.subscribeEmail = (email, confirm = false) => {
-  console.log(`// Adding ${email} to ${provider} list…`); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
+  // eslint-disable-next-line no-console
   if (result) {console.log ('-> added')}
 }
 
@@ -63,15 +67,16 @@ Newsletters.subscribeEmail = (email, confirm = false) => {
  * @summary Unsubscribe a user from the newsletter
  * @param {Object} user
  */
-Newsletters.unsubscribeUser = (user) => {
+Newsletters.unsubscribeUser = async (user) => {
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
   }
-  
-  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+
+  // eslint-disable-next-line no-console
+  console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
-  Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: false}}); 
 }
 
 /**
@@ -79,7 +84,8 @@ Newsletters.unsubscribeUser = (user) => {
  * @param {String} email
  */
 Newsletters.unsubscribeEmail = (email) => {
-  console.log('// Removing "'+email+'" from list…'); // eslint-disable-line
+  // eslint-disable-next-line no-console
+  console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
 }
 
@@ -238,8 +244,10 @@ Newsletters.send = async (isTest = false) => {
 
   if(newsletterEmail.isValid(data)){
 
+    // eslint-disable-next-line no-console
     console.log('// Sending newsletter…');
-    console.log('// Subject: '+subject)
+    // eslint-disable-next-line no-console
+    console.log('// Subject: '+subject);
 
     const newsletter = Newsletters[provider].send({ subject, text, html, isTest });
 
@@ -251,7 +259,7 @@ Newsletters.send = async (isTest = false) => {
       const createdAt = new Date();
 
       // log newsletter
-      Newsletters.insert({
+      await Connectors.create(Newsletters, {
         createdAt,
         subject,
         html,
@@ -270,8 +278,16 @@ Newsletters.send = async (isTest = false) => {
     }
 
   } else {
-    
+
+    // eslint-disable-next-line no-console
     console.log('No newsletter to schedule today…');
   
   }
 }
+
+Meteor.startup(() => {
+  if(!Newsletters[provider]) {
+    // eslint-disable-next-line no-console
+    console.log(`// Warning: please configure your settings for ${provider} support, or else disable the vulcan:newsletter package.`);
+  }
+});

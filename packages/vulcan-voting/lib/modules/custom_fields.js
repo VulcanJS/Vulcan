@@ -1,3 +1,4 @@
+import { Connectors } from 'meteor/vulcan:core'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import Users from 'meteor/vulcan:users';
 import Votes from './votes/collection.js';
 
@@ -10,7 +11,7 @@ Users.addField([
     fieldSchema: {
       type: Array,
       optional: true,
-      viewableBy: Users.owns,
+      canRead: Users.owns,
       resolveAs: {
         type: '[Vote]',
         arguments: 'collectionName: String',
@@ -19,7 +20,7 @@ Users.addField([
           if (args.collectionName) {
             selector.collectionName = args.collectionName;
           }
-          const votes = Votes.find(selector).fetch();
+          const votes = await Connectors.find(Votes, selector);
           return votes;
         }
       },

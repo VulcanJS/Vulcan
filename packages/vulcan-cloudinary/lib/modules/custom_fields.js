@@ -10,7 +10,7 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: String,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
       }
     },
     {
@@ -18,7 +18,7 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
       }
     },
     {
@@ -36,7 +36,7 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: String,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: 'String',
           arguments: 'format: String',

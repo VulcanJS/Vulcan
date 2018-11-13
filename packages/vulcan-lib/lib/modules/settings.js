@@ -1,6 +1,11 @@
 import Vulcan from './config.js';
-import { Utils } from './utils.js';
 import flatten from 'flat';
+
+const getNestedProperty = function (obj, desc) {
+  var arr = desc.split('.');
+  while(arr.length && (obj = obj[arr.shift()]));
+  return obj;
+};
 
 export const Settings = {};
 
@@ -37,7 +42,7 @@ export const getAllSettings = () => {
     }
     
     if (typeof publicSettings[key] !== 'undefined'){
-      settingsObject[key].public = true;
+      settingsObject[key].isPublic = true;
     }
 
     if (registeredSettings[key]) {
@@ -55,8 +60,8 @@ Vulcan.showSettings = () => {
   return getAllSettings();
 }
 
-export const registerSetting = (settingName, defaultValue, description) => {
-  Settings[settingName] = { defaultValue, description };
+export const registerSetting = (settingName, defaultValue, description, isPublic) => {
+  Settings[settingName] = { defaultValue, description, isPublic };
 }
 
 export const getSetting = (settingName, settingDefault) => {
@@ -68,9 +73,9 @@ export const getSetting = (settingName, settingDefault) => {
 
   if (Meteor.isServer) {
     // look in public, private, and root
-    const rootSetting = Utils.getNestedProperty(Meteor.settings, settingName);
-    const privateSetting = Meteor.settings.private && Utils.getNestedProperty(Meteor.settings.private, settingName);
-    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
+    const rootSetting = getNestedProperty(Meteor.settings, settingName);
+    const privateSetting = Meteor.settings.private && getNestedProperty(Meteor.settings.private, settingName);
+    const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
     
     // if setting is an object, "collect" properties from all three places
     if (typeof rootSetting === 'object' || typeof privateSetting === 'object' || typeof publicSetting === 'object') {
@@ -94,8 +99,8 @@ export const getSetting = (settingName, settingDefault) => {
 
   } else {
     // look only in public
-    const publicSetting = Meteor.settings.public && Utils.getNestedProperty(Meteor.settings.public, settingName);
-    setting = publicSetting || defaultValue;
+    const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
+    setting = typeof publicSetting !== 'undefined' ? publicSetting : defaultValue;
   }
 
   // Settings[settingName] = {...Settings[settingName], settingValue: setting};
@@ -104,26 +109,4 @@ export const getSetting = (settingName, settingDefault) => {
 
 }
 
-// Settings collection is deprecated
-// getSetting = function (setting, defaultValue) {
-
-//   const collection = Telescope.settings.collection;
-
-//   if (typeof getSettingFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
-
-//     return getSettingFromJSON(setting);
-
-//   } else if (collection && collection.findOne() && typeof collection.findOne()[setting] !== "undefined") { // look in collection
-
-//     return Telescope.settings.collection.findOne()[setting];
-
-//   } else if (typeof defaultValue !== 'undefined') { // fallback to default
-
-//     return  defaultValue;
-
-//   } else { // or return undefined
-
-//     return undefined;
-
-//   }
-// };
+registerSetting('debug', false, 'Enable debug mode (more verbose logging)');

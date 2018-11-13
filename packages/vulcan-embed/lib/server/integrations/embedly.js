@@ -1,4 +1,5 @@
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { HTTP } from 'meteor/http';
 import { Embed } from '../../modules/embed.js';
 
 registerSetting('embedly', null, 'Embedly settings');
@@ -14,6 +15,7 @@ if (settings) {
 
   if(!apiKey) {
     // fail silently to still let the post be submitted as usual
+    // eslint-disable-next-line no-console
     console.log("Couldn't find an Embedly API key! Please add it to your Vulcan settings."); // eslint-disable-line
     return null;
   }
@@ -24,7 +26,7 @@ if (settings) {
 
       try {
 
-        const data = Meteor.http.get(extractBase, {
+        const data = HTTP.get(extractBase, {
           params: {
             key: apiKey,
             url: url,
@@ -36,7 +38,7 @@ if (settings) {
 
 
         if (data.images && data.images.length > 0) // there may not always be an image
-          data.thumbnailUrl = data.images[0].url.replace("http:","") // add thumbnailUrl as its own property
+          data.thumbnailUrl = data.images[0].url.replace('http:','') // add thumbnailUrl as its own property
 
         if (data.authors && data.authors.length > 0) {
           data.sourceName = data.authors[0].name;
@@ -48,8 +50,10 @@ if (settings) {
         return embedlyData;
 
       } catch (error) {
-        console.log('// Embedly error')
-        console.log(error); // eslint-disable-line
+        // eslint-disable-next-line no-console
+        console.log('// Embedly error');
+        // eslint-disable-next-line no-console
+        console.log(error);
         // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
         const errorObject = JSON.parse(error.message.substring(13));
         throw new Error(errorObject.error_message);
