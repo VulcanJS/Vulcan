@@ -14,6 +14,23 @@ import merge from 'lodash/merge';
 import { singleClientTemplate } from '../modules/graphql_templates';
 import { Utils } from './utils';
 
+function writeGraphQLErrorToStderr(errors)
+{
+  // eslint-disable-next-line no-console
+  console.error(`runGraphQL error: ${errors[0].message}`);
+  // eslint-disable-next-line no-console
+  console.error(errors);
+}
+
+let onGraphQLError = writeGraphQLErrorToStderr;
+export function setOnGraphQLError(fn)
+{
+  if (fn)
+    onGraphQLError = fn;
+  else
+    onGraphQLError = writeGraphQLErrorToStderr;
+}
+
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context ) => {
 
@@ -31,10 +48,7 @@ export const runGraphQL = async (query, variables = {}, context ) => {
   const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
-    // eslint-disable-next-line no-console
-    console.error(`runGraphQL error: ${result.errors[0].message}`);
-    // eslint-disable-next-line no-console
-    console.error(result.errors);
+      onGraphQLError(result.errors);
     throw new Error(result.errors[0].message);
   }
 
