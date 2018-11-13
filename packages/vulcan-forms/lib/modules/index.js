@@ -6,3 +6,4 @@ import './components.js';
 
 export * from './utils';
 export { default as FormWrapper } from '../components/FormWrapper.jsx';
+export { default as mergeWithComponents } from './mergeWithComponents';
