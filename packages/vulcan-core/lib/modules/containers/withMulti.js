@@ -38,13 +38,11 @@ import React, { Component } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, Utils, multiClientTemplate } from 'meteor/vulcan:lib';
+import { getSetting, Utils, multiClientTemplate, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import find from 'lodash/find';
-
-import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 export default function withMulti(options) {
   // console.log(options)
@@ -172,8 +170,8 @@ export default function withMulti(options) {
                 typeof providedTerms === 'undefined'
                   ? {
                       /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms,
-                    limit: results.length + props.ownProps.paginationTerms.itemsPerPage
-                  }
+                      limit: results.length + props.ownProps.paginationTerms.itemsPerPage
+                    }
                   : providedTerms;
 
               props.ownProps.setPaginationTerms(newTerms);

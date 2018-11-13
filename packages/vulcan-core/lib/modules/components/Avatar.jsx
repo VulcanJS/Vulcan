@@ -33,7 +33,7 @@ const Avatar = ({className, user, link, fallback}) => {
 }
 
 Avatar.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   size: PropTypes.string,
   link: PropTypes.bool
 }

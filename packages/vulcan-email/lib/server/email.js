@@ -3,7 +3,27 @@ import VulcanEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
-import { Utils, getSetting, registerSetting, runQuery, Strings } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Utils, getSetting, registerSetting, runQuery, Strings, getString } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+
+/*
+
+Get intl string. Usage: {{__ "posts.create"}}
+
+*/
+Handlebars.registerHelper('__', function(id, context) {
+  const s = getString({ id, locale: context.data.root.locale });
+  return new Handlebars.SafeString(s);
+});
+
+/*
+
+Get intl string, accepts a second variables argument. Usage: {{__ "posts.create" postVariables}}
+
+*/
+Handlebars.registerHelper('___', function(id, variables, context) {
+  const s = getString({ id, variables, locale: context.data.root.locale });
+  return new Handlebars.SafeString(s);
+});
 
 registerSetting('secondaryColor', '#444444');
 registerSetting('accentColor', '#DD3416');
@@ -23,8 +43,12 @@ VulcanEmail.addTemplates = templates => {
   _.extend(VulcanEmail.templates, templates);
 };
 
-VulcanEmail.getTemplate = templateName =>
-  Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
+VulcanEmail.getTemplate = templateName => {
+  if (!VulcanEmail.templates[templateName]) {
+    throw new Error(`Couldn't find email template named  “${templateName}”`);
+  }
+  return Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
+}
 
 VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
   const emailProperties = {
@@ -58,18 +82,18 @@ VulcanEmail.generateTextVersion = html => {
   });
 };
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   if (typeof to === 'object') {
     // eslint-disable-next-line no-redeclare
-    var { to, cc, bcc, replyTo, subject, html, text, throwErrors } = to;
+    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers } = to;
   }
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
-  subject = '[' + siteName + '] ' + subject;
+  subject = subject || '[' + siteName + ']';
 
   if (typeof text === 'undefined') {
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
@@ -83,19 +107,22 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
     bcc: bcc,
     replyTo: replyTo,
     subject: subject,
+    headers: headers,
     text: text,
     html: html,
   };
 
-  if (process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false)) {
-    console.log('//////// sending email…'); // eslint-disable-line
-    console.log('from: ' + from); // eslint-disable-line
-    console.log('cc: ' + cc); // eslint-disable-line
-    console.log('bcc: ' + bcc); // eslint-disable-line
-    console.log('replyTo: ' + replyTo); // eslint-disable-line
-    // console.log('html: '+html);
-    // console.log('text: '+text);
+  const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false)
 
+  console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
+  console.log('from: ' + from); // eslint-disable-line
+  console.log('to: ' + to); // eslint-disable-line
+  console.log('cc: ' + cc); // eslint-disable-line
+  console.log('bcc: ' + bcc); // eslint-disable-line
+  console.log('replyTo: ' + replyTo); // eslint-disable-line
+  console.log('headers: ' + JSON.stringify(headers)); // eslint-disable-line
+
+  if (shouldSendEmail) {
     try {
       Email.send(email);
     } catch (error) {
@@ -103,13 +130,6 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo) => {
       console.log(error); // eslint-disable-line
       if (throwErrors) throw error;
     }
-  } else {
-    console.log('//////// sending email (simulation)…'); // eslint-disable-line
-    console.log('from: ' + from); // eslint-disable-line
-    console.log('to: ' + to); // eslint-disable-line
-    console.log('cc: ' + cc); // eslint-disable-line
-    console.log('bcc: ' + bcc); // eslint-disable-line
-    console.log('replyTo: ' + replyTo); // eslint-disable-line
   }
 
   return email;
@@ -121,20 +141,21 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
 
   // if email has a data() function, merge its return value with results from the query
-  const data = email.data ? { ...result.data, ...email.data(variables) } : result.data;
+  const data = email.data ? { ...result.data, ...email.data({ data: result.data, variables, locale }) } : result.data;
 
-  const subject = typeof email.subject === 'function' ? email.subject(data) : email.subject;
+  const subject = typeof email.subject === 'function' ? email.subject({ data, variables, locale }) : email.subject;
 
   data.__ = Strings[locale];
+  data.locale = locale;
 
   const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data, locale);
 
   return { data, subject, html };
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale') }) => {
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers }) => {
   const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html });
+  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers });
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));

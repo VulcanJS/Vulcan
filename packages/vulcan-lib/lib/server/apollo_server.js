@@ -22,11 +22,12 @@ import { runCallbacks } from '../modules/callbacks.js';
 import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
+import { getHeaderLocale } from './intl.js';
 
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
-registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
+registerSetting('apolloServer.tracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
@@ -146,7 +147,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
+    options.tracing = getSetting('apolloServer.tracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
@@ -155,6 +156,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     //   return source[info.fieldName];
     // }
 
+    // console.log('// apollo_server.js req.renderContext');
+    // console.log(req.renderContext);
+    // console.log('\n\n');
+    
     // Get the token from the header
     if (req.headers.authorization) {
       const token = req.headers.authorization;
@@ -194,11 +199,17 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
-    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
-    // console.log('// apollo_server.js locale:', req.headers.locale);
+    // look for headers either in renderContext (SSR) or req (normal request to the endpoint)
+    const headers = req.renderContext.originalHeaders || req.headers;
 
-    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
+    options.context.locale = getHeaderLocale(headers, user && user.locale);
     
+    // console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
+    // console.log('// apollo_server.js headers:');
+    // console.log(headers);
+    // console.log('// apollo_server.js final locale: ', options.context.locale);
+    // console.log('\n\n');
+
     // add error formatting from apollo-errors
     options.formatError = formatError;
 

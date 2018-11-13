@@ -121,7 +121,7 @@ export const runCallbacks = function () {
     return callbacks.reduce(function (accumulator, callback, index) {
       if (Utils.isPromise(accumulator)) {
         if (!asyncContext) {
-          debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callbacks[index-1].name}]\x1b[0m`);
+          debug(`\x1b[32m>> Started async context in hook [${hook}] by [${callbacks[index-1] && callbacks[index-1].name}]\x1b[0m`);
           asyncContext = true;
         }
         return new Promise((resolve, reject) => {

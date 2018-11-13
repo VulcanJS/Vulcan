@@ -1,4 +1,10 @@
-import { getFragment, getCollection, getFragmentName } from 'meteor/vulcan:core';
+/** Helpers to get values depending on name
+ * E.g. retrieving a collection and its name when only one value is provided
+ *
+ */
+
+import { getCollection } from './collections';
+import { getFragment, getFragmentName } from './fragments';
 /**
  * Extract collectionName from collection
  * or collection from collectionName

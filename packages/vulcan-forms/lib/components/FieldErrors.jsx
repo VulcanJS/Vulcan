@@ -11,4 +11,7 @@ const FieldErrors = ({ errors }) => (
     ))}
   </ul>
 );
+FieldErrors.propTypes = {
+  errors: PropTypes.array.isRequired
+};
 registerComponent('FieldErrors', FieldErrors);
