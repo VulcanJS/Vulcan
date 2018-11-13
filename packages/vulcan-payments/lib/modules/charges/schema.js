@@ -7,12 +7,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['admins'],
     onInsert: (document, currentUser) => {
       return new Date();
     },
@@ -20,18 +20,34 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['admins'],
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: async (post, args, { currentUser, Users }) => {
+        const user = await Users.loader.load(post.userId);
+        return Users.restrictViewableFields(currentUser, Users, user);
+      },
+      addOriginalField: true
+    },
+  },
+  type: {
+    type: String,
+    optional: true,
+    canRead: ['admins'],
   },
   
   // custom properties
 
   associatedCollection: {
     type: String,
+    canRead: ['admins'],
     optional: true,
   },
 
   associatedId: {
     type: String,
+    canRead: ['admins'],
     optional: true,
   },
 
@@ -42,41 +58,56 @@ const schema = {
 
   productKey: {
     type: String,
+    canRead: ['admins'],
     optional: true,
   },
 
-  type: {
+  source: {
     type: String,
+    canRead: ['admins'],
     optional: false,
   },
 
   test: {
     type: Boolean,
+    canRead: ['admins'],
     optional: true,
   },
 
   data: {
     type: Object,
-    viewableBy: ['guests'],
+    canRead: ['admins'],
     blackbox: true,
   },
 
   properties: {
     type: Object,
+    canRead: ['admins'],
     blackbox: true,
   },
 
   ip: {
     type: String,
+    canRead: ['admins'],
     optional: true,
   },
 
   // GraphQL only
 
+  amount: {
+    type: Number,
+    optional: true,
+    canRead: ['admins'],
+    resolveAs: {
+      type: 'Int',
+      resolver: charge => charge.data.amount,
+    }  
+  },
+
   createdAtFormatted: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -85,10 +116,34 @@ const schema = {
     }  
   },
 
+  createdAtFormattedShort: {
+    type: String,
+    optional: true,
+    canRead: ['admins'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return moment(charge.createdAt).format('YYYY/MM/DD, hh:mm');
+      }
+    }  
+  },
+
+  stripeId: {
+    type: String,
+    optional: true,
+    canRead: ['admins'],
+    resolveAs: {
+      type: 'String',
+      resolver: (charge, args, context) => {
+        return charge.data && charge.data.id;
+      }
+    } 
+  },
+
   stripeChargeUrl: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['admins'],
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
@@ -96,6 +151,21 @@ const schema = {
       }
     } 
   },
+
+  // doesn't work yet
+
+  // associatedDocument: {
+  //   type: Object,
+  //   canRead: ['admins'],
+  //   optional: true,
+  //   resolveAs: {
+  //     type: 'Chargeable',
+  //     resolver: (charge, args, context) => {
+  //       const collection = getCollection(charge.associatedCollection);
+  //       return collection.loader.load(charge.associatedId);
+  //     }
+  //   } 
+  // },
 
 };
 

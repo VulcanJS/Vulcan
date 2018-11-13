@@ -14,8 +14,9 @@ const Events = createCollection({
 
   mutations: getDefaultMutations('AnalyticsEvents', {
     newCheck: () => true,
-    editCheck: () => false,
-    removeCheck: () => false
+    update: false,
+    upsert: false,
+    delete: false,
   })
 
 });

@@ -184,7 +184,7 @@ div.ReactTags__suggestions mark{
   }
 }
 
-.form-component-select, .form-component-datetime{
+.form-component-select, .form-component-datetime, .form-component-time, .form-component-date {
   .col-sm-9{
     padding-right: 40px;
   }
@@ -212,5 +212,47 @@ div.ReactTags__suggestions mark{
     text-decoration: none;
     background: $medium-grey;
     color: #fff;
+  }
+}
+
+.form-nested-item{
+  border: 1px solid $light-grey;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  .form-nested-item-deleted-overlay{
+    position: absolute;
+    display: none;
+    opacity: 0.3;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.5' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+.form-nested-item-inner{
+  flex: 1;
+}
+.form-nested-item-remove{
+  margin-left: 10px;
+}
+.form-nested-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg{
+    display:block;
+    path{
+      fill: rgba(255,255,255,0.7);
+      stroke: rgba(255,255,255,0.7);
+    }
   }
 }

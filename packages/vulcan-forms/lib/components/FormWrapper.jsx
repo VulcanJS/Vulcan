@@ -15,18 +15,19 @@ And wraps the Form component with:
 
 Or: 
 
-- withDocument
-- withEdit
-- withRemove
+- withSingle
+- withUpdate
+- withDelete
 
-(When wrapping with withDocument, withEdit, and withRemove, a special Loader
-component is also added to wait for withDocument's loading prop to be false)
+(When wrapping with withSingle, withUpdate, and withDelete, a special Loader
+component is also added to wait for withSingle's loading prop to be false)
 
 */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import { withRouter } from 'react-router'
 import { withApollo, compose } from 'react-apollo';
 import {
   Components,
@@ -34,14 +35,13 @@ import {
   withCurrentUser,
   Utils,
   withNew,
-  withEdit,
-  withRemove,
+  withUpdate,
+  withDelete,
   getFragment,
   getCollection,
 } from 'meteor/vulcan:core';
-import Form from './Form.jsx';
 import gql from 'graphql-tag';
-import { withDocument } from 'meteor/vulcan:core';
+import { withSingle } from 'meteor/vulcan:core';
 import { graphql } from 'react-apollo';
 
 class FormWrapper extends PureComponent {
@@ -59,12 +59,35 @@ class FormWrapper extends PureComponent {
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.getCollection().simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : this.getCollection().simpleSchema()._schema;
   }
 
   // if a document is being passed, this is an edit form
   getFormType() {
-    return this.props.documentId || this.props.slug ? "edit" : "new";
+    return this.props.documentId || this.props.slug ? 'edit' : 'new';
+  }
+
+  // filter out fields with "." or "$"
+  getValidFields() {
+    return Object.keys(this.getSchema()).filter(fieldName => !fieldName.includes('$') && !fieldName.includes('.'));
+  }
+
+  getReadableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return this.getValidFields().filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
+  }
+
+  getCreateableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return this.getValidFields().filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
+  }
+
+  getUpdatetableFields() {
+    const schema = this.getSchema();
+    // OpenCRUD backwards compatibility
+    return this.getValidFields().filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
   }
 
   // get fragment used to decide what data to load from the server to populate the form,
@@ -74,35 +97,39 @@ class FormWrapper extends PureComponent {
     const prefix = `${this.getCollection()._name}${Utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
 
-    const schema = this.getSchema();
     const fields = this.props.fields;
-    const viewableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].viewableBy);
-    const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableBy);
-    const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableBy);
+    const readableFields = this.getReadableFields();
+    const createableFields = this.getCreateableFields();
+    const updatetableFields = this.getUpdatetableFields();
 
     // get all editable/insertable fields (depending on current form type)
-    let queryFields = this.getFormType() === 'new' ? insertableFields : editableFields;
+    let queryFields = this.getFormType() === 'new' ? createableFields : updatetableFields;
     // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
-    let mutationFields = this.getFormType() === 'new' ? _.unique(insertableFields.concat(viewableFields)) : _.unique(insertableFields.concat(editableFields));
+    let mutationFields = this.getFormType() === 'new' ? _.unique(createableFields.concat(readableFields)) : _.unique(createableFields.concat(updatetableFields));
 
     // if "fields" prop is specified, restrict list of fields to it
-    if (typeof fields !== "undefined" && fields.length > 0) {
+    if (typeof fields !== 'undefined' && fields.length > 0) {
       queryFields = _.intersection(queryFields, fields);
       mutationFields = _.intersection(mutationFields, fields);
+    }
+    
+    const convertFields = field => {
+      return field.slice(-5) === '_intl' ? `${field}{ locale value }`: field;
     }
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${queryFields.join('\n')}
+        ${queryFields.map(convertFields).join('\n')}
       }
     `
+
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
       fragment ${fragmentName} on ${this.getCollection().typeName} {
         _id
-        ${mutationFields.join('\n')}
+        ${mutationFields.map(convertFields).join('\n')}
       }
     `
 
@@ -154,7 +181,7 @@ class FormWrapper extends PureComponent {
       schema: this.getSchema(),
     };
 
-    // options for withDocument HoC
+    // options for withSingle HoC
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
       collection: this.getCollection(),
@@ -165,7 +192,7 @@ class FormWrapper extends PureComponent {
       pollInterval: 0, // no polling, only load data once
     };
 
-    // options for withNew, withEdit, and withRemove HoCs
+    // options for withNew, withUpdate, and withDelete HoCs
     const mutationOptions = {
       collection: this.getCollection(),
       fragment: mutationFragment,
@@ -175,27 +202,27 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return (!document && loading) ?
+      return loading ?
         <Components.Loading /> :
-        <Form
+        <Components.Form
           document={document}
           loading={loading}
           {...childProps}
           {...props}
         />;
     };
-    Loader.displayName = `withLoader(Form)`;
+    Loader.displayName = 'withLoader(Form)';
 
-    // if this is an edit from, load the necessary data using the withDocument HoC
+    // if this is an edit from, load the necessary data using the withSingle HoC
     if (this.getFormType() === 'edit') {
 
       WrappedComponent = compose(
-        withDocument(queryOptions),
-        withEdit(mutationOptions),
-        withRemove(mutationOptions)
+        withSingle(queryOptions),
+        withUpdate(mutationOptions),
+        withDelete(mutationOptions)
       )(Loader);
 
-      return <WrappedComponent documentId={this.props.documentId} slug={this.props.slug} />
+      return <WrappedComponent selector={{ documentId: this.props.documentId, slug: this.props.slug }}/>
 
     } else {
 
@@ -224,7 +251,7 @@ class FormWrapper extends PureComponent {
       } else {
         WrappedComponent = compose(
           withNew(mutationOptions)
-        )(Form);
+        )(Components.Form);
       }
 
       return <WrappedComponent {...childProps} />;
@@ -266,7 +293,13 @@ FormWrapper.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
+  hideFields: PropTypes.arrayOf(PropTypes.string),
   showRemove: PropTypes.bool,
+  submitLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
+  revertLabel: PropTypes.string,
+  repeatErrors: PropTypes.bool,
+  warnUnsavedChanges: PropTypes.bool,
 
   // callbacks
   submitCallback: PropTypes.func,
@@ -274,6 +307,7 @@ FormWrapper.propTypes = {
   removeSuccessCallback: PropTypes.func,
   errorCallback: PropTypes.func,
   cancelCallback: PropTypes.func,
+  revertCallback: PropTypes.func,
 
   currentUser: PropTypes.object,
   client: PropTypes.object,
@@ -288,4 +322,4 @@ FormWrapper.contextTypes = {
   intl: intlShape
 }
 
-registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
+registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo, withRouter);

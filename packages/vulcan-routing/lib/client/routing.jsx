@@ -2,6 +2,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
+import { CookiesProvider } from 'react-cookie';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -16,7 +17,7 @@ import { RouterClient } from './router.jsx';
 
 Meteor.startup(() => {
   // note: route defined here because it "shouldn't be removable"
-  addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
+  addRoute({name:'app.notfound', path:'*', componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
   initializeFragments();
@@ -71,7 +72,7 @@ Meteor.startup(() => {
           return !(nextRouterProps.location.action === 'REPLACE');
         }))
       }));
-      return <ApolloProvider store={store} client={apolloClient}>{app}</ApolloProvider>;
+      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider>{app}</CookiesProvider></ApolloProvider>;
     },
   };
 

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'vulcan:accounts',
-  version: '1.8.9',
+  version: '1.12.8',
   summary: 'Accounts UI for React in Meteor 1.3+',
   git: 'https://github.com/studiointeract/accounts-ui',
   documentation: 'README.md'
@@ -9,7 +9,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
   
-  api.use('vulcan:core@1.8.9');
+  api.use('vulcan:core@1.12.8');
 
   api.use('ecmascript');
   api.use('tracker');
@@ -19,6 +19,7 @@ Package.onUse(function(api) {
   api.use('random');
   api.use('email');
   api.use('session');
+  api.use('service-configuration');
 
   api.imply('accounts-base');
 

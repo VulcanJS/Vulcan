@@ -2,44 +2,67 @@ import { Callbacks } from 'meteor/vulcan:lib';
 
 const schema = {
   name: {
-    label: 'Name',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
-  arguments: {
-    label: 'Arguments',
-    type: Array,
-    viewableBy: ['admins'],
-  },
-
-  'arguments.$': {
+  iterator: {
     type: Object,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
+
+  properties: {
+    type: Array,
+    canRead: ['admins'],
+  },
+
+  'properties.$': {
+    type: Object,
+    canRead: ['admins'],
+  },
+
+  // iterator: {
+  //   label: 'Iterator',
+  //   type: String,
+  //   canRead: ['admins'],
+  // },
+
+  // options: {
+  //   label: 'Options',
+  //   type: Array,
+  //   canRead: ['admins'],
+  // },
+
+  // 'options.$': {
+  //   type: Object,
+  //   canRead: ['admins'],
+  // },
 
   runs: {
-    label: 'Runs',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
+  },
+
+  newSyntax: {
+    label: 'New Syntax',
+    type: Boolean,
+    canRead: ['admins'],
   },
 
   returns: {
     label: 'Should Return',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   description: {
-    label: 'Description',
     type: String,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
   },
 
   hooks: {
-    label: 'Hooks',
     type: Array,
-    viewableBy: ['admins'],
+    canRead: ['admins'],
     resolveAs: {
       type: '[String]',
       resolver: callback => {
@@ -52,6 +75,10 @@ const schema = {
       },
     },
   },
+  
+  'hooks.$': {
+    type: Object,
+  }
 };
 
 export default schema;

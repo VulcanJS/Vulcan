@@ -48,6 +48,7 @@ if (!token) {
       event_name: eventName,
       created_at: getDate(),
       email: currentUser.email,
+      user_id: currentUser._id,
       metadata: {
         ...eventProperties
       }

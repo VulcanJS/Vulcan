@@ -1,10 +1,12 @@
+// TODO: get rid of this?
+
 import Mingo from 'mingo';
 
 Mongo.Collection.prototype.findInStore = function (store, selector = {}, options = {}) {
   const typeName = this.options && this.options.typeName;
   const docs = _.where(store.getState().apollo.data, {__typename: typeName})
   
-  const mingoQuery = Mingo.Query(selector);
+  const mingoQuery = new Mingo.Query(selector);
 
   const cursor = mingoQuery.find(docs);
   const sortedDocs = cursor.sort(options.sort).all();

@@ -23,7 +23,7 @@ class Tags extends PureComponent {
 
     this.state = {
       tags: tags,
-      suggestions: _.pluck(props.options, "label"),
+      suggestions: _.pluck(props.options, 'label'),
       value: props.value || []
     };
   }

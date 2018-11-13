@@ -4,11 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
-import Button from 'react-bootstrap/lib/Button';
+import { Link } from 'react-router';
 
 const getLabel = (field, fieldName, collection, intl) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldSchema = schema[fieldName];
+  const schema = collection && collection.simpleSchema()._schema;
+  const fieldSchema = schema && schema[fieldName];
   if (fieldSchema) {
     return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
   } else {
@@ -17,8 +17,8 @@ const getLabel = (field, fieldName, collection, intl) => {
 }
 
 const getTypeName = (field, fieldName, collection) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldSchema = schema[fieldName];
+  const schema = collection && collection.simpleSchema()._schema;
+  const fieldSchema = schema && schema[fieldName];
   if (fieldSchema) {
     const type = fieldSchema.type.singleType;
     const typeName = typeof type === 'function' ? type.name : type;
@@ -32,14 +32,18 @@ const parseImageUrl = value => {
   const isImage = ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 || ['.webp', '.jpeg' ].indexOf(value.substr(-5)) !== -1;
   return isImage ? 
     <img style={{width: '100%', minWidth: 80, maxWidth: 200, display: 'block'}} src={value} alt={value}/> : 
-    <LimitedString string={value}/>;
+    parseUrl(value);
+}
+
+const parseUrl = value => {
+  return value.slice(0,4) === 'http' ? <a href={value} target="_blank"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
 }
 
 const LimitedString = ({ string }) =>
   <div>
     {string.indexOf(' ') === -1 && string.length > 30 ? 
       <span title={string}>{string.substr(0,30)}…</span> : 
-      <span>{string}</span>
+      <span>{(string)}</span>
     }
   </div>
 
@@ -47,6 +51,11 @@ export const getFieldValue = (value, typeName) => {
 
   if (typeof value === 'undefined' || value === null) {
     return ''
+  }
+
+  // JSX element
+  if (React.isValidElement(value)) {
+    return value;
   }
 
   if (Array.isArray(value)) {
@@ -71,25 +80,49 @@ export const getFieldValue = (value, typeName) => {
 
     case 'Object':
     case 'object':
-      return (
-        <table className="table table-bordered">
-          <tbody>
-            {_.map(value, (value, key) => 
-              <tr key={key}>
-                <td><strong>{key}</strong></td>
-                <td>{getFieldValue(value, typeof value)}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )
+      return getObject(value);
 
     case 'Date':
       return moment(new Date(value)).format('dddd, MMMM Do YYYY, h:mm:ss');
 
-    default:
+    case 'String':
+    case 'string':
       return parseImageUrl(value);
-  }  
+
+    default:
+      return value.toString();
+  }
+}
+
+const getObject = object => {
+
+  if (object.__typename === 'User') {
+
+    const user = object;
+
+    return (
+      <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
+        <Components.Avatar size="small" user={user} link />
+        <Link to={user.pageUrl}>{user.displayName}</Link>
+      </div>
+    )
+
+  } else {
+
+    return (
+      <table className="table table-bordered">
+        <tbody>
+          {_.without(Object.keys(object), '__typename').map(key => 
+            <tr key={key}>
+              <td><strong>{key}</strong></td>
+              <td>{getFieldValue(object[key], typeof object[key])}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    )
+
+  }
 }
 
 const CardItem = ({label, value, typeName}) => 
@@ -101,7 +134,7 @@ const CardItem = ({label, value, typeName}) =>
 const CardEdit = (props, context) =>
   <tr>
     <td colSpan="2">
-      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Button bsStyle="info"><FormattedMessage id="cards.edit" /></Button>}>
+      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Components.Button variant="info"><FormattedMessage id="cards.edit" /></Components.Button>}>
         <CardEditForm {...props} />
       </Components.ModalTrigger>
     </td>
@@ -119,13 +152,14 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />
 
-const Card = ({className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
+const Card = ({title, className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
 
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canEdit = showEdit && currentUser && collection.options.mutations.edit.check(currentUser, document);
+  const canEdit = showEdit && currentUser && collection && collection.options.mutations.update.check(currentUser, document);
 
   return (
-    <div className={classNames(className, 'datacard', `datacard-${collection._name}`)}>
+    <div className={classNames(className, 'datacard', collection && `datacard-${collection._name}`)}>
+      {title && <div className="datacard-title">{title}</div>}
       <table className="table table-bordered" style={{maxWidth: '100%'}}>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
@@ -138,7 +172,7 @@ const Card = ({className, collection, document, currentUser, fields, showEdit = 
   );
 };
 
-Card.displayName = "Card";
+Card.displayName = 'Card';
 
 Card.propTypes = {
   className: PropTypes.string,
