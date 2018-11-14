@@ -1,7 +1,8 @@
-import { registerComponent, Components, getCollection, Utils } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection, Utils } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
+import withComponents from '../containers/withComponents';
 import withMulti from '../containers/withMulti.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
@@ -59,6 +60,7 @@ class Datatable extends PureComponent {
   }
 
   render() {
+    const { Components } = this.props;
 
     if (this.props.data) { // static JSON datatable
 
@@ -103,6 +105,7 @@ Datatable.propTypes = {
   newFormOptions: PropTypes.object,
   editFormOptions: PropTypes.object,
   emptyState: PropTypes.object,
+  Components: PropTypes.object.isRequired,
 };
 
 Datatable.defaultProps = {
@@ -110,7 +113,7 @@ Datatable.defaultProps = {
   showEdit: true,
   showSearch: true,
 };
-registerComponent('Datatable', Datatable, withCurrentUser);
+registerComponent({ name: 'Datatable', component: Datatable, hocs: [withCurrentUser, withComponents] });
 export default Datatable;
 
 const DatatableLayout = ({ collectionName, children }) => {
@@ -126,7 +129,8 @@ DatatableAbove Component
 
 */
 const DatatableAbove = (props, { intl }) => {
-  const { collection, currentUser, showSearch, showNew, canInsert, value, updateQuery, options, newFormOptions } = props;
+  const { collection, currentUser, showSearch, showNew, canInsert,
+     value, updateQuery, options, newFormOptions, Components } = props;
 
   return (
     <Components.DatatableAboveLayout>
@@ -146,6 +150,9 @@ const DatatableAbove = (props, { intl }) => {
 };
 DatatableAbove.contextTypes = {
   intl: intlShape,
+};
+DatatableAbove.propTypes = {
+  Components: PropTypes.object.isRequired
 };
 registerComponent('DatatableAbove', DatatableAbove);
 
@@ -169,7 +176,7 @@ registerComponent({ name: 'DatatablAboveLayout', component: DatatableAboveLayout
 DatatableHeader Component
 
 */
-const DatatableHeader = ({ collection, column, toggleSort, currentSort }, { intl }) => {
+const DatatableHeader = ({ collection, column, toggleSort, currentSort, Components }, { intl }) => {
 
   const columnName = typeof column === 'string' ? column : column.label || column.name;
   
@@ -206,6 +213,9 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort }, { intl
 };
 DatatableHeader.contextTypes = {
   intl: intlShape
+};
+DatatableHeader.propTypes = {
+  Components: PropTypes.object.isRequired
 };
 registerComponent('DatatableHeader', DatatableHeader);
 
@@ -259,7 +269,10 @@ DatatableContents Component
 const DatatableContents = (props) => {
 
   // if no columns are provided, default to using keys of first array item
-  const { title, collection, results, columns, loading, loadMore, count, totalCount, networkStatus, showEdit, currentUser, emptyState, toggleSort, currentSort } = props;
+  const { title, collection, results, columns, loading, loadMore, 
+    count, totalCount, networkStatus, showEdit, currentUser, emptyState, 
+    toggleSort, currentSort,
+  Components } = props;
 
   if (loading) {
     return <div className="datatable-list datatable-list-loading"><Components.Loading /></div>;
@@ -292,6 +305,9 @@ const DatatableContents = (props) => {
       }
     </Components.DatatableContentLayout>
   );
+};
+DatatableContents.propTypes = {
+  Components: PropTypes.object.isRequired
 };
 registerComponent('DatatableContents', DatatableContents);
 
@@ -342,7 +358,8 @@ DatatableRow Component
 */
 const DatatableRow = (props, { intl }) => {
 
-  const { collection, columns, document, showEdit, currentUser, options, editFormOptions, rowClass } = props;
+  const { collection, columns, document, showEdit, 
+    currentUser, options, editFormOptions, rowClass, Components } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
@@ -361,6 +378,9 @@ const DatatableRow = (props, { intl }) => {
   </Components.DatatableRowLayout>
   );
 };
+DatatableRow.propTypes = {
+  Components: PropTypes.object.isRequired
+};
 registerComponent('DatatableRow', DatatableRow);
 
 DatatableRow.contextTypes = {
@@ -378,7 +398,7 @@ registerComponent({ name: 'DatatableRowLayout', component: DatatableRowLayout })
 DatatableCell Component
 
 */
-const DatatableCell = ({ column, document, currentUser }) => {
+const DatatableCell = ({ column, document, currentUser, Components }) => {
   const Component = column.component 
   || column.componentName && Components[column.componentName] 
   || Components.DatatableDefaultCell;
@@ -388,6 +408,9 @@ const DatatableCell = ({ column, document, currentUser }) => {
       <Component column={column} document={document} currentUser={currentUser} />
     </Components.DatatableCellLayout>
   );
+};
+DatatableCell.propTypes = {
+  Components: PropTypes.object.isRequired
 };
 registerComponent('DatatableCell', DatatableCell);
 
