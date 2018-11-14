@@ -30,7 +30,8 @@ import {
   getErrors,
   getSetting,
   Utils,
-  isIntlField
+  isIntlField,
+  mergeWithComponents
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -57,7 +58,6 @@ import pickBy from 'lodash/pickBy';
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
 import { getParentPath } from '../modules/path_utils';
-import mergeWithComponents from '../modules/mergeWithComponents';
 import {
   getEditableFields,
   getInsertableFields
