@@ -111,6 +111,7 @@ Datatable.defaultProps = {
   showSearch: true,
 }
 registerComponent('Datatable', Datatable, withCurrentUser);
+export default Datatable
 
 
 /*
