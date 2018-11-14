@@ -16,7 +16,4 @@ Package.onUse(function (api) {
 
   api.mainModule('lib/modules.js', ['client']);
   api.mainModule('lib/modules.js', ['server']);
-
-  api.mainModule('lib/modules.js', ['client']);
-  api.mainModule('lib/modules.js', ['server']);
 });
