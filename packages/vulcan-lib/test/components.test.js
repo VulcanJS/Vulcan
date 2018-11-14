@@ -1,23 +1,25 @@
-import { mergeWithComponents } from '../lib/modules/components'
+import { mergeWithComponents } from '../lib/modules/components';
 import { Components } from 'meteor/vulcan:core';
 import expect from 'expect';
-import { initComponentTest } from 'meteor/vulcan:test'
+import { initComponentTest } from 'meteor/vulcan:test';
 
-initComponentTest()
+initComponentTest();
 
 describe('vulcan:lib/components', function () {
     describe('mergeWithComponents', function () {
-        const TestComponent = () => { };
-        const OverrideTestComponent = () => { };
+        const TestComponent = () => 'foo';
+        const OverrideTestComponent = () => 'bar';
         Components.TestComponent = TestComponent;
-        const MyComponents = { TestComponent: OverrideTestComponent };
         it('override existing components', function () {
+            const MyComponents = { TestComponent: OverrideTestComponent };
             const MergedComponents = mergeWithComponents(MyComponents);
             expect(MergedComponents.TestComponent).toEqual(OverrideTestComponent);
+            expect(MergedComponents.TestComponent()).toEqual('bar');
         });
         it('return \'Components\' if no components are provided', function () {
             expect(mergeWithComponents()).toEqual(Components);
+            expect(mergeWithComponents().TestComponent).toEqual(TestComponent);
         });
 
-    })
-})
+    });
+});

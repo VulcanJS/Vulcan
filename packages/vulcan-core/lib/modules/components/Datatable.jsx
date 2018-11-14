@@ -64,7 +64,7 @@ class Datatable extends PureComponent {
 
     if (this.props.data) { // static JSON datatable
 
-      return <Components.DatatableContents columns={Object.keys(this.props.data[0])} {...this.props} results={this.props.data} showEdit={false} showNew={false} />;
+      return <Components.DatatableContents Components={Components} columns={Object.keys(this.props.data[0])} {...this.props} results={this.props.data} showEdit={false} showNew={false} />;
             
     } else { // dynamic datatable with data loading
       
@@ -84,9 +84,9 @@ class Datatable extends PureComponent {
       const orderBy = Object.keys(this.state.currentSort).length == 0 ? {} : { ...this.state.currentSort, _id: -1 };
 
       return (
-        <Components.DatatableLayout collectionName={collection.options.collectionName}>
-          <Components.DatatableAbove {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-          <DatatableWithMulti {...this.props} collection={collection} terms={{query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
+        <Components.DatatableLayout Components={Components} collectionName={collection.options.collectionName}>
+          <Components.DatatableAbove Components={Components} {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
+          <DatatableWithMulti Components={Components} {...this.props} collection={collection} terms={{query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
         </Components.DatatableLayout>
       );
     }
@@ -284,26 +284,30 @@ const DatatableContents = (props) => {
   const hasMore = totalCount > results.length;
 
   return (
-    <Components.DatatableContentLayout>
+    <Components.DatatableContentsLayout>
       {title && <Components.DatatableTitle title={title}/>}
-      <Components.DatatableContentInnerLayout>
-        <Components.DatatableContentHeadLayout>
+      <Components.DatatableContentsInnerLayout>
+        <Components.DatatableContentsHeadLayout>
             {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column} toggleSort={toggleSort} currentSort={currentSort} />)}
             {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
-        </Components.DatatableContentHeadLayout>
-        <Components.DatatableContentBodyLayout>
-          {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser}/>)}
-        </Components.DatatableContentBodyLayout>
-      </Components.DatatableContentInnerLayout>
+        </Components.DatatableContentsHeadLayout>
+        <Components.DatatableContentsBodyLayout>
+          {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser} />)}
+        </Components.DatatableContentsBodyLayout>
+      </Components.DatatableContentsInnerLayout>
       {hasMore &&
-      <Components.DatatableContentMoreLayout>
-          {isLoadingMore ?
-            <Components.Loading/> :
-            <Components.Button variant="primary" onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Components.Button>
+        <Components.DatatableContentsMoreLayout>
+          {isLoadingMore
+            ? <Components.Loading />
+            : (
+            <Components.DatatableLoadMoreButton onClick={e => { e.preventDefault(); loadMore(); }}>
+                Load More ({count}/{totalCount})
+            </Components.DatatableLoadMoreButton>
+            )
           }
-      </Components.DatatableContentMoreLayout>
+        </Components.DatatableContentsMoreLayout>
       }
-    </Components.DatatableContentLayout>
+    </Components.DatatableContentsLayout>
   );
 };
 DatatableContents.propTypes = {
@@ -311,35 +315,40 @@ DatatableContents.propTypes = {
 };
 registerComponent('DatatableContents', DatatableContents);
 
-const DatatableContentLayout = ({ children }) => (
+const DatatableContentsLayout = ({ children }) => (
   <div className="datatable-list">
     {children}
   </div>
 );
-registerComponent({ name: 'DatatableContentLayout', component: DatatableContentLayout });
-const DatatableContentInnerLayout = ({ children }) => (
+registerComponent({ name: 'DatatableContentsLayout', component: DatatableContentsLayout });
+const DatatableContentsInnerLayout = ({ children }) => (
   <table className="table">
     {children}
   </table>
 );
-registerComponent({ name: 'DatatableContentInnerLayout', component: DatatableContentInnerLayout });
-const DatatableContentHeadLayout = ({ children }) => (
+registerComponent({ name: 'DatatableContentsInnerLayout', component: DatatableContentsInnerLayout });
+const DatatableContentsHeadLayout = ({ children }) => (
   <thead>
     <tr>
       {children}
-    </tr></thead>
+    </tr>
+  </thead>
 );
-registerComponent({ name: 'DatatableContentHeadLayout', component: DatatableContentHeadLayout });
-const DatatableContentBodyLayout = ({ children }) => (
+registerComponent({ name: 'DatatableContentsHeadLayout', component: DatatableContentsHeadLayout });
+const DatatableContentsBodyLayout = ({ children }) => (
   <tbody>{children}</tbody>
 );
-registerComponent({ name: 'DatatableContentBodyLayout', component: DatatableContentBodyLayout });
-const DatatableContentMoreLayout = ({ children }) => (
+registerComponent({ name: 'DatatableContentsBodyLayout', component: DatatableContentsBodyLayout });
+const DatatableContentsMoreLayout = ({ children }) => (
   <div className="datatable-list-load-more">
     {children}
   </div>
 );
-registerComponent({ name: 'DatatableContentMoreLayout', component: DatatableContentMoreLayout });
+registerComponent({ name: 'DatatableContentsMoreLayout', component: DatatableContentsMoreLayout });
+const DatatableLoadMoreButton = ({ count, totalCount, Components, children, ...otherProps }) => (
+  <Components.Button variant="primary" {...otherProps}>{children}</Components.Button>
+);
+registerComponent({ name: 'DatatableLoadMoreButton', component: DatatableLoadMoreButton });
 
 /*
 

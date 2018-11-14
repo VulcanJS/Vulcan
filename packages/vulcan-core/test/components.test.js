@@ -9,7 +9,7 @@ import { initComponentTest } from 'meteor/vulcan:test';
 
 // we must import all the other components, so that "registerComponent" is called
 import '../lib/modules';
-import Datatable from '../lib/modules/components/Datatable'
+import Datatable from '../lib/modules/components/Datatable';
 // stub collection
 import { createCollection, getDefaultResolvers, getDefaultMutations, registerFragment } from 'meteor/vulcan:core';
 const createDummyCollection = (typeName, schema) => {
@@ -20,12 +20,12 @@ const createDummyCollection = (typeName, schema) => {
         resolvers: getDefaultResolvers(typeName + 's'),
         mutations: getDefaultMutations(typeName + 's')
     });
-}
+};
 const Articles = createDummyCollection('Article', {
     name: {
         type: String
     }
-})
+});
 registerFragment(`
    fragment ArticlesDefaultFragment on Article {
        name
@@ -33,21 +33,23 @@ registerFragment(`
 `);
 
 // setup Vulcan (load components, initialize fragments)
-initComponentTest()
+initComponentTest();
 
 
 describe('vulcan-core/components', function () {
     describe('DataTable', function () {
         it('shallow renders DataTable', function () {
             const wrapper = shallow(<Datatable
-                collection={Articles} />)
-            expect(wrapper).toBeDefined()
-        })
+                Components={Components}
+                collection={Articles} />);
+            expect(wrapper).toBeDefined();
+        });
         it('render a static version', function () {
             const wrapper = shallow(<Datatable
-                data={[{ name: 'foo' }, { name: 'bar' }]} />)
-            const content = wrapper.find('DatatableContents').first()
-            expect(content).toBeDefined()
-        })
-    })
-})
+                Components={Components}
+                data={[{ name: 'foo' }, { name: 'bar' }]} />);
+            const content = wrapper.find('DatatableContents').first();
+            expect(content).toBeDefined();
+        });
+    });
+});
