@@ -36,6 +36,7 @@ export { default as withCurrentUser } from './containers/withCurrentUser.js';
 export { default as withMutation } from './containers/withMutation.js';
 export { default as withUpsert } from './containers/withUpsert.js';
 
+export { default as withComponents } from './containers/withComponents';
 
 // OpenCRUD backwards compatibility
 export { default as withNew } from './containers/withCreate.js';
