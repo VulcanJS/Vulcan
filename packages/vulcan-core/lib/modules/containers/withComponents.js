@@ -11,9 +11,9 @@ import { mergeWithComponents } from 'meteor/vulcan:lib';
 
 const withComponents = C => {
     const WrappedComponent = ({components, formComponents, ...otherProps}) => {
-    if (formComponents){
-        console.warn('"formComponents" prop is deprecated, use "components" prop instead (same behaviour)');
-    }
+    //if (formComponents){
+    //    console.warn('"formComponents" prop is deprecated, use "components" prop instead (same behaviour)');
+    //}
     const Components = mergeWithComponents(components || formComponents);
     return <C Components={Components} {...otherProps} />;
     };
