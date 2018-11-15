@@ -1,36 +1,38 @@
 import Users from 'meteor/vulcan:users';
 
 // note: leverage weak dependencies on packages
-const Posts = Package['example-forum'] ? Package['example-forum'].Posts : null;
-const Categories = Package['example-forum'] ? Package['example-forum'].Categories : null;
+const Posts = Package['example-forum']
+  ? Package['example-forum'].Posts
+  : null;
+const Categories = Package['example-forum']
+  ? Package['example-forum'].Categories
+  : null;
 
 Users.addField([
   {
     fieldName: 'subscribedItems',
     fieldSchema: {
       type: Object,
+      viewableBy: ['guests'],
       optional: true,
       blackbox: true,
-      hidden: true // never show this
+      hidden: false // never show this
     }
-  },
-  {
+  }, {
     fieldName: 'subscribers',
     fieldSchema: {
       type: Array,
       optional: true,
       hidden: true // never show this,
     }
-  },
-  {
+  }, {
     fieldName: 'subscribers.$',
     fieldSchema: {
       type: String,
       optional: true,
       hidden: true // never show this,
     }
-  },
-  {
+  }, {
     fieldName: 'subscriberCount',
     fieldSchema: {
       type: Number,
@@ -50,16 +52,14 @@ if (!!Posts) {
         optional: true,
         hidden: true // never show this
       }
-    },
-    {
+    }, {
       fieldName: 'subscribers.$',
       fieldSchema: {
         type: String,
         optional: true,
         hidden: true // never show this
       }
-    },
-    {
+    }, {
       fieldName: 'subscriberCount',
       fieldSchema: {
         type: Number,
@@ -70,7 +70,8 @@ if (!!Posts) {
   ]);
 }
 
-// check if vulcan:categories exists, if yes, add the custom fields to Categories
+// check if vulcan:categories exists, if yes, add the custom fields to
+// Categories
 if (!!Categories) {
   Categories.addField([
     {
@@ -80,16 +81,14 @@ if (!!Categories) {
         optional: true,
         hidden: true // never show this
       }
-    },
-    {
+    }, {
       fieldName: 'subscribers.$',
       fieldSchema: {
         type: String,
         optional: true,
         hidden: true // never show this
       }
-    },
-    {
+    }, {
       fieldName: 'subscriberCount',
       fieldSchema: {
         type: Number,
