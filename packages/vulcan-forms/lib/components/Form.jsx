@@ -545,14 +545,12 @@ class SmartForm extends Component {
 
   /*
 
-  When props change, reinitialize state
-
-  // TODO: only need to check nextProps.prefilledProps?
-  // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+  When prefilled props change, reinitialize state, resetting form contents
+  to default
 
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props, nextProps)) {
+    if (!isEqual(this.props.prefilledProps, nextProps.prefilledProps)) {
       this.setState(getInitialStateFromProps(nextProps));
     }
   }
