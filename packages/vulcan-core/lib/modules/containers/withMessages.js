@@ -16,10 +16,11 @@ import { connect } from 'react-redux';
 
 addAction({
   messages: {
-    flash(content) {
+    flash(content, flashType) {
       return {
         type: 'FLASH',
         content,
+        flashType,
       };
     },
     clear(i) {
@@ -52,20 +53,14 @@ addAction({
 addReducer({
   messages: (state = [], action) => {
     // default values
-    const flashType = action.content && typeof action.content.type !== 'undefined' ? action.content.type : 'error';
+    const flashType = typeof action.flashType === 'undefined' ? 'error' : action.flashType;
     const currentMsg = typeof action.i === 'undefined' ? {} : state[action.i];
 
     switch(action.type) {
       case 'FLASH':
         return [
           ...state,
-          {
-            _id: state.length,
-            ...action.content,
-            type: flashType,
-            seen: false,
-            show: true,
-          },
+          { _id: state.length, content: action.content, flashType, seen: false, show: true },
         ];
       case 'MARK_AS_SEEN':
         return [
