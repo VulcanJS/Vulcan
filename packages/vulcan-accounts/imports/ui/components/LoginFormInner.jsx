@@ -73,7 +73,10 @@ export class AccountsLoginFormInner extends TrackerComponent {
       onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || defaultHooks.onSignedOutHook),
       onPreSignUpHook: props.onPreSignUpHook || defaultHooks.onPreSignUpHook,
       onPostSignUpHook: resetStoreAndThen(postLogInAndThen(props.onPostSignUpHook || defaultHooks.onPostSignUpHook)),
+      isAccepted: false
     };
+
+    this.onToSconfirmed = this.onToSconfirmed.bind(this);
   }
 
   componentDidMount() {
@@ -805,6 +808,15 @@ export class AccountsLoginFormInner extends TrackerComponent {
     }
 
     const SignUp = function(_options) {
+      if (this.state.isAccepted) {
+       _options.confirmed_tos = new Date();
+     } else {
+       this.showMessage('accounts.error_unknown', 'error');
+       $('.act-btn').removeAttr('disabled');
+       self.setState({ waiting: false });
+       onSubmitHook('Unknown error', formState);
+       return;
+     }
       Accounts.createUser(_options, (error) => {
         if (error) {
           // eslint-disable-next-line no-console
@@ -984,6 +996,13 @@ export class AccountsLoginFormInner extends TrackerComponent {
     }
   }
 
+  onToSconfirmed() {
+   console.log('called');
+   this.setState({
+     isAccepted: !this.state.isAccepted
+   });
+ }
+
   render() {
     this.oauthButtons();
     // Backwords compatibility with v1.2.x.
@@ -1000,6 +1019,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         buttons={this.buttons()}
         {...this.state}
         message={message}
+        onToSconfirmed={this.onToSconfirmed}
       />
     );
   }

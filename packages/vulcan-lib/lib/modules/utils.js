@@ -115,7 +115,7 @@ Utils.scrollPageTo = function(selector) {
 
 Utils.scrollIntoView = function (selector) {
   if (!document) return;
-  
+
   const element = document.querySelector(selector);
   if (element) {
     element.scrollIntoView();
@@ -185,7 +185,7 @@ Utils.getUnusedSlug = function (collection, slug) {
 // Utils.getUnusedSlug = async function (collection, slug) {
 //   let suffix = '';
 //   let index = 0;
-// 
+//
 //   const slugRegex = new RegExp('^' + slug + '-[0-9]+$');
 //   // get all the slugs matching slug or slug-123 in that collection
 //   const results = await collection.find( { slug: { $in: [slug, slugRegex] } }, { fields: { slug: 1, _id: 0 } });
@@ -280,7 +280,7 @@ _.mixin({
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
       /*
-        
+
         Remove a value if:
         1. it's not a boolean
         2. it's not a number
@@ -343,7 +343,7 @@ Utils.findIndex = (array, predicate) => {
 }
 
 // adapted from http://stackoverflow.com/a/22072374/649299
-Utils.unflatten = function(array, options, parent, level=0, tree){
+Utils.unflatten = function(array, options, parent, level=0, tree) {
 
   const {
     idProperty = '_id',
@@ -360,11 +360,11 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
   if (typeof parent === 'undefined') {
     // if there is no parent, we're at the root level
     // so we return all root nodes (i.e. nodes with no parent)
-    children = _.filter(array, node => !get(node, parentIdProperty));
+    children = _.filter(array, node => !node[parentIdProperty]);
   } else {
     // if there *is* a parent, we return all its child nodes
     // (i.e. nodes whose parentId is equal to the parent's id.)
-    children = _.filter(array, node => get(node, parentIdProperty) === get(parent, idProperty));
+    children = _.filter(array, node => node[parentIdProperty] === parent[idProperty]);
   }
 
   // if we found children, we keep on iterating
@@ -375,7 +375,7 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
       tree = children;
     } else {
       // else, we add the children to the parent as the "childrenResults" property
-      set(parent, childrenProperty, children);
+      parent[childrenProperty] = children;
     }
 
     // we call the function on each child
@@ -387,6 +387,7 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
 
   return tree;
 };
+
 
 // remove the telescope object from a schema and duplicate it at the root
 Utils.stripTelescopeNamespace = (schema) => {

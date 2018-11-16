@@ -11,7 +11,7 @@ Users.groups = {};
  * @summary Group class
  */
 class Group {
-  
+
   constructor() {
     this.actions = [];
   }
@@ -44,53 +44,54 @@ Users.createGroup = groupName => {
  * @summary get a list of a user's groups
  * @param {Object} user
  */
-Users.getGroups = user => {
+ Users.getGroups = user => {
 
-  let userGroups = [];
+   let userGroups = [];
 
-  if (!user) { // guests user
+   if (!user) { // guests user
 
-    userGroups = ['guests'];
-  
-  } else {
-  
-    userGroups = ['members'];
+     userGroups = ["guests"];
 
-    if (user.groups) { // custom groups
-      userGroups = userGroups.concat(user.groups);
-    } 
-    
-    if (Users.isAdmin(user)) { // admin
-      userGroups.push('admins');
-    }
+   } else {
 
-  }
+     userGroups = ["members"];
 
-  return userGroups;
+     if (user.groups) { // custom groups
+       userGroups = userGroups.concat(user.groups);
+     }
 
-};
+     if (Users.isAdmin(user)) { // admin
+       userGroups.push("admins");
+     }
+
+   }
+
+   return userGroups;
+
+ };
 
 /**
  * @summary get a list of all the actions a user can perform
  * @param {Object} user
  */
-Users.getActions = user => {
-  let userGroups = Users.getGroups(user);
-  if (!userGroups.includes('guests')) {
-    // always give everybody permission for guests actions, too
-    userGroups.push('guests');
-  }
-  let groupActions = userGroups.map(groupName => {
-    // note: make sure groupName corresponds to an actual group
-    const group = Users.groups[groupName];
-    return group && group.actions;
-  });
-  return _.unique(_.flatten(groupActions));
-};
+ Users.getActions = user => {
+   let userGroups = Users.getGroups(user);
+   if (!userGroups.includes('guests')) {
+     // always give everybody permission for guests actions, too
+     userGroups.push('guests');
+   }
+   let groupActions = userGroups.map(groupName => {
+     // note: make sure groupName corresponds to an actual group
+     const group = Users.groups[groupName];
+     return group && group.actions;
+   });
+   return _.unique(_.flatten(groupActions));
+ };
+
 
 /**
  * @summary check if a user is a member of a group
- * @param {Array} user 
+ * @param {Array} user
  * @param {String} group or array of groups
  */
 Users.isMemberOf = (user, groupOrGroups) => {
@@ -103,11 +104,10 @@ Users.isMemberOf = (user, groupOrGroups) => {
  * @param {Object} user
  * @param {String/Array} action or actions
  */
-Users.canDo = (user, actionOrActions) => {
-  const authorizedActions = Users.getActions(user);
-  const actions = Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions];
-  return Users.isAdmin(user) || intersection(authorizedActions, actions).length > 0;
-};
+ Users.canDo = (user, action) => {
+   return Users.isAdmin(user) || Users.getActions(user).indexOf(action) !== -1;
+ };
+
 
 // DEPRECATED
 // TODO: remove this
@@ -123,7 +123,7 @@ Users.canDo = (user, actionOrActions) => {
 //   // note(apollo): use of `__typename` given by react-apollo
 //   //const collectionName = document.getCollectionName();
 //   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
-  
+
 //   if (!user || !document) {
 //     return false;
 //   }
@@ -194,7 +194,7 @@ Users.isAdminById = Users.isAdmin;
    }
    return false;
  };
- 
+
 /**
  * @summary Get a list of fields viewable by a user
  * @param {Object} user - The user performing the action
@@ -232,18 +232,18 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
     // get array of all keys viewable by user
     const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
     const restrictedDocument = _.clone(document);
-    
+
     // loop over each property in the document and delete it if it's not viewable
     _.forEach(restrictedDocument, (value, key) => {
       if (!viewableKeys.includes(key)) {
         delete restrictedDocument[key];
       }
     });
-  
+
     return restrictedDocument;
-  
+
   };
-  
+
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 
 }
@@ -307,11 +307,11 @@ Users.createGroup('guests'); // non-logged-in users
 Users.createGroup('members'); // regular users
 
 const membersActions = [
-  'user.create', 
-  'user.update.own', 
+  'user.create',
+  'user.update.own',
   // OpenCRUD backwards compatibility
-  'users.new', 
-  'users.edit.own', 
+  'users.new',
+  'users.edit.own',
   'users.remove.own',
 ];
 Users.groups.members.can(membersActions);
@@ -319,12 +319,12 @@ Users.groups.members.can(membersActions);
 Users.createGroup('admins'); // admin users
 
 const adminActions = [
-  'user.create', 
+  'user.create',
   'user.update.all',
   'user.delete.all',
   'setting.update',
   // OpenCRUD backwards compatibility
-  'users.new', 
+  'users.new',
   'users.edit.all',
   'users.remove.all',
   'settings.edit',
