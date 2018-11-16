@@ -48,12 +48,13 @@ export const getInsertableFields = function(schema, user) {
 export const getEditableFields = function(schema, user, document) {
   const fields = _.filter(_.keys(schema), function(fieldName) {
     var field = schema[fieldName];
-    return Users.canUpdateField(user, field, document);
+    return Users.canEditField(user, field, document);
   });
   return fields;
 };
 
 /*
+
 
 Convert a nested SimpleSchema schema into a JSON object
 If flatten = true, will create a flat object instead of nested tree

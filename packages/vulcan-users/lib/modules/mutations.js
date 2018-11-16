@@ -19,7 +19,7 @@ const createMutation = {
 
   mutation(root, { data }, context) {
     const { Users, currentUser } = context;
-    performCheck(this, currentUser, data);
+    // performCheck(this, currentUser, data);
 
     return createMutator({
       collection: Users,
@@ -37,7 +37,7 @@ const updateMutation = {
   check(user, document) {
     if (!user || !document) return false;
     // OpenCRUD backwards compatibility
-    return Users.owns(user, document) ? Users.canDo(user, ['user.update.own', 'users.edit.own']) : Users.canDo(user, ['user.update.all', 'users.edit.all']);
+    return Users.owns(user, document) ? true : false;
   },
 
   async mutation(root, { selector, data }, context) {
@@ -48,8 +48,8 @@ const updateMutation = {
     if (!document) {
       throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
     }
-    
-    performCheck(this, currentUser, document);
+
+    // performCheck(this, currentUser, document);
 
     return updateMutator({
       collection: Users,
@@ -81,7 +81,7 @@ const deleteMutation = {
       throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
     }
 
-    performCheck(this, currentUser, document);
+    // performCheck(this, currentUser, document);
 
     return deleteMutator({
       collection: Users,
@@ -156,7 +156,7 @@ registerCallback({
   name: 'user.update.validate',
   iterator: {data: 'The client data'},
   properties: [
-    {document: 'The document being updated'}, 
+    {document: 'The document being updated'},
     {currentUser: 'The current user.'},
     {validationErrors: 'an object that can be used to accumulate validation errors.'},
   ],

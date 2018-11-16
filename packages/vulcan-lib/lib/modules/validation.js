@@ -1,8 +1,8 @@
 import pickBy from 'lodash/pickBy';
 import mapValues from 'lodash/mapValues';
 
-export const dataToModifier = data => ({ 
-  $set: pickBy(data, f => f !== null), 
+export const dataToModifier = data => ({
+  $set: pickBy(data, f => f !== null),
   $unset: mapValues(pickBy(data, f => f === null), () => true),
 });
 
@@ -72,10 +72,10 @@ export const validateDocument = (document, collection, context) => {
 
   1. Check that the current user has permission to insert each field
   2. Run SimpleSchema validation step
-  
+
 */
 export const validateModifier = (modifier, document, collection, context) => {
-  
+
   const { Users, currentUser } = context;
   const schema = collection.simpleSchema()._schema;
   const set = modifier.$set;
@@ -87,7 +87,7 @@ export const validateModifier = (modifier, document, collection, context) => {
   const modifiedProperties = _.keys(set).concat(_.keys(unset));
   modifiedProperties.forEach(function(fieldName) {
     var field = schema[fieldName];
-    if (!field || !Users.canUpdateField(currentUser, field, document)) {
+    if (!field || !Users.canEditField(currentUser, field, document)) {
       validationErrors.push({
         id: 'errors.disallowed_property_detected',
         properties: { name: fieldName },
@@ -211,7 +211,7 @@ export const validateDocumentNotUsed = (document, collection, context) => {
   3. Check field types
   4. Check for missing fields
   5. Run SimpleSchema validation step (for now)
-  
+
 */
 export const validateModifierNotUsed = (modifier, document, collection, context) => {
   const { Users, currentUser } = context;
@@ -225,7 +225,7 @@ export const validateModifierNotUsed = (modifier, document, collection, context)
   const modifiedProperties = _.keys(set).concat(_.keys(unset));
   modifiedProperties.forEach(function(fieldName) {
     var field = schema[fieldName];
-    if (!field || !Users.canUpdateField(currentUser, field, document)) {
+    if (!field || !Users.canEditField(currentUser, field, document)) {
       validationErrors.push({
         id: 'app.disallowed_property_detected',
         data: {name: fieldName},
