@@ -17,6 +17,7 @@
     "apollo-client": "^2.4.2",
     "apollo-engine": "^0.5.4",
     "apollo-errors": "^1.4.0",
+    "apollo-link-schema": "^1.1.1",
     "apollo-link-state": "^0.4.2",
     "apollo-server": "^2.1.0",
     "apollo-server-express": "^2.1.0",
