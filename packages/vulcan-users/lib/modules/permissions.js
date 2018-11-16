@@ -154,7 +154,6 @@ Users.canDo = (user, action) => {
  * @param {Object} document - The document to check (post, comment, user object, etc.)
  */
 Users.owns = function (user, document) {
-  console.log("11111111");
   try {
     if (!!document.userId) {
       // case 1: document is a post or a comment, use userId to check
