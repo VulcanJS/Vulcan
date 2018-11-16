@@ -28,6 +28,8 @@ import { defaultConfig, defaultOptions } from './defaults';
 import { initContext, computeContextFromReq } from './context.js';
 import getPlaygroundConfig from './playground';
 
+// SSR
+import { ssrMiddleware } from '../apollo-ssr'
 /**
  * Options: Apollo server usual options
  *
@@ -73,6 +75,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     }
   });
 
+
   /* Syntax for adding middlewares to /graphql
      Uses Connect + Meteor + Apollo
      For the list of already set middlewares (cookies, compression...), see:
@@ -87,6 +90,10 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     // available on /voyager as a default
     WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
   }
+
+
+  // ssr
+  WebApp.connectHandlers.use(ssrMiddleware)
 
   /*
   * Alternative syntax with Express instead of Connect 
