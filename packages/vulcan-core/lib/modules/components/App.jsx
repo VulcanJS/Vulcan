@@ -107,7 +107,7 @@ class App extends PureComponent {
   render() {
     const routeNames = Object.keys(Routes);
     return (
-      <BrowserRouter>
+      <Components.AppContainer>
         <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
           <div className={`locale-${this.getLocale()}`}>
             <Components.HeadTags />
@@ -129,7 +129,7 @@ class App extends PureComponent {
                 )}
           </div>
         </IntlProvider>
-      </BrowserRouter>
+      </Components.AppContainer>
     );
   }
 }
