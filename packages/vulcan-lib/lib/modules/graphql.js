@@ -359,13 +359,31 @@ export const GraphQLSchema = {
     }
 
     return graphQLSchema;
+  },
+
+  // getters
+  getSchema() {
+    if (!(this.finalSchema && this.finalSchema.length)) {
+      throw new Error('Warning: trying to access schema before it has been created by the server.')
+    }
+    return this.finalSchema[0]
+  },
+  getExecutableSchema() {
+    if (!this.executableSchema) {
+      throw new Error('Warning: trying to access executable schema before it has been created by the server.')
+    }
+    return this.executableSchema
   }
+
 };
 
 Vulcan.getGraphQLSchema = () => {
+  if (!GraphQLSchema.finalSchema) {
+    throw new Error('Warning: trying to access graphQL schema before it has been created by the server.')
+  }
   const schema = GraphQLSchema.finalSchema[0];
   // eslint-disable-next-line no-console
-  console.log(schema);
+  // console.log(schema);
   return schema;
 }
 

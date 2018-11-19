@@ -3,7 +3,6 @@
  * @see https://www.apollographql.com/docs/apollo-server/migration-two-dot.html
  */
 
-import { makeExecutableSchema } from 'apollo-server';
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
 //import express from 'express';
@@ -11,22 +10,21 @@ import { ApolloServer } from 'apollo-server-express';
 
 import { Meteor } from 'meteor/meteor';
 
-import { GraphQLSchema } from '../../modules/graphql.js';
 import { WebApp } from 'meteor/webapp';
 
-import { runCallbacks } from '../../modules/callbacks.js';
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
 
-export let executableSchema;
-
+import initGraphQL from './initGraphQL'
 import './settings';
 import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
 import { initContext, computeContextFromReq } from './context.js';
 import getPlaygroundConfig from './playground';
+
+import { GraphQLSchema } from '../../modules/graphql.js';
 
 // SSR
 import { ssrMiddleware } from '../apollo-ssr'
@@ -117,70 +115,10 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
 // createApolloServer when server startup
 Meteor.startup(() => {
-  runCallbacks('graphql.init.before');
-
-  // typeDefs
-  const generateTypeDefs = () => [
-    `
-scalar JSON
-scalar Date
-
-${GraphQLSchema.getAdditionalSchemas()}
-
-${GraphQLSchema.getCollectionsSchemas()}
-
-type Query {
-
-${GraphQLSchema.queries
-      .map(
-        q =>
-          `${
-            q.description
-              ? `  # ${q.description}
-`
-              : ''
-          }  ${q.query}
-  `
-      )
-      .join('\n')}
-}
-
-${
-      GraphQLSchema.mutations.length > 0
-        ? `type Mutation {
-
-${GraphQLSchema.mutations
-            .map(
-              m =>
-                `${
-                  m.description
-                    ? `  # ${m.description}
-`
-                    : ''
-                }  ${m.mutation}
-`
-            )
-            .join('\n')}
-}
-`
-        : ''
-    }
-`
-  ];
-
-  const typeDefs = generateTypeDefs();
-
-  GraphQLSchema.finalSchema = typeDefs;
-
-  executableSchema = makeExecutableSchema({
-    typeDefs,
-    resolvers: GraphQLSchema.resolvers,
-    schemaDirectives: GraphQLSchema.directives
-  });
-
+  initGraphQL() // define executableSchema
   createApolloServer({
     options: {
-      schema: executableSchema
+      schema: GraphQLSchema.executableSchema
     }
     // config: ....
     // contextFromReq: ....

@@ -10,15 +10,15 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { SchemaLink } from 'apollo-link-schema';
-// TODO: how to import the schema?
-import { GraphQLSchema } from '../../modules/graphql'
-const schema = {} // TODO ???
+import { GraphQLSchema } from '../../modules/graphql.js';
 
 // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
 // import { createHttpLink } from 'apollo-link-http';
 // import fetch from 'node-fetch'
 
 const createClient = (req) => {
+    // we need the executable schema
+    const schema = GraphQLSchema.getExecutableSchema()
     const client = new ApolloClient({
         ssrMode: true,
         link: new SchemaLink({ schema }),
