@@ -31,7 +31,6 @@ const ssrMiddleware = (req, res) => {
 
   // TODO: adapt to Vulcan
   // @see https://github.com/apollographql/GitHunt-React/blob/master/src/server.js
-  // TODO: in the doc it is said to reduce the number of steps, but what steps???
   // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#renderToStringWithData
   renderToStringWithData(App)
     .then(content => {
