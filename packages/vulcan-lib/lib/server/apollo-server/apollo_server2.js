@@ -26,8 +26,7 @@ import getPlaygroundConfig from './playground';
 
 import { GraphQLSchema } from '../../modules/graphql.js';
 
-// SSR
-import { ssrMiddleware } from '../apollo-ssr'
+import { enableSSR } from '../apollo-ssr'
 /**
  * Options: Apollo server usual options
  *
@@ -91,7 +90,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
 
   // ssr
-  //WebApp.connectHandlers.use(ssrMiddleware)
+  enableSSR()
 
   /*
   * Alternative syntax with Express instead of Connect 

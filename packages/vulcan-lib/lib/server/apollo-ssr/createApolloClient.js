@@ -5,7 +5,6 @@
  * /!\ It must be recreated on every request
  */
 
-
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 

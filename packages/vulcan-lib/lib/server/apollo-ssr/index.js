@@ -1,2 +1,1 @@
-import './start'
-export { default as ssrMiddleware } from './ssrMiddleware'
+export { default as enableSSR } from './enableSSR'
