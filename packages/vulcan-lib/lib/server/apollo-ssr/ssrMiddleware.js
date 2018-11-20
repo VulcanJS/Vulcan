@@ -14,8 +14,49 @@ import createClient from './createClient';
 
 import React from 'react';
 import ReactDOM from 'react-dom/server';
+
+// onPageLoad is mostly equivalent to an Express middleware
+// excepts it is tailored to handle Meteor server side rendering
+import { onPageLoad } from 'meteor/server-render'
+
 import Html from './Html';
+import Head from './Head'
 import appGenerator from './appGenerator';
+
+onPageLoad(async (sink) => {
+  const req = sink.request
+  // according to the Apollo doc, client needs to be recreated on every request
+  // this avoids caching server side
+  const client = createClient(req);
+  // TODO adapt to Vulcan
+  const context = {};
+
+  const App = appGenerator({ req, client, context })
+
+  // Alternative that relies on Meteor server-render:
+  // @see https://github.com/szomolanyi/MeteorApolloStarter/blob/master/imports/startup/server/ssr.js
+
+  // TODO: adapt to Vulcan
+  // @see https://github.com/apollographql/GitHunt-React/blob/master/src/server.js
+  // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#renderToStringWithData
+  // equivalent to calling getDataFromTree and then renderToStringWithData
+  //sink.appendToBody(ReactDOM.renderToStaticMarkup(<div id='react-app'></div>))
+  const content = await renderToStringWithData(App)
+  console.log(content.slice(0,100))
+  const wrappedContent = `<div id="react-app">${content}</div>`
+  sink.appendToBody(wrappedContent)
+  //sink.renderIntoElementById('react-app', 'HI')//content)
+  // add headers
+  const head = ReactDOM.renderToString(Head)
+  sink.appendToHead(head)
+  // add data
+  const initialState = client.extract();
+  sink.appendToBody(ReactDOM.renderToString(
+    <script dangerouslySetInnerHTML={{
+      __html: `window.__APOLLO_STATE__ = ${JSON.stringify(initialState).replace(/</g, '\\u003c')};`,
+    }} />
+    ))
+})
 
 const ssrMiddleware = (req, res) => {
   // according to the Apollo doc, client needs to be recreated on every request
@@ -24,7 +65,7 @@ const ssrMiddleware = (req, res) => {
   // TODO adapt to Vulcan
   const context = {};
 
-  const App = appGenerator({req, client, context})
+  const App = appGenerator({ req, client, context })
 
   // Alternative that relies on Meteor server-render:
   // @see https://github.com/szomolanyi/MeteorApolloStarter/blob/master/imports/startup/server/ssr.js

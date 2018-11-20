@@ -91,7 +91,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
 
   // ssr
-  WebApp.connectHandlers.use(ssrMiddleware)
+  //WebApp.connectHandlers.use(ssrMiddleware)
 
   /*
   * Alternative syntax with Express instead of Connect 

@@ -3,11 +3,25 @@
 /* eslint-disable react/no-danger */
 
 import React from 'react';
+import { Helmet } from 'react-helmet'
 
+const Head = () => {
+// Helmet.rewind() is deprecated in favour of renderStatic() for better readability
+//@see https://github.com/nfl/react-helmet/releases/tag/5.0.0
+  const helmet = Helmet.renderStatic()
+  return (
+    <head>
+      {helmet.title.toComponent()}
+      {helmet.meta.toComponent()}
+      {helmet.link.toComponent()}
+    </head>
+  )
+}
 // this render the page and add a script that will load the serialized data
 const Html = ({ content, state }) => {
   return (
     <html>
+      <Head />
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
         <script dangerouslySetInnerHTML={{
