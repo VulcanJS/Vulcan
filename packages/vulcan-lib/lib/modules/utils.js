@@ -61,7 +61,7 @@ Utils.dashToCamel = function (str) {
  * @param {String} str
  */
 Utils.camelCaseify = function(str) {
-  str = this.dashToCamel(str.replace(' ', '-'));
+  str = Utils.dashToCamel(str.replace(' ', '-'));
   str = str.slice(0,1).toLowerCase() + str.slice(1);
   return str;
 };
@@ -115,7 +115,7 @@ Utils.scrollPageTo = function(selector) {
 
 Utils.scrollIntoView = function (selector) {
   if (!document) return;
-  
+
   const element = document.querySelector(selector);
   if (element) {
     element.scrollIntoView();
@@ -264,7 +264,7 @@ _.mixin({
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
       /*
-        
+
         Remove a value if:
         1. it's not a boolean
         2. it's not a number
