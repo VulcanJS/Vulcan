@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -57,10 +58,12 @@ class FormGroup extends PureComponent {
   }
 
   renderHeading() {
-    const { classes, label } = this.props
+    const { classes, label, helpText } = this.props
     return (
       <div className={classes.formSectionHeading} onClick={this.toggle}>
-        <h3 className="form-section-heading-title">{ label }</h3>
+        <Tooltip title={helpText}>
+          <h3 className="form-section-heading-title">{ label }</h3>
+        </Tooltip>
         <span>
           {this.state.collapsed ? <Components.IconRight height={16} width={16}/> : <Components.IconDown height={16} width={16} />}
         </span>
