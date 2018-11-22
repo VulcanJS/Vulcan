@@ -319,7 +319,7 @@ class SmartForm extends Component {
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // if "removeFields" prop is specified, remove its fields
+    // if "hideFields" prop is specified, remove its fields
     const removeFields = this.props.hideFields || this.props.removeFields;
     if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
       relevantFields = _.difference(relevantFields, removeFields);
@@ -1054,6 +1054,7 @@ SmartForm.propTypes = {
   addFields: PropTypes.arrayOf(PropTypes.string),
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
+  addFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.node,
   cancelLabel: PropTypes.node,

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components } from 'meteor/vulcan:core';
+import { Components, Utils } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 import { registerComponent } from 'meteor/vulcan:core';
 import mergeWithComponents from '../modules/mergeWithComponents';
@@ -24,8 +24,8 @@ FormGroupHeader.propTypes = {
 };
 registerComponent({ name: 'FormGroupHeader', component: FormGroupHeader });
 
-const FormGroupLayout = ({ children, heading, collapsed, hasErrors }) => (
-  <div className="form-section">
+const FormGroupLayout = ({ children, label, heading, collapsed, hasErrors }) => (
+  <div className={`form-section form-section-${Utils.slugify(label)}`}>
     {heading}
     <div
       className={classNames({
@@ -78,12 +78,13 @@ class FormGroup extends PureComponent {
     });
 
   render() {
-    const { name, fields, formComponents } = this.props;
+    const { name, fields, formComponents, label } = this.props;
     const { collapsed } = this.state;
     const FormComponents = mergeWithComponents(formComponents);
 
     return (
       <FormComponents.FormGroupLayout
+        label={label}
         toggle={this.toggle}
         collapsed={collapsed}
         heading={name === 'default' ? null : this.renderHeading(FormComponents)}

@@ -98,6 +98,10 @@ class FormWrapper extends PureComponent {
       mutationFields = _.intersection(mutationFields, fields);
     }
 
+    // add "addFields" prop contents to list of fields
+    queryFields = queryFields.concat(this.props.addFields);
+    mutationFields = mutationFields.concat(this.props.addFields);
+
     const convertFields = field => {
       return field.slice(-5) === '_intl' ? `${field}{ locale value }` : field;
     };
@@ -295,6 +299,7 @@ FormWrapper.propTypes = {
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string),
+  addFields: PropTypes.arrayOf(PropTypes.string),
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.node,
   cancelLabel: PropTypes.node,

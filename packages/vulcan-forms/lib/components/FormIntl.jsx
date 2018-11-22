@@ -11,7 +11,7 @@ const FormIntlLayout = ({ children }) => (
 );
 registerComponent({ name: 'FormIntlLayout', component: FormIntlLayout });
 const FormIntlItemLayout = ({ locale, children }) => (
-  <div className={`form-intl-${locale.id}`} key={locale.id}>
+  <div className={`form-intl-${locale.id}`}>
     {children}
   </div>
 );
@@ -47,7 +47,7 @@ class FormIntl extends PureComponent {
     return (
       <FormComponents.FormIntlLayout>
         {Locales.map((locale, i) => (
-          <FormComponents.FormIntlItemLayout locale={locale}>
+          <FormComponents.FormIntlItemLayout key={locale.id} locale={locale}>
             <FormComponents.FormComponent
               {...properties}
               label={this.props.getLabel(name, locale.id)}
