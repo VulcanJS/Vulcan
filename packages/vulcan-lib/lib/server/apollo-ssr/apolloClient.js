@@ -18,14 +18,16 @@ import { ApolloLink } from 'apollo-link';
 // import { createHttpLink } from 'apollo-link-http';
 // import fetch from 'node-fetch'
 
-export const createClient = (req) => {
+export const createClient = async ({req, computeContext}) => {
     // init
     // stateLink will init the client internal state
     const cache = new InMemoryCache()
     const stateLink = createStateLink({ cache });
     // schemaLink will fetch data directly based on the executable schema
     const schema = GraphQLSchema.getExecutableSchema()
-    const schemaLink = new SchemaLink({ schema })
+    // this is the resolver context
+    const context = await computeContext(req)
+    const schemaLink = new SchemaLink({ schema, context })
     const client = new ApolloClient({
         ssrMode: true,
         link: ApolloLink.from([stateLink, schemaLink, errorLink]),

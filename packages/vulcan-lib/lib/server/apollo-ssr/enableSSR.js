@@ -11,17 +11,17 @@ import {
 // excepts it is tailored to handle Meteor server side rendering
 import { onPageLoad } from 'meteor/server-render'
 
-import renderPage from './renderPage'
+import makePageRenderer from './renderPage'
 
 
-const enableSSR = () => {
+const enableSSR = ({computeContext}) => {
   Meteor.startup(() => {
     // init the application components and routes, including components & routes from 3rd-party packages
     initializeFragments();
     populateComponentsApp();
     populateRoutesApp();
     // render the page
-    onPageLoad(renderPage)
+    onPageLoad(makePageRenderer({computeContext}))
   });
 
 }

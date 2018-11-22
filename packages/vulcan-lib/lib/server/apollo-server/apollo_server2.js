@@ -32,24 +32,27 @@ import { enableSSR } from '../apollo-ssr'
  *
  * Config: a config specific to Vulcan
  */
-const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
+const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, customContextFromReq }) => {
   const graphiqlOptions = { ...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions };
   const config = { ...defaultConfig, ...givenConfig };
   config.graphiqlOptions = graphiqlOptions;
 
   // get the options and merge in defaults
   const options = { ...defaultOptions, ...givenOptions };
-  const context = initContext(options.context);
+  const initialContext = initContext(options.context);
+
+  // this replace the previous syntax graphqlExpress(async req => { ... })
+  // this function takes the context, which contains the current request,
+  // and setup the options accordingly ({req}) => { ...; return options }
+  const contextFromReq = computeContextFromReq(initialContext, customContextFromReq)
   // given options contains the schema
   const apolloServer = new ApolloServer({
     engine: engineConfig,
     // graphql playground (replacement to graphiql), available on the app path
     playground: getPlaygroundConfig(config),
     ...options,
-    // this replace the previous syntax graphqlExpress(async req => { ... })
-    // this function takes the context, which contains the current request,
-    // and setup the options accordingly ({req}) => { ...; return options }
-    context: computeContextFromReq(context, contextFromReq)
+    // context optionbject or a function of the current request (+ maybe some other params)
+    context: ({req}) => contextFromReq(req) 
   });
 
   // default function does nothing
@@ -90,7 +93,7 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
 
   // ssr
-  enableSSR()
+  enableSSR({ computeContext: contextFromReq})
 
   /*
   * Alternative syntax with Express instead of Connect 

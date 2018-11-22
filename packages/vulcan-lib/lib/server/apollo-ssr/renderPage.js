@@ -14,40 +14,44 @@ import Head from './components/Head'
 import ApolloState from './components/ApolloState'
 import AppGenerator from './components/AppGenerator';
 
-const renderPage = async sink => {
-    const req = sink.request
-    // according to the Apollo doc, client needs to be recreated on every request
-    // this avoids caching server side
-    const client = createClient(req);
+const makePageRenderer = ({ computeContext }) => {
+    // onPageLoad callback
+    const renderPage = async sink => {
+        const req = sink.request
+        // according to the Apollo doc, client needs to be recreated on every request
+        // this avoids caching server side
+        const client = await createClient({req, computeContext});
 
-    // TODO? do we need this?
-    const context = {};
+        // TODO? do we need this?
+        const context = {};
 
-    // equivalent to calling getDataFromTree and then renderToStringWithData
-    const content = await renderToStringWithData(
-        <AppGenerator req={req} client={client} context={context} />
-    )
+        // equivalent to calling getDataFromTree and then renderToStringWithData
+        const content = await renderToStringWithData(
+            <AppGenerator req={req} client={client} context={context} />
+        )
 
-    // TODO: there should be a cleaner way to set this wrapper
-    // id must always match the client side start.jsx file
-    const wrappedContent = `<div id="react-app">${content}</div>`
-    sink.appendToBody(wrappedContent)
-    // TODO: this sounds cleaner but where do we add the <div id="react-app"> ?
-    //sink.renderIntoElementById('react-app', content)
+        // TODO: there should be a cleaner way to set this wrapper
+        // id must always match the client side start.jsx file
+        const wrappedContent = `<div id="react-app">${content}</div>`
+        sink.appendToBody(wrappedContent)
+        // TODO: this sounds cleaner but where do we add the <div id="react-app"> ?
+        //sink.renderIntoElementById('react-app', content)
 
-    // add headers using helmet
-    const head = ReactDOM.renderToString(<Head />)
-    sink.appendToHead(head)
+        // add headers using helmet
+        const head = ReactDOM.renderToString(<Head />)
+        sink.appendToHead(head)
 
-    // add Apollo state, the client will then parse the string
-    const initialState = client.extract();
-    const serializedApolloState = ReactDOM.renderToString(
-        <ApolloState initialState={initialState} />
-    )
-    sink.appendToBody(serializedApolloState)
+        // add Apollo state, the client will then parse the string
+        const initialState = client.extract();
+        const serializedApolloState = ReactDOM.renderToString(
+            <ApolloState initialState={initialState} />
+        )
+        sink.appendToBody(serializedApolloState)
+    }
+    return renderPage
 }
 
-export default renderPage
+export default makePageRenderer
 // FIRST TRY WITH EXPRESS
 // However this won't work as Meteor is in charge of loading relevant JS script
 // This code would only render dead HTML
