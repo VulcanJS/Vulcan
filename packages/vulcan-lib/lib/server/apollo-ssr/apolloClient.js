@@ -30,7 +30,7 @@ export const createClient = async ({req, computeContext}) => {
     const schemaLink = new SchemaLink({ schema, context })
     const client = new ApolloClient({
         ssrMode: true,
-        link: ApolloLink.from([stateLink, schemaLink, errorLink]),
+        link: ApolloLink.from([stateLink, errorLink, schemaLink ]),
         // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
         // Remember that this is the interface the SSR server will use to connect to the
         // API server, so we need to ensure it isn't firewalled, etc
