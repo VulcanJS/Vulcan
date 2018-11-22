@@ -34,7 +34,9 @@ describe('vulcan:core/default_resolvers', function() {
     const adminUser = { _id: 'foobar', groups: [], isAdmin: true };
     const getSingleResolver = () => getDefaultResolvers(resolversOptions).single.resolver;
 
-    it('return null if documentId is undefined', function() {
+    // TODO: the current behaviour is not consistent, could be improved
+    // @see https://github.com/VulcanJS/Vulcan/issues/2118
+    it.skip('return null if documentId is undefined', function() {
       const resolver = getSingleResolver();
       // no documentId
       const input = { selector: {} };

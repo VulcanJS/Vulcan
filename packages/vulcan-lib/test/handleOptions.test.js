@@ -1,4 +1,4 @@
-import { extractCollectionInfo, extractFragmentInfo } from '../lib/modules/containers/handleOptions';
+import { extractCollectionInfo, extractFragmentInfo } from '../lib/modules/handleOptions';
 import expect from 'expect';
 
 describe('vulcan:lib/handleOptions', function() {
