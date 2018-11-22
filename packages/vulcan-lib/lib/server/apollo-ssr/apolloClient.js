@@ -11,7 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SchemaLink } from 'apollo-link-schema';
 import { GraphQLSchema } from '../../modules/graphql.js';
 
-import { createStateLink } from '../../modules/apollo-common';
+import { createStateLink, errorLink } from '../../modules/apollo-common';
 import { ApolloLink } from 'apollo-link';
 
 // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
@@ -28,7 +28,7 @@ export const createClient = (req) => {
     const schemaLink = new SchemaLink({ schema })
     const client = new ApolloClient({
         ssrMode: true,
-        link: ApolloLink.from([stateLink, schemaLink]),
+        link: ApolloLink.from([stateLink, schemaLink, errorLink]),
         // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
         // Remember that this is the interface the SSR server will use to connect to the
         // API server, so we need to ensure it isn't firewalled, etc
