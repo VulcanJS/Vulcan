@@ -25,6 +25,11 @@ const makePageRenderer = ({ computeContext }) => {
         // TODO? do we need this?
         const context = {};
 
+
+        // TODO: req object does not seem to have been processed by the Express 
+        // middlewares at this point
+        // @see https://github.com/meteor/meteor-feature-requests/issues/174#issuecomment-441047495
+
         // equivalent to calling getDataFromTree and then renderToStringWithData
         const content = await renderToStringWithData(
             <AppGenerator req={req} client={client} context={context} />

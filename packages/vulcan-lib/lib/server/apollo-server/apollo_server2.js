@@ -27,6 +27,8 @@ import getPlaygroundConfig from './playground';
 import { GraphQLSchema } from '../../modules/graphql.js';
 
 import { enableSSR } from '../apollo-ssr'
+
+import universalCookiesMiddleware from 'universal-cookie-express';
 /**
  * Options: Apollo server usual options
  *
@@ -58,6 +60,13 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
   // default function does nothing
   config.configServer(apolloServer);
 
+
+  // WebApp.connectHandlers is a connect server 
+  // you can add middlware as usual when using Express/Connect
+
+  // parse cookies and assign req.universalCookies object
+  WebApp.connectHandlers.use(universalCookiesMiddleware())
+
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server
   apolloServer.applyMiddleware({
@@ -66,14 +75,14 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     path: config.path
   });
 
-  // WebApp.connectHandlers is a connect server and exposes the same API
-  // you can add middlware as usual
+
   // setup the end point
   WebApp.connectHandlers.use(config.path, (req, res) => {
     if (req.method === 'GET') {
       res.end();
     }
   });
+
 
 
   /* Syntax for adding middlewares to /graphql
