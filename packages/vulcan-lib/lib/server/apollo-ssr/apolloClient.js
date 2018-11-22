@@ -11,17 +11,24 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SchemaLink } from 'apollo-link-schema';
 import { GraphQLSchema } from '../../modules/graphql.js';
 
+import { createStateLink } from '../../modules/apollo-common';
+import { ApolloLink } from 'apollo-link';
+
 // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
 // import { createHttpLink } from 'apollo-link-http';
 // import fetch from 'node-fetch'
 
-const createClient = (req) => {
-    // we need the executable schema
+export const createClient = (req) => {
+    // init
+    // stateLink will init the client internal state
+    const cache = new InMemoryCache()
+    const stateLink = createStateLink({ cache });
+    // schemaLink will fetch data directly based on the executable schema
     const schema = GraphQLSchema.getExecutableSchema()
+    const schemaLink = new SchemaLink({ schema })
     const client = new ApolloClient({
         ssrMode: true,
-        link: new SchemaLink({ schema }),
-
+        link: ApolloLink.from([stateLink, schemaLink]),
         // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
         // Remember that this is the interface the SSR server will use to connect to the
         // API server, so we need to ensure it isn't firewalled, etc
@@ -37,10 +44,7 @@ const createClient = (req) => {
         //    // need to explicitely pass fetch server side
         //    fetch
         //}),
-
-        
-        cache: new InMemoryCache(),
+        cache
     });
     return client
 }
-export default createClient

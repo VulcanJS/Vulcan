@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { renderToStringWithData } from 'react-apollo';
 
-import createClient from './createApolloClient';
+import { createClient } from './apolloClient';
 
 import Head from './components/Head'
 import ApolloState from './components/ApolloState'
