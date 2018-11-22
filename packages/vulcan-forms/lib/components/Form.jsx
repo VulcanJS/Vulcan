@@ -234,7 +234,8 @@ class SmartForm extends Component {
 
     // run data object through submitForm callbacks
     data = runCallbacks(this.submitFormCallbacks, data);
-
+    Utils.removeProperty(data, '__typename');
+    
     return data;
   };
 
