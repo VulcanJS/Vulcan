@@ -174,7 +174,13 @@ export const GraphQLSchema = {
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
               [typeName]: {
-                [resolverName]: field.resolveAs.resolver
+                [resolverName]: (document, args, context, info) => {
+                  const { Users, currentUser } = context;
+                  // check that current user has permission to access the original non-resolved field
+                  const canReadField = Users.canReadField(currentUser, field, document);
+                  return canReadField ? field.resolveAs.resolver(document, args, context, info) : null;
+
+                }
               }
             };
             addGraphQLResolvers(resolver);
