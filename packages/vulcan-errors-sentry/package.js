@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:errors-sentry',
   summary: 'Vulcan Sentry error tracking package',
-  version: '1.12.8',
+  version: '1.12.9',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 

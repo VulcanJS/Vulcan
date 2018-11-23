@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:errors",
   summary: "Vulcan error tracking package",
-  version: '1.12.8',
+  version: '1.12.9',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
