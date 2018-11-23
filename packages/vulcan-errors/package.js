@@ -11,7 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'ecmascript',
-    'vulcan:core',
+    'vulcan:core@1.12.9',
   ]);
 
   api.mainModule("lib/server/main.js", "server");
