@@ -139,4 +139,7 @@ addStrings('en', {
   'errors.expectedType': 'Expected a field “{label}” of type {dataType}, got “{value}” instead.',
   'errors.required': 'Field “{label}” is required.',
   'errors.maxString': 'Field “{label}” is limited to {max} characters.',
+  'errors.generic': 'Sorry, something went wrong: <code>{errorMessage}</code>.',
+  'errors.generic_report': 'Sorry, something went wrong:  <code>{errorMessage}</code>. <br/>An error report has been generated.',
+  
 });
