@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:cloudinary',
   summary: 'Vulcan file upload package.',
-  version: '1.12.9',
+  version: '1.12.10',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'vulcan:core@1.12.9'
+    'vulcan:core@1.12.10'
   ]);
 
   api.mainModule('lib/client/main.js', 'client');

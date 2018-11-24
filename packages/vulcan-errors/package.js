@@ -1,7 +1,7 @@
 Package.describe({
   name: "vulcan:errors",
   summary: "Vulcan error tracking package",
-  version: '1.12.9',
+  version: '1.12.10',
   git: "https://github.com/VulcanJS/Vulcan.git"
 });
 
@@ -11,7 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'ecmascript',
-    'vulcan:core@1.12.9',
+    'vulcan:core@1.12.10',
   ]);
 
   api.mainModule("lib/server/main.js", "server");
