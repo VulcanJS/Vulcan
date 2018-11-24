@@ -99,8 +99,10 @@ class FormWrapper extends PureComponent {
     }
 
     // add "addFields" prop contents to list of fields
-    queryFields = queryFields.concat(this.props.addFields);
-    mutationFields = mutationFields.concat(this.props.addFields);
+    if (this.props.addFields && this.props.addFields.length) {
+      queryFields = queryFields.concat(this.props.addFields);
+      mutationFields = mutationFields.concat(this.props.addFields);
+    }
 
     const convertFields = field => {
       return field.slice(-5) === '_intl' ? `${field}{ locale value }` : field;
