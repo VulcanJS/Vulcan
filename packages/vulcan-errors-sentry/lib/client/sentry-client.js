@@ -12,10 +12,11 @@ const environment = getSetting('environment');
 Initialize Sentry
 
 */
-function initSentryForClient() {
+function initSentryForClient(props = {}) {
   Sentry.init({
     dsn: clientDSN,
     environment,
+    release: props.siteData && props.siteData.sourceVersion
   });
 }
 addInitFunction(initSentryForClient);

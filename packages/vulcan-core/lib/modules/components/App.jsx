@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withUpdate from '../containers/withUpdate.js';
+import withSiteData from '../containers/withSiteData.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
@@ -27,6 +28,10 @@ class App extends PureComponent {
     const { locale, localeMethod } = this.initLocale();
     this.state = { locale, localeMethod };
     moment.locale(locale);
+  }
+
+  componentDidMount() {
+    runCallbacks('app.mounted', this.props);
   }
 
   initLocale = () => {
@@ -120,7 +125,7 @@ class App extends PureComponent {
             {this.props.currentUserLoading ? (
               <Components.Loading />
             ) : this.props.children ? (
-              <ErrorCatcher>{this.props.children}</ErrorCatcher>
+              <ErrorCatcher siteData={this.props.siteData}>{this.props.children}</ErrorCatcher>
             ) : (
               <Components.Welcome />
             )}
@@ -148,6 +153,6 @@ const updateOptions = {
   fragmentName: 'UsersCurrent',
 };
 
-registerComponent('App', App, withCurrentUser, [withUpdate, updateOptions], withApollo, withCookies);
+registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies);
 
 export default App;

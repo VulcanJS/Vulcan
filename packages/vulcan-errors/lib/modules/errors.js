@@ -18,11 +18,16 @@ export const userFields = {
   isAdmin: 'isAdmin',
 };
 
-export const addInitFunction = fn => {
-  initFunctions.push(fn);
-  // execute init function as soon as possible
-  fn();
-};
+/*
+
+Moved to server/client's init.js
+
+*/
+// export const addInitFunction = fn => {
+//   initFunctions.push(fn);
+//   // on server, execute init function as soon as possible
+//   fn();
+// };
 
 export const addLogFunction = fn => {
   logFunctions.push(fn);
