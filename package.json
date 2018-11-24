@@ -18,7 +18,7 @@
     "apollo-errors": "^1.4.0",
     "apollo-server-express": "^1.2.0",
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.2",
     "chalk": "2.2.0",
     "classnames": "^2.2.3",
