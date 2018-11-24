@@ -20,12 +20,13 @@ class ErrorCatcher extends Component {
   };
 
   componentDidCatch = (error, errorInfo) => {
-    const { currentUser } = this.props;
+    const { currentUser, siteData } = this.props;
+    const { sourceVersion } = siteData;
     this.setState({ error });
     Errors.log({
       message: error.message,
       error,
-      details: errorInfo,
+      details: { ...errorInfo, sourceVersion },
       currentUser,
     });
   };
