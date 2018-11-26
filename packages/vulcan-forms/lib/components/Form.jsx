@@ -69,7 +69,8 @@ import { callbackProps } from './propTypes';
 // props that should trigger a form reset
 const RESET_PROPS = [
   'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser', 
-  'fields', 'removeFields'
+  'fields', 'removeFields',
+  'prefilledProps' // TODO: prefilledProps should be merged instead?
 ]
 
 const compactParent = (object, path) => {
