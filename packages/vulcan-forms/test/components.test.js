@@ -289,11 +289,6 @@ describe('vulcan-forms/components', function() {
     });
 
     describe('Form state management', function() {
-      //const simulateKeyPresses = (wrapper, value) => {
-      //  wrapper.find('input').first().simulate('change', {target:{value:'bar'}})
-      //  return wrapper
-      //}
-
       // TODO: the change callback is triggerd but `foo` becomes null instead of "bar
       // so it's added to the deletedValues and not changedValues
       it.skip('store typed value', function() {
@@ -307,10 +302,6 @@ describe('vulcan-forms/components', function() {
         console.log(wrapper.state());
         expect(wrapper.state().currentValues).toEqual({foo:'bar'})
       });
-      // TODO: store those props in a config object of the Form
-      const RESET_PROPS = [
-        'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser'
-      ]
       it('reset state when relevant props change', function() {
         const wrapper = shallowWithContext(<Form {...defaultProps} collectionName="Foos" collection={Foos} />);
         wrapper.setState({ currentValues: { foo: 'bar' } })

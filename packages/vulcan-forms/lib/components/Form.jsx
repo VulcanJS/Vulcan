@@ -65,6 +65,13 @@ import {
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';
 
+
+// props that should trigger a form reset
+const RESET_PROPS = [
+  'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser', 
+  'fields', 'removeFields'
+]
+
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
 
@@ -636,14 +643,15 @@ class SmartForm extends Component {
 
   /*
   
-  When props change, reinitialize state
-  
-  // TODO: only need to check nextProps.prefilledProps?
-  // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+  When props change, reinitialize the form  state
+  Triggered only for data related props (collection, document, currentUser etc.)
+
+  @see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
    
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props, nextProps)) {
+    const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]))
+    if (needReset) {
       this.setState(getInitialStateFromProps(nextProps));
     }
   }
