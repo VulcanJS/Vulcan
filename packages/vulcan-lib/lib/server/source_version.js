@@ -16,7 +16,7 @@ const getSourceVersionFromGit = () => {
       .toString()
       .trim();
   } catch (err) {
-    console.error(`Error: could not get source version from command ${cmd}`, err);
+    console.error(`Error: could not get source version from command ${cmd}. Message: ${err.message.toString()}`);
     return undefined;
   }
 };
