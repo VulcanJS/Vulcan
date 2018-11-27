@@ -78,7 +78,7 @@ export const batchUpdateScore = async ({collection, inactive = false, forceUpdat
         $and: [
           {postedAt: {$exists: true}},
           {postedAt: {$lte: new Date()}},
-          {inactive: inactive ? true : {$ne: true}}
+          {inactive: inactive ? true : {$in: [false,null]}}
         ]
       }
     },

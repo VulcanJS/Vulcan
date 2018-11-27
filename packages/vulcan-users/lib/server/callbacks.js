@@ -30,7 +30,7 @@
   function usersMakeAdmin (user) {
     // if this is not a dummy account, and is the first user ever, make them an admin
     // TODO: should use await Connectors.count() instead, but cannot await inside Accounts.onCreateUser. Fix later. 
-    const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+    const realUsersCount = Users.find({'isDummy': {$in: [false,null]}}).count();
     user.isAdmin = !user.isDummy && realUsersCount === 0;
     return user;
   }
