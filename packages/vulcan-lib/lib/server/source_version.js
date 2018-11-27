@@ -8,4 +8,16 @@ or current child process.
 See https://github.com/zodern/meteor-up/issues/807#issuecomment-346915622
 
 */
-export const sourceVersion = process.env.SOURCE_VERSION || childProcess.execSync('git rev-parse HEAD').toString().trim();
+export const getSourceVersion = () => {
+  try {
+    return (
+      process.env.SOURCE_VERSION ||
+      childProcess
+        .execSync('git rev-parse HEAD')
+        .toString()
+        .trim()
+    );
+  } catch (error) {
+    return null;
+  }
+};
