@@ -132,8 +132,8 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.create.async`, properties: { insertedDocument, ...callbackProperties }});
-  await runCallbacksAsync({ name: '*.create.async', properties: { insertedDocument, ...callbackProperties }});
+  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.create.async`, properties: { insertedDocument, document: insertedDocument, ...callbackProperties }});
+  await runCallbacksAsync({ name: '*.create.async', properties: { insertedDocument, document: insertedDocument, ...callbackProperties }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName.toLowerCase()}.new.async`, insertedDocument, currentUser, collection);
 
