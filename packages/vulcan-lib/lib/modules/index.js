@@ -20,8 +20,7 @@ export * from './strings.js';
 export * from './redux.js';
 export * from './headtags.js';
 export * from './fragments.js';
-// export * from './apollo.js';
-// export * from './apollo2.js';
+export * from './apollo-common'
 export * from './dynamic_loader.js';
 export * from './admin.js';
 export * from './fragment_matcher.js';

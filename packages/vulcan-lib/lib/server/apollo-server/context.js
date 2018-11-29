@@ -45,24 +45,32 @@ export const initContext = currentContext => {
   return context;
 };
 
-// Call on every request
-export const computeContextFromReq = (currentContext, contextFromReq) => {
+
+import Cookies from 'universal-cookie';
+
+// initial request will get the login token from a cookie, subsequent requests from 
+// the header
+const getAuthToken = (req) => {
+  return req.headers.authorization || (new Cookies(req.cookies)).get('meteor_login_token')
+}
+// @see https://www.apollographql.com/docs/react/recipes/meteor#Server
+const setupAuthToken = async (context, req) => {
+  const user = await getUser(getAuthToken(req));
+  if (user) {
+    context.userId = user._id;
+    context.currentUser = user;
+    // identify user to any server-side analytics providers
+    runCallbacks('events.identify', user);
+  } else {
+    context.userId = undefined;
+    context.currentUser = undefined;
+  }
+};
+// Returns a function called on every request to compute context
+export const computeContextFromReq = (currentContext, customContextFromReq) => {
   // givenOptions can be either a function of the request or an object
   const getBaseContext = req =>
-    contextFromReq ? { ...currentContext, ...contextFromReq(req) } : { ...currentContext };
-  // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
-  const setupAuthToken = async (context, req) => {
-    const user = await getUser(req.headers.authorization);
-    if (user) {
-      context.userId = user._id;
-      context.currentUser = user;
-      // identify user to any server-side analytics providers
-      runCallbacks('events.identify', user);
-    } else {
-      context.userId = undefined;
-      context.currentUser = undefined;
-    }
-  };
+    customContextFromReq ? { ...currentContext, ...customContextFromReq(req) } : { ...currentContext };
   // Previous implementation
   // Now meteor/apollo already provide this
   // Get the token from the header
@@ -91,7 +99,7 @@ export const computeContextFromReq = (currentContext, contextFromReq) => {
   //}
 
   // create options given the current request
-  const handleReq = async ({ req }) => {
+  const handleReq = async (req) => {
     let context;
     let user = null;
 

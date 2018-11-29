@@ -40,84 +40,82 @@ const clearQuery = gql`
   }
 `;
 
-if (Meteor.isClient) {
-  // init the flash message state
-  registerStateLinkDefault({
-    name: 'flashMessages',
-    defaultValue: []
-  });
-  // mutations (equivalent to reducers)
-  registerStateLinkMutation({
-    name: 'flashMessagesFlash',
-    mutation: (obj, args, context, info) => {
-      // get relevant values from args
-      const { cache } = context;
-      const { content } = args;
-      // retrieve current state
-      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
-      // transform content
-      const flashType = content && typeof content.type !== 'undefined' ? content.type : 'error';
-      const _id = currentFlashMessages.length;
-      const flashMessage = {
-        _id,
-        ...content,
-        type: flashType,
-        seen: false,
-        show: true
-      };
-      // const { } = obj  // the obj param is generally ignored in apollo-state-link
-      // const { } = info // barely needed (external info about the query)
-      // get the current messages
-      // push data
-      const data = {
-        flashMessages: [...currentFlashMessages, flashMessage]
-      };
-      cache.writeData({ data });
-      return null;
-    }
-  });
-  registerStateLinkMutation({
-    name: 'flashMessagesMarkAsSeen',
-    mutation: (obj, args, context) => {
-      const { cache } = context;
-      const { i } = args;
-      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
-      currentFlashMessages[i] = { ...currentFlashMessages[i], seen: true };
-      const data = {
-        flashMessages: currentFlashMessages
-      };
-      cache.writeData({ data });
-      return null;
-    }
-  });
-  registerStateLinkMutation({
-    name: 'flashMessagesClear',
-    mutation: (obj, args, context) => {
-      const { cache } = context;
-      const { i } = args;
-      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
-      currentFlashMessages[i] = { ...currentFlashMessages[i], show: false };
-      const data = {
-        flashMessages: currentFlashMessages
-      };
-      cache.writeData({ data });
-      return null;
-    }
-  });
-  registerStateLinkMutation({
-    name: 'flashMessagesClearSeen',
-    mutation: (obj, args, context) => {
-      const { cache } = context;
-      const currentFlashMessages = cache.readData({ query: getMessagesQuery });
-      const newValue = currentFlashMessages.map(message => (message.seen ? { ...message, show: false } : message));
-      const data = {
-        flashMessages: newValue
-      };
-      cache.writeData({ data });
-      return null;
-    }
-  });
-}
+// init the flash message state
+registerStateLinkDefault({
+  name: 'flashMessages',
+  defaultValue: []
+});
+// mutations (equivalent to reducers)
+registerStateLinkMutation({
+  name: 'flashMessagesFlash',
+  mutation: (obj, args, context, info) => {
+    // get relevant values from args
+    const { cache } = context;
+    const { content } = args;
+    // retrieve current state
+    const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+    // transform content
+    const flashType = content && typeof content.type !== 'undefined' ? content.type : 'error';
+    const _id = currentFlashMessages.length;
+    const flashMessage = {
+      _id,
+      ...content,
+      type: flashType,
+      seen: false,
+      show: true
+    };
+    // const { } = obj  // the obj param is generally ignored in apollo-state-link
+    // const { } = info // barely needed (external info about the query)
+    // get the current messages
+    // push data
+    const data = {
+      flashMessages: [...currentFlashMessages, flashMessage]
+    };
+    cache.writeData({ data });
+    return null;
+  }
+});
+registerStateLinkMutation({
+  name: 'flashMessagesMarkAsSeen',
+  mutation: (obj, args, context) => {
+    const { cache } = context;
+    const { i } = args;
+    const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+    currentFlashMessages[i] = { ...currentFlashMessages[i], seen: true };
+    const data = {
+      flashMessages: currentFlashMessages
+    };
+    cache.writeData({ data });
+    return null;
+  }
+});
+registerStateLinkMutation({
+  name: 'flashMessagesClear',
+  mutation: (obj, args, context) => {
+    const { cache } = context;
+    const { i } = args;
+    const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+    currentFlashMessages[i] = { ...currentFlashMessages[i], show: false };
+    const data = {
+      flashMessages: currentFlashMessages
+    };
+    cache.writeData({ data });
+    return null;
+  }
+});
+registerStateLinkMutation({
+  name: 'flashMessagesClearSeen',
+  mutation: (obj, args, context) => {
+    const { cache } = context;
+    const currentFlashMessages = cache.readData({ query: getMessagesQuery });
+    const newValue = currentFlashMessages.map(message => (message.seen ? { ...message, show: false } : message));
+    const data = {
+      flashMessages: newValue
+    };
+    cache.writeData({ data });
+    return null;
+  }
+});
 
 const withMessages = compose(
   // equivalent to mapDispatchToProps (map the state-link to the component props, so it can access the mutations)

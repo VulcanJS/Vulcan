@@ -3,7 +3,6 @@
  * @see https://www.apollographql.com/docs/apollo-server/migration-two-dot.html
  */
 
-import { makeExecutableSchema } from 'apollo-server';
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
 //import express from 'express';
@@ -11,50 +10,62 @@ import { ApolloServer } from 'apollo-server-express';
 
 import { Meteor } from 'meteor/meteor';
 
-import { GraphQLSchema } from '../../modules/graphql.js';
 import { WebApp } from 'meteor/webapp';
 
-import { runCallbacks } from '../../modules/callbacks.js';
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
 
-export let executableSchema;
-
+import initGraphQL from './initGraphQL'
 import './settings';
 import { engineConfig } from './engine';
 import { defaultConfig, defaultOptions } from './defaults';
 import { initContext, computeContextFromReq } from './context.js';
 import getPlaygroundConfig from './playground';
 
+import { GraphQLSchema } from '../../modules/graphql.js';
+
+import { enableSSR } from '../apollo-ssr'
+
+import universalCookiesMiddleware from 'universal-cookie-express';
 /**
  * Options: Apollo server usual options
  *
  * Config: a config specific to Vulcan
  */
-const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, contextFromReq }) => {
+const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = {}, customContextFromReq }) => {
   const graphiqlOptions = { ...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions };
   const config = { ...defaultConfig, ...givenConfig };
   config.graphiqlOptions = graphiqlOptions;
 
   // get the options and merge in defaults
   const options = { ...defaultOptions, ...givenOptions };
-  const context = initContext(options.context);
+  const initialContext = initContext(options.context);
+
+  // this replace the previous syntax graphqlExpress(async req => { ... })
+  // this function takes the context, which contains the current request,
+  // and setup the options accordingly ({req}) => { ...; return options }
+  const contextFromReq = computeContextFromReq(initialContext, customContextFromReq)
   // given options contains the schema
   const apolloServer = new ApolloServer({
     engine: engineConfig,
     // graphql playground (replacement to graphiql), available on the app path
     playground: getPlaygroundConfig(config),
     ...options,
-    // this replace the previous syntax graphqlExpress(async req => { ... })
-    // this function takes the context, which contains the current request,
-    // and setup the options accordingly ({req}) => { ...; return options }
-    context: computeContextFromReq(context, contextFromReq)
+    // context optionbject or a function of the current request (+ maybe some other params)
+    context: ({req}) => contextFromReq(req) 
   });
 
   // default function does nothing
   config.configServer(apolloServer);
+
+
+  // WebApp.connectHandlers is a connect server 
+  // you can add middlware as usual when using Express/Connect
+
+  // parse cookies and assign req.universalCookies object
+  WebApp.connectHandlers.use(universalCookiesMiddleware())
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server
@@ -64,14 +75,15 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     path: config.path
   });
 
-  // WebApp.connectHandlers is a connect server and exposes the same API
-  // you can add middlware as usual
+
   // setup the end point
   WebApp.connectHandlers.use(config.path, (req, res) => {
     if (req.method === 'GET') {
       res.end();
     }
   });
+
+
 
   /* Syntax for adding middlewares to /graphql
      Uses Connect + Meteor + Apollo
@@ -87,6 +99,10 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
     // available on /voyager as a default
     WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
   }
+
+
+  // ssr
+  enableSSR({ computeContext: contextFromReq})
 
   /*
   * Alternative syntax with Express instead of Connect 
@@ -110,70 +126,10 @@ const createApolloServer = ({ options: givenOptions = {}, config: givenConfig = 
 
 // createApolloServer when server startup
 Meteor.startup(() => {
-  runCallbacks('graphql.init.before');
-
-  // typeDefs
-  const generateTypeDefs = () => [
-    `
-scalar JSON
-scalar Date
-
-${GraphQLSchema.getAdditionalSchemas()}
-
-${GraphQLSchema.getCollectionsSchemas()}
-
-type Query {
-
-${GraphQLSchema.queries
-      .map(
-        q =>
-          `${
-            q.description
-              ? `  # ${q.description}
-`
-              : ''
-          }  ${q.query}
-  `
-      )
-      .join('\n')}
-}
-
-${
-      GraphQLSchema.mutations.length > 0
-        ? `type Mutation {
-
-${GraphQLSchema.mutations
-            .map(
-              m =>
-                `${
-                  m.description
-                    ? `  # ${m.description}
-`
-                    : ''
-                }  ${m.mutation}
-`
-            )
-            .join('\n')}
-}
-`
-        : ''
-    }
-`
-  ];
-
-  const typeDefs = generateTypeDefs();
-
-  GraphQLSchema.finalSchema = typeDefs;
-
-  executableSchema = makeExecutableSchema({
-    typeDefs,
-    resolvers: GraphQLSchema.resolvers,
-    schemaDirectives: GraphQLSchema.directives
-  });
-
+  initGraphQL() // define executableSchema
   createApolloServer({
     options: {
-      schema: executableSchema
+      schema: GraphQLSchema.executableSchema
     }
     // config: ....
     // contextFromReq: ....
