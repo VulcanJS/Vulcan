@@ -45,9 +45,17 @@ export const initContext = currentContext => {
   return context;
 };
 
+
+import Cookies from 'universal-cookie';
+
+// initial request will get the login token from a cookie, subsequent requests from 
+// the header
+const getAuthToken = (req) => {
+  return req.headers.authorization || (new Cookies(req.cookies)).get('meteor_login_token')
+}
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
 const setupAuthToken = async (context, req) => {
-  const user = await getUser(req.headers.authorization);
+  const user = await getUser(getAuthToken(req));
   if (user) {
     context.userId = user._id;
     context.currentUser = user;
