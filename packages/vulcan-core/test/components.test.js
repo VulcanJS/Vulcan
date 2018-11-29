@@ -51,5 +51,24 @@ describe('vulcan-core/components', function () {
             const content = wrapper.find('DatatableContents').first();
             expect(content).toBeDefined();
         });
+        const context = {
+            intl: {
+                formatMessage: () => { },
+            }
+        };
+        it('mounts a static version', function () {
+            const wrapper = mount(
+                <Datatable
+                    Components={Components}
+                    data={[{ name: 'foo' }, { name: 'bar' }]}
+                />
+                , {
+                   context,
+                   childContextTypes: context
+                });
+            expect(wrapper).toBeDefined();
+            //const content = wrapper.find('DatatableContents').first();
+            //expect(content).toBeDefined();
+        });
     });
 });

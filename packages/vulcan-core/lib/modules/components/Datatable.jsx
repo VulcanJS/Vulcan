@@ -6,6 +6,7 @@ import withComponents from '../containers/withComponents';
 import withMulti from '../containers/withMulti.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
+import _sortBy from 'lodash/sortBy';
 
 /*
 
@@ -21,6 +22,12 @@ const delay = (function(){
     timer = setTimeout(callback, ms);
   };
 })();
+
+const getColumnName = column => (
+  typeof column === 'string' 
+  ? column 
+  : column.label || column.name
+);
 
 class Datatable extends PureComponent {
 
@@ -116,11 +123,11 @@ Datatable.defaultProps = {
 registerComponent({ name: 'Datatable', component: Datatable, hocs: [withCurrentUser, withComponents] });
 export default Datatable;
 
-const DatatableLayout = ({ collectionName, children }) => {
+const DatatableLayout = ({ collectionName, children }) => (
   <div className={`datatable datatable-${collectionName}`}>
     {children}
-  </div>;
-};
+  </div>
+);
 registerComponent({ name: 'DatatableLayout', component: DatatableLayout });
 
 /*
@@ -168,7 +175,7 @@ const DatatableAboveLayout = ({ children }) => (
     {children}
   </div>
 );
-registerComponent({ name: 'DatatablAboveLayout', component: DatatableAboveLayout });
+registerComponent({ name: 'DatatableAboveLayout', component: DatatableAboveLayout });
 
   
 /*
@@ -178,7 +185,7 @@ DatatableHeader Component
 */
 const DatatableHeader = ({ collection, column, toggleSort, currentSort, Components }, { intl }) => {
 
-  const columnName = typeof column === 'string' ? column : column.label || column.name;
+  const columnName = getColumnName(column);
   
   if (collection) {
     const schema = collection.simpleSchema()._schema;
@@ -205,7 +212,9 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
 
     const formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
     return (
-      <Components.DatatableHeaderCellLayout className={`datatable-th-${columnName.toLowerCase().replace(/\s/g, '-')}`}>
+      <Components.DatatableHeaderCellLayout
+        className={`datatable-th-${columnName.toLowerCase().replace(/\s/g, '-')}`}
+      >
         {formattedLabel}
       </Components.DatatableHeaderCellLayout>
     );
@@ -282,14 +291,22 @@ const DatatableContents = (props) => {
 
   const isLoadingMore = networkStatus === 2;
   const hasMore = totalCount > results.length;
-
+  const sortedColumns = _sortBy(columns, column => column.order);
   return (
     <Components.DatatableContentsLayout>
       {title && <Components.DatatableTitle title={title}/>}
       <Components.DatatableContentsInnerLayout>
         <Components.DatatableContentsHeadLayout>
-            {_.sortBy(columns, column => column.order).map((column, index) => <Components.DatatableHeader key={index} collection={collection} column={column} toggleSort={toggleSort} currentSort={currentSort} />)}
-            {showEdit ? <th><FormattedMessage id="datatable.edit"/></th> : null}
+          {
+            sortedColumns
+              .map((column, index) => (
+                <Components.DatatableHeader
+                  Components={Components}
+                  key={index} collection={collection} column={column}
+                  toggleSort={toggleSort} currentSort={currentSort} />)
+              )
+          }
+          {showEdit ? <th><FormattedMessage id="datatable.edit" /></th> : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
           {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser} />)}
@@ -373,11 +390,18 @@ const DatatableRow = (props, { intl }) => {
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
   const modalProps = { title: <code>{document._id}</code> };
+  const sortedColumns = _sortBy(columns, column => column.order);
 
   return (
   <Components.DatatableRowLayout className={`datatable-item ${row}`}>
-      {_.sortBy(columns, column => column.order).map((column, index) => (
-        <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} />
+      {
+        sortedColumns
+        .map((column, index) => (
+        <Components.DatatableCell 
+        key={index}
+        Components={Components}
+        column={column} document={document} 
+        currentUser={currentUser} />
       ))}
     {showEdit && canEdit ?
       <Components.DatatableCellLayout>
@@ -411,7 +435,7 @@ const DatatableCell = ({ column, document, currentUser, Components }) => {
   const Component = column.component 
   || column.componentName && Components[column.componentName] 
   || Components.DatatableDefaultCell;
-  const columnName = column.name || column;
+  const columnName = getColumnName(column);
   return (
     <Components.DatatableCellLayout className={`datatable-item-${columnName.toLowerCase().replace(/\s/g, '-')}`}>
       <Component column={column} document={document} currentUser={currentUser} />
