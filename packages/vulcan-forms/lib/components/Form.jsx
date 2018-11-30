@@ -857,6 +857,8 @@ class SmartForm extends Component {
   render() {
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.getCollection()._name;
+    const FormSubmitComponent = this.props.SubmitComponent || Components.FormSubmit
+    const FormGroupComponent = this.props.GroupComponent || Components.FormGroup
 
     return (
       <div className={'document-' + this.getFormType()}>
@@ -864,7 +866,7 @@ class SmartForm extends Component {
           <Components.FormErrors errors={this.state.errors} />
 
           {fieldGroups.map(group => (
-            <Components.FormGroup
+            <FormGroupComponent
               key={group.name}
               {...group}
               errors={this.state.errors}
@@ -881,8 +883,7 @@ class SmartForm extends Component {
           ))}
 
           {this.props.repeatErrors && <Components.FormErrors errors={this.state.errors} />}
-
-          <Components.FormSubmit
+          <FormSubmitComponent
             submitLabel={this.props.submitLabel}
             cancelLabel={this.props.cancelLabel}
             revertLabel={this.props.revertLabel}
