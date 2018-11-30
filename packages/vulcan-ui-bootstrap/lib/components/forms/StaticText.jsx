@@ -2,7 +2,7 @@ import React from 'react';
 import { registerComponent } from 'meteor/vulcan:core';
 
 const parseUrl = value => {
-  return value.slice(0,4) === 'http' ? <a href={value} target="_blank">{value}</a> : value;
+  return value && value.toString().slice(0,4) === 'http' ? <a href={value} target="_blank">{value}</a> : value;
 }
 
 const StaticComponent = ({ value, label }) => (
