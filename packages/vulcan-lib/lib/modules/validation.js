@@ -26,7 +26,7 @@ export const validateDocument = (document, collection, context) => {
   let validationErrors = [];
 
   // Check validity of inserted document
-  _.forEach(document, (value, fieldName) => {
+  Object.keys(document).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
 
     // 1. check that the current user has permission to insert each field
@@ -48,7 +48,8 @@ export const validateDocument = (document, collection, context) => {
       // eslint-disable-next-line no-console
       // console.log(error);
       if (error.type.includes('intlError')) {
-        validationErrors = validationErrors.concat(JSON.parse(error.type.replace('intlError|', '')));
+        const intlError = JSON.parse(error.type.replace('intlError|', ''));
+        validationErrors = validationErrors.concat(intlError);
       } else {
         validationErrors.push({
           id: `errors.${error.type}`,

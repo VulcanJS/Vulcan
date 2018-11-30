@@ -87,7 +87,7 @@ export const validateIntlField = function() {
     if (!hasString) {
       const originalFieldName = this.key.replace('_intl', '');
       errors.push({
-        id: '',
+        id: 'errors.required',
         path: `${this.key}.${index}`,
         properties: { name: originalFieldName, locale: locale.id }
       });
