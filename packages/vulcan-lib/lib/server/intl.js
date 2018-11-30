@@ -137,7 +137,7 @@ Take a header object, and figure out the locale
 Also accepts userLocale to indicate the current user's preferred locale
 
 */
-export const getHeaderLocale = (headers, forceLocale, userLocale) => {
+export const getHeaderLocale = (headers, userLocale) => {
   
   let cookieLocale, acceptedLocale, locale, localeMethod;
 
