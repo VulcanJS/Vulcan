@@ -850,7 +850,7 @@ class SmartForm extends Component {
 
   mutationSuccessCallback = (result, mutationType) => {
     this.setState(prevState => ({ disabled: false }));
-    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
+    let document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
@@ -865,10 +865,10 @@ class SmartForm extends Component {
     }
 
     // run document through mutation success callbacks
-    result = runCallbacks(this.successFormCallbacks, result);
+    document = runCallbacks(this.successFormCallbacks, document, { form: this });
 
     // run success callback if it exists
-    if (this.props.successCallback) this.props.successCallback(document);
+    if (this.props.successCallback) this.props.successCallback(document, { form: this });
   };
 
   // catch graphql errors
@@ -881,7 +881,7 @@ class SmartForm extends Component {
     console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
-    runCallbacks(this.failureFormCallbacks, error);
+    runCallbacks(this.failureFormCallbacks, error, { form: this });
 
     if (!_.isEmpty(error)) {
       // add error to state
@@ -889,7 +889,7 @@ class SmartForm extends Component {
     }
 
     // run error callback if it exists
-    if (this.props.errorCallback) this.props.errorCallback(document, error);
+    if (this.props.errorCallback) this.props.errorCallback(document, error, { form: this });
 
     // scroll back up to show error messages
     Utils.scrollIntoView('.flash-message');
