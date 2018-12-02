@@ -1,5 +1,4 @@
-import { Connectors, debug, debugGroup, debugGroupEnd /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
-import { createError } from 'apollo-errors';
+import { Connectors, debug, debugGroup, debugGroupEnd, throwError /* runCallbacksAsync, runCallbacks, addCallback */ } from 'meteor/vulcan:core';
 import Votes from './votes/collection.js';
 import Users from 'meteor/vulcan:users';
 import { recalculateScore } from './scoring.js';
@@ -289,8 +288,7 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
   const voteOptions = {document, collection, voteType, user, voteId, updateDocument};
 
   if (!document || !user || !Users.canDo(user, `${collectionName.toLowerCase()}.${voteType}`)) {
-    const VoteError = createError('voting.no_permission', {message: 'voting.no_permission'});
-    throw new VoteError();
+    throwError({ id: 'voting.no_permission' });
   }
 
   const existingVote = await hasVotedServer({document, voteType, user});

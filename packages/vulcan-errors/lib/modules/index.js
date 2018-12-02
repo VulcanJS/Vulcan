@@ -1,3 +1,3 @@
 import '../components/ErrorsUserMonitor';
 import '../components/ErrorCatcher';
-export * from './errors';
+export * from './errors.js';

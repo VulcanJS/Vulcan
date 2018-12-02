@@ -28,10 +28,10 @@ to the client.
 */
 
 import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
-import { createError } from 'apollo-errors';
 import { validateDocument, validateData, dataToModifier, modifierToData } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
+import { throwError } from '../modules/errors.js';
 import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
 import clone from 'lodash/clone';
@@ -68,8 +68,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.validate`, newDocument, currentUser, validationErrors);
     
     if (validationErrors.length) {
-      const CreateDocumentValidationError = createError('app.validation_error', {message: 'app.create_document_validation_error'});
-      throw new CreateDocumentValidationError({data: {break: true, errors: validationErrors}});
+      throwError({ id: 'app.validation_error', data: {break: true, errors: validationErrors}});
     }
 
   }
@@ -194,8 +193,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
       console.log('// validationErrors');
       // eslint-disable-next-line no-console
       console.log(validationErrors);
-      const UpdateDocumentValidationError = createError('app.validation_error', { message: 'app.update_document_validation_error' });
-      throw new UpdateDocumentValidationError({data: {break: true, errors: validationErrors}});
+      throwError({ id: 'app.validation_error', data: {break: true, errors: validationErrors}});
     }
 
   }
@@ -314,8 +312,7 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
       console.log('// validationErrors');
       // eslint-disable-next-line no-console
       console.log(validationErrors);
-      const DeleteDocumentValidationError = createError('app.validation_error', { message: 'app.delete_document_validation_error' });
-      throw new DeleteDocumentValidationError({data: {break: true, errors: validationErrors}});
+      throwError({id: 'app.validation_error', data: {break: true, errors: validationErrors}});
     }
 
   }

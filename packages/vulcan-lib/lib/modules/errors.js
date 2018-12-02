@@ -1,3 +1,5 @@
+import { createError } from 'apollo-errors';
+
 /*
 
 Get whatever word is contained between the first two double quotes
@@ -90,3 +92,18 @@ export const getErrors = error => {
   }
   return errors;
 }
+
+/*
+
+An error should have: 
+
+- id: will be used as i18n key (note: available as `name` on the client)
+- message: optionally, a plain-text message
+- data: data/values to give more context to the error
+
+*/
+export const throwError = error => {
+  const { id, message = id, data } = error;
+  const MissingDocumentError = createError(id, { message });
+  throw new MissingDocumentError({ id, data });
+};

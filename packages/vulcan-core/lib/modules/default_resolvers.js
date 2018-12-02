@@ -4,8 +4,7 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
-import { createError } from 'apollo-errors';
+import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName, throwError } from 'meteor/vulcan:lib';
 
 const defaultOptions = {
   cacheMaxAge: 300
@@ -118,8 +117,7 @@ export function getDefaultResolvers(options) {
           if (allowNull) {
             return { result: null };
           } else {
-            const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-            throw new MissingDocumentError({ data: { documentId, selector } });
+            throwError({ id: 'app.missing_document', data: {documentId, selector} });
           }
         }
 
