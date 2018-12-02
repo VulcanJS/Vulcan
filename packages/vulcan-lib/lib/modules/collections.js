@@ -48,7 +48,6 @@ Mongo.Collection.prototype.attachSchema = function(schemaOrFields) {
  */
 Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
   const collection = this;
-  const schema = collection.simpleSchema()._schema;
   const fieldSchema = {};
 
   const fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
@@ -313,6 +312,7 @@ export const createCollection = options => {
           }
         });
       } else {
+        // eslint-disable-next-line no-console
         console.warn(
           `Warning: terms.query is set but schema ${
             collection.options.typeName

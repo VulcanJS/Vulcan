@@ -170,13 +170,13 @@ Utils.slugify = function (s) {
   return slug;
 };
 Utils.getUnusedSlug = function (collection, slug) {
-  let suffix = "";
+  let suffix = '';
   let index = 0;
 
   // test if slug is already in use
   while (!!collection.findOne({slug: slug+suffix})) {
     index++;
-    suffix = "-"+index;
+    suffix = '-'+index;
   }
 
   return slug+suffix;

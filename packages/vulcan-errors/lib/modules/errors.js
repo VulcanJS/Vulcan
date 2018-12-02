@@ -1,10 +1,10 @@
-import Users from 'meteor/vulcan:users';
-import { getSetting } from 'meteor/vulcan:core';
-import get from 'lodash/get';
+// import Users from 'meteor/vulcan:users';
+// import { getSetting } from 'meteor/vulcan:core';
+// import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { formatMessage } from 'meteor/vulcan:i18n';
-import _isEmpty from 'lodash/isEmpty';
-import { inspect } from 'util';
+// import { formatMessage } from 'meteor/vulcan:i18n';
+// import _isEmpty from 'lodash/isEmpty';
+// import { inspect } from 'util';
 
 export const initFunctions = [];
 export const logFunctions = [];

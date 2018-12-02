@@ -26,7 +26,6 @@ import {
   registerComponent,
   Components,
   runCallbacks,
-  getCollection,
   getErrors,
   getSetting,
   Utils,
@@ -1054,7 +1053,6 @@ SmartForm.propTypes = {
   addFields: PropTypes.arrayOf(PropTypes.string),
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
-  addFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.node,
   cancelLabel: PropTypes.node,

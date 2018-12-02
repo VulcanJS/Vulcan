@@ -1,7 +1,7 @@
 /** PropTypes for documentation purpose (not tested yet) */
 import PropTypes from 'prop-types';
 
-const fieldProps = {
+export const fieldProps = {
   //
   defaultValue: PropTypes.any,
   help: PropTypes.string,
@@ -28,7 +28,8 @@ const fieldProps = {
   nestedInput: PropTypes.boolean, // flag
   nestedFields: PropTypes.array //arrayOf(fieldProps)
 };
-const groupProps = {
+
+export const groupProps = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   order: PropTypes.number,
