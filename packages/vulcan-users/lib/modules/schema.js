@@ -111,6 +111,7 @@ const schema = {
     type: Object,
     optional: true,
     blackbox: true,
+    hidden: true,
     canCreate: ['members'],
   },
   // // telescope-specific data, kept for backward compatibility and migration purposes
