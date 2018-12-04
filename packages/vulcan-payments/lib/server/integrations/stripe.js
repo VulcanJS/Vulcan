@@ -128,8 +128,10 @@ export const receiveAction = async (args) => {
 Retrieve or create a Stripe customer
 
 */
-export const getCustomer = async (user, id) => {
+export const getCustomer = async (user, token) => {
 
+  const { id } = token;
+  
   let customer;
 
   try {
