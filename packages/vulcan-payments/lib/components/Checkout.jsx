@@ -20,6 +20,12 @@ class Checkout extends React.Component {
     };
   }
 
+  handleOpen = () => {
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
+  }
+  
   onToken(token) {
 
     const {paymentActionMutation, productKey, associatedCollection, associatedDocument, callback, successCallback, errorCallback, properties, currentUser, flash, coupon} = this.props;
@@ -88,6 +94,7 @@ class Checkout extends React.Component {
     return (
       <div className={classNames('stripe-checkout', {'checkout-loading': this.state.loading})}>
         <StripeCheckout
+          opened={this.handleOpen}
           token={this.onToken}
           stripeKey={Meteor.isDevelopment || stripeSettings.alwaysUseTest ? stripeSettings.publishableKeyTest : stripeSettings.publishableKey}
           ComponentClass="div"
@@ -117,6 +124,7 @@ Checkout.propTypes = {
   coupon: PropTypes.string,
   associatedDocument: PropTypes.object,
   customAmount: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 const WrappedCheckout = (props) => {
