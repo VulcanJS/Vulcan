@@ -77,10 +77,8 @@ export class SplitComponentCollector {
     }
     
     if (name in splitComponentClasses) {
-      console.log("Returning already-loaded component");
       return splitComponentClasses[name];
     } else {
-      console.log("Initiating component load");
       loadSplitComponents([name], onReady);
     }
   }
@@ -110,13 +108,7 @@ export class SplitComponentWrapper extends PureComponent {
 }
 
 export class SplitComponent extends PureComponent {
-  constructor(props) {
-    super(props);
-    console.log("Instantiated SplitComponent");
-  }
-  
   componentFinishedLoading = () => {
-    console.log("Component finished loading");
     this.forceUpdate();
   }
   
@@ -175,7 +167,6 @@ export function loadSplitComponents(componentsList, onFinish)
       splitComponentClasses[componentName] = componentExports.default;
       importProgress.numLeft--;
       if (importProgress.numLeft == 0) {
-        console.log("Finished loading components: "+componentsList.join(","));
         onFinish();
       }
     });

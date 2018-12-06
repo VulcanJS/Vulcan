@@ -21,8 +21,6 @@ export const RouterClient = {
       
       // If there are split components specified, do them now
       InjectData.getData('splitComponents', (data) => {
-        console.log("Split components:");
-        console.log(data);
         loadSplitComponents(data, () => {
           // In case the root element doesn't exist, let's create it
           if (!rootElement) {
