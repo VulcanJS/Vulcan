@@ -72,7 +72,15 @@ Meteor.startup(() => {
       store.reload();
       store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
       const app = runCallbacks('router.server.wrapper', appGenerator(), { req, res, store, apolloClient });
-      return <UserAgentProvider userAgent={req.headers['user-agent']}><ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{app}</CookiesProvider></ApolloProvider></UserAgentProvider>;
+      return (
+        <UserAgentProvider userAgent={req.headers['user-agent']}>
+        <ApolloProvider store={store} client={apolloClient}>
+        <CookiesProvider cookies={req.universalCookies}>
+          {app}
+        </CookiesProvider>
+        </ApolloProvider>
+        </UserAgentProvider>
+      );
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });
