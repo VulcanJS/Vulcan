@@ -35,7 +35,7 @@ class FormNestedArray extends PureComponent {
   };
 
   removeItem = index => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null }, { nestedPath: this.props.path });
+    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null });
   };
 
   /*
@@ -60,9 +60,15 @@ class FormNestedArray extends PureComponent {
     );
     const { errors, path, label, formComponents, minCount, maxCount } = this.props;
     const FormComponents = formComponents;
+
+    //filter out null values to calculate array length
+    let arrayLength = value.filter(singleValue => {
+      return !!singleValue;
+    }).length;
+    
     //add items if there is a minCount
     if(minCount && value.length < minCount) {
-      for(let i = 0;i < minCount - value.length; i++){
+      for(let i = 0; i < minCount - arrayLength; i++){
         this.addItem();
       }
     }
@@ -87,7 +93,7 @@ class FormNestedArray extends PureComponent {
                     removeItem={() => {
                       this.removeItem(i);
                     }}
-                    hideRemove={minCount && value.length <= minCount}
+                    hideRemove={minCount && arrayLength <= minCount}
                   />
                   <FormComponents.FormNestedDivider
                     label={this.props.label}
@@ -96,7 +102,7 @@ class FormNestedArray extends PureComponent {
                 </React.Fragment>
               )
           ),
-          !maxCount || value.length < maxCount && (
+          !maxCount || arrayLength < maxCount && (
             <Components.Button
               key="add-button"
               size="small"

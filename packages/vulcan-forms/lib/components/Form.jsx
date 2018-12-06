@@ -653,7 +653,7 @@ class SmartForm extends Component {
   */
   updateCurrentValues = (newValues, options = {}) => {
     // default to overwriting old value with new
-    const { mode = 'overwrite', nestedPath } = options;
+    const { mode = 'overwrite' } = options;
     const { changeCallback } = this.props;
 
     // keep the previous ones and extend (with possible replacement) with new ones
@@ -676,18 +676,7 @@ class SmartForm extends Component {
           // delete value
           unset(newState.currentValues, path);
           set(newState.currentDocument, path, null);
-          //if field is nested remove empty fields
-          if(nestedPath) {
-            newState.currentDocument[nestedPath] = newState.currentDocument[nestedPath].filter(cleanField => {
-              return !!cleanField;
-            })
-            newState.currentValues[nestedPath] = newState.currentValues[nestedPath].filter(cleanField => {
-              return !!cleanField;
-            })
-          }
-          else {
-            newState.deletedValues = [...prevState.deletedValues, path];
-          }
+          newState.deletedValues = [...prevState.deletedValues, path];
         } else {
           // 1. update currentValues
           set(newState.currentValues, path, value);
