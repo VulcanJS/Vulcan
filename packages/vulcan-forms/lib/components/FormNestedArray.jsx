@@ -81,6 +81,7 @@ class FormNestedArray extends PureComponent {
                     removeItem={() => {
                       this.removeItem(i);
                     }}
+                    hideRemove={minCount && value.length <= minCount}
                   />
                   <FormComponents.FormNestedDivider
                     label={this.props.label}

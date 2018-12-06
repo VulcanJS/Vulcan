@@ -27,7 +27,7 @@ registerComponent({
 });
 
 const FormNestedItem = (
-  { nestedFields, name, path, removeItem, itemIndex, formComponents, ...props },
+  { nestedFields, name, path, removeItem, itemIndex, formComponents, hideRemove, ...props },
   { errors }
 ) => {
   const FormComponents = mergeWithComponents(formComponents);
@@ -46,7 +46,7 @@ const FormNestedItem = (
         );
       })}
       removeButton={
-        isArray && [
+        isArray && !hideRemove && [
           <div key="remove-button" className="form-nested-item-remove">
             <Components.Button
               className="form-nested-button"
