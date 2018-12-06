@@ -58,7 +58,7 @@ class FormNestedArray extends PureComponent {
       'inputProperties',
       'nestedInput'
     );
-    const { errors, path, label, formComponents } = this.props;
+    const { errors, path, label, formComponents, minCount, maxCount } = this.props;
     const FormComponents = formComponents;
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(
@@ -89,15 +89,17 @@ class FormNestedArray extends PureComponent {
                 </React.Fragment>
               )
           ),
-          <Components.Button
-            key="add-button"
-            size="small"
-            variant="success"
-            onClick={this.addItem}
-            className="form-nested-button"
-          >
-            <Components.IconAdd height={12} width={12} />
-          </Components.Button>,
+          !maxCount || value.length < maxCount && (
+            <Components.Button
+              key="add-button"
+              size="small"
+              variant="success"
+              onClick={this.addItem}
+              className="form-nested-button"
+            >
+              <Components.IconAdd height={12} width={12} />
+            </Components.Button>
+          ),
           hasErrors ? (
             <FormComponents.FieldErrors
               key="form-nested-errors"
