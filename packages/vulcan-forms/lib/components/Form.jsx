@@ -431,23 +431,22 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
+
     // array field
     if (fieldSchema.field) {
       field.arrayFieldSchema = fieldSchema.field;
       // create a field that can be exploited by the form
+
       field.arrayField = this.createArraySubField(
         fieldName,
         field.arrayFieldSchema,
         schema
       );
-
-      //field.nestedInput = true
     }
     // nested fields: set input to "nested"
     if (fieldSchema.schema) {
       field.nestedSchema = fieldSchema.schema;
       field.nestedInput = true;
-
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({
@@ -654,7 +653,7 @@ class SmartForm extends Component {
   */
   updateCurrentValues = (newValues, options = {}) => {
     // default to overwriting old value with new
-    const { mode = 'overwrite' } = options;
+    const { mode = 'overwrite', nestedPath } = options;
     const { changeCallback } = this.props;
 
     // keep the previous ones and extend (with possible replacement) with new ones
@@ -677,7 +676,18 @@ class SmartForm extends Component {
           // delete value
           unset(newState.currentValues, path);
           set(newState.currentDocument, path, null);
-          newState.deletedValues = [...prevState.deletedValues, path];
+          //if field is nested remove empty fields
+          if(nestedPath) {
+            newState.currentDocument[nestedPath] = newState.currentDocument[nestedPath].filter(cleanField => {
+              return !!cleanField;
+            })
+            newState.currentValues[nestedPath] = newState.currentValues[nestedPath].filter(cleanField => {
+              return !!cleanField;
+            })
+          }
+          else {
+            newState.deletedValues = [...prevState.deletedValues, path];
+          }
         } else {
           // 1. update currentValues
           set(newState.currentValues, path, value);

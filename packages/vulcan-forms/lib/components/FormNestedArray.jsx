@@ -35,7 +35,7 @@ class FormNestedArray extends PureComponent {
   };
 
   removeItem = index => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null });
+    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null }, { nestedPath: this.props.path });
   };
 
   /*
