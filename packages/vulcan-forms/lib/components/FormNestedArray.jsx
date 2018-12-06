@@ -22,14 +22,28 @@ registerComponent({
 });
 
 class FormNestedArray extends PureComponent {
+  constructor(props) {
+    super(props);
+    let { minCount, value } = props;
+    let arrayLength = value.filter(singleValue => {
+      return !!singleValue;
+    }).length;
+    //add items if there is a minCount
+    if(minCount && arrayLength < minCount) {
+      for( let i = 0; i < minCount - arrayLength; i++ ){
+        this.addItem(i);
+      }
+    }
+  }
   getCurrentValue() {
     return this.props.value || [];
   }
 
-  addItem = () => {
+  addItem = (index) => {
     const value = this.getCurrentValue();
+    let arrayIndex = +index || value.length;
     this.props.updateCurrentValues(
-      { [`${this.props.path}.${value.length}`]: {} },
+      { [`${this.props.path}.${arrayIndex}`]: {} },
       { mode: 'merge' }
     );
   };
@@ -65,13 +79,7 @@ class FormNestedArray extends PureComponent {
     let arrayLength = value.filter(singleValue => {
       return !!singleValue;
     }).length;
-    
-    //add items if there is a minCount
-    if(minCount && value.length < minCount) {
-      for(let i = 0; i < minCount - arrayLength; i++){
-        this.addItem();
-      }
-    }
+
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(
       error => error.path && error.path === path
