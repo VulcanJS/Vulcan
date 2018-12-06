@@ -60,6 +60,12 @@ class FormNestedArray extends PureComponent {
     );
     const { errors, path, label, formComponents, minCount, maxCount } = this.props;
     const FormComponents = formComponents;
+    //add items if there is a minCount
+    if(minCount && value.length < minCount) {
+      for(let i = 0;i < minCount - value.length; i++){
+        this.addItem();
+      }
+    }
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(
       error => error.path && error.path === path
