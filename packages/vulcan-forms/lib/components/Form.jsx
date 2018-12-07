@@ -102,12 +102,9 @@ const getInitialStateFromProps = nextProps => {
   Object.keys(convertedSchema).forEach(key => {
     let minCount = convertedSchema[key].minCount;
     if(minCount) {
-      if(!initialDocument[key]) 
-        initialDocument[key] = [];
-      let toAdd = minCount - initialDocument[key].length;
-      for( let i = 0; i < toAdd; i++ ) {
+      initialDocument[key] = initialDocument[key] || [];
+      while(initialDocument[key].length < minCount)
         initialDocument[key].push({});
-      }
     }
   })
   
@@ -150,7 +147,7 @@ class SmartForm extends Component {
     };
   }
 
-  defaultValues = {};
+  defaultValues = {}; 
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
