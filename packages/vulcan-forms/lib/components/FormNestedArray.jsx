@@ -65,13 +65,13 @@ class FormNestedArray extends PureComponent {
     let arrayLength = value.filter(singleValue => {
       return !!singleValue;
     }).length;
-    
+
     // only keep errors specific to the nested array (and not its subfields)
     const nestedArrayErrors = errors.filter(
       error => error.path && error.path === path
     );
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
-
+    
     return (
       <FormComponents.FormNestedArrayLayout
         label={label}
@@ -96,7 +96,7 @@ class FormNestedArray extends PureComponent {
                 </React.Fragment>
               )
           ),
-          !maxCount || arrayLength < maxCount && (
+          (!maxCount || arrayLength < maxCount) && (
             <Components.Button
               key="add-button"
               size="small"
