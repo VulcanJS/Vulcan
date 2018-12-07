@@ -97,6 +97,20 @@ const getInitialStateFromProps = nextProps => {
     nextProps.prefilledProps,
     nextProps.document
   );
+  
+  //if minCount is specified, go ahead and create empty nested documents
+  Object.keys(convertedSchema).forEach(key => {
+    let minCount = convertedSchema[key].minCount;
+    if(minCount) {
+      if(!initialDocument[key]) 
+        initialDocument[key] = [];
+      let toAdd = minCount - initialDocument[key].length;
+      for( let i = 0; i < toAdd; i++ ) {
+        initialDocument[key].push({});
+      }
+    }
+  })
+  
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
 
