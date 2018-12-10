@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
-import { runCallbacks, runCallbacksAsync } from './callbacks.js';
+import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
@@ -121,38 +121,8 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   });
 };
 
-export const createCollection = options => {
-  const {
-    typeName,
-    collectionName = getCollectionName(typeName),
-    schema,
-    generateGraphQLSchema = true,
-    dbCollectionName
-  } = options;
-
-  // initialize new Mongo collection
-  const collection =
-    collectionName === 'Users' && Meteor.users
-      ? Meteor.users
-      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
-
-  // decorate collection with options
-  collection.options = options;
-
-  // add typeName if missing
-  collection.typeName = typeName;
-  collection.options.typeName = typeName;
-  collection.options.singleResolverName = Utils.camelCaseify(typeName);
-  collection.options.multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
-
-  // add collectionName if missing
-  collection.collectionName = collectionName;
-  collection.options.collectionName = collectionName;
-
-  // add views
-  collection.views = [];
-
-  // generate foo_intl fields
+// generate foo_intl fields
+function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema)) {
@@ -186,6 +156,60 @@ export const createCollection = options => {
       schema[fieldName].optional = true;
     }
   });
+  return schema;
+}
+
+export const createCollection = options => {
+  const {
+    typeName,
+    collectionName = getCollectionName(typeName),
+    generateGraphQLSchema = true,
+    dbCollectionName
+  } = options;
+  let {
+    schema
+  } = options;
+
+  // initialize new Mongo collection
+  const collection =
+    collectionName === 'Users' && Meteor.users
+      ? Meteor.users
+      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+
+  // decorate collection with options
+  collection.options = options;
+
+  // add typeName if missing
+  collection.typeName = typeName;
+  collection.options.typeName = typeName;
+  collection.options.singleResolverName = Utils.camelCaseify(typeName);
+  collection.options.multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
+
+  // add collectionName if missing
+  collection.collectionName = collectionName;
+  collection.options.collectionName = collectionName;
+
+  // add views
+  collection.views = [];
+  
+  //register schema hook
+  registerCallback({
+    name: `${collectionName}.schema`,
+    iterator: { schema: 'the schema of the collection' },
+    properties: [
+      { schema: 'The schema of the collection' },
+      { validationErrors: 'An object that can be used to accumulate validation errors' },
+    ],
+    runs: 'sync',
+    returns: 'schema',
+    description: 'Modifies schemas on collection creation',
+  });
+
+  //register intl callback very last
+  addCallback(`${collectionName}.schema`, addIntlFields);
+
+  //run schema callbacks
+  schema = runCallbacks({ name: `${collectionName}.schema`, iterator: { schema }, properties: { options } }).schema || schema;
 
   if (schema) {
     // attach schema to collection
