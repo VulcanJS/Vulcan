@@ -97,6 +97,17 @@ const getInitialStateFromProps = nextProps => {
     nextProps.prefilledProps,
     nextProps.document
   );
+  
+  //if minCount is specified, go ahead and create empty nested documents
+  Object.keys(convertedSchema).forEach(key => {
+    let minCount = convertedSchema[key].minCount;
+    if(minCount) {
+      initialDocument[key] = initialDocument[key] || [];
+      while(initialDocument[key].length < minCount)
+        initialDocument[key].push({});
+    }
+  })
+  
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
 
@@ -136,7 +147,7 @@ class SmartForm extends Component {
     };
   }
 
-  defaultValues = {};
+  defaultValues = {}; 
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
