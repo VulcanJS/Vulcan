@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
 import { Utils } from './utils.js';
-import { runCallbacks, runCallbacksAsync } from './callbacks.js';
+import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
@@ -125,10 +125,10 @@ export const createCollection = options => {
   const {
     typeName,
     collectionName = getCollectionName(typeName),
-    schema,
     generateGraphQLSchema = true,
     dbCollectionName
   } = options;
+  let { schema } = options;
 
   // initialize new Mongo collection
   const collection =
@@ -152,40 +152,12 @@ export const createCollection = options => {
   // add views
   collection.views = [];
 
-  // generate foo_intl fields
-  Object.keys(schema).forEach(fieldName => {
-    const fieldSchema = schema[fieldName];
-    if (isIntlField(fieldSchema)) {
-      // we have at least one intl field
-      hasIntlFields = true;
+  //register individual collection callback
+  registerCollectionCallback(collectionName);
 
-      // remove `intl` to avoid treating new _intl field as a field to internationalize
-      // eslint-disable-next-line no-unused-vars
-      const { intl, ...propertiesToCopy } = schema[fieldName];
-
-      schema[`${fieldName}_intl`] = {
-        ...propertiesToCopy, // copy properties from regular field
-        hidden: true,
-        type: Array,
-        isIntlData: true
-      };
-
-      delete schema[`${fieldName}_intl`].intl;
-
-      schema[`${fieldName}_intl.$`] = {
-        type: getIntlString()
-      };
-
-      // if original field is required, enable custom validation function instead of `optional` property
-      if (!schema[fieldName].optional) {
-        schema[`${fieldName}_intl`].optional = true;
-        schema[`${fieldName}_intl`].custom = validateIntlField;
-      }
-
-      // make original non-intl field optional
-      schema[fieldName].optional = true;
-    }
-  });
+  //run schema callbacks and run general callbacks last
+  schema = runCallbacks({ name: `${collectionName}.collection`, iterator: schema, properties: { options }});
+  schema = runCallbacks({ name: '*.collection', iterator: schema, properties: { options }});
 
   if (schema) {
     // attach schema to collection
@@ -202,8 +174,8 @@ export const createCollection = options => {
     addGraphQLCollection(collection);
   }
 
-  runCallbacksAsync({ name: '*.collection', properties: { options } });
-  runCallbacksAsync({ name: `${collectionName}.collection`, properties: { options } });
+  runCallbacksAsync({ name: '*.collection.async', properties: { options } });
+  runCallbacksAsync({ name: `${collectionName}.collection.async`, properties: { options } });
 
   // ------------------------------------- Default Fragment -------------------------------- //
 
@@ -335,3 +307,74 @@ export const createCollection = options => {
 
   return collection;
 };
+
+//register collection creation hook for each collection
+function registerCollectionCallback(typeName) {
+  registerCallback({
+    name: `${typeName}.collection`,
+    iterator: { schema: 'the schema of the collection' },
+    properties: [
+      { schema: 'The schema of the collection' },
+      { validationErrors: 'An Object that can be used to accumulate validation errors' }
+    ],
+    runs: 'sync',
+    returns: 'schema',
+    description: 'Modifies schemas on collection creation'
+  })
+}
+
+//register colleciton creation hook
+registerCallback({
+  name: `*.collection`,
+  iterator: { schema: 'the schema of the collection' },
+  properties: [
+    { schema: 'The schema of the collection' },
+    { validationErrors: 'An object that can be used to accumulate validation errors' }
+  ],
+  runs: 'sync',
+  returns: 'schema',
+  description: 'Modifies schemas on collection creation',
+});
+
+// generate foo_intl fields
+function addIntlFields(schema) {
+  Object.keys(schema).forEach(fieldName => {
+    const fieldSchema = schema[fieldName];
+    if (isIntlField(fieldSchema)) {
+      // we have at least one intl field
+      hasIntlFields = true;
+
+      // remove `intl` to avoid treating new _intl field as a field to internationalize
+      // eslint-disable-next-line no-unused-vars
+      const { intl, ...propertiesToCopy } = schema[fieldName];
+
+      schema[`${fieldName}_intl`] = {
+        ...propertiesToCopy, // copy properties from regular field
+        hidden: true,
+        type: Array,
+        isIntlData: true
+      };
+
+      delete schema[`${fieldName}_intl`].intl;
+
+      schema[`${fieldName}_intl.$`] = {
+        type: getIntlString()
+      };
+
+      // if original field is required, enable custom validation function instead of `optional` property
+      if (!schema[fieldName].optional) {
+        schema[`${fieldName}_intl`].optional = true;
+        schema[`${fieldName}_intl`].custom = validateIntlField;
+      }
+
+      // make original non-intl field optional
+      schema[fieldName].optional = true;
+    }
+  });
+  return schema;
+};
+
+//register intl callback very last
+Meteor.startup(() => {
+  addCallback(`*.collection`, addIntlFields);
+});
