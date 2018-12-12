@@ -325,7 +325,7 @@ function registerCollectionCallback(typeName) {
 
 //register colleciton creation hook
 registerCallback({
-  name: `*.collection`,
+  name: '*.collection',
   iterator: { schema: 'the schema of the collection' },
   properties: [
     { schema: 'The schema of the collection' },
@@ -372,9 +372,9 @@ function addIntlFields(schema) {
     }
   });
   return schema;
-};
+}
 
 //register intl callback very last
 Meteor.startup(() => {
-  addCallback(`*.collection`, addIntlFields);
+  addCallback('*.collection', addIntlFields);
 });

@@ -258,8 +258,8 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
-  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties: { newDocument, ...callbackProperties }});
-  await runCallbacksAsync({ name: '*.update.async', properties: { newDocument, ...callbackProperties }});
+  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties: { ...callbackProperties,newDocument, document: newDocument, oldDocument: document  }});
+  await runCallbacksAsync({ name: '*.update.async', properties: { ...callbackProperties, newDocument, document: newDocument, oldDocument: document }});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName.toLowerCase()}.edit.async`, newDocument, document, currentUser, collection);
 
