@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import { debug } from './debug.js';
 import { Utils } from './utils';
 
@@ -170,12 +172,23 @@ export const runCallbacksAsync = function () {
   const callbacks = Array.isArray(hook) ? hook : Callbacks[hook];
 
   if (typeof callbacks !== 'undefined' && !!callbacks.length) {
-    return Promise.all(
-      callbacks.map(callback => {
-        debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-        return callback.apply(this, args);
-      }),
-    );
+    const _runCallbacksAsync = () =>
+        Promise.all(
+            callbacks.map(callback => {
+                debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
+                return callback.apply(this, args);
+            }),
+        );
+
+    if (Meteor.isServer) {
+      // TODO: find out if we can safely use promises on the server, too - https://github.com/VulcanJS/Vulcan/pull/2065
+      return new Promise(async (resolve, reject) => {
+          Meteor.defer(function() {
+            _runCallbacksAsync().then(resolve).catch(reject);
+          });
+      });
+    }
+    return _runCallbacksAsync();
   }
   return [];
 };
