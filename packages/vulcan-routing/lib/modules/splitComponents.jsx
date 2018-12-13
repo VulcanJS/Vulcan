@@ -155,10 +155,10 @@ export function loadSplitComponents(componentsList, onFinish)
   
   let importProgress = {numLeft: componentsList.length};
   
-  for (let i=0; i<componentsList.length; i++) {
-    let componentName = componentsList[i];
-    if (!(componentName in splitComponentImportFns))
+  for (let componentName in componentsList) {
+    if (!splitComponentImportFns[componentName])
       throw new Error(`Requested load of split-component "${componentName}" which is not registered`);
+    
     splitComponentImportFns[componentName]().then(componentExports => {
       if (!componentExports.default) {
         //eslint-disable-next-line no-console
