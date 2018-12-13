@@ -153,23 +153,30 @@ export function loadSplitComponents(componentsList, onFinish)
     return;
   }
   
-  let importProgress = {numLeft: componentsList.length};
-  
-  for (let componentName in componentsList) {
-    if (!splitComponentImportFns[componentName])
-      throw new Error(`Requested load of split-component "${componentName}" which is not registered`);
-    
-    splitComponentImportFns[componentName]().then(componentExports => {
-      if (!componentExports.default) {
-        //eslint-disable-next-line no-console
-        console.error(`Split component ${componentName} does not have a default export`);
-      }
+  runAllAsyncThen(
+    componentsList.map(async (componentName) => {
+      if (!splitComponentImportFns[componentName])
+        throw new Error(`Requested load of split-component "${componentName}" which is not registered`);
+      const componentExports = await splitComponentImportFns[componentName]();
       splitComponentClasses[componentName] = componentExports.default;
-      importProgress.numLeft--;
-      if (importProgress.numLeft == 0) {
-        onFinish();
-      }
-    });
-  }
+    }),
+    onFinish
+  );
 }
 
+// Given an array of async functions, start running all of them immediately.
+// When the last one finishes (regardless of success or failure), call
+// onLastFinished.
+function runAllAsyncThen(asyncFns, onLastFinished) {
+  let progress = {numLeft: asyncFns.length};
+  
+  for(let promise in asyncFns) {
+    let resolve = () => {
+      progress.numLeft--;
+      if (progress.numLeft == 0) {
+        onLastFinished();
+      }
+    }
+    promise().then(resolve, resolve);
+  }
+}
