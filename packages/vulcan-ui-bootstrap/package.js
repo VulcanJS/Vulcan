@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:ui-bootstrap',
   summary: 'Vulcan Bootstrap UI components.',
-  version: '1.12.10',
+  version: '1.12.11',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'vulcan:lib@1.12.10',
+    'vulcan:lib@1.12.11',
     'fourseven:scss@4.10.0',
   ]);
   

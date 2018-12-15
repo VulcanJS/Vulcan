@@ -44,6 +44,7 @@ export default function withSingle(options) {
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
+        refetch: data.refetch,
         // document: Utils.convertDates(collection, data[singleResolverName]),
         [propertyName]: data[resolverName] && data[resolverName].result,
         fragmentName,

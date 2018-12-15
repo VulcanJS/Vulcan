@@ -14,6 +14,7 @@ import { getCollection } from './collections.js';
 import set from 'lodash/set';
 import get from 'lodash/get';
 import isFunction from 'lodash/isFunction';
+import { throwError } from './errors.js';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -169,13 +170,13 @@ Utils.slugify = function (s) {
   return slug;
 };
 Utils.getUnusedSlug = function (collection, slug) {
-  let suffix = "";
+  let suffix = '';
   let index = 0;
 
   // test if slug is already in use
   while (!!collection.findOne({slug: slug+suffix})) {
     index++;
-    suffix = "-"+index;
+    suffix = '-'+index;
   }
 
   return slug+suffix;
@@ -491,11 +492,11 @@ Utils.defineName = (o, name) => {
 Utils.performCheck = (operation, user, checkedObject, context, documentId, operationName, collectionName) => {
 
   if (!checkedObject) {
-    throw new Error(Utils.encodeIntlError({id: 'app.document_not_found', value: documentId}))
+    throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
   }
 
   if (!operation(user, checkedObject, context)) {
-    throw new Error(Utils.encodeIntlError({id: 'app.operation_not_allowed', value: operationName, documentId }));
+    throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
   }
 
 }

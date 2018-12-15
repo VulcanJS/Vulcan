@@ -26,7 +26,6 @@ import {
   registerComponent,
   Components,
   runCallbacks,
-  getCollection,
   getErrors,
   getSetting,
   Utils,
@@ -106,6 +105,17 @@ const getInitialStateFromProps = nextProps => {
     nextProps.prefilledProps,
     nextProps.document
   );
+  
+  //if minCount is specified, go ahead and create empty nested documents
+  Object.keys(convertedSchema).forEach(key => {
+    let minCount = convertedSchema[key].minCount;
+    if(minCount) {
+      initialDocument[key] = initialDocument[key] || [];
+      while(initialDocument[key].length < minCount)
+        initialDocument[key].push({});
+    }
+  })
+  
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
 
@@ -145,7 +155,7 @@ class SmartForm extends Component {
     };
   }
 
-  defaultValues = {};
+  defaultValues = {}; 
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
@@ -860,7 +870,7 @@ class SmartForm extends Component {
 
   mutationSuccessCallback = (result, mutationType) => {
     this.setState(prevState => ({ disabled: false }));
-    const document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
+    let document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
@@ -875,10 +885,10 @@ class SmartForm extends Component {
     }
 
     // run document through mutation success callbacks
-    result = runCallbacks(this.successFormCallbacks, result);
+    document = runCallbacks(this.successFormCallbacks, document, { form: this });
 
     // run success callback if it exists
-    if (this.props.successCallback) this.props.successCallback(document);
+    if (this.props.successCallback) this.props.successCallback(document, { form: this });
   };
 
   // catch graphql errors
@@ -891,7 +901,7 @@ class SmartForm extends Component {
     console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
-    runCallbacks(this.failureFormCallbacks, error);
+    runCallbacks(this.failureFormCallbacks, error, { form: this });
 
     if (!_.isEmpty(error)) {
       // add error to state
@@ -899,7 +909,7 @@ class SmartForm extends Component {
     }
 
     // run error callback if it exists
-    if (this.props.errorCallback) this.props.errorCallback(document, error);
+    if (this.props.errorCallback) this.props.errorCallback(document, error, { form: this });
 
     // scroll back up to show error messages
     Utils.scrollIntoView('.flash-message');
@@ -990,6 +1000,7 @@ class SmartForm extends Component {
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form
+          id={this.props.id}
           onSubmit={this.submitForm}
           onKeyDown={this.formKeyDown}
           ref={e => {
@@ -1062,7 +1073,6 @@ SmartForm.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.string),
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
-  addFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
   submitLabel: PropTypes.node,
   cancelLabel: PropTypes.node,

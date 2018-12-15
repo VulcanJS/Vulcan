@@ -24,10 +24,9 @@ class ErrorsUserMonitor extends PureComponent {
     const errorsUserId = Errors.currentUser && Errors.currentUser._id;
 
     if (currentUserId !== errorsUserId) {
-      const currentUserEmail = currentUser && currentUser.email;
-      const errorsUserEmail = Errors.currentUser && Errors.currentUser.email;
-
-      console.log(`User changed from ${errorsUserEmail} (${errorsUserId}) to ${currentUserEmail} (${currentUserId})`);
+      // const currentUserEmail = currentUser && currentUser.email;
+      // const errorsUserEmail = Errors.currentUser && Errors.currentUser.email;
+      // console.log(`User changed from ${errorsUserEmail} (${errorsUserId}) to ${currentUserEmail} (${currentUserId})`);
 
       Errors.setCurrentUser(currentUser);
     }

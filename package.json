@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.12.10",
+  "version": "1.12.11",
   "engines": {
     "npm": "^3.0"
   },
@@ -8,7 +8,15 @@
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages",
     "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
-    "test": "npm run test-unit"
+    "test": "npm run test-unit",
+    "prettier": "node ./.vulcan/prettier/index.js write-changed",
+    "prettier-all": "node ./.vulcan/prettier/index.js write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run prettier"
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.38",
@@ -93,6 +101,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
+    "babylon": "^6.18.0",
     "chromedriver": "^2.40.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16.3": "^1.4.0",
@@ -108,8 +117,11 @@
     "eslint-plugin-prettier": "^2.5.0",
     "eslint-plugin-react": "^6.7.1",
     "expect": "^23.4.0",
+    "glob": "^7.1.3",
+    "husky": "^1.2.0",
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
+    "prettier": "^1.15.2",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "postcss": {

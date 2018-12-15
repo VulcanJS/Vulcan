@@ -1,4 +1,4 @@
-import { getSetting, sourceVersion } from 'meteor/vulcan:core';
+import { getSetting, getSourceVersion } from 'meteor/vulcan:core';
 import { addInitFunction, addLogFunction, addUserFunction } from 'meteor/vulcan:errors';
 import { serverDSNSetting } from '../modules/settings';
 import Sentry from '@sentry/node';
@@ -17,7 +17,7 @@ function initSentryForServer() {
     dsn: serverDSN,
     environment,
     // see https://github.com/zodern/meteor-up/issues/807#issuecomment-346915622
-    release: sourceVersion,
+    release: getSourceVersion(),
   });
 }
 addInitFunction(initSentryForServer);

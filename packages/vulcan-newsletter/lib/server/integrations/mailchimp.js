@@ -3,10 +3,9 @@
 // newsletter scheduling with MailChimp
 
 import moment from 'moment';
-import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting, throwError } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
-import { createError } from 'apollo-errors';
 
 registerSetting('mailchimp', null, 'MailChimp settings');
 
@@ -59,8 +58,7 @@ if (settings) {
         } else {
           name = 'subscription_failed';
         }
-        const NewsletterError = createError(name, { message });
-        throw new NewsletterError({ data: {path: 'newsletter_subscribeToNewsletter', message}});
+        throwError({ id: name, message, data: {path: 'newsletter_subscribeToNewsletter', message}});
       }
     },
 

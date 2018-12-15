@@ -7,7 +7,7 @@ import {
   detectLocale,
   hasIntlFields,
 } from 'meteor/vulcan:lib';
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/withCurrentUser.js';
