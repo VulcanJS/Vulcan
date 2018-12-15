@@ -991,6 +991,7 @@ class SmartForm extends Component {
     return (
       <div className={'document-' + this.getFormType()}>
         <Formsy.Form
+          id={this.props.id}
           onSubmit={this.submitForm}
           onKeyDown={this.formKeyDown}
           ref={e => {
