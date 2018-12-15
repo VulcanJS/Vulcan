@@ -243,7 +243,7 @@ class SmartForm extends Component {
     });
 
     // run data object through submitForm callbacks
-    data = runCallbacks(this.submitFormCallbacks, data);
+    data = runCallbacks({ callbacks: this.submitFormCallbacks, iterator: data, properties: { form: this }});
 
     return data;
   };
@@ -876,7 +876,7 @@ class SmartForm extends Component {
     }
 
     // run document through mutation success callbacks
-    document = runCallbacks(this.successFormCallbacks, document, { form: this });
+    document = runCallbacks({ callbacks: this.successFormCallbacks, iterator: document, properties: { form: this }});
 
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document, { form: this });
@@ -892,7 +892,7 @@ class SmartForm extends Component {
     console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
-    runCallbacks(this.failureFormCallbacks, error, { form: this });
+    runCallbacks({ callbacks: this.failureFormCallbacks, iterator: error, properties: { error, form: this }});
 
     if (!_.isEmpty(error)) {
       // add error to state
