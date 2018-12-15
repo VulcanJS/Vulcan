@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, Locales } from 'meteor/vulcan:core';
+import { Components, registerComponent, mergeWithComponents, Locales } from 'meteor/vulcan:core';
 import omit from 'lodash/omit';
 import getContext from 'recompose/getContext';
-import mergeWithComponents from '../modules/mergeWithComponents';
 
 // replaceable layout
 const FormIntlLayout = ({ children }) => (

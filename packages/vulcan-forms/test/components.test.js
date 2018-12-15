@@ -6,24 +6,16 @@ import Form from '../lib/components/Form';
 import FormComponent from '../lib/components/FormComponent';
 import '../lib/components/FormNestedArray';
 import expect from 'expect';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16.3';
+
+import { mount, shallow } from 'enzyme';
 import { Components } from 'meteor/vulcan:core';
-
-
-// setup enzyme
-// TODO: write a reusable helper and move this to the tests setup
-Enzyme.configure({ adapter: new Adapter() });
+import { initComponentTest } from 'meteor/vulcan:test';
 
 // we must import all the other components, so that "registerComponent" is called
 import '../lib/modules/components';
-// and then load them in the app so that <Component.Whatever /> is defined
-import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib';
-// we need registered fragments to be initialized because populateComponentsApp will run
-// hocs, like withUpdate, that rely on fragments
-initializeFragments();
-// actually fills the Components object
-populateComponentsApp();
+
+// setup Vulcan (load components, initialize fragments)
+initComponentTest();
 
 // fixtures
 import SimpleSchema from 'simpl-schema';
