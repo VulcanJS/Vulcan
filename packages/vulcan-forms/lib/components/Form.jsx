@@ -1062,7 +1062,7 @@ SmartForm.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
-  addFields: PropTypes.arrayOf(PropTypes.string),
+  // addFields: PropTypes.arrayOf(PropTypes.string), // Nnenna: Commenting out to pass test. This field is already here 3 lines below. I can delete it. But wanted to be sure.
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
