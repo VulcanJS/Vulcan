@@ -153,17 +153,17 @@ export const createCollection = options => {
   collection.views = [];
 
   //register individual collection callback
-  registerCollectionCallback(collectionName);
+  registerCollectionCallback(typeName.toLowerCase());
 
   // if schema has at least one intl field, add intl callback just before 
   // `${collectionName}.collection` callbacks run to make sure it always runs last
   if (schemaHasIntlFields(schema)) {
     hasIntlFields = true; // we have at least one intl field
-    addCallback(`${collectionName}.collection`, addIntlFields);
+    addCallback(`${typeName.toLowerCase()}.collection`, addIntlFields);
   }
 
   //run schema callbacks and run general callbacks last
-  schema = runCallbacks({ name: `${collectionName}.collection`, iterator: schema, properties: { options }});
+  schema = runCallbacks({ name: `${typeName.toLowerCase()}.collection`, iterator: schema, properties: { options }});
   schema = runCallbacks({ name: '*.collection', iterator: schema, properties: { options }});
 
   if (schema) {
