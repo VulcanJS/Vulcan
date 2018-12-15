@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:debug',
   summary: 'Vulcan debug package',
-  version: '1.12.10',
+  version: '1.12.11',
   git: 'https://github.com/VulcanJS/Vulcan.git',
   debugOnly: true
 });
@@ -17,8 +17,8 @@ Package.onUse(function (api) {
 
     // Vulcan packages
 
-    'vulcan:lib@1.12.10',
-    'vulcan:email@1.12.10',
+    'vulcan:lib@1.12.11',
+    'vulcan:email@1.12.11',
 
   ]);
 
