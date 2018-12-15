@@ -189,3 +189,17 @@ export const delayedComponent = name => {
     return Component && <Component {...props} />;
   };
 };
+
+
+// Example with Proxy (might be unstable/hard to reason about)
+//const mergeWithComponents = (myComponents = {}) => {
+//  const handler = {
+//    get: function(target, name) {
+//      return name in target ? target[name] : Components[name];
+//    }
+//  };
+//  const proxy = new Proxy(myComponents, handler);
+//  return proxy;
+//};
+export const mergeWithComponents = myComponents => (myComponents ? { ...Components, ...myComponents } : Components);
+
