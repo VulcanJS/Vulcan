@@ -70,6 +70,13 @@ export const getIntlString = () => {
 
 /*
 
+Check if a schema has at least one intl field
+
+*/
+export const schemaHasIntlFields = schema => Object.keys(schema).some(fieldName => isIntlField(schema[fieldName]));
+
+/*
+
 Custom validation function to check for required locales
 
 See https://github.com/aldeed/simple-schema-js#custom-field-validation

@@ -6,7 +6,7 @@ import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from '
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
-import { validateIntlField, getIntlString, isIntlField } from './intl';
+import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -154,6 +154,13 @@ export const createCollection = options => {
 
   //register individual collection callback
   registerCollectionCallback(collectionName);
+
+  // if schema has at least one intl field, add intl callback just before 
+  // `${collectionName}.collection` callbacks run to make sure it always runs last
+  if (schemaHasIntlFields(schema)) {
+    hasIntlFields = true; // we have at least one intl field
+    addCallback(`${collectionName}.collection`, addIntlFields);
+  }
 
   //run schema callbacks and run general callbacks last
   schema = runCallbacks({ name: `${collectionName}.collection`, iterator: schema, properties: { options }});
@@ -341,8 +348,6 @@ function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema)) {
-      // we have at least one intl field
-      hasIntlFields = true;
 
       // remove `intl` to avoid treating new _intl field as a field to internationalize
       // eslint-disable-next-line no-unused-vars
@@ -373,8 +378,3 @@ function addIntlFields(schema) {
   });
   return schema;
 }
-
-//register intl callback very last
-Meteor.startup(() => {
-  addCallback('*.collection', addIntlFields);
-});
