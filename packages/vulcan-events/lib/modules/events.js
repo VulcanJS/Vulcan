@@ -37,7 +37,7 @@ export const addIdentifyFunction = f => {
 };
 
 export const addPageFunction = f => {
-  const f2 = (empty, route) => f(route);
+  const f2 = ({ currentRoute }) => f(currentRoute);
 
   // rename f2 to same name as f
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
@@ -45,5 +45,5 @@ export const addPageFunction = f => {
   descriptor.value = f.name;
   Object.defineProperty(f2, 'name', descriptor);
 
-  addCallback('router.onUpdate', f2);
+  addCallback('router.onUpdate.async', f2);
 };
