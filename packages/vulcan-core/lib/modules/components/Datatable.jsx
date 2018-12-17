@@ -317,7 +317,7 @@ const DatatableContents = (props) => {
           {isLoadingMore
             ? <Components.Loading />
             : (
-            <Components.DatatableLoadMoreButton onClick={e => { e.preventDefault(); loadMore(); }}>
+            <Components.DatatableLoadMoreButton Components={Components} onClick={e => { e.preventDefault(); loadMore(); }}>
                 Load More ({count}/{totalCount})
             </Components.DatatableLoadMoreButton>
             )
