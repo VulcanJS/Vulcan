@@ -64,6 +64,14 @@ import {
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';
 
+
+// props that should trigger a form reset
+const RESET_PROPS = [
+  'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser', 
+  'fields', 'removeFields',
+  'prefilledProps' // TODO: prefilledProps should be merged instead?
+]
+
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
 
@@ -646,14 +654,15 @@ class SmartForm extends Component {
 
   /*
   
-  When props change, reinitialize state
-  
-  // TODO: only need to check nextProps.prefilledProps?
-  // TODO: see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+  When props change, reinitialize the form  state
+  Triggered only for data related props (collection, document, currentUser etc.)
+
+  @see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
    
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props, nextProps)) {
+    const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]))
+    if (needReset) {
       this.setState(getInitialStateFromProps(nextProps));
     }
   }
@@ -1062,7 +1071,6 @@ SmartForm.propTypes = {
   prefilledProps: PropTypes.object,
   layout: PropTypes.string,
   fields: PropTypes.arrayOf(PropTypes.string),
-  // addFields: PropTypes.arrayOf(PropTypes.string), // Nnenna: Commenting out to pass test. This field is already here 3 lines below. I can delete it. But wanted to be sure.
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
