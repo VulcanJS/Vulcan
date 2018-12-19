@@ -15,6 +15,11 @@ import {
 
 import { RouterServer } from './router.jsx';
 
+//fix helmet when running tests
+if (Meteor.isPackageTest) {
+  Helmet.canUseDOM = false;
+}
+
 Meteor.startup(() => {
   // note: route defined here because it "shouldn't be removable"
   addRoute({name:'app.notfound', path:'*', componentName: 'Error404'});
