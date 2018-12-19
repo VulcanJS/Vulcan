@@ -93,7 +93,7 @@ class Datatable extends PureComponent {
       return (
         <Components.DatatableLayout Components={Components} collectionName={collection.options.collectionName}>
           <Components.DatatableAbove Components={Components} {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
-          <DatatableWithMulti Components={Components} {...this.props} collection={collection} terms={{query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
+          <DatatableWithMulti Components={Components} {...this.props} collection={collection} terms={{ query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
         </Components.DatatableLayout>
       );
     }
