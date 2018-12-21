@@ -17,7 +17,6 @@ export * from './routes.js';
 export * from './utils.js';
 export * from './settings.js';
 export * from './strings.js';
-export * from './redux.js';
 export * from './headtags.js';
 export * from './fragments.js';
 export * from './apollo-common'
