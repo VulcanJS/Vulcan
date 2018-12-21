@@ -8,6 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { renderToStringWithData } from 'react-apollo';
 
+import { runCallbacks } from '../../modules/callbacks'
 import { createClient } from './apolloClient';
 
 import Head from './components/Head'
@@ -52,6 +53,11 @@ const makePageRenderer = ({ computeContext }) => {
             <ApolloState initialState={initialState} />
         )
         sink.appendToBody(serializedApolloState)
+        runCallbacks({
+            name: 'router.server.postRender',
+            iterator: sink,
+            properties: { context }
+        });
     }
     return renderPage
 }
