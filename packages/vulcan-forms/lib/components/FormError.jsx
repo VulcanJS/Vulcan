@@ -8,6 +8,8 @@ const FormError = ({ error, errorContext, getLabel }) => {
   if (error.message) {
     return error.message;
   }
+  // in case this is a nested fields, only keep last segment of path
+  const errorName = error.properties.name.split('.').slice(-1)[0];
   return (
     <FormattedMessage
       id={error.id}
