@@ -15,7 +15,7 @@ const FormError = ({ error, errorContext, getLabel }) => {
       id={error.id}
       values={{
         errorContext,
-        label: error.properties && getLabel(error.properties.name, error.properties.locale),
+        label: error.properties && getLabel(errorName, error.properties.locale),
         ...error.data, // backwards compatibility
         ...error.properties,
       }}
