@@ -62,9 +62,9 @@ Flash.contextTypes = {
 
 registerComponent('Flash', Flash);
 
-const FlashMessages = ({messages, clear, markAsSeen}) => {
+const FlashMessages = ({messages, clear, markAsSeen, className}) => {
   return (
-    <div className="flash-messages">
+    <div className={`flash-messages ${className}`}>
       {messages
         .filter(message => message.show)
         .map(message => <Components.Flash key={message._id} message={message} clear={clear} markAsSeen={markAsSeen} />)}

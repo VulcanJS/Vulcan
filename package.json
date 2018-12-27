@@ -68,7 +68,7 @@
     "react": "^16.2.0",
     "react-addons-pure-render-mixin": "^15.4.1",
     "react-apollo": "^1.4.15",
-    "react-bootstrap": "^0.32.0",
+    "react-bootstrap": "^1.0.0-beta.3",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^2.1.4",
     "react-datetime": "^2.11.1",
