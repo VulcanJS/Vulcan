@@ -127,9 +127,6 @@ addStrings('es', {
   'app.disallowed_property_detected': 'Propiedad no permitida detectada: {value}',
   'app.something_bad_happened': 'Algo malo pasó...',
   'app.embedly_not_authorized': 'Clave API incrustada no válida incluida en el archivo de configuración. Para encontrar su clave, inicie sesión en https://app.embed.ly -> API',
-  'app.required_field_missing': '{fieldName} es obligatorio.',
-  'app.field_is_too_long': '{fieldName} no puede superar {limit} caracteres.',
-  'app.schema_validation_error': 'Error de validación de esquema',
 
   'cards.edit': 'Editar',
   'datatable.new': 'Nuevo',
@@ -140,5 +137,20 @@ addStrings('es', {
 
   'errors.expectedType': 'Se esperaba un campo “{label}” de tipo {dataType}, se ha recibido “{value}” en su lugar.',
   'errors.required': 'El campo “{label}” es obligatorio.',
-  'errors.maxString': 'El campo “{label}” está limitado a {max} carácteres.',
+  'errors.minString': 'El campo “{label}” debe tener al menos {max} caracteres.',
+  'errors.maxString': 'El campo “{label}” está limitado a {max} caracteres.',
+  'errors.generic':'Ha ocurrido un error: <code>{errorMessage}</code>',
+  'errors.generic_report':'Algo ha ido mal: <code>{errorMessage}</code>. </br>Se ha reportado el error.',
+  'errors.minNumber':'El campo “{label}” debe ser superior a {min}.',
+  'errors.maxNumber':'El campo “{label}” debe ser inferior a {max}.',
+  'errors.minCount':'El campo “{label}” debe tener al menos {count}.',
+  'errors.maxCount':'El campo “{label}” está limitado a {count}.',
+  'errors.regEx':'El campo “{label}” está mal formateado.',
+  'errors.badDate':'El campo “{label}” debe ser una fecha.',
+  'errors.notAllowed':'El valor del campo “{label}” no està permitido.',
+  'errors.noDecimal':'El campo “{label}” no puede ser un decimal.',
+
+  'errors.minNumberExclusive':'',
+  'errors.maxNumberExclusive':'',
+  'errors.keyNotInSchema':'',
 });
