@@ -40,7 +40,7 @@ if (settings) {
         const embedData = {
           title: data.title,
           description: data.description
-        }
+        };
         
         if (data.pics && data.pics.length > 0) {
           embedData.thumbnailUrl = data.pics[0];
@@ -63,7 +63,7 @@ if (settings) {
       }
     },
 
-  }
+  };
 
 }
 

@@ -47,12 +47,12 @@ export const initContext = () => {
     return next => (action) => {
       if (!chain) {
         chain = context.getMiddlewares().map(middleware => middleware(store));
-        newDispatch = compose(...chain)(next)
+        newDispatch = compose(...chain)(next);
       }
       return newDispatch(action);
     };
-  })
-}
+  });
+};
 
 // render context object
 export const renderContext = { 
@@ -62,7 +62,7 @@ export const renderContext = {
       initContext();
     }
 
-    return context
+    return context;
 
   } 
 };

@@ -48,7 +48,7 @@ VulcanEmail.getTemplate = templateName => {
     throw new Error(`Couldn't find email template named  “${templateName}”`);
   }
   return Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
-}
+};
 
 VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
   const emailProperties = {
@@ -112,7 +112,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
     html: html,
   };
 
-  const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false)
+  const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false);
 
   console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
   console.log('from: ' + from); // eslint-disable-line

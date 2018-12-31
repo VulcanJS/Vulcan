@@ -11,7 +11,7 @@ const getFirstWord = input => {
     return null;
    }
    return parts[1];
-}
+};
 
 /* 
 
@@ -42,16 +42,16 @@ const parseErrorMessage = message => {
         properties: {
           name: fieldName,
         },
-      }
+      };
     } else {
       // other generic GraphQL errors
       return { 
         message: error
-      }
+      };
     }
   });
   return fieldErrors;
-}
+};
 /*
 
 Errors can have the following properties stored on their `data` property:
@@ -91,7 +91,7 @@ export const getErrors = error => {
     }
   }
   return errors;
-}
+};
 
 /*
 

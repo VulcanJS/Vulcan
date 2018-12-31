@@ -48,7 +48,7 @@ if (settings) {
         const subscribe = callSyncAPI('lists', 'subscribe', subscribeOptions);
         return {result: 'subscribed', ...subscribe};
       } catch (error) {
-        console.log(error)
+        console.log(error);
         let name;
         const message = error.message;
         if (error.code == 214) {
@@ -124,6 +124,6 @@ if (settings) {
       }
     }
 
-  }
+  };
 
 }

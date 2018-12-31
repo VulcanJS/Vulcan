@@ -5,7 +5,7 @@ import { VoteableCollections } from '../modules/make_voteable.js';
 function CreateVoteableUnionType() {
   const voteableSchema = VoteableCollections.length ? `union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}` : '';
   addGraphQLSchema(voteableSchema);
-  return {}
+  return {};
 }
 addCallback('graphql.init.before', CreateVoteableUnionType);
 

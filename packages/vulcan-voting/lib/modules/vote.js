@@ -8,7 +8,7 @@ import { recalculateScore } from './scoring.js';
 Define voting operations
 
 */
-const voteTypes = {}
+const voteTypes = {};
 
 /*
 
@@ -17,7 +17,7 @@ Add new vote types
 */
 export const addVoteType = (voteType, voteTypeOptions) => {
   voteTypes[voteType] = voteTypeOptions;
-}
+};
 
 addVoteType('upvote', {power: 1, exclusive: true});
 addVoteType('downvote', {power: -1, exclusive: true});
@@ -30,11 +30,11 @@ Test if a user has voted on the client
 export const hasVotedClient = ({ document, voteType }) => {
   const userVotes = document.currentUserVotes;
   if (voteType) {
-    return _.where(userVotes, { voteType }).length
+    return _.where(userVotes, { voteType }).length;
   } else {
-    return userVotes && userVotes.length
+    return userVotes && userVotes.length;
   }
-}
+};
 
 /*
 
@@ -51,7 +51,7 @@ Test if a user has voted on the server
 const hasVotedServer = async ({ document, voteType, user }) => {
   const vote = await Connectors.get(Votes, {documentId: document._id, userId: user._id, voteType});
   return vote;
-}
+};
 
 /*
 
@@ -76,7 +76,7 @@ const addVoteClient = ({ document, collection, voteType, user, voteId }) => {
   newDocument.score = recalculateScore(newDocument);
 
   return newDocument;
-}
+};
 
 /*
 
@@ -103,7 +103,7 @@ const addVoteServer = async (voteOptions) => {
   }
 
   return newDocument;
-}
+};
 
 /*
 
@@ -125,7 +125,7 @@ const cancelVoteClient = ({ document, voteType }) => {
 
   }
   return newDocument;
-}
+};
 
 /*
 
@@ -137,8 +137,8 @@ const clearVotesClient = ({ document }) => {
   newDocument.baseScore -= calculateTotalPower(document.currentUserVotes);
   newDocument.score = recalculateScore(newDocument);
   newDocument.currentUserVotes = [];
-  return newDocument
-}
+  return newDocument;
+};
 
 /*
 
@@ -157,7 +157,7 @@ const clearVotesServer = async ({ document, user, collection, updateDocument }) 
     newDocument.score = recalculateScore(newDocument);
   }
   return newDocument;
-}
+};
 
 /*
 
@@ -182,7 +182,7 @@ const cancelVoteServer = async (existingVote, { document, voteType, collection, 
   newDocument.score = recalculateScore(newDocument);
 
   return newDocument;
-}
+};
 
 /*
 
@@ -210,7 +210,7 @@ const createVote = ({ document, collectionName, voteType, user, voteId }) => {
     power: getVotePower({user, voteType, document}),
     votedAt: new Date(),
     __typename: 'Vote'
-  }
+  };
 
   // when creating a vote from the server, voteId can sometimes be undefined
   if (voteId) vote._id = voteId;
@@ -252,7 +252,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      clearVotesClient({document, collection, voteType, user, voteId})
+      clearVotesClient({document, collection, voteType, user, voteId});
     }
 
     returnedDocument = addVoteClient(voteOptions);
@@ -263,7 +263,7 @@ export const performVoteClient = ({ document, collection, voteType = 'upvote', u
   // console.log('returnedDocument:', returnedDocument)
 
   return returnedDocument;
-}
+};
 
 /*
 
@@ -306,7 +306,7 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
     // console.log('action: vote')
 
     if (voteTypes[voteType].exclusive) {
-      document = await clearVotesServer(voteOptions)
+      document = await clearVotesServer(voteOptions);
     }
 
     // runCallbacks(`votes.${voteType}.sync`, document, collection, user);
@@ -324,4 +324,4 @@ export const performVoteServer = async ({ documentId, document, voteType = 'upvo
   document.__typename = collection.options.typeName;
   return document;
 
-}
+};

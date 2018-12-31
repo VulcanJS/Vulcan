@@ -49,7 +49,7 @@ class DateComponent2 extends PureComponent {
       onChange: (name, value) => {
         this.updateDate({ month: value });
       }
-    }
+    };
 
     const dayProperties = {
       label: 'Day',
@@ -60,7 +60,7 @@ class DateComponent2 extends PureComponent {
       onBlur: (e) => {
         this.updateDate({ day: e.target.value });
       }
-    }
+    };
 
     const yearProperties = {
       label: 'Year',
@@ -71,7 +71,7 @@ class DateComponent2 extends PureComponent {
       onBlur: (e) => {
         this.updateDate({ year: e.target.value });
       }
-    }
+    };
 
     return (
       <div className="form-group row">

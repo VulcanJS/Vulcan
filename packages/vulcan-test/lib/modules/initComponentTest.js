@@ -17,5 +17,5 @@ const initComponentTest = () => {
     initializeFragments();
     // actually fills the Components object
     populateComponentsApp();
-}
-export default initComponentTest
+};
+export default initComponentTest;

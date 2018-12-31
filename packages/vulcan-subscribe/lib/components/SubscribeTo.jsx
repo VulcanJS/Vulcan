@@ -7,7 +7,7 @@ import Users from 'meteor/vulcan:users';
 import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/vulcan:core';
 
 // boolean -> unsubscribe || subscribe
-const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe' 
+const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe'; 
 
 class SubscribeToActionHandler extends PureComponent {
 

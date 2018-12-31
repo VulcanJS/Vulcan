@@ -27,7 +27,7 @@ const createDisplayName = user => {
   if (user.username) return user.username;
   if (user.email) return user.email.slice(0, user.email.indexOf('@'));
   return undefined;
-}
+};
 
 
 const adminGroup = {

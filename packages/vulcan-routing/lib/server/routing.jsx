@@ -54,7 +54,7 @@ Meteor.startup(() => {
     wrapperHook(req, res, appGenerator) {
       const { apolloClient, store } = getRenderContext();
       store.reload();
-      store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
+      store.dispatch({ type: '@@nova/INIT' }); // the first dispatch will generate a newDispatch function from middleware
       const app = runCallbacks('router.server.wrapper', appGenerator(), { req, res, store, apolloClient });
       const locale = getHeaderLocale(req.headers );
       const appWithLocale = React.cloneElement(app, { locale });

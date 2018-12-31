@@ -35,4 +35,4 @@ export default class IntlProvider extends Component{
 
 IntlProvider.childContextTypes = {
   intl: intlShape
-}
+};

@@ -27,7 +27,7 @@ if (settings) {
       // eslint-disable-next-line no-console
       console.log(error);
       if (error.message === 'Already subscribed.') {
-        return {result: 'already-subscribed'}
+        return {result: 'already-subscribed'};
       }
     }
   };
@@ -87,6 +87,6 @@ if (settings) {
       return createCampaignSync(params);
     }
 
-  }
+  };
 
 }

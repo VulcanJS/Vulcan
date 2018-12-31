@@ -4,7 +4,7 @@ export const FragmentMatcher = [];
 
 export const addToFragmentMatcher = fragmentMatcher => {
   FragmentMatcher.push(fragmentMatcher);
-}
+};
 
 export const getFragmentMatcher = () => {
   const fm = {
@@ -15,4 +15,4 @@ export const getFragmentMatcher = () => {
     }
   };
   return new IntrospectionFragmentMatcher(fm);
-}
+};

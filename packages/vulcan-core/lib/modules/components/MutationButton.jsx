@@ -83,6 +83,6 @@ const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
       </span>
     </Components.Button>
   );
-}
+};
 
 registerComponent('LoadingButton', LoadingButton);

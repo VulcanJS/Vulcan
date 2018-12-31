@@ -128,14 +128,14 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
         if (!chain) {
           chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
         }
-        newDispatch = compose(...chain)(next)
+        newDispatch = compose(...chain)(next);
         return newDispatch(action);
       } catch (error) {
         // console.log(error)
-        return _.identity
+        return _.identity;
       }
     };
-  })
+  });
 
   // for meteor.user
   req.loginContext = new LoginContext(loginToken);

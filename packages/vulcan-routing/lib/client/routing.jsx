@@ -44,14 +44,14 @@ Meteor.startup(() => {
       context.initialState = initialState;
       const apolloClientReducer = (state = {}, action) => {
         if (initialState && initialState.apollo && !_.isEmpty(initialState.apollo.data) && _.isEmpty(state.data)) {
-          state = initialState.apollo
+          state = initialState.apollo;
         }
         const newState = context.apolloClient.reducer()(state, action);
         return newState;
-      }
+      };
       context.addReducer({ apollo: apolloClientReducer });
       context.store.reload();
-      context.store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
+      context.store.dispatch({ type: '@@nova/INIT' }); // the first dispatch will generate a newDispatch function from middleware
       runCallbacks('router.client.rehydrate', { initialState, store: context.store});
     },
     historyHook(newHistory) {

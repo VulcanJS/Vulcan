@@ -27,6 +27,6 @@ const withSiteData = component => {
       },
     }
   )(component);
-}
+};
 
 export default withSiteData;

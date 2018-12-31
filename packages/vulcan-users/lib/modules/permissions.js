@@ -208,7 +208,7 @@ Users.getViewableFields = function (user, collection, document) {
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
   )));
-}
+};
 
 // collection helper
 Users.helpers({
@@ -246,7 +246,7 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
   
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 
-}
+};
 
 /**
  * @summary Check if a user can submit a field

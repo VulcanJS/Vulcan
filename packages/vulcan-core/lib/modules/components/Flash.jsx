@@ -27,7 +27,7 @@ class Flash extends PureComponent {
       return {
         message: errorObject,
         type: 'error'
-      }
+      };
     } else {
       // else return full error object after internationalizing message
       const { id, message, properties } = errorObject;
@@ -48,13 +48,13 @@ class Flash extends PureComponent {
       <Components.Alert className="flash-message" variant={flashType} onDismiss={this.dismissFlash}>
         <span dangerouslySetInnerHTML={{ __html: message }} />
       </Components.Alert>
-    )
+    );
   }
 }
 
 Flash.propTypes = {
   message: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired])
-}
+};
 
 Flash.contextTypes = {
   intl: intlShape
@@ -70,7 +70,7 @@ const FlashMessages = ({messages, clear, markAsSeen, className}) => {
         .map(message => <Components.Flash key={message._id} message={message} clear={clear} markAsSeen={markAsSeen} />)}
     </div>
   );
-}
+};
 
 FlashMessages.displayName = 'FlashMessages';
 

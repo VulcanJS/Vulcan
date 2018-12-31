@@ -42,8 +42,8 @@ export const withVote = component => {
             __typename: 'Mutation',
             vote: newDocument,
           }
-        })
+        });
       }
     }),
   })(component);
-}
+};

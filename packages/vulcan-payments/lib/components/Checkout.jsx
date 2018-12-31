@@ -40,7 +40,7 @@ class Checkout extends React.Component {
       associatedId: associatedDocument._id,
       properties,
       coupon,
-    }
+    };
 
     paymentActionMutation(args).then(response => {
 
@@ -77,7 +77,7 @@ class Checkout extends React.Component {
       name: 'My Cool Product',
       description: 'This product is awesome.',
       currency: 'USD',
-    }
+    };
 
     // get the product from Products (either object or function applied to doc)
     // or default to sample product
@@ -113,7 +113,7 @@ class Checkout extends React.Component {
         </StripeCheckout>
         {this.state.loading ? <Components.Loading /> : null}
       </div>
-    )
+    );
   }
 }
 
@@ -131,7 +131,7 @@ const WrappedCheckout = (props) => {
   const { fragment, fragmentName } = props;
   const WrappedCheckout = withPaymentAction({fragment, fragmentName})(Checkout);
   return <WrappedCheckout {...props}/>;
-}
+};
 
 registerComponent('Checkout', WrappedCheckout, withCurrentUser, withMessages);
 

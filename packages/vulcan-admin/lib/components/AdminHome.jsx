@@ -19,6 +19,6 @@ const AdminHome = ({ currentUser }) =>
         showEdit={true}
       />
     </Components.ShowIf>
-  </div>
+  </div>;
 
 export default withCurrentUser(AdminHome);

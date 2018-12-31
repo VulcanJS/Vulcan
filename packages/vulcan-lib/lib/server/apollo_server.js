@@ -31,7 +31,7 @@ registerSetting('apolloServer.tracing', Meteor.isDevelopment, 'Tracing by Apollo
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
-const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
+const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO');
 const engineConfig = {
   apiKey: engineApiKey,
   // "origins": [

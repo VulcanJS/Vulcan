@@ -327,7 +327,7 @@ function registerCollectionCallback(typeName) {
     runs: 'sync',
     returns: 'schema',
     description: 'Modifies schemas on collection creation'
-  })
+  });
 }
 
 //register colleciton creation hook

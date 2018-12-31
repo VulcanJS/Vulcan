@@ -4,7 +4,7 @@ import './imports/components.js';
 import './imports/login_session.js';
 import './imports/routes.js';
 import './imports/oauth_config.js';
-import './imports/emailTemplates.js'
+import './imports/emailTemplates.js';
 import { redirect, STATES } from './imports/helpers.js';
 import './imports/api/server/servicesListPublication.js';
 

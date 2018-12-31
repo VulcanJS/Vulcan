@@ -25,7 +25,7 @@ Meteor.startup(function () {
 
         const updatedDocuments = await batchUpdateScore(collection, false, false);
 
-        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} active documents in collection ${collection.options.collectionName}`)
+        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} active documents in collection ${collection.options.collectionName}`);
 
       }, scoreInterval * 1000);
 
@@ -41,7 +41,7 @@ Meteor.startup(function () {
 
         const updatedDocuments = await batchUpdateScore(collection, true, false);
 
-        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`)
+        debug(`[vulcan:voting] Updated scores for ${updatedDocuments} inactive documents in collection ${collection.options.collectionName}`);
 
       }, 3600 * 1000);
 

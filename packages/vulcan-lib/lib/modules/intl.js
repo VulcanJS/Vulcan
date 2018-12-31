@@ -24,11 +24,11 @@ export const getString = ({id, values, defaultMessage, locale}) => {
     });
   }
   return message;
-}
+};
 
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
-}
+};
 
 export const Locales = [];
 

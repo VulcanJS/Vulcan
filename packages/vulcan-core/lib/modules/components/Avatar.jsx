@@ -10,7 +10,7 @@ const Avatar = ({className, user, link, fallback}) => {
   const avatarClassNames = classNames('avatar', className);
 
   if (!user) {
-    return <div className={avatarClassNames}>{fallback}</div>
+    return <div className={avatarClassNames}>{fallback}</div>;
   }
   const avatarUrl = user.avatarUrl || Users.avatar.getUrl(user);
 
@@ -30,18 +30,18 @@ const Avatar = ({className, user, link, fallback}) => {
     </div>
   );
 
-}
+};
 
 Avatar.propTypes = {
   user: PropTypes.object,
   size: PropTypes.string,
   link: PropTypes.bool
-}
+};
 
 Avatar.defaultProps = {
   size: 'medium',
   link: true
-}
+};
 
 Avatar.displayName = 'Avatar';
 

@@ -21,9 +21,9 @@ class Tags extends PureComponent {
   }
 
   handleChange = reducer => value => {
-    const tags = reducer(this.state.tags, value)
+    const tags = reducer(this.state.tags, value);
     this.setState({ tags });
-    this.props.inputProperties.onChange(this.props.name, tags.map(({ id }) => id))
+    this.props.inputProperties.onChange(this.props.name, tags.map(({ id }) => id));
   }
 
   render() {

@@ -11,7 +11,7 @@ const DynamicLoading = ({ isLoading, pastDelay, error }) => {
   } else {
     return null;
   }
-}
+};
 
 registerComponent('DynamicLoading', DynamicLoading);
 

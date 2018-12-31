@@ -113,7 +113,7 @@ const meteorClientConfig = networkInterfaceConfig => {
       }
       return null;
     },
-  }
+  };
 };
 
 export const createApolloClient = options => {

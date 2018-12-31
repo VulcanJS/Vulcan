@@ -292,7 +292,7 @@ _.mixin({
 
       */
       if (typeof value === 'boolean' || typeof value === 'number') {
-        return
+        return;
       }
 
       if(value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
@@ -307,7 +307,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
   const nameWithSpaces = Utils.camelToSpaces(fieldName);
   return label || nameWithSpaces;
-}
+};
 
 Utils.getLogoUrl = () => {
   const logoUrl = getSetting('logoUrl');
@@ -336,12 +336,12 @@ Utils.findIndex = (array, predicate) => {
   let continueLoop = true;
   array.forEach((item, currentIndex) => {
     if (continueLoop && predicate(item)) {
-      index = currentIndex
-      continueLoop = false
+      index = currentIndex;
+      continueLoop = false;
     }
   });
   return index;
-}
+};
 
 // adapted from http://stackoverflow.com/a/22072374/649299
 Utils.unflatten = function(array, options, parent, level=0, tree){
@@ -399,15 +399,15 @@ Utils.stripTelescopeNamespace = (schema) => {
 
   // replace the previous schema by an object based on this filteredSchemaKeys
   return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
-}
+};
 
 /**
  * Convert an array of field names into a Mongo fields specifier
  * @param {Array} fieldsArray
  */
 Utils.arrayToFields = (fieldsArray) => {
-  return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
-}
+  return _.object(fieldsArray, _.map(fieldsArray, function () {return true;}));
+};
 
 /**
  * Get the display name of a React component
@@ -441,7 +441,7 @@ Utils.convertDates = (collection, listOrDocument) => {
   });
 
   return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
-}
+};
 
 Utils.encodeIntlError = error => typeof error !== 'object' ? error : JSON.stringify(error);
 
@@ -471,7 +471,7 @@ Utils.decodeIntlError = (error, options = {stripped: false}) => {
     // check if the error has at least an 'id' expected by react-intl
     if (!parsedError.id) {
       console.error('[Undecodable error]', error); // eslint-disable-line
-      return {id: 'app.something_bad_happened', value: '[undecodable error]'}
+      return {id: 'app.something_bad_happened', value: '[undecodable error]'};
     }
 
     // return the parsed error
@@ -499,11 +499,11 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId, opera
     throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
   }
 
-}
+};
 
 Utils.getRoutePath = routeName => {
   return Routes[routeName] && Routes[routeName].path;
-}
+};
 
 String.prototype.replaceAll = function(search, replacement) {
   var target = this;
@@ -519,7 +519,7 @@ Utils.pluralize = s => {
       `${s}es` :
       `${s}s`;
   return plural;
-}
+};
 
 Utils.removeProperty = (obj, propertyName) => {
   for(const prop in obj) {
@@ -529,4 +529,4 @@ Utils.removeProperty = (obj, propertyName) => {
       Utils.removeProperty(obj[prop], propertyName);
     }
   }
-}
+};

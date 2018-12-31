@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal'
+import Modal from 'react-bootstrap/lib/Modal';
 
 const BootstrapModal = ({ children, size = 'lg', show = false, onHide, title, showCloseButton = true, header, footer, ...rest }) => {
 
@@ -35,6 +35,6 @@ BootstrapModal.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   header: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-}
+};
 
 registerComponent('Modal', BootstrapModal);

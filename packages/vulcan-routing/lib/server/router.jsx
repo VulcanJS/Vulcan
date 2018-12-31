@@ -1,7 +1,7 @@
 import React from 'react';
 import { match, RouterContext, createMemoryHistory } from 'react-router';
-import { renderToString } from 'react-dom/server'
-import { ServerStyleSheet } from 'styled-components'
+import { renderToString } from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 import moment from 'moment';
 import { RoutePolicy } from 'meteor/routepolicy';
 

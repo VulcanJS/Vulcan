@@ -9,7 +9,7 @@ const specificResolvers = {
 
         if (user.services) {
           Object.keys(user.services).forEach((key) => {
-            user.services[key] = {}
+            user.services[key] = {};
           });
         }
       }

@@ -290,27 +290,27 @@ describe('vulcan-forms/components', function() {
           .find('input')
           .first()
           .simulate('change', { target:{value:'bar'} });
-        console.log(wrapper.find('input').first().html())
+        console.log(wrapper.find('input').first().html());
         console.log(wrapper.state());
-        expect(wrapper.state().currentValues).toEqual({foo:'bar'})
+        expect(wrapper.state().currentValues).toEqual({foo:'bar'});
       });
       it('reset state when relevant props change', function() {
         const wrapper = shallowWithContext(<Form {...defaultProps} collectionName="Foos" collection={Foos} />);
-        wrapper.setState({ currentValues: { foo: 'bar' } })
-        expect(wrapper.state('currentValues')).toEqual({foo:'bar'})
-        wrapper.setProps({ collectionName: 'Bars' })
-        expect(wrapper.state('currentValues')).toEqual({})
+        wrapper.setState({ currentValues: { foo: 'bar' } });
+        expect(wrapper.state('currentValues')).toEqual({foo:'bar'});
+        wrapper.setProps({ collectionName: 'Bars' });
+        expect(wrapper.state('currentValues')).toEqual({});
       });
       it('does not reset state when external prop change', function(){
         //const prefilledProps = { bar: 'foo' } // TODO
-        const changeCallback= () => 'CHANGE'
+        const changeCallback= () => 'CHANGE';
         const wrapper = shallowWithContext(<Form {...defaultProps} collection={Foos} changeCallback={changeCallback} />);
-        wrapper.setState({ currentValues: { foo: 'bar' } })
-        expect(wrapper.state('currentValues')).toEqual({foo:'bar'})
-        const newChangeCallback = () => 'NEW'
-        wrapper.setProps({ changeCallback: newChangeCallback })
-        expect(wrapper.state('currentValues')).toEqual({ foo:'bar'})
-      })
+        wrapper.setState({ currentValues: { foo: 'bar' } });
+        expect(wrapper.state('currentValues')).toEqual({foo:'bar'});
+        const newChangeCallback = () => 'NEW';
+        wrapper.setProps({ changeCallback: newChangeCallback });
+        expect(wrapper.state('currentValues')).toEqual({ foo:'bar'});
+      });
     });
   });
 

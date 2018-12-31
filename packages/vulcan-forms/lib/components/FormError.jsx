@@ -22,7 +22,7 @@ const FormError = ({ error, errorContext, getLabel }) => {
       defaultMessage={JSON.stringify(error)}
     />
   )
-;}
+;};
 
 FormError.defaultProps = {
   errorContext: '', // default context so format message does not complain

@@ -1,1 +1,1 @@
-export { default as initComponentTest } from './initComponentTest'
+export { default as initComponentTest } from './initComponentTest';

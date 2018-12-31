@@ -70,7 +70,7 @@ const RESET_PROPS = [
   'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser', 
   'fields', 'removeFields',
   'prefilledProps' // TODO: prefilledProps should be merged instead?
-]
+];
 
 const compactParent = (object, path) => {
   const parentPath = getParentPath(path);
@@ -114,7 +114,7 @@ const getInitialStateFromProps = nextProps => {
       while(initialDocument[key].length < minCount)
         initialDocument[key].push({});
     }
-  })
+  });
   
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
@@ -661,7 +661,7 @@ class SmartForm extends Component {
    
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]))
+    const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]));
     if (needReset) {
       this.setState(getInitialStateFromProps(nextProps));
     }

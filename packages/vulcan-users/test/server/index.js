@@ -1,1 +1,1 @@
-import './callback.test'
+import './callback.test';

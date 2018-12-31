@@ -30,7 +30,7 @@ const schema = {
     type: String,
     optional: true,
   },
-}
+};
 
 Newsletters.attachSchema(new SimpleSchema(schema));
 

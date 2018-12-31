@@ -27,10 +27,10 @@ Embed.builtin = {
       title: metadata.title,
       description: metadata.description,
       thumbnailUrl: metadata.image,
-    }
+    };
   }
 
-}
+};
 
 // -------------- //
 // adapted from https://github.com/acemtp/meteor-meta-extractor/blob/master/meta-extractor.js

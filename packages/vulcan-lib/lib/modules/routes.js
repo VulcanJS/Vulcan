@@ -78,7 +78,7 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
 
   // if the parentRouteName does not exist, error
   if (!RoutesTable[parentRouteName]) {
-    throw new Error(`Route ${parentRouteName} doesn't exist`)
+    throw new Error(`Route ${parentRouteName} doesn't exist`);
   }
 
   // modify the routes table with the new routes
@@ -118,7 +118,7 @@ export const getRoute = name => {
   }
 
   return routeDef;
-}
+};
 
 export const getChildRoute = (name, index) => {
   const routeDef = RoutesTable[name]['childRoutes'][index];
@@ -129,7 +129,7 @@ export const getChildRoute = (name, index) => {
   }
 
   return routeDef;
-}
+};
 
 /**
  * Populate the lookup table for routes to be callable
@@ -151,5 +151,5 @@ export const populateRoutesApp = () => {
     // uncomment for debug
     // console.log('init route:', name);
   });
-}
+};
 

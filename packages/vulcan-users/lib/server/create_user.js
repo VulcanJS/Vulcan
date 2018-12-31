@@ -15,6 +15,6 @@ const createUser = user => {
     document: user,
     validate: false
   });
-}
+};
 
 export default createUser;

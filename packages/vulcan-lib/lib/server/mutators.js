@@ -145,7 +145,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   debug('');
 
   return { data: newDocument };
-}
+};
 
 
 export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context, document }) => {
@@ -264,13 +264,13 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   await runCallbacksAsync(`${collectionName.toLowerCase()}.edit.async`, newDocument, document, currentUser, collection);
 
   debug('\x1b[33m=> updated document with modifier: \x1b[0m');
-  debug('// modifier: ', modifier)
+  debug('// modifier: ', modifier);
   debugGroupEnd();
   debug(`--------------- end \x1b[36m${collectionName} Update Mutator\x1b[0m ---------------`);
   debug('');
 
   return { data: newDocument };
-}
+};
 
 export const deleteMutator = async ({ collection, documentId, selector, currentUser, validate, context, document }) => {
 
@@ -353,7 +353,7 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
   debug('');
 
   return { data: document };
-}
+};
 
 // OpenCRUD backwards compatibility
 export const newMutation = createMutator;
