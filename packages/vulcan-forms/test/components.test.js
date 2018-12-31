@@ -98,6 +98,8 @@ const arrayFullCustomSchema = {
 };
 // example with a native type
 // ["20 rue du Moulin PARIS", "16 rue de la poste PARIS"]
+
+// eslint-disable-next-line no-unused-vars
 const arrayOfStringSchema = {
   addresses: {
     type: Array,
@@ -116,6 +118,7 @@ const objectSchema = {
   }
 };
 // without calling SimpleSchema
+// eslint-disable-next-line no-unused-vars
 const bareObjectSchema = {
   addresses: {
     type: addressSchema,
@@ -139,6 +142,7 @@ const Objects = createDummyCollection('Object', objectSchema);
 const ArrayOfUrls = createDummyCollection('ArrayOfUrl', arrayOfUrlSchema);
 const ArrayOfCustomObjects = createDummyCollection('ArrayOfCustomObject', arrayOfCustomObjectSchema);
 const ArrayFullCustom = createDummyCollection('ArrayFullCustom', arrayFullCustomSchema);
+// eslint-disable-next-line no-unused-vars
 const ArrayOfStrings = createDummyCollection('ArrayOfString', arrayOfStringSchema);
 
 const Addresses = createCollection({
@@ -290,7 +294,9 @@ describe('vulcan-forms/components', function() {
           .find('input')
           .first()
           .simulate('change', { target:{value:'bar'} });
+        // eslint-disable-next-line no-console
         console.log(wrapper.find('input').first().html());
+        // eslint-disable-next-line no-console
         console.log(wrapper.state());
         expect(wrapper.state().currentValues).toEqual({foo:'bar'});
       });

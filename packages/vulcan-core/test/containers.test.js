@@ -2,7 +2,7 @@
 import 'jsdom-global/register';
 import React from 'react';
 import expect from 'expect';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { Components } from 'meteor/vulcan:core';
 import { initComponentTest } from 'meteor/vulcan:test';
 import { withComponents } from '../lib/modules';

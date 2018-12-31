@@ -30,7 +30,9 @@ describe('vulcan:core/default_resolvers', function() {
     });
     // TODO: what's the name of this argument? handles cache
     const lastArg = { cacheControl: {} };
+    // eslint-disable-next-line no-unused-vars
     const loggedInUser = { _id: 'foobar', groups: [], isAdmin: false };
+    // eslint-disable-next-line no-unused-vars
     const adminUser = { _id: 'foobar', groups: [], isAdmin: true };
     const getSingleResolver = () => getDefaultResolvers(resolversOptions).single.resolver;
 
@@ -71,6 +73,7 @@ describe('vulcan:core/default_resolvers', function() {
     it('throws if documentId is defined but does not match any document', function() {
       const resolver = getSingleResolver();
       const documentId = 'bad-document';
+      // eslint-disable-next-line no-unused-vars
       const document = { _id: documentId };
       const input = { selector: { documentId } };
       // empty db

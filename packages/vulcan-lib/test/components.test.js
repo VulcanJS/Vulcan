@@ -14,6 +14,7 @@ describe('vulcan:lib/components', function () {
             const MyComponents = { TestComponent: OverrideTestComponent };
             const MergedComponents = mergeWithComponents(MyComponents);
             expect(MergedComponents.TestComponent).toEqual(OverrideTestComponent);
+            // eslint-disable-next-line
             expect(MergedComponents.TestComponent()).toEqual('bar');
         });
         it('return \'Components\' if no components are provided', function () {
