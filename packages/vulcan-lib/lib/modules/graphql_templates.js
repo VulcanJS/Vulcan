@@ -247,8 +247,9 @@ query singleMovieQuery($input: SingleMovieInput) {
 }
 
 */
-export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query single${typeName}Query($input: Single${typeName}Input) {
+// LESSWRONG: Add extraVariables String
+export const singleClientTemplate = ({ typeName, fragmentName, extraQueries, extraVariablesString }) =>
+`query single${typeName}Query($input: Single${typeName}Input, ${extraVariablesString || ''}) {
   ${Utils.camelCaseify(typeName)}(input: $input) {
     result {
       ...${fragmentName}
