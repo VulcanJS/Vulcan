@@ -120,6 +120,9 @@ export class SplitComponentCollector {
     return Object.keys(this.usedComponents)
   }
   
+  // Either returns the named component, or returns NULL immediately and calls
+  // `callback` later at a time when the component is ready, after which
+  // calling getComponent again will return the component.
   getComponent = (name, callback) => {
     this.usedComponents[name] = true
     const component = splitComponentRegistry.getComponent(name)
