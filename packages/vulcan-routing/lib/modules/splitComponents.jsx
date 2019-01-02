@@ -153,7 +153,7 @@ export function loadSplitComponents(componentsList, onFinish)
     return;
   }
   
-  runAllAsyncThen(
+  Promise.all(
     componentsList.map(async (componentName) => {
       if (!splitComponentImportFns[componentName])
         throw new Error(`Requested load of split-component "${componentName}" which is not registered`);
@@ -162,21 +162,4 @@ export function loadSplitComponents(componentsList, onFinish)
     }),
     onFinish
   );
-}
-
-// Given an array of async functions, start running all of them immediately.
-// When the last one finishes (regardless of success or failure), call
-// onLastFinished.
-function runAllAsyncThen(asyncFns, onLastFinished) {
-  let progress = {numLeft: asyncFns.length};
-  
-  for(let promise in asyncFns) {
-    let resolve = () => {
-      progress.numLeft--;
-      if (progress.numLeft == 0) {
-        onLastFinished();
-      }
-    }
-    promise().then(resolve, resolve);
-  }
 }
