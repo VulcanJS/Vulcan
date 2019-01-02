@@ -31,10 +31,11 @@ const makePageRenderer = ({ computeContext }) => {
         // middlewares at this point
         // @see https://github.com/meteor/meteor-feature-requests/issues/174#issuecomment-441047495
 
+        const Main = () => <AppGenerator req={req} apolloClient={client} context={context} />
+
+
         // equivalent to calling getDataFromTree and then renderToStringWithData
-        const content = await renderToStringWithData(
-            <AppGenerator req={req} client={client} context={context} />
-        )
+        const content = await renderToStringWithData(<Main />)
 
         // TODO: there should be a cleaner way to set this wrapper
         // id must always match the client side start.jsx file

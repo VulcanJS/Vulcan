@@ -1,15 +1,25 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import _isEmpty from 'lodash/isEmpty'
 // TODO: now we should add some callback call to add the store to 
 // Apollo SSR + client side too
 
 // create store, and implement reload function
-export const configureStore = (reducers, initialState = {}, middlewares) => {
+export const configureStore = (reducers = getReducers, initialState = {}, middlewares = getMiddlewares) => {
   let getReducers;
   if (typeof reducers === 'function') {
     getReducers = reducers;
     reducers = getReducers();
   }
-  reducers = typeof reducers === 'object' ? combineReducers(reducers) : reducers;
+  if (typeof reducers === 'object') {
+    // allow to tolerate empty reducers
+    //@see https://github.com/reduxjs/redux/issues/968
+    reducers = !_isEmpty(reducers) ? combineReducers(reducers) : () => {}
+  }
+  let getMiddlewares;
+  if (typeof middlewares === 'function') {
+    getMiddlewares = middlewares;
+    middlewares = getMiddlewares();
+  }
   middlewares = Array.isArray(middlewares) ? middlewares : [middlewares];
   const store = createStore(
     // reducers
@@ -73,3 +83,14 @@ export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
   return middlewares;
 };
 export const getMiddlewares = () => middlewares;
+
+
+
+let store
+export const initStore = () => {
+    if (!store) {
+        store = configureStore()
+    }
+    return store
+}
+export const getStore = () => store

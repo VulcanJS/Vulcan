@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { onPageLoad } from 'meteor/server-render';
-import { ApolloProvider } from 'react-apollo';
-import { CookiesProvider } from 'react-cookie';
+import AppGenerator from './components/AppGenerator'
 
 import {
   createApolloClient,
-  Components,
   populateComponentsApp,
   populateRoutesApp,
   initializeFragments
@@ -25,11 +23,7 @@ Meteor.startup(() => {
   document.body.appendChild(rootElement);
 
   const Main = () => (
-    <ApolloProvider client={apolloClient}>
-      <CookiesProvider>
-        <Components.App />
-      </CookiesProvider>
-    </ApolloProvider>
+    <AppGenerator apolloClient={apolloClient} />
   );
 
   onPageLoad(() => {

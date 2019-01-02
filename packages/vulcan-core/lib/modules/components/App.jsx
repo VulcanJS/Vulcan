@@ -107,29 +107,27 @@ class App extends PureComponent {
   render() {
     const routeNames = Object.keys(Routes);
     return (
-      <Components.AppContainer>
-        <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
-          <div className={`locale-${this.getLocale()}`}>
-            <Components.HeadTags />
-            {/* <Components.RouterHook currentRoute={currentRoute} /> */}
-            {this.props.currentUserLoading ? (
-              <Components.Loading />
-            ) : routeNames.length ? (
-              <Switch>
-                {routeNames.map(key => (
-                  // NOTE: if we want the exact props to be taken into account
-                  // we have to pass it to the RouteWithLayout, not the underlying Route,
-                  // because it is the direct child of Switch
-                  <RouteWithLayout exact key={key} {...Routes[key]} />
-                ))}
-                <Route component={Components.Error404} /> // TODO Apollo2: figure out why this is not working
-              </Switch>
-            ) : (
-                  <Components.Welcome />
-                )}
-          </div>
-        </IntlProvider>
-      </Components.AppContainer>
+      <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
+        <div className={`locale-${this.getLocale()}`}>
+          <Components.HeadTags />
+          {/* <Components.RouterHook currentRoute={currentRoute} /> */}
+          {this.props.currentUserLoading ? (
+            <Components.Loading />
+          ) : routeNames.length ? (
+            <Switch>
+              {routeNames.map(key => (
+                // NOTE: if we want the exact props to be taken into account
+                // we have to pass it to the RouteWithLayout, not the underlying Route,
+                // because it is the direct child of Switch
+                <RouteWithLayout exact key={key} {...Routes[key]} />
+              ))}
+              <Route component={Components.Error404} /> // TODO Apollo2: figure out why this is not working
+            </Switch>
+          ) : (
+                <Components.Welcome />
+              )}
+        </div>
+      </IntlProvider>
     );
   }
 }
