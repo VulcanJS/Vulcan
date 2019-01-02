@@ -4,11 +4,7 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { StaticRouter } from 'react-router';
-import { runCallbacks } from '../../../modules'
 
-// TODO:
-// Problem: Components is only created on Startup
-// so Components.App is not defined here
 import { Components } from 'meteor/vulcan:lib'
 
 import { CookiesProvider } from 'react-cookie';
@@ -30,12 +26,6 @@ const AppGenerator = ({ req, apolloClient, context }) => {
       </StaticRouter>
     </ApolloProvider>
   );
-  // run user registered callbacks
-  const WrappedApp = runCallbacks({
-    name: 'router.server.wrapper', 
-    iterator: App, 
-    properties: { req, context, apolloClient }
-  });
-  return WrappedApp;
+  return App
 };
 export default AppGenerator;

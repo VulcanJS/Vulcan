@@ -7,7 +7,6 @@ import './deep_extend.js';
 // import './intl_polyfill.js';
 // import './graphql.js';
 import './icons.js';
-import './mongo_redux.js';
 
 export * from './components.js';
 export * from './collections.js';
