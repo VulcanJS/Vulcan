@@ -20,12 +20,12 @@ import {
   removeFromSet,
   updateInSet,
   registerWatchedMutation,
-  Collections
+  Collections,
 } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
 
-const defaultOptions = { create: true, update: true, upsert: true, delete: true };
+const defaultOptions = {create: true, update: true, upsert: true, delete: true};
 
 export function getDefaultMutations(options) {
   let typeName, collectionName, mutationOptions;
@@ -34,12 +34,12 @@ export function getDefaultMutations(options) {
     // new single-argument API
     typeName = arguments[0].typeName;
     collectionName = arguments[0].collectionName || getCollectionName(typeName);
-    mutationOptions = { ...defaultOptions, ...arguments[0].options };
+    mutationOptions = {...defaultOptions, ...arguments[0].options};
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
     typeName = getTypeName(collectionName);
-    mutationOptions = { ...defaultOptions, ...arguments[1] };
+    mutationOptions = {...defaultOptions, ...arguments[1]};
   }
 
   // register callbacks for documentation purposes
@@ -66,14 +66,24 @@ export function getDefaultMutations(options) {
         }
         // check if they can perform "foo.new" operation (e.g. "movie.new")
         // OpenCRUD backwards compatibility
-        return Users.canDo(user, [`${typeName.toLowerCase()}.create`, `${collectionName.toLowerCase()}.new`]);
+        return Users.canDo(user, [
+          `${typeName.toLowerCase()}.create`,
+          `${collectionName.toLowerCase()}.new`,
+        ]);
       },
 
-      async mutation(root, { data }, context) {
+      async mutation(root, {data}, context) {
         const collection = context[collectionName];
 
         // check if current user can pass check function; else throw error
-        Utils.performCheck(this.check, context.currentUser, data, '', `${typeName}.create`, collectionName);
+        Utils.performCheck(
+          this.check,
+          context.currentUser,
+          data,
+          '',
+          `${typeName}.create`,
+          collectionName
+        );
 
         // pass document to boilerplate newMutator function
         return await createMutator({
@@ -81,9 +91,9 @@ export function getDefaultMutations(options) {
           data,
           currentUser: context.currentUser,
           validate: true,
-          context
+          context,
         });
-      }
+      },
     };
     mutations.create = createMutation;
     // OpenCRUD backwards compatibility
@@ -95,34 +105,44 @@ export function getDefaultMutations(options) {
 
     */
     if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = mutation.result.data[mutationName].data;
+      registerWatchedMutation(
+        mutationName,
+        multiQueryName,
+        ({mutation, query}) => {
+          // get mongo selector and options objects based on current terms
+          const terms = query.variables.input.terms;
+          const collection = Collections.find(c => c.typeName === typeName);
+          const parameters = collection.getParameters(terms /* apolloClient */);
+          const {selector, options} = parameters;
+          let results = query.result;
+          const document = mutation.result.data[mutationName].data;
 
-        if (belongsToSet(document, selector)) {
-          if (!isInSet(results[multiResolverName], document)) {
-            // make sure document hasn't been already added as this may be called several times
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
+          if (belongsToSet(document, selector)) {
+            if (!isInSet(results[multiResolverName], document)) {
+              // make sure document hasn't been already added as this may be called several times
+              results[multiResolverName] = addToSet(
+                results[multiResolverName],
+                document
+              );
+            }
+            results[multiResolverName] = reorderSet(
+              results[multiResolverName],
+              options.sort
+            );
           }
-          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
+
+          results[multiResolverName].__typename = `Multi${typeName}Output`;
+
+          // console.log('// create');
+          // console.log(mutation);
+          // console.log(query);
+          // console.log(collection);
+          // console.log(parameters);
+          // console.log(results);
+
+          return results;
         }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// create');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(collection);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
+      );
     }
   }
 
@@ -148,11 +168,17 @@ export function getDefaultMutations(options) {
         // if they don't, check if they can perform "foo.edit.all" action
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
-          ? Users.canDo(user, [`${typeName.toLowerCase()}.update.own`, `${collectionName.toLowerCase()}.edit.own`])
-          : Users.canDo(user, [`${typeName.toLowerCase()}.update.all`, `${collectionName.toLowerCase()}.edit.all`]);
+          ? Users.canDo(user, [
+              `${typeName.toLowerCase()}.update.own`,
+              `${collectionName.toLowerCase()}.edit.own`,
+            ])
+          : Users.canDo(user, [
+              `${typeName.toLowerCase()}.update.all`,
+              `${collectionName.toLowerCase()}.edit.all`,
+            ]);
       },
 
-      async mutation(root, { selector, data }, context) {
+      async mutation(root, {selector, data}, context) {
         const collection = context[collectionName];
 
         if (isEmpty(selector)) {
@@ -163,11 +189,22 @@ export function getDefaultMutations(options) {
         const document = await Connectors.get(collection, selector);
 
         if (!document) {
-          throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
+          throw new Error(
+            `Could not find document to update for selector: ${JSON.stringify(
+              selector
+            )}`
+          );
         }
 
         // check if user can perform operation; if not throw error
-        Utils.performCheck(this.check, context.currentUser, document, document._id, `${typeName}.update`, collectionName);
+        Utils.performCheck(
+          this.check,
+          context.currentUser,
+          document,
+          document._id,
+          `${typeName}.update`,
+          collectionName
+        );
 
         // call editMutator boilerplate function
         return await updateMutator({
@@ -177,9 +214,9 @@ export function getDefaultMutations(options) {
           currentUser: context.currentUser,
           validate: true,
           context,
-          document
+          document,
         });
-      }
+      },
     };
 
     mutations.update = updateMutation;
@@ -192,40 +229,57 @@ export function getDefaultMutations(options) {
 
     */
     if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = mutation.result.data[mutationName].data;
+      registerWatchedMutation(
+        mutationName,
+        multiQueryName,
+        ({mutation, query}) => {
+          // get mongo selector and options objects based on current terms
+          const terms = query.variables.input.terms;
+          const collection = Collections.find(c => c.typeName === typeName);
+          const parameters = collection.getParameters(terms /* apolloClient */);
+          const {selector, options} = parameters;
+          let results = query.result;
+          const document = mutation.result.data[mutationName].data;
 
-        if (belongsToSet(document, selector)) {
-          // edited document belongs to the list
-          if (!isInSet(results[multiResolverName], document)) {
-            // if document wasn't already in list, add it
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
+          if (belongsToSet(document, selector)) {
+            // edited document belongs to the list
+            if (!isInSet(results[multiResolverName], document)) {
+              // if document wasn't already in list, add it
+              results[multiResolverName] = addToSet(
+                results[multiResolverName],
+                document
+              );
+            } else {
+              // if document was already in the list, update it
+              results[multiResolverName] = updateInSet(
+                results[multiResolverName],
+                document
+              );
+            }
+            results[multiResolverName] = reorderSet(
+              results[multiResolverName],
+              options.sort,
+              selector
+            );
           } else {
-            // if document was already in the list, update it
-            results[multiResolverName] = updateInSet(results[multiResolverName], document);
+            // if edited doesn't belong to current list anymore (based on view selector), remove it
+            results[multiResolverName] = removeFromSet(
+              results[multiResolverName],
+              document
+            );
           }
-          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort, selector);
-        } else {
-          // if edited doesn't belong to current list anymore (based on view selector), remove it
-          results[multiResolverName] = removeFromSet(results[multiResolverName], document);
+
+          results[multiResolverName].__typename = `Multi${typeName}Output`;
+
+          // console.log('// update');
+          // console.log(mutation);
+          // console.log(query);
+          // console.log(parameters);
+          // console.log(results);
+
+          return results;
         }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// update');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
+      );
     }
   }
   if (mutationOptions.upsert) {
@@ -233,18 +287,28 @@ export function getDefaultMutations(options) {
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
 
-      async mutation(root, { selector, data }, context) {
+      async mutation(root, {selector, data}, context) {
         const collection = context[collectionName];
 
         // check if document exists already
-        const existingDocument = await Connectors.get(collection, selector, { fields: { _id: 1 } });
+        const existingDocument = await Connectors.get(collection, selector, {
+          fields: {_id: 1},
+        });
 
         if (existingDocument) {
-          return await collection.options.mutations.update.mutation(root, { selector, data }, context);
+          return await collection.options.mutations.update.mutation(
+            root,
+            {selector, data},
+            context
+          );
         } else {
-          return await collection.options.mutations.create.mutation(root, { data }, context);
+          return await collection.options.mutations.create.mutation(
+            root,
+            {data},
+            context
+          );
         }
-      }
+      },
     };
   }
   if (mutationOptions.delete) {
@@ -257,7 +321,8 @@ export function getDefaultMutations(options) {
 
       check(user, document) {
         // OpenCRUD backwards compatibility
-        const check = mutationOptions.deleteCheck || mutationOptions.removeCheck;
+        const check =
+          mutationOptions.deleteCheck || mutationOptions.removeCheck;
         if (check) {
           return check(user, document);
         }
@@ -265,11 +330,17 @@ export function getDefaultMutations(options) {
         if (!user || !document) return false;
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
-          ? Users.canDo(user, [`${typeName.toLowerCase()}.delete.own`, `${collectionName.toLowerCase()}.remove.own`])
-          : Users.canDo(user, [`${typeName.toLowerCase()}.delete.all`, `${collectionName.toLowerCase()}.remove.all`]);
+          ? Users.canDo(user, [
+              `${typeName.toLowerCase()}.delete.own`,
+              `${collectionName.toLowerCase()}.remove.own`,
+            ])
+          : Users.canDo(user, [
+              `${typeName.toLowerCase()}.delete.all`,
+              `${collectionName.toLowerCase()}.remove.all`,
+            ]);
       },
 
-      async mutation(root, { selector }, context) {
+      async mutation(root, {selector}, context) {
         const collection = context[collectionName];
 
         if (isEmpty(selector)) {
@@ -279,10 +350,22 @@ export function getDefaultMutations(options) {
         const document = await Connectors.get(collection, selector);
 
         if (!document) {
-          throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
+          throw new Error(
+            `Could not find document to delete for selector: ${JSON.stringify(
+              selector
+            )}`
+          );
         }
 
-        Utils.performCheck(this.check, context.currentUser, document, context, document._id, `${typeName}.delete`, collectionName);
+        Utils.performCheck(
+          this.check,
+          context.currentUser,
+          document,
+          context,
+          document._id,
+          `${typeName}.delete`,
+          collectionName
+        );
 
         return await deleteMutator({
           collection,
@@ -290,9 +373,9 @@ export function getDefaultMutations(options) {
           currentUser: context.currentUser,
           validate: true,
           context,
-          document
+          document,
         });
-      }
+      },
     };
 
     mutations.delete = deleteMutation;
@@ -305,18 +388,25 @@ export function getDefaultMutations(options) {
 
     */
     if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        let results = query.result;
-        const document = mutation.result.data[mutationName].data;
-        results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-        // console.log('// delete')
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-        return results;
-      });
+      registerWatchedMutation(
+        mutationName,
+        multiQueryName,
+        ({mutation, query}) => {
+          let results = query.result;
+          const document = mutation.result.data[mutationName].data;
+          results[multiResolverName] = removeFromSet(
+            results[multiResolverName],
+            document
+          );
+          results[multiResolverName].__typename = `Multi${typeName}Output`;
+          // console.log('// delete')
+          // console.log(mutation);
+          // console.log(query);
+          // console.log(parameters);
+          // console.log(results);
+          return results;
+        }
+      );
     }
   }
 
@@ -329,115 +419,142 @@ const registerCollectionCallbacks = (typeName, options) => {
   if (options.create) {
     registerCallback({
       name: `${typeName}.create.validate`,
-      iterator: { document: 'The document being inserted' },
+      iterator: {document: 'The document being inserted'},
       properties: [
-        { document: 'The document being inserted' },
-        { currentUser: 'The current user' },
-        { validationErrors: 'An object that can be used to accumulate validation errors' }
+        {document: 'The document being inserted'},
+        {currentUser: 'The current user'},
+        {
+          validationErrors:
+            'An object that can be used to accumulate validation errors',
+        },
       ],
       runs: 'sync',
       returns: 'document',
-      description: 'Validate a document before insertion (can be skipped when inserting directly on server).'
+      description:
+        'Validate a document before insertion (can be skipped when inserting directly on server).',
     });
     registerCallback({
       name: `${typeName}.create.before`,
-      iterator: { document: 'The document being inserted' },
-      properties: [{ currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: 'document',
-      description: 'Perform operations on a new document before it\'s inserted in the database.'
-    });
-    registerCallback({
-      name: `${typeName}.create.after`,
-      iterator: { document: 'The document being inserted' },
-      properties: [{ currentUser: 'The current user' }],
+      iterator: {document: 'The document being inserted'},
+      properties: [{currentUser: 'The current user'}],
       runs: 'sync',
       returns: 'document',
       description:
-        'Perform operations on a new document after it\'s inserted in the database but *before* the mutation returns it.'
+        "Perform operations on a new document before it's inserted in the database.",
+    });
+    registerCallback({
+      name: `${typeName}.create.after`,
+      iterator: {document: 'The document being inserted'},
+      properties: [{currentUser: 'The current user'}],
+      runs: 'sync',
+      returns: 'document',
+      description:
+        "Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.",
     });
     registerCallback({
       name: `${typeName}.create.async`,
-      iterator: { document: 'The document being inserted' },
-      properties: [{ currentUser: 'The current user' }, { collection: 'The collection the document belongs to' }],
+      iterator: {document: 'The document being inserted'},
+      properties: [
+        {currentUser: 'The current user'},
+        {collection: 'The collection the document belongs to'},
+      ],
       runs: 'async',
       returns: null,
-      description: 'Perform operations on a new document after it\'s inserted in the database asynchronously.'
+      description:
+        "Perform operations on a new document after it's inserted in the database asynchronously.",
     });
   }
   if (options.update) {
     registerCallback({
       name: `${typeName}.update.validate`,
-      iterator: { data: 'The client data' },
+      iterator: {data: 'The client data'},
       properties: [
-        { document: 'The document being edited' },
-        { currentUser: 'The current user' },
-        { validationErrors: 'An object that can be used to accumulate validation errors' }
+        {document: 'The document being edited'},
+        {currentUser: 'The current user'},
+        {
+          validationErrors:
+            'An object that can be used to accumulate validation errors',
+        },
       ],
       runs: 'sync',
       returns: 'modifier',
-      description: 'Validate a document before update (can be skipped when updating directly on server).'
+      description:
+        'Validate a document before update (can be skipped when updating directly on server).',
     });
     registerCallback({
       name: `${typeName}.update.before`,
-      iterator: { data: 'The client data' },
-      properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
+      iterator: {data: 'The client data'},
+      properties: [
+        {document: 'The document being edited'},
+        {currentUser: 'The current user'},
+      ],
       runs: 'sync',
       returns: 'modifier',
-      description: 'Perform operations on a document before it\'s updated in the database.'
+      description:
+        "Perform operations on a document before it's updated in the database.",
     });
     registerCallback({
       name: `${typeName}.update.after`,
-      iterator: { newDocument: 'The document after the update' },
-      properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
+      iterator: {newDocument: 'The document after the update'},
+      properties: [
+        {document: 'The document being edited'},
+        {currentUser: 'The current user'},
+      ],
       runs: 'sync',
       returns: 'document',
       description:
-        'Perform operations on a document after it\'s updated in the database but *before* the mutation returns it.'
+        "Perform operations on a document after it's updated in the database but *before* the mutation returns it.",
     });
     registerCallback({
       name: `${typeName}.update.async`,
-      iterator: { newDocument: 'The document after the edit' },
+      iterator: {newDocument: 'The document after the edit'},
       properties: [
-        { document: 'The document before the edit' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' }
+        {document: 'The document before the edit'},
+        {currentUser: 'The current user'},
+        {collection: 'The collection the document belongs to'},
       ],
       runs: 'async',
       returns: null,
-      description: 'Perform operations on a document after it\'s updated in the database asynchronously.'
+      description:
+        "Perform operations on a document after it's updated in the database asynchronously.",
     });
   }
   if (options.delete) {
     registerCallback({
       name: `${typeName}.delete.validate`,
-      iterator: { document: 'The document being removed' },
+      iterator: {document: 'The document being removed'},
       properties: [
-        { currentUser: 'The current user' },
-        { validationErrors: 'An object that can be used to accumulate validation errors' }
+        {currentUser: 'The current user'},
+        {
+          validationErrors:
+            'An object that can be used to accumulate validation errors',
+        },
       ],
       runs: 'sync',
       returns: 'document',
-      description: 'Validate a document before removal (can be skipped when removing directly on server).'
+      description:
+        'Validate a document before removal (can be skipped when removing directly on server).',
     });
     registerCallback({
       name: `${typeName}.delete.before`,
-      iterator: { document: 'The document being removed' },
-      properties: [{ currentUser: 'The current user' }],
+      iterator: {document: 'The document being removed'},
+      properties: [{currentUser: 'The current user'}],
       runs: 'sync',
       returns: null,
-      description: 'Perform operations on a document before it\'s removed from the database.'
+      description:
+        "Perform operations on a document before it's removed from the database.",
     });
     registerCallback({
       name: `${typeName}.delete.async`,
       properties: [
-        { document: 'The document being removed' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' }
+        {document: 'The document being removed'},
+        {currentUser: 'The current user'},
+        {collection: 'The collection the document belongs to'},
       ],
       runs: 'async',
       returns: null,
-      description: 'Perform operations on a document after it\'s removed from the database asynchronously.'
+      description:
+        "Perform operations on a document after it's removed from the database asynchronously.",
     });
   }
 };

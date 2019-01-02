@@ -1,1 +1,1 @@
-import './graphql.test'
+import './graphql.test';

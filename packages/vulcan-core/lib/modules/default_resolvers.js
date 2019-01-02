@@ -4,10 +4,19 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName, throwError } from 'meteor/vulcan:lib';
+import {
+  Utils,
+  debug,
+  debugGroup,
+  debugGroupEnd,
+  Connectors,
+  getTypeName,
+  getCollectionName,
+  throwError,
+} from 'meteor/vulcan:lib';
 
 const defaultOptions = {
-  cacheMaxAge: 300
+  cacheMaxAge: 300,
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
@@ -17,12 +26,12 @@ export function getDefaultResolvers(options) {
     // new single-argument API
     typeName = arguments[0].typeName;
     collectionName = arguments[0].collectionName || getCollectionName(typeName);
-    resolverOptions = { ...defaultOptions, ...arguments[0].options };
+    resolverOptions = {...defaultOptions, ...arguments[0].options};
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
     typeName = getTypeName(collectionName);
-    resolverOptions = { ...defaultOptions, ...arguments[1] };
+    resolverOptions = {...defaultOptions, ...arguments[1]};
   }
 
   return {
@@ -31,31 +40,38 @@ export function getDefaultResolvers(options) {
     multi: {
       description: `A list of ${typeName} documents matching a set of query terms`,
 
-      async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { terms = {}, enableCache = false, enableTotal = true } = input;
+      async resolver(root, {input = {}}, context, {cacheControl}) {
+        const {terms = {}, enableCache = false, enableTotal = true} = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
         if (cacheControl && enableCache) {
-          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
-          cacheControl.setCacheHint({ maxAge });
+          const maxAge =
+            resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({maxAge});
         }
 
         // get currentUser and Users collection from context
-        const { currentUser, Users } = context;
+        const {currentUser, Users} = context;
 
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options } = await collection.getParameters(terms, {}, context);
+        let {selector, options} = await collection.getParameters(
+          terms,
+          {},
+          context
+        );
         options.skip = terms.offset;
 
-        debug({ selector, options });
+        debug({selector, options});
 
         const docs = await Connectors.find(collection, selector, options);
 
@@ -65,17 +81,23 @@ export function getDefaultResolvers(options) {
           : docs;
 
         // take the remaining documents and remove any fields that shouldn't be accessible
-        const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
+        const restrictedDocs = Users.restrictViewableFields(
+          currentUser,
+          collection,
+          viewableDocs
+        );
 
         // prime the cache
         restrictedDocs.forEach(doc => collection.loader.prime(doc._id, doc));
 
         debug(`\x1b[33m=> ${restrictedDocs.length} documents returned\x1b[0m`);
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
+        debug(
+          `--------------- end \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
+        );
         debug('');
 
-        const data = { results: restrictedDocs };
+        const data = {results: restrictedDocs};
 
         if (enableTotal) {
           // get total count of documents matching the selector
@@ -84,7 +106,7 @@ export function getDefaultResolvers(options) {
 
         // return results
         return data;
-      }
+      },
     },
 
     // resolver for returning a single document queried based on id or slug
@@ -92,31 +114,39 @@ export function getDefaultResolvers(options) {
     single: {
       description: `A single ${typeName} document fetched by ID or slug`,
 
-      async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector = {}, enableCache = false, allowNull = false } = input;
+      async resolver(root, {input = {}}, context, {cacheControl}) {
+        const {selector = {}, enableCache = false, allowNull = false} = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Selector: ${JSON.stringify(selector)}`);
 
         if (cacheControl && enableCache) {
-          const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
-          cacheControl.setCacheHint({ maxAge });
+          const maxAge =
+            resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
+          cacheControl.setCacheHint({maxAge});
         }
 
-        const { currentUser, Users } = context;
+        const {currentUser, Users} = context;
         const collection = context[collectionName];
 
         // use Dataloader if doc is selected by documentId/_id
         const documentId = selector.documentId || selector._id;
-        const doc = documentId ? await collection.loader.load(documentId) : await Connectors.get(collection, selector);
+        const doc = documentId
+          ? await collection.loader.load(documentId)
+          : await Connectors.get(collection, selector);
 
         if (!doc) {
           if (allowNull) {
-            return { result: null };
+            return {result: null};
           } else {
-            throwError({ id: 'app.missing_document', data: {documentId, selector} });
+            throwError({
+              id: 'app.missing_document',
+              data: {documentId, selector},
+            });
           }
         }
 
@@ -134,15 +164,21 @@ export function getDefaultResolvers(options) {
           );
         }
 
-        const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
+        const restrictedDoc = Users.restrictViewableFields(
+          currentUser,
+          collection,
+          doc
+        );
 
         debugGroupEnd();
-        debug(`--------------- end \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
+        debug(
+          `--------------- end \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
+        );
         debug('');
 
         // filter out disallowed properties and return resulting document
-        return { result: restrictedDoc };
-      }
-    }
+        return {result: restrictedDoc};
+      },
+    },
   };
 }

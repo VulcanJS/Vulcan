@@ -2,57 +2,56 @@
  * Init the graphQL schema
  */
 
-import { makeExecutableSchema } from 'apollo-server';
-import { GraphQLSchema } from '../../modules/graphql.js';
-import { runCallbacks } from '../../modules/callbacks.js';
+import {makeExecutableSchema} from 'apollo-server';
+import {GraphQLSchema} from '../../modules/graphql.js';
+import {runCallbacks} from '../../modules/callbacks.js';
 
-
-const getQueries = () => (
-`type Query {
+const getQueries = () =>
+  `type Query {
 ${GraphQLSchema.queries
-      .map(
-        q =>
-          `${
-            q.description
-              ? `  # ${q.description}
+    .map(
+      q =>
+        `${
+          q.description
+            ? `  # ${q.description}
 `
-              : ''
-          }  ${q.query}
+            : ''
+        }  ${q.query}
   `
-      )
-      .join('\n')}
+    )
+    .join('\n')}
 }
 
-`
-)
-const getMutations = () => GraphQLSchema.mutations.length > 0 ? (
-`
+`;
+const getMutations = () =>
+  GraphQLSchema.mutations.length > 0
+    ? `
 ${
-      GraphQLSchema.mutations.length > 0
-        ? `type Mutation {
+        GraphQLSchema.mutations.length > 0
+          ? `type Mutation {
 
 ${GraphQLSchema.mutations
-            .map(
-              m =>
-                `${
-                  m.description
-                    ? `  # ${m.description}
+              .map(
+                m =>
+                  `${
+                    m.description
+                      ? `  # ${m.description}
 `
-                    : ''
-                }  ${m.mutation}
+                      : ''
+                  }  ${m.mutation}
 `
-            )
-            .join('\n')}
+              )
+              .join('\n')}
 }
 `
-        : ''
-    }
+          : ''
+      }
 
 `
-) : ''
+    : '';
 // typeDefs
 const generateTypeDefs = () => [
-    `
+  `
 scalar JSON
 scalar Date
 
@@ -64,8 +63,8 @@ ${getQueries()}
 
 ${getMutations()}
 
-`
-  ];
+`,
+];
 
 const initGraphQL = () => {
   runCallbacks('graphql.init.before');
@@ -73,11 +72,11 @@ const initGraphQL = () => {
   const executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
-    schemaDirectives: GraphQLSchema.directives
+    schemaDirectives: GraphQLSchema.directives,
   });
   GraphQLSchema.finalSchema = typeDefs;
   GraphQLSchema.executableSchema = executableSchema;
-  return executableSchema
-}
+  return executableSchema;
+};
 
-export default initGraphQL
+export default initGraphQL;

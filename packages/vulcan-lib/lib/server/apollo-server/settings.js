@@ -1,4 +1,4 @@
-import { registerSetting } from '../../modules/settings.js';
+//import { registerSetting } from '../../modules/settings.js';
 // TODO: is this still necessary?
 //registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
 //registerSetting(

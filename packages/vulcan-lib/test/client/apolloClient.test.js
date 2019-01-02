@@ -6,7 +6,7 @@ import {
   getMutations,
   getResolvers,
   createStateLink,
-  createApolloClient
+  createApolloClient,
 } from '../../lib/client/main.js';
 if (Meteor.isClient) {
   describe('vulcan-lib/apolloClient', function() {
@@ -15,7 +15,7 @@ if (Meteor.isClient) {
         const dummyMutation = () => {};
         registerMutation({
           name: 'dummyMutation',
-          mutation: dummyMutation
+          mutation: dummyMutation,
         });
         const mutations = getMutations();
         expect(mutations['dummyMutation']).toEqual(dummyMutation);
@@ -24,7 +24,7 @@ if (Meteor.isClient) {
         const dummyDefault = () => {};
         registerDefault({
           name: 'dummyDefault',
-          defaultValue: dummyDefault
+          defaultValue: dummyDefault,
         });
         const defaults = getDefaults();
         expect(defaults['dummyDefault']).toEqual(dummyDefault);
@@ -33,7 +33,7 @@ if (Meteor.isClient) {
         const dummyMutation = () => {};
         registerMutation({
           name: 'dummyMutation',
-          mutation: dummyMutation
+          mutation: dummyMutation,
         });
         const resolvers = getResolvers();
         expect(resolvers.Mutation['dummyMutation']).toEqual(dummyMutation);

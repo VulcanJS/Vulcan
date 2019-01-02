@@ -16,15 +16,15 @@ export const getPlaygroundConfig = currentConfig => {
         endpoint: currentConfig.path,
         query: '{ currentUser { _id }}',
         // TODO: does not work, we should use a cookie instead?
-        headers: { ['Authorization']: 'localStorage[\'Meteor.loginToken\']' }
-      }
+        headers: {['Authorization']: "localStorage['Meteor.loginToken']"},
+      },
     ],
     settings: {
       'editor.reuseHeaders': true,
       // pass cookies?
-      'request.credentials': 'same-origin'
+      'request.credentials': 'same-origin',
     },
-    ...(currentConfig.gui || {})
+    ...(currentConfig.gui || {}),
   };
 };
 export default getPlaygroundConfig;

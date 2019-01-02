@@ -11,17 +11,22 @@
  * Example
  * @see https://hackernoon.com/storing-local-state-in-react-with-apollo-link-state-738f6ca45569
  */
-import { withClientState } from 'apollo-link-state';
+import {withClientState} from 'apollo-link-state';
 
 /**
  * Create a state link
  */
-export const createStateLink = ({ cache, resolvers, defaults, ...otherOptions }) => {
+export const createStateLink = ({
+  cache,
+  resolvers,
+  defaults,
+  ...otherOptions
+}) => {
   const stateLink = withClientState({
     cache,
     defaults: defaults || getStateLinkDefaults(),
     resolvers: resolvers || getStateLinkResolvers(),
-    ...otherOptions
+    ...otherOptions,
   });
   return stateLink;
 };
@@ -31,7 +36,11 @@ const registeredDefaults = {};
 /**
  * Defaults are default response to queries
  */
-export const registerStateLinkDefault = ({ name, defaultValue, options = {} }) => {
+export const registerStateLinkDefault = ({
+  name,
+  defaultValue,
+  options = {},
+}) => {
   registeredDefaults[name] = defaultValue;
   return registeredDefaults;
 };
@@ -40,12 +49,12 @@ export const getStateLinkDefaults = () => registeredDefaults;
 // Mutation are equivalent to a Redux Action + Reducer
 // except it uses GraphQL to retrieve/update data in the cache
 const registeredMutations = {};
-export const registerStateLinkMutation = ({ name, mutation, options = {} }) => {
+export const registerStateLinkMutation = ({name, mutation, options = {}}) => {
   registeredMutations[name] = mutation;
   return registeredMutations;
 };
 export const getStateLinkMutations = () => registeredMutations;
 
 export const getStateLinkResolvers = () => ({
-  Mutation: getStateLinkMutations()
+  Mutation: getStateLinkMutations(),
 });

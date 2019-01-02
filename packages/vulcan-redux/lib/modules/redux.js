@@ -1,10 +1,14 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import _isEmpty from 'lodash/isEmpty'
-// TODO: now we should add some callback call to add the store to 
+import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
+import _isEmpty from 'lodash/isEmpty';
+// TODO: now we should add some callback call to add the store to
 // Apollo SSR + client side too
 
 // create store, and implement reload function
-export const configureStore = (reducers = getReducers, initialState = {}, middlewares = getMiddlewares) => {
+export const configureStore = (
+  reducers = getReducers,
+  initialState = {},
+  middlewares = getMiddlewares
+) => {
   let getReducers;
   if (typeof reducers === 'function') {
     getReducers = reducers;
@@ -13,7 +17,7 @@ export const configureStore = (reducers = getReducers, initialState = {}, middle
   if (typeof reducers === 'object') {
     // allow to tolerate empty reducers
     //@see https://github.com/reduxjs/redux/issues/968
-    reducers = !_isEmpty(reducers) ? combineReducers(reducers) : () => {}
+    reducers = !_isEmpty(reducers) ? combineReducers(reducers) : () => {};
   }
   let getMiddlewares;
   if (typeof middlewares === 'function') {
@@ -29,8 +33,10 @@ export const configureStore = (reducers = getReducers, initialState = {}, middle
     // middlewares
     compose(
       applyMiddleware(...middlewares),
-      typeof window !== 'undefined' && window.devToolsExtension ? window.devToolsExtension() : f => f,
-    ),
+      typeof window !== 'undefined' && window.devToolsExtension
+        ? window.devToolsExtension()
+        : f => f
+    )
   );
   store.reload = function reload(options = {}) {
     if (typeof options.reducers === 'function') {
@@ -41,9 +47,12 @@ export const configureStore = (reducers = getReducers, initialState = {}, middle
       options.reducers = getReducers();
     }
     if (options.reducers) {
-       reducers = typeof options.reducers === 'object' ? combineReducers(options.reducers) : options.reducers;
-     }
-     this.replaceReducer(reducers);
+      reducers =
+        typeof options.reducers === 'object'
+          ? combineReducers(options.reducers)
+          : options.reducers;
+    }
+    this.replaceReducer(reducers);
     return store;
   };
   return store;
@@ -53,8 +62,8 @@ export const configureStore = (reducers = getReducers, initialState = {}, middle
 // **Notes: client side, addAction to browser**
 // **Notes: server side, addAction to server share with every req**
 let actions = {};
-export const addAction = (addedAction) => {
-  actions = { ...actions, ...addedAction };
+export const addAction = addedAction => {
+  actions = {...actions, ...addedAction};
   return actions;
 };
 export const getActions = () => actions;
@@ -63,8 +72,8 @@ export const getActions = () => actions;
 // **Notes: server side, addReducer to server share with every req**
 let reducers = {};
 
-export const addReducer = (addedReducer) => {
-  reducers = { ...reducers, ...addedReducer };
+export const addReducer = addedReducer => {
+  reducers = {...reducers, ...addedReducer};
   return reducers;
 };
 export const getReducers = () => reducers;
@@ -74,7 +83,9 @@ export const getReducers = () => reducers;
 let middlewares = [];
 
 export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
-  const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray) ? middlewareOrMiddlewareArray : [middlewareOrMiddlewareArray];
+  const addedMiddleware = Array.isArray(middlewareOrMiddlewareArray)
+    ? middlewareOrMiddlewareArray
+    : [middlewareOrMiddlewareArray];
   if (options.unshift) {
     middlewares = [...addedMiddleware, ...middlewares];
   } else {
@@ -84,13 +95,11 @@ export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
 };
 export const getMiddlewares = () => middlewares;
 
-
-
-let store
+let store;
 export const initStore = () => {
-    if (!store) {
-        store = configureStore()
-    }
-    return store
-}
-export const getStore = () => store
+  if (!store) {
+    store = configureStore();
+  }
+  return store;
+};
+export const getStore = () => store;

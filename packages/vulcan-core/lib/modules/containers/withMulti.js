@@ -34,10 +34,16 @@ Terms object can have the following properties:
          
 */
 
-import { withApollo, graphql } from 'react-apollo';
+import {withApollo, graphql} from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting, Utils, multiClientTemplate, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import {
+  getSetting,
+  Utils,
+  multiClientTemplate,
+  extractCollectionInfo,
+  extractFragmentInfo,
+} from 'meteor/vulcan:lib';
 import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
@@ -50,22 +56,22 @@ export default function withMulti(options) {
     pollInterval = getSetting('pollInterval', 20000),
     enableTotal = true,
     enableCache = false,
-    extraQueries
+    extraQueries,
   } = options;
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
 
-  const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const {collectionName, collection} = extractCollectionInfo(options);
+  const {fragmentName, fragment} = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
   const query = gql`
-    ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${multiClientTemplate({typeName, fragmentName, extraQueries})}
     ${fragment}
   `;
 
@@ -79,7 +85,7 @@ export default function withMulti(options) {
       const paginationLimit = (props.terms && props.terms.limit) || limit;
       const paginationTerms = {
         limit: paginationLimit,
-        itemsPerPage: paginationLimit
+        itemsPerPage: paginationLimit,
       };
 
       return paginationTerms;
@@ -93,17 +99,17 @@ export default function withMulti(options) {
         alias: `with${Utils.pluralize(typeName)}`,
 
         // graphql query options
-        options({ terms, paginationTerms, client: apolloClient, currentUser }) {
+        options({terms, paginationTerms, client: apolloClient, currentUser}) {
           // get terms from options, then props, then pagination
-          const mergedTerms = { ...options.terms, ...terms, ...paginationTerms };
+          const mergedTerms = {...options.terms, ...terms, ...paginationTerms};
 
           const graphQLOptions = {
             variables: {
               input: {
                 terms: mergedTerms,
                 enableCache,
-                enableTotal
-              }
+                enableTotal,
+              },
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
@@ -115,7 +121,8 @@ export default function withMulti(options) {
 
           // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
           if (options.notifyOnNetworkStatusChange) {
-            graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
+            graphQLOptions.notifyOnNetworkStatusChange =
+              options.notifyOnNetworkStatusChange;
           }
 
           return graphQLOptions;
@@ -126,8 +133,10 @@ export default function withMulti(options) {
           // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
             // results = Utils.convertDates(collection, props.data[listResolverName]),
-            results = props.data[resolverName] && props.data[resolverName].results,
-            totalCount = props.data[resolverName] && props.data[resolverName].totalCount,
+            results =
+              props.data[resolverName] && props.data[resolverName].results,
+            totalCount =
+              props.data[resolverName] && props.data[resolverName].totalCount,
             networkStatus = props.data.networkStatus,
             loadingInitial = props.data.networkStatus === 1,
             loading = props.data.networkStatus === 1,
@@ -159,8 +168,11 @@ export default function withMulti(options) {
               const newTerms =
                 typeof providedTerms === 'undefined'
                   ? {
-                      /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms,
-                      limit: results.length + props.ownProps.paginationTerms.itemsPerPage
+                      /*...props.ownProps.terms,*/ ...props.ownProps
+                        .paginationTerms,
+                      limit:
+                        results.length +
+                        props.ownProps.paginationTerms.itemsPerPage,
                     }
                   : providedTerms;
 
@@ -173,30 +185,37 @@ export default function withMulti(options) {
               // get terms passed as argument or else just default to incrementing the offset
               const newTerms =
                 typeof providedTerms === 'undefined'
-                  ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length }
+                  ? {
+                      ...props.ownProps.terms,
+                      ...props.ownProps.paginationTerms,
+                      offset: results.length,
+                    }
                   : providedTerms;
 
               return props.data.fetchMore({
-                variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
-                updateQuery(previousResults, { fetchMoreResult }) {
+                variables: {input: {terms: newTerms}}, // ??? not sure about 'terms: newTerms'
+                updateQuery(previousResults, {fetchMoreResult}) {
                   // no more post to fetch
                   if (!fetchMoreResult.data) {
                     return previousResults;
                   }
                   const newResults = {};
-                  newResults[resolverName] = [...previousResults[resolverName], ...fetchMoreResult.data[resolverName]];
+                  newResults[resolverName] = [
+                    ...previousResults[resolverName],
+                    ...fetchMoreResult.data[resolverName],
+                  ];
                   // return the previous results "augmented" with more
-                  return { ...previousResults, ...newResults };
-                }
+                  return {...previousResults, ...newResults};
+                },
               });
             },
 
             fragmentName,
             fragment,
             ...props.ownProps, // pass on the props down to the wrapped component
-            data: props.data
+            data: props.data,
           };
-        }
+        },
       }
     )
   );

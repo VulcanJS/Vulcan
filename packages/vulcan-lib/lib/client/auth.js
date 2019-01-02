@@ -1,13 +1,13 @@
 /**
  * Manage meteor_login_token cookie
- * Necessary for authentication when the 
+ * Necessary for authentication when the
  * Authorization header is not set
- * 
+ *
  * E.g on first page loading
  */
 import Cookies from 'universal-cookie';
 
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
 const cookie = new Cookies();
 
@@ -15,18 +15,20 @@ function setToken(loginToken, expires) {
   if (loginToken && expires !== -1) {
     cookie.set('meteor_login_token', loginToken, {
       path: '/',
-      expires
+      expires,
     });
   } else {
     cookie.remove('meteor_login_token', {
-      path: '/'
+      path: '/',
     });
   }
 }
 
 function initToken() {
   const loginToken = global.localStorage['Meteor.loginToken'];
-  const loginTokenExpires = new Date(global.localStorage['Meteor.loginTokenExpires']);
+  const loginTokenExpires = new Date(
+    global.localStorage['Meteor.loginTokenExpires']
+  );
 
   if (loginToken) {
     setToken(loginToken, loginTokenExpires);

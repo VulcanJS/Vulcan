@@ -12,15 +12,13 @@
 
 //import deepmerge from 'deepmerge';
 import DataLoader from 'dataloader';
-import { getSetting } from '../../modules/settings.js';
-import { _hashLoginToken, _tokenExpiration } from '../accounts_helpers.js';
-import { Collections } from '../../modules/collections.js';
-import { runCallbacks } from '../../modules/callbacks.js';
+import {getSetting} from '../../modules/settings.js';
+import {Collections} from '../../modules/collections.js';
+import {runCallbacks} from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
-import { GraphQLSchema } from '../../modules/graphql.js';
-import { Utils } from '../../modules/utils.js';
+import {GraphQLSchema} from '../../modules/graphql.js';
 import _merge from 'lodash/merge';
-import { getUser } from 'meteor/apollo';
+import {getUser} from 'meteor/apollo';
 
 /**
  * Called once on server creation
@@ -29,7 +27,7 @@ import { getUser } from 'meteor/apollo';
 export const initContext = currentContext => {
   let context;
   if (currentContext) {
-    context = { ...currentContext };
+    context = {...currentContext};
   } else {
     context = {};
   }
@@ -38,21 +36,26 @@ export const initContext = currentContext => {
   context = _merge({}, context, GraphQLSchema.context);
   // go over context and add Dataloader to each collection
   Collections.forEach(collection => {
-    context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, context), {
-      cache: true
-    });
+    context[collection.options.collectionName].loader = new DataLoader(
+      ids => findByIds(collection, ids, context),
+      {
+        cache: true,
+      }
+    );
   });
   return context;
 };
 
-
 import Cookies from 'universal-cookie';
 
-// initial request will get the login token from a cookie, subsequent requests from 
+// initial request will get the login token from a cookie, subsequent requests from
 // the header
-const getAuthToken = (req) => {
-  return req.headers.authorization || (new Cookies(req.cookies)).get('meteor_login_token')
-}
+const getAuthToken = req => {
+  return (
+    req.headers.authorization ||
+    new Cookies(req.cookies).get('meteor_login_token')
+  );
+};
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
 const setupAuthToken = async (context, req) => {
   const user = await getUser(getAuthToken(req));
@@ -70,7 +73,9 @@ const setupAuthToken = async (context, req) => {
 export const computeContextFromReq = (currentContext, customContextFromReq) => {
   // givenOptions can be either a function of the request or an object
   const getBaseContext = req =>
-    customContextFromReq ? { ...currentContext, ...customContextFromReq(req) } : { ...currentContext };
+    customContextFromReq
+      ? {...currentContext, ...customContextFromReq(req)}
+      : {...currentContext};
   // Previous implementation
   // Now meteor/apollo already provide this
   // Get the token from the header
@@ -99,7 +104,7 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
   //}
 
   // create options given the current request
-  const handleReq = async (req) => {
+  const handleReq = async req => {
     let context;
     let user = null;
 
@@ -119,7 +124,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
-    context.locale = (user && user.locale) || req.headers.locale || getSetting('locale', 'en');
+    context.locale =
+      (user && user.locale) || req.headers.locale || getSetting('locale', 'en');
 
     return context;
   };
