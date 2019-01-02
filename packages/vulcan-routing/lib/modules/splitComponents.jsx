@@ -72,11 +72,11 @@ export class SplitComponentCollector {
   // onReady() later at a time when the component is ready, at which point
   // calling getComponent again will return the component.
   getComponent(name, onReady) {
-    if (!(name in this.componentsUsed)) {
+    if (!this.componentsUsed[name]) {
       this.componentsUsed[name] = true
     }
     
-    if (name in splitComponentClasses) {
+    if (splitComponentClasses[name]) {
       return splitComponentClasses[name];
     } else {
       loadSplitComponents([name], onReady);
@@ -115,7 +115,7 @@ export class SplitComponent extends PureComponent {
   render() {
     const { name, ...otherProps } = this.props;
     
-    if (!(name in splitComponentImportFns))
+    if (!splitComponentImportFns[name])
       throw new Error(`${name} is not registered as a split component`);
     
     return (
@@ -135,7 +135,7 @@ export class SplitComponent extends PureComponent {
 
 export function registerSplitComponent(name, importFn)
 {
-  if (name in splitComponentImportFns) {
+  if (splitComponentImportFns[name]) {
     throw new Error(`${name} is already registered as a split component`);
   }
   
