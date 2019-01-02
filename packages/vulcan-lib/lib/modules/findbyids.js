@@ -12,6 +12,6 @@ const findByIds = async function(collection, ids, context) {
   const orderedDocuments = ids.map(id => _.findWhere(documents, {_id: id}));
 
   return orderedDocuments;
-}
+};
 
 export default findByIds;

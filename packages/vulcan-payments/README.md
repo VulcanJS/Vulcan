@@ -92,7 +92,7 @@ Make sure you define your products in a location accessible to both client and s
     associatedCollection={Jobs}
     associatedId={job._id}
     callback={setToPaid}
-    button={<Button className="buy-job-button" bsStyle="primary">Complete Payment</Button>}
+    button={<Button className="buy-job-button" variant="primary">Complete Payment</Button>}
   />
 ```
 

@@ -25,6 +25,6 @@ Charges.addDefaultView(terms => {
 
 Charges.checkAccess = (currentUser, charge) => {
   return Users.isAdmin(currentUser);
-}
+};
 
 export default Charges;

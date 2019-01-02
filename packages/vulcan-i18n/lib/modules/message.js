@@ -7,11 +7,11 @@ const FormattedMessage = ({ id, values, defaultMessage = '', html = false, class
 
   return html ? 
     <span className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :
-    <span className={cssClass}>{message}</span>
-}
+    <span className={cssClass}>{message}</span>;
+};
 
 FormattedMessage.contextTypes = {
   intl: intlShape
-}
+};
 
 export default FormattedMessage;

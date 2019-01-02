@@ -52,7 +52,10 @@ class FormComponentInner extends PureComponent {
       showCharsRemaining,
       charsRemaining,
       renderComponent,
+      formComponents,
     } = this.props;
+
+    const FormComponents = formComponents;
 
     const hasErrors = errors && errors.length;
 
@@ -72,7 +75,7 @@ class FormComponentInner extends PureComponent {
       <div className={inputClass}>
         {instantiateComponent(beforeComponent, properties)}
         <FormInput {...properties}/>
-        {hasErrors ? <Components.FieldErrors errors={errors} /> : null}
+        {hasErrors ? <FormComponents.FieldErrors errors={errors} /> : null}
         {this.renderClear()}
         {showCharsRemaining && (
           <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>

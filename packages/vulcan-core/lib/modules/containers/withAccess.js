@@ -32,5 +32,5 @@ export default function withAccess (options) {
     AccessComponent.displayName = `withAccess(${WrappedComponent.displayName})`;
 
     return withRouter(withCurrentUser(AccessComponent));
-  }
+  };
 }

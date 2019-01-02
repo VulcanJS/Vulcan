@@ -40,7 +40,7 @@ const FormSubmit = ({
         className="form-cancel"
         onClick={e => {
           e.preventDefault();
-          clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
+          clearForm();
           revertCallback(document);
         }}
       >
@@ -60,10 +60,10 @@ const FormSubmit = ({
 );
 
 FormSubmit.propTypes = {
-  submitLabel: PropTypes.string,
-  cancelLabel: PropTypes.string,
+  submitLabel: PropTypes.node,
+  cancelLabel: PropTypes.node,
   cancelCallback: PropTypes.func,
-  revertLabel: PropTypes.string,
+  revertLabel: PropTypes.node,
   revertCallback: PropTypes.func,
   document: PropTypes.object,
   deleteDocument: PropTypes.func,

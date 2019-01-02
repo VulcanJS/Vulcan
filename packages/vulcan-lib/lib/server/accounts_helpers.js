@@ -10,7 +10,7 @@ export const _tokenExpiration = (when) => {
   // We pass when through the Date constructor for backwards compatibility;
   // `when` used to be a number.
   return new Date((new Date(when)).getTime() + _getTokenLifetimeMs());
-}
+};
 
 // A large number of expiration days (approximately 100 years worth) that is
 // used when creating unexpiring tokens.
@@ -25,4 +25,4 @@ export const _getTokenLifetimeMs = () => {
   // unexpiring token.
   const loginExpirationInDays = LOGIN_UNEXPIRING_TOKEN_DAYS;
   return (loginExpirationInDays|| DEFAULT_LOGIN_EXPIRATION_DAYS) * 24 * 60 * 60 * 1000;
-}
+};

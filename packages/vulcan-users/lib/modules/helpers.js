@@ -41,7 +41,7 @@ Users.getUserName = function (user) {
     return null;
   }
 };
-Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOne(userId))};
+Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOne(userId));};
 
 /**
  * @summary Get a user's display name (not unique, can take special characters and spaces)

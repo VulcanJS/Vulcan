@@ -6,11 +6,11 @@ import { intlShape } from 'meteor/vulcan:i18n';
 
 class AccountsVerifyEmail extends PureComponent {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pending: true,
       error: null
-    }
+    };
   }
   
   componentDidMount() {
@@ -32,7 +32,7 @@ class AccountsVerifyEmail extends PureComponent {
   
   render() {
     if(this.state.pending) {
-      return <Components.Loading />
+      return <Components.Loading />;
     } else if(this.state.error) {
       return (
         <div className='password-reset-form'>
@@ -51,7 +51,7 @@ class AccountsVerifyEmail extends PureComponent {
 
 AccountsVerifyEmail.contextTypes = {
   intl: intlShape
-}
+};
 
 AccountsVerifyEmail.propsTypes = {
   currentUser: PropTypes.object,

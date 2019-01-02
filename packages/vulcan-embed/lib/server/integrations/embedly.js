@@ -38,7 +38,7 @@ if (settings) {
 
 
         if (data.images && data.images.length > 0) // there may not always be an image
-          data.thumbnailUrl = data.images[0].url.replace('http:','') // add thumbnailUrl as its own property
+          data.thumbnailUrl = data.images[0].url.replace('http:',''); // add thumbnailUrl as its own property
 
         if (data.authors && data.authors.length > 0) {
           data.sourceName = data.authors[0].name;
@@ -60,7 +60,7 @@ if (settings) {
       }
     },
 
-  }
+  };
 
 }
 

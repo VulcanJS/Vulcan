@@ -23,7 +23,7 @@ export default function withMutation({name, args, fragmentName}) {
     fragment = getFragment(fragmentName);
     fragmentBlock = `{
       ...${fragmentName}
-    }`
+    }`;
   }
   
   if (args) {
@@ -33,13 +33,13 @@ export default function withMutation({name, args, fragmentName}) {
       mutation ${name}(${args1}) {
         ${name}(${args2})${fragmentBlock}
       }
-    `
+    `;
   } else {
     mutation = `
       mutation ${name} {
         ${name}${fragmentBlock}
       }
-    `
+    `;
   }
   
   return graphql(gql`${mutation}${fragmentName ? fragment : ''}`, {

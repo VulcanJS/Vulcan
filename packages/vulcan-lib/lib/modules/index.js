@@ -15,10 +15,9 @@ export * from './graphql.js';
 export * from './routes.js';
 export * from './utils.js';
 export * from './settings.js';
-export * from './strings.js';
 export * from './headtags.js';
 export * from './fragments.js';
-export * from './apollo-common'
+export * from './apollo-common';
 export * from './dynamic_loader.js';
 export * from './admin.js';
 export * from './fragment_matcher.js';
@@ -29,5 +28,5 @@ export * from './intl.js';
 export * from './detect_locale.js';
 export * from './graphql_templates.js';
 export * from './validation.js';
-// export * from './apollo-client/updates.js';
+export * from './handleOptions';
 // export * from './resolvers.js';

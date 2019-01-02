@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:embed',
   summary: 'Vulcan Embed package',
-  version: '1.12.8',
+  version: '1.12.13',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
@@ -11,8 +11,8 @@ Package.onUse( function(api) {
 
   api.use([
     'http',
-    'vulcan:core@1.12.8',
-    'fourseven:scss@4.5.0'
+    'vulcan:core@1.12.13',
+    'fourseven:scss@4.10.0'
   ]);
 
 

@@ -29,7 +29,7 @@ class AccountsEnrollAccount extends PureComponent {
 
 AccountsEnrollAccount.contextTypes = {
   intl: intlShape
-}
+};
 
 AccountsEnrollAccount.propsTypes = {
   currentUser: PropTypes.object,

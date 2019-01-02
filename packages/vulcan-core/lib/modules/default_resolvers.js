@@ -4,8 +4,7 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
-import { createError } from 'apollo-errors';
+import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName, throwError } from 'meteor/vulcan:lib';
 
 const defaultOptions = {
   cacheMaxAge: 300
@@ -117,15 +116,22 @@ export function getDefaultResolvers(options) {
           if (allowNull) {
             return { result: null };
           } else {
-            const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-            throw new MissingDocumentError({ data: { documentId, selector } });
+            throwError({ id: 'app.missing_document', data: {documentId, selector} });
           }
         }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
         if (collection.checkAccess) {
-          Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
+          Utils.performCheck(
+            collection.checkAccess,
+            currentUser,
+            doc,
+            collection,
+            documentId,
+            `${typeName}.read.single`,
+            collectionName
+          );
         }
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);

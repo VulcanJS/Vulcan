@@ -14,7 +14,7 @@ const SelectComponent = ({refFunction, inputProperties, datatype, ...properties}
   };
   let otherOptions = Array.isArray(inputProperties.options) && inputProperties.options.length ? inputProperties.options : [];
   const options = [noneOption, ...otherOptions];
-  return <Select {...inputProperties} options={options} ref={refFunction}/>
+  return <Select {...inputProperties} options={options} ref={refFunction}/>;
 };
 
 SelectComponent.contextTypes = {

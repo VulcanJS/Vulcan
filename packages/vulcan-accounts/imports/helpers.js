@@ -80,7 +80,7 @@ export function validatePassword(password = '', showMessage, clearMessage){
   if (password.length >= Accounts.ui._options.minimumPasswordLength) {
     return true;
   } else {
-    const errMsg = 'accounts.error_minchar'
+    const errMsg = 'accounts.error_minchar';
     showMessage(errMsg, 'warning', false, 'password');
     return false;
   }

@@ -33,4 +33,4 @@ DatabaseConnectors.mongo = {
   delete: async (collection, selector, options = {}) => {
     return await collection.remove(convertUniqueSelector(selector));
   },
-}
+};

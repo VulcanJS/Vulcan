@@ -62,7 +62,7 @@ const getGraphQLType = (schema, fieldName, isInput = false) => {
     default:
       return null;
   }
-}
+};
 
 export const GraphQLSchema = {
 
@@ -174,7 +174,13 @@ export const GraphQLSchema = {
             // then build actual resolver object and pass it to addGraphQLResolvers
             const resolver = {
               [typeName]: {
-                [resolverName]: field.resolveAs.resolver
+                [resolverName]: (document, args, context, info) => {
+                  const { Users, currentUser } = context;
+                  // check that current user has permission to access the original non-resolved field
+                  const canReadField = Users.canReadField(currentUser, field, document);
+                  return canReadField ? field.resolveAs.resolver(document, args, context, info) : null;
+
+                }
               }
             };
             addGraphQLResolvers(resolver);
@@ -265,7 +271,7 @@ export const GraphQLSchema = {
 
     const { interfaces = [], resolvers, mutations } = collection.options;
 
-    const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`
+    const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`;
 
     const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
 
@@ -355,7 +361,7 @@ export const GraphQLSchema = {
 
     } else {
       // eslint-disable-next-line no-console
-      console.log(`// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`)
+      console.log(`// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`);
     }
 
     return graphQLSchema;
@@ -385,7 +391,7 @@ Vulcan.getGraphQLSchema = () => {
   // eslint-disable-next-line no-console
   // console.log(schema);
   return schema;
-}
+};
 
 export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);

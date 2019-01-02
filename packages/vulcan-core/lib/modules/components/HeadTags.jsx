@@ -75,7 +75,7 @@ class HeadTags extends PureComponent {
           } else {
             HeadComponent = componentOrArray;
           }
-          return <HeadComponent key={index} />
+          return <HeadComponent key={index} />;
         })}
         
       </div>

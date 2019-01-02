@@ -11,7 +11,7 @@ Users.avatar = {
    * @return {String}        output cleaned string
    */
   cleanString: function (string) {
-    return string.trim().toLowerCase()
+    return string.trim().toLowerCase();
   },
 
   /**
@@ -22,8 +22,8 @@ Users.avatar = {
    * @return {Boolean}
    */
   isHash: function (string) {
-    var self = this
-    return /^[a-f0-9]{32}$/i.test(self.cleanString(string))
+    var self = this;
+    return /^[a-f0-9]{32}$/i.test(self.cleanString(string));
   },
 
   /**
@@ -35,7 +35,7 @@ Users.avatar = {
   hash: function (string) {
     var self = this;
     // eslint-disable-next-line babel/new-cap
-    return md5(self.cleanString(string)).toString()
+    return md5(self.cleanString(string)).toString();
   },
 
   /**
@@ -49,28 +49,28 @@ Users.avatar = {
    * @return {String}             complete url to the avatar
    */
   imageUrl: function (emailOrHash, options) {
-    var self = this
-    options = options || {}
+    var self = this;
+    options = options || {};
 
     // Want HTTPS ?
     var url = options.secure
     ? 'https://secure.gravatar.com/avatar/'
-    : 'http://www.gravatar.com/avatar/'
-    delete options.secure
+    : 'http://www.gravatar.com/avatar/';
+    delete options.secure;
 
     // Is it an MD5 already ?
     url += self.isHash(emailOrHash)
     ? emailOrHash
-    : self.hash(emailOrHash)
+    : self.hash(emailOrHash);
 
     // Have any options to pass ?
     var params = _.map(options, function (val, key) {
-      return key + '=' + encodeURIComponent(val)
-    }).join('&')
+      return key + '=' + encodeURIComponent(val);
+    }).join('&');
 
     return (params.length > 0)
     ? url + '?' + params
-    : url
+    : url;
   },
 
   // Default functionality. You can override these options by calling

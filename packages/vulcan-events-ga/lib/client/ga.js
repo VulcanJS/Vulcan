@@ -1,5 +1,5 @@
 import { getSetting } from 'meteor/vulcan:core';
-import { addPageFunction, addInitFunction } from 'meteor/vulcan:events';
+import { addPageFunction, addInitFunction, addTrackFunction } from 'meteor/vulcan:events';
 
 /*
 
@@ -19,9 +19,24 @@ function googleAnaticsTrackPage() {
   }
   return {};
 }
-
 // add client-side callback: log a ga request on page view
 addPageFunction(googleAnaticsTrackPage);
+
+function googleAnaticsTrackEvent(name, properties, currentUser) {
+  const { category = name, action = name, label = name, value } = properties;
+  if (window && window.ga) {
+    window.ga('send', {
+      hitType: 'event',
+      eventCategory: category,
+      eventAction: action,
+      eventLabel: label,
+      eventValue: value,
+    });
+  }
+  return {};
+}
+// add client-side callback: log a ga request on page view
+addTrackFunction(googleAnaticsTrackEvent);
 
 function googleAnalyticsInit() {
   // get the google analytics id from the settings

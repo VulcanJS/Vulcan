@@ -15,7 +15,7 @@ addGraphQLMutation('paymentActionMutation(token: JSON, userId: String, productKe
 function CreateChargeableUnionType() {
   const chargeableSchema = `union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}`;
   addGraphQLSchema(chargeableSchema);
-  return {}
+  return {};
 }
 addCallback('graphql.init.before', CreateChargeableUnionType);
 

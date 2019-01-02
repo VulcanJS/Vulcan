@@ -13,6 +13,6 @@ const AdminUsersName = ({ document: user, flash }) =>
 
     {_.rest(Users.getGroups(user)).map(group => <code key={group}>{group}</code>)}
   
-  </div>
+  </div>;
 
 export default AdminUsersName;

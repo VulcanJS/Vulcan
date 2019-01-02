@@ -1,11 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, Locales } from 'meteor/vulcan:core';
+import { Components, registerComponent, mergeWithComponents, Locales } from 'meteor/vulcan:core';
 import omit from 'lodash/omit';
 import getContext from 'recompose/getContext';
 
-class FormIntl extends PureComponent {
+// replaceable layout
+const FormIntlLayout = ({ children }) => (
+  <div className="form-intl">{children}</div>
+);
+registerComponent({ name: 'FormIntlLayout', component: FormIntlLayout });
+const FormIntlItemLayout = ({ locale, children }) => (
+  <div className={`form-intl-${locale.id}`}>
+    {children}
+  </div>
+);
+registerComponent({
+  name: 'FormIntlItemLayout',
+  component: FormIntlItemLayout
+});
 
+class FormIntl extends PureComponent {
   /*
 
   Note: ideally we'd try to make sure to return the right path no matter
@@ -13,27 +27,49 @@ class FormIntl extends PureComponent {
   so we just use the order of the Locales array.
 
   */
-  getLocalePath = (defaultIndex) => {
+  getLocalePath = defaultIndex => {
     return `${this.props.path}_intl.${defaultIndex}`;
-  }
-  
+  };
+
   render() {
+    const { name, formComponents } = this.props;
+    const FormComponents = mergeWithComponents(formComponents);
 
     // do not pass FormIntl's own value, inputProperties, and intlInput props down
-    const properties = omit(this.props, 'value', 'inputProperties', 'intlInput', 'nestedInput');
-
+    const properties = omit(
+      this.props,
+      'value',
+      'inputProperties',
+      'intlInput',
+      'nestedInput'
+    );
     return (
-      <div className="form-intl">
+      <FormComponents.FormIntlLayout>
         {Locales.map((locale, i) => (
-          <div className={`form-intl-${locale.id}`} key={locale.id}>
-            <Components.FormComponent {...properties} label={this.props.getLabel(this.props.name, locale.id)} path={this.getLocalePath(i)} locale={locale.id} />
-          </div>
+          <FormComponents.FormIntlItemLayout key={locale.id} locale={locale}>
+            <FormComponents.FormComponent
+              {...properties}
+              label={this.props.getLabel(name, locale.id)}
+              path={this.getLocalePath(i)}
+              locale={locale.id}
+            />
+          </FormComponents.FormIntlItemLayout>
         ))}
-      </div>
+      </FormComponents.FormIntlLayout>
     );
   }
 }
 
-registerComponent('FormIntl', FormIntl, getContext({
-  getLabel: PropTypes.func,
-}));
+FormIntl.propTypes = {
+  name: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
+  formComponents: PropTypes.object
+};
+
+registerComponent(
+  'FormIntl',
+  FormIntl,
+  getContext({
+    getLabel: PropTypes.func
+  })
+);

@@ -1,3 +1,5 @@
+import { createError } from 'apollo-errors';
+
 /*
 
 Get whatever word is contained between the first two double quotes
@@ -9,7 +11,7 @@ const getFirstWord = input => {
     return null;
    }
    return parts[1];
-}
+};
 
 /* 
 
@@ -40,16 +42,16 @@ const parseErrorMessage = message => {
         properties: {
           name: fieldName,
         },
-      }
+      };
     } else {
       // other generic GraphQL errors
       return { 
         message: error
-      }
+      };
     }
   });
   return fieldErrors;
-}
+};
 /*
 
 Errors can have the following properties stored on their `data` property:
@@ -89,4 +91,19 @@ export const getErrors = error => {
     }
   }
   return errors;
-}
+};
+
+/*
+
+An error should have: 
+
+- id: will be used as i18n key (note: available as `name` on the client)
+- message: optionally, a plain-text message
+- data: data/values to give more context to the error
+
+*/
+export const throwError = error => {
+  const { id, message = id, data } = error;
+  const MissingDocumentError = createError(id, { message });
+  throw new MissingDocumentError({ id, data });
+};

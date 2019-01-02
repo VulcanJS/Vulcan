@@ -14,7 +14,7 @@ const getLabel = (field, fieldName, collection, intl) => {
   } else {
     return fieldName;
   }
-}
+};
 
 const getTypeName = (field, fieldName, collection) => {
   const schema = collection && collection.simpleSchema()._schema;
@@ -26,18 +26,18 @@ const getTypeName = (field, fieldName, collection) => {
   } else {
     return typeof field;
   }
-}
+};
 
 const parseImageUrl = value => {
   const isImage = ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 || ['.webp', '.jpeg'].indexOf(value.substr(-5)) !== -1;
   return isImage ?
     <img style={{ width: '100%', minWidth: 80, maxWidth: 200, display: 'block' }} src={value} alt={value} /> :
     parseUrl(value);
-}
+};
 
 const parseUrl = value => {
-  return value.slice(0, 4) === 'http' ? <a href={value} target="_blank"><LimitedString string={value} /></a> : <LimitedString string={value} />;
-}
+  return value.slice(0,4) === 'http' ? <a href={value} target="_blank"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
+};
 
 const LimitedString = ({ string }) =>
   <div>
@@ -45,12 +45,12 @@ const LimitedString = ({ string }) =>
       <span title={string}>{string.substr(0, 30)}…</span> :
       <span>{(string)}</span>
     }
-  </div>
+  </div>;
 
 export const getFieldValue = (value, typeName) => {
 
   if (typeof value === 'undefined' || value === null) {
-    return ''
+    return '';
   }
 
   // JSX element
@@ -76,7 +76,7 @@ export const getFieldValue = (value, typeName) => {
       return <code>{value.toString()}</code>;
 
     case 'Array':
-      return <ol>{value.map((item, index) => <li key={index}>{getFieldValue(item, typeof item)}</li>)}</ol>
+      return <ol>{value.map((item, index) => <li key={index}>{getFieldValue(item, typeof item)}</li>)}</ol>;
 
     case 'Object':
     case 'object':
@@ -92,7 +92,7 @@ export const getFieldValue = (value, typeName) => {
     default:
       return value.toString();
   }
-}
+};
 
 const getObject = object => {
 
@@ -105,7 +105,7 @@ const getObject = object => {
         <Components.Avatar size="small" user={user} link />
         <Link to={user.pageUrl}>{user.displayName}</Link>
       </div>
-    )
+    );
 
   } else {
 
@@ -120,16 +120,16 @@ const getObject = object => {
           )}
         </tbody>
       </table>
-    )
+    );
 
   }
-}
+};
 
 const CardItem = ({ label, value, typeName }) =>
   <tr>
     <td className="datacard-label"><strong>{label}</strong></td>
     <td className="datacard-value">{getFieldValue(value, typeName)}</td>
-  </tr>
+  </tr>;
 
 const CardEdit = (props, context) =>
   <tr>
@@ -138,7 +138,7 @@ const CardEdit = (props, context) =>
         <CardEditForm {...props} />
       </Components.ModalTrigger>
     </td>
-  </tr>
+  </tr>;
 
 CardEdit.contextTypes = { intl: intlShape };
 
@@ -150,7 +150,7 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     successCallback={document => {
       closeModal();
     }}
-  />
+  />;
 
 const Card = ({ title, className, collection, document, currentUser, fields, showEdit = true }, { intl }) => {
 
@@ -181,10 +181,10 @@ Card.propTypes = {
   currentUser: PropTypes.object,
   fields: PropTypes.array,
   showEdit: PropTypes.bool
-}
+};
 
 Card.contextTypes = {
   intl: intlShape
-}
+};
 
 registerComponent('Card', Card);

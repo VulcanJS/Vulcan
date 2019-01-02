@@ -39,4 +39,4 @@ export const makeCloudinary = ({collection, fieldName}) => {
   }
   addCallback(`${collection.options.collectionName.toLowerCase()}.edit.sync`, cacheImageOnEdit);
 
-}
+};
