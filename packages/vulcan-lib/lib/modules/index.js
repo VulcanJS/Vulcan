@@ -7,7 +7,6 @@ import './deep_extend.js';
 // import './intl_polyfill.js';
 // import './graphql.js';
 import './icons.js';
-import './mongo_redux.js';
 
 export * from './components.js';
 export * from './collections.js';
@@ -17,7 +16,6 @@ export * from './routes.js';
 export * from './utils.js';
 export * from './settings.js';
 export * from './strings.js';
-export * from './redux.js';
 export * from './headtags.js';
 export * from './fragments.js';
 export * from './apollo-common'
