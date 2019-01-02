@@ -10,10 +10,7 @@ import { splitComponentRegistry } from '../modules/splitComponents';
 const getDataPromisified = (name) => {
   return new Promise((resolve, reject)=> {
     try {
-      InjectData.getData(name, (data) => {
-        console.log("data: ", data)
-        resolve(data)
-      })
+      InjectData.getData(name, (data) => resolve(data))
     } catch(err) {
       reject(err)
     }
