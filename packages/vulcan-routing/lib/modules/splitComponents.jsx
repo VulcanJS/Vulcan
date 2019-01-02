@@ -61,36 +61,36 @@ export let splitComponentRegistry = {
   // Functions that when called asynchronously load a new Component (usually of the form `() => import(<path>)`)
   // This should be fully populated on startup
   // This field should be considered private
-  importFunctions: {}, 
+  _importFunctions: {}, 
 
   // Fully loaded components that can be rendered on the client or server
   // On the server, this is fully populated, on the client, it is populated as-needed
   // This field should be considered private
-  components: {},
+  _components: {},
 
   // Adds a component to the registry. Allows it to be loaded later on, but does not run it's import function
   async registerComponent(name, importFn) {
-    if (this.importFunctions[name]) {
+    if (this._importFunctions[name]) {
       throw new Error(`${name} is already registered as a split component`);
     }
-    this.importFunctions[name] = importFn
+    this._importFunctions[name] = importFn
     // On the server, load all components immediately
     if (Meteor.isServer) {
       const componentExports = await importFn()
-      this.components[name] = componentExports.default
+      this._components[name] = componentExports.default
     }
   },
 
   // Loads a component, which means actually running its async import function and caching the result
   async loadComponent (name) {
-    if (!this.importFunctions[name]) {
+    if (!this._importFunctions[name]) {
       throw new Error(`Requested load of split-component "${name}" which is not registered`);
     }
-    if (!this.components[name]) {
-      const componentExports = await this.importFunctions[name]();
-      this.components[name] = componentExports.default;
+    if (!this._components[name]) {
+      const componentExports = await this._importFunctions[name]();
+      this._components[name] = componentExports.default;
     }
-    return this.components[name]
+    return this._components[name]
   },
 
   // Loads multiple components at the same time
@@ -100,12 +100,12 @@ export let splitComponentRegistry = {
 
   // Gets a split component by name, if fully loaded. Otherwise returns undefined
   getComponent(name) {
-    return this.components[name]
+    return this._components[name]
   },
 
   // Returns Boolean on whether component with given name is registered 
   isComponentRegistered(name) {
-    return !!this.importFunctions[name]
+    return !!this._importFunctions[name]
   }
 }
 
