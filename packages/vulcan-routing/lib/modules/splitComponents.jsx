@@ -48,118 +48,126 @@ const SplitComponentContext = React.createContext("splitComponents");
 // Dictionary from component name => import(that component). Populated by
 // calling registerSplitComponent from application code. On both the client
 // and server, this is fully populated on startup.
-let splitComponentImportFns = {};
+
 
 // Dictionary from component name => actual component. On the server, this is
 // fully populated on startup; on the client, this is populated as-needed. This
 // is a global (rather than part of the REACT tree) because it persists across
 // navigation events.
-let splitComponentClasses = {};
+
+// Global Registry of split Components. Used accross navigation events (and clients
+// on the server)
+export let splitComponentRegistry = {
+  // Functions that when called asynchronously load a new Component (usually of the form `() => import(<path>)`)
+  // This should be fully populated on startup
+  // This field should be considered private
+  importFunctions: {}, 
+
+  // Fully loaded components that can be rendered on the client or server
+  // On the server, this is fully populated, on the client, it is populated as-needed
+  // This field should be considered private
+  components: {},
+
+  // Adds a component to the registry. Allows it to be loaded later on, but does not run it's import function
+  async registerComponent(name, importFn) {
+    if (this.importFunctions[name]) {
+      throw new Error(`${name} is already registered as a split component`);
+    }
+    this.importFunctions[name] = importFn
+    // On the server, load all components immediately
+    if (Meteor.isServer) {
+      const componentExports = await importFn()
+      this.components[name] = componentExports.default
+    }
+  },
+
+  // Loads a component, which means actually running its async import function and caching the result
+  async loadComponent (name) {
+    if (!this.importFunctions[name]) {
+      throw new Error(`Requested load of split-component "${name}" which is not registered`);
+    }
+    if (!this.components[name]) {
+      const componentExports = await this.importFunctions[name]();
+      this.components[name] = componentExports.default;
+    }
+    return this.components[name]
+  },
+
+  // Loads multiple components at the same time
+  async loadComponents(nameArray) {
+    return nameArray.map(name => this.loadComponent(name))
+  },
+
+  // Gets a split component by name, if fully loaded. Otherwise returns undefined
+  getComponent(name) {
+    return this.components[name]
+  },
+
+  // Returns Boolean on whether component with given name is registered 
+  isComponentRegistered(name) {
+    return !!this.importFunctions[name]
+  }
+}
+
+export function registerSplitComponent(name, importFn) {
+  splitComponentRegistry.registerComponent(name, importFn)
+}
 
 export class SplitComponentCollector {
-  constructor() {
-    this.componentsUsed = {};
+  usedComponents = {}
+  
+  getUsedComponents = () => {
+    return Object.keys(this.usedComponents)
   }
   
-  getComponentsUsedArray() {
-    let ret = [];
-    for(let key in this.componentsUsed)
-      ret.push(key);
-    return ret;
-  }
-  
-  // Either returns the named component, or returns NULL immediately and calls
-  // onReady() later at a time when the component is ready, at which point
-  // calling getComponent again will return the component.
-  getComponent(name, onReady) {
-    if (!this.componentsUsed[name]) {
-      this.componentsUsed[name] = true
-    }
-    
-    if (splitComponentClasses[name]) {
-      return splitComponentClasses[name];
+  getComponent = (name, callback) => {
+    this.usedComponents[name] = true
+    const component = splitComponentRegistry.getComponent(name)
+    if (component) {
+      return component
     } else {
-      loadSplitComponents([name], onReady);
+      splitComponentRegistry.loadComponent(name).then(callback)
+      return null
     }
   }
 }
 
-export class SplitComponentWrapper extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      componentsLoaded: 0,
-    }
-  }
-  
-  render() {
-    const { collector, children } = this.props;
-    
-    return (
-      <SplitComponentContext.Provider value={{
-        getComponent: (componentName, onReady) => {
-          return collector.getComponent(componentName, onReady);
-        }
-      }}>
-        {children}
-      </SplitComponentContext.Provider>
-    );
-  }
+
+export const SplitComponentWrapper = ({collector, children}) => {
+  return (
+    <SplitComponentContext.Provider value={{
+      getComponent: collector.getComponent
+    }}>
+      {children}
+    </SplitComponentContext.Provider>
+  );
 }
 
-export class SplitComponent extends PureComponent {
-  componentFinishedLoading = () => {
-    this.forceUpdate();
+
+export class SplitComponentRenderer extends PureComponent {
+  state = {
+    Component: this.props.getComponent(this.props.name) || Components.Loading
   }
-  
-  render() {
-    const { name, ...otherProps } = this.props;
-    
-    if (!splitComponentImportFns[name])
+  componentDidMount = () => {
+    const { name, getComponent } = this.props
+    if (!splitComponentRegistry.isComponentRegistered(name)) {
       throw new Error(`${name} is not registered as a split component`);
-    
-    return (
-      <SplitComponentContext.Consumer>
-        {(context) => {
-          const Component = context.getComponent(name, this.componentFinishedLoading);
-          if (Component) {
-            return <Component {...otherProps}/>
-          } else {
-            return <Components.Loading/>
-          }
-        }}
-      </SplitComponentContext.Consumer>
-    );
+    }
+    getComponent(name, (Component) => {this.setState({Component})})
+  }
+  render() {
+    const { name, ...rest } = this.props
+    const { Component } = this.state
+    return <Component {...rest} />
   }
 }
 
-export function registerSplitComponent(name, importFn)
-{
-  if (splitComponentImportFns[name]) {
-    throw new Error(`${name} is already registered as a split component`);
-  }
-  
-  splitComponentImportFns[name] = importFn;
-  
-  if (Meteor.isServer) {
-    importFn().then(componentExports => splitComponentClasses[name] = componentExports.default);
-  }
-}
-
-export function loadSplitComponents(componentsList, onFinish)
-{
-  if (!componentsList || componentsList.length==0) {
-    Meteor.defer(onFinish);
-    return;
-  }
-  
-  Promise.all(
-    componentsList.map(async (componentName) => {
-      if (!splitComponentImportFns[componentName])
-        throw new Error(`Requested load of split-component "${componentName}" which is not registered`);
-      const componentExports = await splitComponentImportFns[componentName]();
-      splitComponentClasses[componentName] = componentExports.default;
-    }),
-    onFinish
+export function SplitComponent(props) {
+  return (
+    <SplitComponentContext.Consumer>
+      {(context) => {
+        return <SplitComponentRenderer getComponent={context.getComponent} {...props} />
+      }}
+    </SplitComponentContext.Consumer>
   );
 }

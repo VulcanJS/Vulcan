@@ -74,7 +74,7 @@ function generateSSRData(options, req, res, renderProps) {
       console.log("renderToString time: ", postTime) // eslint-disable-line no-console
       styledComponentCss = sheet.getStyleTags();
       
-      InjectData.pushData(res, 'splitComponents', splitComponentCollector.getComponentsUsedArray());
+      InjectData.pushData(res, 'splitComponents', splitComponentCollector.getUsedComponents());
     } else if (options.loadingScreen) {
       html = options.loadingScreen;
     }
