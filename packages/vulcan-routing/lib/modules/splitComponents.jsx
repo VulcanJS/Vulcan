@@ -147,7 +147,7 @@ export const SplitComponentWrapper = ({collector, children}) => {
 }
 
 
-export class SplitComponentRenderer extends PureComponent {
+class SplitComponentRenderer extends PureComponent {
   state = {
     Component: this.props.getComponent(this.props.name) || Components.Loading
   }
