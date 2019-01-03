@@ -136,6 +136,8 @@ export class SplitComponentCollector {
 }
 
 
+// Wraps the DOM on the server, and provides context for managing split
+// components.
 export const SplitComponentWrapper = ({collector, children}) => {
   return (
     <SplitComponentContext.Provider value={{
