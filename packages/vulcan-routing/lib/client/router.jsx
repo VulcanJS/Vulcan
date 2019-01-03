@@ -5,6 +5,17 @@ import { Router, browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
 import { InjectData } from 'meteor/vulcan:lib';
+import { splitComponentRegistry } from '../modules/splitComponents';
+
+const getDataPromisified = (name) => {
+  return new Promise((resolve, reject)=> {
+    try {
+      InjectData.getData(name, (data) => resolve(data))
+    } catch(err) {
+      reject(err)
+    }
+  })
+}
 
 export const RouterClient = {
   run(routes, options) {
@@ -12,11 +23,15 @@ export const RouterClient = {
       options = {};
     }
 
-    Meteor.startup(() => {
+    Meteor.startup(async () => {
       const rootElementName = options.rootElement || 'react-app';
       const rootElementType = options.rootElementType || 'div';
       const attributes = options.rootElementAttributes instanceof Array ? options.rootElementAttributes : [];
       let rootElement = document.getElementById(rootElementName);
+      
+      // If there are split components specified, do them now and wait for them to load before initializing the Router
+      const data = await getDataPromisified('splitComponents')
+      await splitComponentRegistry.loadComponents(data)
 
       // In case the root element doesn't exist, let's create it
       if (!rootElement) {
