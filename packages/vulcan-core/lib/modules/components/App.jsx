@@ -18,9 +18,17 @@ import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { withRouter} from 'react-router';
+
+const DummyErrorCatcher = ({ children }) => children;
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
-const RouteWithLayout = ({ layoutName, component, ...rest }) => (
+const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
+
+   // if defined, use ErrorCatcher component to wrap layout contents
+   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : DummyErrorCatcher;
+
+   return (
   <Route
     // NOTE: Switch ignores the "exact" prop of components that 
     // are not its direct children
@@ -29,13 +37,14 @@ const RouteWithLayout = ({ layoutName, component, ...rest }) => (
     //exact 
     {...rest}
     render={props => {
+
+   const layoutProps = {...props, currentRoute}
+   const childComponentProps = {...props, currentRoute}
       const layout = layoutName ? Components[layoutName] : Components.Layout;
-      return React.createElement(layout, props, React.createElement(component, props));
+      return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
     }}
   />
-);
-
-const DummyErrorCatcher = ({ children }) => children;
+)};
 
 class App extends PureComponent {
   constructor(props) {
@@ -129,11 +138,7 @@ class App extends PureComponent {
 
   render() {
     const routeNames = Object.keys(Routes);
-    //const currentRoute = _.last(this.props.routes);
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
-//
-//    // if defined, use ErrorCatcher component to wrap layout contents
-//    const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : DummyErrorCatcher;
 
     return (
       <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
@@ -148,25 +153,13 @@ class App extends PureComponent {
                 // NOTE: if we want the exact props to be taken into account
                 // we have to pass it to the RouteWithLayout, not the underlying Route,
                 // because it is the direct child of Switch
-                <RouteWithLayout exact key={key} {...Routes[key]} />
+                <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
               ))}
               <Route component={Components.Error404} /> 
             </Switch>
           ) : (
                 <Components.Welcome />
               )}
-     {/*
-          <Components.RouterHook currentRoute={currentRoute} />
-          <LayoutComponent {...this.props} currentRoute={currentRoute}>
-            {this.props.currentUserLoading ? (
-              <Components.Loading />
-            ) : this.props.children ? (
-              <ErrorCatcher siteData={this.props.siteData}>{this.props.children}</ErrorCatcher>
-            ) : (
-              <Components.Welcome />
-            )}
-          </LayoutComponent>
-            */}
         </div>
       </IntlProvider>
     );
@@ -190,6 +183,6 @@ const updateOptions = {
   fragmentName: 'UsersCurrent',
 };
 
-registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies);
+registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies, withRouter);
 
 export default App;
