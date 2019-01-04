@@ -94,7 +94,7 @@ export let splitComponentRegistry = {
   },
 
   // Loads multiple components at the same time
-  async loadComponents(nameArray) {
+  async loadComponents(nameArray = []) {
     return await Promise.all(nameArray.map(name => this.loadComponent(name)))
   },
 
