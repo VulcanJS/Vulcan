@@ -16,13 +16,14 @@ import {WebApp} from 'meteor/webapp';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
+import { graphiqlMiddleware, getGraphiqlConfig } from './graphiql';
+import getPlaygroundConfig from './playground';
 
 import initGraphQL from './initGraphQL';
 import './settings';
 import {engineConfig} from './engine';
 import {defaultConfig, defaultOptions} from './defaults';
 import {initContext, computeContextFromReq} from './context.js';
-import getPlaygroundConfig from './playground';
 
 import {GraphQLSchema} from '../../modules/graphql.js';
 
@@ -106,6 +107,11 @@ const createApolloServer = ({
     WebApp.connectHandlers.use(
       config.voyagerPath,
       voyagerMiddleware(getVoyagerConfig(config))
+    );
+    // Setup GraphiQL
+    WebApp.connectHandlers.use(
+      config.graphiqlPath,
+      graphiqlMiddleware(getGraphiqlConfig(config))
     );
   }
 

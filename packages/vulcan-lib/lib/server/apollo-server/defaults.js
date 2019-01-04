@@ -6,7 +6,8 @@ export const defaultConfig = {
   path: '/graphql',
   maxAccountsCacheSizeInMB: 1,
   configServer: apolloServer => {},
-  voyagerPath: '/voyager',
+  voyagerPath: '/graphql-voyager',
+  graphiqlPath: '/graphiql'
 };
 
 export const defaultOptions = {
