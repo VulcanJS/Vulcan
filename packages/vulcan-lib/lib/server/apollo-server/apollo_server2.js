@@ -30,7 +30,10 @@ import {enableSSR} from '../apollo-ssr';
 
 import universalCookiesMiddleware from 'universal-cookie-express';
 
-import { getApolloApplyMiddlewareOptions, getApolloServerOptions } from './settings';
+import {
+  getApolloApplyMiddlewareOptions,
+  getApolloServerOptions,
+} from './settings';
 
 import {getSetting} from '../../modules/settings.js';
 import {formatError} from 'apollo-errors';
@@ -44,9 +47,8 @@ import {formatError} from 'apollo-errors';
 const createApolloServer = ({
   apolloServerOptions = {}, // apollo options
   config = {}, // Vulcan options
-  apolloApplyMiddlewareOptions // apollo.applyMiddleware,
+  apolloApplyMiddlewareOptions, // apollo.applyMiddleware,
 }) => {
-
   const initialContext = initContext(apolloServerOptions.context);
 
   // this replace the previous syntax graphqlExpress(async req => { ... })
@@ -84,7 +86,7 @@ const createApolloServer = ({
     app: WebApp.connectHandlers,
     path: config.path,
     // @see https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#Parameters-2
-    ...apolloApplyMiddlewareOptions
+    ...apolloApplyMiddlewareOptions,
   });
 
   // setup the end point
@@ -147,7 +149,7 @@ Meteor.startup(() => {
     config: {
       path: '/graphql',
       maxAccountsCacheSizeInMB: 1,
-      configServer: apolloServer => { },
+      configServer: apolloServer => {},
       voyagerPath: '/graphql-voyager',
       graphiqlPath: '/graphiql',
       // customConfigFromReq
@@ -157,9 +159,9 @@ Meteor.startup(() => {
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
       cacheControl: true,
-      ...getApolloServerOptions()
+      ...getApolloServerOptions(),
     },
-    apolloApplyMiddlewareOptions: getApolloApplyMiddlewareOptions()
+    apolloApplyMiddlewareOptions: getApolloApplyMiddlewareOptions(),
     // config: ....
     // contextFromReq: ....
   });
