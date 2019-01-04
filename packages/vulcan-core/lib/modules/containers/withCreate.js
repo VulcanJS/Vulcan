@@ -31,6 +31,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { compose, withHandlers } from 'recompose';
 
 const withCreate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -42,25 +43,27 @@ const withCreate = options => {
     ${fragment}
   `;
 
+  const withHandlersOptions = {
+    [`create${typeName}`]: ({ mutate }) => args => {
+      const { data } = args;
+      return mutate({
+        variables: { data }
+      });
+    },
+    // OpenCRUD backwards compatibility
+    newMutation: ({mutate}) => args => {
+      const { document } = args;
+      return mutate({
+        variables: { data: document }
+      });
+    }
+  }    
+
   // wrap component with graphql HoC
-  return graphql(query, {
-    alias: `withCreate${typeName}`,
-    props: ({ ownProps, mutate }) => ({
-      [`create${typeName}`]: args => {
-        const { data } = args;
-        return mutate({
-          variables: { data }
-        });
-      },
-      // OpenCRUD backwards compatibility
-      newMutation: args => {
-        const { document } = args;
-        return mutate({
-          variables: { data: document }
-        });
-      }
-    })
-  });
+  return compose(
+    graphql(query, {alias: `withCreate${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
 };
 
 export default withCreate;

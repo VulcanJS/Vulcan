@@ -32,7 +32,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { upsertClientTemplate } from 'meteor/vulcan:core';
 import clone from 'lodash/clone';
-
+import { compose, withHandlers } from 'recompose';
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withUpsert = options => {
@@ -45,35 +45,34 @@ const withUpsert = options => {
     ${fragment}
   `;
 
-  return graphql(query, {
-    alias: `withUpsert${typeName}`,
-    options: () => ({
-      ssr: false,
-    }),
-    props: ({ ownProps, mutate }) => ({
-      [`upsert${typeName}`]: args => {
-        const { selector, data } = args;
-        return mutate({
-          variables: { selector, data }
-          // note: updateQueries is not needed for editing documents
+  const withHandlersOptions = {
+    [`upsert${typeName}`]: ({ mutate }) => args => {
+      const { selector, data } = args;
+      return mutate({
+        variables: { selector, data }
+        // note: updateQueries is not needed for editing documents
+      });
+    },
+    // OpenCRUD backwards compatibility
+    upsertMutation: ({ mutate }) => args => {
+      const { selector, set, unset } = args;
+      const data = clone(set);
+      unset &&
+        Object.keys(unset).forEach(fieldName => {
+          data[fieldName] = null;
         });
-      },
+      return mutate({
+        variables: { selector, data }
+        // note: updateQueries is not needed for editing documents
+      });
+    }
+  }    
 
-      // OpenCRUD backwards compatibility
-      upsertMutation: args => {
-        const { selector, set, unset } = args;
-        const data = clone(set);
-        unset &&
-          Object.keys(unset).forEach(fieldName => {
-            data[fieldName] = null;
-          });
-        return mutate({
-          variables: { selector, data }
-          // note: updateQueries is not needed for editing documents
-        });
-      }
-    })
-  });
+  return compose(
+    graphql(query, {alias: `withUpsert${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
+  
 };
 
 export default withUpsert;
