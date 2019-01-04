@@ -16,7 +16,7 @@ import {WebApp} from 'meteor/webapp';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
-import { graphiqlMiddleware, getGraphiqlConfig } from './graphiql';
+import {graphiqlMiddleware, getGraphiqlConfig} from './graphiql';
 import getPlaygroundConfig from './playground';
 
 import initGraphQL from './initGraphQL';

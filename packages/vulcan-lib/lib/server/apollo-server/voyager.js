@@ -1,4 +1,4 @@
 export const getVoyagerConfig = currentConfig => ({
-  endpointUrl: currentConfig.voyagerPath,
+  endpointUrl: currentConfig.path,
 });
 export default getVoyagerConfig;

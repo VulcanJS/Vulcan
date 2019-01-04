@@ -3,17 +3,14 @@ export const getGraphiqlConfig = currentConfig => ({
   passHeader: "'Authorization': localStorage['Meteor.loginToken']", // eslint-disable-line quotes
 });
 
-
 // LEGACY SUPPORT FOR GRAPHIQL
-// Code is taken from apollo 1.4 code and 
+// Code is taken from apollo 1.4 code and
 // @see https://github.com/eritikass/express-graphiql-middleware
 // This is the only way to get graphiql to work
 
 import url from 'url';
 
-
 // @seehttps://github.com/apollographql/apollo-server/blob/v1.4.0/packages/apollo-server-module-graphiql/src/resolveGraphiQLString.ts
-
 
 // renderGraphiQL
 /*
@@ -43,7 +40,7 @@ function safeSerialize(data) {
   return data ? JSON.stringify(data).replace(/\//g, '\\/') : null;
 }
 
-export function renderGraphiQL(data){
+export function renderGraphiQL(data) {
   const endpointURL = data.endpointURL;
   const endpointWs =
     endpointURL.startsWith('ws://') || endpointURL.startsWith('wss://');
@@ -240,10 +237,7 @@ function isOptionsFunction(arg) {
   return typeof arg === 'function';
 }
 
-async function resolveGraphiQLOptions(
-  options,
-  ...args
-) {
+async function resolveGraphiQLOptions(options, ...args) {
   if (isOptionsFunction(options)) {
     try {
       return await options(...args);
@@ -264,10 +258,7 @@ function createGraphiQLParams(query) {
   };
 }
 
-function createGraphiQLData(
-  params,
-  options,
-) {
+function createGraphiQLData(params, options) {
   return {
     endpointURL: options.endpointURL,
     subscriptionsEndpoint: options.subscriptionsEndpoint,
@@ -282,11 +273,7 @@ function createGraphiQLData(
   };
 }
 
-async function resolveGraphiQLString(
-  query,
-  options,
-  ...args
-) {
+async function resolveGraphiQLString(query, options, ...args) {
   const graphiqlParams = createGraphiQLParams(query);
   const graphiqlOptions = await resolveGraphiQLOptions(options, ...args);
   const graphiqlData = createGraphiQLData(graphiqlParams, graphiqlOptions);
@@ -307,12 +294,8 @@ async function resolveGraphiQLString(
  * - (optional) result: the result of the query to pre-fill in the GraphiQL UI
  */
 
-export const graphiqlMiddleware = (options) => {
-  const graphiqlHandler = (
-    req,
-    res,
-    next,
-  ) => {
+export const graphiqlMiddleware = options => {
+  const graphiqlHandler = (req, res, next) => {
     const query = req.url && url.parse(req.url, true).query;
     resolveGraphiQLString(query, options, req).then(
       graphiqlString => {
@@ -320,7 +303,7 @@ export const graphiqlMiddleware = (options) => {
         res.write(graphiqlString);
         res.end();
       },
-      error => next(error),
+      error => next(error)
     );
   };
   return graphiqlHandler;
