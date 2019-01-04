@@ -16,55 +16,56 @@ import {WebApp} from 'meteor/webapp';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
+import {graphiqlMiddleware, getGraphiqlConfig} from './graphiql';
+import getPlaygroundConfig from './playground';
 
 import initGraphQL from './initGraphQL';
 import './settings';
 import {engineConfig} from './engine';
-import {defaultConfig, defaultOptions} from './defaults';
 import {initContext, computeContextFromReq} from './context.js';
-import getPlaygroundConfig from './playground';
 
 import {GraphQLSchema} from '../../modules/graphql.js';
 
 import {enableSSR} from '../apollo-ssr';
 
 import universalCookiesMiddleware from 'universal-cookie-express';
+
+import { getApolloApplyMiddlewareOptions, getApolloServerOptions } from './settings';
+
+import {getSetting} from '../../modules/settings.js';
+import {formatError} from 'apollo-errors';
+
+//import _merge from 'lodash/merge';
 /**
  * Options: Apollo server usual options
  *
  * Config: a config specific to Vulcan
  */
 const createApolloServer = ({
-  options: givenOptions = {},
-  config: givenConfig = {},
-  customContextFromReq,
+  apolloServerOptions = {}, // apollo options
+  config = {}, // Vulcan options
+  apolloApplyMiddlewareOptions // apollo.applyMiddleware,
 }) => {
-  const graphiqlOptions = {
-    ...defaultConfig.graphiqlOptions,
-    ...givenConfig.graphiqlOptions,
-  };
-  const config = {...defaultConfig, ...givenConfig};
-  config.graphiqlOptions = graphiqlOptions;
 
-  // get the options and merge in defaults
-  const options = {...defaultOptions, ...givenOptions};
-  const initialContext = initContext(options.context);
+  const initialContext = initContext(apolloServerOptions.context);
 
   // this replace the previous syntax graphqlExpress(async req => { ... })
   // this function takes the context, which contains the current request,
   // and setup the options accordingly ({req}) => { ...; return options }
   const contextFromReq = computeContextFromReq(
     initialContext,
-    customContextFromReq
+    config.customContextFromReq
   );
+
   // given options contains the schema
   const apolloServer = new ApolloServer({
     engine: engineConfig,
     // graphql playground (replacement to graphiql), available on the app path
     playground: getPlaygroundConfig(config),
-    ...options,
     // context optionbject or a function of the current request (+ maybe some other params)
     context: ({req}) => contextFromReq(req),
+    debug: Meteor.isDevelopment,
+    ...apolloServerOptions,
   });
 
   // default function does nothing
@@ -82,6 +83,8 @@ const createApolloServer = ({
     // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
     app: WebApp.connectHandlers,
     path: config.path,
+    // @see https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#Parameters-2
+    ...apolloApplyMiddlewareOptions
   });
 
   // setup the end point
@@ -106,6 +109,11 @@ const createApolloServer = ({
     WebApp.connectHandlers.use(
       config.voyagerPath,
       voyagerMiddleware(getVoyagerConfig(config))
+    );
+    // Setup GraphiQL
+    WebApp.connectHandlers.use(
+      config.graphiqlPath,
+      graphiqlMiddleware(getGraphiqlConfig(config))
     );
   }
 
@@ -136,9 +144,22 @@ const createApolloServer = ({
 Meteor.startup(() => {
   initGraphQL(); // define executableSchema
   createApolloServer({
-    options: {
-      schema: GraphQLSchema.executableSchema,
+    config: {
+      path: '/graphql',
+      maxAccountsCacheSizeInMB: 1,
+      configServer: apolloServer => { },
+      voyagerPath: '/graphql-voyager',
+      graphiqlPath: '/graphiql',
+      // customConfigFromReq
     },
+    apolloServerOptions: {
+      schema: GraphQLSchema.executableSchema,
+      formatError,
+      tracing: getSetting('apolloTracing', Meteor.isDevelopment),
+      cacheControl: true,
+      ...getApolloServerOptions()
+    },
+    apolloApplyMiddlewareOptions: getApolloApplyMiddlewareOptions()
     // config: ....
     // contextFromReq: ....
   });
