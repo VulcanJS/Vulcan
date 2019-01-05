@@ -203,7 +203,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     const headers = req.renderContext.originalHeaders || req.headers;
 
     options.context.locale = getHeaderLocale(headers, user && user.locale);
-    
+
+    if (headers.apikey && (headers.apikey === getSetting('vulcan.apiKey'))) {
+      options.context.currentUser = { isAdmin: true, isApiUser: true };
+    }
     // console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
     // console.log('// apollo_server.js headers:');
     // console.log(headers);
