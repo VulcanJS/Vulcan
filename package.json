@@ -69,6 +69,7 @@
     "mingo": "^2.2.0",
     "moment": "^2.13.0",
     "prop-types": "^15.6.0",
+    "qs": "^6.6.0",
     "react": "^16.2.0",
     "react-addons-pure-render-mixin": "^15.4.1",
     "react-apollo": "^2.2.4",
