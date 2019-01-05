@@ -47,7 +47,16 @@ if (!fs.existsSync(vulcanDirPath + 'package.json')) {
   var vulcanPackageFile = fs.readFileSync(vulcanDirPath + 'package.json');
   var vulcanPackageJson = JSON.parse(vulcanPackageFile);
 
-  console.log(appPackageJson.name + '@' + appPackageJson.version + ' \'package.json\' will be updated with Vulcan@' + vulcanPackageJson.version + ' dependencies.');
+  if (appPackageJson.vulcanVersion) {
+    console.log(appPackageJson.name + '@' + appPackageJson.version +
+      ' \'package.json\' will be updated from Vulcan@' + appPackageJson.vulcanVersion +
+      ' to Vulcan@' + vulcanPackageJson.version +
+      ' dependencies.');
+  } else {
+    console.log(appPackageJson.name + '@' + appPackageJson.version +
+      ' \'package.json\' will be updated with Vulcan@' + vulcanPackageJson.version +
+      ' dependencies.');
+  }
 
   var backupDirPath = vulcanDirPath + 'bkp/';
   if (!fs.existsSync(backupDirPath)) {
@@ -62,6 +71,8 @@ if (!fs.existsSync(vulcanDirPath + 'package.json')) {
     JSON.parse(appPackageFile),
     [vulcanDirPath]
   );
+
+  updatedAppPackageJson.vulcanVersion = vulcanPackageJson.version;
 
   [
     'dependencies',
