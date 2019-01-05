@@ -1,6 +1,6 @@
 import React from 'react';
 import { registerComponent } from 'meteor/vulcan:lib';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function Dashboard() {
   return (
