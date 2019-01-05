@@ -11,6 +11,7 @@ import {ApolloServer} from 'apollo-server-express';
 import {Meteor} from 'meteor/meteor';
 
 import {WebApp} from 'meteor/webapp';
+import bodyParser from 'body-parser';
 
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
@@ -78,6 +79,8 @@ const createApolloServer = ({
 
   // parse cookies and assign req.universalCookies object
   WebApp.connectHandlers.use(universalCookiesMiddleware());
+
+  WebApp.connectHandlers.use(bodyParser.text({ type: 'application/graphql' }));
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server
