@@ -10,7 +10,8 @@
     "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
     "test": "npm run test-unit",
     "prettier": "node ./.vulcan/prettier/index.js write-changed",
-    "prettier-all": "node ./.vulcan/prettier/index.js write"
+    "prettier-all": "node ./.vulcan/prettier/index.js write",
+    "update-package-json": "node ./.vulcan/update_package.js"
   },
   "husky": {
     "hooks": {
