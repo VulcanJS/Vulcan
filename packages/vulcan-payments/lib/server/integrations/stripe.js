@@ -424,7 +424,7 @@ const app = express();
 
 // Add the raw text body of the request to the `request` object
 function addRawBody(req, res, next) {
-  req.setEncoding('utf8');
+  // req.setEncoding('utf8');
 
   var data = '';
 
