@@ -3,7 +3,8 @@ import {ApolloLink} from 'apollo-link';
 import watchedMutationLink from './links/watchedMutation';
 import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
-import {createStateLink, errorLink} from '../../modules/apollo-common';
+import errorLink from './links/error';
+import {createStateLink} from '../../modules/apollo-common';
 import cache from './cache';
 
 // these links do not change once created

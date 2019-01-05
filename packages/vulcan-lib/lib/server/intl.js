@@ -1,7 +1,7 @@
 // see https://github.com/apollographql/graphql-tools/blob/master/docs/source/schema-directives.md#marking-strings-for-internationalization
 
 import {addGraphQLDirective, addGraphQLSchema} from '../modules/graphql';
-import {SchemaDirectiveVisitor} from 'apollo-server';
+import {SchemaDirectiveVisitor} from 'graphql-tools';
 import {defaultFieldResolver} from 'graphql';
 import {Collections} from '../modules/collections';
 import {getSetting} from '../modules/settings';
@@ -79,7 +79,7 @@ Migration function
 const migrateIntlFields = async defaultLocale => {
   if (!defaultLocale) {
     throw new Error(
-      "Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))"
+      'Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields(\'en\'))'
     );
   }
 
