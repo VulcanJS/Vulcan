@@ -264,10 +264,10 @@ export const GraphQLSchema = {
 
         // if field is i18nized, add foo_intl field containing all languages
         if (isIntlField(field)) {
-          fields.mainType.push({
-            name: `${fieldName}_intl`,
-            type: '[IntlValue]',
-          });
+          // fields.mainType.push({
+          //   name: `${fieldName}_intl`,
+          //   type: '[IntlValue]',
+          // });
           fields.create.push({
             name: `${fieldName}_intl`,
             type: '[IntlValueInput]',
