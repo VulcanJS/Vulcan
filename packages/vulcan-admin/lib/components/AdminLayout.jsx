@@ -18,7 +18,7 @@ import {
 class AdminLayout extends React.PureComponent {
   renderWithRestrictedAccess(children, currentUser) {
     // while the currentUser is loading, don't render anything.
-    if (currentUser && currentUser.loading) {
+    if (currentUserLoading) {
       return null;
     } //if the currentUser is an admin, then render the children
     else if (currentUser && currentUser.isAdmin) {
