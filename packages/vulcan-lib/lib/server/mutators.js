@@ -114,8 +114,8 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // }
 
   // run sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.before`, iterator: newDocument, properties: { currentUser, collection }});
-  newDocument = await runCallbacks({ name: '*.create.before', iterator: newDocument, properties: { currentUser, collection }});
+  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.before`, iterator: newDocument, properties: { currentUser, collection, context }});
+  newDocument = await runCallbacks({ name: '*.create.before', iterator: newDocument, properties: { currentUser, collection, context }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.before`, newDocument, currentUser);
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, newDocument, currentUser);
@@ -124,8 +124,8 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   newDocument._id = await Connectors.create(collection, newDocument);
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.after`, iterator: newDocument, properties: { currentUser, collection }});
-  newDocument = await runCallbacks({ name: '*.create.after', iterator: newDocument, properties: { currentUser, collection }});
+  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.after`, iterator: newDocument, properties: { currentUser, collection, context }});
+  newDocument = await runCallbacks({ name: '*.create.after', iterator: newDocument, properties: { currentUser, collection, context }});
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, newDocument, currentUser);
 
