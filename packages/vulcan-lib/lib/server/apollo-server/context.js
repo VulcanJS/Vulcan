@@ -24,13 +24,8 @@ import {getUser} from 'meteor/apollo';
  * Called once on server creation
  * @param {*} currentContext
  */
-export const initContext = currentContext => {
+export const initContext = () => {
   let context;
-  if (currentContext) {
-    context = {...currentContext};
-  } else {
-    context = {};
-  }
   // merge with custom context
   // TODO: deepmerge created an infinite loop here
   context = _merge({}, context, GraphQLSchema.context);
