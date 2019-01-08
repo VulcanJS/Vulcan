@@ -14,22 +14,31 @@ export default function withSingle(options) {
   const typeName = collection.options.typeName;
   const resolverName = Utils.camelCaseify(typeName);
 
+  // LESSWRONG MODIFICATION: Allow the passing of extraVariables so that you can have field-specific queries
+  let extraVariablesString = ''
+  if (options.extraVariables) {
+    extraVariablesString = Object.keys(options.extraVariables).map(k => `$${k}: ${options.extraVariables[k]}`).join(', ')
+  }
+
   const query = gql`
-    ${singleClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${singleClientTemplate({ typeName, fragmentName, extraQueries, extraVariablesString })}
     ${fragment}
   `;
 
   return graphql(query, {
     alias: `with${typeName}`,
 
-    options({ documentId, slug, selector = { documentId, slug } }) {
+    options({ documentId, slug, selector = { documentId, slug }, ...rest }) {
       // OpenCrud backwards compatibility
+      // From the provided arguments, pick the key-value pairs where the key is also in extraVariables option
+      const extraVariables = _.pick(rest, Object.keys(options.extraVariables || {}))  
       const graphQLOptions = {
         variables: {
           input: {
             selector,
             enableCache
-          }
+          },
+          ...extraVariables
         },
         pollInterval // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
