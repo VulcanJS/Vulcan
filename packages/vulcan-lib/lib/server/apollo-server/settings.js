@@ -10,7 +10,7 @@ import _merge from 'lodash/merge';
 //  'Tracing by Apollo. Default is true on development and false on prod',
 //  true
 //);
-// registerSetting('apolloServer.jsonParserOptions.limit', undefined, 'DEPRECATED bodyParser jsonParser limit');
+// registerSetting('apolloServer.jsonParserOptions.limit', undefined, 'bodyParser jsonParser limit');
 
 // NOTE: some option can be functions, so they cannot be
 // defined as Meteor settings, which are pure JSON (no function)

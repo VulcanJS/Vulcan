@@ -81,7 +81,9 @@ const createApolloServer = ({
   WebApp.connectHandlers.use(universalCookiesMiddleware());
 
   // parse request
-  WebApp.connectHandlers.use(bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') }));
+  WebApp.connectHandlers.use(
+    bodyParser.json({limit: getSetting('apolloServer.jsonParserOptions.limit')})
+  );
   WebApp.connectHandlers.use(
     config.path,
     bodyParser.text({type: 'application/graphql'})

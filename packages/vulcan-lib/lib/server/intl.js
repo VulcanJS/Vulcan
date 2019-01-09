@@ -79,7 +79,7 @@ Migration function
 const migrateIntlFields = async defaultLocale => {
   if (!defaultLocale) {
     throw new Error(
-      'Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields(\'en\'))'
+      "Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))"
     );
   }
 
