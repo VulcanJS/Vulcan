@@ -39,7 +39,7 @@ export const runGraphQL = async (query, variables = {}, context ) => {
   }
 
   return result;
-}
+};
 
 export const runQuery = runGraphQL; //backwards compatibility
 
@@ -72,7 +72,7 @@ export const buildQuery = (collection, {fragmentName, fragmentText}) => {
   const query = `${singleClientTemplate({ typeName, fragmentName: name })}${text}`;
 
   return query;
-}
+};
 
 Meteor.startup(() => {
 
@@ -84,7 +84,7 @@ Meteor.startup(() => {
       const query = buildQuery(collection, { fragmentName, fragmentText });
       const result = await runQuery(query, { input: { selector: { documentId } } }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
-    }
+    };
 
   });
 

@@ -1,5 +1,4 @@
 import sanitizeHtml from 'sanitize-html';
-
 import { Utils } from '../modules';
 
 Utils.sanitize = function(s) {

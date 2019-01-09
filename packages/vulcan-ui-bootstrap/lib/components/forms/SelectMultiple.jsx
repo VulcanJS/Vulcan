@@ -6,7 +6,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 const SelectMultipleComponent = ({refFunction, inputProperties, ...properties}, { intl }) => {
   inputProperties.multiple = true;
   
-  return <Select {...inputProperties} ref={refFunction}/>
+  return <Select {...inputProperties} ref={refFunction}/>;
 };
 
 SelectMultipleComponent.contextTypes = {

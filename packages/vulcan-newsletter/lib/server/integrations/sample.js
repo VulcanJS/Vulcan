@@ -78,6 +78,6 @@ if (settings) {
       return sendSync(options);
     }
 
-  }
+  };
 
 }

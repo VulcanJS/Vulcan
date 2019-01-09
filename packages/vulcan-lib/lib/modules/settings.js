@@ -53,16 +53,16 @@ export const getAllSettings = () => {
   });
 
   return _.map(settingsObject, (setting, key) => ({name: key, ...setting}));
-}
+};
 
 
 Vulcan.showSettings = () => {
   return getAllSettings();
-}
+};
 
 export const registerSetting = (settingName, defaultValue, description, isPublic) => {
   Settings[settingName] = { defaultValue, description, isPublic };
-}
+};
 
 export const getSetting = (settingName, settingDefault) => {
 
@@ -84,7 +84,7 @@ export const getSetting = (settingName, settingDefault) => {
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
-      }
+      };
     } else {
       if (typeof rootSetting !== 'undefined') {
         setting = rootSetting;
@@ -107,6 +107,6 @@ export const getSetting = (settingName, settingDefault) => {
 
   return setting;
 
-}
+};
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');

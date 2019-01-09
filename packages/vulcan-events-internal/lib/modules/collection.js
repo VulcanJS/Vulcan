@@ -23,6 +23,6 @@ const Events = createCollection({
 
 Events.checkAccess = (currentUser, doc) => {
   return Users.isAdmin(currentUser);
-}
+};
 
 export default Events;

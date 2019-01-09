@@ -10,7 +10,7 @@ class Email extends PureComponent {
     this.sendTest = this.sendTest.bind(this);
     this.state = {
       loading: false
-    }
+    };
   }
 
   sendTest() {
@@ -44,7 +44,7 @@ class Email extends PureComponent {
           </div>
         </td>
       </tr>
-    )
+    );
   }
 }
 
@@ -81,7 +81,7 @@ const Emails = (/* props*/) => {
       </div>
     
     </div>
-  )
+  );
 };
 
 registerComponent('Emails', Emails);

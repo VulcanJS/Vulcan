@@ -15,7 +15,7 @@ Meteor.startup(function() {
 
         // else get test object (sample post, comment, user, etc.)
         const testVariables =
-          (typeof email.testVariables === 'function' ? email.testVariables() : email.testVariables) || {};
+          (typeof email.testVariables === 'function' ? email.testVariables(params) : email.testVariables) || {};
         // delete params.query so we don't pass it to GraphQL query
         delete params.query;
         // merge test variables with params from URL
@@ -33,6 +33,11 @@ Meteor.startup(function() {
         html = `
           ${builtHtml}
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
+          <h5 style="margin: 20px;">Variables:</h5>
+          <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px;">
+            <pre><code>${JSON.stringify(variables, null, 2)}</code></pre>
+          </div>
+          <h5 style="margin: 20px;">Data:</h5>
           <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px;">
             <pre><code>${JSON.stringify(emailTestData, null, 2)}</code></pre>
           </div>

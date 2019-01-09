@@ -11,7 +11,7 @@ function trackInternal(eventName, eventProperties) {
   const mutation = gql`${createClientTemplate({ typeName: 'AnalyticsEvent', fragmentName })}${fragment}`;
 
   const variables = {
-    document: {
+    data: {
       name: eventName,
       properties: eventProperties,
     },

@@ -9,7 +9,7 @@ const specificResolvers = {
 
         if (user.services) {
           Object.keys(user.services).forEach((key) => {
-            user.services[key] = {}
+            user.services[key] = {};
           });
         }
       }
@@ -64,7 +64,7 @@ const resolvers = {
 
     async resolver(root, { input = {} }, { currentUser, Users }, { cacheControl }) {
       
-      const { selector, enableCache = false } = input;
+      const { selector = {}, enableCache = false } = input;
       const { documentId, slug } = selector;
 
       if (cacheControl && enableCache) {

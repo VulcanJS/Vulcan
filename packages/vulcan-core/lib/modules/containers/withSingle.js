@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getSetting, singleClientTemplate, Utils } from 'meteor/vulcan:lib';
-
-import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { getSetting, singleClientTemplate, Utils, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 export default function withSingle(options) {
-  const { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
+  
+  let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
+
+  // if this is the SSR process, set pollInterval to null
+  // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
+  pollInterval = typeof window === 'undefined' ? null : pollInterval;
 
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -46,6 +49,7 @@ export default function withSingle(options) {
       const propertyName = options.propertyName || 'document';
       const props = {
         loading: data.loading,
+        refetch: data.refetch,
         // document: Utils.convertDates(collection, data[singleResolverName]),
         [propertyName]: data[resolverName] && data[resolverName].result,
         fragmentName,

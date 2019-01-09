@@ -12,18 +12,18 @@ const wrapper = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+};
 
 const header = {
   textAlign: 'center',
-}
+};
 
 const code = {
   border: '1px solid #ccc',
   borderRadius: 3,
   padding: '10px 20px',
   background: 'white',
-}
+};
 
 const Welcome = props => 
   <div style={wrapper}>
@@ -47,7 +47,7 @@ addRoute({ name: 'home', path: '/', componentName: 'HelloWorld' });
 
     </div>
 
-  </div>
+  </div>;
 
 Welcome.displayName = 'Welcome';
 

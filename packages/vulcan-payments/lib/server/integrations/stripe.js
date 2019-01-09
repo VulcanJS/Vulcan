@@ -102,7 +102,7 @@ export const receiveAction = async (args) => {
     userProfile: Users.getProfileUrl(user, true),
     productKey,
     ...properties
-  }
+  };
 
   if (associatedCollection && associatedId) {
     metadata.associatedCollection = associatedCollection;
@@ -121,15 +121,17 @@ export const receiveAction = async (args) => {
 
   runCallbacks('stripe.receive.async', { metadata, user, product, collection, document, args });
   return returnDocument;
-}
+};
 
 /*
 
 Retrieve or create a Stripe customer
 
 */
-export const getCustomer = async (user, id) => {
+export const getCustomer = async (user, token) => {
 
+  const { id } = token;
+  
   let customer;
 
   try {
@@ -156,7 +158,7 @@ export const getCustomer = async (user, id) => {
   }
 
   return customer;
-}
+};
 
 /*
 
@@ -194,7 +196,7 @@ export const createCharge = async ({user, product, collection, document, metadat
 
   runCallbacksAsync('stripe.charge.async', { charge, collection, document, args, user });
 
-  return processAction({collection, document, stripeObject: charge, args, user})
+  return processAction({collection, document, stripeObject: charge, args, user});
 
 };
 
@@ -260,7 +262,7 @@ export const createSubscription = async ({user, product, collection, document, m
 
     runCallbacksAsync('stripe.subscribe.async', {subscription, collection, returnDocument, args, user});
     
-    returnDocument = await processAction({collection, document, stripeObject: subscription, args, user})
+    returnDocument = await processAction({collection, document, stripeObject: subscription, args, user});
 
     return returnDocument;
 
@@ -408,7 +410,7 @@ export const processAction = async ({collection, document, stripeObject, args, u
   debug('');
 
   return returnDocument;
-}
+};
 
 /*
 
@@ -493,7 +495,7 @@ app.post('/stripe', async function(req, res) {
 
             // make sure document actually exists
             if (!document) {
-              throw new Error(`Could not find ${associatedCollection} document with id ${associatedId} associated with subscription id ${subscription.id}; Not processing charge.`)
+              throw new Error(`Could not find ${associatedCollection} document with id ${associatedId} associated with subscription id ${subscription.id}; Not processing charge.`);
             }
 
             const args = {
@@ -502,7 +504,7 @@ app.post('/stripe', async function(req, res) {
               associatedCollection,
               associatedId,
               livemode: subscription.livemode,
-            }
+            };
 
             processAction({ collection, document, stripeObject: charge, args});
 

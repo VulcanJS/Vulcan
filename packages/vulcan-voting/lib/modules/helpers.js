@@ -21,4 +21,4 @@ const hasDownvoted = (user, document) => {
   return user && document.downvoters && !!document.downvoters.find(u => u && (typeof u === 'string' ? u === user._id : u._id === user._id));
 };
 
-export { hasUpvoted, hasDownvoted }
+export { hasUpvoted, hasDownvoted };

@@ -48,7 +48,7 @@ class NewsletterSubscribe extends PureComponent {
             </Components.Button>
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -8,8 +8,8 @@ const Group = ({name, actions}) => {
       <td>{name}</td>
       <td><ul>{actions.map((action, index) => <li key={index}><code>{action}</code></li>)}</ul></td>
     </tr>
-  )
-}
+  );
+};
 
 const Groups = props => {
   return (
@@ -33,8 +33,8 @@ const Groups = props => {
       </div>
 
     </div>
-  )
-}
+  );
+};
 
 registerComponent('Groups', Groups);
 

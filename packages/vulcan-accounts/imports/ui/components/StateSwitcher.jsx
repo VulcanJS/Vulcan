@@ -13,7 +13,7 @@ export class AccountsStateSwitcher extends React.Component {
 
     this.state = {
       formState: props.formState
-    }
+    };
   }
 
   switchToSignUp = (event) => {
@@ -92,7 +92,7 @@ export class AccountsStateSwitcher extends React.Component {
       switchToSignOut,
       cancelResetPassword,
       switchToProfile,
-    }
+    };
     return (
       <Components.AccountsLoginFormInner {...this.props} formState={this.state.formState} handlers={handlers} />
     );

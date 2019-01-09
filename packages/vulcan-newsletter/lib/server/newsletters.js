@@ -46,9 +46,9 @@ Newsletters.subscribeUser = async (user, confirm = false) => {
   console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
-  if (result) {console.log ('-> added')}
+  if (result) {console.log ('-> added');}
   await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: true}});
-}
+};
 
 /**
  * @summary Subscribe an email to the newsletter
@@ -59,8 +59,8 @@ Newsletters.subscribeEmail = (email, confirm = false) => {
   console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
-  if (result) {console.log ('-> added')}
-}
+  if (result) {console.log ('-> added');}
+};
 
 
 /**
@@ -77,7 +77,7 @@ Newsletters.unsubscribeUser = async (user) => {
   console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
   await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: false}}); 
-}
+};
 
 /**
  * @summary Unsubscribe an email from the newsletter
@@ -87,7 +87,7 @@ Newsletters.unsubscribeEmail = (email) => {
   // eslint-disable-next-line no-console
   console.log('// Removing "'+email+'" from list…');
   Newsletters[provider].unsubscribe(email);
-}
+};
 
 /**
  * @summary Build a newsletter subject from an array of posts
@@ -97,7 +97,7 @@ Newsletters.unsubscribeEmail = (email) => {
 Newsletters.getSubject = posts => {
   const subject = posts.map((post, index) => index > 0 ? `, ${post.title}` : post.title).join('');
   return Utils.trimWords(subject, 15);
-}
+};
 
 /**
  * @summary Build a newsletter campaign from an array of posts
@@ -222,14 +222,14 @@ Newsletters.getSubject = posts => {
 Newsletters.getNext = () => {
   var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
   return nextJob;
-}
+};
 
 /**
  * @summary Get the last sent newsletter
  */
 Newsletters.getLast = () => {
   return Newsletters.findOne({}, {sort: {createdAt: -1}});
-}
+};
 
 /**
  * @summary Send the newsletter
@@ -283,7 +283,7 @@ Newsletters.send = async (isTest = false) => {
     console.log('No newsletter to schedule today…');
   
   }
-}
+};
 
 Meteor.startup(() => {
   if(!Newsletters[provider]) {

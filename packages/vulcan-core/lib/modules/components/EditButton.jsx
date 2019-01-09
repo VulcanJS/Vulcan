@@ -32,15 +32,15 @@ EditForm Component
 const EditForm = ({ closeModal, successCallback, removeSuccessCallback, ...props }) => {
 
   const success = successCallback
-    ? () => {
-        successCallback();
+    ? document => {
+        successCallback(document);
         closeModal();
       }
     : closeModal;
 
   const remove = removeSuccessCallback
-    ? () => {
-        removeSuccessCallback();
+    ? document => {
+        removeSuccessCallback(document);
         closeModal();
       }
     : closeModal;

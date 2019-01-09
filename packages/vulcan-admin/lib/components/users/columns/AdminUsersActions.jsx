@@ -9,14 +9,14 @@ const AdminUsersActions = ({ document: user, removeMutation }) =>{
     if (confirm(`Delete user ${Users.getDisplayName(user)}?`)) {
       removeMutation({documentId: user._id});
     }
-  }
+  };
 
-  return <Components.Button variant="primary" onClick={deleteHandler}>Delete</Components.Button>
-}
+  return <Components.Button variant="primary" onClick={deleteHandler}>Delete</Components.Button>;
+};
 
 const removeOptions = {
   collection: Users
-}
+};
 
 export default withRemove(removeOptions)(AdminUsersActions);
 

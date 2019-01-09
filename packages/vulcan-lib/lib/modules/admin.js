@@ -6,4 +6,4 @@ export const addAdminColumn = columnOrColumns => {
   } else {
     AdminColumns.push(columnOrColumns);
   }
-}
+};

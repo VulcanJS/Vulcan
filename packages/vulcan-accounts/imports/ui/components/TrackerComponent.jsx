@@ -21,11 +21,11 @@ class TrackerComponent extends React.Component {
 
   autorun(fn) { return this.__comps.push(Tracker.autorun(c => {
     this.__live = true; fn(c); this.__live = false;
-  }))}
+  }));}
 
   componentDidUpdate() { !this.__live && this.__comps.forEach(c => {
     c.invalidated = c.stopped = false; !c.invalidate();
-  })}
+  });}
 
   subscriptionsReady() {
     return !Object.keys(this.__subs).some(id => !this.__subs[id].ready());

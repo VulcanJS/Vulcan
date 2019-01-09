@@ -4,16 +4,14 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
-import { createError } from 'apollo-errors';
+import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName, throwError } from 'meteor/vulcan:lib';
 
 const defaultOptions = {
-  cacheMaxAge: 300,
+  cacheMaxAge: 300
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
-
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
@@ -26,7 +24,7 @@ export function getDefaultResolvers(options) {
     typeName = getTypeName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -48,7 +46,7 @@ export function getDefaultResolvers(options) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-        
+
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
@@ -77,7 +75,7 @@ export function getDefaultResolvers(options) {
         debug('');
 
         const data = { results: restrictedDocs };
-        
+
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
@@ -85,7 +83,7 @@ export function getDefaultResolvers(options) {
 
         // return results
         return data;
-      },
+      }
     },
 
     // resolver for returning a single document queried based on id or slug
@@ -119,15 +117,22 @@ export function getDefaultResolvers(options) {
           if (allowNull) {
             return { result: null };
           } else {
-            const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-            throw new MissingDocumentError({ data: { documentId, selector } });
+            throwError({ id: 'app.missing_document', data: {documentId, selector} });
           }
         }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
         if (collection.checkAccess) {
-          Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
+          Utils.performCheck(
+            collection.checkAccess,
+            currentUser,
+            doc,
+            collection,
+            documentId,
+            `${typeName}.read.single`,
+            collectionName
+          );
         }
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
@@ -138,7 +143,7 @@ export function getDefaultResolvers(options) {
 
         // filter out disallowed properties and return resulting document
         return { result: restrictedDoc };
-      },
-    },
+      }
+    }
   };
 }

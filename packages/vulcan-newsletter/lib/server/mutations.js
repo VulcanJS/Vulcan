@@ -43,7 +43,7 @@ const resolver = {
       try {
         return await Newsletters.unsubscribeUser(user);
       } catch (error) {
-        const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: 'newsletter.subscription_failed'}) : error.message
+        const errorMessage = error.message.includes('subscription-failed') ? Utils.encodeIntlError({id: 'newsletter.subscription_failed'}) : error.message;
         throw new Error(errorMessage);
       }
     },

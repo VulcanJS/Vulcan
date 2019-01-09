@@ -26,6 +26,6 @@ const withCurrentUser = component => {
       },
     }
   )(component);
-}
+};
 
 export default withCurrentUser;

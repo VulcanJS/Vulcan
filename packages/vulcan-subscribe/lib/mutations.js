@@ -83,7 +83,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   // - the action is subscribe but the user has already subscribed to this item
   // - the action is unsubscribe but the user hasn't subscribed to this item
   if (!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
-    throw Error(Utils.encodeIntlError({id: 'app.mutation_not_allowed', value: 'Already subscribed'}))
+    throw Error(Utils.encodeIntlError({id: 'app.mutation_not_allowed', value: 'Already subscribed'}));
   }
 
   // shorthand for useful variables
@@ -127,7 +127,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
     
     return updatedUser;
   } else {
-    throw Error(Utils.encodeIntlError({id: 'app.something_bad_happened'}))
+    throw Error(Utils.encodeIntlError({id: 'app.something_bad_happened'}));
   }
 };
 

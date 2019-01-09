@@ -32,6 +32,7 @@ class MutationButtonInner extends PureComponent {
         successCallback(result);
       }
     }).catch(error => {
+      this.setState({ loading: false });
       if(errorCallback) {
         errorCallback(error);
       }
@@ -46,6 +47,8 @@ class MutationButtonInner extends PureComponent {
     delete rest[mutationName];
     delete rest.mutationOptions;
     delete rest.mutationArguments;
+    delete rest.successCallback;
+    delete rest.errorCallback;
 
     return <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest}/>;
   }
@@ -80,6 +83,6 @@ const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
       </span>
     </Components.Button>
   );
-}
+};
 
 registerComponent('LoadingButton', LoadingButton);

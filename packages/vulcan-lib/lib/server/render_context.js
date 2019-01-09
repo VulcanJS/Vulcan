@@ -78,16 +78,20 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
   // init
   const history = createMemoryHistory(req.url);
   const loginToken = req.cookies && req.cookies.meteor_login_token;
-  const locale = req.cookies && req.cookies.locale;
-  // console.log('// render_context.js locale:', locale);
-  const apolloClient = createApolloClient({ loginToken, locale });
+  
+  // createApolloClient options will be passed to createMeteorNetworkInterface
+  const apolloClient = createApolloClient({ loginToken, headers: req.headers });
   let actions = {};
   let reducers = { apollo: apolloClient.reducer() };
   let middlewares = [Utils.defineName(apolloClient.middleware(), 'apolloClientMiddleware')];
 
+  // console.log('// render_context.js req.headers');
+  // console.log(req.headers);
+  // console.log('\n\n');
+  
   // renderContext object
   req.renderContext = {
-    locale,
+    originalHeaders: req.headers.originalheaders && JSON.parse(req.headers.originalheaders), // used to pass original client headers to SSR
     history,
     loginToken,
     apolloClient,
@@ -124,14 +128,14 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(function initRenderContextMiddle
         if (!chain) {
           chain = req.renderContext.getMiddlewares().map(middleware => middleware(store));
         }
-        newDispatch = compose(...chain)(next)
+        newDispatch = compose(...chain)(next);
         return newDispatch(action);
       } catch (error) {
         // console.log(error)
-        return _.identity
+        return _.identity;
       }
     };
-  })
+  });
 
   // for meteor.user
   req.loginContext = new LoginContext(loginToken);
