@@ -81,8 +81,11 @@ const createApolloServer = ({
   WebApp.connectHandlers.use(universalCookiesMiddleware());
 
   // parse request
-  WebApp.connectHandlers.use(bodyParser.json());
-  WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
+  WebApp.connectHandlers.use(bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') }));
+  WebApp.connectHandlers.use(
+    config.path,
+    bodyParser.text({type: 'application/graphql'})
+  );
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server
@@ -168,8 +171,8 @@ Meteor.startup(() => {
     },
     apolloApplyMiddlewareOptions: {
       bodyParser: false, // added manually later
-      ...getApolloApplyMiddlewareOptions()
-    }
+      ...getApolloApplyMiddlewareOptions(),
+    },
     // config: ....
     // contextFromReq: ....
   });
