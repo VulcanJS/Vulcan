@@ -97,15 +97,12 @@ class FormNestedArray extends PureComponent {
               )
           ),
           (!maxCount || arrayLength < maxCount) && (
-            <Components.Button
+            <Components.FormNestedFoot
               key="add-button"
-              size="small"
-              variant="success"
-              onClick={this.addItem}
-              className="form-nested-button"
-            >
-            <Components.IconAdd height={12} width={12} />
-          </Components.Button>
+              addItem={this.addItem}
+              label={this.props.label}
+              className="form-nested-foot"
+            />
           ),
           hasErrors ? (
             <FormComponents.FieldErrors

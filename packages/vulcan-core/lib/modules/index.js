@@ -24,6 +24,7 @@ export { default as Flash } from './components/Flash.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
 export { default as RouterHook } from './components/RouterHook.jsx';
+export { default as Dummy } from './components/Dummy.jsx';
 
 export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';
@@ -35,6 +36,7 @@ export { default as withDelete } from './containers/withDelete.js';
 export { default as withCurrentUser } from './containers/withCurrentUser.js';
 export { default as withMutation } from './containers/withMutation.js';
 export { default as withUpsert } from './containers/withUpsert.js';
+export { default as withSiteData } from './containers/withSiteData.js';
 
 export { default as withComponents } from './containers/withComponents';
 

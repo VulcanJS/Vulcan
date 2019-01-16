@@ -10,7 +10,7 @@ Usage:
 
 */
 
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, withSiteData } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import { Errors } from '../modules/errors.js';
 
@@ -43,4 +43,4 @@ class ErrorCatcher extends Component {
   }
 }
 
-registerComponent('ErrorCatcher', ErrorCatcher, withCurrentUser);
+registerComponent('ErrorCatcher', ErrorCatcher, withCurrentUser, withSiteData);
