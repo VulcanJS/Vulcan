@@ -19,6 +19,7 @@ import {GraphQLSchema} from '../../modules/graphql.js';
 import _merge from 'lodash/merge';
 import {getUser} from 'meteor/apollo';
 import {getHeaderLocale} from '../intl.js';
+import {getSetting} from '../../modules/settings.js';
 
 /**
  * Called once on server creation
@@ -105,6 +106,7 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
 
   // create options given the current request
   const handleReq = async req => {
+    const { headers } = req;
     let context;
     let user = null;
 
@@ -119,12 +121,17 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     await setupAuthToken(context, req);
 
     //add the headers to the context
-    context.headers = req.headers;
+    context.headers = headers;
 
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
-    context.locale = getHeaderLocale(req.headers, context.currentUser && context.currentUser.locale);
+    // if apiKey is present, assign "fake" currentUser with admin rights
+    if (headers.apikey && (headers.apikey === getSetting('vulcan.apiKey'))) {
+      context.currentUser = { isAdmin: true, isApiUser: true };
+    }
+
+    context.locale = getHeaderLocale(headers, context.currentUser && context.currentUser.locale);
 
     return context;
   };
