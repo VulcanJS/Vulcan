@@ -48,7 +48,7 @@ Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOn
  * @param {Object} user
  */
 Users.getDisplayName = function (user) {
-  if (typeof user === 'undefined') {
+  if (!user) {
     return '';
   } else {
     return (user.displayName) ? user.displayName : Users.getUserName(user);
