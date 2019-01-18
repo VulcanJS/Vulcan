@@ -522,7 +522,7 @@ class SmartForm extends Component {
     intlLabel = this.context.intl.formatMessage({ id, defaultMessage });
     if (intlLabel === defaultMessage) {
       id = `global.${fieldName}`;
-      intlLabel = this.context.intl.formatMessage({ id });
+      intlLabel = this.context.intl.formatMessage({ id, defaultMessage });
       if (intlLabel === defaultMessage) {
         id = fieldName;
         intlLabel = this.context.intl.formatMessage({ id });
