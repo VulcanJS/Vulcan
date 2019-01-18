@@ -17,7 +17,7 @@ import withSiteData from '../containers/withSiteData.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { withRouter} from 'react-router';
 
 const DummyErrorCatcher = ({ children }) => children;
@@ -142,6 +142,7 @@ class App extends PureComponent {
 
     return (
       <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
+        <Components.ScrollToTop />
         <div className={`locale-${this.getLocale()}`}>
           <Components.HeadTags />
           {/* <Components.RouterHook currentRoute={currentRoute} /> */}

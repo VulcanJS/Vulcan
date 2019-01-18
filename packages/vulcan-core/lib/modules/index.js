@@ -24,6 +24,7 @@ export { default as Flash } from './components/Flash.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
 export { default as RouterHook } from './components/RouterHook.jsx';
+export { default as ScrollToTop } from './components/ScrollToTop.jsx';
 
 export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';
