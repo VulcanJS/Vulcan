@@ -5,7 +5,7 @@ import {registerComponent} from 'meteor/vulcan:lib';
 // Scroll restoration based on https://reacttraining.com/react-router/web/guides/scroll-restoration.
 export default class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
       window.scrollTo(0, 0);
     }
   }

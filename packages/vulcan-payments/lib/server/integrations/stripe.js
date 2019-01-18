@@ -576,10 +576,7 @@ function addRawBody(req, res, next) {
   });
 }
 
-// TODO: re-enable
-// app.use(addRawBody);
-
-app.post('/stripe', async function(req, res) {
+app.post('/stripe', addRawBody, async function(req, res) {
   // eslint-disable-next-line no-console
   console.log('////////////// stripe webhook');
 
