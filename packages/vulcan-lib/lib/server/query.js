@@ -29,7 +29,6 @@ export const runGraphQL = async (query, variables = {}, context ) => {
   });
 
   // see http://graphql.org/graphql-js/graphql/#graphql
-  console.log(executableSchema)
   const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
