@@ -12,13 +12,13 @@
 
 //import deepmerge from 'deepmerge';
 import DataLoader from 'dataloader';
-import {getSetting} from '../../modules/settings.js';
 import {Collections} from '../../modules/collections.js';
 import {runCallbacks} from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
 import {GraphQLSchema} from '../../modules/graphql.js';
 import _merge from 'lodash/merge';
 import {getUser} from 'meteor/apollo';
+import {getHeaderLocale} from '../intl.js';
 
 /**
  * Called once on server creation
@@ -124,8 +124,7 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
-    context.locale =
-      (user && user.locale) || req.headers.locale || getSetting('locale', 'en');
+    context.locale = getHeaderLocale(req.headers, context.currentUser && context.currentUser.locale);
 
     return context;
   };
