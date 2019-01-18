@@ -4,7 +4,6 @@ Run a GraphQL request from the server with the proper context
 
 */
 import { graphql } from 'graphql';
-import { executableSchema } from './apollo_server.js';
 import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
@@ -13,13 +12,15 @@ import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
 import { singleClientTemplate } from '../modules/graphql_templates';
 import { Utils } from './utils';
+import { GraphQLSchema } from '../modules/graphql';
 
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context ) => {
 
   const defaultContext = { currentUser: {isAdmin: true}, locale: getSetting('locale') };
   const queryContext = merge(defaultContext, context);
-
+  const executableSchema = GraphQLSchema.getExecutableSchema();
+  
   // within the scope of this specific request, 
   // decorate each collection with a new Dataloader object and add it to context
   Collections.forEach(collection => {
@@ -28,6 +29,7 @@ export const runGraphQL = async (query, variables = {}, context ) => {
   });
 
   // see http://graphql.org/graphql-js/graphql/#graphql
+  console.log(executableSchema)
   const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
