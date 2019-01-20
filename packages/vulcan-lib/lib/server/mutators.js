@@ -62,8 +62,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     validationErrors = validationErrors.concat(validateDocument(newDocument, collection, context));
 
     // run validation callbacks
-    validationErrors = await runCallbacks({ name: `${typeName.toLowerCase()}.create.validate`, iterator: validationErrors, properties, });
-    validationErrors = await runCallbacks({ name: '*.create.validate', iterator: validationErrors, properties, });
+    validationErrors = await runCallbacks({ name: [`${typeName.toLowerCase()}.create.validate`, '*.create.validate'], iterator: validationErrors, properties, });
     // OpenCRUD backwards compatibility
     newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.validate`, newDocument, currentUser, validationErrors);
     
@@ -112,18 +111,15 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   // }
 
   // run sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.before`, iterator: newDocument, properties, });
-  newDocument = await runCallbacks({ name: '*.create.before', iterator: newDocument, properties, });
+  newDocument = await runCallbacks({ name: [`${typeName.toLowerCase()}.create.before`, '*.create.before'], iterator: newDocument, properties, });
   // OpenCRUD backwards compatibility
-  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.before`, newDocument, currentUser);
-  newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, newDocument, currentUser);
+  newDocument = await runCallbacks([`${collectionName.toLowerCase()}.new.before`, `${collectionName.toLowerCase()}.new.sync`], newDocument, currentUser);
 
   // add _id to document
   newDocument._id = await Connectors.create(collection, newDocument);
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.after`, iterator: newDocument, properties, });
-  newDocument = await runCallbacks({ name: '*.create.after', iterator: newDocument, properties, });
+  newDocument = await runCallbacks({ name: [`${typeName.toLowerCase()}.create.after`,  '*.create.after'], iterator: newDocument, properties, });
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, newDocument, currentUser);
 
@@ -132,8 +128,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.create.async`, properties, });
-  await runCallbacksAsync({ name: '*.create.async', properties, });
+  await runCallbacksAsync({ name: [`${typeName.toLowerCase()}.create.async`, '*.create.async'], properties, });
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName.toLowerCase()}.new.async`, newDocument, currentUser, collection);
 
@@ -190,8 +185,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
 
     validationErrors =  validationErrors.concat(validateData(data, document, collection, context));
     
-    validationErrors = await runCallbacks({ name: `${typeName.toLowerCase()}.update.validate`, iterator: validationErrors, properties, });
-    validationErrors = await runCallbacks({ name: '*.update.validate', iterator: validationErrors, properties, });
+    validationErrors = await runCallbacks({ name: [`${typeName.toLowerCase()}.update.validate`, '*.update.validate'], iterator: validationErrors, properties, });
     // OpenCRUD backwards compatibility
     data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.validate`, dataToModifier(data), document, currentUser, validationErrors));
 
@@ -222,11 +216,9 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   }
 
   // run sync callbacks
-  data = await runCallbacks({ name: `${typeName.toLowerCase()}.update.before`, iterator: data, properties,});
-  data = await runCallbacks({ name: '*.update.before', iterator: data, properties,});
+  data = await runCallbacks({ name:[ `${typeName.toLowerCase()}.update.before`, '*.update.before'], iterator: data, properties,});
   // OpenCRUD backwards compatibility
-  data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.before`, dataToModifier(data), document, currentUser, newDocument));
-  data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.sync`, dataToModifier(data), document, currentUser, newDocument));
+  data = modifierToData(await runCallbacks([`${collectionName.toLowerCase()}.edit.before`, `${collectionName.toLowerCase()}.edit.sync`], dataToModifier(data), document, currentUser, newDocument));
 
   // update connector requires a modifier, so get it from data
   const modifier = dataToModifier(data);
@@ -255,14 +247,12 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   }
 
   // run any post-operation sync callbacks
-  newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.update.after`, iterator: newDocument, properties, });
-  newDocument = await runCallbacks({ name: '*.update.after', iterator: newDocument, properties, });
+  newDocument = await runCallbacks({ name: [`${typeName.toLowerCase()}.update.after`, '*.update.after'], iterator: newDocument, properties, });
   // OpenCRUD backwards compatibility
   newDocument = await runCallbacks(`${collectionName.toLowerCase()}.edit.after`, newDocument, document, currentUser);
 
   // run async callbacks
-  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties,});
-  await runCallbacksAsync({ name: '*.update.async', properties,});
+  await runCallbacksAsync({ name: [`${typeName.toLowerCase()}.update.async`, '*.update.async'], properties,});
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName.toLowerCase()}.edit.async`, newDocument, document, currentUser, collection);
 
@@ -305,8 +295,7 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
 
     let validationErrors = [];
 
-    validationErrors = await runCallbacks({ name: `${typeName.toLowerCase()}.delete.validate`, iterator: validationErrors, properties, });
-    validationErrors = await runCallbacks({ name: '*.delete.validate', iterator: validationErrors, properties, });
+    validationErrors = await runCallbacks({ name: [`${typeName.toLowerCase()}.delete.validate`, '*.delete.validate'], iterator: validationErrors, properties, });
     // OpenCRUD backwards compatibility
     document = await runCallbacks(`${collectionName.toLowerCase()}.remove.validate`, document, currentUser);
 
@@ -332,11 +321,9 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
     }
   }
 
-  await runCallbacks({ name: `${typeName.toLowerCase()}.delete.before`, iterator: document, properties, });
-  await runCallbacks({ name: '*.delete.before', iterator: document, properties, });
+  await runCallbacks({ name: [`${typeName.toLowerCase()}.delete.before`, '*.delete.before'], iterator: document, properties, });
   // OpenCRUD backwards compatibility
-  await runCallbacks(`${collectionName.toLowerCase()}.remove.before`, document, currentUser);
-  await runCallbacks(`${collectionName.toLowerCase()}.remove.sync`, document, currentUser);
+  await runCallbacks([`${collectionName.toLowerCase()}.remove.before`, `${collectionName.toLowerCase()}.remove.sync`], document, currentUser);
 
   await Connectors.delete(collection, selector);
 
@@ -346,8 +333,7 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
     collection.loader.clear(selector.documentId);
   }
 
-  await runCallbacksAsync({ name: `${typeName.toLowerCase()}.delete.async`, properties, });
-  await runCallbacksAsync({ name: '*.delete.async', properties, });
+  await runCallbacksAsync({ name: [`${typeName.toLowerCase()}.delete.async`, '*.delete.async'], properties, });
   // OpenCRUD backwards compatibility
   await runCallbacksAsync(`${collectionName.toLowerCase()}.remove.async`, document, currentUser, collection);
 
