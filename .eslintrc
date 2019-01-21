@@ -27,8 +27,9 @@
         ]
       }
     ],
-    "babel/array-bracket-spacing": 0,
+    "babel/array-bracket-spacing": 1,
     "babel/object-curly-spacing": 0,
+    # "babel/object-curly-spacing": [1, "always", { "objectsInObjects": false, "arraysInObjects": false }],
     "babel/object-shorthand": 0,
     "babel/arrow-parens": 0,
     "no-await-in-loop": 1,
