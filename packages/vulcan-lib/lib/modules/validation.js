@@ -1,9 +1,9 @@
 import pickBy from 'lodash/pickBy';
 import mapValues from 'lodash/mapValues';
 
-export const dataToModifier = data => ({ 
-  $set: pickBy(data, f => f !== null), 
-  $unset: mapValues(pickBy(data, f => f === null), () => true),
+export const dataToModifier = data => ({
+  $set: pickBy(data.$set || data, f => f !== null),
+  $unset: mapValues(pickBy(data.$unset || data, f => f === null), () => true),
 });
 
 export const modifierToData = modifier => ({
