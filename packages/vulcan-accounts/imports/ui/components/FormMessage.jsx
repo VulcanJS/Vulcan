@@ -6,7 +6,7 @@ export class AccountsFormMessage extends React.Component {
     let { message, type, className = 'message', style = {} } = this.props;
     message = _.isObject(message) ? message.message : message; // If message is object, then try to get message from it
     return message ? (
-      <div style={style} className={[ className, type ].join(' ')}>{ message }</div>
+      <div style={style} className={[className, type].join(' ')}>{ message }</div>
     ) : null;
   }
 }

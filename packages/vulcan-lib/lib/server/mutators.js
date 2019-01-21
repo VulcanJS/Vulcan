@@ -216,7 +216,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   }
 
   // run sync callbacks
-  data = await runCallbacks({ name:[ `${typeName.toLowerCase()}.update.before`, '*.update.before'], iterator: data, properties,});
+  data = await runCallbacks({ name:[`${typeName.toLowerCase()}.update.before`, '*.update.before'], iterator: data, properties,});
   // OpenCRUD backwards compatibility
   data = modifierToData(await runCallbacks([`${collectionName.toLowerCase()}.edit.before`, `${collectionName.toLowerCase()}.edit.sync`], dataToModifier(data), document, currentUser, newDocument));
 
