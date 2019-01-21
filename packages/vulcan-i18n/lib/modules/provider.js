@@ -44,10 +44,14 @@ export default class IntlProvider extends Component {
         intlLabel = this.formatMessage({id: fieldName}, values);
       }
     }
+    if (intlLabel) {
+      return intlLabel;
+    }
+
     // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
     let schemaLabel =
       schema && schema[fieldName] ? schema[fieldName].label : null;
-    return intlLabel || schemaLabel || fieldName;
+    return schemaLabel || fieldName;
   };
 
   formatStuff = something => {
