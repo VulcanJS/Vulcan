@@ -3,11 +3,11 @@
 const {esNextPaths} = require('./.vulcan/shared/pathsByLanguageVersion');
 
 module.exports = {
-  bracketSpacing: false,
+  bracketSpacing: true,
   singleQuote: true,
   jsxBracketSameLine: true,
   trailingComma: 'es5',
-  printWidth: 80,
+  printWidth: 100,
   parser: 'babylon',
 
   overrides: [

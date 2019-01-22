@@ -319,13 +319,15 @@ class SmartForm extends Component {
   Note: when submitting the form (getData()), do not include any extra fields.
 
   */
-  getFieldNames = (args = {}) => {
+  getFieldNames = (args) => {
+    // we do this to avoid having default values in arrow functions, which breaks MS Edge support. See https://github.com/meteor/meteor/issues/10171
+    let args0 = args || {};
     const {
       schema = this.state.schema,
       excludeHiddenFields = true,
       replaceIntlFields = false,
       addExtraFields = true
-    } = args;
+    } = args0;
 
     const { fields, addFields } = this.props;
 

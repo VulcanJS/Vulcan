@@ -77,15 +77,6 @@ export const runCallbacks = function () {
   if (typeof arguments[0] === 'object' && arguments.length === 1) {
     const singleArgument = arguments[0];
     hook = singleArgument.name;
-    
-    // if an array of callback hook names is passed, call `runCallbacks` for each hook 
-    if (Array.isArray(hook)) {
-      hook.forEach(name => {
-        runCallbacks({ ...singleArgument, name });
-      });
-      return;
-    }
-    
     formattedHook = formatHookName(hook);
     item = singleArgument.iterator;
     args = singleArgument.properties;
