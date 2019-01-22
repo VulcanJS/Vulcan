@@ -56,8 +56,16 @@ export const getComponent = (name) => {
   }
   if (component.hocs) {
     const hocs = component.hocs.map(hoc => {
-      if(!Array.isArray(hoc)) return hoc;
+      if(!Array.isArray(hoc)) {
+        if (typeof hoc !== 'function') {
+          throw new Error(`In registered component ${name}, an hoc is of type ${typeof hoc}`)
+        }
+        return hoc;
+      }
       const [actualHoc, ...args] = hoc;
+      if (typeof actualHoc !== 'function') {
+        throw new Error(`In registered component ${name}, an hoc is of type ${typeof actualHoc}`)
+      }
       return actualHoc(...args);
     });
     return compose(...hocs)(component.rawComponent);
@@ -202,4 +210,3 @@ export const delayedComponent = name => {
 //  return proxy;
 //};
 export const mergeWithComponents = myComponents => (myComponents ? { ...Components, ...myComponents } : Components);
-
