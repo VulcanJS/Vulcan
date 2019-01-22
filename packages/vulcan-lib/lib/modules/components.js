@@ -49,22 +49,22 @@ export function registerComponent(name, rawComponent, ...hocs) {
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} A (wrapped) React component
  */
-export const getComponent = (name) => {
+export const getComponent = name => {
   const component = ComponentsTable[name];
   if (!component) {
     throw new Error(`Component ${name} not registered.`);
   }
   if (component.hocs) {
     const hocs = component.hocs.map(hoc => {
-      if(!Array.isArray(hoc)) {
+      if (!Array.isArray(hoc)) {
         if (typeof hoc !== 'function') {
-          throw new Error(`In registered component ${name}, an hoc is of type ${typeof hoc}`)
+          throw new Error(`In registered component ${name}, an hoc is of type ${typeof hoc}`);
         }
         return hoc;
       }
       const [actualHoc, ...args] = hoc;
       if (typeof actualHoc !== 'function') {
-        throw new Error(`In registered component ${name}, an hoc is of type ${typeof actualHoc}`)
+        throw new Error(`In registered component ${name}, an hoc is of type ${typeof actualHoc}`);
       }
       return actualHoc(...args);
     });
