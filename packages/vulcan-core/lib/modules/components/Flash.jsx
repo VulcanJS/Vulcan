@@ -45,7 +45,7 @@ class Flash extends PureComponent {
     const flashType = type === 'error' ? 'danger' : type; // if flashType is "error", use "danger" instead
 
     return (
-      <Components.Alert className="flash-message" variant={flashType} dismissible={this.dismissFlash} >
+      <Components.Alert className="flash-message" variant={flashType} onClose={this.dismissFlash} >
         <span dangerouslySetInnerHTML={{ __html: message }} />
       </Components.Alert>
     );
