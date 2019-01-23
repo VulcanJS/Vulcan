@@ -990,65 +990,81 @@ class SmartForm extends Component {
     }
   };
 
+  
+  // --------------------------------------------------------------------- //
+  // ------------------------- Props to Pass ----------------------------- //
+  // --------------------------------------------------------------------- //  
+
+  getWrapperProps = () => ({
+    className: 'document-' + this.getFormType(),
+  });
+
+  getFormProps = () => ({
+    id: this.props.id,
+    onSubmit: this.submitForm,
+    onKeyDown: this.formKeyDown,
+    ref: e => {
+      this.form = e;
+    },
+  });
+
+  getFormErrorsProps = () => ({
+    errors: this.state.errors
+  });
+
+  getFormGroupProps = group => ({
+    key: group.name,
+    ...group,
+    errors: this.state.errors,
+    throwError: this.throwError,
+    currentValues: this.state.currentValues,
+    updateCurrentValues: this.updateCurrentValues,
+    deletedValues: this.state.deletedValues,
+    addToDeletedValues: this.addToDeletedValues,
+    clearFieldErrors: this.clearFieldErrors,
+    formType: this.getFormType(),
+    currentUser: this.props.currentUser,
+    disabled: this.state.disabled,
+    formComponents: mergeWithComponents(this.props.formComponents),
+  });
+
+  getFormSubmitProps = () => ({
+    submitLabel: this.props.submitLabel,
+    cancelLabel: this.props.cancelLabel,
+    revertLabel: this.props.revertLabel,
+    cancelCallback: this.props.cancelCallback,
+    revertCallback: this.props.revertCallback,
+    document: this.getDocument(),
+    deleteDocument: 
+      (this.getFormType() === 'edit' &&
+        this.props.showRemove &&
+        this.deleteDocument) ||
+      null,
+    collectionName:this.props.collectionName,
+    currentValues:this.state.currentValues,
+    deletedValues:this.state.deletedValues,
+    errors:this.state.errors,
+  });
+
   // --------------------------------------------------------------------- //
   // ----------------------------- Render -------------------------------- //
   // --------------------------------------------------------------------- //
 
   render() {
-    const fieldGroups = this.getFieldGroups();
-    const collectionName = this.props.collectionName;
     const FormComponents = mergeWithComponents(this.props.formComponents);
 
     return (
-      <div className={'document-' + this.getFormType()}>
-        <Formsy.Form
-          id={this.props.id}
-          onSubmit={this.submitForm}
-          onKeyDown={this.formKeyDown}
-          ref={e => {
-            this.form = e;
-          }}
-        >
-          <FormComponents.FormErrors errors={this.state.errors} />
+      <div {...this.getWrapperProps()}>
+        <Formsy.Form {...this.getFormProps()}>
+          <FormComponents.FormErrors {...this.getFormErrorsProps()} />
 
-          {fieldGroups.map(group => (
-            <FormComponents.FormGroup
-              key={group.name}
-              {...group}
-              errors={this.state.errors}
-              throwError={this.throwError}
-              currentValues={this.state.currentValues}
-              updateCurrentValues={this.updateCurrentValues}
-              deletedValues={this.state.deletedValues}
-              addToDeletedValues={this.addToDeletedValues}
-              clearFieldErrors={this.clearFieldErrors}
-              formType={this.getFormType()}
-              currentUser={this.props.currentUser}
-              disabled={this.state.disabled}
-              formComponents={FormComponents}
-            />
+          {this.getFieldGroups().map(group => (
+            <FormComponents.FormGroup {...this.getFormGroupProps(group)} />
           ))}
 
           {this.props.repeatErrors && this.renderErrors()}
 
-          <FormComponents.FormSubmit
-            submitLabel={this.props.submitLabel}
-            cancelLabel={this.props.cancelLabel}
-            revertLabel={this.props.revertLabel}
-            cancelCallback={this.props.cancelCallback}
-            revertCallback={this.props.revertCallback}
-            document={this.getDocument()}
-            deleteDocument={
-              (this.getFormType() === 'edit' &&
-                this.props.showRemove &&
-                this.deleteDocument) ||
-              null
-            }
-            collectionName={collectionName}
-            currentValues={this.state.currentValues}
-            deletedValues={this.state.deletedValues}
-            errors={this.state.errors}
-          />
+          <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
         </Formsy.Form>
       </div>
     );
