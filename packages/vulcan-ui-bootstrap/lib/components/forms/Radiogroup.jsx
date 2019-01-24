@@ -1,7 +1,7 @@
 import React from 'react';
-import { RadioGroup } from 'formsy-react-components';
+import { Form } from 'react-bootstrap';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const RadioGroupComponent = ({refFunction, inputProperties, ...properties}) => <RadioGroup {...inputProperties} ref={refFunction}/>;
+const RadioGroupComponent = ({refFunction, inputProperties, ...properties}) => <Form.Check {...inputProperties} ref={refFunction}/>;
 
 registerComponent('FormComponentRadioGroup', RadioGroupComponent);

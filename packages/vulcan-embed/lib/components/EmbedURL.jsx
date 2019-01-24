@@ -3,9 +3,7 @@ import { withMutation } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import FRC from 'formsy-react-components';
-
-const Input = FRC.Input;
+import { Form } from 'react-bootstrap';
 
 class EmbedURL extends Component {
   constructor(props) {
@@ -161,7 +159,7 @@ class EmbedURL extends Component {
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9 embedly-form-control">
           <div className="embedly-url-field">
-            <Input
+            <Form.Control
               {...inputProperties}
               onBlur={this.handleBlur}
               type="url"

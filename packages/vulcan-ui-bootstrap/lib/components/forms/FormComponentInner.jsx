@@ -21,15 +21,20 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { name, options, label, onChange, value, disabled } = this.props;
+    const { name, path, options, label, onChange, value, disabled } = this.props;
 
     // these properties are whitelisted so that they can be safely passed to the actual form input
     // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
     const inputProperties = {
       name,
+      path,
       options,
       label,
-      onChange,
+      onChange: event => {
+        // FormComponent's handleChange expects value as argument; look in target.checked and target.value
+        const inputValue = typeof event.target.checked === 'undefined' ? event.target.value : event.target.checked;
+        onChange(inputValue);
+      },
       value,
       disabled,
       ...this.props.inputProperties,

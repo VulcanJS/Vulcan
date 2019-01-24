@@ -36,7 +36,6 @@ import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Formsy from 'formsy-react';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import set from 'lodash/set';
@@ -922,9 +921,10 @@ class SmartForm extends Component {
   Submit form handler
   
   */
-  submitForm = data => {
-    // note: we can discard the data collected by Formsy because all the data we need is already available via getDocument()
+  submitForm = event => {
 
+    event.preventDefault();
+    
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
       return;
@@ -933,9 +933,9 @@ class SmartForm extends Component {
     // clear errors and disable form while it's submitting
     this.setState(prevState => ({ errors: [], disabled: true }));
 
-    // complete the data with values from custom components which are not being catched by Formsy mixin
+    // complete the data with values from custom components
     // note: it follows the same logic as SmartForm's getDocument method
-    data = this.getData({ replaceIntlFields: true, addExtraFields: false });
+    let data = this.getData({ replaceIntlFields: true, addExtraFields: false });
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) {
@@ -1055,7 +1055,7 @@ class SmartForm extends Component {
 
     return (
       <div {...this.getWrapperProps()}>
-        <Formsy.Form {...this.getFormProps()}>
+        <form {...this.getFormProps()}>
           <FormComponents.FormErrors {...this.getFormErrorsProps()} />
 
           {this.getFieldGroups().map(group => (
@@ -1065,7 +1065,7 @@ class SmartForm extends Component {
           {this.props.repeatErrors && this.renderErrors()}
 
           <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
-        </Formsy.Form>
+        </form>
       </div>
     );
   }

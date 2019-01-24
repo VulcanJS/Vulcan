@@ -1,8 +1,11 @@
 import React from 'react';
-import { Input } from 'formsy-react-components';
-import { registerComponent } from 'meteor/vulcan:core';
+import { Form } from 'react-bootstrap';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
-const EmailComponent = ({refFunction, inputProperties}) => 
-  <Input {...inputProperties} ref={refFunction} type="email" />;
+const EmailComponent = ({ refFunction, inputProperties }) => (
+  <Components.FormItem {...inputProperties}>
+    <Form.Control {...inputProperties} ref={refFunction} type="email" />
+  </Components.FormItem>
+);
 
 registerComponent('FormComponentEmail', EmailComponent);

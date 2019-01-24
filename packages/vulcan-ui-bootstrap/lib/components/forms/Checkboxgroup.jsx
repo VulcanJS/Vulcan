@@ -1,6 +1,6 @@
 import React from 'react';
-import { Checkbox } from 'formsy-react-components';
-import { registerComponent } from 'meteor/vulcan:core';
+import { Form } from 'react-bootstrap';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 import intersection from 'lodash/intersection';
@@ -22,25 +22,28 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
   }
 
   return (
-    <div className="form-group row">
-      <label className="control-label col-sm-3">{label}</label>
-      <div className="col-sm-9">
+    <Components.FormItem {...inputProperties}>
+      <div>
         {options.map((option, i) => (
-          <Checkbox
+          <Form.Check
             layout="elementOnly"
             key={i}
             {...inputProperties}
             label={option.label}
             value={value.includes(option.value)}
+            checked={!!value.includes(option.value)}
+            id={`${path}.${i}`}
+            path={`${path}.${i}`}
             ref={refFunction}
-            onChange={(name, isChecked) => {
+            onChange={event => {
+              const isChecked = event.target.checked;
               const newValue = isChecked ? [...value, option.value] : without(value, option.value);
               updateCurrentValues({ [path]: newValue });
             }}
           />
         ))}
       </div>
-    </div>
+    </Components.FormItem>
   );
 };
 
