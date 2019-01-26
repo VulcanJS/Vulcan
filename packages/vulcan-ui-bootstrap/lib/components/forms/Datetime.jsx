@@ -21,7 +21,7 @@ class DateTime extends PureComponent {
       : null;
 
     return (
-      <Components.FormItem>
+      <Components.FormItem {...this.props.inputProperties}>
         <DateTimePicker
           value={date}
           // newDate argument is a Moment object given by react-datetime

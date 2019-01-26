@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/lib/Form';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 const Default = ({ refFunction, inputProperties }) => (

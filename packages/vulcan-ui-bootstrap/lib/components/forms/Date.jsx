@@ -19,7 +19,6 @@ class DateComponent extends PureComponent {
         ? new Date(this.props.value)
         : this.props.value
       : null;
-
     return (
       <Components.FormItem {...this.props.inputProperties}>
         <DateTimePicker

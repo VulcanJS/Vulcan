@@ -3,7 +3,7 @@ import { withMutation } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import { Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/lib/Form';
 
 class EmbedURL extends Component {
   constructor(props) {

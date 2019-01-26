@@ -13,7 +13,7 @@ import { delayedComponent } from './components';
  * `Components.DynamicLoading` in the meantime.
  *
  * @example Register a component with a dynamic import
- *  registerComponent('MyComponent', dynamicComponent(() => import('./path/to/MyComponent')));
+ *  registerComponent('MyComponent', dynamicLoader(() => import('./path/to/MyComponent')));
  *
  * @example Pass a dynamic component to a route
  *  import { addRoute, dynamicLoader, getDynamicComponent } from 'meteor/vulcan:core';

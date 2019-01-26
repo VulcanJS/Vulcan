@@ -1,6 +1,6 @@
 import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/lib/Form';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 const SelectMultipleComponent = ({refFunction, inputProperties, ...properties}, { intl }) => {
