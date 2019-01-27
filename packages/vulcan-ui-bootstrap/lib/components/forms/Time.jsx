@@ -28,7 +28,7 @@ class Time extends PureComponent {
     }
 
     return (
-      <Components.FormItem {...this.props.inputProperties}>
+      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
         <DateTimePicker
           value={date}
           viewMode="time"

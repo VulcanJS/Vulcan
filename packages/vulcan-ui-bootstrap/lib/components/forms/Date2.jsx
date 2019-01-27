@@ -79,7 +79,7 @@ class DateComponent2 extends PureComponent {
     };
 
     return (
-      <Components.FormItem {...this.props.inputProperties}>
+      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
         <div>
           <div>
             <Components.FormComponentSelect

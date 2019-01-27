@@ -20,7 +20,7 @@ class DateComponent extends PureComponent {
         : this.props.value
       : null;
     return (
-      <Components.FormItem {...this.props.inputProperties}>
+      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
         <DateTimePicker
           value={date}
           timeFormat={false}

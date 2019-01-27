@@ -6,7 +6,7 @@ import uniq from 'lodash/uniq';
 import intersection from 'lodash/intersection';
 
 // note: treat checkbox group the same as a nested component, using `path`
-const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties }) => {
+const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties, itemProperties }) => {
 
   const { options } = inputProperties;
 
@@ -22,7 +22,7 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
   }
 
   return (
-    <Components.FormItem {...inputProperties}>
+    <Components.FormItem {...inputProperties} {...itemProperties}>
       <div>
         {options.map((option, i) => (
           <Form.Check

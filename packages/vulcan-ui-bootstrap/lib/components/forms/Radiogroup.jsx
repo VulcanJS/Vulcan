@@ -1,7 +1,11 @@
 import React from 'react';
 import Form from 'react-bootstrap/lib/Form';
-import { registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
-const RadioGroupComponent = ({refFunction, inputProperties, ...properties}) => <Form.Check {...inputProperties} ref={refFunction}/>;
+const RadioGroupComponent = ({ refFunction, inputProperties, itemProperties }) => (
+  <Components.FormItem {...inputProperties} {...itemProperties}>
+    <Form.Check {...inputProperties} ref={refFunction} />
+  </Components.FormItem>
+);
 
 registerComponent('FormComponentRadioGroup', RadioGroupComponent);

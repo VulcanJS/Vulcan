@@ -995,11 +995,8 @@ class SmartForm extends Component {
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //  
 
-  getWrapperProps = () => ({
-    className: 'document-' + this.getFormType(),
-  });
-
   getFormProps = () => ({
+    className: 'document-' + this.getFormType(),
     id: this.props.id,
     onSubmit: this.submitForm,
     onKeyDown: this.formKeyDown,
@@ -1054,19 +1051,17 @@ class SmartForm extends Component {
     const FormComponents = mergeWithComponents(this.props.formComponents);
 
     return (
-      <div {...this.getWrapperProps()}>
-        <form {...this.getFormProps()}>
-          <FormComponents.FormErrors {...this.getFormErrorsProps()} />
+      <FormComponents.FormElement {...this.getFormProps()}>
+        <FormComponents.FormErrors {...this.getFormErrorsProps()} />
 
-          {this.getFieldGroups().map(group => (
-            <FormComponents.FormGroup {...this.getFormGroupProps(group)} />
-          ))}
+        {this.getFieldGroups().map(group => (
+          <FormComponents.FormGroup {...this.getFormGroupProps(group)} />
+        ))}
 
-          {this.props.repeatErrors && this.renderErrors()}
+        {this.props.repeatErrors && this.renderErrors()}
 
-          <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
-        </form>
-      </div>
+        <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
+      </FormComponents.FormElement>
     );
   }
 }
