@@ -28,14 +28,14 @@ class FormComponent extends Component {
     }
 
     const { currentValues, deletedValues, errors } = nextProps;
-    const { path } = this.props;
+    const path = this.getPath(this.props);
 
     // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
     const includesPathOrChildren = deletedValues =>
       deletedValues.some(deletedPath => deletedPath.includes(path));
 
     const valueChanged =
-      get(currentValues, path) !== get(this.props.currentValues, path);
+      !isEqual(get(currentValues, path), get(this.props.currentValues, path)); 
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged =
       includesPathOrChildren(deletedValues) !==
