@@ -620,7 +620,7 @@ class SmartForm extends Component {
           ...newValues
         } // Submit form after setState update completed
       }),
-      () => this.submitForm(this.form.getModel())
+      () => this.submitForm()
     );
   };
 
@@ -857,7 +857,7 @@ class SmartForm extends Component {
   */
   formKeyDown = event => {
     if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.form.getModel());
+      this.submitForm();
     }
   };
 
@@ -923,7 +923,7 @@ class SmartForm extends Component {
   */
   submitForm = event => {
 
-    event.preventDefault();
+    event && event.preventDefault();
     
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
