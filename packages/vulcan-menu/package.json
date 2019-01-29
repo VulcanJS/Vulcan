@@ -1,0 +1,9 @@
+{
+  "name": "vulcan-menu",
+  "version": "0.0.1",
+  "main": "package.js",
+  "license": "MIT",
+  "dependencies": {
+    "prop-types": "^15.6.2"
+  }
+}
