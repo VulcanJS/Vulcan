@@ -44,10 +44,6 @@ export const setupGraphQLMiddlewares = (
   config,
   apolloApplyMiddlewareOptions
 ) => {
-  // DEBUG LOG
-  const logReqMiddleware = (req, res, next) => {
-    console.log('REQ', req.url, req.headers), next();
-  };
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
   // 2 - Add apollo specific middlewares
