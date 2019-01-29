@@ -124,7 +124,10 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
-    context.locale = getHeaderLocale(req.headers, context.currentUser && context.currentUser.locale);
+    context.locale = getHeaderLocale(
+      req.headers,
+      context.currentUser && context.currentUser.locale
+    );
 
     return context;
   };
