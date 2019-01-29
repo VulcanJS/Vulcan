@@ -277,8 +277,8 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 }
 
 */
-export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query multi${typeName}Query($input: Multi${typeName}Input) {
+export const multiClientTemplate = ({ typeName, fragmentName, extraQueries, extraVariablesString }) =>
+`query multi${typeName}Query($input: Multi${typeName}Input, ${extraVariablesString || ''}) {
   ${Utils.camelCaseify(Utils.pluralize(typeName))}(input: $input) {
     results {
       ...${fragmentName}
@@ -461,8 +461,8 @@ mutation createMovie($data: CreateMovieDataInput!) {
 }
 
 */
-export const createClientTemplate = ({ typeName, fragmentName }) =>
-`mutation create${typeName}($data: Create${typeName}DataInput!) {
+export const createClientTemplate = ({ typeName, fragmentName, extraVariablesString }) =>
+`mutation create${typeName}($data: Create${typeName}DataInput!, ${extraVariablesString || ''}) {
   create${typeName}(data: $data) {
     data {
       ...${fragmentName}
@@ -486,8 +486,8 @@ mutation updateMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 }
 
 */
-export const updateClientTemplate = ({ typeName, fragmentName }) =>
-`mutation update${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+export const updateClientTemplate = ({ typeName, fragmentName, extraVariablesString }) =>
+`mutation update${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!, ${extraVariablesString || ''}) {
   update${typeName}(selector: $selector, data: $data) {
     data {
       ...${fragmentName}
@@ -511,8 +511,8 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 }
 
 */
-export const upsertClientTemplate = ({ typeName, fragmentName }) =>
-`mutation upsert${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+export const upsertClientTemplate = ({ typeName, fragmentName, extraVariablesString }) =>
+`mutation upsert${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!, ${extraVariablesString || ''}) {
   upsert${typeName}(selector: $selector, data: $data) {
     data {
       ...${fragmentName}
@@ -536,8 +536,8 @@ mutation deleteMovie($selector: MovieSelectorUniqueInput!) {
 }
 
 */
-export const deleteClientTemplate = ({ typeName, fragmentName }) =>
-`mutation delete${typeName}($selector: ${typeName}SelectorUniqueInput!) {
+export const deleteClientTemplate = ({ typeName, fragmentName, extraVariablesString }) =>
+`mutation delete${typeName}($selector: ${typeName}SelectorUniqueInput!, ${extraVariablesString || ''}) {
   delete${typeName}(selector: $selector) {
     data {
       ...${fragmentName}

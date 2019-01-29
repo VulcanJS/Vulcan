@@ -34,11 +34,11 @@ import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withCreate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${createClientTemplate({ typeName, fragmentName })}
+    ${createClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
@@ -47,9 +47,10 @@ const withCreate = options => {
     alias: `withCreate${typeName}`,
     props: ({ ownProps, mutate }) => ({
       [`create${typeName}`]: args => {
+        const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
         const { data } = args;
         return mutate({
-          variables: { data }
+          variables: { data, ...extraVariables }
         });
       },
       // OpenCRUD backwards compatibility

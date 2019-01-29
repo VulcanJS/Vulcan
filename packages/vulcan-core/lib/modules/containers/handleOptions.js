@@ -14,13 +14,15 @@ export const extractCollectionInfo = ({ collectionName, collection }) => {
  * Extract fragmentName from fragment
  * or fragment from fragmentName
  */
-export const extractFragmentInfo = ({ fragment, fragmentName }, collectionName) => {
+export const extractFragmentInfo = ({ fragment, fragmentName, extraVariables }, collectionName) => {
   if (!(fragment || fragmentName || collectionName))
     throw new Error('Please specify either fragment or fragmentName, or pass a collectionName');
   if (fragment) {
     return {
       fragment,
-      fragmentName: fragmentName || getFragmentName(fragment)
+      fragmentName: fragmentName || getFragmentName(fragment),
+      // LESSWRONG MODIFICATION: Allow the passing of extraVariables so that you can have field-specific queries
+      extraVariablesString: getExtraVariablesString(extraVariables)
     };
   } else {
     const _fragmentName = fragmentName || `${collectionName}DefaultFragment`;
@@ -30,3 +32,10 @@ export const extractFragmentInfo = ({ fragment, fragmentName }, collectionName) 
     };
   }
 };
+
+function getExtraVariablesString(extraVariables) {
+  if (extraVariables) {
+    return Object.keys(extraVariables).map(k => `$${k}: ${extraVariables[k]}`).join(', ')
+  } 
+  return ''
+}

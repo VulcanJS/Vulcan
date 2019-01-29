@@ -37,11 +37,11 @@ import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withUpdate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${updateClientTemplate({ typeName, fragmentName })}
+    ${updateClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
@@ -49,9 +49,10 @@ const withUpdate = options => {
     alias: `withUpdate${typeName}`,
     props: ({ ownProps, mutate }) => ({
       [`update${typeName}`]: args => {
+        const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
         const { selector, data } = args;
         return mutate({
-          variables: { selector, data }
+          variables: { selector, data, ...extraVariables }
           // note: updateQueries is not needed for editing documents
         });
       },

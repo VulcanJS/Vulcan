@@ -34,11 +34,11 @@ import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withDelete = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${deleteClientTemplate({ typeName, fragmentName })}
+    ${deleteClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
@@ -46,9 +46,10 @@ const withDelete = options => {
     alias: `withDelete${typeName}`,
     props: ({ ownProps, mutate }) => ({
       [`delete${typeName}`]: args => {
+        const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
         const { selector } = args;
         return mutate({
-          variables: { selector }
+          variables: { selector, ...extraVariables }
         });
       },
 
