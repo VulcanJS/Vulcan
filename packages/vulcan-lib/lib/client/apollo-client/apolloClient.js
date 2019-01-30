@@ -24,6 +24,7 @@ export const createApolloClient = () => {
 
 export const getApolloClient = () => {
   if (!apolloClient) {
+    // eslint-disable-next-line no-console
     console.warn('Warning: accessing apollo client before it is initialized.');
   }
   return apolloClient;

@@ -81,11 +81,12 @@ const migrateIntlFields = async defaultLocale => {
     const intlFieldsNames = Object.keys(intlFields);
 
     if (intlFieldsNames.length) {
+      // eslint-disable-next-line no-console
       console.log(
         `### Found ${intlFieldsNames.length} field to migrate for collection ${
           collection.options.collectionName
         }: ${intlFieldsNames.join(', ')} ###\n`
-      ); // eslint-disable-line no-console
+      );
 
       // const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
 

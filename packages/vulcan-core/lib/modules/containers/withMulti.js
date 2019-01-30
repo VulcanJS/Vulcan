@@ -36,7 +36,6 @@ Terms object can have the following properties:
 
 import { withApollo, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import update from 'immutability-helper';
 import {
   getSetting,
   Utils,
@@ -44,7 +43,6 @@ import {
   extractCollectionInfo,
   extractFragmentInfo,
 } from 'meteor/vulcan:lib';
-import Mingo from 'mingo';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 

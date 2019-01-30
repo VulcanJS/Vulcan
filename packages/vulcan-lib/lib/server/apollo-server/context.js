@@ -105,6 +105,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
   const handleReq = async req => {
     const { headers } = req;
     let context;
+
+    // eslint-disable-next-line no-unused-vars
     let user = null;
 
     context = getBaseContext(req);
