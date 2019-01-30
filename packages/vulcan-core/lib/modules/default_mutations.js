@@ -398,7 +398,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ currentUser: 'The current user' }],
       runs: 'sync',
       returns: 'document',
-      description: 'Perform operations on a new document before it\'s inserted in the database.',
+      description: "Perform operations on a new document before it's inserted in the database.",
     });
     registerCallback({
       name: `${typeName}.create.after`,
@@ -407,7 +407,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       runs: 'sync',
       returns: 'document',
       description:
-        'Perform operations on a new document after it\'s inserted in the database but *before* the mutation returns it.',
+        "Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.",
     });
     registerCallback({
       name: `${typeName}.create.async`,
@@ -419,7 +419,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       runs: 'async',
       returns: null,
       description:
-        'Perform operations on a new document after it\'s inserted in the database asynchronously.',
+        "Perform operations on a new document after it's inserted in the database asynchronously.",
     });
   }
   if (options.update) {
@@ -444,7 +444,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
       runs: 'sync',
       returns: 'modifier',
-      description: 'Perform operations on a document before it\'s updated in the database.',
+      description: "Perform operations on a document before it's updated in the database.",
     });
     registerCallback({
       name: `${typeName}.update.after`,
@@ -453,7 +453,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       runs: 'sync',
       returns: 'document',
       description:
-        'Perform operations on a document after it\'s updated in the database but *before* the mutation returns it.',
+        "Perform operations on a document after it's updated in the database but *before* the mutation returns it.",
     });
     registerCallback({
       name: `${typeName}.update.async`,
@@ -466,7 +466,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       runs: 'async',
       returns: null,
       description:
-        'Perform operations on a document after it\'s updated in the database asynchronously.',
+        "Perform operations on a document after it's updated in the database asynchronously.",
     });
   }
   if (options.delete) {
@@ -490,7 +490,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       properties: [{ currentUser: 'The current user' }],
       runs: 'sync',
       returns: null,
-      description: 'Perform operations on a document before it\'s removed from the database.',
+      description: "Perform operations on a document before it's removed from the database.",
     });
     registerCallback({
       name: `${typeName}.delete.async`,
@@ -502,7 +502,7 @@ const registerCollectionCallbacks = (typeName, options) => {
       runs: 'async',
       returns: null,
       description:
-        'Perform operations on a document after it\'s removed from the database asynchronously.',
+        "Perform operations on a document after it's removed from the database asynchronously.",
     });
   }
 };

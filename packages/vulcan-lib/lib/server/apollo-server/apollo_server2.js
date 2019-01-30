@@ -107,6 +107,7 @@ export const createApolloServer = ({
 };
 
 export const onStart = () => {
+  console.log('Creating apollo server');
   // Vulcan specific options
   const config = {
     path: '/graphql',
@@ -156,4 +157,3 @@ export const onStart = () => {
   // ssr
   enableSSR({ computeContext: context });
 };
-

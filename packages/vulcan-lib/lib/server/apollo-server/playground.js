@@ -4,7 +4,7 @@ export const getPlaygroundConfig = currentConfig => {
   // NOTE: this is redundant, Apollo won't show the GUI if NODE_ENV="production"
   if (!Meteor.isDevelopment) return undefined;
   return {
-    endpoint: '/graphql-playground', //currentConfig.path,
+    endpoint: currentConfig.path,
     // allow override
     //FIXME: this global option does not exist yet...
     // @see https://github.com/prisma/graphql-playground/issues/510

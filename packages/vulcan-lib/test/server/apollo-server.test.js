@@ -1,6 +1,4 @@
-import {
-  createApolloServer,
-} from '../../lib/server/apollo-server/apollo_server2';
+import { createApolloServer } from '../../lib/server/apollo-server/apollo_server2';
 //import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 //import { GraphQLSchema } from '../../lib/modules/graphql';
 import expect from 'expect';
@@ -16,7 +14,7 @@ describe('apollo-server', function() {
     //   initGraphQL();
 
     options = {
-      config: {},//defaultConfig,
+      config: {}, //defaultConfig,
       // Apollo options
       apolloServerOptions: {
         // TODO: check why this fails. One of the schema defined
