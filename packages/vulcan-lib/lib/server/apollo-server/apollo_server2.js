@@ -6,28 +6,28 @@
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
 //import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import {ApolloServer} from 'apollo-server-express';
 
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
-import { WebApp } from 'meteor/webapp';
+import {WebApp} from 'meteor/webapp';
 import bodyParser from 'body-parser';
 
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
-import { graphiqlMiddleware, getGraphiqlConfig } from './graphiql';
+import {graphiqlMiddleware, getGraphiqlConfig} from './graphiql';
 import getPlaygroundConfig from './playground';
 
 import initGraphQL from './initGraphQL';
 import './settings';
-import { engineConfig } from './engine';
-import { initContext, computeContextFromReq } from './context.js';
+import {engineConfig} from './engine';
+import {initContext, computeContextFromReq} from './context.js';
 
-import { GraphQLSchema } from '../../modules/graphql.js';
+import {GraphQLSchema} from '../../modules/graphql.js';
 
-import { enableSSR } from '../apollo-ssr';
+import {enableSSR} from '../apollo-ssr';
 
 import universalCookiesMiddleware from 'universal-cookie-express';
 
@@ -36,14 +36,14 @@ import {
   getApolloServerOptions,
 } from './settings';
 
-import { getSetting } from '../../modules/settings.js';
-import { formatError } from 'apollo-errors';
+import {getSetting} from '../../modules/settings.js';
+import {formatError} from 'apollo-errors';
 
-export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
-  // DEBUG LOG
-  const logReqMiddleware = (req, res, next) => {
-    console.log('REQ', req.url, req.headers), next();
-  };
+export const setupGraphQLMiddlewares = (
+  apolloServer,
+  config,
+  apolloApplyMiddlewareOptions
+) => {
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
   // 2 - Add apollo specific middlewares
@@ -59,11 +59,11 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
   // parse request (order matters)
   WebApp.connectHandlers.use(
     config.path,
-    bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
+    bodyParser.json({limit: getSetting('apolloServer.jsonParserOptions.limit')})
   );
   WebApp.connectHandlers.use(
     config.path,
-    bodyParser.text({ type: 'application/graphql' })
+    bodyParser.text({type: 'application/graphql'})
   );
 
   // Provide the Meteor WebApp Connect server instance to Apollo
@@ -75,10 +75,9 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
     ...apolloApplyMiddlewareOptions,
   });
 
-
   // setup the end point otherwise the request hangs
   // TODO: undestand why this is necessary
-  // @see 
+  // @see
   WebApp.connectHandlers.use(config.path, (req, res) => {
     if (req.method === 'GET') {
       res.end();
@@ -108,7 +107,6 @@ export const createApolloServer = ({
   apolloServerOptions = {}, // apollo options
   config = {}, // Vulcan options
 }) => {
-
   // given options contains the schema
   const apolloServer = new ApolloServer({
     // graphql playground (replacement to graphiql), available on the app path
@@ -129,7 +127,7 @@ export const onStart = () => {
   const config = {
     path: '/graphql',
     maxAccountsCacheSizeInMB: 1,
-    configServer: apolloServer => { },
+    configServer: apolloServer => {},
     voyagerPath: '/graphql-voyager',
     graphiqlPath: '/graphiql',
     // customConfigFromReq
@@ -160,7 +158,7 @@ export const onStart = () => {
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
       cacheControl: true,
-      context: ({ req }) => context(req),
+      context: ({req}) => context(req),
       ...getApolloServerOptions(),
     },
   });
@@ -172,7 +170,7 @@ export const onStart = () => {
     setupToolsMiddlewares(config);
   }
   // ssr
-  enableSSR({ computeContext: context });
+  enableSSR({computeContext: context});
 };
 // createApolloServer when server startup
 Meteor.startup(onStart);

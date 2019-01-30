@@ -39,11 +39,11 @@ export { default as withMutation } from './containers/withMutation.js';
 export { default as withUpsert } from './containers/withUpsert.js';
 export { default as withSiteData } from './containers/withSiteData.js';
 
-export { default as withComponents } from './containers/withComponents';
+export {default as withComponents} from './containers/withComponents';
 
 // OpenCRUD backwards compatibility
-export { default as withNew } from './containers/withCreate.js';
-export { default as withEdit } from './containers/withUpdate.js';
-export { default as withRemove } from './containers/withDelete.js';
-export { default as withList } from './containers/withMulti.js';
-export { default as withDocument } from './containers/withSingle.js';
+export {default as withNew} from './containers/withCreate.js';
+export {default as withEdit} from './containers/withUpdate.js';
+export {default as withRemove} from './containers/withDelete.js';
+export {default as withList} from './containers/withMulti.js';
+export {default as withDocument} from './containers/withSingle.js';
