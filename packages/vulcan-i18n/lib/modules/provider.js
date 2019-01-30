@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {getString} from 'meteor/vulcan:lib';
-import {intlShape} from './shape.js';
+import React, { Component } from 'react';
+import { getString, Utils } from 'meteor/vulcan:lib';
+import { intlShape } from './shape.js';
 
 export default class IntlProvider extends Component {
   formatMessage = ({id, defaultMessage}, values) => {
@@ -51,7 +51,7 @@ export default class IntlProvider extends Component {
     // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
     let schemaLabel =
       schema && schema[fieldName] ? schema[fieldName].label : null;
-    return schemaLabel || fieldName;
+    return schemaLabel || Utils.camelToSpaces(fieldName);
   };
 
   formatStuff = something => {
