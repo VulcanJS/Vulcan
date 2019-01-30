@@ -1,4 +1,4 @@
-import {InMemoryCache} from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const cache = new InMemoryCache()
   //ssr

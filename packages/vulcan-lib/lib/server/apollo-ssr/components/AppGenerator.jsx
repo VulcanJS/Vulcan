@@ -5,7 +5,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { StaticRouter } from 'react-router';
 
-import { Components } from 'meteor/vulcan:lib'
+import { Components } from 'meteor/vulcan:lib';
 
 import { CookiesProvider } from 'react-cookie';
 
@@ -16,7 +16,7 @@ import Cookies from 'universal-cookie';
 const AppGenerator = ({ req, apolloClient, context }) => {
   // TODO: universalCookies should be defined here, but it isn't
   // @see https://github.com/meteor/meteor-feature-requests/issues/174#issuecomment-441047495
-  const cookies = new Cookies(req.cookies) // req.universalCookies;
+  const cookies = new Cookies(req.cookies); // req.universalCookies;
   const App = (
     <ApolloProvider client={apolloClient}>
       <StaticRouter location={req.url} context={context}>
@@ -26,6 +26,6 @@ const AppGenerator = ({ req, apolloClient, context }) => {
       </StaticRouter>
     </ApolloProvider>
   );
-  return App
+  return App;
 };
 export default AppGenerator;

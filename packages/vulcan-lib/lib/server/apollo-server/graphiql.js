@@ -42,18 +42,14 @@ function safeSerialize(data) {
 
 export function renderGraphiQL(data) {
   const endpointURL = data.endpointURL;
-  const endpointWs =
-    endpointURL.startsWith('ws://') || endpointURL.startsWith('wss://');
+  const endpointWs = endpointURL.startsWith('ws://') || endpointURL.startsWith('wss://');
   const subscriptionsEndpoint = data.subscriptionsEndpoint;
   const usingHttp = !endpointWs;
   const usingWs = endpointWs || !!subscriptionsEndpoint;
-  const endpointURLWs =
-    usingWs && (endpointWs ? endpointURL : subscriptionsEndpoint);
+  const endpointURLWs = usingWs && (endpointWs ? endpointURL : subscriptionsEndpoint);
 
   const queryString = data.query;
-  const variablesString = data.variables
-    ? JSON.stringify(data.variables, null, 2)
-    : null;
+  const variablesString = data.variables ? JSON.stringify(data.variables, null, 2) : null;
   const resultString = null;
   const operationName = data.operationName;
   const passHeader = data.passHeader ? data.passHeader : '';
@@ -87,11 +83,7 @@ export function renderGraphiQL(data) {
       ? `<link href="//cdn.jsdelivr.net/npm/codemirror@5/theme/${editorTheme}.min.css" rel="stylesheet" />`
       : ''
   }
-  ${
-    usingHttp
-      ? '<script src="//cdn.jsdelivr.net/fetch/2.0.1/fetch.min.js"></script>'
-      : ''
-  }
+  ${usingHttp ? '<script src="//cdn.jsdelivr.net/fetch/2.0.1/fetch.min.js"></script>' : ''}
   ${
     usingWs
       ? `<script src="//unpkg.com/subscriptions-transport-ws@${SUBSCRIPTIONS_TRANSPORT_VERSION}/browser/client.js"></script>`
@@ -263,8 +255,7 @@ function createGraphiQLData(params, options) {
     endpointURL: options.endpointURL,
     subscriptionsEndpoint: options.subscriptionsEndpoint,
     query: params.query || options.query,
-    variables:
-      (params.variables && JSON.parse(params.variables)) || options.variables,
+    variables: (params.variables && JSON.parse(params.variables)) || options.variables,
     operationName: params.operationName || options.operationName,
     passHeader: options.passHeader,
     editorTheme: options.editorTheme,

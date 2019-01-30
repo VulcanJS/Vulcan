@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { onPageLoad } from 'meteor/server-render';
-import AppGenerator from './components/AppGenerator'
+import AppGenerator from './components/AppGenerator';
 
 import {
   createApolloClient,

@@ -6,9 +6,9 @@ import {
   initContext,
   computeContextFromReq,
 } from '../../lib/server/apollo-server';
-import {GraphQLSchema} from '../../lib/modules/graphql';
+import { GraphQLSchema } from '../../lib/modules/graphql';
 import expect from 'expect';
-import {executableSchema} from './fixtures/minimalSchema';
+import { executableSchema } from './fixtures/minimalSchema';
 
 const test = it; // TODO: just before we switch to jest
 // @see https://www.apollographql.com/docs/apollo-server/features/testing.html

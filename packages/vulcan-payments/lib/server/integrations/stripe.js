@@ -55,26 +55,16 @@ import express from 'express';
 import Stripe from 'stripe';
 import Charges from '../../modules/charges/collection.js';
 import Users from 'meteor/vulcan:users';
-import {Products} from '../../modules/products.js';
-import {Promise} from 'meteor/promise';
+import { Products } from '../../modules/products.js';
+import { Promise } from 'meteor/promise';
 
 registerSetting('stripe', null, 'Stripe settings');
 registerSetting('stripe.publishableKey', null, 'Publishable key', true);
-registerSetting(
-  'stripe.publishableKeyTest',
-  null,
-  'Publishable key (test)',
-  true
-);
+registerSetting('stripe.publishableKeyTest', null, 'Publishable key (test)', true);
 registerSetting('stripe.secretKey', null, 'Secret key');
 registerSetting('stripe.secretKeyTest', null, 'Secret key (test)');
 registerSetting('stripe.endpointSecret', null, 'Endpoint secret for webhook');
-registerSetting(
-  'stripe.alwaysUseTest',
-  false,
-  'Always use test keys in all environments',
-  true
-);
+registerSetting('stripe.alwaysUseTest', false, 'Always use test keys in all environments', true);
 
 const stripeSettings = getSetting('stripe');
 
@@ -102,13 +92,7 @@ export const receiveAction = async args => {
     document,
     returnDocument = {};
 
-  const {
-    userId,
-    productKey,
-    associatedCollection,
-    associatedId,
-    properties,
-  } = args;
+  const { userId, productKey, associatedCollection, associatedId, properties } = args;
 
   if (!stripeSettings) {
     throw new Error('Please fill in your Stripe settings');
@@ -117,7 +101,7 @@ export const receiveAction = async args => {
   // if an associated collection name and document id have been provided,
   // get the associated collection and document
   if (associatedCollection && associatedId) {
-    collection = _.findWhere(Collections, {_name: associatedCollection});
+    collection = _.findWhere(Collections, { _name: associatedCollection });
     document = await Connectors.get(collection, associatedId);
   }
 
@@ -193,7 +177,7 @@ Retrieve or create a Stripe customer
 
 */
 export const getCustomer = async (user, token) => {
-  const {id} = token;
+  const { id } = token;
 
   let customer;
 
@@ -203,7 +187,7 @@ export const getCustomer = async (user, token) => {
   } catch (error) {
     // if user doesn't have a stripeCustomerId; or if id doesn't match up with Stripe
     // create new customer object
-    const customerOptions = {email: user.email};
+    const customerOptions = { email: user.email };
     if (id) {
       customerOptions.source = id;
     }
@@ -213,7 +197,7 @@ export const getCustomer = async (user, token) => {
     await updateMutator({
       collection: Users,
       documentId: user._id,
-      data: {stripeCustomerId: customer.id},
+      data: { stripeCustomerId: customer.id },
       validate: false,
     });
   }
@@ -226,18 +210,8 @@ export const getCustomer = async (user, token) => {
 Create one-time charge. 
 
 */
-export const createCharge = async ({
-  user,
-  product,
-  collection,
-  document,
-  metadata,
-  args,
-}) => {
-  const {
-    token,
-    /* userId, productKey, associatedId, properties, */ coupon,
-  } = args;
+export const createCharge = async ({ user, product, collection, document, metadata, args }) => {
+  const { token, /* userId, productKey, associatedId, properties, */ coupon } = args;
 
   const customer = await getCustomer(user, token);
 
@@ -314,7 +288,7 @@ export const createSubscription = async ({
     // eslint-disable-next-line no-unused-vars
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{plan: product.plan}],
+      items: [{ plan: product.plan }],
       metadata,
       ...product.subscriptionProperties,
     });
@@ -410,9 +384,7 @@ const createOrRetrievePlan = async planObject => {
     if (error.statusCode === 404) {
       // eslint-disable-next-line no-console
       console.log(
-        `Creating subscription plan ${
-          planObject.plan
-        } for ${(planObject.amount &&
+        `Creating subscription plan ${planObject.plan} for ${(planObject.amount &&
           (planObject.amount / 100).toLocaleString('en-US', {
             style: 'currency',
             currency: planObject.currency,
@@ -435,17 +407,9 @@ export const createOrRetrieveSubscriptionPlan = async maybePlanObject =>
 Process charges, subscriptions, etc. on Vulcan's side
 
 */
-export const processAction = async ({
-  collection,
-  document,
-  stripeObject,
-  args,
-  user,
-}) => {
+export const processAction = async ({ collection, document, stripeObject, args, user }) => {
   debug('');
-  debugGroup(
-    '--------------- start\x1b[35m processAction \x1b[0m ---------------'
-  );
+  debugGroup('--------------- start\x1b[35m processAction \x1b[0m ---------------');
   debug(`Collection: ${collection.options.collectionName}`);
   debug(`documentId: ${document._id}`);
   debug(`Charge: ${stripeObject}`);
@@ -462,9 +426,7 @@ export const processAction = async ({
   if (existingCharge) {
     // eslint-disable-next-line no-console
     console.log(
-      `// Charge with Stripe id ${
-        stripeObject.id
-      } already exists in db; aborting processAction`
+      `// Charge with Stripe id ${stripeObject.id} already exists in db; aborting processAction`
     );
     return collection && document ? document : {};
   }
@@ -514,13 +476,13 @@ export const processAction = async ({
       ? [...document.chargeIds, chargeSaved._id]
       : [chargeSaved._id];
 
-    let data = {chargeIds};
+    let data = { chargeIds };
 
     // run collection.charge.sync callbacks
     data = await runCallbacks({
       name: 'stripe.process.sync',
       iterator: data,
-      properties: {collection, document, chargeDoc, user},
+      properties: { collection, document, chargeDoc, user },
     });
 
     const updateResult = await updateMutator({
@@ -583,11 +545,7 @@ app.post('/stripe', addRawBody, async function(req, res) {
   const sig = req.headers['stripe-signature'];
 
   try {
-    const event = stripe.webhooks.constructEvent(
-      req.rawBody,
-      sig,
-      stripeSettings.endpointSecret
-    );
+    const event = stripe.webhooks.constructEvent(req.rawBody, sig, stripeSettings.endpointSecret);
 
     // eslint-disable-next-line no-console
     console.log('event ///////////////////');
@@ -615,20 +573,13 @@ app.post('/stripe', addRawBody, async function(req, res) {
           console.log(invoice);
 
           // look up corresponding subscription
-          const subscription = await stripe.subscriptions.retrieve(
-            invoice.subscription
-          );
+          const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
           // eslint-disable-next-line no-console
           console.log('////// subscription');
           // eslint-disable-next-line no-console
           console.log(subscription);
 
-          const {
-            userId,
-            productKey,
-            associatedCollection,
-            associatedId,
-          } = subscription.metadata;
+          const { userId, productKey, associatedCollection, associatedId } = subscription.metadata;
 
           if (associatedCollection && associatedId) {
             const collection = _.findWhere(Collections, {
@@ -653,7 +604,7 @@ app.post('/stripe', addRawBody, async function(req, res) {
               livemode: subscription.livemode,
             };
 
-            processAction({collection, document, stripeObject: charge, args});
+            processAction({ collection, document, stripeObject: charge, args });
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -762,14 +713,14 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(app), {
 Meteor.startup(() => {
   registerCallback({
     name: 'stripe.receive.sync',
-    description: "Modify any metadata before calling Stripe's API",
+    description: 'Modify any metadata before calling Stripe\'s API',
     arguments: [
-      {metadata: 'Metadata about the action'},
-      {user: 'The user'},
-      {product: 'Product created with addProduct'},
-      {collection: 'Associated collection of the charge'},
-      {document: 'Associated document in collection to the charge'},
-      {args: 'Original mutation arguments'},
+      { metadata: 'Metadata about the action' },
+      { user: 'The user' },
+      { product: 'Product created with addProduct' },
+      { collection: 'Associated collection of the charge' },
+      { document: 'Associated document in collection to the charge' },
+      { args: 'Original mutation arguments' },
     ],
     runs: 'sync',
     newSyntax: true,
@@ -778,14 +729,14 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.receive.async',
-    description: "Run after calling Stripe's API",
+    description: 'Run after calling Stripe\'s API',
     arguments: [
-      {metadata: 'Metadata about the charge'},
-      {user: 'The user'},
-      {product: 'Product created with addProduct'},
-      {collection: 'Associated collection of the charge'},
-      {document: 'Associated document in collection to the charge'},
-      {args: 'Original mutation arguments'},
+      { metadata: 'Metadata about the charge' },
+      { user: 'The user' },
+      { product: 'Product created with addProduct' },
+      { collection: 'Associated collection of the charge' },
+      { document: 'Associated document in collection to the charge' },
+      { args: 'Original mutation arguments' },
     ],
     runs: 'sync',
     newSyntax: true,
@@ -793,14 +744,13 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.charge.async',
-    description:
-      'Perform operations immediately after the stripe subscription has completed',
+    description: 'Perform operations immediately after the stripe subscription has completed',
     arguments: [
-      {charge: 'The charge'},
-      {collection: 'Associated collection of the subscription'},
-      {document: 'Associated document in collection to the charge'},
-      {args: 'Original mutation arguments'},
-      {user: 'The user'},
+      { charge: 'The charge' },
+      { collection: 'Associated collection of the subscription' },
+      { document: 'Associated document in collection to the charge' },
+      { args: 'Original mutation arguments' },
+      { user: 'The user' },
     ],
     runs: 'async',
     newSyntax: true,
@@ -808,14 +758,13 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.subscribe.async',
-    description:
-      'Perform operations immediately after the stripe subscription has completed',
+    description: 'Perform operations immediately after the stripe subscription has completed',
     arguments: [
-      {subscription: 'The subscription'},
-      {collection: 'Associated collection of the subscription'},
-      {document: 'Associated document in collection to the charge'},
-      {args: 'Original mutation arguments'},
-      {user: 'The user'},
+      { subscription: 'The subscription' },
+      { collection: 'Associated collection of the subscription' },
+      { document: 'Associated document in collection to the charge' },
+      { args: 'Original mutation arguments' },
+      { user: 'The user' },
     ],
     runs: 'async',
     newSyntax: true,
@@ -826,13 +775,12 @@ Meteor.startup(() => {
     description: 'Modify any metadata before sending the charge to stripe',
     arguments: [
       {
-        modifier:
-          'The modifier object used to update the associated collection',
+        modifier: 'The modifier object used to update the associated collection',
       },
-      {collection: 'Collection associated to the product'},
-      {document: 'Associated document'},
-      {chargeDoc: "Charge document returned by Stripe's API"},
-      {user: 'The user'},
+      { collection: 'Collection associated to the product' },
+      { document: 'Associated document' },
+      { chargeDoc: 'Charge document returned by Stripe\'s API' },
+      { user: 'The user' },
     ],
     runs: 'sync',
     returns: 'The modified arguments to be sent to stripe',
@@ -842,10 +790,10 @@ Meteor.startup(() => {
     name: 'stripe.process.async',
     description: 'Modify any metadata before sending the charge to stripe',
     arguments: [
-      {collection: 'Collection associated to the product'},
-      {document: 'Associated document'},
-      {chargeDoc: "Charge document returned by Stripe's API"},
-      {user: 'The user'},
+      { collection: 'Collection associated to the product' },
+      { document: 'Associated document' },
+      { chargeDoc: 'Charge document returned by Stripe\'s API' },
+      { user: 'The user' },
     ],
     runs: 'async',
     returns: 'The modified arguments to be sent to stripe',
@@ -858,11 +806,7 @@ Meteor.startup(() => {
     Promise.awaitAll(
       Object.keys(Products)
         // Filter out function type products and those without a plan defined (non-subscription)
-        .filter(
-          productKey =>
-            typeof Products[productKey] === 'object' &&
-            Products[productKey].plan
-        )
+        .filter(productKey => typeof Products[productKey] === 'object' && Products[productKey].plan)
         .map(productKey => createOrRetrievePlan(Products[productKey]))
     );
     // eslint-disable-next-line no-console

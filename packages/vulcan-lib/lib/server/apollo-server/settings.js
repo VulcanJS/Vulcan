@@ -27,5 +27,4 @@ let apolloApplyMiddlewareOptions = {};
 export const registerApolloApplyMiddlewareOptions = options => {
   apolloApplyMiddlewareOptions = _merge(apolloApplyMiddlewareOptions, options);
 };
-export const getApolloApplyMiddlewareOptions = () =>
-  apolloApplyMiddlewareOptions;
+export const getApolloApplyMiddlewareOptions = () => apolloApplyMiddlewareOptions;

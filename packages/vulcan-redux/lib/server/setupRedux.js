@@ -1,7 +1,7 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {addCallback} from 'meteor/vulcan:core';
-import {initStore} from '../modules/redux';
+import { Provider } from 'react-redux';
+import { addCallback } from 'meteor/vulcan:core';
+import { initStore } from '../modules/redux';
 
 const setupRedux = () => {
   const store = initStore();

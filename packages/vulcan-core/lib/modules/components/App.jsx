@@ -42,7 +42,7 @@ const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
       return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
     }}
   />
-)};
+);};
 
 class App extends PureComponent {
   constructor(props) {

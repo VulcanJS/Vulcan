@@ -9,7 +9,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
   // note: if used, accounts-base should be loaded before vulcan:lib
-  api.use('accounts-base', {weak: true});
+  api.use('accounts-base', { weak: true });
 
   var packages = [
     'buffer@0.0.0', // see https://github.com/meteor/meteor/issues/8645

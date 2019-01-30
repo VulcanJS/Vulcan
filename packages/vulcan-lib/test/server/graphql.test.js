@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import {GraphQLSchema} from '../../lib/modules/graphql';
+import { GraphQLSchema } from '../../lib/modules/graphql';
 import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 
 describe('vulcan:lib/graphql', function() {

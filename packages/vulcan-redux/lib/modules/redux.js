@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import _isEmpty from 'lodash/isEmpty';
 // TODO: now we should add some callback call to add the store to
 // Apollo SSR + client side too
@@ -48,9 +48,7 @@ export const configureStore = (
     }
     if (options.reducers) {
       reducers =
-        typeof options.reducers === 'object'
-          ? combineReducers(options.reducers)
-          : options.reducers;
+        typeof options.reducers === 'object' ? combineReducers(options.reducers) : options.reducers;
     }
     this.replaceReducer(reducers);
     return store;
@@ -63,7 +61,7 @@ export const configureStore = (
 // **Notes: server side, addAction to server share with every req**
 let actions = {};
 export const addAction = addedAction => {
-  actions = {...actions, ...addedAction};
+  actions = { ...actions, ...addedAction };
   return actions;
 };
 export const getActions = () => actions;
@@ -73,7 +71,7 @@ export const getActions = () => actions;
 let reducers = {};
 
 export const addReducer = addedReducer => {
-  reducers = {...reducers, ...addedReducer};
+  reducers = { ...reducers, ...addedReducer };
   return reducers;
 };
 export const getReducers = () => reducers;

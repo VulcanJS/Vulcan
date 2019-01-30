@@ -2,9 +2,9 @@
  * Init the graphQL schema
  */
 
-import {makeExecutableSchema} from 'apollo-server';
-import {GraphQLSchema} from '../../modules/graphql.js';
-import {runCallbacks} from '../../modules/callbacks.js';
+import { makeExecutableSchema } from 'apollo-server';
+import { GraphQLSchema } from '../../modules/graphql.js';
+import { runCallbacks } from '../../modules/callbacks.js';
 
 const getQueries = () =>
   `type Query {

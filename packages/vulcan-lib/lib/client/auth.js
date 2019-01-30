@@ -7,7 +7,7 @@
  */
 import Cookies from 'universal-cookie';
 
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 
 const cookie = new Cookies();
 
@@ -26,9 +26,7 @@ function setToken(loginToken, expires) {
 
 function initToken() {
   const loginToken = global.localStorage['Meteor.loginToken'];
-  const loginTokenExpires = new Date(
-    global.localStorage['Meteor.loginTokenExpires']
-  );
+  const loginTokenExpires = new Date(global.localStorage['Meteor.loginTokenExpires']);
 
   if (loginToken) {
     setToken(loginToken, loginTokenExpires);

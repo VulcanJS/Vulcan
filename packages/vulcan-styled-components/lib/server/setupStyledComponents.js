@@ -1,9 +1,9 @@
 // Setup SSR
-import {ServerStyleSheet} from 'styled-components';
-import {addCallback} from 'meteor/vulcan:core';
+import { ServerStyleSheet } from 'styled-components';
+import { addCallback } from 'meteor/vulcan:core';
 
 const setupStyledComponents = () => {
-  addCallback('router.server.wrapper', function collectStyles(app, {context}) {
+  addCallback('router.server.wrapper', function collectStyles(app, { context }) {
     const stylesheet = new ServerStyleSheet();
     // @see https://www.styled-components.com/docs/advanced/#example
     const wrappedApp = stylesheet.collectStyles(app);
@@ -12,10 +12,7 @@ const setupStyledComponents = () => {
     return wrappedApp;
   });
 
-  addCallback('router.server.postRender', function appendStyleTags(
-    sink,
-    {context}
-  ) {
+  addCallback('router.server.postRender', function appendStyleTags(sink, { context }) {
     sink.appendToHead(context.stylesheet.getStyleTags());
     return sink;
   });

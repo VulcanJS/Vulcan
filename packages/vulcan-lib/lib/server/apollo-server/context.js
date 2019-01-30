@@ -12,14 +12,14 @@
 
 //import deepmerge from 'deepmerge';
 import DataLoader from 'dataloader';
-import {Collections} from '../../modules/collections.js';
-import {runCallbacks} from '../../modules/callbacks.js';
+import { Collections } from '../../modules/collections.js';
+import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
-import {GraphQLSchema} from '../../modules/graphql.js';
+import { GraphQLSchema } from '../../modules/graphql.js';
 import _merge from 'lodash/merge';
-import {getUser} from 'meteor/apollo';
-import {getHeaderLocale} from '../intl.js';
-import {getSetting} from '../../modules/settings.js';
+import { getUser } from 'meteor/apollo';
+import { getHeaderLocale } from '../intl.js';
+import { getSetting } from '../../modules/settings.js';
 
 /**
  * Called once on server creation
@@ -28,7 +28,7 @@ import {getSetting} from '../../modules/settings.js';
 export const initContext = currentContext => {
   let context;
   if (currentContext) {
-    context = {...currentContext};
+    context = { ...currentContext };
   } else {
     context = {};
   }
@@ -52,10 +52,7 @@ import Cookies from 'universal-cookie';
 // initial request will get the login token from a cookie, subsequent requests from
 // the header
 const getAuthToken = req => {
-  return (
-    req.headers.authorization ||
-    new Cookies(req.cookies).get('meteor_login_token')
-  );
+  return req.headers.authorization || new Cookies(req.cookies).get('meteor_login_token');
 };
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
 const setupAuthToken = async (context, req) => {
@@ -75,8 +72,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
   // givenOptions can be either a function of the request or an object
   const getBaseContext = req =>
     customContextFromReq
-      ? {...currentContext, ...customContextFromReq(req)}
-      : {...currentContext};
+      ? { ...currentContext, ...customContextFromReq(req) }
+      : { ...currentContext };
   // Previous implementation
   // Now meteor/apollo already provide this
   // Get the token from the header
@@ -127,7 +124,7 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     // console.log('// apollo_server.js locale:', req.headers.locale);
 
     // if apiKey is present, assign "fake" currentUser with admin rights
-    if (headers.apikey && (headers.apikey === getSetting('vulcan.apiKey'))) {
+    if (headers.apikey && headers.apikey === getSetting('vulcan.apiKey')) {
       context.currentUser = { isAdmin: true, isApiUser: true };
     }
 

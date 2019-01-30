@@ -1,23 +1,18 @@
-import {ApolloClient} from 'apollo-client';
-import {ApolloLink} from 'apollo-link';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
 import watchedMutationLink from './links/watchedMutation';
 import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
-import {createStateLink} from '../../modules/apollo-common';
+import { createStateLink } from '../../modules/apollo-common';
 import cache from './cache';
 
 // these links do not change once created
-const staticLinks = [
-  watchedMutationLink,
-  errorLink,
-  meteorAccountsLink,
-  httpLink,
-];
+const staticLinks = [watchedMutationLink, errorLink, meteorAccountsLink, httpLink];
 
 let apolloClient;
 export const createApolloClient = () => {
-  const stateLink = createStateLink({cache});
+  const stateLink = createStateLink({ cache });
   const newClient = new ApolloClient({
     link: ApolloLink.from([stateLink, ...staticLinks]),
     cache,

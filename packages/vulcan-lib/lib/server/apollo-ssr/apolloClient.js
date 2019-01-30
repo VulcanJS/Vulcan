@@ -5,29 +5,29 @@
  * /!\ It must be recreated on every request
  */
 
-import {ApolloClient} from 'apollo-client';
-import {InMemoryCache} from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import {SchemaLink} from 'apollo-link-schema';
-import {GraphQLSchema} from '../../modules/graphql.js';
+import { SchemaLink } from 'apollo-link-schema';
+import { GraphQLSchema } from '../../modules/graphql.js';
 
-import {createStateLink} from '../../modules/apollo-common';
-import {ApolloLink} from 'apollo-link';
+import { createStateLink } from '../../modules/apollo-common';
+import { ApolloLink } from 'apollo-link';
 
 // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
 // import { createHttpLink } from 'apollo-link-http';
 // import fetch from 'node-fetch'
 
-export const createClient = async ({req, computeContext}) => {
+export const createClient = async ({ req, computeContext }) => {
   // init
   // stateLink will init the client internal state
   const cache = new InMemoryCache();
-  const stateLink = createStateLink({cache});
+  const stateLink = createStateLink({ cache });
   // schemaLink will fetch data directly based on the executable schema
   const schema = GraphQLSchema.getExecutableSchema();
   // this is the resolver context
   const context = await computeContext(req);
-  const schemaLink = new SchemaLink({schema, context});
+  const schemaLink = new SchemaLink({ schema, context });
   const client = new ApolloClient({
     ssrMode: true,
     link: ApolloLink.from([stateLink, schemaLink]),

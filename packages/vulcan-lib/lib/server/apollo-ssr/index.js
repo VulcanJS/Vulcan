@@ -1,1 +1,1 @@
-export {default as enableSSR} from './enableSSR';
+export { default as enableSSR } from './enableSSR';

@@ -3,8 +3,8 @@
 Run a GraphQL request from the server with the proper context
 
 */
-import {graphql} from 'graphql';
-import {Collections} from '../modules/collections.js';
+import { graphql } from 'graphql';
+import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
 import {
@@ -12,16 +12,16 @@ import {
   extractFragmentName,
   getFragmentText,
 } from '../modules/fragments.js';
-import {getSetting} from '../modules/settings';
+import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
-import {singleClientTemplate} from '../modules/graphql_templates';
-import {Utils} from './utils';
-import {GraphQLSchema} from '../modules/graphql';
+import { singleClientTemplate } from '../modules/graphql_templates';
+import { Utils } from './utils';
+import { GraphQLSchema } from '../modules/graphql';
 
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context) => {
   const defaultContext = {
-    currentUser: {isAdmin: true},
+    currentUser: { isAdmin: true },
     locale: getSetting('locale'),
   };
   const queryContext = merge(defaultContext, context);
@@ -30,21 +30,14 @@ export const runGraphQL = async (query, variables = {}, context) => {
   // within the scope of this specific request,
   // decorate each collection with a new Dataloader object and add it to context
   Collections.forEach(collection => {
-    collection.loader = new DataLoader(
-      ids => findByIds(collection, ids, queryContext),
-      {cache: true}
-    );
+    collection.loader = new DataLoader(ids => findByIds(collection, ids, queryContext), {
+      cache: true,
+    });
     queryContext[collection.options.collectionName] = collection;
   });
 
   // see http://graphql.org/graphql-js/graphql/#graphql
-  const result = await graphql(
-    executableSchema,
-    query,
-    {},
-    queryContext,
-    variables
-  );
+  const result = await graphql(executableSchema, query, {}, queryContext, variables);
 
   if (result.errors) {
     // eslint-disable-next-line no-console
@@ -65,7 +58,7 @@ Given a collection and a fragment, build a query to fetch one document.
 If no fragment is passed, default to default fragment
 
 */
-export const buildQuery = (collection, {fragmentName, fragmentText}) => {
+export const buildQuery = (collection, { fragmentName, fragmentText }) => {
   const collectionName = collection.options.collectionName;
   const typeName = collection.options.typeName;
 
@@ -100,16 +93,9 @@ Meteor.startup(() => {
   Collections.forEach(collection => {
     const typeName = collection.options.typeName;
 
-    collection.queryOne = async (
-      documentId,
-      {fragmentName, fragmentText, context}
-    ) => {
-      const query = buildQuery(collection, {fragmentName, fragmentText});
-      const result = await runQuery(
-        query,
-        {input: {selector: {documentId}}},
-        context
-      );
+    collection.queryOne = async (documentId, { fragmentName, fragmentText, context }) => {
+      const query = buildQuery(collection, { fragmentName, fragmentText });
+      const result = await runQuery(query, { input: { selector: { documentId } } }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
     };
   });

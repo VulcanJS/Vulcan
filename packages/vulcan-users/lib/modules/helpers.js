@@ -1,4 +1,4 @@
-import {Utils} from 'meteor/vulcan:lib';
+import { Utils } from 'meteor/vulcan:lib';
 import Users from './collection.js';
 import moment from 'moment';
 import _ from 'underscore';
@@ -32,12 +32,7 @@ Users.getUser = function(userOrUserId) {
 Users.getUserName = function(user) {
   try {
     if (user.username) return user.username;
-    if (
-      user &&
-      user.services &&
-      user.services.twitter &&
-      user.services.twitter.screenName
-    )
+    if (user && user.services && user.services.twitter && user.services.twitter.screenName)
       return user.services.twitter.screenName;
   } catch (error) {
     console.log(error); // eslint-disable-line
@@ -189,7 +184,7 @@ Users.hasCompletedProfile = function(user) {
 ///////////////////
 
 Users.findLast = function(user, collection) {
-  return collection.findOne({userId: user._id}, {sort: {createdAt: -1}});
+  return collection.findOne({ userId: user._id }, { sort: { createdAt: -1 } });
 };
 
 Users.timeSinceLast = function(user, collection) {
@@ -263,5 +258,5 @@ Users.getRequiredFields = function() {
 // };
 
 Users.findByEmail = function(email) {
-  return Users.findOne({email: email});
+  return Users.findOne({ email: email });
 };

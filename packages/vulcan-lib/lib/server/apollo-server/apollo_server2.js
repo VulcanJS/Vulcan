@@ -6,44 +6,37 @@
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
 //import express from 'express';
-import {ApolloServer} from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 
-import {WebApp} from 'meteor/webapp';
+import { WebApp } from 'meteor/webapp';
 import bodyParser from 'body-parser';
 
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import voyagerMiddleware from 'graphql-voyager/middleware/express';
 import getVoyagerConfig from './voyager';
-import {graphiqlMiddleware, getGraphiqlConfig} from './graphiql';
+import { graphiqlMiddleware, getGraphiqlConfig } from './graphiql';
 import getPlaygroundConfig from './playground';
 
 import initGraphQL from './initGraphQL';
 import './settings';
-import {engineConfig} from './engine';
-import {initContext, computeContextFromReq} from './context.js';
+import { engineConfig } from './engine';
+import { initContext, computeContextFromReq } from './context.js';
 
-import {GraphQLSchema} from '../../modules/graphql.js';
+import { GraphQLSchema } from '../../modules/graphql.js';
 
-import {enableSSR} from '../apollo-ssr';
+import { enableSSR } from '../apollo-ssr';
 
 import universalCookiesMiddleware from 'universal-cookie-express';
 
-import {
-  getApolloApplyMiddlewareOptions,
-  getApolloServerOptions,
-} from './settings';
+import { getApolloApplyMiddlewareOptions, getApolloServerOptions } from './settings';
 
-import {getSetting} from '../../modules/settings.js';
-import {formatError} from 'apollo-errors';
+import { getSetting } from '../../modules/settings.js';
+import { formatError } from 'apollo-errors';
 
-export const setupGraphQLMiddlewares = (
-  apolloServer,
-  config,
-  apolloApplyMiddlewareOptions
-) => {
+export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
   // 2 - Add apollo specific middlewares
@@ -59,12 +52,9 @@ export const setupGraphQLMiddlewares = (
   // parse request (order matters)
   WebApp.connectHandlers.use(
     config.path,
-    bodyParser.json({limit: getSetting('apolloServer.jsonParserOptions.limit')})
+    bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
   );
-  WebApp.connectHandlers.use(
-    config.path,
-    bodyParser.text({type: 'application/graphql'})
-  );
+  WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server when handling requests
@@ -88,15 +78,9 @@ export const setupGraphQLMiddlewares = (
 export const setupToolsMiddlewares = config => {
   // Voyager is a GraphQL schema visual explorer
   // available on /voyager as a default
-  WebApp.connectHandlers.use(
-    config.voyagerPath,
-    voyagerMiddleware(getVoyagerConfig(config))
-  );
+  WebApp.connectHandlers.use(config.voyagerPath, voyagerMiddleware(getVoyagerConfig(config)));
   // Setup GraphiQL
-  WebApp.connectHandlers.use(
-    config.graphiqlPath,
-    graphiqlMiddleware(getGraphiqlConfig(config))
-  );
+  WebApp.connectHandlers.use(config.graphiqlPath, graphiqlMiddleware(getGraphiqlConfig(config)));
 };
 
 /**
@@ -158,7 +142,7 @@ export const onStart = () => {
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
       cacheControl: true,
-      context: ({req}) => context(req),
+      context: ({ req }) => context(req),
       ...getApolloServerOptions(),
     },
   });
@@ -170,7 +154,7 @@ export const onStart = () => {
     setupToolsMiddlewares(config);
   }
   // ssr
-  enableSSR({computeContext: context});
+  enableSSR({ computeContext: context });
 };
 // createApolloServer when server startup
 Meteor.startup(onStart);
