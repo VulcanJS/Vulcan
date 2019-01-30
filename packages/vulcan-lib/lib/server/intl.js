@@ -47,7 +47,7 @@ class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
     const { resolve = defaultFieldResolver, name } = field; 
     field.resolve = async function (...args) {
-      const [ doc, graphQLArguments, context ] = args;
+      const [doc, graphQLArguments, context] = args;
       const fieldValue = await resolve.apply(this, args);
       const locale = graphQLArguments.locale || context.locale;
       const defaultLocale = getSetting('locale');

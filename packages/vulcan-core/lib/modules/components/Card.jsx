@@ -29,7 +29,7 @@ const getTypeName = (field, fieldName, collection) => {
 };
 
 const parseImageUrl = value => {
-  const isImage = ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 || ['.webp', '.jpeg' ].indexOf(value.substr(-5)) !== -1;
+  const isImage = ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 || ['.webp', '.jpeg'].indexOf(value.substr(-5)) !== -1;
   return isImage ? 
     <img style={{width: '100%', minWidth: 80, maxWidth: 200, display: 'block'}} src={value} alt={value}/> : 
     parseUrl(value);
