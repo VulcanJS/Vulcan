@@ -194,13 +194,12 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
 
     use either:
 
-    1. the column name translation
+    1. the column name translation : collectionName.columnName, global.columnName, columnName
     2. the column name label in the schema (if the column name matches a schema field)
     3. the raw column name.
 
     */
-    const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
-    const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage });
+    const formattedLabel = intl.formatLabel({fieldName: columnName, collectionName: collection._name, schema: schema})
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
@@ -461,4 +460,3 @@ const DatatableDefaultCell = ({ column, document }) =>
   <div>{typeof column === 'string' ? getFieldValue(document[column]) : getFieldValue(document[column.name])}</div>;
 
 registerComponent('DatatableDefaultCell', DatatableDefaultCell);
-
