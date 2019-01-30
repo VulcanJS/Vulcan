@@ -3,8 +3,8 @@ import { getString, Utils } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
 export default class IntlProvider extends Component {
-  formatMessage = ({id, defaultMessage}, values) => {
-    return getString({id, defaultMessage, values, locale: this.props.locale});
+  formatMessage = ({ id, defaultMessage }, values) => {
+    return getString({ id, defaultMessage, values, locale: this.props.locale });
   };
 
   /**
@@ -18,11 +18,9 @@ export default class IntlProvider extends Component {
    * @return {string}                            The translated label
    */
 
-  formatLabel = ({fieldName, collectionName, schema}, values) => {
+  formatLabel = ({ fieldName, collectionName, schema }, values) => {
     if (!fieldName) {
-      throw new Error(
-        'fieldName option passed to formatLabel cannot be empty or undefined'
-      );
+      throw new Error('fieldName option passed to formatLabel cannot be empty or undefined');
     }
     const defaultMessage = '|*|*|';
     // Get the intl label
@@ -30,18 +28,15 @@ export default class IntlProvider extends Component {
     // try collectionName.fieldName as intl id
     if (collectionName) {
       intlLabel = this.formatMessage(
-        {id: `${collectionName.toLowerCase()}.${fieldName}`, defaultMessage},
+        { id: `${collectionName.toLowerCase()}.${fieldName}`, defaultMessage },
         values
       );
     }
     // try global.fieldName then just fieldName as intl id
     if (intlLabel === defaultMessage) {
-      intlLabel = this.formatMessage(
-        {id: `global.${fieldName}`, defaultMessage},
-        values
-      );
+      intlLabel = this.formatMessage({ id: `global.${fieldName}`, defaultMessage }, values);
       if (intlLabel === defaultMessage) {
-        intlLabel = this.formatMessage({id: fieldName}, values);
+        intlLabel = this.formatMessage({ id: fieldName }, values);
       }
     }
     if (intlLabel) {
@@ -49,8 +44,7 @@ export default class IntlProvider extends Component {
     }
 
     // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
-    let schemaLabel =
-      schema && schema[fieldName] ? schema[fieldName].label : null;
+    let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
     return schemaLabel || Utils.camelToSpaces(fieldName);
   };
 
