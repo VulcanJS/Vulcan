@@ -4,6 +4,7 @@ import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
 import { Utils, getSetting, registerSetting, runQuery, Strings, getString } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
+import { Email } from 'meteor/email';
 
 /*
 
@@ -82,13 +83,13 @@ VulcanEmail.generateTextVersion = html => {
   });
 };
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   if (typeof to === 'object') {
     // eslint-disable-next-line no-redeclare
-    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers } = to;
+    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers, attachments } = to;
   }
 
   const from = getSetting('defaultEmail', 'noreply@example.com');
@@ -102,14 +103,15 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 
   const email = {
     from: from,
-    to: to,
-    cc: cc,
-    bcc: bcc,
-    replyTo: replyTo,
-    subject: subject,
-    headers: headers,
-    text: text,
-    html: html,
+    to,
+    cc,
+    bcc,
+    replyTo,
+    subject,
+    headers,
+    text,
+    html,
+    attachments,
   };
 
   const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false);
@@ -153,9 +155,9 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   return { data, subject, html };
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers }) => {
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments }) => {
   const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers });
+  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments });
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));

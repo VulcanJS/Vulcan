@@ -20,13 +20,11 @@ import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter} from 'react-router';
 
-const DummyErrorCatcher = ({ children }) => children;
-
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
 
    // if defined, use ErrorCatcher component to wrap layout contents
-   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : DummyErrorCatcher;
+   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
 
    return (
   <Route
@@ -38,8 +36,8 @@ const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
     {...rest}
     render={props => {
 
-   const layoutProps = {...props, currentRoute}
-   const childComponentProps = {...props, currentRoute}
+   const layoutProps = { ...props, currentRoute };
+   const childComponentProps = { ...props, currentRoute };
       const layout = layoutName ? Components[layoutName] : Components.Layout;
       return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
     }}

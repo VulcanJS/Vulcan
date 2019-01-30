@@ -2,17 +2,20 @@ import React, { PureComponent } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import moment from 'moment';
 
-const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0);
+const isEmptyValue = value =>
+  typeof value === 'undefined' ||
+  value === null ||
+  value === '' ||
+  (Array.isArray(value) && value.length === 0);
 
 class DateComponent2 extends PureComponent {
-
   state = {
     year: null,
     month: null,
     day: null,
-  }
+  };
 
-  updateDate = (date) => {
+  updateDate = date => {
     const { value, path } = this.props;
     let newDate;
     this.setState(date, () => {
@@ -20,7 +23,10 @@ class DateComponent2 extends PureComponent {
       if (isEmptyValue(value)) {
         if (year && month && day) {
           // wait until we have all three values to update the date
-          newDate = moment().year(year).month(month).date(day);
+          newDate = moment()
+            .year(year)
+            .month(month)
+            .date(day);
           this.props.updateCurrentValues({ [path]: newDate.toDate() });
         }
       } else {
@@ -32,10 +38,9 @@ class DateComponent2 extends PureComponent {
         this.props.updateCurrentValues({ [path]: newDate.toDate() });
       }
     });
-  }
+  };
 
   render() {
-
     const { path, value } = this.props;
     const months = moment.months();
     const mDate = !isEmptyValue(value) && moment(value);
@@ -45,10 +50,10 @@ class DateComponent2 extends PureComponent {
       name: `${path}.month`,
       layout: 'vertical',
       options: months.map((m, i) => ({ label: m, value: m })),
-      value: mDate && mDate.format('MMMM') || '',
+      value: (mDate && mDate.format('MMMM')) || '',
       onChange: (name, value) => {
         this.updateDate({ month: value });
-      }
+      },
     };
 
     const dayProperties = {
@@ -56,10 +61,10 @@ class DateComponent2 extends PureComponent {
       name: `${path}.day`,
       layout: 'vertical',
       maxLength: 2,
-      value: mDate && mDate.format('DD') || '',
-      onBlur: (e) => {
+      value: (mDate && mDate.format('DD')) || '',
+      onBlur: e => {
         this.updateDate({ day: e.target.value });
-      }
+      },
     };
 
     const yearProperties = {
@@ -67,21 +72,29 @@ class DateComponent2 extends PureComponent {
       name: `${path}.year`,
       layout: 'vertical',
       maxLength: 4,
-      value: mDate && mDate.format('YYYY') || '',
-      onBlur: (e) => {
+      value: (mDate && mDate.format('YYYY')) || '',
+      onBlur: e => {
         this.updateDate({ year: e.target.value });
-      }
+      },
     };
 
     return (
-      <div className="form-group row">
-        <label className="control-label col-sm-3">{this.props.label}</label>
-        <div className="col-sm-9" style={{ display: 'flex', alignItems: 'center' }}>
-          <div><Components.FormComponentSelect inputProperties={monthProperties} datatype={[{ type: String }]} /></div>
-          <div style={{ marginLeft: 10, width: 60 }}><Components.FormComponentText inputProperties={dayProperties} /></div>
-          <div style={{ marginLeft: 10, width: 80 }}><Components.FormComponentText inputProperties={yearProperties} /></div>
+      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
+        <div>
+          <div>
+            <Components.FormComponentSelect
+              inputProperties={monthProperties}
+              datatype={[{ type: String }]}
+            />
+          </div>
+          <div style={{ marginLeft: 10, width: 60 }}>
+            <Components.FormComponentText inputProperties={dayProperties} />
+          </div>
+          <div style={{ marginLeft: 10, width: 80 }}>
+            <Components.FormComponentText inputProperties={yearProperties} />
+          </div>
         </div>
-      </div>
+      </Components.FormItem>
     );
   }
 }

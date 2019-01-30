@@ -51,7 +51,7 @@ GraphQL @intl directive resolver
 */
 class IntlDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
-    const {resolve = defaultFieldResolver, name} = field;
+    const { resolve = defaultFieldResolver, name } = field;
     field.resolve = async function(...args) {
       const [doc, graphQLArguments, context] = args;
       const fieldValue = await resolve.apply(this, args);
