@@ -63,8 +63,10 @@ export const createMutator = async ({ collection, document, data, currentUser, v
 
   Properties
 
+  Note: keep newDocument for backwards compatibility
+  
   */
-  const properties = { data, currentUser, collection, context, document: document };
+  const properties = { data, currentUser, collection, context, document, newDocument: document };
 
   /*
 

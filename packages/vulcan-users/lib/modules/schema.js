@@ -55,7 +55,7 @@ const schema = {
     canRead: ['guests'],
     canUpdate: ['admins'],
     canCreate: ['members'],
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       if ((!user.username) && user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
@@ -137,7 +137,7 @@ const schema = {
     canUpdate: ['members'],
     canRead: ['guests'],
     order: 10,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       return createDisplayName(user);
     },
     searchable: true
@@ -155,7 +155,7 @@ const schema = {
     canUpdate: ['members'],
     canRead: ownsOrIsAdmin,
     order: 20,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       // look in a few places for the user email
       const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
       const facebookEmail = Utils.getNestedProperty(user, 'services.facebook.email');
@@ -180,7 +180,7 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       if (user.email) {
         return getCollection('Users').avatar.hash(user.email);
       }
@@ -190,7 +190,7 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
 
       const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
       const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
@@ -227,7 +227,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     order: 40,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const displayName = createDisplayName(user);
       const basicSlug = Utils.slugify(displayName);
@@ -252,7 +252,7 @@ const schema = {
         return Users.getTwitterName(await Connectors.get(Users, user._id));
       },
     },
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
