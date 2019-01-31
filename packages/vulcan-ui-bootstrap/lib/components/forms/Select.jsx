@@ -1,6 +1,6 @@
 import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Form from 'react-bootstrap/lib/Form';
+import Form from 'react-bootstrap/Form';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 // copied from vulcan:forms/utils.js to avoid extra dependency

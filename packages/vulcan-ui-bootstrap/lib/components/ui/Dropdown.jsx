@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:lib';
-import Dropdown from 'react-bootstrap/lib/Dropdown';
-import DropdownItem from 'react-bootstrap/lib/DropdownItem';
-import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import { LinkContainer } from 'react-router-bootstrap';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 

@@ -5,9 +5,9 @@ Layout for a single form item
 */
 
 import React from 'react';
-import Form from 'react-bootstrap/lib/Form';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { registerComponent } from 'meteor/vulcan:core';
 
 const FormItem = ({ path, label, children, beforeInput, afterInput }) => {
