@@ -8,6 +8,18 @@
   margin-right: 10px;
 }
 
+.form-component-EmbedURL{
+  .col-sm-9{
+    display: flex;
+  }
+  input{
+    margin-right: 10px;
+  }
+}
+
+.embedly-thumbnail{
+  position: relative;
+}
 .embedly-thumbnail-placeholder{
   background: #eee;
   display: flex;
@@ -43,4 +55,13 @@
   span{
     display: none;
   }
+}
+
+.embedly-url-field-loading{
+  position: absolute;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  margin-top: -5px;
+  margin-left: -20px;
 }
