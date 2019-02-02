@@ -205,8 +205,18 @@ export const createCollection = options => {
 
     // handle view option
     if (terms.view && collection.views[terms.view]) {
-      const view = collection.views[terms.view];
-      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient, context));
+      const viewFn = collection.views[terms.view];
+      const view = viewFn(terms, apolloClient, context)
+      let mergedParameters = Utils.deepExtend(true, parameters, view);
+      
+      if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
+        // If both the default view and the selected view have sort options,
+        // don't merge them together; take the selected view's sort. (Otherwise
+        // they merge in the wrong order, so that the default-view's sort takes
+        // precedence over the selected view's sort.)
+        mergedParameters.options.sort = view.options.sort;
+      }
+      parameters = mergedParameters;
     }
 
     // iterate over posts.parameters callbacks
