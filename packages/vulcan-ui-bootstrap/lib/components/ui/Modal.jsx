@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal';
+import Modal from 'react-bootstrap/Modal';
 
 const BootstrapModal = ({ children, size = 'lg', show = false, onHide, title, showCloseButton = true, header, footer, ...rest }) => {
 

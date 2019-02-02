@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from 'react-bootstrap/lib/Form';
+import Form from 'react-bootstrap/Form';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 
 const RadioGroupComponent = ({ refFunction, inputProperties, itemProperties }) => (
