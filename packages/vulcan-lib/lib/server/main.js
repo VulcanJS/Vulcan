@@ -1,5 +1,4 @@
 // import './oauth_config.js';
-export * from './apollo-server';
 import './intl_polyfill.js';
 import './site.js';
 
@@ -17,3 +16,5 @@ export * from './utils.js';
 export * from './intl.js';
 export * from './accounts_helpers.js';
 export * from './source_version.js';
+
+import './apollo-server/startup';

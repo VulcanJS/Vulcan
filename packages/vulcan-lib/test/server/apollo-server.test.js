@@ -1,12 +1,6 @@
-import {
-  createApolloServer,
-  setupWebApp,
-  defaultConfig,
-  initGraphQL,
-  initContext,
-  computeContextFromReq,
-} from '../../lib/server/apollo-server';
-import { GraphQLSchema } from '../../lib/modules/graphql';
+import { createApolloServer } from '../../lib/server/apollo-server/apollo_server2';
+//import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
+//import { GraphQLSchema } from '../../lib/modules/graphql';
 import expect from 'expect';
 import { executableSchema } from './fixtures/minimalSchema';
 
@@ -16,10 +10,11 @@ const test = it; // TODO: just before we switch to jest
 describe('apollo-server', function() {
   let options;
   before(function() {
-    initGraphQL();
+    // TODO: does not work in this test. This should setup the schema.
+    //   initGraphQL();
 
     options = {
-      config: defaultConfig,
+      config: {}, //defaultConfig,
       // Apollo options
       apolloServerOptions: {
         // TODO: check why this fails. One of the schema defined

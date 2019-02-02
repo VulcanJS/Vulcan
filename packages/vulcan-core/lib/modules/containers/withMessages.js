@@ -137,7 +137,7 @@ const withMessages = compose(
   // equivalent to mapStateToProps (map the graphql query to the component props)
   graphql(getMessagesQuery, {
     props: ({ ownProps, data /*: { flashMessages }*/ }) => {
-      const { flashMessages } = data;
+      const { flashMessages = [] } = data;
       return { ...ownProps, messages: flashMessages };
     },
   })

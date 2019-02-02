@@ -156,5 +156,3 @@ export const onStart = () => {
   // ssr
   enableSSR({ computeContext: context });
 };
-// createApolloServer when server startup
-Meteor.startup(onStart);

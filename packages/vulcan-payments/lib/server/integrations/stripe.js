@@ -713,7 +713,7 @@ webAppConnectHandlersUse(Meteor.bindEnvironment(app), {
 Meteor.startup(() => {
   registerCallback({
     name: 'stripe.receive.sync',
-    description: 'Modify any metadata before calling Stripe\'s API',
+    description: "Modify any metadata before calling Stripe's API",
     arguments: [
       { metadata: 'Metadata about the action' },
       { user: 'The user' },
@@ -729,7 +729,7 @@ Meteor.startup(() => {
 
   registerCallback({
     name: 'stripe.receive.async',
-    description: 'Run after calling Stripe\'s API',
+    description: "Run after calling Stripe's API",
     arguments: [
       { metadata: 'Metadata about the charge' },
       { user: 'The user' },
@@ -779,7 +779,7 @@ Meteor.startup(() => {
       },
       { collection: 'Collection associated to the product' },
       { document: 'Associated document' },
-      { chargeDoc: 'Charge document returned by Stripe\'s API' },
+      { chargeDoc: "Charge document returned by Stripe's API" },
       { user: 'The user' },
     ],
     runs: 'sync',
@@ -792,7 +792,7 @@ Meteor.startup(() => {
     arguments: [
       { collection: 'Collection associated to the product' },
       { document: 'Associated document' },
-      { chargeDoc: 'Charge document returned by Stripe\'s API' },
+      { chargeDoc: "Charge document returned by Stripe's API" },
       { user: 'The user' },
     ],
     runs: 'async',
