@@ -1,12 +1,13 @@
 {
   "name": "Vulcan",
-  "version": "1.12.15",
+  "version": "1.12.16",
   "engines": {
     "npm": "^3.0"
   },
   "scripts": {
     "start": "meteor --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages",
+    "lintfix": "eslint --cache --fix --ext .jsx,js packages",
     "test-unit": "TEST_WATCH=1 meteor test-packages ./packages/* --port 3002 --driver-package meteortesting:mocha --raw-logs",
     "test": "npm run test-unit",
     "prettier": "node ./.vulcan/prettier/index.js write-changed",

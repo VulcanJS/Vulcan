@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:errors-sentry',
   summary: 'Vulcan Sentry error tracking package',
-  version: '1.12.15',
+  version: '1.12.16',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
@@ -11,9 +11,9 @@ Package.onUse(function(api) {
   
   api.use([
     'ecmascript',
-    'vulcan:core@1.12.15',
-    'vulcan:users@1.12.15',
-    'vulcan:errors@1.12.15',
+    'vulcan:core@1.12.16',
+    'vulcan:users@1.12.16',
+    'vulcan:errors@1.12.16',
   ]);
   
   api.mainModule('lib/server/main.js', 'server');

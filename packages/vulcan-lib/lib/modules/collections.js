@@ -206,7 +206,7 @@ export const createCollection = options => {
     // handle view option
     if (terms.view && collection.views[terms.view]) {
       const viewFn = collection.views[terms.view];
-      const view = viewFn(terms, apolloClient, context)
+      const view = viewFn(terms, apolloClient, context);
       let mergedParameters = Utils.deepExtend(true, parameters, view);
       
       if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
