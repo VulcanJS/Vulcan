@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.12.13",
+  "version": "1.12.14",
   "engines": {
     "npm": "^3.0"
   },
@@ -48,8 +48,6 @@
     "escape-string-regexp": "^1.0.5",
     "express": "^4.14.0",
     "flat": "^4.0.0",
-    "formsy-react": "^0.19.5",
-    "formsy-react-components": "^0.11.1",
     "graphql": "14.1.1",
     "graphql-anywhere": "^3.0.1",
     "graphql-date": "^1.0.2",

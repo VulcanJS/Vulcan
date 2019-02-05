@@ -10,10 +10,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const FormItem = ({ path, label, children, beforeInput, afterInput }) => {
+const FormItem = ({ path, label, children, beforeInput, afterInput, ...rest }) => {
   if (label) {
     return (
-      <Form.Group as={Row} controlId={path}>
+      <Form.Group as={Row} controlId={path} {...rest}>
         <Form.Label column sm={3}>
           {label}
         </Form.Label>
@@ -26,7 +26,7 @@ const FormItem = ({ path, label, children, beforeInput, afterInput }) => {
     );
   } else {
     return (
-      <Form.Group controlId={path}>
+      <Form.Group controlId={path} {...rest}>
         {beforeInput}
         {children}
         {afterInput}
