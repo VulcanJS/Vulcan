@@ -20,7 +20,8 @@ export const Collections = [];
 
 export const getCollection = name =>
   Collections.find(
-    ({ options: { collectionName } }) => name === collectionName || name === collectionName.toLowerCase()
+    ({ options: { collectionName } }) =>
+      name === collectionName || name === collectionName.toLowerCase()
   );
 
 // TODO: find more reliable way to get collection name from type name?
@@ -105,7 +106,9 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
   if (self._transform && !self._helpers)
-    throw new Meteor.Error('Can\'t apply helpers to \'' + self._name + '\' a transform function already exists!');
+    throw new Meteor.Error(
+      "Can't apply helpers to '" + self._name + "' a transform function already exists!"
+    );
 
   if (!self._helpers) {
     self._helpers = function Document(doc) {
@@ -126,7 +129,7 @@ export const createCollection = options => {
     typeName,
     collectionName = getCollectionName(typeName),
     generateGraphQLSchema = true,
-    dbCollectionName
+    dbCollectionName,
   } = options;
   let { schema } = options;
 
@@ -155,7 +158,7 @@ export const createCollection = options => {
   //register individual collection callback
   registerCollectionCallback(typeName.toLowerCase());
 
-  // if schema has at least one intl field, add intl callback just before 
+  // if schema has at least one intl field, add intl callback just before
   // `${collectionName}.collection` callbacks run to make sure it always runs last
   if (schemaHasIntlFields(schema)) {
     hasIntlFields = true; // we have at least one intl field
@@ -163,8 +166,12 @@ export const createCollection = options => {
   }
 
   //run schema callbacks and run general callbacks last
-  schema = runCallbacks({ name: `${typeName.toLowerCase()}.collection`, iterator: schema, properties: { options }});
-  schema = runCallbacks({ name: '*.collection', iterator: schema, properties: { options }});
+  schema = runCallbacks({
+    name: `${typeName.toLowerCase()}.collection`,
+    iterator: schema,
+    properties: { options },
+  });
+  schema = runCallbacks({ name: '*.collection', iterator: schema, properties: { options } });
 
   if (schema) {
     // attach schema to collection
@@ -196,20 +203,29 @@ export const createCollection = options => {
 
     let parameters = {
       selector: {},
-      options: {}
+      options: {},
     };
 
     if (collection.defaultView) {
-      parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient, context));
+      parameters = Utils.deepExtend(
+        true,
+        parameters,
+        collection.defaultView(terms, apolloClient, context)
+      );
     }
 
     // handle view option
     if (terms.view && collection.views[terms.view]) {
       const viewFn = collection.views[terms.view];
-      const view = viewFn(terms, apolloClient, context)
+      const view = viewFn(terms, apolloClient, context);
       let mergedParameters = Utils.deepExtend(true, parameters, view);
-      
-      if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
+
+      if (
+        mergedParameters.options &&
+        mergedParameters.options.sort &&
+        view.options &&
+        view.options.sort
+      ) {
         // If both the default view and the selected view have sort options,
         // don't merge them together; take the selected view's sort. (Otherwise
         // they merge in the wrong order, so that the default-view's sort takes
@@ -254,7 +270,12 @@ export const createCollection = options => {
 
     // note: check that context exists to avoid calling this from withList during SSR
     if (Meteor.isServer && context) {
-      parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.server`, parameters, _.clone(terms), context);
+      parameters = runCallbacks(
+        `${typeName.toLowerCase()}.parameters.server`,
+        parameters,
+        _.clone(terms),
+        context
+      );
       // OpenCRUD backwards compatibility
       parameters = runCallbacks(
         `${collectionName.toLowerCase()}.parameters.server`,
@@ -293,12 +314,17 @@ export const createCollection = options => {
     if (terms.query) {
       const query = escapeStringRegexp(terms.query);
       const currentSchema = collection.simpleSchema()._schema;
-      const searchableFieldNames = _.filter(_.keys(currentSchema), fieldName => currentSchema[fieldName].searchable);
+      const searchableFieldNames = _.filter(
+        _.keys(currentSchema),
+        fieldName => currentSchema[fieldName].searchable
+      );
       if (searchableFieldNames.length) {
         parameters = Utils.deepExtend(true, parameters, {
           selector: {
-            $or: searchableFieldNames.map(fieldName => ({ [fieldName]: { $regex: query, $options: 'i' } }))
-          }
+            $or: searchableFieldNames.map(fieldName => ({
+              [fieldName]: { $regex: query, $options: 'i' },
+            })),
+          },
         });
       } else {
         // eslint-disable-next-line no-console
@@ -332,11 +358,11 @@ function registerCollectionCallback(typeName) {
     iterator: { schema: 'the schema of the collection' },
     properties: [
       { schema: 'The schema of the collection' },
-      { validationErrors: 'An Object that can be used to accumulate validation errors' }
+      { validationErrors: 'An Object that can be used to accumulate validation errors' },
     ],
     runs: 'sync',
     returns: 'schema',
-    description: 'Modifies schemas on collection creation'
+    description: 'Modifies schemas on collection creation',
   });
 }
 
@@ -346,7 +372,7 @@ registerCallback({
   iterator: { schema: 'the schema of the collection' },
   properties: [
     { schema: 'The schema of the collection' },
-    { validationErrors: 'An object that can be used to accumulate validation errors' }
+    { validationErrors: 'An object that can be used to accumulate validation errors' },
   ],
   runs: 'sync',
   returns: 'schema',
@@ -358,7 +384,6 @@ function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema)) {
-
       // remove `intl` to avoid treating new _intl field as a field to internationalize
       // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];
@@ -367,13 +392,13 @@ function addIntlFields(schema) {
         ...propertiesToCopy, // copy properties from regular field
         hidden: true,
         type: Array,
-        isIntlData: true
+        isIntlData: true,
       };
 
       delete schema[`${fieldName}_intl`].intl;
 
       schema[`${fieldName}_intl.$`] = {
-        type: getIntlString()
+        type: getIntlString(),
       };
 
       // if original field is required, enable custom validation function instead of `optional` property
