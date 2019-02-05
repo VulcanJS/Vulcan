@@ -11,7 +11,6 @@ import { Meteor } from 'meteor/meteor';
 
 const cookie = new Cookies();
 
-
 function setToken(loginToken, expires) {
   if (loginToken && expires !== -1) {
     cookie.set('meteor_login_token', loginToken, {
@@ -43,7 +42,7 @@ Meteor.startup(() => {
 
 // TODO: cleanup
 // This part of the code overrides the default localStorage function,
-// so that when Meteor.loginToken is set, it is also automatically 
+// so that when Meteor.loginToken is set, it is also automatically
 // stored as a cookie (necessary for SSR to work as expected for all HTTP requests)
 const originalSetItem = Meteor._localStorage.setItem;
 Meteor._localStorage.setItem = function setItem(key, value) {
