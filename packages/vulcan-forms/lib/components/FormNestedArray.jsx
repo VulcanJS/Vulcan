@@ -87,7 +87,7 @@ class FormNestedArray extends PureComponent {
                     removeItem={() => {
                       this.removeItem(i);
                     }}
-                    hideRemove={minCount && arrayLength <= minCount}
+                    hideRemove={!!minCount && arrayLength <= minCount}
                   />
                   <FormComponents.FormNestedDivider
                     label={this.props.label}
@@ -120,6 +120,14 @@ FormNestedArray.propTypes = {
   currentValues: PropTypes.object,
   path: PropTypes.string,
   label: PropTypes.string,
+  minCount: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.func
+  ]),
+  maxCount: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.func
+  ]),
   errors: PropTypes.array.isRequired,
   deletedValues: PropTypes.array.isRequired,
   formComponents: PropTypes.object.isRequired
