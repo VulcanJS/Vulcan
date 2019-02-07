@@ -158,6 +158,7 @@ const Addresses = createCollection({
 describe('vulcan-forms/components', function() {
   const context = {
     intl: {
+      formatLabel: () => '',
       formatMessage: () => '',
       formatDate: () => '',
       formatTime: () => '',
