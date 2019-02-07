@@ -41,8 +41,9 @@ function onCreateUserCallback(options, user) {
   for (let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
+      const document = clone(user);
       // eslint-disable-next-line no-await-in-loop
-      autoValue = schema[fieldName].onCreate({ newDocument: clone(user) });
+      autoValue = schema[fieldName].onCreate({ document });
     } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop

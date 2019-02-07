@@ -73,7 +73,8 @@ const FormNestedItem = (
 FormNestedItem.propTypes = {
   path: PropTypes.string.isRequired,
   itemIndex: PropTypes.number,
-  formComponents: PropTypes.object
+  formComponents: PropTypes.object,
+  hideRemove: PropTypes.bool
 };
 
 FormNestedItem.contextTypes = {

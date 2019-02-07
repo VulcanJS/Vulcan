@@ -54,6 +54,13 @@ describe('vulcan-core/components', function () {
         const context = {
             intl: {
                 formatMessage: () => { },
+                formatDate: () => { },
+                formatTime: () => { },
+                formatRelative: () => { },
+                formatNumber: () => { },
+                formatPlural: () => { },
+                formatHTMLMessage: () => { },
+                now: () => { }
             }
         };
         it('mounts a static version', function () {
