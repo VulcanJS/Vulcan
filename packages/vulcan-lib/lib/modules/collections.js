@@ -281,9 +281,9 @@ export const createCollection = options => {
 
     // remove any null fields (setting a field to null means it should be deleted)
     _.keys(parameters.selector).forEach(key => {
-      if (parameters.selector[key] === viewFieldNullOrMissing) {
+      if (_.isEqual(parameters.selector[key], viewFieldNullOrMissing)) {
         parameters.selector[key] = null;
-      } else if (parameters.selector[key] === viewFieldAllowAny) {
+      } else if (_.isEqual(parameters.selector[key], viewFieldAllowAny)) {
         delete parameters.selector[key];
       } else if (parameters.selector[key] === null) {
         //console.log(`Warning: Null key ${key} in query of collection ${collectionName} with view ${terms.view}.`);
