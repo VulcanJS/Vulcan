@@ -175,6 +175,9 @@ class FormWrapper extends PureComponent {
 
     const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
 
+    // LESSWRONG: ADDED extraVariables option
+    const { extraVariables = {} } = this.props
+
     // props to pass on to child component (i.e. <Form />)
     const childProps = {
       formType: this.getFormType(),
@@ -196,6 +199,7 @@ class FormWrapper extends PureComponent {
     const mutationOptions = {
       collection: this.getCollection(),
       fragment: mutationFragment,
+      extraVariables
     };
 
     // create a stateless loader component,

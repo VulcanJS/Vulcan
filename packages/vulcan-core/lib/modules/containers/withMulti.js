@@ -59,14 +59,14 @@ export default function withMulti(options) {
   } = options;
 
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
   const query = gql`
-    ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${multiClientTemplate({ typeName, fragmentName, extraQueries, extraVariablesString })}
     ${fragment}
   `;
 
@@ -94,17 +94,18 @@ export default function withMulti(options) {
         alias: `with${Utils.pluralize(typeName)}`,
 
         // graphql query options
-        options({ terms, paginationTerms, client: apolloClient, currentUser }) {
+        options({ terms, paginationTerms, client: apolloClient, currentUser, ...rest }) {
           // get terms from options, then props, then pagination
           const mergedTerms = { ...options.terms, ...terms, ...paginationTerms };
-
+          const extraVariables = _.pick(rest, Object.keys(options.extraVariables || {}))  
           const graphQLOptions = {
             variables: {
               input: {
                 terms: mergedTerms,
                 enableCache,
                 enableTotal
-              }
+              },
+              ...extraVariables
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
