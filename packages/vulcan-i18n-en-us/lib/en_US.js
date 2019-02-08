@@ -46,6 +46,9 @@ addStrings('en', {
   'forms.delete_confirm': 'Delete document?',
   'forms.revert': 'Revert',
   'forms.confirm_discard': 'Discard changes?',
+  'forms.day': 'Day',
+  'forms.month': 'Month',
+  'forms.year': 'Year',
 
   'users.profile': 'Profile',
   'users.complete_profile': 'Complete your Profile',
