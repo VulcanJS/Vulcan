@@ -1,1 +1,1 @@
-import './provider.test.js'
+import './provider.test.js';
