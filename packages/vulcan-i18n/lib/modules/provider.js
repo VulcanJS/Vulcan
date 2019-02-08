@@ -10,10 +10,10 @@ export default class IntlProvider extends Component {
   /**
    * formatLabel - Get a label for a field, for a given collection, in the current language. The evaluation is as follows : i18n(collectionName.fieldName) > i18n(global.fieldName) > i18n(fieldName) > schema.fieldName.label > fieldName
    *
-   * @param  {object} options
-   * @param  {string} options.fieldName          The name of the field to evaluate (required)
-   * @param  {string} options.collectionName     The name of the collection the field belongs to
-   * @param  {object} options.schema             The schema of the collection
+   * @param  {object} params
+   * @param  {string} params.fieldName          The name of the field to evaluate (required)
+   * @param  {string} params.collectionName     The name of the collection the field belongs to
+   * @param  {object} params.schema             The schema of the collection
    * @param  {object} values                     The values to pass to format the i18n string
    * @return {string}                            The translated label
    */
