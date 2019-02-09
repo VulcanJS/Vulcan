@@ -36,7 +36,6 @@ function initToken() {
 }
 
 Meteor.startup(() => {
-  console.log('init token');
   initToken();
 });
 
