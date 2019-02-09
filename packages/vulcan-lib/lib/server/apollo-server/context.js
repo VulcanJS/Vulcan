@@ -35,15 +35,6 @@ export const initContext = currentContext => {
   // merge with custom context
   // TODO: deepmerge created an infinite loop here
   context = _merge({}, context, GraphQLSchema.context);
-  // go over context and add Dataloader to each collection
-  Collections.forEach(collection => {
-    context[collection.options.collectionName].loader = new DataLoader(
-      ids => findByIds(collection, ids, context),
-      {
-        cache: true,
-      }
-    );
-  });
   return context;
 };
 
@@ -67,6 +58,22 @@ const setupAuthToken = async (context, req) => {
     context.currentUser = undefined;
   }
 };
+
+// @see https://github.com/facebook/dataloader#caching-per-request
+const generateDataLoaders = (context) => {
+  // go over context and add Dataloader to each collection
+  Collections.forEach(collection => {
+    context[collection.options.collectionName].loader = new DataLoader(
+      ids => findByIds(collection, ids, context),
+      {
+        cache: true,
+      }
+    );
+  });
+  return context;
+};
+
+
 // Returns a function called on every request to compute context
 export const computeContextFromReq = (currentContext, customContextFromReq) => {
   // givenOptions can be either a function of the request or an object
@@ -84,6 +91,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     let user = null;
 
     context = getBaseContext(req);
+
+    generateDataLoaders(context);
 
     // note: custom default resolver doesn't currently work
     // see https://github.com/apollographql/apollo-server/issues/716

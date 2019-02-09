@@ -39,13 +39,13 @@ describe('apollo-server', function() {
   });
   describe('setupWebApp', function() {});
   describe('compute context', function() {
-    test.skip('inital context contains data loaders', function() {
-      // TODO
-    });
     test.skip('initial context contains graphQLSchema context', function() {
       // TODO
     });
     test.skip('initial context is merged with provided context', function() {
+      // TODO
+    });
+    test.skip('data loaders are regenerated on each request', function() {
       // TODO
     });
   });
