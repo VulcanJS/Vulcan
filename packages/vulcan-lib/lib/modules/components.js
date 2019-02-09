@@ -1,8 +1,37 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 import React from 'react';
+import difference from 'lodash/difference';
 
 export const Components = {}; // will be populated on startup (see vulcan:routing)
 export const ComponentsTable = {}; // storage for infos about components
+
+export const coreComponents = [
+  'Alert',
+  'Button',
+  'Modal',
+  'ModalTrigger',
+  'Table',
+  'FormComponentCheckbox',
+  'FormComponentCheckboxGroup',
+  'FormComponentDate',
+  'FormComponentDate2',
+  'FormComponentDateTime',
+  'FormComponentDefault',
+  'FormComponentText',
+  'FormComponentEmail',
+  'FormComponentNumber',
+  'FormComponentRadioGroup',
+  'FormComponentSelect',
+  'FormComponentSelectMultiple',
+  'FormComponentStaticText',
+  'FormComponentTextarea',
+  'FormComponentTime',
+  'FormComponentUrl',
+  'FormComponentInner',
+  'FormControl',
+  'FormElement',
+  'FormItem',
+];
 
 /**
  * Register a Vulcan component with a name, a raw component than can be extended
@@ -79,8 +108,10 @@ export const getComponent = name => {
  * ℹ️ Called once on app startup
  **/
 export const populateComponentsApp = () => {
+  const registeredComponents = Object.keys(ComponentsTable);
+
   // loop over each component in the list
-  Object.keys(ComponentsTable).map(name => {
+  registeredComponents.map(name => {
     
     // populate an entry in the lookup table
     Components[name] = getComponent(name);
@@ -88,6 +119,14 @@ export const populateComponentsApp = () => {
     // uncomment for debug
     // console.log('init component:', name);
   });
+
+  const missingComponents = difference(coreComponents, registeredComponents);
+
+  if (missingComponents.length) {
+    // eslint-disable-next-line no-console
+    console.warn(`Found the following missing core components: ${missingComponents.join(', ')}. Include a UI package such as vulcan:ui-bootstrap to add them.`);
+  }
+
 };
 
 /**
