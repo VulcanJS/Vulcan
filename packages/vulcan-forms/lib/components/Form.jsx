@@ -693,13 +693,21 @@ class SmartForm extends Component {
 
       Object.keys(newValues).forEach(key => {
         const path = key;
-        const value = newValues[key];
+        let value = newValues[key];
+
         if (isEmptyValue(value)) {
           // delete value
           unset(newState.currentValues, path);
           set(newState.currentDocument, path, null);
           newState.deletedValues = [...prevState.deletedValues, path];
         } else {
+
+          // cast to correct type if needed
+          // TODO: cast based on actual schema field type
+          if (!isNaN(value)) {
+            value = parseFloat(value);
+          }
+          
           // 1. update currentValues
           set(newState.currentValues, path, value);
 
