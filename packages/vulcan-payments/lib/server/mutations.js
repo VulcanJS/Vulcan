@@ -5,7 +5,7 @@ import { receiveAction } from '../server/integrations/stripe.js';
 const resolver = {
   Mutation: {
     async paymentActionMutation(root, args, context) {
-      return await receiveAction(args);
+      return await receiveAction(args, context);
     },
   },
 };

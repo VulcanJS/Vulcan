@@ -87,7 +87,7 @@ const sampleProduct = {
 Receive the action and call the appropriate handler
 
 */
-export const receiveAction = async args => {
+export const receiveAction = async (args, context) => {
   let collection,
     document,
     returnDocument = {};
@@ -136,6 +136,7 @@ export const receiveAction = async args => {
     collection,
     document,
     args,
+    context,
   });
 
   if (product.type === 'subscription') {
@@ -147,6 +148,7 @@ export const receiveAction = async args => {
       document,
       metadata,
       args,
+      context,
     });
   } else {
     // else, perform charge
@@ -157,6 +159,7 @@ export const receiveAction = async args => {
       document,
       metadata,
       args,
+      context,
     });
   }
 
@@ -167,6 +170,7 @@ export const receiveAction = async args => {
     collection,
     document,
     args,
+    context,
   });
   return returnDocument;
 };
@@ -210,7 +214,7 @@ export const getCustomer = async (user, token) => {
 Create one-time charge. 
 
 */
-export const createCharge = async ({ user, product, collection, document, metadata, args }) => {
+export const createCharge = async ({ user, product, collection, document, metadata, args, context, }) => {
   const { token, /* userId, productKey, associatedId, properties, */ coupon } = args;
 
   const customer = await getCustomer(user, token);
@@ -244,6 +248,7 @@ export const createCharge = async ({ user, product, collection, document, metada
     document,
     args,
     user,
+    context,
   });
 
   return processAction({
@@ -252,6 +257,7 @@ export const createCharge = async ({ user, product, collection, document, metada
     stripeObject: charge,
     args,
     user,
+    context,
   });
 };
 
@@ -267,6 +273,7 @@ export const createSubscription = async ({
   document,
   metadata,
   args,
+  context,
 }) => {
   let returnDocument = document;
 
@@ -325,6 +332,7 @@ export const createSubscription = async ({
       returnDocument,
       args,
       user,
+      context,
     });
 
     returnDocument = await processAction({
@@ -333,6 +341,7 @@ export const createSubscription = async ({
       stripeObject: subscription,
       args,
       user,
+      context,
     });
 
     return returnDocument;
@@ -357,6 +366,7 @@ const createPlan = async ({
   amount,
   interval_count,
   statement_descriptor,
+  context,
   ...metadata
 }) =>
   stripe.plans.create({
@@ -407,7 +417,7 @@ export const createOrRetrieveSubscriptionPlan = async maybePlanObject =>
 Process charges, subscriptions, etc. on Vulcan's side
 
 */
-export const processAction = async ({ collection, document, stripeObject, args, user }) => {
+export const processAction = async ({ collection, document, stripeObject, args, user, context }) => {
   debug('');
   debugGroup('--------------- start\x1b[35m processAction \x1b[0m ---------------');
   debug(`Collection: ${collection.options.collectionName}`);
@@ -490,6 +500,7 @@ export const processAction = async ({ collection, document, stripeObject, args, 
       documentId: associatedId,
       data,
       validate: false,
+      context,
     });
 
     returnDocument = updateResult.data;
@@ -502,6 +513,7 @@ export const processAction = async ({ collection, document, stripeObject, args, 
     returnDocument,
     chargeDoc,
     user,
+    context,
   });
 
   debugGroupEnd();
