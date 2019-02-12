@@ -86,6 +86,13 @@ const getGraphQLType = (schema, fieldName, isInput = false) => {
 };
 
 export const GraphQLSchema = {
+
+  // used for schema stitching
+  stitchedSchemas: [],
+  addStitchedSchema(schema) {
+    this.stitchedSchemas.push(schema);
+  },
+
   // collections used to auto-generate schemas
   collections: [],
   addCollection(collection) {
@@ -466,3 +473,4 @@ export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
+export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);

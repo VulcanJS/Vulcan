@@ -3,6 +3,7 @@
  */
 
 import { makeExecutableSchema } from 'apollo-server';
+import { mergeSchemas } from 'graphql-tools';
 import { GraphQLSchema } from '../../modules/graphql.js';
 import { runCallbacks } from '../../modules/callbacks.js';
 
@@ -74,8 +75,10 @@ const initGraphQL = () => {
     resolvers: GraphQLSchema.resolvers,
     schemaDirectives: GraphQLSchema.directives,
   });
+  const mergedSchema = mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] });
+
   GraphQLSchema.finalSchema = typeDefs;
-  GraphQLSchema.executableSchema = executableSchema;
+  GraphQLSchema.executableSchema = mergedSchema;
   return executableSchema;
 };
 
