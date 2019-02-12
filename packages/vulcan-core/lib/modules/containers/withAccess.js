@@ -38,7 +38,7 @@ export default function withAccess(options) {
           !this.canAccess(props.currentUser) &&
           typeof redirect === 'string'
         ) {
-          props.router.push(redirect);
+          props.history.push(redirect);
         }
       }
 
