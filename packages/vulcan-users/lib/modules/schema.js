@@ -306,6 +306,18 @@ const schema = {
     },
   },
 
+  pagePath: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (user, args, { Users }) => {
+        return Users.getProfileUrl(user, false);
+      },
+    },
+  },
+
   editUrl: {
     type: String,
     optional: true,
