@@ -8,12 +8,7 @@ import { Link } from 'react-router-dom';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
-  const fieldSchema = schema && schema[fieldName];
-  if (fieldSchema) {
-    return intl.formatMessage({ id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label });
-  } else {
-    return fieldName;
-  }
+  return intl.formatLabel({ fieldName: fieldName, collectionName: collection._name, schema: schema });
 };
 
 const getTypeName = (field, fieldName, collection) => {

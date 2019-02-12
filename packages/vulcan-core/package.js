@@ -2,7 +2,7 @@ Package.describe({
   name: 'vulcan:core',
   summary: 'Vulcan core package',
   version: '1.12.16',
-  git: 'https://github.com/VulcanJS/Vulcan.git'
+  git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(function(api) {
@@ -13,7 +13,7 @@ Package.onUse(function(api) {
     'vulcan:i18n@1.12.16',
     'vulcan:users@1.12.16',
     'vulcan:routing@1.12.16',
-    'vulcan:debug@1.12.16'
+    'vulcan:debug@1.12.16',
   ]);
 
   api.imply(['vulcan:lib@1.12.16']);

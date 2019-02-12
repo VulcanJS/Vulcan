@@ -29,13 +29,12 @@ import { delayedComponent } from './components';
  * @return {React.Component}
  *  Component that will load the dynamic import on mount
  */
-export const dynamicLoader = importComponent => loadable({
-  loader: isFunction(importComponent)
-    ? importComponent
-    : () => importComponent, // backwards compatibility,
-  // use delayedComponent, as this function can be used when Components is not populated yet
-  loading: delayedComponent('DynamicLoading'),
-});
+export const dynamicLoader = importComponent =>
+  loadable({
+    loader: isFunction(importComponent) ? importComponent : () => importComponent, // backwards compatibility,
+    // use delayedComponent, as this function can be used when Components is not populated yet
+    loading: delayedComponent('DynamicLoading'),
+  });
 
 /**
  * Renders a dynamic component with the given props.
@@ -51,7 +50,7 @@ export const getDynamicComponent = componentImport => {
   console.warn(
     'getDynamicComponent is deprecated, use renderDynamicComponent instead.',
     'If you want to retrieve the component instead that of just rendering it,',
-    'use dynamicLoader. See this issue to know how to do it: https://github.com/VulcanJS/Vulcan/issues/1997',
+    'use dynamicLoader. See this issue to know how to do it: https://github.com/VulcanJS/Vulcan/issues/1997'
   );
   return renderDynamicComponent(componentImport);
 };
