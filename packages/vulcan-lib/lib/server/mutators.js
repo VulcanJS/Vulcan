@@ -39,7 +39,7 @@ import isEmpty from 'lodash/isEmpty';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
-export const createMutator = async ({ collection, document, data, currentUser, validate, context }) => {
+export const createMutator = async ({ collection, document, data, currentUser, validate=true, context }) => {
 
   const { collectionName, typeName } = collection.options;
 
@@ -164,7 +164,7 @@ export const createMutator = async ({ collection, document, data, currentUser, v
   return { data: newDocument };
 }
 
-export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate, context, document }) => {
+export const updateMutator = async ({ collection, documentId, selector, data, set = {}, unset = {}, currentUser, validate=true, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
 
@@ -308,7 +308,7 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
   return { data: newDocument };
 }
 
-export const deleteMutator = async ({ collection, documentId, selector, currentUser, validate, context, document }) => {
+export const deleteMutator = async ({ collection, documentId, selector, currentUser, validate=true, context, document }) => {
 
   const { collectionName, typeName } = collection.options;
 
