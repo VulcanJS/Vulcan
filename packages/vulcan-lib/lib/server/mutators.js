@@ -58,10 +58,25 @@ export const createMutator = async ({ collection, document, data, currentUser, v
     const validationErrors = validateDocument(newDocument, collection, context);
 
     // run validation callbacks
-    newDocument = await runCallbacks({ name: `${typeName.toLowerCase()}.create.validate`, iterator: newDocument, properties: { currentUser, validationErrors, collection }});
-    newDocument = await runCallbacks({ name: '*.create.validate', iterator: newDocument, properties: { currentUser, validationErrors, collection }});
+    newDocument = await runCallbacks({
+      name: `${typeName.toLowerCase()}.create.validate`,
+      iterator: newDocument,
+      properties: { currentUser, validationErrors, collection },
+      ignoreExceptions: false,
+    });
+    newDocument = await runCallbacks({
+      name: '*.create.validate',
+      iterator: newDocument,
+      properties: { currentUser, validationErrors, collection },
+      ignoreExceptions: false,
+    });
     // OpenCRUD backwards compatibility
-    newDocument = await runCallbacks(`${collectionName.toLowerCase()}.new.validate`, newDocument, currentUser, validationErrors);
+    newDocument = await runCallbacks({
+      name: `${collectionName.toLowerCase()}.new.validate`,
+      iterator: newDocument,
+      properties: [currentUser, validationErrors],
+      ignoreExceptions: false,
+    });
 
     if (validationErrors.length) {
       const NewDocumentValidationError = createError('app.validation_error', {message: JSON.stringify(validationErrors)});
@@ -181,10 +196,25 @@ export const updateMutator = async ({ collection, documentId, selector, data, se
     let validationErrors;
 
     validationErrors =  validateData(data, document, collection, context);
-    data = await runCallbacks({ name: `${typeName.toLowerCase()}.update.validate`, iterator: data, properties: { document, currentUser, validationErrors, collection }});
-    data = await runCallbacks({ name: '*.update.validate', iterator: data, properties: { document, currentUser, validationErrors, collection }});
+    data = await runCallbacks({
+      name: `${typeName.toLowerCase()}.update.validate`,
+      iterator: data,
+      properties: { document, currentUser, validationErrors, collection },
+      ignoreExceptions: false,
+    });
+    data = await runCallbacks({
+      name: '*.update.validate',
+      iterator: data,
+      properties: { document, currentUser, validationErrors, collection },
+      ignoreExceptions: false,
+    });
     // OpenCRUD backwards compatibility
-    data = modifierToData(await runCallbacks(`${collectionName.toLowerCase()}.edit.validate`, dataToModifier(data), document, currentUser, validationErrors));
+    data = modifierToData(await runCallbacks({
+      name: `${collectionName.toLowerCase()}.edit.validate`,
+      iterator: dataToModifier(data),
+      properties: [document, currentUser, validationErrors],
+      ignoreExceptions: false,
+    }));
 
     // LESSWRONG - added custom message (showing all validation errors instead of a generic message)
     if (validationErrors.length) {
@@ -304,10 +334,25 @@ export const deleteMutator = async ({ collection, documentId, selector, currentU
 
   // if document is not trusted, run validation callbacks
   if (validate) {
-    document = await runCallbacks({ name: `${typeName.toLowerCase()}.delete.validate`, iterator: document, properties: { currentUser, collection }});
-    document = await runCallbacks({ name: '*.delete.validate', iterator: document, properties: { currentUser, collection }});
+    document = await runCallbacks({
+      name: `${typeName.toLowerCase()}.delete.validate`,
+      iterator: document,
+      properties: { currentUser, collection },
+      ignoreExceptions: false,
+    });
+    document = await runCallbacks({
+      name: '*.delete.validate',
+      iterator: document,
+      properties: { currentUser, collection },
+      ignoreExceptions: false,
+    });
     // OpenCRUD backwards compatibility
-    document = await runCallbacks(`${collectionName.toLowerCase()}.remove.validate`, document, currentUser);
+    document = await runCallbacks({
+      name: `${collectionName.toLowerCase()}.remove.validate`,
+      iterator: document,
+      properties: [currentUser],
+      ignoreExceptions: false,
+    });
   }
 
   // run onRemove step
