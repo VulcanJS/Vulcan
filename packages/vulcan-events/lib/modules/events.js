@@ -37,6 +37,7 @@ export const addIdentifyFunction = f => {
 };
 
 export const addPageFunction = f => {
+try {
   const f2 = ({ currentRoute }) => f(currentRoute);
 
   // rename f2 to same name as f
@@ -46,4 +47,7 @@ export const addPageFunction = f => {
   Object.defineProperty(f2, 'name', descriptor);
 
   addCallback('router.onUpdate.async', f2);
+  } catch(e) {
+    console.log(e);
+  }
 };
