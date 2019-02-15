@@ -1,4 +1,4 @@
-import {addRoute, getDynamicComponent} from 'meteor/vulcan:lib';
+import { addRoute, getDynamicComponent } from 'meteor/vulcan:lib';
 
 addRoute([
   // {name: 'cheatsheet', path: '/cheatsheet', component: import('./components/Cheatsheet.jsx')},
@@ -49,7 +49,7 @@ addRoute([
     name: 'debugVulcanBook',
     path: '/debug/vulcanbook',
     componentName: 'VulcanBook',
-    layoutName: 'DebugLayout'
+    layoutName: 'DebugLayout',
   },
   {
     name: 'debugI18n',
