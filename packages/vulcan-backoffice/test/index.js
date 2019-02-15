@@ -1,3 +1,3 @@
-import "./namingHelpers";
+import './namingHelpers';
 
-import "./routes";
+import './routes';

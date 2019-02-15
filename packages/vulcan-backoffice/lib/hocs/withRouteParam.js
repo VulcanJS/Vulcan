@@ -1,6 +1,6 @@
 /**
  * Pass a route param to its child
- * 
+ *
  */
 import React from 'react';
 import PropTypes from 'prop-types';

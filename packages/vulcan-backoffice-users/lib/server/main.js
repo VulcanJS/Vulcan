@@ -1,2 +1,2 @@
-export * from "../modules";
-import "./methods";
+export * from '../modules';
+import './methods';

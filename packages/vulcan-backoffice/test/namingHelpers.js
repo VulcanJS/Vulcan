@@ -4,14 +4,14 @@ import {
   getBasePath,
   getNewPath,
   getEditPath,
-  getDetailsPath
+  getDetailsPath,
 } from '../lib/modules/namingHelpers';
 
 const dummyCollectionName = 'Dummies';
 const DummyCollection = {
   options: {
-    collectionName: dummyCollectionName
-  }
+    collectionName: dummyCollectionName,
+  },
 };
 describe('vulcan:backoffice/namingHelpers', function() {
   it('get collection name', function() {

@@ -1,13 +1,6 @@
 import React, { PureComponent } from 'react';
-import {
-  registerComponent,
-  Components,
-  withSingle,
-  withAccess
-} from 'meteor/vulcan:core';
-import {
-  getItemComponentName,
-} from '../namingHelpers';
+import { registerComponent, Components, withSingle, withAccess } from 'meteor/vulcan:core';
+import { getItemComponentName } from '../namingHelpers';
 import { withRouteParam } from '../../hocs/withRouteParam';
 /**
  * Create the item details page
@@ -30,11 +23,11 @@ const createItemComponent = (collection, options) => {
   };
   component.displayName = componentName;
   const withDocumentOptions = {
-    collection
+    collection,
   };
   const withAccessOptions = {
     groups: options.item.accessGroups,
-    redirect: options.item.accessRedirect
+    redirect: options.item.accessRedirect,
   };
   registerComponent({
     name: componentName,
@@ -42,8 +35,8 @@ const createItemComponent = (collection, options) => {
     hocs: [
       [withAccess, withAccessOptions],
       withRouteParam('documentId'),
-      [withSingle, withDocumentOptions]
-    ]
+      [withSingle, withDocumentOptions],
+    ],
   });
   return component; // return if the component is needed
 };

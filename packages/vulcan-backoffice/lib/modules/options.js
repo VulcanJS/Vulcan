@@ -8,9 +8,9 @@ const defaultCollectionOptions = {
   list: { accessGroups: ['admins'], accessRedirect: '/' },
   item: { accessGroups: ['admins'], accessRedirect: '/' },
   menuItem: {
-    groups: ['admins']
+    groups: ['admins'],
   },
-  layoutName: 'VulcanBackofficeLayout'
+  layoutName: 'VulcanBackofficeLayout',
 };
 
 const defaultBackofficeOptions = {
@@ -18,13 +18,11 @@ const defaultBackofficeOptions = {
   generateMenuItems: true,
   generateComponents: true,
   //generateUI: true,
-  basePath: '/backoffice', 
-  ...defaultCollectionOptions
+  basePath: '/backoffice',
+  ...defaultCollectionOptions,
 };
 
-export const mergeDefaultCollectionOptions = (
-  collectionOptions,
-  options = {}
-) => _merge({}, defaultBackofficeOptions, options, collectionOptions);
+export const mergeDefaultCollectionOptions = (collectionOptions, options = {}) =>
+  _merge({}, defaultBackofficeOptions, options, collectionOptions);
 export const mergeDefaultBackofficeOptions = options =>
   _merge({}, defaultBackofficeOptions, options);

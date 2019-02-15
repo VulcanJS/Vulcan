@@ -9,5 +9,5 @@ Meteor.methods({
         Accounts.setPassword(_id, password);
       }
     }
-  }
+  },
 });

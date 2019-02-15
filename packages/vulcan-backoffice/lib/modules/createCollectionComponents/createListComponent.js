@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { registerComponent, Components, withAccess } from 'meteor/vulcan:core';
-import {
-  getListComponentName,
-} from '../namingHelpers';
+import { getListComponentName } from '../namingHelpers';
 
 const createListComponent = (collection, options) => {
   const component = class ListComponent extends PureComponent {
@@ -31,7 +29,7 @@ const createListComponent = (collection, options) => {
   registerComponent({
     name: componentName,
     component: component,
-    hocs: [[withAccess, withAccessOptions]]
+    hocs: [[withAccess, withAccessOptions]],
   });
   return component;
 };

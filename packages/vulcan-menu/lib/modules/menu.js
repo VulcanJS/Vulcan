@@ -23,16 +23,16 @@ export const menuItemProps = {
   label: PropTypes.string,
   labelToken: PropTypes.string, // TODO: one of label or labelToken must be defined
   path: PropTypes.string,
-  onClick: PropTypes.func, 
+  onClick: PropTypes.func,
   LeftComponent: PropTypes.any, //React component @see https://github.com/facebook/prop-types/issues/200
   RightComponent: PropTypes.any,
   groups: PropTypes.arrayOf(PropTypes.string), // groups that can see the item
-  menuName: PropTypes.string // submenu name (facultative for main menu)
+  menuName: PropTypes.string, // submenu name (facultative for main menu)
 };
 
 const defaultMenuName = 'defaultMenu';
 const registeredMenus = {
-  [defaultMenuName]: {}
+  [defaultMenuName]: {},
 };
 
 export const registerMenuItem = config => {
@@ -45,17 +45,13 @@ export const registerMenuItem = config => {
 
 export const removeMenuItem = (itemId, menuName = defaultMenuName) => {
   delete registeredMenus[menuName][itemId];
-  if (
-    menuName !== defaultMenuName &&
-    Objet.isEmpty(registeredMenus[menuName])
-  ) {
+  if (menuName !== defaultMenuName && Objet.isEmpty(registeredMenus[menuName])) {
     delete registeredMenus[menuName];
   }
 };
 
 // should not be needed
-export const getMenuItemsConfig = (menuName = defaultMenuName) =>
-  registeredMenus[menuName];
+export const getMenuItemsConfig = (menuName = defaultMenuName) => registeredMenus[menuName];
 export const getAllMenuItemsConfig = () => registeredMenus;
 
 const filterAuthorized = (currentUser, menuItems) =>
@@ -74,9 +70,7 @@ export const getMenuItems = (menuName = defaultMenuName) => {
   const menu = registeredMenus[menuName];
   if (!menu) {
     console.warn(
-      `Warning: Menu ${menuName} unknown. Menus available: ${Object.keys(
-        registeredMenus
-      )}`
+      `Warning: Menu ${menuName} unknown. Menus available: ${Object.keys(registeredMenus)}`
     );
     return [];
   }
@@ -87,5 +81,5 @@ export const getMenuItems = (menuName = defaultMenuName) => {
 export const getMenuItemsMap = () =>
   Object.keys(registeredMenus).reduce((res, menuName) => ({
     ...res,
-    [menuName]: getMenuItems(menuName)
+    [menuName]: getMenuItems(menuName),
   }));
