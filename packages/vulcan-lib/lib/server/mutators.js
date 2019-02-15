@@ -317,12 +317,13 @@ export const updateMutator = async ({
       autoValue = await schema[fieldName].onUpdate(properties); // eslint-disable-line no-await-in-loop
     } else if (schema[fieldName].onEdit) {
       // OpenCRUD backwards compatibility
+      // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onEdit(
         dataToModifier(clone(data)),
         document,
         currentUser,
         document
-      ); // eslint-disable-line no-await-in-loop
+      );
     }
     if (typeof autoValue !== 'undefined') {
       data[fieldName] = autoValue;
