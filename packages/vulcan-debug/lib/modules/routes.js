@@ -46,6 +46,12 @@ addRoute([
     layoutName: 'DebugLayout',
   },
   {
+    name: 'debugVulcanBook',
+    path: '/debug/vulcanbook',
+    componentName: 'VulcanBook',
+    layoutName: 'DebugLayout'
+  },
+  {
     name: 'debugI18n',
     path: '/debug/i18n',
     componentName: 'I18n',

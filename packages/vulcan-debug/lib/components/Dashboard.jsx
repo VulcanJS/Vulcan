@@ -13,6 +13,9 @@ function Dashboard() {
         <li key="Components">
           <Link to="/debug/components">Components</Link>
         </li>
+        <li key="Vulcanbook">
+          <Link to="/debug/vulcanbook">Vulcan Book</Link>
+        </li>
         <li key="Emails">
           <Link to="/debug/emails">Emails</Link>
         </li>

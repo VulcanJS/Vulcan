@@ -55,6 +55,7 @@
       "avoid-escape"
     ],
     "react/prop-types": 0,
+    "react/display-name": 0,
     "semi": [1, "always"]
   },
   "env": {

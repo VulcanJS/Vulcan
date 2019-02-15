@@ -3,3 +3,4 @@ import './routes.js';
 
 import './settings/collection.js';
 
+import './stories';
