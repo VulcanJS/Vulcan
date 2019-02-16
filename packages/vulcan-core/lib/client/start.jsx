@@ -18,10 +18,12 @@ Meteor.startup(() => {
   const apolloClient = createApolloClient();
 
   // Create the root element
-  const rootElement = document.createElement('div');
-  rootElement.id = 'react-app';
-  document.body.appendChild(rootElement);
-
+  if (!document.getElementById('react-app')) {
+    const rootElement = document.createElement('div');
+    rootElement.id = 'react-app';
+    document.body.appendChild(rootElement);
+  }
+  
   const Main = () => (
     <AppGenerator apolloClient={apolloClient} />
   );
