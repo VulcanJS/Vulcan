@@ -74,32 +74,6 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     customContextFromReq
       ? { ...currentContext, ...customContextFromReq(req) }
       : { ...currentContext };
-  // Previous implementation
-  // Now meteor/apollo already provide this
-  // Get the token from the header
-  //let user = null
-  //if (req.headers.authorization) {
-  //  const token = req.headers.authorization;
-  //  check(token, String);
-  //  const hashedToken = _hashLoginToken(token);
-  //
-  //      // Get the user from the database
-  //      user = await Meteor.users.findOne({ 'services.resume.loginTokens.hashedToken': hashedToken });
-  //
-  //      if (user) {
-  //        // identify user to any server-side analytics providers
-  //        runCallbacks('events.identify', user);
-  //
-  //        const loginToken = Utils.findWhere(user.services.resume.loginTokens, { hashedToken });
-  //        const expiresAt = _tokenExpiration(loginToken.when);
-  //        const isExpired = expiresAt < new Date();
-  //
-  //        if (!isExpired) {
-  //          context.userId = user._id;
-  //          context.currentUser = user;
-  //        }
-  //      }
-  //}
 
   // create options given the current request
   const handleReq = async req => {
@@ -113,7 +87,7 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
 
     // note: custom default resolver doesn't currently work
     // see https://github.com/apollographql/apollo-server/issues/716
-    // options.fieldResolver = (source, args, context, info) => {
+    // @options.fieldResolver = (source, args, context, info) => {
     //   return source[info.fieldName];
     // }
 
@@ -121,9 +95,6 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
 
     //add the headers to the context
     context.headers = headers;
-
-    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
-    // console.log('// apollo_server.js locale:', req.headers.locale);
 
     // if apiKey is present, assign "fake" currentUser with admin rights
     if (headers.apikey && headers.apikey === getSetting('vulcan.apiKey')) {

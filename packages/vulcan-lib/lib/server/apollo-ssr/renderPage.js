@@ -41,7 +41,17 @@ const makePageRenderer = ({ computeContext }) => {
     });
 
     // equivalent to calling getDataFromTree and then renderToStringWithData
-    const htmlContent = await renderToStringWithData(WrappedApp);
+    let htmlContent = '';
+    try {
+    htmlContent = await renderToStringWithData(WrappedApp);
+    } catch (err) {
+      console.error(`Error while server-rendering. date: ${new Date().toString()} url: ${req.url}`); // eslint-disable-line no-console
+      console.error(err);
+      // show error in client in dev
+      if (Meteor.isDevelopment) {
+        htmlContent = `Error while server-rendering: ${err.message}`;
+      }
+    }
 
     // TODO: there should be a cleaner way to set this wrapper
     // id must always match the client side start.jsx file
@@ -72,41 +82,3 @@ const makePageRenderer = ({ computeContext }) => {
 };
 
 export default makePageRenderer;
-// FIRST TRY WITH EXPRESS
-// However this won't work as Meteor is in charge of loading relevant JS script
-// This code would only render dead HTML
-// Could be useful for SEO though or if we switch away from Meteor
-//const ssrMiddleware = (req, res) => {
-//  // according to the Apollo doc, client needs to be recreated on every request
-//  // this avoids caching server side
-//  const client = createClient(req);
-//  // TODO adapt to Vulcan
-//  const context = {};
-//
-//  const App = appGenerator({ req, client, context })
-//
-//  // Alternative that relies on Meteor server-render:
-//  // @see https://github.com/szomolanyi/MeteorApolloStarter/blob/master/imports/startup/server/ssr.js
-//
-//  // TODO: adapt to Vulcan
-//  // @see https://github.com/apollographql/GitHunt-React/blob/master/src/server.js
-//  // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#renderToStringWithData
-//  renderToStringWithData(App)
-//    .then(content => {
-//      const initialState = client.extract();
-//      const html = <Html content={content} state={initialState} />;
-//      //const html = <Html content={content} client={client} />;
-//      res.statusCode = 200;
-//      //res.status(200);
-//      res.end(`<!doctype html>\n${ReactDOM.renderToStaticMarkup(html)}`, 'utf8');
-//      //res.end();
-//    })
-//    .catch(e => {
-//      console.error('RENDERING ERROR:', e); // eslint-disable-line no-console
-//      res.statusCode = 500;
-//      res.end(`An error occurred. Stack trace:\n\n${e.stack}`);
-//    });
-//
-//  // TODO here we actually render with context (see render_context)
-//};
-// export default ssrMiddleware;
