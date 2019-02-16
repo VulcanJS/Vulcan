@@ -14,7 +14,7 @@ Vulcan.VERSION = '1.12.16';
 // ------------------------------------- Schemas -------------------------------- //
 
 SimpleSchema.extendOptions([
-  'hidden',     // hidden: true means the field is never shown in a form no matter what
+  'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
   'inputProperties', // extra form properties
@@ -22,7 +22,7 @@ SimpleSchema.extendOptions([
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
   'group', // form fieldset group
-  
+
   'onCreate', // field insert callback
   'onInsert', // field insert callback (OpenCRUD backwards compatibility)
 

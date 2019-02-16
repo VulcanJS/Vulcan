@@ -42,9 +42,9 @@ export const coreComponents = [
  * @param {...Function} hocs The HOCs to compose with the raw component.
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
- * 
+ *
  * @returns Structure of a component in the list:
  *
  * ComponentsTable.Foo = {
@@ -112,10 +112,9 @@ export const populateComponentsApp = () => {
 
   // loop over each component in the list
   registeredComponents.map(name => {
-    
     // populate an entry in the lookup table
     Components[name] = getComponent(name);
-    
+
     // uncomment for debug
     // console.log('init component:', name);
   });
@@ -124,9 +123,12 @@ export const populateComponentsApp = () => {
 
   if (missingComponents.length) {
     // eslint-disable-next-line no-console
-    console.warn(`Found the following missing core components: ${missingComponents.join(', ')}. Include a UI package such as vulcan:ui-bootstrap to add them.`);
+    console.warn(
+      `Found the following missing core components: ${missingComponents.join(
+        ', '
+      )}. Include a UI package such as vulcan:ui-bootstrap to add them.`
+    );
   }
-
 };
 
 /**
@@ -136,12 +138,12 @@ export const populateComponentsApp = () => {
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} An interchangeable/extendable React component
  */
- export const getRawComponent = (name) => {
+export const getRawComponent = name => {
   return ComponentsTable[name].rawComponent;
 };
 
 /**
- * Replace a Vulcan component with the same name with a new component or 
+ * Replace a Vulcan component with the same name with a new component or
  * an extension of the raw component and one or more optional higher order components.
  * This function keeps track of the previous HOCs and wrap the new HOCs around previous ones
  *
@@ -151,11 +153,10 @@ export const populateComponentsApp = () => {
  * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
- * an empty array, and it's ok! 
+ * an empty array, and it's ok!
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
- export function replaceComponent(name, newComponent, ...newHocs) {
-
+export function replaceComponent(name, newComponent, ...newHocs) {
   // support single argument syntax
   if (typeof arguments[0] === 'object') {
     // eslint-disable-next-line no-redeclare
@@ -165,20 +166,20 @@ export const populateComponentsApp = () => {
   }
 
   const previousComponent = ComponentsTable[name];
-  const previousHocs = previousComponent && previousComponent.hocs || [];
+  const previousHocs = (previousComponent && previousComponent.hocs) || [];
 
   if (!previousComponent) {
     // eslint-disable-next-line no-console
     console.warn(
       `Trying to replace non-registered component ${name}. The component is ` +
-      'being registered. If you were trying to replace a component defined by ' +
-      'another package, make sure that you haven\'t misspelled the name. Check ' +
-      'also if the original component is still being registered or that it ' +
-      'hasn\'t been renamed.',
+        'being registered. If you were trying to replace a component defined by ' +
+        "another package, make sure that you haven't misspelled the name. Check " +
+        'also if the original component is still being registered or that it ' +
+        "hasn't been renamed."
     );
   }
 
-  return registerComponent(name, newComponent, ...newHocs, ...previousHocs);  
+  return registerComponent(name, newComponent, ...newHocs, ...previousHocs);
 }
 
 export const copyHoCs = (sourceComponent, targetComponent) => {
@@ -196,10 +197,14 @@ export const instantiateComponent = (component, props) => {
     return null;
   } else if (typeof component === 'string') {
     const Component = getComponent(component);
-    return <Component {...props}/>;
-  } else if (typeof component === 'function' && component.prototype && component.prototype.isReactComponent) {
+    return <Component {...props} />;
+  } else if (
+    typeof component === 'function' &&
+    component.prototype &&
+    component.prototype.isReactComponent
+  ) {
     const Component = component;
-    return <Component {...props}/>;
+    return <Component {...props} />;
   } else if (typeof component === 'function') {
     return component(props);
   } else {
@@ -237,7 +242,6 @@ export const delayedComponent = name => {
   };
 };
 
-
 // Example with Proxy (might be unstable/hard to reason about)
 //const mergeWithComponents = (myComponents = {}) => {
 //  const handler = {
@@ -248,4 +252,5 @@ export const delayedComponent = name => {
 //  const proxy = new Proxy(myComponents, handler);
 //  return proxy;
 //};
-export const mergeWithComponents = myComponents => (myComponents ? { ...Components, ...myComponents } : Components);
+export const mergeWithComponents = myComponents =>
+  myComponents ? { ...Components, ...myComponents } : Components;
