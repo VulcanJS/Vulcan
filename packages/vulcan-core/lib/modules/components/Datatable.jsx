@@ -257,9 +257,9 @@ const DatatableSorter = ({ name, label, toggleSort, currentSort }) =>
         {!currentSort[name] ? (
           <SortNone/> 
         ) : currentSort[name] === 1 ? (
-          <SortDesc/> 
-        ) : (
           <SortAsc/>
+        ) : (
+          <SortDesc/> 
         )
       }
       </span>
