@@ -20,8 +20,11 @@ class DateTime extends PureComponent {
         : this.props.value
       : null;
 
+    // note: get rid of the default onChange inherited from FormComponent
+    const { onChange, ...newInputProperties } = this.props.inputProperties; // eslint-disable-line no-unused-vars
+
     return (
-      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
+      <Components.FormItem {...newInputProperties} {...this.props.itemProperties}>
         <DateTimePicker
           value={date}
           // newDate argument is a Moment object given by react-datetime
