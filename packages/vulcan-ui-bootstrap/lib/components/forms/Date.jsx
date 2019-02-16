@@ -19,8 +19,12 @@ class DateComponent extends PureComponent {
         ? new Date(this.props.value)
         : this.props.value
       : null;
+
+    // note: get rid of the default onChange inherited from FormComponent
+    const { onChange, ...newInputProperties } = this.props.inputProperties; // eslint-disable-line no-unused-vars
+
     return (
-      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
+      <Components.FormItem {...newInputProperties} {...this.props.itemProperties}>
         <DateTimePicker
           value={date}
           timeFormat={false}
