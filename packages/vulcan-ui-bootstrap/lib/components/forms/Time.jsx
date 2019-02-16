@@ -27,8 +27,11 @@ class Time extends PureComponent {
       date.setHours(0, 0);
     }
 
+    // note: get rid of the default onChange inherited from FormComponent
+    const { onChange, ...newInputProperties } = this.props.inputProperties; // eslint-disable-line no-unused-vars
+
     return (
-      <Components.FormItem {...this.props.inputProperties} {...this.props.itemProperties}>
+      <Components.FormItem {...newInputProperties} {...this.props.itemProperties}>
         <DateTimePicker
           value={date}
           viewMode="time"

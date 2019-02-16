@@ -1,7 +1,6 @@
 import { addStrings } from 'meteor/vulcan:core';
 
 addStrings('en', {
-
   'accounts.error_incorrect_password': 'Incorrect password',
   'accounts.error_email_required': 'Email required',
   'accounts.error_email_already_exists': 'Email already exists',
@@ -46,6 +45,9 @@ addStrings('en', {
   'forms.delete_confirm': 'Delete document?',
   'forms.revert': 'Revert',
   'forms.confirm_discard': 'Discard changes?',
+  'forms.day': 'Day',
+  'forms.month': 'Month',
+  'forms.year': 'Year',
 
   'users.profile': 'Profile',
   'users.complete_profile': 'Complete your Profile',
@@ -76,8 +78,8 @@ addStrings('en', {
   'users.please_sign_up_log_in': 'Please sign up or log in',
   'users.cannot_post': 'Sorry, you do not have permission to post at this time',
   'users.cannot_comment': 'Sorry, you do not have permission to comment at this time',
-  'users.subscribe': 'Subscribe to this user\'s posts',
-  'users.unsubscribe': 'Unsubscribe to this user\'s posts',
+  'users.subscribe': "Subscribe to this user's posts",
+  'users.unsubscribe': "Unsubscribe to this user's posts",
   'users.subscribed': 'You have subscribed to “{name}” posts.',
   'users.unsubscribed': 'You have unsubscribed from “{name}” posts.',
   'users.subscribers': 'Subscribers',
@@ -85,8 +87,9 @@ addStrings('en', {
   'users.delete_confirm': 'Delete this user?',
   'users.email_already_taken': 'This email is already taken: {value}',
 
-  'settings': 'Settings',
-  'settings.json_message': 'Note: settings already provided in your <code>settings.json</code> file will be disabled.',
+  settings: 'Settings',
+  'settings.json_message':
+    'Note: settings already provided in your <code>settings.json</code> file will be disabled.',
   'settings.edit': 'Edit Settings',
   'settings.edited': 'Settings edited (please reload).',
   'settings.title': 'Title',
@@ -117,31 +120,35 @@ addStrings('en', {
   'settings.scoreUpdateInterval': 'Score Update Interval',
 
   'app.loading': 'Loading…',
-  'app.404': 'Sorry, we couldn\'t find what you were looking for.',
-  'app.missing_document':  'Sorry, we couldn\'t find the document you were looking for.',
+  'app.404': "Sorry, we couldn't find what you were looking for.",
+  'app.missing_document': "Sorry, we couldn't find the document you were looking for.",
   'app.powered_by': 'Built with Vulcan.js',
   'app.or': 'Or',
   'app.noPermission': 'Sorry, you do not have the permission to do this at this time.',
-  'app.operation_not_allowed': 'Sorry, you don\'t have the rights to perform the operation "{value}"',
+  'app.operation_not_allowed':
+    'Sorry, you don\'t have the rights to perform the operation "{value}"',
   'app.document_not_found': 'Document not found (id: {value})',
   'app.disallowed_property_detected': 'Disallowed property detected: {value}',
   'app.something_bad_happened': 'Something bad happened...',
-  'app.embedly_not_authorized': 'Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API',
+  'app.embedly_not_authorized':
+    'Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API',
 
   'cards.edit': 'Edit',
   'datatable.new': 'New',
   'datatable.edit': 'Edit',
   'datatable.search': 'Search',
 
-  'admin': 'Admin',
-  'notifications': 'Notifications',
+  admin: 'Admin',
+  notifications: 'Notifications',
 
-  'errors.expectedType': 'Expected type {dataType} for field “{label}”, received “{value}” instead.',
+  'errors.expectedType':
+    'Expected type {dataType} for field “{label}”, received “{value}” instead.',
   'errors.required': 'Field “{label}” is required.',
   'errors.minString': 'Field “{label}” needs to have at least {min} characters',
   'errors.maxString': 'Field “{label}” is limited to {max} characters.',
   'errors.generic': 'Sorry, something went wrong: <code>{errorMessage}</code>.',
-  'errors.generic_report': 'Sorry, something went wrong:  <code>{errorMessage}</code>. <br/>An error report has been generated.',
+  'errors.generic_report':
+    'Sorry, something went wrong:  <code>{errorMessage}</code>. <br/>An error report has been generated.',
   'errors.minNumber': 'Field “{label}” must be higher than {min}. ',
   'errors.maxNumber': 'Field “{label}” must be lower than {max}. ',
   'errors.minCount': 'There needs to be at least {count} in field “{label}”.',
@@ -153,6 +160,5 @@ addStrings('en', {
   //TODO other simple schema errors
   'errors.minNumberExclusive': '',
   'errors.maxNumberExclusive': '',
-  'errors.keyNotInSchema': ''
-
+  'errors.keyNotInSchema': '',
 });

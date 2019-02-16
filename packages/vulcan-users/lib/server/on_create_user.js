@@ -1,5 +1,12 @@
 import Users from '../modules/index.js';
-import { runCallbacks, runCallbacksAsync, Utils, debug, debugGroup, debugGroupEnd } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import {
+  runCallbacks,
+  runCallbacksAsync,
+  Utils,
+  debug,
+  debugGroup,
+  debugGroupEnd,
+} from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import clone from 'lodash/clone';
 
 // TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
@@ -25,7 +32,9 @@ function onCreateUserCallback(options, user) {
   _.keys(options).forEach(fieldName => {
     var field = schema[fieldName];
     if (!field || !Users.canCreateField(user, field)) {
-      throw new Error(Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName }));
+      throw new Error(
+        Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName })
+      );
     }
   });
 
@@ -41,8 +50,9 @@ function onCreateUserCallback(options, user) {
   for (let fieldName of Object.keys(schema)) {
     let autoValue;
     if (schema[fieldName].onCreate) {
+      const document = clone(user);
       // eslint-disable-next-line no-await-in-loop
-      autoValue = schema[fieldName].onCreate({ newDocument: clone(user) });
+      autoValue = schema[fieldName].onCreate({ document });
     } else if (schema[fieldName].onInsert) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop

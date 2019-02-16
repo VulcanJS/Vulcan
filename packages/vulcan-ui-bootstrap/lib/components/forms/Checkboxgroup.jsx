@@ -21,14 +21,17 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
     }
   }
 
+  // note: get rid of the default onChange inherited from FormComponent
+  const { onChange, ...newInputProperties } = inputProperties; // eslint-disable-line no-unused-vars
+
   return (
-    <Components.FormItem {...inputProperties} {...itemProperties}>
+    <Components.FormItem {...newInputProperties} {...itemProperties}>
       <div>
         {options.map((option, i) => (
           <Form.Check
             layout="elementOnly"
             key={i}
-            {...inputProperties}
+            {...newInputProperties}
             label={option.label}
             value={value.includes(option.value)}
             checked={!!value.includes(option.value)}
