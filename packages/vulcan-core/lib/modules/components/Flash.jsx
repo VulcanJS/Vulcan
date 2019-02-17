@@ -10,9 +10,10 @@ class Flash extends PureComponent {
     this.dismissFlash = this.dismissFlash.bind(this);
   }
 
-  componentDidMount() {
-    this.props.markAsSeen && this.props.markAsSeen(this.props.message._id);
-  }
+  // TODO: reenable if still useful, otherwise delete
+  // componentDidMount() {
+  //   this.props.markAsSeen && this.props.markAsSeen(this.props.message._id);
+  // }
 
   dismissFlash(e) {
     e.preventDefault();
@@ -64,12 +65,12 @@ Flash.contextTypes = {
 
 registerComponent('Flash', Flash);
 
-const FlashMessages = ({messages, clear, markAsSeen, className}) => {
+const FlashMessages = ({messages, className, ...flashActions}) => {
   return (
     <div className={`flash-messages ${className}`}>
       {messages
-        .filter(message => message.show)
-        .map(message => <Components.Flash key={message._id} message={message} clear={clear} markAsSeen={markAsSeen} />)}
+        // .filter(message => message.show)
+        .map((message, i) => <Components.Flash key={i} message={message} {...flashActions} />)}
     </div>
   );
 };

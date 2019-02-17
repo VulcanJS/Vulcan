@@ -19,6 +19,7 @@ import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter} from 'react-router';
+import MessageContext, { flash } from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
@@ -51,8 +52,48 @@ class App extends PureComponent {
       runCallbacks('events.identify', props.currentUser);
     }
     const { locale, localeMethod } = this.initLocale();
-    this.state = { locale, localeMethod };
+    this.state = { 
+      locale, 
+      localeMethod,
+      messages: [], 
+    };
     moment.locale(locale);
+  }
+
+  /*
+
+  Clear messages on route change
+  See https://stackoverflow.com/a/45373907/649299
+
+  */
+  componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {
+      this.clear();
+    });
+  }
+
+  componentWillUnmount() {
+      this.unlisten();
+  }
+
+  /* 
+  
+  Show a flash message
+  
+  */
+  flash = message => {
+    this.setState({ 
+      messages: [...this.state.messages, message
+    ]});
+  }
+
+  /*
+
+  Clear all flash messages
+
+  */
+  clear = () => {
+    this.setState({ messages: []});
   }
 
   componentDidMount() {
@@ -136,30 +177,34 @@ class App extends PureComponent {
 
   render() {
     const routeNames = Object.keys(Routes);
+    const { flash } = this;
+    const { messages } = this.state;
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
 
     return (
       <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <Components.ScrollToTop />
-        <div className={`locale-${this.getLocale()}`}>
-          <Components.HeadTags />
-          {/* <Components.RouterHook currentRoute={currentRoute} /> */}
-          {this.props.currentUserLoading ? (
-            <Components.Loading />
-          ) : routeNames.length ? (
-            <Switch>
-              {routeNames.map(key => (
-                // NOTE: if we want the exact props to be taken into account
-                // we have to pass it to the RouteWithLayout, not the underlying Route,
-                // because it is the direct child of Switch
-                <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
-              ))}
-              <Route component={Components.Error404} /> 
-            </Switch>
-          ) : (
-                <Components.Welcome />
-              )}
-        </div>
+        <MessageContext.Provider value={{ messages, flash }}>
+          <Components.ScrollToTop />
+          <div className={`locale-${this.getLocale()}`}>
+            <Components.HeadTags />
+            {/* <Components.RouterHook currentRoute={currentRoute} /> */}
+            {this.props.currentUserLoading ? (
+              <Components.Loading />
+            ) : routeNames.length ? (
+              <Switch>
+                {routeNames.map(key => (
+                  // NOTE: if we want the exact props to be taken into account
+                  // we have to pass it to the RouteWithLayout, not the underlying Route,
+                  // because it is the direct child of Switch
+                  <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
+                ))}
+                <Route component={Components.Error404} /> 
+              </Switch>
+            ) : (
+                  <Components.Welcome />
+                )}
+          </div>
+        </MessageContext.Provider>
       </IntlProvider>
     );
   }

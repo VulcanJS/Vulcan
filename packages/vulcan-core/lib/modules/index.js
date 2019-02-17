@@ -1,4 +1,3 @@
-import './callbacks.js';
 
 // import and re-export
 export * from 'meteor/vulcan:lib';
@@ -40,6 +39,8 @@ export { default as withUpsert } from './containers/withUpsert.js';
 export { default as withSiteData } from './containers/withSiteData.js';
 
 export { default as withComponents } from './containers/withComponents';
+
+export { default as MessageContext } from './messages.js';
 
 // OpenCRUD backwards compatibility
 export { default as withNew } from './containers/withCreate.js';
