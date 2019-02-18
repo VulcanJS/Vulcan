@@ -38,7 +38,7 @@ class DateTime extends PureComponent {
 }
 
 DateTime.propTypes = {
-  control: PropTypes.any,
+  input: PropTypes.any,
   datatype: PropTypes.any,
   group: PropTypes.any,
   label: PropTypes.string,

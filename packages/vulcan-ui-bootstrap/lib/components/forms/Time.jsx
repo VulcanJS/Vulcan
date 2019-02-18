@@ -47,7 +47,7 @@ class Time extends PureComponent {
 }
 
 Time.propTypes = {
-  control: PropTypes.any,
+  input: PropTypes.any,
   datatype: PropTypes.any,
   group: PropTypes.any,
   label: PropTypes.string,
