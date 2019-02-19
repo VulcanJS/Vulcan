@@ -124,11 +124,8 @@ class DateComponent2 extends PureComponent {
       },
     };
 
-    // note: get rid of the default onChange inherited from FormComponent
-    const { onChange, ...newInputProperties } = inputProperties; // eslint-disable-line no-unused-vars
-
     return (
-      <Components.FormItem {...newInputProperties} {...itemProperties}>
+      <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
         <div style={{ display: 'flex' }}>
           <div>
             <label>

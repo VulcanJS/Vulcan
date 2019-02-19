@@ -7,7 +7,7 @@ const SelectMultipleComponent = ({ refFunction, inputProperties, itemProperties 
   inputProperties.multiple = true;
 
   return (
-    <Components.FormItem {...inputProperties} {...itemProperties}>
+    <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
       <Form.Control as="select" {...inputProperties} ref={refFunction} />
     </Components.FormItem>
   );
