@@ -10,7 +10,7 @@ import {registerComponent, Components, withAccess, Dummy} from 'meteor/vulcan:co
 const RestrictToAdmins = withAccess({groups: ['admins']})(Dummy);
 
 /**
- * A simple component that renders the existing layout and checks wether the currentUser is an admin or not.
+ * A simple component that renders the existing layout and checks whether the currentUser is an admin or not.
  */
 
 function AdminLayout({children}) {
