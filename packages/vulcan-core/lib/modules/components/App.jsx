@@ -198,7 +198,8 @@ class App extends PureComponent {
                   // because it is the direct child of Switch
                   <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
                 ))}
-                <Route component={Components.Error404} /> 
+                <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404'}} component={Components.Error404} />
+                {/* <Route component={Components.Error404} />  */}
               </Switch>
             ) : (
                   <Components.Welcome />
