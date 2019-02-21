@@ -1,10 +1,40 @@
 import SimpleSchema from 'simpl-schema';
 
+export const Strings = {};
+
+export const Domains = {};
+
+export const addStrings = (language, strings) => {
+  if (typeof Strings[language] === 'undefined') {
+    Strings[language] = {};
+  }
+  Strings[language] = {
+    ...Strings[language],
+    ...strings
+  };
+};
+
+export const getString = ({id, values, defaultMessage, locale}) => {
+  const messages = Strings[locale] || {};
+  let message = messages[id] || defaultMessage;
+  if (message && values) {
+    Object.keys(values).forEach(key => {
+      // note: see replaceAll definition in vulcan:lib/utils
+      message = message.replaceAll(`{${key}}`, values[key]);
+    });
+  }
+  return message;
+};
+
+export const registerDomain = (locale, domain) => {
+  Domains[domain] = locale;
+};
+
 export const Locales = [];
 
 export const registerLocale = locale => {
   Locales.push(locale);
-}
+};
 
 /*
 
@@ -13,15 +43,8 @@ Note: look into simplifying this
 
 */
 export const isIntlField = fieldSchema => {
-  const typeProperty = fieldSchema.type;
-  let type;
-  if (Array.isArray(typeProperty)) {
-    type = typeProperty[0].type;
-  } else {
-    type = typeProperty.singleType ? typeProperty.singleType : typeProperty.definitions[0].type;
-  }
-  return type.name === 'IntlString';
-}
+  return fieldSchema.intl;
+};
 
 /*
 
@@ -29,22 +52,28 @@ Generate custom IntlString SimpleSchema type
 
 */
 export const getIntlString = () => {
-  
   const schema = {
     locale: {
       type: String,
-      optional: true,
+      optional: true
     },
     value: {
       type: String,
-      optional: true,
+      optional: true
     }
   };
 
   const IntlString = new SimpleSchema(schema);
   IntlString.name = 'IntlString';
   return IntlString;
-}
+};
+
+/*
+
+Check if a schema has at least one intl field
+
+*/
+export const schemaHasIntlFields = schema => Object.keys(schema).some(fieldName => isIntlField(schema[fieldName]));
 
 /*
 
@@ -53,23 +82,27 @@ Custom validation function to check for required locales
 See https://github.com/aldeed/simple-schema-js#custom-field-validation
 
 */
-export const validateIntlField = function () {
+export const validateIntlField = function() {
   let errors = [];
 
-  // if field is required, go through locales to check which one are required
-  if (!this.definition.optional) {
-    const requiredLocales = Locales.filter(locale => locale.required);
+  // go through locales to check which one are required
+  const requiredLocales = Locales.filter(locale => locale.required);
 
-    requiredLocales.forEach((locale, index) => {
-      const strings = this.value;
-      const hasString = strings.some(s => s.locale === locale.id && s.value);
+  requiredLocales.forEach((locale, index) => {
+    const strings = this.value;
+    const hasString = strings && Array.isArray(strings) && strings.some(s => s && s.locale === locale.id && s.value);
+    if (!hasString) {
       const originalFieldName = this.key.replace('_intl', '');
-      if (!hasString) {
-        errors.push({ id: 'errors.required', path: `${this.key}.${index}`, properties: { name: originalFieldName, locale: locale.id }});
-      }
-    });
+      errors.push({
+        id: 'errors.required',
+        path: `${this.key}.${index}`,
+        properties: { name: originalFieldName, locale: locale.id }
+      });
+    }
+  });
 
+  if (errors.length > 0) {
+    // hack to work around the fact that custom validation function can only return a single string
+    return `intlError|${JSON.stringify(errors)}`;
   }
-  // hack to work around the fact that custom validation function can only return a single string
-  return `intlError|${JSON.stringify(errors)}`;
-}
+};

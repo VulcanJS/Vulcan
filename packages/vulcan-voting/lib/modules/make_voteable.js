@@ -141,4 +141,4 @@ export const makeVoteable = collection => {
     },
 
   ]);
-}
+};

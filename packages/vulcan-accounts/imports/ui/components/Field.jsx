@@ -7,7 +7,7 @@ const autocompleteValues = {
   'usernameOrEmail': 'email',
   'email': 'email',
   'password': 'current-password'
-}
+};
 
 export class AccountsField extends PureComponent {
   constructor(props) {
@@ -49,8 +49,8 @@ export class AccountsField extends PureComponent {
       type = 'text',
       onChange,
       // required = false,
-      className = "field",
-      defaultValue = "",
+      className = 'field',
+      defaultValue = '',
       message,
     } = this.props;
     const { mount = true } = this.state;
@@ -75,4 +75,4 @@ AccountsField.propTypes = {
   onChange: PropTypes.func
 };
 
-registerComponent('AccountsField', AccountsField)
+registerComponent('AccountsField', AccountsField);

@@ -29,7 +29,7 @@ class AccountsResetPassword extends PureComponent {
 
 AccountsResetPassword.contextTypes = {
   intl: intlShape
-}
+};
 
 AccountsResetPassword.propsTypes = {
   currentUser: PropTypes.object,

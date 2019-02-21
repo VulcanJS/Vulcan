@@ -19,7 +19,7 @@ SyncedCron.options = {
 };
 
 const addZero = num => {
-  return num < 10 ? "0"+num : num;
+  return num < 10 ? '0'+num : num;
 };
 
 var getSchedule = function (parser) {
@@ -38,8 +38,8 @@ var getSchedule = function (parser) {
 
   const offsetInMinutes = new Date().getTimezoneOffset();
   const GMTtime = moment.duration(getSetting('newsletter.time', defaultTime));
-  const serverTime = GMTtime.subtract(offsetInMinutes, "minutes");
-  const serverTimeString = addZero(serverTime.hours()) + ":" + addZero(serverTime.minutes());
+  const serverTime = GMTtime.subtract(offsetInMinutes, 'minutes');
+  const serverTimeString = addZero(serverTime.hours()) + ':' + addZero(serverTime.minutes());
 
   // console.log("// scheduled for: (GMT): "+getSetting('newsletterTime', defaultTime));
   // console.log("// server offset (minutes): "+offsetInMinutes);

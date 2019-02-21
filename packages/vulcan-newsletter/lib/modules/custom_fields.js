@@ -11,10 +11,10 @@ Users.addField([
       canCreate: ['members'],
       canUpdate: ['members'],
       canRead: ['guests'],
-      control: 'NewsletterSubscribe',
+      input: 'NewsletterSubscribe',
       group: {
-        name: "newsletter",
-        label: "Newsletter",
+        name: 'newsletter',
+        label: 'Newsletter',
         order: 3
       },
     }

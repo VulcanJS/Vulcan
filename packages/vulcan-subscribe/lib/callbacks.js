@@ -92,13 +92,13 @@ function SubscribedUsersNotifications (post) {
 }
 
 if (!!Posts && !!Comments) {
-  addCallback("comments.new.async", SubscribedPostNotifications);
+  addCallback('comments.new.async', SubscribedPostNotifications);
 }
 
 if (!!Posts) {
-  addCallback("posts.new.async", SubscribedUsersNotifications);
+  addCallback('posts.new.async', SubscribedUsersNotifications);
 }
 
 if (!!Posts && !!Categories) {
-  addCallback("posts.new.async", SubscribedCategoriesNotifications);
+  addCallback('posts.new.async', SubscribedCategoriesNotifications);
 }

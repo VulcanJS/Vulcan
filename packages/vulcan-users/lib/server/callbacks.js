@@ -9,7 +9,7 @@
   function hasCompletedProfile (user) {
     return Users.hasCompletedProfile(user);
   }
-  addCallback("users.profileCompleted.sync", hasCompletedProfile);
+  addCallback('users.profileCompleted.sync', hasCompletedProfile);
 
   // remove this to get rid of dependency on vulcan:email
 
@@ -27,14 +27,16 @@
   // }
   // addCallback("users.new.sync", usersNewAdminUserCreationNotification);
 
-  function usersMakeAdmin (user) {
+  export function usersMakeAdmin (user) {
     // if this is not a dummy account, and is the first user ever, make them an admin
     // TODO: should use await Connectors.count() instead, but cannot await inside Accounts.onCreateUser. Fix later. 
-    const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
-    user.isAdmin = !user.isDummy && realUsersCount === 0;
+    if (typeof user.isAdmin === 'undefined') {
+      const realUsersCount = Users.find({'isDummy': {$ne: true}}).count();
+      user.isAdmin = !user.isDummy && realUsersCount === 0;
+    }
     return user;
   }
-  addCallback("users.new.sync", usersMakeAdmin);
+  addCallback('users.new.sync', usersMakeAdmin);
 
   function usersEditGenerateHtmlBio (modifier) {
     if (modifier.$set && modifier.$set.bio) {
@@ -42,7 +44,7 @@
     }
     return modifier;
   }
-  addCallback("users.edit.sync", usersEditGenerateHtmlBio);
+  addCallback('users.edit.sync', usersEditGenerateHtmlBio);
 
   function usersEditCheckEmail (modifier, user) {
     // if email is being modified, update user.emails too
@@ -53,12 +55,13 @@
       // check for existing emails and throw error if necessary
       const userWithSameEmail = Users.findByEmail(newEmail);
       if (userWithSameEmail && userWithSameEmail._id !== user._id) {
-        throw new Error(Utils.encodeIntlError({id:"users.email_already_taken", value: newEmail}));
+        throw new Error(Utils.encodeIntlError({id:'users.email_already_taken', value: newEmail}));
       }
 
       // if user.emails exists, change it too
       if (!!user.emails) {
         user.emails[0].address = newEmail;
+        user.emails[0].verified = false;
         modifier.$set.emails = user.emails;
       }
 
@@ -68,13 +71,13 @@
     }
     return modifier;
   }
-  addCallback("users.edit.sync", usersEditCheckEmail);
+  addCallback('users.edit.sync', usersEditCheckEmail);
 
   // when a user is edited, check if their profile is now complete
   function usersCheckCompletion (newUser, oldUser) {
     if (!Users.hasCompletedProfile(oldUser) && Users.hasCompletedProfile(newUser)) {
-      runCallbacksAsync("users.profileCompleted.async", newUser);
+      runCallbacksAsync('users.profileCompleted.async', newUser);
     }
   }
-  addCallback("users.edit.async", usersCheckCompletion);
+  addCallback('users.edit.async', usersCheckCompletion);
 

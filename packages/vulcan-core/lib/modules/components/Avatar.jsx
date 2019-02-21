@@ -2,41 +2,46 @@ import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Users from 'meteor/vulcan:users';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-const Avatar = ({className, user, link}) => {
+const Avatar = ({ className, user, link, fallback }) => {
 
+  const avatarClassNames = classNames('avatar', className);
+
+  if (!user) {
+    return <div className={avatarClassNames}>{fallback}</div>;
+  }
   const avatarUrl = user.avatarUrl || Users.avatar.getUrl(user);
 
-  const img = <img alt={Users.getDisplayName(user)} className="avatar-image" src={avatarUrl} title={user.username}/>;
+  const img = <img alt={Users.getDisplayName(user)} className="avatar-image" src={avatarUrl} title={user.username} />;
   const initials = <span className="avatar-initials"><span>{Users.avatar.getInitials(user)}</span></span>;
 
   const avatar = avatarUrl ? img : initials;
 
   return (
-    <div className={classNames('avatar', className)}>
-      {link ? 
+    <div className={avatarClassNames}>
+      {link ?
         <Link to={Users.getProfileUrl(user)}>
           <span>{avatar}</span>
-        </Link> 
+        </Link>
         : <span>{avatar}</span>
       }
     </div>
   );
 
-}
+};
 
 Avatar.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   size: PropTypes.string,
   link: PropTypes.bool
-}
+};
 
 Avatar.defaultProps = {
   size: 'medium',
   link: true
-}
+};
 
 Avatar.displayName = 'Avatar';
 

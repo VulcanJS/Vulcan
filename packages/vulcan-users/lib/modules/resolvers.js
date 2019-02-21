@@ -8,8 +8,8 @@ const specificResolvers = {
         user = await Connectors.get(context.Users, context.userId);
 
         if (user.services) {
-          Object.keys(user.services).forEach((key) => {
-            user.services[key] = {}
+          Object.keys(user.services).forEach(key => {
+            user.services[key] = {};
           });
         }
       }
@@ -25,12 +25,9 @@ const defaultOptions = {
 };
 
 const resolvers = {
-
   multi: {
-
-    async resolver(root, { input = {} }, {currentUser, Users}, { cacheControl }) {
-
-      const { terms = {}, enableCache = false } = input;
+    async resolver(root, { input = {} }, { currentUser, Users }, { cacheControl }) {
+      const { terms = {}, enableCache = false, enableTotal = true } = input;
 
       if (cacheControl && enableCache) {
         const maxAge = defaultOptions.cacheMaxAge;
@@ -38,7 +35,7 @@ const resolvers = {
       }
 
       // get selector and options from terms and perform Mongo query
-      let {selector, options} = await Users.getParameters(terms);
+      let { selector, options } = await Users.getParameters(terms);
       options.skip = terms.offset;
       const users = await Connectors.find(Users, selector, options);
 
@@ -48,16 +45,20 @@ const resolvers = {
       // prime the cache
       restrictedUsers.forEach(user => Users.loader.prime(user._id, user));
 
-      return { results: restrictedUsers };
-    },
+      const data = { results: restrictedUsers };
 
+      if (enableTotal) {
+        // get total count of documents matching the selector
+        data.totalCount = await Connectors.count(Users, selector);
+      }
+
+      return data;
+    },
   },
 
   single: {
-
     async resolver(root, { input = {} }, { currentUser, Users }, { cacheControl }) {
-      
-      const { selector, enableCache = false } = input;
+      const { selector = {}, enableCache = false } = input;
       const { documentId, slug } = selector;
 
       if (cacheControl && enableCache) {
@@ -66,12 +67,14 @@ const resolvers = {
       }
 
       // don't use Dataloader if user is selected by slug
-      const user = documentId ? await Users.loader.load(documentId) : (slug ? await Connectors.get(Users, {slug}): await Connectors.get(Users));
+      const user = documentId
+        ? await Users.loader.load(documentId)
+        : slug
+        ? await Connectors.get(Users, { slug })
+        : await Connectors.get(Users);
       return { result: Users.restrictViewableFields(currentUser, Users, user) };
     },
-
   },
-  
 };
 
 export default resolvers;

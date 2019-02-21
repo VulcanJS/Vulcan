@@ -5,7 +5,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 export class AccountsSocialButtons extends React.Component {
   render() {
-    let { oauthServices = {}, className = "social-buttons" } = this.props;
+    let { oauthServices = {}, className = 'social-buttons' } = this.props;
     return(
       <div className={ className }>
         {Object.keys(oauthServices).map((id, i) => {

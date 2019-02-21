@@ -31,8 +31,8 @@ NewForm Component
 const NewForm = ({ closeModal, successCallback, ...props }) => {
 
   const success = successCallback
-    ? () => {
-        successCallback();
+    ? document => {
+        successCallback(document);
         closeModal();
       }
     : closeModal;

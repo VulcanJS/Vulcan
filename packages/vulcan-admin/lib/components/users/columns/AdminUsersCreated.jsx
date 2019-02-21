@@ -5,6 +5,6 @@ import moment from 'moment';
 const AdminUsersCreated = ({ document: user }) =>
   <div>
     {moment(new Date(user.createdAt)).format('MM/DD/YY')}
-  </div>
+  </div>;
 
 export default AdminUsersCreated;

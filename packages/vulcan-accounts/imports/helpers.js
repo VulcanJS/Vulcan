@@ -58,20 +58,20 @@ export function loginResultCallback(service, err) {
 }
 
 export function passwordSignupFields() {
-  return Accounts.ui._options.passwordSignupFields || "USERNAME_AND_EMAIL";
+  return Accounts.ui._options.passwordSignupFields || 'USERNAME_AND_EMAIL';
 }
 
 export function validateEmail(email, showMessage, clearMessage) {
-  if (passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL" && email === '') {
+  if (passwordSignupFields() === 'USERNAME_AND_OPTIONAL_EMAIL' && email === '') {
     return true;
   }
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
   } else if (!email || email.length === 0) {
-    showMessage("accounts.error_email_required", 'warning', false, 'email');
+    showMessage('accounts.error_email_required', 'warning', false, 'email');
     return false;
   } else {
-    showMessage("accounts.error_invalid_email", 'warning', false, 'email');
+    showMessage('accounts.error_invalid_email', 'warning', false, 'email');
     return false;
   }
 }
@@ -80,7 +80,7 @@ export function validatePassword(password = '', showMessage, clearMessage){
   if (password.length >= Accounts.ui._options.minimumPasswordLength) {
     return true;
   } else {
-    const errMsg = "accounts.error_minchar"
+    const errMsg = 'accounts.error_minchar';
     showMessage(errMsg, 'warning', false, 'password');
     return false;
   }
@@ -91,7 +91,7 @@ export function validateUsername(username, showMessage, clearMessage, formState)
     return true;
   } else {
     const fieldName = (passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP) ? 'username' : 'usernameOrEmail';
-    showMessage("accounts.error_username_required", 'warning', false, fieldName);
+    showMessage('accounts.error_username_required', 'warning', false, fieldName);
     return false;
   }
 }

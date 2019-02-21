@@ -9,12 +9,12 @@ import SimpleSchema from 'simpl-schema';
 Vulcan = {};
 
 // eslint-disable-next-line no-undef
-Vulcan.VERSION = '1.11.2';
+Vulcan.VERSION = '1.12.17';
 
 // ------------------------------------- Schemas -------------------------------- //
 
 SimpleSchema.extendOptions([
-  'hidden',     // hidden: true means the field is never shown in a form no matter what
+  'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
   'inputProperties', // extra form properties
@@ -22,7 +22,7 @@ SimpleSchema.extendOptions([
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
   'group', // form fieldset group
-  
+
   'onCreate', // field insert callback
   'onInsert', // field insert callback (OpenCRUD backwards compatibility)
 
@@ -50,9 +50,11 @@ SimpleSchema.extendOptions([
   'options', // form options
   'query', // field-specific data loading query
   'selectable', // field can be used as part of a selector when querying for data
+  'unique', // field can be used as part of a selectorUnique when querying for data
   'orderable', // field can be used to order results when querying for data
 
   'intl', // set to `true` to make a field international
+  'isIntlData', // marker for the actual schema fields that hold intl strings
 ]);
 
 // eslint-disable-next-line no-undef

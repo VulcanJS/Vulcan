@@ -5,18 +5,23 @@ import PropTypes from 'prop-types';
 class ModalTrigger extends PureComponent {
   constructor() {
     super();
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.state = {
       modalIsOpen: false,
     };
   }
 
-  openModal() {
+  clickHandler = () => {
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
+    this.openModal();
+  }
+
+  openModal = () => {
     this.setState({ modalIsOpen: true });
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
 
@@ -37,9 +42,9 @@ class ModalTrigger extends PureComponent {
 
     let triggerComponent = trigger || component;
     triggerComponent = triggerComponent ? (
-      React.cloneElement(triggerComponent, { onClick: this.openModal })
+      React.cloneElement(triggerComponent, { onClick: this.clickHandler })
     ) : (
-      <a href="javascript:void(0)" onClick={this.openModal}>
+      <a href="javascript:void(0)" onClick={this.clickHandler}>
         {label}
       </a>
     );
@@ -75,6 +80,7 @@ ModalTrigger.propTypes = {
   trigger: PropTypes.object,
   size: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  onClick: PropTypes.func,
 };
 
 registerComponent('ModalTrigger', ModalTrigger);

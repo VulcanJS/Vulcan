@@ -13,26 +13,26 @@ const wrapper = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+};
 
 const header = {
   textAlign: 'center',
-}
+};
 
 const code = {
-  border: "1px solid #ccc",
+  border: '1px solid #ccc',
   borderRadius: 3,
   padding: '10px 20px',
   background: 'white',
-}
+};
 
 function escapeHtml(unsafe) {
   return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
  }
 
 const HelloWorld = props => 
@@ -73,7 +73,7 @@ addRoute({ name: 'home', path: '/', componentName: 'Home' });
 
     </div>
 
-  </div>
+  </div>;
 
 HelloWorld.displayName = 'HelloWorld';
 

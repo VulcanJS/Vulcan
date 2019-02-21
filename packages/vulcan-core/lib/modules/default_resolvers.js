@@ -4,8 +4,16 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName } from 'meteor/vulcan:lib';
-import { createError } from 'apollo-errors';
+import {
+  Utils,
+  debug,
+  debugGroup,
+  debugGroupEnd,
+  Connectors,
+  getTypeName,
+  getCollectionName,
+  throwError,
+} from 'meteor/vulcan:lib';
 
 const defaultOptions = {
   cacheMaxAge: 300,
@@ -13,7 +21,6 @@ const defaultOptions = {
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
-
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
@@ -26,7 +33,7 @@ export function getDefaultResolvers(options) {
     typeName = getTypeName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
-  
+
   return {
     // resolver for returning a list of documents based on a set of query terms
 
@@ -37,7 +44,9 @@ export function getDefaultResolvers(options) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -48,11 +57,12 @@ export function getDefaultResolvers(options) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
-        
+
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
         // get selector and options from terms and perform Mongo query
+
         let { selector, options } = await collection.getParameters(terms, {}, context);
         options.skip = terms.offset;
 
@@ -77,7 +87,7 @@ export function getDefaultResolvers(options) {
         debug('');
 
         const data = { results: restrictedDocs };
-        
+
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
@@ -94,13 +104,14 @@ export function getDefaultResolvers(options) {
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector = {}, enableCache = false } = input;
-        const { documentId, slug } = selector;
+        const { selector = {}, enableCache = false, allowNull = false } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`DocumentId: ${documentId}, Slug: ${slug}`);
+        debug(`Selector: ${JSON.stringify(selector)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
@@ -110,22 +121,35 @@ export function getDefaultResolvers(options) {
         const { currentUser, Users } = context;
         const collection = context[collectionName];
 
-        // don't use Dataloader if doc is selected by slug
+        // use Dataloader if doc is selected by documentId/_id
+        const documentId = selector.documentId || selector._id;
         const doc = documentId
           ? await collection.loader.load(documentId)
-          : slug
-            ? await Connectors.get(collection, { slug })
-            : await Connectors.get(collection);
+          : await Connectors.get(collection, selector);
 
         if (!doc) {
-          const MissingDocumentError = createError('app.missing_document', { message: 'app.missing_document' });
-          throw new MissingDocumentError({ data: { documentId, slug } });
+          if (allowNull) {
+            return { result: null };
+          } else {
+            throwError({
+              id: 'app.missing_document',
+              data: { documentId, selector },
+            });
+          }
         }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
         if (collection.checkAccess) {
-          Utils.performCheck(collection.checkAccess, currentUser, doc, collection, documentId);
+          Utils.performCheck(
+            collection.checkAccess,
+            currentUser,
+            doc,
+            collection,
+            documentId,
+            `${typeName}.read.single`,
+            collectionName
+          );
         }
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);

@@ -1,98 +1,46 @@
 import React, { PureComponent } from 'react';
-import FRC from 'formsy-react-components';
 import ReactTagInput from 'react-tag-input';
 import PropTypes from 'prop-types';
 
 const ReactTags = ReactTagInput.WithContext;
 
-const Input = FRC.Input;
-
 class Tags extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleAddition = this.handleAddition.bind(this);
 
-    const tags = props.value ? props.value.map(optionId => {
-      return {
-        id: optionId,
-        text: _.findWhere(props.options, {value: optionId}).label
-      };
-    }) : [];
+    this.suggestions = (props.options || []).map(
+      ({ value, label }) => ({ id: value, text: label })
+    );
+    const tags = (props.value || []).map(id => (
+      // tolerate cases when a tag is not found in suggestions (create a tag on the fly)
+      this.suggestions.find(suggestion => id === suggestion.id) || { id, text: id }
+    ));
 
-    this.state = {
-      tags: tags,
-      suggestions: _.pluck(props.options, "label"),
-      value: props.value || []
-    };
+    this.state = { tags };
   }
 
-  handleDelete(i) {
-
-    const tags = this.state.tags;
-    tags.splice(i, 1);
-
-    const value = this.state.value;
-    value.splice(i,1);
-
-    this.setState({
-      tags: tags,
-      value: value
-    });
-  }
-
-  handleAddition(tag) {
-
-    // first, check if added tag is part of the possible options
-    const option = _.findWhere(this.props.options, {label: tag});
-
-    if (option) {
-
-      // add tag to state (for tag widget)
-      const tags = this.state.tags;
-      tags.push({
-          id: tags.length + 1,
-          text: tag
-      });
-
-      // add value to state (to store in db)
-      const value = this.state.value;
-      value.push(option.value);
-
-      this.setState({
-        tags: tags,
-        value: value
-      });
-    }
-
+  handleChange = reducer => value => {
+    const tags = reducer(this.state.tags, value);
+    this.setState({ tags });
+    this.props.inputProperties.onChange(this.props.name, tags.map(({ id }) => id));
   }
 
   render() {
-
-    const {name, /* value, */ label} = this.props;
-
     return (
       <div className="form-group row">
-        <label className="control-label col-sm-3">{label}</label>
+        <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <div className="tags-field">
             <ReactTags
               tags={this.state.tags}
-              suggestions={this.state.suggestions}
-              handleDelete={this.handleDelete}
-              handleAddition={this.handleAddition}
+              suggestions={this.suggestions}
+              handleDelete={this.handleChange(
+                (tags, index) => [...tags.slice(0, index), ...tags.slice(index + 1)]
+              )}
+              handleAddition={this.handleChange((tags, newTag) => [...tags, newTag])}
               minQueryLength={1}
-              classNames={{
-                // tags: 'tagsClass',
-                // tagInput: 'form-control'
-                // selected: 'selectedClass',
-                // tag: 'tagClass',
-                // remove: 'removeClass',
-                // suggestions: 'suggestionsClass'
-              }}
             />
-            <Input name={name} type="hidden" readOnly value={this.state.value} />
           </div>
         </div>
       </div>
@@ -103,7 +51,16 @@ class Tags extends PureComponent {
 Tags.propTypes = {
   name: PropTypes.string,
   value: PropTypes.any,
-  label: PropTypes.string
+  label: PropTypes.string,
+  inputProperties: PropTypes.shape({
+    onChange: PropTypes.func,
+  }),
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.any,
+      label: PropTypes.string,
+    })
+  ),
 };
 
 export default Tags;

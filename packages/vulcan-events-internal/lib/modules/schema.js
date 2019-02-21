@@ -4,7 +4,7 @@ const schema = {
     canRead: ['guests'],
     optional: true,
     onInsert: () => {
-      return new Date()
+      return new Date();
     }
   },
   name: {

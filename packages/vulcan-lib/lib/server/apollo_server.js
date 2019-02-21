@@ -1,4 +1,4 @@
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
+/* import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { makeExecutableSchema } from 'graphql-tools';
@@ -22,15 +22,16 @@ import { runCallbacks } from '../modules/callbacks.js';
 import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
 import { _hashLoginToken, _tokenExpiration } from './accounts_helpers';
+import { getHeaderLocale } from './intl.js';
 
 export let executableSchema;
 
 registerSetting('apolloEngine.logLevel', 'INFO', 'Log level (one of INFO, DEBUG, WARN, ERROR');
-registerSetting('apolloTracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
+registerSetting('apolloServer.tracing', Meteor.isDevelopment, 'Tracing by Apollo. Default is true on development and false on prod', true);
 
 // see https://github.com/apollographql/apollo-cache-control
 const engineApiKey = getSetting('apolloEngine.apiKey');
-const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO')
+const engineLogLevel = getSetting('apolloEngine.logLevel', 'INFO');
 const engineConfig = {
   apiKey: engineApiKey,
   // "origins": [
@@ -40,11 +41,11 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  "stores": [
+  'stores': [
     {
-      "name": "vulcanCache",
-      "inMemory": {
-        "cacheSize": 20000000
+      'name': 'vulcanCache',
+      'inMemory': {
+        'cacheSize': 20000000
       }
     }
   ],
@@ -62,16 +63,16 @@ const engineConfig = {
   //     }
   //   }
   // ],
-  "queryCache": {
-    "publicFullQueryStore": "vulcanCache",
-    "privateFullQueryStore": "vulcanCache"
+  'queryCache': {
+    'publicFullQueryStore': 'vulcanCache',
+    'privateFullQueryStore': 'vulcanCache'
   },
   // "reporting": {
   //   "endpointUrl": "https://engine-report.apollographql.com",
   //   "debugReports": true
   // },
-  "logging": {
-    "level": engineLogLevel
+  'logging': {
+    'level': engineLogLevel
   }
 };
 let engine;
@@ -126,7 +127,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   graphQLServer.use(compression());
 
   // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
+  graphQLServer.use(config.path, bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') }), graphqlExpress(async (req) => {
     let options;
     let user = null;
 
@@ -146,7 +147,7 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     }
 
     // enable tracing and caching
-    options.tracing = getSetting('apolloTracing', Meteor.isDevelopment);
+    options.tracing = getSetting('apolloServer.tracing', Meteor.isDevelopment);
     options.cacheControl = true;
 
     // note: custom default resolver doesn't currently work
@@ -155,6 +156,10 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
     //   return source[info.fieldName];
     // }
 
+    // console.log('// apollo_server.js req.renderContext');
+    // console.log(req.renderContext);
+    // console.log('\n\n');
+    
     // Get the token from the header
     if (req.headers.authorization) {
       const token = req.headers.authorization;
@@ -181,6 +186,9 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
         }
       }
     }
+    
+    //add the headers to the context
+    options.context.headers = req.headers;
 
 
     // merge with custom context
@@ -191,11 +199,20 @@ const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, options.context), { cache: true });
     });
 
-    // console.log('// apollo_server.js user-agent:', req.headers['user-agent']);
-    // console.log('// apollo_server.js locale:', req.headers.locale);
+    // look for headers either in renderContext (SSR) or req (normal request to the endpoint)
+    const headers = req.renderContext.originalHeaders || req.headers;
 
-    options.context.locale = user && user.locale || req.headers.locale || getSetting('locale', 'en');
-    
+    options.context.locale = getHeaderLocale(headers, user && user.locale);
+
+    if (headers.apikey && (headers.apikey === getSetting('vulcan.apiKey'))) {
+      options.context.currentUser = { isAdmin: true, isApiUser: true };
+    }
+    // console.log('// apollo_server.js isSSR?', !!req.renderContext.originalHeaders ? 'yes' : 'no');
+    // console.log('// apollo_server.js headers:');
+    // console.log(headers);
+    // console.log('// apollo_server.js final locale: ', options.context.locale);
+    // console.log('\n\n');
+
     // add error formatting from apollo-errors
     options.formatError = formatError;
 
@@ -260,3 +277,4 @@ ${GraphQLSchema.mutations.map(m => (
     schema: executableSchema,
   });
 });
+ */

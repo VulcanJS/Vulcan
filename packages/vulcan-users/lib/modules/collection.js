@@ -25,6 +25,6 @@ export const Users = createCollection({
 
 });
 
-addGraphQLQuery(`currentUser: User`);
+addGraphQLQuery('currentUser: User');
 
 export default Users;

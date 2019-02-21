@@ -67,7 +67,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
   // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
   const x = 1/Math.pow(n*24+2,1.3);
   // time decay factor
-  const f = 1.3
+  const f = 1.3;
   const itemsPromise = collection.rawCollection().aggregate([
     {
       $match: {
@@ -85,7 +85,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         score: 1,
         newScore: {
           $divide: [
-            "$baseScore",
+            '$baseScore',
               {
                 $pow: [
                   {
@@ -93,7 +93,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
                       {
                         $divide: [
                           {
-                            $subtract: [new Date(), "$postedAt"] // Age in miliseconds
+                            $subtract: [new Date(), '$postedAt'] // Age in miliseconds
                           },
                           60 * 60 * 1000
                         ]
@@ -116,7 +116,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         newScore: 1,
         scoreDiffSignificant: {
           $gt: [
-            {$abs: {$subtract: ["$score", "$newScore"]}},
+            {$abs: {$subtract: ['$score', '$newScore']}},
             x
           ]
         },
@@ -124,7 +124,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           $gt: [
             {$divide: [
               {
-                $subtract: [new Date(), "$postedAt"] // Difference in miliseconds
+                $subtract: [new Date(), '$postedAt'] // Difference in miliseconds
               },
               60 * 60 * 1000 //Difference in hours
             ]},
@@ -132,7 +132,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
         }
       }
     },
-  ])
+  ]);
 
   const items = await itemsPromise;
   const itemsArray = await items.toArray();
@@ -146,7 +146,7 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           update: {$set: {score: i.newScore, inactive: false}},
           upsert: false,
         }
-      }
+      };
     } else if (i.oldEnough) {
       // only set a post as inactive if it's older than n days
       return {
@@ -155,9 +155,9 @@ export const batchUpdateScore = async (collection, inactive = false, forceUpdate
           update: {$set: {inactive: true}},
           upsert: false,
         }
-      }
+      };
     }
-  }))
+  }));
   if (itemUpdates && itemUpdates.length) {await collection.rawCollection().bulkWrite(itemUpdates, {ordered: false});}
   return updatedDocumentsCounter;
-}
+};

@@ -17,7 +17,7 @@ import { RouterClient } from './router.jsx';
 
 Meteor.startup(() => {
   // note: route defined here because it "shouldn't be removable"
-  addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
+  addRoute({name:'app.notfound', path:'*', componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
   initializeFragments();
@@ -44,14 +44,14 @@ Meteor.startup(() => {
       context.initialState = initialState;
       const apolloClientReducer = (state = {}, action) => {
         if (initialState && initialState.apollo && !_.isEmpty(initialState.apollo.data) && _.isEmpty(state.data)) {
-          state = initialState.apollo
+          state = initialState.apollo;
         }
         const newState = context.apolloClient.reducer()(state, action);
         return newState;
-      }
+      };
       context.addReducer({ apollo: apolloClientReducer });
       context.store.reload();
-      context.store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
+      context.store.dispatch({ type: '@@nova/INIT' }); // the first dispatch will generate a newDispatch function from middleware
       runCallbacks('router.client.rehydrate', { initialState, store: context.store});
     },
     historyHook(newHistory) {
@@ -78,3 +78,5 @@ Meteor.startup(() => {
 
   RouterClient.run(AppRoutes, options);
 });
+
+

@@ -11,7 +11,7 @@ export const addProduct = (productKey, product, productType = 'product') => {
       const returnValue = product(document);
       returnValue.type = productType;
       return returnValue;
-    }
+    };
   } else {
     productWithType = product;
     productWithType.type = productType;

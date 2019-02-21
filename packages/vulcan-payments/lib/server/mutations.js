@@ -5,7 +5,7 @@ import { receiveAction } from '../server/integrations/stripe.js';
 const resolver = {
   Mutation: {
     async paymentActionMutation(root, args, context) {
-      return await receiveAction(args);
+      return await receiveAction(args, context);
     },
   },
 };
@@ -15,7 +15,7 @@ addGraphQLMutation('paymentActionMutation(token: JSON, userId: String, productKe
 function CreateChargeableUnionType() {
   const chargeableSchema = `union Chargeable = ${Collections.map(collection => collection.typeName).join(' | ')}`;
   addGraphQLSchema(chargeableSchema);
-  return {}
+  return {};
 }
 addCallback('graphql.init.before', CreateChargeableUnionType);
 

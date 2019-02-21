@@ -7,9 +7,9 @@ const Icon = ({ name, iconClass, onClick }) => {
   iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
   const c = 'icon fa fa-fw fa-' + iconCode + ' icon-' + name + iconClass;
   return <i onClick={onClick} className={c} aria-hidden="true"></i>;
-}
+};
 
-Icon.displayName = "Icon";
+Icon.displayName = 'Icon';
 
 registerComponent('Icon', Icon);
 

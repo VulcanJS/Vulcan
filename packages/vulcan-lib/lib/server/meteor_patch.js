@@ -1,5 +1,11 @@
 import { WebApp } from 'meteor/webapp';
 
+// NOTE: simplified version of webAppConnectHandlersUse that doesn't do anything
+// export const webAppConnectHandlersUse = (app, options) => {
+//   WebApp.connectHandlers.use(app);
+// };
+
+// TODO: figure out if still needed?
 // clever webAppConnectHandlersUse
 export const webAppConnectHandlersUse = (name, route, fn, options) => {
   // init
@@ -62,17 +68,19 @@ export const webAppConnectHandlersUse = (name, route, fn, options) => {
   });
 };
 
-webAppConnectHandlersUse(function sortConnectHandlersMiddleware(req, res, next) {
-  WebApp.rawConnectHandlers.stack.forEach((item) => {
-    if (isNaN(item.handle.order)) {
-      item.handle.order = 100;
-    }
-  });
-  WebApp.connectHandlers.stack.forEach((item) => {
-    if (isNaN(item.handle.order)) {
-      item.handle.order = 100;
-    }
-  });
-  WebApp.rawConnectHandlers.stack.sort((a, b) => a.handle.order - b.handle.order);
-  WebApp.connectHandlers.stack.sort((a, b) => a.handle.order - b.handle.order);
-}, { order: 0, autoNext: true, once: true, unshift: true });
+// NOTE: breaks /graphql endpoint in production
+// TODO: figure out what this does and if it's still needed?
+// webAppConnectHandlersUse(function sortConnectHandlersMiddleware(req, res, next) {
+//   WebApp.rawConnectHandlers.stack.forEach((item) => {
+//     if (isNaN(item.handle.order)) {
+//       item.handle.order = 100;
+//     }
+//   });
+//   WebApp.connectHandlers.stack.forEach((item) => {
+//     if (isNaN(item.handle.order)) {
+//       item.handle.order = 100;
+//     }
+//   });
+//   WebApp.rawConnectHandlers.stack.sort((a, b) => a.handle.order - b.handle.order);
+//   WebApp.connectHandlers.stack.sort((a, b) => a.handle.order - b.handle.order);
+// }, { order: 0, autoNext: true, once: true, unshift: true });

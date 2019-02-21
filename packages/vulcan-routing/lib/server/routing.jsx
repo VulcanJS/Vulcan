@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { CookiesProvider } from 'react-cookie';
-
 import { Meteor } from 'meteor/meteor';
 
 import {
@@ -11,13 +10,19 @@ import {
   Routes, populateComponentsApp, populateRoutesApp, initializeFragments,
   getRenderContext,
   runCallbacks,
+  getHeaderLocale,
 } from 'meteor/vulcan:lib';
 
 import { RouterServer } from './router.jsx';
 
+//fix helmet when running tests
+if (Meteor.isPackageTest) {
+  Helmet.canUseDOM = false;
+}
+
 Meteor.startup(() => {
   // note: route defined here because it "shouldn't be removable"
-  addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
+  addRoute({name:'app.notfound', path:'*', componentName: 'Error404'});
 
   // init the application components and routes, including components & routes from 3rd-party packages
   initializeFragments();
@@ -49,9 +54,13 @@ Meteor.startup(() => {
     wrapperHook(req, res, appGenerator) {
       const { apolloClient, store } = getRenderContext();
       store.reload();
-      store.dispatch({ type: '@@nova/INIT' }) // the first dispatch will generate a newDispatch function from middleware
+      store.dispatch({ type: '@@nova/INIT' }); // the first dispatch will generate a newDispatch function from middleware
       const app = runCallbacks('router.server.wrapper', appGenerator(), { req, res, store, apolloClient });
-      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{app}</CookiesProvider></ApolloProvider>;
+      const locale = getHeaderLocale(req.headers );
+      const appWithLocale = React.cloneElement(app, { locale });
+      // TODO: currently locale is passed through cookies as a hack because it's not available as props; fix this
+      req.universalCookies.cookies.locale = locale;
+      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider cookies={req.universalCookies}>{appWithLocale}</CookiesProvider></ApolloProvider>;
     },
     preRender(req, res, app) {
       runCallbacks('router.server.preRender', { req, res, app });

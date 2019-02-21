@@ -13,19 +13,44 @@ import Vulcan from './config.js'; // used for global export
 import { Utils } from './utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 import { isIntlField } from './intl.js';
-import { selectorInputTemplate, mainTypeTemplate, createInputTemplate, createDataInputTemplate, updateInputTemplate, updateDataInputTemplate, orderByInputTemplate, selectorUniqueInputTemplate, deleteInputTemplate, upsertInputTemplate, singleInputTemplate, multiInputTemplate, multiOutputTemplate, singleOutputTemplate, mutationOutputTemplate, singleQueryTemplate, multiQueryTemplate, createMutationTemplate, updateMutationTemplate, upsertMutationTemplate, deleteMutationTemplate } from './graphql_templates.js';
+import {
+  selectorInputTemplate,
+  mainTypeTemplate,
+  createInputTemplate,
+  createDataInputTemplate,
+  updateInputTemplate,
+  updateDataInputTemplate,
+  orderByInputTemplate,
+  selectorUniqueInputTemplate,
+  deleteInputTemplate,
+  upsertInputTemplate,
+  singleInputTemplate,
+  multiInputTemplate,
+  multiOutputTemplate,
+  singleOutputTemplate,
+  mutationOutputTemplate,
+  singleQueryTemplate,
+  multiQueryTemplate,
+  createMutationTemplate,
+  updateMutationTemplate,
+  upsertMutationTemplate,
+  deleteMutationTemplate,
+} from './graphql_templates.js';
 
 disableFragmentWarnings();
 
 // get GraphQL type for a given schema and field name
-const getGraphQLType = (schema, fieldName) => {
-
+const getGraphQLType = (schema, fieldName, isInput = false) => {
   const field = schema[fieldName];
   const type = field.type.singleType;
-  const typeName = typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
+  const typeName =
+    typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
+
+  if (field.isIntlData) {
+    return isInput ? '[IntlValueInput]' : '[IntlValue]';
+  }
 
   switch (typeName) {
-
     case 'String':
       return 'String';
 
@@ -58,9 +83,15 @@ const getGraphQLType = (schema, fieldName) => {
     default:
       return null;
   }
-}
+};
 
 export const GraphQLSchema = {
+
+  // used for schema stitching
+  stitchedSchemas: [],
+  addStitchedSchema(schema) {
+    this.stitchedSchemas.push(schema);
+  },
 
   // collections used to auto-generate schemas
   collections: [],
@@ -69,9 +100,11 @@ export const GraphQLSchema = {
   },
   // generate GraphQL schemas for all registered collections
   getCollectionsSchemas() {
-    const collectionsSchemas = this.collections.map(collection => {
-      return this.generateSchema(collection);
-    }).join('');
+    const collectionsSchemas = this.collections
+      .map(collection => {
+        return this.generateSchema(collection);
+      })
+      .join('');
     return collectionsSchemas;
   },
 
@@ -120,8 +153,8 @@ export const GraphQLSchema = {
   addDirective(directive) {
     this.directives = deepmerge(this.directives, directive);
   },
-  
-  // for a given schema, return main type fields, selector fields, 
+
+  // for a given schema, return main type fields, selector fields,
   // unique selector fields, orderBy fields, creatable fields, and updatable fields
   getFields(schema, typeName) {
     const fields = {
@@ -134,45 +167,58 @@ export const GraphQLSchema = {
     };
 
     Object.keys(schema).forEach(fieldName => {
-
       const field = schema[fieldName];
       const fieldType = getGraphQLType(schema, fieldName);
+      const inputFieldType = getGraphQLType(schema, fieldName, true);
 
       // only include fields that are viewable/insertable/editable and don't contain "$" in their name
       // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
       // OpenCRUD backwards compatibility
-      if ((field.canRead || field.canCreate || field.canUpdate || field.viewableBy || field.insertableBy || field.editableBy) && fieldName.indexOf('$') === -1) {
-
+      if (
+        (field.canRead ||
+          field.canCreate ||
+          field.canUpdate ||
+          field.viewableBy ||
+          field.insertableBy ||
+          field.editableBy) &&
+        fieldName.indexOf('$') === -1
+      ) {
         const fieldDescription = field.description;
-        const fieldDirective = isIntlField(field) ? `@intl` : '';
+        const fieldDirective = isIntlField(field) ? '@intl' : '';
         const fieldArguments = isIntlField(field) ? [{ name: 'locale', type: 'String' }] : [];
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
+          // get resolver name from resolveAs object, or else default to field name
+          const resolverName = field.resolveAs.fieldName || fieldName;
 
-            // get resolver name from resolveAs object, or else default to field name
-            const resolverName = field.resolveAs.fieldName || fieldName;
+          // use specified GraphQL type or else convert schema type
+          const fieldGraphQLType = field.resolveAs.type || fieldType;
 
-            // use specified GraphQL type or else convert schema type
-            const fieldGraphQLType = field.resolveAs.type || fieldType;
+          // if resolveAs is an object, first push its type definition
+          // include arguments if there are any
+          // note: resolved fields are not internationalized
+          fields.mainType.push({
+            description: field.resolveAs.description,
+            name: resolverName,
+            args: field.resolveAs.arguments,
+            type: fieldGraphQLType,
+          });
 
-            // if resolveAs is an object, first push its type definition
-            // include arguments if there are any
-            // note: resolved fields are not internationalized
-            fields.mainType.push({
-              description: field.resolveAs.description,
-              name: resolverName,
-              args: field.resolveAs.arguments,
-              type: fieldGraphQLType,
-            });
-
-            // then build actual resolver object and pass it to addGraphQLResolvers
-            const resolver = {
-              [typeName]: {
-                [resolverName]: field.resolveAs.resolver
-              }
-            };
-            addGraphQLResolvers(resolver);
+          // then build actual resolver object and pass it to addGraphQLResolvers
+          const resolver = {
+            [typeName]: {
+              [resolverName]: (document, args, context, info) => {
+                const { Users, currentUser } = context;
+                // check that current user has permission to access the original non-resolved field
+                const canReadField = Users.canReadField(currentUser, field, document);
+                return canReadField
+                  ? field.resolveAs.resolver(document, args, context, info)
+                  : null;
+              },
+            },
+          };
+          addGraphQLResolvers(resolver);
 
           // if addOriginalField option is enabled, also add original field to schema
           if (field.resolveAs.addOriginalField && fieldType) {
@@ -184,7 +230,6 @@ export const GraphQLSchema = {
               directive: fieldDirective,
             });
           }
-
         } else {
           // try to guess GraphQL type
           if (fieldType) {
@@ -202,7 +247,7 @@ export const GraphQLSchema = {
         if (field.canCreate || field.insertableBy) {
           fields.create.push({
             name: fieldName,
-            type: fieldType,
+            type: inputFieldType,
             required: !field.optional,
           });
         }
@@ -210,19 +255,40 @@ export const GraphQLSchema = {
         if (field.canUpdate || field.editableBy) {
           fields.update.push({
             name: fieldName,
-            type: fieldType,
+            type: inputFieldType,
           });
         }
 
         // if field is i18nized, add foo_intl field containing all languages
-        if (isIntlField(field)) {
-          fields.mainType.push({ name: `${fieldName}_intl`, type: `[IntlValue]` });
-          fields.create.push({ name: `${fieldName}_intl`, type: `[IntlValueInput]` });
-          fields.update.push({ name: `${fieldName}_intl`, type: `[IntlValueInput]` });
-        }
+        // NOTE: not necessary anymore because intl fields are added by addIntlFields() in collections.js
+        // TODO: delete if not needed
+        // if (isIntlField(field)) {
+        //   // fields.mainType.push({
+        //   //   name: `${fieldName}_intl`,
+        //   //   type: '[IntlValue]',
+        //   // });
+        //   fields.create.push({
+        //     name: `${fieldName}_intl`,
+        //     type: '[IntlValueInput]',
+        //   });
+        //   fields.update.push({
+        //     name: `${fieldName}_intl`,
+        //     type: '[IntlValueInput]',
+        //   });
+        // }
 
         if (field.selectable) {
-          // TODO
+          fields.selector.push({
+            name: fieldName,
+            type: inputFieldType,
+          });
+        }
+
+        if (field.selectable && field.unique) {
+          fields.selectorUnique.push({
+            name: fieldName,
+            type: inputFieldType,
+          });
         }
 
         if (field.orderable) {
@@ -235,14 +301,15 @@ export const GraphQLSchema = {
 
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
-
     let graphQLSchema = '';
 
     const schemaFragments = [];
 
     const collectionName = collection.options.collectionName;
 
-    const typeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
+    const typeName = collection.typeName
+      ? collection.typeName
+      : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     const schema = collection.simpleSchema()._schema;
 
@@ -250,12 +317,16 @@ export const GraphQLSchema = {
 
     const { interfaces = [], resolvers, mutations } = collection.options;
 
-    const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`
+    const description = collection.options.description
+      ? collection.options.description
+      : `Type for ${collectionName}`;
 
     const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
 
-    if (mainType.length){
-      schemaFragments.push(mainTypeTemplate({ typeName, description, interfaces, fields: mainType }));
+    if (mainType.length) {
+      schemaFragments.push(
+        mainTypeTemplate({ typeName, description, interfaces, fields: mainType })
+      );
       schemaFragments.push(deleteInputTemplate({ typeName }));
       schemaFragments.push(singleInputTemplate({ typeName }));
       schemaFragments.push(multiInputTemplate({ typeName }));
@@ -282,63 +353,119 @@ export const GraphQLSchema = {
 
       if (!_.isEmpty(resolvers)) {
         const queryResolvers = {};
-  
+
         // single
-        if (resolvers.single) { 
+        if (resolvers.single) {
           addGraphQLQuery(singleQueryTemplate({ typeName }), resolvers.single.description);
-          queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(resolvers.single);
+          queryResolvers[Utils.camelCaseify(typeName)] = resolvers.single.resolver.bind(
+            resolvers.single
+          );
         }
-  
+
         // multi
-        if (resolvers.multi) { 
+        if (resolvers.multi) {
           addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-          queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(resolvers.multi);
+          queryResolvers[
+            Utils.camelCaseify(Utils.pluralize(typeName))
+          ] = resolvers.multi.resolver.bind(resolvers.multi);
         }
         addGraphQLResolvers({ Query: { ...queryResolvers } });
       }
-      
+
       if (!_.isEmpty(mutations)) {
         const mutationResolvers = {};
         // create
-        if (mutations.create) { // e.g. "createMovie(input: CreateMovieInput) : Movie"
-          addGraphQLMutation(createMutationTemplate({ typeName }), mutations.create.description);
-          mutationResolvers[`create${typeName}`] = mutations.create.mutation.bind(mutations.create);
+        if (mutations.create) {
+          // e.g. "createMovie(input: CreateMovieInput) : Movie"
+          if (create.length === 0) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `// Warning: you defined a "create" mutation for collection ${collectionName}, but it doesn't have any mutable fields, so no corresponding mutation types can be generated. Remove the "create" mutation or define a "canCreate" property on a field to disable this warning`
+            );
+          } else {
+            addGraphQLMutation(createMutationTemplate({ typeName }), mutations.create.description);
+            mutationResolvers[`create${typeName}`] = mutations.create.mutation.bind(
+              mutations.create
+            );
+          }
         }
         // update
-        if (mutations.update) { // e.g. "updateMovie(input: UpdateMovieInput) : Movie"
-          addGraphQLMutation(updateMutationTemplate({ typeName }), mutations.update.description);
-          mutationResolvers[`update${typeName}`] = mutations.update.mutation.bind(mutations.update);
-    
+        if (mutations.update) {
+          // e.g. "updateMovie(input: UpdateMovieInput) : Movie"
+          if (update.length === 0) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `// Warning: you defined an "update" mutation for collection ${collectionName}, but it doesn't have any mutable fields, so no corresponding mutation types can be generated. Remove the "update" mutation or define a "canUpdate" property on a field to disable this warning`
+            );
+          } else {
+            addGraphQLMutation(updateMutationTemplate({ typeName }), mutations.update.description);
+            mutationResolvers[`update${typeName}`] = mutations.update.mutation.bind(
+              mutations.update
+            );
+          }
         }
         // upsert
-        if (mutations.upsert) { // e.g. "upsertMovie(input: UpsertMovieInput) : Movie"
-          addGraphQLMutation(upsertMutationTemplate({ typeName }), mutations.upsert.description);
-          mutationResolvers[`upsert${typeName}`] = mutations.upsert.mutation.bind(mutations.upsert);
+        if (mutations.upsert) {
+          // e.g. "upsertMovie(input: UpsertMovieInput) : Movie"
+          if (update.length === 0) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `// Warning: you defined an "upsert" mutation for collection ${collectionName}, but it doesn't have any mutable fields, so no corresponding mutation types can be generated. Remove the "upsert" mutation or define a "canUpdate" property on a field to disable this warning`
+            );
+          } else {
+            addGraphQLMutation(upsertMutationTemplate({ typeName }), mutations.upsert.description);
+            mutationResolvers[`upsert${typeName}`] = mutations.upsert.mutation.bind(
+              mutations.upsert
+            );
+          }
         }
         // delete
-        if (mutations.delete) { // e.g. "deleteMovie(input: DeleteMovieInput) : Movie"
+        if (mutations.delete) {
+          // e.g. "deleteMovie(input: DeleteMovieInput) : Movie"
           addGraphQLMutation(deleteMutationTemplate({ typeName }), mutations.delete.description);
           mutationResolvers[`delete${typeName}`] = mutations.delete.mutation.bind(mutations.delete);
         }
         addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
       }
-      graphQLSchema = schemaFragments.join('\n\n') + `\n\n\n`;
-
+      graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
     } else {
       // eslint-disable-next-line no-console
-      console.log(`// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`)
+      console.log(
+        `// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`
+      );
     }
 
     return graphQLSchema;
-  }
+  },
+
+  // getters
+  getSchema() {
+    if (!(this.finalSchema && this.finalSchema.length)) {
+      throw new Error('Warning: trying to access schema before it has been created by the server.');
+    }
+    return this.finalSchema[0];
+  },
+  getExecutableSchema() {
+    if (!this.executableSchema) {
+      throw new Error(
+        'Warning: trying to access executable schema before it has been created by the server.'
+      );
+    }
+    return this.executableSchema;
+  },
 };
 
 Vulcan.getGraphQLSchema = () => {
+  if (!GraphQLSchema.finalSchema) {
+    throw new Error(
+      'Warning: trying to access graphQL schema before it has been created by the server.'
+    );
+  }
   const schema = GraphQLSchema.finalSchema[0];
   // eslint-disable-next-line no-console
   console.log(schema);
   return schema;
-}
+};
 
 export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
@@ -348,3 +475,4 @@ export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
+export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);

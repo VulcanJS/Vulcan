@@ -8,19 +8,21 @@ const FormError = ({ error, errorContext, getLabel }) => {
   if (error.message) {
     return error.message;
   }
+  // in case this is a nested fields, only keep last segment of path
+  const errorName = error.properties.name.split('.').slice(-1)[0];
   return (
     <FormattedMessage
       id={error.id}
       values={{
         errorContext,
-        label: error.properties && getLabel(error.properties.name, error.properties.locale),
+        label: error.properties && getLabel(errorName, error.properties.locale),
         ...error.data, // backwards compatibility
         ...error.properties,
       }}
       defaultMessage={JSON.stringify(error)}
     />
   )
-;}
+;};
 
 FormError.defaultProps = {
   errorContext: '', // default context so format message does not complain

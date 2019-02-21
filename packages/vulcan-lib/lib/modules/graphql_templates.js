@@ -1,8 +1,8 @@
 import { Utils } from './utils';
 
 export const convertToGraphQL = (fields, indentation) => {
-  return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join(`\n`) : '';
-}
+  return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join('\n') : '';
+};
 
 export const arrayToGraphQL = fields => fields.map(f => `${f.name}: ${f.type}`).join(', ');
 
@@ -19,12 +19,16 @@ export const getArguments = args => {
   } else {
     return '';
   }
-}
+};
 
 /* ------------------------------------- Generic Field Template ------------------------------------- */
 
+// export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
+// `${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
+
+// version that does not make any fields required
 export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-`${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
+`${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
@@ -42,7 +46,7 @@ type Movie{
 */
 export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
 `# ${description}
-type ${typeName} ${interfaces.length ? `implements ${interfaces.join(`, `)} ` : ''}{
+type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }
 `;
@@ -154,6 +158,8 @@ export const singleInputTemplate = ({ typeName }) =>
   selector: ${typeName}SelectorUniqueInput
   # Whether to enable caching for this query
   enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
 }`;
 
 /*
@@ -171,11 +177,11 @@ type MultiMovieInput {
 export const multiInputTemplate = ({ typeName }) =>
 `input Multi${typeName}Input {
   # A JSON object that contains the query terms used to fetch data
-  terms: JSON, 
+  terms: JSON,
   # How much to offset the results by
-  offset: Int, 
+  offset: Int,
   # A limit for the query
-  limit: Int, 
+  limit: Int,
   # Whether to enable caching for this query
   enableCache: Boolean
   # Whether to calculate totalCount for this query
@@ -344,7 +350,7 @@ export const createInputTemplate = ({ typeName }) =>
 
 /*
 
-Type for update mutation input argument 
+Type for update mutation input argument
 
 type UpdateMovieInput {
   selector: MovieSelectorUniqueInput!

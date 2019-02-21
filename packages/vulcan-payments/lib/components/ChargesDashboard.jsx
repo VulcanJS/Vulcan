@@ -1,15 +1,15 @@
 import React from 'react';
 import { registerComponent, Components } from 'meteor/vulcan:lib';
 
-// import { Link } from 'react-router';
+// import { Link } from 'react-router-dom';
 // const AssociatedDocument = ({ document }) => {
 //   <Link to={document.pageUrl}>{document._id}</Link>
 // }
 
 const StripeId = ({ document }) => 
-  <a href={document.stripeChargeUrl} target="_blank">{document.stripeId}</a>
+  <a href={document.stripeChargeUrl} target="_blank">{document.stripeId}</a>;
 
-const ChargesDashboard = props => 
+const ChargesDashboard = props =>
   <div className="charges">
     <Components.Datatable
       showSearch={false}
@@ -20,12 +20,12 @@ const ChargesDashboard = props =>
       }}
       columns={[
         {
-          name: 'createdAtFormattedShort', 
+          name: 'createdAtFormattedShort',
           label: 'Created At',
         },
         'user',
         'amount',
-        'type', 
+        'type',
         'source',
         'productKey',
         'test',
@@ -36,6 +36,6 @@ const ChargesDashboard = props =>
         },
       ]}
     />
-  </div>
+  </div>;
 
 registerComponent('ChargesDashboard', ChargesDashboard);

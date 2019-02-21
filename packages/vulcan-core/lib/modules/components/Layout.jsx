@@ -2,9 +2,9 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 
 const Layout = ({children}) =>
-  <div className="wrapper" id="wrapper">{children}</div>
+  <div className="wrapper" id="wrapper">{children}</div>;
 
-Layout.displayName = "Layout";
+Layout.displayName = 'Layout';
 
 registerComponent('Layout', Layout);
 

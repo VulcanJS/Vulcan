@@ -8,10 +8,10 @@ const Loading = props => {
       <div className="bounce2"></div>
       <div className="bounce3"></div>
     </div>
-  )
-}
+  );
+};
 
-Loading.displayName = "Loading";
+Loading.displayName = 'Loading';
 
 registerComponent('Loading', Loading);
 
