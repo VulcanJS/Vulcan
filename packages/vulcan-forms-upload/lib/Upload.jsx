@@ -136,12 +136,21 @@ class Upload extends PureComponent {
 
   /*
 
+  Find out field type
+
+  */
+  getFieldType = () => {
+    return this.props.datatype && this.props.datatype[0].type;
+  }
+  
+  /*
+
   Check the field's type to decide if the component should handle
   multiple image uploads or not. Default to yes.
 
   */
   enableMultiple = () => {
-    return this.props.maxCount !== 1;
+    return this.getFieldType() !== String || this.props.maxCount !== 1;
   };
 
   /*
@@ -181,7 +190,7 @@ class Upload extends PureComponent {
     files.forEach((file, index) => {
       // figure out update path for current image
       const updateIndex = imagesCount + index;
-      const updatePath = `${this.props.path}.${updateIndex}`;
+      const updatePath = this.getFieldType() === String ? this.props.path : `${this.props.path}.${updateIndex}`;
 
       // build preview object
       const previewObject = {
