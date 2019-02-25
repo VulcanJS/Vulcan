@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import without from 'lodash/without';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
-  return intl.formatLabel({ fieldName: fieldName, collectionName: collection._name, schema: schema });
+  return intl.formatLabel ? intl.formatLabel({ fieldName: fieldName, collectionName: collection && collection._name, schema: schema }): fieldName;
 };
 
 const getTypeName = (field, fieldName, collection) => {
@@ -107,7 +108,7 @@ const getObject = object => {
     return (
       <table className="table table-bordered">
         <tbody>
-          {_.without(Object.keys(object), '__typename').map(key =>
+          {without(Object.keys(object), '__typename').map(key =>
             <tr key={key}>
               <td><strong>{key}</strong></td>
               <td>{getFieldValue(object[key], typeof object[key])}</td>
@@ -149,7 +150,7 @@ const CardEditForm = ({ collection, document, closeModal }) =>
 
 const Card = ({ title, className, collection, document, currentUser, fields, showEdit = true }, { intl }) => {
 
-  const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
+  const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
   const canEdit = showEdit && currentUser && collection && collection.options.mutations.update.check(currentUser, document);
 
   return (

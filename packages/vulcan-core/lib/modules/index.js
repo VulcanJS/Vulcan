@@ -5,6 +5,8 @@ export * from 'meteor/vulcan:lib';
 export * from './default_mutations.js';
 export * from './default_resolvers.js';
 
+export * from './components.js';
+
 export { default as Layout } from './components/Layout.jsx';
 export { default as App } from './components/App.jsx';
 export { default as Icon } from './components/Icon.jsx';
@@ -17,7 +19,6 @@ export { default as Error404 } from './components/Error404.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as Avatar } from './components/Avatar.jsx';
-export { default as Card } from './components/Card.jsx';
 export { default as Datatable } from './components/Datatable.jsx';
 export { default as Flash } from './components/Flash.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
