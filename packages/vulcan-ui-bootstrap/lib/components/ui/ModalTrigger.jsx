@@ -69,7 +69,7 @@ class ModalTrigger extends PureComponent {
         >
           {childrenComponent}
         </Components.Modal>
-      < />
+      </>
     );
   }
 }
