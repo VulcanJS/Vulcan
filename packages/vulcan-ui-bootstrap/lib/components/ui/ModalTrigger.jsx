@@ -54,7 +54,7 @@ class ModalTrigger extends PureComponent {
     const footerComponent = footer && React.cloneElement(footer, { closeModal: this.closeModal });
 
     return (
-      <div className="modal-trigger">
+      <>
         {triggerComponent}
         <Components.Modal
           size={size}
@@ -69,7 +69,7 @@ class ModalTrigger extends PureComponent {
         >
           {childrenComponent}
         </Components.Modal>
-      </div>
+      < />
     );
   }
 }
