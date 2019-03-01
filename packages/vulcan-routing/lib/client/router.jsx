@@ -53,7 +53,7 @@ export const RouterClient = {
       
       let serverUrl = await getDataPromisified('url');
       if (serverUrl && serverUrl !== window.location.pathname+(window.location.search||"")) {
-        throw new Error(`RouterClient sees a URL mismatch: ${data} vs ${window.location.pathname}`);
+        throw new Error(`RouterClient sees a URL mismatch: ${serverUrl} vs ${window.location.pathname}`);
       }
 
       // Rehydrate data client side, if desired.
