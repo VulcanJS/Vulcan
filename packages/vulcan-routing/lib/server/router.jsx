@@ -86,6 +86,9 @@ function generateSSRData(options, req, res, renderProps) {
 
     // send server timezone to client
     InjectData.pushData(res, 'utcOffset', moment().utcOffset());
+    
+    // send the URL that is being rendered to the client
+    InjectData.pushData(res, 'url', req.url);
 
     if (options.postRender) {
       options.postRender(req, res);
