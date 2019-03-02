@@ -1,4 +1,5 @@
-import { createError } from 'apollo-errors';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 /*
 
@@ -9,8 +10,8 @@ const getFirstWord = input => {
   const parts = /"([^"]*)"/.exec(input);
   if (parts === null) {
     return null;
-   }
-   return parts[1];
+  }
+  return parts[1];
 };
 
 /* 
@@ -27,7 +28,6 @@ In field "addresses": Expected "[JSON]!", found null."
 */
 
 const parseErrorMessage = message => {
-
   // note: optionally add .slice(1) at the end to get rid of the first error, which is not that helpful
   let fieldErrors = message.split('\n');
 
@@ -35,7 +35,7 @@ const parseErrorMessage = message => {
     // field name is whatever is between the first to double quotes
     const fieldName = getFirstWord(error);
     if (error.includes('found null')) {
-      // missing field errors 
+      // missing field errors
       return {
         id: 'errors.required',
         path: fieldName,
@@ -45,8 +45,8 @@ const parseErrorMessage = message => {
       };
     } else {
       // other generic GraphQL errors
-      return { 
-        message: error
+      return {
+        message: error,
       };
     }
   });
@@ -71,19 +71,21 @@ Scenario 4: single GraphQL error with no data property
 */
 export const getErrors = error => {
 
-  // 1. wrap in array
+  // 1. by default, return raw error wrapped in array
   let errors = [error];
+
   // if this is one or more GraphQL errors, extract and convert them
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+    // get first graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
     const graphQLError = error.graphQLErrors[0];
-    if (graphQLError.data && !_.isEmpty(graphQLError.data)) {
-      if (graphQLError.data.errors) {
+    const data = get(graphQLError, 'extensions.exception.data')
+    if (data && !isEmpty(data)) {
+      if (data.errors) {
         // 2. there are multiple errors on the data.errors object
-        errors = graphQLError.data && graphQLError.data.errors;
+        errors = data.errors;
       } else {
         // 3. there is only one error
-        errors = [graphQLError.data];
+        errors = [data];
       }
     } else {
       // 4. there is no data object, try to parse raw error message
@@ -91,19 +93,4 @@ export const getErrors = error => {
     }
   }
   return errors;
-};
-
-/*
-
-An error should have: 
-
-- id: will be used as i18n key (note: available as `name` on the client)
-- message: optionally, a plain-text message
-- data: data/values to give more context to the error
-
-*/
-export const throwError = error => {
-  const { id, message = id, data } = error;
-  const MissingDocumentError = createError(id, { message });
-  throw new MissingDocumentError({ id, data });
 };

@@ -40,7 +40,7 @@ import {
 } from '../modules/validation.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
-import { throwError } from '../modules/errors.js';
+import { throwError } from './errors.js';
 import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
 import clone from 'lodash/clone';
