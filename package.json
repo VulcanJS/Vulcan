@@ -27,7 +27,7 @@
     "apollo-cache-inmemory": "^1.4.2",
     "apollo-client": "2.4.12",
     "apollo-engine": "1.1.2",
-    "apollo-errors": "^1.4.0",
+    "apollo-errors": "^1.9.0",
     "apollo-link-error": "^1.1.5",
     "apollo-link-schema": "^1.1.1",
     "apollo-link-state": "^0.4.2",

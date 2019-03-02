@@ -221,7 +221,9 @@ class SmartForm extends Component {
 
   */
   getData = customArgs => {
+    // we want to keep prefilled data even for hidden/removed fields
     const args = {
+      excludeRemovedFields: false,
       excludeHiddenFields: false,
       replaceIntlFields: true,
       addExtraFields: false,
@@ -324,6 +326,7 @@ class SmartForm extends Component {
     const {
       schema = this.state.schema,
       excludeHiddenFields = true,
+      excludeRemovedFields = true,
       replaceIntlFields = false,
       addExtraFields = true
     } = args0;
@@ -339,9 +342,12 @@ class SmartForm extends Component {
     }
 
     // if "hideFields" prop is specified, remove its fields
-    const removeFields = this.props.hideFields || this.props.removeFields;
-    if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
-      relevantFields = _.difference(relevantFields, removeFields);
+    if (excludeRemovedFields) {
+      // OpenCRUD backwards compatibility
+      const removeFields = this.props.removeFields || this.props.hideFields;
+      if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
+        relevantFields = _.difference(relevantFields, removeFields);
+      }
     }
 
     // if "addFields" prop is specified, add its fields
@@ -1048,7 +1054,7 @@ class SmartForm extends Component {
           <FormComponents.FormGroup {...this.getFormGroupProps(group)} />
         ))}
 
-        {this.props.repeatErrors && this.renderErrors()}
+        {this.props.repeatErrors && <FormComponents.FormErrors {...this.getFormErrorsProps()} />}
 
         <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
       </FormComponents.FormElement>

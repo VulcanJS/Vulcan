@@ -1,5 +1,21 @@
 #!/usr/bin/env node
 
+/*
+
+### Usage
+
+Place Vulcan's package.json in .vulcan/package.json and run meteor npm run update-package-json form your project's folder.
+
+You'll have to manually manage breaking updates (example, from ^2.0.1 to ^3.0.2).
+
+### Features
+
+- makes a backup of the project's package.json
+- only merges dependencies, devDependencies and peerDependencies
+- if full merge is successful, shows a list of updated versions
+- will store vulcanVersion in package.json for future updates
+
+*/
 
 var fs = require('fs');
 var mergePackages = require('@userfrosting/merge-package-dependencies');
