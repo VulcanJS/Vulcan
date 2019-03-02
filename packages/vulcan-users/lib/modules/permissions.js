@@ -173,6 +173,8 @@ Users.isAdmin = function (userOrUserId) {
 };
 Users.isAdminById = Users.isAdmin;
 
+export const isAdmin = Users.isAdmin;
+
 /**
  * @summary Check if a user can view a field
  * @param {Object} user - The user performing the action

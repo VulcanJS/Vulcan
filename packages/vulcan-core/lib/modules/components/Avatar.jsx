@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Users from 'meteor/vulcan:users';
+import { getDisplayName, avatar as avatarUtility, getProfileUrl } from 'meteor/vulcan:users';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
@@ -12,17 +12,17 @@ const Avatar = ({ className, user, link, fallback }) => {
   if (!user) {
     return <div className={avatarClassNames}>{fallback}</div>;
   }
-  const avatarUrl = user.avatarUrl || Users.avatar.getUrl(user);
+  const avatarUrl = user.avatarUrl || avatarUtility.getUrl(user);
 
-  const img = <img alt={Users.getDisplayName(user)} className="avatar-image" src={avatarUrl} title={user.username} />;
-  const initials = <span className="avatar-initials"><span>{Users.avatar.getInitials(user)}</span></span>;
+  const img = <img alt={getDisplayName(user)} className="avatar-image" src={avatarUrl} title={user.username} />;
+  const initials = <span className="avatar-initials"><span>{avatarUtility.getInitials(user)}</span></span>;
 
   const avatar = avatarUrl ? img : initials;
 
   return (
     <div className={avatarClassNames}>
       {link ?
-        <Link to={Users.getProfileUrl(user)}>
+        <Link to={getProfileUrl(user)}>
           <span>{avatar}</span>
         </Link>
         : <span>{avatar}</span>

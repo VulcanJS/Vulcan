@@ -342,3 +342,5 @@ Users.avatar = {
 
 // This will be replaced if the user calls setOptions in their own code
 Users.avatar.setOptions({});
+
+export const avatar = Users.avatar;

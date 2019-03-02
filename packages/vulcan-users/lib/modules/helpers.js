@@ -57,6 +57,7 @@ Users.getDisplayName = function(user) {
 Users.getDisplayNameById = function(userId) {
   return Users.getDisplayName(Users.findOne(userId));
 };
+export const getDisplayName = Users.getDisplayName;
 
 /**
  * @summary Get a user's profile URL
@@ -75,6 +76,7 @@ Users.getProfileUrl = function(user, isAbsolute) {
     return '';
   }
 };
+export const getProfileUrl = Users.getProfileUrl;
 
 /**
  * @summary Get a user's account edit URL
