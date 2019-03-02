@@ -2,12 +2,12 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const EditButton = ({ style = 'primary', size, showId, modalProps, ...props }, { intl }) => (
+const EditButton = ({ style = 'primary', label, size, showId, modalProps, ...props }, { intl }) => (
   <Components.ModalTrigger
-    label={intl.formatMessage({ id: 'datatable.edit' })}
+    label={label || intl.formatMessage({ id: 'datatable.edit' })}
     component={
       <Components.Button size={size} variant={style}>
-        <FormattedMessage id="datatable.edit" />
+        {label || <FormattedMessage id="datatable.edit" />}
       </Components.Button>
     }
     modalProps={modalProps}
