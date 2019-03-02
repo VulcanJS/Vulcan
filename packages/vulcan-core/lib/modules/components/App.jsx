@@ -159,11 +159,7 @@ class App extends PureComponent {
   };
 
   getChildContext() {
-    const messages = Strings[this.getLocale()] || {};
-    const intlProvider = new IntlProvider({ locale: this.getLocale() }, messages);
-    const { intl } = intlProvider.getChildContext();
     return {
-      intl: intl,
       getLocale: this.getLocale,
       setLocale: this.setLocale,
     };

@@ -64,6 +64,7 @@ export default class IntlProvider extends Component {
         formatLabel: this.formatLabel,
         formatHTMLMessage: this.formatStuff,
         now: this.formatStuff,
+        locale: this.props.locale,
       },
     };
   }
