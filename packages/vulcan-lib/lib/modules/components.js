@@ -83,7 +83,7 @@ export const getComponent = name => {
   if (!component) {
     throw new Error(`Component ${name} not registered.`);
   }
-  if (component.hocs) {
+  if (component.hocs && component.hocs.length) {
     const hocs = component.hocs.map(hoc => {
       if (!Array.isArray(hoc)) {
         if (typeof hoc !== 'function') {
