@@ -49,10 +49,11 @@ export class AccountsField extends PureComponent {
       type = 'text',
       onChange,
       required = false,
-      className = 'field',
       defaultValue = '',
       message,
     } = this.props;
+    let { className = 'field' } = this.state;
+    
     const { mount = true } = this.state;
     if (type == 'notice') {
       return <div className={ className }>{ label }</div>;
