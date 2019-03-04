@@ -43,7 +43,6 @@ class Group {
  description: 'My awesome group' // optional
  }
 
- if there there is value for parentRouteName it will look for the route and add the new route as a child of it
  */
 export const createGroup = (groupOrGroupArray, parentRouteName) => {
 
