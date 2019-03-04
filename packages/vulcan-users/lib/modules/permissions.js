@@ -11,9 +11,12 @@ Users.groups = {};
  * @summary Group class
  */
 class Group {
-  
-  constructor() {
+
+  constructor(name, label, description) {
     this.actions = [];
+    this.name = name;
+    this.label = label;
+    this.description = description;
   }
 
   can(actions) {
@@ -32,12 +35,34 @@ class Group {
 // Helpers        //
 ////////////////////
 
+/*
+ A route is defined in the list like:
+ RoutesTable.foobar = {
+ name: 'foobar',
+ path: '/xyz',
+ component: getComponent('FooBar')
+ componentName: 'FooBar' // optional
+ }
+
+ if there there is value for parentRouteName it will look for the route and add the new route as a child of it
+ */
+export const createGroup = (groupOrGroupArray, parentRouteName) => {
+
+  // be sure to have an array of routes to manipulate
+  const addedGroups = Array.isArray(groupOrGroupArray) ? groupOrGroupArray : [groupOrGroupArray];
+
+  // modify the users collection with the new routes
+  addedGroups.map(({name, label, description, ...properties}) => {
+    Users.createGroup(name, label, description);
+  });
+};
+
 /**
  * @summary create a new group
  * @param {String} groupName
  */
-Users.createGroup = groupName => {
-  Users.groups[groupName] = new Group();
+Users.createGroup = (name, label, description) => {
+  Users.groups[name] = new Group(name, label, description);
 };
 
 /**
@@ -51,15 +76,15 @@ Users.getGroups = user => {
   if (!user) { // guests user
 
     userGroups = ['guests'];
-  
+
   } else {
-  
+
     userGroups = ['members'];
 
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
-    } 
-    
+    }
+
     if (Users.isAdmin(user)) { // admin
       userGroups.push('admins');
     }
@@ -90,7 +115,7 @@ Users.getActions = user => {
 
 /**
  * @summary check if a user is a member of a group
- * @param {Array} user 
+ * @param {Array} user
  * @param {String} group or array of groups
  */
 Users.isMemberOf = (user, groupOrGroups) => {
@@ -123,7 +148,7 @@ Users.canDo = (user, actionOrActions) => {
 //   // note(apollo): use of `__typename` given by react-apollo
 //   //const collectionName = document.getCollectionName();
 //   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
-  
+
 //   if (!user || !document) {
 //     return false;
 //   }
@@ -196,7 +221,7 @@ export const isAdmin = Users.isAdmin;
    }
    return false;
  };
- 
+
 /**
  * @summary Get a list of fields viewable by a user
  * @param {Object} user - The user performing the action
@@ -234,18 +259,18 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
     // get array of all keys viewable by user
     const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
     const restrictedDocument = _.clone(document);
-    
+
     // loop over each property in the document and delete it if it's not viewable
     _.forEach(restrictedDocument, (value, key) => {
       if (!viewableKeys.includes(key)) {
         delete restrictedDocument[key];
       }
     });
-  
+
     return restrictedDocument;
-  
+
   };
-  
+
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 
 };
@@ -309,11 +334,11 @@ Users.createGroup('guests'); // non-logged-in users
 Users.createGroup('members'); // regular users
 
 const membersActions = [
-  'user.create', 
-  'user.update.own', 
+  'user.create',
+  'user.update.own',
   // OpenCRUD backwards compatibility
-  'users.new', 
-  'users.edit.own', 
+  'users.new',
+  'users.edit.own',
   'users.remove.own',
 ];
 Users.groups.members.can(membersActions);
@@ -321,12 +346,12 @@ Users.groups.members.can(membersActions);
 Users.createGroup('admins'); // admin users
 
 const adminActions = [
-  'user.create', 
+  'user.create',
   'user.update.all',
   'user.delete.all',
   'setting.update',
   // OpenCRUD backwards compatibility
-  'users.new', 
+  'users.new',
   'users.edit.all',
   'users.remove.all',
   'settings.edit',
