@@ -36,12 +36,11 @@ class Group {
 ////////////////////
 
 /*
- A route is defined in the list like:
- RoutesTable.foobar = {
+ A group is defined in the list like:
+ Users.groups[foobar] = {
  name: 'foobar',
- path: '/xyz',
- component: getComponent('FooBar')
- componentName: 'FooBar' // optional
+ label: 'Foobar', // optional
+ description: 'My awesome group' // optional
  }
 
  if there there is value for parentRouteName it will look for the route and add the new route as a child of it
