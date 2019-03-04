@@ -44,12 +44,12 @@ class Group {
  }
 
  */
-export const createGroup = (groupOrGroupArray, parentRouteName) => {
+export const createGroup = (groupOrGroupArray) => {
 
-  // be sure to have an array of routes to manipulate
+  // be sure to have an array of groups to manipulate
   const addedGroups = Array.isArray(groupOrGroupArray) ? groupOrGroupArray : [groupOrGroupArray];
 
-  // modify the users collection with the new routes
+  // modify the users collection with the new groups
   addedGroups.map(({name, label, description, ...properties}) => {
     Users.createGroup(name, label, description);
   });
