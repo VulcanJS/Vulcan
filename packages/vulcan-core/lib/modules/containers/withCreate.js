@@ -44,7 +44,7 @@ const withCreate = options => {
   `;
 
   const withHandlersOptions = {
-    [`create${typeName}`]: ({ mutate }) => args => {
+    [`create${typeName}`]: ({ mutate, ownProps }) => args => {
       const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { data } = args;
       return mutate({
@@ -52,10 +52,11 @@ const withCreate = options => {
       });
     },
     // OpenCRUD backwards compatibility
-    newMutation: ({mutate}) => args => {
+    newMutation: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { document } = args;
       return mutate({
-        variables: { data: document }
+        variables: { data: document, ...extraVariables}
       });
     }
   }    
