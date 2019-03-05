@@ -40,6 +40,11 @@ export const addCallback = function (hook, callback) {
   }
 
   Callbacks[hook].push(callback);
+  
+  if (Callbacks[hook].length > 10) {
+    // eslint-disable-next-line no-console
+    console.log(`Warning: Excessively many hooks (${Callback[hooks].length}) on callback ${callback}.`);
+  }
 };
 
 /**
@@ -259,10 +264,20 @@ let pendingCallbacks = {};
 // `markCallbackStarted`.
 let pendingCallbackKey = 0;
 
+// Count of the number of outstanding callbacks. Used to check that this isn't
+// leaking.
+let numCallbacksPending = 0;
+
 // When starting an async callback, assign it an ID, record the fact that it's
 // running, and return the ID.
 function markCallbackStarted(description)
 {
+  if (numCallbacksPending > 1000) {
+    // eslint-disable-next-line no-console
+    console.log(`Warning: Excessively many background callbacks running (numCallbacksPending=${numCallbacksPending})`);
+  }
+  numCallbacksPending++;
+  
   if (pendingCallbackKey >= Number.MAX_SAFE_INTEGER)
     pendingCallbackKey = 0;
   else
@@ -274,6 +289,7 @@ function markCallbackStarted(description)
 // Record the fact that an async callback with the given ID has finished.
 function markCallbackFinished(id)
 {
+  numCallbacksPending--;
   delete pendingCallbacks[id];
 }
 
