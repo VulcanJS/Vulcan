@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
 
 /*
 
@@ -11,5 +11,13 @@ An error should have:
 */
 export const throwError = error => {
   const { id, } = error;
-  throw new ApolloError(id, 'VALIDATION_ERROR', error);
+  throw new GraphQLError(
+    id,
+    null,
+    null,
+    null,
+    null,
+    null,
+    error
+  );
 };
