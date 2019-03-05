@@ -31,6 +31,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { compose, withHandlers } from 'recompose';
 
 const withDelete = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -42,27 +43,30 @@ const withDelete = options => {
     ${fragment}
   `;
 
-  return graphql(query, {
-    alias: `withDelete${typeName}`,
-    props: ({ ownProps, mutate }) => ({
-      [`delete${typeName}`]: args => {
-        const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
-        const { selector } = args;
-        return mutate({
-          variables: { selector, ...extraVariables }
-        });
-      },
+  const withHandlersOptions = {
+    [`delete${typeName}`]: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const { selector } = args;
+      return mutate({
+        variables: { selector, ...extraVariables }
+      });
+    },
+    // OpenCRUD backwards compatibility
+    removeMutation: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const { documentId } = args;
+      const selector = { documentId };
+      return mutate({
+        variables: { selector, ...extraVariables }
+      });
+    },
+  }    
 
-      // OpenCRUD backwards compatibility
-      removeMutation: args => {
-        const { documentId } = args;
-        const selector = { documentId };
-        return mutate({
-          variables: { selector }
-        });
-      }
-    })
-  });
+  // wrap component with graphql HoC
+  return compose(
+    graphql(query, {alias: `withDelete${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
 };
 
 export default withDelete;

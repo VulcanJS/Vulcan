@@ -31,6 +31,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
+import { compose, withHandlers } from 'recompose';
 
 const withCreate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -42,26 +43,29 @@ const withCreate = options => {
     ${fragment}
   `;
 
+  const withHandlersOptions = {
+    [`create${typeName}`]: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const { data } = args;
+      return mutate({
+        variables: { data, ...extraVariables }
+      });
+    },
+    // OpenCRUD backwards compatibility
+    newMutation: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const { document } = args;
+      return mutate({
+        variables: { data: document, ...extraVariables}
+      });
+    }
+  }    
+
   // wrap component with graphql HoC
-  return graphql(query, {
-    alias: `withCreate${typeName}`,
-    props: ({ ownProps, mutate }) => ({
-      [`create${typeName}`]: args => {
-        const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
-        const { data } = args;
-        return mutate({
-          variables: { data, ...extraVariables }
-        });
-      },
-      // OpenCRUD backwards compatibility
-      newMutation: args => {
-        const { document } = args;
-        return mutate({
-          variables: { data: document }
-        });
-      }
-    })
-  });
+  return compose(
+    graphql(query, {alias: `withCreate${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
 };
 
 export default withCreate;
