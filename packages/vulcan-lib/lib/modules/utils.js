@@ -14,7 +14,6 @@ import { getCollection } from './collections.js';
 import set from 'lodash/set';
 import get from 'lodash/get';
 import isFunction from 'lodash/isFunction';
-import { throwError } from './errors.js';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -487,18 +486,6 @@ Utils.findWhere = (array, criteria) => array.find(item => Object.keys(criteria).
 Utils.defineName = (o, name) => {
   Object.defineProperty(o, 'name', { value: name });
   return o;
-};
-
-Utils.performCheck = (operation, user, checkedObject, context, documentId, operationName, collectionName) => {
-
-  if (!checkedObject) {
-    throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
-  }
-
-  if (!operation(user, checkedObject, context)) {
-    throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
-  }
-
 };
 
 Utils.getRoutePath = routeName => {
