@@ -35,19 +35,20 @@ import { compose, withHandlers } from 'recompose';
 
 const withCreate = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${createClientTemplate({ typeName, fragmentName })}
+    ${createClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
   const withHandlersOptions = {
     [`create${typeName}`]: ({ mutate }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { data } = args;
       return mutate({
-        variables: { data }
+        variables: { data, ...extraVariables }
       });
     },
     // OpenCRUD backwards compatibility

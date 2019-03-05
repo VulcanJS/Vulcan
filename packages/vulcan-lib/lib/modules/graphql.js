@@ -28,6 +28,11 @@ const getGraphQLType = (schema, fieldName, isInput = false) => {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
   }
 
+  // LESSWRONG: Add optional property to override default input type generation
+  if (isInput && field.inputType) {
+    return field.inputType
+  }
+
   switch (typeName) {
 
     case 'String':

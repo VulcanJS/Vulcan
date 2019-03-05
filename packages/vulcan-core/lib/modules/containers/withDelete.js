@@ -35,27 +35,29 @@ import { compose, withHandlers } from 'recompose';
 
 const withDelete = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${deleteClientTemplate({ typeName, fragmentName })}
+    ${deleteClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
   const withHandlersOptions = {
-    [`delete${typeName}`]: ({ mutate }) => args => {
+    [`delete${typeName}`]: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { selector } = args;
       return mutate({
-        variables: { selector }
+        variables: { selector, ...extraVariables }
       });
     },
     // OpenCRUD backwards compatibility
-    removeMutation: ({ mutate }) => args => {
+    removeMutation: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { documentId } = args;
       const selector = { documentId };
       return mutate({
-        variables: { selector }
+        variables: { selector, ...extraVariables }
       });
     },
   }    

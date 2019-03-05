@@ -37,32 +37,34 @@ import { extractCollectionInfo, extractFragmentInfo } from './handleOptions';
 
 const withUpsert = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { fragmentName, fragment, extraVariablesString } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
   const query = gql`
-    ${upsertClientTemplate({ typeName, fragmentName })}
+    ${upsertClientTemplate({ typeName, fragmentName, extraVariablesString })}
     ${fragment}
   `;
 
   const withHandlersOptions = {
-    [`upsert${typeName}`]: ({ mutate }) => args => {
+    [`upsert${typeName}`]: ({ mutate, ownProps }) => args => {
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const { selector, data } = args;
       return mutate({
-        variables: { selector, data }
+        variables: { selector, data, ...extraVariables }
         // note: updateQueries is not needed for editing documents
       });
     },
     // OpenCRUD backwards compatibility
-    upsertMutation: ({ mutate }) => args => {
+    upsertMutation: ({ mutate, ownProps }) => args => {
       const { selector, set, unset } = args;
+      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
       const data = clone(set);
       unset &&
         Object.keys(unset).forEach(fieldName => {
           data[fieldName] = null;
         });
       return mutate({
-        variables: { selector, data }
+        variables: { selector, data, ...extraVariables }
         // note: updateQueries is not needed for editing documents
       });
     }

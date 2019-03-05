@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
 import moment from 'moment';
 import { RoutePolicy } from 'meteor/routepolicy';
+import { SplitComponentCollector, SplitComponentWrapper } from '../modules/splitComponents';
 
 import { withRenderContextEnvironment, InjectData } from 'meteor/vulcan:lib';
 
@@ -53,6 +54,13 @@ function generateSSRData(options, req, res, renderProps) {
       app = options.wrapperHook(req, res, appGenerator);
     }
 
+    let splitComponentCollector;
+    if (!options.disableSSR) {
+      splitComponentCollector = new SplitComponentCollector();
+      app = <SplitComponentWrapper collector={splitComponentCollector}>
+          {app}
+      </SplitComponentWrapper>
+    }
     if (options.preRender) {
       options.preRender(req, res, app);
     }
@@ -60,10 +68,13 @@ function generateSSRData(options, req, res, renderProps) {
     if (!options.disableSSR) {
       const sheet = new ServerStyleSheet();
       const time = new Date()
+      
       html = renderToString(sheet.collectStyles(app));
       const postTime = new Date() - time
       console.log("renderToString time: ", postTime) // eslint-disable-line no-console
       styledComponentCss = sheet.getStyleTags();
+      
+      InjectData.pushData(res, 'splitComponents', splitComponentCollector.getUsedComponents());
     } else if (options.loadingScreen) {
       html = options.loadingScreen;
     }
@@ -75,6 +86,9 @@ function generateSSRData(options, req, res, renderProps) {
 
     // send server timezone to client
     InjectData.pushData(res, 'utcOffset', moment().utcOffset());
+    
+    // send the URL that is being rendered to the client
+    InjectData.pushData(res, 'url', req.url);
 
     if (options.postRender) {
       options.postRender(req, res);
@@ -92,7 +106,7 @@ function generateSSRData(options, req, res, renderProps) {
 
 function sendSSRHtml(options, req, res, next, renderProps) {
   const { css, html, styledComponentCss } = generateSSRData(options, req, res, renderProps);
-
+  
   req.dynamicHead = req.dynamicHead || '';
   req.dynamicBody = req.dynamicBody || '';
 

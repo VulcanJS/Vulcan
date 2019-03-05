@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import { CookiesProvider } from 'react-cookie';
+import { SplitComponentCollector, SplitComponentWrapper } from '../modules/splitComponents';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -72,7 +73,16 @@ Meteor.startup(() => {
           return !(nextRouterProps.location.action === 'REPLACE' || !prevRouterProps);
         }))
       }));
-      return <ApolloProvider store={store} client={apolloClient}><CookiesProvider>{app}</CookiesProvider></ApolloProvider>;
+      const splitComponentCollector = new SplitComponentCollector();
+      return (
+        <SplitComponentWrapper collector={splitComponentCollector}>
+        <ApolloProvider store={store} client={apolloClient}>
+        <CookiesProvider>
+          {app}
+        </CookiesProvider>
+        </ApolloProvider>
+        </SplitComponentWrapper>
+      );
     },
   };
 

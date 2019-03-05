@@ -13,6 +13,17 @@ const wrapAsync = (Meteor.wrapAsync)? Meteor.wrapAsync : Meteor._wrapAsync;
 
 registerSetting('maxDocumentsPerRequest', 5000, 'Maximum documents per request');
 
+// When used in a view, set the query so that it returns rows where a field is
+// null or is missing. Equivalent to a searech with mongo's `field:null`, except
+// that null can't be used this way within Vulcan views because it's ambiguous
+// between searching for null/missing, vs overriding the default view to allow
+// any value.
+export const viewFieldNullOrMissing = {nullOrMissing:true};
+
+// When used in a view, set the query so that any value for this field is
+// permitted, overriding constraints from the default view if they exist.
+export const viewFieldAllowAny = {allowAny:true};
+
 // will be set to `true` if there is one or more intl schema fields
 export let hasIntlFields = false;
 
@@ -220,8 +231,18 @@ export const createCollection = options => {
 
     // handle view option
     if (terms.view && collection.views[terms.view]) {
-      const view = collection.views[terms.view];
-      parameters = Utils.deepExtend(true, parameters, view(terms, apolloClient, context));
+      const viewFn = collection.views[terms.view];
+      const view = viewFn(terms, apolloClient, context)
+      let mergedParameters = Utils.deepExtend(true, parameters, view);
+
+      if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
+        // If both the default view and the selected view have sort options,
+        // don't merge them together; take the selected view's sort. (Otherwise
+        // they merge in the wrong order, so that the default-view's sort takes
+        // precedence over the selected view's sort.)
+        mergedParameters.options.sort = view.options.sort;
+      }
+      parameters = mergedParameters;
     }
 
     // iterate over posts.parameters callbacks
@@ -260,7 +281,14 @@ export const createCollection = options => {
 
     // remove any null fields (setting a field to null means it should be deleted)
     _.keys(parameters.selector).forEach(key => {
-      if (parameters.selector[key] === null) delete parameters.selector[key];
+      if (_.isEqual(parameters.selector[key], viewFieldNullOrMissing)) {
+        parameters.selector[key] = null;
+      } else if (_.isEqual(parameters.selector[key], viewFieldAllowAny)) {
+        delete parameters.selector[key];
+      } else if (parameters.selector[key] === null) {
+        //console.log(`Warning: Null key ${key} in query of collection ${collectionName} with view ${terms.view}.`);
+        delete parameters.selector[key];
+      }
     });
     if (parameters.options.sort) {
       _.keys(parameters.options.sort).forEach(key => {
