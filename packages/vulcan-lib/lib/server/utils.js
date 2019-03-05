@@ -1,5 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 import { Utils } from '../modules';
+import { throwError } from './errors.js';
 
 Utils.sanitize = function(s) {
   return sanitizeHtml(s, {
@@ -10,6 +11,18 @@ Utils.sanitize = function(s) {
       'tbody', 'tr', 'th', 'td', 'pre', 'img'
     ]
   });
+};
+
+Utils.performCheck = (operation, user, checkedObject, context, documentId, operationName, collectionName) => {
+
+  if (!checkedObject) {
+    throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
+  }
+
+  if (!operation(user, checkedObject, context)) {
+    throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
+  }
+
 };
 
 export { Utils };

@@ -175,7 +175,6 @@ export const schemaProperties = [
   'autoValue',
   'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
-  'profile', // profile: true means the field is shown on user profiles
   'form', // form placeholder
   'inputProperties', // form placeholder
   'control', // SmartForm control (String or React component)
@@ -183,9 +182,12 @@ export const schemaProperties = [
   'autoform', // legacy form placeholder; backward compatibility (not used anymore)
   'order', // position in the form
   'group', // form fieldset group
-  'onInsert', // field insert callback
-  'onEdit', // field edit callback
-  'onRemove', // field remove callback
+  'onCreate', // field insert callback
+  'onUpdate', // field edit callback
+  'onDelete', // field remove callback
+  'onInsert', // OpenCRUD backwards compatibility
+  'onEdit', // OpenCRUD backwards compatibility
+  'onRemove', // OpenCRUD backwards compatibility
   'canRead',
   'canCreate',
   'canUpdate',
