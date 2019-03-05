@@ -7,6 +7,8 @@ import { Meteor } from 'meteor/meteor';
 import { InjectData } from 'meteor/vulcan:lib';
 import { splitComponentRegistry } from '../modules/splitComponents';
 
+import * as Sentry from '@sentry/browser';
+
 const getDataPromisified = (name) => {
   return new Promise((resolve, reject)=> {
     try {
@@ -49,6 +51,12 @@ export const RouterClient = {
         }
 
         document.body.appendChild(rootElement);
+      }
+      
+      let serverUrl = await getDataPromisified('url');
+      if (serverUrl && serverUrl !== window.location.pathname+(window.location.search||"")) {
+        //throw new Error(`RouterClient sees a URL mismatch: ${serverUrl} vs ${window.location.pathname}`);
+        Sentry.captureException(new Error(`RouterClient sees a URL mismatch: ${serverUrl} vs ${window.location.pathname}`));
       }
 
       // Rehydrate data client side, if desired.
