@@ -217,13 +217,14 @@ class SmartForm extends Component {
   Get a list of children-fields for a nested field.
 
   */
-  getChildFields = fieldName => this.props.fields.reduce((filtered, field) => {
-    const child = field.replace(new RegExp(`^${fieldName}\\.`), '');
-    if(child !== field)
-      return filtered ? filtered.push(child) : [child];
+  getChildFields = fieldName => this.props.fields && 
+        this.props.fields.reduce((filtered, field) => {
+          const child = field.replace(new RegExp(`^${fieldName}\\.`), '');
+          if(child !== field)
+            return filtered ? filtered.push(child) : [child];
 
-    return filtered;
-  }, null);
+          return filtered;
+        }, null);
 
   /*
 
