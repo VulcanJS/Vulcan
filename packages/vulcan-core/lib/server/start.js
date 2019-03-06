@@ -1,5 +1,5 @@
 import {Inject} from 'meteor/meteorhacks:inject-initial';
-import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import { SyncedCron } from 'meteor/littledata:synced-cron';
 import { getSetting, registerSetting } from 'meteor/vulcan:lib';
 
 registerSetting('mailUrl', null, 'The SMTP URL used to send out email');

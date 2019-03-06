@@ -1,6 +1,6 @@
 import { /*updateScore,*/ batchUpdateScore } from './scoring.js';
 import { VoteableCollections } from '../modules/make_voteable.js';
-import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import { SyncedCron } from 'meteor/littledata:synced-cron';
 
 // Setting voting.scoreUpdateInterval removed and replaced with a hard-coded
 // interval because the time-parsing library we use can't handle numbers of
