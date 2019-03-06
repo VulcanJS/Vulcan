@@ -214,6 +214,19 @@ class SmartForm extends Component {
 
   /*
 
+  Get a list of children-fields for a nested field.
+
+  */
+  getChildFields = fieldName => this.props.fields.reduce((filtered, field) => {
+    const child = field.replace(new RegExp(`^${fieldName}\\.`), '');
+    if(child !== field)
+      return filtered ? filtered.push(child) : [child];
+
+    return filtered;
+  }, null);
+
+  /*
+
   Like getDocument, but cross-reference with getFieldNames()
   to only return fields that actually need to be submitted
 
@@ -328,16 +341,18 @@ class SmartForm extends Component {
       excludeHiddenFields = true,
       excludeRemovedFields = true,
       replaceIntlFields = false,
-      addExtraFields = true
+      addExtraFields = true,      
     } = args0;
 
-    const { fields, addFields } = this.props;
+    let fields = args0.fields || this.props.fields;
+    
+    const { addFields } = this.props;
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields = this.getMutableFields(schema);
 
     // if "fields" prop is specified, restrict list of fields to it
-    if (typeof fields !== 'undefined' && fields.length > 0) {
+    if (fields !== '*' && typeof fields !== 'undefined' && fields.length > 0) {
       relevantFields = _.intersection(relevantFields, fields);
     }
 
@@ -477,7 +492,8 @@ class SmartForm extends Component {
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({
-        schema: field.nestedSchema
+        schema: field.nestedSchema,
+        fields: this.getChildFields(fieldName) || '*'
       }).map(subFieldName => {
         return this.createField(
           subFieldName,
