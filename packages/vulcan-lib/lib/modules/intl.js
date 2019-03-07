@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import { getSetting } from '../modules/settings';
 
 export const Strings = {};
 
@@ -15,7 +16,7 @@ export const addStrings = (language, strings) => {
 };
 
 export const getString = ({id, values, defaultMessage, locale}) => {
-  const messages = Strings[locale] || {};
+  const messages = Strings[locale] || Strings[defaultLocale] || {};
   let message = messages[id] || defaultMessage;
   if (message && values) {
     Object.keys(values).forEach(key => {
@@ -29,6 +30,8 @@ export const getString = ({id, values, defaultMessage, locale}) => {
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
 };
+
+export const defaultLocale = getSetting('locale', 'en');
 
 export const Locales = [];
 
