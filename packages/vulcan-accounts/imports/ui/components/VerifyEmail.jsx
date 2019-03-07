@@ -14,7 +14,7 @@ class AccountsVerifyEmail extends PureComponent {
   }
   
   componentDidMount() {
-    const token = this.props.params.token;
+    const token = this.props.match.params.token;
     Accounts.verifyEmail(token, (verifyEmailResult) => {
       if(verifyEmailResult && verifyEmailResult.error) {
         this.setState({
@@ -55,7 +55,7 @@ AccountsVerifyEmail.contextTypes = {
 
 AccountsVerifyEmail.propsTypes = {
   currentUser: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 AccountsVerifyEmail.displayName = 'AccountsEnrollAccount';
