@@ -6,6 +6,8 @@
 
 # Vulcan
 
+**Hacked and Updated version by Hiro98, used internally. Check commits for details.**
+
 [Version 1.11.2](https://github.com/VulcanJS/Vulcan/releases)
 
 Vulcan is a React+GraphQL framework for Meteor. 
