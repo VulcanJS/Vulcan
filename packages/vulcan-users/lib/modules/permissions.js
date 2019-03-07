@@ -35,31 +35,11 @@ class Group {
 // Helpers        //
 ////////////////////
 
-/*
- A group is defined in the list like:
- Users.groups[foobar] = {
- name: 'foobar',
- label: 'Foobar', // optional
- description: 'My awesome group' // optional
- }
-
- */
-export const createGroup = (groupOrGroupArray) => {
-
-  // be sure to have an array of groups to manipulate
-  const addedGroups = Array.isArray(groupOrGroupArray) ? groupOrGroupArray : [groupOrGroupArray];
-
-  // modify the users collection with the new groups
-  addedGroups.map(({name, label, description, ...properties}) => {
-    Users.createGroup(name, label, description);
-  });
-};
-
 /**
  * @summary create a new group
  * @param {String} groupName
  */
-Users.createGroup = (name, label, description) => {
+export const createGroup = Users.createGroup = ({ name, description, label }) => {
   Users.groups[name] = new Group(name, label, description);
 };
 
@@ -328,8 +308,8 @@ Users.canUpdateField = function (user, field, document) {
 /**
  * @summary initialize the 3 out-of-the-box groups
  */
-Users.createGroup('guests'); // non-logged-in users
-Users.createGroup('members'); // regular users
+createGroup('guests'); // non-logged-in users
+createGroup('members'); // regular users
 
 const membersActions = [
   'user.create',
@@ -341,7 +321,7 @@ const membersActions = [
 ];
 Users.groups.members.can(membersActions);
 
-Users.createGroup('admins'); // admin users
+createGroup('admins'); // admin users
 
 const adminActions = [
   'user.create',
