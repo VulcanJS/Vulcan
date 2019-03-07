@@ -48,7 +48,7 @@ const withUpdate = options => {
 
   const withHandlersOptions = {
     [`update${typeName}`]: ({ mutate, ownProps }) => args => {
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const { selector, data } = args;
       return mutate({
         variables: { selector, data, ...extraVariables }
@@ -57,7 +57,7 @@ const withUpdate = options => {
     },
     // OpenCRUD backwards compatibility
     editMutation: ({ mutate, ownProps }) => args => {
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const { documentId, set, unset } = args;
       const selector = { documentId };
       const data = clone(set);
