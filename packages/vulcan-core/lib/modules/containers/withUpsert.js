@@ -47,7 +47,7 @@ const withUpsert = options => {
 
   const withHandlersOptions = {
     [`upsert${typeName}`]: ({ mutate, ownProps }) => args => {
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const { selector, data } = args;
       return mutate({
         variables: { selector, data, ...extraVariables }
@@ -57,7 +57,7 @@ const withUpsert = options => {
     // OpenCRUD backwards compatibility
     upsertMutation: ({ mutate, ownProps }) => args => {
       const { selector, set, unset } = args;
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const data = clone(set);
       unset &&
         Object.keys(unset).forEach(fieldName => {

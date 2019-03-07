@@ -45,7 +45,7 @@ const withDelete = options => {
 
   const withHandlersOptions = {
     [`delete${typeName}`]: ({ mutate, ownProps }) => args => {
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const { selector } = args;
       return mutate({
         variables: { selector, ...extraVariables }
@@ -53,7 +53,7 @@ const withDelete = options => {
     },
     // OpenCRUD backwards compatibility
     removeMutation: ({ mutate, ownProps }) => args => {
-      const extraVariables = _.pick(ownProps, Object.keys(options.extraVariables || {}))  
+      const extraVariables = _.pick(ownProps || {}, Object.keys(options.extraVariables || {}))  
       const { documentId } = args;
       const selector = { documentId };
       return mutate({
