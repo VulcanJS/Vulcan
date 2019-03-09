@@ -28,7 +28,7 @@ export const getString = ({id, values, defaultMessage, locale}) => {
 
   // if default locale hasn't got the message too
   if(!message)
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}).\x1b[0m`);
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
 
   if (message && values) {
     Object.keys(values).forEach(key => {
