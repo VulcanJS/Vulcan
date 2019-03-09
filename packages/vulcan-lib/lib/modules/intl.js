@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
+import { debug } from 'meteor/vulcan:lib';
 
 export const Strings = {};
 
@@ -16,8 +17,19 @@ export const addStrings = (language, strings) => {
 };
 
 export const getString = ({id, values, defaultMessage, locale}) => {
-  const messages = Strings[locale] || Strings[defaultLocale] || {};
-  let message = messages[id] || defaultMessage;
+  const messages = Strings[locale] || {};
+  let message = messages[id];
+
+  // use default locale
+  if(!message) {
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}."\x1b[0m`);
+    message = Strings[defaultLocale] && Strings[defaultLocale][id];
+
+    // if default locale hasn't got the message too
+    if(!message)
+      debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
+  }
+
   if (message && values) {
     Object.keys(values).forEach(key => {
       // note: see replaceAll definition in vulcan:lib/utils
