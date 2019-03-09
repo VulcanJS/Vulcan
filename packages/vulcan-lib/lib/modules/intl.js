@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
 import { debug } from 'meteor/vulcan:lib';
+import { O_CREAT } from 'constants';
 
 export const Strings = {};
 
@@ -26,7 +27,7 @@ export const getString = ({id, values, defaultMessage, locale}) => {
     message = Strings[defaultLocale] && Strings[defaultLocale][id];
 
     // if default locale hasn't got the message too
-    if(!message)
+    if(!message && locale === defaultLocale)
       debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
   }
 
