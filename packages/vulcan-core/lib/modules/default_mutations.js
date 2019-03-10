@@ -112,7 +112,8 @@ export function getDefaultMutations(options) {
         const parameters = collection.getParameters(terms /* apolloClient */);
         const { selector, options } = parameters;
         let results = query.result;
-        const document = mutation.result.data[mutationName].data;
+        const document = mutation.result && mutation.result.data
+        && mutation.result.data[mutationName].data;
 
         if (belongsToSet(document, selector)) {
           if (!isInSet(results[multiResolverName], document)) {
@@ -224,7 +225,8 @@ export function getDefaultMutations(options) {
         const parameters = collection.getParameters(terms /* apolloClient */);
         const { selector, options } = parameters;
         let results = query.result;
-        const document = mutation.result.data[mutationName].data;
+        const document = mutation.result && mutation.result.data
+          && mutation.result.data[mutationName].data;
 
         if (belongsToSet(document, selector)) {
           // edited document belongs to the list
@@ -358,7 +360,9 @@ export function getDefaultMutations(options) {
     if (Meteor.isClient) {
       registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
         let results = query.result;
-        const document = mutation.result.data[mutationName].data;
+        const document = mutation.result && mutation.result.data
+          && mutation.result.data[mutationName].data;
+          
         results[multiResolverName] = removeFromSet(results[multiResolverName], document);
         results[multiResolverName].__typename = `Multi${typeName}Output`;
         // console.log('// delete')
