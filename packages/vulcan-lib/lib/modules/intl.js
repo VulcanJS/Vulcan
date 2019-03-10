@@ -1,7 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
 import { debug } from 'meteor/vulcan:lib';
-import { O_CREAT } from 'constants';
 
 export const Strings = {};
 
