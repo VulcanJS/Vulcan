@@ -65,6 +65,9 @@ export const createMutator = async ({
   // we don't want to modify the original document
   document = data || document;
 
+  // clean document
+  document = collection.simpleSchema().clean(document);
+
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
 
@@ -240,6 +243,9 @@ export const updateMutator = async ({
 }) => {
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
+
+  // clean data
+  data = collection.simpleSchema().clean(data);
 
   // OpenCRUD backwards compatibility
   selector = selector || { _id: documentId };
