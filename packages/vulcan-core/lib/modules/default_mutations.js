@@ -113,6 +113,7 @@ export function getDefaultMutations(options) {
         const { selector, options } = parameters;
         let results = query.result;
         const document = mutation.result && mutation.result.data
+        && mutation.result.data[mutationName]
         && mutation.result.data[mutationName].data;
 
         if (belongsToSet(document, selector)) {
@@ -226,7 +227,9 @@ export function getDefaultMutations(options) {
         const { selector, options } = parameters;
         let results = query.result;
         const document = mutation.result && mutation.result.data
+          && mutation.result.data[mutationName]
           && mutation.result.data[mutationName].data;
+
 
         if (belongsToSet(document, selector)) {
           // edited document belongs to the list
@@ -361,7 +364,9 @@ export function getDefaultMutations(options) {
       registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
         let results = query.result;
         const document = mutation.result && mutation.result.data
+          && mutation.result.data[mutationName]
           && mutation.result.data[mutationName].data;
+
           
         results[multiResolverName] = removeFromSet(results[multiResolverName], document);
         results[multiResolverName].__typename = `Multi${typeName}Output`;
