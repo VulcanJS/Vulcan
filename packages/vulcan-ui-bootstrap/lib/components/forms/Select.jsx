@@ -21,7 +21,7 @@ const SelectComponent = ({ refFunction, inputProperties, itemProperties, datatyp
     <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
       <Form.Control as="select" {...inputProperties} ref={refFunction}>
         {options.map((option, i) => (
-          <option key={i} {...option}>{option.value}</option>
+          <option key={i} {...option}>{option.label}</option>
         ))}
       </Form.Control>
     </Components.FormItem>
