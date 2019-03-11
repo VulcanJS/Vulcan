@@ -24,6 +24,7 @@ import {
 } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
@@ -112,10 +113,8 @@ export function getDefaultMutations(options) {
         const parameters = collection.getParameters(terms /* apolloClient */);
         const { selector, options } = parameters;
         let results = query.result;
-        const document = mutation.result && mutation.result.data
-        && mutation.result.data[mutationName]
-        && mutation.result.data[mutationName].data;
-
+        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
+        
         if (belongsToSet(document, selector)) {
           if (!isInSet(results[multiResolverName], document)) {
             // make sure document hasn't been already added as this may be called several times
@@ -226,11 +225,8 @@ export function getDefaultMutations(options) {
         const parameters = collection.getParameters(terms /* apolloClient */);
         const { selector, options } = parameters;
         let results = query.result;
-        const document = mutation.result && mutation.result.data
-          && mutation.result.data[mutationName]
-          && mutation.result.data[mutationName].data;
-
-
+        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
+        
         if (belongsToSet(document, selector)) {
           // edited document belongs to the list
           if (!isInSet(results[multiResolverName], document)) {
@@ -363,11 +359,8 @@ export function getDefaultMutations(options) {
     if (Meteor.isClient) {
       registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
         let results = query.result;
-        const document = mutation.result && mutation.result.data
-          && mutation.result.data[mutationName]
-          && mutation.result.data[mutationName].data;
+        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
 
-          
         results[multiResolverName] = removeFromSet(results[multiResolverName], document);
         results[multiResolverName].__typename = `Multi${typeName}Output`;
         // console.log('// delete')
