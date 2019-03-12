@@ -75,7 +75,8 @@ const initGraphQL = () => {
     resolvers: GraphQLSchema.resolvers,
     schemaDirectives: GraphQLSchema.directives,
   });
-  const mergedSchema = mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] });
+  // only call mergeSchemas if we actually have stitchedSchemas
+  const mergedSchema = GraphQLSchema.stitchedSchemas.length > 0 ? mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] }) : executableSchema;
 
   GraphQLSchema.finalSchema = typeDefs;
   GraphQLSchema.executableSchema = mergedSchema;
