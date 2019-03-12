@@ -578,7 +578,7 @@ const startDebugMutator = (name, action, properties) => {
   });
 };
 
-const endDebugMutator = (name, action, properties) => {
+const endDebugMutator = (name, action, properties = {}) => {
   Object.keys(properties).forEach(p => {
     debug(`// ${p}: `, properties[p]);
   });
