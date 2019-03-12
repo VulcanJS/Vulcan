@@ -18,6 +18,8 @@ const getFirstWord = input => {
 
 Parse a GraphQL error message
 
+TODO: check if still useful?
+
 Sample message: 
 
 "GraphQL error: Variable "$data" got invalid value {"meetingDate":"2018-08-07T06:05:51.704Z"}.
@@ -28,6 +30,11 @@ In field "addresses": Expected "[JSON]!", found null."
 */
 
 const parseErrorMessage = message => {
+
+  if (!message) {
+    return null;
+  }
+
   // note: optionally add .slice(1) at the end to get rid of the first error, which is not that helpful
   let fieldErrors = message.split('\n');
 
@@ -52,6 +59,7 @@ const parseErrorMessage = message => {
   });
   return fieldErrors;
 };
+
 /*
 
 Errors can have the following properties stored on their `data` property:
@@ -60,37 +68,17 @@ Errors can have the following properties stored on their `data` property:
   - properties: additional data. Will be passed to vulcan-i18n as values
   - message: if id cannot be used as i81n key, message will be used
   
-Scenario 1: normal error thrown with new Error(), put it in array and return it
-
-Scenario 2: multiple GraphQL errors stored on data.errors
-
-Scenario 3: single GraphQL error with data property
-
-Scenario 4: single GraphQL error with no data property
-
 */
 export const getErrors = error => {
 
-  // 1. by default, return raw error wrapped in array
-  let errors = [error];
+  const graphQLErrors = error.graphQLErrors;
+  
+  // error thrown using new ApolloError
+  const apolloErrors = get(graphQLErrors, '0.extensions.exception.data.errors');
 
-  // if this is one or more GraphQL errors, extract and convert them
-  if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    // get first graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-    const graphQLError = error.graphQLErrors[0];
-    const data = get(graphQLError, 'extensions.exception.data')
-    if (data && !isEmpty(data)) {
-      if (data.errors) {
-        // 2. there are multiple errors on the data.errors object
-        errors = data.errors;
-      } else {
-        // 3. there is only one error
-        errors = [data];
-      }
-    } else {
-      // 4. there is no data object, try to parse raw error message
-      errors = parseErrorMessage(graphQLError.message);
-    }
-  }
-  return errors;
+  // regular server error (with schema stitching)
+  const regularErrors = get(graphQLErrors, '0.extensions.exception.errors');
+
+  return apolloErrors || regularErrors || graphQLErrors;
+ 
 };

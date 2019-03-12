@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server';
+import { UserInputError } from 'apollo-server';
 
 /*
 
@@ -11,5 +11,5 @@ An error should have:
 */
 export const throwError = error => {
   const { id, } = error;
-  throw new ApolloError(id, 'VALIDATION_ERROR', error);
+  throw new UserInputError(id, error);
 };
