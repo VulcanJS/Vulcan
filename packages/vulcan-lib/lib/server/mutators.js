@@ -77,7 +77,7 @@ export const createMutator = async ({
   Note: keep newDocument for backwards compatibility
   
   */
-  const properties = { data, currentUser, collection, context, document, newDocument: document };
+  const properties = { data, currentUser, collection, context, document, newDocument: document, schema };
 
   /*
 
@@ -267,7 +267,7 @@ export const updateMutator = async ({
   Properties
 
   */
-  const properties = { data, oldDocument, document, currentUser, collection, context };
+  const properties = { data, oldDocument, document, currentUser, collection, context, schema };
 
   /*
 
@@ -467,7 +467,7 @@ export const deleteMutator = async ({
   Properties
 
   */
-  const properties = { document, currentUser, collection, context };
+  const properties = { document, currentUser, collection, context, schema };
 
   /*
 
