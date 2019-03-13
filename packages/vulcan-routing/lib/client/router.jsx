@@ -19,6 +19,12 @@ const getDataPromisified = (name) => {
   })
 }
 
+const sleep = (time) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), time)
+  })
+}
+
 export const RouterClient = {
   run(routes, options) {
     if (!options) {
@@ -31,6 +37,9 @@ export const RouterClient = {
       const attributes = options.rootElementAttributes instanceof Array ? options.rootElementAttributes : [];
       let rootElement = document.getElementById(rootElementName);
       
+      // We make sure to always wait here, since scrolling with a hash in the URL seems to only work when this method waits until
+      // the rest of the app is initialized (or something like that).
+      await sleep(0)
       // If there are split components specified, do them now and wait for them to load before initializing the Router
       const data = await getDataPromisified('splitComponents')
       await splitComponentRegistry.loadComponents(data)
