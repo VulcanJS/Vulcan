@@ -1,10 +1,10 @@
-# erikdakoda:vulcan-material-ui 1.12.8_13
+# vulcan:ui-material 1.12.8_13
+
+Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
+
 
 Replacement for [Vulcan](http://vulcanjs.org/) components using [Material-UI](https://material-ui.com/). 
-This version has been tested against Vulcan 1.12.8 and Material-UI 3.1.0.
 
-To give me feedback open an issue on GitHub or you can reach me on the [Vulcan Slack](https://vulcanjs.slack.com) 
-channel as erikdakoda.
 
 There are some nice bonus features like a CountrySelect with autocomplete and theming.
 
@@ -15,9 +15,9 @@ All components in vulcan:ui-bootstrap, vulcan:forms and vulcan:accounts have bee
 To add vulcan-material-ui to an existing Vulcan project, enter the following:
 
 ``` sh
-meteor add erikdakoda:vulcan-material-ui
+meteor add vulcan:ui-material
 
-meteor npm install --save @material-ui/core
+meteor npm install --save @material-ui/core@3.1.0
 meteor npm install --save react-jss
 meteor npm install --save mdi-material-ui
 meteor npm install --save react-autosuggest
@@ -48,7 +48,7 @@ For an example theme see `modules/sampleTheme.js`. For a complete list of values
 see the [MUI Default Theme](https://material-ui-next.com/customization/default-theme/). 
 
 Register your theme in the Vulcan environment by giving it a name: `registerTheme('MyTheme', theme);`. 
-You can have multiple themes registered and you can specify which one to use in your settings file using the `muiTheme` public setting.
+You can have multiple themes registered and you can specify which one to use in your settings file using the `muiTheme` **public** setting.
 
 In addition to the Material UI spec, I use a `utils` section in my themes where I place global variables for reusable styles. 
 For example the sample theme contains 

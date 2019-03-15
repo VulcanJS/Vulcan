@@ -73,11 +73,7 @@ const MuiRadioGroup = createReactClass({
     options: PropTypes.array.isRequired
   },
   
-  getInitialState: function () {
-    if (this.props.refFunction) {
-      this.props.refFunction(this);
-    }
-  },
+
   
   getDefaultProps: function () {
     return {

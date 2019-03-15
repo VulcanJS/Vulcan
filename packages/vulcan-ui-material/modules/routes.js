@@ -1,8 +1,10 @@
 import { addRoute } from 'meteor/vulcan:core';
 
-
-addRoute({
-  name: 'theme',
-  path: '/theme',
-  componentName: 'ThemeStyles',
-});
+//Only create route on dev mode, not production.
+if (Meteor.isDevelopment) {
+  addRoute({
+    name: 'theme',
+    path: '/theme',
+    componentName: 'ThemeStyles',
+  });
+}

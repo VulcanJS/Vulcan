@@ -4,30 +4,39 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import EditIcon from 'mdi-material-ui/Pencil';
 
-
-const EditButton = ({
-                      collection,
-                      document,
-                      color = 'default',
-                      variant,
-                      triggerClasses,
-                      buttonClasses,
-                      ...props
-                    }, { intl }) => (
-  
+const EditButton = (
+  {
+    collection,
+    document,
+    color = 'default',
+    variant,
+    triggerClasses,
+    buttonClasses,
+    showRemove,
+    ...props
+  },
+  { intl }
+) => (
   <Components.ModalTrigger
     classes={triggerClasses}
-    component={<Components.TooltipIconButton titleId="datatable.edit"
-                                             icon={<EditIcon/>}
-                                             color={color}
-                                             variant={variant}
-                                             classes={buttonClasses}
-    />}
+    component={
+      <Components.TooltipIconButton
+        titleId="datatable.edit"
+        icon={<EditIcon />}
+        color={color}
+        variant={variant}
+        classes={buttonClasses}
+      />
+    }
   >
-    <Components.EditForm collection={collection} document={document} {...props}/>
+    <Components.EditForm
+      collection={collection}
+      document={document}
+      showRemove={showRemove}
+      {...props}
+    />
   </Components.ModalTrigger>
 );
-
 
 EditButton.propTypes = {
   collection: PropTypes.object.isRequired,
@@ -36,27 +45,32 @@ EditButton.propTypes = {
   variant: PropTypes.string,
   triggerClasses: PropTypes.object,
   buttonClasses: PropTypes.object,
+  showRemove: PropTypes.bool
 };
-
 
 EditButton.contextTypes = {
   intl: intlShape
 };
 
-
 EditButton.displayName = 'EditButton';
 
-
 registerComponent('EditButton', EditButton);
-
 
 /*
 
 EditForm Component
 
 */
-const EditForm = ({ collection, document, closeModal, options, successCallback, removeSuccessCallback,...props }) => {
-  
+const EditForm = ({
+  collection,
+  document,
+  closeModal,
+  options,
+  successCallback,
+  removeSuccessCallback,
+  showRemove,
+  ...props
+}) => {
   const success = successCallback
     ? () => {
         successCallback();
@@ -70,17 +84,17 @@ const EditForm = ({ collection, document, closeModal, options, successCallback, 
         closeModal();
       }
     : closeModal;
-  
+
   return (
-  <Components.SmartForm
-    {...props}
-    collection={collection}
-    documentId={document && document._id}
-    showRemove={true}
-    successCallback={success}
-    removeSuccessCallback={remove}
-  />
-);
-}
+    <Components.SmartForm
+      {...props}
+      collection={collection}
+      documentId={document && document._id}
+      showRemove={showRemove ? true : showRemove}
+      successCallback={success}
+      removeSuccessCallback={remove}
+    />
+  );
+};
 
 registerComponent('EditForm', EditForm);

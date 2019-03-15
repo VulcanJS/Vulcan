@@ -74,63 +74,64 @@ const styles = theme => {
 };
 
 
-class Layout extends React.Component {
-  state = {
-    isOpen: { sideNav: true }
-  };
 
-  toggle = (item, openOrClose) => {
-    const newState = { isOpen: {} };
-    newState.isOpen[item] = typeof openOrClose === 'string' ?
-      openOrClose === 'open' :
-      !this.state.isOpen[item];
-    this.setState(newState);
-  };
+  class Layout extends React.Component {
+    state = {
+      isOpen: { sideNav: true }
+    };
 
-  render = () => {
-    const routeName = Utils.slugify(this.props.currentRoute.name);
-    const classes = this.props.classes;
-    const isOpen = this.state.isOpen;
+    toggle = (item, openOrClose) => {
+      const newState = { isOpen: {} };
+      newState.isOpen[item] = typeof openOrClose === 'string' ?
+        openOrClose === 'open' :
+        !this.state.isOpen[item];
+      this.setState(newState);
+    };
 
-    return (
-      <div className={classNames(classes.root, 'wrapper', `wrapper-${routeName}`)}>
-        <div className={classes.appFrame}>
+    render = () => {
+      const routeName = Utils.slugify(this.props.currentRoute.name);
+      const classes = this.props.classes;
+      const isOpen = this.state.isOpen;
 
-          <Components.Header isSideNavOpen={isOpen.sideNav}
-            toggleSideNav={openOrClose =>
-              this.toggle('sideNav', openOrClose)} />
+      return (
+        <div className={classNames(classes.root, 'wrapper', `wrapper-${routeName}`)}>
+          <div className={classes.appFrame}>
 
-          <Drawer variant="persistent"
-            classes={{ paper: classes.drawerPaper, }}
-            open={isOpen.sideNav}
-          >
-            <AppBar className={classes.drawerHeader} elevation={4} square={true}>
-              <Toolbar>
-              </Toolbar>
-            </AppBar>
-            <Components.SideNavigation />
-          </Drawer>
+            <Components.Header isSideNavOpen={isOpen.sideNav}
+              toggleSideNav={openOrClose =>
+                this.toggle('sideNav', openOrClose)} />
 
-          <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>
-            {this.props.children}
-          </main>
+            <Drawer variant="persistent"
+              classes={{ paper: classes.drawerPaper, }}
+              open={isOpen.sideNav}
+            >
+              <AppBar className={classes.drawerHeader} elevation={4} square={true}>
+                <Toolbar>
+                </Toolbar>
+              </AppBar>
+              <Components.SideNavigation />
+            </Drawer>
 
-          <Components.FlashMessages />
+            <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>
+              {this.props.children}
+            </main>
 
+            <Components.FlashMessages />
+
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
+  }
+
+
+  Layout.propTypes = {
+    classes: PropTypes.object.isRequired,
+    children: PropTypes.node,
   };
-}
 
 
-Layout.propTypes = {
-  classes: PropTypes.object.isRequired,
-  children: PropTypes.node,
-};
+  Layout.displayName = 'Layout';
 
 
-Layout.displayName = 'Layout';
-
-
-replaceComponent('Layout', Layout, [withStyles, styles]);
+  replaceComponent('Layout', Layout, [withStyles, styles]);

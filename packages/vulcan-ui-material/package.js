@@ -5,7 +5,6 @@ Package.describe({
   documentation: 'README.md'
 });
 
-
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.6');
 

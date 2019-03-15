@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -38,15 +38,14 @@ class SideNavigation extends React.Component {
   };
   
   render () {
-    const currentUser = this.props.currentUser;
-    const classes = this.props.classes;
+    const { currentUser, classes, history } = this.props;
     const isOpen = this.state.isOpen;
     
     return (
       <div className={classes.root}>
         
         <List>
-          <ListItem button onClick={() => {this.props.history.push('/');}}>
+          <ListItem button onClick={() => {history.push('/');}}>
             <ListItemIcon>
               <HomeIcon/>
             </ListItemIcon>
@@ -69,14 +68,14 @@ class SideNavigation extends React.Component {
               </ListItem>
               <Collapse in={isOpen.admin} transitionduration="auto" unmountOnExit>
                 <ListItem button className={classes.nested}
-                          onClick={() => {this.props.history.push('/admin');}}>
+                          onClick={() => {browserHistory.push('/admin');}}>
                   <ListItemIcon>
                     <UsersIcon/>
                   </ListItemIcon>
                   <ListItemText inset primary="Users"/>
                 </ListItem>
                 <ListItem button className={classes.nested}
-                          onClick={() => {this.props.history.push('/theme');}}>
+                          onClick={() => {browserHistory.push('/theme');}}>
                   <ListItemIcon>
                     <ThemeIcon/>
                   </ListItemIcon>

@@ -7,7 +7,7 @@ import './accounts/AccountsPasswordOrService';
 import './accounts/AccountsSocialButtons';
 
 import './bonus/LoadMore';
-import './bonus/SearchInput';
+// import './bonus/SearchInput';
 import './bonus/TooltipIntl';
 import './bonus/TooltipIconButton';
 
@@ -20,10 +20,11 @@ import './core/NewButton';
 
 import './forms/FormComponentInner';
 import './forms/FormErrors';
-import './forms/FormGroup';
+//import './forms/FormGroup';
 import './forms/FormGroupNone';
 import './forms/FormGroupWithLine';
 import './forms/FormNested';
+import './forms/FormNestedArrayLayout';
 import './forms/FormNestedDivider';
 import './forms/FormNestedFoot';
 import './forms/FormNestedHead';
