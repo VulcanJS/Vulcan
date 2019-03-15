@@ -20,6 +20,6 @@ Package.onUse(function (api) {
     'forms.css', 
   ], ['client', 'server']);
 
-  api.mainModule('client/main.js', 'client');
-  api.mainModule('server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
+  api.mainModule('lib/server/main.js', 'server');
 });
