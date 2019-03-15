@@ -70,7 +70,7 @@ const MuiInput = createReactClass({
   },
   
   changeValue: function (value) {
-    this.props.onChange(this.props.name, value);
+    this.props.onChange(value);
   },
   
   handleBlur: function (event) {
