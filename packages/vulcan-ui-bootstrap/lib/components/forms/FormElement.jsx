@@ -1,5 +1,5 @@
 // import React from 'react';
 import Form from 'react-bootstrap/Form';
-import { registerComponent } from 'meteor/vulcan:core';
+import { replaceComponent } from 'meteor/vulcan:core';
 
-registerComponent('FormElement', Form);
+replaceComponent('FormElement', Form);
