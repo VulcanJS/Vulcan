@@ -77,7 +77,7 @@ const MuiInput = createReactClass({
     const { type, value } = this.props;
     
     if (type === 'url' && !!value && value !== fixUrl(value)) {
-        this.changeValue(fixUrl(value))
+        this.changeValue(fixUrl(value));
     }
   },
   

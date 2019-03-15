@@ -31,8 +31,8 @@ class ScrollTrigger extends Component {
           supportsPassive = true;
         }
       });
-      window.addEventListener("testPassive", null, opts);
-      window.removeEventListener("testPassive", null, opts);
+      window.addEventListener('testPassive', null, opts);
+      window.removeEventListener('testPassive', null, opts);
       //eslint-disable-next-line no-empty
     } catch (e) {}
     return supportsPassive;

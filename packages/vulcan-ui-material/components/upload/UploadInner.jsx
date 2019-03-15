@@ -124,7 +124,7 @@ const UploadInner = (props) => {
               {uploading && (
                 <div className="upload-uploading">
                   <span>
-                    <FormattedMessage id={`upload.uploading`}/>
+                    <FormattedMessage id={'upload.uploading'}/>
                   </span>
                 </div>
               )}

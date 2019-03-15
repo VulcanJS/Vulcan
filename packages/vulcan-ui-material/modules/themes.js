@@ -37,7 +37,7 @@ export const registerTheme = (name, theme) => {
 export const getTheme = (name) => {
   const themeInfo = ThemesTable[name];
   if (!themeInfo) return null;
-  themeInfo.theme.typography = { ...themeInfo.theme.typography, useNextVariants: true }
+  themeInfo.theme.typography = { ...themeInfo.theme.typography, useNextVariants: true };
   return createMuiTheme(themeInfo.theme);
 };
 
@@ -53,7 +53,7 @@ export const getRawTheme = (name) => {
   const themeInfo = ThemesTable[name];
   if (!themeInfo) return null;
   return themeInfo.theme;
-}
+};
 
 /**
  * Get the theme specified in the 'muiTheme' setting

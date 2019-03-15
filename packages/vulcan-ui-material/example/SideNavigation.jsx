@@ -68,14 +68,14 @@ class SideNavigation extends React.Component {
               </ListItem>
               <Collapse in={isOpen.admin} transitionduration="auto" unmountOnExit>
                 <ListItem button className={classes.nested}
-                          onClick={() => {browserHistory.push('/admin');}}>
+                          onClick={() => {history.push('/admin');}}>
                   <ListItemIcon>
                     <UsersIcon/>
                   </ListItemIcon>
                   <ListItemText inset primary="Users"/>
                 </ListItem>
                 <ListItem button className={classes.nested}
-                          onClick={() => {browserHistory.push('/theme');}}>
+                          onClick={() => {history.push('/theme');}}>
                   <ListItemIcon>
                     <ThemeIcon/>
                   </ListItemIcon>
