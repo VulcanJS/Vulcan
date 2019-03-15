@@ -54,7 +54,7 @@
       "single",
       "avoid-escape"
     ],
-    "react/display-name": 2,
+    "react/display-name": 1,
     "react/prop-types": 0,
     "semi": [2, "always"]
   },
