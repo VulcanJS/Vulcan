@@ -56,7 +56,7 @@
     ],
     "react/display-name": 1,
     "react/prop-types": 0,
-    "semi": [2, "always"]
+    "semi": [1, "always"]
   },
   "env": {
     "browser": true,
