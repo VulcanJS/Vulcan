@@ -60,7 +60,7 @@ class ModalTrigger extends PureComponent {
     this.setState({ modalIsOpen: false });
   };
 
-  render () {
+  render() {
     const {
       className,
       dialogClassName,
@@ -92,35 +92,31 @@ class ModalTrigger extends PureComponent {
     const childrenComponent = typeof children.type === 'function' ?
       React.cloneElement(children, { closeModal: this.closeModal }) :
       children;
-
+      
     return (
       <span className={classNames('modal-trigger', classes.root, className)}>
-
         {triggerComponent}
-          <Dialog className={classNames(dialogClassName)}
-                  open={this.state.modalIsOpen}
-                  onClose={this.closeModal}
-                  fullWidth={true}
-                  classes={{ paper: classes.paper }}
-          >
-            <DialogTitle className={classes.dialogTitle}>
-              {title}
+        <Dialog className={classNames(dialogClassName)}
+                open={this.state.modalIsOpen}
+                onClose={this.closeModal}
+                fullWidth={true}
+                classes={{ paper: classes.paper }}
+        >
+          <DialogTitle className={classes.dialogTitle}>
+            {title}
+            <Components.Button iconButton aria-label="Close" className={classes.closeButton} onClick={this.closeModal}>
+              <Tooltip title={intl.formatMessage({ id: 'modal.close' })}>
+                <Close />
+              </Tooltip>
+            </Components.Button>
+          </DialogTitle>
 
-              <Components.Button iconButton aria-label="Close" className={classes.closeButton} onClick={this.closeModal}>
-                <Tooltip title={intl.formatMessage({ id: 'modal.close' })}>
-                  <Close />
-                </Tooltip>
-             </Components.Button>
-
-            </DialogTitle>
-
-            <DialogContent className={classes.dialogContent}>
-              <Components.ErrorCatcher>
-                {childrenComponent}
-              </Components.ErrorCatcher>
-            </DialogContent>
-          </Dialog>
-
+          <DialogContent className={classes.dialogContent}>
+            <Components.ErrorCatcher>
+              {childrenComponent}
+            </Components.ErrorCatcher>
+          </DialogContent>
+        </Dialog>
       </span>
     );
   }

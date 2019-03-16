@@ -39,14 +39,14 @@ const baseStyles = theme => ({
     alignItems: 'center',
   },
   addButton: {
-    position: 'absolute',
-    top: '-8px',
-    right: 0,
+    bottom: '2rem',
+    right: '2rem',
+    position: 'fixed',
+    top: 'auto',
   },
-  search: {
-    marginBottom: theme.spacing.unit * 8,
+  table: {
+    marginTop:0
   },
-  table: {},
   denseTable: {},
   denserTable: {},
   flatTable: {},
@@ -155,6 +155,7 @@ class Datatable extends PureComponent {
             <Components.SearchInput value={this.state.query}
                                     updateQuery={this.updateQuery}
                                     className={classes.search}
+                                    labelId={'datatable.search'}
             />
           }
           {
@@ -297,37 +298,41 @@ const DatatableContents = ({
   
   return (
     <React.Fragment>
-      {
-        title &&
+      { 
+        (title)?
         <Toolbar>
           <Typography variant="h6" id="tableTitle">
             title
           </Typography>
         </Toolbar>
+        :null
       }
       <Table className={classNames(classes.table, denseClass)}>
-        <TableHead className={classes.tableHead}>
-          <TableRow className={classes.tableRow}>
-            {
-              _.sortBy(columns, column => column.order).map(
-                (column, index) =>
-                  <Components.DatatableHeader key={index}
-                                              collection={collection}
-                                              intlNamespace={intlNamespace}
-                                              column={column}
-                                              classes={classes}
-                                              toggleSort={toggleSort}
-                                              currentSort={currentSort}
-                  />
-              )
-            }
-            {
-              (showEdit || editComponent) &&
-              
-              <TableCell className={classes.tableCell}/>
-            }
-          </TableRow>
-        </TableHead>
+        {
+          columns && 
+          <TableHead className={classes.tableHead}>
+            <TableRow className={classes.tableRow}>
+              {
+                _.sortBy(columns, column => column.order).map(
+                  (column, index) =>
+                    <Components.DatatableHeader key={index}
+                                                collection={collection}
+                                                intlNamespace={intlNamespace}
+                                                column={column}
+                                                classes={classes}
+                                                toggleSort={toggleSort}
+                                                currentSort={currentSort}
+                    />
+                )
+              }
+              {
+                (showEdit || editComponent) &&
+                
+                <TableCell className={classes.tableCell}/>
+              }
+            </TableRow>
+          </TableHead>
+        }
         
         {
           results &&
