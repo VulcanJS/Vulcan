@@ -13,11 +13,12 @@ Package.onUse(function (api) {
     'vulcan:core@1.12.8',
     'vulcan:accounts@1.12.8',
     'vulcan:forms@1.12.8',
+    'vulcan:errors@1.12.8',
   ]);
-  
+
   api.addFiles([
-    'accounts.css', 
-    'forms.css', 
+    'accounts.css',
+    'forms.css',
   ], ['client', 'server']);
 
   api.mainModule('lib/client/main.js', 'client');
