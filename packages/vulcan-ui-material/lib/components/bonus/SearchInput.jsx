@@ -5,11 +5,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SearchIcon from 'mdi-material-ui/Magnify';
 import ClearIcon from 'mdi-material-ui/CloseCircle';
 import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import NoSsr from '@material-ui/core/NoSsr';
 import classNames from 'classnames';
 import _debounce from 'lodash/debounce';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
-import autosizeInput from 'autosize-input';
 
 const styles = theme => ({
   
@@ -27,10 +27,7 @@ const styles = theme => ({
   },
   
   root: {
-    display: 'inline-flex',
-    backgroundColor: theme.palette.common.faintBlack,
-    borderRadius: 20,
-    padding: 6,
+    marginTop: 0
   },
   
   clear: {
@@ -59,10 +56,6 @@ const styles = theme => ({
   clearDisabled: {
     opacity: 0,
     pointerEvents: 'none',
-  },
-  
-  dense: {
-    padding: 4,
   },
   
   icon: {
@@ -95,8 +88,6 @@ class SearchInput extends PureComponent {
     };
     
     this.input = null;
-    this.removeAutosize = null;
-    this.triggerResize = null;
     
     this.updateQuery = _debounce(this.updateQuery, 500);
   }
@@ -105,25 +96,17 @@ class SearchInput extends PureComponent {
     if (!document) return;
     const element = document.querySelector(`.search-input-${this.props.name} input[type=search]`);
   
-    // We have to patch into addEventListener because autosizeInput provides no way to trigger resize
     element._addEventListener = element.addEventListener;
     element.addEventListener = function(type, listener, useCapture) {
       if(useCapture === undefined)
         useCapture = false;
       this._addEventListener(type, listener, useCapture);
-      this.triggerResize = listener;
     };
 
-    this.removeAutosize = autosizeInput(element);
-    
-    this.triggerResize = element.triggerResize;
     element.addEventListener = element._addEventListener;
   }
   
   componentWillUnmount () {
-    if (this.removeAutosize) {
-      this.removeAutosize();
-    }
   }
   
   handleShortcutKeys = (key, event) => {
@@ -149,7 +132,7 @@ class SearchInput extends PureComponent {
   };
   
   clearSearch = (event, dontFocus) => {
-    this.setState({ value: '' }, this.triggerResize);
+    this.setState({ value: '' });
     this.updateQuery('');
   
     if (!dontFocus) {
@@ -175,7 +158,7 @@ class SearchInput extends PureComponent {
       noShortcuts,
       name,
     } = this.props;
-    
+
     const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput}/>;
     
     const clearButton = <Components.TooltipIntl
@@ -191,18 +174,24 @@ class SearchInput extends PureComponent {
     
     return (
       <React.Fragment>
-        <Input className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.dense, className)}
-               classes={{ input: classes.input }}
-               id={`search-input-${name}`}
-               name={name}
-               inputRef={input => this.input = input}
-               value={this.state.value}
-               type="search"
-               onChange={this.updateSearch}
-               onFocus={this.handleFocus}
-               disableUnderline={true}
-               startAdornment={searchIcon}
-               endAdornment={clearButton}
+        <TextField
+          label="Search"
+          type="search"
+          id={`search-input-${name}`}
+          name={name}
+          title="Search"
+          value={this.state.value}
+          inputRef={input => this.input = input}
+          fullWidth
+          className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.inputTypeSearch, className, classes.textField)}
+          margin="normal"
+          variant="outlined"
+          onChange={this.updateSearch}
+          onFocus={this.handleFocus}
+          InputProps={{
+            startAdornment: searchIcon,
+            endAdornment: clearButton
+          }}
         />
         <NoSsr>
           {

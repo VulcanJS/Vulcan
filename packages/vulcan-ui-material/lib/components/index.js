@@ -7,7 +7,7 @@ import './accounts/AccountsPasswordOrService';
 import './accounts/AccountsSocialButtons';
 
 import './bonus/LoadMore';
-// import './bonus/SearchInput';
+import './bonus/SearchInput';
 import './bonus/TooltipIntl';
 import './bonus/TooltipIconButton';
 
