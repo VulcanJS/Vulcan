@@ -265,9 +265,20 @@ export class AccountsLoginFormInner extends TrackerComponent {
   }
 
   fields() {
-    const loginFields = [];
+    let loginFields = [];
     const { formState } = this.state;
 
+    // if extra fields have been specified, add onChange handler to them
+    if (this.props.extraFields) {
+      loginFields = this.props.extraFields.map(field => {
+        const { id } = field;
+        return {
+          ...field,
+          onChange: this.handleChange.bind(this, id),
+        }
+      });
+    }
+      
     if (!hasPasswordService() && getLoginServices().length == 0) {
       loginFields.push({
         label: 'No login service added, i.e. accounts-password',
@@ -766,6 +777,13 @@ export class AccountsLoginFormInner extends TrackerComponent {
       onSubmitHook
     } = this.state;
 
+    // add extra fields to options
+    if (this.props.extraFields) {
+      this.props.extraFields.forEach(({ id })=> {
+        options[id] = this.state[id];
+      });
+    }
+    
     const self = this;
 
     let error = false;
