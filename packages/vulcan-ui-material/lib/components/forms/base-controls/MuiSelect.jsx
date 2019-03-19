@@ -86,7 +86,7 @@ const MuiSelect = createReactClass({
   },
 
   changeValue: function (value) {
-    this.props.onChange(this.props.name, value);
+    this.props.onChange(value);
   },
 
   render: function () {
