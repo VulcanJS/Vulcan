@@ -55,6 +55,7 @@ SimpleSchema.extendOptions([
 
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings
+  'tooltip', // if not empty, the field will provide a tooltip when hovered over
 ]);
 
 // eslint-disable-next-line no-undef

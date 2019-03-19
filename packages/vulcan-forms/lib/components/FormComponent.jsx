@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import SimpleSchema from 'simpl-schema'
 import { isEmptyValue, getNullValue } from '../modules/utils.js';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class FormComponent extends Component {
   constructor(props) {
@@ -286,20 +287,27 @@ class FormComponent extends Component {
         value: this.getValue()
       });
     }
-    return (
-      <Components.FormComponentInner
-        {...this.props}
-        {...this.state}
-        inputType={this.getType()}
-        value={this.getValue()}
-        errors={this.getErrors()}
-        document={this.context.getDocument()}
-        showCharsRemaining={!!this.showCharsRemaining()}
-        onChange={this.handleChange}
-        clearField={this.clearField}
-        formInput={this.getFormInput()}
-      />
-    );
+
+    const formComponent = <Components.FormComponentInner
+      {...this.props}
+      {...this.state}
+      inputType={this.getType()}
+      value={this.getValue()}
+      errors={this.getErrors()}
+      document={this.context.getDocument()}
+      showCharsRemaining={!!this.showCharsRemaining()}
+      onChange={this.handleChange}
+      clearField={this.clearField}
+      formInput={this.getFormInput()}
+    />
+
+    if (this.props.tooltip) {
+      return <Tooltip title={this.props.tooltip} placement="left-start">
+        <div>{ formComponent }</div>
+      </Tooltip>
+    } else {
+      return formComponent;
+    }
   }
 }
 
@@ -324,6 +332,7 @@ FormComponent.propTypes = {
   addToDeletedValues: PropTypes.func,
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
+  tooltip: PropTypes.string,
 };
 
 FormComponent.contextTypes = {

@@ -137,6 +137,7 @@ export const schemaProperties = [
   'query',
   'fieldProperties',
   'intl',
+  'tooltip'
 ];
 
 export const formProperties = [
@@ -169,4 +170,5 @@ export const formProperties = [
   'options',
   'query',
   'fieldProperties',
+  'tooltip'
 ];
