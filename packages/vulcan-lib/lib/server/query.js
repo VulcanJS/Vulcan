@@ -93,9 +93,10 @@ Meteor.startup(() => {
   Collections.forEach(collection => {
     const typeName = collection.options.typeName;
 
-    collection.queryOne = async (documentId, { fragmentName, fragmentText, context }) => {
+    collection.queryOne = async (documentIdOrSelector, { fragmentName, fragmentText, context }) => {
+      const selector = typeof documentIdOrSelector === 'string' ? { documentId: documentIdOrSelector } : documentIdOrSelector;
       const query = buildQuery(collection, { fragmentName, fragmentText });
-      const result = await runQuery(query, { input: { selector: { documentId } } }, context);
+      const result = await runQuery(query, { input: { selector } }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
     };
   });
