@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiInput from '../base-controls/MuiInput';
+import MuiPicker from '../base-controls/MuiPicker';
 import { registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -29,9 +29,7 @@ export const styles = theme => ({
   
 });
 
-
 const DateComponent = ({ refFunction, classes, ...properties }) =>
-  <MuiInput {...properties} ref={refFunction} type="date"/>;
-
+  <MuiPicker {...properties} {...classes} ref={refFunction}/>;
 
 registerComponent('FormComponentDate', DateComponent, [withStyles, styles]);
