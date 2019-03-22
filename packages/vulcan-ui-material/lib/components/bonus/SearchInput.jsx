@@ -5,34 +5,31 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SearchIcon from 'mdi-material-ui/Magnify';
 import ClearIcon from 'mdi-material-ui/CloseCircle';
 import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import NoSsr from '@material-ui/core/NoSsr';
 import classNames from 'classnames';
 import _debounce from 'lodash/debounce';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
-import autosizeInput from 'autosize-input';
 
 const styles = theme => ({
-  
+
   '@global': {
     'input[type=text]::-ms-clear, input[type=text]::-ms-reveal':
-      {
-        display: 'none',
-        width: 0,
-        height: 0,
-      },
+        {
+          display: 'none',
+          width: 0,
+          height: 0,
+        },
     'input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button':
-      { display: 'none' },
+        { display: 'none' },
     'input[type="search"]::-webkit-search-results-button, input[type="search"]::-webkit-search-results-decoration':
-      { display: 'none' },
+        { display: 'none' },
   },
-  
+
   root: {
-    display: 'inline-flex',
-    backgroundColor: theme.palette.common.faintBlack,
-    borderRadius: 20,
-    padding: 6,
+    marginTop: 0
   },
-  
+
   clear: {
     transition: theme.transitions.create('opacity,transform', {
       duration: theme.transitions.duration.short,
@@ -48,29 +45,25 @@ const styles = theme => ({
     },
     flexDirection: 'column',
   },
-  
+
   clearDense: {
     width: 32,
     height: 32,
     margin: -4,
     marginLeft: 0,
   },
-  
+
   clearDisabled: {
     opacity: 0,
     pointerEvents: 'none',
   },
-  
-  dense: {
-    padding: 4,
-  },
-  
+
   icon: {
     color: theme.palette.common.lightBlack,
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
-  
+
   input: {
     lineHeight: 1,
     paddingTop: 2,
@@ -81,51 +74,41 @@ const styles = theme => ({
     }),*/
     minWidth: 130,
   },
-  
+
 });
 
 
 class SearchInput extends PureComponent {
-  
+
   constructor (props) {
     super(props);
-    
+
     this.state = {
       value: props.defaultValue || '',
     };
-    
+
     this.input = null;
-    this.removeAutosize = null;
-    this.triggerResize = null;
-    
+
     this.updateQuery = _debounce(this.updateQuery, 500);
   }
-  
+
   componentDidMount () {
     if (!document) return;
     const element = document.querySelector(`.search-input-${this.props.name} input[type=search]`);
-  
-    // We have to patch into addEventListener because autosizeInput provides no way to trigger resize
+
     element._addEventListener = element.addEventListener;
     element.addEventListener = function(type, listener, useCapture) {
       if(useCapture === undefined)
         useCapture = false;
       this._addEventListener(type, listener, useCapture);
-      this.triggerResize = listener;
     };
 
-    this.removeAutosize = autosizeInput(element);
-    
-    this.triggerResize = element.triggerResize;
     element.addEventListener = element._addEventListener;
   }
-  
+
   componentWillUnmount () {
-    if (this.removeAutosize) {
-      this.removeAutosize();
-    }
   }
-  
+
   handleShortcutKeys = (key, event) => {
     switch (key) {
       case 's':
@@ -139,34 +122,34 @@ class SearchInput extends PureComponent {
         break;
     }
   };
-  
+
   handleFocus = () => {
     this.input.select();
   };
-  
+
   focusInput = (event) => {
     this.input.focus();
   };
-  
+
   clearSearch = (event, dontFocus) => {
-    this.setState({ value: '' }, this.triggerResize);
+    this.setState({ value: '' });
     this.updateQuery('');
-  
+
     if (!dontFocus) {
       this.focusInput();
     }
   };
-  
+
   updateSearch = (event) => {
     const value = event.target.value;
     this.setState({ value: value });
     this.updateQuery(value);
   };
-  
+
   updateQuery = (value) => {
     this.props.updateQuery(value);
   };
-  
+
   render () {
     const {
       classes,
@@ -175,47 +158,53 @@ class SearchInput extends PureComponent {
       noShortcuts,
       name,
     } = this.props;
-    
+
     const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput}/>;
-    
+
     const clearButton = <Components.TooltipIntl
-      titleId="search.clear"
-      icon={<ClearIcon/>}
-      onClick={this.clearSearch}
-      classes={{
-        root: classNames(!this.state.value && classes.clearDisabled),
-        button: classNames('clear-button', classes.clear, dense && classes.clearDense),
-      }}
-      disabled={!this.state.value}
+        titleId="search.clear"
+        icon={<ClearIcon/>}
+        onClick={this.clearSearch}
+        classes={{
+          root: classNames(!this.state.value && classes.clearDisabled),
+          button: classNames('clear-button', classes.clear, dense && classes.clearDense),
+        }}
+        disabled={!this.state.value}
     />;
-    
+
     return (
-      <React.Fragment>
-        <Input className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.dense, className)}
-               classes={{ input: classes.input }}
-               id={`search-input-${name}`}
-               name={name}
-               inputRef={input => this.input = input}
-               value={this.state.value}
-               type="search"
-               onChange={this.updateSearch}
-               onFocus={this.handleFocus}
-               disableUnderline={true}
-               startAdornment={searchIcon}
-               endAdornment={clearButton}
-        />
-        <NoSsr>
-          {
-            // KeyboardEventHandler is not valid on the server, where its name is undefined
-            typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts &&
-            
-            <KeyboardEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys}/>
-          }
-        </NoSsr>
-      </React.Fragment>
+        <React.Fragment>
+          <TextField
+              label="Search"
+              type="search"
+              id={`search-input-${name}`}
+              name={name}
+              title="Search"
+              value={this.state.value}
+              inputRef={input => this.input = input}
+              fullWidth
+              className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.inputTypeSearch, className, classes.textField)}
+              margin="normal"
+              variant="outlined"
+              onChange={this.updateSearch}
+              onFocus={this.handleFocus}
+              InputProps={{
+                startAdornment: searchIcon,
+                endAdornment: clearButton
+              }}
+          />
+          <NoSsr>
+            {
+              // KeyboardEventHandler is not valid on the server, where its name is undefined
+              typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts &&
+
+              <KeyboardEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys}/>
+            }
+          </NoSsr>
+        </React.Fragment>
     );
   }
-  
+
 }
 
 
