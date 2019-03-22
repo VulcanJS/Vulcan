@@ -39,10 +39,10 @@ const baseStyles = theme => ({
     alignItems: 'center',
   },
   addButton: {
-    bottom: '2rem',
+    top: '9.5rem',
     right: '2rem',
     position: 'fixed',
-    top: 'auto',
+    bottom: 'auto',
   },
   table: {
     marginTop:0
