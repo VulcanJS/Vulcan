@@ -299,13 +299,13 @@ const DatatableContents = ({
   return (
     <React.Fragment>
       {
-      (title)?
-          <Toolbar>
-            <Typography variant="h6" id="tableTitle">
-              title
-            </Typography>
-          </Toolbar>
-          :null
+        (title)?
+            <Toolbar>
+              <Typography variant="h6" id="tableTitle">
+                title
+              </Typography>
+            </Toolbar>
+            :null
       }
       <Table className={classNames(classes.table, denseClass)}>
       {
@@ -314,15 +314,15 @@ const DatatableContents = ({
           <TableRow className={classes.tableRow}>
             {
               _.sortBy(columns, column => column.order).map(
-                  (column, index) =>
-                      <Components.DatatableHeader key={index}
-                                                  collection={collection}
-                                                  intlNamespace={intlNamespace}
-                                                  column={column}
-                                                  classes={classes}
-                                                  toggleSort={toggleSort}
-                                                  currentSort={currentSort}
-                      />
+                (column, index) =>
+                    <Components.DatatableHeader key={index}
+                                                collection={collection}
+                                                intlNamespace={intlNamespace}
+                                                column={column}
+                                                classes={classes}
+                                                toggleSort={toggleSort}
+                                                currentSort={currentSort}
+                    />
               )
             }
             {
@@ -341,18 +341,18 @@ const DatatableContents = ({
             {
               results.map(
                 (document, index) =>
-                    <Components.DatatableRow collection={collection}
-                                             columns={columns}
-                                             document={document}
-                                             refetch={refetch}
-                                             key={index}
-                                             showEdit={showEdit}
-                                             editComponent={editComponent}
-                                             currentUser={currentUser}
-                                             classes={classes}
-                                             rowClass={rowClass}
-                                             handleRowClick={handleRowClick}
-                    />)
+                  <Components.DatatableRow collection={collection}
+                                           columns={columns}
+                                           document={document}
+                                           refetch={refetch}
+                                           key={index}
+                                           showEdit={showEdit}
+                                           editComponent={editComponent}
+                                           currentUser={currentUser}
+                                           classes={classes}
+                                           rowClass={rowClass}
+                                           handleRowClick={handleRowClick}
+                  />)
             }
           </TableBody>
         }
@@ -365,9 +365,9 @@ const DatatableContents = ({
               {
                 _.sortBy(columns, column => column.order).map(
                   (column, index) =>
-                      <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
-                        {footerData[index]}
-                      </TableCell>
+                    <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
+                      {footerData[index]}
+                    </TableCell>
                 )
               }
               {
@@ -380,11 +380,11 @@ const DatatableContents = ({
 
         }
 
-    </Table>
-    {
-      paginate &&
+      </Table>
+      {
+        paginate &&
 
-      <TablePagination
+        <TablePagination
           component="div"
           count={totalCount}
           rowsPerPage={paginationTerms.itemsPerPage}
@@ -397,20 +397,20 @@ const DatatableContents = ({
           }}
           onChangePage={onChangePage}
           onChangeRowsPerPage={onChangeRowsPerPage}
-      />
-    }
-    {
-      !paginate && loadMore &&
+        />
+      }
+      {
+        !paginate && loadMore &&
 
-      <Components.LoadMore className={classes.loadMore}
-                           count={count}
-                           totalCount={totalCount}
-                           loadMore={loadMore}
-                           networkStatus={networkStatus}
-      />
-    }
-  </React.Fragment>
-);
+        <Components.LoadMore className={classes.loadMore}
+                             count={count}
+                             totalCount={totalCount}
+                             loadMore={loadMore}
+                             networkStatus={networkStatus}
+        />
+      }
+    </React.Fragment>
+  );
 };
 
 
