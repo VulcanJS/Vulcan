@@ -110,13 +110,13 @@ class Datatable extends PureComponent {
     if (this.props.data) {
 
       return <Components.DatatableContents
-          columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-          {...this.props}
-          results={this.props.data}
-          count={this.props.data.length}
-          totalCount={this.props.data.length}
-          showEdit={false}
-          showNew={false}
+        columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
+        {...this.props}
+        results={this.props.data}
+        count={this.props.data.length}
+        totalCount={this.props.data.length}
+        showEdit={false}
+        showNew={false}
       />;
 
     } else {
@@ -146,36 +146,36 @@ class Datatable extends PureComponent {
           { ...this.state.currentSort, _id: -1 };
 
       return (
-          <div className={classNames('datatable', `datatable-${collection._name}`, classes.root,
-              className)}>
-            {/* DatatableAbove Component part*/}
-            {
-              showSearch &&
+        <div className={classNames('datatable', `datatable-${collection._name}`, classes.root,
+            className)}>
+          {/* DatatableAbove Component part*/}
+          {
+            showSearch &&
 
-              <Components.SearchInput value={this.state.query}
-                                      updateQuery={this.updateQuery}
-                                      className={classes.search}
-                                      labelId={'datatable.search'}
-              />
-            }
-            {
-              showNew &&
-
-              <Components.NewButton collection={collection}
-                                    variant="fab"
-                                    color="primary"
-                                    className={classes.addButton}
-              />
-            }
-
-            <DatatableWithMulti {...this.props}
-                                collection={collection}
-                                terms={{ query: this.state.query, orderBy: orderBy }}
-                                currentUser={this.props.currentUser}
-                                toggleSort={this.toggleSort}
-                                currentSort={this.state.currentSort}
+            <Components.SearchInput value={this.state.query}
+                                    updateQuery={this.updateQuery}
+                                    className={classes.search}
+                                    labelId={'datatable.search'}
             />
-          </div>
+          }
+          {
+            showNew &&
+
+            <Components.NewButton collection={collection}
+                                  variant="fab"
+                                  color="primary"
+                                  className={classes.addButton}
+            />
+          }
+
+          <DatatableWithMulti {...this.props}
+                              collection={collection}
+                              terms={{ query: this.state.query, orderBy: orderBy }}
+                              currentUser={this.props.currentUser}
+                              toggleSort={this.toggleSort}
+                              currentSort={this.state.currentSort}
+          />
+        </div>
       );
     }
   }
