@@ -4,7 +4,6 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import SearchIcon from 'mdi-material-ui/Magnify';
 import ClearIcon from 'mdi-material-ui/CloseCircle';
-import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import NoSsr from '@material-ui/core/NoSsr';
 import classNames from 'classnames';
@@ -15,15 +14,15 @@ const styles = theme => ({
 
   '@global': {
     'input[type=text]::-ms-clear, input[type=text]::-ms-reveal':
-        {
-          display: 'none',
-          width: 0,
-          height: 0,
-        },
+      {
+        display: 'none',
+        width: 0,
+        height: 0,
+      },
     'input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button':
-        { display: 'none' },
+      { display: 'none' },
     'input[type="search"]::-webkit-search-results-button, input[type="search"]::-webkit-search-results-decoration':
-        { display: 'none' },
+      { display: 'none' },
   },
 
   root: {
@@ -162,46 +161,46 @@ class SearchInput extends PureComponent {
     const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput}/>;
 
     const clearButton = <Components.TooltipIntl
-        titleId="search.clear"
-        icon={<ClearIcon/>}
-        onClick={this.clearSearch}
-        classes={{
-          root: classNames(!this.state.value && classes.clearDisabled),
-          button: classNames('clear-button', classes.clear, dense && classes.clearDense),
-        }}
-        disabled={!this.state.value}
+      titleId="search.clear"
+      icon={<ClearIcon/>}
+      onClick={this.clearSearch}
+      classes={{
+        root: classNames(!this.state.value && classes.clearDisabled),
+        button: classNames('clear-button', classes.clear, dense && classes.clearDense),
+      }}
+      disabled={!this.state.value}
     />;
 
     return (
-        <React.Fragment>
-          <TextField
-              label="Search"
-              type="search"
-              id={`search-input-${name}`}
-              name={name}
-              title="Search"
-              value={this.state.value}
-              inputRef={input => this.input = input}
-              fullWidth
-              className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.inputTypeSearch, className, classes.textField)}
-              margin="normal"
-              variant="outlined"
-              onChange={this.updateSearch}
-              onFocus={this.handleFocus}
-              InputProps={{
-                startAdornment: searchIcon,
-                endAdornment: clearButton
-              }}
-          />
-          <NoSsr>
-            {
-              // KeyboardEventHandler is not valid on the server, where its name is undefined
-              typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts &&
+      <React.Fragment>
+        <TextField
+            label="Search"
+            type="search"
+            id={`search-input-${name}`}
+            name={name}
+            title="Search"
+            value={this.state.value}
+            inputRef={input => this.input = input}
+            fullWidth
+            className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.inputTypeSearch, className, classes.textField)}
+            margin="normal"
+            variant="outlined"
+            onChange={this.updateSearch}
+            onFocus={this.handleFocus}
+            InputProps={{
+              startAdornment: searchIcon,
+              endAdornment: clearButton
+            }}
+        />
+        <NoSsr>
+          {
+            // KeyboardEventHandler is not valid on the server, where its name is undefined
+            typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts &&
 
-              <KeyboardEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys}/>
-            }
-          </NoSsr>
-        </React.Fragment>
+            <KeyboardEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys}/>
+          }
+        </NoSsr>
+      </React.Fragment>
     );
   }
 
