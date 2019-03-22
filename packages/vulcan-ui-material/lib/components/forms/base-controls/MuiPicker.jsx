@@ -8,7 +8,7 @@ import MuiFormHelper from './MuiFormHelper';
 import TextField from '@material-ui/core/TextField';
 
 import moment from 'moment';
-import 'moment-timezone';
+//import 'moment-timezone';
 
 const dateFormat = 'YYYY-MM-DD';
 

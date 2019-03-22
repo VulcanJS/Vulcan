@@ -24,7 +24,8 @@ meteor npm install --save react-autosuggest
 meteor npm install --save autosuggest-highlight
 meteor npm install --save react-isolated-scroll
 meteor npm install --save-exact react-keyboard-event-handler@1.3.2
-meteor npm install --save autosize-input
+#meteor npm install --save autosize-input
+meteor npm install --save moment-timezone
 ```
 
 > NOTE: If you want to avoid deprecation warnings added in MUI versions after 3.1.0, you can lock MUI to the currently supported version using `meteor npm install --save @material-ui/core@3.1.0`. Don't for get to remove or update the version number when you update this package in the future.
