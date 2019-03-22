@@ -491,14 +491,14 @@ const DatatableSorter = ({ name, label, toggleSort, currentSort, sortable }) =>
              sortDirection={!currentSort[name] ? false : currentSort[name] === 1 ? 'asc' : 'desc'}
   >
     <Tooltip
-        title="Sort"
-        placement='bottom-start'
-        enterDelay={300}
+      title="Sort"
+      placement='bottom-start'
+      enterDelay={300}
     >
       <TableSortLabel
-          active={!currentSort[name] ? false : true}
-          direction={currentSort[name] === 1 ? 'desc' : 'asc'}
-          onClick={() => toggleSort(name)}
+        active={!currentSort[name] ? false : true}
+        direction={currentSort[name] === 1 ? 'desc' : 'asc'}
+        onClick={() => toggleSort(name)}
       >
         {label}
       </TableSortLabel>
@@ -546,20 +546,20 @@ const DatatableRow = ({
 
   return (
     <TableRow
-        className={classNames('datatable-item', classes.tableRow, rowClass, handleRowClick && classes.clickRow)}
-        onClick={handleRowClick && (event => handleRowClick(event, document))}
-        hover
+      className={classNames('datatable-item', classes.tableRow, rowClass, handleRowClick && classes.clickRow)}
+      onClick={handleRowClick && (event => handleRowClick(event, document))}
+      hover
     >
 
       {
         _.sortBy(columns, column => column.order).map(
-            (column, index) =>
-                <Components.DatatableCell key={index}
-                                          column={column}
-                                          document={document}
-                                          currentUser={currentUser}
-                                          classes={classes}
-                />)
+          (column, index) =>
+              <Components.DatatableCell key={index}
+                                        column={column}
+                                        document={document}
+                                        currentUser={currentUser}
+                                        classes={classes}
+              />)
       }
 
       {
@@ -607,13 +607,13 @@ const DatatableCell = ({ column, document, currentUser, classes }) => {
 
   const columnName = typeof column === 'string' ? column : column.name;
   const className = typeof columnName === 'string' ?
-      `datatable-item-${columnName.toLowerCase()}` :
-      '';
+    `datatable-item-${columnName.toLowerCase()}` :
+    '';
   const cellClass = typeof column.cellClass === 'function' ?
     column.cellClass({ column, document, currentUser }) :
     typeof column.cellClass === 'string' ?
-        column.cellClass :
-        null;
+      column.cellClass :
+      null;
 
   return (
     <TableCell className={classNames(classes.tableCell, cellClass, className)}>
@@ -638,10 +638,10 @@ const DatatableDefaultCell = ({ column, document }) =>
   <div>
     {
       typeof column === 'string'
-          ?
-          getFieldValue(document[column])
-          :
-          getFieldValue(document[column.name])
+        ?
+        getFieldValue(document[column])
+        :
+        getFieldValue(document[column.name])
     }
   </div>;
 
