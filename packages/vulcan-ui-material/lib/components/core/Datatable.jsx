@@ -487,23 +487,23 @@ DatatableSorter Component
 */
 
 const DatatableSorter = ({ name, label, toggleSort, currentSort, sortable }) =>
-    <TableCell className="datatable-sorter"
-               sortDirection={!currentSort[name] ? false : currentSort[name] === 1 ? 'asc' : 'desc'}
+  <TableCell className="datatable-sorter"
+             sortDirection={!currentSort[name] ? false : currentSort[name] === 1 ? 'asc' : 'desc'}
+  >
+    <Tooltip
+        title="Sort"
+        placement='bottom-start'
+        enterDelay={300}
     >
-      <Tooltip
-          title="Sort"
-          placement='bottom-start'
-          enterDelay={300}
+      <TableSortLabel
+          active={!currentSort[name] ? false : true}
+          direction={currentSort[name] === 1 ? 'desc' : 'asc'}
+          onClick={() => toggleSort(name)}
       >
-        <TableSortLabel
-            active={!currentSort[name] ? false : true}
-            direction={currentSort[name] === 1 ? 'desc' : 'asc'}
-            onClick={() => toggleSort(name)}
-        >
-          {label}
-        </TableSortLabel>
-      </Tooltip>
-    </TableCell>;
+        {label}
+      </TableSortLabel>
+    </Tooltip>
+  </TableCell>;
 
 replaceComponent('DatatableSorter', DatatableSorter);
 
@@ -545,44 +545,44 @@ const DatatableRow = ({
   }
 
   return (
-      <TableRow
-          className={classNames('datatable-item', classes.tableRow, rowClass, handleRowClick && classes.clickRow)}
-          onClick={handleRowClick && (event => handleRowClick(event, document))}
-          hover
-      >
+    <TableRow
+        className={classNames('datatable-item', classes.tableRow, rowClass, handleRowClick && classes.clickRow)}
+        onClick={handleRowClick && (event => handleRowClick(event, document))}
+        hover
+    >
 
-        {
-          _.sortBy(columns, column => column.order).map(
-              (column, index) =>
-                  <Components.DatatableCell key={index}
-                                            column={column}
-                                            document={document}
-                                            currentUser={currentUser}
-                                            classes={classes}
-                  />)
-        }
+      {
+        _.sortBy(columns, column => column.order).map(
+            (column, index) =>
+                <Components.DatatableCell key={index}
+                                          column={column}
+                                          document={document}
+                                          currentUser={currentUser}
+                                          classes={classes}
+                />)
+      }
 
-        {
-          (showEdit || editComponent) &&
+      {
+        (showEdit || editComponent) &&
 
-          <TableCell className={classes.editCell}>
-            {
-              EditComponent &&
+        <TableCell className={classes.editCell}>
+          {
+            EditComponent &&
 
-              <EditComponent collection={collection} document={document} refetch={refetch}/>
-            }
-            {
-              showEdit &&
+            <EditComponent collection={collection} document={document} refetch={refetch}/>
+          }
+          {
+            showEdit &&
 
-              <Components.EditButton collection={collection}
-                                     document={document}
-                                     buttonClasses={{ button: classes.editButton }}
-              />
-            }
-          </TableCell>
-        }
+            <Components.EditButton collection={collection}
+                                   document={document}
+                                   buttonClasses={{ button: classes.editButton }}
+            />
+          }
+        </TableCell>
+      }
 
-      </TableRow>
+    </TableRow>
   );
 };
 
@@ -602,26 +602,26 @@ DatatableCell Component
 */
 const DatatableCell = ({ column, document, currentUser, classes }) => {
   const Component = column.component ||
-      Components[column.componentName] ||
-      Components.DatatableDefaultCell;
+    Components[column.componentName] ||
+    Components.DatatableDefaultCell;
 
   const columnName = typeof column === 'string' ? column : column.name;
   const className = typeof columnName === 'string' ?
       `datatable-item-${columnName.toLowerCase()}` :
       '';
   const cellClass = typeof column.cellClass === 'function' ?
-      column.cellClass({ column, document, currentUser }) :
-      typeof column.cellClass === 'string' ?
-          column.cellClass :
-          null;
+    column.cellClass({ column, document, currentUser }) :
+    typeof column.cellClass === 'string' ?
+        column.cellClass :
+        null;
 
   return (
-      <TableCell className={classNames(classes.tableCell, cellClass, className)}>
-        <Component column={column}
-                   document={document}
-                   currentUser={currentUser}
-        />
-      </TableCell>
+    <TableCell className={classNames(classes.tableCell, cellClass, className)}>
+      <Component column={column}
+                 document={document}
+                 currentUser={currentUser}
+      />
+    </TableCell>
   );
 };
 
@@ -635,15 +635,15 @@ DatatableDefaultCell Component
 
 */
 const DatatableDefaultCell = ({ column, document }) =>
-    <div>
-      {
-        typeof column === 'string'
-            ?
-            getFieldValue(document[column])
-            :
-            getFieldValue(document[column.name])
-      }
-    </div>;
+  <div>
+    {
+      typeof column === 'string'
+          ?
+          getFieldValue(document[column])
+          :
+          getFieldValue(document[column.name])
+    }
+  </div>;
 
 
 replaceComponent('DatatableDefaultCell', DatatableDefaultCell);
