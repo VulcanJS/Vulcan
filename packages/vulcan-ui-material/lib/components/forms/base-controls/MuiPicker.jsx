@@ -14,6 +14,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 export const styles = theme => ({
   inputRoot: {
+    'marginTop': '16px',
     '& .clear-enabled': { opacity: 0 },
     '&:hover .clear-enabled': { opacity: 0.54 },
   },
@@ -40,13 +41,13 @@ const MuiPicker = createReactClass({
     formatValue: PropTypes.func,
     hideClear: PropTypes.bool,
   },
-  
+
   getDefaultProps: function () {
     return {
       type: 'date',
     };
   },
-  
+
   handleChange: function (event) {
     let value = event.target.value;
     if (this.props.scrubValue) {
@@ -54,7 +55,7 @@ const MuiPicker = createReactClass({
     }
     this.props.onChange(value);
   },
-  
+
   render: function () {
     const { classes, disabled, autoFocus } = this.props;
     const value = moment(this.props.value, dateFormat, true).isValid() ? this.props.value : moment(this.props.value).format(dateFormat);
