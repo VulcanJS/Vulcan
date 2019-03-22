@@ -300,12 +300,12 @@ const DatatableContents = ({
     <React.Fragment>
       {
         (title)?
-            <Toolbar>
-              <Typography variant="h6" id="tableTitle">
-                title
-              </Typography>
-            </Toolbar>
-            :null
+          <Toolbar>
+            <Typography variant="h6" id="tableTitle">
+              title
+            </Typography>
+          </Toolbar>
+          :null
       }
       <Table className={classNames(classes.table, denseClass)}>
       {
@@ -315,14 +315,14 @@ const DatatableContents = ({
             {
               _.sortBy(columns, column => column.order).map(
                 (column, index) =>
-                    <Components.DatatableHeader key={index}
-                                                collection={collection}
-                                                intlNamespace={intlNamespace}
-                                                column={column}
-                                                classes={classes}
-                                                toggleSort={toggleSort}
-                                                currentSort={currentSort}
-                    />
+                  <Components.DatatableHeader key={index}
+                                              collection={collection}
+                                              intlNamespace={intlNamespace}
+                                              column={column}
+                                              classes={classes}
+                                              toggleSort={toggleSort}
+                                              currentSort={currentSort}
+                  />
               )
             }
             {
