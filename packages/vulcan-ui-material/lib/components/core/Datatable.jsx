@@ -297,120 +297,120 @@ const DatatableContents = ({
   };
 
   return (
-      <React.Fragment>
+    <React.Fragment>
+      {
+        (title)?
+            <Toolbar>
+              <Typography variant="h6" id="tableTitle">
+                title
+              </Typography>
+            </Toolbar>
+            :null
+      }
+      <Table className={classNames(classes.table, denseClass)}>
         {
-          (title)?
-              <Toolbar>
-                <Typography variant="h6" id="tableTitle">
-                  title
-                </Typography>
-              </Toolbar>
-              :null
-        }
-        <Table className={classNames(classes.table, denseClass)}>
-          {
-            columns &&
-            <TableHead className={classes.tableHead}>
-              <TableRow className={classes.tableRow}>
-                {
-                  _.sortBy(columns, column => column.order).map(
-                      (column, index) =>
-                          <Components.DatatableHeader key={index}
-                                                      collection={collection}
-                                                      intlNamespace={intlNamespace}
-                                                      column={column}
-                                                      classes={classes}
-                                                      toggleSort={toggleSort}
-                                                      currentSort={currentSort}
-                          />
-                  )
-                }
-                {
-                  (showEdit || editComponent) &&
-
-                  <TableCell className={classes.tableCell}/>
-                }
-              </TableRow>
-            </TableHead>
-          }
-
-          {
-            results &&
-
-            <TableBody className={classes.tableBody}>
+          columns &&
+          <TableHead className={classes.tableHead}>
+            <TableRow className={classes.tableRow}>
               {
-                results.map(
-                    (document, index) =>
-                        <Components.DatatableRow collection={collection}
-                                                 columns={columns}
-                                                 document={document}
-                                                 refetch={refetch}
-                                                 key={index}
-                                                 showEdit={showEdit}
-                                                 editComponent={editComponent}
-                                                 currentUser={currentUser}
-                                                 classes={classes}
-                                                 rowClass={rowClass}
-                                                 handleRowClick={handleRowClick}
-                        />)
+                _.sortBy(columns, column => column.order).map(
+                    (column, index) =>
+                        <Components.DatatableHeader key={index}
+                                                    collection={collection}
+                                                    intlNamespace={intlNamespace}
+                                                    column={column}
+                                                    classes={classes}
+                                                    toggleSort={toggleSort}
+                                                    currentSort={currentSort}
+                        />
+                )
               }
-            </TableBody>
-          }
+              {
+                (showEdit || editComponent) &&
 
-          {
-            footerData &&
-
-            <TableFooter className={classes.tableFooter}>
-              <TableRow className={classes.tableRow}>
-                {
-                  _.sortBy(columns, column => column.order).map(
-                      (column, index) =>
-                          <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
-                            {footerData[index]}
-                          </TableCell>
-                  )
-                }
-                {
-                  (showEdit || editComponent) &&
-
-                  <TableCell className={classes.tableCell}/>
-                }
-              </TableRow>
-            </TableFooter>
-
-          }
-
-        </Table>
-        {
-          paginate &&
-
-          <TablePagination
-              component="div"
-              count={totalCount}
-              rowsPerPage={paginationTerms.itemsPerPage}
-              page={getPage(paginationTerms)}
-              backIconButtonProps={{
-                'aria-label': 'Previous Page',
-              }}
-              nextIconButtonProps={{
-                'aria-label': 'Next Page',
-              }}
-              onChangePage={onChangePage}
-              onChangeRowsPerPage={onChangeRowsPerPage}
-          />
+                <TableCell className={classes.tableCell}/>
+              }
+            </TableRow>
+          </TableHead>
         }
-        {
-          !paginate && loadMore &&
 
-          <Components.LoadMore className={classes.loadMore}
-                               count={count}
-                               totalCount={totalCount}
-                               loadMore={loadMore}
-                               networkStatus={networkStatus}
-          />
+        {
+          results &&
+
+          <TableBody className={classes.tableBody}>
+            {
+              results.map(
+                  (document, index) =>
+                      <Components.DatatableRow collection={collection}
+                                               columns={columns}
+                                               document={document}
+                                               refetch={refetch}
+                                               key={index}
+                                               showEdit={showEdit}
+                                               editComponent={editComponent}
+                                               currentUser={currentUser}
+                                               classes={classes}
+                                               rowClass={rowClass}
+                                               handleRowClick={handleRowClick}
+                      />)
+            }
+          </TableBody>
         }
-      </React.Fragment>
-  );
+
+        {
+          footerData &&
+
+          <TableFooter className={classes.tableFooter}>
+            <TableRow className={classes.tableRow}>
+              {
+                _.sortBy(columns, column => column.order).map(
+                    (column, index) =>
+                        <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
+                          {footerData[index]}
+                        </TableCell>
+                )
+              }
+              {
+                (showEdit || editComponent) &&
+
+                <TableCell className={classes.tableCell}/>
+              }
+            </TableRow>
+          </TableFooter>
+
+        }
+
+    </Table>
+    {
+      paginate &&
+
+      <TablePagination
+          component="div"
+          count={totalCount}
+          rowsPerPage={paginationTerms.itemsPerPage}
+          page={getPage(paginationTerms)}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
+      />
+    }
+    {
+      !paginate && loadMore &&
+
+      <Components.LoadMore className={classes.loadMore}
+                           count={count}
+                           totalCount={totalCount}
+                           loadMore={loadMore}
+                           networkStatus={networkStatus}
+      />
+    }
+  </React.Fragment>
+);
 };
 
 
@@ -438,11 +438,11 @@ const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSor
     */
     const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
     formattedLabel = typeof columnName === 'string' ?
-        intl.formatMessage({
-          id: `${collection._name}.${columnName}`,
-          defaultMessage: defaultMessage
-        }) :
-        '';
+      intl.formatMessage({
+        id: `${collection._name}.${columnName}`,
+        defaultMessage: defaultMessage
+      }) :
+      '';
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use
     // column.name
@@ -458,17 +458,17 @@ const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSor
     }
   } else if (intlNamespace) {
     formattedLabel = typeof columnName === 'string' ?
-        intl.formatMessage({
-          id: `${intlNamespace}.${columnName}`,
-          defaultMessage: columnName
-        }) :
-        '';
+      intl.formatMessage({
+        id: `${intlNamespace}.${columnName}`,
+        defaultMessage: columnName
+      }) :
+      '';
   } else {
     formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
   }
 
   return <TableCell
-      className={classNames(classes.tableHeadCell, column.headerClass)}>{formattedLabel}</TableCell>;
+    className={classNames(classes.tableHeadCell, column.headerClass)}>{formattedLabel}</TableCell>;
 };
 
 
@@ -554,12 +554,12 @@ const DatatableRow = ({
       {
         _.sortBy(columns, column => column.order).map(
           (column, index) =>
-              <Components.DatatableCell key={index}
-                                        column={column}
-                                        document={document}
-                                        currentUser={currentUser}
-                                        classes={classes}
-              />)
+            <Components.DatatableCell key={index}
+                                      column={column}
+                                      document={document}
+                                      currentUser={currentUser}
+                                      classes={classes}
+            />)
       }
 
       {
