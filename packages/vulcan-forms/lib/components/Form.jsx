@@ -66,7 +66,7 @@ import { callbackProps } from './propTypes';
 
 // props that should trigger a form reset
 const RESET_PROPS = [
-  'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser', 
+  'collection', 'collectionName', 'typeName', 'document', 'schema', 'currentUser',
   'fields', 'removeFields',
   'prefilledProps' // TODO: prefilledProps should be merged instead?
 ];
@@ -104,17 +104,17 @@ const getInitialStateFromProps = nextProps => {
     nextProps.prefilledProps,
     nextProps.document
   );
-  
+
   //if minCount is specified, go ahead and create empty nested documents
   Object.keys(convertedSchema).forEach(key => {
     let minCount = convertedSchema[key].minCount;
-    if(minCount) {
+    if (minCount) {
       initialDocument[key] = initialDocument[key] || [];
-      while(initialDocument[key].length < minCount)
+      while (initialDocument[key].length < minCount)
         initialDocument[key].push({});
     }
   });
-  
+
   // remove all instances of the `__typename` property from document
   Utils.removeProperty(initialDocument, '__typename');
 
@@ -154,7 +154,7 @@ class SmartForm extends Component {
     };
   }
 
-  defaultValues = {}; 
+  defaultValues = {};
 
   submitFormCallbacks = [];
   successFormCallbacks = [];
@@ -266,7 +266,7 @@ class SmartForm extends Component {
     });
 
     // run data object through submitForm callbacks
-    data = runCallbacks({ callbacks: this.submitFormCallbacks, iterator: data, properties: { form: this }});
+    data = runCallbacks({ callbacks: this.submitFormCallbacks, iterator: data, properties: { form: this } });
 
     return data;
   };
@@ -737,8 +737,72 @@ class SmartForm extends Component {
 
   /*
    
-  Warn the user if there are unsaved changes
+  Install a route leave hook to warn the user if there are unsaved changes
    
+  */
+  componentDidMount = () => {
+    this.checkRouteChange();
+    this.checkBrowserClosing();
+  }
+
+  /*
+  Remove the closing browser check on component unmount
+  see https://gist.github.com/mknabe/bfcb6db12ef52323954a28655801792d
+  */
+  componentWillUnmount = () => {
+    if (this.getWarnUnsavedChanges()) {
+      // unblock route change
+      if (this.unblock) {
+        this.unblock();
+      }
+      // unblock browser change
+      window.onbeforeunload = undefined; //undefined instead of null to support IE
+    }
+  };
+
+
+  // -------------------- Check on form leaving ----- //
+
+  /**
+   * Check if we must warn user on unsaved change
+   */
+  getWarnUnsavedChanges = () => {
+    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
+    if (typeof this.props.warnUnsavedChanges === 'boolean') {
+      warnUnsavedChanges = this.props.warnUnsavedChanges;
+    }
+    return warnUnsavedChanges;
+  }
+
+  // check for route change, prevent form content loss
+  checkRouteChange = () => {
+    // @see https://github.com/ReactTraining/react-router/issues/4635#issuecomment-297828995
+    // @see https://github.com/ReactTraining/history#blocking-transitions
+    if (this.getWarnUnsavedChanges()) {
+      this.unblock = this.props.history.block((location, action) => {
+        // return the message that will pop into a window.confirm alert
+        // if returns nothing, the message won't appear and the user won't be blocked
+        return this.handleRouteLeave();
+
+        /*
+            // React-router 3 implementtion
+            const routes = this.props.router.routes;
+            const currentRoute = routes[routes.length - 1];
+            this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
+      
+            */
+      });
+    }
+  }
+  // check for browser closing
+  checkBrowserClosing = () => {
+    //check for closing the browser with unsaved changes too
+    window.onbeforeunload = this.handlePageLeave;
+  }
+
+  /*
+  Check if the user has unsaved changes, returns a message if yes
+  and nothing if not
   */
   handleRouteLeave = () => {
     if (this.isChanged()) {
@@ -750,9 +814,13 @@ class SmartForm extends Component {
     }
   };
 
-  //see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
-  //the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
-  handlePageLeave = event => {
+  /**
+   * Same for browser closing
+   * 
+   * see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+   * the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
+   */
+  handlePageLeave = (event) => {
     if (this.isChanged()) {
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
@@ -765,41 +833,6 @@ class SmartForm extends Component {
       return message;
     }
   };
-
-  /*
-   
-  Install a route leave hook to warn the user if there are unsaved changes
-   
-  */
-  componentDidMount = () => {
-    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
-    if (typeof this.props.warnUnsavedChanges === 'boolean') {
-      warnUnsavedChanges = this.props.warnUnsavedChanges;
-    }
-    if (warnUnsavedChanges) {
-      const routes = this.props.router.routes;
-      const currentRoute = routes[routes.length - 1];
-      this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
-
-      //check for closing the browser with unsaved changes
-      window.onbeforeunload = this.handlePageLeave;
-    }
-  };
-
-  /*
-  Remove the closing browser check on component unmount
-  see https://gist.github.com/mknabe/bfcb6db12ef52323954a28655801792d
-  */
-  componentWillUnmount = () => {
-    let warnUnsavedChanges = getSetting('forms.warnUnsavedChanges');
-    if (typeof this.props.warnUnsavedChanges === 'boolean') {
-      warnUnsavedChanges = this.props.warnUnsavedChanges;
-    }
-    if (warnUnsavedChanges) {
-      window.onbeforeunload = undefined; //undefined instead of null to support IE
-    }
-  };
-
   /*
    
   Returns true if there are any differences between the initial document and the current one
@@ -899,7 +932,7 @@ class SmartForm extends Component {
     }
 
     // run document through mutation success callbacks
-    document = runCallbacks({ callbacks: this.successFormCallbacks, iterator: document, properties: { form: this }});
+    document = runCallbacks({ callbacks: this.successFormCallbacks, iterator: document, properties: { form: this } });
 
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document, { form: this });
@@ -915,7 +948,7 @@ class SmartForm extends Component {
     console.log(error);
 
     // run mutation failure callbacks on error, we do not allow the callbacks to change the error
-    runCallbacks({ callbacks: this.failureFormCallbacks, iterator: error, properties: { error, form: this }});
+    runCallbacks({ callbacks: this.failureFormCallbacks, iterator: error, properties: { error, form: this } });
 
     if (!_.isEmpty(error)) {
       // add error to state
@@ -937,7 +970,7 @@ class SmartForm extends Component {
   submitForm = event => {
 
     event && event.preventDefault();
-    
+
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
       return;
@@ -1003,7 +1036,7 @@ class SmartForm extends Component {
     }
   };
 
-  
+
   // --------------------------------------------------------------------- //
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //  
@@ -1045,15 +1078,15 @@ class SmartForm extends Component {
     cancelCallback: this.props.cancelCallback,
     revertCallback: this.props.revertCallback,
     document: this.getDocument(),
-    deleteDocument: 
+    deleteDocument:
       (this.getFormType() === 'edit' &&
         this.props.showRemove &&
         this.deleteDocument) ||
       null,
-    collectionName:this.props.collectionName,
-    currentValues:this.state.currentValues,
-    deletedValues:this.state.deletedValues,
-    errors:this.state.errors,
+    collectionName: this.props.collectionName,
+    currentValues: this.state.currentValues,
+    deletedValues: this.state.deletedValues,
+    errors: this.state.errors,
   });
 
   // --------------------------------------------------------------------- //

@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const EditButton = ({ style = 'primary', label, size, showId, modalProps, ...props }, { intl }) => (
+const EditButton = ({ style = 'primary', label, size, showId, modalProps, formProps, ...props }, { intl }) => (
   <Components.ModalTrigger
     label={label || intl.formatMessage({ id: 'datatable.edit' })}
     component={
@@ -12,7 +12,7 @@ const EditButton = ({ style = 'primary', label, size, showId, modalProps, ...pro
     }
     modalProps={modalProps}
   >
-    <Components.EditForm {...props} />
+    <Components.EditForm {...props} formProps={formProps}/>
   </Components.ModalTrigger>
 );
 
@@ -29,7 +29,7 @@ registerComponent('EditButton', EditButton);
 EditForm Component
 
 */
-const EditForm = ({ closeModal, successCallback, removeSuccessCallback, ...props }) => {
+const EditForm = ({ closeModal, successCallback, removeSuccessCallback, formProps, ...props }) => {
 
   const success = successCallback
     ? document => {
@@ -46,7 +46,7 @@ const EditForm = ({ closeModal, successCallback, removeSuccessCallback, ...props
     : closeModal;
 
   return (
-    <Components.SmartForm successCallback={success} removeSuccessCallback={remove} {...props} />
+    <Components.SmartForm successCallback={success} removeSuccessCallback={remove} {...formProps} {...props} />
   );
 };
 registerComponent('EditForm', EditForm);

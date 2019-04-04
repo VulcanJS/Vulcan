@@ -39,7 +39,7 @@
   addCallback('users.new.sync', usersMakeAdmin);
 
   function usersEditGenerateHtmlBio (modifier) {
-    if (modifier.$set && modifier.$set.bio) {
+    if (modifier.$set && 'bio' in modifier.$set) {
       modifier.$set.htmlBio = Utils.sanitize(marked(modifier.$set.bio));
     }
     return modifier;

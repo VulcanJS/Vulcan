@@ -28,6 +28,135 @@ import get from 'lodash/get';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
+/**
+ * Safe getter
+ * Must returns null if the document is absent (eg in case of validation failure)
+ * @param {*} mutation 
+ * @param {*} mutationName 
+ */
+const getDocumentFromMutation = (mutation, mutationName) => {
+  const mutationData = (mutation.result.data[mutationName] || {});
+  const document = mutationData.data;
+  return document;
+};
+
+const getCreateMutationName = (typeName) => `create${typeName}`;
+const getUpdateMutationName = (typeName) => `update${typeName}`;
+const getDeleteMutationName = (typeName) => `delete${typeName}`;
+const getUpsertMutationName = (typeName) => `upsert${typeName}`;
+const getMultiResolverName = (typeName) => Utils.camelCaseify(Utils.pluralize(typeName));
+const getMultiQueryName = (typeName) => `multi${typeName}Query`;
+
+/*
+
+Handle post-mutation updates of the client cache
+TODO: this is a client only function
+it should be called by a callback on collection create?
+*/
+export const registerWatchedMutations = (mutations, typeName) => {
+  if (Meteor.isClient) {
+    const multiQueryName = getMultiQueryName(typeName);
+    const multiResolverName = getMultiResolverName(typeName);
+    // create
+    if (mutations.create) {
+      const mutationName = mutations.create.name;
+      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
+        // get mongo selector and options objects based on current terms
+        const terms = query.variables.input.terms;
+        const collection = Collections.find(c => c.typeName === typeName);
+        const parameters = collection.getParameters(terms /* apolloClient */);
+        const { selector, options } = parameters;
+        let results = query.result;
+        const document = getDocumentFromMutation(mutation, mutationName);
+        // nothing to add
+        if (!document) return results;
+
+        if (belongsToSet(document, selector)) {
+          if (!isInSet(results[multiResolverName], document)) {
+            // make sure document hasn't been already added as this may be called several times
+            results[multiResolverName] = addToSet(results[multiResolverName], document);
+          }
+          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
+        }
+
+        results[multiResolverName].__typename = `Multi${typeName}Output`;
+
+        // console.log('// create');
+        // console.log(mutation);
+        // console.log(query);
+        // console.log(collection);
+        // console.log(parameters);
+        // console.log(results);
+
+        return results;
+      });
+    }
+    //update
+    if (mutations.update) {
+      const mutationName = mutations.update.name;
+      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
+        // get mongo selector and options objects based on current terms
+        const terms = query.variables.input.terms;
+        const collection = Collections.find(c => c.typeName === typeName);
+        const parameters = collection.getParameters(terms /* apolloClient */);
+        const { selector, options } = parameters;
+        let results = query.result;
+        const document = getDocumentFromMutation(mutation, mutationName);
+        // nothing to update
+        if (!document) return results;
+
+        if (belongsToSet(document, selector)) {
+          // edited document belongs to the list
+          if (!isInSet(results[multiResolverName], document)) {
+            // if document wasn't already in list, add it
+            results[multiResolverName] = addToSet(results[multiResolverName], document);
+          } else {
+            // if document was already in the list, update it
+            results[multiResolverName] = updateInSet(results[multiResolverName], document);
+          }
+          results[multiResolverName] = reorderSet(
+            results[multiResolverName],
+            options.sort,
+            selector
+          );
+        } else {
+          // if edited doesn't belong to current list anymore (based on view selector), remove it
+          results[multiResolverName] = removeFromSet(results[multiResolverName], document);
+        }
+
+        results[multiResolverName].__typename = `Multi${typeName}Output`;
+
+        // console.log('// update');
+        // console.log(mutation);
+        // console.log(query);
+        // console.log(parameters);
+        // console.log(results);
+
+        return results;
+      });
+    }
+    //delete
+    if (mutations.delete) {
+      const mutationName = mutations.delete.name;
+      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
+        let results = query.result;
+        const document = getDocumentFromMutation(mutation, mutationName);
+        // nothing to delete
+        if (!document) return results;
+        results[multiResolverName] = removeFromSet(results[multiResolverName], document);
+        results[multiResolverName].__typename = `Multi${typeName}Output`;
+        // console.log('// delete')
+        // console.log(mutation);
+        // console.log(query);
+        // console.log(parameters);
+        // console.log(results);
+        return results;
+      });
+    }
+  }
+};
+
+
 export function getDefaultMutations(options) {
   let typeName, collectionName, mutationOptions;
 
@@ -46,17 +175,16 @@ export function getDefaultMutations(options) {
   // register callbacks for documentation purposes
   registerCollectionCallbacks(typeName, mutationOptions);
 
-  const multiResolverName = Utils.camelCaseify(Utils.pluralize(typeName));
-  const multiQueryName = `multi${typeName}Query`;
   const mutations = {};
 
   if (mutationOptions.create) {
     // mutation for inserting a new document
 
-    const mutationName = `create${typeName}`;
+    const mutationName = getCreateMutationName(typeName);
 
     const createMutation = {
       description: `Mutation for creating new ${typeName} documents`,
+      name: mutationName,
 
       // check function called on a user to see if they can perform the operation
       check(user, document) {
@@ -99,51 +227,16 @@ export function getDefaultMutations(options) {
     mutations.create = createMutation;
     // OpenCRUD backwards compatibility
     mutations.new = createMutation;
-
-    /*
-
-    Handle post-mutation updates of the client cache
-
-    */
-    if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
-        
-        if (belongsToSet(document, selector)) {
-          if (!isInSet(results[multiResolverName], document)) {
-            // make sure document hasn't been already added as this may be called several times
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
-        }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// create');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(collection);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
-    }
   }
 
   if (mutationOptions.update) {
     // mutation for editing a specific document
 
-    const mutationName = `update${typeName}`;
+    const mutationName = getUpdateMutationName(typeName);
 
     const updateMutation = {
       description: `Mutation for updating a ${typeName} document`,
+      name: mutationName,
 
       // check function called on a user and document to see if they can perform the operation
       check(user, document) {
@@ -160,13 +253,13 @@ export function getDefaultMutations(options) {
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
           ? Users.canDo(user, [
-              `${typeName.toLowerCase()}.update.own`,
-              `${collectionName.toLowerCase()}.edit.own`,
-            ])
+            `${typeName.toLowerCase()}.update.own`,
+            `${collectionName.toLowerCase()}.edit.own`,
+          ])
           : Users.canDo(user, [
-              `${typeName.toLowerCase()}.update.all`,
-              `${collectionName.toLowerCase()}.edit.all`,
-            ]);
+            `${typeName.toLowerCase()}.update.all`,
+            `${collectionName.toLowerCase()}.edit.all`,
+          ]);
       },
 
       async mutation(root, { selector, data }, context) {
@@ -212,56 +305,13 @@ export function getDefaultMutations(options) {
     // OpenCRUD backwards compatibility
     mutations.edit = updateMutation;
 
-    /*
-
-    Handle post-mutation updates of the client cache
-
-    */
-    if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
-        
-        if (belongsToSet(document, selector)) {
-          // edited document belongs to the list
-          if (!isInSet(results[multiResolverName], document)) {
-            // if document wasn't already in list, add it
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          } else {
-            // if document was already in the list, update it
-            results[multiResolverName] = updateInSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(
-            results[multiResolverName],
-            options.sort,
-            selector
-          );
-        } else {
-          // if edited doesn't belong to current list anymore (based on view selector), remove it
-          results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// update');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
-    }
   }
   if (mutationOptions.upsert) {
     // mutation for upserting a specific document
+    const mutationName = getUpsertMutationName(typeName);
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
+      name: mutationName,
 
       async mutation(root, { selector, data }, context) {
         const collection = context[collectionName];
@@ -286,10 +336,11 @@ export function getDefaultMutations(options) {
   if (mutationOptions.delete) {
     // mutation for removing a specific document (same checks as edit mutation)
 
-    const mutationName = `delete${typeName}`;
+    const mutationName = getDeleteMutationName(typeName);
 
     const deleteMutation = {
       description: `Mutation for deleting a ${typeName} document`,
+      name: mutationName,
 
       check(user, document) {
         // OpenCRUD backwards compatibility
@@ -302,13 +353,13 @@ export function getDefaultMutations(options) {
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
           ? Users.canDo(user, [
-              `${typeName.toLowerCase()}.delete.own`,
-              `${collectionName.toLowerCase()}.remove.own`,
-            ])
+            `${typeName.toLowerCase()}.delete.own`,
+            `${collectionName.toLowerCase()}.remove.own`,
+          ])
           : Users.canDo(user, [
-              `${typeName.toLowerCase()}.delete.all`,
-              `${collectionName.toLowerCase()}.remove.all`,
-            ]);
+            `${typeName.toLowerCase()}.delete.all`,
+            `${collectionName.toLowerCase()}.remove.all`,
+          ]);
       },
 
       async mutation(root, { selector }, context) {
@@ -351,26 +402,10 @@ export function getDefaultMutations(options) {
     // OpenCRUD backwards compatibility
     mutations.remove = deleteMutation;
 
-    /*
+  }
 
-    Handle post-mutation updates of the client cache
-
-    */
-    if (Meteor.isClient) {
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        let results = query.result;
-        const document = get(mutation, `result.data['${mutationName}'.data]`, {});
-
-        results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-        // console.log('// delete')
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-        return results;
-      });
-    }
+  if (Meteor.isClient) {
+    registerWatchedMutations(mutations, typeName);
   }
 
   return mutations;

@@ -1,4 +1,4 @@
-import { createApolloServer } from '../../lib/server/apollo-server/apollo_server2';
+import { createApolloServer } from '../../lib/server/apollo-server/apollo_server';
 //import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 //import { GraphQLSchema } from '../../lib/modules/graphql';
 import expect from 'expect';

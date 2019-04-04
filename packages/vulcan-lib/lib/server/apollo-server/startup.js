@@ -1,3 +1,3 @@
-const { onStart } = require('./apollo_server2');
+const { onStart } = require('./apollo_server');
 // createApolloServer when server startup
 Meteor.startup(onStart);
