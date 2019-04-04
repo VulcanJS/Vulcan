@@ -77,7 +77,7 @@ export const createMutator = async ({
   Note: keep newDocument for backwards compatibility
   
   */
-  const properties = { data, currentUser, collection, context, document, newDocument: document, schema };
+  const properties = { data, originalData: clone(data), currentUser, collection, context, document, newDocument: document, schema };
 
   /*
 
