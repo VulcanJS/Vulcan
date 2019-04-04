@@ -9,7 +9,7 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { SchemaLink } from 'apollo-link-schema';
-import { GraphQLSchema } from '../../modules/graphql.js';
+import { GraphQLSchema } from '../../modules/graphql';
 
 import { createStateLink } from '../../modules/apollo-common';
 import { ApolloLink } from 'apollo-link';

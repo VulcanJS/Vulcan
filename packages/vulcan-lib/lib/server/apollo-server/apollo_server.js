@@ -25,7 +25,7 @@ import './settings';
 import { engineConfig } from './engine';
 import { initContext, computeContextFromReq } from './context.js';
 
-import { GraphQLSchema } from '../../modules/graphql.js';
+import { GraphQLSchema } from '../../modules/graphql';
 
 import { enableSSR } from '../apollo-ssr';
 

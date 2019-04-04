@@ -12,10 +12,12 @@ describe('vulcan:lib/graphql', function() {
     expect(() => GraphQLSchema.getExecutableSchema()).toThrow();
   });
   it('can access the graphql schema', function() {
+    GraphQLSchema.init();
     initGraphQL();
     expect(GraphQLSchema.getSchema()).toBeDefined();
   });
   it('can access the executable graphql schema', function() {
+    GraphQLSchema.init();
     initGraphQL();
     expect(GraphQLSchema.getExecutableSchema()).toBeDefined();
   });
