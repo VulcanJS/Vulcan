@@ -131,7 +131,8 @@
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
     "prettier": "^1.15.2",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "sinon": "^6.3.5"
   },
   "postcss": {
     "plugins": {

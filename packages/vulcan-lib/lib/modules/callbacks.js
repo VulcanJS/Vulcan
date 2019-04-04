@@ -53,14 +53,24 @@ export const addCallback = function (hook, callback) {
 
 /**
  * @summary Remove a callback from a hook
- * @param {string} hook - The name of the hook
- * @param {string} functionName - The name of the function to remove
+ * @param {string} hookName - The name of the hook
+ * @param {string} callbackName - The name of the function to remove
  */
 export const removeCallback = function (hookName, callbackName) {
   const formattedHook = formatHookName(hookName);
   Callbacks[formattedHook] = _.reject(Callbacks[formattedHook], function (callback) {
     return callback.name === callbackName;
   });
+};
+
+
+/**
+ * @summary Remove all callbacks from a hook (mostly for testing purposes)
+ * @param {string} hookName - The name of the hook
+ */
+export const removeAllCallbacks = function(hookName) {
+  const formattedHook = formatHookName(hookName);
+  Callbacks[formattedHook] = [];
 };
 
 /**
