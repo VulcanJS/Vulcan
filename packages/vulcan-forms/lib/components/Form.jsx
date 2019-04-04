@@ -490,12 +490,15 @@ class SmartForm extends Component {
       field.nestedSchema = fieldSchema.schema;
       field.nestedInput = true;
 
+      // get all children by path (if any)
+      const children = this.getChildFields(fieldName);
+
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({
         schema: field.nestedSchema,
-        fields: this.getChildFields(fieldName) || '*'
-      }).map(subFieldName => {
+        fields: (this.props.fields.includes(fieldName) || !children) ? '*' : children
+       }).map(subFieldName => {
         return this.createField(
           subFieldName,
           field.nestedSchema,
