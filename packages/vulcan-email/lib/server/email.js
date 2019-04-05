@@ -12,17 +12,17 @@ Get intl string. Usage: {{__ "posts.create"}}
 
 */
 Handlebars.registerHelper('__', function(id, context) {
-  const s = getString({ id, locale: context.data.root.locale, values: context.data.root });
+  const s = getString({ id, locale: context.data.root.locale });
   return new Handlebars.SafeString(s);
 });
 
 /*
 
-Get intl string, accepts a second variables argument. Usage: {{__ "posts.create" postVariables}}
+Get intl string, accepts a second optional values argument. Usage: {{___ "posts.create"}} or {{___ "posts.create" postValues}}
 
 */
-Handlebars.registerHelper('___', function(id, variables, context) {
-  const s = getString({ id, values: variables, locale: context.data.root.locale });
+Handlebars.registerHelper('___', function(id, values, context) {
+  const s = getString({ id, values, locale: context.data.root.locale });
   return new Handlebars.SafeString(s);
 });
 
