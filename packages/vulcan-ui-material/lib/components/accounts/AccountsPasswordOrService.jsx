@@ -26,7 +26,7 @@ export function hasPasswordService() {
 
 export class AccountsPasswordOrService extends PureComponent {
   render () {
-    let { className = 'password-or-service', style = {}, classes } = this.props;
+    let { className = 'password-or-service', classes } = this.props;
     const services = Object.keys(this.props.oauthServices).map(service => {
       return this.props.oauthServices[service].label;
     });

@@ -19,7 +19,7 @@ import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter} from 'react-router';
-import MessageContext, { flash } from '../messages.js';
+import MessageContext from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {

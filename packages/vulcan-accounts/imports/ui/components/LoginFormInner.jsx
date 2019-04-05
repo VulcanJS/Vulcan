@@ -275,7 +275,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         return {
           ...field,
           onChange: this.handleChange.bind(this, id),
-        }
+        };
       });
     }
       

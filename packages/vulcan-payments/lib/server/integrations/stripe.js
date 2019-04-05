@@ -195,6 +195,10 @@ export const getCustomer = async (user, token) => {
     if (id) {
       customerOptions.source = id;
     }
+    console.log('// getCustomer');
+    console.log(user);
+    console.log(token);
+    console.log(customerOptions);
     customer = await stripe.customers.create(customerOptions);
 
     // add stripe customer id to user object

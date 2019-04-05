@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Components,
-  registerComponent,
   replaceComponent,
   withCurrentUser,
   withMulti,
@@ -127,7 +126,6 @@ class Datatable extends PureComponent {
         options,
         showSearch,
         showNew,
-        currentUser,
         classes,
       } = this.props;
 
