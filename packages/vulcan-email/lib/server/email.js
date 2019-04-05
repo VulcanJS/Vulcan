@@ -19,6 +19,7 @@ Handlebars.registerHelper('__', function(id, context) {
 /*
 
 Get intl string, accepts a second optional values argument. Usage: {{___ "posts.create"}} or {{___ "posts.create" postValues}}
+TODO: Can we use the "__" helper for both use cases?
 
 */
 Handlebars.registerHelper('___', function(id, values, context) {

@@ -14,7 +14,7 @@ class FormComponent extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.showCharsRemaining()) {
       const value = this.getValue();
       this.updateCharacterCount(value);

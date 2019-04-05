@@ -160,7 +160,7 @@ const MuiSuggest = createReactClass({
     };
   },
   
-  componentWillReceiveProps: function (nextProps) {
+  UNSAFE_componentWillReceiveProps: function (nextProps) {
     if (nextProps.value !== this.state.value ||
       nextProps.options !== this.props.options) {
       const selectedOption = this.getSelectedOption(nextProps);
