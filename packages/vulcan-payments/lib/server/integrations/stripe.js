@@ -177,28 +177,24 @@ export const receiveAction = async (args, context) => {
 
 /*
 
-Retrieve or create a Stripe customer
+Update/retrieve or create a Stripe customer
 
 */
 export const getCustomer = async (user, token) => {
   const { id } = token;
 
   let customer;
+  const customerOptions = {};
+  if (id) {
+    customerOptions.source = id;
+  }
 
   try {
-    // try retrieving customer from Stripe
-    customer = await stripe.customers.retrieve(user.stripeCustomerId);
+    // update customer with latest payment source and get customer object in return (if it exists)
+    customer = await stripe.customers.update(user.stripeCustomerId, customerOptions);
   } catch (error) {
-    // if user doesn't have a stripeCustomerId; or if id doesn't match up with Stripe
-    // create new customer object
-    const customerOptions = { email: user.email };
-    if (id) {
-      customerOptions.source = id;
-    }
-    console.log('// getCustomer');
-    console.log(user);
-    console.log(token);
-    console.log(customerOptions);
+    // if user doesn't have a stripeCustomerId; or if id doesn't match up with Stripe, create new customer object
+    customerOptions.email = user.email;
     customer = await stripe.customers.create(customerOptions);
 
     // add stripe customer id to user object
@@ -218,7 +214,15 @@ export const getCustomer = async (user, token) => {
 Create one-time charge. 
 
 */
-export const createCharge = async ({ user, product, collection, document, metadata, args, context, }) => {
+export const createCharge = async ({
+  user,
+  product,
+  collection,
+  document,
+  metadata,
+  args,
+  context,
+}) => {
   const { token, /* userId, productKey, associatedId, properties, */ coupon } = args;
 
   const customer = await getCustomer(user, token);
@@ -421,7 +425,14 @@ export const createOrRetrieveSubscriptionPlan = async maybePlanObject =>
 Process charges, subscriptions, etc. on Vulcan's side
 
 */
-export const processAction = async ({ collection, document, stripeObject, args, user, context }) => {
+export const processAction = async ({
+  collection,
+  document,
+  stripeObject,
+  args,
+  user,
+  context,
+}) => {
   debug('');
   debugGroup('--------------- start\x1b[35m processAction \x1b[0m ---------------');
   debug(`Collection: ${collection.options.collectionName}`);
