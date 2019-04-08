@@ -286,7 +286,7 @@ export const createSubscription = async ({
   let returnDocument = document;
 
   try {
-    const customer = await getCustomer(user, args.token.id);
+    const customer = await getCustomer(user, args.token);
     // if product has an initial cost,
     // create an invoice item and attach it to the customer first
     // see https://stripe.com/docs/subscriptions/invoices#adding-invoice-items
