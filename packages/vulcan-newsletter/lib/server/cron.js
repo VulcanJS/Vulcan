@@ -1,4 +1,4 @@
-import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import { SyncedCron } from 'meteor/littledata:synced-cron';
 import moment from 'moment';
 import Newsletters from '../modules/collection.js';
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
