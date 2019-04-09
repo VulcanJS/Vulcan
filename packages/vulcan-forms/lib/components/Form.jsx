@@ -477,7 +477,8 @@ class SmartForm extends Component {
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({
-        schema: field.nestedSchema
+        schema: field.nestedSchema,
+        addExtraFields: false
       }).map(subFieldName => {
         return this.createField(
           subFieldName,
