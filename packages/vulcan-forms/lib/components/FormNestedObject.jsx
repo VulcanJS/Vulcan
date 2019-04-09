@@ -41,7 +41,7 @@ class FormNestedObject extends PureComponent {
     const hasErrors = nestedObjectErrors && nestedObjectErrors.length;
     return (
       <FormComponents.FormNestedObjectLayout
-        hasErros={hasErrors}
+        hasErrors={hasErrors}
         label={this.props.label}
         content={[
           <FormComponents.FormNestedItem
