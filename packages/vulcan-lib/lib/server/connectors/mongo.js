@@ -15,22 +15,27 @@ const convertUniqueSelector = selector => {
 };
 
 DatabaseConnectors.mongo = {
-  get: async (collection, selector = {}, options = {}) => {
-    return await collection.findOne(convertUniqueSelector(selector), options);
+  get: async (collection, selector = {}, options = {}, skipConversion) => {
+    const convertedSelector = skipConversion ? selector : convertUniqueSelector(selector)
+    return await collection.findOne(convertedSelector, options);
   },
-  find: async (collection, selector = {}, options = {}) => {
-    return await collection.find(convertSelector(selector), options).fetch();
+  find: async (collection, selector = {}, options = {}, skipConversion) => {
+    const convertedSelector = skipConversion ? selector : convertUniqueSelector(selector)
+    return await collection.find(convertedSelector, options).fetch();
   },
-  count: async (collection, selector = {}, options = {}) => {
-    return await collection.find(convertSelector(selector), options).count();
+  count: async (collection, selector = {}, options = {}, skipConversion) => {
+    const convertedSelector = skipConversion ? selector : convertUniqueSelector(selector)
+    return await collection.find(convertedSelector, options).count();
   },
   create: async (collection, document, options = {}) => {
     return await collection.insert(document);
   },
-  update: async (collection, selector, modifier, options = {}) => {
-    return await collection.update(convertUniqueSelector(selector), modifier, options);
+  update: async (collection, selector, modifier, options = {}, skipConversion) => {
+    const convertedSelector = skipConversion ? selector : convertUniqueSelector(selector)
+    return await collection.update(convertedSelector, modifier, options);
   },
-  delete: async (collection, selector, options = {}) => {
-    return await collection.remove(convertUniqueSelector(selector));
+  delete: async (collection, selector, options = {}, skipConversion) => {
+    const convertedSelector = skipConversion ? selector : convertUniqueSelector(selector)
+    return await collection.remove(convertedSelector);
   },
 };
