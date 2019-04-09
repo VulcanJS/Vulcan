@@ -20,7 +20,7 @@ class AccountsEnrollAccount extends PureComponent {
     } else {
       return (
         <div className='password-reset-form'>
-          <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}!</div>
+          <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}</div>
         </div>
       );
     }
