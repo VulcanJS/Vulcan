@@ -1,6 +1,6 @@
 import Users from 'meteor/vulcan:users';
 import VulcanEmail from 'meteor/vulcan:email';
-import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import { SyncedCron } from 'meteor/littledata:synced-cron';
 import Newsletters from '../modules/collection.js';
 import { Utils, getSetting, registerSetting, runCallbacksAsync, Connectors } from 'meteor/vulcan:core';
 
