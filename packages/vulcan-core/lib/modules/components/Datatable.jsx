@@ -6,6 +6,7 @@ import withComponents from '../containers/withComponents';
 import withMulti from '../containers/withMulti.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
+import _isFunction from 'lodash/isFunction';
 import _sortBy from 'lodash/sortBy';
 
 /*
