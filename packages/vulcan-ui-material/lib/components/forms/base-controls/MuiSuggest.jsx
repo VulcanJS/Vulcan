@@ -217,7 +217,7 @@ const MuiSuggest = createReactClass({
       selectedOption: suggestion,
       inputValue: this.getOptionLabel(suggestion),
     });
-    this.props.onChange(this.props.name, suggestion.value, this.getOptionLabel(suggestion));
+    this.props.onChange(suggestion.value, this.getOptionLabel(suggestion));
   },
   
   handleInputChange: function (event) {
