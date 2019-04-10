@@ -384,11 +384,13 @@ DatatableRow Component
 const DatatableRow = (props, { intl }) => {
 
   const { collection, columns, document, showEdit, 
-    currentUser, options, editFormOptions, rowClass, Components, modalProps } = props;
+    currentUser, options, editFormOptions, rowClass, Components } = props;
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
-  const _modalProps = { title: <code>{document._id}</code>, ...(_isFunction(modalProps) ? modalProps(document) : (modalProps || {})) };
+  const { modalProps = {} } = props;
+  const defaultModalProps = { title: <code>{document._id}</code> };
+  const customModalProps = { ...defaultModalProps, ...(_isFunction(modalProps) ? modalProps(document) : modalProps) };
   const sortedColumns = _sortBy(columns, column => column.order);
 
   return (
@@ -404,7 +406,7 @@ const DatatableRow = (props, { intl }) => {
       ))}
     {showEdit && canEdit ?
       <Components.DatatableCellLayout>
-        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={_modalProps} {...editFormOptions}/>
+        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={customModalProps} {...editFormOptions}/>
       </Components.DatatableCellLayout>
     : null}
   </Components.DatatableRowLayout>
