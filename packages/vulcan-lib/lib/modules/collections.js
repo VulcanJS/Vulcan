@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
+import { addGraphQLCollection, addToGraphQLContext } from './graphql';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
