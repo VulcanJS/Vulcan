@@ -1,6 +1,5 @@
 import expect from 'expect';
 import sinon from 'sinon/pkg/sinon.js';
-console.log('sinon', sinon);
 
 import { createMutator } from '../../lib/server/mutators';
 //import StubCollections from 'meteor/hwillson:stub-collections';
