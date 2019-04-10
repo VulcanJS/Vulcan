@@ -13,6 +13,7 @@ Package.onUse(function (api) {
     'vulcan:core@1.12.8',
     'vulcan:accounts@1.12.8',
     'vulcan:forms@1.12.8',
+    'vulcan:ui-react',
   ]);
   
   api.addFiles([
