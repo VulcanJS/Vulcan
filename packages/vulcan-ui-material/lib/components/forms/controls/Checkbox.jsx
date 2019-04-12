@@ -3,8 +3,8 @@ import MuiSwitch from '../base-controls/MuiSwitch';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
-const CheckboxComponent = ({ refFunction, ...properties }) =>
-  <MuiSwitch {...properties} ref={refFunction}/>;
+const CheckboxComponent = ({ refFunction, inputProperties }) =>
+  <MuiSwitch {...inputProperties} ref={refFunction}/>;
 
 
 registerComponent('FormComponentCheckbox', CheckboxComponent);

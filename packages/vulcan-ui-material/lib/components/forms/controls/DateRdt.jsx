@@ -24,19 +24,20 @@ class DateComponent extends PureComponent {
   }
 
   render() {
+    const { value, label } = this.props.inputProperties;
 
-    const date = this.props.value ? (typeof this.props.value === 'string' ? new Date(this.props.value) : this.props.value) : null;
+    const date = value ? (typeof value === 'string' ? new Date(value) : value) : null;
 
     return (
       <div className="form-group row">
-        <label className="control-label col-sm-3">{this.props.label}</label>
+        <label className="control-label col-sm-3">{label}</label>
         <div className="col-sm-9">
           <DateTimePicker
             value={date}
             timeFormat={false}
             // newDate argument is a Moment object given by react-datetime
             onChange={newDate => this.updateDate(newDate)}
-            inputProps={{name: this.props.name}}
+            inputProps={this.props.inputProperties}
           />
         </div>
       </div>
@@ -48,9 +49,10 @@ DateComponent.propTypes = {
   control: PropTypes.any,
   datatype: PropTypes.any,
   group: PropTypes.any,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  value: PropTypes.any,
+  inputProperties: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    value: PropTypes.any,
+  }),
 };
 
 DateComponent.contextTypes = {

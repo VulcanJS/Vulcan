@@ -54,14 +54,14 @@ export default {
    * `name`, `label` and `itemIndex` (for nested forms) properties.
    */
   getId: function () {
-    if (this.props.id) {
-      return this.props.id;
+    const { id, label = '', name, itemIndex = '' } = this.props;
+    if (id) {
+      return id;
     }
-    const label = (typeof this.props.label === 'undefined' ? '' : this.props.label);
-    const itemIndex = (typeof this.props.itemIndex=== 'undefined' ? '' : this.props.itemIndex);
+    const cleanName = name ? name.split('[').join('_').replace(']', '') : '';
     return [
       'frc',
-      this.props.name.split('[').join('_').replace(']', ''),
+      cleanName,
       itemIndex,
       this.hashString(JSON.stringify(label))
     ].join('-');

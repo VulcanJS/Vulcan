@@ -29,7 +29,7 @@ export const styles = theme => ({
   
 });
 
-const DateComponent = ({ refFunction, classes, ...properties }) =>
-  <MuiPicker {...properties} {...classes} ref={refFunction}/>;
+const DateComponent = ({ refFunction, classes, inputProperties }) =>
+  <MuiPicker {...inputProperties} {...classes} ref={refFunction}/>;
 
 registerComponent('FormComponentDate', DateComponent, [withStyles, styles]);
