@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, instantiateComponent, getHtmlInputProps } from 'meteor/vulcan:core';
 import classNames from 'classnames';
-import { getInputProps } from 'meteor/vulcan:ui-react';
 
 class FormComponentInner extends PureComponent {
   renderClear = () => {
@@ -27,10 +26,10 @@ class FormComponentInner extends PureComponent {
       const inputValue = inputType === 'checkbox' ? event.target.checked : event.target.value;
       onChange(inputValue);
     };
-    return {
-      ...getInputProps(this.props),
-      onChange: enhancedOnChange
-    };
+    const withInputProps = getHtmlInputProps(this.props);
+    withInputProps.onChange = enhancedOnChange; // TODO: legacy code?
+    withInputProps.inputProperties.onChange = enhancedOnChange;
+    return withInputProps;
   };
 
   render() {
