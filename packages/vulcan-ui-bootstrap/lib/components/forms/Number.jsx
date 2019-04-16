@@ -1,8 +1,11 @@
 import React from 'react';
-import { Input } from 'formsy-react-components';
-import { registerComponent } from 'meteor/vulcan:core';
+import Form from 'react-bootstrap/Form';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
-const NumberComponent = ({refFunction, inputProperties}) => 
-  <Input {...inputProperties} ref={refFunction} type="number" />;
+const NumberComponent = ({ refFunction, inputProperties, itemProperties }) => (
+  <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
+    <Form.Control {...inputProperties} ref={refFunction} type="number" />
+  </Components.FormItem>
+);
 
 registerComponent('FormComponentNumber', NumberComponent);

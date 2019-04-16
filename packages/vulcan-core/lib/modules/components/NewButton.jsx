@@ -2,16 +2,16 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
-const NewButton = ({ collection, size, style = 'primary', ...props }, { intl }) => (
+const NewButton = ({ collection, size, label, style = 'primary', formProps, ...props }, { intl }) => (
   <Components.ModalTrigger
-    label={intl.formatMessage({ id: 'datatable.new' })}
+    label={label || intl.formatMessage({ id: 'datatable.new' })}
     component={
       <Components.Button variant={style} size={size}>
-        <FormattedMessage id="datatable.new" />
+       {label || <FormattedMessage id="datatable.new" />}
       </Components.Button>
     }
   >
-    <Components.NewForm collection={collection} {...props} />
+    <Components.NewForm collection={collection} formProps={formProps} {...props} />
   </Components.ModalTrigger>
 );
 
@@ -28,7 +28,7 @@ registerComponent('NewButton', NewButton);
 NewForm Component
 
 */
-const NewForm = ({ closeModal, successCallback, ...props }) => {
+const NewForm = ({ closeModal, successCallback, formProps, ...props }) => {
 
   const success = successCallback
     ? document => {
@@ -37,6 +37,6 @@ const NewForm = ({ closeModal, successCallback, ...props }) => {
       }
     : closeModal;
 
-  return <Components.SmartForm successCallback={success} {...props} />;
+  return <Components.SmartForm successCallback={success} {...formProps} {...props} />;
 };
 registerComponent('NewForm', NewForm);

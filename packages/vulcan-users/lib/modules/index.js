@@ -1,9 +1,9 @@
 import Users from './collection.js';
 
-import './avatar.js';
-import './fragments.js';
-import './helpers.js';
-import './permissions.js';
-import './views.js';
+export * from './avatar.js';
+export * from './fragments.js';
+export * from './helpers.js';
+export * from './permissions.js';
+export * from './views.js';
 
 export default Users;

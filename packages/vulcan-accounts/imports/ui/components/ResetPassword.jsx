@@ -6,7 +6,7 @@ import { STATES } from '../../helpers.js';
 
 class AccountsResetPassword extends PureComponent {
   componentDidMount() {
-    const token = this.props.params.token;
+    const token = this.props.match.params.token;
     Accounts._loginButtonsSession.set('resetPasswordToken', token);
   }
 
@@ -20,7 +20,7 @@ class AccountsResetPassword extends PureComponent {
     } else {
       return (
         <div className='password-reset-form'>
-          <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}!</div>
+          <div>{this.context.intl.formatMessage({id: 'accounts.info_password_changed'})}</div>
         </div>
       );
     }
@@ -33,7 +33,7 @@ AccountsResetPassword.contextTypes = {
 
 AccountsResetPassword.propsTypes = {
   currentUser: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 AccountsResetPassword.displayName = 'AccountsResetPassword';

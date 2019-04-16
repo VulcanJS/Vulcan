@@ -48,18 +48,21 @@ export class AccountsField extends PureComponent {
       label,
       type = 'text',
       onChange,
-      // required = false,
-      className = 'field',
+      required = false,
       defaultValue = '',
       message,
     } = this.props;
+    let { className = 'field' } = this.state;
+    
     const { mount = true } = this.state;
     if (type == 'notice') {
       return <div className={ className }>{ label }</div>;
     }
     
     const autoComplete = autocompleteValues[id];
-
+    if(required)
+      className += ' required';
+    
     return mount ? (
       <div className={ className } style={{marginBottom: '10px'}}>
         <Components.FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } autoComplete={autoComplete }/>

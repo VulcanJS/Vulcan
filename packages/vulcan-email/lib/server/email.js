@@ -18,11 +18,12 @@ Handlebars.registerHelper('__', function(id, context) {
 
 /*
 
-Get intl string, accepts a second variables argument. Usage: {{__ "posts.create" postVariables}}
+Get intl string, accepts a second optional values argument. Usage: {{___ "posts.create"}} or {{___ "posts.create" postValues}}
+TODO: Can we use the "__" helper for both use cases?
 
 */
-Handlebars.registerHelper('___', function(id, variables, context) {
-  const s = getString({ id, variables, locale: context.data.root.locale });
+Handlebars.registerHelper('___', function(id, values, context) {
+  const s = getString({ id, values, locale: context.data.root.locale });
   return new Handlebars.SafeString(s);
 });
 
@@ -69,7 +70,14 @@ VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
     __: Strings[locale],
   };
 
-  const emailHTML = VulcanEmail.getTemplate('wrapper')(emailProperties);
+  let emailHTML;
+  
+  try { 
+    emailHTML = VulcanEmail.getTemplate('wrapper')(emailProperties);
+  } catch(e) {
+    emailHTML = htmlContent;
+  }
+
   const inlinedHTML = Juice(emailHTML, { preserveMediaQueries: true });
   const doctype =
     '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';

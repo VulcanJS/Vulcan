@@ -10,7 +10,8 @@ class ModalTrigger extends PureComponent {
     };
   }
 
-  clickHandler = () => {
+  clickHandler = (e) => {
+    e.preventDefault();
     if (this.props.onClick) {
       this.props.onClick();
     }

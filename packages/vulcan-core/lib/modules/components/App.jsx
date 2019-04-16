@@ -6,6 +6,7 @@ import {
   runCallbacks,
   detectLocale,
   hasIntlFields,
+  Routes,
 } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -16,6 +17,33 @@ import withSiteData from '../containers/withSiteData.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
+import { Switch, Route } from 'react-router-dom';
+import { withRouter} from 'react-router';
+import MessageContext from '../messages.js';
+
+// see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
+const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
+
+   // if defined, use ErrorCatcher component to wrap layout contents
+   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
+
+   return (
+  <Route
+    // NOTE: Switch ignores the "exact" prop of components that 
+    // are not its direct children
+    // Since the render tree is now Switch > RouteWithLayout > Route
+    // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
+    //exact 
+    {...rest}
+    render={props => {
+
+   const layoutProps = { ...props, currentRoute };
+   const childComponentProps = { ...props, currentRoute };
+      const layout = layoutName ? Components[layoutName] : Components.Layout;
+      return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
+    }}
+  />
+);};
 
 class App extends PureComponent {
   constructor(props) {
@@ -24,8 +52,48 @@ class App extends PureComponent {
       runCallbacks('events.identify', props.currentUser);
     }
     const { locale, localeMethod } = this.initLocale();
-    this.state = { locale, localeMethod };
+    this.state = { 
+      locale, 
+      localeMethod,
+      messages: [], 
+    };
     moment.locale(locale);
+  }
+
+  /*
+
+  Clear messages on route change
+  See https://stackoverflow.com/a/45373907/649299
+
+  */
+  UNSAFE_componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {
+      this.clear();
+    });
+  }
+
+  componentWillUnmount() {
+      this.unlisten();
+  }
+
+  /* 
+  
+  Show a flash message
+  
+  */
+  flash = message => {
+    this.setState({ 
+      messages: [...this.state.messages, message
+    ]});
+  }
+
+  /*
+
+  Clear all flash messages
+
+  */
+  clear = () => {
+    this.setState({ messages: []});
   }
 
   componentDidMount() {
@@ -91,44 +159,49 @@ class App extends PureComponent {
   };
 
   getChildContext() {
-    const messages = Strings[this.getLocale()] || {};
-    const intlProvider = new IntlProvider({ locale: this.getLocale() }, messages);
-    const { intl } = intlProvider.getChildContext();
     return {
-      intl: intl,
       getLocale: this.getLocale,
       setLocale: this.setLocale,
     };
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     if (!this.props.currentUser && nextProps.currentUser) {
       runCallbacks('events.identify', nextProps.currentUser);
     }
   }
 
   render() {
-    const currentRoute = _.last(this.props.routes);
-    const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
-
-    // if defined, use ErrorCatcher component to wrap layout contents
-    const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
+    const routeNames = Object.keys(Routes);
+    const { flash } = this;
+    const { messages } = this.state;
+    //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
 
     return (
       <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
-        <div className={`locale-${this.getLocale()}`}>
-          <Components.HeadTags />
-          <Components.RouterHook currentRoute={currentRoute} />
-          <LayoutComponent {...this.props} currentRoute={currentRoute}>
+        <MessageContext.Provider value={{ messages, flash }}>
+          <Components.ScrollToTop />
+          <div className={`locale-${this.getLocale()}`}>
+            <Components.HeadTags />
+            {/* <Components.RouterHook currentRoute={currentRoute} /> */}
             {this.props.currentUserLoading ? (
               <Components.Loading />
-            ) : this.props.children ? (
-              <ErrorCatcher>{this.props.children}</ErrorCatcher>
+            ) : routeNames.length ? (
+              <Switch>
+                {routeNames.map(key => (
+                  // NOTE: if we want the exact props to be taken into account
+                  // we have to pass it to the RouteWithLayout, not the underlying Route,
+                  // because it is the direct child of Switch
+                  <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
+                ))}
+                <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404'}} component={Components.Error404} />
+                {/* <Route component={Components.Error404} />  */}
+              </Switch>
             ) : (
-              <Components.Welcome />
-            )}
-          </LayoutComponent>
-        </div>
+                  <Components.Welcome />
+                )}
+          </div>
+        </MessageContext.Provider>
       </IntlProvider>
     );
   }
@@ -151,6 +224,6 @@ const updateOptions = {
   fragmentName: 'UsersCurrent',
 };
 
-registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies);
+registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies, withRouter);
 
 export default App;
