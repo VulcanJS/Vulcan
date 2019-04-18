@@ -2,11 +2,11 @@ import SimpleSchema from 'simpl-schema';
 import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
-// Order for the Schema is as follows. Change as you see fit: 
-// 00. 
+// Order for the Schema is as follows. Change as you see fit:
+// 00.
 // 10. Display Name
 // 20. Email
-// 30. Bio 
+// 30. Bio
 // 40. Slug
 // 50. Website
 // 60. Twitter username
@@ -23,12 +23,12 @@ const createDisplayName = user => {
   const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
   if (profileName) return profileName;
   if (twitterName) return twitterName;
-  if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+  if (linkedinFirstName)
+    return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
   if (user.username) return user.username;
   if (user.email) return user.email.slice(0, user.email.indexOf('@'));
   return undefined;
 };
-
 
 const adminGroup = {
   name: 'admin',
@@ -55,12 +55,17 @@ const schema = {
     canRead: ['guests'],
     canUpdate: ['admins'],
     canCreate: ['members'],
-    onCreate: ({ newDocument: user }) => {
-      if ((!user.username) && user.services && user.services.twitter && user.services.twitter.screenName) {
+    onCreate: ({ document: user }) => {
+      if (
+        !user.username &&
+        user.services &&
+        user.services.twitter &&
+        user.services.twitter.screenName
+      ) {
         return user.services.twitter.screenName;
       }
     },
-    searchable: true
+    searchable: true,
   },
   emails: {
     type: Array,
@@ -85,12 +90,12 @@ const schema = {
     canRead: ['admins'],
     onCreate: () => {
       return new Date();
-    }
+    },
   },
   isAdmin: {
     type: Boolean,
     label: 'Admin',
-    control: 'checkbox',
+    input: 'checkbox',
     optional: true,
     canCreate: ['admins'],
     canUpdate: ['admins'],
@@ -101,7 +106,7 @@ const schema = {
     type: String,
     label: 'Preferred Language',
     optional: true,
-    control: 'select',
+    input: 'select',
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ['guests'],
@@ -132,15 +137,15 @@ const schema = {
   displayName: {
     type: String,
     optional: true,
-    control: 'text',
+    input: 'text',
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ['guests'],
     order: 10,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       return createDisplayName(user);
     },
-    searchable: true
+    searchable: true,
   },
   /**
     The user's email. Modifiable.
@@ -150,12 +155,12 @@ const schema = {
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
     mustComplete: true,
-    control: 'text',
+    input: 'text',
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ownsOrIsAdmin,
     order: 20,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       // look in a few places for the user email
       const meteorEmails = Utils.getNestedProperty(user, 'services.meteor-developer.emails');
       const facebookEmail = Utils.getNestedProperty(user, 'services.facebook.email');
@@ -170,7 +175,7 @@ const schema = {
       if (linkedinEmail) return linkedinEmail;
       return undefined;
     },
-    searchable: true
+    searchable: true,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -180,31 +185,31 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       if (user.email) {
         return getCollection('Users').avatar.hash(user.email);
       }
-    }
+    },
   },
   avatarUrl: {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ newDocument: user }) => {
-
-      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
+    onCreate: ({ document: user }) => {
+      const twitterAvatar = Utils.getNestedProperty(
+        user,
+        'services.twitter.profile_image_url_https'
+      );
       const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
 
       if (twitterAvatar) return twitterAvatar;
       if (facebookId) return `https://graph.facebook.com/${facebookId}/picture?type=large`;
       return undefined;
-
     },
     resolveAs: {
       fieldName: 'avatarUrl',
       type: 'String',
       resolver: async (user, args, { Users }) => {
-
         if (_.isEmpty(user)) return null;
 
         if (user.avatarUrl) {
@@ -215,9 +220,8 @@ const schema = {
           const fullUser = await Users.loader.load(user._id);
           return Users.avatar.getUrl(fullUser);
         }
-
-      }
-    }
+      },
+    },
   },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
@@ -227,7 +231,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     order: 40,
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       // create a basic slug from display name and then modify it if this slugs already exists;
       const displayName = createDisplayName(user);
       const basicSlug = Utils.slugify(displayName);
@@ -241,7 +245,7 @@ const schema = {
   twitterUsername: {
     type: String,
     optional: true,
-    control: 'text',
+    input: 'text',
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ['guests'],
@@ -252,11 +256,11 @@ const schema = {
         return Users.getTwitterName(await Connectors.get(Users, user._id));
       },
     },
-    onCreate: ({ newDocument: user }) => {
+    onCreate: ({ document: user }) => {
       if (user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
-    }
+    },
   },
   /**
     Groups
@@ -264,21 +268,28 @@ const schema = {
   groups: {
     type: Array,
     optional: true,
-    control: 'checkboxgroup',
+    input: 'checkboxgroup',
     canCreate: ['admins'],
     canUpdate: ['admins'],
     canRead: ['guests'],
     group: adminGroup,
     form: {
-      options: function () {
-        const groups = _.without(_.keys(getCollection('Users').groups), 'guests', 'members', 'admins');
-        return groups.map(group => { return { value: group, label: group }; });
-      }
+      options: function() {
+        const groups = _.without(
+          _.keys(getCollection('Users').groups),
+          'guests',
+          'members',
+          'admins'
+        );
+        return groups.map(group => {
+          return { value: group, label: group };
+        });
+      },
     },
   },
   'groups.$': {
     type: String,
-    optional: true
+    optional: true,
   },
 
   // GraphQL only fields
@@ -292,7 +303,19 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getProfileUrl(user, true);
       },
-    }
+    },
+  },
+
+  pagePath: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    resolveAs: {
+      type: 'String',
+      resolver: (user, args, { Users }) => {
+        return Users.getProfileUrl(user, false);
+      },
+    },
   },
 
   editUrl: {
@@ -304,9 +327,8 @@ const schema = {
       resolver: (user, args, { Users }) => {
         return Users.getEditUrl(user, true);
       },
-    }
-  }
-
+    },
+  },
 };
 
 export default schema;

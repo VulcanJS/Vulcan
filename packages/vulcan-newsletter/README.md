@@ -12,7 +12,7 @@ This package schedules an automatic newsletter digest.
 ### Dependencies
 
 - [meteor-mailchimp](https://github.com/MiroHibler/meteor-mailchimp/)
-- [synced-cron](https://github.com/percolatestudio/meteor-synced-cron)
+- [synced-cron](https://github.com/littledata/meteor-synced-cron)
 - [handlebars-server](https://github.com/EventedMind/meteor-handlebars-server)
 - [meteor-npm](https://github.com/arunoda/meteor-npm/)
 

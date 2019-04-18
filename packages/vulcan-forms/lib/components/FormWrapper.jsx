@@ -51,6 +51,8 @@ import {
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';
 
+const intlSuffix = '_intl';
+
 class FormWrapper extends PureComponent {
   constructor(props) {
     super(props);
@@ -94,8 +96,11 @@ class FormWrapper extends PureComponent {
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
-      queryFields = _.intersection(queryFields, fields);
-      mutationFields = _.intersection(mutationFields, fields);
+      // add "_intl" suffix to all fields in case some of them are intl fields
+      const fieldsWithIntlSuffix = fields.map(field => `${field}${intlSuffix}`);
+      const allFields = [...fields, ...fieldsWithIntlSuffix];
+      queryFields = _.intersection(queryFields, allFields);
+      mutationFields = _.intersection(mutationFields, allFields);
     }
 
     // add "addFields" prop contents to list of fields
@@ -105,7 +110,7 @@ class FormWrapper extends PureComponent {
     }
 
     const convertFields = field => {
-      return field.slice(-5) === '_intl' ? `${field}{ locale value }` : field;
+      return field.slice(-5) === intlSuffix ? `${field}{ locale value }` : field;
     };
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.

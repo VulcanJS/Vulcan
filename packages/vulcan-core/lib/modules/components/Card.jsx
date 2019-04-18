@@ -4,16 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
+import without from 'lodash/without';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
-  const fieldSchema = schema && schema[fieldName];
-  if (fieldSchema) {
-    return intl.formatMessage({id: `${collection._name}.${fieldName}`, defaultMessage: fieldSchema.label});
-  } else {
-    return fieldName;
-  }
+  return intl.formatLabel ? intl.formatLabel({ fieldName: fieldName, collectionName: collection && collection._name, schema: schema }): fieldName;
 };
 
 const getTypeName = (field, fieldName, collection) => {
@@ -30,19 +26,19 @@ const getTypeName = (field, fieldName, collection) => {
 
 const parseImageUrl = value => {
   const isImage = ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 || ['.webp', '.jpeg'].indexOf(value.substr(-5)) !== -1;
-  return isImage ? 
-    <img style={{width: '100%', minWidth: 80, maxWidth: 200, display: 'block'}} src={value} alt={value}/> : 
+  return isImage ?
+    <img style={{ width: '100%', minWidth: 80, maxWidth: 200, display: 'block' }} src={value} alt={value} /> :
     parseUrl(value);
 };
 
 const parseUrl = value => {
-  return value.slice(0,4) === 'http' ? <a href={value} target="_blank"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
+  return value.slice(0,4) === 'http' ? <a href={value} target="_blank" rel="noopener noreferrer"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
 };
 
 const LimitedString = ({ string }) =>
   <div>
-    {string.indexOf(' ') === -1 && string.length > 30 ? 
-      <span title={string}>{string.substr(0,30)}…</span> : 
+    {string.indexOf(' ') === -1 && string.length > 30 ?
+      <span title={string}>{string.substr(0, 30)}…</span> :
       <span>{(string)}</span>
     }
   </div>;
@@ -112,7 +108,7 @@ const getObject = object => {
     return (
       <table className="table table-bordered">
         <tbody>
-          {_.without(Object.keys(object), '__typename').map(key => 
+          {without(Object.keys(object), '__typename').map(key =>
             <tr key={key}>
               <td><strong>{key}</strong></td>
               <td>{getFieldValue(object[key], typeof object[key])}</td>
@@ -125,7 +121,7 @@ const getObject = object => {
   }
 };
 
-const CardItem = ({label, value, typeName}) => 
+const CardItem = ({ label, value, typeName }) =>
   <tr>
     <td className="datacard-label"><strong>{label}</strong></td>
     <td className="datacard-value">{getFieldValue(value, typeName)}</td>
@@ -134,7 +130,7 @@ const CardItem = ({label, value, typeName}) =>
 const CardEdit = (props, context) =>
   <tr>
     <td colSpan="2">
-      <Components.ModalTrigger label={context.intl.formatMessage({id: 'cards.edit'})} component={<Components.Button variant="info"><FormattedMessage id="cards.edit" /></Components.Button>}>
+      <Components.ModalTrigger label={context.intl.formatMessage({ id: 'cards.edit' })} component={<Components.Button variant="info"><FormattedMessage id="cards.edit" /></Components.Button>}>
         <CardEditForm {...props} />
       </Components.ModalTrigger>
     </td>
@@ -143,7 +139,7 @@ const CardEdit = (props, context) =>
 CardEdit.contextTypes = { intl: intlShape };
 
 const CardEditForm = ({ collection, document, closeModal }) =>
-  <Components.SmartForm 
+  <Components.SmartForm
     collection={collection}
     documentId={document._id}
     showRemove={true}
@@ -152,19 +148,19 @@ const CardEditForm = ({ collection, document, closeModal }) =>
     }}
   />;
 
-const Card = ({title, className, collection, document, currentUser, fields, showEdit = true}, {intl}) => {
+const Card = ({ title, className, collection, document, currentUser, fields, showEdit = true }, { intl }) => {
 
-  const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
+  const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
   const canEdit = showEdit && currentUser && collection && collection.options.mutations.update.check(currentUser, document);
 
   return (
     <div className={classNames(className, 'datacard', collection && `datacard-${collection._name}`)}>
       {title && <div className="datacard-title">{title}</div>}
-      <table className="table table-bordered" style={{maxWidth: '100%'}}>
+      <table className="table table-bordered" style={{ maxWidth: '100%' }}>
         <tbody>
           {canEdit ? <CardEdit collection={collection} document={document} /> : null}
-          {fieldNames.map((fieldName, index) => 
-            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(document[fieldName], fieldName, collection)} label={getLabel(document[fieldName], fieldName, collection, intl)}/>
+          {fieldNames.map((fieldName, index) =>
+            <CardItem key={index} value={document[fieldName]} typeName={getTypeName(document[fieldName], fieldName, collection)} label={getLabel(document[fieldName], fieldName, collection, intl)} />
           )}
         </tbody>
       </table>

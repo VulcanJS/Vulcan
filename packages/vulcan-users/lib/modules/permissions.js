@@ -18,12 +18,12 @@ class Group {
 
   can(actions) {
     actions = Array.isArray(actions) ? actions : [actions];
-    this.actions = this.actions.concat(actions);
+    this.actions = this.actions.concat(actions.map(a => a.toLowerCase()));
   }
 
   cannot(actions) {
     actions = Array.isArray(actions) ? actions : [actions];
-    this.actions = _.difference(this.actions, actions);
+    this.actions = _.difference(this.actions, actions.map(a => a.toLowerCase()));
   }
 
 }
@@ -172,6 +172,8 @@ Users.isAdmin = function (userOrUserId) {
   }
 };
 Users.isAdminById = Users.isAdmin;
+
+export const isAdmin = Users.isAdmin;
 
 /**
  * @summary Check if a user can view a field

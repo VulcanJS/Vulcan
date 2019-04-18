@@ -11,15 +11,46 @@ When clearing an image, it is addeds to `deletedValues` and set to `null` in the
 but the array item itself is not deleted. The entire array is then cleaned when submitting the form.
 
 */
-import { Components, getSetting, registerSetting, registerComponent } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
+import {
+  Components,
+  getSetting,
+  registerSetting,
+  registerComponent,
+} from 'meteor/vulcan:lib';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
-import { FormattedMessage } from 'meteor/vulcan:i18n';
+import {FormattedMessage} from 'meteor/vulcan:i18n';
 import set from 'lodash/set';
 
-registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
+registerSetting(
+  'cloudinary.cloudName',
+  null,
+  'Cloudinary cloud name (for image uploads)'
+);
+
+/*
+
+Dropzone styles
+
+*/
+const baseStyle = {
+  borderWidth: 1,
+  borderStyle: 'dashed',
+  marginBottom: '10',
+  padding: '10',
+};
+const activeStyle = {
+  borderStyle: 'solid',
+  borderColor: '#6c6',
+  backgroundColor: '#eee',
+};
+const rejectStyle = {
+  borderStyle: 'solid',
+  borderColor: '#c66',
+  backgroundColor: '#eee',
+};
 
 /*
 
@@ -28,7 +59,9 @@ Get a URL from an image or an array of images
 */
 const getImageUrl = imageOrImageArray => {
   // if image is actually an array of formats, use first format
-  const image = Array.isArray(imageOrImageArray) ? imageOrImageArray[0] : imageOrImageArray;
+  const image = Array.isArray(imageOrImageArray)
+    ? imageOrImageArray[0]
+    : imageOrImageArray;
   // if image is an object, return secure_url; else return image itself
   const imageUrl = typeof image === 'string' ? image : image.secure_url;
   return imageUrl;
@@ -52,9 +85,12 @@ class Image extends PureComponent {
 
   render() {
     return (
-      <div className={`upload-image ${this.props.loading ? 'upload-image-loading' : ''} ${this.props.error ? 'upload-image-error' : ''}`}>
+      <div
+        className={`upload-image ${
+          this.props.loading ? 'upload-image-loading' : ''
+        } ${this.props.error ? 'upload-image-error' : ''}`}>
         <div className="upload-image-contents">
-          <img style={{ width: 150 }} src={getImageUrl(this.props.image)} />
+          <img style={{width: 150}} src={getImageUrl(this.props.image)} />
           {this.props.loading && (
             <div className="upload-loading">
               <Components.Loading />
@@ -75,25 +111,38 @@ Cloudinary Image Upload component
 
 */
 class Upload extends PureComponent {
-
   constructor(props, context) {
     super(props);
 
     const self = this;
 
     // add callback to clean any preview or error values
-    function uploadKeepRealImages (data) {
-      // keep only "real" images
-      const images = self.getImages({ includePreviews: false, includeDeleted: false});
-      // replace images in `data` object with real images
-      set(data, self.props.path, images);
+    // (when handling multiple images)
+    function uploadKeepRealImages(data) {
+      if (Array.isArray(self.props.value)) {
+        // keep only "real" images
+        const images = self.getImages({
+          includePreviews: false,
+          includeDeleted: false,
+        });
+        // replace images in `data` object with real images
+        set(data, self.props.path, images);
+      }
       return data;
     }
     context.addToSubmitForm(uploadKeepRealImages);
-
   }
-  state = { uploading: false };
+  state = {uploading: false};
 
+  /*
+
+  Find out field type
+
+  */
+  getFieldType = () => {
+    return this.props.datatype && this.props.datatype[0].type;
+  }
+  
   /*
 
   Check the field's type to decide if the component should handle
@@ -101,7 +150,7 @@ class Upload extends PureComponent {
 
   */
   enableMultiple = () => {
-    return this.props.maxCount !== 1;
+    return this.getFieldType() !== String || this.props.maxCount !== 1;
   };
 
   /*
@@ -110,7 +159,10 @@ class Upload extends PureComponent {
 
   */
   isDisabled = () => {
-    return this.state.uploading || this.props.maxCount <= this.getImages({ includeDeleted: false }).length;
+    return (
+      this.state.uploading ||
+      this.props.maxCount <= this.getImages({includeDeleted: false}).length
+    );
   };
 
   /*
@@ -130,19 +182,25 @@ class Upload extends PureComponent {
     });
 
     // request url to cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting('cloudinary.cloudName')}/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${getSetting(
+      'cloudinary.cloudName'
+    )}/upload`;
 
     // trigger a request for each file
     files.forEach((file, index) => {
       // figure out update path for current image
       const updateIndex = imagesCount + index;
-      const updatePath = `${this.props.path}.${updateIndex}`;
+      const updatePath = this.getFieldType() === String ? this.props.path : `${this.props.path}.${updateIndex}`;
 
       // build preview object
-      const previewObject = { secure_url: file.preview, loading: true, preview: true };
+      const previewObject = {
+        secure_url: file.preview,
+        loading: true,
+        preview: true,
+      };
 
       // update current values using preview object
-      this.props.updateCurrentValues({ [updatePath]: previewObject });
+      this.props.updateCurrentValues({[updatePath]: previewObject});
 
       // request body
       const body = new FormData();
@@ -160,21 +218,33 @@ class Upload extends PureComponent {
             if (body.error) {
               // eslint-disable-next-line no-console
               console.log(body.error);
-              this.props.throwError({ id: 'upload.error', path: this.props.path, message: body.error.message });
-              const errorObject = { ...previewObject, loading: false, error: true };
-              this.props.updateCurrentValues({ [updatePath]: errorObject });
+              this.props.throwError({
+                id: 'upload.error',
+                path: this.props.path,
+                message: body.error.message,
+              });
+              const errorObject = {
+                ...previewObject,
+                loading: false,
+                error: true,
+              };
+              this.props.updateCurrentValues({[updatePath]: errorObject});
               return null;
             } else {
               // use the https:// url given by cloudinary; or eager property if using transformations
               const imageObject = body.eager ? body.eager : body.secure_url;
-              this.props.updateCurrentValues({ [updatePath]: imageObject });
+              this.props.updateCurrentValues({[updatePath]: imageObject});
               return imageObject;
             }
           })
           .catch(error => {
             // eslint-disable-next-line no-console
             console.log(error);
-            this.props.throwError({ id: 'upload.error', path: this.props.path, message: error.message });
+            this.props.throwError({
+              id: 'upload.error',
+              path: this.props.path,
+              message: error.message,
+            });
           })
       );
     });
@@ -198,7 +268,7 @@ class Upload extends PureComponent {
 
   */
   clearImage = index => {
-    this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null });
+    this.props.updateCurrentValues({[`${this.props.path}.${index}`]: null});
   };
 
   /*
@@ -207,9 +277,9 @@ class Upload extends PureComponent {
 
   */
   getImages = (args = {}) => {
-    const { includePreviews = true, includeDeleted = false } = args;
+    const {includePreviews = true, includeDeleted = false} = args;
     let images = this.props.value;
-  
+
     // if images is an empty string, null, etc. just return an empty array
     if (!images) {
       return [];
@@ -222,15 +292,21 @@ class Upload extends PureComponent {
     // remove previews if needed
     images = includePreviews ? images : images.filter(image => !image.preview);
     // remove deleted images
-    images = includeDeleted ? images : images.filter((image, index) => !this.isDeleted(index));
+    images = includeDeleted
+      ? images
+      : images.filter((image, index) => !this.isDeleted(index));
     return images;
   };
 
   render() {
-    const { uploading } = this.state;
-    const images = this.getImages({ includeDeleted: true });
+    const {uploading} = this.state;
+    const images = this.getImages({includeDeleted: true});
+
     return (
-      <div className={`form-group row ${this.isDisabled() ? 'upload-disabled' : ''}`}>
+      <div
+        className={`form-group row ${
+          this.isDisabled() ? 'upload-disabled' : ''
+        }`}>
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <div className="upload-field">
@@ -241,18 +317,27 @@ class Upload extends PureComponent {
               className="dropzone-base"
               activeClassName="dropzone-active"
               rejectClassName="dropzone-reject"
-              disabled={this.isDisabled()}
-            >
-              <div>
-                <FormattedMessage id="upload.prompt" />
-              </div>
-              {uploading && (
-                <div className="upload-uploading">
-                  <span>
-                    <FormattedMessage id="upload.uploading" />
-                  </span>
-                </div>
-              )}
+              disabled={this.isDisabled()}>
+              {({getRootProps, getInputProps, isDragActive, isDragReject}) => {
+                let styles = {...baseStyle};
+                styles = isDragActive ? {...styles, ...activeStyle} : styles;
+                styles = isDragReject ? {...styles, ...rejectStyle} : styles;
+                return (
+                  <div {...getRootProps()} style={styles}>
+                    <input {...getInputProps()} />
+                    <div>
+                      <FormattedMessage id="upload.prompt" />
+                    </div>
+                    {uploading && (
+                      <div className="upload-uploading">
+                        <span>
+                          <FormattedMessage id="upload.uploading" />
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              }}
             </Dropzone>
 
             {!!images.length && (

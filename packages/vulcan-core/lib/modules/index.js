@@ -1,4 +1,3 @@
-import './callbacks.js';
 
 // import and re-export
 export * from 'meteor/vulcan:lib';
@@ -6,24 +5,22 @@ export * from 'meteor/vulcan:lib';
 export * from './default_mutations.js';
 export * from './default_resolvers.js';
 
+export * from './components.js';
+
 export { default as Layout } from './components/Layout.jsx';
 export { default as App } from './components/App.jsx';
 export { default as Icon } from './components/Icon.jsx';
-export { default as Loading } from './components/Loading.jsx';
 export { default as ShowIf } from './components/ShowIf.jsx';
-export { default as NewButton } from './components/NewButton.jsx';
-export { default as EditButton } from './components/EditButton.jsx';
 export { default as MutationButton } from './components/MutationButton.jsx';
 export { default as Error404 } from './components/Error404.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
-export { default as Avatar } from './components/Avatar.jsx';
-export { default as Card } from './components/Card.jsx';
 export { default as Datatable } from './components/Datatable.jsx';
 export { default as Flash } from './components/Flash.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
 export { default as RouterHook } from './components/RouterHook.jsx';
+export { default as ScrollToTop } from './components/ScrollToTop.jsx';
 export { default as Dummy } from './components/Dummy.jsx';
 
 export { default as withAccess } from './containers/withAccess.js';
@@ -39,6 +36,8 @@ export { default as withUpsert } from './containers/withUpsert.js';
 export { default as withSiteData } from './containers/withSiteData.js';
 
 export { default as withComponents } from './containers/withComponents';
+
+export { default as MessageContext } from './messages.js';
 
 // OpenCRUD backwards compatibility
 export { default as withNew } from './containers/withCreate.js';

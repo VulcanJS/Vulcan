@@ -14,7 +14,7 @@ class FormComponent extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.showCharsRemaining()) {
       const value = this.getValue();
       this.updateCharacterCount(value);
@@ -23,19 +23,19 @@ class FormComponent extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     // allow custom controls to determine if they should update
-    if (this.isCustomInput(this.getType(nextProps))) {
+    if (this.isCustomInput(this.getInputType(nextProps))) {
       return true;
     }
 
     const { currentValues, deletedValues, errors } = nextProps;
-    const { path } = this.props;
+    const path = this.getPath(this.props);
 
     // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
     const includesPathOrChildren = deletedValues =>
       deletedValues.some(deletedPath => deletedPath.includes(path));
 
     const valueChanged =
-      get(currentValues, path) !== get(this.props.currentValues, path);
+      !isEqual(get(currentValues, path), get(this.props.currentValues, path)); 
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged =
       includesPathOrChildren(deletedValues) !==
@@ -93,13 +93,14 @@ class FormComponent extends Component {
   Function passed to form controls (always controlled) to update their value
   
   */
-  handleChange = (name, value) => {
+  handleChange = value => {
+
     // if value is an empty string, delete the field
     if (value === '') {
       value = null;
     }
     // if this is a number field, convert value before sending it up to Form
-    if (this.getType() === 'number' && value != null) {
+    if (this.getFieldType() === Number && value != null) {
       value = Number(value);
     }
 
@@ -160,7 +161,7 @@ class FormComponent extends Component {
   showCharsRemaining = props => {
     const p = props || this.props;
     return (
-      p.max && ['url', 'email', 'textarea', 'text'].includes(this.getType(p))
+      p.max && ['url', 'email', 'textarea', 'text'].includes(this.getInputType(p))
     );
   };
 
@@ -181,12 +182,22 @@ class FormComponent extends Component {
 
   /*
 
+  Get field field value type
+
+  */
+  getFieldType = props => {
+    const p = props || this.props;
+    return p.datatype && p.datatype[0].type;
+  }
+
+  /*
+
   Get form input type, either based on input props, or by guessing based on form field type
 
   */
-  getType = props => {
+  getInputType = props => {
     const p = props || this.props;
-    const fieldType = p.datatype && p.datatype[0].type;
+    const fieldType = this.getFieldType();
     const autoType =
       fieldType === Number
         ? 'number'
@@ -218,7 +229,7 @@ class FormComponent extends Component {
   
   */
   getFormInput = () => {
-    const inputType = this.getType();
+    const inputType = this.getInputType();
     const FormComponents = mergeWithComponents(this.props.formComponents);
 
     // if input is a React component, use it
@@ -322,7 +333,7 @@ class FormComponent extends Component {
       <FormComponents.FormComponentInner
         {...this.props}
         {...this.state}
-        inputType={this.getType()}
+        inputType={this.getInputType()}
         value={this.getValue()}
         errors={this.getErrors()}
         document={this.context.getDocument()}

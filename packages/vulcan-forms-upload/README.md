@@ -84,7 +84,7 @@ Posts.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    control: getComponent('Upload'),
+    input: getComponent('Upload'),
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ['guests'],
@@ -110,7 +110,7 @@ Users.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    control: getComponent('Upload'),
+    input: getComponent('Upload'),
     canCreate: ['members'],
     canUpdate: ['members'],
     canRead: ['guests'],

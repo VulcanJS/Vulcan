@@ -1,0 +1,16 @@
+.form-nested-item {
+  display: flex;
+}
+
+.form-nested-item-inner {
+  flex-grow: 1;
+}
+
+.form-nested-item-remove {
+  padding-top: 8px;
+  margin-left: 8px;
+}
+
+.form-nested-item-remove > button {
+  margin-right: -4px;
+}

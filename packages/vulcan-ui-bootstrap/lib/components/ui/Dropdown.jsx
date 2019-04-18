@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:lib';
-import Dropdown from 'react-bootstrap/lib/Dropdown';
-import DropdownItem from 'react-bootstrap/lib/DropdownItem';
-import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import { LinkContainer } from 'react-router-bootstrap';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
@@ -14,13 +14,13 @@ A node contains a menu item, and optionally a list of child items
 */
 const Node = ({ childrenItems, ...rest }) => {
   return (
-    <div className="menu-node">
+    <>
       <Item {...rest} />
       {childrenItems &&
         !!childrenItems.length && (
           <div className="menu-node-children">{childrenItems.map((item, index) => <Item key={index} {...item} />)}</div>
         )}
-    </div>
+    </>
   );
 };
 
@@ -34,7 +34,7 @@ Note: `rest` is used to ensure auto-generated props from parent dropdown
 components are properly passed down to MenuItem
 
 */
-const Item = ({ index, to, labelId, label, component, componentProps = {}, itemProps, ...rest }) => {
+const Item = ({ index, to, labelId, label, component, componentProps = {}, itemProps, linkProps, ...rest }) => {
   let menuComponent;
 
   if (component) {
@@ -46,12 +46,12 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
   }
 
   const item = (
-    <DropdownItem className="dropdown-item" eventKey={index} {...itemProps} {...rest}>
+    <DropdownItem eventKey={index} {...itemProps} {...rest}>
       {menuComponent}
     </DropdownItem>
   );
 
-  return to ? <LinkContainer to={to}>{item}</LinkContainer> : item;
+  return to ? <LinkContainer to={to} {...linkProps}>{item}</LinkContainer> : item;
 };
 
 Item.propTypes = {

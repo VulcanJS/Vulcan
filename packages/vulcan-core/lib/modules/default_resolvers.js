@@ -4,10 +4,19 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils, debug, debugGroup, debugGroupEnd, Connectors, getTypeName, getCollectionName, throwError } from 'meteor/vulcan:lib';
+import {
+  Utils,
+  debug,
+  debugGroup,
+  debugGroupEnd,
+  Connectors,
+  getTypeName,
+  getCollectionName,
+  throwError,
+} from 'meteor/vulcan:lib';
 
 const defaultOptions = {
-  cacheMaxAge: 300
+  cacheMaxAge: 300,
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
@@ -35,7 +44,9 @@ export function getDefaultResolvers(options) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -51,6 +62,7 @@ export function getDefaultResolvers(options) {
         const collection = context[collectionName];
 
         // get selector and options from terms and perform Mongo query
+
         let { selector, options } = await collection.getParameters(terms, {}, context);
         options.skip = terms.offset;
 
@@ -83,7 +95,7 @@ export function getDefaultResolvers(options) {
 
         // return results
         return data;
-      }
+      },
     },
 
     // resolver for returning a single document queried based on id or slug
@@ -95,7 +107,9 @@ export function getDefaultResolvers(options) {
         const { selector = {}, enableCache = false, allowNull = false } = input;
 
         debug('');
-        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
+        debugGroup(
+          `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
+        );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Selector: ${JSON.stringify(selector)}`);
 
@@ -117,7 +131,10 @@ export function getDefaultResolvers(options) {
           if (allowNull) {
             return { result: null };
           } else {
-            throwError({ id: 'app.missing_document', data: {documentId, selector} });
+            throwError({
+              id: 'app.missing_document',
+              data: { documentId, selector },
+            });
           }
         }
 
@@ -143,7 +160,7 @@ export function getDefaultResolvers(options) {
 
         // filter out disallowed properties and return resulting document
         return { result: restrictedDoc };
-      }
-    }
+      },
+    },
   };
 }

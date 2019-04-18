@@ -51,8 +51,10 @@
     "no-useless-escape": 0,
     "quotes": [
       1,
-      "single"
+      "single",
+      "avoid-escape"
     ],
+    "react/display-name": 1,
     "react/prop-types": 0,
     "semi": [1, "always"]
   },

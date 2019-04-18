@@ -1,12 +1,12 @@
 import React from 'react';
-import { Checkbox } from 'formsy-react-components';
-import { registerComponent } from 'meteor/vulcan:core';
+import Form from 'react-bootstrap/Form';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 import intersection from 'lodash/intersection';
 
 // note: treat checkbox group the same as a nested component, using `path`
-const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties }) => {
+const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties, itemProperties }) => {
 
   const { options } = inputProperties;
 
@@ -20,27 +20,30 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
       value = checkedValues;
     }
   }
-
+  
   return (
-    <div className="form-group row">
-      <label className="control-label col-sm-3">{label}</label>
-      <div className="col-sm-9">
+    <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
+      <div>
         {options.map((option, i) => (
-          <Checkbox
+          <Form.Check
+            {...inputProperties}
             layout="elementOnly"
             key={i}
-            {...inputProperties}
             label={option.label}
             value={value.includes(option.value)}
+            checked={!!value.includes(option.value)}
+            id={`${path}.${i}`}
+            path={`${path}.${i}`}
             ref={refFunction}
-            onChange={(name, isChecked) => {
+            onChange={event => {
+              const isChecked = event.target.checked;
               const newValue = isChecked ? [...value, option.value] : without(value, option.value);
               updateCurrentValues({ [path]: newValue });
             }}
           />
         ))}
       </div>
-    </div>
+    </Components.FormItem>
   );
 };
 

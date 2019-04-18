@@ -1,0 +1,18 @@
+.accounts-ui .form-control {
+  color: rgba(0, 0, 0, 0.87);
+  padding: 8px 0;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+  margin-bottom: 1px;
+  border-radius: 0;
+  width: 100%;
+}
+
+.accounts-ui .form-control:focus {
+  border-bottom-width: 2px;
+  margin-bottom: 0;
+}
+

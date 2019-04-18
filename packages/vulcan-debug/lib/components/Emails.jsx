@@ -34,9 +34,9 @@ class Email extends PureComponent {
     return (
       <tr>
         <td>{name}</td>
-        <td><a href={'/email/template/'+email.template} target="_blank">{email.template}</a></td>
+        <td><a href={'/email/template/'+email.template} target="_blank" rel="noopener noreferrer">{email.template}</a></td>
         <td>{typeof email.subject === 'function' ? email.subject({}) : email.subject}</td>
-        <td><a href={email.path.replace(':_id?', '').replace(':documentId?', '')} target="_blank">{email.path}</a></td>
+        <td><a href={email.path.replace(':_id?', '').replace(':documentId?', '')} target="_blank" rel="noopener noreferrer">{email.path}</a></td>
         <td>
           <div className={this.state.loading ? 'test-email loading' : 'test-email'}>
             <Components.Button disabled={this.state.loading} onClick={this.sendTest} variant="primary">Send Test</Components.Button>

@@ -1,4 +1,4 @@
-import { registerComponent, getCollection, Utils } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -6,6 +6,7 @@ import withComponents from '../containers/withComponents';
 import withMulti from '../containers/withMulti.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
+import _isFunction from 'lodash/isFunction';
 import _sortBy from 'lodash/sortBy';
 
 /*
@@ -67,11 +68,11 @@ class Datatable extends PureComponent {
   }
 
   render() {
-    const { Components } = this.props;
+    const { Components, modalProps } = this.props;
 
     if (this.props.data) { // static JSON datatable
 
-      return <Components.DatatableContents Components={Components} columns={Object.keys(this.props.data[0])} {...this.props} results={this.props.data} showEdit={false} showNew={false} />;
+      return <Components.DatatableContents Components={Components} columns={Object.keys(this.props.data[0])} {...this.props} results={this.props.data} showEdit={false} showNew={false} modalProps={modalProps} />;
             
     } else { // dynamic datatable with data loading
       
@@ -194,13 +195,12 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
 
     use either:
 
-    1. the column name translation
+    1. the column name translation : collectionName.columnName, global.columnName, columnName
     2. the column name label in the schema (if the column name matches a schema field)
     3. the raw column name.
 
     */
-    const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
-    const formattedLabel = intl.formatMessage({ id: `${collection._name}.${columnName}`, defaultMessage });
+    const formattedLabel = intl.formatLabel({fieldName: columnName, collectionName: collection._name, schema: schema});
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
@@ -258,9 +258,9 @@ const DatatableSorter = ({ name, label, toggleSort, currentSort }) =>
         {!currentSort[name] ? (
           <SortNone/> 
         ) : currentSort[name] === 1 ? (
-          <SortDesc/> 
-        ) : (
           <SortAsc/>
+        ) : (
+          <SortDesc/> 
         )
       }
       </span>
@@ -280,7 +280,7 @@ const DatatableContents = (props) => {
   // if no columns are provided, default to using keys of first array item
   const { title, collection, results, columns, loading, loadMore, 
     count, totalCount, networkStatus, showEdit, currentUser, emptyState, 
-    toggleSort, currentSort,
+    toggleSort, currentSort, modalProps,
   Components } = props;
 
   if (loading) {
@@ -309,7 +309,7 @@ const DatatableContents = (props) => {
           {showEdit ? <th><FormattedMessage id="datatable.edit" /></th> : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
-          {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser} />)}
+          {results.map((document, index) => <Components.DatatableRow {...props} collection={collection} columns={columns} document={document} key={index} showEdit={showEdit} currentUser={currentUser} modalProps={modalProps} />)}
         </Components.DatatableContentsBodyLayout>
       </Components.DatatableContentsInnerLayout>
       {hasMore &&
@@ -389,7 +389,9 @@ const DatatableRow = (props, { intl }) => {
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
-  const modalProps = { title: <code>{document._id}</code> };
+  const { modalProps = {} } = props;
+  const defaultModalProps = { title: <code>{document._id}</code> };
+  const customModalProps = { ...defaultModalProps, ...(_isFunction(modalProps) ? modalProps(document) : modalProps) };
   const sortedColumns = _sortBy(columns, column => column.order);
 
   return (
@@ -405,7 +407,7 @@ const DatatableRow = (props, { intl }) => {
       ))}
     {showEdit && canEdit ?
       <Components.DatatableCellLayout>
-        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={modalProps} {...editFormOptions}/>
+        <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={customModalProps} {...editFormOptions}/>
       </Components.DatatableCellLayout>
     : null}
   </Components.DatatableRowLayout>
@@ -461,4 +463,3 @@ const DatatableDefaultCell = ({ column, document }) =>
   <div>{typeof column === 'string' ? getFieldValue(document[column]) : getFieldValue(document[column.name])}</div>;
 
 registerComponent('DatatableDefaultCell', DatatableDefaultCell);
-

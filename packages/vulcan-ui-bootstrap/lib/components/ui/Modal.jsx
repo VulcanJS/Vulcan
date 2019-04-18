@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal';
+import Modal from 'react-bootstrap/Modal';
 
 const BootstrapModal = ({ children, size = 'lg', show = false, onHide, title, showCloseButton = true, header, footer, ...rest }) => {
 
@@ -14,7 +14,7 @@ const BootstrapModal = ({ children, size = 'lg', show = false, onHide, title, sh
     headerComponent = <Modal.Header closeButton={showCloseButton}></Modal.Header>;
   }
 
-  const footerComonent = footer ? <Modal.Footer>{footer}</Modal.Footer> : null;
+  const footerComponent = footer ? <Modal.Footer>{footer}</Modal.Footer> : null;
   
   return (
     <Modal size={size} show={show} onHide={onHide} {...rest}>
@@ -22,7 +22,7 @@ const BootstrapModal = ({ children, size = 'lg', show = false, onHide, title, sh
       <Modal.Body>
         {children}
       </Modal.Body>
-      {footerComonent}
+      {footerComponent}
     </Modal>
   );
 };

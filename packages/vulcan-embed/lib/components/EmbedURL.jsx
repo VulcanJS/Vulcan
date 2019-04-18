@@ -3,9 +3,6 @@ import { withMutation } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import FRC from 'formsy-react-components';
-
-const Input = FRC.Input;
 
 class EmbedURL extends Component {
   constructor(props) {
@@ -45,10 +42,9 @@ class EmbedURL extends Component {
   };
 
   // called whenever the URL input field loses focus
-  handleBlur = async () => {
+  handleBlur = async e => {
     try {
-      // value from formsy input ref
-      const url = this.input.getValue();
+      const url = e.target.value;
 
       // start the mutation only if the input has a value
       if (url.length) {
@@ -62,7 +58,11 @@ class EmbedURL extends Component {
         // console.log('Embedly Data', result);
 
         // extract the relevant data, for easier consumption
-        const { data: { getEmbedData: { title, description, thumbnailUrl } } } = result;
+        const {
+          data: {
+            getEmbedData: { title, description, thumbnailUrl },
+          },
+        } = result;
         const body = description;
 
         // update the form
@@ -93,7 +93,10 @@ class EmbedURL extends Component {
       this.setState({ loading: false });
 
       // something bad happened
-      this.context.throwError({ id: 'embedurl.error_fetching_data', data: { name: this.props.path, message: errorMessage } });
+      this.context.throwError({
+        id: 'embedurl.error_fetching_data',
+        data: { name: this.props.path, message: errorMessage },
+      });
     }
   };
 
@@ -108,10 +111,26 @@ class EmbedURL extends Component {
     };
   };
 
+  getLoadingStyle = () => {
+    const loadingStyle = {
+      display: this.state.loading ? 'block' : 'none'
+    };
+
+    return loadingStyle;
+  };
+
   renderThumbnail() {
     return (
       <div className="embedly-thumbnail">
-        <img className="embedly-thumbnail-image" src={this.context.getDocument().thumbnailUrl} />
+        <img
+          className="embedly-thumbnail-image"
+          src={this.context.getDocument().thumbnailUrl}
+          onClick={this.editThumbnail}
+        />
+
+        <div className="embedly-url-field-loading" style={this.getLoadingStyle()}>
+          <Components.Loading />
+        </div>
         <div className="embedly-thumbnail-actions">
           <a className="thumbnail-edit" onClick={this.editThumbnail}>
             <Components.Icon name="edit" /> <FormattedMessage id="posts.enter_thumbnail_url" />
@@ -130,10 +149,13 @@ class EmbedURL extends Component {
         <div
           style={{ width: `${Math.round(60 * this.getDimensions().ratio)}px`, height: '60px' }}
           onClick={this.editThumbnail}
-          className="embedly-thumbnail-placeholder"
-        >
+          className="embedly-thumbnail-placeholder">
           <Components.Icon name="image" />
           <FormattedMessage id="posts.enter_thumbnail_url" />
+        </div>
+
+        <div className="embedly-url-field-loading" style={this.getLoadingStyle()}>
+          <Components.Loading />
         </div>
       </div>
     );
@@ -144,38 +166,29 @@ class EmbedURL extends Component {
       position: 'relative',
     };
 
-    const loadingStyle = {
-      position: 'absolute',
-      pointerEvents: 'none',
-      top: '15px',
-      right: '15px',
-    };
-
-    loadingStyle.display = this.state.loading ? 'block' : 'none';
-
     // see https://facebook.github.io/react/warnings/unknown-prop.html
     const { document, control, getEmbedData, refFunction, inputProperties } = this.props; // eslint-disable-line
 
     return (
-      <div className="form-group row embedly-form-group" style={wrapperStyle}>
-        <label className="control-label col-sm-3">{this.props.label}</label>
-        <div className="col-sm-9 embedly-form-control">
-          <div className="embedly-url-field">
-            <Input
-              {...inputProperties}
-              onBlur={this.handleBlur}
-              type="url"
-              ref={ref => (this.input = ref)}
-              layout="elementOnly"
-            />
-            <div className="embedly-url-field-loading" style={loadingStyle}>
-              <Components.Loading />
+      <Components.FormComponentText
+        inputProperties={{
+          ...inputProperties,
+          onBlur: this.handleBlur,
+          type: 'url',
+          layout: 'elementOnly',
+        }}
+        itemProperties={{
+          className: 'embedly-form-item',
+          style: wrapperStyle,
+          afterInput: (
+            <div className="embedly-url-after-input">
+              {this.context.getDocument().thumbnailUrl
+                ? this.renderThumbnail()
+                : this.renderNoThumbnail()}
             </div>
-          </div>
-
-          {this.context.getDocument().thumbnailUrl ? this.renderThumbnail() : this.renderNoThumbnail()}
-        </div>
-      </div>
+          ),
+        }}
+      />
     );
   }
 }
