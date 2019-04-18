@@ -10,36 +10,28 @@ const defaultOptions = {
       'createdAt',
       'username',
       'email',
-      'isAdmin'
+      'isAdmin',
       //"groups"
     ],
     accessGroups: ['admins'],
     accessRedirect: '/',
-    headerTextToken: 'usersManager.header.list'
+    headerTextToken: 'usersManager.header.list',
   },
   details: {
     fields: ['_id', 'createdAt', 'username', 'email', 'isAdmin', 'groups'],
     accessGroups: ['admins'],
-    accessRedirect: '/'
+    accessRedirect: '/',
   },
   form: {
     newFields: ['username', 'email', '_password', 'groups', 'isAdmin'],
-    editFields: [
-      '_id',
-      'createdAt',
-      'username',
-      'email',
-      '_password',
-      'groups',
-      'isAdmin'
-    ],
+    editFields: ['_id', 'createdAt', 'username', 'email', '_password', 'groups', 'isAdmin'],
     accessGroups: ['admins'],
     accessRedirect: '/',
-    headerTextToken: 'usersManager.header'
+    headerTextToken: 'usersManager.header',
   },
   menuItem: {
-    labelToken: 'usersManager.collectionName'
-  }
+    labelToken: 'usersManager.collectionName',
+  },
 };
 const enhanceBackofficeWithUsers = (options = {}) => {
   const mergedOptions = _merge({}, defaultOptions, options);

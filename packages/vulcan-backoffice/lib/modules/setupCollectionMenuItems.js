@@ -1,14 +1,6 @@
 /** Add an item to the menu to access the collection */
-import {
-  registerMenuItem,
-  getMenuItems,
-  getAuthorizedMenuItems
-} from 'meteor/vulcan:menu';
-import {
-  getBasePath,
-  getCollectionName,
-  getCollectionDisplayName
-} from './namingHelpers';
+import { registerMenuItem, getMenuItems, getAuthorizedMenuItems } from 'meteor/vulcan:menu';
+import { getBasePath, getCollectionName, getCollectionDisplayName } from './namingHelpers';
 import { mergeDefaultCollectionOptions } from './options';
 
 const adminMenuName = 'vulcan-backoffice';
@@ -24,10 +16,9 @@ export const setupCollectionMenuItems = (collection, collectionOptions) => {
     name: collectionName,
     label,
     labelToken: labelToken,
-    path:
-      options.menuItem.basePath || getBasePath(collection, options.basePath),
+    path: options.menuItem.basePath || getBasePath(collection, options.basePath),
     groups: options.menuItem.groups,
-    menuName: adminMenuName
+    menuName: adminMenuName,
   });
 };
 // to retrieve the items

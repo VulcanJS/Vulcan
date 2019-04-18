@@ -6,7 +6,7 @@ import {
   getEditPath,
   getDetailsPath,
   getListComponentName,
-  getItemComponentName
+  getItemComponentName,
 } from './namingHelpers';
 import { mergeDefaultCollectionOptions } from './options';
 import _values from 'lodash/values';
@@ -21,15 +21,15 @@ export const generateRoutes = (collection, options) => {
       path: basePath,
       componentName: getListComponentName(collection),
       returnRoute: basePath,
-      layoutName: options.layoutName
+      layoutName: options.layoutName,
     },
     itemRoute: {
       name: 'vulcan-backoffice-' + baseRouteName + '-details',
       path: detailsPath,
       componentName: getItemComponentName(collection),
       returnRoute: basePath,
-      layoutName: options.layoutName
-    }
+      layoutName: options.layoutName,
+    },
   };
   return routes;
 };
