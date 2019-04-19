@@ -13,7 +13,9 @@
     "test": "npm run test-unit",
     "prettier": "node ./.vulcan/prettier/index.js write-changed",
     "prettier-all": "node ./.vulcan/prettier/index.js write",
-    "update-package-json": "node ./.vulcan/update_package.js"
+    "update-package-json": "node ./.vulcan/update_package.js",
+    "storybook": "VULCAN_DIR=\"..\" start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "husky": {
     "hooks": {
@@ -28,6 +30,7 @@
     "apollo-engine": "1.1.2",
     "apollo-errors": "^1.9.0",
     "apollo-link-error": "^1.1.5",
+    "apollo-link-http": "^1.5.14",
     "apollo-link-schema": "^1.1.1",
     "apollo-link-state": "^0.4.2",
     "apollo-link-watched-mutation": "^0.1.0",
@@ -105,6 +108,12 @@
   },
   "private": true,
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@storybook/addon-actions": "^5.0.10",
+    "@storybook/addon-links": "^5.0.10",
+    "@storybook/addons": "^5.0.10",
+    "@storybook/react": "^5.0.10",
+    "@storybook/theming": "^5.0.10",
     "@userfrosting/merge-package-dependencies": "^1.2.0",
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^10.0.1",
@@ -130,9 +139,16 @@
     "husky": "^1.2.0",
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
+    "node-sass": "^4.11.0",
     "prettier": "^1.15.2",
+    "sass-loader": "^7.1.0",
+    "scrap-meteor-loader": "0.0.1",
     "selenium-webdriver": "^4.0.0-alpha.1",
-    "sinon": "^6.3.5"
+    "sinon": "^6.3.5",
+    "storybook-addon-intl": "^2.4.1",
+    "storybook-react-router": "^1.0.5",
+    "vulcan-loader": "0.0.1",
+    "webpack": "4.28.4"
   },
   "postcss": {
     "plugins": {
