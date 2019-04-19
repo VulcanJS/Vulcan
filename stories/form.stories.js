@@ -19,7 +19,7 @@ storiesOf('vulcan-forms')
 ))
 .add('FormError intl', () => (
     <Components.FormError error={{
-        id: 'intel-id',
+        id: 'intl-id',
         properties:{
             name:'address.street'
         }
