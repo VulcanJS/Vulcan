@@ -1163,7 +1163,7 @@ SmartForm.childContextTypes = {
   currentValues: PropTypes.object
 };
 
-module.exports = SmartForm;
+export default SmartForm;
 
 registerComponent({
   name: 'Form',

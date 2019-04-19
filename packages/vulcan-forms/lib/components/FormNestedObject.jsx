@@ -69,6 +69,6 @@ FormNestedObject.propTypes = {
   formComponents: PropTypes.object
 };
 
-module.exports = FormNestedObject;
+export default FormNestedObject;
 
 registerComponent('FormNestedObject', FormNestedObject);

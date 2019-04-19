@@ -133,7 +133,7 @@ FormNestedArray.propTypes = {
   formComponents: PropTypes.object.isRequired
 };
 
-module.exports = FormNestedArray;
+export default FormNestedArray;
 
 registerComponent('FormNestedArray', FormNestedArray);
 
