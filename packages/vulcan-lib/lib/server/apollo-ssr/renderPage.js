@@ -77,7 +77,7 @@ const makePageRenderer = ({ computeContext }) => {
     runCallbacks({
       name: 'router.server.postRender',
       iterator: sink,
-      properties: { context },
+      properties: { req, context },
     });
   };
   return renderPage;
