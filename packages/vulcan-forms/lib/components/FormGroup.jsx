@@ -127,7 +127,7 @@ FormGroup.propTypes = {
   currentUser: PropTypes.object
 };
 
-module.exports = FormGroup;
+export default FormGroup;
 
 registerComponent('FormGroup', FormGroup);
 
