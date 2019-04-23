@@ -4,7 +4,7 @@
  * @returns Initial props + props specific to the HTML input in an inputProperties object
  */
 export const getHtmlInputProps = props => {
-  const { name, path, options, label, onChange, value, disabled } = props;
+  const { name, path, options, label, onChange, onBlur, value, disabled } = props;
 
   // these properties are whitelisted so that they can be safely passed to the actual form input
   // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
@@ -14,6 +14,7 @@ export const getHtmlInputProps = props => {
     options,
     label,
     onChange,
+    onBlur,
     value,
     disabled,
     ...props.inputProperties,
