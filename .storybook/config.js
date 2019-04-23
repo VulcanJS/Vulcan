@@ -4,11 +4,11 @@
 import { addDecorator, configure } from '@storybook/react';
 
 // init UI using a Decorator
-//import BootstrapDecorator from './decorators/BootstrapDecorator'
-//addDecorator(BootstrapDecorator)
+import BootstrapDecorator from './decorators/BootstrapDecorator'
+addDecorator(BootstrapDecorator)
 // Uncomment to activate material UI instead
-import MaterialUIDecorator from './decorators/MaterialUIDecorator'
-addDecorator(MaterialUIDecorator)
+// import MaterialUIDecorator from './decorators/MaterialUIDecorator'
+// addDecorator(MaterialUIDecorator)
 
 /*
 
