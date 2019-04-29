@@ -12,7 +12,7 @@ const FormNestedObjectLayout = ({ hasErrors, label, content }) => (
   </div>
 );
 FormNestedObjectLayout.propTypes = {
-  hasErrors: PropTypes.bool,
+  hasErrors: PropTypes.number,
   label: PropTypes.node,
   content: PropTypes.node
 };
