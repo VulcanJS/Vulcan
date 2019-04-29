@@ -14,7 +14,7 @@ const FormNestedArrayLayout = ({ hasErrors, label, content }) => (
   </div>
 );
 FormNestedArrayLayout.propTypes = {
-  hasErrors: PropTypes.bool,
+  hasErrors: PropTypes.number,
   label: PropTypes.node,
   content: PropTypes.node,
 };
