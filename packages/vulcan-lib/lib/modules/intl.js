@@ -29,7 +29,7 @@ export const getString = ({id, values, defaultMessage, locale}) => {
     if(!message && locale !== defaultLocale){
       debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
     }
-    message=defaultMessage;
+    //message=defaultMessage;
   }
 
   if (message && values) {
