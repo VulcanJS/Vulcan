@@ -22,7 +22,7 @@ const FormNestedArrayLayout = ({ hideLabel = false, label, content, children }) 
 FormNestedArrayLayout.propTypes = {
 	hasErrors: PropTypes.bool,
 	label: PropTypes.node,
-	hideLabel: PropTypes.boolean,
+	hideLabel: PropTypes.bool,
 	content: PropTypes.node,
 };
 replaceComponent({
