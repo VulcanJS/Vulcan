@@ -63,7 +63,7 @@ describe('vulcan-core/components', function () {
                 now: () => { }
             }
         };
-        it('mounts a static version', function () {
+        it.skip('mounts a static version', function () {
             const wrapper = mount(
                 <Datatable
                     Components={Components}
