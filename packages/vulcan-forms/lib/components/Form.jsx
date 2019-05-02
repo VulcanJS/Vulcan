@@ -458,7 +458,7 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
-    // array field (field is "foobar.$")
+    // array field 
     if (fieldSchema.arrayFieldSchema) {
       field.arrayFieldSchema = fieldSchema.arrayFieldSchema;
       // create a field that can be exploited by the form

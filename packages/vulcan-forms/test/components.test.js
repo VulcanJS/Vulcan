@@ -468,18 +468,19 @@ describe('vulcan-forms/components', function() {
         maxCount: 2,
       };
       it('should display add button if items < maxCount', function() {
-        const wrapper = shallow(<FormNestedArray {...props} currentValues={{}} value={[1]} />);
+        const wrapper = shallow(<FormNestedArray {...props} maxCount={2} currentValues={{}} value={[1]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formFooter = !!layout.prop('content')[1];
-        expect(formFooter).toEqual(true);
+        const formFooter = layout.find('FormNestedFoot');
+        expect(formFooter).toHaveLength(1);
       });
       it('should not display add button if items >= maxCount', function() {
-        const wrapper = shallow(<FormNestedArray {...props} currentValues={{}} value={[1, 2]} />);
+        const wrapper = shallow(<FormNestedArray {...props} maxCount={2} currentValues={{}} value={[1, 2]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formFooter = !!layout.prop('content')[1];
-        expect(formFooter).toEqual(false);
+        const formFooter = layout.find('FormNestedFoot');
+        expect(formFooter).toHaveLength(0);
       });
     });
+
     describe('minCount', function() {
       const props = {
         ...defaultProps,
@@ -490,10 +491,8 @@ describe('vulcan-forms/components', function() {
           <FormNestedArray {...props} currentValues={{}} value={[1, 2, 3]} />
         );
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formNestedItems = layout.prop('content')[0];
-        formNestedItems.forEach((formNestedItem, idx) => {
-          const nestedWrapper = shallow(<div>{formNestedItem}</div>);
-          const nestedItem = nestedWrapper.find('FormNestedItem');
+        const nestedItems = layout.find('FormNestedItem');
+        nestedItems.forEach((nestedItem, idx) => {
           const hideRemove = nestedItem.prop('hideRemove');
           expect({ res: hideRemove, idx }).toEqual({ res: false, idx });
         });
@@ -501,16 +500,15 @@ describe('vulcan-forms/components', function() {
       it('should not display remove button if items <= minCount', function() {
         const wrapper = shallow(<FormNestedArray {...props} currentValues={{}} value={[1, 2]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formNestedItems = layout.prop('content')[0];
-        formNestedItems.forEach((formNestedItem, idx) => {
-          const nestedWrapper = shallow(<div>{formNestedItem}</div>);
-          const nestedItem = nestedWrapper.find('FormNestedItem');
+        const nestedItems = layout.find('FormNestedItem');
+        nestedItems.forEach((nestedItem, idx) => {
           const hideRemove = nestedItem.prop('hideRemove');
           expect({ res: hideRemove, idx }).toEqual({ res: true, idx });
         });
       });
     });
   });
+
   describe('FormNestedObject', function() {
     const defaultProps = {
       errors: [],

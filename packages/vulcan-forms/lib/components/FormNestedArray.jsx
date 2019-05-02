@@ -88,7 +88,7 @@ class FormNestedArray extends PureComponent {
 
     //filter out null values to calculate array length
     let arrayLength = value.filter(singleValue => {
-      return !!singleValue;
+      return typeof singleValue !== 'undefined' && singleValue !== null;
     }).length;
 
     // only keep errors specific to the nested array (and not its subfields)
