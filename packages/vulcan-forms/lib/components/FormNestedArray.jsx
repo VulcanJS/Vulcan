@@ -56,9 +56,11 @@ class FormNestedArray extends PureComponent {
       'value',
       'input',
       'inputProperties',
-      'nestedInput'
+      'nestedInput',
+      'beforeComponent',
+      'afterComponent'
     );
-    const { errors, path, label, formComponents, minCount, maxCount, beforeComponent, afterComponent } = this.props;
+    const { errors, path, formComponents, minCount, maxCount, beforeComponent, afterComponent } = this.props;
     const FormComponents = formComponents;
 
     //filter out null values to calculate array length
@@ -72,7 +74,7 @@ class FormNestedArray extends PureComponent {
     );
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
 
-    return <FormComponents.FormNestedArrayLayout label={label}>
+    return <FormComponents.FormNestedArrayLayout {...properties} >
       {instantiateComponent(beforeComponent, properties)}
       {value.map((subDocument, i) => !this.isDeleted(i) && <React.Fragment key={i}>
         <FormComponents.FormNestedItem {...properties} itemIndex={i} path={`${this.props.path}.${i}`} removeItem={() => {
