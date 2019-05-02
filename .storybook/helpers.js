@@ -11,7 +11,7 @@ Simplified versions of Vulcan APIs and helpers
 Components
 
 */
-export const Components = {}; // will be populated on startup (see vulcan:routing)
+export const Components = {}; // will be populated on startup 
 
 export const ComponentsMockProps = {};
 

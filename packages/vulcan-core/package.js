@@ -12,7 +12,6 @@ Package.onUse(function(api) {
     'vulcan:lib@1.13.0',
     'vulcan:i18n@1.13.0',
     'vulcan:users@1.13.0',
-    'vulcan:routing@1.13.0',
     'vulcan:debug@1.13.0',
   ]);
 
