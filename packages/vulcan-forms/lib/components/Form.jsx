@@ -411,6 +411,7 @@ class SmartForm extends Component {
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
+
     return field;
   };
   handleFieldPath = (field, fieldName, parentPath) => {
@@ -437,12 +438,15 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
-    // array field
-    if (fieldSchema.field) {
-      field.arrayFieldSchema = fieldSchema.field;
+    // array field 
+    if (fieldSchema.arrayFieldSchema) {
+      field.arrayFieldSchema = fieldSchema.arrayFieldSchema;
       // create a field that can be exploited by the form
-      field.arrayField = this.createArraySubField(fieldName, field.arrayFieldSchema, schema);
-
+      field.arrayField = this.createArraySubField(
+        fieldName,
+        field.arrayFieldSchema,
+        schema
+      );
       //field.nestedInput = true
     }
     // nested fields: set input to "nested"
