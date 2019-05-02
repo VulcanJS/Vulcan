@@ -21,9 +21,9 @@ const RegionSelect = ({ classes, refFunction, inputProperties, ...properties }) 
   const regionLabel = currentCountryInfo ? currentCountryInfo.regionLabel : 'Region';
   
   if (options) {
-    return <MuiSuggest {...inputProperties} ref={refFunction} options={options} label={regionLabel}/>;
+    return <MuiSuggest inputProperties={inputProperties} {...properties} ref={refFunction} options={options} label={regionLabel}/>;
   } else {
-    return <MuiInput {...inputProperties} ref={refFunction} label={regionLabel}/>;
+    return <MuiInput inputProperties={inputProperties} {...properties} ref={refFunction} label={regionLabel}/>;
   }
 };
 

@@ -77,8 +77,9 @@ const MuiCheckboxGroup = createReactClass({
   
   changeCheckbox: function () {
     const value = [];
-    this.props.options.forEach(function (option, key) {
-      if (this[this.props.name + '-' + option.value].checked) {
+    const { options, name } = this.props.inputProperties;
+    options.forEach(function (option, key) {
+      if (this[name + '-' + option.value].checked) {
         value.push(option.value);
       }
     }.bind(this));
@@ -94,10 +95,11 @@ const MuiCheckboxGroup = createReactClass({
   },
   
   renderElement: function () {
-    const controls = this.props.options.map((checkbox, key) => {
+    const { name, options, disabled: _disabled } = this.props.inputProperties;
+    const controls = options.map((checkbox, key) => {
       let value = checkbox.value;
-      let checked = (this.props.value.indexOf(value) !== -1);
-      let disabled = checkbox.disabled || this.props.disabled;
+      let checked = (value.indexOf(value) !== -1);
+      let disabled = checkbox.disabled || _disabled;
       const Component = this.props.variant === 'switch' ? Switch : Checkbox;
       
       return (
@@ -105,7 +107,7 @@ const MuiCheckboxGroup = createReactClass({
           key={key}
           control={
             <Component
-              inputRef={(c) => this[this.props.name + '-' + value] = c}
+              inputRef={(c) => this[name + '-' + value] = c}
               checked={checked}
               onChange={this.changeCheckbox}
               value={value}
@@ -117,7 +119,7 @@ const MuiCheckboxGroup = createReactClass({
       );
     });
     
-    const maxLength = this.props.options.reduce((max, option) =>
+    const maxLength = options.reduce((max, option) =>
       option.label.length > max ? option.label.length : max, 0);
   
     const columnClass = maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';

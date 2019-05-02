@@ -47,6 +47,7 @@ const MuiSwitch = createReactClass({
   },
   
   renderElement: function () {
+    const { disabled, value, label } = this.props.inputProperties;
     return (
       <FormControlLabel
         control={
@@ -54,12 +55,12 @@ const MuiSwitch = createReactClass({
             ref={(c) => this.element = c}
             {...this.cleanSwitchProps(this.cleanProps(this.props))}
             id={this.getId()}
-            checked={this.props.value === true}
+            checked={value === true}
             onChange={this.changeValue}
-            disabled={this.props.disabled}
+            disabled={disabled}
           />
         }
-        label={this.props.label}
+        label={label}
       />
     );
   },
