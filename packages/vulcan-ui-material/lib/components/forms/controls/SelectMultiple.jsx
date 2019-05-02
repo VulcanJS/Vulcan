@@ -3,8 +3,8 @@ import MuiSelect from '../base-controls/MuiSelect';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
-const SelectMultiple = ({ refFunction, inputProperties }) => {
-  return <MuiSelect {...inputProperties} multiple={true} ref={refFunction}/>;
+const SelectMultiple = ({ refFunction, ...properties }) => {
+  return <MuiSelect {...properties} multiple={true} ref={refFunction}/>;
 };
 
 

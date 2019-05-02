@@ -30,8 +30,8 @@ export const styles = theme => ({
 });
 
 
-const DateTimeComponent = ({ refFunction, classes, inputProperties }) =>
-  <MuiInput {...inputProperties} ref={refFunction} type="datetime-local"/>;
+const DateTimeComponent = ({ refFunction, classes, ...properties }) =>
+  <MuiInput {...properties} ref={refFunction} type="datetime-local"/>;
 
 
 registerComponent('FormComponentDateTime', DateTimeComponent, [withStyles, styles]);
