@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
 
-// Replaceable layout
-const FormNestedArrayLayout = ({ hasErrors, label, content }) => (
+// Replaceable layout, default implementation
+const FormNestedArrayLayout = ({ hasErrors, label, content, children }) => (
   <div
     className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}
   >
     <label className="control-label col-sm-3">{label}</label>
-    <div className="col-sm-9">{content}</div>
+    <div className="col-sm-9">{content || children}</div>
   </div>
 );
 FormNestedArrayLayout.propTypes = {
@@ -58,7 +58,7 @@ class FormNestedArray extends PureComponent {
       'inputProperties',
       'nestedInput'
     );
-    const { errors, path, label, formComponents, minCount, maxCount } = this.props;
+    const { errors, path, label, formComponents, minCount, maxCount, beforeComponent, afterComponent } = this.props;
     const FormComponents = formComponents;
 
     //filter out null values to calculate array length
@@ -71,48 +71,19 @@ class FormNestedArray extends PureComponent {
       error => error.path && error.path === path
     );
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
-    
-    return (
-      <FormComponents.FormNestedArrayLayout
-        label={label}
-        content={[
-          value.map(
-            (subDocument, i) =>
-              !this.isDeleted(i) && (
-                <React.Fragment key={i}>
-                  <FormComponents.FormNestedItem
-                    {...properties}
-                    itemIndex={i}
-                    path={`${this.props.path}.${i}`}
-                    removeItem={() => {
-                      this.removeItem(i);
-                    }}
-                    hideRemove={!!minCount && arrayLength <= minCount}
-                  />
-                  <FormComponents.FormNestedDivider
-                    label={this.props.label}
-                    addItem={this.addItem}
-                  />
-                </React.Fragment>
-              )
-          ),
-          (!maxCount || arrayLength < maxCount) && (
-            <Components.FormNestedFoot
-              key="add-button"
-              addItem={this.addItem}
-              label={this.props.label}
-              className="form-nested-foot"
-            />
-          ),
-          hasErrors ? (
-            <FormComponents.FieldErrors
-              key="form-nested-errors"
-              errors={nestedArrayErrors}
-            />
-          ) : null
-        ]}
-      />
-    );
+
+    return <FormComponents.FormNestedArrayLayout label={label}>
+      {instantiateComponent(beforeComponent, properties)}
+      {value.map((subDocument, i) => !this.isDeleted(i) && <React.Fragment key={i}>
+        <FormComponents.FormNestedItem {...properties} itemIndex={i} path={`${this.props.path}.${i}`} removeItem={() => {
+          this.removeItem(i);
+        }} hideRemove={!!minCount && arrayLength <= minCount} />
+        <FormComponents.FormNestedDivider label={this.props.label} addItem={this.addItem} />
+      </React.Fragment>)}
+      {(!maxCount || arrayLength < maxCount) && <Components.FormNestedFoot key="add-button" addItem={this.addItem} label={this.props.label} className="form-nested-foot" />}
+      {hasErrors ? <FormComponents.FieldErrors key="form-nested-errors" errors={nestedArrayErrors} /> : null}
+      {instantiateComponent(afterComponent, properties)}
+    </FormComponents.FormNestedArrayLayout>;
   }
 }
 
