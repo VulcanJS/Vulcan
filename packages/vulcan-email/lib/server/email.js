@@ -33,6 +33,7 @@ registerSetting('title', 'My App');
 registerSetting('tagline');
 registerSetting('emailFooter');
 registerSetting('logoUrl');
+registerSetting('logoReverseUrl');
 registerSetting('logoHeight');
 registerSetting('logoWidth');
 registerSetting('defaultEmail', 'noreply@example.com');
@@ -59,11 +60,13 @@ VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
     siteName: getSetting('title', 'My App'),
     tagline: getSetting('tagline'),
     siteUrl: Utils.getSiteUrl(),
+    rootUrl: Utils.getRootUrl(),
     body: htmlContent,
     unsubscribe: '',
     accountLink: Utils.getSiteUrl() + 'account',
     footer: getSetting('emailFooter'),
     logoUrl: getSetting('logoUrl'),
+    logoReverseUrl: getSetting('logoReverseUrl'),
     logoHeight: getSetting('logoHeight'),
     logoWidth: getSetting('logoWidth'),
     ...data,
