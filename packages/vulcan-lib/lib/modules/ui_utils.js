@@ -9,6 +9,7 @@ export const getHtmlInputProps = props => {
   // these properties are whitelisted so that they can be safely passed to the actual form input
   // and avoid https://facebook.github.io/react/warnings/unknown-prop.html warnings
   const inputProperties = {
+    ...props.inputProperties,
     name,
     path,
     options,
@@ -17,7 +18,6 @@ export const getHtmlInputProps = props => {
     onBlur,
     value,
     disabled,
-    ...props.inputProperties,
   };
 
   return {
