@@ -95,10 +95,10 @@ const MuiCheckboxGroup = createReactClass({
   },
   
   renderElement: function () {
-    const { name, options, disabled: _disabled } = this.props.inputProperties;
+    const { name, options, disabled: _disabled, value:_values } = this.props.inputProperties;
     const controls = options.map((checkbox, key) => {
-      let value = checkbox.value;
-      let checked = (value.indexOf(value) !== -1);
+      let checkboxValue = checkbox.value;
+      let checked = (_values.indexOf(checkboxValue) !== -1);
       let disabled = checkbox.disabled || _disabled;
       const Component = this.props.variant === 'switch' ? Switch : Checkbox;
       
@@ -107,10 +107,10 @@ const MuiCheckboxGroup = createReactClass({
           key={key}
           control={
             <Component
-              inputRef={(c) => this[name + '-' + value] = c}
+              inputRef={(c) => this[name + '-' + checkboxValue] = c}
               checked={checked}
               onChange={this.changeCheckbox}
-              value={value}
+              value={checkboxValue}
               disabled={disabled}
             />
           }
@@ -132,7 +132,6 @@ const MuiCheckboxGroup = createReactClass({
   },
   
   render: function () {
-    
     if (this.props.layout === 'elementOnly') {
       return (
         <div>{this.renderElement()}</div>
