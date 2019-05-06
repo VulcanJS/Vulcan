@@ -20,9 +20,9 @@ import './core/NewButton';
 
 import './forms/FormComponentInner';
 import './forms/FormErrors';
-//import './forms/FormGroup';
+import './forms/FormGroupDefault';
+import './forms/FormGroupLine';
 import './forms/FormGroupNone';
-import './forms/FormGroupWithLine';
 import './forms/FormNested';
 import './forms/FormNestedArrayLayout';
 import './forms/FormNestedDivider';
