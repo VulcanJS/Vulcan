@@ -19,11 +19,12 @@ const FormGroupHeader = ({ toggle, collapsed, label }) => (
 FormGroupHeader.propTypes = {
   toggle: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  collapsed: PropTypes.bool
+  collapsed: PropTypes.bool,
+  group: PropTypes.object,
 };
 registerComponent({ name: 'FormGroupHeader', component: FormGroupHeader });
 
-const FormGroupLayout = ({ children, label, heading, collapsed, hasErrors }) => (
+const FormGroupLayout = ({ children, label, heading, collapsed, group, hasErrors }) => (
   <div className={`form-section form-section-${Utils.slugify(label)}`}>
     {heading}
     <div
@@ -36,9 +37,11 @@ const FormGroupLayout = ({ children, label, heading, collapsed, hasErrors }) => 
   </div>
 );
 FormGroupLayout.propTypes = {
-  hasErrors: PropTypes.bool,
-  collapsed: PropTypes.bool,
+  label: PropTypes.string,
   heading: PropTypes.node,
+  collapsed: PropTypes.bool,
+  group: PropTypes.object,
+  hasErrors: PropTypes.bool,
   children: PropTypes.node
 };
 registerComponent({ name: 'FormGroupLayout', component: FormGroupLayout });
@@ -49,7 +52,7 @@ class FormGroup extends PureComponent {
     this.toggle = this.toggle.bind(this);
     this.renderHeading = this.renderHeading.bind(this);
     this.state = {
-      collapsed: props.startCollapsed || false
+      collapsed: props.group.startCollapsed || false
     };
   }
 
@@ -65,6 +68,7 @@ class FormGroup extends PureComponent {
         toggle={this.toggle}
         label={this.props.label}
         collapsed={this.state.collapsed}
+        group={this.props.group}
       />
     );
   }
@@ -77,7 +81,7 @@ class FormGroup extends PureComponent {
     });
 
   render() {
-    const { name, fields, formComponents, label } = this.props;
+    const { name, fields, formComponents, label, group } = this.props;
     const { collapsed } = this.state;
     const FormComponents = mergeWithComponents(formComponents);
 
@@ -86,6 +90,7 @@ class FormGroup extends PureComponent {
         label={label}
         toggle={this.toggle}
         collapsed={collapsed}
+        group={group}
         heading={name === 'default' ? null : this.renderHeading(FormComponents)}
         hasErrors={this.hasErrors()}
       >
@@ -116,6 +121,7 @@ FormGroup.propTypes = {
   label: PropTypes.string,
   order: PropTypes.number,
   fields: PropTypes.array.isRequired,
+  group: PropTypes.object.isRequired,
   errors: PropTypes.array.isRequired,
   throwError: PropTypes.func.isRequired,
   currentValues: PropTypes.object.isRequired,
