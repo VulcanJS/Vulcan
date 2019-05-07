@@ -4,6 +4,7 @@
 import Users from 'meteor/vulcan:users';
 import _filter from 'lodash/filter';
 import _keys from 'lodash/keys';
+import { array } from 'prop-types';
 
 /* getters */
 // filter out fields with "." or "$"
@@ -77,13 +78,16 @@ export const convertSchema = (schema, flatten = false) => {
       // and get its schema if possible or its type otherwise
       const subSchemaOrType = getNestedFieldSchemaOrType(fieldName, schema);
       if (subSchemaOrType) {
-        // if nested field exists, call convertSchema recursively
+        // remember the subschema if it exists, allow to customize labels for each group of items for arrays of objects
+        jsonSchema[fieldName].arrayFieldSchema = getFieldSchema(`${fieldName}.$`, schema);
+
+        // call convertSchema recursively on the subSchema
         const convertedSubSchema = convertSchema(subSchemaOrType);
         // nested schema can be a field schema ({type, canRead, etc.}) (convertedSchema will be null)
         // or a schema on its own with subfields (convertedSchema will return smth)
         if (!convertedSubSchema) {
           // subSchema is a simple field in this case (eg array of numbers)
-          jsonSchema[fieldName].field = getFieldSchema(`${fieldName}.$`, schema);
+          jsonSchema[fieldName].isSimpleArrayField = true;//getFieldSchema(`${fieldName}.$`, schema);
         } else {
           // subSchema is a full schema with multiple fields (eg array of objects)
           if (flatten) {
