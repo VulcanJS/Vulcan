@@ -15,13 +15,17 @@ import {
     removeAllCallbacks,
 } from 'meteor/vulcan:core';
 import {
-    isoCreateCollection
+    isoCreateCollection,
+    initServerTest
 } from 'meteor/vulcan:test';
+
 describe('vulcan:lib/mutators', function(){
 
     let Foos;
     let defaultParams;
     before(async function () {
+        initServerTest();
+
         Foos = await isoCreateCollection({
           collectionName: 'Foo2s',
           typeName: 'Foo2',

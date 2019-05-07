@@ -1,6 +1,6 @@
 import {Components, getComponent} from './components';
 
-export const Routes = {}; // will be populated on startup (see vulcan:routing)
+export const Routes = {}; // will be populated on startup 
 export const RoutesTable = {}; // storage for infos about routes themselves
 
 /*
