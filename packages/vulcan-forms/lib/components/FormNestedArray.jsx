@@ -80,7 +80,7 @@ class FormNestedArray extends PureComponent {
 
   render() {
     const value = this.getCurrentValue();
-    const visibleItemIndex = this.computeVisibleIndex(value);
+    const visibleItemIndexes = this.computeVisibleIndex(value);
     // do not pass FormNested's own value, input and inputProperties props down
     const properties = _omit(
       this.props,
@@ -117,6 +117,7 @@ class FormNestedArray extends PureComponent {
         {value.map((subDocument, i) => {
           if (this.isDeleted(i)) return null;
           const path = `${this.props.path}.${i}`;
+          const visibleItemIndex = visibleItemIndexes[i];
           return (
             <FormComponents.FormNestedArrayInnerLayout
               {...arrayField}
@@ -124,11 +125,12 @@ class FormNestedArray extends PureComponent {
               FormComponents={FormComponents}
               addItem={this.addItem}
               itemIndex={i}
+              visibleItemIndex={visibleItemIndex}
               path={path}>
               <FormComponents.FormNestedItem
                 {...properties}
                 itemIndex={i}
-                visibleItemIndex={visibleItemIndex[i]}
+                visibleItemIndex={visibleItemIndex}
                 path={path}
                 removeItem={() => {
                   this.removeItem(i);
