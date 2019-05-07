@@ -4,7 +4,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import { getCountryInfo } from './RegionSelect';
 
 
-const PostalCode = ({ classes, refFunction, ...properties }) => {
+const PostalCode = ({ classes, refFunction,  ...properties }) => {
   const currentCountryInfo = getCountryInfo(properties);
   const postalLabel = currentCountryInfo ? currentCountryInfo.postalLabel : 'Postal code';
   

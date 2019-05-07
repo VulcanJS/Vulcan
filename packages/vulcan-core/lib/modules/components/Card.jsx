@@ -32,7 +32,7 @@ const parseImageUrl = value => {
 };
 
 const parseUrl = value => {
-  return value.slice(0,4) === 'http' ? <a href={value} target="_blank"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
+  return value.slice(0,4) === 'http' ? <a href={value} target="_blank" rel="noopener noreferrer"><LimitedString string={value}/></a> : <LimitedString string={value}/>;
 };
 
 const LimitedString = ({ string }) =>

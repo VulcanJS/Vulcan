@@ -3,11 +3,12 @@ import MuiInput from '../base-controls/MuiInput';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
-const TextareaComponent = ({ refFunction, ...properties }) =>
+const TextareaComponent = ({ refFunction, inputProperties, ...properties }) =>
   <MuiInput {...properties}
             ref={refFunction}
             multiline={true}
-            rows={properties.rows ? properties.rows : 2}
+            inputProperties={inputProperties}
+            rows={inputProperties.rows ? inputProperties.rows : 2}
             rowsMax={10}
   />;
 

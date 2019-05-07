@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
+import { 
+  Components, registerComponent, instantiateComponent,
+  getHtmlInputProps
+ } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import _omit from 'lodash/omit';
 import classNames from 'classnames';
+import _omit from 'lodash/omit';
 
 
 const styles = theme => ({
@@ -50,7 +53,10 @@ const styles = theme => ({
 class FormComponentInner extends PureComponent {
   
   getProperties = () => {
-    return _omit(this.props, 'classes');
+    return _omit(
+      getHtmlInputProps(this.props),
+      'classes'
+    );
   };
   
   render () {

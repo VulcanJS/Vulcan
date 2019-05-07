@@ -45,7 +45,9 @@ const makePageRenderer = ({ computeContext }) => {
     try {
     htmlContent = await renderToStringWithData(WrappedApp);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(`Error while server-rendering. date: ${new Date().toString()} url: ${req.url}`); // eslint-disable-line no-console
+      // eslint-disable-next-line no-console
       console.error(err);
       // show error in client in dev
       if (Meteor.isDevelopment) {

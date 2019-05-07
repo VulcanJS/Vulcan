@@ -3,6 +3,14 @@ import gql from 'graphql-tag';
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
 
+/**
+ * @param {*} collectionOrName A collection name, or a whole collection
+ */
+export const getDefaultFragmentName = (collectionOrName) => {
+  const collectionName = typeof collectionOrName === 'string' ? collectionOrName : collectionOrName.options.collectionName;
+  return `${collectionName}DefaultFragment`;
+};
+
 /*
 
 Get a fragment's name from its text

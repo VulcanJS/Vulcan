@@ -14,7 +14,7 @@ class FormComponent extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.showCharsRemaining()) {
       const value = this.getValue();
       this.updateCharacterCount(value);
@@ -374,6 +374,7 @@ FormComponent.contextTypes = {
   getDocument: PropTypes.func.isRequired
 };
 
-module.exports = FormComponent;
+//module.exports = FormComponent;
+export default FormComponent;
 
 registerComponent('FormComponent', FormComponent);

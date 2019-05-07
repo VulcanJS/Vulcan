@@ -19,7 +19,7 @@ import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter} from 'react-router';
-import MessageContext, { flash } from '../messages.js';
+import MessageContext from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
@@ -66,7 +66,7 @@ class App extends PureComponent {
   See https://stackoverflow.com/a/45373907/649299
 
   */
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {
       this.clear();
     });
@@ -165,7 +165,7 @@ class App extends PureComponent {
     };
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     if (!this.props.currentUser && nextProps.currentUser) {
       runCallbacks('events.identify', nextProps.currentUser);
     }

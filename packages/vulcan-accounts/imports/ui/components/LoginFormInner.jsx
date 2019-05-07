@@ -105,6 +105,13 @@ export class AccountsLoginFormInner extends TrackerComponent {
       ...this.getDefaultFieldValues(),
     }));
 
+    // if extra fields have been specified, add their default values
+    if (this.props.extraFields) {
+      this.props.extraFields.forEach(field => {
+        this.setState({ [field.id]: field.defaultValue});
+      });
+    }
+
     // Listen for the user to login/logout.
     this.autorun(() => {
 
@@ -275,10 +282,10 @@ export class AccountsLoginFormInner extends TrackerComponent {
         return {
           ...field,
           onChange: this.handleChange.bind(this, id),
-        }
+        };
       });
     }
-      
+
     if (!hasPasswordService() && getLoginServices().length == 0) {
       loginFields.push({
         label: 'No login service added, i.e. accounts-password',
@@ -783,7 +790,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         options[id] = this.state[id];
       });
     }
-    
+
     const self = this;
 
     let error = false;

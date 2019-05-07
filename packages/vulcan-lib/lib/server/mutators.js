@@ -184,6 +184,8 @@ export const createMutator = async ({
   After
 
   */
+  // note: query for document to get fresh document with collection-hooks effects applied
+  document = await Connectors.get(collection, document._id);
   // run any post-operation sync callbacks
   document = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.after`,
@@ -194,8 +196,6 @@ export const createMutator = async ({
   // OpenCRUD backwards compatibility
   document = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, document, currentUser);
 
-  // note: query for document to get fresh document with collection-hooks effects applied
-  document = await Connectors.get(collection, document._id);
 
   /*
 

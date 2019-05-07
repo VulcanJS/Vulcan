@@ -431,6 +431,7 @@ class SmartForm extends Component {
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
+
     return field;
   };
   handleFieldPath = (field, fieldName, parentPath) => {
@@ -457,16 +458,15 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
-    // array field
-    if (fieldSchema.field) {
-      field.arrayFieldSchema = fieldSchema.field;
+    // array field 
+    if (fieldSchema.arrayFieldSchema) {
+      field.arrayFieldSchema = fieldSchema.arrayFieldSchema;
       // create a field that can be exploited by the form
       field.arrayField = this.createArraySubField(
         fieldName,
         field.arrayFieldSchema,
         schema
       );
-
       //field.nestedInput = true
     }
     // nested fields: set input to "nested"
@@ -477,7 +477,8 @@ class SmartForm extends Component {
       // get nested schema
       // for each nested field, get field object by calling createField recursively
       field.nestedFields = this.getFieldNames({
-        schema: field.nestedSchema
+        schema: field.nestedSchema,
+        addExtraFields: false
       }).map(subFieldName => {
         return this.createField(
           subFieldName,
@@ -1083,8 +1084,8 @@ class SmartForm extends Component {
       <FormComponents.FormElement {...this.getFormProps()}>
         <FormComponents.FormErrors {...this.getFormErrorsProps()} />
 
-        {this.getFieldGroups().map(group => (
-          <FormComponents.FormGroup {...this.getFormGroupProps(group)} />
+        {this.getFieldGroups().map((group, i) => (
+          <FormComponents.FormGroup key={i} {...this.getFormGroupProps(group)} />
         ))}
 
         {this.props.repeatErrors && <FormComponents.FormErrors {...this.getFormErrorsProps()} />}
@@ -1162,7 +1163,7 @@ SmartForm.childContextTypes = {
   currentValues: PropTypes.object
 };
 
-module.exports = SmartForm;
+export default SmartForm;
 
 registerComponent({
   name: 'Form',

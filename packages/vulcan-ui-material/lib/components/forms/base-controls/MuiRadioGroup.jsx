@@ -66,11 +66,13 @@ const styles = theme => ({
 const MuiRadioGroup = createReactClass({
   
   mixins: [ComponentMixin],
-  
+
   propTypes: {
-    name: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['inline', 'stacked']),
-    options: PropTypes.array.isRequired
+    inputProperties: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      options: PropTypes.array.isRequired
+    })
   },
   
 
@@ -87,7 +89,7 @@ const MuiRadioGroup = createReactClass({
   changeRadio: function (event) {
     const value = event.target.value;
     //this.setValue(value);
-    this.props.onChange(this.props.name, value);
+    this.props.onChange(value);
   },
   
   validate: function () {
@@ -98,9 +100,10 @@ const MuiRadioGroup = createReactClass({
   },
   
   renderElement: function () {
-    const controls = this.props.options.map((radio, key) => {
-      let checked = (this.props.value === radio.value);
-      let disabled = radio.disabled || this.props.disabled;
+    const { options, value, name, disabled: _disabled } = this.props.inputProperties;
+    const controls = options.map((radio, key) => {
+      let checked = (value === radio.value);
+      let disabled = radio.disabled || _disabled;
       
       return (
         <FormControlLabel
@@ -118,7 +121,7 @@ const MuiRadioGroup = createReactClass({
       );
     });
     
-    const maxLength = this.props.options.reduce((max, option) =>
+    const maxLength = options.reduce((max, option) =>
       option.label.length > max ? option.label.length : max, 0);
     
     let columnClass = maxLength < 18 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';
@@ -126,10 +129,10 @@ const MuiRadioGroup = createReactClass({
     
     return (
       <RadioGroup
-        aria-label={this.props.name}
-        name={this.props.name}
+        aria-label={name}
+        name={name}
         className={classNames(this.props.classes.group, this.props.classes[columnClass])}
-        value={this.props.value}
+        value={value}
         onChange={this.changeRadio}
       >
         {controls}

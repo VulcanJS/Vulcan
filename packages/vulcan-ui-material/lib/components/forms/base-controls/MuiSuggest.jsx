@@ -160,7 +160,7 @@ const MuiSuggest = createReactClass({
     };
   },
   
-  componentWillReceiveProps: function (nextProps) {
+  UNSAFE_componentWillReceiveProps: function (nextProps) {
     if (nextProps.value !== this.state.value ||
       nextProps.options !== this.props.options) {
       const selectedOption = this.getSelectedOption(nextProps);
@@ -217,7 +217,7 @@ const MuiSuggest = createReactClass({
       selectedOption: suggestion,
       inputValue: this.getOptionLabel(suggestion),
     });
-    this.props.onChange(this.props.name, suggestion.value, this.getOptionLabel(suggestion));
+    this.props.onChange(suggestion.value, this.getOptionLabel(suggestion));
   },
   
   handleInputChange: function (event) {
@@ -309,6 +309,7 @@ const MuiSuggest = createReactClass({
           name: this.props.name,
           'aria-haspopup': 'true',
           ...this.props.inputProps,
+          ...this.props.inputProperties,
           startAdornment,
           endAdornment,
         }}

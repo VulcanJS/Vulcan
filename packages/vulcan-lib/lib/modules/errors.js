@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
 
 /*
 
@@ -29,7 +28,7 @@ In field "addresses": Expected "[JSON]!", found null."
 
 */
 
-const parseErrorMessage = message => {
+export const parseErrorMessage = message => {
 
   if (!message) {
     return null;

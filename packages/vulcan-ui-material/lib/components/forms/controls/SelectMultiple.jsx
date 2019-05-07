@@ -4,9 +4,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 
 
 const SelectMultiple = ({ refFunction, ...properties }) => {
-  properties.multiple = true;
-  
-  return <MuiSelect {...properties} ref={refFunction}/>;
+  return <MuiSelect {...properties} multiple={true} ref={refFunction}/>;
 };
 
 

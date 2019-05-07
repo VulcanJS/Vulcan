@@ -1,12 +1,13 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addToGraphQLContext } from './graphql.js';
+import { addGraphQLCollection, addToGraphQLContext } from './graphql';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
 import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
+import clone from 'lodash/clone';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -239,7 +240,7 @@ export const createCollection = options => {
     parameters = runCallbacks(
       `${typeName.toLowerCase()}.parameters`,
       parameters,
-      _.clone(terms),
+      clone(terms),
       apolloClient,
       context
     );
@@ -247,7 +248,7 @@ export const createCollection = options => {
     parameters = runCallbacks(
       `${collectionName.toLowerCase()}.parameters`,
       parameters,
-      _.clone(terms),
+      clone(terms),
       apolloClient,
       context
     );
@@ -256,14 +257,14 @@ export const createCollection = options => {
       parameters = runCallbacks(
         `${typeName.toLowerCase()}.parameters.client`,
         parameters,
-        _.clone(terms),
+        clone(terms),
         apolloClient
       );
       // OpenCRUD backwards compatibility
       parameters = runCallbacks(
         `${collectionName.toLowerCase()}.parameters.client`,
         parameters,
-        _.clone(terms),
+        clone(terms),
         apolloClient
       );
     }
@@ -273,14 +274,14 @@ export const createCollection = options => {
       parameters = runCallbacks(
         `${typeName.toLowerCase()}.parameters.server`,
         parameters,
-        _.clone(terms),
+        clone(terms),
         context
       );
       // OpenCRUD backwards compatibility
       parameters = runCallbacks(
         `${collectionName.toLowerCase()}.parameters.server`,
         parameters,
-        _.clone(terms),
+        clone(terms),
         context
       );
     }

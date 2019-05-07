@@ -7,7 +7,7 @@ import { registerComponent, Components } from 'meteor/vulcan:lib';
 // }
 
 const StripeId = ({ document }) => 
-  <a href={document.stripeChargeUrl} target="_blank">{document.stripeId}</a>;
+  <a href={document.stripeChargeUrl} target="_blank" rel="noopener noreferrer">{document.stripeId}</a>;
 
 const ChargesDashboard = props =>
   <div className="charges">

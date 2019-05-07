@@ -25,7 +25,7 @@ import './settings';
 import { engineConfig } from './engine';
 import { initContext, computeContextFromReq } from './context.js';
 
-import { GraphQLSchema } from '../../modules/graphql.js';
+import { GraphQLSchema } from '../../modules/graphql';
 
 import { enableSSR } from '../apollo-ssr';
 
@@ -89,7 +89,7 @@ export const setupToolsMiddlewares = config => {
  */
 export const createApolloServer = ({
   apolloServerOptions = {}, // apollo options
-  config = {}, // Vulcan options
+  config, // Vulcan options
 }) => {
   // given options contains the schema
   const apolloServer = new ApolloServer({
@@ -101,7 +101,9 @@ export const createApolloServer = ({
   });
 
   // default function does nothing
-  config.configServer(apolloServer);
+  if (config.configServer) {
+    config.configServer(apolloServer);
+  }
 
   return apolloServer;
 };

@@ -3,11 +3,11 @@ import MuiSelect from '../base-controls/MuiSelect';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
-const SelectComponent = ({ refFunction, ...properties }) => {
+const SelectComponent = ({ refFunction, inputProperties, ...properties }) => {
   const noneOption = { label: '', value: '' };
-  properties.options = [noneOption, ...properties.options];
+  const options = [noneOption, ...inputProperties.options];
   
-  return <MuiSelect {...properties} ref={refFunction}/>;
+  return <MuiSelect inputProperties={inputProperties} {...properties} options={options} ref={refFunction}/>;
 };
 
 
