@@ -2,6 +2,8 @@ import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
 import { debug } from 'meteor/vulcan:lib';
 
+export const defaultLocale = getSetting('locale', 'en');
+
 export const Strings = {};
 
 export const Domains = {};
@@ -12,25 +14,24 @@ export const addStrings = (language, strings) => {
   }
   Strings[language] = {
     ...Strings[language],
-    ...strings
+    ...strings,
   };
 };
 
-export const getString = ({id, values, defaultMessage, locale}) => {
-  const messages = Strings[locale] || {};
-  let message = messages[id];
+export const getString = ({ id, values, defaultMessage, locale }) => {
+  let message = '';
 
-  // use default locale
-  if(!message) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}".\x1b[0m`);
+  if (Strings[locale] && Strings[locale][id]) {
+    message = Strings[locale][id];
+  } else if (Strings[defaultLocale] && Strings[defaultLocale][id]) {
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
     message = Strings[defaultLocale] && Strings[defaultLocale][id];
-
-    // if default locale hasn't got the message too
-    if(!message && locale !== defaultLocale)
-      debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
+  } else if (defaultMessage) {
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
+    message = defaultMessage;
   }
 
-  if (message && values) {
+  if (values) {
     Object.keys(values).forEach(key => {
       // note: see replaceAll definition in vulcan:lib/utils
       message = message.replaceAll(`{${key}}`, values[key]);
@@ -42,8 +43,6 @@ export const getString = ({id, values, defaultMessage, locale}) => {
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
 };
-
-export const defaultLocale = getSetting('locale', 'en');
 
 export const Locales = [];
 
