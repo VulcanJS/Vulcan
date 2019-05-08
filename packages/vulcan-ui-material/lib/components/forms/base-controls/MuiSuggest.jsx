@@ -309,6 +309,7 @@ const MuiSuggest = createReactClass({
           name: this.props.name,
           'aria-haspopup': 'true',
           ...this.props.inputProps,
+          ...this.props.inputProperties,
           startAdornment,
           endAdornment,
         }}

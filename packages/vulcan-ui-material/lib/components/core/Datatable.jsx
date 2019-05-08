@@ -435,13 +435,12 @@ const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSor
     3. the raw column name.
     */
     const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
-    formattedLabel = typeof columnName === 'string' ?
+    formattedLabel = typeof columnName === 'string' &&
       intl.formatMessage({
         id: `${collection._name}.${columnName}`,
         defaultMessage: defaultMessage
-      }) :
-      '';
-
+      }) || defaultMessage;
+    
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use
     // column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
@@ -455,12 +454,11 @@ const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSor
       />;
     }
   } else if (intlNamespace) {
-    formattedLabel = typeof columnName === 'string' ?
+    formattedLabel = typeof columnName === 'string' &&
       intl.formatMessage({
         id: `${intlNamespace}.${columnName}`,
         defaultMessage: columnName
-      }) :
-      '';
+      }) || columnName;
   } else {
     formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
   }

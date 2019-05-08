@@ -374,6 +374,7 @@ FormComponent.contextTypes = {
   getDocument: PropTypes.func.isRequired
 };
 
-module.exports = FormComponent;
+//module.exports = FormComponent;
+export default FormComponent;
 
 registerComponent('FormComponent', FormComponent);

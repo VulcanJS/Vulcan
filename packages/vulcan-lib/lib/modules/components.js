@@ -2,7 +2,7 @@ import { compose } from 'react-apollo'; // note: at the moment, compose@react-ap
 import React from 'react';
 import difference from 'lodash/difference';
 
-export const Components = {}; // will be populated on startup (see vulcan:routing)
+export const Components = {}; // will be populated on startup 
 export const ComponentsTable = {}; // storage for infos about components
 
 export const coreComponents = [
