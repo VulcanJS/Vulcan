@@ -73,6 +73,8 @@ export default {
   
   cleanProps: function (props) {
     const removedFields = [
+      'arrayField',
+      'arrayFieldSchema',
       'beforeComponent',
       'afterComponent',
       'addonAfter',
@@ -122,7 +124,8 @@ export default {
       'formComponents',
       'autoValue',
       'minCount',
-      'maxCount'
+      'maxCount',
+      'visibleItemIndex'
     ];
     
     return _omit(props, removedFields);
