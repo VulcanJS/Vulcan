@@ -17,7 +17,9 @@ Package.onUse(function (api) {
   
   api.addFiles([
     'accounts.css', 
-    'forms.css', 
+    'forms.css',
+    'en_US.js',
+    'fr_FR.js',
   ], ['client', 'server']);
 
   api.mainModule('lib/client/main.js', 'client');
