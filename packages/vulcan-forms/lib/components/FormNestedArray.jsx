@@ -141,7 +141,7 @@ class FormNestedArray extends PureComponent {
           );
         })}
         {(!maxCount || arrayLength < maxCount) && (
-          <Components.FormNestedFoot
+          <FormComponents.FormNestedFoot
             key="add-button"
             addItem={this.addItem}
             label={this.props.label}
