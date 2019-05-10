@@ -138,8 +138,8 @@ You can pass a couple of extra options to form groups as well:
   const platformGroup: {
     name: 'shops.platform',
     order: 4,
-    startComponent: 'ShopsPlatformTitle', // component to put at the top of the form group
-    endComponent: 'ShopsConnectButtons',  // component to put at the bottom of the form group
+    beforeComponent: 'ShopsPlatformTitle', // component to put at the top of the form group
+    afterComponent: 'ShopsConnectButtons',  // component to put at the bottom of the form group
   },
 ```
 

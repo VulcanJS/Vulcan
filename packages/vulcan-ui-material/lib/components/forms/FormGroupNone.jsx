@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { instantiateComponent, registerComponent, Utils } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 
@@ -22,19 +22,13 @@ const FormGroupHeaderNone = () => {
 registerComponent('FormGroupHeaderNone', FormGroupHeaderNone, [withStyles, styles]);
 
 
-const FormGroupLayoutNone = ({ label, collapsed, hasErrors, heading, group, children, classes }) => {
-  const name = group.name.split('.').length > 1 ? group.name.split('.')[1] : group.name;
-  
+const FormGroupLayoutNone = ({ label, anchorName, collapsed, hasErrors, heading, group, children, classes }) => {
   return (
-    <div className={classNames(classes.root, 'form-section', `form-section-${name}`)}>
+    <div className={classNames(classes.root, 'form-section', `form-section-${anchorName}`)}>
       
-      <a name={name}/>
-  
-      {instantiateComponent(group.startComponent)}
+      <a name={anchorName}/>
   
       {children}
-  
-      {instantiateComponent(group.endComponent)}
     
     </div>
   );
@@ -43,6 +37,7 @@ const FormGroupLayoutNone = ({ label, collapsed, hasErrors, heading, group, chil
 
 FormGroupLayoutNone.propTypes = {
   label: PropTypes.string.isRequired,
+  anchorName: PropTypes.string.isRequired,
   collapsed: PropTypes.bool.isRequired,
   hasErrors: PropTypes.bool.isRequired,
   heading: PropTypes.node,
