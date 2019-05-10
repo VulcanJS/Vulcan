@@ -30,7 +30,8 @@ import {
   getSetting,
   Utils,
   isIntlField,
-  mergeWithComponents
+  mergeWithComponents,
+  formatLabel,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -524,7 +525,8 @@ class SmartForm extends Component {
    */
   getLabel = (fieldName, fieldLocale) => {
     const collectionName = this.props.collectionName.toLowerCase();
-    const label = this.context.intl.formatLabel({
+    const label = formatLabel({
+      intl: this.context.intl,
       fieldName: fieldName,
       collectionName: collectionName,
       schema: this.state.flatSchema,

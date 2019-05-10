@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:lib';
+import { registerComponent, Components, formatLabel } from 'meteor/vulcan:lib';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import without from 'lodash/without';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
-  return intl.formatLabel ? intl.formatLabel({ fieldName: fieldName, collectionName: collection && collection._name, schema: schema }): fieldName;
+  return formatLabel({ intl, fieldName: fieldName, collectionName: collection && collection._name, schema: schema });
 };
 
 const getTypeName = (field, fieldName, collection) => {
