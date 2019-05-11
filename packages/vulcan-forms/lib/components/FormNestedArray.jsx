@@ -1,24 +1,41 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
+import _omit from 'lodash/omit';
 
-// Replaceable layout
-const FormNestedArrayLayout = ({ hasErrors, label, content }) => (
-  <div
-    className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}
-  >
+// Replaceable layout, default implementation
+const FormNestedArrayLayout = ({ hasErrors, label, content, children }) => (
+  <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
     <label className="control-label col-sm-3">{label}</label>
-    <div className="col-sm-9">{content}</div>
+    <div className="col-sm-9">{content || children}</div>
   </div>
 );
 FormNestedArrayLayout.propTypes = {
   hasErrors: PropTypes.bool,
   label: PropTypes.node,
-  content: PropTypes.node
+  content: PropTypes.node,
 };
 registerComponent({
   name: 'FormNestedArrayLayout',
-  component: FormNestedArrayLayout
+  component: FormNestedArrayLayout,
+});
+
+// Wraps the FormNestedItem, repeated for each object
+// Allow for example to have a label per object
+const FormNestedArrayInnerLayout = props => {
+  const { FormComponents, label, children, addItem, beforeComponent, afterComponent } = props;
+  return (
+    <div>
+      {instantiateComponent(beforeComponent, props)}
+      {children}
+      <FormComponents.FormNestedDivider label={label} addItem={addItem} />
+      {instantiateComponent(afterComponent, props)}
+    </div>
+  );
+};
+registerComponent({
+  name: 'FormNestedArrayInnerLayout',
+  component: FormNestedArrayInnerLayout,
 });
 
 class FormNestedArray extends PureComponent {
@@ -48,70 +65,94 @@ class FormNestedArray extends PureComponent {
     return this.props.deletedValues.includes(`${this.props.path}.${index}`);
   };
 
+  computeVisibleIndex = values => {
+    let currentIndex = 0;
+    const visibleIndexes = values.map((subDocument, subDocumentIndx) => {
+      if (this.isDeleted(subDocumentIndx)) {
+        return 0;
+      } else {
+        currentIndex = currentIndex + 1;
+        return currentIndex;
+      }
+    });
+    return visibleIndexes;
+  };
+
   render() {
     const value = this.getCurrentValue();
+    const visibleItemIndexes = this.computeVisibleIndex(value);
     // do not pass FormNested's own value, input and inputProperties props down
-    const properties = _.omit(
+    const properties = _omit(
       this.props,
       'value',
       'input',
       'inputProperties',
-      'nestedInput'
+      'nestedInput',
+      'beforeComponent',
+      'afterComponent'
     );
-    const { errors, path, label, formComponents, minCount, maxCount } = this.props;
+    const {
+      errors,
+      path,
+      formComponents,
+      minCount,
+      maxCount,
+      beforeComponent,
+      afterComponent,
+      arrayField,
+    } = this.props;
     const FormComponents = formComponents;
 
     //filter out null values to calculate array length
     let arrayLength = value.filter(singleValue => {
-      return !!singleValue;
+      return typeof singleValue !== 'undefined' && singleValue !== null;
     }).length;
 
     // only keep errors specific to the nested array (and not its subfields)
-    const nestedArrayErrors = errors.filter(
-      error => error.path && error.path === path
-    );
+    const nestedArrayErrors = errors.filter(error => error.path && error.path === path);
     const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
-    
     return (
-      <FormComponents.FormNestedArrayLayout
-        label={label}
-        content={[
-          value.map(
-            (subDocument, i) =>
-              !this.isDeleted(i) && (
-                <React.Fragment key={i}>
-                  <FormComponents.FormNestedItem
-                    {...properties}
-                    itemIndex={i}
-                    path={`${this.props.path}.${i}`}
-                    removeItem={() => {
-                      this.removeItem(i);
-                    }}
-                    hideRemove={!!minCount && arrayLength <= minCount}
-                  />
-                  <FormComponents.FormNestedDivider
-                    label={this.props.label}
-                    addItem={this.addItem}
-                  />
-                </React.Fragment>
-              )
-          ),
-          (!maxCount || arrayLength < maxCount) && (
-            <Components.FormNestedFoot
-              key="add-button"
+      <FormComponents.FormNestedArrayLayout {...properties}>
+        {instantiateComponent(beforeComponent, properties)}
+        {value.map((subDocument, i) => {
+          if (this.isDeleted(i)) return null;
+          const path = `${this.props.path}.${i}`;
+          const visibleItemIndex = visibleItemIndexes[i];
+          return (
+            <FormComponents.FormNestedArrayInnerLayout
+              {...arrayField}
+              key={path}
+              FormComponents={FormComponents}
               addItem={this.addItem}
-              label={this.props.label}
-              className="form-nested-foot"
-            />
-          ),
-          hasErrors ? (
-            <FormComponents.FieldErrors
-              key="form-nested-errors"
-              errors={nestedArrayErrors}
-            />
-          ) : null
-        ]}
-      />
+              itemIndex={i}
+              visibleItemIndex={visibleItemIndex}
+              path={path}>
+              <FormComponents.FormNestedItem
+                {...properties}
+                itemIndex={i}
+                visibleItemIndex={visibleItemIndex}
+                path={path}
+                removeItem={() => {
+                  this.removeItem(i);
+                }}
+                hideRemove={!!minCount && arrayLength <= minCount}
+              />
+            </FormComponents.FormNestedArrayInnerLayout>
+          );
+        })}
+        {(!maxCount || arrayLength < maxCount) && (
+          <FormComponents.FormNestedFoot
+            key="add-button"
+            addItem={this.addItem}
+            label={this.props.label}
+            className="form-nested-foot"
+          />
+        )}
+        {hasErrors ? (
+          <FormComponents.FieldErrors key="form-nested-errors" errors={nestedArrayErrors} />
+        ) : null}
+        {instantiateComponent(afterComponent, properties)}
+      </FormComponents.FormNestedArrayLayout>
     );
   }
 }
@@ -120,17 +161,11 @@ FormNestedArray.propTypes = {
   currentValues: PropTypes.object,
   path: PropTypes.string,
   label: PropTypes.string,
-  minCount: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.func
-  ]),
-  maxCount: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.func
-  ]),
+  minCount: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+  maxCount: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   errors: PropTypes.array.isRequired,
   deletedValues: PropTypes.array.isRequired,
-  formComponents: PropTypes.object.isRequired
+  formComponents: PropTypes.object.isRequired,
 };
 
 export default FormNestedArray;
@@ -138,12 +173,7 @@ export default FormNestedArray;
 registerComponent('FormNestedArray', FormNestedArray);
 
 const IconAdd = ({ width = 24, height = 24 }) => (
-  <svg
-    width={width}
-    height={height}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 448 512"
-  >
+  <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
     <path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z" />
   </svg>
 );
@@ -151,12 +181,7 @@ const IconAdd = ({ width = 24, height = 24 }) => (
 registerComponent('IconAdd', IconAdd);
 
 const IconRemove = ({ width = 24, height = 24 }) => (
-  <svg
-    width={width}
-    height={height}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 448 512"
-  >
+  <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
     <path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z" />
   </svg>
 );

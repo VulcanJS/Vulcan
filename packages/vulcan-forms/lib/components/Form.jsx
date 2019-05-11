@@ -52,6 +52,7 @@ import uniqBy from 'lodash/uniqBy';
 import isObject from 'lodash/isObject';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
+import omit from 'lodash/omit';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
@@ -431,6 +432,7 @@ class SmartForm extends Component {
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
+
     return field;
   };
   handleFieldPath = (field, fieldName, parentPath) => {
@@ -457,16 +459,15 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
-    // array field
-    if (fieldSchema.field) {
-      field.arrayFieldSchema = fieldSchema.field;
+    // array field 
+    if (fieldSchema.arrayFieldSchema) {
+      field.arrayFieldSchema = fieldSchema.arrayFieldSchema;
       // create a field that can be exploited by the form
       field.arrayField = this.createArraySubField(
         fieldName,
         field.arrayFieldSchema,
         schema
       );
-
       //field.nestedInput = true
     }
     // nested fields: set input to "nested"
@@ -1042,6 +1043,7 @@ class SmartForm extends Component {
   getFormGroupProps = group => ({
     key: group.name,
     ...group,
+    group: omit(group, ['fields']),
     errors: this.state.errors,
     throwError: this.throwError,
     currentValues: this.state.currentValues,
