@@ -60,7 +60,7 @@ const styles = theme => ({
 
 
 const FormGroupHeader = ({ toggle, collapsed, label, group, classes }) => {
-  const collapsible = group && group.collapsible || group.name === 'admin';
+  const collapsible = group && group.collapsible || group && group.name === 'admin';
   
   return (
     <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-section-heading')}
