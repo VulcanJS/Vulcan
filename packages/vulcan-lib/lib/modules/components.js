@@ -73,6 +73,18 @@ export function registerComponent(name, rawComponent, ...hocs) {
 }
 
 /**
+ * Returns true if a component with the given name has been registered with
+ * registerComponent(name, component, ...hocs).
+ *
+ * @param {String} name The name of the component to get.
+ * @returns {Boolean}
+ */
+export const componentExists = (name) => {
+  const component = ComponentsTable[name];
+  return !!component;
+};
+
+/**
  * Get a component registered with registerComponent(name, component, ...hocs).
  *
  * @param {String} name The name of the component to get.
