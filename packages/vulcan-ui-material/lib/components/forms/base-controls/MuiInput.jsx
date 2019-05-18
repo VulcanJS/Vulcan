@@ -61,12 +61,22 @@ const MuiInput = createReactClass({
     };
   },
   
+  getInitialState: function () {
+    if (this.props.refFunction) {
+      this.props.refFunction(this);
+    }
+    
+    return {
+      value: this.props.value,
+    };
+  },
+  
   handleChange: function (event) {
     let value = event.target.value;
     if (this.props.scrubValue) {
       value = this.props.scrubValue(value);
     }
-    this.changeValue(value);
+    this.setState({ value });
   },
   
   changeValue: function (value) {
@@ -74,10 +84,13 @@ const MuiInput = createReactClass({
   },
   
   handleBlur: function (event) {
-    const { type, value } = this.props;
+    const { type } = this.props;
+    const { value } = this.state;
     
     if (type === 'url' && !!value && value !== fixUrl(value)) {
         this.changeValue(fixUrl(value));
+    } else {
+      this.changeValue(value);
     }
   },
   
@@ -109,7 +122,7 @@ const MuiInput = createReactClass({
   
   renderElement: function (startAdornment, endAdornment) {
     const { classes, disabled, autoFocus, formatValue } = this.props;
-    const value = formatValue ? formatValue(this.props.value) : this.props.value;
+    const value = formatValue ? formatValue(this.state.value) : this.state.value;
     const options = this.props.options || {};
     
     return (
@@ -117,7 +130,7 @@ const MuiInput = createReactClass({
         ref={c => (this.element = c)}
         {...this.cleanProps(this.props)}
         id={this.getId()}
-        value={value}
+        value={value || ''}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         disabled={disabled}
