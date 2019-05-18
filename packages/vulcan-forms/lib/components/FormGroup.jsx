@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, Utils } from 'meteor/vulcan:core';
+import { Components, instantiateComponent, Utils } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 
@@ -9,9 +9,9 @@ const FormGroupHeader = ({ toggle, collapsed, label }) => (
     <h3 className="form-section-heading-title">{label}</h3>
     <span className="form-section-heading-toggle">
       {collapsed ? (
-        <Components.IconRight height={16} width={16} />
+        <Components.IconRight height={16} width={16}/>
       ) : (
-        <Components.IconDown height={16} width={16} />
+        <Components.IconDown height={16} width={16}/>
       )}
     </span>
   </div>
@@ -24,8 +24,9 @@ FormGroupHeader.propTypes = {
 };
 registerComponent({ name: 'FormGroupHeader', component: FormGroupHeader });
 
-const FormGroupLayout = ({ children, label, heading, collapsed, group, hasErrors }) => (
-  <div className={`form-section form-section-${Utils.slugify(label)}`}>
+const FormGroupLayout = ({ children, label, anchorName, heading, collapsed, group, hasErrors }) => (
+  <div className={`form-section form-section-${anchorName} form-section-${Utils.slugify(label)}`}>
+    <a name={anchorName}/>
     {heading}
     <div
       className={classNames({
@@ -38,6 +39,7 @@ const FormGroupLayout = ({ children, label, heading, collapsed, group, hasErrors
 );
 FormGroupLayout.propTypes = {
   label: PropTypes.string,
+  anchorName: PropTypes.string,
   heading: PropTypes.node,
   collapsed: PropTypes.bool,
   group: PropTypes.object,
@@ -47,7 +49,7 @@ FormGroupLayout.propTypes = {
 registerComponent({ name: 'FormGroupLayout', component: FormGroupLayout });
 
 class FormGroup extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.renderHeading = this.renderHeading.bind(this);
@@ -55,14 +57,14 @@ class FormGroup extends PureComponent {
       collapsed: props.group.startCollapsed || false
     };
   }
-
-  toggle() {
+  
+  toggle () {
     this.setState({
       collapsed: !this.state.collapsed
     });
   }
-
-  renderHeading(FormComponents) {
+  
+  renderHeading (FormComponents) {
     return (
       <FormComponents.FormGroupHeader
         toggle={this.toggle}
@@ -72,7 +74,7 @@ class FormGroup extends PureComponent {
       />
     );
   }
-
+  
   // if at least one of the fields in the group has an error, the group as a whole has an error
   hasErrors = () =>
     _.some(this.props.fields, field => {
@@ -80,38 +82,46 @@ class FormGroup extends PureComponent {
         .length;
     });
 
-  render() {
+render () {
     const { name, fields, formComponents, label, group } = this.props;
     const { collapsed } = this.state;
     const FormComponents = mergeWithComponents(formComponents);
-
+    const anchorName = name.split('.').length > 1 ? name.split('.')[1] : name;
+    
     return (
-      <FormComponents.FormGroupLayout
-        label={label}
-        toggle={this.toggle}
-        collapsed={collapsed}
-        group={group}
-        heading={name === 'default' ? null : this.renderHeading(FormComponents)}
-        hasErrors={this.hasErrors()}
-      >
-        {fields.map(field => (
-          <FormComponents.FormComponent
-            key={field.name}
-            disabled={this.props.disabled}
-            {...field}
-            errors={this.props.errors}
-            throwError={this.props.throwError}
-            currentValues={this.props.currentValues}
-            updateCurrentValues={this.props.updateCurrentValues}
-            deletedValues={this.props.deletedValues}
-            addToDeletedValues={this.props.addToDeletedValues}
-            clearFieldErrors={this.props.clearFieldErrors}
-            formType={this.props.formType}
-            currentUser={this.props.currentUser}
-            formComponents={FormComponents}
-          />
-        ))}
-      </FormComponents.FormGroupLayout>
+        <FormComponents.FormGroupLayout
+          label={label}
+          anchorName={anchorName}
+          toggle={this.toggle}
+          collapsed={collapsed}
+          group={group}
+          heading={name === 'default' ? null : this.renderHeading(FormComponents)}
+          hasErrors={this.hasErrors()}
+        >
+
+          {instantiateComponent(group.beforeComponent)}
+
+          {fields.map(field => (
+            <FormComponents.FormComponent
+              key={field.name}
+              disabled={this.props.disabled}
+              {...field}
+              errors={this.props.errors}
+              throwError={this.props.throwError}
+              currentValues={this.props.currentValues}
+              updateCurrentValues={this.props.updateCurrentValues}
+              deletedValues={this.props.deletedValues}
+              addToDeletedValues={this.props.addToDeletedValues}
+              clearFieldErrors={this.props.clearFieldErrors}
+              formType={this.props.formType}
+              currentUser={this.props.currentUser}
+              formComponents={FormComponents}
+            />
+          ))}
+  
+          {instantiateComponent(group.afterComponent)}
+
+        </FormComponents.FormGroupLayout>
     );
   }
 }
@@ -153,7 +163,7 @@ const IconRight = ({ width = 24, height = 24 }) => (
       points="5.5,23.5 18.5,12 5.5,0.5"
       id="Outline_Icons"
     />
-    <rect fill="none" width="24" height="24" id="Frames-24px" />
+    <rect fill="none" width="24" height="24" id="Frames-24px"/>
   </svg>
 );
 
@@ -175,7 +185,7 @@ const IconDown = ({ width = 24, height = 24 }) => (
       points="0.501,5.5 12.001,18.5 23.501,5.5"
       id="Outline_Icons"
     />
-    <rect fill="none" width="24" height="24" id="Frames-24px" />
+    <rect fill="none" width="24" height="24" id="Frames-24px"/>
   </svg>
 );
 
