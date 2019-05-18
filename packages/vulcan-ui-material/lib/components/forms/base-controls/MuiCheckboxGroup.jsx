@@ -75,15 +75,19 @@ const MuiCheckboxGroup = createReactClass({
     };
   },
   
-  changeCheckbox: function () {
-    const value = [];
+  changeCheckbox: function (event) {
     const { options, name } = this.props.inputProperties;
+
+    const checkedValue = this[name + '-' + event.target.value].checked && event.target.value;
+    const value = checkedValue ? [checkedValue] : [];
+    
     options.forEach(function (option, key) {
-      if (this[name + '-' + option.value].checked) {
+      if (this.props.maxCount && value.length >= this.props.maxCount) return;
+      if (this[name + '-' + option.value].checked && option.value !== checkedValue) {
         value.push(option.value);
       }
     }.bind(this));
-
+    
     this.props.onChange(value);
   },
   
@@ -95,7 +99,7 @@ const MuiCheckboxGroup = createReactClass({
   },
   
   renderElement: function () {
-    const { name, options, disabled: _disabled, value:_values } = this.props.inputProperties;
+    const { name, options, disabled: _disabled, value: _values } = this.props.inputProperties;
     const controls = options.map((checkbox, key) => {
       let checkboxValue = checkbox.value;
       let checked = (_values.indexOf(checkboxValue) !== -1);
@@ -121,7 +125,7 @@ const MuiCheckboxGroup = createReactClass({
     
     const maxLength = options.reduce((max, option) =>
       option.label.length > max ? option.label.length : max, 0);
-  
+    
     const columnClass = maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';
     
     return (
