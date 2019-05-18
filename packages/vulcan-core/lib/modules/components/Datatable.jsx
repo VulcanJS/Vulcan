@@ -1,4 +1,4 @@
-import { registerComponent, getCollection } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection, formatLabel } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -200,7 +200,7 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
     3. the raw column name.
 
     */
-    const formattedLabel = intl.formatLabel({fieldName: columnName, collectionName: collection._name, schema: schema});
+    const formattedLabel = formatLabel({ intl, fieldName: columnName, collectionName: collection._name, schema: schema });
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
