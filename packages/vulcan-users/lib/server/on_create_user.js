@@ -65,7 +65,7 @@ function onCreateUserCallback(options, user) {
   user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {} });
   user = runCallbacks('users.new.sync', user);
 
-  runCallbacksAsync({ name: 'user.create.async', properties: { data: user } });
+  runCallbacksAsync({ name: 'user.create.async', iterator: user, properties: { data: user, document: user, collection: Users } });
   // OpenCRUD backwards compatibility
   runCallbacksAsync('users.new.async', user);
 
