@@ -200,7 +200,7 @@ export const copyHoCs = (sourceComponent, targetComponent) => {
 
 /**
  * Returns an instance of the given component name of function
- * @param {string|function} component  A component or registered component name
+ * @param {string|function} component  A component, the name of a component, or a react element
  * @param {Object} [props]  Optional properties to pass to the component
  */
 //eslint-disable-next-line react/display-name
@@ -210,8 +210,9 @@ export const instantiateComponent = (component, props) => {
   } else if (typeof component === 'string') {
     const Component = getComponent(component);
     return <Component {...props} />;
-  } else if (
-    typeof component === 'function' &&
+  } else if (React.isValidElement(component)) {
+    return React.cloneElement(component, props);
+  } else if (typeof component === 'function' &&
     component.prototype &&
     component.prototype.isReactComponent
   ) {
