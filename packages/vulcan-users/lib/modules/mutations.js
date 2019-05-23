@@ -142,21 +142,20 @@ registerCallback({
 });
 registerCallback({
   name:'user.create.async',
-  iterator: {data:'the document after being inserted in the database'},
+  iterator: { document: 'The document being inserted' },
   properties: [
-    {insertedDocument: 'The document that was inserted to the collection'},
-    { currentUser: 'The current user' },
-    {collection: 'The Users collection'}
+    { data: 'The document being inserted' }, //for backward compatibility
+    { collection: 'The Users collection' }
   ],
   runs: 'async',
-  returns: 'document',
-  description: 'Perform operations on a new document after it\'s inserted in the database asynchronously.',
+  returns: null,
+  description: 'Perform operations on a new user after it\'s inserted in the database asynchronously.',
 });
 registerCallback({
   name: 'user.update.validate',
   iterator: {data: 'The client data'},
   properties: [
-    {document: 'The document being updated'}, 
+    {document: 'The document being updated'},
     {currentUser: 'The current user.'},
     {validationErrors: 'an object that can be used to accumulate validation errors.'},
   ],
