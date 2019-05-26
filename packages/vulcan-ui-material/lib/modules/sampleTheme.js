@@ -1,7 +1,8 @@
 import { registerTheme } from './themes';
 import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
+import error from '@material-ui/core/colors/red';
+import success from '@material-ui/core/colors/green';
 
 
 /** @ignore */
@@ -21,19 +22,22 @@ const theme = {
   palette: {
     primary: indigo,
     secondary: blue,
-    error: red,
+    error: error,
   },
   
   utils: {
     
     tooltipEnterDelay: 700,
-    
+  
     errorMessage: {
       textAlign: 'center',
-      backgroundColor: red[500],
-      color: 'white',
-      borderRadius: '4px',
-      fontWeight: 'bold',
+      backgroundColor: error[500],
+      color: '#fff',
+      borderRadius: 4,
+      padding: '6px 16px',
+      '&.success': {
+        backgroundColor: success[500],
+      }
     },
     
     denseTable: {

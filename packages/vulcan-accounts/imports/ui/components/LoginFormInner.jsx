@@ -927,6 +927,8 @@ export class AccountsLoginFormInner extends TrackerComponent {
       onSubmitHook,
       onSignedInHook,
     } = this.state;
+    
+    this.clearMessages();
 
     if (!this.validateField('password', newPassword)){
       onSubmitHook('err.minChar',formState);
