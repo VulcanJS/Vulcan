@@ -1,7 +1,10 @@
 import { registerTheme } from './themes';
-import indigo from '@material-ui/core/colors/indigo';
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
+import primary from '@material-ui/core/colors/indigo';
+import secondary from '@material-ui/core/colors/deepPurple';
+import error from '@material-ui/core/colors/red';
+import info from '@material-ui/core/colors/blue';
+import success from '@material-ui/core/colors/green';
+import warning from '@material-ui/core/colors/orange';
 
 
 /** @ignore */
@@ -19,9 +22,55 @@ import red from '@material-ui/core/colors/red';
 const theme = {
   
   palette: {
-    primary: indigo,
-    secondary: blue,
-    error: red,
+    
+    primary: {
+      light: primary[200],
+      main: primary[500],
+      dark: primary[800],
+      contrastText: '#fff',
+      ...primary
+    },
+  
+    secondary: {
+      light: secondary[200],
+      main: secondary[500],
+      dark: secondary[800],
+      contrastText: '#fff',
+      ...secondary
+    },
+  
+    error: {
+      light: error[200],
+      main: error[500],
+      dark: error[800],
+      contrastText: '#fff',
+      ...error
+    },
+  
+    warning: {
+      light: warning[100],
+      main: warning[500],
+      dark: warning[900],
+      contrastText: '#fff',
+      ...warning
+    },
+  
+    success: {
+      light: success[100],
+      main: success[500],
+      dark: success[900],
+      contrastText: '#fff',
+      ...success
+    },
+  
+    info: {
+      light: info[100],
+      main: info[500],
+      dark: info[900],
+      contrastText: '#fff',
+      ...info
+    },
+  
   },
   
   utils: {

@@ -5,9 +5,9 @@ import { getDisplayName, avatar as avatarUtility, getProfileUrl } from 'meteor/v
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-const Avatar = ({ className, user, link, fallback }) => {
+const Avatar = ({ className, user, size, gutter, link, fallback }) => {
 
-  const avatarClassNames = classNames('avatar', className);
+  const avatarClassNames = classNames('avatar', `size-${size}`, `gutter-${gutter}`, className);
 
   if (!user) {
     return <div className={avatarClassNames}>{fallback}</div>;
@@ -34,12 +34,14 @@ const Avatar = ({ className, user, link, fallback }) => {
 
 Avatar.propTypes = {
   user: PropTypes.object,
-  size: PropTypes.string,
+  size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'profile']),
+  gutter: PropTypes.oneOf(['bottom', 'left', 'right', 'sides', 'all', 'none']),
   link: PropTypes.bool
 };
 
 Avatar.defaultProps = {
   size: 'medium',
+  gutter: 'none',
   link: true
 };
 

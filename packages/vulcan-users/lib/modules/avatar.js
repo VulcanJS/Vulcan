@@ -1,3 +1,4 @@
+import { getSetting } from 'meteor/vulcan:lib';
 import Users from './collection.js';
 import md5 from 'crypto-js/md5';
 
@@ -159,9 +160,9 @@ Users.avatar = {
   // Get the initials of the user
   getInitials: function (user) {
 
-    var initials = '';
-    var name = '';
-    var parts = [];
+    let initials = '';
+    let name = '';
+    let parts = [];
 
     if (user && user.profile && user.profile.firstName) {
       initials = user.profile.firstName.charAt(0).toUpperCase();
@@ -180,6 +181,9 @@ Users.avatar = {
       if (user && user.profile && user.profile.name) {
         name = user.profile.name;
       }
+      else if (user && user.displayName) {
+        name = user.displayName;
+      }
       else if (user && user.username) {
         name = user.username;
       }
@@ -194,6 +198,16 @@ Users.avatar = {
     }
 
     return initials;
+  },
+  
+  getUserStatus: function (user) {
+    const hostCompanyId = getSetting('hostCompany.companyId');
+  
+    if (Users.isAdmin(user)) {
+      return 'admin';
+    } else if (!!user.companyId && !!hostCompanyId && user.companyId === hostCompanyId) {
+      return 'host';
+    }
   },
 
   // Get the url of the user's avatar
