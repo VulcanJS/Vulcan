@@ -33,21 +33,27 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     const resetStoreAndThen = hook => {
       return () => {
-        props.client.resetStore().then(() => {
+        const resetStoreCallback = () => {
           hook();
-        });
+          removeResetStoreCallback(resetStoreCallback);
+        };
+        const removeResetStoreCallback = props.client.onResetStore(resetStoreCallback);
+        props.client.resetStore();
       };
     };
 
     const postLogInAndThen = hook => {
       return () => {
-        props.client.resetStore().then(() => {
-          if(Callbacks['users.postlogin']) { // execute any post-sign-in callbacks
-          runCallbacks('users.postlogin');
+        const resetStoreCallback = () => {
+          if (Callbacks['users.postlogin']) { // execute any post-sign-in callbacks
+            runCallbacks('users.postlogin');
           } else { // or else execute the hook
             hook();
           }
-        });
+          removeResetStoreCallback(resetStoreCallback);
+        };
+        const removeResetStoreCallback = props.client.onResetStore(resetStoreCallback);
+        props.client.resetStore();
       };
     };
 
@@ -69,10 +75,10 @@ export class AccountsLoginFormInner extends TrackerComponent {
       waiting: false,
       formState: props.formState ? props.formState : (currentUser ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
-      onSignedInHook: resetStoreAndThen(postLogInAndThen(props.onSignedInHook || defaultHooks.onSignedInHook)),
+      onSignedInHook: postLogInAndThen(props.onSignedInHook || defaultHooks.onSignedInHook),
       onSignedOutHook: resetStoreAndThen(props.onSignedOutHook || defaultHooks.onSignedOutHook),
       onPreSignUpHook: props.onPreSignUpHook || defaultHooks.onPreSignUpHook,
-      onPostSignUpHook: resetStoreAndThen(postLogInAndThen(props.onPostSignUpHook || defaultHooks.onPostSignUpHook)),
+      onPostSignUpHook: postLogInAndThen(props.onPostSignUpHook || defaultHooks.onPostSignUpHook),
     };
   }
 
@@ -834,6 +840,8 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
+        self.setState({ waiting: false });
+        
         if (error) {
           // eslint-disable-next-line no-console
           console.log(error);
@@ -856,13 +864,11 @@ export class AccountsLoginFormInner extends TrackerComponent {
         else {
           onSubmitHook(null, formState);
           self.props.handlers.switchToProfile();
+          self.clearDefaultFieldValues();
           // self.setState({ formState: STATES.PROFILE, password: null });
           let currentUser = Accounts.user();
           loginResultCallback(self.state.onPostSignUpHook.bind(self, _options, currentUser));
-          self.clearDefaultFieldValues();
         }
-
-        self.setState({ waiting: false });
       });
     };
     if (!error) {

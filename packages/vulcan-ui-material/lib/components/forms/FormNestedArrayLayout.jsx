@@ -20,8 +20,8 @@ const FormNestedArrayLayout = ({ hideLabel = false, label, content, children }) 
 );
 
 FormNestedArrayLayout.propTypes = {
-	hasErrors: PropTypes.bool,
-	label: PropTypes.node,
+  hasErrors: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+  label: PropTypes.node,
 	hideLabel: PropTypes.bool,
 	content: PropTypes.node,
 };

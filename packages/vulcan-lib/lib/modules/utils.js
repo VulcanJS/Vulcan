@@ -149,6 +149,17 @@ Utils.getSiteUrl = function () {
 };
 
 /**
+ * @summary Returns the user defined site URL or Meteor.absoluteUrl. Remove trailing '/' if it exists
+ */
+Utils.getRootUrl = function () {
+  let url = getSetting('siteUrl', Meteor.absoluteUrl());
+  if (url.slice(-1) === '/') {
+    url = url.slice(0, -1);
+  }
+  return url;
+};
+
+/**
  * @summary The global namespace for Vulcan utils.
  * @param {String} url - the URL to redirect
  */

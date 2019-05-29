@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
-import { debug } from 'meteor/vulcan:lib';
+import { debug, Utils } from 'meteor/vulcan:lib';
+
+export const defaultLocale = getSetting('locale', 'en');
 
 export const Strings = {};
 
@@ -12,27 +14,24 @@ export const addStrings = (language, strings) => {
   }
   Strings[language] = {
     ...Strings[language],
-    ...strings
+    ...strings,
   };
 };
 
-export const getString = ({id, values, defaultMessage, locale}) => {
-  const messages = Strings[locale] || {};
-  let message = messages[id];
+export const getString = ({ id, values, defaultMessage, locale }) => {
+  let message = '';
 
-  // use default locale
-  if(!message) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}".\x1b[0m`);
+  if (Strings[locale] && Strings[locale][id]) {
+    message = Strings[locale][id];
+  } else if (Strings[defaultLocale] && Strings[defaultLocale][id]) {
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
     message = Strings[defaultLocale] && Strings[defaultLocale][id];
-
-    // if default locale hasn't got the message too
-    if(!message && locale !== defaultLocale){
-      debug(`\x1b[32m>> INTL: No string found for id "${id}" in the default locale ("${defaultLocale}").\x1b[0m`);
-    }
-    message=defaultMessage;
+  } else if (defaultMessage) {
+    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
+    message = defaultMessage;
   }
 
-  if (message && values) {
+  if (values) {
     Object.keys(values).forEach(key => {
       // note: see replaceAll definition in vulcan:lib/utils
       message = message.replaceAll(`{${key}}`, values[key]);
@@ -44,8 +43,6 @@ export const getString = ({id, values, defaultMessage, locale}) => {
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
 };
-
-export const defaultLocale = getSetting('locale', 'en');
 
 export const Locales = [];
 
@@ -123,3 +120,46 @@ export const validateIntlField = function() {
     return `intlError|${JSON.stringify(errors)}`;
   }
 };
+
+/**
+ * formatLabel - Get a label for a field, for a given collection, in the current language. The evaluation is as follows : i18n(collectionName.fieldName) > i18n(global.fieldName) > i18n(fieldName) > schema.fieldName.label > fieldName
+ *
+ * @param  {object} params
+ * @param  {object} params.intl               An intlShape object obtained from the react context for example
+ * @param  {string} params.fieldName          The name of the field to evaluate (required)
+ * @param  {string} params.collectionName     The name of the collection the field belongs to
+ * @param  {object} params.schema             The schema of the collection
+ * @param  {object} values                    The values to pass to format the i18n string
+ * @return {string}                           The translated label
+ */
+
+export const formatLabel = ({ intl, fieldName, collectionName, schema }, values) => {
+  if (!fieldName) {
+    throw new Error('fieldName option passed to formatLabel cannot be empty or undefined');
+  }
+  const defaultMessage = '|*|*|';
+  // Get the intl label
+  let intlLabel = defaultMessage;
+  // try collectionName.fieldName as intl id
+  if (collectionName) {
+    intlLabel = intl.formatMessage(
+      { id: `${collectionName.toLowerCase()}.${fieldName}`, defaultMessage },
+      values
+    );
+  }
+  // try global.fieldName then just fieldName as intl id
+  if (intlLabel === defaultMessage) {
+    intlLabel = intl.formatMessage({ id: `global.${fieldName}`, defaultMessage }, values);
+    if (intlLabel === defaultMessage) {
+      intlLabel = intl.formatMessage({ id: fieldName }, values);
+    }
+  }
+  if (intlLabel) {
+    return intlLabel;
+  }
+  
+  // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
+  let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
+  return schemaLabel || Utils.camelToSpaces(fieldName);
+};
+

@@ -1,4 +1,4 @@
-import { registerComponent, getCollection } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection, formatLabel } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -83,9 +83,9 @@ class Datatable extends PureComponent {
       };
 
       const DatatableWithMulti = withMulti(options)(Components.DatatableContents);
-
+      // openCRUD backwards compatibility
       const canInsert = collection.options && collection.options.mutations && collection.options.mutations.new && collection.options.mutations.new.check(this.props.currentUser);
-      
+      const canCreate = collection.options && collection.options.mutations && collection.options.mutations.create && collection.options.mutations.create.check(this.props.currentUser);
       // add _id to orderBy when we want to sort a column, to avoid breaking the graphql() hoc;
       // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
       // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays {}. So we test on the length of keys for this object.
@@ -93,7 +93,7 @@ class Datatable extends PureComponent {
 
       return (
         <Components.DatatableLayout Components={Components} collectionName={collection.options.collectionName}>
-          <Components.DatatableAbove Components={Components} {...this.props} collection={collection} canInsert={canInsert} value={this.state.value} updateQuery={this.updateQuery} />
+          <Components.DatatableAbove Components={Components} {...this.props} collection={collection} canInsert={canInsert || canCreate} canUpdate={canInsert || canCreate} value={this.state.value} updateQuery={this.updateQuery} />
           <DatatableWithMulti Components={Components} {...this.props} collection={collection} terms={{ query: this.state.query, orderBy: orderBy }} currentUser={this.props.currentUser} toggleSort={this.toggleSort} currentSort={this.state.currentSort}/>
         </Components.DatatableLayout>
       );
@@ -200,7 +200,7 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
     3. the raw column name.
 
     */
-    const formattedLabel = intl.formatLabel({fieldName: columnName, collectionName: collection._name, schema: schema});
+    const formattedLabel = formatLabel({ intl, fieldName: columnName, collectionName: collection._name, schema: schema });
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
@@ -386,8 +386,9 @@ const DatatableRow = (props, { intl }) => {
 
   const { collection, columns, document, showEdit, 
     currentUser, options, editFormOptions, rowClass, Components } = props;
+  // openCRUD backwards compatibility
   const canEdit = collection && collection.options && collection.options.mutations && collection.options.mutations.edit && collection.options.mutations.edit.check(currentUser, document);
-
+  const canUpdate = collection && collection.options && collection.options.mutations && collection.options.mutations.update && collection.options.mutations.update.check(currentUser, document);
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
   const { modalProps = {} } = props;
   const defaultModalProps = { title: <code>{document._id}</code> };
@@ -405,7 +406,7 @@ const DatatableRow = (props, { intl }) => {
         column={column} document={document} 
         currentUser={currentUser} />
       ))}
-    {showEdit && canEdit ?
+    {showEdit && (canEdit || canUpdate) ? // openCRUD backwards compatibility
       <Components.DatatableCellLayout>
         <Components.EditButton collection={collection} documentId={document._id} currentUser={currentUser} mutationFragmentName={options && options.fragmentName} modalProps={customModalProps} {...editFormOptions}/>
       </Components.DatatableCellLayout>
