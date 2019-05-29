@@ -10,6 +10,7 @@ const Head = () => {
       {helmet.title.toComponent()}
       {helmet.meta.toComponent()}
       {helmet.link.toComponent()}
+      {helmet.script.toComponent()}
     </head>
   );
 };
