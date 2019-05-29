@@ -53,44 +53,56 @@ import { callbackProps } from './propTypes';
 
 const intlSuffix = '_intl';
 
+const RESET_PROPS = ["documentId"]
+
 class FormWrapper extends PureComponent {
   constructor(props) {
     super(props);
-    // instantiate the wrapped component in constructor, not in render
+  }
+  componentWillMount(){
+    // instantiate the wrapped component outside of render
     // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
-    this.FormComponent = this.getComponent(props);
+    this.FormComponent = this.getComponent(this.props);
+  }
+  UNSAFE_componentWillReceiveProps(nextProps){
+    const shouldReset = !!RESET_PROPS.find(resetProp => nextProps[resetProp] !== this.props[resetProp])
+    // reinit the component on certain props change
+    if (shouldReset){
+      this.FormComponent = this.getComponent(nextProps);
+    }
   }
   // return the current schema based on either the schema or collection prop
-  getSchema() {
-    return this.props.schema
-      ? this.props.schema
-      : this.props.collection.simpleSchema()._schema;
+  getSchema(props) {
+    return props.schema
+      ? props.schema
+      : props.collection.simpleSchema()._schema;
   }
 
   // if a document is being passed, this is an edit form
-  getFormType() {
-    return this.props.documentId || this.props.slug ? 'edit' : 'new';
+  getFormType(props) {
+    return props.documentId || props.slug ? 'edit' : 'new';
   }
 
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
-  getFragments() {
-    const prefix = `${this.props.collectionName}${Utils.capitalize(
-      this.getFormType()
+  getFragments(props) {
+    const formType = this.getFormType(props)
+    const prefix = `${props.collectionName}${Utils.capitalize(
+      formType
     )}`;
     const fragmentName = `${prefix}FormFragment`;
 
-    const fields = this.props.fields;
-    const readableFields = getReadableFields(this.getSchema());
-    const createableFields = getCreateableFields(this.getSchema());
-    const updatetableFields = getUpdateableFields(this.getSchema());
+    const fields = props.fields;
+    const readableFields = getReadableFields(this.getSchema(props));
+    const createableFields = getCreateableFields(this.getSchema(props));
+    const updatetableFields = getUpdateableFields(this.getSchema(props));
 
     // get all editable/insertable fields (depending on current form type)
     let queryFields =
-      this.getFormType() === 'new' ? createableFields : updatetableFields;
+      formType === 'new' ? createableFields : updatetableFields;
     // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
     let mutationFields =
-      this.getFormType() === 'new'
+      formType === 'new'
         ? _.unique(createableFields.concat(readableFields))
         : _.unique(createableFields.concat(updatetableFields));
 
@@ -104,9 +116,9 @@ class FormWrapper extends PureComponent {
     }
 
     // add "addFields" prop contents to list of fields
-    if (this.props.addFields && this.props.addFields.length) {
-      queryFields = queryFields.concat(this.props.addFields);
-      mutationFields = mutationFields.concat(this.props.addFields);
+    if (props.addFields && props.addFields.length) {
+      queryFields = queryFields.concat(props.addFields);
+      mutationFields = mutationFields.concat(props.addFields);
     }
 
     const convertFields = field => {
@@ -115,7 +127,7 @@ class FormWrapper extends PureComponent {
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     const generatedQueryFragment = gql`
-      fragment ${fragmentName} on ${this.props.typeName} {
+      fragment ${fragmentName} on ${props.typeName} {
         _id
         ${queryFields.map(convertFields).join('\n')}
       }
@@ -123,7 +135,7 @@ class FormWrapper extends PureComponent {
 
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     const generatedMutationFragment = gql`
-      fragment ${fragmentName} on ${this.props.typeName} {
+      fragment ${fragmentName} on ${props.typeName} {
         _id
         ${mutationFields.map(convertFields).join('\n')}
       }
@@ -134,35 +146,35 @@ class FormWrapper extends PureComponent {
     let mutationFragment = generatedMutationFragment;
 
     // if queryFragment or mutationFragment props are specified, accept either fragment object or fragment string
-    if (this.props.queryFragment) {
+    if (props.queryFragment) {
       queryFragment =
-        typeof this.props.queryFragment === 'string'
+        typeof props.queryFragment === 'string'
           ? gql`
-              ${this.props.queryFragment}
+              ${props.queryFragment}
             `
-          : this.props.queryFragment;
+          : props.queryFragment;
     }
-    if (this.props.mutationFragment) {
+    if (props.mutationFragment) {
       mutationFragment =
-        typeof this.props.mutationFragment === 'string'
+        typeof props.mutationFragment === 'string'
           ? gql`
-              ${this.props.mutationFragment}
+              ${props.mutationFragment}
             `
-          : this.props.mutationFragment;
+          : props.mutationFragment;
     }
 
     // same with queryFragmentName and mutationFragmentName
-    if (this.props.queryFragmentName) {
-      queryFragment = getFragment(this.props.queryFragmentName);
+    if (props.queryFragmentName) {
+      queryFragment = getFragment(props.queryFragmentName);
     }
-    if (this.props.mutationFragmentName) {
-      mutationFragment = getFragment(this.props.mutationFragmentName);
+    if (props.mutationFragmentName) {
+      mutationFragment = getFragment(props.mutationFragmentName);
     }
 
     // if any field specifies extra queries, add them
     const extraQueries = _.compact(
       queryFields.map(fieldName => {
-        const field = this.getSchema()[fieldName];
+        const field = this.getSchema(props)[fieldName];
         return field.query;
       })
     );
@@ -175,29 +187,30 @@ class FormWrapper extends PureComponent {
     };
   }
 
-  getComponent() {
+  getComponent(props) {
+    const formType = this.getFormType(props)
     let WrappedComponent;
 
-    const prefix = `${this.props.collectionName}${Utils.capitalize(
-      this.getFormType()
+    const prefix = `${props.collectionName}${Utils.capitalize(
+      formType
     )}`;
 
     const {
       queryFragment,
       mutationFragment,
       extraQueries
-    } = this.getFragments();
+    } = this.getFragments(props);
 
     // props to pass on to child component (i.e. <Form />)
     const childProps = {
-      formType: this.getFormType(),
-      schema: this.getSchema()
+      formType,
+      schema: this.getSchema(props)
     };
 
     // options for withSingle HoC
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
-      collection: this.props.collection,
+      collection: props.collection,
       fragment: queryFragment,
       extraQueries,
       fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
@@ -207,7 +220,7 @@ class FormWrapper extends PureComponent {
 
     // options for withNew, withUpdate, and withDelete HoCs
     const mutationOptions = {
-      collection: this.props.collection,
+      collection: props.collection,
       fragment: mutationFragment
     };
 
@@ -229,7 +242,7 @@ class FormWrapper extends PureComponent {
     Loader.displayName = 'withLoader(Form)';
 
     // if this is an edit from, load the necessary data using the withSingle HoC
-    if (this.getFormType() === 'edit') {
+    if (formType === 'edit') {
       WrappedComponent = compose(
         withSingle(queryOptions),
         withUpdate(mutationOptions),
@@ -239,8 +252,8 @@ class FormWrapper extends PureComponent {
       return (
         <WrappedComponent
           selector={{
-            documentId: this.props.documentId,
-            slug: this.props.slug
+            documentId: props.documentId,
+            slug: props.slug
           }}
         />
       );
