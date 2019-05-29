@@ -53,8 +53,6 @@ import { callbackProps } from './propTypes';
 
 const intlSuffix = '_intl';
 
-const RESET_PROPS = ["documentId"]
-
 class FormWrapper extends PureComponent {
   constructor(props) {
     super(props);
@@ -65,7 +63,8 @@ class FormWrapper extends PureComponent {
     this.FormComponent = this.getComponent(this.props);
   }
   UNSAFE_componentWillReceiveProps(nextProps){
-    const shouldReset = !!RESET_PROPS.find(resetProp => nextProps[resetProp] !== this.props[resetProp])
+    // reset if a documentId has been added or removed
+    const shouldReset = nextProps.documentId && !this.props.documentId || !nextProps.documentId && this.props.documentId
     // reinit the component on certain props change
     if (shouldReset){
       this.FormComponent = this.getComponent(nextProps);
