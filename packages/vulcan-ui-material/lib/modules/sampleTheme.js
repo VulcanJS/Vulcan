@@ -79,7 +79,7 @@ const theme = {
     
     errorMessage: {
       textAlign: 'center',
-      backgroundColor: red[500],
+      backgroundColor: error[500],
       color: 'white',
       borderRadius: '4px',
       fontWeight: 'bold',
