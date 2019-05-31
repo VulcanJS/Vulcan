@@ -23,7 +23,8 @@ export const getGraphQLType = ({
 
   const fieldType = field.type.singleType;
   const fieldTypeName =
-    typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : type;
+    typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
+  console.log(schema, field, fieldType, fieldType._schema);
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
