@@ -1,6 +1,7 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { STATES } from '../../helpers.js';
 
@@ -33,9 +34,9 @@ AccountsEnrollAccount.contextTypes = {
 
 AccountsEnrollAccount.propsTypes = {
   currentUser: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 AccountsEnrollAccount.displayName = 'AccountsEnrollAccount';
 
-registerComponent('AccountsEnrollAccount', AccountsEnrollAccount, withCurrentUser);
+registerComponent('AccountsEnrollAccount', AccountsEnrollAccount, withCurrentUser, withRouter);
