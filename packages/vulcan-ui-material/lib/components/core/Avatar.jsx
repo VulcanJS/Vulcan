@@ -120,7 +120,6 @@ const Avatar = ({
   if (avatarUrl && avatarUrl.indexOf('gravatar.com') > -1) avatarUrl = null;
   const statusIconClass = `statusIcon${size === 'profile' ? 'Profile' : ''}`;
   const userStatus = Users.avatar.getUserStatus(user);
-  console.log(userStatus);
   
   const statusIcon = userStatus &&
     <Tooltip title={intl.formatMessage({ id: `users.${userStatus}` })} placement="bottom">

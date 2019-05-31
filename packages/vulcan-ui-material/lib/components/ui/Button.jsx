@@ -10,43 +10,59 @@ import withTheme from '@material-ui/core/styles/withTheme';
 const styles = theme => ({
   
   success: {
-    backgroundColor: theme.palette.success.main,
-    color: theme.palette.success.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.success.main,
+      color: theme.palette.success.contrastText,
+    }
   },
   
   outline_success: {
-    borderColor: theme.palette.success.main,
-    color: theme.palette.success.main,
+    '&:hover': {
+      borderColor: theme.palette.success.main,
+      color: theme.palette.success.main,
+    }
   },
   
   warning: {
-    backgroundColor: theme.palette.warning.main,
-    color: theme.palette.warning.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.warning.main,
+      color: theme.palette.warning.contrastText,
+    }
   },
   
   outline_warning: {
-    borderColor: theme.palette.warning.main,
-    color: theme.palette.warning.main,
+    '&:hover': {
+      borderColor: theme.palette.warning.main,
+      color: theme.palette.warning.main,
+    }
   },
   
   danger: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.error.main,
+      color: theme.palette.error.contrastText,
+    }
   },
   
   outline_danger: {
-    borderColor: theme.palette.error.main,
-    color: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.main,
+      color: theme.palette.error.main,
+    }
   },
   
   info: {
-    backgroundColor: theme.palette.info.main,
-    color: theme.palette.info.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.info.main,
+      color: theme.palette.info.contrastText,
+    }
   },
   
   outline_info: {
-    borderColor: theme.palette.info.main,
-    color: theme.palette.info.main,
+    '&:hover': {
+      borderColor: theme.palette.info.main,
+      color: theme.palette.info.main,
+    }
   },
   
   light: {},
@@ -72,7 +88,7 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
   variant = varParts && varParts.length > 1 ? varParts[1] : varParts && varParts.length > 0 ? varParts[0] : null;
   let color;
   
-  switch(variant) {
+  switch (variant) {
     case 'primary':
       color = 'primary';
       break;
@@ -93,7 +109,7 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
   
   variant = outline === 'outline' ? 'outlined' : variant && variant !== 'link' ? 'contained' : 'text';
   
-  switch(size) {
+  switch (size) {
     case 'sm':
       size = 'small';
       break;

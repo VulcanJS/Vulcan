@@ -11,6 +11,7 @@ import './bonus/SearchInput';
 import './bonus/TooltipIntl';
 import './bonus/TooltipIconButton';
 
+import './core/Avatar';
 import './core/Card';
 import './core/Datatable';
 import './core/EditButton';
