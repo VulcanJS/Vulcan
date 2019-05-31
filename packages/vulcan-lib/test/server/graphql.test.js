@@ -8,20 +8,20 @@ import { getGraphQLType } from '../../lib/modules/graphql/schemaFields';
 import SimpleSchema from 'simpl-schema';
 test = it;
 
-describe('vulcan:lib/graphql', function() {
+describe('vulcan:lib/graphql', function () {
   // TODO: handle the graphQL init better to fix those tests
-  it.skip('throws if graphql schema is not initialized', function() {
+  it.skip('throws if graphql schema is not initialized', function () {
     expect(() => GraphQLSchema.getSchema()).toThrow();
   });
-  it.skip('throws if executable schema is not initialized', function() {
+  it.skip('throws if executable schema is not initialized', function () {
     expect(() => GraphQLSchema.getExecutableSchema()).toThrow();
   });
-  it('can access the graphql schema', function() {
+  it('can access the graphql schema', function () {
     GraphQLSchema.init();
     initGraphQL();
     expect(GraphQLSchema.getSchema()).toBeDefined();
   });
-  it('can access the executable graphql schema', function() {
+  it('can access the executable graphql schema', function () {
     GraphQLSchema.init();
     initGraphQL();
     expect(GraphQLSchema.getExecutableSchema()).toBeDefined();
@@ -29,35 +29,49 @@ describe('vulcan:lib/graphql', function() {
 
 
 
-    describe('schemaFields', () => {
-        test('return nested type for nested objects', () => {
-            const schema = new SimpleSchema({
-                nested: {
-                    type: new SimpleSchema({
-                        firstNestedField: {
-                            type: String,
-                        },
-                        secondNestedField: {
-                            type: Number
-                        }
-                    })
-                }
-                });
-            const res = getGraphQLType(schema, 'nested');
-            console.log('nested', res);
-            expect(false).toBe(true);
-        });
-        test('return JSON for nested objects that are actual JSON objects', () => {
-            const schema = new SimpleSchema({
-                    nested: {
-                        type: Object,
-                    }
-                    });
-            const res = getGraphQLType(schema, 'nested');
-            console.log('JSON', res);
-            expect(false).toBe(true);
-
-        });
-
+  describe('schemaFields', () => {
+    test('return nested type for nested objects', () => {
+      const schema = new SimpleSchema({
+        nestedField: {
+          type: new SimpleSchema({
+            firstNestedField: {
+              type: String,
+            },
+            secondNestedField: {
+              type: Number
+            }
+          })
+        }
+      })._schema;
+      const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
+      expect(type).toBe('FooNestedField');
     });
+    test('return JSON for nested objects with blackbox option', () => {
+      const schema = new SimpleSchema({
+        nestedField: {
+          blackbox: true,
+          type: new SimpleSchema({
+            firstNestedField: {
+              type: String,
+            },
+            secondNestedField: {
+              type: Number
+            }
+          })
+        }
+      })._schema;
+      const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
+      expect(type).toBe('FooNestedField');
+    });
+    test('return JSON for nested objects that are actual JSON objects', () => {
+      const schema = new SimpleSchema({
+        nestedField: {
+          type: Object,
+        }
+      })
+        ._schema;
+      const type = getGraphQLType({schema, fieldName:'nestedField', typeName:'Foo'});
+      expect(type).toBe('JSON');
+    });
+  });
 });

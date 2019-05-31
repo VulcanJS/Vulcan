@@ -3,18 +3,33 @@
  */
 import { isIntlField } from '../intl.js';
 
+const capitalize = (word) => {
+  if(!word) return word;
+  const [first, ...rest] = word;
+  return [first.toUpperCase(), ...rest].join('');
+};
+// remove ".$" at the end of array child fieldName
+const unarrayfy = (fieldName) => {
+  return fieldName ? fieldName.split('.')[0] : fieldName;
+};
 // get GraphQL type for a given schema and field name
-export const getGraphQLType = (schema, fieldName, isInput = false) => {
+export const getGraphQLType = ({
+  schema, 
+  fieldName, 
+  typeName,
+  isInput = false
+}) => {
   const field = schema[fieldName];
-  const type = field.type.singleType;
-  const typeName =
-    typeof type === 'object' ? 'Object' : typeof type === 'function' ? type.name : type;
+
+  const fieldType = field.type.singleType;
+  const fieldTypeName =
+    typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : type;
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
   }
 
-  switch (typeName) {
+  switch (fieldTypeName) {
     case 'String':
       return 'String';
 
@@ -33,16 +48,22 @@ export const getGraphQLType = (schema, fieldName, isInput = false) => {
       // note: make sure field has an associated array
       if (schema[arrayItemFieldName]) {
         // try to get array type from associated array
-        const arrayItemType = getGraphQLType(schema, arrayItemFieldName);
+        const arrayItemType = getGraphQLType({
+          schema, 
+          fieldName: arrayItemFieldName,
+          typeName
+        });
         return arrayItemType ? `[${arrayItemType}]` : null;
       }
       return null;
 
     case 'Object':
       // 2 cases: it's an actual JSON or a nested schema
-      console.log('field type', field.type);
+      if (!field.blackbox && fieldType._schema){
+        return `${typeName}${capitalize(unarrayfy(fieldName))}`;
+      } 
+      // blackbox JSON object
       return 'JSON';
-
     case 'Date':
       return 'Date';
 
@@ -66,8 +87,8 @@ export const getSchemaFields = (schema, typeName) => {
 
   Object.keys(schema).forEach(fieldName => {
     const field = schema[fieldName];
-    const fieldType = getGraphQLType(schema, fieldName);
-    const inputFieldType = getGraphQLType(schema, fieldName, true);
+    const fieldType = getGraphQLType({schema, fieldName, typeName});
+    const inputFieldType = getGraphQLType({schema, fieldName, typeName, isInput:true});
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
