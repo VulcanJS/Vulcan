@@ -14,11 +14,10 @@ const styles = theme => ({
   
   layoutRoot: {
     minWidth: '320px',
-    paddingBottom: theme.spacing.unit * 3,
   },
   
   headerRoot: {
-    marginBottom: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
   },
   
   divider: {

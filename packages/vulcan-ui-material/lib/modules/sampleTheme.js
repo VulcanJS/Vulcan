@@ -33,6 +33,7 @@ const theme = {
       textAlign: 'center',
       backgroundColor: error[500],
       color: '#fff',
+      lineHeight: 1.2,
       borderRadius: 4,
       padding: '6px 16px',
       '&.success': {

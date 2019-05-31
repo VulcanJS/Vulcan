@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from 'mdi-material-ui/Menu';
 import ChevronLeftIcon from 'mdi-material-ui/ChevronLeft';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { getSetting, Components, registerComponent } from 'meteor/vulcan:core';
+import { getSetting, registerComponent } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
 

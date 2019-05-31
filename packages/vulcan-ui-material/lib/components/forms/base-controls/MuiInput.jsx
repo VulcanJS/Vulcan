@@ -71,6 +71,12 @@ const MuiInput = createReactClass({
     };
   },
   
+  UNSAFE_componentWillReceiveProps: function (nextProps) {
+    if (nextProps.value !== this.state.value) {
+      this.setState({ value: nextProps.value });
+    }
+  },
+  
   handleChange: function (event) {
     let value = event.target.value;
     if (this.props.scrubValue) {
