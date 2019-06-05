@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import classNames from 'classnames';
 
 
@@ -53,14 +53,13 @@ const TooltipIconButton = (props, { intl }) => {
             
             ?
             
-            <Button className={classNames(classes.button, slug)}
-                    variant="fab"
+            <Fab className={classNames(classes.button, slug)}
                     aria-label={title}
                     ref={buttonRef}
                     {...properties}
             >
               {icon}
-            </Button>
+            </Fab>
             
             :
             
