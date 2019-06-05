@@ -57,7 +57,7 @@ class FormWrapper extends PureComponent {
   constructor(props) {
     super(props);
   }
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     // instantiate the wrapped component outside of render
     // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
     this.FormComponent = this.getComponent(this.props);
