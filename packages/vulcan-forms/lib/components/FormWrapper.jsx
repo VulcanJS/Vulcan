@@ -57,14 +57,14 @@ class FormWrapper extends PureComponent {
   constructor(props) {
     super(props);
   }
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     // instantiate the wrapped component outside of render
     // see https://reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method
     this.FormComponent = this.getComponent(this.props);
   }
   UNSAFE_componentWillReceiveProps(nextProps){
     // reset if a documentId has been added or removed
-    const shouldReset = nextProps.documentId && !this.props.documentId || !nextProps.documentId && this.props.documentId
+    const shouldReset = nextProps.documentId && !this.props.documentId || !nextProps.documentId && this.props.documentId;
     // reinit the component on certain props change
     if (shouldReset){
       this.FormComponent = this.getComponent(nextProps);
@@ -85,7 +85,7 @@ class FormWrapper extends PureComponent {
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
   getFragments(props) {
-    const formType = this.getFormType(props)
+    const formType = this.getFormType(props);
     const prefix = `${props.collectionName}${Utils.capitalize(
       formType
     )}`;
@@ -187,7 +187,7 @@ class FormWrapper extends PureComponent {
   }
 
   getComponent(props) {
-    const formType = this.getFormType(props)
+    const formType = this.getFormType(props);
     let WrappedComponent;
 
     const prefix = `${props.collectionName}${Utils.capitalize(
