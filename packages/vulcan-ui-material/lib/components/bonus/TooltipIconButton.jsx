@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import classNames from 'classnames';
 
 
@@ -23,7 +23,7 @@ const styles = theme => ({
 
 
 const TooltipIconButton = (props, { intl }) => {
-  
+
   const {
     title,
     titleId,
@@ -36,38 +36,37 @@ const TooltipIconButton = (props, { intl }) => {
     variant,
     ...properties
   } = props;
-  
+
   const titleText = props.title || intl.formatMessage({ id: titleId });
   const slug = Utils.slugify(titleId);
-  
+
   return (
     <Tooltip classes={{ tooltip: classNames('tooltip-icon-button', classes.tooltip, className) }}
-             id={`tooltip-${slug}`}
-             title={titleText}
-             placement={placement}
-             enterDelay={theme.utils.tooltipEnterDelay}
+      id={`tooltip-${slug}`}
+      title={titleText}
+      placement={placement}
+      enterDelay={theme.utils.tooltipEnterDelay}
     >
       <div className={classes.buttonWrap}>
         {
           variant === 'fab'
-            
             ?
-            
-            <Button className={classNames(classes.button, slug)}
-                    variant="fab"
-                    aria-label={title}
-                    ref={buttonRef}
-                    {...properties}
+
+            <Fab className={classNames(classes.button, slug)}
+              variant="fab"
+              aria-label={title}
+              ref={buttonRef}
+              {...properties}
             >
               {icon}
-            </Button>
-            
+            </Fab>
+
             :
-            
+
             <IconButton className={classNames(classes.button, slug)}
-                        aria-label={title}
-                        ref={buttonRef}
-                        {...properties}
+              aria-label={title}
+              ref={buttonRef}
+              {...properties}
             >
               {icon}
             </IconButton>
@@ -75,7 +74,7 @@ const TooltipIconButton = (props, { intl }) => {
       </div>
     </Tooltip>
   );
-  
+
 };
 
 
