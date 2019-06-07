@@ -82,6 +82,40 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
       });
+
+      test('return nested  array type for arrays of nested objects', () => {
+        const schema = new SimpleSchema({
+          arrayField: {
+            type: Array,
+            canRead:['admins']
+          },
+          'arrayField.$': {
+            type: new SimpleSchema({
+              firstNestedField: {
+                type: String,
+              },
+              secondNestedField: {
+                type: Number
+              }
+            })
+          }
+        })._schema;
+        const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' });
+        expect(type).toBe('[FooArrayField]');
+      });
+      test('return basic array type for array of primitives', () => {
+        const schema = new SimpleSchema({
+          arrayField: {
+            type: Array,
+            canRead:['admins']
+          },
+          'arrayField.$':{
+            type: String
+          }
+        })._schema;
+        const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' });
+        expect(type).toBe('[String]');
+      });
     });
 
     describe('getSchemaFields', () => {
@@ -190,6 +224,28 @@ describe('vulcan:lib/graphql', function () {
       const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
       expect(normalizedSchema).toMatch('type Foo { nestedField: FooNestedField }');
       expect(normalizedSchema).toMatch('type FooNestedField { subField: String }');
+    });
+    test('generate graphQL type for array of nested objects', () => {
+      const collection = makeDummyCollection({
+        arrayField: {
+          type: Array,
+          canRead:['admins']
+        
+        },
+        'arrayField.$': {
+          type: new SimpleSchema({
+            subField: {
+              type: String,
+              canRead: ['admins']
+            }
+          }),
+          canRead: ['admins']
+        }
+      });
+      const res = collectionToGraphQL(collection);
+      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+      expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
+      expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
     });
 
 
