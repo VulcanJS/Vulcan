@@ -76,9 +76,17 @@ export const getGraphQLType = ({
   }
 };
 
-const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
 const isNestedObjectField = (field) => !!getNestedSchema(field);
 const getNestedSchema = field => field.type.singleType._schema;
+
+const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
+const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
+const hasArrayChild = (fieldName, schema) =>!!getArrayChild(fieldName, schema);
+
+const getArrayChildSchema = (fieldName, schema) => {
+  return getNestedSchema(getArrayChild(fieldName, schema));
+};
+const hasArrayNestedChild = (fieldName, schema) => hasArrayChild(fieldName, schema) && !!getArrayChildSchema(fieldName, schema);
 
 const hasPermissions = field => (
   field.canRead || field.canCreate || field.canUpdate
@@ -266,6 +274,15 @@ export const getSchemaFields = (schema, typeName) => {
 
         }
       }
+      // TODO: check for arrays of objects
+      // if (isArrayChildField) {...}
+
+      const permissionsFields = getPermissionFields({ field, fieldName, inputFieldType });
+      fields.create.concat(permissionsFields.create);
+      fields.update.concat(permissionsFields.update);
+      fields.selector.concat(permissionsFields.selector);
+      fields.selectorUnique.concat(permissionsFields.selectorUnique);
+      fields.orderBy.concat(permissionsFields.orderBy);
       // check for nested fields
       if (isNestedObjectField(field)) {
         //console.log('detected a nested field', fieldName);
@@ -276,16 +293,18 @@ export const getSchemaFields = (schema, typeName) => {
         nestedFields.typeName = nestedTypeName;
         nestedFieldsList.push(nestedFields);
       }
+      // check if field is an array of objects
+      console.log('fieldName', fieldName);
+      if (hasArrayNestedChild(fieldName, schema)){
+        console.log('detected a field with an array child', fieldName);
+        const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
+        const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
+        const arrayNestedFields = getSchemaFields(arrayNestedSchema, arrayNestedTypeName);
+        // add the generated typeName to the info
+        arrayNestedFields.typeName = arrayNestedTypeName;
+        nestedFieldsList.push(arrayNestedFields);
+      }
 
-          // TODO: check for arrays of objects
-          // if (isArrayChildField) {...}
-
-      const permissionsFields = getPermissionFields({field, fieldName, inputFieldType});
-      fields.create.concat(permissionsFields.create);
-      fields.update.concat(permissionsFields.update);
-      fields.selector.concat(permissionsFields.selector);
-      fields.selectorUnique.concat(permissionsFields.selectorUnique);
-      fields.orderBy.concat(permissionsFields.orderBy);
     }
   });
   return {
