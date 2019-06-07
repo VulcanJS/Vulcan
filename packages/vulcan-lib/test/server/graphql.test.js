@@ -4,9 +4,14 @@ import { GraphQLSchema } from '../../lib/modules/graphql';
 import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
-import { getGraphQLType } from '../../lib/modules/graphql/schemaFields';
+import { getSchemaFields, getGraphQLType } from '../../lib/modules/graphql/schemaFields';
+import collectionToGraphQL from '../../lib/modules/graphql/collectionToGraphQL';
 import SimpleSchema from 'simpl-schema';
-test = it;
+const test = it;
+
+// allow to easily test regex on a graphql string
+// all blanks and series of blanks are replaces by one single space
+const normalizeGraphQLSchema = gqlSchema => gqlSchema.replace(/\s+/g, ' ');
 
 describe('vulcan:lib/graphql', function () {
   // TODO: handle the graphQL init better to fix those tests
@@ -28,53 +33,165 @@ describe('vulcan:lib/graphql', function () {
   });
 
 
-
   describe('schemaFields', () => {
-    test('return nested type for nested objects', () => {
-      const schema = new SimpleSchema({
+    describe('getGraphQLType', () => {
+
+      test('return nested type for nested objects', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: new SimpleSchema({
+              firstNestedField: {
+                type: String,
+              },
+              secondNestedField: {
+                type: Number
+              }
+            })
+          }
+        })._schema;
+        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
+        expect(type).toBe('FooNestedField');
+      });
+      /*test('return JSON for nested objects with blackbox option', () => {
+        // TODO: this test might actually be incorrect,
+        // the schema needs to be initialized by the collection
+        const schema = new SimpleSchema({
+          nestedField: {
+            optional: true,
+            blackbox: true,
+            type: new SimpleSchema({
+              firstNestedField: {
+                type: String,
+              },
+              secondNestedField: {
+                type: Number
+              }
+            })
+          }
+        })._schema;
+        const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
+        expect(type).toBe('JSON');
+      });*/
+      test('return JSON for nested objects that are actual JSON objects', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: Object,
+          }
+        })
+          ._schema;
+        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
+        expect(type).toBe('JSON');
+      });
+    });
+
+    describe('getSchemaFields', () => {
+
+      test('fields without permissions are ignored', () => {
+        const schema = new SimpleSchema({
+          field: {
+            type: String,
+            canRead: ['admins']
+          },
+          ignoredField: {
+            type: String,
+          }
+        })._schema;
+        const fields = getSchemaFields(schema, 'Foo');
+        const mainType = fields.fields.mainType;
+        expect(mainType).toHaveLength(1);
+        expect(mainType[0].name).toEqual('field');
+      });
+      test('nested fields without permissions are ignored', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: new SimpleSchema({
+              firstNestedField: {
+                type: String,
+                canRead: ['admins']
+              },
+              ignoredNestedField: {
+                type: Number,
+              }
+            }),
+            canRead: ['admins']
+          }
+        })._schema;
+        const fields = getSchemaFields(schema, 'Foo');
+        const nestedFields = fields.nestedFieldsList[0];
+        // one field in the nested object
+        expect(nestedFields.fields.mainType).toHaveLength(1);
+        expect(nestedFields.fields.mainType[0].name).toEqual('firstNestedField');
+      });
+      test('generate fields for nested objects', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: new SimpleSchema({
+              firstNestedField: {
+                type: String,
+                canRead: ['admins']
+              },
+              secondNestedField: {
+                type: Number,
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        })._schema;
+
+        const fields = getSchemaFields(schema, 'Foo');
+        // one nested object
+        expect(fields.nestedFieldsList).toHaveLength(1);
+        const nestedFields = fields.nestedFieldsList[0];
+        expect(nestedFields.typeName).toEqual('FooNestedField');
+        // one field in the nested object
+        expect(nestedFields.fields.mainType).toHaveLength(2);
+        expect(nestedFields.fields.mainType[0].name).toEqual('firstNestedField');
+        expect(nestedFields.fields.mainType[1].name).toEqual('secondNestedField');
+      });
+
+    });
+  });
+  describe('collectionToGraphQL', () => {
+    const makeDummyCollection = (schema) => ({
+      options: {
+        collectionName: 'Foos'
+      },
+      typeName: 'Foo',
+      simpleSchema: () => new SimpleSchema(schema)
+    });
+    test('generate a type for a simple collection', () => {
+      const collection = makeDummyCollection({
+        field: {
+          type: String,
+          canRead: ['admins']
+        }
+      });
+      const res = collectionToGraphQL(collection);
+      expect(res.graphQLSchema).toBeDefined();
+      // debug
+      //console.log(res.graphQLSchema);
+      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+      expect(normalizedSchema).toMatch('type Foo { field: String }');
+    });
+    test('generate type for a nested field', () => {
+      const collection = makeDummyCollection({
         nestedField: {
           type: new SimpleSchema({
-            firstNestedField: {
+            subField: {
               type: String,
-            },
-            secondNestedField: {
-              type: Number
+              canRead: ['admins']
             }
-          })
+          }),
+          canRead: ['admins']
         }
-      })._schema;
-      const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
-      expect(type).toBe('FooNestedField');
+      });
+      const res = collectionToGraphQL(collection);
+      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+      expect(normalizedSchema).toMatch('type Foo { nestedField: FooNestedField }');
+      expect(normalizedSchema).toMatch('type FooNestedField { subField: String }');
     });
-    /*test('return JSON for nested objects with blackbox option', () => {
-      // TODO: this test might actually be incorrect,
-      // the schema needs to be initialized by the collection
-      const schema = new SimpleSchema({
-        nestedField: {
-          optional: true,
-          blackbox: true,
-          type: new SimpleSchema({
-            firstNestedField: {
-              type: String,
-            },
-            secondNestedField: {
-              type: Number
-            }
-          })
-        }
-      })._schema;
-      const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
-      expect(type).toBe('JSON');
-    });*/
-    test('return JSON for nested objects that are actual JSON objects', () => {
-      const schema = new SimpleSchema({
-        nestedField: {
-          type: Object,
-        }
-      })
-        ._schema;
-      const type = getGraphQLType({schema, fieldName:'nestedField', typeName:'Foo'});
-      expect(type).toBe('JSON');
-    });
+
+
   });
 });

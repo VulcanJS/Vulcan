@@ -12,6 +12,10 @@ const capitalize = (word) => {
 const unarrayfy = (fieldName) => {
   return fieldName ? fieldName.split('.')[0] : fieldName;
 };
+
+// get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
+export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}`;
+
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({
   schema, 
@@ -24,7 +28,6 @@ export const getGraphQLType = ({
   const fieldType = field.type.singleType;
   const fieldTypeName =
     typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
-  console.log(schema, field, fieldType, fieldType._schema);
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
@@ -61,7 +64,7 @@ export const getGraphQLType = ({
     case 'Object':
       // 2 cases: it's an actual JSON or a nested schema
       if (!field.blackbox && fieldType._schema){
-        return `${typeName}${capitalize(unarrayfy(fieldName))}`;
+        return getNestedGraphQLType(typeName, fieldName);
       } 
       // blackbox JSON object
       return 'JSON';
@@ -71,6 +74,146 @@ export const getGraphQLType = ({
     default:
       return null;
   }
+};
+
+const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
+const isNestedObjectField = (field) => !!getNestedSchema(field);
+const getNestedSchema = field => field.type.singleType._schema;
+
+const hasPermissions = field => (
+  field.canRead || field.canCreate || field.canUpdate
+);
+const hasLegacyPermissions = field => {
+  const hasLegacyPermissions = field.viewableBy || field.insertableBy || field.editableBy;
+  if (hasLegacyPermissions) console.warn('Some field is using legacy permission fields viewableBy, insertableBy and editableBy. Please replace those fields with canRead, canCreate and canUpdate.');
+  return hasLegacyPermissions;
+};
+
+// Generate GraphQL fields and resolvers for a field with a specific resolveAs
+// resolveAs allow to generate "virtual" fields that are queryable in GraphQL but does not exist in the database
+export const getResolveAsFields = ({ 
+  typeName, 
+  field, 
+  fieldName, 
+  fieldType,
+  fieldDescription,
+  fieldDirective,
+  fieldArguments,
+}) => {
+  const fields = {
+    mainType: [],
+  };
+  const resolvers = [];
+
+  // get resolver name from resolveAs object, or else default to field name
+  const resolverName = field.resolveAs.fieldName || fieldName;
+
+  // use specified GraphQL type or else convert schema type
+  const fieldGraphQLType = field.resolveAs.type || fieldType;
+
+  // if resolveAs is an object, first push its type definition
+  // include arguments if there are any
+  // note: resolved fields are not internationalized
+  fields.mainType.push({
+    description: field.resolveAs.description,
+    name: resolverName,
+    args: field.resolveAs.arguments,
+    type: fieldGraphQLType,
+  });
+
+  // then build actual resolver object and pass it to addGraphQLResolvers
+  const resolver = {
+    [typeName]: {
+      [resolverName]: (document, args, context, info) => {
+        const { Users, currentUser } = context;
+        // check that current user has permission to access the original non-resolved field
+        const canReadField = Users.canReadField(currentUser, field, document);
+        return canReadField
+          ? field.resolveAs.resolver(document, args, context, info)
+          : null;
+      },
+    },
+  };
+  resolvers.push(resolver);
+
+  // if addOriginalField option is enabled, also add original field to schema
+  if (fieldType && field.resolveAs.addOriginalField) {
+    fields.mainType.push({
+      description: fieldDescription,
+      name: fieldName,
+      args: fieldArguments,
+      type: fieldType,
+      directive: fieldDirective,
+    });
+  }
+  return fields;
+};
+
+// handle querying/updating permissions
+export const getPermissionFields = ({
+  field,
+  fieldName,
+  inputFieldType,
+}) => {
+  const fields = {
+    create: [],
+    update: [],
+    selector: [],
+    selectorUnique: [],
+    orderBy: [],
+  };
+  // OpenCRUD backwards compatibility
+  if (field.canCreate || field.insertableBy) {
+    fields.create.push({
+      name: fieldName,
+      type: inputFieldType,
+      required: !field.optional,
+    });
+  }
+  // OpenCRUD backwards compatibility
+  if (field.canUpdate || field.editableBy) {
+    fields.update.push({
+      name: fieldName,
+      type: inputFieldType,
+    });
+  }
+
+  // if field is i18nized, add foo_intl field containing all languages
+  // NOTE: not necessary anymore because intl fields are added by addIntlFields() in collections.js
+  // TODO: delete if not needed
+  // if (isIntlField(field)) {
+  //   // fields.mainType.push({
+  //   //   name: `${fieldName}_intl`,
+  //   //   type: '[IntlValue]',
+  //   // });
+  //   fields.create.push({
+  //     name: `${fieldName}_intl`,
+  //     type: '[IntlValueInput]',
+  //   });
+  //   fields.update.push({
+  //     name: `${fieldName}_intl`,
+  //     type: '[IntlValueInput]',
+  //   });
+  // }
+
+  if (field.selectable) {
+    fields.selector.push({
+      name: fieldName,
+      type: inputFieldType,
+    });
+  }
+
+  if (field.selectable && field.unique) {
+    fields.selectorUnique.push({
+      name: fieldName,
+      type: inputFieldType,
+    });
+  }
+
+  if (field.orderable) {
+    fields.orderBy.push(fieldName);
+  }
+  return fields;
 };
 
 // for a given schema, return main type fields, selector fields,
@@ -84,6 +227,7 @@ export const getSchemaFields = (schema, typeName) => {
     selectorUnique: [],
     orderBy: [],
   };
+  const nestedFieldsList = [];
   const resolvers = [];
 
   Object.keys(schema).forEach(fieldName => {
@@ -95,13 +239,7 @@ export const getSchemaFields = (schema, typeName) => {
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
     // OpenCRUD backwards compatibility
     if (
-      (field.canRead ||
-        field.canCreate ||
-        field.canUpdate ||
-        field.viewableBy ||
-        field.insertableBy ||
-        field.editableBy) &&
-      fieldName.indexOf('$') === -1
+      (hasPermissions(field) || hasLegacyPermissions(field)) && ! isArrayChildField(fieldName)
     ) {
       const fieldDescription = field.description;
       const fieldDirective = isIntlField(field) ? '@intl' : '';
@@ -109,47 +247,11 @@ export const getSchemaFields = (schema, typeName) => {
 
       // if field has a resolveAs, push it to schema
       if (field.resolveAs) {
-        // get resolver name from resolveAs object, or else default to field name
-        const resolverName = field.resolveAs.fieldName || fieldName;
-
-        // use specified GraphQL type or else convert schema type
-        const fieldGraphQLType = field.resolveAs.type || fieldType;
-
-        // if resolveAs is an object, first push its type definition
-        // include arguments if there are any
-        // note: resolved fields are not internationalized
-        fields.mainType.push({
-          description: field.resolveAs.description,
-          name: resolverName,
-          args: field.resolveAs.arguments,
-          type: fieldGraphQLType,
+        const resolveAsFields = getResolveAsFields({
+          typeName, field, fieldName, fieldType, fieldDescription, fieldDirective, fieldArguments
         });
-
-        // then build actual resolver object and pass it to addGraphQLResolvers
-        const resolver = {
-          [typeName]: {
-            [resolverName]: (document, args, context, info) => {
-              const { Users, currentUser } = context;
-              // check that current user has permission to access the original non-resolved field
-              const canReadField = Users.canReadField(currentUser, field, document);
-              return canReadField
-                ? field.resolveAs.resolver(document, args, context, info)
-                : null;
-            },
-          },
-        };
-        resolvers.push(resolver);
-
-        // if addOriginalField option is enabled, also add original field to schema
-        if (field.resolveAs.addOriginalField && fieldType) {
-          fields.mainType.push({
-            description: fieldDescription,
-            name: fieldName,
-            args: fieldArguments,
-            type: fieldType,
-            directive: fieldDirective,
-          });
-        }
+        resolvers.concat(resolveAsFields.resolvers);
+        fields.mainType.concat(resolveAsFields.mainType);
       } else {
         // try to guess GraphQL type
         if (fieldType) {
@@ -160,64 +262,35 @@ export const getSchemaFields = (schema, typeName) => {
             type: fieldType,
             directive: fieldDirective,
           });
+
+
         }
       }
-
-      // OpenCRUD backwards compatibility
-      if (field.canCreate || field.insertableBy) {
-        fields.create.push({
-          name: fieldName,
-          type: inputFieldType,
-          required: !field.optional,
-        });
-      }
-      // OpenCRUD backwards compatibility
-      if (field.canUpdate || field.editableBy) {
-        fields.update.push({
-          name: fieldName,
-          type: inputFieldType,
-        });
+      // check for nested fields
+      if (isNestedObjectField(field)) {
+        //console.log('detected a nested field', fieldName);
+        const nestedSchema = getNestedSchema(field);
+        const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
+        const nestedFields = getSchemaFields(nestedSchema, nestedTypeName);
+        // add the generated typeName to the info
+        nestedFields.typeName = nestedTypeName;
+        nestedFieldsList.push(nestedFields);
       }
 
-      // if field is i18nized, add foo_intl field containing all languages
-      // NOTE: not necessary anymore because intl fields are added by addIntlFields() in collections.js
-      // TODO: delete if not needed
-      // if (isIntlField(field)) {
-      //   // fields.mainType.push({
-      //   //   name: `${fieldName}_intl`,
-      //   //   type: '[IntlValue]',
-      //   // });
-      //   fields.create.push({
-      //     name: `${fieldName}_intl`,
-      //     type: '[IntlValueInput]',
-      //   });
-      //   fields.update.push({
-      //     name: `${fieldName}_intl`,
-      //     type: '[IntlValueInput]',
-      //   });
-      // }
+          // TODO: check for arrays of objects
+          // if (isArrayChildField) {...}
 
-      if (field.selectable) {
-        fields.selector.push({
-          name: fieldName,
-          type: inputFieldType,
-        });
-      }
-
-      if (field.selectable && field.unique) {
-        fields.selectorUnique.push({
-          name: fieldName,
-          type: inputFieldType,
-        });
-      }
-
-      if (field.orderable) {
-        fields.orderBy.push(fieldName);
-      }
+      const permissionsFields = getPermissionFields({field, fieldName, inputFieldType});
+      fields.create.concat(permissionsFields.create);
+      fields.update.concat(permissionsFields.update);
+      fields.selector.concat(permissionsFields.selector);
+      fields.selectorUnique.concat(permissionsFields.selectorUnique);
+      fields.orderBy.concat(permissionsFields.orderBy);
     }
   });
   return {
     fields,
+    nestedFieldsList,
     resolvers
   };
 };

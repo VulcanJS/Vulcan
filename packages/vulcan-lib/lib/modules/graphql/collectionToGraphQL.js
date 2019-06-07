@@ -163,6 +163,7 @@ const createMutations = ({ mutations, typeName, collectionName, fields}) => {
     );
     return { mutationsResolversToAdd, mutationsToAdd };
 };
+
 const collectionToGraphQL = (collection) => {
     let graphQLSchema = '';
     const schemaFragments = [];
@@ -171,7 +172,8 @@ const collectionToGraphQL = (collection) => {
         collectionName, typeName, schema, description,
         interfaces = [], resolvers, mutations
     } = getCollectionInfos(collection);
-    const { fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
+
+    const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
 
     const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
 
@@ -179,6 +181,14 @@ const collectionToGraphQL = (collection) => {
         schemaFragments.push(
             mainTypeTemplate({ typeName, description, interfaces, fields: mainType })
         );
+        // the schema may produce a list of additional graphQL types for nested arrays/objects
+        if (nestedFieldsList) {
+            for (const { fields: nestedFields, typeName: nestedTypeName  } of nestedFieldsList) {
+                const { mainType: nestedMainType } = nestedFields;
+                schemaFragments.push(mainTypeTemplate({typeName: nestedTypeName, fields: nestedMainType}));
+                // TODO: should we handle create, delete, etc. too for nested fields?
+            }
+        }
         schemaFragments.push(deleteInputTemplate({ typeName }));
         schemaFragments.push(singleInputTemplate({ typeName }));
         schemaFragments.push(multiInputTemplate({ typeName }));
@@ -233,7 +243,7 @@ const collectionToGraphQL = (collection) => {
         );
     }
 
-    return { graphQLSchema };
+    return {graphQLSchema };
 };
 
 export default collectionToGraphQL;
