@@ -115,7 +115,7 @@ Utils.scrollPageTo = function(selector) {
 
 Utils.scrollIntoView = function (selector) {
   if (!document) return;
-  
+
   const element = document.querySelector(selector);
   if (element) {
     element.scrollIntoView();
@@ -196,7 +196,7 @@ Utils.getUnusedSlug = function (collection, slug) {
 // Utils.getUnusedSlug = async function (collection, slug) {
 //   let suffix = '';
 //   let index = 0;
-// 
+//
 //   const slugRegex = new RegExp('^' + slug + '-[0-9]+$');
 //   // get all the slugs matching slug or slug-123 in that collection
 //   const results = await collection.find( { slug: { $in: [slug, slugRegex] } }, { fields: { slug: 1, _id: 0 } });
@@ -291,7 +291,7 @@ _.mixin({
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
       /*
-        
+
         Remove a value if:
         1. it's not a boolean
         2. it's not a number
@@ -527,4 +527,13 @@ Utils.removeProperty = (obj, propertyName) => {
       Utils.removeProperty(obj[prop], propertyName);
     }
   }
+};
+
+/**
+ * Convert an array of field options into an allowedValues array
+ * @param {Array} schemaFieldOptionsArray
+ */
+Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
+  if (!Array.isArray(schemaFieldOptionsArray)) { throw new Error('Utils.getAllowedValues: Expected Array')}
+  return schemaFieldOptionsArray.map(schemaFieldOption => schemaFieldOption.value);
 };
