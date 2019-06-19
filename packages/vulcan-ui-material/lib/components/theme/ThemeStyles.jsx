@@ -142,10 +142,10 @@ const ThemeStyles = ({ theme, classes }) => {
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <Typography variant="h5" gutterBottom>
-            Headline: {describeTypography(theme, 'h5')}
+            h5: {describeTypography(theme, 'h5')}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            Title: {describeTypography(theme, 'h6')}
+            h6: {describeTypography(theme, 'h6')}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Subtitle1: {describeTypography(theme, 'subtitle1')}
