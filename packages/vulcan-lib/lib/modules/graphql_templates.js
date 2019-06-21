@@ -28,7 +28,7 @@ export const getArguments = args => {
 
 // version that does not make any fields required
 export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-`${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
+  `${description ? `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
@@ -45,11 +45,14 @@ type Movie{
 
 */
 export const mainTypeTemplate = ({ typeName, description = '', interfaces = '', fields }) =>
-`# ${description}
+  `# ${description}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }
 `;
+
+export const enumTypeTemplate = ({ typeName, allowedValues }) =>
+  `enum ${typeName} { ${allowedValues.join('\n')} }`;
 
 /* ------------------------------------- Selector Types ------------------------------------- */
 
@@ -76,7 +79,7 @@ see https://www.opencrud.org/#sec-Data-types
 
 */
 export const selectorInputTemplate = ({ typeName, fields }) =>
-`input ${typeName}SelectorInput {
+  `input ${typeName}SelectorInput {
   AND: [${typeName}SelectorInput]
   OR: [${typeName}SelectorInput]
 ${convertToGraphQL(fields, '  ')}
@@ -93,7 +96,7 @@ type MovieSelectorUniqueInput {
 
 */
 export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
-`input ${typeName}SelectorUniqueInput {
+  `input ${typeName}SelectorUniqueInput {
   _id: String
   documentId: String # OpenCRUD backwards compatibility
   slug: String
@@ -111,7 +114,7 @@ enum MovieOrderByInput {
 
 */
 export const orderByInputTemplate = ({ typeName, fields }) =>
-`enum ${typeName}OrderByInput {
+  `enum ${typeName}OrderByInput {
   foobar
   ${fields.join('\n  ')}
 }`;
@@ -154,7 +157,7 @@ type SingleMovieInput {
 
 */
 export const singleInputTemplate = ({ typeName }) =>
-`input Single${typeName}Input {
+  `input Single${typeName}Input {
   selector: ${typeName}SelectorUniqueInput
   # Whether to enable caching for this query
   enableCache: Boolean
@@ -175,7 +178,7 @@ type MultiMovieInput {
 
 */
 export const multiInputTemplate = ({ typeName }) =>
-`input Multi${typeName}Input {
+  `input Multi${typeName}Input {
   # A JSON object that contains the query terms used to fetch data
   terms: JSON,
   # How much to offset the results by
@@ -208,7 +211,7 @@ type SingleMovieOuput{
 
 */
 export const singleOutputTemplate = ({ typeName }) =>
-`type Single${typeName}Output{
+  `type Single${typeName}Output{
   result: ${typeName}
 }`;
 
@@ -223,7 +226,7 @@ type MultiMovieOuput{
 
 */
 export const multiOutputTemplate = ({ typeName }) =>
-`type Multi${typeName}Output{
+  `type Multi${typeName}Output{
   results: [${typeName}]
   totalCount: Int
 }`;
@@ -248,7 +251,7 @@ query singleMovieQuery($input: SingleMovieInput) {
 
 */
 export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query single${typeName}Query($input: Single${typeName}Input) {
+  `query single${typeName}Query($input: Single${typeName}Input) {
   ${Utils.camelCaseify(typeName)}(input: $input) {
     result {
       ...${fragmentName}
@@ -277,7 +280,7 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 
 */
 export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query multi${typeName}Query($input: Multi${typeName}Input) {
+  `query multi${typeName}Query($input: Multi${typeName}Input) {
   ${Utils.camelCaseify(Utils.pluralize(typeName))}(input: $input) {
     results {
       ...${fragmentName}
@@ -298,7 +301,7 @@ createMovie(input: CreateMovieInput) : MovieOutput
 
 */
 export const createMutationTemplate = ({ typeName }) =>
-`create${typeName}(data: Create${typeName}DataInput!) : ${typeName}Output`;
+  `create${typeName}(data: Create${typeName}DataInput!) : ${typeName}Output`;
 
 /*
 
@@ -308,7 +311,7 @@ updateMovie(input: UpdateMovieInput) : MovieOutput
 
 */
 export const updateMutationTemplate = ({ typeName }) =>
-`update${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+  `update${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -318,7 +321,7 @@ upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
 export const upsertMutationTemplate = ({ typeName }) =>
-`upsert${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+  `upsert${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -328,7 +331,7 @@ deleteMovie(input: DeleteMovieInput) : MovieOutput
 
 */
 export const deleteMutationTemplate = ({ typeName }) =>
-`delete${typeName}(selector: ${typeName}SelectorUniqueInput!) : ${typeName}Output`;
+  `delete${typeName}(selector: ${typeName}SelectorUniqueInput!) : ${typeName}Output`;
 
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 
@@ -344,7 +347,7 @@ type CreateMovieInput {
 
 */
 export const createInputTemplate = ({ typeName }) =>
-`input Create${typeName}Input{
+  `input Create${typeName}Input{
   data: Create${typeName}DataInput!
 }`;
 
@@ -359,7 +362,7 @@ type UpdateMovieInput {
 
 */
 export const updateInputTemplate = ({ typeName }) =>
-`input Update${typeName}Input{
+  `input Update${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -377,7 +380,7 @@ type UpsertMovieInput {
 
 */
 export const upsertInputTemplate = ({ typeName }) =>
-`input Upsert${typeName}Input{
+  `input Upsert${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -392,7 +395,7 @@ type DeleteMovieInput {
 
 */
 export const deleteInputTemplate = ({ typeName }) =>
-`input Delete${typeName}Input{
+  `input Delete${typeName}Input{
   selector: ${typeName}SelectorUniqueInput!
 }`;
 
@@ -407,7 +410,7 @@ type CreateMovieDataInput {
 
 */
 export const createDataInputTemplate = ({ typeName, fields }) =>
-`input Create${typeName}DataInput {
+  `input Create${typeName}DataInput {
 ${convertToGraphQL(fields, '  ')}
 }`;
 
@@ -422,7 +425,7 @@ type UpdateMovieDataInput {
 
 */
 export const updateDataInputTemplate = ({ typeName, fields }) =>
-`input Update${typeName}DataInput {
+  `input Update${typeName}DataInput {
 ${convertToGraphQL(fields, '  ')}
 }`;
 
@@ -438,7 +441,7 @@ type MovieOutput {
 
 */
 export const mutationOutputTemplate = ({ typeName }) =>
-`type ${typeName}Output{
+  `type ${typeName}Output{
   data: ${typeName}
 }`;
 
@@ -461,7 +464,7 @@ mutation createMovie($data: CreateMovieDataInput!) {
 
 */
 export const createClientTemplate = ({ typeName, fragmentName }) =>
-`mutation create${typeName}($data: Create${typeName}DataInput!) {
+  `mutation create${typeName}($data: Create${typeName}DataInput!) {
   create${typeName}(data: $data) {
     data {
       ...${fragmentName}
@@ -486,7 +489,7 @@ mutation updateMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
-`mutation update${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  `mutation update${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
   update${typeName}(selector: $selector, data: $data) {
     data {
       ...${fragmentName}
@@ -511,7 +514,7 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
-`mutation upsert${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  `mutation upsert${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
   upsert${typeName}(selector: $selector, data: $data) {
     data {
       ...${fragmentName}
@@ -536,10 +539,11 @@ mutation deleteMovie($selector: MovieSelectorUniqueInput!) {
 
 */
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
-`mutation delete${typeName}($selector: ${typeName}SelectorUniqueInput!) {
+  `mutation delete${typeName}($selector: ${typeName}SelectorUniqueInput!) {
   delete${typeName}(selector: $selector) {
     data {
       ...${fragmentName}
     }
   }
 }`;
+

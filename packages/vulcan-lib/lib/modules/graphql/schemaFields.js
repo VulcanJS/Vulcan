@@ -13,9 +13,23 @@ const unarrayfy = (fieldName) => {
   return fieldName ? fieldName.split('.')[0] : fieldName;
 };
 
+// allowed values of a field if present
+export const getAllowedValues = (field) => field.type.definitions[0].allowedValues;
+export const hasAllowedValues = field => {
+  const allowedValues = getAllowedValues(field);
+  if (allowedValues && !allowedValues.length) {
+    console.warn(`Field ${field} as empty allowed values`);
+    return false;
+  }
+  return !!allowedValues;
+};
+
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
 export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}`;
+
+export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}Enum`;
+
 
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({
@@ -29,6 +43,7 @@ export const getGraphQLType = ({
   const fieldType = field.type.singleType;
   const fieldTypeName =
     typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
+  console.log('type', '\n', field.type.definitions[0].type, '\n');
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
@@ -36,6 +51,9 @@ export const getGraphQLType = ({
 
   switch (fieldTypeName) {
     case 'String':
+      if (hasAllowedValues(field)) {
+        return getEnumType(typeName, fieldName);
+      }
       return 'String';
 
     case 'Boolean':
@@ -237,6 +255,7 @@ export const getSchemaFields = (schema, typeName) => {
     orderBy: [],
   };
   const nestedFieldsList = [];
+  const enumFieldsList = [];
   const resolvers = [];
 
   Object.keys(schema).forEach(fieldName => {
@@ -271,12 +290,17 @@ export const getSchemaFields = (schema, typeName) => {
             type: fieldType,
             directive: fieldDirective,
           });
-
-
         }
       }
-      // TODO: check for arrays of objects
-      // if (isArrayChildField) {...}
+
+      // if field has allowedValues, add enum type
+      if (hasAllowedValues(field)) {
+        console.log('field', fieldName, 'has  allowed values', getAllowedValues(field));
+        enumFieldsList.push({
+          allowedValues: getAllowedValues(field),
+          typeName: getEnumType(typeName, fieldName)
+        });
+      }
 
       const permissionsFields = getPermissionFields({ field, fieldName, inputFieldType });
       fields.create.concat(permissionsFields.create);
@@ -284,6 +308,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.selector.concat(permissionsFields.selector);
       fields.selectorUnique.concat(permissionsFields.selectorUnique);
       fields.orderBy.concat(permissionsFields.orderBy);
+
       // check for nested fields
       if (isNestedObjectField(field)) {
         //console.log('detected a nested field', fieldName);
@@ -310,6 +335,7 @@ export const getSchemaFields = (schema, typeName) => {
   return {
     fields,
     nestedFieldsList,
+    enumFieldsList,
     resolvers
   };
 };

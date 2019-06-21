@@ -27,6 +27,7 @@ import {
     updateMutationTemplate,
     upsertMutationTemplate,
     deleteMutationTemplate,
+    enumTypeTemplate
 } from '../graphql_templates.js';
 
 import { Utils } from '../utils.js';
@@ -177,7 +178,7 @@ const collectionToGraphQL = (collection) => {
         interfaces = [], resolvers, mutations
     } = getCollectionInfos(collection);
 
-    const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
+    const { nestedFieldsList, enumFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
 
     const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
 
@@ -192,6 +193,11 @@ const collectionToGraphQL = (collection) => {
                 schemaFragments.push(mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
                 // TODO: should we handle create, delete, etc. too for nested fields?
                 //console.log('nested schema', mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
+            }
+        }
+        if (enumFieldsList) {
+            for (const { allowedValues, typeName: enumTypeName } of enumFieldsList) {
+                schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
             }
         }
         schemaFragments.push(deleteInputTemplate({ typeName }));

@@ -194,7 +194,7 @@ describe('vulcan:lib/graphql', function () {
 
     });
   });
-  describe('collectionToGraphQL', () => {
+  describe('collection to GraphQL type', () => {
     test('generate a type for a simple collection', () => {
       const collection = makeDummyCollection({
         field: {
@@ -248,9 +248,29 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
       expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
     });
+
+    describe('enums', () => {
+      test('generate enum type when allowedValues is defined and field is a string', () => {
+        const collection = makeDummyCollection({
+          withAllowedField: {
+            type: String,
+            canRead: ['admins'],
+            allowedValues: ['foo', 'bar']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { withAllowedField: FooWithAllowedFieldEnum }');
+        expect(normalizedSchema).toMatch('enum FooWithAllowedFieldEnum { foo bar }');
+      });
+
+    });
   });
 
-  describe('fragments generation', () => {
+  describe('default fragment generation', () => {
     test('generate default fragment for basic collection', () => {
       const collection = makeDummyCollection({
         foo: {
