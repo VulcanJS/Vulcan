@@ -4,14 +4,23 @@ import { GraphQLSchema } from '../../lib/modules/graphql';
 import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
+import collectionToGraphQL from '../../lib/modules/graphql/collection';
 import { getSchemaFields, getGraphQLType } from '../../lib/modules/graphql/schemaFields';
-import collectionToGraphQL from '../../lib/modules/graphql/collectionToGraphQL';
+import { getDefaultFragmentText } from '../../lib/modules/graphql/defaultFragment';
 import SimpleSchema from 'simpl-schema';
 const test = it;
 
+const makeDummyCollection = (schema) => ({
+  options: {
+    collectionName: 'Foos'
+  },
+  typeName: 'Foo',
+  simpleSchema: () => new SimpleSchema(schema)
+});
+
 // allow to easily test regex on a graphql string
 // all blanks and series of blanks are replaces by one single space
-const normalizeGraphQLSchema = gqlSchema => gqlSchema.replace(/\s+/g, ' ');
+const normalizeGraphQLSchema = gqlSchema => gqlSchema.replace(/\s+/g, ' ').trim();
 
 describe('vulcan:lib/graphql', function () {
   // TODO: handle the graphQL init better to fix those tests
@@ -33,9 +42,8 @@ describe('vulcan:lib/graphql', function () {
   });
 
 
-  describe('schemaFields', () => {
+  describe('schemaFields - graphql fields generation from simple schema', () => {
     describe('getGraphQLType', () => {
-
       test('return nested type for nested objects', () => {
         const schema = new SimpleSchema({
           nestedField: {
@@ -87,7 +95,7 @@ describe('vulcan:lib/graphql', function () {
         const schema = new SimpleSchema({
           arrayField: {
             type: Array,
-            canRead:['admins']
+            canRead: ['admins']
           },
           'arrayField.$': {
             type: new SimpleSchema({
@@ -107,9 +115,9 @@ describe('vulcan:lib/graphql', function () {
         const schema = new SimpleSchema({
           arrayField: {
             type: Array,
-            canRead:['admins']
+            canRead: ['admins']
           },
-          'arrayField.$':{
+          'arrayField.$': {
             type: String
           }
         })._schema;
@@ -187,13 +195,6 @@ describe('vulcan:lib/graphql', function () {
     });
   });
   describe('collectionToGraphQL', () => {
-    const makeDummyCollection = (schema) => ({
-      options: {
-        collectionName: 'Foos'
-      },
-      typeName: 'Foo',
-      simpleSchema: () => new SimpleSchema(schema)
-    });
     test('generate a type for a simple collection', () => {
       const collection = makeDummyCollection({
         field: {
@@ -229,8 +230,8 @@ describe('vulcan:lib/graphql', function () {
       const collection = makeDummyCollection({
         arrayField: {
           type: Array,
-          canRead:['admins']
-        
+          canRead: ['admins']
+
         },
         'arrayField.$': {
           type: new SimpleSchema({
@@ -247,7 +248,97 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
       expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
     });
+  });
 
+  describe('fragments generation', () => {
+    test('generate default fragment for basic collection', () => {
+      const collection = makeDummyCollection({
+        foo: {
+          type: String,
+          canRead: ['guests']
+        },
+        bar: {
+          type: String,
+          canRead: ['guests']
+        }
 
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo bar }');
+    });
+    test('generate default fragment with nested object', () => {
+      const collection = makeDummyCollection({
+        foo: {
+          type: String,
+          canRead: ['guests']
+        },
+        nestedField: {
+          canRead: ['guests'],
+          type: new SimpleSchema({
+            bar: {
+              type: String,
+              canRead: ['guests']
+            }
+          })
+        }
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo nestedField { bar } }');
+    });
+    test('generate default fragment with blackbox JSON object (no nesting)', () => {
+      const collection = makeDummyCollection({
+        foo: {
+          type: String,
+          canRead: ['guests']
+        },
+        object: {
+          canRead: ['guests'],
+          type: Object
+        }
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo object }');
+    });
+    test('generate default fragment with nested array of objects', () => {
+      const collection = makeDummyCollection({
+        arrayField: {
+          type: Array,
+          canRead: ['admins']
+
+        },
+        'arrayField.$': {
+          type: new SimpleSchema({
+            subField: {
+              type: String,
+              canRead: ['admins']
+            }
+          }),
+          canRead: ['admins']
+        }
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField { subField } }');
+    });
+    test('generate default fragment with array of native values', () => {
+      const collection = makeDummyCollection({
+        arrayField: {
+          type: Array,
+          canRead: ['admins']
+
+        },
+        'arrayField.$': {
+          type: Number,
+          canRead: ['admins']
+        }
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField }');
+
+    });
   });
 });

@@ -12,7 +12,7 @@ import GraphQLDate from 'graphql-date';
 import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
 
-import collectionToGraphQL from './collectionToGraphQL';
+import collectionToGraphQL from './collection';
 
 disableFragmentWarnings();
 
@@ -24,7 +24,7 @@ const defaultResolvers = {
 
 export const GraphQLSchema = {
   // reinit the schema (testing purposes only)
-  init(){
+  init() {
     this.collections = [];
     this.schemas = [];
     this.queries = [];
@@ -103,7 +103,7 @@ export const GraphQLSchema = {
   generateSchema(collection) {
     const {
       graphQLSchema,
-      schemaResolvers =[],
+      schemaResolvers = [],
       resolversToAdd = [],
       queriesToAdd = [],
       mutationsToAdd = [],

@@ -1,10 +1,10 @@
 /**
- * Generate graphQL for Vulcan schema fields
+ * Generate graphQL types for the fields of a Vulcan schema
  */
 import { isIntlField } from '../intl.js';
 
 const capitalize = (word) => {
-  if(!word) return word;
+  if (!word) return word;
   const [first, ...rest] = word;
   return [first.toUpperCase(), ...rest].join('');
 };
@@ -13,13 +13,14 @@ const unarrayfy = (fieldName) => {
   return fieldName ? fieldName.split('.')[0] : fieldName;
 };
 
+
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
 export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}`;
 
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({
-  schema, 
-  fieldName, 
+  schema,
+  fieldName,
   typeName,
   isInput = false
 }) => {
@@ -53,7 +54,7 @@ export const getGraphQLType = ({
       if (schema[arrayItemFieldName]) {
         // try to get array type from associated array
         const arrayItemType = getGraphQLType({
-          schema, 
+          schema,
           fieldName: arrayItemFieldName,
           typeName
         });
@@ -63,9 +64,9 @@ export const getGraphQLType = ({
 
     case 'Object':
       // 2 cases: it's an actual JSON or a nested schema
-      if (!field.blackbox && fieldType._schema){
+      if (!field.blackbox && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName);
-      } 
+      }
       // blackbox JSON object
       return 'JSON';
     case 'Date':
@@ -81,7 +82,7 @@ const getNestedSchema = field => field.type.singleType._schema;
 
 const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
 const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
-const hasArrayChild = (fieldName, schema) =>!!getArrayChild(fieldName, schema);
+const hasArrayChild = (fieldName, schema) => !!getArrayChild(fieldName, schema);
 
 const getArrayChildSchema = (fieldName, schema) => {
   return getNestedSchema(getArrayChild(fieldName, schema));
@@ -99,10 +100,10 @@ const hasLegacyPermissions = field => {
 
 // Generate GraphQL fields and resolvers for a field with a specific resolveAs
 // resolveAs allow to generate "virtual" fields that are queryable in GraphQL but does not exist in the database
-export const getResolveAsFields = ({ 
-  typeName, 
-  field, 
-  fieldName, 
+export const getResolveAsFields = ({
+  typeName,
+  field,
+  fieldName,
   fieldType,
   fieldDescription,
   fieldDirective,
@@ -240,14 +241,14 @@ export const getSchemaFields = (schema, typeName) => {
 
   Object.keys(schema).forEach(fieldName => {
     const field = schema[fieldName];
-    const fieldType = getGraphQLType({schema, fieldName, typeName});
-    const inputFieldType = getGraphQLType({schema, fieldName, typeName, isInput:true});
+    const fieldType = getGraphQLType({ schema, fieldName, typeName });
+    const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
     // OpenCRUD backwards compatibility
     if (
-      (hasPermissions(field) || hasLegacyPermissions(field)) && ! isArrayChildField(fieldName)
+      (hasPermissions(field) || hasLegacyPermissions(field)) && !isArrayChildField(fieldName)
     ) {
       const fieldDescription = field.description;
       const fieldDirective = isIntlField(field) ? '@intl' : '';
@@ -294,9 +295,8 @@ export const getSchemaFields = (schema, typeName) => {
         nestedFieldsList.push(nestedFields);
       }
       // check if field is an array of objects
-      console.log('fieldName', fieldName);
-      if (hasArrayNestedChild(fieldName, schema)){
-        console.log('detected a field with an array child', fieldName);
+      if (hasArrayNestedChild(fieldName, schema)) {
+        //console.log('detected a field with an array child', fieldName);
         const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
         const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
         const arrayNestedFields = getSchemaFields(arrayNestedSchema, arrayNestedTypeName);

@@ -1,3 +1,7 @@
+/**
+ * Generates the GraphQL schema and
+ * the resolvers and mutations for a Vulcan collectio
+ */
 import {
     getSchemaFields
 } from './schemaFields';
@@ -86,7 +90,7 @@ const createResolvers = ({ resolvers, typeName }) => {
         resolversToAdd
     };
 };
-const createMutations = ({ mutations, typeName, collectionName, fields}) => {
+const createMutations = ({ mutations, typeName, collectionName, fields }) => {
     const mutationResolvers = {};
     const mutationsToAdd = [];
     const mutationsResolversToAdd = [];
@@ -120,7 +124,7 @@ const createMutations = ({ mutations, typeName, collectionName, fields}) => {
             console.log(
                 `// Warning: you defined an "update" mutation for collection ${collectionName}, but it doesn't have any mutable fields, so no corresponding mutation types can be generated. Remove the "update" mutation or define a "canUpdate" property on a field to disable this warning`
             );
-        } else  {
+        } else {
             mutationsToAdd.push(
                 [updateMutationTemplate({ typeName }), mutations.update.description]
             );
@@ -183,10 +187,11 @@ const collectionToGraphQL = (collection) => {
         );
         // the schema may produce a list of additional graphQL types for nested arrays/objects
         if (nestedFieldsList) {
-            for (const { fields: nestedFields, typeName: nestedTypeName  } of nestedFieldsList) {
+            for (const { fields: nestedFields, typeName: nestedTypeName } of nestedFieldsList) {
                 const { mainType: nestedMainType } = nestedFields;
-                schemaFragments.push(mainTypeTemplate({typeName: nestedTypeName, fields: nestedMainType}));
+                schemaFragments.push(mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
                 // TODO: should we handle create, delete, etc. too for nested fields?
+                //console.log('nested schema', mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
             }
         }
         schemaFragments.push(deleteInputTemplate({ typeName }));
@@ -217,13 +222,13 @@ const collectionToGraphQL = (collection) => {
 
         const { queriesToAdd, resolversToAdd } = createResolvers({ resolvers, typeName });
         const { mutationsToAdd,
-        
+
             mutationsResolversToAdd
-        } = createMutations({ 
+        } = createMutations({
             mutations,
-            typeName, 
+            typeName,
             collectionName,
-            fields 
+            fields
         });
 
         graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
@@ -243,7 +248,7 @@ const collectionToGraphQL = (collection) => {
         );
     }
 
-    return {graphQLSchema };
+    return { graphQLSchema };
 };
 
 export default collectionToGraphQL;

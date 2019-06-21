@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { getDefaultFragmentText } from './graphql/defaultFragment';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
@@ -41,14 +42,14 @@ export const registerFragment = fragmentTextSource => {
   // extract subFragments from text
   const matchedSubFragments = fragmentText.match(/\.{3}([_A-Za-z][_0-9A-Za-z]*)/g) || [];
   const subFragments = _.unique(matchedSubFragments.map(f => f.replace('...', '')));
-  
+
   // register fragment
   Fragments[fragmentName] = {
     fragmentText
   };
 
   // also add subfragments if there are any
-  if(subFragments && subFragments.length) {
+  if (subFragments && subFragments.length) {
     Fragments[fragmentName].subFragments = subFragments;
   }
 
@@ -75,42 +76,9 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   return gql.apply(null, gqlArguments);
 };
 
-/*
 
-Create default "dumb" gql fragment object for a given collection
 
-*/
-export const getDefaultFragmentText = (collection, options = { onlyViewable: true }) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldNames = _.reject(_.keys(schema), fieldName => {
-    /*
 
-    Exclude a field from the default fragment if
-    1. it has a resolver and addOriginalField is false
-    2. it has $ in its name
-    3. it's not viewable (if onlyViewable option is true)
-
-    */
-    const field = schema[fieldName];
-    // OpenCRUD backwards compatibility
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
-  });
-
-  if (fieldNames.length) {
-    const fragmentText = `
-      fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
-        ${fieldNames.map(fieldName => {
-          return fieldName+'\n';
-        }).join('')}
-      }
-    `;
-
-    return fragmentText;
-  } else {
-    return null;
-  }
-
-};
 export const getDefaultFragment = collection => {
   const fragmentText = getDefaultFragmentText(collection);
   return fragmentText ? gql`${fragmentText}` : null;
@@ -138,8 +106,8 @@ export const extendFragmentWithProperties = (fragmentName, newProperties) => {
   const fragment = Fragments[fragmentName];
   const fragmentEndPosition = fragment.fragmentText.lastIndexOf('}');
   const newFragmentText = [
-    fragment.fragmentText.slice(0, fragmentEndPosition), 
-    newProperties, 
+    fragment.fragmentText.slice(0, fragmentEndPosition),
+    newProperties,
     fragment.fragmentText.slice(fragmentEndPosition)
   ].join('');
   registerFragment(newFragmentText);
@@ -155,7 +123,7 @@ Note: can only be called *after* a fragment is registered
 export const removeFromFragment = (fragmentName, propertyName) => {
   const fragment = Fragments[fragmentName];
   const newFragmentText = fragment.fragmentText.replace(propertyName, '');
-  registerFragment(newFragmentText);  
+  registerFragment(newFragmentText);
 };
 
 /*
@@ -178,7 +146,7 @@ export const getFragment = fragmentName => {
     initializeFragments([fragmentName]);
   }
   // return fragment object created by gql
-  return Fragments[fragmentName].fragmentObject;  
+  return Fragments[fragmentName].fragmentObject;
 };
 
 /*
@@ -191,7 +159,7 @@ export const getFragmentText = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`);
   }
   // return fragment object created by gql
-  return Fragments[fragmentName].fragmentText;  
+  return Fragments[fragmentName].fragmentText;
 };
 
 /*
@@ -219,7 +187,7 @@ export const initializeFragments = (fragments = getNonInitializedFragmentNames()
       });
     }
   });
-  
+
   // create fragment objects
 
   // initialize fragments *with no subfragments* first to avoid unresolved dependencies
