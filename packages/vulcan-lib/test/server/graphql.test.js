@@ -266,7 +266,30 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { withAllowedField: FooWithAllowedFieldEnum }');
         expect(normalizedSchema).toMatch('enum FooWithAllowedFieldEnum { foo bar }');
       });
+      test('generate enum type for nested objects', () => {
+        test('generate enum type when allowedValues is defined and field is a string', () => {
+          const collection = makeDummyCollection({
+            nestedField: {
+              type: new SimpleSchema({
+                withAllowedField: {
+                  type: String,
+                  allowedValues: ['foo', 'bar'],
+                  canRead: ['admins'],
+                }
+              }),
+              canRead: ['admins'],
+            }
+          });
+          const res = collectionToGraphQL(collection);
+          expect(res.graphQLSchema).toBeDefined();
+          // debug
+          //console.log(res.graphQLSchema);
+          const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+          expect(normalizedSchema).toMatch('type Foo { nestedField { withAllowedField: FooNestedFieldWithAllowedFieldEnum } }');
+          expect(normalizedSchema).toMatch('enum FooNestedFieldWithAllowedFieldEnum { foo bar }');
+        });
 
+      });
     });
   });
 
