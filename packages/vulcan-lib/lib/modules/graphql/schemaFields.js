@@ -2,33 +2,22 @@
  * Generate graphQL types for the fields of a Vulcan schema
  */
 import { isIntlField } from '../intl.js';
+import {
+  hasAllowedValues,
+  getAllowedValues,
+  unarrayfyFieldName
+} from '../simpleSchema_utils';
 
 const capitalize = (word) => {
   if (!word) return word;
   const [first, ...rest] = word;
   return [first.toUpperCase(), ...rest].join('');
 };
-// remove ".$" at the end of array child fieldName
-const unarrayfy = (fieldName) => {
-  return fieldName ? fieldName.split('.')[0] : fieldName;
-};
-
-// allowed values of a field if present
-export const getAllowedValues = (field) => field.type.definitions[0].allowedValues;
-export const hasAllowedValues = field => {
-  const allowedValues = getAllowedValues(field);
-  if (allowedValues && !allowedValues.length) {
-    console.warn(`Field ${field} as empty allowed values`);
-    return false;
-  }
-  return !!allowedValues;
-};
-
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
-export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}`;
+export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}`;
 
-export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfy(fieldName))}Enum`;
+export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
 
 // get GraphQL type for a given schema and field name
@@ -43,7 +32,6 @@ export const getGraphQLType = ({
   const fieldType = field.type.singleType;
   const fieldTypeName =
     typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
-  console.log('type', '\n', field.type.definitions[0].type, '\n');
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
@@ -295,7 +283,6 @@ export const getSchemaFields = (schema, typeName) => {
 
       // if field has allowedValues, add enum type
       if (hasAllowedValues(field)) {
-        console.log('field', fieldName, 'has  allowed values', getAllowedValues(field));
         enumFieldsList.push({
           allowedValues: getAllowedValues(field),
           typeName: getEnumType(typeName, fieldName)
