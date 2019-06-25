@@ -479,7 +479,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         onClick: this.passwordChange.bind(this),
       });
 
-      if (Accounts.user()) {
+      if (currentUser) {
         loginButtons.push({
           id: 'switchToSignOut',
           label: this.context.intl.formatMessage({ id: 'accounts.cancel' }),
