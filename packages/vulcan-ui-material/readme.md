@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.12.8_13
+# vulcan:ui-material 1.13.0
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -38,9 +38,9 @@ This package no longer depends on `vulcan:ui-boostrap`, so you can remove it.
 To activate the example layout copy the three components to your project and import them:
 
 ``` javascript
-import './example/Header',
-import './example/Layout',
-import './example/SideNavigation',
+import './example/Header';
+import './example/Layout';
+import './example/SideNavigation';
 ```
 
 ## Theming
@@ -99,7 +99,7 @@ In your own code, make sure that your components will render the same on the ser
 
 You can pass a couple of extra options to inputs from the `form` property of your schema:
 
-``` javascript
+```javascript
   userKey: {
     type: String,
     label: 'User key',
@@ -135,12 +135,12 @@ You can pass a couple of extra options to inputs from the `form` property of you
 You can pass a couple of extra options to form groups as well:
 
 ``` javascript
-  const platformGroup: {
+  const platformGroup = {
     name: 'shops.platform',
     order: 4,
     beforeComponent: 'ShopsPlatformTitle', // component to put at the top of the form group
     afterComponent: 'ShopsConnectButtons',  // component to put at the bottom of the form group
-  },
+  };
 ```
 
 ## DataTable
