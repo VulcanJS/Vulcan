@@ -15,7 +15,7 @@ class DateTime extends PureComponent {
 
   render() {
 
-    const { inputProperties } = this.props;
+    const { inputProperties, disabled = false } = this.props;
 
     const date = this.props.value
       ? typeof this.props.value === 'string'
@@ -30,7 +30,7 @@ class DateTime extends PureComponent {
           // newDate argument is a Moment object given by react-datetime
           onChange={newDate => this.updateDate(newDate._d)}
           format={'x'}
-          inputProps={{ name: this.props.name }}
+          inputProps={{ name: this.props.name, disabled }}
         />
       </Components.FormItem>
     );

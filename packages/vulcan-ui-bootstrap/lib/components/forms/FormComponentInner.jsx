@@ -5,8 +5,9 @@ import { Components, registerComponent, instantiateComponent, getHtmlInputProps 
 import classNames from 'classnames';
 
 class FormComponentInner extends PureComponent {
+
   renderClear = () => {
-    if (['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input)) {
+    if (['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input) && !this.props.disabled) {
       return (
         <a
           href="javascript:void(0)"
