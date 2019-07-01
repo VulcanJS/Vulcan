@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Components, instantiateComponent, Utils } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 
 const FormGroupHeader = ({ toggle, collapsed, label }) => (
   <div className="form-section-heading" onClick={toggle}>
@@ -81,10 +82,15 @@ class FormGroup extends PureComponent {
       return !!this.props.errors.filter(error => error.path === field.path)
         .length;
     });
-
-render () {
+  
+  render () {
+    if (this.props.group.adminsOnly && !Users.isAdmin(this.props.currentUser)) {
+      return null;
+    }
+  
     const { name, fields, formComponents, label, group } = this.props;
     const { collapsed } = this.state;
+    
     const FormComponents = mergeWithComponents(formComponents);
     const anchorName = name.split('.').length > 1 ? name.split('.')[1] : name;
     

@@ -54,6 +54,7 @@ import isObject from 'lodash/isObject';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
 import omit from 'lodash/omit';
+import _filter from 'lodash/filter';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
@@ -295,17 +296,16 @@ class SmartForm extends Component {
       return group;
     });
 
-    // add default group
-    groups = [
-      {
+    // add default group if necessary
+    const defaultGroupFields = _filter(fields, field => !field.group)
+    if (defaultGroupFields.length){
+      groups = [{
         name: 'default',
         label: 'default',
         order: 0,
-        fields: _.filter(fields, field => {
-          return !field.group;
-        })
-      }
-    ].concat(groups);
+        fields: defaultGroupFields
+      }].concat(groups);
+    }
 
     // sort by order
     groups = _.sortBy(groups, 'order');

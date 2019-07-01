@@ -69,6 +69,7 @@ addStrings('es', {
   'users.newsletter_subscribeToNewsletter': 'Suscribirse al boletín informativo',
   'users.users_admin': 'Admin',
   'users.admin': 'Admin',
+  'users.host': 'Miembro del equipo',
   'users.isAdmin': 'Administrador',
   'users.posts': 'Publicaciones',
   'users.upvoted_posts': 'Publicaciones modificadas',

@@ -63,12 +63,12 @@ const FormGroupHeader = ({ toggle, collapsed, label, group, classes }) => {
   const collapsible = group && group.collapsible || group && group.name === 'admin';
   
   return (
-    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-section-heading')}
+    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-group-header')}
          onClick={collapsible ? toggle : null}
     >
       
       <Typography
-        className={classNames('form-section-heading-title', classes.subtitle1, collapsible && classes.collapsible)}
+        className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)}
         variant="subtitle1"
         onClick={this.toggle}
       >

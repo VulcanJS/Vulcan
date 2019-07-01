@@ -71,6 +71,7 @@ addStrings('en', {
   'users.newsletter_subscribeToNewsletter': 'عضویت در خبرنامه',
   'users.users_admin': 'مدیر',
   'users.admin': 'مدیر',
+  'users.host': '???',
   'users.isAdmin': 'مدیر',
   'users.posts': 'پست ها',
   'users.upvoted_posts': 'پست هایی که بیشتر پسند شده اند',

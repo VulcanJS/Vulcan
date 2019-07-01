@@ -37,14 +37,26 @@ const baseStyles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  searchWrapper: {
+  },
+  addButtonWrapper: {
+  },
   addButton: {
-    top: '9.5rem',
-    right: '2rem',
-    position: 'fixed',
-    bottom: 'auto',
+    // Floating button won't work with multiple datatables, buttons are superposed
+    // top: '9.5rem',
+    // right: '2rem',
+    // position: 'fixed',
+    // bottom: 'auto',
   },
   table: {
-    marginTop:0
+    marginTop: 0
   },
   denseTable: {},
   denserTable: {},
@@ -70,7 +82,7 @@ const delay = (function () {
 
 class Datatable extends PureComponent {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.updateQuery = this.updateQuery.bind(this);
@@ -94,7 +106,7 @@ class Datatable extends PureComponent {
     this.setState({ currentSort });
   };
 
-  updateQuery (value) {
+  updateQuery(value) {
     this.setState({
       value: value
     });
@@ -105,7 +117,7 @@ class Datatable extends PureComponent {
     }, 700);
   }
 
-  render () {
+  render() {
     if (this.props.data) {
 
       return <Components.DatatableContents
@@ -141,37 +153,45 @@ class Datatable extends PureComponent {
       // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays
       // {}. So we test on the length of keys for this object.
       const orderBy = Object.keys(this.state.currentSort).length == 0 ? {} :
-          { ...this.state.currentSort, _id: -1 };
+        { ...this.state.currentSort, _id: -1 };
 
       return (
         <div className={classNames('datatable', `datatable-${collection._name}`, classes.root,
-            className)}>
+          className)}>
           {/* DatatableAbove Component part*/}
-          {
-            showSearch &&
+          {(showSearch || showNew) &&
+            <div className={classes.header}>
+              {
+                showSearch &&
+                <div className={classes.searchWrapper} >
+                  <Components.SearchInput value={this.state.query}
+                    updateQuery={this.updateQuery}
+                    className={classes.search}
+                    labelId={'datatable.search'}
+                  />
+                </div>
+              }
+              {
+                showNew &&
+                <div className={classes.addButtonWrapper}>
 
-            <Components.SearchInput value={this.state.query}
-                                    updateQuery={this.updateQuery}
-                                    className={classes.search}
-                                    labelId={'datatable.search'}
-            />
-          }
-          {
-            showNew &&
 
-            <Components.NewButton collection={collection}
-                                  variant="fab"
-                                  color="primary"
-                                  className={classes.addButton}
-            />
+                  <Components.NewButton collection={collection}
+                    variant="fab"
+                    color="primary"
+                    className={classes.addButton}
+                  />
+                </div>
+              }
+            </div>
           }
 
           <DatatableWithMulti {...this.props}
-                              collection={collection}
-                              terms={{ query: this.state.query, orderBy: orderBy }}
-                              currentUser={this.props.currentUser}
-                              toggleSort={this.toggleSort}
-                              currentSort={this.state.currentSort}
+            collection={collection}
+            terms={{ query: this.state.query, orderBy: orderBy }}
+            currentUser={this.props.currentUser}
+            toggleSort={this.toggleSort}
+            currentSort={this.state.currentSort}
           />
         </div>
       );
@@ -234,36 +254,36 @@ const datatableContentsStyles = theme => (_assign({}, baseStyles(theme), {
 
 
 const DatatableContents = ({
-                             collection,
-                             columns,
-                             results,
-                             loading,
-                             loadMore,
-                             count,
-                             totalCount,
-                             networkStatus,
-                             refetch,
-                             showEdit,
-                             editComponent,
-                             emptyState,
-                             currentUser,
-                             classes,
-                             footerData,
-                             dense,
-                             queryDataRef,
-                             rowClass,
-                             handleRowClick,
-                             intlNamespace,
-                             title,
-                             toggleSort,
-                             currentSort,
-                             paginate,
-                             paginationTerms,
-                             setPaginationTerms
-                           }) => {
+  collection,
+  columns,
+  results,
+  loading,
+  loadMore,
+  count,
+  totalCount,
+  networkStatus,
+  refetch,
+  showEdit,
+  editComponent,
+  emptyState,
+  currentUser,
+  classes,
+  footerData,
+  dense,
+  queryDataRef,
+  rowClass,
+  handleRowClick,
+  intlNamespace,
+  title,
+  toggleSort,
+  currentSort,
+  paginate,
+  paginationTerms,
+  setPaginationTerms
+}) => {
 
   if (loading) {
-    return <Components.Loading/>;
+    return <Components.Loading />;
   } else if (!results || !results.length) {
     return emptyState || null;
   }
@@ -297,40 +317,40 @@ const DatatableContents = ({
   return (
     <React.Fragment>
       {
-        (title)?
+        (title) ?
           <Toolbar>
             <Typography variant="h6" id="tableTitle">
               title
             </Typography>
           </Toolbar>
-          :null
+          : null
       }
       <Table className={classNames(classes.table, denseClass)}>
-      {
-        columns &&
-        <TableHead className={classes.tableHead}>
-          <TableRow className={classes.tableRow}>
-            {
-              _.sortBy(columns, column => column.order).map(
-                (column, index) =>
-                  <Components.DatatableHeader key={index}
-                                              collection={collection}
-                                              intlNamespace={intlNamespace}
-                                              column={column}
-                                              classes={classes}
-                                              toggleSort={toggleSort}
-                                              currentSort={currentSort}
-                  />
-              )
-            }
-            {
-              (showEdit || editComponent) &&
+        {
+          columns &&
+          <TableHead className={classes.tableHead}>
+            <TableRow className={classes.tableRow}>
+              {
+                _.sortBy(columns, column => column.order).map(
+                  (column, index) =>
+                    <Components.DatatableHeader key={index}
+                      collection={collection}
+                      intlNamespace={intlNamespace}
+                      column={column}
+                      classes={classes}
+                      toggleSort={toggleSort}
+                      currentSort={currentSort}
+                    />
+                )
+              }
+              {
+                (showEdit || editComponent) &&
 
-              <TableCell className={classes.tableCell}/>
-            }
-          </TableRow>
-        </TableHead>
-      }
+                <TableCell className={classes.tableCell} />
+              }
+            </TableRow>
+          </TableHead>
+        }
 
         {
           results &&
@@ -340,16 +360,16 @@ const DatatableContents = ({
               results.map(
                 (document, index) =>
                   <Components.DatatableRow collection={collection}
-                                           columns={columns}
-                                           document={document}
-                                           refetch={refetch}
-                                           key={index}
-                                           showEdit={showEdit}
-                                           editComponent={editComponent}
-                                           currentUser={currentUser}
-                                           classes={classes}
-                                           rowClass={rowClass}
-                                           handleRowClick={handleRowClick}
+                    columns={columns}
+                    document={document}
+                    refetch={refetch}
+                    key={index}
+                    showEdit={showEdit}
+                    editComponent={editComponent}
+                    currentUser={currentUser}
+                    classes={classes}
+                    rowClass={rowClass}
+                    handleRowClick={handleRowClick}
                   />)
             }
           </TableBody>
@@ -371,7 +391,7 @@ const DatatableContents = ({
               {
                 (showEdit || editComponent) &&
 
-                <TableCell className={classes.tableCell}/>
+                <TableCell className={classes.tableCell} />
               }
             </TableRow>
           </TableFooter>
@@ -401,10 +421,10 @@ const DatatableContents = ({
         !paginate && loadMore &&
 
         <Components.LoadMore className={classes.loadMore}
-                             count={count}
-                             totalCount={totalCount}
-                             loadMore={loadMore}
-                             networkStatus={networkStatus}
+          count={count}
+          totalCount={totalCount}
+          loadMore={loadMore}
+          networkStatus={networkStatus}
         />
       }
     </React.Fragment>
@@ -440,17 +460,17 @@ const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSor
         id: `${collection._name}.${columnName}`,
         defaultMessage: defaultMessage
       }) || defaultMessage;
-    
+
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use
     // column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
 
     if (column.sortable) {
       return <Components.DatatableSorter name={sortPropertyName}
-                                         label={formattedLabel}
-                                         toggleSort={toggleSort}
-                                         currentSort={currentSort}
-                                         sortable={column.sortable}
+        label={formattedLabel}
+        toggleSort={toggleSort}
+        currentSort={currentSort}
+        sortable={column.sortable}
       />;
     }
   } else if (intlNamespace) {
@@ -484,7 +504,7 @@ DatatableSorter Component
 
 const DatatableSorter = ({ name, label, toggleSort, currentSort, sortable }) =>
   <TableCell className="datatable-sorter"
-             sortDirection={!currentSort[name] ? false : currentSort[name] === 1 ? 'asc' : 'desc'}
+    sortDirection={!currentSort[name] ? false : currentSort[name] === 1 ? 'asc' : 'desc'}
   >
     <Tooltip
       title="Sort"
@@ -522,17 +542,17 @@ const datatableRowStyles = theme => (_assign({}, baseStyles(theme), {
 
 
 const DatatableRow = ({
-                        collection,
-                        columns,
-                        document,
-                        refetch,
-                        showEdit,
-                        editComponent,
-                        currentUser,
-                        rowClass,
-                        handleRowClick,
-                        classes,
-                      }, { intl }) => {
+  collection,
+  columns,
+  document,
+  refetch,
+  showEdit,
+  editComponent,
+  currentUser,
+  rowClass,
+  handleRowClick,
+  classes,
+}, { intl }) => {
 
   const EditComponent = editComponent;
 
@@ -551,10 +571,10 @@ const DatatableRow = ({
         _.sortBy(columns, column => column.order).map(
           (column, index) =>
             <Components.DatatableCell key={index}
-                                      column={column}
-                                      document={document}
-                                      currentUser={currentUser}
-                                      classes={classes}
+              column={column}
+              document={document}
+              currentUser={currentUser}
+              classes={classes}
             />)
       }
 
@@ -564,15 +584,13 @@ const DatatableRow = ({
         <TableCell className={classes.editCell}>
           {
             EditComponent &&
-
-            <EditComponent collection={collection} document={document} refetch={refetch}/>
+            <EditComponent collection={collection} document={document} refetch={refetch} />
           }
           {
             showEdit &&
-
             <Components.EditButton collection={collection}
-                                   document={document}
-                                   buttonClasses={{ button: classes.editButton }}
+              document={document}
+              buttonClasses={{ button: classes.editButton }}
             />
           }
         </TableCell>
@@ -614,8 +632,8 @@ const DatatableCell = ({ column, document, currentUser, classes }) => {
   return (
     <TableCell className={classNames(classes.tableCell, cellClass, className)}>
       <Component column={column}
-                 document={document}
-                 currentUser={currentUser}
+        document={document}
+        currentUser={currentUser}
       />
     </TableCell>
   );
