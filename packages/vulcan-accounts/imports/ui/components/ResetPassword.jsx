@@ -1,6 +1,7 @@
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { withRouter } from 'react-router';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { STATES } from '../../helpers.js';
 
@@ -33,9 +34,9 @@ AccountsResetPassword.contextTypes = {
 
 AccountsResetPassword.propsTypes = {
   currentUser: PropTypes.object,
-  match: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 AccountsResetPassword.displayName = 'AccountsResetPassword';
 
-registerComponent('AccountsResetPassword', AccountsResetPassword, withCurrentUser);
+registerComponent('AccountsResetPassword', AccountsResetPassword, withCurrentUser, withRouter);
