@@ -7,7 +7,7 @@ import jsdom from 'jsdom-global';
 import Enzyme from 'enzyme';
 // TODO: must be updated depending on the React version
 // @see https://www.npmjs.com/package/enzyme-adapter-react-16
-import Adapter from 'enzyme-adapter-react-16.3';
+import Adapter from 'enzyme-adapter-react-16';
 
 const initComponentTest = () => {
   // init a JSDOM to allow rendering server side
