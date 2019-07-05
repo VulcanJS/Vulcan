@@ -33,11 +33,6 @@ const makePageRenderer = ({ computeContext }) => {
 
     const App = <AppGenerator req={req} apolloClient={client} context={context} />;
 
-    // fill apollo store
-    // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
-    //because react-apollo may trigger style generation while walking the React tree to find query
-    await getDataFromTree(App);
-
     // run user registered callbacks that wraps the React app
     const WrappedApp = runCallbacks({
       name: 'router.server.wrapper',
@@ -45,10 +40,24 @@ const makePageRenderer = ({ computeContext }) => {
       properties: { req, context, apolloClient: client },
     });
 
+    // fill apollo store
+    // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
+    //because react-apollo may trigger style generation while walking the React tree to find query
+    await getDataFromTree(WrappedApp);
+
+    // run callback related to style (need to be done AFTER we get the data with Apollo
+    // otherwise SSR is messed up)
+    const StyledWrappedApp = runCallbacks({
+      name: 'router.server.styleWrapper',
+      iterator: App,
+      properties: { req, context, apolloClient: client },
+    });
+
+
     // equivalent to calling getDataFromTree and then renderToStringWithData
     let htmlContent = '';
     try {
-      htmlContent = await ReactDOM.renderToString(WrappedApp);
+      htmlContent = await ReactDOM.renderToString(StyledWrappedApp);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`Error while server-rendering. date: ${new Date().toString()} url: ${req.url}`); // eslint-disable-line no-console

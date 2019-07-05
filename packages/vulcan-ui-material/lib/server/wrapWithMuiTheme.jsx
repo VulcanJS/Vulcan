@@ -39,5 +39,5 @@ function injectJss(sink, { context }) {
 }
 
 
-addCallback('router.server.wrapper', wrapWithMuiTheme);
+addCallback('router.server.styleWrapper', wrapWithMuiTheme);
 addCallback('router.server.postRender', injectJss);
