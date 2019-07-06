@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import _isEmpty from 'lodash/isEmpty';
+import reducer from './reducer';
 // TODO: now we should add some callback call to add the store to
 // Apollo SSR + client side too
 
@@ -94,10 +95,12 @@ export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
 export const getMiddlewares = () => middlewares;
 
 let store;
-export const initStore = () => {
+export const initStore = initialState => {
   if (!store) {
-    store = configureStore();
+    store = configureStore(getReducers, initialState, []);
   }
   return store;
 };
-export const getStore = () => store;
+export const getStore = () => {
+  return store;
+};
