@@ -33,41 +33,41 @@ const makePageRenderer = ({ computeContext }) => {
 
     const App = <AppGenerator req={req} apolloClient={client} context={context} />;
 
-    // run user registered callbacks that wraps the React app
-    // The wrappers must NOT have any side effect during React tree traversal
-    // otherwise SSR may fail
-    const WrappedApp = runCallbacks({
-      name: 'router.server.wrapper',
-      iterator: App,
-      properties: { req, context, apolloClient: client },
-    });
-
-
-    // run wrappers that must only me applied during the data collection step
-    // eg Material UI theming WITHOUT style generation
-    // The wrappers must NOT have any side effect during React tree traversal
-    // otherwise SSR may fail
-    const DataWrappedApp = runCallbacks({
-      name: 'router.server.dataWrapper',
-      iterator: WrappedApp,
-      properties: { req, context, apolloClient: client },
-    });
-    // fill apollo store
-    // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
-    //because react-apollo may trigger style generation while walking the React tree to find query
-    await getDataFromTree(DataWrappedApp);
-
-    // run callback related to rendering
-    // eg Material UI theming WITH style generation
-    // those wrapper can tolerate side effects during React tree traversal (eg className/styles generation)
-    const StyledWrappedApp = runCallbacks({
-      name: 'router.server.renderWrapper',
-      iterator: WrappedApp,
-      properties: { req, context, apolloClient: client },
-    });
-    // equivalent to calling getDataFromTree and then renderToStringWithData
     let htmlContent = '';
     try {
+      // run user registered callbacks that wraps the React app
+      // The wrappers must NOT have any side effect during React tree traversal
+      // otherwise SSR may fail
+      const WrappedApp = runCallbacks({
+        name: 'router.server.wrapper',
+        iterator: App,
+        properties: { req, context, apolloClient: client },
+      });
+
+
+      // run wrappers that must only me applied during the data collection step
+      // eg Material UI theming WITHOUT style generation
+      // The wrappers must NOT have any side effect during React tree traversal
+      // otherwise SSR may fail
+      const DataWrappedApp = runCallbacks({
+        name: 'router.server.dataWrapper',
+        iterator: WrappedApp,
+        properties: { req, context, apolloClient: client },
+      });
+      // fill apollo store
+      // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
+      //because react-apollo may trigger style generation while walking the React tree to find query
+      await getDataFromTree(DataWrappedApp);
+
+      // run callback related to rendering
+      // eg Material UI theming WITH style generation
+      // those wrapper can tolerate side effects during React tree traversal (eg className/styles generation)
+      const StyledWrappedApp = runCallbacks({
+        name: 'router.server.renderWrapper',
+        iterator: WrappedApp,
+        properties: { req, context, apolloClient: client },
+      });
+      // equivalent to calling getDataFromTree and then renderToStringWithData
       htmlContent = await ReactDOM.renderToString(StyledWrappedApp);
     } catch (err) {
       // eslint-disable-next-line no-console
