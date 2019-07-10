@@ -16,6 +16,7 @@ export const createApolloClient = () => {
   // links registered by packages
   const registeredLinks = getLinks();
   const terminatingLinks = getTerminatingLinks();
+  if (terminatingLinks.length > 1) console.warn('Warning: You registered more than one terminating Apollo link.');
 
   const stateLink = createStateLink({ cache });
   const newClient = new ApolloClient({
@@ -24,8 +25,8 @@ export const createApolloClient = () => {
       ...registeredLinks,
       ...staticLinks,
       // terminating
-      ...terminatingLinks,
-      httpLink]),
+      ...(terminatingLinks.length ? terminatingLinks : [httpLink]),
+    ]),
     cache,
   });
   // register the client
