@@ -6,15 +6,26 @@ import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
 import { createStateLink } from '../../modules/apollo-common';
 import cache from './cache';
+import { getTerminatingLinks, getLinks } from './links/registerLinks';
 
 // these links do not change once created
-const staticLinks = [watchedMutationLink, errorLink, meteorAccountsLink, httpLink];
+const staticLinks = [watchedMutationLink, errorLink, meteorAccountsLink];
 
 let apolloClient;
 export const createApolloClient = () => {
+  // links registered by packages
+  const registeredLinks = getLinks();
+  const terminatingLinks = getTerminatingLinks();
+
   const stateLink = createStateLink({ cache });
   const newClient = new ApolloClient({
-    link: ApolloLink.from([stateLink, ...staticLinks]),
+    link: ApolloLink.from([
+      stateLink,
+      ...registeredLinks,
+      ...staticLinks,
+      // terminating
+      ...terminatingLinks,
+      httpLink]),
     cache,
   });
   // register the client
