@@ -1,5 +1,3 @@
-// setup JSDOM server side for testing (necessary for Enzyme to mount)
-import 'jsdom-global/register';
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
@@ -12,9 +10,9 @@ import '../lib/modules';
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
 
-describe('vulcan-core/containers', function() {
-  describe('withComponents', function() {
-    it('should override components', function() {
+describe('vulcan-core/containers', function () {
+  describe('withComponents', function () {
+    it('should override components', function () {
       // replace any component for testing purpose
       const firstComponentName = Components[Object.keys(Components)[0]];
       const FooComponent = () => 'FOO';
@@ -26,13 +24,13 @@ describe('vulcan-core/containers', function() {
       expect(wrapper.html()).toEqual('FOO');
     });
   });
-  describe('withMessages', function() {
+  describe('withMessages', function () {
     const WrappedComponent = props => <div />;
     const apolloClient = null; // TODO: init an apolloClient, that must be available in the context
-    it.skip('pass messages', function() {});
-    it.skip('add a flash message', function() {});
-    it.skip('mark a flash message as seen', function() {});
-    it.skip('hide a flash message as seen', function() {});
-    it.skip('clear seen', function() {});
+    it.skip('pass messages', function () { });
+    it.skip('add a flash message', function () { });
+    it.skip('mark a flash message as seen', function () { });
+    it.skip('hide a flash message as seen', function () { });
+    it.skip('clear seen', function () { });
   });
 });
