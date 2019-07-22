@@ -1,4 +1,4 @@
-import expect from 'jest';
+import expect from 'expect';
 import {
   registerDefault,
   getDefaults,
