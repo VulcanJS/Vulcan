@@ -4,11 +4,13 @@
 import { addDecorator, configure } from '@storybook/react';
 
 // init UI using a Decorator
-import BootstrapDecorator from './decorators/BootstrapDecorator'
-addDecorator(BootstrapDecorator)
-// Uncomment to activate material UI instead
-// import MaterialUIDecorator from './decorators/MaterialUIDecorator'
-// addDecorator(MaterialUIDecorator)
+import MaterialUIDecorator from './decorators/MaterialUIDecorator'
+
+if (process.env.STORYBOOK_UI === 'material') {
+  addDecorator(MaterialUIDecorator)
+} else {
+  addDecorator(BootstrapDecorator);
+}
 
 import onStorybookStart from "./startup"
 onStorybookStart(() => console.log("Storybook started"))

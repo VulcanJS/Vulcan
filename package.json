@@ -15,7 +15,8 @@
     "prettier-all": "node ./.vulcan/prettier/index.js write",
     "update-package-json": "node ./.vulcan/update_package.js",
     "storybook": "VULCAN_DIR=\"..\" start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook-material": "STORYBOOK_UI=material VULCAN_DIR=\"..\" start-storybook -p 6006",
+    "build-storybook": "STORYBOOK_UI=material build-storybook -o docs/storybook-material && STORYBOOK_UI=bootstrap build-storybook -o docs/storybook-bootstrap"
   },
   "husky": {
     "hooks": {
