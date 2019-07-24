@@ -8,51 +8,73 @@ import Users from 'meteor/vulcan:users';
 const test = it; // TODO: just before we switch to jest
 
 // stub collection
-import { 
-    getDefaultResolvers, 
-    getDefaultMutations,
-    addCallback,
-    removeAllCallbacks,
+import {
+  getDefaultResolvers,
+  getDefaultMutations,
+  addCallback,
+  removeAllCallbacks, createCollection,
 } from 'meteor/vulcan:core';
 import {
     isoCreateCollection,
     initServerTest
 } from 'meteor/vulcan:test';
 
+const createDummyCollection = (typeName, schema) =>
+  createCollection({
+    collectionName: typeName + 's',
+    typeName,
+    schema,
+    resolvers: getDefaultResolvers(typeName + 's'),
+    mutations: getDefaultMutations(typeName + 's'),
+  });
+const foo2Schema = {
+  _id: {
+    type: String,
+    canRead: ['guests'],
+    optional: true,
+  },
+  foo2: {
+    type: String,
+    canCreate: ['guests'],
+    canRead: ['guests'],
+    canUpdate: ['guests'],
+  },
+};
+let Foo2s = createDummyCollection('Foo2', foo2Schema);
+
 describe('vulcan:lib/mutators', function(){
 
-    let Foos;
     let defaultParams;
     before(async function () {
         initServerTest();
-
-        Foos = await isoCreateCollection({
-          collectionName: 'Foo2s',
-          typeName: 'Foo2',
-          schema: {
-            _id: {
-              type: String,
-              canRead: ['guests'],
-              optional: true,
-            },
-            foo: {
-              type: String,
-              canCreate: ['guests'],
-              canRead: ['guests'],
-              canUpdate: ['guests'],
-            },
+  
+      /*Foo2s = await isoCreateCollection({
+        collectionName: 'Foo2s',
+        typeName: 'Foo2',
+        schema: {
+          _id: {
+            type: String,
+            canRead: ['guests'],
+            optional: true,
           },
-          resolvers: getDefaultResolvers('Foo2s'),
-          mutations: getDefaultMutations('Foo2s'),
-        });
+          foo: {
+            type: String,
+            canCreate: ['guests'],
+            canRead: ['guests'],
+            canUpdate: ['guests'],
+          },
+        },
+        resolvers: getDefaultResolvers('Foo2s'),
+        mutations: getDefaultMutations('Foo2s'),
+      });*/
     });
     beforeEach(function () {
         removeAllCallbacks('foo2.create.after');
         removeAllCallbacks('foo2.create.before');
         removeAllCallbacks('foo2.create.async');
         defaultParams = {
-            collection: Foos,
-            document: { foo: 'bar' },
+            collection: Foo2s,
+            document: { foo2: 'bar' },
             currentUser: null,
             validate: () => true,
             context: {

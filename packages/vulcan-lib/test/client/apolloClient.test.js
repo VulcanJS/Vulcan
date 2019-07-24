@@ -1,50 +1,50 @@
-import expect from 'jest';
+import expect from 'expect';
 import {
-  registerDefault,
-  getDefaults,
-  registerMutation,
-  getMutations,
-  getResolvers,
+  registerStateLinkDefault,
+  getStateLinkDefaults,
+  registerStateLinkMutation,
+  getStateLinkMutations,
+  getStateLinkResolvers,
   createStateLink,
   createApolloClient,
 } from '../../lib/client/main.js';
 if (Meteor.isClient) {
-  describe('vulcan-lib/apolloClient', function() {
+  describe('vulcan-lib/apolloClient', function () {
     describe('apollo-state-link', () => {
-      it('register and retrieve a mutation', function() {
-        const dummyMutation = () => {};
-        registerMutation({
+      it('registerStateLink and retrieve a mutation', function () {
+        const dummyMutation = () => { };
+        registerStateLinkMutation({
           name: 'dummyMutation',
           mutation: dummyMutation,
         });
-        const mutations = getMutations();
+        const mutations = getStateLinkMutations();
         expect(mutations['dummyMutation']).toEqual(dummyMutation);
       });
-      it('register and retrieve a default value', function() {
-        const dummyDefault = () => {};
-        registerDefault({
+      it('register and retrieve a default value', function () {
+        const dummyDefault = () => { };
+        registerStateLinkDefault({
           name: 'dummyDefault',
           defaultValue: dummyDefault,
         });
-        const defaults = getDefaults();
+        const defaults = getStateLinkDefaults();
         expect(defaults['dummyDefault']).toEqual(dummyDefault);
       });
-      it('register mutation and get resolvers', function() {
-        const dummyMutation = () => {};
-        registerMutation({
+      it('register mutation and get resolvers', function () {
+        const dummyMutation = () => { };
+        registerStateLinkMutation({
           name: 'dummyMutation',
           mutation: dummyMutation,
         });
-        const resolvers = getResolvers();
+        const resolvers = getStateLinkResolvers();
         expect(resolvers.Mutation['dummyMutation']).toEqual(dummyMutation);
       });
       it('create a stateLink', () => {
-        const stateLink = createStateLink();
+        const stateLink = createStateLink({});
         expect(stateLink).toBeDefined();
       });
     });
-    describe('apollo-client', function() {
-      it('create a client', function() {
+    describe('apollo-client', function () {
+      it.skip('create a client', function () {
         const apolloClient = createApolloClient();
         expect(apolloClient).toBeDefined();
       });
