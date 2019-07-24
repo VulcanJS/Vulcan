@@ -8,8 +8,9 @@ import './accounts/AccountsSocialButtons';
 
 import './bonus/LoadMore';
 import './bonus/SearchInput';
-import './bonus/TooltipIntl';
+import './bonus/TooltipButton';
 import './bonus/TooltipIconButton';
+import './bonus/TooltipIntl';
 
 import './core/Avatar';
 import './core/Card';
