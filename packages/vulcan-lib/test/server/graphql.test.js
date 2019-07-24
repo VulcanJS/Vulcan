@@ -250,6 +250,23 @@ describe('vulcan:lib/graphql', function () {
     });
 
     describe('enums', () => {
+      test('don\'t generate enum type when some values are not allowed', () => {
+        const collection = makeDummyCollection({
+          withAllowedField: {
+            type: String,
+            canRead: ['admins'],
+            allowedValues: ['français', 'bar'] // "ç" is not accepted, Enum must be a name
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { withAllowedField: String }');
+        expect(normalizedSchema).not.toMatch('type Foo { withAllowedField: FooWithAllowedFieldEnum }');
+        expect(normalizedSchema).not.toMatch('enum FooWithAllowedFieldEnum { français bar }');
+      });
       test('generate enum type when allowedValues is defined and field is a string', () => {
         const collection = makeDummyCollection({
           withAllowedField: {

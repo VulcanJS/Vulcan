@@ -1,6 +1,7 @@
 /**
  * Generate graphQL types for the fields of a Vulcan schema
  */
+/* eslint-disable no-console */
 import { isIntlField } from '../intl.js';
 import {
   hasAllowedValues,
@@ -13,6 +14,11 @@ const capitalize = (word) => {
   const [first, ...rest] = word;
   return [first.toUpperCase(), ...rest].join('');
 };
+
+// @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
+// @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
+const isValidName = (name) => name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
+const isValidEnum = (values) => !values.find((val => !isValidName(val)));
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
 export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}`;
@@ -39,7 +45,7 @@ export const getGraphQLType = ({
 
   switch (fieldTypeName) {
     case 'String':
-      if (hasAllowedValues(field)) {
+      if (hasAllowedValues(field) && isValidEnum(getAllowedValues(field))) {
         return getEnumType(typeName, fieldName);
       }
       return 'String';
@@ -283,10 +289,20 @@ export const getSchemaFields = (schema, typeName) => {
 
       // if field has allowedValues, add enum type
       if (hasAllowedValues(field)) {
-        enumFieldsList.push({
-          allowedValues: getAllowedValues(field),
-          typeName: getEnumType(typeName, fieldName)
-        });
+        const allowedValues = getAllowedValues(field);
+        // TODO: we can't force value creation
+        //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${fieldName} can not be used as enum.
+        //One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/.`)//;
+
+        // ignore arrays containing invalid values
+        if (isValidEnum(allowedValues)) {
+          enumFieldsList.push({//
+            allowedValues,
+            typeName: getEnumType(typeName, fieldName)
+          });
+        } else {
+          console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
+        }
       }
 
       const permissionsFields = getPermissionFields({ field, fieldName, inputFieldType });
