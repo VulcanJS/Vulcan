@@ -3,12 +3,13 @@
  */
 import { addDecorator, configure } from '@storybook/react';
 
-// init UI using a Decorator
-import MaterialUIDecorator from './decorators/MaterialUIDecorator'
 
 if (process.env.STORYBOOK_UI === 'material') {
+  // init UI using a Decorator
+  const MaterialUIDecorator = require('./decorators/MaterialUIDecorator').default
   addDecorator(MaterialUIDecorator)
 } else {
+  const BootstrapDecorator = require('./decorators/BootstrapDecorator').default
   addDecorator(BootstrapDecorator);
 }
 
