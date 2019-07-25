@@ -17,7 +17,12 @@ const capitalize = (word) => {
 
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
-const isValidName = (name) => name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
+const isValidName = (name) => {
+  if (typeof name !== 'string') {
+    throw new Error(`Allowed value of field of type String is not a string (value: ${name}, type:${typeof name})`);
+  }
+  return name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
+};
 const isValidEnum = (values) => !values.find((val => !isValidName(val)));
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
@@ -286,6 +291,7 @@ export const getSchemaFields = (schema, typeName) => {
           });
         }
       }
+
 
       // if field has allowedValues, add enum type
       if (hasAllowedValues(field)) {

@@ -187,12 +187,17 @@ const collectionToGraphQL = (collection) => {
             mainTypeTemplate({ typeName, description, interfaces, fields: mainType })
         );
         // the schema may produce a list of additional graphQL types for nested arrays/objects
+        // TODO: factorize to use the same function as for non nested fields
         if (nestedFieldsList) {
-            for (const { fields: nestedFields, typeName: nestedTypeName } of nestedFieldsList) {
+            for (const { fields: nestedFields, enumFieldsList: nestedEnumFieldsList, typeName: nestedTypeName } of nestedFieldsList) {
                 const { mainType: nestedMainType } = nestedFields;
                 schemaFragments.push(mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
+                if (nestedEnumFieldsList) {
+                    for (const { allowedValues, typeName: enumTypeName } of nestedEnumFieldsList) {
+                        schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
+                    }
+                }
                 // TODO: should we handle create, delete, etc. too for nested fields?
-                //console.log('nested schema', mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
             }
         }
         if (enumFieldsList) {

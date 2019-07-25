@@ -267,6 +267,16 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).not.toMatch('type Foo { withAllowedField: FooWithAllowedFieldEnum }');
         expect(normalizedSchema).not.toMatch('enum FooWithAllowedFieldEnum { français bar }');
       });
+      test('fail when allowedValues are not string', () => {
+        const collection = makeDummyCollection({
+          withAllowedField: {
+            type: String,
+            canRead: ['admins'],
+            allowedValues: [0, 1] // "ç" is not accepted, Enum must be a name
+          }
+        });
+        expect(() => collectionToGraphQL(collection)).toThrow();
+      });
       test('generate enum type when allowedValues is defined and field is a string', () => {
         const collection = makeDummyCollection({
           withAllowedField: {
@@ -306,6 +316,45 @@ describe('vulcan:lib/graphql', function () {
           expect(normalizedSchema).toMatch('enum FooNestedFieldWithAllowedFieldEnum { foo bar }');
         });
 
+      });
+
+      test('2 level of nesting', () => {
+        const collection = makeDummyCollection({
+          entrepreneurLifeCycleHistory: {
+            type: Array,
+            optional: true,
+            canRead: ['admins', 'mods'],
+            //onUpdate: entLifecycleHistoryOnUpdate,
+          },
+          'entrepreneurLifeCycleHistory.$': {
+            type: new SimpleSchema(
+              {
+                entrepreneurLifeCycleState: {
+                  type: String,
+                  // canCreate: ['admins', 'mods'],
+                  canRead: ['admins', 'mods'],
+                  // canUpdate: ['admins', 'mods'],
+                  input: 'select',
+                  options: [
+                    { value: 'booster', label: 'Booster' },
+                    { value: 'explorer', label: 'Explorer' },
+                    { value: 'starter', label: 'Starter' },
+                    { value: 'tester', label: 'Tester' },
+                  ],
+                  allowedValues: ['booster', 'explorer', 'starter', 'tester'],
+                },
+              }
+            )
+          },
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { entrepreneurLifeCycleHistory: [FooEntrepreneurLifeCycleHistory]');
+        expect(normalizedSchema).toMatch('type FooEntrepreneurLifeCycleHistory { entrepreneurLifeCycleState: FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum');
+        expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
     });
   });
