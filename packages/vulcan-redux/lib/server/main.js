@@ -1,4 +1,3 @@
-import setupRedux from './setupRedux';
-setupRedux();
+export setupRedux from './setupRedux';
 
 export * from '../modules/index';

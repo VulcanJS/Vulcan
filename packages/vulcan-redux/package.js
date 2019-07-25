@@ -13,3 +13,9 @@ Package.onUse(function(api) {
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
 });
+
+Package.onTest(function(api) {
+  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:core']);
+  api.mainModule('./test/index.js');
+  api.mainModule('./test/server/index.js', 'server');
+});

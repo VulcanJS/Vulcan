@@ -88,6 +88,10 @@ vulcan:email@1.13.0
 vulcan:i18n@1.13.0
 vulcan:i18n-en-us@1.13.0
 vulcan:lib@1.13.0
+<<<<<<< HEAD
+=======
+vulcan:ui-bootstrap@1.13.0
+>>>>>>> ad7c547a587ee53e05bc971c09de21bd553a7f90
 vulcan:users@1.13.0
 webapp@1.7.3
 webapp-hashing@1.0.9
