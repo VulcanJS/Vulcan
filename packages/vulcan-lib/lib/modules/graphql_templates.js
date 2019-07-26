@@ -27,8 +27,10 @@ export const getArguments = args => {
 // `${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
 
 // version that does not make any fields required
-export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-  `${description ? `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
+export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') => {
+  return `${description ? `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
+
+};
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
@@ -337,6 +339,10 @@ export const deleteMutationTemplate = ({ typeName }) =>
 
 // note: not currently used
 
+export const nestedInputTemplate = ({ typeName, fields }) =>
+  `input ${typeName}Input {
+  ${convertToGraphQL(fields, '  ')}
+}`;
 /*
 
 Type for create mutation input argument

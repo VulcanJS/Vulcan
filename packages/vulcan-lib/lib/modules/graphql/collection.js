@@ -27,7 +27,8 @@ import {
     updateMutationTemplate,
     upsertMutationTemplate,
     deleteMutationTemplate,
-    enumTypeTemplate
+    enumTypeTemplate,
+    nestedInputTemplate
 } from '../graphql_templates.js';
 
 import { Utils } from '../utils.js';
@@ -182,6 +183,10 @@ const generateSchemaFragments = ({ typeName, description, interfaces = [], field
         for (const { allowedValues, typeName: enumTypeName } of enums) {
             schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
         }
+    }
+    if (isNested) {
+        schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));
+        return schemaFragments; // return now
     }
     schemaFragments.push(deleteInputTemplate({ typeName }));
     schemaFragments.push(singleInputTemplate({ typeName }));

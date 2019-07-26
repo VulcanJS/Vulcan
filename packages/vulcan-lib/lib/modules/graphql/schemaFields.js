@@ -26,7 +26,7 @@ const isValidName = (name) => {
 const isValidEnum = (values) => !values.find((val => !isValidName(val)));
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
-export const getNestedGraphQLType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}`;
+export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
 export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
@@ -73,7 +73,8 @@ export const getGraphQLType = ({
         const arrayItemType = getGraphQLType({
           schema,
           fieldName: arrayItemFieldName,
-          typeName
+          typeName,
+          isInput
         });
         return arrayItemType ? `[${arrayItemType}]` : null;
       }
@@ -82,7 +83,7 @@ export const getGraphQLType = ({
     case 'Object':
       // 2 cases: it's an actual JSON or a nested schema
       if (!field.blackbox && fieldType._schema) {
-        return getNestedGraphQLType(typeName, fieldName);
+        return getNestedGraphQLType(typeName, fieldName, isInput);
       }
       // blackbox JSON object
       return 'JSON';
@@ -323,9 +324,11 @@ export const getSchemaFields = (schema, typeName) => {
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
         const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
+        //const nestedInputTypeName = `${nestedTypeName}Input`;
         const nestedFields = getSchemaFields(nestedSchema, nestedTypeName);
         // add the generated typeName to the info
         nestedFields.typeName = nestedTypeName;
+        //nestedFields.inputTypeName = nestedInputTypeName;
         nestedFieldsList.push(nestedFields);
       }
       // check if field is an array of objects
