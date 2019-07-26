@@ -209,6 +209,27 @@ describe('vulcan:lib/graphql', function () {
       const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
       expect(normalizedSchema).toMatch('type Foo { field: String }');
     });
+    test('generate a type for a field with resolveAs', () => {
+      const collection = makeDummyCollection({
+        field: {
+          type: String,
+          canRead: ['admins'],
+          resolveAs: {
+            fieldName: 'field',
+            type: 'Bar',
+            resolver: async (user, args, { Users }) => {
+              return 'bar';
+            },
+          },
+        }
+      });
+      const res = collectionToGraphQL(collection);
+      expect(res.graphQLSchema).toBeDefined();
+      // debug
+      //console.log(res.graphQLSchema);
+      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+      expect(normalizedSchema).toMatch('type Foo { field: Bar }');
+    });
     test('generate type for a nested field', () => {
       const collection = makeDummyCollection({
         nestedField: {

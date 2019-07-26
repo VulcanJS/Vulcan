@@ -172,7 +172,7 @@ export const getResolveAsFields = ({
       directive: fieldDirective,
     });
   }
-  return fields;
+  return { fields, resolvers };
 };
 
 // handle querying/updating permissions
@@ -274,11 +274,11 @@ export const getSchemaFields = (schema, typeName) => {
 
       // if field has a resolveAs, push it to schema
       if (field.resolveAs) {
-        const resolveAsFields = getResolveAsFields({
+        const { fields: resolveAsFields, resolvers: resolveAsResolvers } = getResolveAsFields({
           typeName, field, fieldName, fieldType, fieldDescription, fieldDirective, fieldArguments
         });
-        resolvers.concat(resolveAsFields.resolvers);
-        fields.mainType.concat(resolveAsFields.mainType);
+        resolvers.push(...resolveAsResolvers);
+        fields.mainType.push(...resolveAsFields.mainType);
       } else {
         // try to guess GraphQL type
         if (fieldType) {
@@ -312,11 +312,11 @@ export const getSchemaFields = (schema, typeName) => {
       }
 
       const permissionsFields = getPermissionFields({ field, fieldName, inputFieldType });
-      fields.create.concat(permissionsFields.create);
-      fields.update.concat(permissionsFields.update);
-      fields.selector.concat(permissionsFields.selector);
-      fields.selectorUnique.concat(permissionsFields.selectorUnique);
-      fields.orderBy.concat(permissionsFields.orderBy);
+      fields.create.push(...permissionsFields.create);
+      fields.update.push(...permissionsFields.update);
+      fields.selector.push(...permissionsFields.selector);
+      fields.selectorUnique.push(...permissionsFields.selectorUnique);
+      fields.orderBy.push(...permissionsFields.orderBy);
 
       // check for nested fields
       if (isNestedObjectField(field)) {

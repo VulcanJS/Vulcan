@@ -215,6 +215,7 @@ const collectionToGraphQL = (collection) => {
         if (create.length) {
             schemaFragments.push(createInputTemplate({ typeName }));
             schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
+            console.log(schemaFragments.slice(-2));
         }
 
         if (update.length) {
