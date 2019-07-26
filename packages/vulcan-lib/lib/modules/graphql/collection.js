@@ -169,6 +169,49 @@ const createMutations = ({ mutations, typeName, collectionName, fields }) => {
     return { mutationsResolversToAdd, mutationsToAdd };
 };
 
+
+// generate types, input and enums
+const generateSchemaFragments = ({ typeName, description, interfaces = [], fields, isNested = false }) => {
+    const schemaFragments = [];
+    const { mainType, create, update, selector, selectorUnique, orderBy, enums } = fields;
+    schemaFragments.push(
+        mainTypeTemplate({ typeName, description, interfaces, fields: mainType })
+    );
+
+    if (enums) {
+        for (const { allowedValues, typeName: enumTypeName } of enums) {
+            schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
+        }
+    }
+    schemaFragments.push(deleteInputTemplate({ typeName }));
+    schemaFragments.push(singleInputTemplate({ typeName }));
+    schemaFragments.push(multiInputTemplate({ typeName }));
+    schemaFragments.push(singleOutputTemplate({ typeName }));
+    schemaFragments.push(multiOutputTemplate({ typeName }));
+    schemaFragments.push(mutationOutputTemplate({ typeName }));
+
+    if (create.length) {
+        schemaFragments.push(createInputTemplate({ typeName }));
+        schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
+    }
+
+    if (update.length) {
+        schemaFragments.push(updateInputTemplate({ typeName }));
+        schemaFragments.push(upsertInputTemplate({ typeName }));
+        schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
+    }
+
+    schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
+
+    schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
+
+    schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
+
+
+
+    return schemaFragments;
+
+};
 const collectionToGraphQL = (collection) => {
     let graphQLSchema = '';
     const schemaFragments = [];
@@ -178,59 +221,30 @@ const collectionToGraphQL = (collection) => {
         interfaces = [], resolvers, mutations
     } = getCollectionInfos(collection);
 
-    const { nestedFieldsList, enumFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
+    const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
 
-    const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
+    const { mainType } = fields;
 
     if (mainType.length) {
-        schemaFragments.push(
-            mainTypeTemplate({ typeName, description, interfaces, fields: mainType })
-        );
-        // the schema may produce a list of additional graphQL types for nested arrays/objects
+        schemaFragments.push(...generateSchemaFragments({
+            typeName,
+            description,
+            interfaces,
+            fields,
+            isNested: false,
+        }));
+        /* NESTED */
         // TODO: factorize to use the same function as for non nested fields
+        // the schema may produce a list of additional graphQL types for nested arrays/objects
         if (nestedFieldsList) {
-            for (const { fields: nestedFields, enumFieldsList: nestedEnumFieldsList, typeName: nestedTypeName } of nestedFieldsList) {
-                const { mainType: nestedMainType } = nestedFields;
-                schemaFragments.push(mainTypeTemplate({ typeName: nestedTypeName, fields: nestedMainType }));
-                if (nestedEnumFieldsList) {
-                    for (const { allowedValues, typeName: enumTypeName } of nestedEnumFieldsList) {
-                        schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
-                    }
-                }
-                // TODO: should we handle create, delete, etc. too for nested fields?
+            for (const nestedFields of nestedFieldsList) {
+                schemaFragments.push(...generateSchemaFragments({
+                    typeName: nestedFields.typeName,
+                    fields: nestedFields.fields,
+                    isNested: true
+                }));
             }
         }
-        if (enumFieldsList) {
-            for (const { allowedValues, typeName: enumTypeName } of enumFieldsList) {
-                schemaFragments.push(enumTypeTemplate({ typeName: enumTypeName, allowedValues }));
-            }
-        }
-        schemaFragments.push(deleteInputTemplate({ typeName }));
-        schemaFragments.push(singleInputTemplate({ typeName }));
-        schemaFragments.push(multiInputTemplate({ typeName }));
-        schemaFragments.push(singleOutputTemplate({ typeName }));
-        schemaFragments.push(multiOutputTemplate({ typeName }));
-        schemaFragments.push(mutationOutputTemplate({ typeName }));
-
-        if (create.length) {
-            schemaFragments.push(createInputTemplate({ typeName }));
-            schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
-            console.log(schemaFragments.slice(-2));
-        }
-
-        if (update.length) {
-            schemaFragments.push(updateInputTemplate({ typeName }));
-            schemaFragments.push(upsertInputTemplate({ typeName }));
-            schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
-        }
-
-        schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
-
-        schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
-
-        schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
-
-
 
         const { queriesToAdd, resolversToAdd } = createResolvers({ resolvers, typeName });
         const { mutationsToAdd,

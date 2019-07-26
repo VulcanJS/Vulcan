@@ -211,7 +211,7 @@ type SingleMovieOuput{
 
 */
 export const singleOutputTemplate = ({ typeName }) =>
-  `type Single${typeName}Output{
+  `type Single${typeName}Output {
   result: ${typeName}
 }`;
 
@@ -226,7 +226,7 @@ type MultiMovieOuput{
 
 */
 export const multiOutputTemplate = ({ typeName }) =>
-  `type Multi${typeName}Output{
+  `type Multi${typeName}Output {
   results: [${typeName}]
   totalCount: Int
 }`;
@@ -347,7 +347,7 @@ type CreateMovieInput {
 
 */
 export const createInputTemplate = ({ typeName }) =>
-  `input Create${typeName}Input{
+  `input Create${typeName}Input {
   data: Create${typeName}DataInput!
 }`;
 
@@ -362,7 +362,7 @@ type UpdateMovieInput {
 
 */
 export const updateInputTemplate = ({ typeName }) =>
-  `input Update${typeName}Input{
+  `input Update${typeName}Input {
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -380,7 +380,7 @@ type UpsertMovieInput {
 
 */
 export const upsertInputTemplate = ({ typeName }) =>
-  `input Upsert${typeName}Input{
+  `input Upsert${typeName}Input {
   selector: ${typeName}SelectorUniqueInput!
   data: Update${typeName}DataInput!
 }`;
@@ -395,7 +395,7 @@ type DeleteMovieInput {
 
 */
 export const deleteInputTemplate = ({ typeName }) =>
-  `input Delete${typeName}Input{
+  `input Delete${typeName}Input {
   selector: ${typeName}SelectorUniqueInput!
 }`;
 
@@ -441,7 +441,7 @@ type MovieOutput {
 
 */
 export const mutationOutputTemplate = ({ typeName }) =>
-  `type ${typeName}Output{
+  `type ${typeName}Output {
   data: ${typeName}
 }`;
 

@@ -378,6 +378,77 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
     });
+
+    describe('mutation inputs', () => {
+      test('generate creation input', () => {
+        const collection = makeDummyCollection({
+          field: {
+            type: String,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('input CreateFooInput { data: CreateFooDataInput! }');
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { field: String }');
+      });
+      test('generate inputs for nested objects', () => {
+        const collection = makeDummyCollection({
+          nestedField: {
+            type: new SimpleSchema({
+              someField: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+              }
+            }),
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% of the expected result
+        expect(normalizedSchema).toMatch('input CreateFooInput { data: CreateFooInputData! }');
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { nestedField: FooNestedFieldInput }');
+        expect(normalizedSchema).toMatch('input FooNestedFieldInput { someField: String }');
+      });
+      test('generate inputs for array of nested objects', () => {
+        const collection = makeDummyCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            type: new SimpleSchema({
+              someField: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+              }
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% sure of the syntax
+        expect(normalizedSchema).toMatch('input CreateFooInput { data: CreateFooInputData! }');
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayFieldField: [FooArrayFieldInput] }');
+        expect(normalizedSchema).toMatch('input FooArrayFieldInput { someField: String }');
+      });
+
+
+    });
   });
 
   describe('default fragment generation', () => {

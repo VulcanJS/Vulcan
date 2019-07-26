@@ -252,9 +252,9 @@ export const getSchemaFields = (schema, typeName) => {
     selector: [],
     selectorUnique: [],
     orderBy: [],
+    enums: []
   };
   const nestedFieldsList = [];
-  const enumFieldsList = [];
   const resolvers = [];
 
   Object.keys(schema).forEach(fieldName => {
@@ -302,7 +302,7 @@ export const getSchemaFields = (schema, typeName) => {
 
         // ignore arrays containing invalid values
         if (isValidEnum(allowedValues)) {
-          enumFieldsList.push({//
+          fields.enums.push({//
             allowedValues,
             typeName: getEnumType(typeName, fieldName)
           });
@@ -344,7 +344,6 @@ export const getSchemaFields = (schema, typeName) => {
   return {
     fields,
     nestedFieldsList,
-    enumFieldsList,
     resolvers
   };
 };
