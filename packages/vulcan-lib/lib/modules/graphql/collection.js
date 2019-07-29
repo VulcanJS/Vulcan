@@ -186,6 +186,29 @@ const generateSchemaFragments = ({ typeName, description, interfaces = [], field
     }
     if (isNested) {
         schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));
+        //schemaFragments.push(deleteInputTemplate({ typeName }));
+        //schemaFragments.push(singleInputTemplate({ typeName }));
+        //schemaFragments.push(multiInputTemplate({ typeName }));
+        //schemaFragments.push(singleOutputTemplate({ typeName }));
+        //schemaFragments.push(multiOutputTemplate({ typeName }));
+        //schemaFragments.push(mutationOutputTemplate({ typeName }));
+
+        if (create.length) {
+            //   schemaFragments.push(createInputTemplate({ typeName }));
+            schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
+        }
+
+        if (update.length) {
+            //        schemaFragments.push(updateInputTemplate({ typeName }));
+            //      schemaFragments.push(upsertInputTemplate({ typeName }));
+            schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
+        }
+
+        //   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
+
+        //    schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
+
+        //    schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
         return schemaFragments; // return now
     }
     schemaFragments.push(deleteInputTemplate({ typeName }));

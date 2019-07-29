@@ -176,11 +176,26 @@ export const getResolveAsFields = ({
   return { fields, resolvers };
 };
 
+
+// [Foo] => [CreateFoo]
+const prefixType = (prefix, type) => {
+  if (!(type && type.length)) return type;
+  if (type[0] === '[') return `[${prefix}${type.slice(1, -1)}]`;
+  return prefix + type;
+};
+// [Foo] => [FooDataDinput]
+const suffixType = (type, suffix) => {
+  if (!(type && type.length)) return type;
+  if (type[0] === '[') return `[${type.slice(1, -1)}${suffix}]`;
+  return type + suffix;
+};
 // handle querying/updating permissions
 export const getPermissionFields = ({
   field,
   fieldName,
+  fieldType,
   inputFieldType,
+  hasNesting = false
 }) => {
   const fields = {
     create: [],
@@ -189,11 +204,14 @@ export const getPermissionFields = ({
     selectorUnique: [],
     orderBy: [],
   };
+  const createInputFieldType = hasNesting ? suffixType(prefixType('Create', fieldType), 'DataInput') : inputFieldType;
+  const updateInputFieldType = hasNesting ? suffixType(prefixType('Update', fieldType), 'DataInput') : inputFieldType;
+
   // OpenCRUD backwards compatibility
   if (field.canCreate || field.insertableBy) {
     fields.create.push({
       name: fieldName,
-      type: inputFieldType,
+      type: createInputFieldType,
       required: !field.optional,
     });
   }
@@ -201,7 +219,7 @@ export const getPermissionFields = ({
   if (field.canUpdate || field.editableBy) {
     fields.update.push({
       name: fieldName,
-      type: inputFieldType,
+      type: updateInputFieldType,
     });
   }
 
@@ -210,15 +228,15 @@ export const getPermissionFields = ({
   // TODO: delete if not needed
   // if (isIntlField(field)) {
   //   // fields.mainType.push({
-  //   //   name: `${fieldName}_intl`,
+  //   //   name: `${ fieldName } _intl`,
   //   //   type: '[IntlValue]',
   //   // });
   //   fields.create.push({
-  //     name: `${fieldName}_intl`,
+  //     name: `${ fieldName } _intl`,
   //     type: '[IntlValueInput]',
   //   });
   //   fields.update.push({
-  //     name: `${fieldName}_intl`,
+  //     name: `${ fieldName } _intl`,
   //     type: '[IntlValueInput]',
   //   });
   // }
@@ -263,6 +281,10 @@ export const getSchemaFields = (schema, typeName) => {
     const fieldType = getGraphQLType({ schema, fieldName, typeName });
     const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
+    const isNestedObject = isNestedObjectField(field);
+    const isNestedArray = hasArrayNestedChild(fieldName, schema);
+    const hasNesting = isNestedObject || isNestedArray;
+
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
     // OpenCRUD backwards compatibility
@@ -298,7 +320,7 @@ export const getSchemaFields = (schema, typeName) => {
       if (hasAllowedValues(field)) {
         const allowedValues = getAllowedValues(field);
         // TODO: we can't force value creation
-        //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${fieldName} can not be used as enum.
+        //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${ fieldName } can not be used as enum.
         //One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/.`)//;
 
         // ignore arrays containing invalid values
@@ -312,7 +334,7 @@ export const getSchemaFields = (schema, typeName) => {
         }
       }
 
-      const permissionsFields = getPermissionFields({ field, fieldName, inputFieldType });
+      const permissionsFields = getPermissionFields({ field, fieldName, fieldType, inputFieldType, hasNesting });
       fields.create.push(...permissionsFields.create);
       fields.update.push(...permissionsFields.update);
       fields.selector.push(...permissionsFields.selector);
@@ -320,7 +342,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.orderBy.push(...permissionsFields.orderBy);
 
       // check for nested fields
-      if (isNestedObjectField(field)) {
+      if (isNestedObject) {
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
         const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
@@ -332,7 +354,7 @@ export const getSchemaFields = (schema, typeName) => {
         nestedFieldsList.push(nestedFields);
       }
       // check if field is an array of objects
-      if (hasArrayNestedChild(fieldName, schema)) {
+      if (isNestedArray) {
         //console.log('detected a field with an array child', fieldName);
         const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
         const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
