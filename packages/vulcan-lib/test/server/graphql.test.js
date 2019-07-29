@@ -209,27 +209,6 @@ describe('vulcan:lib/graphql', function () {
       const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
       expect(normalizedSchema).toMatch('type Foo { field: String }');
     });
-    test('generate a type for a field with resolveAs', () => {
-      const collection = makeDummyCollection({
-        field: {
-          type: String,
-          canRead: ['admins'],
-          resolveAs: {
-            fieldName: 'field',
-            type: 'Bar',
-            resolver: async (user, args, { Users }) => {
-              return 'bar';
-            },
-          },
-        }
-      });
-      const res = collectionToGraphQL(collection);
-      expect(res.graphQLSchema).toBeDefined();
-      // debug
-      //console.log(res.graphQLSchema);
-      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-      expect(normalizedSchema).toMatch('type Foo { field: Bar }');
-    });
     test('generate type for a nested field', () => {
       const collection = makeDummyCollection({
         nestedField: {
@@ -268,6 +247,55 @@ describe('vulcan:lib/graphql', function () {
       const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
       expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
       expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
+    });
+
+
+    describe('resolveAs', () => {
+      test('generate a type for a field with resolveAs', () => {
+        const collection = makeDummyCollection({
+          field: {
+            type: String,
+            canRead: ['admins'],
+            resolveAs: {
+              fieldName: 'field',
+              type: 'Bar',
+              resolver: async (user, args, { Users }) => {
+                return 'bar';
+              },
+            },
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { field: Bar }');
+      });
+      test('generate a type for a field with addOriginalField=true', () => {
+
+        const collection = makeDummyCollection({
+          field: {
+            type: String,
+            optional: true,
+            canRead: ['admins'],
+            resolveAs: {
+              fieldName: 'resolvedField',
+              type: 'Bar',
+              resolver: (collection, args, context) => {
+                return 'bar';
+              },
+              addOriginalField: true,
+            }
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { resolvedField: Bar field: String }');
+      });
     });
 
     describe('enums', () => {
