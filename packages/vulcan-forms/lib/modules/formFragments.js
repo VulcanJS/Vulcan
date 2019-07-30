@@ -1,4 +1,4 @@
-import _unique from 'lodash/unique';
+import _uniq from 'lodash/uniq';
 import _intersection from 'lodash/intersection';
 import gql from 'graphql-tag';
 import {
@@ -6,6 +6,9 @@ import {
     getCreateableFields,
     getUpdateableFields
 } from '../modules/schema_utils';
+import {
+    Utils,
+} from 'meteor/vulcan:core';
 const intlSuffix = '_intl';
 
 // NewFoobarFormFragment || EditFoobarFormFragment
@@ -23,6 +26,7 @@ const getFragmentName = (formType, collectionName) => {
 const getFormFragments = ({
     formType = 'new', // new || edit
     collectionName,
+    typeName,
     schema,
     fields, // restrict on certain fields
     addFields, // add additional fields (eg to display static fields)
@@ -35,7 +39,7 @@ const getFormFragments = ({
         ? getCreateableFields(schema)
         : getUpdateableFields(schema);
     // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
-    let mutationFields = _unique(queryFields.concat(readableFields));
+    let mutationFields = _uniq(queryFields.concat(readableFields));
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
@@ -60,7 +64,7 @@ const getFormFragments = ({
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     // TODO: support nesting
     const generatedQueryFragment = gql`
-      fragment ${fragmentName} on ${this.props.typeName} {
+      fragment ${fragmentName} on ${typeName} {
         _id
         ${queryFields.map(convertFields).join('\n')}
       }
@@ -69,7 +73,7 @@ const getFormFragments = ({
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     // TODO: support nesting
     const generatedMutationFragment = gql`
-      fragment ${fragmentName} on ${this.props.typeName} {
+      fragment ${fragmentName} on ${typeName} {
         _id
         ${mutationFields.map(convertFields).join('\n')}
       }

@@ -1,4 +1,5 @@
 import expect from 'expect';
+import { print } from 'graphql/language/printer';
 
 import SimpleSchema from 'simpl-schema';
 import getFormFragments from '../lib/modules/formFragments';
@@ -6,11 +7,12 @@ const test = it;
 
 // allow to easily test regex on a graphql string
 // all blanks and series of blanks are replaces by one single space
-const normalizeGraphQLSchema = gqlSchema => gqlSchema.replace(/\s+/g, ' ').trim();
+const normalizeFragment = gqlSchema => print(gqlSchema).replace(/\s+/g, ' ').trim();
 
 const defaultArgs = {
     formType: 'new',
-    collectionName: 'Foos'
+    collectionName: 'Foos',
+    typeName: 'Foo'
 };
 describe('vulcan:form/formFragments', function () {
     test('generate valid query and mutation fragment', () => {
@@ -20,7 +22,7 @@ describe('vulcan:form/formFragments', function () {
                 canRead: ['admins'],
                 canCreate: ['admins']
             },
-            nonCreatetableField: {
+            nonCreateableField: {
                 type: String,
                 canRead: ['admins'],
                 canUpdate: ['admins']
@@ -30,8 +32,10 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeGraphQLSchema(queryFragment)).toMatch('fragment CreateFooFormFragment on Foo { field }');
-        expect(normalizeGraphQLSchema(mutationFragment)).toMatch('fragment CreateFooFormFragment on Foo { field }');
+        expect(queryFragment).toBeDefined();
+        expect(mutationFragment).toBeDefined();
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field nonCreateableField }');
     });
     test('take formType into account', function () {
         const schema = new SimpleSchema({
@@ -41,7 +45,7 @@ describe('vulcan:form/formFragments', function () {
                 canUpdate: ['admins']
             },
             // should not appear
-            nonUpdateablefield: {
+            nonUpdateableField: {
                 type: String,
                 canRead: ['admins'],
                 canCreate: ['admins']
@@ -52,13 +56,14 @@ describe('vulcan:form/formFragments', function () {
             formType: 'edit',
             schema,
         });
-        expect(normalizeGraphQLSchema(queryFragment)).toMatch('fragment CreateFooFormFragment on Foo { field }');
-        expect(normalizeGraphQLSchema(mutationFragment)).toMatch('fragment CreateFooFormFragment on Foo { field }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosEditFormFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosEditFormFragment on Foo { _id field nonUpdateableField }');
 
     });
     test('create subfields for nested objects', () => {
         const schema = new SimpleSchema({
             nestedField: {
+                canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
                         type: String,
@@ -73,8 +78,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeGraphQLSchema(queryFragment)).toMatch('fragment CreateFooFormFragment on Foo { nestedField { firstNestedField secondNestedField } }');
-        expect(normalizeGraphQLSchema(mutationFragment)).toMatch('fragment CreateFooFormFragment on Foo { nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
     });
     test('create subfields for arrays of nested objects', () => {
         const schema = new SimpleSchema({
@@ -83,6 +88,7 @@ describe('vulcan:form/formFragments', function () {
                 canRead: ['admins']
             },
             'arrayField.$': {
+                canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
                         type: String,
@@ -97,8 +103,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeGraphQLSchema(queryFragment)).toMatch('fragment CreateFooFormFragment on Foo { arrayField { firstNestedField secondNestedField } }');
-        expect(normalizeGraphQLSchema(mutationFragment)).toMatch('fragment CreateFooFormFragment on Foo { arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
     });
     test('add readable fields to mutation fragment', () => {
         const schema = new SimpleSchema({
@@ -116,8 +122,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeGraphQLSchema(queryFragment)).not.toMatch('readOnlyField'); // this does not affect the queryFragment;
-        expect(normalizeGraphQLSchema(mutationFragment)).toMatch('fragment CreateFooFormFragment on Foo { field readOnlyField }');
+        expect(normalizeFragment(queryFragment)).not.toMatch('readOnlyField'); // this does not affect the queryFragment;
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field readOnlyField }');
     });
 });
 
