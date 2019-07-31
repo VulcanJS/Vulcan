@@ -1,3 +1,4 @@
+// TODO: refactor to mutualize more code with vulcan-core defaultFragment functions
 import _uniq from 'lodash/uniq';
 import _intersection from 'lodash/intersection';
 import gql from 'graphql-tag';
@@ -20,6 +21,94 @@ const getFragmentName = (formType, collectionName) => {
     return fragmentName;
 };
 
+
+// get modifiable fields in the query either for update or create operations
+const getQueryFieldNames = ({
+    schema,
+    options
+}) => {
+    const queryFields = options.formType === 'new'
+        ? getCreateableFields(schema)
+        : getUpdateableFields(schema);
+    return queryFields;
+};
+// add readable fields to mutation fields
+const getMutationFieldNames = ({
+    readableFieldNames,
+    queryFieldNames
+}) => {
+    return _uniq(queryFieldNames.concat(readableFieldNames));
+};
+
+
+const getFieldFragment = ({ schema, fieldName, options }) => {
+    const field = schema[fieldName];
+    if (!(field && field.type)) return fieldName;
+    const fieldType = field.type.singleType;
+    const fieldTypeName =
+        typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
+
+    switch (fieldTypeName) {
+        // recursive call for nested arrays and objects
+        case 'Object':
+            if (!field.blackbox && fieldType._schema) {
+                return getSchemaFragment({
+                    fragmentName: fieldName,
+                    schema: fieldType._schema,
+                    options
+                }) || null;
+            }
+            return fieldName;
+        case 'Array':
+            const arrayItemFieldName = `${fieldName}.$`;
+            const arrayItemField = schema[arrayItemFieldName];
+            // note: make sure field has an associated array item field
+            if (arrayItemField) {
+                // child will either be native value or a an object (first case)
+                const arrayItemFieldType = arrayItemField.type.singleType;
+                if (!arrayItemField.blackbox && arrayItemFieldType._schema) {
+                    return getSchemaFragment({
+                        fragmentName: fieldName,
+                        schema: arrayItemFieldType._schema,
+                        options
+                    }) || null;
+                }
+            }
+            return fieldName;
+        default:
+            // handle intl or return fieldName
+            return fieldName.slice(-5) === intlSuffix ? `${fieldName}{ locale value }` : fieldName;
+    }
+};
+
+// get fragment for a whole schema (root schema or nested schema of an object or an array)
+const getSchemaFragment = ({
+    schema,
+    fragmentName,
+    options,
+    fieldNames: providedFieldNames
+}) => {
+    // differentiate mutation/query and create/update cases
+    // respect provided fieldNames if any (needed for the root schema)
+    const fieldNames = providedFieldNames || (
+        options.isMutation
+            ? getMutationFieldNames({ queryFieldNames: getQueryFieldNames({ schema, options }), readableFieldNames: getReadableFields(schema) })
+            : getQueryFieldNames({ schema, options })
+    );
+
+    const childFragments = fieldNames.length && fieldNames.map(fieldName => getFieldFragment({
+        schema,
+        fieldName,
+        options
+    }))
+        // remove empty values
+        .filter(f => !!f);
+    if (childFragments.length) {
+        return `${fragmentName} { ${childFragments.join('\n')} }`;
+    }
+    return null;
+};
+
 /**
  * Generate query and mutation fragments for forms
 */
@@ -32,52 +121,49 @@ const getFormFragments = ({
     addFields, // add additional fields (eg to display static fields)
 }) => {
     const fragmentName = getFragmentName(formType, collectionName);
-    const readableFields = getReadableFields(schema);
 
-    // get the values we need for edition
-    let queryFields = formType === 'new'
-        ? getCreateableFields(schema)
-        : getUpdateableFields(schema);
-    // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
-    let mutationFields = _uniq(queryFields.concat(readableFields));
+    // get the root schema fieldNames
+    let queryFieldNames = getQueryFieldNames({ schema, options: { formType } });
+    let mutationFieldNames = getMutationFieldNames({ queryFieldNames, readableFieldNames: getReadableFields(schema) });
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
         // add "_intl" suffix to all fields in case some of them are intl fields
         const fieldsWithIntlSuffix = fields.map(field => `${field}${intlSuffix}`);
         const allFields = [...fields, ...fieldsWithIntlSuffix];
-        queryFields = _intersection(queryFields, allFields);
-        mutationFields = _intersection(mutationFields, allFields);
+        queryFieldNames = _intersection(queryFieldNames, allFields);
+        mutationFieldNames = _intersection(mutationFieldNames, allFields);
     }
 
     // add "addFields" prop contents to list of fields
     if (addFields && addFields.length) {
-        queryFields = queryFields.concat(addFields);
-        mutationFields = mutationFields.concat(addFields);
+        queryFieldNames = queryFieldNames.concat(addFields);
+        mutationFieldNames = mutationFieldNames.concat(addFields);
     }
 
+    queryFieldNames.unshift('_id');
+    mutationFieldNames.unshift('_id');
 
-    const convertFields = field => {
-        return field.slice(-5) === intlSuffix ? `${field}{ locale value }` : field;
-    };
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     // TODO: support nesting
-    const generatedQueryFragment = gql`
-      fragment ${fragmentName} on ${typeName} {
-        _id
-        ${queryFields.map(convertFields).join('\n')}
-      }
-    `;
+    const queryFragmentText = getSchemaFragment({
+        schema,
+        fragmentName: `fragment ${fragmentName} on ${typeName}`,
+        options: { formType, isMutation: false },
+        fieldNames: queryFieldNames
+    });
+    const generatedQueryFragment = gql(queryFragmentText);
 
+    const mutationFragmentText = getSchemaFragment({
+        schema,
+        fragmentName: `fragment ${fragmentName} on ${typeName}`,
+        options: { formType, isMutation: true },
+        fieldNames: mutationFieldNames
+    });
     // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
     // TODO: support nesting
-    const generatedMutationFragment = gql`
-      fragment ${fragmentName} on ${typeName} {
-        _id
-        ${mutationFields.map(convertFields).join('\n')}
-      }
-    `;
+    const generatedMutationFragment = gql(mutationFragmentText);
 
     // get query & mutation fragments from props or else default to same as generatedFragment
     return {

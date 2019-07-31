@@ -66,9 +66,11 @@ describe('vulcan:form/formFragments', function () {
                 canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
+                        canCreate: ['admins'],
                         type: String,
                     },
                     secondNestedField: {
+                        canCreate: ['admins'],
                         type: Number
                     }
                 })
@@ -85,15 +87,18 @@ describe('vulcan:form/formFragments', function () {
         const schema = new SimpleSchema({
             arrayField: {
                 type: Array,
-                canRead: ['admins']
+                canRead: ['admins'],
+                canCreate: ['admins']
             },
             'arrayField.$': {
                 canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
+                        canCreate: ['admins'],
                         type: String,
                     },
                     secondNestedField: {
+                        canCreate: ['admins'],
                         type: Number
                     }
                 })
