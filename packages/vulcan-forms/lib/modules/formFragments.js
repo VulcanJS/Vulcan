@@ -1,4 +1,8 @@
-// TODO: refactor to mutualize more code with vulcan-core defaultFragment functions
+/**
+ * Generate mutation and query fragments for a form based on the schema
+ * TODO: refactor to mutualize more code with vulcan-core defaultFragment functions
+ * TODO: move to lib when refactored
+ */
 import _uniq from 'lodash/uniq';
 import _intersection from 'lodash/intersection';
 import gql from 'graphql-tag';
@@ -165,10 +169,18 @@ const getFormFragments = ({
     // TODO: support nesting
     const generatedMutationFragment = gql(mutationFragmentText);
 
+    // if any field specifies extra queries, add them
+    const extraQueries = _.compact(
+        getQueryFieldNames({ schema, options: { formType } }).map(fieldName => {
+            const field = schema[fieldName];
+            return field.query;
+        })
+    );
     // get query & mutation fragments from props or else default to same as generatedFragment
     return {
         queryFragment: generatedQueryFragment,
         mutationFragment: generatedMutationFragment,
+        extraQueries
     };
 };
 
