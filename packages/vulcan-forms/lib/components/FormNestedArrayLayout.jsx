@@ -28,7 +28,7 @@ const FormNestedArrayLayout = (props) => {
         {
           addItem &&
 
-          <FormComponents.Button className="form-nested-button" size="small" variant="success" onClick={addItem}>
+          <FormComponents.Button className="form-nested-button" size="sm" variant="success" onClick={addItem}>
             <FormComponents.IconAdd height={12} width={12} />
           </FormComponents.Button>
         }
