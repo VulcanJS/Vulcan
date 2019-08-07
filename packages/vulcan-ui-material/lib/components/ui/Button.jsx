@@ -111,13 +111,13 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
 
   switch (size) {
     case 'sm':
-      size = 'sm';
+      size = 'small';
       break;
     case 'md':
-      size = 'md';
+      size = 'medium';
       break;
     case 'lg':
-      size = 'lg';
+      size = 'large';
       break;
     default:
       size = undefined;
