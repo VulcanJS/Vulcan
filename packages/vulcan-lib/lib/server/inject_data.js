@@ -12,8 +12,12 @@ export const InjectData = {
 
   // encode object to string
   _encode(ejson) {
-    const ejsonString = EJSON.stringify(ejson);
-    return encodeURIComponent(ejsonString);
+    try {
+      const ejsonString = EJSON.stringify(ejson);
+      return encodeURIComponent(ejsonString);
+    } catch (error) {
+      return null;
+    }
   },
 
   // decode string to object
@@ -55,8 +59,12 @@ export const InjectData = {
     if (res._injectPayload) {
       // same as _.clone(res._injectPayload[key]);
       const data = res._injectPayload[key];
-      const clonedData = EJSON.parse(EJSON.stringify(data));
-      return clonedData;
+      try {
+        const clonedData = EJSON.parse(EJSON.stringify(data));
+        return clonedData;
+      } catch (error) {
+        return null;
+      }
     }
     return null;
   },

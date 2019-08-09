@@ -51,3 +51,7 @@ packages/nova-router/.npm
 npm-debug.log
 
 typings
+
+storybook-static
+docs/storybook-material
+docs/storybook-bootstrap

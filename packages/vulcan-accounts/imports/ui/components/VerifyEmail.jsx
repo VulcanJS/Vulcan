@@ -1,5 +1,6 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 
@@ -55,9 +56,9 @@ AccountsVerifyEmail.contextTypes = {
 
 AccountsVerifyEmail.propsTypes = {
   currentUser: PropTypes.object,
-  match: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 AccountsVerifyEmail.displayName = 'AccountsEnrollAccount';
 
-registerComponent('AccountsVerifyEmail', AccountsVerifyEmail, withCurrentUser);
+registerComponent('AccountsVerifyEmail', AccountsVerifyEmail, withCurrentUser, withRouter);

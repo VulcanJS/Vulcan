@@ -1,19 +1,13 @@
 import React from 'react';
 import merge from 'lodash/merge';
 import { storiesOf } from '@storybook/react';
+import { withKnobs, text, boolean, select } from '@storybook/addon-knobs';
+import { capitalize, wrapInParent, lorem } from './helpers';
 // import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 
 import { Components } from 'meteor/vulcan:core';
 
-const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
-
-function capitalize(string) {
-  return string.replace(/\-/, ' ').split(' ').map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }).join(' ');
-}
 /*
 
 UI Components Stories
@@ -40,18 +34,53 @@ alerts.forEach(variant =>
 Avatar
 
 */
-storiesOf('UI/Avatar', module).add('Default', () => (
-  <Components.Avatar user={{ displayName: 'John Smith' }}/>
-));
+const avatar = storiesOf('UI/Avatar', module);
+avatar.addDecorator(withKnobs);
+
+avatar.add('Default', () => {
+  const doWrap = boolean('Wrap in parent', false);
+  const displayName = text('user.displayName', 'John Smith');
+  const avatarUrl = text('user.avatarUrl',
+    'https://res.cloudinary.com/picoum/image/upload/v1525703248/KeyBee/Erik_2008_Large_ylfrmh.jpg');
+  const isAdmin = boolean('user.isAdmin', false);
+  const size = select('size', [null, 'xsmall', 'small', 'medium', 'large', 'profile']);
+  const gutter = select('gutter', [null, 'bottom', 'left', 'right', 'sides', 'all', 'none']);
+  const link = boolean('link', true);
+  
+  const avatar = <Components.Avatar user={{ displayName, avatarUrl, isAdmin }}
+                                    size={size}
+                                    gutter={gutter}
+                                    link={link}
+  />;
+  
+  return wrapInParent(avatar, doWrap);
+});
 
 /*
 
 Button
 
 */
-storiesOf('UI/Button', module).add('Default', () => (
-  <Components.Button>Click Me</Components.Button>
-));
+const button = storiesOf('UI/Button', module);
+button.addDecorator(withKnobs);
+
+button.add('Default', () => {
+  const doWrap = boolean('Wrap in parent', false);
+  const children = text('children', 'Click Me');
+  const variant = select('variant',
+    [null, 'primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark', 'link',
+      'outline-primary', 'outline-secondary', 'outline-success', 'outline-warning', 'outline-danger', 'outline-info',
+      'outline-light', 'outline-dark', 'inherit']);
+  const size = select('size', [null, 'sm', 'md', 'lg']);
+  const iconButton = boolean('iconButton', false);
+  const disabled = boolean('disabled', false);
+  
+  const button = <Components.Button variant={variant} size={size} disabled={disabled} iconButton={iconButton}>
+    {iconButton ? <Components.IconAdd/> : children}
+  </Components.Button>;
+  
+  return wrapInParent(button, doWrap);
+});
 
 /*
 
@@ -235,7 +264,7 @@ const formComponents = [
 
 /*
 
-To get form input props, merge: 
+To get form input props, merge:
 
 1. default props common to all inputs
 2. specific props for current input

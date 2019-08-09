@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Components } from 'meteor/vulcan:core';
 import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -8,6 +7,7 @@ import SimpleSchema from 'simpl-schema';
 import { isEmptyValue, getNullValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -102,6 +102,8 @@ class FormComponent extends Component {
     // if this is a number field, convert value before sending it up to Form
     if (this.getFieldType() === Number && value != null) {
       value = Number(value);
+    } else if (this.getFieldType() === SimpleSchema.Integer && value != null) {
+      value = parseInt(value);
     }
 
     const updateValue = this.props.locale
@@ -188,7 +190,7 @@ class FormComponent extends Component {
   getFieldType = props => {
     const p = props || this.props;
     return p.datatype && p.datatype[0].type;
-  }
+  };
 
   /*
 
@@ -199,7 +201,7 @@ class FormComponent extends Component {
     const p = props || this.props;
     const fieldType = this.getFieldType();
     const autoType =
-      fieldType === Number
+      (fieldType === Number || fieldType === SimpleSchema.Integer)
         ? 'number'
         : fieldType === Boolean
           ? 'checkbox'
@@ -294,15 +296,14 @@ class FormComponent extends Component {
     }
   };
 
-  getFieldType = () => {
-    return this.props.datatype[0].type;
-  };
   isArrayField = () => {
     return this.getFieldType() === Array;
   };
+  
   isObjectField = () => {
     return this.getFieldType() instanceof SimpleSchema;
   };
+  
   render() {
     const FormComponents = mergeWithComponents(this.props.formComponents);
 

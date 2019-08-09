@@ -1,34 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, instantiateComponent } from 'meteor/vulcan:core';
+import { registerComponent, instantiateComponent } from 'meteor/vulcan:core';
 import _omit from 'lodash/omit';
-
-// Replaceable layout, default implementation
-const FormNestedArrayLayout = ({ hasErrors, label, content, children }) => (
-  <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
-    <label className="control-label col-sm-3">{label}</label>
-    <div className="col-sm-9">{content || children}</div>
-  </div>
-);
-FormNestedArrayLayout.propTypes = {
-  hasErrors: PropTypes.bool,
-  label: PropTypes.node,
-  content: PropTypes.node,
-};
-registerComponent({
-  name: 'FormNestedArrayLayout',
-  component: FormNestedArrayLayout,
-});
 
 // Wraps the FormNestedItem, repeated for each object
 // Allow for example to have a label per object
 const FormNestedArrayInnerLayout = props => {
   const { FormComponents, label, children, addItem, beforeComponent, afterComponent } = props;
   return (
-    <div>
+    <div className="form-nested-array-inner-layout">
       {instantiateComponent(beforeComponent, props)}
       {children}
-      <FormComponents.FormNestedDivider label={label} addItem={addItem} />
+      <FormComponents.FormNestedDivider label={label} addItem={addItem}/>
       {instantiateComponent(afterComponent, props)}
     </div>
   );
@@ -97,8 +80,6 @@ class FormNestedArray extends PureComponent {
       formComponents,
       minCount,
       maxCount,
-      beforeComponent,
-      afterComponent,
       arrayField,
     } = this.props;
     const FormComponents = formComponents;
@@ -107,13 +88,15 @@ class FormNestedArray extends PureComponent {
     let arrayLength = value.filter(singleValue => {
       return typeof singleValue !== 'undefined' && singleValue !== null;
     }).length;
-
+    properties.addItem = (!maxCount || arrayLength < maxCount) ? this.addItem : null;
+    
     // only keep errors specific to the nested array (and not its subfields)
-    const nestedArrayErrors = errors.filter(error => error.path && error.path === path);
-    const hasErrors = nestedArrayErrors && nestedArrayErrors.length;
+    properties.nestedArrayErrors = errors.filter(error => error.path && error.path === path);
+    properties.hasErrors = !!(properties.nestedArrayErrors && properties.nestedArrayErrors.length);
+    
     return (
       <FormComponents.FormNestedArrayLayout {...properties}>
-        {instantiateComponent(beforeComponent, properties)}
+        
         {value.map((subDocument, i) => {
           if (this.isDeleted(i)) return null;
           const path = `${this.props.path}.${i}`;
@@ -140,18 +123,7 @@ class FormNestedArray extends PureComponent {
             </FormComponents.FormNestedArrayInnerLayout>
           );
         })}
-        {(!maxCount || arrayLength < maxCount) && (
-          <FormComponents.FormNestedFoot
-            key="add-button"
-            addItem={this.addItem}
-            label={this.props.label}
-            className="form-nested-foot"
-          />
-        )}
-        {hasErrors ? (
-          <FormComponents.FieldErrors key="form-nested-errors" errors={nestedArrayErrors} />
-        ) : null}
-        {instantiateComponent(afterComponent, properties)}
+      
       </FormComponents.FormNestedArrayLayout>
     );
   }
@@ -174,7 +146,7 @@ registerComponent('FormNestedArray', FormNestedArray);
 
 const IconAdd = ({ width = 24, height = 24 }) => (
   <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-    <path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z" />
+    <path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z" />
   </svg>
 );
 
@@ -182,7 +154,7 @@ registerComponent('IconAdd', IconAdd);
 
 const IconRemove = ({ width = 24, height = 24 }) => (
   <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-    <path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z" />
+    <path fill="currentColor" d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z" />
   </svg>
 );
 

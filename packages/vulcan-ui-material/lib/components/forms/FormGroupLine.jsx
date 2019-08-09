@@ -14,11 +14,10 @@ const styles = theme => ({
   
   layoutRoot: {
     minWidth: '320px',
-    paddingBottom: theme.spacing.unit * 3,
   },
   
   headerRoot: {
-    marginBottom: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
   },
   
   divider: {
@@ -26,16 +25,13 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * -3,
   },
   
-  subtitle1: {
-    marginTop: theme.spacing.unit * 5,
-    position: 'relative',
-  },
-  
   collapsible: {
     cursor: 'pointer',
   },
   
-  typography: {
+  label: {},
+  
+  subtitle1: {
     display: 'flex',
     alignItems: 'center',
     '& > div': {
@@ -64,14 +60,17 @@ const FormGroupHeaderLine = ({ toggle, collapsed, label, group, classes }) => {
   const collapsible = group && group.collapsible || group && group.name === 'admin';
   
   return (
-    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-section-heading')}
+    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-group-header')}
          onClick={collapsible ? toggle : null}
     >
       
       <Divider className={classes.divider}/>
       
-      <Typography className={classes.typography} variant="subtitle1" gutterBottom>
-        <div>
+      <Typography className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)} 
+                  variant="subtitle1" 
+                  gutterBottom
+      >
+        <div className={classes.label}>
           {label}
         </div>
         {

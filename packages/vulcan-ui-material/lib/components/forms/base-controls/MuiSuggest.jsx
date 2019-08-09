@@ -398,7 +398,7 @@ const MuiSuggest = createReactClass({
     let count = 0;
     const inputMatchesSelection = value === this.getOptionLabel(this.getSelectedOption());
     
-    return (this.props.disableText || this.props.showAllOptions) && inputMatchesSelection ?
+    return ((this.props.disableText || this.props.showAllOptions) && inputMatchesSelection) ?
       
       this.props.options.filter(suggestion => {
         return true;
@@ -411,7 +411,7 @@ const MuiSuggest = createReactClass({
         ?
         
         this.props.options.filter(suggestion => {
-          count += 1;
+          count++;
           return count <= maxSuggestions;
         })
         
@@ -419,12 +419,10 @@ const MuiSuggest = createReactClass({
         
         this.props.options.filter(suggestion => {
           const label = this.getOptionLabel(suggestion);
-          const keep =
-            count < maxSuggestions && label.toLowerCase().slice(0, inputLength) ===
-            inputValue;
+          const keep = count < maxSuggestions && label.toLowerCase().includes(inputValue);
           
           if (keep) {
-            count += 1;
+            count++;
           }
           
           return keep;

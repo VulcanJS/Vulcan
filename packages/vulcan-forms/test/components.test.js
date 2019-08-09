@@ -1,10 +1,9 @@
-// setup JSDOM server side for testing (necessary for Enzyme to mount)
-import 'jsdom-global/register';
 import React from 'react';
 // TODO: should be loaded from Components instead?
 import Form from '../lib/components/Form';
 import FormComponent from '../lib/components/FormComponent';
 import FormNestedArray from '../lib/components/FormNestedArray';
+import FormNestedArrayLayout from '../lib/components/FormNestedArrayLayout';
 import expect from 'expect';
 
 import { mount, shallow } from 'enzyme';
@@ -158,7 +157,7 @@ const Addresses = createCollection({
 
 // helpers
 // tests
-describe('vulcan-forms/components', function() {
+describe('vulcan-forms/components', function () {
   const context = {
     intl: {
       formatMessage: () => '',
@@ -181,24 +180,24 @@ describe('vulcan-forms/components', function() {
       context,
     });
 
-  describe('Form collectionName="" (handle fields computation)', function() {
+  describe('Form collectionName="" (handle fields computation)', function () {
     // since some props are now handled by HOC we need to provide them manually
     const defaultProps = {
       collectionName: '',
       typeName: '',
     };
 
-    describe('Form generation', function() {
+    describe('Form generation', function () {
       // getters
       const getArrayFormGroup = wrapper => wrapper.find('FormGroup').find({ name: 'addresses' });
       const getFields = arrayFormGroup => arrayFormGroup.prop('fields');
-      describe('basic collection - no nesting', function() {
-        it('shallow render', function() {
+      describe('basic collection - no nesting', function () {
+        it('shallow render', function () {
           const wrapper = shallowWithContext(<Form collectionName="" collection={Addresses} />);
           expect(wrapper).toBeDefined();
         });
       });
-      describe('nested object (not in array)', function() {
+      describe('nested object (not in array)', function () {
         it('shallow render', () => {
           const wrapper = shallowWithContext(<Form collectionName="" collection={Objects} />);
           expect(wrapper).toBeDefined();
@@ -225,14 +224,14 @@ describe('vulcan-forms/components', function() {
           expect(addressField.nestedSchema.street).toBeDefined();
         });
       });
-      describe('array of objects', function() {
+      describe('array of objects', function () {
         it('shallow render', () => {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayOfObjects} />
           );
           expect(wrapper).toBeDefined();
         });
-        it('render a FormGroup for addresses', function() {
+        it('render a FormGroup for addresses', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayOfObjects} />
           );
@@ -240,7 +239,7 @@ describe('vulcan-forms/components', function() {
           expect(formGroup).toBeDefined();
           expect(formGroup).toHaveLength(1);
         });
-        it('passes down the array child fields', function() {
+        it('passes down the array child fields', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayOfObjects} />
           );
@@ -251,8 +250,8 @@ describe('vulcan-forms/components', function() {
           expect(arrayField.nestedFields).toHaveLength(Object.keys(addressSchema).length);
         });
       });
-      describe('array with custom children inputs (e.g array of url)', function() {
-        it('shallow render', function() {
+      describe('array with custom children inputs (e.g array of url)', function () {
+        it('shallow render', function () {
           const wrapper = shallowWithContext(<Form collectionName="" collection={ArrayOfUrls} />);
           expect(wrapper).toBeDefined();
         });
@@ -264,15 +263,15 @@ describe('vulcan-forms/components', function() {
           expect(arrayField.arrayField).toBeDefined();
         });
       });
-      describe('array of objects with custom children inputs', function() {
-        it('shallow render', function() {
+      describe('array of objects with custom children inputs', function () {
+        it('shallow render', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayOfCustomObjects} />
           );
           expect(wrapper).toBeDefined();
         });
         // TODO: does not work, schema_utils needs an update
-        it.skip('passes down the custom input', function() {
+        it.skip('passes down the custom input', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayOfCustomObjects} />
           );
@@ -282,14 +281,14 @@ describe('vulcan-forms/components', function() {
           expect(arrayField.arrayField).toBeDefined();
         });
       });
-      describe('array with a fully custom input (array itself and children)', function() {
-        it('shallow render', function() {
+      describe('array with a fully custom input (array itself and children)', function () {
+        it('shallow render', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayFullCustom} />
           );
           expect(wrapper).toBeDefined();
         });
-        it('passes down the custom input', function() {
+        it('passes down the custom input', function () {
           const wrapper = shallowWithContext(
             <Form collectionName="" collection={ArrayFullCustom} />
           );
@@ -301,10 +300,10 @@ describe('vulcan-forms/components', function() {
       });
     });
 
-    describe('Form state management', function() {
+    describe('Form state management', function () {
       // TODO: the change callback is triggerd but `foo` becomes null instead of "bar
       // so it's added to the deletedValues and not changedValues
-      it.skip('store typed value', function() {
+      it.skip('store typed value', function () {
         const wrapper = mountWithContext(<Form {...defaultProps} collection={Foos} />);
         //console.log(wrapper.state());
         wrapper
@@ -322,7 +321,7 @@ describe('vulcan-forms/components', function() {
         console.log(wrapper.state());
         expect(wrapper.state().currentValues).toEqual({ foo: 'bar' });
       });
-      it('reset state when relevant props change', function() {
+      it('reset state when relevant props change', function () {
         const wrapper = shallowWithContext(
           <Form {...defaultProps} collectionName="Foos" collection={Foos} />
         );
@@ -331,7 +330,7 @@ describe('vulcan-forms/components', function() {
         wrapper.setProps({ collectionName: 'Bars' });
         expect(wrapper.state('currentValues')).toEqual({});
       });
-      it('does not reset state when external prop change', function() {
+      it('does not reset state when external prop change', function () {
         //const prefilledProps = { bar: 'foo' } // TODO
         const changeCallback = () => 'CHANGE';
         const wrapper = shallowWithContext(
@@ -346,11 +345,11 @@ describe('vulcan-forms/components', function() {
     });
   });
 
-  describe('FormComponent (select the components to render and handle state)', function() {
+  describe('FormComponent (select the components to render and handle state)', function () {
     const shallowWithContext = C =>
       shallow(C, {
         context: {
-          getDocument: () => {},
+          getDocument: () => { },
         },
       });
     const defaultProps = {
@@ -365,16 +364,16 @@ describe('vulcan-forms/components', function() {
       currentValues: {},
       formType: 'new',
       deletedValues: [],
-      throwError: () => {},
-      updateCurrentValues: () => {},
+      throwError: () => { },
+      updateCurrentValues: () => { },
       errors: [],
-      clearFieldErrors: () => {},
+      clearFieldErrors: () => { },
     };
-    it('shallow render', function() {
+    it('shallow render', function () {
       const wrapper = shallowWithContext(<FormComponent {...defaultProps} />);
       expect(wrapper).toBeDefined();
     });
-    describe('array of objects', function() {
+    describe('array of objects', function () {
       const props = {
         ...defaultProps,
         datatype: [{ type: Array }],
@@ -387,13 +386,13 @@ describe('vulcan-forms/components', function() {
         nestedFields: [{}, {}, {}],
         currentValues: {},
       };
-      it('render a FormNestedArray', function() {
+      it('render a FormNestedArray', function () {
         const wrapper = shallowWithContext(<FormComponent {...props} />);
         const formNested = wrapper.find('FormNestedArray');
         expect(formNested).toHaveLength(1);
       });
     });
-    describe('nested object', function() {
+    describe('nested object', function () {
       const props = {
         ...defaultProps,
         datatype: [{ type: new SimpleSchema({}) }],
@@ -406,22 +405,22 @@ describe('vulcan-forms/components', function() {
         nestedFields: [{}, {}, {}],
         currentValues: {},
       };
-      it('shallow render', function() {
+      it('shallow render', function () {
         const wrapper = shallowWithContext(<FormComponent {...props} />);
         expect(wrapper).toBeDefined();
       });
-      it('render a FormNestedObject', function() {
+      it('render a FormNestedObject', function () {
         const wrapper = shallowWithContext(<FormComponent {...props} />);
         const formNested = wrapper.find('FormNestedObject');
         expect(formNested).toHaveLength(1);
       });
     });
-    describe('array of custom inputs (e.g url)', function() {
-      it('shallow render', function() {});
+    describe('array of custom inputs (e.g url)', function () {
+      it('shallow render', function () { });
     });
   });
 
-  describe('FormNestedArray', function() {
+  describe('FormNestedArray', function () {
     const defaultProps = {
       errors: [],
       deletedValues: [],
@@ -430,25 +429,25 @@ describe('vulcan-forms/components', function() {
       //nestedFields: []
     };
 
-    describe('Display the input n times', function() {
-      it('shallow render', function() {
+    describe('Display the input n times', function () {
+      it('shallow render', function () {
         const wrapper = shallow(<FormNestedArray {...defaultProps} currentValues={{}} />);
         expect(wrapper).toBeDefined();
       });
       // TODO: broken now we use a layout...
-      it.skip('shows an add button when empty', function() {
+      it.skip('shows an add button when empty', function () {
         const wrapper = mount(<FormNestedArray {...defaultProps} currentValues={{}} />);
         const addButton = wrapper.find('IconAdd');
         expect(addButton).toHaveLength(1);
       });
-      it.skip('shows 3 items', function() {
+      it.skip('shows 3 items', function () {
         const wrapper = mount(
           <FormNestedArray {...defaultProps} currentValues={{}} value={[1, 2, 3]} />
         );
         const nestedItem = wrapper.find('FormNestedItem');
         expect(nestedItem).toHaveLength(3);
       });
-      it.skip('pass the correct path and itemIndex to each form', function() {
+      it.skip('pass the correct path and itemIndex to each form', function () {
         const wrapper = mount(
           <FormNestedArray {...defaultProps} currentValues={{}} value={[1, 2]} />
         );
@@ -461,34 +460,42 @@ describe('vulcan-forms/components', function() {
         expect(item1.prop('path')).toEqual('foobar.1');
       });
     });
-    describe('maxCount', function() {
+    describe('maxCount', function () {
       const props = {
         ...defaultProps,
         maxCount: 2,
       };
-      it('should display add button if items < maxCount', function() {
+      it('should pass addItem to FormNestedArrayLayout if items < maxCount', function () {
         const wrapper = shallow(<FormNestedArray {...props} maxCount={2} currentValues={{}} value={[1]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formFooter = layout.find('FormNestedFoot');
-        expect(formFooter).toHaveLength(1);
+        const addItem = layout.props().addItem;
+        expect(typeof addItem).toBe('function');
       });
-      it('should not display add button if items >= maxCount', function() {
+      it('should display add button if items < maxCount', function () {
+        const wrapper = shallow(<FormNestedArrayLayout {...defaultProps} addItem={() => { return null; }} hasError={false} />);
+        const button = wrapper.find('.form-nested-button');
+        expect(button).toHaveLength(1);
+      });
+      it('should not pass addItem to FormNestedArrayLayout if items >= maxCount', function () {
         const wrapper = shallow(<FormNestedArray {...props} maxCount={2} currentValues={{}} value={[1, 2]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
-        const formFooter = layout.find('FormNestedFoot');
-        expect(formFooter).toHaveLength(0);
+        const addItem = layout.props().addItem;
+        expect(addItem).toBeNull();
+      });
+      it('should not display add button if items >= maxCount', function () {
+        const wrapper = shallow(<FormNestedArrayLayout {...defaultProps} addItem={null} hasError={false} />);
+        const button = wrapper.find('.form-nested-button');
+        expect(button).toHaveLength(0);
       });
     });
 
-    describe('minCount', function() {
+    describe('minCount', function () {
       const props = {
         ...defaultProps,
         minCount: 2,
       };
-      it('should display remove item button when array length > minCount', function() {
-        const wrapper = shallow(
-          <FormNestedArray {...props} currentValues={{}} value={[1, 2, 3]} />
-        );
+      it('should display remove item button when array length > minCount', function () {
+        const wrapper = shallow(<FormNestedArray {...props} currentValues={{}} value={[1, 2, 3]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
         const nestedItems = layout.find('FormNestedItem');
         nestedItems.forEach((nestedItem, idx) => {
@@ -496,7 +503,7 @@ describe('vulcan-forms/components', function() {
           expect({ res: hideRemove, idx }).toEqual({ res: false, idx });
         });
       });
-      it('should not display remove button if items <= minCount', function() {
+      it('should not display remove button if items <= minCount', function () {
         const wrapper = shallow(<FormNestedArray {...props} currentValues={{}} value={[1, 2]} />);
         const layout = wrapper.find('FormNestedArrayLayout').first();
         const nestedItems = layout.find('FormNestedItem');
@@ -508,32 +515,32 @@ describe('vulcan-forms/components', function() {
     });
   });
 
-  describe('FormNestedObject', function() {
+  describe('FormNestedObject', function () {
     const defaultProps = {
       errors: [],
       path: 'foobar',
       formComponents: Components,
     };
-    it('shallow render', function() {
+    it('shallow render', function () {
       const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
       expect(wrapper).toBeDefined();
     });
-    it.skip('render a Form collectionName="" for the object', function() {
+    it.skip('render a Form collectionName="" for the object', function () {
       // eslint-disable-next-line no-unused-vars
       const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
       expect(false).toBe(true);
     });
-    it('does not show any button', function() {
+    it('does not show any button', function () {
       const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
       const button = wrapper.find('BootstrapButton');
       expect(button).toHaveLength(0);
     });
-    it('does not show add button', function() {
+    it('does not show add button', function () {
       const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
       const addButton = wrapper.find('IconAdd');
       expect(addButton).toHaveLength(0);
     });
-    it('does not show remove button', function() {
+    it('does not show remove button', function () {
       const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
       const removeButton = wrapper.find('IconRemove');
       expect(removeButton).toHaveLength(0);

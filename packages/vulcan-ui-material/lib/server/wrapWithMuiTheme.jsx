@@ -8,7 +8,7 @@ import { SheetsRegistry } from 'react-jss/lib/jss';
 import JssCleanup from '../components/theme/JssCleanup';
 
 
-function wrapWithMuiTheme (app, {context }) {
+function wrapWithMuiTheme (app, { context }) {
   const sheetsRegistry = new SheetsRegistry();
   context.sheetsRegistry = sheetsRegistry;
   

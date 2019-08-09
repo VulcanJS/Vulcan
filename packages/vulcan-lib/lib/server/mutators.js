@@ -68,7 +68,7 @@ export const createMutator = async ({
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
 
-  startDebugMutator(collectionName, 'Update', { validate, document });
+  startDebugMutator(collectionName, 'Create', { validate, document });
 
   /*
 

@@ -1,11 +1,11 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Vulcan libraries.',
-  version: '1.13.0',
+  version: '1.13.1',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   // note: if used, accounts-base should be loaded before vulcan:lib
@@ -16,14 +16,14 @@ Package.onUse(function(api) {
 
     // Minimal Meteor packages
 
-    'meteor@1.9.0',
+    'meteor@1.9.3',
     'static-html@1.2.2',
-    'standard-minifier-css@1.4.1',
-    'standard-minifier-js@2.3.4',
+    'standard-minifier-css@1.5.3',
+    'standard-minifier-js@2.4.1',
     'es5-shim@4.8.0',
-    'ecmascript@0.11.0',
-    'shell-server@0.3.1',
-    'webapp@1.6.0',
+    'ecmascript@0.12.4',
+    'shell-server@0.4.0',
+    'webapp@1.7.3',
     'server-render@0.3.1',
 
     // Other meteor-base package
@@ -46,7 +46,7 @@ Package.onUse(function(api) {
 
     // 'aldeed:collection2-core@2.0.0',
     'meteorhacks:picker@1.0.3',
-    'littledata:synced-cron@1.3.1',
+    'littledata:synced-cron@1.5.1',
     'meteorhacks:inject-initial@1.0.4',
   ];
 
@@ -60,8 +60,9 @@ Package.onUse(function(api) {
   api.mainModule('lib/client/main.js', 'client');
 });
 
-Package.onTest(function(api) {
-  api.use(['ecmascript', 'meteortesting:mocha']);
+
+Package.onTest(function (api) {
+  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:lib']);
   api.mainModule('./test/client/index.js', 'client');
   api.mainModule('./test/server/index.js', 'server');
 });
