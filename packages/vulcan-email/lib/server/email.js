@@ -94,16 +94,16 @@ VulcanEmail.generateTextVersion = html => {
   });
 };
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments) => {
+VulcanEmail.send = (to, from, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   if (typeof to === 'object') {
     // eslint-disable-next-line no-redeclare
-    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers, attachments } = to;
+    var { to, from, cc, bcc, replyTo, subject, html, text, throwErrors, headers, attachments } = to;
   }
 
-  const from = getSetting('defaultEmail', 'noreply@example.com');
+  const _from = from || getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
   subject = subject || '[' + siteName + ']';
 
@@ -113,7 +113,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
   }
 
   const email = {
-    from: from,
+    from: _from,
     to,
     cc,
     bcc,
@@ -128,7 +128,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
   const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false);
 
   console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
-  console.log('from: ' + from); // eslint-disable-line
+  console.log('from: ' + _from); // eslint-disable-line
   console.log('to: ' + to); // eslint-disable-line
   console.log('cc: ' + cc); // eslint-disable-line
   console.log('bcc: ' + bcc); // eslint-disable-line
