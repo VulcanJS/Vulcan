@@ -13,6 +13,8 @@ import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import collectionToGraphQL from './collection';
+import {mainTypeTemplate} from '../graphql_templates';
+import getSchemaFields from './schemaFields'
 
 disableFragmentWarnings();
 
@@ -98,6 +100,21 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
 
+  addType({ typeName, resolver, schema, description = '', interfaces = [] }) {
+    if(!typeName) {
+      throw Error('Error: trying to add type without typeName')
+    }
+    // generate a graphql type def from the simpleSchema 
+    const { fields } = getSchemaFields(schema, typeName);
+    // console.log(JSON.stringify(fields, null, 2))
+    const graphQLSchema = mainTypeTemplate({typeName, fields: fields.mainType, description, interfaces })
+    console.log(graphQLSchema)
+    // add the type and its resolver
+  },
+
+  // TODO
+  getType(){},
+
 
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
@@ -159,4 +176,4 @@ export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSc
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
 export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
-
+export const addType = GraphQLSchema.addType.bind(GraphQLSchema);
