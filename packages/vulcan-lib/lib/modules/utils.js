@@ -168,7 +168,7 @@ Utils.getOutgoingUrl = function (url) {
 };
 
 Utils.slugify = function (s) {
-  var slug = getSlug(s, {
+  let slug = getSlug(s, {
     truncate: 60
   });
 
@@ -179,17 +179,16 @@ Utils.slugify = function (s) {
 
   return slug;
 };
-Utils.getUnusedSlug = function (collection, slug) {
-  let suffix = '';
-  let index = 0;
 
+Utils.getUnusedSlug = function (collection, slug, documentId) {
   // test if slug is already in use
-  while (!!collection.findOne({slug: slug+suffix})) {
-    index++;
-    suffix = '-'+index;
+  for (let index = 0; index <= Number.MAX_SAFE_INTEGER; index++) {
+    const suffix = index ? '-' + index : '';
+    const documentWithSlug = collection.findOne({ slug: slug + suffix });
+    if (!documentWithSlug || (documentId && documentWithSlug._id === documentId)) {
+      return slug + suffix;
+    }
   }
-
-  return slug+suffix;
 };
 
 // Different version, less calls to the db but it cannot be used until we figure out how to use async for onCreate functions
@@ -209,8 +208,8 @@ Utils.getUnusedSlug = function (collection, slug) {
 //   return slug + suffix;
 // };
 
-Utils.getUnusedSlugByCollectionName = function (collectionName, slug) {
-  return Utils.getUnusedSlug(getCollection(collectionName), slug);
+Utils.getUnusedSlugByCollectionName = function (collectionName, slug, documentId) {
+  return Utils.getUnusedSlug(getCollection(collectionName), slug, documentId);
 };
 
 Utils.getShortUrl = function(post) {
