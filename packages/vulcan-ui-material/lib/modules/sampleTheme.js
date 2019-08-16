@@ -119,6 +119,40 @@ const theme = {
     
   },
   
+  overrides: {
+    MuiButton: {
+      root: {
+        lineHeight: 1,
+        padding: '4px 16px',
+        minHeight: 40,
+      },
+      text: {
+        padding: '4px 16px',
+      },
+      outlined: {
+        padding: '4px 16px',
+      },
+      sizeSmall: {
+        padding: '4px 8px',
+        minHeight: 32,
+      },
+      sizeLarge: {
+        padding: '4px 24px',
+        minHeight: 48,
+      },
+      label: {
+        flexDirection: 'inherit',
+        '& > svg': {
+          marginRight: '8px',
+        },
+        '& > span.icon-wrap': {
+          marginRight: '8px',
+          fontSize: 0,
+        },
+      },
+    },
+  },
+  
 };
 
 

@@ -2,31 +2,11 @@ import React from 'react';
 import merge from 'lodash/merge';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, select } from '@storybook/addon-knobs';
+import { capitalize, wrapInParent, lorem } from './helpers';
 // import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 
 import { Components } from 'meteor/vulcan:core';
-
-const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
-
-function capitalize (string) {
-  return string.replace(/\-/, ' ').split(' ').map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }).join(' ');
-}
-
-function wrapInParent (component, doWrap) {
-  return doWrap
-    ?
-    <span style={{ backgroundColor: '#DDDDDD', padding: 48, display: 'inline-block' }}>
-        <span style={{ backgroundColor: '#FFFFFF', display: 'inline-block' }}>
-          {component}
-        </span>
-      </span>
-    :
-    component;
-}
 
 /*
 

@@ -1,23 +1,22 @@
-# vulcan:ui-material 1.13.1
+# vulcan:ui-material 1.13.0_1
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
-
 Replacement for [Vulcan](http://vulcanjs.org/) components using [Material-UI](https://material-ui.com/). 
-
 
 There are some nice bonus features like a CountrySelect with autocomplete and theming.
 
 All components in vulcan:ui-bootstrap, vulcan:forms and vulcan:accounts have been implemented except for Icon.
 
+
 ## Installation
 
-To add vulcan-material-ui to an existing Vulcan project, enter the following:
+To add vulcan-material-ui to an existing Vulcan project, run the following in the console:
 
 ``` sh
 meteor add vulcan:ui-material
 
-meteor npm install --save @material-ui/core@3.1.0
+meteor npm install --save @material-ui/core@3.9.3
 meteor npm install --save react-jss
 meteor npm install --save mdi-material-ui
 meteor npm install --save react-autosuggest
@@ -27,11 +26,6 @@ meteor npm install --save-exact react-keyboard-event-handler@1.3.2
 #meteor npm install --save autosize-input
 meteor npm install --save moment-timezone
 ```
-
-> NOTE: If you want to avoid deprecation warnings added in MUI versions after 3.1.0, you can lock MUI to the currently supported version using `meteor npm install --save @material-ui/core@3.1.0`. Don't for get to remove or update the version number when you update this package in the future.
-
-
-> IMPORTANT: Please note that I have abandoned material-ui-icons in favor of mdi-material-ui because it has a much larger [selection of icons](https://materialdesignicons.com/).
 
 This package no longer depends on `vulcan:ui-boostrap`, so you can remove it.
 
@@ -79,7 +73,7 @@ const theme = {
 };
 ```
 
-You can use tooltipEnterDelay (or any other variable you define in utils) anywhere you include the withTheme HOC. See `/components/bonus/TooltipIconButton.jsx` for an example.
+You can use tooltipEnterDelay (or any other variable you define in utils) anywhere you include the withTheme HOC. See `/components/bonus/TooltipButton.jsx` for an example.
 
 You can use errorMessage (or any other style fragment you define in utils) anywhere you include the withStyles HOC. See `/components/accounts/Form.jsx` for an example.
 
@@ -93,13 +87,13 @@ Sometimes the React rendered on the server and the client don't match exactly an
 
 Your pages should still render correctly, but there may be a blink and redraw when the first page after SSR loads in the browser.
 
-In your own code, make sure that your components will render the same on the server and the client. This means not referring to client-side object such as `document` or `jQuery`. If you have a misbehaving component, try wrapping it with [react-no-ssr](https://github.com/kadirahq/react-no-ssr). 
+In your own code, make sure that your components will render the same on the server and the client. This means not referring to client-side object such as `window`, `document` or `jQuery`. If you have a misbehaving component, try wrapping it in a [NoSsr](https://material-ui.com/components/no-ssr/) component.
 
 ## Form Controls
 
 You can pass a couple of extra options to inputs from the `form` property of your schema:
 
-```javascript
+```
   userKey: {
     type: String,
     label: 'User key',
@@ -128,8 +122,6 @@ You can pass a couple of extra options to inputs from the `form` property of you
   },
 ```
 
-> Note: `form.getHidden` has been deprecated. Now you can just pass a function to `hidden`.
-
 ## Form Groups
 
 You can pass a couple of extra options to form groups as well:
@@ -138,8 +130,8 @@ You can pass a couple of extra options to form groups as well:
   const platformGroup = {
     name: 'shops.platform',
     order: 4,
-    beforeComponent: 'ShopsPlatformTitle', // component to put at the top of the form group
-    afterComponent: 'ShopsConnectButtons',  // component to put at the bottom of the form group
+    beforeComponent: 'ShopsPlatformTitle',  // component to put at the top of the form group
+    afterComponent:  'ShopsConnectButtons', // component to put at the bottom of the form group
   };
 ```
 
@@ -166,7 +158,7 @@ AgendaJobActionsInner.propTypes = {
 <Components.Datatable
   editComponent={AgendaJobActions}
   collection={AgendaJobs}
-   ...
+  //...
 />
 ```
 
@@ -183,9 +175,9 @@ You can also use other string values, as long as you define a `utils` entry name
 
 ## CountrySelect
 
-There is an additional component, an autosuggest-based country select.
+One of the bonus components is **CountrySelect**, a country autosuggest.
 
-``` javascript
+```
   country: {
     type: String,
     label: 'Country',
@@ -207,3 +199,31 @@ import { getCountryLabel } from 'meteor/erikdakoda:vulcan-material-ui';
 </Typography>
 ```
 
+
+## TooltipButton
+
+**TooltipButton** is an easy way to add icons, icon buttons, buttons, and static elements with a tooltip. It takes intl string IDs for easy localization.
+
+| Property    | Type    | Description  |
+| ----------- | ------- | ------------ |
+| title       | node    | Popover title as a string or a node |
+| titleId     | string  | Popover title as an intl string ID |
+| titleValues | object  | Values for the intl string |
+| label       | node    | Button label as a string or node |
+| labelId     | string  | Button label as an intl string ID |
+| type        | enum    | `simple`, `fab`, `button`, `submit`, `icon` |
+| size        | enum    | `icon`, `xsmall`, `small`, `medium`, `large` |
+| variant     | enum    | `text`, `outlined`, `contained` |
+| placement   | enum    | Tooltip placement: `bottom-end`, `bottom-start`, `bottom`, `left-end`, `left-start`, `left`, `right-end`, `right-start`, `right`, `top-end`, `top-start`, `top` |
+| icon        | node    | Icon element or component name |
+| loading     | bool    | When true, a loading spinner will be displayed |
+| disabled    | bool    | When true, the button will be disabled |
+| className   | string  | Class name for the element root |
+| classes     | object  | Classes to override the defaults |
+| buttonRef   | func    | Function for grabbing the a reference to the button |
+| enterDelay  | number  | Tooltip enter delay |
+| leaveDelay  | number  | Tooltip leave delay |
+| parent      | enum    | Set parent to `popover` if the button's parent is a popover to increase the z-index of the tooltip |
+| children    | node    | You can optionally render arbitrary content (instead of a button) |
+
+See the Storybook example by running the script `storybook-material`.
