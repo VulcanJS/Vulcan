@@ -8,6 +8,8 @@ import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
 import _isFunction from 'lodash/isFunction';
 import _sortBy from 'lodash/sortBy';
+import qs from 'qs';
+import { withRouter } from 'react-router';
 
 /*
 
@@ -32,38 +34,87 @@ const getColumnName = column => (
 
 class Datatable extends PureComponent {
 
-  constructor() {
-    super();
-    this.updateQuery = this.updateQuery.bind(this);
-    this.state = {
+  constructor(props) {
+    super(props);
+
+    let initState = {
       value: '',
       query: '',
       currentSort: {}
     };
+
+    // only load urlState if useUrlState is enabled 
+    if (props.useUrlState) {
+      const urlState = this.getUrlState(props);
+      if (urlState.query) {
+        initState.value = urlState.query;
+        initState.query = urlState.query;
+      }
+      if (urlState.sort) {
+        const [ sortKey, sortValue ] = urlState.sort.split('|');
+        initState.currentSort = { [sortKey]: parseInt(sortValue) };
+      }
+    }
+
+    this.state = initState;
+  }
+
+  getUrlState = (props) => {
+    const p = props || this.props;
+    return qs.parse(p.location.search, { ignoreQueryPrefix: true });
+  }
+
+  /*
+
+  If useUrlState is not enabled, do nothing
+
+  */
+  updateQueryParameter = (key, value) => {
+    if (this.props.useUrlState) {
+      const urlState = this.getUrlState();
+
+      if (value === null || value === '') {
+        // when value is null or empty, remove key from URL state
+        delete urlState[key];
+      } else {
+        urlState[key] = value;
+      }
+      const queryString = qs.stringify(urlState);
+      this.props.history.push({
+        search: `?${queryString}`
+      });
+    }
   }
 
   toggleSort = column => {
     let currentSort;
+    let urlValue;
     if (!this.state.currentSort[column]) {
       currentSort = { [column] : 1 };
+      urlValue = `${column}|1`;
     } else if (this.state.currentSort[column] === 1) {
       currentSort = { [column] : -1 };
+      urlValue = `${column}|-1`;
     } else {
       currentSort = {};
+      urlValue = null;
     }
     this.setState({ currentSort });
+    this.updateQueryParameter('sort', urlValue);
   }
 
-  updateQuery(e) {
+  updateQuery = (e) => {
     e.persist();
     e.preventDefault();
+    const value = e.target.value;
     this.setState({
-      value: e.target.value
+      value
     });
     delay(() => {
       this.setState({
-        query: e.target.value
+        query: value
       });
+      this.updateQueryParameter('query', value);
     }, 700 );
   }
 
@@ -120,8 +171,9 @@ Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
   showSearch: true,
+  useUrlState: true,
 };
-registerComponent({ name: 'Datatable', component: Datatable, hocs: [withCurrentUser, withComponents] });
+registerComponent({ name: 'Datatable', component: Datatable, hocs: [withCurrentUser, withComponents, withRouter] });
 export default Datatable;
 
 const DatatableLayout = ({ collectionName, children }) => (
@@ -277,8 +329,7 @@ DatatableContents Component
 
 const DatatableContents = (props) => {
 
-  // if no columns are provided, default to using keys of first array item
-  const { title, collection, results, columns, loading, loadMore, 
+  let { title, collection, results, columns, loading, loadMore, 
     count, totalCount, networkStatus, showEdit, currentUser, emptyState, 
     toggleSort, currentSort, modalProps,
   Components } = props;
@@ -289,6 +340,11 @@ const DatatableContents = (props) => {
     return emptyState || null;
   }
 
+  // if no columns are provided, default to using keys of first array item
+  if (!columns) {
+    columns = Object.keys(results[0]);
+  }
+  
   const isLoadingMore = networkStatus === 2;
   const hasMore = totalCount > results.length;
   const sortedColumns = _sortBy(columns, column => column.order);
