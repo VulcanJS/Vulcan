@@ -29,7 +29,7 @@ export const track = async (eventName, eventProperties, currentUser) => {
 };
 
 export const addUserFunction = f => {
-  addCallback('users.new.async', f);
+  addCallback('user.create.async', f);
 };
 
 export const addIdentifyFunction = f => {
