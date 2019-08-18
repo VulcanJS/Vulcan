@@ -85,6 +85,10 @@ export const getGraphQLType = ({
       if (!field.blackbox && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName, isInput);
       }
+      // getType(typeName)
+      if (field.type.definitions[0].blackbox && field.typeName) {
+        return field.typeName;
+      }
       // blackbox JSON object
       return 'JSON';
     case 'Date':

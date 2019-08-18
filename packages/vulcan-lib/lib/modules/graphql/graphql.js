@@ -13,11 +13,33 @@ import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import collectionToGraphQL from './collection';
-import {mainTypeTemplate} from '../graphql_templates';
+import { generateResolversFromSchema } from './resolvers';
+import { mainTypeTemplate } from '../graphql_templates';
 import getSchemaFields from './schemaFields'
 
 disableFragmentWarnings();
 
+/**
+ * Extract relevant collection information and set default values
+ * @param {*} collection 
+ */
+const getCollectionInfos = (collection) => {
+  const collectionName = collection.options.collectionName;
+  const typeName = collection.typeName
+      ? collection.typeName
+      : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
+  const schema = collection.simpleSchema();
+  const description = collection.options.description
+      ? collection.options.description
+      : `Type for ${collectionName}`;
+  return {
+      ...collection.options,
+      collectionName,
+      typeName,
+      schema,
+      description,
+  };
+};
 
 const defaultResolvers = {
   JSON: GraphQLJSON,
@@ -100,34 +122,78 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
 
-  addType({ typeName, resolver, schema, description = '', interfaces = [] }) {
+  addTypeAndResolvers({ typeName, schema, description = '', interfaces = []}) {
     if(!typeName) {
       throw Error('Error: trying to add type without typeName')
     }
+
+    const { fields, nestedFieldsList, schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    mainType = fields.mainType;
     // generate a graphql type def from the simpleSchema 
-    const { fields } = getSchemaFields(schema, typeName);
+    console.log('--------------------')
+    console.log(typeName)
+    // console.log(mainType)
+    // console.log(fields)
+    // console.log(nestedFieldsList)
+    // console.log(resolveAsFields)
+    console.log('--------------------')
+
     // console.log(JSON.stringify(fields, null, 2))
-    const graphQLSchema = mainTypeTemplate({typeName, fields: fields.mainType, description, interfaces })
-    console.log(graphQLSchema)
+    const mainGraphQLSchema = mainTypeTemplate({typeName, fields: mainType, description, interfaces });
+
+    // console.log(mainGraphQLSchema)
     // add the type and its resolver
+    this.addSchema(mainGraphQLSchema);
+    const resolvers = generateResolversFromSchema(schema)
+    if(resolvers){
+      this.addResolvers({[typeName]: resolvers});
+    }
+    schemaResolvers.forEach(addGraphQLResolvers);
+
+    // console.log(this.resolvers)
+
   },
 
-  // TODO
-  getType(){},
+  
+  /**
+   * getType - pass this into the schema to make a nested object type,
+   * referencing another type. This type sould be declared through 
+   * createCollection or addTypeAndResolvers 
+   *
+   * @param {*} typeName
+   * @returns
+   */
+  getType(typeName) {
+    return {
+      type: Object,
+      blackbox: true,
+      typeName: typeName,
+    }
+  },
 
 
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
+
+    const {
+      collectionName, typeName, schema, description,
+      interfaces = [], resolvers, mutations
+    } = getCollectionInfos(collection);
+
+
+    const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+
+    addTypeAndResolvers({ typeName, schema, description, });
+
     const {
       graphQLSchema,
-      schemaResolvers = [],
       resolversToAdd = [],
       queriesToAdd = [],
       mutationsToAdd = [],
       mutationsResolversToAdd = [],
     } = collectionToGraphQL(collection);
     // register the generated resolvers
-    schemaResolvers.forEach(addGraphQLResolvers);
+    // schemaResolvers.forEach(addGraphQLResolvers);
     queriesToAdd.forEach(([query, description]) => {
       addGraphQLQuery(query, description);
     });
@@ -176,4 +242,5 @@ export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSc
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
 export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
-export const addType = GraphQLSchema.addType.bind(GraphQLSchema);
+export const addTypeAndResolvers = GraphQLSchema.addTypeAndResolvers.bind(GraphQLSchema);
+export const getType = GraphQLSchema.getType.bind(GraphQLSchema);
