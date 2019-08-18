@@ -275,14 +275,11 @@ const collectionToGraphQL = (collection) => {
         }
 
         const { queriesToAdd, resolversToAdd } = createResolvers({ resolvers, typeName });
-        const { mutationsToAdd,
-
-            mutationsResolversToAdd
-        } = createMutations({
+        const { mutationsToAdd, mutationsResolversToAdd } = createMutations({
             mutations,
             typeName,
             collectionName,
-            fields
+            fields,
         });
 
         graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';

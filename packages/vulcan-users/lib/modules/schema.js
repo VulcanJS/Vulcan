@@ -39,6 +39,18 @@ const ownsOrIsAdmin = (user, document) => {
   return getCollection('Users').owns(user, document) || getCollection('Users').isAdmin(user);
 };
 
+const UserEmail = {
+  address: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+  },
+  verified: {
+    type: Boolean,
+    optional: true,
+  },
+};
+
 /**
  * @summary Users schema
  * @type {Object}
@@ -67,23 +79,14 @@ const schema = {
     },
     searchable: true,
   },
-  emails: {
-    type: Array,
-    optional: true,
-  },
-  'emails.$': {
-    type: Object,
-    optional: true,
-  },
-  'emails.$.address': {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email,
-    optional: true,
-  },
-  'emails.$.verified': {
-    type: Boolean,
-    optional: true,
-  },
+  // emails: {
+  //   type: Array,
+  //   optional: true,
+  // },
+  // 'emails.$': {
+  //   type: Object,
+  //   optional: true,
+  // },
   createdAt: {
     type: Date,
     optional: true,
