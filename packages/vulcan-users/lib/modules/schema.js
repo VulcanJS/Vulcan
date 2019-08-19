@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { Utils, getCollection, Connectors, Locales, getType, addTypeAndResolvers } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit:
@@ -44,12 +44,15 @@ const UserEmail = {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     optional: true,
+    canRead: ['admin']
   },
   verified: {
     type: Boolean,
     optional: true,
+    canRead: ['admin']
   },
 };
+addTypeAndResolvers({ typeName: 'UserEmail', schema: new SimpleSchema(UserEmail), description: 'The known emails of the user' });
 
 /**
  * @summary Users schema
@@ -79,14 +82,15 @@ const schema = {
     },
     searchable: true,
   },
-  // emails: {
-  //   type: Array,
-  //   optional: true,
-  // },
-  // 'emails.$': {
-  //   type: Object,
-  //   optional: true,
-  // },
+  emails: {
+    type: Array,
+    optional: true,
+    canRead: ['admin']
+  },
+  'emails.$': {
+    ...getType('UserEmail'),
+    optional: true,
+  },
   createdAt: {
     type: Date,
     optional: true,
