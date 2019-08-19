@@ -3,13 +3,9 @@
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../intl.js';
-import {
-  hasAllowedValues,
-  getAllowedValues,
-  unarrayfyFieldName
-} from '../simpleSchema_utils';
+import { hasAllowedValues, getAllowedValues, unarrayfyFieldName } from '../simpleSchema_utils';
 
-const capitalize = (word) => {
+const capitalize = word => {
   if (!word) return word;
   const [first, ...rest] = word;
   return [first.toUpperCase(), ...rest].join('');
@@ -17,32 +13,33 @@ const capitalize = (word) => {
 
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
-const isValidName = (name) => {
+const isValidName = name => {
   if (typeof name !== 'string') {
-    throw new Error(`Allowed value of field of type String is not a string (value: ${name}, type:${typeof name})`);
+    throw new Error(
+      `Allowed value of field of type String is not a string (value: ${name}, type:${typeof name})`
+    );
   }
   return name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
 };
-const isValidEnum = (values) => !values.find((val => !isValidName(val)));
+const isValidEnum = values => !values.find(val => !isValidName(val));
 
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
-export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
+export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
+  `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
 // export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
-
 // get GraphQL type for a given schema and field name
-export const getGraphQLType = ({
-  schema,
-  fieldName,
-  typeName,
-  isInput = false
-}) => {
+export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false }) => {
   const field = schema[fieldName];
 
   const fieldType = field.type.singleType;
   const fieldTypeName =
-    typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
+    typeof fieldType === 'object'
+      ? 'Object'
+      : typeof fieldType === 'function'
+      ? fieldType.name
+      : fieldType;
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
@@ -74,7 +71,7 @@ export const getGraphQLType = ({
           schema,
           fieldName: arrayItemFieldName,
           typeName,
-          isInput
+          isInput,
         });
         return arrayItemType ? `[${arrayItemType}]` : null;
       }
@@ -99,24 +96,26 @@ export const getGraphQLType = ({
   }
 };
 
-const isNestedObjectField = (field) => !!field.typeName; 
+const isNestedObjectField = field => !!field.typeName;
 const getNestedSchema = field => field.type.singleType._schema;
 
-const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
+const isArrayChildField = fieldName => fieldName.indexOf('$') !== -1;
 const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
 const hasArrayChild = (fieldName, schema) => !!getArrayChild(fieldName, schema);
 
 const getArrayChildSchema = (fieldName, schema) => {
   return getNestedSchema(getArrayChild(fieldName, schema));
 };
-const hasArrayNestedChild = (fieldName, schema) => hasArrayChild(fieldName, schema) && !!getArrayChildSchema(fieldName, schema);
+const hasArrayNestedChild = (fieldName, schema) =>
+  hasArrayChild(fieldName, schema) && !!getArrayChildSchema(fieldName, schema);
 
-const hasPermissions = field => (
-  field.canRead || field.canCreate || field.canUpdate
-);
+const hasPermissions = field => field.canRead || field.canCreate || field.canUpdate;
 const hasLegacyPermissions = field => {
   const hasLegacyPermissions = field.viewableBy || field.insertableBy || field.editableBy;
-  if (hasLegacyPermissions) console.warn('Some field is using legacy permission fields viewableBy, insertableBy and editableBy. Please replace those fields with canRead, canCreate and canUpdate.');
+  if (hasLegacyPermissions)
+    console.warn(
+      'Some field is using legacy permission fields viewableBy, insertableBy and editableBy. Please replace those fields with canRead, canCreate and canUpdate.'
+    );
   return hasLegacyPermissions;
 };
 
@@ -159,9 +158,7 @@ export const getResolveAsFields = ({
         const { Users, currentUser } = context;
         // check that current user has permission to access the original non-resolved field
         const canReadField = Users.canReadField(currentUser, field, document);
-        return canReadField
-          ? field.resolveAs.resolver(document, args, context, info)
-          : null;
+        return canReadField ? field.resolveAs.resolver(document, args, context, info) : null;
       },
     },
   };
@@ -179,7 +176,6 @@ export const getResolveAsFields = ({
   }
   return { fields, resolvers };
 };
-
 
 // [Foo] => [CreateFoo]
 const prefixType = (prefix, type) => {
@@ -199,7 +195,7 @@ export const getPermissionFields = ({
   fieldName,
   fieldType,
   inputFieldType,
-  hasNesting = false
+  hasNesting = false,
 }) => {
   const fields = {
     create: [],
@@ -208,8 +204,12 @@ export const getPermissionFields = ({
     selectorUnique: [],
     orderBy: [],
   };
-  const createInputFieldType = hasNesting ? suffixType(prefixType('Create', fieldType), 'DataInput') : inputFieldType;
-  const updateInputFieldType = hasNesting ? suffixType(prefixType('Update', fieldType), 'DataInput') : inputFieldType;
+  const createInputFieldType = hasNesting
+    ? suffixType(prefixType('Create', fieldType), 'DataInput')
+    : inputFieldType;
+  const updateInputFieldType = hasNesting
+    ? suffixType(prefixType('Update', fieldType), 'DataInput')
+    : inputFieldType;
 
   // OpenCRUD backwards compatibility
   if (field.canCreate || field.insertableBy) {
@@ -268,7 +268,7 @@ export const getPermissionFields = ({
 // for a given schema, return main type fields, selector fields,
 // unique selector fields, orderBy fields, creatable fields, and updatable fields
 export const getSchemaFields = (schema, typeName) => {
-  if(!schema) console.log('/////////////////////',typeName, '/////////////////////')
+  if (!schema) console.log('/////////////////////', typeName, '/////////////////////');
   const fields = {
     mainType: [],
     create: [],
@@ -276,7 +276,7 @@ export const getSchemaFields = (schema, typeName) => {
     selector: [],
     selectorUnique: [],
     orderBy: [],
-    enums: []
+    enums: [],
   };
   const nestedFieldsList = [];
   const resolvers = [];
@@ -293,9 +293,7 @@ export const getSchemaFields = (schema, typeName) => {
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
     // OpenCRUD backwards compatibility
-    if (
-      (hasPermissions(field) || hasLegacyPermissions(field)) && !isArrayChildField(fieldName)
-    ) {
+    if ((hasPermissions(field) || hasLegacyPermissions(field)) && !isArrayChildField(fieldName)) {
       const fieldDescription = field.description;
       const fieldDirective = isIntlField(field) ? '@intl' : '';
       const fieldArguments = isIntlField(field) ? [{ name: 'locale', type: 'String' }] : [];
@@ -303,7 +301,13 @@ export const getSchemaFields = (schema, typeName) => {
       // if field has a resolveAs, push it to schema
       if (field.resolveAs) {
         const { fields: resolveAsFields, resolvers: resolveAsResolvers } = getResolveAsFields({
-          typeName, field, fieldName, fieldType, fieldDescription, fieldDirective, fieldArguments
+          typeName,
+          field,
+          fieldName,
+          fieldType,
+          fieldDescription,
+          fieldDirective,
+          fieldArguments,
         });
         resolvers.push(...resolveAsResolvers);
         fields.mainType.push(...resolveAsFields.mainType);
@@ -319,7 +323,6 @@ export const getSchemaFields = (schema, typeName) => {
           });
         }
       }
-
 
       // if field has allowedValues, add enum type
       // if (hasAllowedValues(field)) {
@@ -339,7 +342,13 @@ export const getSchemaFields = (schema, typeName) => {
       //   }
       // }
 
-      const permissionsFields = getPermissionFields({ field, fieldName, fieldType, inputFieldType, hasNesting });
+      const permissionsFields = getPermissionFields({
+        field,
+        fieldName,
+        fieldType,
+        inputFieldType,
+        hasNesting,
+      });
       fields.create.push(...permissionsFields.create);
       fields.update.push(...permissionsFields.update);
       fields.selector.push(...permissionsFields.selector);
@@ -368,13 +377,12 @@ export const getSchemaFields = (schema, typeName) => {
       //   arrayNestedFields.typeName = arrayNestedTypeName;
       //   nestedFieldsList.push(arrayNestedFields);
       // }
-
     }
   });
   return {
     fields,
     nestedFieldsList,
-    resolvers
+    resolvers,
   };
 };
 

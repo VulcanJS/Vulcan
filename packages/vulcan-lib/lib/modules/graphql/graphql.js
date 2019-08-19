@@ -14,30 +14,34 @@ import { disableFragmentWarnings } from 'graphql-tag';
 
 import collectionToGraphQL from './collection';
 import { generateResolversFromSchema } from './resolvers';
-import { mainTypeTemplate, createDataInputTemplate, updateDataInputTemplate } from '../graphql_templates';
-import getSchemaFields from './schemaFields'
+import {
+  mainTypeTemplate,
+  createDataInputTemplate,
+  updateDataInputTemplate,
+} from '../graphql_templates';
+import getSchemaFields from './schemaFields';
 
 disableFragmentWarnings();
 
 /**
  * Extract relevant collection information and set default values
- * @param {*} collection 
+ * @param {*} collection
  */
-const getCollectionInfos = (collection) => {
+const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
   const typeName = collection.typeName
-      ? collection.typeName
-      : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
+    ? collection.typeName
+    : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
   const schema = collection.simpleSchema();
   const description = collection.options.description
-      ? collection.options.description
-      : `Type for ${collectionName}`;
+    ? collection.options.description
+    : `Type for ${collectionName}`;
   return {
-      ...collection.options,
-      collectionName,
-      typeName,
-      schema,
-      description,
+    ...collection.options,
+    collectionName,
+    typeName,
+    schema,
+    description,
   };
 };
 
@@ -122,53 +126,44 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
 
-  addTypeAndResolvers({ typeName, schema, description = '', interfaces = []}) {
-    if(!typeName) {
-      throw Error('Error: trying to add type without typeName')
+  addTypeAndResolvers({ typeName, schema, description = '', interfaces = [] }) {
+    if (!typeName) {
+      throw Error('Error: trying to add type without typeName');
     }
 
-    const { fields, nestedFieldsList, schemaResolvers = [],  } = getSchemaFields(schema._schema, typeName);
-    mainType = fields.mainType;
-    // generate a graphql type def from the simpleSchema 
-    console.log('--------------------')
-    console.log(typeName)
-    console.log(fields.create)
-    console.log(fields.update)
-    // console.log(mainType)
-    // console.log(fields)
-    // console.log(nestedFieldsList)
-    // console.log(resolveAsFields)
-    console.log('--------------------')
+    const { fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    const mainType = fields.mainType;
 
-    // console.log(JSON.stringify(fields, null, 2))
-    const mainGraphQLSchema = mainTypeTemplate({typeName, fields: mainType, description, interfaces });
-    // console.log(mainGraphQLSchema)
+    // generate a graphql type def from the simpleSchema
+    const mainGraphQLSchema = mainTypeTemplate({
+      typeName,
+      fields: mainType,
+      description,
+      interfaces,
+    });
+
     // add the type and its resolver
     this.addSchema(mainGraphQLSchema);
-    
+
     // createTypeDataInput
     if ((fields.create || []).length) {
-      this.addSchema(createDataInputTemplate({typeName, fields: fields.create}));
+      this.addSchema(createDataInputTemplate({ typeName, fields: fields.create }));
     }
     // updateTypeDataInput
     if ((fields.update || []).length) {
-      this.addSchema(updateDataInputTemplate({typeName, fields: fields.update}));
+      this.addSchema(updateDataInputTemplate({ typeName, fields: fields.update }));
     }
-    const resolvers = generateResolversFromSchema(schema)
-    if(resolvers){
-      this.addResolvers({[typeName]: resolvers});
+    const resolvers = generateResolversFromSchema(schema);
+    if (resolvers) {
+      this.addResolvers({ [typeName]: resolvers });
     }
     schemaResolvers.forEach(addGraphQLResolvers);
-
-    // console.log(this.resolvers)
-
   },
 
-  
   /**
    * getType - pass this into the schema to make a nested object type,
-   * referencing another type. This type sould be declared through 
-   * createCollection or addTypeAndResolvers 
+   * referencing another type. This type sould be declared through
+   * createCollection or addTypeAndResolvers
    *
    * @param {*} typeName
    * @returns
@@ -178,18 +173,20 @@ export const GraphQLSchema = {
       type: Object,
       blackbox: true,
       typeName: typeName,
-    }
+    };
   },
-
 
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
-
     const {
-      collectionName, typeName, schema, description,
-      interfaces = [], resolvers, mutations
+      collectionName,
+      typeName,
+      schema,
+      description,
+      interfaces = [],
+      resolvers,
+      mutations,
     } = getCollectionInfos(collection);
-
 
     // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
 
