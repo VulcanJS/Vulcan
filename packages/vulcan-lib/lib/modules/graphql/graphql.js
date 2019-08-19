@@ -14,7 +14,7 @@ import { disableFragmentWarnings } from 'graphql-tag';
 
 import collectionToGraphQL from './collection';
 import { generateResolversFromSchema } from './resolvers';
-import { mainTypeTemplate } from '../graphql_templates';
+import { mainTypeTemplate, createDataInputTemplate, updateDataInputTemplate } from '../graphql_templates';
 import getSchemaFields from './schemaFields'
 
 disableFragmentWarnings();
@@ -127,11 +127,13 @@ export const GraphQLSchema = {
       throw Error('Error: trying to add type without typeName')
     }
 
-    const { fields, nestedFieldsList, schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    const { fields, nestedFieldsList, schemaResolvers = [],  } = getSchemaFields(schema._schema, typeName);
     mainType = fields.mainType;
     // generate a graphql type def from the simpleSchema 
     console.log('--------------------')
     console.log(typeName)
+    console.log(fields.create)
+    console.log(fields.update)
     // console.log(mainType)
     // console.log(fields)
     // console.log(nestedFieldsList)
@@ -140,10 +142,18 @@ export const GraphQLSchema = {
 
     // console.log(JSON.stringify(fields, null, 2))
     const mainGraphQLSchema = mainTypeTemplate({typeName, fields: mainType, description, interfaces });
-
     // console.log(mainGraphQLSchema)
     // add the type and its resolver
     this.addSchema(mainGraphQLSchema);
+    
+    // createTypeDataInput
+    if ((fields.create || []).length) {
+      this.addSchema(createDataInputTemplate({typeName, fields: fields.create}));
+    }
+    // updateTypeDataInput
+    if ((fields.update || []).length) {
+      this.addSchema(updateDataInputTemplate({typeName, fields: fields.update}));
+    }
     const resolvers = generateResolversFromSchema(schema)
     if(resolvers){
       this.addResolvers({[typeName]: resolvers});
@@ -181,9 +191,9 @@ export const GraphQLSchema = {
     } = getCollectionInfos(collection);
 
 
-    const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
 
-    addTypeAndResolvers({ typeName, schema, description, });
+    addTypeAndResolvers({ typeName, schema, description, interfaces });
 
     const {
       graphQLSchema,
