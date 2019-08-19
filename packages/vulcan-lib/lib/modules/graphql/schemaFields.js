@@ -28,7 +28,7 @@ const isValidEnum = (values) => !values.find((val => !isValidName(val)));
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
 export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
-export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
+// export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
 
 // get GraphQL type for a given schema and field name
@@ -50,9 +50,9 @@ export const getGraphQLType = ({
 
   switch (fieldTypeName) {
     case 'String':
-      if (hasAllowedValues(field) && isValidEnum(getAllowedValues(field))) {
-        return getEnumType(typeName, fieldName);
-      }
+      // if (hasAllowedValues(field) && isValidEnum(getAllowedValues(field))) {
+      //   return getEnumType(typeName, fieldName);
+      // }
       return 'String';
 
     case 'Boolean':
@@ -99,7 +99,7 @@ export const getGraphQLType = ({
   }
 };
 
-const isNestedObjectField = (field) => !!getNestedSchema(field);
+const isNestedObjectField = (field) => !!field.typeName; 
 const getNestedSchema = field => field.type.singleType._schema;
 
 const isArrayChildField = (fieldName) => fieldName.indexOf('$') !== -1;
@@ -268,6 +268,7 @@ export const getPermissionFields = ({
 // for a given schema, return main type fields, selector fields,
 // unique selector fields, orderBy fields, creatable fields, and updatable fields
 export const getSchemaFields = (schema, typeName) => {
+  if(!schema) console.log('/////////////////////',typeName, '/////////////////////')
   const fields = {
     mainType: [],
     create: [],
@@ -321,22 +322,22 @@ export const getSchemaFields = (schema, typeName) => {
 
 
       // if field has allowedValues, add enum type
-      if (hasAllowedValues(field)) {
-        const allowedValues = getAllowedValues(field);
-        // TODO: we can't force value creation
-        //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${ fieldName } can not be used as enum.
-        //One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/.`)//;
+      // if (hasAllowedValues(field)) {
+      //   const allowedValues = getAllowedValues(field);
+      //   // TODO: we can't force value creation
+      //   //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${ fieldName } can not be used as enum.
+      //   //One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/.`)//;
 
-        // ignore arrays containing invalid values
-        if (isValidEnum(allowedValues)) {
-          fields.enums.push({//
-            allowedValues,
-            typeName: getEnumType(typeName, fieldName)
-          });
-        } else {
-          console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
-        }
-      }
+      //   // ignore arrays containing invalid values
+      //   if (isValidEnum(allowedValues)) {
+      //     fields.enums.push({//
+      //       allowedValues,
+      //       typeName: getEnumType(typeName, fieldName)
+      //     });
+      //   } else {
+      //     console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
+      //   }
+      // }
 
       const permissionsFields = getPermissionFields({ field, fieldName, fieldType, inputFieldType, hasNesting });
       fields.create.push(...permissionsFields.create);
@@ -346,27 +347,27 @@ export const getSchemaFields = (schema, typeName) => {
       fields.orderBy.push(...permissionsFields.orderBy);
 
       // check for nested fields
-      if (isNestedObject) {
-        //console.log('detected a nested field', fieldName);
-        const nestedSchema = getNestedSchema(field);
-        const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
-        //const nestedInputTypeName = `${nestedTypeName}Input`;
-        const nestedFields = getSchemaFields(nestedSchema, nestedTypeName);
-        // add the generated typeName to the info
-        nestedFields.typeName = nestedTypeName;
-        //nestedFields.inputTypeName = nestedInputTypeName;
-        nestedFieldsList.push(nestedFields);
-      }
-      // check if field is an array of objects
-      if (isNestedArray) {
-        //console.log('detected a field with an array child', fieldName);
-        const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
-        const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
-        const arrayNestedFields = getSchemaFields(arrayNestedSchema, arrayNestedTypeName);
-        // add the generated typeName to the info
-        arrayNestedFields.typeName = arrayNestedTypeName;
-        nestedFieldsList.push(arrayNestedFields);
-      }
+      // if (isNestedObject) {
+      //   //console.log('detected a nested field', fieldName);
+      //   const nestedSchema = getNestedSchema(field);
+      //   const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
+      //   //const nestedInputTypeName = `${nestedTypeName}Input`;
+      //   const nestedFields = getSchemaFields(nestedSchema, nestedTypeName);
+      //   // add the generated typeName to the info
+      //   nestedFields.typeName = nestedTypeName;
+      //   //nestedFields.inputTypeName = nestedInputTypeName;
+      //   nestedFieldsList.push(nestedFields);
+      // }
+      // // check if field is an array of objects
+      // if (isNestedArray) {
+      //   //console.log('detected a field with an array child', fieldName);
+      //   const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
+      //   const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
+      //   const arrayNestedFields = getSchemaFields(arrayNestedSchema, arrayNestedTypeName);
+      //   // add the generated typeName to the info
+      //   arrayNestedFields.typeName = arrayNestedTypeName;
+      //   nestedFieldsList.push(arrayNestedFields);
+      // }
 
     }
   });
