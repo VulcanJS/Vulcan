@@ -277,6 +277,7 @@ Users.canCreateField = function (user, field) {
  * Check if a user can edit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
+ * @param {Object} document - The document being edited or inserted
  */
 Users.canUpdateField = function (user, field, document) {
   const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
