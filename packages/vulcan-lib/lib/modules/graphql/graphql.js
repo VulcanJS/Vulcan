@@ -29,9 +29,7 @@ disableFragmentWarnings();
  */
 const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
-  const typeName = collection.typeName
-    ? collection.typeName
-    : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
+  const typeName = collection.typeName;
   const schema = collection.simpleSchema();
   const description = collection.options.description
     ? collection.options.description
