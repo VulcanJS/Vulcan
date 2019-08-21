@@ -59,7 +59,7 @@ export const createMutator = async ({
   data,
   currentUser,
   validate,
-  context,
+  context = {},
 }) => {
   // OpenCRUD backwards compatibility: accept either data or document
   // we don't want to modify the original document
@@ -68,6 +68,11 @@ export const createMutator = async ({
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
 
+  // get currentUser from context if possible
+  if (!currentUser && context.currentUser) {
+    currentUser = context.currentUser;
+  }
+  
   startDebugMutator(collectionName, 'Create', { validate, document });
 
   /*
@@ -235,11 +240,16 @@ export const updateMutator = async ({
   unset = {},
   currentUser,
   validate,
-  context,
+  context = {},
   document: oldDocument,
 }) => {
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
+
+  // get currentUser from context if possible
+  if (!currentUser && context.currentUser) {
+    currentUser = context.currentUser;
+  }
 
   // OpenCRUD backwards compatibility
   selector = selector || { _id: documentId };
@@ -444,11 +454,17 @@ export const deleteMutator = async ({
   selector,
   currentUser,
   validate,
-  context,
+  context = {},
   document,
 }) => {
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
+
+  // get currentUser from context if possible
+  if (!currentUser && context.currentUser) {
+    currentUser = context.currentUser;
+  }
+  
   // OpenCRUD backwards compatibility
   selector = selector || { _id: documentId };
 
