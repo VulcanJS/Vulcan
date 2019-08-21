@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 // TODO: now we should add some callback call to add the store to
 // Apollo SSR + client side too

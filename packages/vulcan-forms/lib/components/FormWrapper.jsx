@@ -28,7 +28,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router';
-import { withApollo, compose } from 'react-apollo';
+import { withApollo } from 'react-apollo';
+import compose from 'recompose/compose';
 import {
   Components,
   registerComponent,
