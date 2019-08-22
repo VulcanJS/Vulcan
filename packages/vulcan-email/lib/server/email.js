@@ -112,6 +112,12 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
     text = VulcanEmail.generateTextVersion(html);
   }
 
+  // in dev or staging environments, add suffix to email subjects to differentiate them.
+  const environment = getSetting('environment');
+  if (['development', 'staging'].includes(environment)) {
+    subject = `${subject} [${environment}]`;
+  }
+
   const email = {
     from: _from,
     to,
