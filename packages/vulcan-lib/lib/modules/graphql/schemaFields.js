@@ -78,7 +78,7 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
       return null;
 
     case 'Object':
-      // 2 cases: it's an actual JSON or a nested schema
+      // 3 cases: it's a nested Schema, a referenced schema, or an actual JSON
       if (!field.blackbox && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName, isInput);
       }
@@ -108,6 +108,11 @@ const getArrayChildSchema = (fieldName, schema) => {
 };
 const hasArrayNestedChild = (fieldName, schema) =>
   hasArrayChild(fieldName, schema) && !!getArrayChildSchema(fieldName, schema);
+
+const getArrayChildTypeName = (fieldName, schema) =>
+  (getArrayChild(fieldName, schema) || {}).typeName;
+const hasArrayReferenceChild = (fieldName, schema) =>
+  hasArrayChild(fieldName, schema) && !!getArrayChildTypeName(fieldName, schema);
 
 const hasPermissions = field => field.canRead || field.canCreate || field.canUpdate;
 const hasLegacyPermissions = field => {
@@ -287,7 +292,7 @@ export const getSchemaFields = (schema, typeName) => {
     const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
     const isNestedObject = isNestedObjectField(field);
-    const isNestedArray = hasArrayNestedChild(fieldName, schema);
+    const isNestedArray = hasArrayNestedChild(fieldName, schema) || hasArrayReferenceChild(fieldName, schema);
     const hasNesting = isNestedObject || isNestedArray;
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
@@ -341,6 +346,9 @@ export const getSchemaFields = (schema, typeName) => {
       //     console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
       //   }
       // }
+      if(typeName === 'Schema'){
+        console.log(fieldName, hasNesting)
+      }
 
       const permissionsFields = getPermissionFields({
         field,
