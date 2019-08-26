@@ -428,6 +428,7 @@ const DatatableContents = props => {
     currentSort,
     modalProps,
     Components,
+    error,
   } = props;
 
   if (loading) {
@@ -450,6 +451,8 @@ const DatatableContents = props => {
   const sortedColumns = _sortBy(columns, column => column.order);
   return (
     <Components.DatatableContentsLayout>
+      {/* note: we want to be able to show potential errors while still showing the data below */}
+      {error && <Components.Alert variant="danger">{error.message}</Components.Alert>}
       {title && <Components.DatatableTitle title={title} />}
       <Components.DatatableContentsInnerLayout>
         <Components.DatatableContentsHeadLayout>

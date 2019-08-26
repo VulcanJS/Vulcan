@@ -41,6 +41,9 @@ export default function withSingle(options) {
         graphQLOptions.fetchPolicy = options.fetchPolicy;
       }
 
+      // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
+      graphQLOptions.errorPolicy = 'all';
+
       return graphQLOptions;
     },
     props: returnedProps => {
