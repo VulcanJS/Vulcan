@@ -16,5 +16,7 @@ registerFragment(`
     groups
     services
     avatarUrl
+    pageUrl
+    pagePath
   }
 `);
