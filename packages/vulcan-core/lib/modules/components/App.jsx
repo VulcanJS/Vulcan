@@ -18,32 +18,35 @@ import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
-import { withRouter} from 'react-router';
+import { withRouter } from 'react-router';
 import MessageContext from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
+  // if defined, use ErrorCatcher component to wrap layout contents
+  const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
 
-   // if defined, use ErrorCatcher component to wrap layout contents
-   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
-
-   return (
-  <Route
-    // NOTE: Switch ignores the "exact" prop of components that 
-    // are not its direct children
-    // Since the render tree is now Switch > RouteWithLayout > Route
-    // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
-    //exact 
-    {...rest}
-    render={props => {
-
-   const layoutProps = { ...props, currentRoute };
-   const childComponentProps = { ...props, currentRoute };
-      const layout = layoutName ? Components[layoutName] : Components.Layout;
-      return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
-    }}
-  />
-);};
+  return (
+    <Route
+      // NOTE: Switch ignores the "exact" prop of components that
+      // are not its direct children
+      // Since the render tree is now Switch > RouteWithLayout > Route
+      // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
+      //exact
+      {...rest}
+      render={props => {
+        const layoutProps = { ...props, currentRoute };
+        const childComponentProps = { ...props, currentRoute };
+        const layout = layoutName ? Components[layoutName] : Components.Layout;
+        return React.createElement(
+          layout,
+          layoutProps,
+          <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>
+        );
+      }}
+    />
+  );
+};
 
 class App extends PureComponent {
   constructor(props) {
@@ -52,10 +55,10 @@ class App extends PureComponent {
       runCallbacks('events.identify', props.currentUser);
     }
     const { locale, localeMethod } = this.initLocale();
-    this.state = { 
-      locale, 
+    this.state = {
+      locale,
       localeMethod,
-      messages: [], 
+      messages: [],
     };
     moment.locale(locale);
   }
@@ -67,13 +70,13 @@ class App extends PureComponent {
 
   */
   UNSAFE_componentWillMount() {
-    this.unlisten = this.props.history.listen((location, action) => {
+    this.unlisten = this.props.history && this.props.history.listen((location, action) => {
       this.clear();
     });
   }
 
   componentWillUnmount() {
-      this.unlisten();
+    this.unlisten();
   }
 
   /* 
@@ -82,10 +85,10 @@ class App extends PureComponent {
   
   */
   flash = message => {
-    this.setState({ 
-      messages: [...this.state.messages, message
-    ]});
-  }
+    this.setState({
+      messages: [...this.state.messages, message],
+    });
+  };
 
   /*
 
@@ -93,8 +96,8 @@ class App extends PureComponent {
 
   */
   clear = () => {
-    this.setState({ messages: []});
-  }
+    this.setState({ messages: [] });
+  };
 
   componentDidMount() {
     runCallbacks('app.mounted', this.props);
@@ -178,7 +181,10 @@ class App extends PureComponent {
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
 
     return (
-      <IntlProvider locale={this.getLocale()} key={this.getLocale()} messages={Strings[this.getLocale()]}>
+      <IntlProvider
+        locale={this.getLocale()}
+        key={this.getLocale()}
+        messages={Strings[this.getLocale()]}>
         <MessageContext.Provider value={{ messages, flash }}>
           <Components.ScrollToTop />
           <div className={`locale-${this.getLocale()}`}>
@@ -192,14 +198,24 @@ class App extends PureComponent {
                   // NOTE: if we want the exact props to be taken into account
                   // we have to pass it to the RouteWithLayout, not the underlying Route,
                   // because it is the direct child of Switch
-                  <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
+                  <RouteWithLayout
+                    exact
+                    currentRoute={Routes[key]}
+                    siteData={this.props.siteData}
+                    key={key}
+                    {...Routes[key]}
+                  />
                 ))}
-                <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404'}} component={Components.Error404} />
+                <RouteWithLayout
+                  siteData={this.props.siteData}
+                  currentRoute={{ name: '404' }}
+                  component={Components.Error404}
+                />
                 {/* <Route component={Components.Error404} />  */}
               </Switch>
             ) : (
-                  <Components.Welcome />
-                )}
+              <Components.Welcome />
+            )}
           </div>
         </MessageContext.Provider>
       </IntlProvider>
@@ -219,11 +235,45 @@ App.childContextTypes = {
 
 App.displayName = 'App';
 
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { getFragment } from 'meteor/vulcan:lib';
+
+const currentUserQuery = gql`
+  query getCurrentUser {
+    currentUser {
+      ...UsersCurrent
+    }
+  }
+  ${getFragment('UsersCurrent')}
+`;
+
+/* 
+
+Use useQuery hook instead of withCurrentUser as a workaround
+for infinite loading issue due to cancelled query
+(possibly https://stackoverflow.com/questions/50294001/apollo-graphql-requests-are-canceled )
+
+*/
+const AppWithCurrentUser = (props) => {
+  const { loading, error, data } = useQuery(currentUserQuery);
+  return <App currentUserLoading={loading} currentUser={data.currentUser} currentUserData={data} {...props}/>;
+};
+
 const updateOptions = {
   collectionName: 'Users',
   fragmentName: 'UsersCurrent',
 };
 
-registerComponent('App', App, withCurrentUser, withSiteData, [withUpdate, updateOptions], withApollo, withCookies, withRouter);
+registerComponent(
+  'App',
+  AppWithCurrentUser,
+  // withCurrentUser,
+  withSiteData,
+  [withUpdate, updateOptions],
+  withApollo,
+  withCookies,
+  withRouter
+);
 
 export default App;
