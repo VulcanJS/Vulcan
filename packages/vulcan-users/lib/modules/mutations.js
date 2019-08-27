@@ -1,5 +1,6 @@
 import { createMutator, updateMutator, deleteMutator, Utils, Connectors, registerCallback } from 'meteor/vulcan:lib';
 import Users from './collection'; // TODO: circular dependency?
+import isEmpty from 'lodash/isEmpty';
 
 const performCheck = (mutation, user, document) => {
   if (!mutation.check(user, document))
@@ -74,7 +75,9 @@ const deleteMutation = {
   async mutation(root, { selector }, context) {
 
     const { Users, currentUser } = context;
-
+    if (isEmpty(selector) || (!selector._id && !selector.documentId && !selector.slug)) {
+      throw new Error('Selector cannot be empty');
+    }
     const document = await Connectors.get(Users, selector);
 
     if (!document) {
@@ -85,7 +88,7 @@ const deleteMutation = {
 
     return deleteMutator({
       collection: Users,
-      selector,
+      selector: { _id: document._id },
       currentUser,
       validate: true,
       context,
