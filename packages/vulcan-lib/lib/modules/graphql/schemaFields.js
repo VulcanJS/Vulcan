@@ -32,14 +32,15 @@ export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false }) => {
   const field = schema[fieldName];
+  if (field.typeName) return field.typeName; // respect typeName provided by user
 
   const fieldType = field.type.singleType;
   const fieldTypeName =
     typeof fieldType === 'object'
       ? 'Object'
       : typeof fieldType === 'function'
-      ? fieldType.name
-      : fieldType;
+        ? fieldType.name
+        : fieldType;
 
   if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
@@ -346,8 +347,8 @@ export const getSchemaFields = (schema, typeName) => {
       //     console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
       //   }
       // }
-      if(typeName === 'Schema'){
-        console.log(fieldName, hasNesting)
+      if (typeName === 'Schema') {
+        console.log(fieldName, hasNesting);
       }
 
       const permissionsFields = getPermissionFields({
