@@ -552,6 +552,60 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooArrayFieldDataInput { someField: String }');
       });
 
+      test('do NOT generate inputs for nested objects', () => {
+        const collection = makeDummyCollection({
+          nestedField: {
+            type: new SimpleSchema({
+              someField: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+              }
+            }),
+            typeName: 'AlreadyRegisteredSchema',
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% of the expected result
+        expect(normalizedSchema).not.toMatch('CreateFooInput');
+        expect(normalizedSchema).not.toMatch('CreateFooDataInput');
+        expect(normalizedSchema).not.toMatch('CreateFooNestedFieldDataInput');
+      });
+      test('do NOT generate inputs for array of objects if typeName is provided', () => {
+        const collection = makeDummyCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            typeName: 'AlreadyRegisteredType',
+            type: new SimpleSchema({
+              someField: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+              }
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% sure of the syntax
+        expect(normalizedSchema).not.toMatch('CreateFooInput');
+        expect(normalizedSchema).not.toMatch('CreateFooDataInput');
+        expect(normalizedSchema).not.toMatch('CreateFooArrayFieldDataInput');
+      });
+
       test('ignore resolveAs', () => {
         const collection = makeDummyCollection({
           nestedField: {
