@@ -15,20 +15,22 @@ const capitalize = (word) => {
   return [first.toUpperCase(), ...rest].join('');
 };
 
+
+// get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
+export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
+
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
+/*
 const isValidName = (name) => {
   if (typeof name !== 'string') {
     throw new Error(`Allowed value of field of type String is not a string (value: ${name}, type:${typeof name})`);
   }
   return name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
 };
-const isValidEnum = (values) => !values.find((val => !isValidName(val)));
-
-// get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
-export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
-
-export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
+*/
+//const isValidEnum = (values) => !values.find((val => !isValidName(val)));
+//export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
 
 // get GraphQL type for a given schema and field name
@@ -50,9 +52,12 @@ export const getGraphQLType = ({
 
   switch (fieldTypeName) {
     case 'String':
+      /*
+      Getting Enums from allowed values is counter productive because enums syntax is limited
+      @see https://github.com/VulcanJS/Vulcan/issues/2332
       if (hasAllowedValues(field) && isValidEnum(getAllowedValues(field))) {
         return getEnumType(typeName, fieldName);
-      }
+      }*/
       return 'String';
 
     case 'Boolean':
@@ -316,12 +321,13 @@ export const getSchemaFields = (schema, typeName) => {
       }
 
 
+      // Support for enums from allowedValues has been removed (counter-productive)
       // if field has allowedValues, add enum type
-      if (hasAllowedValues(field)) {
+      /*if (hasAllowedValues(field)) {
         const allowedValues = getAllowedValues(field);
         // TODO: we can't force value creation
         //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${ fieldName } can not be used as enum.
-        //One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/.`)//;
+        //One or more values are not respecting the Name regex`)
 
         // ignore arrays containing invalid values
         if (isValidEnum(allowedValues)) {
@@ -330,9 +336,10 @@ export const getSchemaFields = (schema, typeName) => {
             typeName: getEnumType(typeName, fieldName)
           });
         } else {
-          console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex: /[_A-Za-z][_0-9A-Za-z]*/. Consider normalizing allowedValues and using separate labels for displaying.`);
+          console.warn(`Warning: Allowed values of field ${fieldName} can not be used as GraphQL Enum. One or more values are not respecting the Name regex.Consider normalizing allowedValues and using separate labels for displaying.`);
         }
-      }
+      } 
+      */
 
       const permissionsFields = getPermissionFields({ field, fieldName, fieldType, inputFieldType, hasNesting });
       fields.create.push(...permissionsFields.create);
@@ -346,7 +353,7 @@ export const getSchemaFields = (schema, typeName) => {
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
         const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
-        //const nestedInputTypeName = `${nestedTypeName}Input`;
+        //const nestedInputTypeName = `${ nestedTypeName }Input`;
         const nestedFields = getSchemaFields(nestedSchema, nestedTypeName);
         // add the generated typeName to the info
         nestedFields.typeName = nestedTypeName;

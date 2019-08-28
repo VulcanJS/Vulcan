@@ -296,6 +296,8 @@ describe('vulcan:lib/graphql', function () {
       });
     });
 
+    /*
+    Feature removed
     describe('enums', () => {
       test('don\'t generate enum type when some values are not allowed', () => {
         const collection = makeDummyCollection({
@@ -403,7 +405,20 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type FooEntrepreneurLifeCycleHistory { entrepreneurLifeCycleState: FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum');
         expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
+
+      test("support enum type in array children", () => {
+        throw new Error("test not written yet")
+        const schema = {
+          arrayField : { ... }
+          "arrayField.$": {
+            type: String,
+            allowedValues: [...] // whatever
+          } 
+        }
+      })
     });
+
+    */
 
     describe('mutation inputs', () => {
       test('generate creation input', () => {
