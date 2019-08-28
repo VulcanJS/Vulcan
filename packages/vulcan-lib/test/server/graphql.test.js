@@ -552,7 +552,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooArrayFieldDataInput { someField: String }');
       });
 
-      test('do NOT generate inputs for nested objects', () => {
+      test('do NOT generate inputs for nested objects if a type is provided', () => {
         const collection = makeDummyCollection({
           nestedField: {
             type: new SimpleSchema({

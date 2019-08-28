@@ -99,9 +99,8 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
   }
 };
 
-const isReference = field => getFieldTypeName(getFieldType(field)) === 'Object' && field.typeName;
+//const isObject = field => getFieldTypeName(getFieldType(field));
 const hasNestedSchema = field => !!getNestedSchema(field);
-const isNestedObjectField = field => isReference(field) || hasNestedSchema(field);
 const getNestedSchema = field => field.type.singleType._schema;
 
 const isArrayChildField = fieldName => fieldName.indexOf('$') !== -1;
@@ -114,10 +113,10 @@ const getArrayChildSchema = (fieldName, schema) => {
 const hasArrayNestedChild = (fieldName, schema) =>
   hasArrayChild(fieldName, schema) && !!getArrayChildSchema(fieldName, schema);
 
-const getArrayChildTypeName = (fieldName, schema) =>
-  (getArrayChild(fieldName, schema) || {}).typeName;
-const hasArrayReferenceChild = (fieldName, schema) =>
-  hasArrayChild(fieldName, schema) && !!getArrayChildTypeName(fieldName, schema);
+//const getArrayChildTypeName = (fieldName, schema) =>
+//  (getArrayChild(fieldName, schema) || {}).typeName;
+//const hasArrayReferenceChild = (fieldName, schema) =>
+//  hasArrayChild(fieldName, schema) && !!getArrayChildTypeName(fieldName, schema);
 
 const hasPermissions = field => field.canRead || field.canCreate || field.canUpdate;
 const hasLegacyPermissions = field => {
@@ -296,10 +295,12 @@ export const getSchemaFields = (schema, typeName) => {
     const fieldType = getGraphQLType({ schema, fieldName, typeName });
     const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
-    const isNestedObject = isNestedObjectField(field);
-    const isNestedArray = hasArrayNestedChild(fieldName, schema) || hasArrayReferenceChild(fieldName, schema);
     // ignore fields that already have a typeName
-    const hasNesting = isNestedObject || isNestedArray;
+    const isNestedObject = !(field.typeName) && hasNestedSchema(field);
+    const isNestedArray = hasArrayNestedChild(fieldName, schema)
+      && hasNestedSchema(getArrayChild(fieldName, schema))
+      && !getArrayChild(fieldName, schema).typeName;
+    const hasNesting = isNestedArray || isNestedObject;
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
@@ -371,7 +372,7 @@ export const getSchemaFields = (schema, typeName) => {
 
       // check for nested fields if the field does not reference an existing type
       // TODO: reuse addTypeAndResolver on the nested schema instead?
-      if (!(field.typeName) && isNestedObject) {
+      if (isNestedObject) {
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
         const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
@@ -384,7 +385,7 @@ export const getSchemaFields = (schema, typeName) => {
       }
       // check if field is an array of objects if the field does not reference an existing type
       // TODO: reuse addTypeAndResolver on the nested schema instead?
-      if (isNestedArray && !isReference(getArrayChild(fieldName, schema))) {
+      if (isNestedArray) {
         //console.log('detected a field with an array child', fieldName);
         const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
         const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);
