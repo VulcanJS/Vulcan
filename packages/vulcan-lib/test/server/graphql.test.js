@@ -281,6 +281,8 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { nestedField: AlreadyRegisteredNestedType }');
         expect(normalizedSchema).not.toMatch('FooNestedField');
       });
+
+      // TODO: does this test case make any sense?
       test('do NOT generate graphQL type if an existing graphQL type is referenced', () => {
         const collection = makeDummyCollection({
           nestedField: {
@@ -350,6 +352,8 @@ describe('vulcan:lib/graphql', function () {
       });
     });
 
+    /*
+    generating enums from allowed values automatically => bad idea, could be a manual helper instead
     describe('enums', () => {
       test('don\'t generate enum type when some values are not allowed', () => {
         const collection = makeDummyCollection({
@@ -458,6 +462,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
     });
+    */
 
     describe('mutation inputs', () => {
       test('generate creation input', () => {
