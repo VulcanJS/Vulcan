@@ -195,58 +195,112 @@ describe('vulcan:lib/graphql', function () {
     });
   });
   describe('collection to GraphQL type', () => {
-    test('generate a type for a simple collection', () => {
-      const collection = makeDummyCollection({
-        field: {
-          type: String,
-          canRead: ['admins']
-        }
+    describe('basic', () => {
+      test('generate a type for a simple collection', () => {
+        const collection = makeDummyCollection({
+          field: {
+            type: String,
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { field: String }');
       });
-      const res = collectionToGraphQL(collection);
-      expect(res.graphQLSchema).toBeDefined();
-      // debug
-      //console.log(res.graphQLSchema);
-      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-      expect(normalizedSchema).toMatch('type Foo { field: String }');
-    });
-    test('generate type for a nested field', () => {
-      const collection = makeDummyCollection({
-        nestedField: {
-          type: new SimpleSchema({
-            subField: {
-              type: String,
-              canRead: ['admins']
-            }
-          }),
-          canRead: ['admins']
-        }
+      test('use provided graphQL type if any', () => {
+        const collection = makeDummyCollection({
+          field: {
+            type: String,
+            typeName: 'StringEnum',
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { field: StringEnum }');
       });
-      const res = collectionToGraphQL(collection);
-      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-      expect(normalizedSchema).toMatch('type Foo { nestedField: FooNestedField }');
-      expect(normalizedSchema).toMatch('type FooNestedField { subField: String }');
-    });
-    test('generate graphQL type for array of nested objects', () => {
-      const collection = makeDummyCollection({
-        arrayField: {
-          type: Array,
-          canRead: ['admins']
+      test('generate type for a nested field', () => {
+        const collection = makeDummyCollection({
+          nestedField: {
+            type: new SimpleSchema({
+              subField: {
+                type: String,
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { nestedField: FooNestedField }');
+        expect(normalizedSchema).toMatch('type FooNestedField { subField: String }');
+      });
+      test('generate graphQL type for array of nested objects', () => {
+        const collection = makeDummyCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins']
 
-        },
-        'arrayField.$': {
-          type: new SimpleSchema({
-            subField: {
-              type: String,
-              canRead: ['admins']
-            }
-          }),
-          canRead: ['admins']
-        }
+          },
+          'arrayField.$': {
+            type: new SimpleSchema({
+              subField: {
+                type: String,
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
+        expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
       });
-      const res = collectionToGraphQL(collection);
-      const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-      expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
-      expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
+    });
+
+    describe('nesting with referenced field', () => {
+      test('use referenced graphQL type if provided for nested object', () => {
+        const collection = makeDummyCollection({
+          nestedField: {
+            type: Object,
+            blackbox: true,
+            typeName: 'AlreadyRegisteredNestedType',
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { nestedField: AlreadyRegisteredNestedType }');
+        expect(normalizedSchema).not.toMatch('FooNestedField');
+      });
+      test('do NOT generate graphQL type if an existing graphQL type is referenced', () => {
+        const collection = makeDummyCollection({
+          nestedField: {
+            type: new SimpleSchema({
+              subField: {
+                type: String,
+                canRead: ['admins']
+              }
+            }),
+            typeName: 'AlreadyRegisteredNestedType',
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { nestedField: AlreadyRegisteredNestedType }');
+        expect(normalizedSchema).not.toMatch('FooNestedField');
+      });
+
+
     });
 
 
