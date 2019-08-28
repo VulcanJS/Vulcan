@@ -384,7 +384,7 @@ export const getSchemaFields = (schema, typeName) => {
       }
       // check if field is an array of objects if the field does not reference an existing type
       // TODO: reuse addTypeAndResolver on the nested schema instead?
-      if (!(field.typeName) && isNestedArray) {
+      if (isNestedArray && !isReference(getArrayChild(fieldName, schema))) {
         //console.log('detected a field with an array child', fieldName);
         const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
         const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);

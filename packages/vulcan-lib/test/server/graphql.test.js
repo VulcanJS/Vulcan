@@ -301,8 +301,28 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { nestedField: AlreadyRegisteredNestedType }');
         expect(normalizedSchema).not.toMatch('FooNestedField');
       });
-
-
+      test('do NOT generate graphQL type for array of nested objects if an existing graphQL type is referenced', () => {
+        const collection = makeDummyCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins']
+          },
+          'arrayField.$': {
+            typeName: 'AlreadyRegisteredType',
+            type: new SimpleSchema({
+              subField: {
+                type: String,
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { arrayField: [AlreadyRegisteredType] }');
+        expect(normalizedSchema).not.toMatch('type FooArrayField { subField: String }');
+      });
     });
 
 
