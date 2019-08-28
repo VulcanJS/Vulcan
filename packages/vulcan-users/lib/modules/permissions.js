@@ -178,7 +178,9 @@ export const isAdmin = Users.isAdmin;
 /**
  * @summary Check if a user can view a field
  * @param {Object} user - The user performing the action
- * @param {Object} field - The field being edited or inserted
+ * @param {Object} field - The schema of the requested field
+ * @param {Object} field - The full document of the collection
+ * @returns {Boolean} - true if the user can read the field, false if not
  */
  Users.canReadField = function (user, field, document) {
    const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility

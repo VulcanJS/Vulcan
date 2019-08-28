@@ -47,7 +47,7 @@ type Movie{
 
 */
 export const mainTypeTemplate = ({ typeName, description = '', interfaces = '', fields }) =>
-  `# ${description}
+  `${description ? '# ' + description : ''}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }
@@ -114,11 +114,13 @@ enum MovieOrderByInput {
   createdAt
 }
 
+NB: the foobar is not a mistake, we need it because the type should always
+be defined, even if there are no fields.
+
 */
 export const orderByInputTemplate = ({ typeName, fields }) =>
   `enum ${typeName}OrderByInput {
-  foobar
-  ${fields.join('\n  ')}
+  ${Array.isArray(fields) && fields.length ? fields.join('\n  ') : 'foobar'}
 }`;
 
 /* ------------------------------------- Query Types ------------------------------------- */

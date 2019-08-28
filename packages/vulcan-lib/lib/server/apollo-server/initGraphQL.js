@@ -11,6 +11,7 @@ import { runCallbacks } from '../../modules/callbacks.js';
 const initGraphQL = () => {
   runCallbacks('graphql.init.before');
   const typeDefs = generateTypeDefs(GraphQLSchema);
+
   const executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
