@@ -296,10 +296,9 @@ export const getSchemaFields = (schema, typeName) => {
     const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
     // ignore fields that already have a typeName
-    const isNestedObject = !(field.typeName) && hasNestedSchema(field);
+    const isNestedObject = hasNestedSchema(field);
     const isNestedArray = hasArrayNestedChild(fieldName, schema)
-      && hasNestedSchema(getArrayChild(fieldName, schema))
-      && !getArrayChild(fieldName, schema).typeName;
+      && hasNestedSchema(getArrayChild(fieldName, schema));
     const hasNesting = isNestedArray || isNestedObject;
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
@@ -371,8 +370,8 @@ export const getSchemaFields = (schema, typeName) => {
       fields.orderBy.push(...permissionsFields.orderBy);
 
       // check for nested fields if the field does not reference an existing type
-      // TODO: reuse addTypeAndResolver on the nested schema instead?
-      if (isNestedObject) {
+      if (!(field.typeName) && isNestedObject) {
+        // TODO: reuse addTypeAndResolver on the nested schema instead?
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
         const nestedTypeName = getNestedGraphQLType(typeName, fieldName);
@@ -384,8 +383,8 @@ export const getSchemaFields = (schema, typeName) => {
         nestedFieldsList.push(nestedFields);
       }
       // check if field is an array of objects if the field does not reference an existing type
-      // TODO: reuse addTypeAndResolver on the nested schema instead?
-      if (isNestedArray) {
+      if (isNestedArray && !getArrayChild(fieldName, schema).typeName) {
+        // TODO: reuse addTypeAndResolver on the nested schema instead?
         //console.log('detected a field with an array child', fieldName);
         const arrayNestedSchema = getArrayChildSchema(fieldName, schema);
         const arrayNestedTypeName = getNestedGraphQLType(typeName, fieldName);

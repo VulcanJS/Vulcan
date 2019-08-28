@@ -552,7 +552,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooArrayFieldDataInput { someField: String }');
       });
 
-      test('do NOT generate inputs for nested objects if a type is provided', () => {
+      test('do NOT generate new inputs for nested objects if a type is provided', () => {
         const collection = makeDummyCollection({
           nestedField: {
             type: new SimpleSchema({
@@ -562,7 +562,7 @@ describe('vulcan:lib/graphql', function () {
                 canCreate: ['admins'],
               }
             }),
-            typeName: 'AlreadyRegisteredSchema',
+            typeName: 'AlreadyRegisteredType',
             canRead: ['admins'],
             canCreate: ['admins'],
           }
@@ -572,11 +572,10 @@ describe('vulcan:lib/graphql', function () {
         //console.log(res.graphQLSchema);
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         // TODO: not 100% of the expected result
-        expect(normalizedSchema).not.toMatch('CreateFooInput');
-        expect(normalizedSchema).not.toMatch('CreateFooDataInput');
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { nestedField: CreateAlreadyRegisteredTypeDataInput }');
         expect(normalizedSchema).not.toMatch('CreateFooNestedFieldDataInput');
       });
-      test('do NOT generate inputs for array of objects if typeName is provided', () => {
+      test('do NOT generate new inputs for array of objects if typeName is provided', () => {
         const collection = makeDummyCollection({
           arrayField: {
             type: Array,
@@ -601,8 +600,7 @@ describe('vulcan:lib/graphql', function () {
         //console.log(res.graphQLSchema);
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         // TODO: not 100% sure of the syntax
-        expect(normalizedSchema).not.toMatch('CreateFooInput');
-        expect(normalizedSchema).not.toMatch('CreateFooDataInput');
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [CreateAlreadyRegisteredTypeDataInput] }');
         expect(normalizedSchema).not.toMatch('CreateFooArrayFieldDataInput');
       });
 
