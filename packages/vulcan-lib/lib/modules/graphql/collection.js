@@ -162,8 +162,10 @@ const generateSchemaFragments = ({
     }
   }
   if (isNested) {
-    console.log('nested fields', mainType);
-    schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));
+    // TODO: this is wrong because the mainType includes resolveAs fields
+    // + this input type does not seem to be actually used?
+    // schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));
+
     //schemaFragments.push(deleteInputTemplate({ typeName }));
     //schemaFragments.push(singleInputTemplate({ typeName }));
     //schemaFragments.push(multiInputTemplate({ typeName }));
