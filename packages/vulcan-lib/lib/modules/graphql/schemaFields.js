@@ -11,9 +11,9 @@ const capitalize = word => {
   return [first.toUpperCase(), ...rest].join('');
 };
 
-
 // get GraphQL type for a nested object (<MainTypeName><FieldName> e.g PostAuthor, EventAdress, etc.)
-export const getNestedGraphQLType = (typeName, fieldName, isInput) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
+export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
+  `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
 // @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
@@ -32,9 +32,10 @@ const isValidName = name => {
 // export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
 const getFieldType = field => field.type.singleType;
-const getFieldTypeName = fieldType => typeof fieldType === 'object'
-  ? 'Object'
-  : typeof fieldType === 'function'
+const getFieldTypeName = fieldType =>
+  typeof fieldType === 'object'
+    ? 'Object'
+    : typeof fieldType === 'function'
     ? fieldType.name
     : fieldType;
 
@@ -90,9 +91,9 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
       if (!field.blackbox && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName, isInput);
       }
-      // getType(typeName)
+      // referenced Schema
       if (field.type.definitions[0].blackbox && field.typeName) {
-        return field.typeName;
+        return isInput ? field.typeName + 'Input' : field.typeName;
       }
       // blackbox JSON object
       return 'JSON';
@@ -105,6 +106,8 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
 };
 
 //const isObject = field => getFieldTypeName(getFieldType(field));
+const hasTypeName = field => !!(field || {}).typeName;
+
 const hasNestedSchema = field => !!getNestedSchema(field);
 const getNestedSchema = field => field.type.singleType._schema;
 
@@ -302,9 +305,11 @@ export const getSchemaFields = (schema, typeName) => {
 
     // ignore fields that already have a typeName
     const isNestedObject = hasNestedSchema(field);
-    const isNestedArray = hasArrayNestedChild(fieldName, schema)
-      && hasNestedSchema(getArrayChild(fieldName, schema));
-    const hasNesting = isNestedArray || isNestedObject;
+    const isNestedArray =
+      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema));
+    const isReferencedObject = hasTypeName(field);
+    const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
+    const hasNesting = isNestedArray || isNestedObject || isReferencedObject || isReferencedArray;
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
@@ -340,7 +345,6 @@ export const getSchemaFields = (schema, typeName) => {
         }
       }
 
-
       // Support for enums from allowedValues has been removed (counter-productive)
       // if field has allowedValues, add enum type
       /*if (hasAllowedValues(field)) {
@@ -375,7 +379,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.orderBy.push(...permissionsFields.orderBy);
 
       // check for nested fields if the field does not reference an existing type
-      if (!(field.typeName) && isNestedObject) {
+      if (!field.typeName && isNestedObject) {
         // TODO: reuse addTypeAndResolver on the nested schema instead?
         //console.log('detected a nested field', fieldName);
         const nestedSchema = getNestedSchema(field);
