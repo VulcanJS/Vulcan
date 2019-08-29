@@ -142,9 +142,6 @@ export const GraphQLSchema = {
 
     // add the type and its resolver
     this.addSchema(mainGraphQLSchema);
-    if( typeName === 'Schema') {
-      // console.log( fields.create )
-    }
 
     // createTypeDataInput
     if ((fields.create || []).length) {
