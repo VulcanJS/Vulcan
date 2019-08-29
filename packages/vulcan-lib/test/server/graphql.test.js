@@ -370,6 +370,7 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { resolvedField: Bar field: String }');
       });
+
     });
 
     /*
@@ -441,9 +442,9 @@ describe('vulcan:lib/graphql', function () {
           expect(normalizedSchema).toMatch('type Foo { nestedField { withAllowedField: FooNestedFieldWithAllowedFieldEnum } }');
           expect(normalizedSchema).toMatch('enum FooNestedFieldWithAllowedFieldEnum { foo bar }');
         });
-
+ 
       });
-
+ 
       test('2 level of nesting', () => {
         const collection = makeDummyCollection({
           entrepreneurLifeCycleHistory: {
@@ -482,7 +483,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type FooEntrepreneurLifeCycleHistory { entrepreneurLifeCycleState: FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum');
         expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
-
+ 
       test("support enum type in array children", () => {
         throw new Error("test not written yet")
         const schema = {
@@ -643,7 +644,7 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).not.toMatch('input CreateFooNestedFieldDataInput');
       });
-      test('generate input with resolveAs and addOriginalField', () => {
+      test('ignore resolveAs with addOriginalField when generating nested create input', () => {
         const collection = makeDummyCollection({
           nestedField: {
             canRead: ['admins'],
@@ -672,6 +673,42 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooInput { data: CreateFooDataInput! }');
         expect(normalizedSchema).toMatch('input CreateFooDataInput { nestedField: CreateFooNestedFieldDataInput }');
         expect(normalizedSchema).toMatch('input CreateFooNestedFieldDataInput { someField: String }');
+      });
+
+      // TODO: not passing, may need to rethink why we need this field
+      // anyway the type is wrong currently
+      test('ignore resolveAs when generating default nested input type for a nested field', () => {
+        const collection = makeDummyCollection({
+          arrayField: {
+            type: Array,
+            optional: true,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            canUpdate: ['admins'],
+          },
+          'arrayField.$': {
+            type: new SimpleSchema({
+              someFieldId: {
+                type: String,
+                optional: true,
+                canRead: ['admins'],
+                resolveAs: {
+                  fieldName: 'someField',
+                  type: 'User',
+                  resolver: (collection, args, context) => {
+                    return { foo: 'bar' };
+                  },
+                  addOriginalField: true,
+                },
+              },
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+
+        expect(normalizedSchema).toMatch('input FooArrayFieldInput { someFieldId: String }');
       });
     });
   });

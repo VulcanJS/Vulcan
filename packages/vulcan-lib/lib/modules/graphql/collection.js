@@ -162,6 +162,7 @@ const generateSchemaFragments = ({
     }
   }
   if (isNested) {
+    console.log('nested fields', mainType);
     schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));
     //schemaFragments.push(deleteInputTemplate({ typeName }));
     //schemaFragments.push(singleInputTemplate({ typeName }));
