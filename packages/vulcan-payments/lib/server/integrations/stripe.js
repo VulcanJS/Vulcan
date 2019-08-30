@@ -285,6 +285,8 @@ export const createSubscription = async ({
 }) => {
   let returnDocument = document;
 
+  let invoiceItemId;
+
   try {
     const customer = await getCustomer(user, args.token);
     // if product has an initial cost,
@@ -298,6 +300,7 @@ export const createSubscription = async ({
         currency: product.currency,
         description: product.initialAmountDescription,
       });
+      invoiceItemId = initialInvoiceItem.id;
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -358,6 +361,23 @@ export const createSubscription = async ({
     console.log('// Stripe createSubscription error');
     // eslint-disable-next-line no-console
     console.log(error);
+    /*
+
+    If an invoice item was created, cancel it to avoid having invoice items
+    pile up and be charged during future payment attempts.
+
+    */
+    if (invoiceItemId) {
+      try {
+        await stripe.invoiceItems.del(invoiceItemId);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(`// Error while attempting to delete invoice item ID ${invoiceItemId}`);
+        // eslint-disable-next-line no-console
+        console.log(error);
+        throw error;
+      }
+    }
     throw error;
   }
 };

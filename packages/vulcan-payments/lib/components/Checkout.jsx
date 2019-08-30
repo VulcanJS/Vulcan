@@ -55,12 +55,22 @@ class Checkout extends React.Component {
         flash({id: 'payments.payment_succeeded', type: 'success'});
       }
     
-    }).catch(error => {
+    }).catch((error) => {
 
+      const { graphQLErrors } = error;
+
+      /*
+
+      Pass full graphQLErrors array instead of "dumbed-down" error object
+      See https://github.com/apollographql/apollo-link/issues/1022#issuecomment-517809093
+
+      */
+     
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.log(graphQLErrors);
+
       if (errorCallback) {
-        errorCallback(error);
+        errorCallback(graphQLErrors);
       } else {
         flash({message: error.message, type: 'error'});
       }
