@@ -45,5 +45,5 @@ export const addPageFunction = f => {
   descriptor.value = f.name;
   Object.defineProperty(f2, 'name', descriptor);
 
-  addCallback('router.onUpdate.async', f2);
+  addCallback('router.onupdate.async', f2);
 };
