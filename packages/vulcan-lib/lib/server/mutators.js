@@ -221,6 +221,10 @@ export const createMutator = async ({
     collection
   );
 
+  if (context && context.Users) {
+    document = context.Users.restrictViewableFields(currentUser, collection, document);
+  }
+
   endDebugMutator(collectionName, 'Create', { document });
 
   return { data: document };
@@ -439,6 +443,11 @@ export const updateMutator = async ({
   );
 
   endDebugMutator(collectionName, 'Update', { modifier });
+
+  // filter out non readable fields if appliable
+  if (context && context.Users) {
+    document = context.Users.restrictViewableFields(currentUser, collection, document);
+  }
 
   return { data: document };
 };
