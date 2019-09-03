@@ -71,7 +71,9 @@ let Foo2s = createDummyCollection('Foo2', foo2Schema);
 
 describe('vulcan:lib/mutators', function () {
 
-  let defaultParams;
+  let defaultArgs;
+  let createArgs;
+  let updateArgs;
   before(async function () {
     initServerTest();
 
@@ -99,55 +101,81 @@ describe('vulcan:lib/mutators', function () {
     removeAllCallbacks('foo2.create.after');
     removeAllCallbacks('foo2.create.before');
     removeAllCallbacks('foo2.create.async');
-    defaultParams = {
+    defaultArgs = {
       collection: Foo2s,
-      document: { foo2: 'bar' },
       currentUser: null,
       validate: () => true,
       context: {
         Users
       }
     };
+    createArgs = {
+      ...defaultArgs,
+    };
+    updateArgs = {
+      ...defaultArgs
+
+    };
   });
 
   describe('basic', () => {
     test('should run createMutator', async function () {
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({
+        ...createArgs,
+        document: { foo2: 'bar' }
+      });
       expect(resultDocument).toBeDefined();
     });
     test('create should not mutate the provided data', async () => {
       const foo = { foo2: 'foo' };
       const fooCopy = { ...foo };
-      const { data: resultDocument } = await createMutator({ ...defaultParams, document: foo });
+      const { data: resultDocument } = await createMutator({ ...createArgs, document: foo });
       expect(foo).toEqual(fooCopy);
     });
     test('update should not mutate the provided data', async () => {
-      const foo = { foo2: 'foo' };
       const fooUpdate = { foo2: 'fooUpdate' };
-      const fooCopy = { ...foo };
       const fooUpdateCopy = { ...fooUpdate };
-      const { data: resultDocument } = await updateMutator({ ...defaultParams, document: fooUpdate, oldDocument: foo });
-      expect(foo).toEqual(fooCopy);
+      const { data: foo } = await createMutator({ ...createArgs, document: { foo2: 'foo' } });
+      const { data: resultDocument } = await updateMutator({
+        ...updateArgs,
+        documentId: foo._id,
+        data: fooUpdate,
+      });
       expect(fooUpdate).toEqual(fooUpdateCopy);
     });
   });
 
   describe('onCreate/onUpdate', () => {
     test('run onCreate callbacks during creation', async () => {
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({
+        ...createArgs,
+        document: { foo2: 'bar' }
+      });
       expect(resultDocument.publicAuto).toEqual('CREATED');
     });
     test('run onUpdate callback during update', async () => {
-      const { data: resultDocument } = await updateMutator({ ...defaultParams, oldDocument: { foo2: 'bar' } });
+      const { data: foo } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
+      const { data: resultDocument } = await updateMutator({
+        ...updateArgs,
+        documentId: foo._id,
+        data: { foo2: 'update' },
+      });
       expect(resultDocument.publicAuto).toEqual('UPDATED');
-
     });
     test('filter out non allowed field created by onCreate before returning new document', async () => {
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({
+        ...defaultArgs,
+        document: { foo2: 'bar' }
+      });
       expect(resultDocument.privateAuto).not.toBeDefined();
     });
     test('filter out non allowed field created by onUpdate before returning updated document', async () => {
-      const { data: resultDocument } = await updateMutator(defaultParams);
+      const { data: foo } = await createMutator({ ...defaultArgs, document: { foo2: 'bar' } });
+      const { data: resultDocument } = await updateMutator({
+        ...defaultArgs,
+        documentId: foo._id,
+        data: { foo2: 'update' }
+      });
       expect(resultDocument.privateAuto).not.toBeDefined();
 
     });
@@ -166,7 +194,7 @@ describe('vulcan:lib/mutators', function () {
         document.after = true;
         return document;
       });
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
       expect(afterSpy.calledOnce).toBe(true);
       expect(resultDocument.after).toBe(true);
     });
@@ -179,7 +207,7 @@ describe('vulcan:lib/mutators', function () {
         // TODO need a sinon stub
         //expect(originalData.after).toBeUndefined()
       });
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
       expect(asyncSpy.calledOnce).toBe(true);
     });
     test.skip('provide initial data to async callbacks', async function () {
@@ -193,7 +221,7 @@ describe('vulcan:lib/mutators', function () {
         // TODO need a sinon stub
         //expect(originalData.after).toBeUndefined()
       });
-      const { data: resultDocument } = await createMutator(defaultParams);
+      const { data: resultDocument } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
       expect(asyncSpy.calledOnce).toBe(true);
       // TODO: check result
     });
