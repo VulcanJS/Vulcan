@@ -29,6 +29,7 @@ Child Props:
 
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
+import { compose, withHandlers } from 'recompose';
 import gql from 'graphql-tag';
 import { updateClientTemplate, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import clone from 'lodash/clone';
@@ -43,32 +44,34 @@ const withUpdate = options => {
     ${fragment}
   `;
 
-  return graphql(query, {
-    alias: `withUpdate${typeName}`,
-    props: ({ ownProps, mutate }) => ({
-      [`update${typeName}`]: args => {
-        const { selector, data } = args;
-        return mutate({
-          variables: { selector, data }
-          // note: updateQueries is not needed for editing documents
+  const withHandlersOptions = {
+    [`update${typeName}`]: ({ mutate, ownProps }) => args => {
+      const { selector, data } = args;
+      return mutate({
+        variables: { selector, data }
+        // note: updateQueries is not needed for editing documents
+      });
+    },
+    // OpenCRUD backwards compatibility
+    editMutation: ({ mutate, ownProps }) => args => {
+      const { documentId, set, unset } = args;
+      const selector = { documentId };
+      const data = clone(set);
+      unset &&
+        Object.keys(unset).forEach(fieldName => {
+          data[fieldName] = null;
         });
-      },
-      // OpenCRUD backwards compatibility
-      editMutation: args => {
-        const { documentId, set, unset } = args;
-        const selector = { documentId };
-        const data = clone(set);
-        unset &&
-          Object.keys(unset).forEach(fieldName => {
-            data[fieldName] = null;
-          });
-        return mutate({
-          variables: { selector, data }
-          // note: updateQueries is not needed for editing documents
-        });
-      }
-    })
-  });
+      return mutate({
+        variables: { selector, data }
+        // note: updateQueries is not needed for editing documents
+      });
+    }
+  }
+  
+  return compose(
+    graphql(query, {alias: `withUpdate${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
 };
 
 export default withUpdate;

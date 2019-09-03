@@ -31,6 +31,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import { compose, withHandlers } from 'recompose';
 
 const withDelete = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -42,26 +43,28 @@ const withDelete = options => {
     ${fragment}
   `;
 
-  return graphql(query, {
-    alias: `withDelete${typeName}`,
-    props: ({ ownProps, mutate }) => ({
-      [`delete${typeName}`]: args => {
-        const { selector } = args;
-        return mutate({
-          variables: { selector }
-        });
-      },
+  const withHandlersOptions = {
+    [`delete${typeName}`]: ({ mutate, ownProps }) => args => {
+      const { selector } = args;
+      return mutate({
+        variables: { selector }
+      });
+    },
+    // OpenCRUD backwards compatibility
+    removeMutation: ({ mutate, ownProps }) => args => {
+      const { documentId } = args;
+      const selector = { documentId };
+      return mutate({
+        variables: { selector }
+      });
+    },
+  }    
 
-      // OpenCRUD backwards compatibility
-      removeMutation: args => {
-        const { documentId } = args;
-        const selector = { documentId };
-        return mutate({
-          variables: { selector }
-        });
-      }
-    })
-  });
+  // wrap component with graphql HoC
+  return compose(
+    graphql(query, {alias: `withDelete${typeName}`}),
+    withHandlers(withHandlersOptions)
+  )
 };
 
 export default withDelete;
