@@ -173,9 +173,9 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   return { data, subject, html };
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, from }) => {
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, throwErrors }) => {
   const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
+  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, throwErrors });
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));
