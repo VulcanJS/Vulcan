@@ -123,9 +123,12 @@ describe('vulcan:lib/mutators', function () {
     });
     test('update should not mutate the provided data', async () => {
       const foo = { foo2: 'foo' };
+      const fooUpdate = { foo2: 'fooUpdate' };
       const fooCopy = { ...foo };
-      const { data: resultDocument } = await createMutator({ ...defaultParams, document: foo, oldDocument: foo });
+      const fooUpdateCopy = { ...fooUpdate };
+      const { data: resultDocument } = await updateMutator({ ...defaultParams, document: fooUpdate, oldDocument: foo });
       expect(foo).toEqual(fooCopy);
+      expect(fooUpdate).toEqual(fooUpdateCopy);
     });
   });
 
@@ -135,7 +138,6 @@ describe('vulcan:lib/mutators', function () {
       expect(resultDocument.publicAuto).toEqual('CREATED');
     });
     test('run onUpdate callback during update', async () => {
-      console.log(await updateMutator(defaultParams));
       const { data: resultDocument } = await updateMutator({ ...defaultParams, oldDocument: { foo2: 'bar' } });
       expect(resultDocument.publicAuto).toEqual('UPDATED');
 
