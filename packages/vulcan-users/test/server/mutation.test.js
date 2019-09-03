@@ -16,7 +16,8 @@ const context = {
             collectionName: 'Users',
             typeName: 'User'
         },
-        simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } })
+        simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } }),
+        restrictViewableFields: (currentUser, collection, doc) => doc
     },
     currentUser: {
         isAdmin: true,

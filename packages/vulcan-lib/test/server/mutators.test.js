@@ -1,7 +1,7 @@
 import expect from 'expect';
 import sinon from 'sinon/pkg/sinon.js';
 
-import { createMutator, updateMutator } from '../../lib/server/mutators';
+import { createMutator, updateMutator, deleteMutator } from '../../lib/server/mutators';
 //import StubCollections from 'meteor/hwillson:stub-collections';
 import Users from 'meteor/vulcan:users';
 
@@ -15,7 +15,6 @@ import {
   removeAllCallbacks, createCollection,
 } from 'meteor/vulcan:core';
 import {
-  isoCreateCollection,
   initServerTest
 } from 'meteor/vulcan:test';
 
@@ -59,6 +58,9 @@ const foo2Schema = {
     },
     onUpdate: () => {
       return 'UPDATED';
+    },
+    onDelete: () => {
+      return 'DELETED';
     }
   },
   privateAuto: {
@@ -72,6 +74,9 @@ const foo2Schema = {
     },
     onUpdate: () => {
       return 'UPDATED';
+    },
+    onDelete: () => {
+      return 'DELETED';
     }
   }
 };
@@ -154,15 +159,15 @@ describe('vulcan:lib/mutators', function () {
     });
   });
 
-  describe('onCreate/onUpdate', () => {
-    test('run onCreate callbacks during creation', async () => {
+  describe('onCreate/onUpdate/onDelete', () => {
+    test('run onCreate callbacks during creation and assign returned value', async () => {
       const { data: resultDocument } = await createMutator({
         ...createArgs,
         document: { foo2: 'bar' }
       });
       expect(resultDocument.publicAuto).toEqual('CREATED');
     });
-    test('run onUpdate callback during update', async () => {
+    test('run onUpdate callback during update and assign returned value', async () => {
       const { data: foo } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
       const { data: resultDocument } = await updateMutator({
         ...updateArgs,
@@ -171,6 +176,7 @@ describe('vulcan:lib/mutators', function () {
       });
       expect(resultDocument.publicAuto).toEqual('UPDATED');
     });
+
     test('keep auto generated private fields ', async () => {
       const { data: resultDocument } = await createMutator({
         ...defaultArgs,
@@ -189,15 +195,15 @@ describe('vulcan:lib/mutators', function () {
 
     });
   });
-  describe('currentUser', () => {
-    test('filter out non allowed field created by onCreate before returning new document', async () => {
+  describe('permissions', () => {
+    test('filter out non allowed field before returning new document', async () => {
       const { data: resultDocument } = await createMutator({
         ...defaultArgs,
         document: { foo2: 'bar' }
       });
       expect(resultDocument.privateAuto).not.toBeDefined();
     });
-    test('filter out non allowed field created by onUpdate before returning updated document', async () => {
+    test('filter out non allowed field before returning updated document', async () => {
       const { data: foo } = await createMutator({ ...defaultArgs, document: { foo2: 'bar' } });
       const { data: resultDocument } = await updateMutator({
         ...defaultArgs,
@@ -205,7 +211,16 @@ describe('vulcan:lib/mutators', function () {
         data: { foo2: 'update' }
       });
       expect(resultDocument.privateAuto).not.toBeDefined();
-
+    });
+    test('filter out non allowed field before returning deleted document', async () => {
+      const { data: foo } = await createMutator({ ...defaultArgs, document: { foo2: 'bar' } });
+      const { data: resultDocument } = await deleteMutator({
+        ...defaultArgs,
+        selector: {
+          documentId: foo._id,
+        }
+      });
+      expect(resultDocument.privateAuto).not.toBeDefined();
     });
 
   });
