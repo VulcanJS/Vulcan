@@ -200,6 +200,7 @@ Datatable.propTypes = {
   editFormOptions: PropTypes.object,
   emptyState: PropTypes.object,
   Components: PropTypes.object.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };
 
 Datatable.defaultProps = {
