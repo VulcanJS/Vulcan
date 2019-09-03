@@ -30,7 +30,8 @@ import {
   getSetting,
   Utils,
   isIntlField,
-  mergeWithComponents
+  mergeWithComponents,
+  formatLabel,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -52,6 +53,8 @@ import uniqBy from 'lodash/uniqBy';
 import isObject from 'lodash/isObject';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
+import omit from 'lodash/omit';
+import _filter from 'lodash/filter';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
@@ -293,17 +296,16 @@ class SmartForm extends Component {
       return group;
     });
 
-    // add default group
-    groups = [
-      {
+    // add default group if necessary
+    const defaultGroupFields = _filter(fields, field => !field.group)
+    if (defaultGroupFields.length){
+      groups = [{
         name: 'default',
         label: 'default',
         order: 0,
-        fields: _.filter(fields, field => {
-          return !field.group;
-        })
-      }
-    ].concat(groups);
+        fields: defaultGroupFields
+      }].concat(groups);
+    }
 
     // sort by order
     groups = _.sortBy(groups, 'order');
@@ -431,6 +433,7 @@ class SmartForm extends Component {
     if (fieldSchema.description) {
       field.help = fieldSchema.description;
     }
+
     return field;
   };
   handleFieldPath = (field, fieldName, parentPath) => {
@@ -457,16 +460,15 @@ class SmartForm extends Component {
     return field;
   };
   handleFieldChildren = (field, fieldName, fieldSchema, schema) => {
-    // array field
-    if (fieldSchema.field) {
-      field.arrayFieldSchema = fieldSchema.field;
+    // array field 
+    if (fieldSchema.arrayFieldSchema) {
+      field.arrayFieldSchema = fieldSchema.arrayFieldSchema;
       // create a field that can be exploited by the form
       field.arrayField = this.createArraySubField(
         fieldName,
         field.arrayFieldSchema,
         schema
       );
-
       //field.nestedInput = true
     }
     // nested fields: set input to "nested"
@@ -524,7 +526,8 @@ class SmartForm extends Component {
    */
   getLabel = (fieldName, fieldLocale) => {
     const collectionName = this.props.collectionName.toLowerCase();
-    const label = this.context.intl.formatLabel({
+    const label = formatLabel({
+      intl: this.context.intl,
       fieldName: fieldName,
       collectionName: collectionName,
       schema: this.state.flatSchema,
@@ -1042,6 +1045,7 @@ class SmartForm extends Component {
   getFormGroupProps = group => ({
     key: group.name,
     ...group,
+    group: omit(group, ['fields']),
     errors: this.state.errors,
     throwError: this.throwError,
     currentValues: this.state.currentValues,
@@ -1163,7 +1167,7 @@ SmartForm.childContextTypes = {
   currentValues: PropTypes.object
 };
 
-module.exports = SmartForm;
+export default SmartForm;
 
 registerComponent({
   name: 'Form',

@@ -181,7 +181,7 @@ const MuiSuggest = createReactClass({
   
   getSelectedOption: function (props) {
     props = props || this.props;
-    const selectedOption = props.options.find((opt) => opt.value === props.value);
+    const selectedOption = props.options && props.options.find((opt) => opt.value === props.value);
     return selectedOption || { label: '', value: null };
   },
   
@@ -203,6 +203,7 @@ const MuiSuggest = createReactClass({
   },
   
   suggestionSelected: function (event, { suggestion }) {
+    event.preventDefault();
     this.changeValue(suggestion);
   },
   
@@ -217,7 +218,7 @@ const MuiSuggest = createReactClass({
       selectedOption: suggestion,
       inputValue: this.getOptionLabel(suggestion),
     });
-    this.props.onChange(suggestion.value, this.getOptionLabel(suggestion));
+    this.props.onChange(suggestion.value);
   },
   
   handleInputChange: function (event) {
@@ -273,13 +274,13 @@ const MuiSuggest = createReactClass({
   },
   
   renderElement: function (startAdornment, endAdornment) {
-    const { classes, autoFocus, disableText, showAllOptions } = this.props;
+    const { classes, autoFocus, disableText, showAllOptions, inputProperties } = this.props;
     
     return (
       <Autosuggest
         theme={{
           container: classes.container,
-          input: classNames(classes.input, this.props.disableText && classes.readOnly),
+          input: classNames(classes.input, disableText && classes.readOnly),
           suggestionsContainer: classes.suggestionsContainer,
           suggestionsContainerOpen: classes.suggestionsContainerOpen,
           suggestion: classes.suggestion,
@@ -298,17 +299,17 @@ const MuiSuggest = createReactClass({
         renderSuggestion={this.renderSuggestion}
         onSuggestionSelected={this.suggestionSelected}
         inputProps={{
+          ...this.cleanProps(inputProperties),
           autoFocus,
           classes,
           onChange: this.handleInputChange,
           onFocus: this.handleFocus,
           onBlur: this.handleBlur,
           value: this.state.inputValue,
-          readOnly: this.props.disableText,
+          readOnly: disableText,
           disabled: this.props.disabled,
           name: this.props.name,
           'aria-haspopup': 'true',
-          ...this.props.inputProps,
           startAdornment,
           endAdornment,
         }}
@@ -395,9 +396,9 @@ const MuiSuggest = createReactClass({
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
-    const inputMatchesSelection = value === this.getOptionLabel(this.state.selectedOption);
+    const inputMatchesSelection = value === this.getOptionLabel(this.getSelectedOption());
     
-    return (this.props.disableText || this.props.showAllOptions) && inputMatchesSelection ?
+    return ((this.props.disableText || this.props.showAllOptions) && inputMatchesSelection) ?
       
       this.props.options.filter(suggestion => {
         return true;
@@ -410,7 +411,7 @@ const MuiSuggest = createReactClass({
         ?
         
         this.props.options.filter(suggestion => {
-          count += 1;
+          count++;
           return count <= maxSuggestions;
         })
         
@@ -418,12 +419,10 @@ const MuiSuggest = createReactClass({
         
         this.props.options.filter(suggestion => {
           const label = this.getOptionLabel(suggestion);
-          const keep =
-            count < maxSuggestions && label.toLowerCase().slice(0, inputLength) ===
-            inputValue;
+          const keep = count < maxSuggestions && label.toLowerCase().includes(inputValue);
           
           if (keep) {
-            count += 1;
+            count++;
           }
           
           return keep;

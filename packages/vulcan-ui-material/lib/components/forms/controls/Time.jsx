@@ -30,8 +30,8 @@ export const styles = theme => ({
 });
 
 
-const TimeComponent = ({ refFunction, classes, inputProperties }) =>
-  <MuiInput {...inputProperties} ref={refFunction} type="time"/>;
+const TimeComponent = ({ refFunction, classes, ...properties }) =>
+  <MuiInput {...properties} ref={refFunction} type="time"/>;
 
 
 registerComponent('FormComponentTime', TimeComponent, [withStyles, styles]);

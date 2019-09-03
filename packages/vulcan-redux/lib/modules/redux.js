@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 // TODO: now we should add some callback call to add the store to
 // Apollo SSR + client side too
@@ -33,8 +34,8 @@ export const configureStore = (
     // middlewares
     compose(
       applyMiddleware(...middlewares),
-      typeof window !== 'undefined' && window.devToolsExtension
-        ? window.devToolsExtension()
+      typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+        ? window.__REDUX_DEVTOOLS_EXTENSION__()
         : f => f
     )
   );

@@ -1,3 +1,13 @@
+1.13.0_1 / 2019-07-23
+=====================
+
+ * TooltipButton: Deprecated TooltipIntl and TooltipIconButton in favor of TooltipButton - they will be deleted in Vulcan 1.15.0
+ 
+1.13.0 / 2019-07-19
+===================
+
+ * TooltipIntl: Changed display from 'inline-block' to 'inherit' for more flexibility
+ 
 1.12.8_17 / 2019-02-02
 ======================
 

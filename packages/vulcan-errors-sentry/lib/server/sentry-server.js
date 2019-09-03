@@ -45,9 +45,9 @@ addLogFunction(logToSentry);
 Set the current user
 
 */
-function setSentryUser(currentUser) {
+function setSentryUser({ user }) {
   Sentry.configureScope(scope => {
-    scope.setUser(getUserObject(currentUser));
+    scope.setUser(getUserObject(user));
   });
 }
 addUserFunction(setSentryUser);

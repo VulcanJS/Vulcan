@@ -10,8 +10,17 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const FormItem = ({ path, label, children, beforeInput, afterInput, layout = 'horizontal', ...rest }) => {
-  if (layout === 'inputOnly' || !label) { // input only layout
+const FormItem = ({
+  path,
+  label,
+  children,
+  beforeInput,
+  afterInput,
+  layout = 'horizontal',
+  ...rest
+}) => {
+  if (layout === 'inputOnly' || !label) {
+    // input only layout
     return (
       <Form.Group controlId={path} {...rest}>
         {beforeInput}
@@ -19,9 +28,22 @@ const FormItem = ({ path, label, children, beforeInput, afterInput, layout = 'ho
         {afterInput}
       </Form.Group>
     );
-  } else if (layout === 'vertical') { // vertical layout
-    return <div>TODO</div>;
-  } else { // horizontal layout (default)
+  } else if (layout === 'vertical') {
+    // vertical layout
+    return (
+      <Form.Group controlId={path} {...rest}>
+        <Form.Label>
+          {label}
+        </Form.Label>
+        <div>
+          {beforeInput}
+          {children}
+          {afterInput}
+        </div>
+      </Form.Group>
+    );
+  } else {
+    // horizontal layout (default)
     return (
       <Form.Group as={Row} controlId={path} {...rest}>
         <Form.Label column sm={3}>

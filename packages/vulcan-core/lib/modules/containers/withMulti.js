@@ -117,6 +117,9 @@ export default function withMulti(options) {
             graphQLOptions.fetchPolicy = options.fetchPolicy;
           }
 
+          // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
+          graphQLOptions.errorPolicy = 'all';
+
           // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
           if (options.notifyOnNetworkStatusChange) {
             graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
@@ -127,6 +130,7 @@ export default function withMulti(options) {
 
         // define props returned by graphql HoC
         props(props) {
+
           // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
           const refetch = props.data.refetch,
             // results = Utils.convertDates(collection, props.data[listResolverName]),

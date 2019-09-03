@@ -15,15 +15,15 @@ export const getCountryInfo = function (formComponentProps) {
 };
 
 
-const RegionSelect = ({ classes, refFunction, inputProperties, ...properties }) => {
+const RegionSelect = ({ classes, refFunction, ...properties }) => {
   const currentCountryInfo = getCountryInfo(properties);
   const options = currentCountryInfo ? currentCountryInfo.regions : null;
   const regionLabel = currentCountryInfo ? currentCountryInfo.regionLabel : 'Region';
   
   if (options) {
-    return <MuiSuggest {...inputProperties} ref={refFunction} options={options} label={regionLabel}/>;
+    return <MuiSuggest {...properties} ref={refFunction} options={options} label={regionLabel}/>;
   } else {
-    return <MuiInput {...inputProperties} ref={refFunction} label={regionLabel}/>;
+    return <MuiInput {...properties} ref={refFunction} label={regionLabel}/>;
   }
 };
 

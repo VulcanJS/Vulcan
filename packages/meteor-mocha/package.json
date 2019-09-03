@@ -1,0 +1,15 @@
+{
+  "name": "mocha",
+  "version": "0.0.0-semantic-release",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meteortesting/meteor-mocha"
+  },
+  "author": "Dispatch Technologies, Inc. (http://www.dispatch.me/)",
+  "license": "MIT",
+  "release": {
+    "verifyConditions": ["semantic-release-meteor", "@semantic-release/github"],
+    "getLastRelease": "semantic-release-meteor",
+    "publish": ["semantic-release-meteor", "@semantic-release/github"]
+  }
+}

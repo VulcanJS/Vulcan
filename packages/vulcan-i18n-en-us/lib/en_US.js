@@ -71,6 +71,7 @@ addStrings('en', {
   'users.newsletter_subscribeToNewsletter': 'Subscribe to newsletter',
   'users.users_admin': 'Admin',
   'users.admin': 'Admin',
+  'users.host': 'Team member',
   'users.isAdmin': 'Admin',
   'users.posts': 'Posts',
   'users.upvoted_posts': 'Upvoted Posts',

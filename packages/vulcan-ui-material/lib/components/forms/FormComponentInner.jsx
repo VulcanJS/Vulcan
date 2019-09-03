@@ -90,8 +90,6 @@ class FormComponentInner extends PureComponent {
   
     if (intlInput) {
       return <Components.FormIntl {...properties} />;
-    } else if (nestedInput){
-      return <Components.FormNested {...properties} />;
     } else {
       return (
         <div className={inputClass}>

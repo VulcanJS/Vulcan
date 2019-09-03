@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { registerComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import classNames from 'classnames';
 
 
@@ -23,6 +23,9 @@ const styles = theme => ({
 
 
 const TooltipIconButton = (props, { intl }) => {
+  
+  //eslint-disable-next-line no-console
+  console.warn('WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0');
   
   const {
     title,
@@ -53,14 +56,13 @@ const TooltipIconButton = (props, { intl }) => {
             
             ?
             
-            <Button className={classNames(classes.button, slug)}
-                    variant="fab"
+            <Fab className={classNames(classes.button, slug)}
                     aria-label={title}
                     ref={buttonRef}
                     {...properties}
             >
               {icon}
-            </Button>
+            </Fab>
             
             :
             

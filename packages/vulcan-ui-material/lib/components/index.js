@@ -8,9 +8,11 @@ import './accounts/AccountsSocialButtons';
 
 import './bonus/LoadMore';
 import './bonus/SearchInput';
-import './bonus/TooltipIntl';
+import './bonus/TooltipButton';
 import './bonus/TooltipIconButton';
+import './bonus/TooltipIntl';
 
+import './core/Avatar';
 import './core/Card';
 import './core/Datatable';
 import './core/EditButton';
@@ -20,14 +22,11 @@ import './core/NewButton';
 
 import './forms/FormComponentInner';
 import './forms/FormErrors';
-//import './forms/FormGroup';
+import './forms/FormGroupDefault';
+import './forms/FormGroupLine';
 import './forms/FormGroupNone';
-import './forms/FormGroupWithLine';
-import './forms/FormNested';
 import './forms/FormNestedArrayLayout';
 import './forms/FormNestedDivider';
-import './forms/FormNestedFoot';
-import './forms/FormNestedHead';
 import './forms/FormSubmit';
 import './forms/controls/Checkbox';
 import './forms/controls/CheckboxGroup';
