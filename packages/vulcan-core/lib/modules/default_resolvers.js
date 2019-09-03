@@ -91,6 +91,8 @@ export function getDefaultResolvers(options) {
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
+        } else {
+          data.totalCount = null;
         }
 
         // return results

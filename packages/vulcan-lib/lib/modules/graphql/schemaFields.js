@@ -187,7 +187,8 @@ export const getSchemaFields = (schema, typeName) => {
           });
         }
 
-        if (field.orderable) {
+        // backwards-compatibility: keep "orderable" too
+        if (field.orderable || field.sortable) {
           fields.orderBy.push(fieldName);
         }
       }

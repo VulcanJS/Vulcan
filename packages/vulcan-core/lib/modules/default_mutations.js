@@ -364,7 +364,7 @@ export function getDefaultMutations(options) {
       async mutation(root, { selector }, context) {
         const collection = context[collectionName];
 
-        if (isEmpty(selector)) {
+        if (isEmpty(selector) || (!selector._id && !selector.documentId && !selector.slug)) {
           throw new Error('Selector cannot be empty');
         }
 
@@ -388,7 +388,7 @@ export function getDefaultMutations(options) {
 
         return await deleteMutator({
           collection,
-          selector,
+          selector: { _id: document._id },
           currentUser: context.currentUser,
           validate: true,
           context,

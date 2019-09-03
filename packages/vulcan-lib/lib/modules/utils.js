@@ -115,7 +115,7 @@ Utils.scrollPageTo = function(selector) {
 
 Utils.scrollIntoView = function (selector) {
   if (!document) return;
-  
+
   const element = document.querySelector(selector);
   if (element) {
     element.scrollIntoView();
@@ -168,7 +168,7 @@ Utils.getOutgoingUrl = function (url) {
 };
 
 Utils.slugify = function (s) {
-  var slug = getSlug(s, {
+  let slug = getSlug(s, {
     truncate: 60
   });
 
@@ -179,24 +179,32 @@ Utils.slugify = function (s) {
 
   return slug;
 };
-Utils.getUnusedSlug = function (collection, slug) {
-  let suffix = '';
-  let index = 0;
 
+/**
+ * @summary Given a collection and a slug, returns the same or modified slug that's unique within the collection;
+ * It's modified by appending a dash and an integer; eg: my-slug  =>  my-slug-1
+ * @param {Object} collection
+ * @param {string} slug
+ * @param {string} [documentId] If you are generating a slug for an existing document, pass it's _id to
+ * avoid the slug changing
+ * @returns {string} The slug passed in the 2nd param, but may be
+ */
+Utils.getUnusedSlug = function (collection, slug, documentId) {
   // test if slug is already in use
-  while (!!collection.findOne({slug: slug+suffix})) {
-    index++;
-    suffix = '-'+index;
+  for (let index = 0; index <= Number.MAX_SAFE_INTEGER; index++) {
+    const suffix = index ? '-' + index : '';
+    const documentWithSlug = collection.findOne({ slug: slug + suffix });
+    if (!documentWithSlug || (documentId && documentWithSlug._id === documentId)) {
+      return slug + suffix;
+    }
   }
-
-  return slug+suffix;
 };
 
 // Different version, less calls to the db but it cannot be used until we figure out how to use async for onCreate functions
 // Utils.getUnusedSlug = async function (collection, slug) {
 //   let suffix = '';
 //   let index = 0;
-// 
+//
 //   const slugRegex = new RegExp('^' + slug + '-[0-9]+$');
 //   // get all the slugs matching slug or slug-123 in that collection
 //   const results = await collection.find( { slug: { $in: [slug, slugRegex] } }, { fields: { slug: 1, _id: 0 } });
@@ -209,8 +217,15 @@ Utils.getUnusedSlug = function (collection, slug) {
 //   return slug + suffix;
 // };
 
-Utils.getUnusedSlugByCollectionName = function (collectionName, slug) {
-  return Utils.getUnusedSlug(getCollection(collectionName), slug);
+/**
+ * @summary This is the same as Utils.getUnusedSlug(), but takes the name of the collection instead
+ * @param {string} collectionName
+ * @param {string} slug
+ * @param {string} [documentId]
+ * @returns {string}
+ */
+Utils.getUnusedSlugByCollectionName = function (collectionName, slug, documentId) {
+  return Utils.getUnusedSlug(getCollection(collectionName), slug, documentId);
 };
 
 Utils.getShortUrl = function(post) {
@@ -291,7 +306,7 @@ _.mixin({
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
       /*
-        
+
         Remove a value if:
         1. it's not a boolean
         2. it's not a number
@@ -527,4 +542,13 @@ Utils.removeProperty = (obj, propertyName) => {
       Utils.removeProperty(obj[prop], propertyName);
     }
   }
+};
+
+/**
+ * Convert an array of field options into an allowedValues array
+ * @param {Array} schemaFieldOptionsArray
+ */
+Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
+  if (!Array.isArray(schemaFieldOptionsArray)) { throw new Error('Utils.getAllowedValues: Expected Array')}
+  return schemaFieldOptionsArray.map(schemaFieldOption => schemaFieldOption.value);
 };

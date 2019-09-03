@@ -79,7 +79,7 @@ FormNestedArrayLayout.propTypes = {
   nestedArrayErrors: PropTypes.array,
   label: PropTypes.node,
   hideLabel: PropTypes.bool,
-  addItem: PropTypes.funct,
+  addItem: PropTypes.func,
   beforeComponent: PropTypes.node,
   afterComponent: PropTypes.node,
   formComponents: PropTypes.object,

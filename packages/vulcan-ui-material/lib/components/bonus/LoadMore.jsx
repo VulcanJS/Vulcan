@@ -45,7 +45,7 @@ const LoadMore = ({
                     infiniteScroll,
                   }, { intl }) => {
   
-  const isLoadingMore = networkStatus === 2;
+  const isLoadingMore = networkStatus < 7;
   const loadMoreText = intl.formatMessage({ id: 'load_more.load_more' });
   const title = `${loadMoreText} (${count}/${totalCount})`;
   const hasMore = totalCount > count;

@@ -139,7 +139,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     });
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.formState && nextProps.formState !== this.state.formState) {
       this.setState({
         formState: nextProps.formState,
@@ -788,7 +788,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         // this.setState({ formState: STATES.PROFILE });
         self.clearDefaultFieldValues();
         loginResultCallback(() => {
-          Meteor.setTimeout(() => this.state.onSignedInHook(this.props), 100);
+          Meteor.setTimeout(() => this.state.onSignedInHook(this.props), 10);
         });
       }
     });

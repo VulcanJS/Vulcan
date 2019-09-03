@@ -1,5 +1,3 @@
-// setup JSDOM server side for testing (necessary for Enzyme to mount)
-import 'jsdom-global/register';
 import React from 'react';
 import expect from 'expect';
 import { mount, shallow } from 'enzyme';
@@ -70,8 +68,8 @@ describe('vulcan-core/components', function () {
                     data={[{ name: 'foo' }, { name: 'bar' }]}
                 />
                 , {
-                   context,
-                   childContextTypes: context
+                    context,
+                    childContextTypes: context
                 });
             expect(wrapper).toBeDefined();
             //const content = wrapper.find('DatatableContents').first();
