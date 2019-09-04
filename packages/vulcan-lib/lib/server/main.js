@@ -12,7 +12,7 @@ export * from './errors.js';
 // TODO: what to do with this?
 export * from './meteor_patch.js';
 //export * from './render_context.js';
-//export * from './inject_data.js';
+export * from './inject_data.js';
 export * from './utils.js';
 export * from './intl.js';
 export * from './accounts_helpers.js';

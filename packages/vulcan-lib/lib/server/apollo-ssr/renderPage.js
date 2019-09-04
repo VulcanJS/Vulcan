@@ -14,6 +14,7 @@ import { createClient } from './apolloClient';
 import Head from './components/Head';
 import ApolloState from './components/ApolloState';
 import AppGenerator from './components/AppGenerator';
+import injectDefaultData from './injectDefaultData';
 
 const makePageRenderer = ({ computeContext }) => {
   // onPageLoad callback
@@ -90,6 +91,14 @@ const makePageRenderer = ({ computeContext }) => {
     // add headers using helmet
     const head = ReactDOM.renderToString(<Head />);
     sink.appendToHead(head);
+
+    // add complementary data to the HTML (previously done by inject_data)
+    const dataToInject = injectDefaultData(req, sink.result);
+    if (dataToInject._injectHtml) {
+      sink.appendToHead(dataToInject._injectHtml);
+      // Delete 
+    }
+
 
     // add Apollo state, the client will then parse the string
     const initialState = client.extract();
