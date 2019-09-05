@@ -6,7 +6,7 @@ intl polyfill. See https://github.com/andyearnshaw/Intl.js/
 
 import { getSetting } from './settings.js';
 
-var areIntlLocalesSupported = require('intl-locales-supported');
+import areIntlLocalesSupported from 'intl-locales-supported'
 
 var localesMyAppSupports = [
   getSetting('locale', 'en')

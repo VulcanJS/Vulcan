@@ -64,7 +64,7 @@
     "immutability-helper": "^2.0.0",
     "import": "0.0.6",
     "intl": "^1.2.4",
-    "intl-locales-supported": "^1.0.0",
+    "intl-locales-supported": "1.4.6",
     "juice": "^5.1.0",
     "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
