@@ -96,7 +96,6 @@ const makePageRenderer = ({ computeContext }) => {
     const dataToInject = injectDefaultData(req, sink.result);
     if (dataToInject._injectHtml) {
       sink.appendToHead(dataToInject._injectHtml);
-      // Delete 
     }
 
 
