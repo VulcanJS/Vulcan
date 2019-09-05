@@ -93,7 +93,7 @@ const makePageRenderer = ({ computeContext }) => {
     sink.appendToHead(head);
 
     // add complementary data to the HTML (previously done by inject_data)
-    const dataToInject = injectDefaultData(req, sink.result);
+    const dataToInject = injectDefaultData(req, { responseHeaders: sink.responseHeaders });
     if (dataToInject._injectHtml) {
       sink.appendToHead(dataToInject._injectHtml);
     }

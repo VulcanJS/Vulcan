@@ -1,7 +1,7 @@
 import expect from 'expect';
 import sinon from 'sinon';
 import makePageRenderer from '../../lib/server/apollo-ssr/renderPage';
-import { InjectData } from '../../lib/server/inject_data';
+//import { InjectData } from '../../lib/server/apollo-ssr';
 
 const test = it;
 
@@ -17,7 +17,6 @@ const createDummySink = () => ({
         this.result.head += content;
     },
     appendToBody(content) {
-        console.log(this);
         this.result.body += content;
     }
 });
@@ -37,4 +36,12 @@ describe('renderPage', () => {
         expect(sink.result.head).toMatch(/<script type="text\/inject-data">(.*?)<\/script>/);
     });
 
+    test('do not inject data if cors are set', async () => {
+        const sink = createDummySink();
+        sink.responseHeaders = {
+            'access-control-allow-origin': 'whatever'
+        };
+        await renderPage(sink);
+        expect(sink.result.head).not.toMatch('type="text/inject-data');
+    });
 });

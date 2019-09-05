@@ -1,12 +1,15 @@
-import { InjectData } from '../inject_data';
+import { InjectData } from './inject_data';
 import moment from 'moment';
 
 /**
  * Data included in every requests
  */
 
-const injectDefaultData = (req, res) => {
-    const resCopy = { ...res }; // Do not actually mutate the result
+const injectDefaultData = (req, { responseHeaders }) => {
+    /* legacy: InjectData was part of fast-render and use to take the http res as first param 
+    now we simultate the _headers props to allow checking CORS
+    */
+    const res = { _headers: responseHeaders };
     const data =
         [
             ['utcOffset', moment().utcOffset()],
@@ -14,8 +17,12 @@ const injectDefaultData = (req, res) => {
         ];
     data.forEach(([key, value]) => {
         // TODO: InjectData is not very efficient
-        InjectData.pushData(resCopy, key, value);
+        InjectData.pushData(
+            res,
+            key,
+            value
+        );
     });
-    return resCopy;
+    return res;
 };
 export default injectDefaultData;
