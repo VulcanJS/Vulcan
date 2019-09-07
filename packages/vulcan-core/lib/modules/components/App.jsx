@@ -23,27 +23,32 @@ import MessageContext from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
-
-   // if defined, use ErrorCatcher component to wrap layout contents
-   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
-
-   return (
-  <Route
-    // NOTE: Switch ignores the "exact" prop of components that 
-    // are not its direct children
-    // Since the render tree is now Switch > RouteWithLayout > Route
-    // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
-    //exact 
-    {...rest}
-    render={props => {
-
-   const layoutProps = { ...props, currentRoute };
-   const childComponentProps = { ...props, currentRoute };
-      const layout = layoutName ? Components[layoutName] : Components.Layout;
-      return React.createElement(layout, layoutProps, <ErrorCatcher>{React.createElement(component, childComponentProps)}</ErrorCatcher>);
-    }}
-  />
-);};
+  
+  // if defined, use ErrorCatcher component to wrap layout contents
+  const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
+  
+  return (
+    <Route
+      // NOTE: Switch ignores the "exact" prop of components that 
+      // are not its direct children
+      // Since the render tree is now Switch > RouteWithLayout > Route
+      // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
+      //exact 
+      {...rest}
+      render={props => {
+        
+        const layoutProps = { ...props, currentRoute };
+        const childComponentProps = { ...props, currentRoute };
+        const layout = layoutName ? Components[layoutName] : Components.Layout;
+        const children = <ErrorCatcher>
+          <Components.RouterHook currentRoute={currentRoute}/>
+          {React.createElement(component, childComponentProps)}
+        </ErrorCatcher>;
+        return React.createElement(layout, layoutProps, children);
+      }}
+    />
+  );
+};
 
 class App extends PureComponent {
   constructor(props) {
@@ -166,8 +171,10 @@ class App extends PureComponent {
   }
 
   UNSAFE_componentWillUpdate(nextProps) {
-    if (!this.props.currentUser && nextProps.currentUser) {
-      runCallbacks('events.identify', nextProps.currentUser);
+    const currentUser = this.props.currentUser;
+    const nextUser = nextProps.currentUser;
+    if (nextUser && (!currentUser || currentUser._id !== nextUser._id)) {
+      runCallbacks('events.identify', nextUser);
     }
   }
 
@@ -183,7 +190,6 @@ class App extends PureComponent {
           <Components.ScrollToTop />
           <div className={`locale-${this.getLocale()}`}>
             <Components.HeadTags />
-            {/* <Components.RouterHook currentRoute={currentRoute} /> */}
             {this.props.currentUserLoading ? (
               <Components.Loading />
             ) : routeNames.length ? (
