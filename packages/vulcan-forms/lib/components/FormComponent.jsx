@@ -7,7 +7,6 @@ import SimpleSchema from 'simpl-schema';
 import { isEmptyValue, getNullValue } from '../modules/utils.js';
 
 class FormComponent extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -34,21 +33,15 @@ class FormComponent extends Component {
     const includesPathOrChildren = deletedValues =>
       deletedValues.some(deletedPath => deletedPath.includes(path));
 
-    const valueChanged =
-      !isEqual(get(currentValues, path), get(this.props.currentValues, path)); 
+    const valueChanged = !isEqual(get(currentValues, path), get(this.props.currentValues, path));
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged =
-      includesPathOrChildren(deletedValues) !==
-      includesPathOrChildren(this.props.deletedValues);
+      includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
     const disabledChanged = nextProps.disabled !== this.props.disabled;
 
     const shouldUpdate =
-      valueChanged ||
-      errorChanged ||
-      deleteChanged ||
-      charsChanged ||
-      disabledChanged;
+      valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
 
     return shouldUpdate;
   }
@@ -83,7 +76,7 @@ class FormComponent extends Component {
       'datetime',
       'date',
       'time',
-      'text'
+      'text',
     ].includes(inputType);
     return !isStandardInput;
   };
@@ -94,7 +87,6 @@ class FormComponent extends Component {
   
   */
   handleChange = value => {
-
     // if value is an empty string, delete the field
     if (value === '') {
       value = null;
@@ -106,9 +98,7 @@ class FormComponent extends Component {
       value = parseInt(value);
     }
 
-    const updateValue = this.props.locale
-      ? { locale: this.props.locale, value }
-      : value;
+    const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
     this.props.updateCurrentValues({ [this.getPath()]: updateValue });
 
     // for text fields, update character count on change
@@ -126,7 +116,7 @@ class FormComponent extends Component {
     const characterCount = value ? value.length : 0;
     this.setState({
       charsRemaining: this.props.max - characterCount,
-      charsCount: characterCount
+      charsCount: characterCount,
     });
   };
 
@@ -162,9 +152,7 @@ class FormComponent extends Component {
   */
   showCharsRemaining = props => {
     const p = props || this.props;
-    return (
-      p.max && ['url', 'email', 'textarea', 'text'].includes(this.getInputType(p))
-    );
+    return p.max && ['url', 'email', 'textarea', 'text'].includes(this.getInputType(p));
   };
 
   /*
@@ -176,9 +164,7 @@ class FormComponent extends Component {
   */
   getErrors = errors => {
     errors = errors || this.props.errors;
-    const fieldErrors = errors.filter(
-      error => error.path && error.path.includes(this.props.path)
-    );
+    const fieldErrors = errors.filter(error => error.path && error.path.includes(this.props.path));
     return fieldErrors;
   };
 
@@ -201,13 +187,13 @@ class FormComponent extends Component {
     const p = props || this.props;
     const fieldType = this.getFieldType();
     const autoType =
-      (fieldType === Number || fieldType === SimpleSchema.Integer)
+      fieldType === Number || fieldType === SimpleSchema.Integer
         ? 'number'
         : fieldType === Boolean
-          ? 'checkbox'
-          : fieldType === Date
-            ? 'date'
-            : 'text';
+        ? 'checkbox'
+        : fieldType === Date
+        ? 'date'
+        : 'text';
     return p.input || autoType;
   };
 
@@ -289,9 +275,7 @@ class FormComponent extends Component {
 
         default:
           const CustomComponent = FormComponents[this.props.input];
-          return CustomComponent
-            ? CustomComponent
-            : FormComponents.FormComponentDefault;
+          return CustomComponent ? CustomComponent : FormComponents.FormComponentDefault;
       }
     }
   };
@@ -299,11 +283,11 @@ class FormComponent extends Component {
   isArrayField = () => {
     return this.getFieldType() === Array;
   };
-  
+
   isObjectField = () => {
     return this.getFieldType() instanceof SimpleSchema;
   };
-  
+
   render() {
     const FormComponents = mergeWithComponents(this.props.formComponents);
 
@@ -373,7 +357,7 @@ FormComponent.propTypes = {
 };
 
 FormComponent.contextTypes = {
-  getDocument: PropTypes.func.isRequired
+  getDocument: PropTypes.func.isRequired,
 };
 
 //module.exports = FormComponent;

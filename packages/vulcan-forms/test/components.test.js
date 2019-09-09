@@ -15,7 +15,8 @@ import '../lib/modules/components';
 
 // TODO: init this component in Vulcan:core (currently depends on either Bootstrap or Material UI to exists)
 import { registerComponent } from 'meteor/vulcan:core';
-registerComponent({ name: 'Button', component: ({ children }) => <button>{children}</button> });
+registerComponent({ name: 'Button', component: ({ children, onClick, type }) => <button type={type} onClick={onClick}>{children}</button> });
+registerComponent({ name: 'FormComponentInner', component: ({ children, onChange, onBlur, value }) => <input value={value} onBlur={onBlur} onChange={onChange} /> });
 
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
@@ -254,14 +255,18 @@ describe('vulcan-forms/components', function () {
           expect(arrayField.nestedFields).toHaveLength(Object.keys(addressSchema).length);
         });
         it('passes down prefilled props to objects nested in array', () => {
+          const prefilledProps = {
+            'addresses': {
+              'street': 'Rue de la paix'
+            }
+          };
           const wrapper = mountWithContext(
-            <Form {...defaultProps} collection={ArrayOfObjects} prefilledProps={{
-              'adresses.0': {
-                'street': 'Rue de la paix'
-              }
-            }} />
+            <Form {...defaultProps} collection={ArrayOfObjects} prefilledProps={prefilledProps} />
           );
-          expect(wrapper.html()).toEqual('TODO');
+          // press the add button
+          wrapper.find('button').first().simulate('click');
+          const input = wrapper.find('input');
+          expect(input.prop('value')).toEqual('Rue de la paix');
         });
       });
       describe('array with custom children inputs (e.g array of url)', function () {
