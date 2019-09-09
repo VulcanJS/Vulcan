@@ -256,7 +256,7 @@ describe('vulcan-forms/components', function () {
         });
         it('passes down prefilled props to objects nested in array', () => {
           const prefilledProps = {
-            'addresses': {
+            'addresses.$': {
               'street': 'Rue de la paix'
             }
           };

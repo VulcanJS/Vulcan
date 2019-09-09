@@ -30,9 +30,8 @@ class FormNestedArray extends PureComponent {
   addItem = () => {
     const { prefilledProps, path } = this.props;
     const value = this.getCurrentValue();
-    console.log(prefilledProps, path);
     this.props.updateCurrentValues(
-      { [`${path}.${value.length}`]: _get(prefilledProps, path) || {} },
+      { [`${path}.${value.length}`]: _get(prefilledProps, `${path}.$`) || {} },
       { mode: 'merge' }
     );
   };
