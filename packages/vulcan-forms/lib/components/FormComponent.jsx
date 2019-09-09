@@ -368,7 +368,8 @@ FormComponent.propTypes = {
   errors: PropTypes.array.isRequired,
   addToDeletedValues: PropTypes.func,
   clearFieldErrors: PropTypes.func.isRequired,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  prefilledProps: PropTypes.object,
 };
 
 FormComponent.contextTypes = {

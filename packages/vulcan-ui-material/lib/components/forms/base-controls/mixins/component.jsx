@@ -125,7 +125,8 @@ export default {
       'autoValue',
       'minCount',
       'maxCount',
-      'visibleItemIndex'
+      'visibleItemIndex',
+      'prefilledProps',
     ];
     
     return _omit(props, removedFields);
