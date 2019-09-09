@@ -21,103 +21,78 @@ import SimpleSchema from 'simpl-schema';
 
 // helpers
 // tests
-describe('vulcan-forms/components', function () {
-    const context = {
-        intl: {
-            formatMessage: () => '',
-            formatDate: () => '',
-            formatTime: () => '',
-            formatRelative: () => '',
-            formatNumber: () => '',
-            formatPlural: () => '',
-            formatHTMLMessage: () => '',
-            now: () => '',
-        },
-    };
-    // eslint-disable-next-line no-unused-vars
-    const mountWithContext = C =>
-        mount(C, {
-            context,
-        });
+describe('vulcan-forms/FormComponent', function () {
     const shallowWithContext = C =>
         shallow(C, {
-            context,
+            context: {
+                getDocument: () => { },
+            },
         });
-
-
-    describe('FormComponent (select the components to render and handle state)', function () {
-        const shallowWithContext = C =>
-            shallow(C, {
-                context: {
-                    getDocument: () => { },
-                },
-            });
-        const defaultProps = {
-            disabled: false,
-            optional: true,
-            document: {},
-            name: 'meetingPlace',
-            path: 'meetingPlace',
-            datatype: [{ type: Object }],
-            layout: 'horizontal',
-            label: 'Meeting place',
+    const defaultProps = {
+        disabled: false,
+        optional: true,
+        document: {},
+        name: 'meetingPlace',
+        path: 'meetingPlace',
+        datatype: [{ type: Object }],
+        layout: 'horizontal',
+        label: 'Meeting place',
+        currentValues: {},
+        formType: 'new',
+        deletedValues: [],
+        throwError: () => { },
+        updateCurrentValues: () => { },
+        errors: [],
+        clearFieldErrors: () => { },
+    };
+    it('shallow render', function () {
+        const wrapper = shallowWithContext(<FormComponent {...defaultProps} />);
+        expect(wrapper).toBeDefined();
+    });
+    describe('array of objects', function () {
+        const props = {
+            ...defaultProps,
+            datatype: [{ type: Array }],
+            nestedSchema: {
+                street: {},
+                country: {},
+                zipCode: {},
+            },
+            nestedInput: true,
+            nestedFields: [{}, {}, {}],
             currentValues: {},
-            formType: 'new',
-            deletedValues: [],
-            throwError: () => { },
-            updateCurrentValues: () => { },
-            errors: [],
-            clearFieldErrors: () => { },
+        };
+        it('render a FormNestedArray', function () {
+            const wrapper = shallowWithContext(<FormComponent {...props} />);
+            const formNested = wrapper.find('FormNestedArray');
+            expect(formNested).toHaveLength(1);
+        });
+    });
+    describe('nested object', function () {
+        const props = {
+            ...defaultProps,
+            datatype: [{ type: new SimpleSchema({}) }],
+            nestedSchema: {
+                street: {},
+                country: {},
+                zipCode: {},
+            },
+            nestedInput: true,
+            nestedFields: [{}, {}, {}],
+            currentValues: {},
         };
         it('shallow render', function () {
-            const wrapper = shallowWithContext(<FormComponent {...defaultProps} />);
+            const wrapper = shallowWithContext(<FormComponent {...props} />);
             expect(wrapper).toBeDefined();
         });
-        describe('array of objects', function () {
-            const props = {
-                ...defaultProps,
-                datatype: [{ type: Array }],
-                nestedSchema: {
-                    street: {},
-                    country: {},
-                    zipCode: {},
-                },
-                nestedInput: true,
-                nestedFields: [{}, {}, {}],
-                currentValues: {},
-            };
-            it('render a FormNestedArray', function () {
-                const wrapper = shallowWithContext(<FormComponent {...props} />);
-                const formNested = wrapper.find('FormNestedArray');
-                expect(formNested).toHaveLength(1);
-            });
+        it('render a FormNestedObject', function () {
+            const wrapper = shallowWithContext(<FormComponent {...props} />);
+            const formNested = wrapper.find('FormNestedObject');
+            expect(formNested).toHaveLength(1);
         });
-        describe('nested object', function () {
-            const props = {
-                ...defaultProps,
-                datatype: [{ type: new SimpleSchema({}) }],
-                nestedSchema: {
-                    street: {},
-                    country: {},
-                    zipCode: {},
-                },
-                nestedInput: true,
-                nestedFields: [{}, {}, {}],
-                currentValues: {},
-            };
-            it('shallow render', function () {
-                const wrapper = shallowWithContext(<FormComponent {...props} />);
-                expect(wrapper).toBeDefined();
-            });
-            it('render a FormNestedObject', function () {
-                const wrapper = shallowWithContext(<FormComponent {...props} />);
-                const formNested = wrapper.find('FormNestedObject');
-                expect(formNested).toHaveLength(1);
-            });
-        });
-        describe('array of custom inputs (e.g url)', function () {
-            it('shallow render', function () { });
-        });
+    });
+    describe('array of custom inputs (e.g url)', function () {
+        it('shallow render', function () { });
     });
 
 });

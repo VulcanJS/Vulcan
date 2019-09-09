@@ -19,37 +19,34 @@ initComponentTest();
 
 // helpers
 // tests
-describe('vulcan-forms/components', function () {
-
-    describe('FormNestedObject', function () {
-        const defaultProps = {
-            errors: [],
-            path: 'foobar',
-            formComponents: Components,
-        };
-        it('shallow render', function () {
-            const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
-            expect(wrapper).toBeDefined();
-        });
-        it.skip('render a Form collectionName="" for the object', function () {
-            // eslint-disable-next-line no-unused-vars
-            const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
-            expect(false).toBe(true);
-        });
-        it('does not show any button', function () {
-            const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
-            const button = wrapper.find('BootstrapButton');
-            expect(button).toHaveLength(0);
-        });
-        it('does not show add button', function () {
-            const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
-            const addButton = wrapper.find('IconAdd');
-            expect(addButton).toHaveLength(0);
-        });
-        it('does not show remove button', function () {
-            const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
-            const removeButton = wrapper.find('IconRemove');
-            expect(removeButton).toHaveLength(0);
-        });
+describe('vulcan-forms/FormNestedObject', function () {
+    const defaultProps = {
+        errors: [],
+        path: 'foobar',
+        formComponents: Components,
+    };
+    it('shallow render', function () {
+        const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
+        expect(wrapper).toBeDefined();
+    });
+    it.skip('render a Form collectionName="" for the object', function () {
+        // eslint-disable-next-line no-unused-vars
+        const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
+        expect(false).toBe(true);
+    });
+    it('does not show any button', function () {
+        const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
+        const button = wrapper.find('BootstrapButton');
+        expect(button).toHaveLength(0);
+    });
+    it('does not show add button', function () {
+        const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
+        const addButton = wrapper.find('IconAdd');
+        expect(addButton).toHaveLength(0);
+    });
+    it('does not show remove button', function () {
+        const wrapper = shallow(<Components.FormNestedObject {...defaultProps} currentValues={{}} />);
+        const removeButton = wrapper.find('IconRemove');
+        expect(removeButton).toHaveLength(0);
     });
 });

@@ -26,7 +26,7 @@ const FormNestedArrayLayout = props => {
         {children}
         {addItem && (
           <FormComponents.Button
-            className="form-nested-button"
+            className="form-nested-button form-nested-add"
             size="sm"
             variant="success"
             onClick={addItem}>
