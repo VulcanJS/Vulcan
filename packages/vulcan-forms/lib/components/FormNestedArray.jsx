@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, instantiateComponent } from 'meteor/vulcan:core';
 import _omit from 'lodash/omit';
+import _get from 'lodash/get';
 
 // Wraps the FormNestedItem, repeated for each object
 // Allow for example to have a label per object
@@ -27,9 +28,10 @@ class FormNestedArray extends PureComponent {
   }
 
   addItem = () => {
+    const { prefilledProps, path } = this.props;
     const value = this.getCurrentValue();
     this.props.updateCurrentValues(
-      { [`${this.props.path}.${value.length}`]: {} },
+      { [`${path}.${value.length}`]: _get(prefilledProps, path) || {} },
       { mode: 'merge' }
     );
   };
