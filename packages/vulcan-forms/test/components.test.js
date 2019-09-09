@@ -13,6 +13,10 @@ import { initComponentTest } from 'meteor/vulcan:test';
 // we must import all the other components, so that "registerComponent" is called
 import '../lib/modules/components';
 
+// TODO: init this component in Vulcan:core (currently depends on either Bootstrap or Material UI to exists)
+import { registerComponent } from 'meteor/vulcan:core';
+registerComponent({ name: 'Button', component: ({ children }) => <button>{children}</button> });
+
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
 
@@ -180,7 +184,7 @@ describe('vulcan-forms/components', function () {
       context,
     });
 
-  describe('Form collectionName="" (handle fields computation)', function () {
+  describe('Form', function () {
     // since some props are now handled by HOC we need to provide them manually
     const defaultProps = {
       collectionName: '',
@@ -248,6 +252,16 @@ describe('vulcan-forms/components', function () {
           const arrayField = fields[0];
           expect(arrayField.nestedInput).toBe(true);
           expect(arrayField.nestedFields).toHaveLength(Object.keys(addressSchema).length);
+        });
+        it('passes down prefilled props to objects nested in array', () => {
+          const wrapper = mountWithContext(
+            <Form {...defaultProps} collection={ArrayOfObjects} prefilledProps={{
+              'adresses.0': {
+                'street': 'Rue de la paix'
+              }
+            }} />
+          );
+          expect(wrapper.html()).toEqual('TODO');
         });
       });
       describe('array with custom children inputs (e.g array of url)', function () {
