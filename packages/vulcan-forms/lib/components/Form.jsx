@@ -122,7 +122,7 @@ const getInitialStateFromProps = nextProps => {
   Utils.removeProperty(initialDocument, '__typename');
 
   return {
-    disabled: false,
+    disabled: nextProps.disabled,
     errors: [],
     deletedValues: [],
     currentValues: {},
@@ -1056,6 +1056,7 @@ class SmartForm extends Component {
     formType: this.getFormType(),
     currentUser: this.props.currentUser,
     disabled: this.state.disabled,
+    prefilledProps: this.props.prefilledProps,
     formComponents: mergeWithComponents(this.props.formComponents),
   });
 
@@ -1128,6 +1129,7 @@ SmartForm.propTypes = {
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
   formComponents: PropTypes.object,
+  disabled: PropTypes.bool,
 
   // callbacks
   ...callbackProps,
