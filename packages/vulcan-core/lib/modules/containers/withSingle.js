@@ -14,6 +14,12 @@ export const singleQuery = ({
     ${singleClientTemplate({ typeName, fragmentName, extraQueries })}
     ${fragment}
   `;
+  // debug
+  const { print } = require('graphql/language/printer');
+  console.log('****');
+  console.log(print(query));
+  console.log('****');
+
   return query;
 };
 

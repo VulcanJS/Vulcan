@@ -31,7 +31,6 @@ const test = it;
 
 // we must import all the other components, so that "registerComponent" is called
 import '../lib/modules';
-import { watchFile } from 'fs';
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
 
@@ -69,14 +68,16 @@ describe('vulcan-core/containers', function () {
     const fragment = {
       definitions: [{
         name: {
-          value: 'FooDefaultFragment'
+          value: 'FoosDefaultFragment'
         }
       }],
-      toString: () => 'fragment FooDefaultFragment on Foo { foo }'
+      toString: () => `fragment FoosDefaultFragment on Foo { 
+        id
+        hello
+      }`
     };
     describe('withSingle', () => {
       const TestComponent = (props) => {
-        console.log(props);
         return <div>test</div>;
       };
       test('returns a graphql component', () => {
@@ -91,50 +92,62 @@ describe('vulcan-core/containers', function () {
 
         const foo = { id: 1, hello: 'world' };
         // The component AND the query need to be exported
-        const mocks = [
-          {
-            request: {
-              // TODO: withSingle should export a function that generate this query
-              query: gql`
+
+        const mock = {
+          request: {
+            // TODO: withSingle should export a function that generate this query
+            query: gql`
               query singleFooQuery($input: SingleFooInput) {
                 foo(input: $input) {
                   result {
                     ...FoosDefaultFragment
-                    }
                   }
+                  __typename
                 }
-              fragment FoosDefaultFragment on Foo {
-                foo
-                }
-              `,
-              variables: {
-                'input': { 'selector': {}, 'enableCache': false }
               }
+
+              fragment FoosDefaultFragment on Foo {
+                id
+                hello
+              }
+              `,
+            variables: {
+              // variables must absolutely match with the emitted request,
+              // including undefined values
+              'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
+            }
+          },
+          result: {
+            data: {
+              foo: { result: foo, __typename: 'Foo' }
             },
-            result: {
-              data: {
-                foo: { result: foo }
-              },
-            },
-          }
-        ];
+          },
+        };
+        const mocks = [
+          mock,
+        ]; // need multiple mocks, one per query
         const SingleComponent = withSingle({
           collection: Foo,
           pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
-          fragment: ''
+          fragment
         })(TestComponent);
         const wrapper = mount(
-          <MockedProvider mocks={mocks} >
+          <MockedProvider removeTypename mocks={mocks} addTypename={false} >
             <SingleComponent />
           </MockedProvider>
         );
-        const res = wrapper.find(TestComponent).first();
-        expect(res.prop('loading')).toBe(true);
+
+        const loadingRes = wrapper.find(TestComponent).first();
+        expect(loadingRes.prop('loading')).toBe(true);
         // @see https://www.apollographql.com/docs/react/recipes/testing/#testing-final-state
+        //await new Promise(resolve => setTimeout(resolve));
         await wait(0);
         wrapper.update(); // rerender
-        expect(res.prop('error')).toBeFalsy();
-        expect(res.prop('document')).toEqual({ data: foo });
+
+        const finalRes = wrapper.find(TestComponent).first();
+        expect(finalRes.prop('loading')).toBe(false);
+        expect(finalRes.prop('data').error).toBeFalsy();
+        expect(finalRes.prop('document')).toEqual(foo);
       });
       test('work if fragment is not yet defined', () => {
         const hoc = withSingle({
