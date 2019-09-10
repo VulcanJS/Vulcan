@@ -81,7 +81,7 @@
     "qs": "^6.6.0",
     "react": "^16.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
-    "react-apollo": "^2.4.1",
+    "react-apollo": "^2.5.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^2.1.4",
@@ -162,6 +162,7 @@
     "storybook-addon-intl": "^2.4.1",
     "storybook-react-router": "^1.0.5",
     "vulcan-loader": "0.0.1",
+    "waait": "^1.0.5",
     "webpack": "4.28.4"
   },
   "postcss": {

@@ -5,7 +5,7 @@ Package.describe({
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
@@ -21,8 +21,8 @@ Package.onUse(function(api) {
   api.mainModule('lib/client/main.js', 'client');
 });
 
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:core', 'vulcan:test', 'vulcan:users']);
-  api.mainModule('./test/index.js');
+  api.mainModule('./test/server/index.js', ['server']);
   api.mainModule('./test/client/index.js', ['client']);
 });
