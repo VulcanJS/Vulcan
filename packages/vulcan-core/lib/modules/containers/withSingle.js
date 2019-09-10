@@ -15,10 +15,10 @@ export const singleQuery = ({
     ${fragment}
   `;
   // debug
-  const { print } = require('graphql/language/printer');
-  console.log('****');
-  console.log(print(query));
-  console.log('****');
+  //const { print } = require('graphql/language/printer');
+  //console.log('****');
+  //console.log(print(query));
+  //console.log('****');
 
   return query;
 };

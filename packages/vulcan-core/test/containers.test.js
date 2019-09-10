@@ -16,6 +16,9 @@ import {
   withSideData,
   withAccess,
 } from '../lib/modules';
+import {
+  singleQuery
+} from '../lib/modules/containers/withSingle';
 
 import { mount } from 'enzyme';
 
@@ -59,16 +62,18 @@ describe('vulcan-core/containers', function () {
   });
 
   describe('queries', () => {
+    const typeName = 'Foo';
     const Foo = {
       options: {
         collectionName: 'Foos',
-        typeName: 'Foo'
+        typeName
       }
     };
+    const fragmentName = 'FoosDefaultFragment';
     const fragment = {
       definitions: [{
         name: {
-          value: 'FoosDefaultFragment'
+          value: fragmentName
         }
       }],
       toString: () => `fragment FoosDefaultFragment on Foo { 
@@ -96,7 +101,8 @@ describe('vulcan-core/containers', function () {
         const mock = {
           request: {
             // TODO: withSingle should export a function that generate this query
-            query: gql`
+            query: singleQuery({ typeName, fragmentName, fragment }),
+            /*gql`
               query singleFooQuery($input: SingleFooInput) {
                 foo(input: $input) {
                   result {
@@ -110,7 +116,7 @@ describe('vulcan-core/containers', function () {
                 id
                 hello
               }
-              `,
+              `,*/
             variables: {
               // variables must absolutely match with the emitted request,
               // including undefined values
