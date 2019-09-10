@@ -4,8 +4,21 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { getSetting, singleClientTemplate, Utils, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
+export const singleQuery = ({
+  typeName,
+  fragmentName,
+  fragment,
+  extraQueries,
+}) => {
+  const query = gql`
+    ${singleClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${fragment}
+  `;
+  return query;
+};
+
 export default function withSingle(options) {
-  
+
   let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
 
   // if this is the SSR process, set pollInterval to null
@@ -17,10 +30,9 @@ export default function withSingle(options) {
   const typeName = collection.options.typeName;
   const resolverName = Utils.camelCaseify(typeName);
 
-  const query = gql`
-    ${singleClientTemplate({ typeName, fragmentName, extraQueries })}
-    ${fragment}
-  `;
+  const query = singleQuery({
+    typeName, fragmentName, fragment, extraQueries
+  });
 
   return graphql(query, {
     alias: `with${typeName}`,
