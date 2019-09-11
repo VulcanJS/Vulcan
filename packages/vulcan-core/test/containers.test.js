@@ -1,6 +1,7 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import gql from 'graphql-tag';
 import { Components } from 'meteor/vulcan:core';
 import { initComponentTest } from 'meteor/vulcan:test';
 import {
@@ -19,8 +20,10 @@ import {
 import {
   singleQuery
 } from '../lib/modules/containers/withSingle';
+import {
+  multiQuery
+} from '../lib/modules/containers/withMulti';
 
-import { mount } from 'enzyme';
 
 import wait from 'waait';
 
@@ -63,7 +66,8 @@ describe('vulcan-core/containers', function () {
     const Foo = {
       options: {
         collectionName: 'Foos',
-        typeName
+        typeName,
+        multiResolverName: 'foos'
       }
     };
     const fragmentName = 'FoosDefaultFragment';
@@ -80,10 +84,11 @@ describe('vulcan-core/containers', function () {
       }`
     };
     const foo = { id: 1, hello: 'world', __typename: 'Foo' };
+    const TestComponent = (props) => {
+      return <div>test</div>;
+    };
+
     describe('withSingle', () => {
-      const TestComponent = (props) => {
-        return <div>test</div>;
-      };
       test('returns a graphql component', () => {
         const wrapper = withSingle({
           collection: Foo,
@@ -205,15 +210,189 @@ describe('vulcan-core/containers', function () {
         expect(hoc).toBeInstanceOf(Function);
       });
     });
+
     describe('withMulti', () => {
+      const defaultQuery = multiQuery({
+        fragment,
+        typeName,
+        fragmentName
+      });
+      const defaultVariables = {
+        'input': {
+          'terms': {
+            'limit': 10,
+            'itemsPerPage': 10
+          },
+          'enableCache': false,
+          'enableTotal': true
+        }
+      };
+      const defaultOptions = {
+        collection: Foo,
+        fragment,
+        pollInterval: 0
+      };
       test('returns a graphql component', () => {
-        const wrapper = withMulti({
-          collection: Foo,
-          fragment
-        });
+        const wrapper = withMulti(defaultOptions);
         expect(wrapper).toBeDefined();
         expect(wrapper).toBeInstanceOf(Function);
       });
+      test('query multiple documents', async () => {
+
+        const response = {
+          request: {
+            query: defaultQuery,
+            variables: defaultVariables
+          },
+          result: {
+            data: {
+              foos: {
+                results: [foo],
+                totalCount: 10,
+                __typename: '[Foo]'
+              },
+            }
+          }
+        };
+        const mocks = [response];
+        const MultiComponent = withMulti({
+          collection: Foo,
+          fragment,
+          pollInterval: 0,
+        })(TestComponent);
+
+        const wrapper = mount(
+          <MockedProvider mocks={mocks}>
+            <MultiComponent
+              terms={{}}
+            />
+          </MockedProvider>
+        );
+        const loadingRes = wrapper.find(TestComponent);
+        expect(loadingRes.prop('loading')).toEqual(true);
+        expect(loadingRes.prop('error')).toBeFalsy();
+        // pass loading
+        await wait(0);
+        wrapper.update();
+        const finalRes = wrapper.find(TestComponent);
+        expect(finalRes.prop('loading')).toEqual(false);
+        expect(finalRes.prop('error')).toBeFalsy();
+        expect(finalRes.prop('results')).toEqual([foo]);
+        expect(finalRes.prop('count')).toEqual(1);
+      });
+
+      test.skip('add pagination terms', () => {
+
+      });
+
+      test('load more and load more inc', async () => {
+        // @see https://stackoverflow.com/questions/49064334/invoke-a-function-with-enzyme-when-function-is-passed-down-as-prop-react
+        const responses = [
+          // first request
+          {
+            request: {
+              query: defaultQuery,
+              variables: {
+                input: {
+                  ...defaultVariables.input,
+                  terms: {
+                    limit: 1,
+                    itemsPerPage: 1 // = first limit
+                  }
+                }
+              }
+            },
+            result: {
+              data: {
+                foos: {
+                  results: [foo],
+                  totalCount: 10,
+                  __typename: '[Foo]'
+                }
+              }
+            }
+          },
+          // calling loadMore / loadMoreInc will send new requests with updated terms
+          // loadMore
+          {
+            request: {
+              query: defaultQuery,
+              variables: {
+                input: {
+                  ...defaultVariables.input,
+                  terms: {
+                    limit: 2, // limit is increased by load more
+                    itemsPerPage: 1
+                  }
+                }
+              }
+            },
+            result: {
+              data: {
+                foos: {
+                  results: [foo, foo, foo],
+                  totalCount: 10,
+                  __typename: '[Foo]'
+                }
+              }
+            }
+          },
+          // loadmoreInc
+          {
+            request: {
+              query: defaultQuery,
+              variables: {
+                // get an offset to load only relevant data
+                input: { terms: { limit: 2, itemsPerPage: 1, offset: 3 } }
+              }
+            },
+            result: {
+              data: {
+                foos: {
+                  results: [foo, foo],
+                  totalCount: 10,
+                  __typename: '[Foo]'
+                }
+              }
+            }
+          }
+        ];
+
+        const MultiComponent = withMulti(defaultOptions)(TestComponent);
+
+        const wrapper = mount(
+          <MockedProvider mocks={responses}>
+            <MultiComponent terms={{ limit: 1 }} />
+          </MockedProvider>
+        );
+        // get data
+        await wait(0);
+        wrapper.update();
+
+        // call load more
+        expect(wrapper.find(TestComponent).prop('loadMore')).toBeInstanceOf(Function);
+        wrapper.find(TestComponent).prop('loadMore')();
+        await wait(0);
+        wrapper.update();
+        const loadMoreRes = wrapper.find(TestComponent);
+        expect(loadMoreRes.prop('error')).toBeFalsy();
+        expect(loadMoreRes.prop('results')).toHaveLength(3);
+
+        // call load more incremental
+        // TODO: weird behaviour
+        //expect(wrapper.find(TestComponent).prop('loadMoreInc')).toBeInstanceOf(Function);
+        //wrapper.find(TestComponent).prop('loadMoreInc')();
+        //await wait(0);
+        //wrapper.update();
+        //const loadMoreIncRes = wrapper.find(TestComponent);
+        //expect(loadMoreRes.prop('error')).toBeFalsy();
+        //expect(loadMoreIncRes.prop('results')).toHaveLength(5);
+
+      });
+      test.skip('load more inc', () => {
+
+      });
+
     });
   });
   describe('mutations', () => {

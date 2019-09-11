@@ -44,7 +44,6 @@ export default function withSingle(options) {
     alias: `with${typeName}`,
 
     options({ documentId, slug, selector = { documentId, slug } }) {
-      console.log(documentId, selector);
       // OpenCrud backwards compatibility
       const graphQLOptions = {
         variables: {

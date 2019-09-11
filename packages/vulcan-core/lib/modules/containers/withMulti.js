@@ -46,6 +46,14 @@ import {
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 
+export const multiQuery = ({
+  typeName, fragmentName, extraQueries, fragment
+}) => (gql`
+    ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
+    ${fragment}
+  `
+  );
+
 export default function withMulti(options) {
   // console.log(options)
 
@@ -68,10 +76,7 @@ export default function withMulti(options) {
   const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
-  const query = gql`
-    ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
-    ${fragment}
-  `;
+  const query = multiQuery({ typeName, fragmentName, extraQueries, fragment });
 
   return compose(
     // wrap component with Apollo HoC to give it access to the store
@@ -168,8 +173,8 @@ export default function withMulti(options) {
                 typeof providedTerms === 'undefined'
                   ? {
                       /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms,
-                      limit: results.length + props.ownProps.paginationTerms.itemsPerPage,
-                    }
+                    limit: results.length + props.ownProps.paginationTerms.itemsPerPage,
+                  }
                   : providedTerms;
 
               props.ownProps.setPaginationTerms(newTerms);
@@ -182,10 +187,10 @@ export default function withMulti(options) {
               const newTerms =
                 typeof providedTerms === 'undefined'
                   ? {
-                      ...props.ownProps.terms,
-                      ...props.ownProps.paginationTerms,
-                      offset: results.length,
-                    }
+                    ...props.ownProps.terms,
+                    ...props.ownProps.paginationTerms,
+                    offset: results.length,
+                  }
                   : providedTerms;
 
               return props.data.fetchMore({
