@@ -303,7 +303,7 @@ export const getSchemaFields = (schema, typeName) => {
     const fieldType = getGraphQLType({ schema, fieldName, typeName });
     const inputFieldType = getGraphQLType({ schema, fieldName, typeName, isInput: true });
 
-    // ignore fields that already have a typeName
+    // find types that have a nested schema or have a reference to antoher type
     const isNestedObject = hasNestedSchema(field);
     const isNestedArray =
       hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema));
