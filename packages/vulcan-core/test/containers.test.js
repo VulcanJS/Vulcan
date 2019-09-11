@@ -79,8 +79,10 @@ describe('vulcan-core/containers', function () {
       toString: () => `fragment FoosDefaultFragment on Foo { 
         id
         hello
+        __typename
       }`
     };
+    const foo = { id: 1, hello: 'world', __typename: 'Foo' };
     describe('withSingle', () => {
       const TestComponent = (props) => {
         return <div>test</div>;
@@ -94,29 +96,9 @@ describe('vulcan-core/containers', function () {
         expect(wrapper).toBeInstanceOf(Function);
       });
       test('query single document', async () => {
-
-        const foo = { id: 1, hello: 'world' };
-        // The component AND the query need to be exported
-
         const mock = {
           request: {
-            // TODO: withSingle should export a function that generate this query
             query: singleQuery({ typeName, fragmentName, fragment }),
-            /*gql`
-              query singleFooQuery($input: SingleFooInput) {
-                foo(input: $input) {
-                  result {
-                    ...FoosDefaultFragment
-                  }
-                  __typename
-                }
-              }
-
-              fragment FoosDefaultFragment on Foo {
-                id
-                hello
-              }
-              `,*/
             variables: {
               // variables must absolutely match with the emitted request,
               // including undefined values
@@ -138,7 +120,7 @@ describe('vulcan-core/containers', function () {
           fragment
         })(TestComponent);
         const wrapper = mount(
-          <MockedProvider removeTypename mocks={mocks} addTypename={false} >
+          <MockedProvider removeTypename mocks={mocks} >
             <SingleComponent />
           </MockedProvider>
         );
@@ -154,6 +136,68 @@ describe('vulcan-core/containers', function () {
         expect(finalRes.prop('loading')).toBe(false);
         expect(finalRes.prop('data').error).toBeFalsy();
         expect(finalRes.prop('document')).toEqual(foo);
+      });
+      test('send new request if props are updated', async () => {
+        const foo = { id: 1, hello: 'world' };
+        const query = singleQuery({ typeName, fragmentName, fragment });
+        const firstRequest = {
+          request: {
+            query,
+            variables: {
+              // variables must absolutely match with the emitted request,
+              // including undefined values
+              'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
+            }
+          },
+          result: {
+            data: {
+              foo: { result: null, __typename: 'Foo' }
+            },
+          },
+        };
+        const documentIdRequest = {
+          request: {
+            query,
+            variables: {
+              input: { selector: { documentId: '42', slug: undefined }, 'enableCache': false }
+            }
+          },
+          result: {
+            data: {
+              foo: { result: foo, __typename: 'Foo' }
+            }
+          }
+        };
+        const mocks = [
+          firstRequest,
+          documentIdRequest
+        ]; // need multiple mocks, one per query
+        const SingleComponent = withSingle({
+          collection: Foo,
+          pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+          fragment
+        })(TestComponent);
+        const wrapper = mount(
+          <MockedProvider removeTypename mocks={mocks} >
+            <SingleComponent />
+          </MockedProvider>
+        );
+        // @see https://www.apollographql.com/docs/react/recipes/testing/#testing-final-state
+        //await new Promise(resolve => setTimeout(resolve));
+        await wait(0);
+        wrapper.update(); // rerender
+        const intermediateRes = wrapper.find(TestComponent).first();
+        expect(intermediateRes.prop('loading')).toBe(false);
+        expect(intermediateRes.prop('data').error).toBeFalsy();
+        expect(intermediateRes.prop('document')).toEqual(null);
+        // change props
+        wrapper.setProps({ documentId: '42', selector: { documentId: 42 } });
+        const finalRes = wrapper.find(TestComponent).first();
+        expect(finalRes.props()).toEqual(false);
+        expect(finalRes.prop('loading')).toBe(false);
+        expect(finalRes.prop('data').error).toBeFalsy();
+        expect(finalRes.prop('document')).toEqual(foo);
+
       });
       test('work if fragment is not yet defined', () => {
         const hoc = withSingle({
