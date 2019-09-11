@@ -658,7 +658,7 @@ const DatatableDefaultCell = ({ column, document }) => (
   <div>
     {typeof column === 'string'
       ? getFieldValue(document[column])
-      : getFieldValue(document[column.name])}
+      : getFieldValue(document[column.name], column)}
   </div>
 );
 
