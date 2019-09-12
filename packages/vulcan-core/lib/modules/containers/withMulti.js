@@ -197,16 +197,19 @@ export default function withMulti(options) {
                 variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
                   // no more post to fetch
-                  if (!fetchMoreResult.data) {
+                  if (!(
+                    fetchMoreResult[resolverName]
+                    && fetchMoreResult[resolverName].results
+                    && fetchMoreResult[resolverName].results.length
+                  )) {
                     return previousResults;
                   }
-                  const newResults = {};
-                  newResults[resolverName] = [
-                    ...previousResults[resolverName],
-                    ...fetchMoreResult.data[resolverName],
+                  const newResults = { ...previousResults, [resolverName]: { ...previousResults[resolverName] } }; // TODO: should we clone this object?
+                  newResults[resolverName].results = [
+                    ...previousResults[resolverName].results,
+                    ...fetchMoreResult[resolverName].results,
                   ];
-                  // return the previous results "augmented" with more
-                  return { ...previousResults, ...newResults };
+                  return newResults;
                 },
               });
             },
