@@ -22,7 +22,7 @@ import { withRouter} from 'react-router';
 import MessageContext from '../messages.js';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
-const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
+const RouteWithLayout = ({ layoutComponent, layoutName, component, currentRoute, ...rest }) => {
   
   // if defined, use ErrorCatcher component to wrap layout contents
   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
@@ -39,7 +39,8 @@ const RouteWithLayout = ({ layoutName, component, currentRoute, ...rest }) => {
         
         const layoutProps = { ...props, currentRoute };
         const childComponentProps = { ...props, currentRoute };
-        const layout = layoutName ? Components[layoutName] : Components.Layout;
+        // Use layoutComponent, or else registered layout component; or else default layout
+        const layout = layoutComponent ? layoutComponent : layoutName ? Components[layoutName] : Components.Layout;
         const children = <ErrorCatcher>
           <Components.RouterHook currentRoute={currentRoute}/>
           {React.createElement(component, childComponentProps)}
