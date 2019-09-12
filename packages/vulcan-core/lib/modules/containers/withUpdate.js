@@ -30,7 +30,11 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { updateClientTemplate, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import {
+  updateClientTemplate,
+  extractCollectionInfo,
+  extractFragmentInfo,
+} from 'meteor/vulcan:lib';
 import clone from 'lodash/clone';
 
 const withUpdate = options => {
@@ -45,11 +49,19 @@ const withUpdate = options => {
 
   return graphql(query, {
     alias: `withUpdate${typeName}`,
+    options: () => {
+      const graphQLOptions = {};
+      
+      // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
+      graphQLOptions.errorPolicy = 'all';
+
+      return graphQLOptions;
+    },
     props: ({ ownProps, mutate }) => ({
       [`update${typeName}`]: args => {
         const { selector, data } = args;
         return mutate({
-          variables: { selector, data }
+          variables: { selector, data },
           // note: updateQueries is not needed for editing documents
         });
       },
@@ -63,11 +75,11 @@ const withUpdate = options => {
             data[fieldName] = null;
           });
         return mutate({
-          variables: { selector, data }
+          variables: { selector, data },
           // note: updateQueries is not needed for editing documents
         });
-      }
-    })
+      },
+    }),
   });
 };
 
