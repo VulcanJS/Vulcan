@@ -64,6 +64,8 @@ const LimitedString = ({ string }) => (
   </div>
 );
 
+const formatDate = value => moment(new Date(value)).format('YYYY/MM/DD, hh:mm');
+
 export const getFieldValue = (value, options = {}) => {
   // if typeName is not provided, default to typeof value
   // note: contents provides additional clues about the contents (image, video, etc.)
@@ -107,12 +109,27 @@ export const getFieldValue = (value, options = {}) => {
       return getObject(value);
 
     case 'Date':
-      return moment(new Date(value)).format('dddd, MMMM Do YYYY, h:mm:ss');
+      return formatDate(value);
 
     case 'String':
     case 'string':
-      const forceIsImage = contents === 'image';
-      return parseImageUrl(value, forceIsImage);
+      switch (contents) {
+        case 'html':
+          return <div dangerouslySetInnerHTML={{ __html: value }} />;
+
+        case 'date':
+          return formatDate(value);
+
+        case 'image':
+          return parseImageUrl(value, true);
+
+        case 'url':
+          return parseUrl(value, true);
+
+        default:
+          // still attempt to parse string as an image or URL if possible
+          return parseImageUrl(value);
+      }
 
     default:
       return value.toString();
