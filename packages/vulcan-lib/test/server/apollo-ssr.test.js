@@ -1,8 +1,11 @@
 import expect from 'expect';
 import sinon from 'sinon';
 import makePageRenderer from '../../lib/server/apollo-ssr/renderPage';
+import React from 'react';
+import ApolloState from '../../lib/server/apollo-ssr/components/ApolloState';
 //import { InjectData } from '../../lib/server/apollo-ssr';
 import { initGraphQLTest } from 'meteor/vulcan:test';
+import { mount } from 'enzyme';
 
 const test = it;
 
@@ -21,7 +24,7 @@ const createDummySink = () => ({
         this.result.body += content;
     }
 });
-describe('renderPage', () => {
+describe('vulcan:lib/renderPage', () => {
     let renderPage;
     before(() => {
         initGraphQLTest();
@@ -54,5 +57,24 @@ describe('renderPage', () => {
         };
         await renderPage(sink);
         expect(sink.result.head).not.toMatch('type="text/inject-data');
+    });
+
+    describe('ApolloState', () => {
+        // TODO: a better test would be replacing the App component
+        // temporarily with a component that add <script>window.HACKED=1</script>
+        // to apollo state, and run renderPage directly
+        // That would mean creating a helper to replace App easily when rendering
+        //@see https://medium.com/node-security/the-most-common-xss-vulnerability-in-react-js-applications-2bdffbcc1fa0
+        test('serialize apollo state', async () => {
+            const wrapper = mount(<ApolloState initialState={
+                {
+                    hack: '<script>window.HACKED=1</script>'
+                }
+            } />);
+            expect(wrapper.find('script')).toHaveLength(1);
+            const script = wrapper.find('script');
+            expect(script.text()).not.toMatch('<script');
+            expect(script.text()).not.toMatch('<');
+        });
     });
 });
