@@ -1,5 +1,5 @@
-import { registerComponent, getCollection, formatLabel } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
+import { Components, registerComponent, getCollection, formatLabel } from 'meteor/vulcan:lib';
+import React, { PureComponent, useState } from 'react';
 import PropTypes from 'prop-types';
 import withCurrentUser from '../containers/withCurrentUser.js';
 import withComponents from '../containers/withComponents';
@@ -10,6 +10,7 @@ import _isFunction from 'lodash/isFunction';
 import _sortBy from 'lodash/sortBy';
 import qs from 'qs';
 import { withRouter } from 'react-router';
+import _isEmpty from 'lodash/isEmpty';
 
 /*
 
@@ -36,6 +37,7 @@ class Datatable extends PureComponent {
       value: '',
       query: '',
       currentSort: {},
+      currentFilters: {},
     };
 
     // only load urlState if useUrlState is enabled
@@ -48,6 +50,9 @@ class Datatable extends PureComponent {
       if (urlState.sort) {
         const [sortKey, sortValue] = urlState.sort.split('|');
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
+      }
+      if (urlState.filters) {
+        initState.currentFilters = urlState.filters;
       }
     }
 
@@ -96,6 +101,21 @@ class Datatable extends PureComponent {
     }
     this.setState({ currentSort });
     this.updateQueryParameter('sort', urlValue);
+  };
+
+  submitFilters = ({ name, filters }) => {
+    // clone state filters object
+    let newFilters = Object.assign({}, this.state.currentFilters);
+    if (filters.length === 0) {
+      // if there are no filter options, remove column filter from state altogether
+      delete newFilters[name];
+    } else {
+      // else, update filters
+      newFilters[name] = filters;
+    }
+
+    this.setState({ currentFilters: newFilters });
+    this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
   };
 
   updateQuery = e => {
@@ -180,6 +200,8 @@ class Datatable extends PureComponent {
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
+            submitFilters={this.submitFilters}
+            currentFilters={this.state.currentFilters}
           />
         </Components.DatatableLayout>
       );
@@ -285,7 +307,10 @@ registerComponent({ name: 'DatatableAboveLayout', component: DatatableAboveLayou
 DatatableHeader Component
 
 */
-const DatatableHeader = ({ collection, column, toggleSort, currentSort, Components }, { intl }) => {
+const DatatableHeader = (
+  { collection, column, toggleSort, currentSort, submitFilters, currentFilters, Components },
+  { intl }
+) => {
   const columnName = getColumnName(column);
 
   if (collection) {
@@ -309,16 +334,33 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, Componen
 
     // if sortable is a string, use it as the name of the property to sort by. If it's just `true`, use column.name
     const sortPropertyName = typeof column.sortable === 'string' ? column.sortable : column.name;
-    return column.sortable ? (
-      <Components.DatatableSorter
-        name={sortPropertyName}
-        label={formattedLabel}
-        toggleSort={toggleSort}
-        currentSort={currentSort}
-        sortable={column.sortable}
-      />
-    ) : (
-      <Components.DatatableHeaderCellLayout>{formattedLabel}</Components.DatatableHeaderCellLayout>
+
+    // if filterable is a string, use it as the name of the property to filter by. If it's just `true`, use column.name
+    const filterablePropertyName =
+      typeof column.filterable === 'string' ? column.filterable : column.name;
+
+    return (
+      <Components.DatatableHeaderCellLayout>
+        <span className="datatable-header-cell-label">{formattedLabel}</span>
+        {column.sortable && (
+          <Components.DatatableSorter
+            name={sortPropertyName}
+            label={formattedLabel}
+            toggleSort={toggleSort}
+            currentSort={currentSort}
+            sortable={column.sortable}
+          />
+        )}
+        {column.filterable && (
+          <Components.DatatableFilter
+            name={filterablePropertyName}
+            label={formattedLabel}
+            options={column.options}
+            submitFilters={submitFilters}
+            currentFilters={currentFilters}
+          />
+        )}
+      </Components.DatatableHeaderCellLayout>
     );
   } else {
     const formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
@@ -339,7 +381,9 @@ DatatableHeader.propTypes = {
 registerComponent('DatatableHeader', DatatableHeader);
 
 const DatatableHeaderCellLayout = ({ children, ...otherProps }) => (
-  <th {...otherProps}>{children}</th>
+  <th {...otherProps}>
+    <div className="datatable-header-cell-inner">{children}</div>
+  </th>
 );
 registerComponent({ name: 'DatatableHeaderCellLayout', component: DatatableHeaderCellLayout });
 
@@ -389,21 +433,61 @@ const SortAsc = () => (
 );
 
 const DatatableSorter = ({ name, label, toggleSort, currentSort }) => (
-  <th>
-    <div
-      className="datatable-sorter"
-      onClick={() => {
-        toggleSort(name);
-      }}>
-      <span className="datatable-sorter-label">{label}</span>
-      <span className="sort-icon">
-        {!currentSort[name] ? <SortNone /> : currentSort[name] === 1 ? <SortAsc /> : <SortDesc />}
-      </span>
-    </div>
-  </th>
+  <span
+    className="datatable-sorter"
+    onClick={() => {
+      toggleSort(name);
+    }}>
+    {!currentSort[name] ? <SortNone /> : currentSort[name] === 1 ? <SortAsc /> : <SortDesc />}
+  </span>
 );
 
 registerComponent('DatatableSorter', DatatableSorter);
+
+const Filter = () => (
+  <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    <path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-6 400H54c-3.3 0-6-2.7-6-6V86c0-3.3 2.7-6 6-6h340c3.3 0 6 2.7 6 6v340c0 3.3-2.7 6-6 6zM224 184v16c0 13.3-10.7 24-24 24h-24v148c0 6.6-5.4 12-12 12h-8c-6.6 0-12-5.4-12-12V224h-24c-13.3 0-24-10.7-24-24v-16c0-13.3 10.7-24 24-24h24v-20c0-6.6 5.4-12 12-12h8c6.6 0 12 5.4 12 12v20h24c13.3 0 24 10.7 24 24zm128 128v16c0 13.3-10.7 24-24 24h-24v20c0 6.6-5.4 12-12 12h-8c-6.6 0-12-5.4-12-12v-20h-24c-13.3 0-24-10.7-24-24v-16c0-13.3 10.7-24 24-24h24V140c0-6.6 5.4-12 12-12h8c6.6 0 12 5.4 12 12v148h24c13.3 0 24 10.7 24 24z" />
+  </svg>
+);
+
+const DatatableFilter = ({ name, label, options, submitFilters, currentFilters = {} }) => {
+  const [filters, setFilters] = useState(currentFilters[name]);
+
+  // note: convert all values to strings since they might be stored in URL
+  const stringOptions = options.map(({ value, label }) => ({ value: value.toString(), label }));
+
+  return (
+    <span className="datatable-filter">
+      <Components.ModalTrigger title={`Filter ${label}`} size="small" trigger={<Filter />}>
+        <div>
+          <Components.FormComponentCheckboxGroup
+            path="filter"
+            itemProperties={{ layout: 'inputOnly' }}
+            inputProperties={{ options: stringOptions }}
+            value={filters}
+            updateCurrentValues={newValues => {
+              setFilters(newValues.filter);
+            }}
+          />
+          <Components.Button
+            onClick={() => {
+              setFilters([]);
+            }}>
+            Clear All
+          </Components.Button>
+          <Components.Button
+            onClick={() => {
+              submitFilters({ name, filters });
+            }}>
+            Submit
+          </Components.Button>
+        </div>
+      </Components.ModalTrigger>
+    </span>
+  );
+};
+
+registerComponent('DatatableFilter', DatatableFilter);
 
 /*
 
@@ -427,6 +511,8 @@ const DatatableContents = props => {
     emptyState,
     toggleSort,
     currentSort,
+    submitFilters,
+    currentFilters,
     modalProps,
     Components,
     error,
@@ -465,6 +551,8 @@ const DatatableContents = props => {
               column={column}
               toggleSort={toggleSort}
               currentSort={currentSort}
+              submitFilters={submitFilters}
+              currentFilters={currentFilters}
             />
           ))}
           {showEdit ? (
