@@ -9,14 +9,15 @@
 
 // in react-apollo v3, this will be imported from the independant package "@apollo/react-testing" instead
 // currently we use v2
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import React from 'react';
 
-const ExtendedMockedProvider = props => {
-  return (
-    <MockedProvider {...props}>
-      {React.cloneElement(props.children, { ...(props.childProps || {}) })}
-    </MockedProvider>
-  );
-};
-export default ExtendedMockedProvider;
+//const ExtendedMockedProvider = props => {
+//  return (
+//    <MockedProvider {...props}>
+//      {React.cloneElement(props.children, { ...(props.childProps || {}) })}
+//    </MockedProvider>
+//  );
+//};
+//export default ExtendedMockedProvider;
+export default MockedProvider;

@@ -46,7 +46,7 @@ describe('vulcan:core/container/mutations', () => {
         };
         // NOT passing for no reason...
         // @see https://github.com/apollographql/react-apollo/issues/3478
-        test.skip('run a create mutation', async () => {
+        test('run a create mutation', async () => {
             const CreateComponent = withCreate(defaultOptions)(TestComponent);
             const responses = [{
                 request: {

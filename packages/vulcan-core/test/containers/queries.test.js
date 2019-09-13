@@ -206,10 +206,6 @@ describe('vulcan:core/queries', function () {
           <SingleComponent />
         </MockedProvider>
       );
-
-      const loadingRes = wrapper.find(TestComponent).first();
-      // @see https://www.apollographql.com/docs/react/recipes/testing/#testing-final-state
-      //await new Promise(resolve => setTimeout(resolve));
       await wait(0);
       wrapper.update(); // rerender
       const finalRes = wrapper.find(TestComponent).first();
