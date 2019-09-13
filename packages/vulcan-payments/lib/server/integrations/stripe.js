@@ -43,7 +43,7 @@ import {
   debugGroupEnd,
   getSetting,
   registerSetting,
-  newMutation,
+  createMutator,
   updateMutator,
   Collections,
   registerCallback,
@@ -378,6 +378,14 @@ export const createSubscription = async ({
         throw error;
       }
     }
+    runCallbacksAsync('stripe.error.async', {
+      action: 'subscription',
+      collection,
+      returnDocument,
+      args,
+      user,
+      context,
+    });
     throw error;
   }
 };
@@ -506,9 +514,9 @@ export const processAction = async ({
     chargeDoc.ip = token.client_ip;
   }
   // insert
-  const chargeSavedData = await newMutation({
+  const chargeSavedData = await createMutator({
     collection: Charges,
-    document: chargeDoc,
+    data: chargeDoc,
     validate: false,
   });
   const chargeSaved = chargeSavedData.data;

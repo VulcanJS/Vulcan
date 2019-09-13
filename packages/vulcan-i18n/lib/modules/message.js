@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { intlShape } from './shape';
 
 const FormattedMessage = ({ id, values, defaultMessage = '', html = false, className = '' }, { intl }) => {
-  const message = intl.formatMessage({ id, defaultMessage }, values);
+  let message = intl.formatMessage({ id, defaultMessage }, values);
   const cssClass = `i18n-message ${className}`;
+
+  // if message is empty, use [id]
+  if (message === '') {
+    message = `[${id}]`;
+  }
 
   return html ? 
     <span className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :

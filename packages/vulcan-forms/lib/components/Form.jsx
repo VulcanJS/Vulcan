@@ -289,7 +289,7 @@ class SmartForm extends Component {
     // for each group, add relevant fields
     groups = groups.map(group => {
       group.label =
-        group.label || this.context.intl.formatMessage({ id: group.name });
+        group.label || this.context.intl.formatMessage({ id: group.name }) || Utils.capitalize(group.name);
       group.fields = _.filter(fields, field => {
         return field.group && field.group.name === group.name;
       });
@@ -297,7 +297,7 @@ class SmartForm extends Component {
     });
 
     // add default group if necessary
-    const defaultGroupFields = _filter(fields, field => !field.group)
+    const defaultGroupFields = _filter(fields, field => !field.group);
     if (defaultGroupFields.length){
       groups = [{
         name: 'default',
