@@ -8,6 +8,7 @@ import { registerFragment, getDefaultFragmentText } from './fragments.js';
 import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
+import isEmpty from 'lodash/isEmpty';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -200,7 +201,7 @@ export const createCollection = options => {
   // ------------------------------------- Parameters -------------------------------- //
 
   collection.getParameters = (terms = {}, apolloClient, context) => {
-    // console.log(terms);
+    console.log(terms);
 
     let parameters = {
       selector: {},
@@ -286,8 +287,20 @@ export const createCollection = options => {
       );
     }
 
+    /*
+
+    Add filters. Note: filters work by addition. Specifying { category: ['foo', 'bar']}
+    returns the sum of all items that have category `foo` *or* have category `bar`
+
+    */
+    if (terms.filterBy && !isEmpty(terms.filterBy)) {
+      Object.keys(terms.filterBy).forEach(propertyName => {
+        parameters.selector[propertyName] = { $in: terms.filterBy[propertyName] };
+      });
+    }
+
     // sort using terms.orderBy (overwrite defaultView's sort)
-    if (terms.orderBy && !_.isEmpty(terms.orderBy)) {
+    if (terms.orderBy && !isEmpty(terms.orderBy)) {
       parameters.options.sort = terms.orderBy;
     }
 
@@ -342,7 +355,7 @@ export const createCollection = options => {
     const limit = terms.limit || parameters.options.limit;
     parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
 
-    // console.log(parameters);
+    console.log(parameters);
 
     return parameters;
   };
