@@ -6,7 +6,7 @@ import StubCollections from 'meteor/hwillson:stub-collections';
 
 const test = it;
 
-const { create: createUser, delete: deleteMutation, update } = mutations;
+const { create: createUser, delete: deleteMutation, /*update*/ } = mutations;
 
 const fooUser = { _id: 'foobar' };
 const context = {
