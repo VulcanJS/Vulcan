@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.13.0_1
+# vulcan:ui-material 1.13.2
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -109,6 +109,8 @@ You can pass a couple of extra options to inputs from the `form` property of you
       inputClassName: 'halfWidthLeft', // use 'halfWidthLeft' or 'halfWidthRight'
                                        //   to display two controls side by side
       hideLabel: true,                 // hide the label
+      hideLink: true,                  // url and email inputs are are adorned with
+                                       // an icon button link - unless you hide them
       rows: 10,                        // for textareas you can specify the rows
       variant: 'switch',               // for checkboxgroups you can use either 
                                        //   'checkbox' (default) or 'switch'
