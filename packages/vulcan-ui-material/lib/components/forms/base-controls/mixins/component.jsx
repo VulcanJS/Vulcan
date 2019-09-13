@@ -82,6 +82,7 @@ export default {
       'afterComponent',
       'addonAfter',
       'addonBefore',
+      'hideLink',
       'help',
       'label',
       'hideLabel',
