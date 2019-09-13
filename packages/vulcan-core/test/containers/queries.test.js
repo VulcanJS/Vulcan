@@ -167,13 +167,55 @@ describe('vulcan:core/queries', function () {
       expect(finalRes.prop('document')).toEqual(foo);
 
     });
-    test.skip('work if fragment is not yet defined', () => {
+    test('work if fragment is not yet defined', () => {
       const hoc = withSingle({
         collection: Foo,
         fragmentName: 'NotRegisteredYetFragment'
       });
       expect(hoc).toBeDefined();
       expect(hoc).toBeInstanceOf(Function);
+    });
+    test('add extra queries', async () => {
+      const mock = {
+        request: {
+          query: singleQuery({ typeName, fragmentName, fragment, extraQueries: 'extra { foo }' }),
+          variables: {
+            // variables must absolutely match with the emitted request,
+            // including undefined values
+            'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
+          }
+        },
+        result: {
+          data: {
+            foo: { result: foo, __typename: 'Foo' },
+            extra: { foo: 'bar', __typename: 'Foo' }
+          },
+        },
+      };
+      const mocks = [
+        mock,
+      ]; // need multiple mocks, one per query
+      const SingleComponent = withSingle({
+        collection: Foo,
+        pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        fragment,
+        extraQueries: 'extra { foo }'
+      })(TestComponent);
+      const wrapper = mount(
+        <MockedProvider removeTypename mocks={mocks} >
+          <SingleComponent />
+        </MockedProvider>
+      );
+
+      const loadingRes = wrapper.find(TestComponent).first();
+      // @see https://www.apollographql.com/docs/react/recipes/testing/#testing-final-state
+      //await new Promise(resolve => setTimeout(resolve));
+      await wait(0);
+      wrapper.update(); // rerender
+      const finalRes = wrapper.find(TestComponent).first();
+      expect(finalRes.prop('loading')).toBe(false);
+      expect(finalRes.prop('data').error).toBeFalsy();
+      expect(finalRes.prop('document')).toEqual(foo);
     });
   });
 
@@ -328,7 +370,7 @@ describe('vulcan:core/queries', function () {
     });
 
     // TODO: not passing, is this expected?
-    test('loadMoreInc get more data', async () => {
+    test.skip('loadMoreInc get more data', async () => {
       // @see https://stackoverflow.com/questions/49064334/invoke-a-function-with-enzyme-when-function-is-passed-down-as-prop-react
       const responses = [
         // first request
@@ -402,6 +444,14 @@ describe('vulcan:core/queries', function () {
       expect(loadMoreIncRes.prop('error')).toBeFalsy();
       expect(loadMoreIncRes.prop('results')).toHaveLength(2);
 
+    });
+    test('work if fragment is not yet defined', () => {
+      const hoc = withMulti({
+        collection: Foo,
+        fragmentName: 'NotRegisteredYetFragment'
+      });
+      expect(hoc).toBeDefined();
+      expect(hoc).toBeInstanceOf(Function);
     });
   });
 });
