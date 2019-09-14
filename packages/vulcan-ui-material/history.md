@@ -1,3 +1,11 @@
+1.13.2 / 2019-09-13
+===================
+
+ * Forms: Added indicator for required fields
+ * Forms: Added support for styling of disabled input
+ * LoadMore: Fixed bug that would sometimes display "NaN items"
+ * StartAdornment: url and email inputs are now adorned with an icon button link - unless you pass `hideLink: true` in inputProperties
+ 
 1.13.0_1 / 2019-07-23
 =====================
 
