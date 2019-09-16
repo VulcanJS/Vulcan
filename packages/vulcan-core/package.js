@@ -9,13 +9,13 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'vulcan:lib@1.13.2',
-    'vulcan:i18n@1.13.2',
-    'vulcan:users@1.13.2',
-    'vulcan:debug@1.13.2',
+    'vulcan:lib@=1.13.2',
+    'vulcan:i18n@=1.13.2',
+    'vulcan:users@=1.13.2',
+    'vulcan:debug@=1.13.2',
   ]);
 
-  api.imply(['vulcan:lib@1.13.2']);
+  api.imply(['vulcan:lib@=1.13.2']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

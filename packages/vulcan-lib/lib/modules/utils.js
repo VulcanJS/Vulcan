@@ -27,8 +27,11 @@ export const Utils = {};
  * @summary Convert a camelCase string to dash-separated string
  * @param {String} str
  */
-Utils.camelToDash = function (str) {
-  return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
+Utils.camelToDash = function(str) {
+  return str
+    .replace(/\W+/g, '-')
+    .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 };
 
 /**
@@ -36,15 +39,30 @@ Utils.camelToDash = function (str) {
  * See http://stackoverflow.com/questions/4149276/javascript-camelcase-to-regular-form
  * @param {String} str
  */
-Utils.camelToSpaces = function (str) {
-  return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+Utils.camelToSpaces = function(str) {
+  return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str) {
+    return str.toUpperCase();
+  });
 };
+
+/**
+ * @summary Convert a string to title case ('foo bar baz' to 'Foo Bar Baz')
+ * See https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
+ * @param {String} str
+ */
+Utils.toTitleCase = str =>
+  str &&
+  str
+    .toLowerCase()
+    .split(' ')
+    .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
 
 /**
  * @summary Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */
-Utils.underscoreToDash = function (str) {
+Utils.underscoreToDash = function(str) {
   return str.replace('_', '-');
 };
 
@@ -52,8 +70,10 @@ Utils.underscoreToDash = function (str) {
  * @summary Convert a dash separated string to camelCase.
  * @param {String} str
  */
-Utils.dashToCamel = function (str) {
-  return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
+Utils.dashToCamel = function(str) {
+  return str.replace(/(\-[a-z])/g, function($1) {
+    return $1.toUpperCase().replace('-', '');
+  });
 };
 
 /**
@@ -62,7 +82,7 @@ Utils.dashToCamel = function (str) {
  */
 Utils.camelCaseify = function(str) {
   str = this.dashToCamel(str.replace(' ', '-'));
-  str = str.slice(0,1).toLowerCase() + str.slice(1);
+  str = str.slice(0, 1).toLowerCase() + str.slice(1);
   return str;
 };
 
@@ -72,13 +92,10 @@ Utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Utils.trimWords = function(s, numWords) {
+  if (!s) return s;
 
-  if (!s)
-    return s;
-
-  var expString = s.split(/\s+/,numWords);
-  if(expString.length >= numWords)
-    return expString.join(' ')+'…';
+  var expString = s.split(/\s+/, numWords);
+  if (expString.length >= numWords) return expString.join(' ') + '…';
   return s;
 };
 
@@ -86,7 +103,7 @@ Utils.trimWords = function(s, numWords) {
  * @summary Trim a block of HTML code to get a clean text excerpt
  * @param {String} html - HTML to trim.
  */
-Utils.trimHTML = function (html, numWords) {
+Utils.trimHTML = function(html, numWords) {
   var text = Utils.stripHTML(html);
   return Utils.trimWords(text, numWords);
 };
@@ -101,19 +118,21 @@ Utils.capitalize = function(str) {
 
 Utils.t = function(message) {
   var d = new Date();
-  console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()); // eslint-disable-line
+  console.log(
+    '### ' + message + ' rendered at ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+  ); // eslint-disable-line
 };
 
 Utils.nl2br = function(str) {
   var breakTag = '<br />';
-  return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+  return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 };
 
 Utils.scrollPageTo = function(selector) {
   $('body').scrollTop($(selector).offset().top);
 };
 
-Utils.scrollIntoView = function (selector) {
+Utils.scrollIntoView = function(selector) {
   if (!document) return;
 
   const element = document.querySelector(selector);
@@ -124,8 +143,8 @@ Utils.scrollIntoView = function (selector) {
 
 Utils.getDateRange = function(pageNumber) {
   var now = moment(new Date());
-  var dayToDisplay=now.subtract(pageNumber-1, 'days');
-  var range={};
+  var dayToDisplay = now.subtract(pageNumber - 1, 'days');
+  var range = {};
   range.start = dayToDisplay.startOf('day').valueOf();
   range.end = dayToDisplay.endOf('day').valueOf();
   // console.log("after: ", dayToDisplay.startOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
@@ -140,7 +159,7 @@ Utils.getDateRange = function(pageNumber) {
 /**
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
-Utils.getSiteUrl = function () {
+Utils.getSiteUrl = function() {
   let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) !== '/') {
     url += '/';
@@ -151,7 +170,7 @@ Utils.getSiteUrl = function () {
 /**
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Remove trailing '/' if it exists
  */
-Utils.getRootUrl = function () {
+Utils.getRootUrl = function() {
   let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) === '/') {
     url = url.slice(0, -1);
@@ -163,13 +182,13 @@ Utils.getRootUrl = function () {
  * @summary The global namespace for Vulcan utils.
  * @param {String} url - the URL to redirect
  */
-Utils.getOutgoingUrl = function (url) {
+Utils.getOutgoingUrl = function(url) {
   return Utils.getSiteUrl() + 'out?url=' + encodeURIComponent(url);
 };
 
-Utils.slugify = function (s) {
+Utils.slugify = function(s) {
   let slug = getSlug(s, {
-    truncate: 60
+    truncate: 60,
   });
 
   // can't have posts with an "edit" slug
@@ -189,7 +208,7 @@ Utils.slugify = function (s) {
  * avoid the slug changing
  * @returns {string} The slug passed in the 2nd param, but may be
  */
-Utils.getUnusedSlug = function (collection, slug, documentId) {
+Utils.getUnusedSlug = function(collection, slug, documentId) {
   // test if slug is already in use
   for (let index = 0; index <= Number.MAX_SAFE_INTEGER; index++) {
     const suffix = index ? '-' + index : '';
@@ -224,7 +243,7 @@ Utils.getUnusedSlug = function (collection, slug, documentId) {
  * @param {string} [documentId]
  * @returns {string}
  */
-Utils.getUnusedSlugByCollectionName = function (collectionName, slug, documentId) {
+Utils.getUnusedSlugByCollectionName = function(collectionName, slug, documentId) {
   return Utils.getUnusedSlug(getCollection(collectionName), slug, documentId);
 };
 
@@ -241,10 +260,10 @@ Utils.getDomain = function(url) {
 };
 
 // add http: if missing
-Utils.addHttp = function (url) {
+Utils.addHttp = function(url) {
   try {
     if (url.substring(0, 5) !== 'http:' && url.substring(0, 6) !== 'https:') {
-      url = 'http:'+url;
+      url = 'http:' + url;
     }
     return url;
   } catch (error) {
@@ -287,22 +306,22 @@ Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
   return true;
 };
 
-Utils.log = function (s) {
-  if(getSetting('debug', false) || process.env.NODE_ENV === 'development') {
+Utils.log = function(s) {
+  if (getSetting('debug', false) || process.env.NODE_ENV === 'development') {
     console.log(s); // eslint-disable-line
   }
 };
 
 // see http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
-Utils.getNestedProperty = function (obj, desc) {
+Utils.getNestedProperty = function(obj, desc) {
   var arr = desc.split('.');
-  while(arr.length && (obj = obj[arr.shift()]));
+  while (arr.length && (obj = obj[arr.shift()]));
   return obj;
 };
 
 // see http://stackoverflow.com/a/14058408/649299
 _.mixin({
-  compactObject : function(object) {
+  compactObject: function(object) {
     var clone = _.clone(object);
     _.each(clone, function(value, key) {
       /*
@@ -320,12 +339,17 @@ _.mixin({
         return;
       }
 
-      if(value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+      if (
+        value === undefined ||
+        value === null ||
+        value === '' ||
+        (Array.isArray(value) && value.length === 0)
+      ) {
         delete clone[key];
       }
     });
     return clone;
-  }
+  },
 });
 
 Utils.getFieldLabel = (fieldName, collection) => {
@@ -337,14 +361,14 @@ Utils.getFieldLabel = (fieldName, collection) => {
 Utils.getLogoUrl = () => {
   const logoUrl = getSetting('logoUrl');
   if (logoUrl) {
-    const prefix = Utils.getSiteUrl().slice(0,-1);
+    const prefix = Utils.getSiteUrl().slice(0, -1);
     // the logo may be hosted on another website
     return logoUrl.indexOf('://') > -1 ? logoUrl : prefix + logoUrl;
   }
 };
 
 // note(apollo): get collection's name from __typename given by react-apollo
-Utils.getCollectionNameFromTypename = (type) => {
+Utils.getCollectionNameFromTypename = type => {
   if (type.indexOf('Post') > -1) {
     return 'posts';
   } else if (type.indexOf('Cat') > -1) {
@@ -369,12 +393,11 @@ Utils.findIndex = (array, predicate) => {
 };
 
 // adapted from http://stackoverflow.com/a/22072374/649299
-Utils.unflatten = function(array, options, parent, level=0, tree){
-
+Utils.unflatten = function(array, options, parent, level = 0, tree) {
   const {
     idProperty = '_id',
     parentIdProperty = 'parentId',
-    childrenProperty = 'childrenResults'
+    childrenProperty = 'childrenResults',
   } = options;
 
   level++;
@@ -395,7 +418,6 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
 
   // if we found children, we keep on iterating
   if (!!children.length) {
-
     if (typeof parent === 'undefined') {
       // if we're at the root, then the tree consist of all root nodes
       tree = children;
@@ -415,33 +437,37 @@ Utils.unflatten = function(array, options, parent, level=0, tree){
 };
 
 // remove the telescope object from a schema and duplicate it at the root
-Utils.stripTelescopeNamespace = (schema) => {
+Utils.stripTelescopeNamespace = schema => {
   // grab the users schema keys
   const schemaKeys = Object.keys(schema);
 
   // remove any field beginning by telescope: .telescope, .telescope.upvotedPosts.$, ...
-  const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0,9) !== 'telescope');
+  const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0, 9) !== 'telescope');
 
   // replace the previous schema by an object based on this filteredSchemaKeys
-  return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
+  return filteredSchemaKeys.reduce((sch, key) => ({ ...sch, [key]: schema[key] }), {});
 };
 
 /**
  * Convert an array of field names into a Mongo fields specifier
  * @param {Array} fieldsArray
  */
-Utils.arrayToFields = (fieldsArray) => {
-  return _.object(fieldsArray, _.map(fieldsArray, function () {return true;}));
+Utils.arrayToFields = fieldsArray => {
+  return _.object(
+    fieldsArray,
+    _.map(fieldsArray, function() {
+      return true;
+    })
+  );
 };
 
 /**
  * Get the display name of a React component
  * @param {React Component} WrappedComponent
  */
-Utils.getComponentDisplayName = (WrappedComponent) => {
+Utils.getComponentDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
-
 
 /**
  * Take a collection and a list of documents, and convert all their date fields to date objects
@@ -468,9 +494,9 @@ Utils.convertDates = (collection, listOrDocument) => {
   return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
 };
 
-Utils.encodeIntlError = error => typeof error !== 'object' ? error : JSON.stringify(error);
+Utils.encodeIntlError = error => (typeof error !== 'object' ? error : JSON.stringify(error));
 
-Utils.decodeIntlError = (error, options = {stripped: false}) => {
+Utils.decodeIntlError = (error, options = { stripped: false }) => {
   try {
     // do we get the error as a string or as an error object?
     let strippedError = typeof error === 'string' ? error : error.message;
@@ -496,18 +522,19 @@ Utils.decodeIntlError = (error, options = {stripped: false}) => {
     // check if the error has at least an 'id' expected by react-intl
     if (!parsedError.id) {
       console.error('[Undecodable error]', error); // eslint-disable-line
-      return {id: 'app.something_bad_happened', value: '[undecodable error]'};
+      return { id: 'app.something_bad_happened', value: '[undecodable error]' };
     }
 
     // return the parsed error
     return parsedError;
-  } catch(__) {
+  } catch (__) {
     // the error is not internationalizable
     return error;
   }
 };
 
-Utils.findWhere = (array, criteria) => array.find(item => Object.keys(criteria).every(key => item[key] === criteria[key]));
+Utils.findWhere = (array, criteria) =>
+  array.find(item => Object.keys(criteria).every(key => item[key] === criteria[key]));
 
 Utils.defineName = (o, name) => {
   Object.defineProperty(o, 'name', { value: name });
@@ -526,17 +553,14 @@ String.prototype.replaceAll = function(search, replacement) {
 Utils.isPromise = value => isFunction(get(value, 'then'));
 
 Utils.pluralize = s => {
-  const plural = s.slice(-1) === 'y' ?
-    `${s.slice(0, -1)}ies` :
-    s.slice(-1) === 's' ?
-      `${s}es` :
-      `${s}s`;
+  const plural =
+    s.slice(-1) === 'y' ? `${s.slice(0, -1)}ies` : s.slice(-1) === 's' ? `${s}es` : `${s}s`;
   return plural;
 };
 
 Utils.removeProperty = (obj, propertyName) => {
-  for(const prop in obj) {
-    if (prop === propertyName){
+  for (const prop in obj) {
+    if (prop === propertyName) {
       delete obj[prop];
     } else if (typeof obj[prop] === 'object') {
       Utils.removeProperty(obj[prop], propertyName);
@@ -549,6 +573,8 @@ Utils.removeProperty = (obj, propertyName) => {
  * @param {Array} schemaFieldOptionsArray
  */
 Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
-  if (!Array.isArray(schemaFieldOptionsArray)) { throw new Error('Utils.getAllowedValues: Expected Array')}
+  if (!Array.isArray(schemaFieldOptionsArray)) {
+    throw new Error('Utils.getAllowedValues: Expected Array');
+  }
   return schemaFieldOptionsArray.map(schemaFieldOption => schemaFieldOption.value);
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { HTTP } from 'meteor/http';
 
 export default (coverageOptions) => {

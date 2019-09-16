@@ -7,7 +7,7 @@ import classNames from 'classnames';
 class FormComponentInner extends PureComponent {
 
   renderClear = () => {
-    if (['datetime', 'time', 'select', 'radiogroup'].includes(this.props.input) && !this.props.disabled) {
+    if (['date', 'date2', 'datetime', 'time', 'select', 'radiogroup'].includes(this.props.inputType) && !this.props.disabled) {
       return (
         <a
           href="javascript:void(0)"
@@ -38,6 +38,7 @@ class FormComponentInner extends PureComponent {
       inputClassName,
       name,
       input,
+      inputType,
       beforeComponent,
       afterComponent,
       errors,
@@ -51,7 +52,7 @@ class FormComponentInner extends PureComponent {
 
     const hasErrors = errors && errors.length;
 
-    const inputName = typeof input === 'function' ? input.name : input;
+    const inputName = typeof input === 'function' ? input.name : inputType;
     const inputClass = classNames(
       'form-input',
       inputClassName,

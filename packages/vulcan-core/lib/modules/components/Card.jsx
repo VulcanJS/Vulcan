@@ -29,11 +29,11 @@ const getTypeName = (field, fieldName, collection) => {
   }
 };
 
-const parseImageUrl = value => {
+const parseImageUrl = (value, forceIsImage = false) => {
   const isImage =
     ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 ||
     ['.webp', '.jpeg'].indexOf(value.substr(-5)) !== -1;
-  return isImage ? (
+  return isImage || forceIsImage ? (
     <img
       style={{ width: '100%', minWidth: 80, maxWidth: 200, display: 'block' }}
       src={value}
@@ -64,7 +64,15 @@ const LimitedString = ({ string }) => (
   </div>
 );
 
-export const getFieldValue = (value, typeName) => {
+const formatDate = value => moment(new Date(value)).format('YYYY/MM/DD, hh:mm');
+
+export const getFieldValue = (value, options = {}) => {
+  // if typeName is not provided, default to typeof value
+  // note: contents provides additional clues about the contents (image, video, etc.)
+
+  let { typeName = typeof value, contents } = options;
+
+  // no value; we return an empty string
   if (typeof value === 'undefined' || value === null) {
     return '';
   }
@@ -74,12 +82,9 @@ export const getFieldValue = (value, typeName) => {
     return value;
   }
 
+  // Array
   if (Array.isArray(value)) {
     typeName = 'Array';
-  }
-
-  if (typeof typeName === 'undefined') {
-    typeName = typeof value;
   }
 
   switch (typeName) {
@@ -94,7 +99,7 @@ export const getFieldValue = (value, typeName) => {
       return (
         <ol>
           {value.map((item, index) => (
-            <li key={index}>{getFieldValue(item, typeof item)}</li>
+            <li key={index}>{getFieldValue(item, { typeName: typeof item })}</li>
           ))}
         </ol>
       );
@@ -104,11 +109,27 @@ export const getFieldValue = (value, typeName) => {
       return getObject(value);
 
     case 'Date':
-      return moment(new Date(value)).format('dddd, MMMM Do YYYY, h:mm:ss');
+      return formatDate(value);
 
     case 'String':
     case 'string':
-      return parseImageUrl(value);
+      switch (contents) {
+        case 'html':
+          return <div dangerouslySetInnerHTML={{ __html: value }} />;
+
+        case 'date':
+          return formatDate(value);
+
+        case 'image':
+          return parseImageUrl(value, true);
+
+        case 'url':
+          return parseUrl(value, true);
+
+        default:
+          // still attempt to parse string as an image or URL if possible
+          return parseImageUrl(value);
+      }
 
     default:
       return value.toString();
@@ -122,7 +143,7 @@ const getObject = object => {
     return (
       <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
         <Components.Avatar size="small" user={user} link />
-        <Link to={user.pageUrl}>{user.displayName}</Link>
+        <Link to={user.pagePath}>{user.displayName}</Link>
       </div>
     );
   } else {
@@ -134,7 +155,7 @@ const getObject = object => {
               <td>
                 <strong>{key}</strong>
               </td>
-              <td>{getFieldValue(object[key], typeof object[key])}</td>
+              <td>{getFieldValue(object[key], { typeName: typeof object[key] })}</td>
             </tr>
           ))}
         </tbody>
@@ -148,7 +169,7 @@ const CardItem = ({ label, value, typeName }) => (
     <td className="datacard-label">
       <strong>{label}</strong>
     </td>
-    <td className="datacard-value">{getFieldValue(value, typeName)}</td>
+    <td className="datacard-value">{getFieldValue(value, { typeName })}</td>
   </tr>
 );
 
