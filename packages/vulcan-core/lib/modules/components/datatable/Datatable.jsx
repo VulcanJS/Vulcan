@@ -9,7 +9,7 @@ import compose from 'recompose/compose';
 
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/withMulti.js';
+import withMulti from '../../containers/multi.js';
 
 /*
 
