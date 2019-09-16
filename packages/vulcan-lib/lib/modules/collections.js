@@ -300,9 +300,14 @@ export const createCollection = options => {
         if (Array.isArray(filter)) {
           parameters.selector[propertyName] = { $in: filter };
         } else if (filter.after || filter.before) {
-          const after = moment(filter.after, 'YYYY-MM-DD').toDate();
-          const before = moment(filter.before, 'YYYY-MM-DD').toDate();
-          parameters.selector[propertyName] = { $gte: after, $lte: before };
+          const dateFilter = {};
+          if (filter.after) {
+            dateFilter.$gte = moment(filter.after, 'YYYY-MM-DD').toDate();
+          }
+          if (filter.before) {
+            dateFilter.$lte = moment(filter.before, 'YYYY-MM-DD').toDate();
+          }
+          parameters.selector[propertyName] = dateFilter;
         }
       });
     }
