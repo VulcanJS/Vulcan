@@ -35,10 +35,11 @@ describe('vulcan:core/container/mutations', () => {
         __typename
       }`
     };
+
+    const rawFoo = { hello: 'world' };
     const foo = { id: 1, hello: 'world', __typename: 'Foo' };
     describe('withCreate', () => {
         const TestComponent = () => 'test';
-        const rawFoo = { hello: 'world' };
         const defaultOptions = {
             collection: Foo,
             fragmentName: fragmentName,
@@ -72,9 +73,12 @@ describe('vulcan:core/container/mutations', () => {
                     }
                 },
                 result: {
-                    createFoo: {
-                        data: foo
-                    },
+                    data: {
+                        createFoo: {
+                            data: foo,
+                            __typename: 'Foo'
+                        },
+                    }
                 }
             }];
             const wrapper = mount(
@@ -87,7 +91,7 @@ describe('vulcan:core/container/mutations', () => {
             const res = await wrapper.find(TestComponent).prop('createFoo')({
                 data: rawFoo
             });
-            expect(res).toEqual(foo);
+            expect(res).toEqual({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
         });
     });
 

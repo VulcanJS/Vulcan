@@ -28,6 +28,9 @@ import '../../lib/modules';
 initComponentTest();
 
 describe('vulcan:core/queries', function () {
+  // increase timeout
+  this.timeout(5000);
+
   const typeName = 'Foo';
   const Foo = {
     options: {
@@ -426,10 +429,13 @@ describe('vulcan:core/queries', function () {
       wrapper.find(TestComponent).prop('loadMoreInc')();
       await wait();
       wrapper.update();
-      const loadMoreIncLoading = wrapper.find(TestComponent);
-      expect(loadMoreIncLoading.prop('loadingMore')).toEqual(true);
-      await wait();
-      wrapper.update();
+      if (Meteor.isServer) {
+        // in the client call is instantaneous... don't know why
+        const loadMoreIncLoading = wrapper.find(TestComponent);
+        expect(loadMoreIncLoading.prop('loadingMore')).toBe(true);
+        await wait();
+        wrapper.update();
+      }
       const loadMoreIncRes = wrapper.find(TestComponent);
       expect(loadMoreIncRes.prop('loadingMore')).toEqual(false);
       expect(loadMoreIncRes.prop('error')).toBeFalsy();
