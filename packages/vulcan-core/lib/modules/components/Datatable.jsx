@@ -1,9 +1,9 @@
 import { registerComponent, getCollection, formatLabel } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import withCurrentUser from '../containers/withCurrentUser.js';
+import withCurrentUser from '../containers/currentUser.js';
 import withComponents from '../containers/withComponents';
-import withMulti from '../containers/withMulti.js';
+import withMulti from '../containers/multi.js';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { getFieldValue } from './Card.jsx';
 import _isFunction from 'lodash/isFunction';

@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 //import gql from 'graphql-tag';
 import { initComponentTest } from 'meteor/vulcan:test';
 import {
@@ -15,10 +15,10 @@ import {
 } from '../../lib/modules';
 import {
   singleQuery
-} from '../../lib/modules/containers/withSingle';
+} from '../../lib/modules/containers/single';
 import {
   multiQuery
-} from '../../lib/modules/containers/withMulti';
+} from '../../lib/modules/containers/multi';
 
 
 import wait from 'waait';

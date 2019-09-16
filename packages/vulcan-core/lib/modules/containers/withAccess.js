@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
-import {Components} from 'meteor/vulcan:lib';
-import withCurrentUser from './withCurrentUser';
-import {withRouter} from 'react-router';
+import React, { PureComponent } from 'react';
+import { Components } from 'meteor/vulcan:lib';
+import withCurrentUser from './currentUser';
+import { withRouter } from 'react-router';
 import Users from 'meteor/vulcan:users';
 
 /**
@@ -56,8 +56,8 @@ export default function withAccess(options) {
         return this.canAccess(this.props.currentUser) ? (
           <WrappedComponent {...this.props} />
         ) : (
-          this.renderFailureComponent()
-        );
+            this.renderFailureComponent()
+          );
       }
     }
 
