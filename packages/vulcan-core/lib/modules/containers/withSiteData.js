@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
-import { graphql } from 'react-apollo';   
-import gql from 'graphql-tag';    
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
-const withSiteData = component => {
-
-  return graphql(
-    gql`
+const siteDataQuery = gql`
       query getSiteData {
         SiteData {
           url
@@ -14,19 +11,43 @@ const withSiteData = component => {
           logoUrl
         }
       }
-    `, {
-      alias: 'withSiteData',
-      
-      props(props) {
-        const { data } = props;
-        return {
-          siteDataLoading: data.loading,
-          siteData: data.SiteData,
-          siteDataData: data,
-        };
-      },
-    }
-  )(component);
+    `;
+export const useSiteData = () => (
+  useQuery(siteDataQuery)
+);
+
+export const withSiteData = C => {
+  const Wrapped = (props) => {
+    const res = useSiteData();
+    const { loading, data } = res;
+    const namedRes =
+    {
+      siteDataLoading: loading,
+      siteData: data && data.SiteData,
+      siteDataData: data,
+    };
+    return <C {...props} {...namedRes} />;
+  };
+  Wrapped.displayName = 'withSiteData';
+  return Wrapped;
 };
 
 export default withSiteData;
+/*
+return graphql(
+    , {
+    alias: 'withSiteData',
+
+    props(props) {
+      const { data } = props;
+      return {
+        siteDataLoading: data.loading,
+        siteData: data.SiteData,
+        siteDataData: data,
+      };
+    },
+  }
+)(component);
+};
+*/
+

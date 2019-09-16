@@ -6,6 +6,12 @@ import { initComponentTest } from 'meteor/vulcan:test';
 import {
   withSingle,
   withMulti,
+  withCurrentUser,
+  withSiteData,
+  useCurrentUser,
+  useMulti,
+  useSingle,
+  useSiteData
 } from '../../lib/modules';
 import {
   singleQuery
@@ -56,6 +62,17 @@ describe('vulcan:core/queries', function () {
   const TestComponent = (props) => {
     return <div>test</div>;
   };
+
+  describe('exports', () => {
+    expect(useSingle).toBeDefined();
+    expect(useMulti).toBeDefined();
+    expect(useCurrentUser).toBeDefined();
+    expect(useSiteData).toBeDefined();
+    expect(withSingle).toBeDefined();
+    expect(withMulti).toBeDefined();
+    expect(withCurrentUser).toBeDefined();
+    expect(withSiteData).toBeDefined();
+  });
 
   describe('withSingle', () => {
     test('returns a graphql component', () => {
@@ -449,6 +466,19 @@ describe('vulcan:core/queries', function () {
       });
       expect(hoc).toBeDefined();
       expect(hoc).toBeInstanceOf(Function);
+    });
+  });
+
+  describe('withCurrentUser', () => {
+    test('return a valid component', () => {
+      const CurrentUserComponent = withCurrentUser(TestComponent);
+      expect(CurrentUserComponent).toBeDefined();
+    });
+  });
+  describe('withSiteData', () => {
+    test('return a valid component', () => {
+      const SiteDataComponent = withSiteData(TestComponent);
+      expect(SiteDataComponent).toBeDefined();
     });
   });
 });
