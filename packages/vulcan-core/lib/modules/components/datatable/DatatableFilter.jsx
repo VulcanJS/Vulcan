@@ -1,8 +1,24 @@
-import { Components, registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent, Utils } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
+import moment from 'moment';
+
+const getCount = columnFilters => {
+  if (!columnFilters) {
+    return 0;
+  } else if (Array.isArray(columnFilters)) {
+    return columnFilters.length;
+  } else if (columnFilters.after || columnFilters.before) {
+    if (columnFilters.after && columnFilters.before) {
+      return 2;
+    } else { 
+      return 1;
+    }
+  }
+  return 0;
+};
 
 const Filter = ({ count }) => (
   <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -29,29 +45,9 @@ const Filter = ({ count }) => (
   </svg>
 );
 
-const DatatableFilter = ({
-  data,
-  loading,
-  name,
-  label,
-  query,
-  options,
-  submitFilters,
-  currentFilters = {},
-  Components,
-}) => {
-  const columnFilters = currentFilters[name];
-  const [filters, setFilters] = useState(columnFilters);
+const DatatableFilter = props => {
+  const { columnFilters, label, query, Components } = props;
 
-  const filterProps = {
-    name,
-    query,
-    options,
-    filters,
-    setFilters,
-    submitFilters,
-    Components,
-  };
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
@@ -63,11 +59,11 @@ const DatatableFilter = ({
           />
         }
         size="small"
-        trigger={<Filter count={columnFilters && columnFilters.length} />}>
+        trigger={<Filter count={getCount(columnFilters)} />}>
         {query ? (
-          <Components.DatatableFilterContentsWithData {...filterProps} />
+          <Components.DatatableFilterContentsWithData {...props} />
         ) : (
-          <Components.DatatableFilterContents {...filterProps} />
+          <Components.DatatableFilterContents {...props} />
         )}
       </Components.ModalTrigger>
     </span>
@@ -106,34 +102,101 @@ const DatatableFilterContentsWithData = props => {
 
 registerComponent('DatatableFilterContentsWithData', DatatableFilterContentsWithData);
 
-const DatatableFilterContents = ({ name, options, filters, setFilters, submitFilters }) => (
+const DatatableFilterContents = props => {
+  const { name, field, options, columnFilters, submitFilters } = props;
+  const fieldType = Utils.getFieldType(field);
+
+  const [filters, setFilters] = useState(columnFilters);
+
+  const filterProps = { ...props, filters, setFilters };
+
+  let contents;
+
+  if (options) {
+    contents = <Components.DatatableFilterCheckboxes {...filterProps} />;
+  } else {
+    switch (fieldType) {
+      case Date:
+        contents = <Components.DatatableFilterDates {...filterProps} />;
+        break;
+
+      default:
+        contents = <p>Please specify an options property on your schema field.</p>;
+    }
+  }
+
+  return (
+    <div>
+      {contents}
+      <a
+        style={{ display: 'inline-block', marginRight: 10 }}
+        className="datatable_filter_clear"
+        href="javascript:void(0)"
+        onClick={() => {
+          setFilters([]);
+        }}>
+        <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
+      </a>
+      <Components.Button
+        className="datatable_filter_submit"
+        onClick={() => {
+          submitFilters({ name, filters });
+        }}>
+        <FormattedMessage id="datatable.submit" defaultMessage="Submit" />
+      </Components.Button>
+    </div>
+  );
+};
+
+registerComponent('DatatableFilterContents', DatatableFilterContents);
+
+const DatatableFilterCheckboxes = ({ options, filters, setFilters }) => (
+  <Components.FormComponentCheckboxGroup
+    path="filter"
+    itemProperties={{ layout: 'inputOnly' }}
+    inputProperties={{ options }}
+    value={filters}
+    updateCurrentValues={newValues => {
+      setFilters(newValues.filter);
+    }}
+  />
+);
+
+registerComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
+
+const DatatableFilterDates = ({ filters, setFilters }) => (
   <div>
-    <Components.FormComponentCheckboxGroup
-      path="filter"
-      itemProperties={{ layout: 'inputOnly' }}
-      inputProperties={{ options }}
-      value={filters}
+    <Components.FormComponentDate
+      path="after"
+      itemProperties={{ label: 'After', layout: 'horizontal' }}
+      inputProperties={{}}
+      value={filters && moment(filters.after, 'YYYY-MM-DD')}
       updateCurrentValues={newValues => {
-        setFilters(newValues.filter);
+        if (!newValues.after || newValues.after === '') {
+          const newFilters = Object.assign({}, filters);
+          delete newFilters.after;
+          setFilters(newFilters);
+        } else {
+          setFilters({...filters, after: newValues.after.format('YYYY-MM-DD')});
+        }
       }}
     />
-    <a
-      style={{ display: 'inline-block', marginRight: 10 }}
-      className="datatable_filter_clear"
-      href="javascript:void(0)"
-      onClick={() => {
-        setFilters([]);
-      }}>
-      <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
-    </a>
-    <Components.Button
-      className="datatable_filter_submit"
-      onClick={() => {
-        submitFilters({ name, filters });
-      }}>
-      <FormattedMessage id="datatable.submit" defaultMessage="Submit" />
-    </Components.Button>
+    <Components.FormComponentDate
+      path="before"
+      itemProperties={{ label: 'Before', layout: 'horizontal' }}
+      inputProperties={{}}
+      value={filters && moment(filters.before, 'YYYY-MM-DD')}
+      updateCurrentValues={newValues => {
+        if (!newValues.before || newValues.before === '') {
+          const newFilters = Object.assign({}, filters);
+          delete newFilters.before;
+          setFilters(newFilters);
+        } else {
+          setFilters({...filters, before: newValues.before.format('YYYY-MM-DD')});
+        }
+      }}
+    />
   </div>
 );
 
-registerComponent('DatatableFilterContents', DatatableFilterContents);
+registerComponent('DatatableFilterDates', DatatableFilterDates);

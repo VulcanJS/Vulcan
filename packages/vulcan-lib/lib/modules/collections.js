@@ -9,6 +9,7 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -289,13 +290,20 @@ export const createCollection = options => {
 
     /*
 
-    Add filters. Note: filters work by addition. Specifying { category: ['foo', 'bar']}
+    Add filters. Note: array filters work by addition. Specifying { category: ['foo', 'bar']}
     returns the sum of all items that have category `foo` *or* have category `bar`
 
     */
     if (terms.filterBy && !isEmpty(terms.filterBy)) {
       Object.keys(terms.filterBy).forEach(propertyName => {
-        parameters.selector[propertyName] = { $in: terms.filterBy[propertyName] };
+        const filter = terms.filterBy[propertyName];
+        if (Array.isArray(filter)) {
+          parameters.selector[propertyName] = { $in: filter };
+        } else if (filter.after || filter.before) {
+          const after = moment(filter.after, 'YYYY-MM-DD').toDate();
+          const before = moment(filter.before, 'YYYY-MM-DD').toDate();
+          parameters.selector[propertyName] = { $gte: after, $lte: before };
+        }
       });
     }
 

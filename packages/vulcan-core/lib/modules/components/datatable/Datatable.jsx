@@ -1,4 +1,4 @@
-import { registerComponent, getCollection } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection, Utils } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -6,7 +6,6 @@ import qs from 'qs';
 import { withRouter } from 'react-router';
 import _isEmpty from 'lodash/isEmpty';
 import compose from 'recompose/compose';
-import _get from 'lodash/get';
 import withCurrentUser from '../../containers/withCurrentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/withMulti.js';
@@ -52,13 +51,15 @@ class Datatable extends PureComponent {
         const schema = props.collection.simpleSchema()._schema;
 
         const filters = {};
-        // all URL values are stored as strings, so convert them back to numbers if needed
         Object.keys(urlState.filters).forEach(fieldName => {
-          const isNumberField = _get(schema[fieldName], 'type.definitions.0.type') === Number;
-          const doNothing = x => x;
-          filters[fieldName] = urlState.filters[fieldName].map(isNumberField ? parseFloat : doNothing);
+          const filterContent = urlState.filters[fieldName];
+          if (Utils.getFieldType(schema[fieldName]) === Number) {
+            // all URL values are stored as strings, so convert them back to numbers if needed
+            filters[fieldName] = filterContent.map(parseFloat);
+          } else {
+            filters[fieldName] = filterContent;
+          }
         });
-
         initState.currentFilters = filters;
       }
     }
@@ -113,14 +114,13 @@ class Datatable extends PureComponent {
   submitFilters = ({ name, filters }) => {
     // clone state filters object
     let newFilters = Object.assign({}, this.state.currentFilters);
-    if (filters.length === 0) {
+    if (_isEmpty(filters)) {
       // if there are no filter options, remove column filter from state altogether
       delete newFilters[name];
     } else {
       // else, update filters
       newFilters[name] = filters;
     }
-
     this.setState({ currentFilters: newFilters });
     this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
   };
@@ -230,7 +230,6 @@ Datatable.propTypes = {
   showSearch: PropTypes.bool,
   newFormOptions: PropTypes.object,
   editFormOptions: PropTypes.object,
-  emptyState: PropTypes.object,
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };

@@ -10,7 +10,7 @@ class DateComponent extends PureComponent {
   }
 
   updateDate(date) {
-    this.context.updateCurrentValues({ [this.props.path]: date });
+    this.props.updateCurrentValues({ [this.props.path]: date });
   }
 
   render() {
