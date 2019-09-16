@@ -2,6 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const Filter = ({ count }) => (
   <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -37,6 +38,7 @@ const DatatableFilter = ({
   options,
   submitFilters,
   currentFilters = {},
+  Components,
 }) => {
   const columnFilters = currentFilters[name];
   const [filters, setFilters] = useState(columnFilters);
@@ -48,11 +50,18 @@ const DatatableFilter = ({
     filters,
     setFilters,
     submitFilters,
+    Components,
   };
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
-        title={`Filter ${label}`}
+        title={
+          <FormattedMessage
+            id="datatable.filter_column"
+            values={{ label }}
+            defaultMessage={`Filter ${label}`}
+          />
+        }
         size="small"
         trigger={<Filter count={columnFilters && columnFilters.length} />}>
         {query ? (
@@ -97,36 +106,34 @@ const DatatableFilterContentsWithData = props => {
 
 registerComponent('DatatableFilterContentsWithData', DatatableFilterContentsWithData);
 
-const DatatableFilterContents = ({ name, options, filters, setFilters, submitFilters }) => {
-
-  // note: convert all values to strings since they might be stored in URL
-  const stringOptions = options.map(({ value, label }) => ({ value: value.toString(), label }));
-
-  return (
-    <div>
-      <Components.FormComponentCheckboxGroup
-        path="filter"
-        itemProperties={{ layout: 'inputOnly' }}
-        inputProperties={{ options: stringOptions }}
-        value={filters}
-        updateCurrentValues={newValues => {
-          setFilters(newValues.filter);
-        }}
-      />
-      <Components.Button
-        onClick={() => {
-          setFilters([]);
-        }}>
-        Clear All
-      </Components.Button>
-      <Components.Button
-        onClick={() => {
-          submitFilters({ name, filters });
-        }}>
-        Submit
-      </Components.Button>
-    </div>
-  );
-};
+const DatatableFilterContents = ({ name, options, filters, setFilters, submitFilters }) => (
+  <div>
+    <Components.FormComponentCheckboxGroup
+      path="filter"
+      itemProperties={{ layout: 'inputOnly' }}
+      inputProperties={{ options }}
+      value={filters}
+      updateCurrentValues={newValues => {
+        setFilters(newValues.filter);
+      }}
+    />
+    <a
+      style={{ display: 'inline-block', marginRight: 10 }}
+      className="datatable_filter_clear"
+      href="javascript:void(0)"
+      onClick={() => {
+        setFilters([]);
+      }}>
+      <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
+    </a>
+    <Components.Button
+      className="datatable_filter_submit"
+      onClick={() => {
+        submitFilters({ name, filters });
+      }}>
+      <FormattedMessage id="datatable.submit" defaultMessage="Submit" />
+    </Components.Button>
+  </div>
+);
 
 registerComponent('DatatableFilterContents', DatatableFilterContents);

@@ -6,7 +6,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router';
 import _isEmpty from 'lodash/isEmpty';
 import compose from 'recompose/compose';
-
+import _get from 'lodash/get';
 import withCurrentUser from '../../containers/withCurrentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/withMulti.js';
@@ -49,7 +49,17 @@ class Datatable extends PureComponent {
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
       }
       if (urlState.filters) {
-        initState.currentFilters = urlState.filters;
+        const schema = props.collection.simpleSchema()._schema;
+
+        const filters = {};
+        // all URL values are stored as strings, so convert them back to numbers if needed
+        Object.keys(urlState.filters).forEach(fieldName => {
+          const isNumberField = _get(schema[fieldName], 'type.definitions.0.type') === Number;
+          const doNothing = x => x;
+          filters[fieldName] = urlState.filters[fieldName].map(isNumberField ? parseFloat : doNothing);
+        });
+
+        initState.currentFilters = filters;
       }
     }
 

@@ -201,7 +201,7 @@ export const createCollection = options => {
   // ------------------------------------- Parameters -------------------------------- //
 
   collection.getParameters = (terms = {}, apolloClient, context) => {
-    console.log(terms);
+    // console.log(terms);
 
     let parameters = {
       selector: {},
@@ -355,7 +355,7 @@ export const createCollection = options => {
     const limit = terms.limit || parameters.options.limit;
     parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
 
-    console.log(parameters);
+    // console.log(JSON.stringify(parameters, 2));
 
     return parameters;
   };

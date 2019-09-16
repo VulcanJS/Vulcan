@@ -58,6 +58,7 @@ const DatatableHeader = (
             toggleSort={toggleSort}
             currentSort={currentSort}
             sortable={column.sortable}
+            Components={Components}
           />
         )}
         {column.filterable && (
@@ -68,6 +69,7 @@ const DatatableHeader = (
             options={filterOptions}
             submitFilters={submitFilters}
             currentFilters={currentFilters}
+            Components={Components}
           />
         )}
       </Components.DatatableHeaderCellLayout>
