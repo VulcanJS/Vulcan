@@ -286,10 +286,6 @@ describe('vulcan:core/queries', function () {
       expect(finalRes.prop('count')).toEqual(1);
     });
 
-    test.skip('add pagination terms', () => {
-
-    });
-
     test('load more increase the limit', async () => {
       // @see https://stackoverflow.com/questions/49064334/invoke-a-function-with-enzyme-when-function-is-passed-down-as-prop-react
       const responses = [
@@ -366,7 +362,7 @@ describe('vulcan:core/queries', function () {
     });
 
     // TODO: not passing, is this expected?
-    test.skip('loadMoreInc get more data', async () => {
+    test('loadMoreInc get more data', async () => {
       // @see https://stackoverflow.com/questions/49064334/invoke-a-function-with-enzyme-when-function-is-passed-down-as-prop-react
       const responses = [
         // first request
@@ -421,9 +417,6 @@ describe('vulcan:core/queries', function () {
           <MultiComponent terms={{ limit: 1 }} />
         </MockedProvider>
       );
-      console.log(wrapper.find(TestComponent).prop('loading'));
-      console.log(wrapper.find(TestComponent).prop('loadingInitial'));
-      console.log(wrapper.find(TestComponent).prop('loadingMore'));
       // get data
       await wait(0);
       wrapper.update();
@@ -431,12 +424,14 @@ describe('vulcan:core/queries', function () {
       // TODO: weird behaviour
       expect(wrapper.find(TestComponent).prop('loadMoreInc')).toBeInstanceOf(Function);
       wrapper.find(TestComponent).prop('loadMoreInc')();
-      console.log(wrapper.find(TestComponent).prop('loading'));
-      console.log(wrapper.find(TestComponent).prop('loadingInitial'));
-      console.log(wrapper.find(TestComponent).prop('loadingMore'));
-      await wait(0);
+      await wait();
+      wrapper.update();
+      const loadMoreIncLoading = wrapper.find(TestComponent);
+      expect(loadMoreIncLoading.prop('loadingMore')).toEqual(true);
+      await wait();
       wrapper.update();
       const loadMoreIncRes = wrapper.find(TestComponent);
+      expect(loadMoreIncRes.prop('loadingMore')).toEqual(false);
       expect(loadMoreIncRes.prop('error')).toBeFalsy();
       expect(loadMoreIncRes.prop('results')).toHaveLength(2);
 

@@ -26,7 +26,7 @@ export const singleQuery = ({
 /**
  * Create GraphQL useQuery options and variables based on props and provided options
  * @param {*} options 
- * @param {*} param1 
+ * @param {*} props
  */
 const buildQueryOptions = (options, { documentId, slug, selector = { documentId, slug } }) => {
   let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, fetchPolicy } = options;
@@ -55,9 +55,11 @@ const buildQueryOptions = (options, { documentId, slug, selector = { documentId,
   return graphQLOptions;
 };
 
-const buildResult = (returnedProps,
+const buildResult = (
+  options,
   { fragmentName, fragment, resolverName },
-  options) => {
+  returnedProps,
+) => {
   const { /* ownProps, */ data, error } = returnedProps;
   const propertyName = options.propertyName || 'document';
   const props = {
@@ -75,7 +77,7 @@ const buildResult = (returnedProps,
   return props;
 };
 
-export const useSingle = (props, options) => {
+export const useSingle = (options, props) => {
   const { extraQueries } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -91,9 +93,9 @@ export const useSingle = (props, options) => {
     buildQueryOptions(options, props)
   );
   const result = buildResult(
-    queryRes,
+    options,
     { fragment, fragmentName, resolverName },
-    options
+    queryRes,
   );
   return result;
 };
@@ -102,7 +104,7 @@ export const withSingle = (options) => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const Wrapped = props => {
-    const res = useSingle(props, options);
+    const res = useSingle(options, props);
     return <C {...props} {...res} />;
   };
   Wrapped.displayName = `with${typeName}`;
