@@ -112,7 +112,7 @@ const DatatableFilterContentsWithData = props => {
 registerComponent('DatatableFilterContentsWithData', DatatableFilterContentsWithData);
 
 const DatatableFilterContents = props => {
-  const { name, field, options, columnFilters, submitFilters } = props;
+  const { name, field, options, columnFilters, submitFilters, filterComponent } = props;
   const fieldType = Utils.getFieldType(field);
 
   const [filters, setFilters] = useState(columnFilters);
@@ -121,7 +121,10 @@ const DatatableFilterContents = props => {
 
   let contents;
 
-  if (options) {
+  if (filterComponent) {
+    const CustomFilter = filterComponent;
+    contents = <CustomFilter {...filterProps}/>;
+  } else if (options) {
     contents = <Components.DatatableFilterCheckboxes {...filterProps} />;
   } else {
     switch (fieldType) {

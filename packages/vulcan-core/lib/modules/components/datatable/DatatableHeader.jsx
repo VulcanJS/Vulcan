@@ -66,6 +66,7 @@ const DatatableHeader = (
             options={filterOptions}
             submitFilters={submitFilters}
             columnFilters={currentFilters[column.name]}
+            filterComponent={column.filterComponent}
             Components={Components}
           />
         )}
