@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { EJSON } from 'meteor/ejson';
 import { onPageLoad } from 'meteor/server-render';
 
@@ -21,9 +20,18 @@ export const InjectData = {
     return EJSON.parse(decodedEjsonString);
   },
 
+  _checkReady() {
+    if (!this._ready) {
+      const dom = document.querySelector('script[type="text/inject-data"]');
+      const injectedDataString = dom ? dom.textContent.trim() : '';
+      this._data = InjectData._decode(injectedDataString) || {};
+      this._ready = true;
+    }
+  },
   // sync version
   // Must always be called inside an onPageLoad callback
   getDataSync(key) {
+    this._checkReady();
     return this._data[key];
   },
 
@@ -33,20 +41,14 @@ export const InjectData = {
     if (!callback) {
       return new Promise((resolve, reject) => {
         onPageLoad(() => {
+          this._checkReady();
           resolve(this._data[key]);
         });
       });
     }
     onPageLoad(() => {
+      this._checkReady();
       callback(this._data[key]);
     });
   },
 };
-
-// when DOM loaded, decode string from <script> and save the data
-onPageLoad(() => {
-  const dom = document.querySelector('script[type="text/inject-data"]');
-  const injectedDataString = dom ? dom.textContent.trim() : '';
-  InjectData._data = InjectData._decode(injectedDataString) || {};
-  InjectData._ready = true;
-});
