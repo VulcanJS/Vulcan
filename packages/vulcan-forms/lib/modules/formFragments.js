@@ -154,6 +154,10 @@ const getFormFragments = ({
     queryFieldNames.unshift('_id');
     mutationFieldNames.unshift('_id');
 
+    // check unicity (_id can be added twice)
+    queryFieldNames = _uniq(queryFieldNames);
+    mutationFieldNames = _uniq(mutationFieldNames);
+
 
     // generate query fragment based on the fields that can be edited. Note: always add _id.
     // TODO: support nesting
