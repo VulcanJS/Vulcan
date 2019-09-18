@@ -2,20 +2,7 @@
  * Generates the default fragment for a collection
  * = a fragment containing all fields
  */
-
-// list fields that can be included in the default fragment for a schema
-const getFragmentFieldNames = ({ schema, options }) => _.reject(_.keys(schema), fieldName => {
-    /*
-  
-    Exclude a field from the default fragment if
-    1. it has a resolver and addOriginalField is false
-    2. it has $ in its name
-    3. it's not viewable (if onlyViewable option is true)
-    */
-    const field = schema[fieldName];
-    // OpenCRUD backwards compatibility
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
-});
+import { getFragmentFieldNames } from '../schema_utils';
 
 // get fragment for a whole object (root schema or nested schema of an object or an array)
 const getObjectFragment = ({

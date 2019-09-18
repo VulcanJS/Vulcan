@@ -807,5 +807,35 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField }');
 
     });
+
+    test('add field with resolveAs only if addOriginalField is true', () => {
+      const collection = makeDummyCollection({
+        // ignored in default fragments
+        object: {
+          type: Object,
+          canRead: ['admins'],
+          resolveAs: {
+            fieldName: 'resolvedObject',
+            type: 'People',
+            resolver: () => (null)
+          }
+        },
+        json: {
+          type: Object,
+          canRead: ['admins'],
+          resolveAs: {
+            fieldName: 'resolvedJSON',
+            type: 'JSON',
+            resolver: () => null,
+            addOriginalField: true
+          }
+        },
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
+
+    });
+
   });
 });

@@ -130,5 +130,35 @@ describe('vulcan:form/formFragments', function () {
         expect(normalizeFragment(queryFragment)).not.toMatch('readOnlyField'); // this does not affect the queryFragment;
         expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field readOnlyField }');
     });
+    test('ignore virtual/resolved fields', () => {
+        const schema = new SimpleSchema({
+            field: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+                resolveAs: {
+                    fieldName: 'resolvedField',
+                    type: 'Whatever',
+                    addOriginalField: true,
+                    resolver: () => ({})
+                }
+            },
+            virtual: {
+                type: String,
+                canRead: ['admins'],
+                resolveAs: {
+                    type: 'Whatever',
+                    resolver: () => ({})
+                }
+            }
+        })._schema;
+        const { queryFragment, mutationFragment } = getFormFragments({
+            ...defaultArgs,
+            schema,
+        });
+        expect(normalizeFragment(queryFragment)).not.toMatch('virtual');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field }');
+
+    });
 });
 

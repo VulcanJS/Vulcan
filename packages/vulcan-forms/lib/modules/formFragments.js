@@ -7,10 +7,10 @@ import _uniq from 'lodash/uniq';
 import _intersection from 'lodash/intersection';
 import gql from 'graphql-tag';
 import {
-    getReadableFields,
     getCreateableFields,
-    getUpdateableFields
-} from '../modules/schema_utils';
+    getUpdateableFields,
+    getFragmentFieldNames
+} from 'meteor/vulcan:lib';
 import {
     Utils,
 } from 'meteor/vulcan:core';
@@ -96,7 +96,10 @@ const getSchemaFragment = ({
     // respect provided fieldNames if any (needed for the root schema)
     const fieldNames = providedFieldNames || (
         options.isMutation
-            ? getMutationFieldNames({ queryFieldNames: getQueryFieldNames({ schema, options }), readableFieldNames: getReadableFields(schema) })
+            ? getMutationFieldNames({
+                queryFieldNames: getQueryFieldNames({ schema, options }),
+                readableFieldNames: getFragmentFieldNames({ schema, options: { onlyViewable: true } })
+            })
             : getQueryFieldNames({ schema, options })
     );
 
@@ -128,7 +131,10 @@ const getFormFragments = ({
 
     // get the root schema fieldNames
     let queryFieldNames = getQueryFieldNames({ schema, options: { formType } });
-    let mutationFieldNames = getMutationFieldNames({ queryFieldNames, readableFieldNames: getReadableFields(schema) });
+    let mutationFieldNames = getMutationFieldNames({
+        queryFieldNames,
+        readableFieldNames: getFragmentFieldNames({ schema, options: { onlyViewable: true } })
+    });
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
