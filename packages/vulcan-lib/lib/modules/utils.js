@@ -578,3 +578,10 @@ Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
   }
   return schemaFieldOptionsArray.map(schemaFieldOption => schemaFieldOption.value);
 };
+
+/**
+ * type is an array due to the possibility of using SimpleSchema.oneOf
+ * right now we support only fields with one type
+ * @param {Object} field
+ */
+Utils.getFieldType = field => get(field, 'type.definitions.0.type');

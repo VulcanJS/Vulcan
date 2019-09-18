@@ -9,6 +9,8 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
+import _omit from 'lodash/omit';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -70,7 +72,7 @@ Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
  */
 Mongo.Collection.prototype.removeField = function(fieldName) {
   var collection = this;
-  var schema = _.omit(collection.simpleSchema()._schema, fieldName);
+  var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
   collection.attachSchema(new SimpleSchema(schema));
@@ -114,15 +116,15 @@ Mongo.Collection.prototype.helpers = function(helpers) {
 
   if (!self._helpers) {
     self._helpers = function Document(doc) {
-      return _.extend(this, doc);
+      return Object.assign(this, doc);
     };
     self._transform = function(doc) {
       return new self._helpers(doc);
     };
   }
 
-  _.each(helpers, function(helper, key) {
-    self._helpers.prototype[key] = helper;
+  Object.keys(helpers).forEach(function(key) {
+    self._helpers.prototype[key] = helpers[key];
   });
 };
 
@@ -201,7 +203,9 @@ export const createCollection = options => {
   // ------------------------------------- Parameters -------------------------------- //
 
   collection.getParameters = (terms = {}, apolloClient, context) => {
-    console.log(terms);
+    // console.log(terms);
+
+    const currentSchema = collection.simpleSchema()._schema;
 
     let parameters = {
       selector: {},
@@ -289,13 +293,37 @@ export const createCollection = options => {
 
     /*
 
-    Add filters. Note: filters work by addition. Specifying { category: ['foo', 'bar']}
+    Add filters. Note: array filters work by addition. Specifying { category: ['foo', 'bar']}
     returns the sum of all items that have category `foo` *or* have category `bar`
 
     */
-    if (terms.filterBy && !isEmpty(terms.filterBy)) {
-      Object.keys(terms.filterBy).forEach(propertyName => {
-        parameters.selector[propertyName] = { $in: terms.filterBy[propertyName] };
+    if (!isEmpty(terms.filterBy)) {
+      Object.keys(terms.filterBy).forEach(fieldName => {
+        const filter = terms.filterBy[fieldName];
+
+        if (filter) {
+          if (Array.isArray(filter)) {
+            parameters.selector[fieldName] = { $in: filter };
+          } else if (filter.after || filter.before) {
+            const dateFilter = {};
+            if (filter.after) {
+              dateFilter.$gte = moment(filter.after, 'YYYY-MM-DD').toDate();
+            }
+            if (filter.before) {
+              dateFilter.$lte = moment(filter.before, 'YYYY-MM-DD').toDate();
+            }
+            parameters.selector[fieldName] = dateFilter;
+          } else if (filter.gte || filter.lte) {
+            const numberFilter = {};
+            if (filter.gte) {
+              numberFilter.$gte = parseFloat(filter.gte);
+            }
+            if (filter.lte) {
+              numberFilter.$lte = parseFloat(filter.lte);
+            }
+            parameters.selector[fieldName] = numberFilter;
+          }
+        }
       });
     }
 
@@ -316,20 +344,18 @@ export const createCollection = options => {
     }
 
     // remove any null fields (setting a field to null means it should be deleted)
-    _.keys(parameters.selector).forEach(key => {
+    Object.keys(parameters.selector).forEach(key => {
       if (parameters.selector[key] === null) delete parameters.selector[key];
     });
     if (parameters.options.sort) {
-      _.keys(parameters.options.sort).forEach(key => {
+      Object.keys(parameters.options.sort).forEach(key => {
         if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
       });
     }
 
     if (terms.query) {
       const query = escapeStringRegexp(terms.query);
-      const currentSchema = collection.simpleSchema()._schema;
-      const searchableFieldNames = _.filter(
-        _.keys(currentSchema),
+      const searchableFieldNames = Object.keys(currentSchema).filter(
         fieldName => currentSchema[fieldName].searchable
       );
       if (searchableFieldNames.length) {
@@ -355,7 +381,7 @@ export const createCollection = options => {
     const limit = terms.limit || parameters.options.limit;
     parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
 
-    console.log(parameters);
+    // console.log(JSON.stringify(parameters, 2));
 
     return parameters;
   };

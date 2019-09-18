@@ -1,10 +1,10 @@
 /*
  * Schema converter/getters
  */
+import { Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import _filter from 'lodash/filter';
 import _keys from 'lodash/keys';
-import { array } from 'prop-types';
 
 /* getters */
 // filter out fields with "." or "$"
@@ -122,7 +122,7 @@ export const getFieldSchema = (fieldName, schema) => {
 
 // type is an array due to the possibility of using SimpleSchema.oneOf
 // right now we support only fields with one type
-export const getSchemaType = schema => schema.type.definitions[0].type;
+export const getSchemaType = Utils.getFieldType;
 
 const getArrayNestedSchema = (fieldName, schema) => {
   const arrayItemSchema = schema._schema[`${fieldName}.$`];

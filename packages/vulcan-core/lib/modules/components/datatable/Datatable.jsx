@@ -103,14 +103,13 @@ class Datatable extends PureComponent {
   submitFilters = ({ name, filters }) => {
     // clone state filters object
     let newFilters = Object.assign({}, this.state.currentFilters);
-    if (filters.length === 0) {
+    if (_isEmpty(filters)) {
       // if there are no filter options, remove column filter from state altogether
       delete newFilters[name];
     } else {
       // else, update filters
       newFilters[name] = filters;
     }
-
     this.setState({ currentFilters: newFilters });
     this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
   };
@@ -220,7 +219,6 @@ Datatable.propTypes = {
   showSearch: PropTypes.bool,
   newFormOptions: PropTypes.object,
   editFormOptions: PropTypes.object,
-  emptyState: PropTypes.object,
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };

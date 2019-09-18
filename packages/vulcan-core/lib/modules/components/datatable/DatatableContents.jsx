@@ -23,7 +23,6 @@ const DatatableContents = props => {
     networkStatus,
     showEdit,
     currentUser,
-    emptyState,
     toggleSort,
     currentSort,
     submitFilters,
@@ -39,8 +38,6 @@ const DatatableContents = props => {
         <Components.Loading />
       </div>
     );
-  } else if (!results || !results.length) {
-    return emptyState || null;
   }
 
   // if no columns are provided, default to using keys of first array item
@@ -77,18 +74,22 @@ const DatatableContents = props => {
           ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
-          {results.map((document, index) => (
-            <Components.DatatableRow
-              {...props}
-              collection={collection}
-              columns={columns}
-              document={document}
-              key={index}
-              showEdit={showEdit}
-              currentUser={currentUser}
-              modalProps={modalProps}
-            />
-          ))}
+          {results.length ? (
+            results.map((document, index) => (
+              <Components.DatatableRow
+                {...props}
+                collection={collection}
+                columns={columns}
+                document={document}
+                key={index}
+                showEdit={showEdit}
+                currentUser={currentUser}
+                modalProps={modalProps}
+              />
+            ))
+          ) : (
+            <Components.DatatableEmpty />
+          )}
         </Components.DatatableContentsBodyLayout>
       </Components.DatatableContentsInnerLayout>
       {hasMore && (
@@ -157,3 +158,20 @@ DatatableTitle Component
 const DatatableTitle = ({ title }) => <div className="datatable-title">{title}</div>;
 
 registerComponent('DatatableTitle', DatatableTitle);
+
+/*
+
+DatatableEmpty Component
+
+*/
+const DatatableEmpty = () => (
+  <tr>
+    <td colSpan="99">
+      <div style={{ textAlign: 'center', padding: 10 }}>
+        <FormattedMessage id="datatable.empty" defaultMessage="No items to display." />
+      </div>
+    </td>
+  </tr>
+);
+
+registerComponent('DatatableEmpty', DatatableEmpty);
