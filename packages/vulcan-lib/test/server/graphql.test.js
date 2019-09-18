@@ -675,13 +675,8 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooNestedFieldDataInput { someField: String }');
       });
 
-      // TODO:
-      // this type is created by "schemaFragments.push(nestedInputTemplate({ typeName, fields: mainType }));"
-      // but it does not seem used at all??
-      // We choose either:
-      // - figure out why we needed it in the first place, and fix it so it does not mistakenly include "resolveAs" fields
-      // - if we don't need it, just dump this test and remove the code
-      test('ignore resolveAs when generating default nested input type for a nested field', () => {
+      test('do not generate generic input type for direct nested arrays or objects (only appliable to referenced types)', () => {
+        // TODO: test is over complex because of a previous misunderstanding, can be simplified
         const collection = makeDummyCollection({
           arrayField: {
             type: Array,
@@ -711,8 +706,7 @@ describe('vulcan:lib/graphql', function () {
         const res = collectionToGraphQL(collection);
         expect(res.graphQLSchema).toBeDefined();
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-
-        expect(normalizedSchema).toMatch('input FooArrayFieldInput { someFieldId: String }');
+        expect(normalizedSchema).not.toMatch('input FooArrayFieldInput');
       });
     });
   });
