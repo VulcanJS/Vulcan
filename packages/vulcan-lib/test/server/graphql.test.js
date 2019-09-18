@@ -847,6 +847,27 @@ describe('vulcan:lib/graphql', function () {
       const normalizedFragment = normalizeGraphQLSchema(fragment);
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
     });
+    test('ignore referenced schemas in array child', () => {
+      const collection = makeDummyCollection({
+        field: {
+          type: String,
+          canRead: ['admins']
+        },
+        emails: {
+          type: Array,
+          optional: true,
+          canRead: ['admin']
+        },
+        'emails.$': {
+          type: Object,
+          typeName: 'UserEmail',
+          optional: true,
+        },
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
+    });
 
   });
 });
