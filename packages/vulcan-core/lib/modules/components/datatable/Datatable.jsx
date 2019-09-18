@@ -48,19 +48,7 @@ class Datatable extends PureComponent {
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
       }
       if (urlState.filters) {
-        const schema = props.collection.simpleSchema()._schema;
-
-        const filters = {};
-        Object.keys(urlState.filters).forEach(fieldName => {
-          const filterContent = urlState.filters[fieldName];
-          if (Utils.getFieldType(schema[fieldName]) === Number) {
-            // all URL values are stored as strings, so convert them back to numbers if needed
-            filters[fieldName] = filterContent.map(parseFloat);
-          } else {
-            filters[fieldName] = filterContent;
-          }
-        });
-        initState.currentFilters = filters;
+        initState.currentFilters = urlState.filters;
       }
     }
 
