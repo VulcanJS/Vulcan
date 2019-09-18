@@ -830,6 +830,23 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
 
     });
+    test('ignore referenced schemas', () => {
+      const collection = makeDummyCollection({
+        field: {
+          type: String,
+          canRead: ['admins']
+        },
+        // ignored in default fragments
+        address: {
+          type: Object,
+          typeName: 'Address',
+          canRead: ['admins'],
+        },
+      });
+      const fragment = getDefaultFragmentText(collection);
+      const normalizedFragment = normalizeGraphQLSchema(fragment);
+      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
+    });
 
   });
 });

@@ -33,8 +33,9 @@ export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(sche
     1. it has a resolver and addOriginalField is false
     2. it has $ in its name
     3. it's not viewable (if onlyViewable option is true)
+    4. it is not a reference type (typeName is undefined)
     */
     const field = schema[fieldName];
     // OpenCRUD backwards compatibility
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
+    return (field.resolveAs && !field.resolveAs.addOriginalField) || field.typeName || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
 });
