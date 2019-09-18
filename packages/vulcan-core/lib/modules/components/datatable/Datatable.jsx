@@ -1,4 +1,4 @@
-import { registerComponent, getCollection, Utils } from 'meteor/vulcan:lib';
+import { registerComponent, getCollection } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -6,9 +6,10 @@ import qs from 'qs';
 import { withRouter } from 'react-router';
 import _isEmpty from 'lodash/isEmpty';
 import compose from 'recompose/compose';
-import withCurrentUser from '../../containers/withCurrentUser.js';
+
+import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/withMulti.js';
+import withMulti from '../../containers/multi.js';
 
 /*
 

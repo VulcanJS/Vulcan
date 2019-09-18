@@ -30,7 +30,7 @@
     "@babel/runtime": "7.1.2",
     "analytics-node": "^2.1.1",
     "apollo-cache-inmemory": "^1.4.2",
-    "apollo-client": "2.4.12",
+    "apollo-client": "2.6.3",
     "apollo-engine": "1.1.2",
     "apollo-errors": "^1.9.0",
     "apollo-link-error": "^1.1.5",
@@ -81,7 +81,7 @@
     "qs": "^6.6.0",
     "react": "^16.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
-    "react-apollo": "^2.4.1",
+    "react-apollo": "3.0.0",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^2.1.4",
@@ -113,6 +113,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@material-ui/core": "^3.9.3",
     "@storybook/addon-actions": "5.0.8",
@@ -162,6 +163,7 @@
     "storybook-addon-intl": "^2.4.1",
     "storybook-react-router": "^1.0.5",
     "vulcan-loader": "0.0.1",
+    "waait": "^1.0.5",
     "webpack": "4.28.4"
   },
   "postcss": {
