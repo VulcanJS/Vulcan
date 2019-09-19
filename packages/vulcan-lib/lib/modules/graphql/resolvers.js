@@ -14,17 +14,20 @@ const generateResolversFromSchema = schema => {
   const resolvers = {};
 
   _firstLevelSchemaKeys.forEach(key => {
-    const resolver = (root, args, context) => {
-      const result = root[key];
-      if (!result) return null;
-      const { currentUser, Users } = context;
-      if (Users.canReadField(currentUser, _schema[key], root)) {
-        return result;
-      } else {
-        return null;
-      }
-    };
-    resolvers[key] = resolver;
+    // only add resolvers for the fields that can be read
+    if(_schema[key] && (_schema[key].canRead || _schema[key].viewableBy)) {
+      const resolver = (root, args, context) => {
+        const result = root[key];
+        if (!result) return null;
+        const { currentUser, Users } = context;
+        if (Users.canReadField(currentUser, _schema[key], root)) {
+          return result;
+        } else {
+          return null;
+        }
+      };
+      resolvers[key] = resolver;
+    }
   });
   return resolvers;
 };

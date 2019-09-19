@@ -152,7 +152,8 @@ export const GraphQLSchema = {
       this.addSchema(updateDataInputTemplate({ typeName, fields: fields.update }));
     }
     const resolvers = generateResolversFromSchema(schema);
-    if (resolvers) {
+    // only add resolvers if there is at least one
+    if (typeof resolvers === 'object' && Object.keys(resolvers).length >= 1) {
       this.addResolvers({ [typeName]: resolvers });
     }
     schemaResolvers.forEach(addGraphQLResolvers);
