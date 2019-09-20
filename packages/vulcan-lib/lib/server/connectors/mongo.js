@@ -1,4 +1,5 @@
 import { DatabaseConnectors } from '../connectors.js';
+import mapValues from 'lodash/mapValues';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -14,6 +15,98 @@ const convertUniqueSelector = selector => {
   return selector;
 };
 
+
+/*
+
+Filtering
+
+*/
+const conversionTable = {
+  _eq: '$eq',
+  _gt: '$gt',
+  _gte: '$gte',
+  _in: '$in',
+  _lt: '$lt',
+  _lte: '$lte',
+  _neq: '$ne',
+  _nin: '$nin',
+  asc: 1,
+  desc: -1,
+};
+
+/*
+
+Convert GraphQL expression into MongoDB expression, for example
+
+{ _in: ["foo", "bar"] }
+
+to
+
+{ $in: ["foo", "bar"] }
+
+*/
+const convertExpression = expression => {
+  const graphqlOperator = Object.keys(expression)[0];
+  const value = expression[graphqlOperator];
+  const mongoOperator = conversionTable[graphqlOperator];
+  return { [mongoOperator]: value };
+};
+
+const filterFunction = ({ where, limit = 20, orderBy }) => {
+
+  let selector = {};
+  let options = {};
+
+  // filter
+  Object.keys(where).forEach(fieldName => {
+    switch (fieldName) {
+      case '_and':
+        selector['$and'] = where._and.map(field => mapValues(field, convertExpression));
+        break;
+
+      case '_or':
+        selector['$or'] = where._or.map(field => mapValues(field, convertExpression));
+
+        break;
+
+      case '_not':
+        selector['$not'] = where._not.map(field => mapValues(field, convertExpression));
+        break;
+
+      case 'search':
+        break;
+
+      default:
+        selector[fieldName] = convertExpression(where[fieldName]);
+
+        break;
+    }
+  });
+
+  // order
+  if (orderBy) {
+    options.sort = mapValues(orderBy, order => conversionTable[order]);
+  }
+
+  // limit
+  if (limit) {
+    options.limit = limit;
+  }
+
+  // console.log(JSON.stringify(selector, 2));
+  // console.log(JSON.stringify(options, 2));
+
+  return {
+    selector,
+    options,
+  };
+}
+
+/*
+
+Connectors
+
+*/
 DatabaseConnectors.mongo = {
   get: async (collection, selector = {}, options = {}) => {
     return await collection.findOne(convertUniqueSelector(selector), options);
@@ -33,4 +126,5 @@ DatabaseConnectors.mongo = {
   delete: async (collection, selector, options = {}) => {
     return await collection.remove(convertUniqueSelector(selector));
   },
+  filter: filterFunction,
 };

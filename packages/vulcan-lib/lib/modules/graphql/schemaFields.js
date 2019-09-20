@@ -59,6 +59,7 @@ export const getSchemaFields = (schema, typeName) => {
       selector: [],
       selectorUnique: [],
       orderBy: [],
+      readable: [],
     };
     const resolvers = [];
 
@@ -82,6 +83,14 @@ export const getSchemaFields = (schema, typeName) => {
         const fieldDescription = field.description;
         const fieldDirective = isIntlField(field) ? '@intl' : '';
         const fieldArguments = isIntlField(field) ? [{ name: 'locale', type: 'String' }] : [];
+
+        // if field is readable, make it filterable/orderable too
+        if (field.canRead) {
+          fields.readable.push({
+            name: fieldName,
+            type: fieldType,
+          });
+        }
 
         // if field has a resolveAs, push it to schema
         if (field.resolveAs) {
@@ -187,10 +196,6 @@ export const getSchemaFields = (schema, typeName) => {
           });
         }
 
-        // backwards-compatibility: keep "orderable" too
-        if (field.orderable || field.sortable) {
-          fields.orderBy.push(fieldName);
-        }
       }
     });
     return {

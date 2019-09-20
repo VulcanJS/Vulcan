@@ -30,5 +30,4 @@ export * from './graphql_templates/index.js';
 export * from './validation.js';
 export * from './handleOptions';
 export * from './ui_utils';
-export * from './query_filters';
 // export * from './resolvers.js';

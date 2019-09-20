@@ -1,5 +1,8 @@
 import { convertToGraphQL } from './types.js';
 
+// field types that support filtering
+const supportedFieldTypes = ['String', 'Int', 'Date'];
+
 /* ------------------------------------- Selector Types ------------------------------------- */
 
 /*
@@ -25,7 +28,7 @@ see https://www.opencrud.org/#sec-Data-types
 
 */
 export const selectorInputTemplate = ({ typeName, fields }) =>
-`input ${typeName}SelectorInput {
+  `input ${typeName}SelectorInput {
   _and: [${typeName}SelectorInput]
   _or: [${typeName}SelectorInput]
 ${convertToGraphQL(fields, '  ')}
@@ -42,7 +45,7 @@ type MovieSelectorUniqueInput {
 
 */
 export const selectorUniqueInputTemplate = ({ typeName, fields }) =>
-`input ${typeName}SelectorUniqueInput {
+  `input ${typeName}SelectorUniqueInput {
   _id: String
   documentId: String # OpenCRUD backwards compatibility
   slug: String
@@ -54,30 +57,29 @@ ${convertToGraphQL(fields, '  ')}
 See https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#
  
 */
-export const whereFieldTemplate = ({ typeName, fields }) =>
-`input ${typeName}WhereFieldTemplate {
-  _and: [whereFieldTemplate]
-  _not: whereFieldTemplate
-  _or: [whereFieldTemplate]
-  created_at: timestamptz_comparison_exp
-  id: Int_comparison_exp
-  title: String_comparison_exp
-  updated_at: timestamptz_comparison_exp
+export const fieldWhereInputTemplate = ({ typeName, fields }) =>
+  `input ${typeName}WhereInput {
+  _and: [${typeName}WhereInput]
+  _not: ${typeName}WhereInput
+  _or: [${typeName}WhereInput]
+  # will search across all searchable fields at the same time
+  search: String
+  ${fields
+    .map(field => {
+      const { name, type } = field;
+      if (supportedFieldTypes.includes(type)) {
+        const isArrayField = name[0] === '[';
+        return `${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
+      } else {
+        return '';
+      }
+    })
+    .join('\n')}
 }`;
 
-
-/*
-
-The orderBy type defines which fields a query can be ordered by
-
-enum MovieOrderByInput {
-  title
-  createdAt
-}
-
-*/
-export const orderByInputTemplate = ({ typeName, fields }) =>
-`enum ${typeName}OrderByInput {
-  foobar
-  ${fields.join('\n  ')}
+export const fieldOrderByInputTemplate = ({ typeName, fields }) =>
+  `input ${typeName}OrderByInput {
+  foo: OrderBy
+  bar: OrderBy
+  ${fields.map(({ name }) => `${name}: OrderBy`).join('\n')}
 }`;

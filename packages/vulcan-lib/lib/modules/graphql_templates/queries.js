@@ -40,7 +40,7 @@ type SingleMovieInput {
 export const singleInputTemplate = ({ typeName }) =>
 `input Single${typeName}Input {
   # filtering
-  where: ${typeName}SelectorUniqueInput
+  where: ${typeName}WhereInput
   # filtering (backwards-compatibility)
   selector: ${typeName}SelectorUniqueInput
   # Whether to enable caching for this query
@@ -74,7 +74,7 @@ export const multiInputTemplate = ({ typeName }) =>
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
   # OpenCRUD fields
-  where: ${typeName}SelectorInput
+  where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
   skip: Int
   after: String

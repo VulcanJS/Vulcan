@@ -14,6 +14,7 @@ import {
   getCollectionName,
   throwError,
 } from 'meteor/vulcan:lib';
+import isEmpty from 'lodash/isEmpty';
 
 const defaultOptions = {
   cacheMaxAge: 300,
@@ -63,7 +64,8 @@ export function getDefaultResolvers(options) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options } = await collection.getParameters(terms, {}, context);
+        let { selector, options } = isEmpty(terms) ? Connectors.filter(input) : await collection.getParameters(terms, {}, context);
+
         options.skip = terms.offset;
 
         debug({ selector, options });
@@ -127,7 +129,7 @@ export function getDefaultResolvers(options) {
         const documentId = selector.documentId || selector._id;
         const doc = documentId
           ? await collection.loader.load(documentId)
-          : await Connectors.get(collection, selector);
+          : await Connectors.get(collection, Connectors.filter(input).selector);
 
         if (!doc) {
           if (allowNull) {

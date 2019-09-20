@@ -14,7 +14,7 @@ import {
 } from '../modules/fragments.js';
 import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
-import { singleClientTemplate } from '../modules/graphql_templates';
+import { singleClientTemplate } from '../modules/graphql_templates/index.js';
 import { Utils } from './utils';
 import { GraphQLSchema } from '../modules/graphql';
 
