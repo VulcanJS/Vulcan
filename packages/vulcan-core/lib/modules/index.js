@@ -33,7 +33,7 @@ export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';
 export { withMulti, useMulti } from './containers/multi.js';
 export { withSingle, useSingle } from './containers/single.js';
-export { default as withCreate } from './containers/withCreate.js';
+export { withCreate, useCreate } from './containers/create.js';
 export { default as withUpdate } from './containers/withUpdate.js';
 export { default as withDelete } from './containers/withDelete.js';
 export { withCurrentUser, useCurrentUser } from './containers/currentUser.js';
@@ -46,7 +46,7 @@ export { default as withComponents } from './containers/withComponents';
 export { default as MessageContext } from './messages.js';
 
 // OpenCRUD backwards compatibility
-export { default as withNew } from './containers/withCreate.js';
+export { default as withNew } from './containers/create.js';
 export { default as withEdit } from './containers/withUpdate.js';
 export { default as withRemove } from './containers/withDelete.js';
 export { default as withList } from './containers/multi.js';

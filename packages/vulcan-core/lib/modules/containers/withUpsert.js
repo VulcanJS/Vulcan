@@ -58,6 +58,7 @@ const withUpsert = options => {
 
       // OpenCRUD backwards compatibility
       upsertMutation: args => {
+        console.warn('(Vulcan 1.13.2) Using deprecated upsertMutation. Use the new "upsertFoo" syntax instead.');
         const { selector, set, unset } = args;
         const data = clone(set);
         unset &&

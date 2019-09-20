@@ -54,6 +54,7 @@ const withDelete = options => {
 
       // OpenCRUD backwards compatibility
       removeMutation: args => {
+        console.warn('(Vulcan 1.13.2) Using deprecated removeMutation. Use the new "deleteFoo" syntax instead.');
         const { documentId } = args;
         const selector = { documentId };
         return mutate({

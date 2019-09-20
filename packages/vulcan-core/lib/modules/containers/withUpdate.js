@@ -51,7 +51,7 @@ const withUpdate = options => {
     alias: `withUpdate${typeName}`,
     options: () => {
       const graphQLOptions = {};
-      
+
       // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
       graphQLOptions.errorPolicy = 'all';
 
@@ -67,6 +67,7 @@ const withUpdate = options => {
       },
       // OpenCRUD backwards compatibility
       editMutation: args => {
+        console.warn('(Vulcan 1.13.2) Using deprecated editMutation. Use the new "updateFoo" syntax instead.');
         const { documentId, set, unset } = args;
         const selector = { documentId };
         const data = clone(set);
