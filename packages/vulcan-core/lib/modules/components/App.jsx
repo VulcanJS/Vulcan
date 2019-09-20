@@ -12,7 +12,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/currentUser.js';
-import withUpdate from '../containers/withUpdate.js';
+import withUpdate from '../containers/update.js';
 import withSiteData from '../containers/siteData.js';
 import { withApollo } from 'react-apollo';
 import { withCookies } from 'react-cookie';
