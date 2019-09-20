@@ -4,10 +4,13 @@ import {
     withUpdate,
     withUpsert,
     withDelete,
-    withMutation
+    withMutation,
+    useCreate,
+    useUpdate,
+    useUpsert,
+    useDelete
 } from '../../lib/modules';
 import { MockedProvider } from 'meteor/vulcan:test';
-import wait from 'waait';
 import { mount } from 'enzyme';
 import expect from 'expect';
 import gql from 'graphql-tag';
@@ -46,15 +49,39 @@ describe('vulcan:core/container/mutations', () => {
         fragmentName: fragmentName,
         fragment
     };
-    describe('imports', () => {
-        expect(useCreate).toBeInstanceOf(Function)
-        expect(useUpdate).toBeInstanceOf(Function)
-        expect(useUpsert).toBeInstanceOf(Function)
-        expect(useDelete).toBeInstanceOf(Function)
-        expect(withCreate).toBeInstanceOf(Function)
-        expect(withUpdate).toBeInstanceOf(Function)
-        expect(withUpsert).toBeInstanceOf(Function)
-        expect(withDelete).toBeInstanceOf(Function)
+    describe('common', () => {
+        test('export hooks and hocs', () => {
+            expect(useCreate).toBeInstanceOf(Function)
+            expect(useUpdate).toBeInstanceOf(Function)
+            expect(useUpsert).toBeInstanceOf(Function)
+            expect(useDelete).toBeInstanceOf(Function)
+            expect(withCreate).toBeInstanceOf(Function)
+            expect(withUpdate).toBeInstanceOf(Function)
+            expect(withUpsert).toBeInstanceOf(Function)
+            expect(withDelete).toBeInstanceOf(Function)
+        })
+        test('pass down props', () => {
+            const CreateComponent = withCreate(defaultOptions)(TestComponent);
+            const UpdateComponent = withUpdate(defaultOptions)(TestComponent);
+            const UpsertComponent = withUpsert(defaultOptions)(TestComponent);
+            const DeleteComponent = withDelete(defaultOptions)(TestComponent);
+            [
+                CreateComponent,
+                UpdateComponent,
+                UpsertComponent,
+                DeleteComponent
+            ].forEach((C) => {
+                const wrapper = mount(
+                    <MockedProvider mocks={[]}>
+                        <C foo="bar" />
+                    </MockedProvider>
+                )
+                expect({
+                    res: wrapper.find('TestComponent').prop('foo'),
+                    C: C.displayName
+                }).toEqual({ res: "bar", C: C.displayName })
+            })
+        })
     })
     describe('withCreate', () => {
         // NOT passing for no reason...
@@ -250,6 +277,13 @@ describe('vulcan:core/container/mutations', () => {
             })
             expect(res).toEqual({ data: { deleteFoo: { data: foo, __typename: 'Foo' } } })
 
+        })
+    })
+
+    describe('custom mutation', () => {
+        test('return a component even if fragment is not yet registered', () => {
+            const MutationComponent = withMutation({ name: 'whatever', fragmentName: 'foobar' })(TestComponent)
+            expect(MutationComponent).toBeInstanceOf(Function)
         })
     })
 

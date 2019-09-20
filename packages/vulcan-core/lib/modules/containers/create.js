@@ -57,11 +57,12 @@ export const withCreate = options => C => {
   const typeName = collection.options.typeName;
   const funcName = `create${typeName}`;
   const legacyError = () => {
-    throw new Error('newMutation function has been removed. Use the "createFoo" syntax instead.');
+    throw new Error(`newMutation function has been removed. Use ${funcName} instead.`);
   };
   const Wrapper = props => {
     const [createFunc] = useCreate(options);
     return <C
+      {...props}
       {...{ [funcName]: createFunc }}
       newMutation={legacyError}
     />;
