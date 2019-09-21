@@ -3,6 +3,7 @@ import mapValues from 'lodash/mapValues';
 import { getSetting } from '../../modules/settings.js';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
+import escapeStringRegexp from 'escape-string-regexp';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -45,7 +46,7 @@ const getFieldNames = expressionArray => {
 };
 
 const filterFunction = (collection, input) => {
-  const { where, limit = 20, orderBy } = input;
+  const { where, limit = 20, orderBy, search } = input;
   let selector = {};
   let options = {};
   let filteredFields = [];
@@ -66,10 +67,10 @@ const filterFunction = (collection, input) => {
 
   or (intl fields):
 
-  { title_intl: { $elemMatch: { $in: ["foo", "bar"] } } }
+  { title_intl.value: { $in: ["foo", "bar"] } }
 
   */
-  const convertExpression = (fieldExpression) => {
+  const convertExpression = fieldExpression => {
     const [fieldName] = Object.keys(fieldExpression);
     const [operator] = Object.keys(fieldExpression[fieldName]);
     const value = fieldExpression[fieldName][operator];
@@ -104,7 +105,7 @@ const filterFunction = (collection, input) => {
 
         default:
           filteredFields.push(fieldName);
-          selector = {...selector, ...convertExpression({ [fieldName]: where[fieldName] })};
+          selector = { ...selector, ...convertExpression({ [fieldName]: where[fieldName] }) };
 
           break;
       }
@@ -114,6 +115,34 @@ const filterFunction = (collection, input) => {
   // order
   if (!isEmpty(orderBy)) {
     options.sort = mapValues(orderBy, order => conversionTable[order]);
+  }
+
+  // search
+  // TODO: decide if this is still needed?
+  if (!isEmpty(search)) {
+    const searchQuery = escapeStringRegexp(search);
+    const searchableFieldNames = Object.keys(schema).filter(
+      // do not include intl fields here
+      fieldName => !fieldName.includes('_intl') && schema[fieldName].searchable
+    );
+    if (searchableFieldNames.length) {
+      selector = {
+        ...selector,
+        $or: searchableFieldNames.map(fieldName => {
+          const isIntl = schema[fieldName].intl;
+          return {
+            [isIntl ? `${fieldName}_intl.value` : fieldName]: { $regex: searchQuery, $options: 'i' },
+          };
+        }),
+      };
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Warning: search argument is set but schema ${
+          collection.options.collectionName
+        } has no searchable field. Set "searchable: true" for at least one field to enable search.`
+      );
+    }
   }
 
   // limit

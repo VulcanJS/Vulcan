@@ -41,6 +41,8 @@ export const singleInputTemplate = ({ typeName }) =>
 `input Single${typeName}Input {
   # filtering
   where: ${typeName}WhereInput
+  orderBy: ${typeName}OrderByInput
+  search: String
   # filtering (backwards-compatibility)
   selector: ${typeName}SelectorUniqueInput
   # Whether to enable caching for this query
@@ -76,6 +78,7 @@ export const multiInputTemplate = ({ typeName }) =>
   # OpenCRUD fields
   where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
+  search: String
   skip: Int
   after: String
   before: String
