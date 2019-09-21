@@ -1,7 +1,7 @@
 import { convertToGraphQL } from './types.js';
 
 // field types that support filtering
-const supportedFieldTypes = ['String', 'Int', 'Date'];
+const supportedFieldTypes = ['String', 'Int', 'Float', 'Boolean', 'Date'];
 
 /* ------------------------------------- Selector Types ------------------------------------- */
 

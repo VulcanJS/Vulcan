@@ -64,7 +64,12 @@ export function getDefaultResolvers(options) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options } = isEmpty(terms) ? Connectors.filter(input) : await collection.getParameters(terms, {}, context);
+        let { selector, options, filteredFields } = isEmpty(terms)
+          ? Connectors.filter(input)
+          : await collection.getParameters(terms, {}, context);
+
+        // make sure all filtered fields are allowed
+        Users.checkFields(currentUser, collection, filteredFields);
 
         options.skip = terms.offset;
 
@@ -108,14 +113,16 @@ export function getDefaultResolvers(options) {
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector = {}, enableCache = false, allowNull = false } = input;
+        const { selector: oldSelector = {}, enableCache = false, allowNull = false } = input;
+
+        let doc;
 
         debug('');
         debugGroup(
           `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
         );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`Selector: ${JSON.stringify(selector)}`);
+        debug(`Selector: ${JSON.stringify(oldSelector)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
@@ -126,10 +133,18 @@ export function getDefaultResolvers(options) {
         const collection = context[collectionName];
 
         // use Dataloader if doc is selected by documentId/_id
-        const documentId = selector.documentId || selector._id;
-        const doc = documentId
-          ? await collection.loader.load(documentId)
-          : await Connectors.get(collection, Connectors.filter(input).selector);
+        const documentId = oldSelector.documentId || oldSelector._id;
+
+        if (documentId) {
+          doc = collection.loader.load(documentId);
+        } else {
+          let { selector, filteredFields } = Connectors.filter(input);
+
+          // make sure all filtered fields are allowed
+          Users.checkFields(currentUser, collection, filteredFields);
+
+          doc = Connectors.get(collection, selector);
+        }
 
         if (!doc) {
           if (allowNull) {
@@ -137,7 +152,7 @@ export function getDefaultResolvers(options) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId, selector },
+              data: { documentId, oldSelector },
             });
           }
         }

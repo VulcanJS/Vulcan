@@ -449,19 +449,6 @@ Utils.stripTelescopeNamespace = schema => {
 };
 
 /**
- * Convert an array of field names into a Mongo fields specifier
- * @param {Array} fieldsArray
- */
-Utils.arrayToFields = fieldsArray => {
-  return _.object(
-    fieldsArray,
-    _.map(fieldsArray, function() {
-      return true;
-    })
-  );
-};
-
-/**
  * Get the display name of a React component
  * @param {React Component} WrappedComponent
  */

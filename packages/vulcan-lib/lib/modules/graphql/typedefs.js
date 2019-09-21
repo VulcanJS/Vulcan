@@ -90,6 +90,33 @@ input Int_Array_Selector {
   # contains_all: [Int_Selector]
 }
 
+input Float_Selector {
+  _eq: Float
+  _gt: Float
+  _gte: Float
+  _in: [Float!]
+  #_is_null: Boolean
+  _lt: Float
+  _lte: Float
+  #_neq: Float
+  #_nin: [Float!]
+}
+
+input Float_Array_Selector {
+  contains: Float_Selector
+  # contains_all: [Float_Selector]
+}
+
+input Boolean_Selector {
+  _eq: Boolean
+  #_neq: Boolean
+}
+
+input Boolean_Array_Selector {
+  contains: Boolean_Selector
+  # contains_all: [Boolean_Selector]
+}
+
 input Date_Selector {
   _eq: Date
   _gt: Date

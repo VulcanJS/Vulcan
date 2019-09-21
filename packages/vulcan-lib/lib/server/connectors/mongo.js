@@ -1,5 +1,7 @@
 import { DatabaseConnectors } from '../connectors.js';
 import mapValues from 'lodash/mapValues';
+import { getSetting } from '../../modules/settings.js';
+import uniq from 'lodash/uniq';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -14,7 +16,6 @@ const convertUniqueSelector = selector => {
   }
   return selector;
 };
-
 
 /*
 
@@ -32,6 +33,14 @@ const conversionTable = {
   _nin: '$nin',
   asc: 1,
   desc: -1,
+};
+
+// get all fields mentioned in an expression like [ { foo: { _gt: 2 } }, { bar: { _eq : 3 } } ]
+const getFieldNames = expressionArray => {
+  return expressionArray.map(exp => {
+    const [fieldName] = Object.keys(exp);
+    return fieldName;
+  });
 };
 
 /*
@@ -53,23 +62,26 @@ const convertExpression = expression => {
 };
 
 const filterFunction = ({ where, limit = 20, orderBy }) => {
-
-  let selector = {};
-  let options = {};
+  const selector = {};
+  const options = {};
+  let filteredFields = [];
 
   // filter
   Object.keys(where).forEach(fieldName => {
     switch (fieldName) {
       case '_and':
+        filteredFields = filteredFields.concat(getFieldNames(where._and));
         selector['$and'] = where._and.map(field => mapValues(field, convertExpression));
         break;
 
       case '_or':
+        filteredFields = filteredFields.concat(getFieldNames(where._or));
         selector['$or'] = where._or.map(field => mapValues(field, convertExpression));
 
         break;
 
       case '_not':
+        filteredFields = filteredFields.concat(getFieldNames(where._not));
         selector['$not'] = where._not.map(field => mapValues(field, convertExpression));
         break;
 
@@ -77,6 +89,7 @@ const filterFunction = ({ where, limit = 20, orderBy }) => {
         break;
 
       default:
+        filteredFields.push(fieldName);
         selector[fieldName] = convertExpression(where[fieldName]);
 
         break;
@@ -90,17 +103,19 @@ const filterFunction = ({ where, limit = 20, orderBy }) => {
 
   // limit
   if (limit) {
-    options.limit = limit;
+    options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
   }
 
   // console.log(JSON.stringify(selector, 2));
   // console.log(JSON.stringify(options, 2));
+  // console.log(uniq(filteredFields));
 
   return {
     selector,
     options,
+    filteredFields: uniq(filteredFields),
   };
-}
+};
 
 /*
 

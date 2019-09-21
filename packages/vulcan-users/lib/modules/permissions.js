@@ -1,6 +1,8 @@
 import Users from './collection.js';
-import { Utils } from 'meteor/vulcan:lib';
 import intersection from 'lodash/intersection';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import difference from 'lodash/difference';
 
 /**
  * @summary Users.groups object
@@ -204,12 +206,12 @@ export const isAdmin = Users.isAdmin;
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
-  return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+  return compact(map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       if (fieldName.indexOf('.$') > -1) return null;
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
-  )));
+  ));
 };
 
 // collection helper
@@ -218,6 +220,25 @@ Users.helpers({
     return Users.getViewableFields(this, collection, document);
   }
 });
+
+/**
+ * @summary Check if a user can access a list of fields
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} fields - The list of fields
+ */
+Users.checkFields = (user, collection, fields) => {
+  const viewableFields = Users.getViewableFields(user, collection);
+  const diff = difference(fields, viewableFields);
+
+  if (diff.length) {
+    throw new Error(
+      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(
+        ', '
+      )}.`
+    );
+  }
+};
 
 /**
  * @summary For a given document or list of documents, keep only fields viewable by current user
@@ -232,7 +253,7 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
   const restrictDoc = document => {
 
     // get array of all keys viewable by user
-    const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
+    const viewableKeys = Users.getViewableFields(user, collection, document);
     const restrictedDocument = _.clone(document);
     
     // loop over each property in the document and delete it if it's not viewable
