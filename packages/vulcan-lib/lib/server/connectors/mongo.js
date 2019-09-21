@@ -2,6 +2,7 @@ import { DatabaseConnectors } from '../connectors.js';
 import mapValues from 'lodash/mapValues';
 import { getSetting } from '../../modules/settings.js';
 import uniq from 'lodash/uniq';
+import isEmpty from 'lodash/isEmpty';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -43,69 +44,82 @@ const getFieldNames = expressionArray => {
   });
 };
 
-/*
-
-Convert GraphQL expression into MongoDB expression, for example
-
-{ _in: ["foo", "bar"] }
-
-to
-
-{ $in: ["foo", "bar"] }
-
-*/
-const convertExpression = expression => {
-  const graphqlOperator = Object.keys(expression)[0];
-  const value = expression[graphqlOperator];
-  const mongoOperator = conversionTable[graphqlOperator];
-  return { [mongoOperator]: value };
-};
-
-const filterFunction = ({ where, limit = 20, orderBy }) => {
-  const selector = {};
-  const options = {};
+const filterFunction = (collection, input) => {
+  const { where, limit = 20, orderBy } = input;
+  let selector = {};
+  let options = {};
   let filteredFields = [];
 
+  const schema = collection.simpleSchema()._schema;
+
+  /*
+
+  Convert GraphQL expression into MongoDB expression, for example
+
+  { fieldName: { operator: value } }
+
+  { title: { _in: ["foo", "bar"] } }
+
+  to:
+
+  { title: { $in: ["foo", "bar"] } }
+
+  or (intl fields):
+
+  { title_intl: { $elemMatch: { $in: ["foo", "bar"] } } }
+
+  */
+  const convertExpression = (fieldExpression) => {
+    const [fieldName] = Object.keys(fieldExpression);
+    const [operator] = Object.keys(fieldExpression[fieldName]);
+    const value = fieldExpression[fieldName][operator];
+    const mongoOperator = conversionTable[operator];
+    const isIntl = schema[fieldName].intl;
+    const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
+    return { [mongoFieldName]: { [mongoOperator]: value } };
+  };
+
   // filter
-  Object.keys(where).forEach(fieldName => {
-    switch (fieldName) {
-      case '_and':
-        filteredFields = filteredFields.concat(getFieldNames(where._and));
-        selector['$and'] = where._and.map(field => mapValues(field, convertExpression));
-        break;
+  if (!isEmpty(where)) {
+    Object.keys(where).forEach(fieldName => {
+      switch (fieldName) {
+        case '_and':
+          filteredFields = filteredFields.concat(getFieldNames(where._and));
+          selector['$and'] = where._and.map(convertExpression);
+          break;
 
-      case '_or':
-        filteredFields = filteredFields.concat(getFieldNames(where._or));
-        selector['$or'] = where._or.map(field => mapValues(field, convertExpression));
+        case '_or':
+          filteredFields = filteredFields.concat(getFieldNames(where._or));
+          selector['$or'] = where._or.map(convertExpression);
 
-        break;
+          break;
 
-      case '_not':
-        filteredFields = filteredFields.concat(getFieldNames(where._not));
-        selector['$not'] = where._not.map(field => mapValues(field, convertExpression));
-        break;
+        case '_not':
+          filteredFields = filteredFields.concat(getFieldNames(where._not));
+          selector['$not'] = where._not.map(convertExpression);
+          break;
 
-      case 'search':
-        break;
+        case 'search':
+          break;
 
-      default:
-        filteredFields.push(fieldName);
-        selector[fieldName] = convertExpression(where[fieldName]);
+        default:
+          filteredFields.push(fieldName);
+          selector = {...selector, ...convertExpression({ [fieldName]: where[fieldName] })};
 
-        break;
-    }
-  });
+          break;
+      }
+    });
+  }
 
   // order
-  if (orderBy) {
+  if (!isEmpty(orderBy)) {
     options.sort = mapValues(orderBy, order => conversionTable[order]);
   }
 
   // limit
-  if (limit) {
-    options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
-  }
+  options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
 
+  // console.log(JSON.stringify(where, 2));
   // console.log(JSON.stringify(selector, 2));
   // console.log(JSON.stringify(options, 2));
   // console.log(uniq(filteredFields));
