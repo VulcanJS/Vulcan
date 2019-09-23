@@ -191,7 +191,7 @@ const CardEdit = (props, context) => (
 
 CardEdit.contextTypes = { intl: intlShape };
 
-const CardEditForm = ({ collection, document, closeModal, ...editFormOptions }) => (
+const CardEditForm = ({ collection, document, closeModal, ...editFormProps }) => (
   <Components.SmartForm
     collection={collection}
     documentId={document._id}
@@ -199,12 +199,12 @@ const CardEditForm = ({ collection, document, closeModal, ...editFormOptions }) 
     successCallback={document => {
       closeModal();
     }}
-    {...editFormOptions}
+    {...editFormProps}
   />
 );
 
 const Card = (
-  { title, className, collection, document, currentUser, fields, showEdit = true, ...editFormOptions },
+  { title, className, collection, document, currentUser, fields, showEdit = true, ...editFormProps },
   { intl }
 ) => {
   const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
@@ -221,7 +221,7 @@ const Card = (
       <table className="table table-bordered" style={{ maxWidth: '100%' }}>
         <tbody>
           {canEdit ? (
-            <CardEdit collection={collection} document={document} {...editFormOptions} />
+            <CardEdit collection={collection} document={document} {...editFormProps} />
           ) : null}
           {fieldNames.map((fieldName, index) => (
             <CardItem
@@ -246,7 +246,7 @@ Card.propTypes = {
   currentUser: PropTypes.object,
   fields: PropTypes.array,
   showEdit: PropTypes.bool,
-  editFormOptions: PropTypes.object,
+  editFormProps: PropTypes.object,
 };
 
 Card.contextTypes = {
