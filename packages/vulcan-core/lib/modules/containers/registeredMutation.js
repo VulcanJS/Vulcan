@@ -53,7 +53,7 @@ export const withMutation = (options) => C => {
   const Wrapper = props => {
     const mutation = useRegisteredMutation(options);
     return (
-      <C {...props} {...{ [name]: mutation }} />
+      <C {...props} {...{ [options.name]: mutation }} />
     );
   };
   Wrapper.displayName = 'withMutation';
