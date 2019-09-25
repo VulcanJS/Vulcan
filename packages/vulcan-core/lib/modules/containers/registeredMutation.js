@@ -44,7 +44,7 @@ export const useRegisteredMutation = (options) => {
   }
   const query = gql`${mutation}${fragmentName ? fragment : ''}`;
 
-  const mutateFunc = useMutation(query);
+  const [mutateFunc] = useMutation(query);
   const extendedMutateFunc = vars => mutateFunc({ variables: vars });
   return extendedMutateFunc;
 };
