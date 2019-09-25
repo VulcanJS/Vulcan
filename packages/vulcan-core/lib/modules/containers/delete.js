@@ -49,7 +49,9 @@ export const useDelete = (options) => {
   });
 
   const [deleteFunc] = useMutation(query);
-  const extendedDeleteFunc = ({ selector }) => deleteFunc({ variables: { selector } });
+  const extendedDeleteFunc = (selector) => {
+    deleteFunc({ variables: { selector } });
+  };
   return [extendedDeleteFunc];
 };
 

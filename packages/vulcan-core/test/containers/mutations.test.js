@@ -273,7 +273,7 @@ describe('vulcan:core/container/mutations', () => {
             )
             expect(wrapper.find(TestComponent).prop('deleteFoo')).toBeInstanceOf(Function)
             const res = await wrapper.find(TestComponent).prop('deleteFoo')({
-                selector: { documentId: "42" }
+                documentId: "42"
             })
             expect(res).toEqual({ data: { deleteFoo: { data: foo, __typename: 'Foo' } } })
 
