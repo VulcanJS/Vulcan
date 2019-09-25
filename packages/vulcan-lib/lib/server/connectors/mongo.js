@@ -74,6 +74,9 @@ const filterFunction = (collection, input) => {
     const [fieldName] = Object.keys(fieldExpression);
     const [operator] = Object.keys(fieldExpression[fieldName]);
     const value = fieldExpression[fieldName][operator];
+    if (isEmpty(value)) {
+      throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
+    }
     const mongoOperator = conversionTable[operator];
     const isIntl = schema[fieldName].intl;
     const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
