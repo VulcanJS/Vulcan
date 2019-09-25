@@ -55,7 +55,8 @@ module.exports = ({ config }) => {
       'meteor/vulcan:email': path.resolve(__dirname, './mocks/vulcan-email'),
       //'meteor/vulcan:i18n': 'react-intl',
       // Other packages
-      'meteor/apollo': path.resolve(__dirname, './mocks/meteor-apollo')
+      'meteor/apollo': path.resolve(__dirname, './mocks/meteor-apollo'),
+      'meteor/server-render': path.resolve(__dirname, './mocks/meteor-server-render')
     },
   };
   // Mock global variables
@@ -73,7 +74,7 @@ module.exports = ({ config }) => {
   // force the config to use local node_modules instead the modules from Vulcan install
   // Should not be modified
   config.resolve.modules.push(
-      path.resolve(__dirname, '../node_modules')
+    path.resolve(__dirname, '../node_modules')
   )
 
   // handle meteor packages
@@ -85,11 +86,12 @@ module.exports = ({ config }) => {
       // Remove meteor package (last step)
       {
         loader: 'scrap-meteor-loader',
-        options:{
+        options: {
           // those package will be preserved, we provide a mock instead
           preserve: [
             'meteor/apollo',
-            'meteor/vulcan:email'
+            'meteor/vulcan:email',
+            'meteor/server-render'
           ]
         }
       },
