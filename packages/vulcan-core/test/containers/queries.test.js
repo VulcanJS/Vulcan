@@ -17,7 +17,7 @@ import {
   singleQuery
 } from '../../lib/modules/containers/single';
 import {
-  multiQuery
+  buildMultiQuery
 } from '../../lib/modules/containers/multi';
 
 
@@ -236,7 +236,7 @@ describe('vulcan:core/queries', function () {
   });
 
   describe('withMulti', () => {
-    const defaultQuery = multiQuery({
+    const defaultQuery = buildMultiQuery({
       fragment,
       typeName,
       fragmentName

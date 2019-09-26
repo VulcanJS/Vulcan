@@ -45,7 +45,7 @@ import {
   extractFragmentInfo,
 } from 'meteor/vulcan:lib';
 
-export const multiQuery = ({
+export const buildMultiQuery = ({
   typeName, fragmentName, extraQueries, fragment
 }) => (gql`
     ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
@@ -208,10 +208,11 @@ export const useMulti = (options, props) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
-  const typeName = collection.options.typeName; const resolverName = collection.options.multiResolverName;
+  const typeName = collection.options.typeName;
+  const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
-  const query = multiQuery({ typeName, fragmentName, extraQueries, fragment });
+  const query = buildMultiQuery({ typeName, fragmentName, extraQueries, fragment });
 
   const queryOptions = buildQueryOptions(options, { paginationTerms }, props);
   const queryRes = useQuery(query, queryOptions);

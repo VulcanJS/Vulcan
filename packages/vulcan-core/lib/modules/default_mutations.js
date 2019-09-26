@@ -17,13 +17,13 @@ import {
   addToSet,
   reorderSet,
   isInSet,
-  removeFromSet,
-  updateInSet,
+  //  updateInSet,
   registerWatchedMutation,
   Collections,
 } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
+import { getMultiResolverName } from 'meteor/vulcan:lib';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
@@ -43,7 +43,6 @@ const getCreateMutationName = (typeName) => `create${typeName}`;
 const getUpdateMutationName = (typeName) => `update${typeName}`;
 const getDeleteMutationName = (typeName) => `delete${typeName}`;
 const getUpsertMutationName = (typeName) => `upsert${typeName}`;
-const getMultiResolverName = (typeName) => Utils.camelCaseify(Utils.pluralize(typeName));
 const getMultiQueryName = (typeName) => `multi${typeName}Query`;
 
 /*
@@ -57,6 +56,8 @@ export const registerWatchedMutations = (mutations, typeName) => {
     const multiQueryName = getMultiQueryName(typeName);
     const multiResolverName = getMultiResolverName(typeName);
     // create
+    // TODO: does not work anymore, use "update" option in mutation instead.
+    // see delete mutation implementation
     if (mutations.create) {
       const mutationName = mutations.create.name;
       registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
@@ -93,68 +94,8 @@ export const registerWatchedMutations = (mutations, typeName) => {
     //update
     // NOTE: update now seems to be correctly handled by Apollo out of the box, based on doc id and cache normalization
     // so using watched mutations is not necessary anymore
-    /*
-    if (mutations.update) {
-      const mutationName = mutations.update.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to update
-        if (!document) return results;
-
-        if (belongsToSet(document, selector)) {
-          // edited document belongs to the list
-          if (!isInSet(results[multiResolverName], document)) {
-            // if document wasn't already in list, add it
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          } else {
-            // if document was already in the list, update it
-            results[multiResolverName] = updateInSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(
-            results[multiResolverName],
-            options.sort,
-            selector
-          );
-        } else {
-          // if edited doesn't belong to current list anymore (based on view selector), remove it
-          results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// update');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
-    }*/
     //delete
-    if (mutations.delete) {
-      const mutationName = mutations.delete.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to delete
-        if (!document) return results;
-        results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-        // console.log('// delete')
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-        return results;
-      });
-    }
+    // NOTE: delete is now handled within the useDelete mutator
   }
 };
 
@@ -335,6 +276,7 @@ export function getDefaultMutations(options) {
       },
     };
   }
+
   if (mutationOptions.delete) {
     // mutation for removing a specific document (same checks as edit mutation)
 

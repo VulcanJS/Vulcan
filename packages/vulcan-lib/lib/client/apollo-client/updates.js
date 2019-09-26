@@ -48,7 +48,7 @@ Update a document in a set of results
 
 */
 // TODO: legacy, not used anymore because Apollo handles it out of the box
-export const updateInSet = (queryData, document) => {
+/* export const updateInSet = (queryData, document) => {
   const oldDocument = queryData.results.find(item => item._id === document._id);
   const newDocument = { ...oldDocument, ...document };
   const index = queryData.results.findIndex(item => item._id === document._id);
@@ -56,6 +56,7 @@ export const updateInSet = (queryData, document) => {
   newData.results[index] = newDocument;
   return newData;
 };
+*/
 
 /*
 
@@ -67,18 +68,4 @@ export const reorderSet = (queryData, sort, selector) => {
   const cursor = mingoQuery.find(queryData.results);
   queryData.results = cursor.sort(sort).all();
   return queryData;
-};
-
-/*
-
-Remove a document from a set
-
-*/
-export const removeFromSet = (queryData, document) => {
-  const newData = {
-    ...queryData,
-    results: queryData.results.filter(item => item._id !== document._id),
-    totalCount: queryData.totalCount - 1,
-  };
-  return newData;
 };

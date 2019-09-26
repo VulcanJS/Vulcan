@@ -31,6 +31,8 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import { buildMultiQuery } from './multi';
+import { getVariablesListFromCache, removeFromSet } from './cacheUpdate';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -42,13 +44,41 @@ export const useDelete = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
+  const multiResolverName = collection.options.multiResolverName;
+  const deleteResolverName = `delete${typeName}`;
 
   const query = buildDeleteQuery({
     fragment,
     fragmentName, typeName
   });
 
-  const [deleteFunc] = useMutation(query);
+  const [deleteFunc] = useMutation(query, {
+    // optimistic update
+    update: (cache, { data }) => {
+      // update multi queries
+      const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
+      const removedDoc = data[deleteResolverName].data;
+      // get all the resolvers that match
+      const variablesList = getVariablesListFromCache(cache, multiResolverName);
+      variablesList.forEach(variables => {
+        try {
+          const values = cache.readQuery({ query: multiQuery, variables });
+          const newData = {
+            ...values,
+            [multiResolverName]: {
+              ...values[multiResolverName],
+              ...removeFromSet(values[multiResolverName], removedDoc)
+            }
+          };
+          cache.writeQuery({ query: multiQuery, variables, data: newData });
+        } catch (err) {
+          // could not find the query
+          // TODO: be smarter about the error cases and check only for cache mismatch
+          console.log(err);
+        }
+      });
+    }
+  });
   const extendedDeleteFunc = (selector) => deleteFunc({ variables: { selector } });
   return [extendedDeleteFunc];
 };
