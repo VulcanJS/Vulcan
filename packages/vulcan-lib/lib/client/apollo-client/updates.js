@@ -47,6 +47,7 @@ export const addToSet = (queryData, document) => {
 Update a document in a set of results
 
 */
+// TODO: legacy, not used anymore because Apollo handles it out of the box
 export const updateInSet = (queryData, document) => {
   const oldDocument = queryData.results.find(item => item._id === document._id);
   const newDocument = { ...oldDocument, ...document };

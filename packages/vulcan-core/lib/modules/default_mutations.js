@@ -91,13 +91,16 @@ export const registerWatchedMutations = (mutations, typeName) => {
       });
     }
     //update
+    // NOTE: update now seems to be correctly handled by Apollo out of the box, based on doc id and cache normalization
+    // so using watched mutations is not necessary anymore
+    /*
     if (mutations.update) {
       const mutationName = mutations.update.name;
       registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
         // get mongo selector and options objects based on current terms
         const terms = query.variables.input.terms;
         const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
+        const parameters = collection.getParameters(terms);
         const { selector, options } = parameters;
         let results = query.result;
         const document = getDocumentFromMutation(mutation, mutationName);
@@ -133,7 +136,7 @@ export const registerWatchedMutations = (mutations, typeName) => {
 
         return results;
       });
-    }
+    }*/
     //delete
     if (mutations.delete) {
       const mutationName = mutations.delete.name;
