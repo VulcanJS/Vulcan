@@ -13,91 +13,19 @@ import {
   Connectors,
   getTypeName,
   getCollectionName,
-  belongsToSet,
-  addToSet,
-  reorderSet,
-  isInSet,
-  //  updateInSet,
-  registerWatchedMutation,
-  Collections,
 } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
-import { getMultiResolverName } from 'meteor/vulcan:lib';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
-/**
- * Safe getter
- * Must returns null if the document is absent (eg in case of validation failure)
- * @param {*} mutation 
- * @param {*} mutationName 
- */
-const getDocumentFromMutation = (mutation, mutationName) => {
-  const mutationData = (mutation.result.data[mutationName] || {});
-  const document = mutationData.data;
-  return document;
-};
 
 const getCreateMutationName = (typeName) => `create${typeName}`;
 const getUpdateMutationName = (typeName) => `update${typeName}`;
 const getDeleteMutationName = (typeName) => `delete${typeName}`;
 const getUpsertMutationName = (typeName) => `upsert${typeName}`;
-const getMultiQueryName = (typeName) => `multi${typeName}Query`;
+//const getMultiQueryName = (typeName) => `multi${typeName}Query`;
 
-/*
-
-Handle post-mutation updates of the client cache
-TODO: this is a client only function
-it should be called by a callback on collection create?
-*/
-export const registerWatchedMutations = (mutations, typeName) => {
-  if (Meteor.isClient) {
-    const multiQueryName = getMultiQueryName(typeName);
-    const multiResolverName = getMultiResolverName(typeName);
-    // create
-    // TODO: does not work anymore, use "update" option in mutation instead.
-    // see delete mutation implementation
-    if (mutations.create) {
-      const mutationName = mutations.create.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to add
-        if (!document) return results;
-
-        if (belongsToSet(document, selector)) {
-          if (!isInSet(results[multiResolverName], document)) {
-            // make sure document hasn't been already added as this may be called several times
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
-        }
-
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-
-        // console.log('// create');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(collection);
-        // console.log(parameters);
-        // console.log(results);
-
-        return results;
-      });
-    }
-    //update
-    // NOTE: update now seems to be correctly handled by Apollo out of the box, based on doc id and cache normalization
-    // so using watched mutations is not necessary anymore
-    //delete
-    // NOTE: delete is now handled within the useDelete mutator
-  }
-};
 
 
 export function getDefaultMutations(options) {
@@ -259,7 +187,7 @@ export function getDefaultMutations(options) {
       async mutation(root, { selector, data }, context) {
         const collection = context[collectionName];
 
-        // check if document exists already
+        // check if documeet exists already
         const existingDocument = await Connectors.get(collection, selector, {
           fields: { _id: 1 },
         });
@@ -346,10 +274,6 @@ export function getDefaultMutations(options) {
     // OpenCRUD backwards compatibility
     mutations.remove = deleteMutation;
 
-  }
-
-  if (Meteor.isClient) {
-    registerWatchedMutations(mutations, typeName);
   }
 
   return mutations;

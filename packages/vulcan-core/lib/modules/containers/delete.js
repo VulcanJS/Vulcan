@@ -32,7 +32,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import { buildMultiQuery } from './multi';
-import { getVariablesListFromCache, removeFromSet } from './cacheUpdate';
+import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -62,14 +62,8 @@ export const useDelete = (options) => {
       const variablesList = getVariablesListFromCache(cache, multiResolverName);
       variablesList.forEach(variables => {
         try {
-          const values = cache.readQuery({ query: multiQuery, variables });
-          const newData = {
-            ...values,
-            [multiResolverName]: {
-              ...values[multiResolverName],
-              ...removeFromSet(values[multiResolverName], removedDoc)
-            }
-          };
+          const queryResult = cache.readQuery({ query: multiQuery, variables });
+          const newData = removeFromData({ queryResult, multiResolverName, document: removedDoc });
           cache.writeQuery({ query: multiQuery, variables, data: newData });
         } catch (err) {
           // could not find the query

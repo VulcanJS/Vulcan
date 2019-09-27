@@ -57,7 +57,7 @@ export const useCreate = (options) => {
       /*
       PREVIOUS IMPLEMENTION with watched mutations
       Some code should serve as inspiration
-      
+
         if (mutations.create) {
         const mutationName = mutations.create.name;
         registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
