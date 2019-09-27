@@ -36,6 +36,24 @@ export const getVariablesListFromCache = (proxy, queryName) => {
 };
 
 
+/**
+ * Add to data
+ * @param {*} queryData 
+ * @param {*} document 
+ */
+export const addToData = ({ queryResult, multiResolverName, document }) => {
+    const queryData = queryResult[multiResolverName];
+    return {
+        ...queryResult,
+        [multiResolverName]: {
+            ...queryData,
+            // TODO: check order using mingo
+            results: [...queryData.results, document],
+            totalCount: queryData.totalCount + 1
+        }
+    };
+};
+
 
 /*
 
