@@ -17,7 +17,7 @@ To add vulcan-material-ui to an existing Vulcan project, run the following in th
 meteor add vulcan:ui-material
 
 meteor npm install --save @material-ui/core@3.9.3
-meteor npm install --save react-jss
+meteor npm install --save react-jss@8.1.0
 meteor npm install --save mdi-material-ui
 meteor npm install --save react-autosuggest
 meteor npm install --save autosuggest-highlight
