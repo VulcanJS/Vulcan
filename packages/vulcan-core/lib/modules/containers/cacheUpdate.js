@@ -1,8 +1,8 @@
-import { cpus } from 'os';
 
 /**
  *  Optimistic cache updates
  */
+import Mingo from 'mingo';
 
 
 /**
@@ -58,26 +58,43 @@ Test if a document is already in a result set
 */
 export const isInData = ({ queryResult, multiResolverName, document }) => positionInSet(queryResult[multiResolverName].results, document) === -1;
 
-export const positionInSet = (results, document) => results.findIndex(item => item._id === document._id);
+export const positionInSet = (results, document) => results.findIndex(item => item._id && (item._id === document._id));
+
+
+/*
+
+Reorder results according to a sort
+
+*/
+export const reorderSet = (results, sort, selector) => {
+    const mingoQuery = new Mingo.Query(selector);
+    const cursor = mingoQuery.find(results);
+    const sortedResults = cursor.sort(sort).all();
+    return sortedResults;
+};
 
 /**
  * Add to data
  * @param {*} queryData 
  * @param {*} document 
  */
-export const addToData = ({ queryResult, multiResolverName, document }) => {
+export const addToData = ({ queryResult, multiResolverName, document, sort, selector }) => {
     const queryData = queryResult[multiResolverName];
-    const idx = positionInSet(queryData.results, document);
     let { results, totalCount } = queryData;
-    const newResults = [...results];
+    const idx = positionInSet(results, document);
+    let newResults = [...results];
     if (idx !== -1) {
         // doc has already been added, eg after an optimistic response
         // update it
         newResults[idx] = document;
     } else {
         // add to list
-        newResults.push(document);
+        newResults.unshift(document);
         totalCount = totalCount + 1;
+    }
+    // sort if necessary
+    if (sort) {
+        newResults = reorderSet(newResults, sort, selector);
     }
     return {
         ...queryResult,
@@ -108,10 +125,10 @@ export const removeFromData = ({ queryResult, multiResolverName, document }) => 
 Test if a document is matched by a given selector
 
 */
-//export const belongsToSet = (document, selector) => {
-//  const mingoQuery = new Mingo.Query(selector);
-//  return mingoQuery.test(document);
-//};
+export const matchSelector = (document, selector) => {
+    const mingoQuery = new Mingo.Query(selector);
+    return mingoQuery.test(document);
+};
 
 
 /*
@@ -143,15 +160,3 @@ Update a document in a set of results
   return newData;
 };
 */
-
-/*
-
-Reorder results according to a sort
-
-*/
-//export const reorderSet = (queryData, sort, selector) => {
-//  const mingoQuery = new Mingo.Query(selector);
-//  const cursor = mingoQuery.find(queryData.results);
-//  queryData.results = cursor.sort(sort).all();
-//  return queryData;
-//};

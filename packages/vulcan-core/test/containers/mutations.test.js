@@ -10,10 +10,14 @@ import {
     useUpsert,
     useDelete
 } from '../../lib/modules';
+import {
+    multiQueryUpdater
+} from '../../lib/modules/containers/create'
 import { MockedProvider } from 'meteor/vulcan:test';
 import { mount } from 'enzyme';
 import expect from 'expect';
 import gql from 'graphql-tag';
+import sinon from 'sinon'
 
 const test = it;
 
@@ -34,15 +38,15 @@ describe('vulcan:core/container/mutations', () => {
             }
         }],
         toString: () => `fragment FoosDefaultFragment on Foo { 
-        id
+        _id
         hello
         __typename
       }`
     };
 
     const rawFoo = { hello: 'world' };
-    const fooUpdate = { id: 1, hello: 'world' };
-    const foo = { id: 1, hello: 'world', __typename: 'Foo' };
+    const fooUpdate = { _id: 1, hello: 'world' };
+    const foo = { _id: 1, hello: 'world', __typename: 'Foo' };
     const TestComponent = () => 'test';
     const defaultOptions = {
         collection: Foo,
@@ -102,7 +106,7 @@ describe('vulcan:core/container/mutations', () => {
                     }
 
                     fragment FoosDefaultFragment on Foo {
-                      id
+                      _id
                       hello
                       __typename
                     }
@@ -132,6 +136,142 @@ describe('vulcan:core/container/mutations', () => {
             });
             expect(res).toEqual({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
         });
+
+        describe('multiQuery update after create mutation', () => {
+            const defaultOptions = {
+                typeName, fragment, fragmentName,
+                collection: Foo,
+            }
+            const defaultCacheContent = {
+                foos: {
+                    results: [],
+                    totalCount: 0
+                }
+            }
+            const defaultCacheData = {
+                data: {
+                    ROOT_QUERY: {
+                        // variables are contained in the query name
+                        [`foos(${JSON.stringify(
+                            {
+                                input: {
+                                    terms: {}
+                                }
+                            }
+                        )})`]: {}
+                    }
+                }
+            }
+
+            beforeEach(() => {
+                Foo.getParameters = (terms) => ({
+                    selector: {},
+                    options: {}
+                }
+                )
+            })
+            test('add document to multi query after a creation', () => {
+                const update = multiQueryUpdater(defaultOptions)
+                const writeQuery = sinon.spy()
+                const cache = {
+                    readQuery: () => defaultCacheContent,
+                    writeQuery,
+                    data: defaultCacheData
+                }
+                update(cache, {
+                    data: {
+                        createFoo: {
+                            data: foo
+                        }
+                    }
+                })
+                expect(writeQuery.calledOnce).toBe(true)
+            })
+            test('update document if already there', () => {
+                const update = multiQueryUpdater(defaultOptions)
+                const writeQuery = sinon.spy()
+                const cache = {
+                    readQuery: () => ({
+                        ...defaultCacheContent,
+                        foos: {
+                            results: [foo],
+                            totalCount: 1
+                        }
+                    }),
+                    writeQuery,
+                    data: defaultCacheData
+                }
+                const updateFoo = { ...foo, UPDATED: true }
+                update(cache, {
+                    data: {
+                        createFoo: {
+                            data: updateFoo
+                        }
+                    }
+                })
+                expect(writeQuery.calledOnce).toBe(true)
+                expect(writeQuery.getCall(0).args[0]).toMatchObject({
+                    data: { 'foos': { results: [updateFoo], totalCount: 1 } }
+                })
+            })
+            test('do not add document if it does not match the mongo selector', () => {
+                const update = multiQueryUpdater(defaultOptions)
+                const writeQuery = sinon.spy()
+                const cache = {
+                    readQuery: () => defaultCacheContent,
+                    writeQuery,
+                    data: defaultCacheData
+                }
+                const newFoo = { ...foo, val: 41 }
+                Foo.getParameters = () => ({
+                    selector: {
+                        val: { $gt: 42 }
+                    },
+                    options: {}
+                })
+                update(cache, {
+                    data: {
+                        createFoo: {
+                            data: newFoo
+                        }
+                    }
+                })
+                expect(writeQuery.notCalled).toBe(true)
+            })
+            test('sort documents', () => {
+                const update = multiQueryUpdater(defaultOptions)
+                const writeQuery = sinon.spy()
+                const cache = {
+                    readQuery: () => ({
+                        foos: {
+                            results: [{ val: 40 }, { val: 43 }],
+                            totalCount: 2
+                        }
+                    }),
+                    writeQuery,
+                    data: defaultCacheData
+                }
+                const newFoo = { ...foo, val: 42 }
+                Foo.getParameters = () => ({
+                    selector: {},
+                    options: {
+                        sort: {
+                            val: 1
+                        }
+                    }
+                })
+                update(cache, {
+                    data: {
+                        createFoo: {
+                            data: newFoo
+                        }
+                    }
+                })
+                const res = writeQuery.getCall(0).args[0].data.foos.results
+                expect(res).toHaveLength(3)
+                expect(res[1]).toEqual(newFoo)
+            })
+        })
     });
 
     describe('update', () => {
@@ -141,23 +281,23 @@ describe('vulcan:core/container/mutations', () => {
                 request: {
                     query: gql`
                     mutation updateFoo($selector: FooSelectorUniqueInput!, $data: UpdateFooDataInput!) {
-                        updateFoo(selector: $selector, data: $data) {
-                             data {
+                            updateFoo(selector: $selector, data: $data) {
+                                data {
                                ...FoosDefaultFragment
                                __typename
-                             }
+                    }
                              __typename
-                           }
-                    }
+                }
+            }
 
-                    fragment FoosDefaultFragment on Foo {
-                      id
-                      hello
-                      __typename
-                    }
-                    `,
+            fragment FoosDefaultFragment on Foo {
+                _id
+                hello
+                __typename
+            }
+            `,
                     variables: {
-                        //selector: { documentId: foo.id },
+                        //selector: { documentId: foo._id },
                         data: fooUpdate
                     }
                 },
@@ -188,9 +328,9 @@ describe('vulcan:core/container/mutations', () => {
             const responses = [{
                 request: {
                     query: gql`
-                    mutation upsertFoo($selector: FooSelectorUniqueInput!, $data: UpdateFooDataInput!) {
-                        upsertFoo(selector: $selector, data: $data) {
-                            data {
+            mutation upsertFoo($selector: FooSelectorUniqueInput!, $data: UpdateFooDataInput!) {
+                upsertFoo(selector: $selector, data: $data) {
+                    data {
                               ...FoosDefaultFragment
                               __typename
                             }
@@ -198,12 +338,12 @@ describe('vulcan:core/container/mutations', () => {
                           }
                     }
 
-                    fragment FoosDefaultFragment on Foo {
-                      id
+    fragment FoosDefaultFragment on Foo {
+        _id
                       hello
                       __typename
-                    }
-                    `,
+    }
+    `,
                     variables: {
                         data: fooUpdate
                     }
@@ -236,21 +376,21 @@ describe('vulcan:core/container/mutations', () => {
                 request: {
                     query: gql`
                     mutation deleteFoo($selector: FooSelectorUniqueInput!) {
-                       deleteFoo(selector: $selector) {
-                         data {
+    deleteFoo(selector: $selector) {
+        data {
                            ...FoosDefaultFragment
                            __typename
-                         }
+}
                          __typename
                        }
                     }
 
-                    fragment FoosDefaultFragment on Foo {
-                      id
+    fragment FoosDefaultFragment on Foo {
+        _id
                       hello
                       __typename
-                    }
-                    `,
+    }
+    `,
                     variables: {
                         selector: {
                             documentId: "42"

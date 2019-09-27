@@ -32,9 +32,9 @@ import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import { useMutation } from '@apollo/react-hooks';
 import { buildMultiQuery } from './multi';
-import { addToData, getVariablesListFromCache } from './cacheUpdate';
+import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
 
-const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
+export const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
   const query = gql`
     ${createClientTemplate({ typeName, fragmentName })}
     ${fragment}
@@ -42,47 +42,14 @@ const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
   return query;
 };
 
-export const multiQueryUpdater = ({ typeName, fragment, fragmentName, collection }) => (cache, { data }) => {
+export const multiQueryUpdater = ({
+  typeName,
+  fragment,
+  fragmentName,
+  collection
+}) => (cache, { data }) => {
   const createResolverName = `create${typeName}`;
   const multiResolverName = collection.options.multiResolverName;
-  /*
-  PREVIOUS IMPLEMENTION with watched mutations
-  Some code should serve as inspiration
-
-    if (mutations.create) {
-    const mutationName = mutations.create.name;
-    registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-      // get mongo selector and options objects based on current terms
-      const terms = query.variables.input.terms;
-      const collection = Collections.find(c => c.typeName === typeName);
-      const parameters = collection.getParameters(terms);
-      const { selector, options } = parameters;
-      let results = query.result;
-      const document = getDocumentFromMutation(mutation, mutationName);
-      // nothing to add
-      if (!document) return results;
- 
-      if (belongsToSet(document, selector)) {
-        if (!isInSet(results[multiResolverName], document)) {
-          // make sure document hasn't been already added as this may be called several times
-          results[multiResolverName] = addToSet(results[multiResolverName], document);
-        }
-        results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
-      }
- 
-      results[multiResolverName].__typename = `Multi${typeName}Output`;
- 
-      // console.log('// create');
-      // console.log(mutation);
-      // console.log(query);
-      // console.log(collection);
-      // console.log(parameters);
-      // console.log(results);
- 
-      return results;
-    });
-  }
-  */
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
   const newDoc = data[createResolverName].data;
@@ -91,10 +58,17 @@ export const multiQueryUpdater = ({ typeName, fragment, fragmentName, collection
   variablesList.forEach(variables => {
     try {
       const queryResult = cache.readQuery({ query: multiQuery, variables });
-      // TODO: check if the document is appliable to this query, depending on the selector
-      // TODO: handle order using the selector
-      const newData = addToData({ queryResult, multiResolverName, document: newDoc });
-      cache.writeQuery({ query: multiQuery, variables, data: newData });
+      // get mongo selector and options objects based on current terms
+      const terms = variables.input.terms;
+      const parameters = collection.getParameters(terms);
+      const { selector, options: paramOptions } = parameters;
+      const { sort } = paramOptions;
+      // check if the document should be included in this query, given the query filters
+      if (matchSelector(document, selector)) {
+        // TODO: handle order using the selector
+        const newData = addToData({ queryResult, multiResolverName, document: newDoc, sort, selector });
+        cache.writeQuery({ query: multiQuery, variables, data: newData });
+      }
     } catch (err) {
       // could not find the query
       // TODO: be smarter about the error cases and check only for cache mismatch
