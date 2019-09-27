@@ -1,3 +1,5 @@
+import { cpus } from 'os';
+
 /**
  *  Optimistic cache updates
  */
@@ -49,6 +51,15 @@ export const getVariablesListFromCache = (proxy, queryName) => {
 };
 
 
+/*
+
+Test if a document is already in a result set
+
+*/
+export const isInData = ({ queryResult, multiResolverName, document }) => positionInSet(queryResult[multiResolverName].results, document) === -1;
+
+export const positionInSet = (results, document) => results.findIndex(item => item._id === document._id);
+
 /**
  * Add to data
  * @param {*} queryData 
@@ -56,13 +67,25 @@ export const getVariablesListFromCache = (proxy, queryName) => {
  */
 export const addToData = ({ queryResult, multiResolverName, document }) => {
     const queryData = queryResult[multiResolverName];
+    const idx = positionInSet(queryData.results, document);
+    let { results, totalCount } = queryData;
+    const newResults = [...results];
+    if (idx !== -1) {
+        // doc has already been added, eg after an optimistic response
+        // update it
+        newResults[idx] = document;
+    } else {
+        // add to list
+        newResults.push(document);
+        totalCount = totalCount + 1;
+    }
     return {
         ...queryResult,
         [multiResolverName]: {
             ...queryData,
             // TODO: check order using mingo
-            results: [...queryData.results, document],
-            totalCount: queryData.totalCount + 1
+            results: newResults,
+            totalCount
         }
     };
 };
@@ -90,12 +113,6 @@ Test if a document is matched by a given selector
 //  return mingoQuery.test(document);
 //};
 
-/*
-
-Test if a document is already in a result set
-
-*/
-// export const isInSet = (data, document) => data.results.find(item => item._id === document._id);
 
 /*
 
