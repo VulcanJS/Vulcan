@@ -7,6 +7,11 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import without from 'lodash/without';
 
+/*
+
+Helpers
+
+*/
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
   return formatLabel({
@@ -17,7 +22,7 @@ const getLabel = (field, fieldName, collection, intl) => {
   });
 };
 
-const getTypeName = (field, fieldName, collection) => {
+const getTypeName = (value, fieldName, collection) => {
   const schema = collection && collection.simpleSchema()._schema;
   const fieldSchema = schema && schema[fieldName];
   if (fieldSchema) {
@@ -25,37 +30,49 @@ const getTypeName = (field, fieldName, collection) => {
     const typeName = typeof type === 'function' ? type.name : type;
     return typeName;
   } else {
-    return typeof field;
+    return typeof value;
   }
 };
 
-const parseImageUrl = (value, forceIsImage = false) => {
+/*
+
+Card Item Components
+
+*/
+
+// Image
+const CardItemImage = ({ value, force = false, Components }) => {
   const isImage =
     ['.png', '.jpg', '.gif'].indexOf(value.substr(-4)) !== -1 ||
     ['.webp', '.jpeg'].indexOf(value.substr(-5)) !== -1;
-  return isImage || forceIsImage ? (
+  return isImage || force ? (
     <img
+      className="contents-image"
       style={{ width: '100%', minWidth: 80, maxWidth: 200, display: 'block' }}
       src={value}
       alt={value}
     />
   ) : (
-    parseUrl(value)
+    <Components.CardItemUrl value={value} Components={Components} />
   );
 };
+registerComponent({ name: 'CardItemImage', component: CardItemImage });
 
-const parseUrl = value => {
-  return value.slice(0, 4) === 'http' ? (
-    <a href={value} target="_blank" rel="noopener noreferrer">
-      <LimitedString string={value} />
+// URL
+const CardItemUrl = ({ value, force, Components }) => {
+  return force || value.slice(0, 4) === 'http' ? (
+    <a className="contents-link" href={value} target="_blank" rel="noopener noreferrer">
+      <Components.CardItemString string={value} />
     </a>
   ) : (
-    <LimitedString string={value} />
+    <Components.CardItemString string={value} />
   );
 };
+registerComponent({ name: 'CardItemUrl', component: CardItemUrl });
 
-const LimitedString = ({ string }) => (
-  <div>
+// String
+const CardItemString = ({ string }) => (
+  <div className="contents-string">
     {string.indexOf(' ') === -1 && string.length > 30 ? (
       <span title={string}>{string.substr(0, 30)}…</span>
     ) : (
@@ -63,14 +80,98 @@ const LimitedString = ({ string }) => (
     )}
   </div>
 );
+registerComponent({ name: 'CardItemString', component: CardItemString });
 
-const formatDate = value => moment(new Date(value)).format('YYYY/MM/DD, hh:mm');
+// Date
+const CardItemDate = ({ value }) => (
+  <span className="contents-date">{moment(new Date(value)).format('YYYY/MM/DD, hh:mm')}</span>
+);
+registerComponent({ name: 'CardItemDate', component: CardItemDate });
 
-export const getFieldValue = (value, options = {}) => {
+// Number
+const CardItemNumber = ({ value }) => <code className="contents-number">{value.toString()}</code>;
+registerComponent({ name: 'CardItemNumber', component: CardItemNumber });
+
+// Array
+const CardItemArray = ({ value, Components }) => (
+  <ol className="contents-array">
+    {value.map((item, index) => (
+      <li key={index}>
+        {
+          <Components.CardItemSwitcher
+            value={item}
+            typeName={typeof item}
+            Components={Components}
+          />
+        }
+      </li>
+    ))}
+  </ol>
+);
+registerComponent({ name: 'CardItemArray', component: CardItemArray });
+
+// Object
+const CardItemObject = ({ value: object, Components }) => {
+  if (object.__typename === 'User') {
+    const user = object;
+
+    return (
+      <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
+        <Components.Avatar size="small" user={user} link />
+        <Link to={user.pagePath}>{user.displayName}</Link>
+      </div>
+    );
+  } else {
+    return (
+      <table className="table table-bordered">
+        <tbody>
+          {without(Object.keys(object), '__typename').map(key => (
+            <tr key={key}>
+              <td>
+                <strong>{key}</strong>
+              </td>
+              <td>
+                <Components.CardItemSwitcher
+                  value={object[key]}
+                  typeName={typeof object[key]}
+                  Components={Components}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+};
+registerComponent({ name: 'CardItemObject', component: CardItemObject });
+
+// HTML
+const CardItemHTML = ({ value }) => (
+  <div className="contents-html" dangerouslySetInnerHTML={{ __html: value }} />
+);
+registerComponent({ name: 'CardItemHTML', component: CardItemHTML });
+
+// Default
+const CardItemDefault = ({ value }) => <span>{value.toString()}</span>;
+registerComponent({ name: 'CardItemDefault', component: CardItemDefault });
+
+// Main component
+const CardItemSwitcher = props => {
   // if typeName is not provided, default to typeof value
   // note: contents provides additional clues about the contents (image, video, etc.)
 
-  let { typeName = typeof value, contents } = options;
+  let { value, typeName, contents, Components, fieldName, collection } = props;
+
+  if (!typeName) {
+    if (collection) {
+      typeName = getTypeName(value, fieldName, collection);
+    } else {
+      typeName = typeof value;
+    }
+  }
+
+  const itemProps = { value, Components };
 
   // no value; we return an empty string
   if (typeof value === 'undefined' || value === null) {
@@ -93,83 +194,58 @@ export const getFieldValue = (value, options = {}) => {
     case 'Number':
     case 'number':
     case 'SimpleSchema.Integer':
-      return <code>{value.toString()}</code>;
+      return <Components.CardItemNumber {...itemProps} />;
 
     case 'Array':
-      return (
-        <ol>
-          {value.map((item, index) => (
-            <li key={index}>{getFieldValue(item, { typeName: typeof item })}</li>
-          ))}
-        </ol>
-      );
+      return <Components.CardItemArray {...itemProps} />;
 
     case 'Object':
     case 'object':
-      return getObject(value);
+      return <Components.CardItemObject {...itemProps} />;
 
     case 'Date':
-      return formatDate(value);
+      return <Components.CardItemDate {...itemProps} />;
 
     case 'String':
     case 'string':
       switch (contents) {
         case 'html':
-          return <div dangerouslySetInnerHTML={{ __html: value }} />;
+          return <Components.CardItemHTML {...itemProps} />;
 
         case 'date':
-          return formatDate(value);
+          return <Components.CardItemDate {...itemProps} />;
 
         case 'image':
-          return parseImageUrl(value, true);
+          return <Components.CardItemImage {...itemProps} force={true} />;
 
         case 'url':
-          return parseUrl(value, true);
+          return <Components.CardItemUrl {...itemProps} force={true} />;
 
         default:
           // still attempt to parse string as an image or URL if possible
-          return parseImageUrl(value);
+          return <Components.CardItemImage {...itemProps} />;
       }
 
     default:
-      return value.toString();
+      return <Components.CardItemDefault {...itemProps} />;
   }
 };
+registerComponent({ name: 'CardItemSwitcher', component: CardItemSwitcher });
 
-const getObject = object => {
-  if (object.__typename === 'User') {
-    const user = object;
-
-    return (
-      <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
-        <Components.Avatar size="small" user={user} link />
-        <Link to={user.pagePath}>{user.displayName}</Link>
-      </div>
-    );
-  } else {
-    return (
-      <table className="table table-bordered">
-        <tbody>
-          {without(Object.keys(object), '__typename').map(key => (
-            <tr key={key}>
-              <td>
-                <strong>{key}</strong>
-              </td>
-              <td>{getFieldValue(object[key], { typeName: typeof object[key] })}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-};
-
-const CardItem = ({ label, value, typeName }) => (
+const CardItem = ({ label, value, typeName, Components, fieldName, collection }) => (
   <tr>
     <td className="datacard-label">
       <strong>{label}</strong>
     </td>
-    <td className="datacard-value">{getFieldValue(value, { typeName })}</td>
+    <td className="datacard-value">
+      <Components.CardItemSwitcher
+        value={value}
+        typeName={typeName}
+        Components={Components}
+        fieldName={fieldName}
+        collection={collection}
+      />
+    </td>
   </tr>
 );
 
@@ -204,7 +280,17 @@ const CardEditForm = ({ collection, document, closeModal, ...editFormProps }) =>
 );
 
 const Card = (
-  { title, className, collection, document, currentUser, fields, showEdit = true, ...editFormProps },
+  {
+    title,
+    className,
+    collection,
+    document,
+    currentUser,
+    fields,
+    showEdit = true,
+    Components,
+    ...editFormProps
+  },
   { intl }
 ) => {
   const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
@@ -227,8 +313,10 @@ const Card = (
             <CardItem
               key={index}
               value={document[fieldName]}
-              typeName={getTypeName(document[fieldName], fieldName, collection)}
+              fieldName={fieldName}
+              collection={collection}
               label={getLabel(document[fieldName], fieldName, collection, intl)}
+              Components={Components}
             />
           ))}
         </tbody>

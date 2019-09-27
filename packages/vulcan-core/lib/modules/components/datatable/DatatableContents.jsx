@@ -14,7 +14,7 @@ const DatatableContents = props => {
   let {
     title,
     collection,
-    results,
+    results = [],
     columns,
     loading,
     loadMore,
@@ -42,7 +42,7 @@ const DatatableContents = props => {
 
   // if no columns are provided, default to using keys of first array item
   if (!columns) {
-    columns = Object.keys(results[0]);
+    columns = Object.keys(results[0]).filter(k => k !== '__typename');
   }
 
   const isLoadingMore = networkStatus === 2;
