@@ -113,7 +113,7 @@ Utils.trimHTML = function(html, numWords) {
  * @param {String} str
  */
 Utils.capitalize = function(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str && str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 Utils.t = function(message) {
