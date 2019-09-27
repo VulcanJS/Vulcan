@@ -53,6 +53,7 @@ const DatatableRow = (props, { intl }) => {
           column={column}
           document={document}
           currentUser={currentUser}
+          collection={collection}
         />
       ))}
       {showEdit && (canEdit || canUpdate) ? ( // openCRUD backwards compatibility

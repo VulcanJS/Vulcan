@@ -172,7 +172,7 @@ registerComponent('DatatableFilterContents', DatatableFilterContents);
 Checkboxes
 
 */
-const DatatableFilterCheckboxes = ({ field, options, filters, setFilters }) => {
+const DatatableFilterCheckboxes = ({ field, options, filters = [], setFilters }) => {
   let value = filters;
 
   // all URL values are stored as strings, so convert them back to numbers if needed
