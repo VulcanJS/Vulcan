@@ -130,7 +130,7 @@ class Datatable extends PureComponent {
   };
 
   render() {
-    const { Components, modalProps } = this.props;
+    const { Components, modalProps, data } = this.props;
 
     if (this.props.data) {
       // static JSON datatable
@@ -138,8 +138,8 @@ class Datatable extends PureComponent {
       return (
         <Components.DatatableContents
           Components={Components}
-          columns={Object.keys(this.props.data[0])}
           {...this.props}
+          datatableData={data}
           results={this.props.data}
           showEdit={false}
           showNew={false}
@@ -178,6 +178,17 @@ class Datatable extends PureComponent {
 
       const filterBy = this.state.currentFilters;
 
+      const terms = {};
+      if (!_isEmpty(this.state.query)) {
+        terms.query = this.state.query;
+      }
+      if (!_isEmpty(orderBy)) {
+        terms.orderBy = orderBy;
+      }
+      if (!_isEmpty(filterBy)) {
+        terms.filterBy = filterBy;
+      }
+
       return (
         <Components.DatatableLayout
           Components={Components}
@@ -195,7 +206,7 @@ class Datatable extends PureComponent {
             Components={Components}
             {...this.props}
             collection={collection}
-            terms={{ query: this.state.query, orderBy, filterBy }}
+            terms={terms}
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
