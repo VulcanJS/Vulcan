@@ -2,6 +2,7 @@
  * Generate graphQL for Vulcan schema fields
  */
 import { isIntlField } from '../intl.js';
+import relations from './relations.js';
 
 // get GraphQL type for a given schema and field name
 const getGraphQLType = (schema, fieldName, isInput = false) => {
@@ -117,9 +118,16 @@ export const getSchemaFields = (schema, typeName) => {
                 const { Users, currentUser } = context;
                 // check that current user has permission to access the original non-resolved field
                 const canReadField = Users.canReadField(currentUser, field, document);
-                return canReadField
-                  ? field.resolveAs.resolver(document, args, context, info)
-                  : null;
+                if (canReadField) {
+                  const { relation, resolver } = field.resolveAs;
+                  if (relation) {
+                    return relations[relation]({document, args, context, info, fieldName, typeName: fieldGraphQLType});
+                  } else {
+                    return resolver(document, args, context, info);
+                  }
+                } else {
+                  return null;
+                }
               },
             },
           };

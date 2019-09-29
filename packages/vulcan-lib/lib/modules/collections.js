@@ -28,6 +28,9 @@ export const getCollection = name =>
       name === collectionName || name === collectionName.toLowerCase()
   );
 
+export const getCollectionByTypeName = name =>
+  Collections.find(({ options: { typeName } }) => name === typeName);
+
 // TODO: find more reliable way to get collection name from type name?
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
