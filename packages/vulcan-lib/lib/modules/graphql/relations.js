@@ -14,3 +14,20 @@ export const hasOne = async ({ document, fieldName, context, typeName }) => {
     relatedDocument
   );
 };
+
+export const hasMany = async ({ document, fieldName, context, typeName }) => {
+  // get rid of [ and ] in typeName
+  const parsedTypeName = typeName.replace('[', '').replace(']', '');
+  // if document doesn't have a "foreign key" field, return null
+  if (!document[fieldName]) return null;
+  // get related collection
+  const relatedCollection = getCollectionByTypeName(parsedTypeName);
+  // get related documents
+  const relatedDocuments = await relatedCollection.loader.loadMany(document[fieldName]);
+  // filter related document to restrict viewable fields
+  return context.Users.restrictViewableFields(
+    context.currentUser,
+    relatedCollection,
+    relatedDocuments
+  );
+};
