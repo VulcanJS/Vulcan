@@ -163,66 +163,74 @@ const CardItemHTML = ({ value }) => (
 registerComponent({ name: 'CardItemHTML', component: CardItemHTML });
 
 // HasOne Relation
-const CardItemRelationHasOne = ({ relatedDocument, relatedCollection, fieldSchema }) => (
+const CardItemRelationHasOne = ({ Components, ...rest }) => (
   <div className="contents-hasone">
-    {
-      <Components.CardItemRelationItem
-        document={relatedDocument}
-        fieldSchema={fieldSchema}
-        collection={relatedCollection}
-      />
-    }
+    {<Components.CardItemRelationItem Components={Components} {...rest} />}
   </div>
 );
 registerComponent({ name: 'CardItemRelationHasOne', component: CardItemRelationHasOne });
 
 // HasMany Relation
-const CardItemRelationHasMany = ({
-  relatedDocument: relatedDocuments,
-  relatedCollection,
-  fieldSchema,
-}) => (
-  <ul className="contents-hasmany">
-    {relatedDocuments.map(document => (
-      <li key={document._id}>
-        <Components.CardItemRelationItem
-          document={document}
-          fieldSchema={fieldSchema}
-          collection={relatedCollection}
-        />
-      </li>
+const CardItemRelationHasMany = ({ relatedDocument: relatedDocuments, Components, ...rest }) => (
+  <div className="contents-hasmany">
+    {relatedDocuments.map(relatedDocument => (
+      <Components.CardItemRelationItem
+        key={relatedDocument._id}
+        relatedDocument={relatedDocument}
+        Components={Components}
+        {...rest}
+      />
     ))}
-  </ul>
+  </div>
 );
 registerComponent({ name: 'CardItemRelationHasMany', component: CardItemRelationHasMany });
 
+/*
+
+Tokens are components used to display an invidual element like a user name, 
+link to a post, category name, etc. 
+
+The naming convention is Type+Token, e.g. UserToken, PostToken, CategoryToken…
+
+*/
+
 // Relation Item
-const CardItemRelationItem = ({ document, collection }) => {
-  const label = collection.options.getLabel ? collection.options.getLabel(document) : document._id;
-  return document.__typename === 'User' ? (
-    <Components.CardItemUser user={document} />
+const CardItemRelationItem = ({ relatedDocument, relatedCollection, Components }) => {
+  const label = relatedCollection.options.getLabel
+    ? relatedCollection.options.getLabel(relatedDocument)
+    : relatedDocument._id;
+  const typeName = relatedDocument.__typename;
+  const Token = Components[`${typeName}Token`];
+  return Token ? (
+    <Token document={relatedDocument} label={label} />
   ) : (
-    <span className="relation-item">
-      {document.pagePath ? <Link to={document.pagePath}>{label}</Link> : <span>{label}</span>}
-    </span>
+    <Components.DefaultToken document={relatedDocument} label={label} />
   );
 };
 registerComponent({ name: 'CardItemRelationItem', component: CardItemRelationItem });
 
-// User Item
-const CardItemUser = ({ user }) => (
+// Default Token
+const DefaultToken = ({ document, label }) => (
+  <li className="relation-default-token">
+    {document.pagePath ? <Link to={document.pagePath}>{label}</Link> : <span>{label}</span>}
+  </li>
+);
+registerComponent({ name: 'DefaultToken', component: DefaultToken });
+
+// User Token
+const UserToken = ({ document }) => (
   <div className="contents-user user-item">
-    <Components.Avatar size="small" user={user} />
-    {user.pagePath ? (
-      <Link className="user-item-name" to={user.pagePath}>
-        {user.displayName}
+    <Components.Avatar size="small" user={document} />
+    {document.pagePath ? (
+      <Link className="user-item-name" to={document.pagePath}>
+        {document.displayName}
       </Link>
     ) : (
-      <span className="user-item-name">{user.displayName}</span>
+      <span className="user-item-name">{document.displayName}</span>
     )}
   </div>
 );
-registerComponent({ name: 'CardItemUser', component: CardItemUser });
+registerComponent({ name: 'UserToken', component: UserToken });
 
 // Default
 const CardItemDefault = ({ value }) => <span>{value.toString()}</span>;
