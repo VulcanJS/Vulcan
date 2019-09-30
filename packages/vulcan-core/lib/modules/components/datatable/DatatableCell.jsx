@@ -44,10 +44,14 @@ registerComponent({ name: 'DatatableCellLayout', component: DatatableCellLayout 
 DatatableDefaultCell Component
 
 */
-const DatatableDefaultCell = ({ column, document, Components, collection }) => {
-  const fieldName = column.name;
-  const props = { value: document[fieldName], fieldName, Components, collection };
+const DatatableDefaultCell = ({ column, document, ...rest }) => (
+  <Components.CardItemSwitcher
+    value={document[column.name]}
+    document={document}
+    fieldName={column.name}
+    {...column}
+    {...rest}
+  />
+);
 
-  return <Components.CardItemSwitcher {...props} {...column} />;
-};
 registerComponent('DatatableDefaultCell', DatatableDefaultCell);

@@ -28,8 +28,11 @@ export const getCollection = name =>
       name === collectionName || name === collectionName.toLowerCase()
   );
 
-export const getCollectionByTypeName = name =>
-  Collections.find(({ options: { typeName } }) => name === typeName);
+export const getCollectionByTypeName = name => {
+  // in case typeName is for an array ('[User]'), get rid of brackets
+  let parsedTypeName = name.replace('[', '').replace(']', '');
+  return Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+};
 
 // TODO: find more reliable way to get collection name from type name?
 export const getCollectionName = typeName => Utils.pluralize(typeName);
@@ -171,6 +174,15 @@ export const createCollection = options => {
     hasIntlFields = true; // we have at least one intl field
     addCallback(`${typeName.toLowerCase()}.collection`, addIntlFields);
   }
+
+  // add "auto-relations" to schema resolvers
+  Object.keys(schema).map(fieldName => {
+    const field = schema[fieldName];
+    // if no resolver or relation is provided, try to guess relation and add it to schema
+    if (field.resolveAs && !field.resolveAs.resolver && !field.resolveAs.relation) {
+      field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+    }
+  });
 
   //run schema callbacks and run general callbacks last
   schema = runCallbacks({

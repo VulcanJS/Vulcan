@@ -3,13 +3,6 @@
  */
 import { isIntlField } from '../intl.js';
 import relations from './relations.js';
-import { Utils } from '../utils.js';
-
-// if schema field is an array, use hasMany relation; else use hasOne
-const guessRelation = field => {
-  const type = Utils.getFieldType(field);
-  return type === Array ? 'hasMany' : 'hasOne';
-};
 
 // get GraphQL type for a given schema and field name
 const getGraphQLType = (schema, fieldName, isInput = false) => {
@@ -76,24 +69,31 @@ export const getSchemaFields = (schema, typeName) => {
     const fieldType = getGraphQLType(schema, fieldName);
     const inputFieldType = getGraphQLType(schema, fieldName, true);
 
+    const {
+      canRead,
+      canCreate,
+      canUpdate,
+      viewableBy,
+      insertableBy,
+      editableBy,
+      resolveAs,
+      description,
+      selectable,
+      unique,
+    } = field;
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
     // OpenCRUD backwards compatibility
     if (
-      (field.canRead ||
-        field.canCreate ||
-        field.canUpdate ||
-        field.viewableBy ||
-        field.insertableBy ||
-        field.editableBy) &&
+      (canRead || canCreate || canUpdate || viewableBy || insertableBy || editableBy) &&
       fieldName.indexOf('$') === -1
     ) {
-      const fieldDescription = field.description;
+      const fieldDescription = description;
       const fieldDirective = isIntlField(field) ? '@intl' : '';
       const fieldArguments = isIntlField(field) ? [{ name: 'locale', type: 'String' }] : [];
 
       // if field is readable, make it filterable/orderable too
-      if (field.canRead) {
+      if (canRead || viewableBy) {
         fields.readable.push({
           name: fieldName,
           type: fieldType,
@@ -101,20 +101,20 @@ export const getSchemaFields = (schema, typeName) => {
       }
 
       // if field has a resolveAs, push it to schema
-      if (field.resolveAs) {
+      if (resolveAs) {
         // get resolver name from resolveAs object, or else default to field name
-        const resolverName = field.resolveAs.fieldName || fieldName;
+        const resolverName = resolveAs.fieldName || fieldName;
 
         // use specified GraphQL type or else convert schema type
-        const fieldGraphQLType = field.resolveAs.type || fieldType;
+        const fieldGraphQLType = resolveAs.type || fieldType;
 
         // if resolveAs is an object, first push its type definition
         // include arguments if there are any
         // note: resolved fields are not internationalized
         fields.mainType.push({
-          description: field.resolveAs.description,
+          description: resolveAs.description,
           name: resolverName,
-          args: field.resolveAs.arguments,
+          args: resolveAs.arguments,
           type: fieldGraphQLType,
         });
 
@@ -125,14 +125,12 @@ export const getSchemaFields = (schema, typeName) => {
               const { Users, currentUser } = context;
               // check that current user has permission to access the original non-resolved field
               const canReadField = Users.canReadField(currentUser, field, document);
+              const { resolver, relation } = resolveAs;
               if (canReadField) {
-                const { relation, resolver } = field.resolveAs;
                 if (resolver) {
                   return resolver(document, args, context, info);
                 } else {
-                  // try to guess relation if not provided
-                  const relationName = relation ? relation : guessRelation(field);
-                  return relations[relationName]({
+                  return relations[relation]({
                     document,
                     args,
                     context,
@@ -150,7 +148,7 @@ export const getSchemaFields = (schema, typeName) => {
         resolvers.push(resolver);
 
         // if addOriginalField option is enabled, also add original field to schema
-        if (field.resolveAs.addOriginalField && fieldType) {
+        if (resolveAs.addOriginalField && fieldType) {
           fields.mainType.push({
             description: fieldDescription,
             name: fieldName,
@@ -173,7 +171,7 @@ export const getSchemaFields = (schema, typeName) => {
       }
 
       // OpenCRUD backwards compatibility
-      if (field.canCreate || field.insertableBy) {
+      if (canCreate || insertableBy) {
         fields.create.push({
           name: fieldName,
           type: inputFieldType,
@@ -181,7 +179,7 @@ export const getSchemaFields = (schema, typeName) => {
         });
       }
       // OpenCRUD backwards compatibility
-      if (field.canUpdate || field.editableBy) {
+      if (canUpdate || editableBy) {
         fields.update.push({
           name: fieldName,
           type: inputFieldType,
@@ -206,14 +204,14 @@ export const getSchemaFields = (schema, typeName) => {
       //   });
       // }
 
-      if (field.selectable) {
+      if (selectable) {
         fields.selector.push({
           name: fieldName,
           type: inputFieldType,
         });
       }
 
-      if (field.selectable && field.unique) {
+      if (selectable && unique) {
         fields.selectorUnique.push({
           name: fieldName,
           type: inputFieldType,
@@ -221,6 +219,7 @@ export const getSchemaFields = (schema, typeName) => {
       }
     }
   });
+
   return {
     fields,
     resolvers,
