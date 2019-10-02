@@ -134,9 +134,13 @@ export function getDefaultResolvers(options) {
 
         // use Dataloader if doc is selected by documentId/_id
         const documentId = oldSelector.documentId || oldSelector._id;
+        const slug = oldSelector.slug;
 
         if (documentId) {
           doc = await collection.loader.load(documentId);
+        } else if (slug) {
+          // make an exception for slug
+          doc = await Connectors.get(collection, { slug });
         } else {
           let { selector, filteredFields } = Connectors.filter(collection, input);
 
