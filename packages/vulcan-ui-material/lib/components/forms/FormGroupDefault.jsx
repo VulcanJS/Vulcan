@@ -99,10 +99,10 @@ const FormGroupHeader = ({ toggle, collapsed, label, group, classes }) => {
 
 
 FormGroupHeader.propTypes = {
-  toggle: PropTypes.func.isRequired,
-  collapsed: PropTypes.bool.isRequired,
+  toggle: PropTypes.func,
+  collapsed: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  group: PropTypes.object.isRequired,
+  group: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
 

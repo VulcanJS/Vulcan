@@ -4,6 +4,7 @@ import createReactClass from 'create-react-class';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { Components } from 'meteor/vulcan:core';
 
 
 //noinspection JSUnusedGlobalSymbols
@@ -12,31 +13,13 @@ const MuiFormControl = createReactClass({
   propTypes: {
     label: PropTypes.node,
     children: PropTypes.node,
-    required: PropTypes.bool,
+    optional: PropTypes.bool,
     hasErrors: PropTypes.bool,
     fakeLabel: PropTypes.bool,
     hideLabel: PropTypes.bool,
     layout: PropTypes.oneOf(['horizontal', 'vertical', 'elementOnly']),
-    htmlFor: PropTypes.string
-  },
-  
-  getDefaultProps: function () {
-    return {
-      label: '',
-      required: false,
-      hasErrors: false,
-      fakeLabel: false,
-      hideLabel: false,
-    };
-  },
-  
-  renderRequiredSymbol: function () {
-    if (this.props.required === false) {
-      return null;
-    }
-    return (
-      <span className="required-symbol"> *</span>
-    );
+    htmlFor: PropTypes.string,
+    inputType: PropTypes.string,
   },
   
   renderLabel: function () {
@@ -48,10 +31,9 @@ const MuiFormControl = createReactClass({
       return (
         <FormLabel className="control-label legend"
                    component="legend"
-                   data-required={this.props.required}
+                   data-required={!this.props.optional}
         >
-          {this.props.label}
-          {this.renderRequiredSymbol()}
+          {this.props.label}<Components.RequiredIndicator optional={this.props.optional} value={this.props.value}/>
         </FormLabel>
       );
     }
@@ -60,12 +42,11 @@ const MuiFormControl = createReactClass({
     
     return (
       <InputLabel className="control-label"
-                  data-required={this.props.required}
+                  data-required={!this.props.optional}
                   htmlFor={this.props.htmlFor}
                   shrink={shrink}
       >
-        {this.props.label}
-        {this.renderRequiredSymbol()}
+        {this.props.label}<Components.RequiredIndicator optional={this.props.optional} value={this.props.value}/>
       </InputLabel>
     );
   },

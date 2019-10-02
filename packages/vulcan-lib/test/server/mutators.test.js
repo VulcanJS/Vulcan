@@ -90,33 +90,15 @@ describe('vulcan:lib/mutators', function () {
   let updateArgs;
   before(async function () {
     initServerTest();
+  })
 
-    /*Foo2s = await isoCreateCollection({
-      collectionName: 'Foo2s',
-      typeName: 'Foo2',
-      schema: {
-        _id: {
-          type: String,
-          canRead: ['guests'],
-          optional: true,
-        },
-        foo: {
-          type: String,
-          canCreate: ['guests'],
-          canRead: ['guests'],
-          canUpdate: ['guests'],
-        },
-      },
-      resolvers: getDefaultResolvers('Foo2s'),
-      mutations: getDefaultMutations('Foo2s'),
-    });*/
-  });
   beforeEach(function () {
     removeAllCallbacks('foo2.create.after');
     removeAllCallbacks('foo2.create.before');
     removeAllCallbacks('foo2.create.async');
     defaultArgs = {
       collection: Foo2s,
+      document: { foo2: 'bar' },
       currentUser: null,
       validate: () => true,
       context: {
@@ -266,6 +248,54 @@ describe('vulcan:lib/mutators', function () {
         //expect(originalData.after).toBeUndefined()
       });
       const { data: resultDocument } = await createMutator({ ...createArgs, document: { foo2: 'bar' } });
+      expect(asyncSpy.calledOnce).toBe(true);
+      // TODO: check result
+    });
+
+    test('should run createMutator', async function () {
+      const { data: resultDocument } = await createMutator(defaultArgs);
+      expect(resultDocument).toBeDefined();
+    });
+    // before
+    test.skip('run before callback before document is saved', function () {
+      // TODO get the document in the database
+    });
+    //after
+    test('run after callback  before document is returned', async function () {
+      const afterSpy = sinon.spy();
+      addCallback('foo2.create.after', (document) => {
+        afterSpy();
+        document.after = true;
+        return document;
+      });
+      const { data: resultDocument } = await createMutator(defaultArgs);
+      expect(afterSpy.calledOnce).toBe(true);
+      expect(resultDocument.after).toBe(true);
+    });
+    // async
+    test('run async callback', async function () {
+      // TODO need a sinon stub
+      const asyncSpy = sinon.spy();
+      addCallback('foo2.create.async', (properties) => {
+        asyncSpy(properties);
+        // TODO need a sinon stub
+        //expect(originalData.after).toBeUndefined()
+      });
+      const { data: resultDocument } = await createMutator(defaultArgs);
+      expect(asyncSpy.calledOnce).toBe(true);
+    });
+    test.skip('provide initial data to async callbacks', async function () {
+      const asyncSpy = sinon.spy();
+      addCallback('foo2.create.after', (document) => {
+        document.after = true;
+        return document;
+      });
+      addCallback('foo2.create.async', (properties) => {
+        asyncSpy(properties);
+        // TODO need a sinon stub
+        //expect(originalData.after).toBeUndefined()
+      });
+      const { data: resultDocument } = await createMutator(defaultArgs);
       expect(asyncSpy.calledOnce).toBe(true);
       // TODO: check result
     });

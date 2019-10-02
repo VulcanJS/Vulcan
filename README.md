@@ -6,7 +6,6 @@
 
 # Vulcan
 
-[Version 1.11.2](https://github.com/VulcanJS/Vulcan/releases)
 
 Vulcan is a React+GraphQL framework for Meteor. 
 
@@ -39,6 +38,10 @@ Find more info in the [documentation](http://docs.vulcanjs.org/#Install).
 - [Old Telescope Homepage](http://telescopeapp.org)
 
 ### Other Versions
+
+[See all releases](https://github.com/VulcanJS/Vulcan/releases).
+
+To update an existing Vulcan app, [see migration doc](https://github.com/VulcanJS/Vulcan/)) and [changelog](https://github.com/VulcanJS/Vulcan/).
 
 You can find the older, non-Apollo version of Telescope Nova on the [nova-classic](https://github.com/TelescopeJS/Telescope/tree/nova-classic) branch. 
 

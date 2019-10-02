@@ -18,6 +18,7 @@ export const styles = theme => ({
   inputFocused: {
     '& .clear-enabled': { opacity: 0.54 }
   },
+  inputDisabled: {},
 });
 
 
@@ -145,7 +146,7 @@ const MuiInput = createReactClass({
         startAdornment={startAdornment}
         endAdornment={endAdornment}
         placeholder={this.props.placeholder}
-        classes={{ root: classes.inputRoot, focused: classes.inputFocused }}
+        classes={{ root: classes.inputRoot, focused: classes.inputFocused, disabled: classes.inputDisabled }}
       />
     );
   },

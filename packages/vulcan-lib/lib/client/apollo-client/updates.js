@@ -35,6 +35,7 @@ Add a document to a set of results
 */
 export const addToSet = (queryData, document) => {
   const newData = {
+    ...queryData,
     results: [...queryData.results, document],
     totalCount: queryData.totalCount + 1,
   };
@@ -50,7 +51,7 @@ export const updateInSet = (queryData, document) => {
   const oldDocument = queryData.results.find(item => item._id === document._id);
   const newDocument = { ...oldDocument, ...document };
   const index = queryData.results.findIndex(item => item._id === document._id);
-  const newData = { results: [...queryData.results] }; // clone
+  const newData = { ...queryData, results: [...queryData.results] }; // clone
   newData.results[index] = newDocument;
   return newData;
 };
@@ -74,6 +75,7 @@ Remove a document from a set
 */
 export const removeFromSet = (queryData, document) => {
   const newData = {
+    ...queryData,
     results: queryData.results.filter(item => item._id !== document._id),
     totalCount: queryData.totalCount - 1,
   };

@@ -8,7 +8,7 @@ import { getSetting, registerSetting } from '../modules/settings.js';
 
 registerSetting('locale', 'en');
 
-var areIntlLocalesSupported = require('intl-locales-supported');
+import areIntlLocalesSupported from 'intl-locales-supported'
 
 var localesMyAppSupports = [
   getSetting('locale', 'en')
