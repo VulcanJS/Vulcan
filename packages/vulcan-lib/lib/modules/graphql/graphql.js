@@ -19,7 +19,6 @@ import {
   createDataInputTemplate,
   updateInputTemplate,
   updateDataInputTemplate,
-  orderByInputTemplate,
   selectorUniqueInputTemplate,
   deleteInputTemplate,
   upsertInputTemplate,

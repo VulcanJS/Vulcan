@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import without from 'lodash/without';
+import withComponents from '../containers/withComponents.js';
 
 /*
 
@@ -450,4 +451,8 @@ Card.contextTypes = {
   intl: intlShape,
 };
 
-registerComponent('Card', Card);
+registerComponent({
+  name: 'Card',
+  component: Card,
+  hocs: [withComponents],
+});
