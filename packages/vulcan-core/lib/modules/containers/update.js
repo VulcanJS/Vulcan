@@ -46,6 +46,7 @@ export const buildUpdateQuery = ({ typeName, fragmentName, fragment }) => (
 export const useUpdate = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
+  const { mutationOptions = {} } = options;
 
   const typeName = collection.options.typeName;
   const query = buildUpdateQuery({ typeName, fragmentName, fragment });
@@ -56,7 +57,8 @@ export const useUpdate = (options) => {
   }
   );
   const extendedUpdateFunc = ({ data, selector }) => updateFunc({
-    variables: { data, selector }
+    variables: { data, selector },
+    ...mutationOptions
   });
   return [extendedUpdateFunc];
 };

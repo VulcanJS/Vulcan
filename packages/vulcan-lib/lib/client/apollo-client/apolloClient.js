@@ -1,6 +1,5 @@
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import watchedMutationLink from './links/watchedMutation';
 import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
@@ -9,7 +8,7 @@ import cache from './cache';
 import { getTerminatingLinks, getLinks } from './links/registerLinks';
 
 // these links do not change once created
-const staticLinks = [watchedMutationLink, errorLink, meteorAccountsLink];
+const staticLinks = [errorLink, meteorAccountsLink];
 
 let apolloClient;
 export const createApolloClient = () => {

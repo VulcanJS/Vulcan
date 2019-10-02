@@ -31,6 +31,8 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import { buildMultiQuery } from './multi';
+import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -38,17 +40,47 @@ export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
     ${fragment}
   `
 );
+
+// remove value from the cached lists
+const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
+  const multiResolverName = collection.options.multiResolverName;
+  const deleteResolverName = `delete${typeName}`;
+  return (cache, { data }) => {
+    // update multi queries
+    const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
+    const removedDoc = data[deleteResolverName].data;
+    // get all the resolvers that match
+    const variablesList = getVariablesListFromCache(cache, multiResolverName);
+    variablesList.forEach(variables => {
+      try {
+        const queryResult = cache.readQuery({ query: multiQuery, variables });
+        const newData = removeFromData({ queryResult, multiResolverName, document: removedDoc });
+        cache.writeQuery({ query: multiQuery, variables, data: newData });
+      } catch (err) {
+        // could not find the query
+        // TODO: be smarter about the error cases and check only for cache mismatch
+        console.log(err);
+      }
+    });
+  };
+};
+
 export const useDelete = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
+  const { mutationOptions = {} } = options;
 
   const query = buildDeleteQuery({
     fragment,
     fragmentName, typeName
   });
 
-  const [deleteFunc] = useMutation(query);
+  const [deleteFunc] = useMutation(query, {
+    // optimistic update
+    update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
+    ...mutationOptions
+  });
   const extendedDeleteFunc = (selector) => deleteFunc({ variables: { selector } });
   return [extendedDeleteFunc];
 };
