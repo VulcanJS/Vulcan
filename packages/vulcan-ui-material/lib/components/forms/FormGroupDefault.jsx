@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { replaceComponent } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Collapse from '@material-ui/core/Collapse';
 import Paper from '@material-ui/core/Paper';
@@ -56,14 +56,19 @@ const styles = theme => ({
     overflow: 'visible',
   },
   
+  hidden: {
+    display: 'none',
+  },
+  
 });
 
 
-const FormGroupHeader = ({ toggle, collapsed, label, group, classes }) => {
+const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) => {
   const collapsible = group && group.collapsible || group && group.name === 'admin';
   
   return (
-    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-group-header')}
+    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 
+      hidden && classes.hidden, 'form-group-header')}
          onClick={collapsible ? toggle : null}
     >
       
@@ -101,16 +106,18 @@ const FormGroupHeader = ({ toggle, collapsed, label, group, classes }) => {
 FormGroupHeader.propTypes = {
   toggle: PropTypes.func,
   collapsed: PropTypes.bool,
+  hidden: PropTypes.bool,
   label: PropTypes.string.isRequired,
   group: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
 
 
-replaceComponent('FormGroupHeader', FormGroupHeader, [withStyles, styles]);
+registerComponent('FormGroupHeader', FormGroupHeader, [withStyles, styles]);
 
 
-const FormGroupLayout = ({ label, anchorName, collapsed, hasErrors, heading, group, children, classes }) => {
+const FormGroupLayout = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
+  const collapsedIn = (!collapsed && !hidden) || hasErrors;
   
   return (
     <div className={classNames(classes.layoutRoot, 'form-section', `form-section-${anchorName}`)}>
@@ -119,7 +126,7 @@ const FormGroupLayout = ({ label, anchorName, collapsed, hasErrors, heading, gro
       
       {heading}
       
-      <Collapse classes={{ container: classes.container, entered: classes.entered }} in={!collapsed || hasErrors}>
+      <Collapse classes={{ container: classes.container, entered: classes.entered }} in={collapsedIn}>
         <Paper className={classes.paper}>
           
           {children}
@@ -135,6 +142,7 @@ FormGroupLayout.propTypes = {
   label: PropTypes.string.isRequired,
   anchorName: PropTypes.string.isRequired,
   collapsed: PropTypes.bool.isRequired,
+  hidden: PropTypes.bool.isRequired,
   hasErrors: PropTypes.bool.isRequired,
   heading: PropTypes.node,
   group: PropTypes.object.isRequired,
@@ -143,5 +151,5 @@ FormGroupLayout.propTypes = {
 };
 
 
-replaceComponent('FormGroupLayout', FormGroupLayout, [withStyles, styles]);
+registerComponent('FormGroupLayout', FormGroupLayout, [withStyles, styles]);
 

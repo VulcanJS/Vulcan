@@ -10,6 +10,10 @@ const styles = theme => ({
   root: {
     minWidth: '320px'
   },
+  
+  hidden: {
+    display: 'none',
+  }
 
 });
 
@@ -22,9 +26,9 @@ const FormGroupHeaderNone = () => {
 registerComponent('FormGroupHeaderNone', FormGroupHeaderNone, [withStyles, styles]);
 
 
-const FormGroupLayoutNone = ({ label, anchorName, collapsed, hasErrors, heading, group, children, classes }) => {
+const FormGroupLayoutNone = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
   return (
-    <div className={classNames(classes.root, 'form-section', `form-section-${anchorName}`)}>
+    <div className={classNames(classes.root, hidden && classes.hidden,'form-section', `form-section-${anchorName}`)}>
       
       <a name={anchorName}/>
   
@@ -39,6 +43,7 @@ FormGroupLayoutNone.propTypes = {
   label: PropTypes.string.isRequired,
   anchorName: PropTypes.string.isRequired,
   collapsed: PropTypes.bool.isRequired,
+  hidden: PropTypes.bool.isRequired,
   hasErrors: PropTypes.bool.isRequired,
   heading: PropTypes.node,
   group: PropTypes.object.isRequired,
