@@ -130,6 +130,9 @@ export default {
       'maxCount',
       'visibleItemIndex',
       'prefilledProps',
+      'addItem',
+      'nestedArrayErrors',
+      'hasErrors',
     ];
     
     return _omit(props, removedFields);

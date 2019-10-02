@@ -8,3 +8,4 @@ const Default = ({ refFunction, ...properties }) =>
 
 
 registerComponent('FormComponentDefault', Default);
+registerComponent('FormComponentText', Default);

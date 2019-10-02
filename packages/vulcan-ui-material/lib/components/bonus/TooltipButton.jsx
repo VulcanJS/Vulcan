@@ -27,7 +27,9 @@ const styles = theme => ({
     display: 'inline-block',
   },
   
-  button: {},
+  button: {
+    zIndex: 2,
+  },
   
   popoverPopper: {
     zIndex: 1700,
@@ -198,7 +200,7 @@ const TooltipButton = (props, { intl }) => {
                                 {...properties}
                                 aria-label={title}
                                 ref={buttonRef}
-                                disabled={loading || disabled}
+                                disabled={(loading && !(disabled === false)) || disabled}
                     >
                       {iconWithClass}
                     </IconButton>

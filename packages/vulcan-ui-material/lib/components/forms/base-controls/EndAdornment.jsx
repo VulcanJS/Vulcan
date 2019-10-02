@@ -20,7 +20,8 @@ export const styles = theme => ({
     },
     '& > * + *': {
       marginLeft: 8,
-    }
+    },
+    height: 'auto',
   },
   clearButton: {
     opacity: 0,
