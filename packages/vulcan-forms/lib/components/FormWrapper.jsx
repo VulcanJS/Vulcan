@@ -190,9 +190,11 @@ class FormWrapper extends PureComponent {
       collection: this.props.collection,
       fragment: queryFragment,
       extraQueries,
-      fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+      queryOptions: {
+        fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+        pollInterval: 0, // no polling, only load data once
+      },
       enableCache: false,
-      pollInterval: 0, // no polling, only load data once
     };
 
     // options for withNew, withUpdate, and withDelete HoCs
@@ -208,8 +210,8 @@ class FormWrapper extends PureComponent {
       return loading ? (
         <Components.Loading />
       ) : (
-        <Components.Form document={document} loading={loading} {...childProps} {...props} />
-      );
+          <Components.Form document={document} loading={loading} {...childProps} {...props} />
+        );
     };
     Loader.displayName = 'withLoader(Form)';
 
