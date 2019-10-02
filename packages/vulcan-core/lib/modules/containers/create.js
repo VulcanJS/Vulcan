@@ -42,6 +42,9 @@ export const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
   return query;
 };
 
+/**
+ * Update cached list of data after a document creation
+ */
 export const multiQueryUpdater = ({
   typeName,
   fragment,
@@ -78,6 +81,7 @@ export const multiQueryUpdater = ({
 };
 
 export const useCreate = (options) => {
+  const { mutationOptions = {} } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
@@ -85,7 +89,8 @@ export const useCreate = (options) => {
 
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
   const [createFunc] = useMutation(query, {
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection })
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
+    ...mutationOptions
   });
   // so the syntax is useCreate({collection: ...}, {data: ...})
   const extendedCreateFunc = (args) => createFunc({ variables: { data: args.data } });

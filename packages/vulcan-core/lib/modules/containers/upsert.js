@@ -46,6 +46,7 @@ export const useUpsert = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
+  const { mutationOptions = {} } = options;
 
   const query = buildUpsertQuery({ typeName, fragmentName, fragment });
 
@@ -53,7 +54,8 @@ export const useUpsert = options => {
     errorPolicy: 'all',
     // we reuse the update function create, which should actually support
     // upserting
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection })
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
+    ...mutationOptions
   });
 
   const extendedUpsertFunc = ({ data, selector }) => upsertFunc({ variables: { data, selector } });

@@ -40,12 +40,36 @@ export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
     ${fragment}
   `
 );
+
+// remove value from the cached lists
+const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
+  const multiResolverName = collection.options.multiResolverName;
+  const deleteResolverName = `delete${typeName}`;
+  return (cache, { data }) => {
+    // update multi queries
+    const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
+    const removedDoc = data[deleteResolverName].data;
+    // get all the resolvers that match
+    const variablesList = getVariablesListFromCache(cache, multiResolverName);
+    variablesList.forEach(variables => {
+      try {
+        const queryResult = cache.readQuery({ query: multiQuery, variables });
+        const newData = removeFromData({ queryResult, multiResolverName, document: removedDoc });
+        cache.writeQuery({ query: multiQuery, variables, data: newData });
+      } catch (err) {
+        // could not find the query
+        // TODO: be smarter about the error cases and check only for cache mismatch
+        console.log(err);
+      }
+    });
+  };
+};
+
 export const useDelete = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
-  const multiResolverName = collection.options.multiResolverName;
-  const deleteResolverName = `delete${typeName}`;
+  const { mutationOptions = {} } = options;
 
   const query = buildDeleteQuery({
     fragment,
@@ -54,24 +78,8 @@ export const useDelete = (options) => {
 
   const [deleteFunc] = useMutation(query, {
     // optimistic update
-    update: (cache, { data }) => {
-      // update multi queries
-      const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
-      const removedDoc = data[deleteResolverName].data;
-      // get all the resolvers that match
-      const variablesList = getVariablesListFromCache(cache, multiResolverName);
-      variablesList.forEach(variables => {
-        try {
-          const queryResult = cache.readQuery({ query: multiQuery, variables });
-          const newData = removeFromData({ queryResult, multiResolverName, document: removedDoc });
-          cache.writeQuery({ query: multiQuery, variables, data: newData });
-        } catch (err) {
-          // could not find the query
-          // TODO: be smarter about the error cases and check only for cache mismatch
-          console.log(err);
-        }
-      });
-    }
+    update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
+    ...mutationOptions
   });
   const extendedDeleteFunc = (selector) => deleteFunc({ variables: { selector } });
   return [extendedDeleteFunc];

@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { graphql, useQuery } from 'react-apollo';
+import React from 'react';
+import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
-import { getSetting, singleClientTemplate, Utils, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import {
+  getSetting, singleClientTemplate, Utils, extractCollectionInfo,
+  extractFragmentInfo, deprecate
+} from 'meteor/vulcan:lib';
 
 export const singleQuery = ({
   typeName,
@@ -29,7 +31,7 @@ export const singleQuery = ({
  * @param {*} props
  */
 const buildQueryOptions = (options, { documentId, slug, selector = { documentId, slug } }) => {
-  let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, fetchPolicy } = options;
+  let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, fetchPolicy, queryOptions = {} } = options;
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
@@ -46,13 +48,20 @@ const buildQueryOptions = (options, { documentId, slug, selector = { documentId,
   };
 
   if (fetchPolicy) {
+    deprecate('1.13.3', 'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useSingle, option: fetchPolicy)');
     graphQLOptions.fetchPolicy = fetchPolicy;
+  }
+  if (typeof options.pollInterval !== 'undefined') {
+    deprecate('1.13.3', 'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: pollInterval)');
   }
 
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
   graphQLOptions.errorPolicy = 'all';
 
-  return graphQLOptions;
+  return {
+    ...graphQLOptions,
+    ...queryOptions
+  };
 };
 
 const buildResult = (
@@ -113,68 +122,3 @@ export const withSingle = (options) => C => {
 
 // legacy default export
 export default withSingle;
-/*
-const withSingle = (options) => C => {
-  let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, extraQueries } = options;
-
-  // if this is the SSR process, set pollInterval to null
-  // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
-  pollInterval = typeof window === 'undefined' ? null : pollInterval;
-
-  const { collectionName, collection } = extractCollectionInfo(options);
-  const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
-  const typeName = collection.options.typeName;
-  const resolverName = Utils.camelCaseify(typeName);
-
-  const query = singleQuery({
-    typeName, fragmentName, fragment, extraQueries
-  });
-
-  return graphql(query, {
-    alias: `with${typeName}`,
-
-    options({ documentId, slug, selector = { documentId, slug } }) {
-      // OpenCrud backwards compatibility
-      const graphQLOptions = {
-        variables: {
-          input: {
-            selector,
-            enableCache
-          }
-        },
-        pollInterval // note: pollInterval can be set to 0 to disable polling (20s by default)
-      };
-
-      if (options.fetchPolicy) {
-        graphQLOptions.fetchPolicy = options.fetchPolicy;
-      }
-
-      // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
-      graphQLOptions.errorPolicy = 'all';
-
-      return graphQLOptions;
-    },
-    props: returnedProps => {
-      const { /* ownProps, *//* data } = returnedProps;
-
-const propertyName = options.propertyName || 'document';
-const props = {
-loading: data.loading,
-refetch: data.refetch,
-// document: Utils.convertDates(collection, data[singleResolverName]),
-[propertyName]: data[resolverName] && data[resolverName].result,
-fragmentName,
-fragment,
-data
-};
-
-if (data.error) {
-// get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-props.error = data.error.graphQLErrors[0];
-}
-
-return props;
-}
-});
-};
-*/

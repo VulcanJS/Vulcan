@@ -254,8 +254,10 @@ describe('vulcan:core/queries', function () {
     const defaultOptions = {
       collection: Foo,
       fragment,
-      pollInterval: 0,
-      notifyOnNetworkStatusChange: true // necessary for loadMoreInc
+      queryOptions: {
+        pollInterval: 0,
+        notifyOnNetworkStatusChange: true // necessary for loadMoreInc
+      }
     };
     test('returns a graphql component', () => {
       const wrapper = withMulti(defaultOptions);
@@ -446,6 +448,7 @@ describe('vulcan:core/queries', function () {
       wrapper.find(TestComponent).prop('loadMoreInc')();
       await wait();
       wrapper.update();
+      // NOTE: this can sometimes fail for no reason... rerun the tests to debug
       if (Meteor.isServer) {
         // in the client call is instantaneous... don't know why
         const loadMoreIncLoading = wrapper.find(TestComponent);
