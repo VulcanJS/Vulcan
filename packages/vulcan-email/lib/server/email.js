@@ -168,9 +168,15 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   data.__ = Strings[locale];
   data.locale = locale;
 
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data, locale);
-
-  return { data, subject, html };
+  try {
+    const htmlContents = VulcanEmail.getTemplate(email.template)(data);
+    const html = VulcanEmail.buildTemplate(htmlContents, data, locale);
+    return { data, subject, html };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+  
 };
 
 VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, from }) => {
