@@ -37,7 +37,6 @@
     "apollo-link-http": "^1.5.14",
     "apollo-link-schema": "^1.1.1",
     "apollo-link-state": "^0.4.2",
-    "apollo-link-watched-mutation": "^0.1.0",
     "apollo-server": "2.3.3",
     "apollo-server-express": "2.3.3",
     "babel-runtime": "^6.26.0",

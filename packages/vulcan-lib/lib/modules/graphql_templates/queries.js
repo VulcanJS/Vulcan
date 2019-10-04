@@ -1,5 +1,8 @@
 import { Utils } from '../utils.js';
 
+export const getSingleResolverName = typeName => Utils.camelCaseify(typeName);
+export const getMultiResolverName = typeName => Utils.camelCaseify(Utils.pluralize(typeName));
+
 /* ------------------------------------- Query Types ------------------------------------- */
 
 /*
@@ -9,7 +12,7 @@ A query for a single document
 movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
-export const singleQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(typeName)}(input: Single${typeName}Input): Single${typeName}Output`;
+export const singleQueryTemplate = ({ typeName }) => `${getSingleResolverName(typeName)}(input: Single${typeName}Input): Single${typeName}Output`;
 
 
 /*
@@ -19,7 +22,7 @@ A query for multiple documents
 movies(input: MultiMovieInput) : MultiMovieOutput
 
 */
-export const multiQueryTemplate = ({ typeName }) => `${Utils.camelCaseify(Utils.pluralize(typeName))}(input: Multi${typeName}Input): Multi${typeName}Output`;
+export const multiQueryTemplate = ({ typeName }) => `${getMultiResolverName(typeName)}(input: Multi${typeName}Input): Multi${typeName}Output`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 

@@ -55,7 +55,7 @@ Create
 */
 export const createMutator = async ({
   collection,
-  document,
+  document: providedDocument,
   data,
   currentUser,
   validate,
@@ -63,7 +63,7 @@ export const createMutator = async ({
 }) => {
   // OpenCRUD backwards compatibility: accept either data or document
   // we don't want to modify the original document
-  document = data || document;
+  let document = { ...(data || providedDocument) };
 
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
@@ -72,7 +72,7 @@ export const createMutator = async ({
   if (!currentUser && context.currentUser) {
     currentUser = context.currentUser;
   }
-  
+
   startDebugMutator(collectionName, 'Create', { validate, document });
 
   /*
@@ -220,6 +220,10 @@ export const createMutator = async ({
     currentUser,
     collection
   );
+
+  if (context.Users) {
+    document = context.Users.restrictViewableFields(currentUser, collection, document);
+  }
 
   endDebugMutator(collectionName, 'Create', { document });
 
@@ -440,6 +444,11 @@ export const updateMutator = async ({
 
   endDebugMutator(collectionName, 'Update', { modifier });
 
+  // filter out non readable fields if appliable
+  if (context.Users) {
+    document = context.Users.restrictViewableFields(currentUser, collection, document);
+  }
+
   return { data: document };
 };
 
@@ -464,7 +473,7 @@ export const deleteMutator = async ({
   if (!currentUser && context.currentUser) {
     currentUser = context.currentUser;
   }
-  
+
   // OpenCRUD backwards compatibility
   selector = selector || { _id: documentId };
 
@@ -574,6 +583,11 @@ export const deleteMutator = async ({
   );
 
   endDebugMutator(collectionName, 'Delete');
+
+  // filter out non readable fields if appliable
+  if (context.Users) {
+    document = context.Users.restrictViewableFields(currentUser, collection, document);
+  }
 
   return { data: document };
 };

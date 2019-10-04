@@ -19,3 +19,10 @@ export const debugGroupEnd = function () {
     console.groupEnd.apply(null, arguments);
   }
 };
+
+// Show a deprecation message, with a version so we keep track of deprecated features
+export const deprecate = (nextVulcanVersion, message) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`DEPRECATED (${nextVulcanVersion}):`, message);
+  }
+};

@@ -31,8 +31,10 @@ import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import { useMutation } from '@apollo/react-hooks';
+import { buildMultiQuery } from './multi';
+import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
 
-const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
+export const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
   const query = gql`
     ${createClientTemplate({ typeName, fragmentName })}
     ${fragment}
@@ -40,13 +42,56 @@ const buildCreateQuery = ({ typeName, fragmentName, fragment }) => {
   return query;
 };
 
+/**
+ * Update cached list of data after a document creation
+ */
+export const multiQueryUpdater = ({
+  typeName,
+  fragment,
+  fragmentName,
+  collection
+}) => (cache, { data }) => {
+  const createResolverName = `create${typeName}`;
+  const multiResolverName = collection.options.multiResolverName;
+  // update multi queries
+  const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
+  const newDoc = data[createResolverName].data;
+  // get all the resolvers that match
+  const variablesList = getVariablesListFromCache(cache, multiResolverName);
+  variablesList.forEach(variables => {
+    try {
+      const queryResult = cache.readQuery({ query: multiQuery, variables });
+      // get mongo selector and options objects based on current terms
+      const terms = variables.input.terms;
+      const parameters = collection.getParameters(terms);
+      const { selector, options: paramOptions } = parameters;
+      const { sort } = paramOptions;
+      // check if the document should be included in this query, given the query filters
+      if (matchSelector(document, selector)) {
+        // TODO: handle order using the selector
+        const newData = addToData({ queryResult, multiResolverName, document: newDoc, sort, selector });
+        cache.writeQuery({ query: multiQuery, variables, data: newData });
+      }
+    } catch (err) {
+      // could not find the query
+      // TODO: be smarter about the error cases and check only for cache mismatch
+      console.log(err);
+    }
+  });
+};
+
 export const useCreate = (options) => {
+  const { mutationOptions = {} } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
+
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
-  const [createFunc] = useMutation(query);
+  const [createFunc] = useMutation(query, {
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
+    ...mutationOptions
+  });
   // so the syntax is useCreate({collection: ...}, {data: ...})
   const extendedCreateFunc = (args) => createFunc({ variables: { data: args.data } });
   return [extendedCreateFunc];
