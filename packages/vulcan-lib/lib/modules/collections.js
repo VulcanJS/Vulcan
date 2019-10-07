@@ -306,42 +306,6 @@ export const createCollection = options => {
       );
     }
 
-    /*
-
-    Add filters. Note: array filters work by addition. Specifying { category: ['foo', 'bar']}
-    returns the sum of all items that have category `foo` *or* have category `bar`
-
-    */
-    if (!isEmpty(terms.filterBy)) {
-      Object.keys(terms.filterBy).forEach(fieldName => {
-        const filter = terms.filterBy[fieldName];
-
-        if (filter) {
-          if (Array.isArray(filter)) {
-            parameters.selector[fieldName] = { $in: filter };
-          } else if (filter.after || filter.before) {
-            const dateFilter = {};
-            if (filter.after) {
-              dateFilter.$gte = moment(filter.after, 'YYYY-MM-DD').toDate();
-            }
-            if (filter.before) {
-              dateFilter.$lte = moment(filter.before, 'YYYY-MM-DD').toDate();
-            }
-            parameters.selector[fieldName] = dateFilter;
-          } else if (filter.gte || filter.lte) {
-            const numberFilter = {};
-            if (filter.gte) {
-              numberFilter.$gte = parseFloat(filter.gte);
-            }
-            if (filter.lte) {
-              numberFilter.$lte = parseFloat(filter.lte);
-            }
-            parameters.selector[fieldName] = numberFilter;
-          }
-        }
-      });
-    }
-
     // sort using terms.orderBy (overwrite defaultView's sort)
     if (terms.orderBy && !isEmpty(terms.orderBy)) {
       parameters.options.sort = terms.orderBy;

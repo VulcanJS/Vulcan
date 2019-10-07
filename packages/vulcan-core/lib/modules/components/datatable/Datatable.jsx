@@ -9,7 +9,10 @@ import compose from 'recompose/compose';
 
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/multi.js';
+import withMulti from '../../containers/multi2.js';
+
+const ascSortOperator = 'asc';
+const descSortOperator = 'desc';
 
 /*
 
@@ -44,8 +47,8 @@ class Datatable extends PureComponent {
         initState.value = urlState.query;
         initState.query = urlState.query;
       }
-      if (urlState.sort) {
-        const [sortKey, sortValue] = urlState.sort.split('|');
+      if (urlState.orderBy) {
+        const [sortKey, sortValue] = urlState.orderBy.split('|');
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
       }
       if (urlState.filters) {
@@ -83,22 +86,29 @@ class Datatable extends PureComponent {
     }
   };
 
+  /*
+
+  Note: when state is asc, toggling goes to desc;
+  but when state is desc toggling again removes sort.
+
+  */
   toggleSort = column => {
     let currentSort;
     let urlValue;
     if (!this.state.currentSort[column]) {
-      currentSort = { [column]: 1 };
-      urlValue = `${column}|1`;
-    } else if (this.state.currentSort[column] === 1) {
-      currentSort = { [column]: -1 };
-      urlValue = `${column}|-1`;
+      currentSort = { [column]: ascSortOperator };
+      urlValue = `${column}|${ascSortOperator}`;
+    } else if (this.state.currentSort[column] === ascSortOperator) {
+      currentSort = { [column]: descSortOperator };
+      urlValue = `${column}|${descSortOperator}`;
     } else {
       currentSort = {};
       urlValue = null;
     }
     this.setState({ currentSort });
-    this.updateQueryParameter('sort', urlValue);
+    this.updateQueryParameter('orderBy', urlValue);
   };
+
 
   submitFilters = ({ name, filters }) => {
     // clone state filters object
@@ -172,21 +182,19 @@ class Datatable extends PureComponent {
       // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
       // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays {}. So we test on the length of keys for this object.
       const orderBy =
-        Object.keys(this.state.currentSort).length == 0
+        Object.keys(this.state.currentSort).length === 0
           ? {}
-          : { ...this.state.currentSort, _id: -1 };
+          : { ...this.state.currentSort, _id: descSortOperator };
 
-      const filterBy = this.state.currentFilters;
-
-      const terms = {};
+      const input = {};
       if (!_isEmpty(this.state.query)) {
-        terms.query = this.state.query;
+        input.search = this.state.query;
       }
       if (!_isEmpty(orderBy)) {
-        terms.orderBy = orderBy;
+        input.orderBy = orderBy;
       }
-      if (!_isEmpty(filterBy)) {
-        terms.filterBy = filterBy;
+      if (!_isEmpty(this.state.currentFilters)) {
+        input.where = this.state.currentFilters;
       }
 
       return (
@@ -206,7 +214,7 @@ class Datatable extends PureComponent {
             Components={Components}
             {...this.props}
             collection={collection}
-            terms={terms}
+            input={input}
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
