@@ -10,14 +10,18 @@ DatatableStories.addDecorator(withKnobs);
 
 const defaultProps = {
     DatatableContents: {
-        results: [{ 'foo': 'bar', 'answer': 42 }]
-        /*columns={[{
-
+        title: 'foobar',
+        results: [{ 'foo': 'bar', 'answer': 42 }],
+        columns: [{
+            label: 'Foo',
+            name: 'foo'
         }, {
-
-        }]}*/
+            label: 'answer',
+            name: 'answer'
+        }]
     }
 };
+
 DatatableStories
     .add('DatatableContents - interactive', () => {
         const title = text('title', 'My datatable');
@@ -31,4 +35,10 @@ DatatableStories
     })
     .add('DatatableContents - loading', () => (
         <Components.DatatableContents loading={true} />
+    ))
+    .add('DatatableContents - error', () => (
+        <Components.DatatableContents
+            {...defaultProps.DatatableContents}
+            error={{ message: 'foo' }}
+        />
     ));
