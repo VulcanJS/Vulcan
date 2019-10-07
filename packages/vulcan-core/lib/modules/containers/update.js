@@ -51,16 +51,16 @@ export const useUpdate = (options) => {
   const typeName = collection.options.typeName;
   const query = buildUpdateQuery({ typeName, fragmentName, fragment });
 
-  const [updateFunc] = useMutation(query, {
+  const [updateFunc, ...rest] = useMutation(query, {
     // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
-    errorPolicy: 'all'
+    errorPolicy: 'all',
+    ...mutationOptions
   }
   );
   const extendedUpdateFunc = ({ data, selector }) => updateFunc({
     variables: { data, selector },
-    ...mutationOptions
   });
-  return [extendedUpdateFunc];
+  return [extendedUpdateFunc, ...rest];
 };
 
 export const withUpdate = options => C => {

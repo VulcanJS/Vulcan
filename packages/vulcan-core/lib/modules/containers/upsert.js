@@ -50,7 +50,7 @@ export const useUpsert = options => {
 
   const query = buildUpsertQuery({ typeName, fragmentName, fragment });
 
-  const [upsertFunc] = useMutation(query, {
+  const [upsertFunc, ...rest] = useMutation(query, {
     errorPolicy: 'all',
     // we reuse the update function create, which should actually support
     // upserting
@@ -60,7 +60,7 @@ export const useUpsert = options => {
 
   const extendedUpsertFunc = ({ data, selector }) => upsertFunc({ variables: { data, selector } });
 
-  return [extendedUpsertFunc];
+  return [extendedUpsertFunc, ...rest];
 };
 
 export const withUpsert = options => C => {
