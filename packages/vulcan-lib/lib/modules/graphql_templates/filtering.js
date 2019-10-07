@@ -15,6 +15,8 @@ type MovieSelectorInput {
   ...
 }
 
+// TODO: not currently used
+
 */
 export const selectorInputTemplate = ({ typeName, fields }) =>
   `input ${typeName}SelectorInput {
@@ -53,20 +55,20 @@ export const fieldWhereInputTemplate = ({ typeName, fields }) =>
   _or: [${typeName}WhereInput]
   # will search across all searchable fields at the same time
   search: String
-  ${fields
-    .map(field => {
-      const { name, type } = field;
-      if (supportedFieldTypes.includes(type)) {
-        const isArrayField = name[0] === '[';
-        return `${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
-      } else {
-        return '';
-      }
-    })
-    .join('\n')}
+${fields
+  .map(field => {
+    const { name, type } = field;
+    if (supportedFieldTypes.includes(type)) {
+      const isArrayField = name[0] === '[';
+      return `  ${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
+    } else {
+      return '';
+    }
+  })
+  .join('\n')}
 }`;
 
 export const fieldOrderByInputTemplate = ({ typeName, fields }) =>
   `input ${typeName}OrderByInput {
-  ${fields.map(({ name }) => `${name}: OrderBy`).join('\n')}
+${fields.map(({ name }) => `  ${name}: OrderBy`).join('\n')}
 }`;

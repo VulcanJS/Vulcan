@@ -20,7 +20,7 @@ updateMovie(input: UpdateMovieInput) : MovieOutput
 
 */
 export const updateMutationTemplate = ({ typeName }) =>
-`update${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+`update${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -30,7 +30,7 @@ upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
 export const upsertMutationTemplate = ({ typeName }) =>
-`upsert${typeName}(selector: ${typeName}SelectorUniqueInput!, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+`upsert${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -40,11 +40,11 @@ deleteMovie(input: DeleteMovieInput) : MovieOutput
 
 */
 export const deleteMutationTemplate = ({ typeName }) =>
-`delete${typeName}(selector: ${typeName}SelectorUniqueInput!) : ${typeName}Output`;
+`delete${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput) : ${typeName}Output`;
 
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 
-// note: not currently used
+// TODO: not currently used
 
 /*
 
@@ -69,10 +69,13 @@ type UpdateMovieInput {
   data: UpdateMovieDataInput!
 }
 
+Note: selector is for backwards-compatibility
+
 */
 export const updateInputTemplate = ({ typeName }) =>
 `input Update${typeName}Input{
-  selector: ${typeName}SelectorUniqueInput!
+  where: ${typeName}WhereInput
+  selector: ${typeName}SelectorUniqueInput
   data: Update${typeName}DataInput!
 }`;
 
@@ -87,10 +90,13 @@ type UpsertMovieInput {
   data: UpdateMovieDataInput!
 }
 
+Note: selector is for backwards-compatibility
+
 */
 export const upsertInputTemplate = ({ typeName }) =>
 `input Upsert${typeName}Input{
-  selector: ${typeName}SelectorUniqueInput!
+  where: ${typeName}WhereInput
+  selector: ${typeName}SelectorUniqueInput
   data: Update${typeName}DataInput!
 }`;
 
@@ -102,10 +108,13 @@ type DeleteMovieInput {
   selector: MovieSelectorUniqueInput!
 }
 
+Note: selector is for backwards-compatibility
+
 */
 export const deleteInputTemplate = ({ typeName }) =>
 `input Delete${typeName}Input{
-  selector: ${typeName}SelectorUniqueInput!
+  where: ${typeName}WhereInput
+  selector: ${typeName}SelectorUniqueInput
 }`;
 
 /*
@@ -198,8 +207,8 @@ mutation updateMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
-`mutation update${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
-  update${typeName}(selector: $selector, data: $data) {
+`mutation update${typeName}($where: ${typeName}WhereInput, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  update${typeName}(where: $where, selector: $selector, data: $data) {
     data {
       ...${fragmentName}
     }
@@ -223,8 +232,8 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
-`mutation upsert${typeName}($selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
-  upsert${typeName}(selector: $selector, data: $data) {
+`mutation upsert${typeName}($where: ${typeName}WhereInput, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  upsert${typeName}(where: $where, selector: $selector, data: $data) {
     data {
       ...${fragmentName}
     }
@@ -248,8 +257,8 @@ mutation deleteMovie($selector: MovieSelectorUniqueInput!) {
 
 */
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
-`mutation delete${typeName}($selector: ${typeName}SelectorUniqueInput!) {
-  delete${typeName}(selector: $selector) {
+`mutation delete${typeName}($where: ${typeName}WhereInput, $selector: ${typeName}SelectorUniqueInput!) {
+  delete${typeName}(where: $where, selector: $selector) {
     data {
       ...${fragmentName}
     }

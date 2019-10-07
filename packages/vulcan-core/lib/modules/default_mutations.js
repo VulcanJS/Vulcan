@@ -19,14 +19,11 @@ import isEmpty from 'lodash/isEmpty';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
-
-const getCreateMutationName = (typeName) => `create${typeName}`;
-const getUpdateMutationName = (typeName) => `update${typeName}`;
-const getDeleteMutationName = (typeName) => `delete${typeName}`;
-const getUpsertMutationName = (typeName) => `upsert${typeName}`;
+const getCreateMutationName = typeName => `create${typeName}`;
+const getUpdateMutationName = typeName => `update${typeName}`;
+const getDeleteMutationName = typeName => `delete${typeName}`;
+const getUpsertMutationName = typeName => `upsert${typeName}`;
 //const getMultiQueryName = (typeName) => `multi${typeName}Query`;
-
-
 
 export function getDefaultMutations(options) {
   let typeName, collectionName, mutationOptions;
@@ -124,20 +121,29 @@ export function getDefaultMutations(options) {
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
           ? Users.canDo(user, [
-            `${typeName.toLowerCase()}.update.own`,
-            `${collectionName.toLowerCase()}.edit.own`,
-          ])
+              `${typeName.toLowerCase()}.update.own`,
+              `${collectionName.toLowerCase()}.edit.own`,
+            ])
           : Users.canDo(user, [
-            `${typeName.toLowerCase()}.update.all`,
-            `${collectionName.toLowerCase()}.edit.all`,
-          ]);
+              `${typeName.toLowerCase()}.update.all`,
+              `${collectionName.toLowerCase()}.edit.all`,
+            ]);
       },
 
-      async mutation(root, { selector, data }, context) {
+      async mutation(root, { where, selector: oldSelector, data }, context) {
         const collection = context[collectionName];
 
-        if (isEmpty(selector)) {
-          throw new Error('Selector cannot be empty');
+        // handle both `where` and `selector` for backwards-compatibility
+        let selector;
+        if (!isEmpty(where)) {
+          const filterParameters = Connectors.filter(collection, { where });
+          selector = filterParameters.selector;
+        } else {
+          if (!isEmpty(selector)) {
+            selector = oldSelector;
+          } else {
+            throw new Error('Selector cannot be empty');
+          }
         }
 
         // get entire unmodified document from database
@@ -175,7 +181,6 @@ export function getDefaultMutations(options) {
     mutations.update = updateMutation;
     // OpenCRUD backwards compatibility
     mutations.edit = updateMutation;
-
   }
   if (mutationOptions.upsert) {
     // mutation for upserting a specific document
@@ -184,7 +189,7 @@ export function getDefaultMutations(options) {
       description: `Mutation for upserting a ${typeName} document`,
       name: mutationName,
 
-      async mutation(root, { selector, data }, context) {
+      async mutation(root, { where, selector, data }, context) {
         const collection = context[collectionName];
 
         // check if documeet exists already
@@ -195,7 +200,7 @@ export function getDefaultMutations(options) {
         if (existingDocument) {
           return await collection.options.mutations.update.mutation(
             root,
-            { selector, data },
+            { where, selector, data },
             context
           );
         } else {
@@ -225,20 +230,29 @@ export function getDefaultMutations(options) {
         // OpenCRUD backwards compatibility
         return Users.owns(user, document)
           ? Users.canDo(user, [
-            `${typeName.toLowerCase()}.delete.own`,
-            `${collectionName.toLowerCase()}.remove.own`,
-          ])
+              `${typeName.toLowerCase()}.delete.own`,
+              `${collectionName.toLowerCase()}.remove.own`,
+            ])
           : Users.canDo(user, [
-            `${typeName.toLowerCase()}.delete.all`,
-            `${collectionName.toLowerCase()}.remove.all`,
-          ]);
+              `${typeName.toLowerCase()}.delete.all`,
+              `${collectionName.toLowerCase()}.remove.all`,
+            ]);
       },
 
-      async mutation(root, { selector }, context) {
+      async mutation(root, { where, selector: oldSelector }, context) {
         const collection = context[collectionName];
 
-        if (isEmpty(selector) || (!selector._id && !selector.documentId && !selector.slug)) {
-          throw new Error('Selector cannot be empty');
+        // handle both `where` and `selector` for backwards-compatibility
+        let selector;
+        if (!isEmpty(where)) {
+          const filterParameters = Connectors.filter(collection, { where });
+          selector = filterParameters.selector;
+        } else {
+          if (!isEmpty(selector)) {
+            selector = oldSelector;
+          } else {
+            throw new Error('Selector cannot be empty');
+          }
         }
 
         const document = await Connectors.get(collection, selector);
@@ -273,7 +287,6 @@ export function getDefaultMutations(options) {
     mutations.delete = deleteMutation;
     // OpenCRUD backwards compatibility
     mutations.remove = deleteMutation;
-
   }
 
   return mutations;
