@@ -18,3 +18,4 @@ ShowIf.propTypes = {
 ShowIf.displayName = 'ShowIf';
 
 registerComponent('ShowIf', ShowIf, withCurrentUser);
+export default ShowIf;
