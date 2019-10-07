@@ -287,17 +287,17 @@ export const GraphQLSchema = {
   },
 };
 
-Vulcan.getGraphQLSchema = () => {
-  if (!GraphQLSchema.finalSchema) {
-    throw new Error(
-      'Warning: trying to access graphQL schema before it has been created by the server.'
-    );
-  }
-  const schema = GraphQLSchema.finalSchema[0];
-  // eslint-disable-next-line no-console
-  console.log(schema);
-  return schema;
-};
+// Vulcan.getGraphQLSchema = () => {
+//   if (!GraphQLSchema.finalSchema) {
+//     throw new Error(
+//       'Warning: trying to access graphQL schema before it has been created by the server.'
+//     );
+//   }
+//   const schema = GraphQLSchema.finalSchema[0];
+//   // eslint-disable-next-line no-console
+//   console.log(schema);
+//   return schema;
+// };
 
 export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
