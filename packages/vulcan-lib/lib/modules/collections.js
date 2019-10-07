@@ -38,7 +38,11 @@ export const getCollectionByTypeName = name => {
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
 // TODO: find more reliable way to get type name from collection name?
-export const getTypeName = collectionName => collectionName.slice(0, -1);
+export const getTypeName = collectionName => {
+  return collectionName.slice(-3) === 'ies'
+    ? collectionName.slice(0, -3) + 'y'
+    : collectionName.slice(0, -1);
+};
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
