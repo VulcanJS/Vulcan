@@ -76,7 +76,6 @@ export const getSchemaFields = (schema, typeName) => {
       viewableBy,
       insertableBy,
       editableBy,
-      resolveAs,
       description,
       selectable,
       unique,
@@ -101,62 +100,68 @@ export const getSchemaFields = (schema, typeName) => {
       }
 
       // if field has a resolveAs, push it to schema
-      if (resolveAs) {
-        // get resolver name from resolveAs object, or else default to field name
-        const resolverName = resolveAs.fieldName || fieldName;
+      // note: resolveAs can be an array containing multiple resolver definitions
+      if (field.resolveAs) {
 
-        // use specified GraphQL type or else convert schema type
-        const fieldGraphQLType = resolveAs.type || fieldType;
+        const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
-        // if resolveAs is an object, first push its type definition
-        // include arguments if there are any
-        // note: resolved fields are not internationalized
-        fields.mainType.push({
-          description: resolveAs.description,
-          name: resolverName,
-          args: resolveAs.arguments,
-          type: fieldGraphQLType,
-        });
+        resolveAsArray.forEach(resolveAs => {
+          // get resolver name from resolveAs object, or else default to field name
+          const resolverName = resolveAs.fieldName || fieldName;
 
-        // then build actual resolver object and pass it to addGraphQLResolvers
-        const resolver = {
-          [typeName]: {
-            [resolverName]: (document, args, context, info) => {
-              const { Users, currentUser } = context;
-              // check that current user has permission to access the original non-resolved field
-              const canReadField = Users.canReadField(currentUser, field, document);
-              const { resolver, relation } = resolveAs;
-              if (canReadField) {
-                if (resolver) {
-                  return resolver(document, args, context, info);
-                } else {
-                  return relations[relation]({
-                    document,
-                    args,
-                    context,
-                    info,
-                    fieldName,
-                    typeName: fieldGraphQLType,
-                  });
-                }
-              } else {
-                return null;
-              }
-            },
-          },
-        };
-        resolvers.push(resolver);
+          // use specified GraphQL type or else convert schema type
+          const fieldGraphQLType = resolveAs.type || fieldType;
 
-        // if addOriginalField option is enabled, also add original field to schema
-        if (resolveAs.addOriginalField && fieldType) {
+          // if resolveAs is an object, first push its type definition
+          // include arguments if there are any
+          // note: resolved fields are not internationalized
           fields.mainType.push({
-            description: fieldDescription,
-            name: fieldName,
-            args: fieldArguments,
-            type: fieldType,
-            directive: fieldDirective,
+            description: resolveAs.description,
+            name: resolverName,
+            args: resolveAs.arguments,
+            type: fieldGraphQLType,
           });
-        }
+
+          // then build actual resolver object and pass it to addGraphQLResolvers
+          const resolver = {
+            [typeName]: {
+              [resolverName]: (document, args, context, info) => {
+                const { Users, currentUser } = context;
+                // check that current user has permission to access the original non-resolved field
+                const canReadField = Users.canReadField(currentUser, field, document);
+                const { resolver, relation } = resolveAs;
+                if (canReadField) {
+                  if (resolver) {
+                    return resolver(document, args, context, info);
+                  } else {
+                    return relations[relation]({
+                      document,
+                      args,
+                      context,
+                      info,
+                      fieldName,
+                      typeName: fieldGraphQLType,
+                    });
+                  }
+                } else {
+                  return null;
+                }
+              },
+            },
+          };
+          resolvers.push(resolver);
+
+          // if addOriginalField option is enabled, also add original field to schema
+          if (resolveAs.addOriginalField && fieldType) {
+            fields.mainType.push({
+              description: fieldDescription,
+              name: fieldName,
+              args: fieldArguments,
+              type: fieldType,
+              directive: fieldDirective,
+            });
+          }
+        });
       } else {
         // try to guess GraphQL type
         if (fieldType) {
