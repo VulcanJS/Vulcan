@@ -26,7 +26,7 @@ Changes will be tracked in the changelog file.
 ### In Vulcan core repository
 
 - If updating to a minor or major with non trivial breaking changes (1.13 to 1.14 for example), create a branch for the previous version based on master (1.13 in this example).
-- Go to `devel` branch.
+- Go to a `release/your-version` branch.
 - Update packages versions in each package.
 - Update the CHANGELOG.md.
 - Update package.json version. 
