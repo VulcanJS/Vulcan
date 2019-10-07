@@ -150,7 +150,7 @@ const DatatableFilterContents = props => {
         className="datatable_filter_clear"
         href="javascript:void(0)"
         onClick={() => {
-          setFilters([]);
+          setFilters(undefined);
         }}>
         <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
       </a>

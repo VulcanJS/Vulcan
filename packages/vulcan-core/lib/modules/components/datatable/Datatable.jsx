@@ -33,6 +33,8 @@ class Datatable extends PureComponent {
   constructor(props) {
     super(props);
 
+    const { initialState, useUrlState } = props;
+
     let initState = {
       value: '',
       query: '',
@@ -40,12 +42,28 @@ class Datatable extends PureComponent {
       currentFilters: {},
     };
 
+    // initial state can be defined via props
+    // note: this prop-originating initial state will *not* be reflected in the URL
+    if (initialState) {
+      if (initialState.search) {
+        initState.searchValue = initialState.search;
+        initState.search = initialState.search;
+      }
+      if (initialState.orderBy) {
+        initState.currentSort = initialState.orderBy;
+
+      }
+      if (initialState.filters) {
+        initState.currentFilters = initialState.filters;
+      }      
+    }
+
     // only load urlState if useUrlState is enabled
-    if (props.useUrlState) {
+    if (useUrlState) {
       const urlState = this.getUrlState(props);
-      if (urlState.query) {
-        initState.value = urlState.query;
-        initState.query = urlState.query;
+      if (urlState.search) {
+        initState.searchValue = urlState.query;
+        initState.search = urlState.query;
       }
       if (urlState.orderBy) {
         const [sortKey, sortValue] = urlState.orderBy.split('|');
@@ -124,18 +142,18 @@ class Datatable extends PureComponent {
     this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
   };
 
-  updateQuery = e => {
+  updateSearch = e => {
     e.persist();
     e.preventDefault();
-    const value = e.target.value;
+    const searchValue = e.target.value;
     this.setState({
-      value,
+      searchValue,
     });
     delay(() => {
       this.setState({
-        query: value,
+        search: searchValue,
       });
-      this.updateQueryParameter('query', value);
+      this.updateQueryParameter('search', searchValue);
     }, 700);
   };
 
@@ -208,7 +226,7 @@ class Datatable extends PureComponent {
             canInsert={canInsert || canCreate}
             canUpdate={canInsert || canCreate}
             value={this.state.value}
-            updateQuery={this.updateQuery}
+            updateSearch={this.updateSearch}
           />
           <DatatableWithMulti
             Components={Components}
@@ -273,7 +291,7 @@ const DatatableAbove = (props, { intl }) => {
     showNew,
     canInsert,
     value,
-    updateQuery,
+    updateSearch,
     options,
     newFormOptions,
     Components,
@@ -291,7 +309,7 @@ const DatatableAbove = (props, { intl }) => {
           type="text"
           name="datatableSearchQuery"
           value={value}
-          onChange={updateQuery}
+          onChange={updateSearch}
         />
       )}
       {showNew && canInsert && (
