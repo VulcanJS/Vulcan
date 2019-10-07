@@ -12,19 +12,8 @@ The selector type is used to query for one or more documents
 type MovieSelectorInput {
   AND: [MovieSelectorInput]
   OR: [MovieSelectorInput]
-  id: String
-  id_not: String
-  id_in: [String!]
-  id_not_in: [String!]
-  ...
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
   ...
 }
-
-see https://www.opencrud.org/#sec-Data-types
 
 */
 export const selectorInputTemplate = ({ typeName, fields }) =>
@@ -79,7 +68,5 @@ export const fieldWhereInputTemplate = ({ typeName, fields }) =>
 
 export const fieldOrderByInputTemplate = ({ typeName, fields }) =>
   `input ${typeName}OrderByInput {
-  foo: OrderBy
-  bar: OrderBy
   ${fields.map(({ name }) => `${name}: OrderBy`).join('\n')}
 }`;

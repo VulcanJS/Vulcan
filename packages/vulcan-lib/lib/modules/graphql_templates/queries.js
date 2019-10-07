@@ -46,8 +46,11 @@ export const singleInputTemplate = ({ typeName }) =>
   where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
   search: String
-  # filtering (backwards-compatibility)
+
+  # backwards-compatibility
   selector: ${typeName}SelectorUniqueInput
+
+  # options
   # Whether to enable caching for this query
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
@@ -68,25 +71,24 @@ type MultiMovieInput {
 */
 export const multiInputTemplate = ({ typeName }) =>
 `input Multi${typeName}Input {
+
+  # filtering
+  where: ${typeName}WhereInput
+  orderBy: ${typeName}OrderByInput
+  search: String
+  offset: Int,
+  limit: Int,
+
+  # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
   terms: JSON,
-  # How much to offset the results by
-  offset: Int,
-  # A limit for the query
-  limit: Int,
+
+  # options
   # Whether to enable caching for this query
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  # OpenCRUD fields
-  where: ${typeName}WhereInput
-  orderBy: ${typeName}OrderByInput
-  search: String
-  skip: Int
-  after: String
-  before: String
-  first: Int
-  last: Int
+  
 }`;
 
 /* ------------------------------------- Query Output Types ------------------------------------- */
