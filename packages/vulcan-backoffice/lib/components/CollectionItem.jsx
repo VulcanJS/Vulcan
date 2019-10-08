@@ -8,8 +8,10 @@
 import React from 'react';
 import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
 
-const CollectionItemDetails = ({ document, currentUser, collection }) => {
-  <Components.Card collection={collection} document={document} currentUser={currentUser} />;
+const CollectionItemDetails = props => {
+  if (props.loading) return <Components.Loading />;
+  if (!props.document) return 'Document not found';
+  return <Components.Card {...props} />;
 };
 
 registerComponent({

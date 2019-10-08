@@ -27,7 +27,7 @@ const setupBackoffice = (collections, providedOptions = {}, collectionsOptions =
     setupCollectionMenuItems(collection, collectionOptions);
   });
   // index
-  addRoute({ name: 'vulcan-backoffice', path: options.basePath, componentName: 'VulcanBackofficeIndex', layoutName: options.layoutName }) // setup the route
 };
+addRoute({ name: 'vulcan-backoffice', path: '/backoffice', componentName: 'VulcanBackofficeIndex', layoutName: 'VulcanBackofficeLayout' }) // setup the route
 
 export default setupBackoffice;

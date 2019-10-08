@@ -1,4 +1,5 @@
 import { registerComponent, Components, formatLabel } from 'meteor/vulcan:lib';
+import withComponents from '../containers/withComponents';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -341,4 +342,4 @@ Card.contextTypes = {
   intl: intlShape,
 };
 
-registerComponent('Card', Card);
+registerComponent('Card', Card, withComponents);

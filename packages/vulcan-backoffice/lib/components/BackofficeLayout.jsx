@@ -1,43 +1,30 @@
 import React from 'react';
 import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import { getAuthorizedMenuItems, menuItemProps } from 'meteor/vulcan:menu';
-import { browserHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const MenuItem = (
-  {
-    name,
-    label,
-    path,
-    onClick,
-    // called after the main action is done
-    afterClick,
-    labelToken,
-    LeftComponent,
-    RightComponent,
-    //  router
-  },
+  { name, label, path, onClick, labelToken, LeftComponent, RightComponent },
   { intl }
-) => (
-  <li
-    key={name}
-    //selected={path && router.isActive(path)}
-    onClick={
-      onClick
-        ? () => {
-            onClick();
-            afterClick && afterClick();
-          }
-        : () => {
-            browserHistory.push(path);
-            afterClick && afterClick();
-          }
-    }>
-    {LeftComponent && <LeftComponent />}
-    <span>{label || intl.formatMessage({ id: labelToken })}</span>
-    {RightComponent && <RightComponent />}
-  </li>
-);
+) => {
+  let Wrapper = React.Fragment;
+  if (path) {
+    const LinkToPath = ({ children }) => <Link to={path}>{children}</Link>;
+    Wrapper = LinkToPath;
+  }
+  return (
+    <Wrapper key={name}>
+      <li
+        //selected={path && router.isActive(path)}
+        onClick={onClick}>
+        {LeftComponent && <LeftComponent />}
+        <span>{label || intl.formatMessage({ id: labelToken })}</span>
+        {RightComponent && <RightComponent />}
+      </li>
+    </Wrapper>
+  );
+};
 
 MenuItem.propTypes = {
   ...menuItemProps,

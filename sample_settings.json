@@ -17,6 +17,10 @@
 
     "googleAnalytics": {
       "apiKey": "foo123"
+    },
+
+    "backoffice": {
+      "enabled": true
     }
 
   },

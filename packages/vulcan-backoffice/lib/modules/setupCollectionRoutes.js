@@ -2,8 +2,6 @@ import { addRoute } from 'meteor/vulcan:core';
 import {
   getBasePath,
   getBaseRouteName,
-  getNewPath,
-  getEditPath,
   getDetailsPath,
   getListComponentName,
   getItemComponentName,

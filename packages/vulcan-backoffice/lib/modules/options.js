@@ -4,6 +4,13 @@
  */
 import _merge from 'lodash/merge';
 
+export const devOptions = {
+  list: { accessGroups: ['guests', 'members', 'admins'] },
+  item: { accessGroups: ['guests', 'members', 'admins'] },
+  menuItem: { groups: ['guests', 'members', 'admins'] },
+  layoutName: 'VulcanBackofficeLayout'
+}
+
 const defaultCollectionOptions = {
   list: { accessGroups: ['admins'], accessRedirect: '/' },
   item: { accessGroups: ['admins'], accessRedirect: '/' },
