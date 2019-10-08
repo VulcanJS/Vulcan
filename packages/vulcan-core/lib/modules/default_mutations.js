@@ -139,7 +139,7 @@ export function getDefaultMutations(options) {
           const filterParameters = Connectors.filter(collection, { where });
           selector = filterParameters.selector;
         } else {
-          if (!isEmpty(selector)) {
+          if (!isEmpty(oldSelector)) {
             selector = oldSelector;
           } else {
             throw new Error('Selector cannot be empty');
@@ -248,7 +248,7 @@ export function getDefaultMutations(options) {
           const filterParameters = Connectors.filter(collection, { where });
           selector = filterParameters.selector;
         } else {
-          if (!isEmpty(selector)) {
+          if (!isEmpty(oldSelector)) {
             selector = oldSelector;
           } else {
             throw new Error('Selector cannot be empty');
