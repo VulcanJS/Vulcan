@@ -65,7 +65,7 @@ const DatatableContents = props => {
   }
 
   const isLoadingMore = networkStatus === 2;
-  const hasMore = totalCount > results.length;
+  const hasMore = totalCount > results && results.length;
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
@@ -95,7 +95,7 @@ const DatatableContents = props => {
           ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
-          {results.length ? (
+          {results && results.length ? (
             results.map((document, index) => (
               <Components.DatatableRow
                 {...props}

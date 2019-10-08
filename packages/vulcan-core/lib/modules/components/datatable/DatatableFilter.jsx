@@ -58,7 +58,7 @@ const DatatableFilter = props => {
           <FormattedMessage
             id="datatable.filter_column"
             values={{ label }}
-            defaultMessage={`Filter ${label}`}
+            defaultMessage={`Filter “${label}”`}
           />
         }
         size="small"
@@ -185,26 +185,21 @@ Operator: _in
 
 */
 const checkboxOperator = '_in';
-const DatatableFilterCheckboxes = ({ field, options, filters = { [checkboxOperator]: [] }, setFilters }) => {
-  let value = filters[checkboxOperator];
-
-  // all URL values are stored as strings, so convert them back to numbers if needed
-  if (Utils.getFieldType(field) === Number) {
-    value = filters[checkboxOperator].map(parseFloat);
-  }
-
-  return (
-    <Components.FormComponentCheckboxGroup
-      path="filter"
-      itemProperties={{ layout: 'inputOnly' }}
-      inputProperties={{ options }}
-      value={value}
-      updateCurrentValues={({ filter: newValues }) => {
-        setFilters({ [checkboxOperator]: newValues });
-      }}
-    />
-  );
-};
+const DatatableFilterCheckboxes = ({
+  options,
+  filters = { [checkboxOperator]: [] },
+  setFilters,
+}) => (
+  <Components.FormComponentCheckboxGroup
+    path="filter"
+    itemProperties={{ layout: 'inputOnly' }}
+    inputProperties={{ options }}
+    value={filters[checkboxOperator]}
+    updateCurrentValues={({ filter: newValues }) => {
+      setFilters({ [checkboxOperator]: newValues });
+    }}
+  />
+);
 
 registerComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
 
