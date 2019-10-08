@@ -35,3 +35,4 @@ RouterHook.propTypes = {
 RouterHook.displayName = 'RouterHook';
 
 registerComponent('RouterHook', RouterHook, withApollo);
+export default RouterHook;

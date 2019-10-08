@@ -14,7 +14,7 @@ const styles = theme => ({
   
   formInput: {
     position: 'relative',
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 2,
   },
   
   halfWidthLeft: {

@@ -39,13 +39,21 @@ describe('vulcan-core/components', function () {
         it('shallow renders DataTable', function () {
             const wrapper = shallow(<Datatable
                 Components={Components}
-                collection={Articles} />);
+                collection={Articles}
+                location={{
+                    search: null
+                }}
+            />);
             expect(wrapper).toBeDefined();
         });
         it('render a static version', function () {
             const wrapper = shallow(<Datatable
                 Components={Components}
-                data={[{ name: 'foo' }, { name: 'bar' }]} />);
+                data={[{ name: 'foo' }, { name: 'bar' }]}
+                location={{
+                    search: null
+                }}
+            />);
             const content = wrapper.find('DatatableContents').first();
             expect(content).toBeDefined();
         });

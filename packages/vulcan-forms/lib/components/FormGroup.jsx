@@ -121,6 +121,7 @@ class FormGroup extends PureComponent {
               clearFieldErrors={this.props.clearFieldErrors}
               formType={this.props.formType}
               currentUser={this.props.currentUser}
+              prefilledProps={this.props.prefilledProps}
               formComponents={FormComponents}
             />
           ))}
@@ -146,7 +147,8 @@ FormGroup.propTypes = {
   addToDeletedValues: PropTypes.func.isRequired,
   clearFieldErrors: PropTypes.func.isRequired,
   formType: PropTypes.string.isRequired,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  prefilledProps: PropTypes.object,
 };
 
 export default FormGroup;

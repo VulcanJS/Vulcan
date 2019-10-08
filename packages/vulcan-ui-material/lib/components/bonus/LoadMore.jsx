@@ -50,6 +50,7 @@ const LoadMore = ({
   const title = `${loadMoreText} (${count}/${totalCount})`;
   const hasMore = totalCount > count;
   const countValues = { count, totalCount };
+  showCount = isNaN(totalCount) || isNaN(count) ? false : showCount;
   
   const loadMoreButton = useTextButton
     ?

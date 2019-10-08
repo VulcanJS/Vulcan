@@ -106,6 +106,7 @@ const styles = theme => ({
   inputFocused: {
     '& .clear-enabled': { opacity: 0.54 }
   },
+  inputDisabled: {},
 });
 
 

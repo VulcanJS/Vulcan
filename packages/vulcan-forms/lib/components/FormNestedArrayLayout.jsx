@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 // Replaceable layout, default implementation
-const FormNestedArrayLayout = (props) => {
+const FormNestedArrayLayout = props => {
   const {
     hasErrors,
     nestedArrayErrors,
@@ -18,31 +18,27 @@ const FormNestedArrayLayout = (props) => {
 
   return (
     <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
-
       {instantiateComponent(beforeComponent, props)}
 
       <label className="control-label col-sm-3">{label}</label>
 
       <div className="col-sm-9">
         {children}
-        {
-          addItem &&
-
-          <FormComponents.Button className="form-nested-button" size="sm" variant="success" onClick={addItem}>
+        {addItem && (
+          <FormComponents.Button
+            className="form-nested-button form-nested-add"
+            size="sm"
+            variant="success"
+            onClick={addItem}>
             <FormComponents.IconAdd height={12} width={12} />
           </FormComponents.Button>
-        }
-        {
-          props.hasErrors
-            ?
-            <FormComponents.FieldErrors key="form-nested-errors" errors={nestedArrayErrors} />
-            :
-            null
-        }
+        )}
+        {props.hasErrors ? (
+          <FormComponents.FieldErrors key="form-nested-errors" errors={nestedArrayErrors} />
+        ) : null}
       </div>
 
       {instantiateComponent(afterComponent, props)}
-
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { instantiateComponent, Components } from 'meteor/vulcan:core';
+import { Components } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 
 
@@ -25,6 +24,7 @@ export const styles = theme => ({
 
 const MuiFormHelper = (props) => {
   const {
+    className,
     classes,
     help,
     errors,
@@ -43,7 +43,7 @@ const MuiFormHelper = (props) => {
     <Components.FormError error={errors[0]} />;
   
   return (
-    <FormHelperText className={classes.formHelperText} error={hasErrors}>
+    <FormHelperText className={classNames(className, classes.formHelperText)} error={hasErrors}>
       
       <span>
         {
@@ -65,6 +65,7 @@ const MuiFormHelper = (props) => {
 
 
 MuiFormHelper.propTypes = {
+  className: PropTypes.string,
   classes: PropTypes.object.isRequired,
   value: PropTypes.any,
   changeValue: PropTypes.func,

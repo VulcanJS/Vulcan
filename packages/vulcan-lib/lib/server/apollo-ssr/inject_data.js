@@ -1,14 +1,11 @@
 import { EJSON } from 'meteor/ejson';
-import moment from 'moment';
-import { webAppConnectHandlersUse } from './meteor_patch.js';
+//import { webAppConnectHandlersUse } from './meteor_patch.js';
 
 // InjectData object
 export const InjectData = {
 
   // data object initialized with offset
-  _data: {
-    utcOffset: moment().utcOffset()
-  },
+  _data: {},
 
   // encode object to string
   _encode(ejson) {
@@ -29,7 +26,7 @@ export const InjectData = {
 
   // push data to res._injectPayload and generate res._injectHtml
   pushData(res, key, value) {
-    
+
     this._data[key] = value;
 
     if (!res._injectPayload) {
@@ -71,6 +68,8 @@ export const InjectData = {
 };
 
 // **injectDataMiddleware, Notes that it must after router connect handler**
+/*
+Now used directly during render
 webAppConnectHandlersUse(function injectDataMiddleware(req, res, next) {
   if (res._injectHtml) {
     req.dynamicHead = req.dynamicHead || '';
@@ -78,3 +77,5 @@ webAppConnectHandlersUse(function injectDataMiddleware(req, res, next) {
   }
   next();
 }, { order: 900 });
+
+*/

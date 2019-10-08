@@ -60,6 +60,7 @@ const styles = theme => ({
   line: {
     marginBottom: '12px',
   },
+  inputDisabled: {},
 });
 
 

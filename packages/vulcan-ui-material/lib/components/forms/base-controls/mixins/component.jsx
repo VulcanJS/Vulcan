@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import _omit from 'lodash/omit';
 
 
@@ -10,8 +9,10 @@ export default {
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     hideLabel: PropTypes.bool,
     layout: PropTypes.string,
-    required: PropTypes.bool,
+    optional: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.object),
+    className: PropTypes.string,
+    inputType: PropTypes.string,
   },
   
   getFormControlProperties: function () {
@@ -19,7 +20,8 @@ export default {
       label: this.props.label,
       hideLabel: this.props.hideLabel,
       layout: this.props.layout,
-      required: this.props.required,
+      optional: this.props.optional,
+      value: this.props.value,
       hasErrors: this.hasErrors(),
       className: this.props.className,
       inputType: this.props.inputType,
@@ -35,6 +37,7 @@ export default {
       charsRemaining: this.props.charsRemaining,
       charsCount: this.props.charsCount,
       max: this.props.max,
+      className: 'form-helper-text',
     };
   },
   
@@ -79,12 +82,12 @@ export default {
       'afterComponent',
       'addonAfter',
       'addonBefore',
+      'hideLink',
       'help',
       'label',
       'hideLabel',
       'options',
       'layout',
-      'rowLabel',
       'validatePristine',
       'validateOnSubmit',
       'inputClassName',
@@ -125,7 +128,8 @@ export default {
       'autoValue',
       'minCount',
       'maxCount',
-      'visibleItemIndex'
+      'visibleItemIndex',
+      'prefilledProps',
     ];
     
     return _omit(props, removedFields);
@@ -135,6 +139,7 @@ export default {
     const removedFields = [
       'value',
       'error',
+      'label',
     ];
   
     return _omit(props, removedFields);

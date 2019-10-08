@@ -11,12 +11,13 @@ export default withMutation({
 
 */
 
-import { graphql } from 'react-apollo';
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { getFragment } from 'meteor/vulcan:lib';
 
-export default function withMutation({name, args, fragmentName}) {
-
+export const useRegisteredMutation = (options) => {
+  const { name, args, fragmentName, mutationOptions = {} } = options;
   let mutation, fragment, fragmentBlock = '';
 
   if (fragmentName) {
@@ -25,7 +26,7 @@ export default function withMutation({name, args, fragmentName}) {
       ...${fragmentName}
     }`;
   }
-  
+
   if (args) {
     const args1 = _.map(args, (type, name) => `$${name}: ${type}`); // e.g. $url: String
     const args2 = _.map(args, (type, name) => `${name}: $${name}`); // e.g. $url: url
@@ -41,15 +42,22 @@ export default function withMutation({name, args, fragmentName}) {
       }
     `;
   }
-  
-  return graphql(gql`${mutation}${fragmentName ? fragment : ''}`, {
-    alias: 'withMutation',
-    props: ({ownProps, mutate}) => ({
-      [name]: (vars) => {
-        return mutate({ 
-          variables: vars,
-        });
-      }
-    }),
-  });
-}
+  const query = gql`${mutation}${fragmentName ? fragment : ''}`;
+
+  const [mutateFunc] = useMutation(query, mutationOptions);
+  const extendedMutateFunc = vars => mutateFunc({ variables: vars });
+  return extendedMutateFunc;
+};
+
+export const withMutation = (options) => C => {
+  const Wrapper = props => {
+    const mutation = useRegisteredMutation(options);
+    return (
+      <C {...props} {...{ [options.name]: mutation }} />
+    );
+  };
+  Wrapper.displayName = 'withMutation';
+  return Wrapper;
+};
+
+export default withMutation;
