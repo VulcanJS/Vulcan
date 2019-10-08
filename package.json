@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.13.2",
+  "version": "1.13.3",
   "engines": {
     "npm": "^3.0"
   },
@@ -9,16 +9,18 @@
     "visualizer": "meteor --extra-packages bundle-visualizer --production --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages",
     "lintfix": "eslint --cache --fix --ext .jsx,js packages",
-    "test-unit": "TEST_CHROME_ARGS='--remote-debugging-port=9222' TEST_BROWSER_DRIVER=chrome meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha --raw-logs",
-    "test-client": "TEST_SERVER=0 TEST_CHROME_ARGS='--remote-debugging-port=9222' TEST_BROWSER_DRIVER=chrome meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha --raw-logs",
-    "test-server": "TEST_CLIENT=0 TEST_CHROME_ARGS='--remote-debugging-port=9222' TEST_BROWSER_DRIVER=chrome meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha --raw-logs",
+    "test-unit": "meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha",
+    "open-test-client": "xdg-open http://localhost:60859",
+    "test-client": "TEST_SERVER=0 meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha",
+    "test-server": "TEST_CLIENT=0 meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha",
     "test": "npm run test-unit",
     "prettier": "node ./.vulcan/prettier/index.js write-changed",
     "prettier-all": "node ./.vulcan/prettier/index.js write",
     "update-package-json": "node ./.vulcan/update_package.js",
     "storybook": "VULCAN_DIR=\"..\" start-storybook -p 6006",
     "storybook-material": "STORYBOOK_UI=material VULCAN_DIR=\"..\" start-storybook -p 6006",
-    "build-storybook": "STORYBOOK_UI=material build-storybook -o docs/storybook-material && STORYBOOK_UI=bootstrap build-storybook -o docs/storybook-bootstrap"
+    "build-storybook": "STORYBOOK_UI=material build-storybook -o docs/storybook-material && STORYBOOK_UI=bootstrap build-storybook -o docs/storybook-bootstrap",
+    "generate-changelog": "auto-changelog -u"
   },
   "husky": {
     "hooks": {
@@ -29,14 +31,13 @@
     "@babel/runtime": "7.1.2",
     "analytics-node": "^2.1.1",
     "apollo-cache-inmemory": "^1.4.2",
-    "apollo-client": "2.4.12",
+    "apollo-client": "2.6.3",
     "apollo-engine": "1.1.2",
     "apollo-errors": "^1.9.0",
     "apollo-link-error": "^1.1.5",
     "apollo-link-http": "^1.5.14",
     "apollo-link-schema": "^1.1.1",
     "apollo-link-state": "^0.4.2",
-    "apollo-link-watched-mutation": "^0.1.0",
     "apollo-server": "2.3.3",
     "apollo-server-express": "2.3.3",
     "babel-runtime": "^6.26.0",
@@ -68,7 +69,7 @@
     "immutability-helper": "^2.0.0",
     "import": "0.0.6",
     "intl": "^1.2.4",
-    "intl-locales-supported": "^1.0.0",
+    "intl-locales-supported": "1.4.6",
     "juice": "^5.1.0",
     "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
@@ -80,7 +81,7 @@
     "qs": "^6.6.0",
     "react": "^16.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
-    "react-apollo": "^2.4.1",
+    "react-apollo": "3.0.0",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^2.1.4",
@@ -112,6 +113,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@material-ui/core": "^3.9.3",
     "@storybook/addon-actions": "5.0.8",
@@ -121,6 +123,7 @@
     "@storybook/react": "5.0.8",
     "@storybook/theming": "5.0.8",
     "@userfrosting/merge-package-dependencies": "^1.2.0",
+    "auto-changelog": "^1.16.1",
     "autoprefixer": "^6.3.6",
     "autosuggest-highlight": "^3.1.1",
     "babel-eslint": "^10.0.1",
@@ -161,6 +164,7 @@
     "storybook-addon-intl": "^2.4.1",
     "storybook-react-router": "^1.0.5",
     "vulcan-loader": "0.0.1",
+    "waait": "^1.0.5",
     "webpack": "4.28.4"
   },
   "postcss": {

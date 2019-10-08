@@ -20,6 +20,7 @@ import './core/Loading';
 import './core/ModalTrigger';
 import './core/NewButton';
 
+import './forms/base-controls/MuiRequiredIndicator';
 import './forms/FormComponentInner';
 import './forms/FormErrors';
 import './forms/FormGroupDefault';

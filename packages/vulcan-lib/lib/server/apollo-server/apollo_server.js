@@ -35,6 +35,7 @@ import { getApolloApplyMiddlewareOptions, getApolloServerOptions } from './setti
 
 import { getSetting } from '../../modules/settings.js';
 import { formatError } from 'apollo-errors';
+import { runCallbacks } from '../../modules/callbacks';
 
 export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
   // IMPORTANT: order matters !
@@ -55,6 +56,14 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
     bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
   );
   WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
+
+
+  // enhance webapp
+  runCallbacks({
+    name: 'graphql.middlewares.setup',
+    iterator: WebApp,
+    properties: {}
+  });
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server when handling requests
@@ -113,7 +122,7 @@ export const onStart = () => {
   const config = {
     path: '/graphql',
     maxAccountsCacheSizeInMB: 1,
-    configServer: apolloServer => {},
+    configServer: apolloServer => { },
     voyagerPath: '/graphql-voyager',
     graphiqlPath: '/graphiql',
     // customConfigFromReq

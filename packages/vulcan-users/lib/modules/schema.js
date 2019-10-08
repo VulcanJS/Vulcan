@@ -70,6 +70,11 @@ const schema = {
   emails: {
     type: Array,
     optional: true,
+    canRead: ['admins'],
+    onCreate: ({ document }) => {
+      // simulate Accounts behaviour
+      if (!document.emails && document.email) return [{ address: document.email }];
+    }
   },
   'emails.$': {
     type: Object,
@@ -274,7 +279,7 @@ const schema = {
     canRead: ['guests'],
     group: adminGroup,
     form: {
-      options: function() {
+      options: function () {
         const groups = _.without(
           _.keys(getCollection('Users').groups),
           'guests',

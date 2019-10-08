@@ -12,6 +12,7 @@ registerFragment(`
       username
       displayName
       pageUrl
+      pagePath
       emailHash
       avatarUrl
     }
