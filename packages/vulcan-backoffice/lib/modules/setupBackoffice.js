@@ -3,6 +3,7 @@
  * - create routes
  * - register menu items
  */
+import { addRoute } from 'meteor/vulcan:core'
 import { mergeDefaultBackofficeOptions, mergeDefaultCollectionOptions } from './options';
 import { getCollectionName } from './namingHelpers';
 import createCollectionComponents from './createCollectionComponents';
@@ -11,30 +12,22 @@ import setupCollectionMenuItems from './setupCollectionMenuItems';
 
 const setupBackoffice = (collections, providedOptions = {}, collectionsOptions = {}) => {
   const options = mergeDefaultBackofficeOptions(providedOptions);
+  // pages for each collection
   collections.forEach(collection => {
     const collectionName = getCollectionName(collection);
     const collectionOptions = mergeDefaultCollectionOptions(
       collectionsOptions[collectionName],
       options
     );
-    if (options.generateComponents) {
-      const { ListComponent, ItemComponent } = createCollectionComponents(
-        collection,
-        collectionOptions
-      );
-    }
-    if (options.generateRoutes) {
-      setupCollectionRoutes(collection, collectionOptions);
-    }
-    if (options.generateMenuItems) {
-      setupCollectionMenuItems(collection, collectionOptions);
-    }
+    const { ListComponent, ItemComponent } = createCollectionComponents(
+      collection,
+      collectionOptions
+    );
+    setupCollectionRoutes(collection, collectionOptions);
+    setupCollectionMenuItems(collection, collectionOptions);
   });
-  if (options.generateUI) {
-    // TODO: create the backoffice UI on basePath endpoint
-    // createBackofficeComponents() // init the components
-    // addRoute({name:'vulcan-backoffice', path: options.basePath, componentName:"VulcanBackoffice"}) // setup the route
-  }
+  // index
+  addRoute({ name: 'vulcan-backoffice', path: options.basePath, componentName: 'VulcanBackofficeIndex', layoutName: options.layoutName }) // setup the route
 };
 
 export default setupBackoffice;

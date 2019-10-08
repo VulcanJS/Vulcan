@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  registerComponent,
-  withCurrentUser
-} from 'meteor/vulcan:core';
+import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import { getAuthorizedMenuItems, menuItemProps } from 'meteor/vulcan:menu';
 import { browserHistory } from 'react-router';
-import PropTypes from 'prop-types'
-
-
+import PropTypes from 'prop-types';
 
 const MenuItem = (
   {
@@ -20,7 +15,7 @@ const MenuItem = (
     labelToken,
     LeftComponent,
     RightComponent,
-  //  router
+    //  router
   },
   { intl }
 ) => (
@@ -37,15 +32,10 @@ const MenuItem = (
             browserHistory.push(path);
             afterClick && afterClick();
           }
-    }
-  >
-    {LeftComponent && (
-        <LeftComponent />
-    )}
+    }>
+    {LeftComponent && <LeftComponent />}
     <span>{label || intl.formatMessage({ id: labelToken })}</span>
-    {RightComponent && (
-        <RightComponent />
-    )}
+    {RightComponent && <RightComponent />}
   </li>
 );
 
@@ -53,7 +43,7 @@ MenuItem.propTypes = {
   ...menuItemProps,
   // parent can pass another onClick callback
   // eg to close the menu
-  afterClick: PropTypes.func
+  afterClick: PropTypes.func,
 };
 
 const Layout = ({ children, currentUser }) => {
@@ -61,13 +51,9 @@ const Layout = ({ children, currentUser }) => {
   return (
     <div>
       <div>
-        <ul>
-          {backofficeMenuItems.map(MenuItem)}
-        </ul>
+        <ul>{backofficeMenuItems.map(MenuItem)}</ul>
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   );
 };
@@ -75,5 +61,5 @@ const Layout = ({ children, currentUser }) => {
 registerComponent({
   name: 'VulcanBackofficeLayout',
   component: Layout,
-  hocs: [withCurrentUser]
+  hocs: [withCurrentUser],
 });

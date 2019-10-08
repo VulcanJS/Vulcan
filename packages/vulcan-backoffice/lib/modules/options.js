@@ -14,9 +14,6 @@ const defaultCollectionOptions = {
 };
 
 const defaultBackofficeOptions = {
-  generateRoutes: true,
-  generateMenuItems: true,
-  generateComponents: true,
   //generateUI: true,
   basePath: '/backoffice',
   ...defaultCollectionOptions,

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:menu',
   summary: 'Vulcan menu manager',
-  version: '1.12.13',
+  version: '1.13.3',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 

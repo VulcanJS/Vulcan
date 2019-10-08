@@ -1,4 +1,5 @@
-import './routes';
+import './settings';
+import './startup';
 import './components';
 
 export { default as withDocumentId } from '../hocs/withDocumentId';

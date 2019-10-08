@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import Users from "meteor/vulcan:users";
-import _difference from "lodash/difference";
+import Users from 'meteor/vulcan:users';
+import _difference from 'lodash/difference';
 
 const getCollectionSchema = collection => collection.options.schema;
 
@@ -19,7 +19,7 @@ const getDefaultColumns = (collection, currentUser) => {
     // remove array fields
     .filter(colName => !colName.match(/\.\$$/));
   // remove unwanted columns
-  validColumns = _difference(validColumns, ["_id", "userId"]);
+  validColumns = _difference(validColumns, ['_id', 'userId']);
   // remove columns that are not viewable
   //validColumns = Users.restrict
 
@@ -27,21 +27,21 @@ const getDefaultColumns = (collection, currentUser) => {
 };
 
 const setSortable = (sortableColumns, columns) => {
-  const sortableMap = sortableColumns.reduce((res, col) => ({...res, [col]: true }), {});
-  return  columns.map(item => (item.name in sortableMap ? {...item, sortable: true} : item));
-}
+  const sortableMap = sortableColumns.reduce((res, col) => ({ ...res, [col]: true }), {});
+  return columns.map(item => (item.name in sortableMap ? { ...item, sortable: true } : item));
+};
 
 const buildDefaultColumns = (schema, columns) => {
   // TODO: use schema processing to specify component
-  return columns.map( col => {
+  return columns.map(col => {
     if (typeof col === 'string') {
       return {
-        name: col,  
-      }
+        name: col,
+      };
     }
-    return col; 
-  })
-}
+    return col;
+  });
+};
 
 export const CollectionList = ({
   //loading,
@@ -69,7 +69,7 @@ export const CollectionList = ({
         collection.options.schema,
         basicColumns || getDefaultColumns(collection, currentUser)
       ),
-      ...customColumns
+      ...customColumns,
     ])}
   />
 );
@@ -78,5 +78,5 @@ export default CollectionList;
 registerComponent({
   name: 'VulcanBackofficeCollectionList',
   component: CollectionList,
-  hocs: [withCurrentUser]
+  hocs: [withCurrentUser],
 });
