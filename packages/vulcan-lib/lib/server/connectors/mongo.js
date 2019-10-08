@@ -151,6 +151,7 @@ const filterFunction = (collection, input) => {
   // limit
   options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
 
+  // console.log(JSON.stringify(input, 2));
   // console.log(JSON.stringify(where, 2));
   // console.log(JSON.stringify(selector, 2));
   // console.log(JSON.stringify(options, 2));
