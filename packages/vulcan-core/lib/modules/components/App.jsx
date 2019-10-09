@@ -52,16 +52,13 @@ const groupRoutesPerLayout = routes =>
   }, {});
 
 const RouteSwitch = ({ routes, siteData }) => {
-  console.log('here');
   const routesPerLayout = groupRoutesPerLayout(routes);
   const layoutNames = Object.keys(routesPerLayout);
   const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
-  console.log('routesPerLayout', routesPerLayout, routes);
   return (
     <Switch>
       {layoutNames.map(layoutName => {
         const { routes, layoutComponent } = routesPerLayout[layoutName];
-        console.log('routes', routes.map(r => r.path));
         const Layout = layoutComponent;
         return (
           <Route key={layoutName} path={routes.map(r => r.path)}>

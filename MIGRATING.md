@@ -2,6 +2,11 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
+## From 1.13.3 to 1.14.0
+
+- Update React-Router to v5+. Versions must match exactly between react-router and react-router-dom `npm i --save-exact react-router@5.0.1 react-router-dom@5.0.1`. Note: v4 to v5 is supposed to be a minor update so there are not many breaking changes.
+- Optionally update react-router-bootstrap to v0.25.0 `npm i --save-exact react-router-bootstrap@0.25.0`
+
 ## From 1.13.2 to 1.13.3
 
 - Update React to a version over 16.8 (and under 17 which will bring breaking changes) to access hooks
