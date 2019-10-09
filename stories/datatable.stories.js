@@ -16,10 +16,10 @@ const defaultProps = {
         results: [{ 'foo': 'bar', 'answer': 42 }],
         columns: [{
             label: 'Foo',
-            name: 'foo'
+            name: 'foo',
         }, {
             label: 'answer',
-            name: 'answer'
+            name: 'answer',
         }]
     }
 };
@@ -27,11 +27,23 @@ const defaultProps = {
 DatatableStories
     .add('DatatableContents - interactive', () => {
         const title = text('title', 'My datatable');
-
+        const results = [{ 'foo': 'bar', 'answer': 42 }];
+        const columns = [{
+            label: 'Foo',
+            name: 'foo',
+            order: 1
+        }, {
+            label: 'answer',
+            name: 'answer',
+            order: 2
+        }];
         return (
             <Components.DatatableContents
                 {...defaultProps.DatatableContents}
                 title={title}
+                results={object('results', results)}
+                columns={object('columns', columns)}
+
             />
         );
     })
@@ -50,13 +62,25 @@ DatatableStories
             showEdit={true}
         />
     ))
+    // DOES NOT WORK 
     .add('DatatableContents - showNew', () => (
         <Components.DatatableContents
             {...defaultProps.DatatableContents}
-            showNew={false}
+            showNew={true}
         />
     ))
+    // DOES NOT WORK 
+    .add('DatatableContents - Display DatableEmpty', () => {
+        return (
+            < Components.DatatableContents
+                {...defaultProps.DatatableContents}
+                results={[]}
+            />);
+    })
 
+    .add('DatatableContents - DatableEmpty Component', () => (
+        < Components.DatatableEmpty />
+    ))
 
 
     ;
