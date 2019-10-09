@@ -61,7 +61,7 @@ const RouteSwitch = ({ routes, siteData }) => {
         const { routes, layoutComponent } = routesPerLayout[layoutName];
         const Layout = layoutComponent;
         return (
-          <Route key={layoutName} path={routes.map(r => r.path)}>
+          <Route key={layoutName} exact path={routes.map(r => r.path)}>
             <Layout>
               {routes.map(route => {
                 const {
