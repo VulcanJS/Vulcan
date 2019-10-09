@@ -21,37 +21,85 @@ import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import MessageContext from '../messages.js';
 
-// see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
-const RouteWithLayout = ({ layoutComponent, layoutName, component, currentRoute, ...rest }) => {
-  // if defined, use ErrorCatcher component to wrap layout contents
-  const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
+const getRouteLayoutName = route => {
+  const { layoutComponent, layoutName } = route;
+  if (layoutComponent && (!layoutComponent.displayName || layoutName)) {
+    throw new Error(
+      'Adding route with layoutComponent but without displayName or layoutName. ' +
+        'An unique name is mandatory to group routes per layout.' +
+        'Please add a displayName to your layoutComponent or specify the layoutName property. ' +
+        `Route: ${route.name} ${route.path}`
+    );
+  }
+  const finalLayoutName = layoutComponent
+    ? layoutComponent.displayName || layoutName
+    : layoutName || 'Layout';
+  return finalLayoutName;
+};
 
+const groupRoutesPerLayout = routes =>
+  Object.keys(routes).reduce((perLayout, routeName) => {
+    const route = routes[routeName];
+    const layoutName = getRouteLayoutName(route);
+    if (!perLayout[layoutName]) {
+      perLayout[layoutName] = {
+        routes: [],
+        layoutComponent: route.layoutComponent || Components[layoutName],
+      };
+    }
+    perLayout[layoutName].routes.push(route);
+    return perLayout;
+  }, {});
+
+const RouteSwitch = ({ routes, siteData }) => {
+  console.log('here');
+  const routesPerLayout = groupRoutesPerLayout(routes);
+  const layoutNames = Object.keys(routesPerLayout);
+  const ErrorCatcher = Components.ErrorCatcher ? Components.ErrorCatcher : Components.Dummy;
+  console.log('routesPerLayout', routesPerLayout, routes);
   return (
-    <Route
-      // NOTE: Switch ignores the "exact" prop of components that
-      // are not its direct children
-      // Since the render tree is now Switch > RouteWithLayout > Route
-      // (instead of just Switch > Route), we must write <RouteWithLayout exact ... />
-      //exact
-      {...rest}
-      render={props => {
-        const layoutProps = { ...props, currentRoute };
-        const childComponentProps = { ...props, currentRoute };
-        // Use layoutComponent, or else registered layout component; or else default layout
-        const layout = layoutComponent
-          ? layoutComponent
-          : layoutName
-          ? Components[layoutName]
-          : Components.Layout;
-        const children = (
-          <ErrorCatcher>
-            <Components.RouterHook currentRoute={currentRoute} />
-            {React.createElement(component, childComponentProps)}
-          </ErrorCatcher>
+    <Switch>
+      {layoutNames.map(layoutName => {
+        const { routes, layoutComponent } = routesPerLayout[layoutName];
+        console.log('routes', routes.map(r => r.path));
+        const Layout = layoutComponent;
+        return (
+          <Route key={layoutName} path={routes.map(r => r.path)}>
+            <Layout>
+              {routes.map(route => {
+                const {
+                  name,
+                  component: routeComponent,
+                  componentName,
+                  ...otherRouteParams
+                } = route;
+                const component = routeComponent || Components[componentName];
+                return (
+                  <Route
+                    key={name}
+                    exact
+                    render={props => {
+                      const childComponentProps = { ...props, currentRoute: route };
+                      return (
+                        <ErrorCatcher>
+                          <Components.RouterHook currentRoute={route} />
+                          {React.createElement(component, childComponentProps)}
+                        </ErrorCatcher>
+                      );
+                    }}
+                    {...otherRouteParams}
+                  />
+                );
+              })}
+            </Layout>
+          </Route>
         );
-        return React.createElement(layout, layoutProps, children);
-      }}
-    />
+      })}
+      <Components.Layout>
+        <Route siteData={siteData} currentRoute={{ name: '404' }} component={Components.Error404} />
+      </Components.Layout>
+      {/* <Route component={Components.Error404} />  */}
+    </Switch>
   );
 };
 
@@ -184,11 +232,10 @@ class App extends PureComponent {
   }
 
   render() {
-    const routeNames = Object.keys(Routes);
     const { flash } = this;
     const { messages } = this.state;
+    const { siteData } = this.props;
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
-
     return (
       <IntlProvider
         locale={this.getLocale()}
@@ -200,27 +247,8 @@ class App extends PureComponent {
             <Components.HeadTags />
             {this.props.currentUserLoading ? (
               <Components.Loading />
-            ) : routeNames.length ? (
-              <Switch>
-                {routeNames.map(key => (
-                  // NOTE: if we want the exact props to be taken into account
-                  // we have to pass it to the RouteWithLayout, not the underlying Route,
-                  // because it is the direct child of Switch
-                  <RouteWithLayout
-                    exact
-                    currentRoute={Routes[key]}
-                    siteData={this.props.siteData}
-                    key={key}
-                    {...Routes[key]}
-                  />
-                ))}
-                <RouteWithLayout
-                  siteData={this.props.siteData}
-                  currentRoute={{ name: '404' }}
-                  component={Components.Error404}
-                />
-                {/* <Route component={Components.Error404} />  */}
-              </Switch>
+            ) : Object.keys(Routes).length ? (
+              <RouteSwitch routes={Routes} siteData={siteData} />
             ) : (
               <Components.Welcome />
             )}
