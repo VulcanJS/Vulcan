@@ -5,8 +5,10 @@ import 'meteor/vulcan:core';
 
 import { withKnobs, text, boolean, select, number, object } from '@storybook/addon-knobs';
 
+
 const DatatableStories = storiesOf('Core/Datatable', module);
 DatatableStories.addDecorator(withKnobs);
+
 
 const defaultProps = {
     DatatableContents: {
@@ -41,4 +43,20 @@ DatatableStories
             {...defaultProps.DatatableContents}
             error={{ message: 'foo' }}
         />
-    ));
+    ))
+    .add('DatatableContents - showEdit', () => (
+        <Components.DatatableContents
+            {...defaultProps.DatatableContents}
+            showEdit={true}
+        />
+    ))
+    .add('DatatableContents - showNew', () => (
+        <Components.DatatableContents
+            {...defaultProps.DatatableContents}
+            showNew={false}
+        />
+    ))
+
+
+
+    ;
