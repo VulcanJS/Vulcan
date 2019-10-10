@@ -6,7 +6,7 @@ import _get from 'lodash/get';
 
 // Wraps the FormNestedItem, repeated for each object
 // Allow for example to have a label per object
-const FormNestedArrayInnerLayout = props => {
+const FormNestedArrayInnerLayout = (props, context) => {
   const { FormComponents, label, children, addItem, beforeComponent, afterComponent } = props;
   return (
     <div className="form-nested-array-inner-layout">
@@ -38,6 +38,7 @@ class FormNestedArray extends PureComponent {
 
   removeItem = index => {
     this.props.updateCurrentValues({ [`${this.props.path}.${index}`]: null });
+    this.forceUpdate();
   };
 
   /*
@@ -47,7 +48,7 @@ class FormNestedArray extends PureComponent {
   look for the presence of 'addresses.1')
   */
   isDeleted = index => {
-    return this.props.deletedValues.includes(`${this.props.path}.${index}`);
+    return this.context.deletedValues.includes(`${this.props.path}.${index}`);
   };
 
   computeVisibleIndex = values => {
@@ -129,8 +130,11 @@ FormNestedArray.propTypes = {
   minCount: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   maxCount: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   errors: PropTypes.array.isRequired,
-  deletedValues: PropTypes.array.isRequired,
   formComponents: PropTypes.object.isRequired,
+};
+
+FormNestedArray.contextTypes = {
+  deletedValues: PropTypes.array.isRequired
 };
 
 export default FormNestedArray;
