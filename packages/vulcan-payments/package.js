@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['promise', 'vulcan:core@=1.13.3', 'fourseven:scss@4.5.4']);
+  api.use(['promise', 'vulcan:core@=1.13.4', 'fourseven:scss@4.5.4']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

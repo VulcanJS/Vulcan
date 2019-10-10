@@ -10,9 +10,9 @@ Package.onUse(function (api) {
 
   api.use([
     'ecmascript',
-    'vulcan:core@=1.13.3',
-    'vulcan:accounts@=1.13.3',
-    'vulcan:forms@=1.13.3'
+    'vulcan:core@=1.13.4',
+    'vulcan:accounts@=1.13.4',
+    'vulcan:forms@=1.13.4'
   ]);
 
   api.addFiles([

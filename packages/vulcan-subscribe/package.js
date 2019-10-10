@@ -9,11 +9,11 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'vulcan:core@=1.13.3',
+    'vulcan:core@=1.13.4',
     // dependencies on posts, categories are done with nested imports to reduce explicit dependencies
   ]);
 
-  api.use(['vulcan:posts@=1.13.3', 'vulcan:comments@=1.13.3', 'vulcan:categories@=1.13.3'], {
+  api.use(['vulcan:posts@=1.13.4', 'vulcan:comments@=1.13.4', 'vulcan:categories@=1.13.4'], {
     weak: true,
   });
 

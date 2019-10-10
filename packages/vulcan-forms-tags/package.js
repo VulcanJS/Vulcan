@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:core@=1.13.3', 'vulcan:forms@=1.13.3']);
+  api.use(['vulcan:core@=1.13.4', 'vulcan:forms@=1.13.4']);
 
   api.mainModule('lib/export.js', ['client', 'server']);
 });
