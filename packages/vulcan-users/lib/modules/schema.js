@@ -70,6 +70,7 @@ const schema = {
   emails: {
     type: Array,
     optional: true,
+    canRead: ['admins'],
     onCreate: ({ document }) => {
       // simulate Accounts behaviour
       if (!document.emails && document.email) return [{ address: document.email }];

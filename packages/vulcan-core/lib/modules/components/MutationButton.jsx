@@ -63,3 +63,4 @@ class MutationButtonInner extends PureComponent {
 }
 
 registerComponent('MutationButton', MutationButton);
+export default MutationButton;

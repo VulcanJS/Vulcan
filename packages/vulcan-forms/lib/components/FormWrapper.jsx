@@ -210,8 +210,8 @@ class FormWrapper extends PureComponent {
       return loading ? (
         <Components.Loading />
       ) : (
-          <Components.Form document={document} loading={loading} {...childProps} {...props} />
-        );
+        <Components.Form document={document} loading={loading} {...childProps} {...props} />
+      );
     };
     Loader.displayName = 'withLoader(Form)';
 
@@ -323,3 +323,5 @@ registerComponent({
   component: FormWrapper,
   hocs: [withCurrentUser, withApollo, withRouter, withCollectionProps],
 });
+
+export default FormWrapper;

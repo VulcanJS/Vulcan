@@ -7,27 +7,22 @@ export * from './default_resolvers.js';
 
 export * from './components.js';
 
-export { default as Layout } from './components/Layout.jsx';
 export { default as App } from './components/App.jsx';
-export { default as Icon } from './components/Icon.jsx';
-export { default as ShowIf } from './components/ShowIf.jsx';
-export { default as MutationButton } from './components/MutationButton.jsx';
-export { default as Error404 } from './components/Error404.jsx';
+export { default as Datatable } from './components/Datatable';
+export { default as Dummy } from './components/Dummy.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
-export { default as HeadTags } from './components/HeadTags.jsx';
-export { default as Datatable } from './components/datatable/Datatable.jsx';
-export { default as DatatableSorter } from './components/datatable/DatatableSorter.jsx';
-export { default as DatatableFilter } from './components/datatable/DatatableFilter.jsx';
-export { default as DatatableCell } from './components/datatable/DatatableCell.jsx';
-export { default as DatatableContents } from './components/datatable/DatatableContents.jsx';
-export { default as DatatableHeader } from './components/datatable/DatatableHeader.jsx';
-export { default as DatatableRow } from './components/datatable/DatatableRow.jsx';
+export { default as Error404 } from './components/Error404.jsx';
 export { default as Flash } from './components/Flash.jsx';
+export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
-export { default as Welcome } from './components/Welcome.jsx';
+export { default as Icon } from './components/Icon.jsx';
+export { default as Layout } from './components/Layout.jsx';
+export { default as Loading } from './components/Loading';
+export { default as MutationButton } from './components/MutationButton.jsx';
 export { default as RouterHook } from './components/RouterHook.jsx';
 export { default as ScrollToTop } from './components/ScrollToTop.jsx';
-export { default as Dummy } from './components/Dummy.jsx';
+export { default as ShowIf } from './components/ShowIf.jsx';
+export { default as Welcome } from './components/Welcome.jsx';
 
 export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';

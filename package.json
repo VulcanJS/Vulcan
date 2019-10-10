@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.13.2",
+  "version": "1.13.3",
   "engines": {
     "npm": "^3.0"
   },
@@ -19,7 +19,8 @@
     "update-package-json": "node ./.vulcan/update_package.js",
     "storybook": "VULCAN_DIR=\"..\" start-storybook -p 6006",
     "storybook-material": "STORYBOOK_UI=material VULCAN_DIR=\"..\" start-storybook -p 6006",
-    "build-storybook": "STORYBOOK_UI=material build-storybook -o docs/storybook-material && STORYBOOK_UI=bootstrap build-storybook -o docs/storybook-bootstrap"
+    "build-storybook": "STORYBOOK_UI=material build-storybook -o docs/storybook-material && STORYBOOK_UI=bootstrap build-storybook -o docs/storybook-bootstrap",
+    "generate-changelog": "auto-changelog -u"
   },
   "husky": {
     "hooks": {
@@ -122,6 +123,7 @@
     "@storybook/react": "5.0.8",
     "@storybook/theming": "5.0.8",
     "@userfrosting/merge-package-dependencies": "^1.2.0",
+    "auto-changelog": "^1.16.1",
     "autoprefixer": "^6.3.6",
     "autosuggest-highlight": "^3.1.1",
     "babel-eslint": "^10.0.1",

@@ -88,13 +88,13 @@ export const useCreate = (options) => {
   const typeName = collection.options.typeName;
 
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
-  const [createFunc] = useMutation(query, {
+  const [createFunc, ...rest] = useMutation(query, {
     update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
     ...mutationOptions
   });
   // so the syntax is useCreate({collection: ...}, {data: ...})
   const extendedCreateFunc = (args) => createFunc({ variables: { data: args.data } });
-  return [extendedCreateFunc];
+  return [extendedCreateFunc, ...rest];
 };
 
 export const withCreate = options => C => {
