@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:i18n-fr-fr',
   summary: 'Vulcan i18n package (fr_FR)',
-  version: '1.13.3',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'vulcan:ui-material',
-  version: '1.13.3',
+  version: '1.13.4',
   summary: 'Replacement for Vulcan (http://vulcanjs.org/) components using material-ui',
   documentation: 'README.md'
 });
