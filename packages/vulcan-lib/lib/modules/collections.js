@@ -9,8 +9,8 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
 import _omit from 'lodash/omit';
+import merge from 'lodash/merge';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -136,6 +136,10 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   Object.keys(helpers).forEach(function(key) {
     self._helpers.prototype[key] = helpers[key];
   });
+};
+
+export const extendCollection = (collection, options) => {
+  collection.options = merge(collection.options, options);
 };
 
 export const createCollection = options => {
