@@ -65,7 +65,7 @@ export function getDefaultResolvers(options) {
         // get selector and options from terms and perform Mongo query
 
         let { selector, options, filteredFields } = isEmpty(terms)
-          ? Connectors.filter(collection, input)
+          ? Connectors.filter(collection, input, context)
           : await collection.getParameters(terms, {}, context);
 
         // make sure all filtered fields are allowed
@@ -142,7 +142,7 @@ export function getDefaultResolvers(options) {
           // make an exception for slug
           doc = await Connectors.get(collection, { slug });
         } else {
-          let { selector, filteredFields } = Connectors.filter(collection, input);
+          let { selector, filteredFields } = Connectors.filter(collection, input, context);
 
           // make sure all filtered fields are allowed
           Users.checkFields(currentUser, collection, filteredFields);
