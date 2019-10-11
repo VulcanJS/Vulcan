@@ -21,8 +21,6 @@ const defaultOptions = {
   cacheMaxAge: 300,
 };
 
-const alwaysTrue = () => true;
-
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
   let typeName, collectionName, resolverOptions;
@@ -80,11 +78,30 @@ export function getDefaultResolvers(options) {
 
         const docs = await Connectors.find(collection, selector, options);
 
-        // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
-        const canReadFunction = collection.checkAccess
-          ? collection.checkAccess
-          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
-        const viewableDocs = docs.filter(doc => canReadFunction(currentUser, doc));
+        let viewableDocs = docs;
+
+        // new API (Oct 2019)
+        const canRead = get(collection, 'options.permissions.canRead');
+        if (canRead) {
+          if (typeof canRead === 'function') {
+            // if canRead is a function, use it to filter list of documents
+            viewableDocs = docs.filter(doc => canRead(currentUser, doc));
+          } else if (Array.isArray(canRead)) {
+            if (canRead.includes('owners')) {
+              // if canReady array includes the owners group, test each document
+              // to see if it's owned by the current user
+              viewableDocs = docs.filter(doc => Users.isMemberOf(currentUser, canRead, doc));
+            } else {
+              // else, we don't need a per-document check and just allow or disallow
+              // access to all documents at once
+              viewableDocs = Users.isMemberOf(currentUser, canRead) ? viewableDocs : [];
+            }
+          }
+        } else if (collection.checkAccess) {
+          // old API
+          // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
+          viewableDocs = docs.filter(doc => collection.checkAccess(currentUser, doc));
+        }
 
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
@@ -167,9 +184,23 @@ export function getDefaultResolvers(options) {
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
-        const canReadFunction = collection.checkAccess
-          ? collection.checkAccess
-          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
+        let canReadFunction;
+
+        // new API (Oct 2019)
+        const canRead = get(collection, 'options.permissions.canRead');
+        if (canRead) {
+          if (typeof canRead === 'function') {
+            // if canRead is a function, use it to check current document
+            canReadFunction = canRead;
+          } else if (Array.isArray(canRead)) {
+            // else if it's an array of groups, check if current user belongs to them
+            // for the current document
+            canReadFunction = (currentUser, doc) => Users.isMemberOf(currentUser, canRead, doc);
+          }
+        } else if (collection.checkAccess) {
+          // old API
+          canReadFunction = collection.checkAccess;
+        }
 
         Utils.performCheck(
           canReadFunction,

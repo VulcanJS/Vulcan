@@ -15,11 +15,15 @@ Utils.sanitize = function(s) {
 
 Utils.performCheck = (operation, user, checkedObject, context, documentId, operationName, collectionName) => {
 
+  if (!operation) {
+    throwError({ id: 'app.no_permissions_defined', data: { documentId, operationName } });
+  }
+
   if (!checkedObject) {
     throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
   }
 
-  if (!operation(user, checkedObject, context)) {
+  if (!operation || !operation(user, checkedObject, context)) {
     throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
   }
 
