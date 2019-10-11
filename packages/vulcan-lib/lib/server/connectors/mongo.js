@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
+import get from 'lodash/get';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -78,7 +79,9 @@ const filterFunction = (collection, input, context) => {
     const [operator] = Object.keys(fieldExpression[fieldName]);
     const value = fieldExpression[fieldName][operator];
     if (isEmpty(value)) {
-      throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
+      throw new Error(
+        `Detected empty filter value for field ${fieldName} with operator ${operator}`
+      );
     }
     const mongoOperator = conversionTable[operator];
     const isIntl = schema[fieldName].intl;
@@ -100,14 +103,17 @@ const filterFunction = (collection, input, context) => {
 
   /*
 
-  The `view` argument accepts the name of a view function that will then 
+  The `filter` argument accepts the name of a filter function that will then 
   be called to calculate more complex selector and options objects
 
   */
-  if (!isEmpty(filter) && collection.filters && collection.filters[filter]) {
-    const filterObject = collection.filters[filter](input, context);
-    selector = merge(selector, filterObject.selector);
-    options = merge(options, filterObject.options);
+  if (!isEmpty(filter)) {
+    const filterFunction = get(collection, `options.filters.${filter}`);
+    if (filterFunction) {
+      const filterObject = filterFunction(input, context);
+      selector = merge(selector, filterObject.selector);
+      options = merge(options, filterObject.options);
+    }
   }
 
   // where
@@ -160,7 +166,10 @@ const filterFunction = (collection, input, context) => {
         $or: searchableFieldNames.map(fieldName => {
           const isIntl = schema[fieldName].intl;
           return {
-            [isIntl ? `${fieldName}_intl.value` : fieldName]: { $regex: searchQuery, $options: 'i' },
+            [isIntl ? `${fieldName}_intl.value` : fieldName]: {
+              $regex: searchQuery,
+              $options: 'i',
+            },
           };
         }),
       };
