@@ -15,10 +15,13 @@ import {
   throwError,
 } from 'meteor/vulcan:lib';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 const defaultOptions = {
   cacheMaxAge: 300,
 };
+
+const alwaysTrue = () => true;
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
@@ -78,9 +81,10 @@ export function getDefaultResolvers(options) {
         const docs = await Connectors.find(collection, selector, options);
 
         // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
-        const viewableDocs = collection.checkAccess
-          ? _.filter(docs, doc => collection.checkAccess(currentUser, doc))
-          : docs;
+        const canReadFunction = collection.checkAccess
+          ? collection.checkAccess
+          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
+        const viewableDocs = docs.filter(doc => canReadFunction(currentUser, doc));
 
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
@@ -163,17 +167,19 @@ export function getDefaultResolvers(options) {
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
-        if (collection.checkAccess) {
-          Utils.performCheck(
-            collection.checkAccess,
-            currentUser,
-            doc,
-            collection,
-            documentId,
-            `${typeName}.read.single`,
-            collectionName
-          );
-        }
+        const canReadFunction = collection.checkAccess
+          ? collection.checkAccess
+          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
+
+        Utils.performCheck(
+          canReadFunction,
+          currentUser,
+          doc,
+          collection,
+          documentId,
+          `${typeName}.read.single`,
+          collectionName
+        );
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 

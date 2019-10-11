@@ -13,9 +13,11 @@ import {
   Connectors,
   getTypeName,
   getCollectionName,
+  getCollection,
 } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
@@ -56,11 +58,21 @@ export function getDefaultMutations(options) {
 
       // check function called on a user to see if they can perform the operation
       check(user, document) {
+
+        // new API
+        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canCreate');
+        if (typeof permissionsCheck === 'function') {
+          return permissionsCheck(user, document);
+        } else if (Array.isArray(permissionsCheck)) {
+          return Users.isMemberOf(user, permissionsCheck, document);
+        }
+
         // OpenCRUD backwards compatibility
         const check = mutationOptions.createCheck || mutationOptions.newCheck;
         if (check) {
           return check(user, document);
         }
+
         // check if they can perform "foo.new" operation (e.g. "movie.new")
         // OpenCRUD backwards compatibility
         return Users.canDo(user, [
@@ -108,6 +120,15 @@ export function getDefaultMutations(options) {
 
       // check function called on a user and document to see if they can perform the operation
       check(user, document) {
+
+        // new API
+        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canUpdate');
+        if (typeof permissionsCheck === 'function') {
+          return permissionsCheck(user, document);
+        } else if (Array.isArray(permissionsCheck)) {
+          return Users.isMemberOf(user, permissionsCheck, document);
+        }
+        
         // OpenCRUD backwards compatibility
         const check = mutationOptions.updateCheck || mutationOptions.editCheck;
         if (check) {
@@ -220,6 +241,15 @@ export function getDefaultMutations(options) {
       name: mutationName,
 
       check(user, document) {
+
+        // new API
+        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canDelete');
+        if (typeof permissionsCheck === 'function') {
+          return permissionsCheck(user, document);
+        } else if (Array.isArray(permissionsCheck)) {
+          return Users.isMemberOf(user, permissionsCheck, document);
+        }
+
         // OpenCRUD backwards compatibility
         const check = mutationOptions.deleteCheck || mutationOptions.removeCheck;
         if (check) {

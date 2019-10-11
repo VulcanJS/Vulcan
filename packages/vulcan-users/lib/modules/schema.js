@@ -284,6 +284,7 @@ const schema = {
           _.keys(getCollection('Users').groups),
           'guests',
           'members',
+          'owners',
           'admins'
         );
         return groups.map(group => {

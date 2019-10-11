@@ -46,7 +46,7 @@ Users.createGroup = groupName => {
  * @summary get a list of a user's groups
  * @param {Object} user
  */
-Users.getGroups = user => {
+Users.getGroups = (user, document) => {
 
   let userGroups = [];
 
@@ -58,6 +58,10 @@ Users.getGroups = user => {
   
     userGroups = ['members'];
 
+    if (document && Users.owns(user, document)) {
+      userGroups.push('owners');
+    }
+    
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
     } 
@@ -95,9 +99,9 @@ Users.getActions = user => {
  * @param {Array} user 
  * @param {String} group or array of groups
  */
-Users.isMemberOf = (user, groupOrGroups) => {
+Users.isMemberOf = (user, groupOrGroups, document) => {
   const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
-  return intersection(Users.getGroups(user), groups).length > 0;
+  return intersection(Users.getGroups(user, document), groups).length > 0;
 };
 
 /**
