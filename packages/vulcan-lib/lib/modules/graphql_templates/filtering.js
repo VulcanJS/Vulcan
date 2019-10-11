@@ -53,8 +53,6 @@ export const fieldWhereInputTemplate = ({ typeName, fields }) =>
   _and: [${typeName}WhereInput]
   _not: ${typeName}WhereInput
   _or: [${typeName}WhereInput]
-  # will search across all searchable fields at the same time
-  search: String
 ${fields
   .map(field => {
     const { name, type } = field;

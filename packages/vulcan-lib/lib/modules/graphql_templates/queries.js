@@ -46,6 +46,7 @@ export const singleInputTemplate = ({ typeName }) =>
   where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
   search: String
+  filter: String
 
   # backwards-compatibility
   selector: ${typeName}SelectorUniqueInput
@@ -76,12 +77,13 @@ export const multiInputTemplate = ({ typeName }) =>
   where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
   search: String
-  offset: Int,
-  limit: Int,
+  offset: Int
+  limit: Int
+  filter: String
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  terms: JSON,
+  terms: JSON
 
   # options
   # Whether to enable caching for this query

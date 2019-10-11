@@ -4,6 +4,7 @@ import { getSetting } from '../../modules/settings.js';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
+import merge from 'lodash/merge';
 
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
@@ -45,10 +46,12 @@ const getFieldNames = expressionArray => {
   });
 };
 
-const filterFunction = (collection, input) => {
-  const { where, limit = 20, orderBy, search } = input;
+const filterFunction = (collection, input, context) => {
+  const { where, limit = 20, orderBy, search, filter, offset } = input;
   let selector = {};
-  let options = {};
+  let options = {
+    sort: {},
+  };
   let filteredFields = [];
 
   const schema = collection.simpleSchema()._schema;
@@ -83,7 +86,31 @@ const filterFunction = (collection, input) => {
     return { [mongoFieldName]: { [mongoOperator]: value } };
   };
 
-  // filter
+  /*
+
+  When a collection is created, a defaultInput option can be passed
+  in order to specify defaut `where`, `limit`, `orderBy`, etc. 
+  values that should always apply. 
+
+  */
+  if (collection.defaultInput) {
+    selector = merge(selector, collection.defaultInput.selector);
+    options = merge(options, collection.defaultInput.options);
+  }
+
+  /*
+
+  The `view` argument accepts the name of a view function that will then 
+  be called to calculate more complex selector and options objects
+
+  */
+  if (!isEmpty(filter) && collection.filters && collection.filters[filter]) {
+    const filterObject = collection.filters[filter](input, context);
+    selector = merge(selector, filterObject.selector);
+    options = merge(options, filterObject.options);
+  }
+
+  // where
   if (!isEmpty(where)) {
     Object.keys(where).forEach(fieldName => {
       switch (fieldName) {
@@ -115,13 +142,12 @@ const filterFunction = (collection, input) => {
     });
   }
 
-  // order
+  // orderBy
   if (!isEmpty(orderBy)) {
-    options.sort = mapValues(orderBy, order => conversionTable[order]);
+    options.sort = merge(options.sort, mapValues(orderBy, order => conversionTable[order]));
   }
 
   // search
-  // TODO: decide if this is still needed?
   if (!isEmpty(search)) {
     const searchQuery = escapeStringRegexp(search);
     const searchableFieldNames = Object.keys(schema).filter(
@@ -149,9 +175,18 @@ const filterFunction = (collection, input) => {
   }
 
   // limit
-  options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
+  if (limit) {
+    options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
+  }
+
+  // offest
+  if (offset) {
+    options.skip = offset;
+  }
 
   // console.log(JSON.stringify(input, 2));
+  // console.log(JSON.stringify(collection.defaultInput, 2));
+  // console.log(JSON.stringify(view, 2));
   // console.log(JSON.stringify(where, 2));
   // console.log(JSON.stringify(selector, 2));
   // console.log(JSON.stringify(options, 2));
