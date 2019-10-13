@@ -2,10 +2,6 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getFieldValue } from '../Card.jsx';
-
-const getColumnName = column => (typeof column === 'string' ? column : column.label || column.name);
-
 /*
 
 DatatableCell Component
@@ -16,7 +12,7 @@ const DatatableCell = ({ column, document, currentUser, Components, collection }
     column.component ||
     (column.componentName && Components[column.componentName]) ||
     Components.DatatableDefaultCell;
-  const columnName = getColumnName(column);
+  const columnName = column.label || column.name;
 
   return (
     <Components.DatatableCellLayout
@@ -48,10 +44,14 @@ registerComponent({ name: 'DatatableCellLayout', component: DatatableCellLayout 
 DatatableDefaultCell Component
 
 */
-const DatatableDefaultCell = ({ column, document, Components, collection }) => {
-  const fieldName = typeof column === 'string' ? column : column.name;
-  const props = { value: document[fieldName], fieldName, Components, collection };
+const DatatableDefaultCell = ({ column, document, ...rest }) => (
+  <Components.CardItemSwitcher
+    value={document[column.name]}
+    document={document}
+    fieldName={column.name}
+    {...column}
+    {...rest}
+  />
+);
 
-  return <Components.CardItemSwitcher {...props} {...typeof column !== 'string' && column} />;
-};
 registerComponent('DatatableDefaultCell', DatatableDefaultCell);

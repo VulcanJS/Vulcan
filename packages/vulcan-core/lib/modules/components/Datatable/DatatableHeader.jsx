@@ -3,8 +3,6 @@ import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 
-const getColumnName = column => (typeof column === 'string' ? column : column.label || column.name);
-
 /*
 
 DatatableHeader Component
@@ -14,7 +12,7 @@ const DatatableHeader = (
   { collection, column, toggleSort, currentSort, submitFilters, currentFilters, Components },
   { intl }
 ) => {
-  const columnLabel = getColumnName(column);
+  const columnLabel = column.label || column.name;
 
   if (collection) {
     const schema = collection.simpleSchema()._schema;
@@ -42,7 +40,7 @@ const DatatableHeader = (
     const filterQuery = field && field.query;
 
     return (
-      <Components.DatatableHeaderCellLayout>
+      <Components.DatatableHeaderCellLayout className={`datatable-header-${column.name}`}>
         <span className="datatable-header-cell-label">{formattedLabel}</span>
         {column.sortable && (
           <Components.DatatableSorter

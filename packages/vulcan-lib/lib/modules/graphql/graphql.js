@@ -19,7 +19,6 @@ import {
   createDataInputTemplate,
   updateInputTemplate,
   updateDataInputTemplate,
-  orderByInputTemplate,
   selectorUniqueInputTemplate,
   deleteInputTemplate,
   upsertInputTemplate,
@@ -34,7 +33,9 @@ import {
   updateMutationTemplate,
   upsertMutationTemplate,
   deleteMutationTemplate,
-} from '../graphql_templates.js';
+  fieldWhereInputTemplate,
+  fieldOrderByInputTemplate,
+} from '../graphql_templates/index.js';
 
 import { 
   getSchemaFields
@@ -149,7 +150,7 @@ export const GraphQLSchema = {
       ? collection.options.description
       : `Type for ${collectionName}`;
 
-    const { mainType, create, update, selector, selectorUnique, orderBy } = fields;
+    const { mainType, create, update, selector, selectorUnique, readable } = fields;
 
     if (mainType.length) {
       schemaFragments.push(
@@ -175,9 +176,12 @@ export const GraphQLSchema = {
 
       schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
 
-      schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
+      if (readable.length) {
+        schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
+        schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+      }
 
-      schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
+      schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
 
       if (!_.isEmpty(resolvers)) {
         const queryResolvers = {};
@@ -283,17 +287,17 @@ export const GraphQLSchema = {
   },
 };
 
-Vulcan.getGraphQLSchema = () => {
-  if (!GraphQLSchema.finalSchema) {
-    throw new Error(
-      'Warning: trying to access graphQL schema before it has been created by the server.'
-    );
-  }
-  const schema = GraphQLSchema.finalSchema[0];
-  // eslint-disable-next-line no-console
-  console.log(schema);
-  return schema;
-};
+// Vulcan.getGraphQLSchema = () => {
+//   if (!GraphQLSchema.finalSchema) {
+//     throw new Error(
+//       'Warning: trying to access graphQL schema before it has been created by the server.'
+//     );
+//   }
+//   const schema = GraphQLSchema.finalSchema[0];
+//   // eslint-disable-next-line no-console
+//   console.log(schema);
+//   return schema;
+// };
 
 export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
 export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);

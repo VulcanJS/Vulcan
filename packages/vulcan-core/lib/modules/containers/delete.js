@@ -76,13 +76,13 @@ export const useDelete = (options) => {
     fragmentName, typeName
   });
 
-  const [deleteFunc] = useMutation(query, {
+  const [deleteFunc, ...rest] = useMutation(query, {
     // optimistic update
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
   const extendedDeleteFunc = (selector) => deleteFunc({ variables: { selector } });
-  return [extendedDeleteFunc];
+  return [extendedDeleteFunc, ...rest];
 };
 
 export const withDelete = options => C => {

@@ -1,15 +1,19 @@
-import { registerComponent, getCollection } from 'meteor/vulcan:lib';
+import { Utils, registerComponent, getCollection } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import qs from 'qs';
 import { withRouter } from 'react-router';
-import _isEmpty from 'lodash/isEmpty';
 import compose from 'recompose/compose';
-
+import _isEmpty from 'lodash/isEmpty';
+import _set from 'lodash/set';
+import _cloneDeep from 'lodash/cloneDeep';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/multi.js';
+import withMulti from '../../containers/multi2.js';
+
+const ascSortOperator = 'asc';
+const descSortOperator = 'desc';
 
 /*
 
@@ -30,31 +34,80 @@ class Datatable extends PureComponent {
   constructor(props) {
     super(props);
 
+    const { initialState, useUrlState } = props;
+
     let initState = {
-      value: '',
-      query: '',
+      searchValue: '',
+      search: '',
       currentSort: {},
       currentFilters: {},
     };
 
-    // only load urlState if useUrlState is enabled
-    if (props.useUrlState) {
-      const urlState = this.getUrlState(props);
-      if (urlState.query) {
-        initState.value = urlState.query;
-        initState.query = urlState.query;
+    // initial state can be defined via props
+    // note: this prop-originating initial state will *not* be reflected in the URL
+    if (initialState) {
+      if (initialState.search) {
+        initState.searchValue = initialState.search;
+        initState.search = initialState.search;
       }
-      if (urlState.sort) {
-        const [sortKey, sortValue] = urlState.sort.split('|');
+      if (initialState.orderBy) {
+        initState.currentSort = initialState.orderBy;
+      }
+      if (initialState.filters) {
+        initState.currentFilters = initialState.filters;
+      }
+    }
+
+    // only load urlState if useUrlState is enabled
+    if (useUrlState) {
+      const urlState = this.getUrlState(props);
+      if (urlState.search) {
+        initState.searchValue = urlState.search;
+        initState.search = urlState.search;
+      }
+      if (urlState.orderBy) {
+        const [sortKey, sortValue] = urlState.orderBy.split('|');
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
       }
       if (urlState.filters) {
-        initState.currentFilters = urlState.filters;
+        // all URL values are stored as strings, so convert them back to numbers if needed
+        initState.currentFilters = this.convertToNumbers(urlState.filters, props);
       }
     }
 
     this.state = initState;
   }
+
+  /*
+
+  Take a complex filter object and convert its "leaves" to numbers when needed
+
+  */
+  convertToNumbers = (urlStateFilters, props) => {
+    const convertedFilters = _cloneDeep(urlStateFilters);
+    const p = props || this.props;
+    const { collection } = p;
+
+    // only try to convert when we have a collection schema
+    if (collection) {
+      const schema = collection.simpleSchema()._schema;
+
+      Object.keys(urlStateFilters).forEach(fieldName => {
+        const field = schema[fieldName];
+        // for each field, check if it's supposed to be a number
+        if (Utils.getFieldType(field) === Number) {
+          const filter = urlStateFilters[fieldName];
+          // the "operator" can be _in, _eq, _gte, etc.
+          const [operator] = Object.keys(filter);
+          const value = urlStateFilters[fieldName][operator];
+          // value can be a single value or an array, depending on filter type
+          const convertedValue = Array.isArray(value) ? value.map(parseFloat) : parseFloat(value);
+          _set(convertedFilters, `${fieldName}.${operator}`, convertedValue);
+        }
+      });
+    }
+    return convertedFilters;
+  };
 
   getUrlState = props => {
     const p = props || this.props;
@@ -83,21 +136,27 @@ class Datatable extends PureComponent {
     }
   };
 
+  /*
+
+  Note: when state is asc, toggling goes to desc;
+  but when state is desc toggling again removes sort.
+
+  */
   toggleSort = column => {
     let currentSort;
     let urlValue;
     if (!this.state.currentSort[column]) {
-      currentSort = { [column]: 1 };
-      urlValue = `${column}|1`;
-    } else if (this.state.currentSort[column] === 1) {
-      currentSort = { [column]: -1 };
-      urlValue = `${column}|-1`;
+      currentSort = { [column]: ascSortOperator };
+      urlValue = `${column}|${ascSortOperator}`;
+    } else if (this.state.currentSort[column] === ascSortOperator) {
+      currentSort = { [column]: descSortOperator };
+      urlValue = `${column}|${descSortOperator}`;
     } else {
       currentSort = {};
       urlValue = null;
     }
     this.setState({ currentSort });
-    this.updateQueryParameter('sort', urlValue);
+    this.updateQueryParameter('orderBy', urlValue);
   };
 
   submitFilters = ({ name, filters }) => {
@@ -114,23 +173,23 @@ class Datatable extends PureComponent {
     this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
   };
 
-  updateQuery = e => {
+  updateSearch = e => {
     e.persist();
     e.preventDefault();
-    const value = e.target.value;
+    const searchValue = e.target.value;
     this.setState({
-      value,
+      searchValue,
     });
     delay(() => {
       this.setState({
-        query: value,
+        search: searchValue,
       });
-      this.updateQueryParameter('query', value);
+      this.updateQueryParameter('search', searchValue);
     }, 700);
   };
 
   render() {
-    const { Components, modalProps } = this.props;
+    const { Components, modalProps, data } = this.props;
 
     if (this.props.data) {
       // static JSON datatable
@@ -138,8 +197,8 @@ class Datatable extends PureComponent {
       return (
         <Components.DatatableContents
           Components={Components}
-          columns={Object.keys(this.props.data[0])}
           {...this.props}
+          datatableData={data}
           results={this.props.data}
           showEdit={false}
           showNew={false}
@@ -168,15 +227,17 @@ class Datatable extends PureComponent {
         collection.options.mutations &&
         collection.options.mutations.create &&
         collection.options.mutations.create.check(this.props.currentUser);
-      // add _id to orderBy when we want to sort a column, to avoid breaking the graphql() hoc;
-      // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
-      // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays {}. So we test on the length of keys for this object.
-      const orderBy =
-        Object.keys(this.state.currentSort).length == 0
-          ? {}
-          : { ...this.state.currentSort, _id: -1 };
 
-      const filterBy = this.state.currentFilters;
+      const input = {};
+      if (!_isEmpty(this.state.search)) {
+        input.search = this.state.search;
+      }
+      if (!_isEmpty(this.state.currentSort)) {
+        input.orderBy = this.state.currentSort;
+      }
+      if (!_isEmpty(this.state.currentFilters)) {
+        input.where = this.state.currentFilters;
+      }
 
       return (
         <Components.DatatableLayout
@@ -188,14 +249,14 @@ class Datatable extends PureComponent {
             collection={collection}
             canInsert={canInsert || canCreate}
             canUpdate={canInsert || canCreate}
-            value={this.state.value}
-            updateQuery={this.updateQuery}
+            searchValue={this.state.searchValue}
+            updateSearch={this.updateSearch}
           />
           <DatatableWithMulti
             Components={Components}
             {...this.props}
             collection={collection}
-            terms={{ query: this.state.query, orderBy, filterBy }}
+            input={input}
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
@@ -253,8 +314,8 @@ const DatatableAbove = (props, { intl }) => {
     showSearch,
     showNew,
     canInsert,
-    value,
-    updateQuery,
+    searchValue,
+    updateSearch,
     options,
     newFormOptions,
     Components,
@@ -265,14 +326,16 @@ const DatatableAbove = (props, { intl }) => {
       {showSearch && (
         <Components.DatatableAboveSearchInput
           className="datatable-search form-control"
-          placeholder={`${intl.formatMessage({
-            id: 'datatable.search',
-            defaultMessage: 'Search',
-          })}…`}
-          type="text"
-          name="datatableSearchQuery"
-          value={value}
-          onChange={updateQuery}
+          inputProperties={{
+            path: 'datatableSearchQuery',
+            placeholder: `${intl.formatMessage({
+              id: 'datatable.search',
+              defaultMessage: 'Search',
+            })}…`,
+            value: searchValue,
+            onChange: updateSearch,
+          }}
+          Components={Components}
         />
       )}
       {showNew && canInsert && (
@@ -294,7 +357,10 @@ DatatableAbove.propTypes = {
 };
 registerComponent('DatatableAbove', DatatableAbove);
 
-const DatatableAboveSearchInput = props => <input {...props} />;
+const DatatableAboveSearchInput = props => {
+  const { Components } = props;
+  return <Components.FormComponentText {...props} />;
+};
 registerComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput });
 
 const DatatableAboveLayout = ({ children }) => <div className="datatable-above">{children}</div>;

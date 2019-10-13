@@ -113,7 +113,7 @@ Utils.trimHTML = function(html, numWords) {
  * @param {String} str
  */
 Utils.capitalize = function(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str && str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 Utils.t = function(message) {
@@ -367,19 +367,6 @@ Utils.getLogoUrl = () => {
   }
 };
 
-// note(apollo): get collection's name from __typename given by react-apollo
-Utils.getCollectionNameFromTypename = type => {
-  if (type.indexOf('Post') > -1) {
-    return 'posts';
-  } else if (type.indexOf('Cat') > -1) {
-    return 'categories';
-  } else if (type.indexOf('User') > -1) {
-    return 'users';
-  } else if (type.indexOf('Comment') > -1) {
-    return 'comments';
-  }
-};
-
 Utils.findIndex = (array, predicate) => {
   let index = -1;
   let continueLoop = true;
@@ -446,19 +433,6 @@ Utils.stripTelescopeNamespace = schema => {
 
   // replace the previous schema by an object based on this filteredSchemaKeys
   return filteredSchemaKeys.reduce((sch, key) => ({ ...sch, [key]: schema[key] }), {});
-};
-
-/**
- * Convert an array of field names into a Mongo fields specifier
- * @param {Array} fieldsArray
- */
-Utils.arrayToFields = fieldsArray => {
-  return _.object(
-    fieldsArray,
-    _.map(fieldsArray, function() {
-      return true;
-    })
-  );
 };
 
 /**

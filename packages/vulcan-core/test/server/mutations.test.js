@@ -1,4 +1,4 @@
-import { getDefaultMutations } from '../lib/modules/default_mutations';
+import { getDefaultMutations } from '../../lib/modules/default_mutations';
 import SimpleSchema from 'simpl-schema';
 
 import expect from 'expect';

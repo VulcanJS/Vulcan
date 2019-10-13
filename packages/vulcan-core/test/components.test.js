@@ -7,7 +7,7 @@ import { initComponentTest } from 'meteor/vulcan:test';
 
 // we must import all the other components, so that "registerComponent" is called
 import '../lib/modules';
-import Datatable from '../lib/modules/components/datatable/Datatable';
+import Datatable from '../lib/modules/components/Datatable';
 // stub collection
 import { createCollection, getDefaultResolvers, getDefaultMutations, registerFragment } from 'meteor/vulcan:core';
 const createDummyCollection = (typeName, schema) => {

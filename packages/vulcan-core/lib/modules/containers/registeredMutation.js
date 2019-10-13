@@ -17,7 +17,7 @@ import gql from 'graphql-tag';
 import { getFragment } from 'meteor/vulcan:lib';
 
 export const useRegisteredMutation = (options) => {
-  const { name, args, fragmentName } = options;
+  const { name, args, fragmentName, mutationOptions = {} } = options;
   let mutation, fragment, fragmentBlock = '';
 
   if (fragmentName) {
@@ -44,7 +44,7 @@ export const useRegisteredMutation = (options) => {
   }
   const query = gql`${mutation}${fragmentName ? fragment : ''}`;
 
-  const [mutateFunc] = useMutation(query);
+  const [mutateFunc] = useMutation(query, mutationOptions);
   const extendedMutateFunc = vars => mutateFunc({ variables: vars });
   return extendedMutateFunc;
 };
