@@ -34,13 +34,21 @@ const baseStyles = theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  scroller: {
+    overflow: 'auto',
+  },
+  searchWrapper: {
+  },
+  addButtonWrapper: {
     alignItems: 'center',
   },
   searchWrapper: {},
@@ -177,16 +185,18 @@ class Datatable extends PureComponent {
                 </div>
               )}
             </div>
-          )}
+          }
 
-          <DatatableWithMulti
-            {...this.props}
-            collection={collection}
-            terms={{ query: this.state.query, orderBy: orderBy }}
-            currentUser={this.props.currentUser}
-            toggleSort={this.toggleSort}
-            currentSort={this.state.currentSort}
-          />
+          <div className={classes.scroller}>
+            <DatatableWithMulti
+              {...this.props}
+              collection={collection}
+              terms={{ query: this.state.query, orderBy: orderBy }}
+              currentUser={this.props.currentUser}
+              toggleSort={this.toggleSort}
+              currentSort={this.state.currentSort}
+            />
+          </div>
         </div>
       );
     }
