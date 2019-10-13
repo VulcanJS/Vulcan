@@ -9,6 +9,7 @@ import classNames from 'classnames';
 
 
 export const styles = theme => ({
+  
   inputAdornment: {
     whiteSpace: 'nowrap',
     marginTop: '0 !important',
@@ -23,6 +24,7 @@ export const styles = theme => ({
     },
     height: 'auto',
   },
+  
   clearButton: {
     opacity: 0,
     '& svg': {
@@ -38,12 +40,18 @@ export const styles = theme => ({
       duration: theme.transitions.duration.short,
     }),
   },
+  
   urlButton: {
-    verticalAlign: 'bottom',
-    width: 24,
-    height: 24,
+    width: 40,
+    height: 40,
     fontSize: 20,
-  }
+    margin: -8,
+    marginRight: 0,
+    '&:last-child': {
+      margin: -8,
+    },
+  },
+  
 });
 
 
