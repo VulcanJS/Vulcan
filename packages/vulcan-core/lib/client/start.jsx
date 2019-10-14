@@ -9,7 +9,10 @@ import {
   populateComponentsApp,
   populateRoutesApp,
   initializeFragments,
+  getSetting,
 } from 'meteor/vulcan:lib';
+
+const disableSsr = getSetting('apolloSsr.disable', false);
 
 Meteor.startup(() => {
   // init the application components and routes, including components & routes from 3rd-party packages
@@ -25,19 +28,23 @@ Meteor.startup(() => {
 
   const Main = () => <AppGenerator apolloClient={apolloClient} />;
 
-  onPageLoad(() => {
-    const ssrUrl = InjectData.getDataSync('url');
-    // in localhost hostname is null
-    if (ssrUrl.hostname && ssrUrl.hostname !== window.location.hostname) {
-      console.warn(
-        `Mismatch between the browser hostname (${
-          window.location.hostname
-        }) and the hostname used during SSR (${
-          ssrUrl.hostname
-        }). Will prevent full rehydration of the React DOM.`
-      );
-    } else {
-      ReactDOM.hydrate(<Main />, document.getElementById('react-app'));
-    }
-  });
+  if (!disableSsr) {
+    onPageLoad(() => {
+      const ssrUrl = InjectData.getDataSync('url');
+      // in localhost hostname is null
+      if (ssrUrl && ssrUrl.hostname && ssrUrl.hostname !== window.location.hostname) {
+        console.warn(
+          `Mismatch between the browser hostname (${
+            window.location.hostname
+          }) and the hostname used during SSR (${
+            ssrUrl.hostname
+          }). Will prevent full rehydration of the React DOM.`
+        );
+      } else {
+        ReactDOM.hydrate(<Main />, document.getElementById('react-app'));
+      }
+    });
+  } else {
+    ReactDOM.render(<Main />, document.getElementById('react-app'));
+  }
 });
