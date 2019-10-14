@@ -67,7 +67,7 @@ export const multiQueryUpdater = ({
       const { selector, options: paramOptions } = parameters;
       const { sort } = paramOptions;
       // check if the document should be included in this query, given the query filters
-      if (matchSelector(document, selector)) {
+      if (matchSelector(newDoc, selector)) {
         // TODO: handle order using the selector
         const newData = addToData({ queryResult, multiResolverName, document: newDoc, sort, selector });
         cache.writeQuery({ query: multiQuery, variables, data: newData });
