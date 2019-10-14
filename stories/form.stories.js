@@ -90,7 +90,6 @@ storiesOf('vulcan-forms')
   ))
   .add('Form base-controls MuiSuggest', () => (
     <Components.MuiSuggest
-    // inputProperties = { {options: options} }
       options={options}
     />
   ));
