@@ -1,3 +1,3 @@
 import { registerSetting } from '../settings';
 
-registerSetting('apolloSsr.disable', 'Disable Server Side Rendering', false);
+registerSetting('apolloSsr.disable', false, 'Disable Server Side Rendering');
