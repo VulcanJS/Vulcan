@@ -41,18 +41,15 @@ const baseStyles = theme => ({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   scroller: {
     overflow: 'auto',
   },
-  searchWrapper: {
-  },
+  searchWrapper: {},
   addButtonWrapper: {
     alignItems: 'center',
   },
-  searchWrapper: {},
-  addButtonWrapper: {},
   addButton: {
     // Floating button won't work with multiple datatables, buttons are superposed
     // top: '9.5rem',
@@ -185,7 +182,7 @@ class Datatable extends PureComponent {
                 </div>
               )}
             </div>
-          }
+          )}
 
           <div className={classes.scroller}>
             <DatatableWithMulti
