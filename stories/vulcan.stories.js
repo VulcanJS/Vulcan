@@ -303,39 +303,6 @@ formComponents.forEach(item => {
 
 /*
 
-Core Components
-
-*/
-
-/*
-
-Card
-
-*/
-const cardProps = {
-  document: {
-    title: 'My title',
-    url: 'https://vulcanjs.org',
-    image:
-      'https://cl.ly/6906b7446a73/Screen%20Shot%202019-02-25%20at%2010.19.47.png',
-    isTrue: false,
-    answerToLife: 42,
-    myObject: { foo: 12, bar: 'baz' },
-    now: new Date(),
-    component: (
-      <label>
-        <input type="checkbox" /> My Checkbox
-      </label>
-    ),
-    array: [1, 2, 'foo', 'bar'],
-  },
-};
-storiesOf('Core/Card', module).add('Default', () => (
-  <Components.Card {...cardProps} />
-));
-
-/*
-
 Datatable
 
 */
