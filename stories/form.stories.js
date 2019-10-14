@@ -4,12 +4,13 @@ import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:forms';
-import { withKnobs, boolean} from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 const vulcan_forms = storiesOf('Core/vulcan-forms', module);
 vulcan_forms.addDecorator(withKnobs);
 
-const options = [{
+const options = [
+  {
     value: 'Afghan',
     label: 'Afghan',
   },
@@ -40,7 +41,8 @@ const options = [{
   {
     value: 'Botswanais',
     label: 'Botswanais',
-  }]
+  },
+];
 
 vulcan_forms
   .add('FormError - message', () => (
@@ -92,11 +94,8 @@ vulcan_forms
       }}
     />
   ))
-  .add('Form base-controls MuiSuggest', () => (
-    <Components.MuiSuggest
-      options={options}
-    />
-  )).add('Form base-controls MuiRequiredIndicator', () =>{ 
+  .add('Form base-controls MuiSuggest', () => <Components.MuiSuggest options={options} />)
+  .add('Form base-controls MuiRequiredIndicator', () => {
     const optional = boolean('optional', false);
     return <Components.RequiredIndicator optional={optional} />;
   });

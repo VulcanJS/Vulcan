@@ -100,7 +100,13 @@ const formComponents = [
       options,
     },
   },
-  { name: 'FormComponentSelectMultiple' },
+  {
+    name: 'FormComponentSelectMultiple',
+    props: {
+      value: ['opt2'],
+      options,
+    },
+  },
   { name: 'FormComponentStaticText' },
   { name: 'FormComponentTextarea' },
   { name: 'FormComponentTime' },
@@ -133,7 +139,10 @@ const getFormProps = (componentName, storyProps) => {
 
 formComponents.forEach(item => {
   const { name } = item;
+  console.log('name', name);
+  console.log('components ', Components);
   const Component = Components[name];
+  console.log('component', Component);
   const componentLabel = name.replace('FormComponent', '');
   const storyName = `Forms/${componentLabel}`;
   if (Component) {

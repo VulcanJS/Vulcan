@@ -43,6 +43,7 @@ import './forms/controls/PostalCode';
 import './forms/controls/RadioGroup';
 import './forms/controls/RegionSelect';
 import './forms/controls/Select';
+import './forms/controls/SelectMultiple';
 import './forms/controls/Textarea';
 import './forms/controls/Time';
 import './forms/controls/TimeRdt';
