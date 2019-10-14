@@ -96,10 +96,8 @@ const options = [
     {
       name: 'FormComponentSelect',
       props: {
-        inputProperties: {
-          value: 'opt2',
-          options,
-        },
+        value: 'opt2',
+        options,
       },
     },
     { name: 'FormComponentSelectMultiple' },
