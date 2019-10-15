@@ -3,6 +3,7 @@ import React from 'react';
 import _isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import Users from 'meteor/vulcan:users';
 
 /*
 
@@ -27,13 +28,13 @@ const DatatableRow = (props, { intl }) => {
     collection.options &&
     collection.options.mutations &&
     collection.options.mutations.edit &&
-    collection.options.mutations.edit.check(currentUser, document);
+    collection.options.mutations.edit.check(currentUser, document, { Users });
   const canUpdate =
     collection &&
     collection.options &&
     collection.options.mutations &&
     collection.options.mutations.update &&
-    collection.options.mutations.update.check(currentUser, document);
+    collection.options.mutations.update.check(currentUser, document, { Users });
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
   const { modalProps = {} } = props;
   const defaultModalProps = { title: <code>{document._id}</code> };

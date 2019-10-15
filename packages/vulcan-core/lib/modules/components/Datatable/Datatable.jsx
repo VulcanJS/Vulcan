@@ -11,6 +11,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
+import Users from 'meteor/vulcan:users';
 
 const ascSortOperator = 'asc';
 const descSortOperator = 'desc';
@@ -221,12 +222,12 @@ class Datatable extends PureComponent {
         collection.options &&
         collection.options.mutations &&
         collection.options.mutations.new &&
-        collection.options.mutations.new.check(this.props.currentUser);
+        collection.options.mutations.new.check(this.props.currentUser, null, { Users });
       const canCreate =
         collection.options &&
         collection.options.mutations &&
         collection.options.mutations.create &&
-        collection.options.mutations.create.check(this.props.currentUser);
+        collection.options.mutations.create.check(this.props.currentUser, null, { Users });
 
       const input = {};
       if (!_isEmpty(this.state.search)) {

@@ -12,6 +12,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import without from 'lodash/without';
 import withComponents from '../containers/withComponents.js';
+import Users from 'meteor/vulcan:users';
 
 /*
 
@@ -407,7 +408,7 @@ const Card = (
     showEdit &&
     currentUser &&
     collection &&
-    collection.options.mutations.update.check(currentUser, document);
+    collection.options.mutations.update.check(currentUser, document, { Users });
 
   return (
     <div
