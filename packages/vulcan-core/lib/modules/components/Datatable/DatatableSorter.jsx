@@ -52,7 +52,7 @@ const DatatableSorter = ({ name, label, toggleSort, currentSort }) => (
     onClick={() => {
       toggleSort(name);
     }}>
-    {!currentSort[name] ? <SortNone /> : currentSort[name] === 1 ? <SortAsc /> : <SortDesc />}
+    {!currentSort[name] ? <SortNone /> : currentSort[name] === 'asc' ? <SortAsc /> : <SortDesc />}
   </span>
 );
 

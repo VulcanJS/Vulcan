@@ -108,7 +108,9 @@ FormGroupHeaderLine.displayName = 'FormGroupHeaderLine';
 registerComponent('FormGroupHeaderLine', FormGroupHeaderLine, [withStyles, styles]);
 
 
-const FormGroupLayoutLine = ({ label, anchorName, collapsed, hasErrors, heading, group, children, classes }) => {
+const FormGroupLayoutLine = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
+  const collapsedIn = (!collapsed && !hidden) || hasErrors;
+  
   return (
     <div className={classNames(classes.layoutRoot, 'form-section', `form-section-${anchorName}`)}>
       
@@ -116,7 +118,7 @@ const FormGroupLayoutLine = ({ label, anchorName, collapsed, hasErrors, heading,
       
       {heading}
       
-      <Collapse classes={{ entered: classes.entered }} in={!collapsed || hasErrors}>
+      <Collapse classes={{ entered: classes.entered }} in={collapsedIn}>
         
         {children}
       
@@ -131,6 +133,7 @@ FormGroupLayoutLine.propTypes = {
   label: PropTypes.string.isRequired,
   anchorName: PropTypes.string.isRequired,
   collapsed: PropTypes.bool.isRequired,
+  hidden: PropTypes.bool.isRequired,
   hasErrors: PropTypes.bool.isRequired,
   heading: PropTypes.node,
   group: PropTypes.object.isRequired,

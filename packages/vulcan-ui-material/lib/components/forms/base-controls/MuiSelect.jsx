@@ -36,7 +36,7 @@ export const styles = theme => ({
   },
 
   input: {
-    paddingLeft: 8,
+    //paddingLeft: 8,
   },
   
   inputDisabled: {},

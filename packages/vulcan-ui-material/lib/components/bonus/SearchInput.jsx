@@ -160,7 +160,7 @@ class SearchInput extends PureComponent {
 
     const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput}/>;
 
-    const clearButton = <Components.TooltipIntl
+    const clearButton = <Components.TooltipButton
       titleId="search.clear"
       icon={<ClearIcon/>}
       onClick={this.clearSearch}

@@ -43,7 +43,7 @@ class ModalTrigger extends PureComponent {
 
     let triggerComponent = trigger || component;
     triggerComponent = triggerComponent ? (
-      React.cloneElement(triggerComponent, { onClick: this.clickHandler })
+      <span onClick={this.clickHandler}>{triggerComponent}</span>
     ) : (
       <a href="javascript:void(0)" onClick={this.clickHandler}>
         {label}

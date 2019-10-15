@@ -9,8 +9,8 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
 import _omit from 'lodash/omit';
+import merge from 'lodash/merge';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -28,11 +28,21 @@ export const getCollection = name =>
       name === collectionName || name === collectionName.toLowerCase()
   );
 
+export const getCollectionByTypeName = name => {
+  // in case typeName is for an array ('[User]'), get rid of brackets
+  let parsedTypeName = name.replace('[', '').replace(']', '');
+  return Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+};
+
 // TODO: find more reliable way to get collection name from type name?
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
 // TODO: find more reliable way to get type name from collection name?
-export const getTypeName = collectionName => collectionName.slice(0, -1);
+export const getTypeName = collectionName => {
+  return collectionName.slice(-3) === 'ies'
+    ? collectionName.slice(0, -3) + 'y'
+    : collectionName.slice(0, -1);
+};
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
@@ -128,6 +138,10 @@ Mongo.Collection.prototype.helpers = function(helpers) {
   });
 };
 
+export const extendCollection = (collection, options) => {
+  collection.options = merge(collection.options, options);
+};
+
 export const createCollection = options => {
   const {
     typeName,
@@ -168,6 +182,15 @@ export const createCollection = options => {
     hasIntlFields = true; // we have at least one intl field
     addCallback(`${typeName.toLowerCase()}.collection`, addIntlFields);
   }
+
+  // add "auto-relations" to schema resolvers
+  Object.keys(schema).map(fieldName => {
+    const field = schema[fieldName];
+    // if no resolver or relation is provided, try to guess relation and add it to schema
+    if (field.resolveAs && !field.resolveAs.resolver && !field.resolveAs.relation) {
+      field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+    }
+  });
 
   //run schema callbacks and run general callbacks last
   schema = runCallbacks({
@@ -289,42 +312,6 @@ export const createCollection = options => {
         clone(terms),
         context
       );
-    }
-
-    /*
-
-    Add filters. Note: array filters work by addition. Specifying { category: ['foo', 'bar']}
-    returns the sum of all items that have category `foo` *or* have category `bar`
-
-    */
-    if (!isEmpty(terms.filterBy)) {
-      Object.keys(terms.filterBy).forEach(fieldName => {
-        const filter = terms.filterBy[fieldName];
-
-        if (filter) {
-          if (Array.isArray(filter)) {
-            parameters.selector[fieldName] = { $in: filter };
-          } else if (filter.after || filter.before) {
-            const dateFilter = {};
-            if (filter.after) {
-              dateFilter.$gte = moment(filter.after, 'YYYY-MM-DD').toDate();
-            }
-            if (filter.before) {
-              dateFilter.$lte = moment(filter.before, 'YYYY-MM-DD').toDate();
-            }
-            parameters.selector[fieldName] = dateFilter;
-          } else if (filter.gte || filter.lte) {
-            const numberFilter = {};
-            if (filter.gte) {
-              numberFilter.$gte = parseFloat(filter.gte);
-            }
-            if (filter.lte) {
-              numberFilter.$lte = parseFloat(filter.lte);
-            }
-            parameters.selector[fieldName] = numberFilter;
-          }
-        }
-      });
     }
 
     // sort using terms.orderBy (overwrite defaultView's sort)
