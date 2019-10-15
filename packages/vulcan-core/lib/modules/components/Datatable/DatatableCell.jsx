@@ -2,8 +2,6 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getFieldValue } from '../Card.jsx';
-
 const getColumnName = column => (typeof column === 'string' ? column : column.label || column.name);
 
 /*

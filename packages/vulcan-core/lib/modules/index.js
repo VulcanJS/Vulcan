@@ -1,4 +1,3 @@
-
 // import and re-export
 export * from 'meteor/vulcan:lib';
 
@@ -8,6 +7,7 @@ export * from './default_resolvers.js';
 export * from './components.js';
 
 export { default as App } from './components/App.jsx';
+export { default as Card } from './components/Card';
 export { default as Datatable } from './components/Datatable';
 export { default as Dummy } from './components/Dummy.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
