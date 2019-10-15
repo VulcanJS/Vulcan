@@ -9,9 +9,12 @@ import {
   populateComponentsApp,
   populateRoutesApp,
   initializeFragments,
+  runCallbacks
 } from 'meteor/vulcan:lib';
 
 Meteor.startup(() => {
+  // run functions that must be called before populating components or routes
+  runCallbacks('startup.before');
   // init the application components and routes, including components & routes from 3rd-party packages
   initializeFragments();
   populateComponentsApp();
@@ -31,9 +34,9 @@ Meteor.startup(() => {
     if (ssrUrl.hostname && ssrUrl.hostname !== window.location.hostname) {
       console.warn(
         `Mismatch between the browser hostname (${
-          window.location.hostname
+        window.location.hostname
         }) and the hostname used during SSR (${
-          ssrUrl.hostname
+        ssrUrl.hostname
         }). Will prevent full rehydration of the React DOM.`
       );
     } else {
