@@ -9,7 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use(
-    ['fourseven:scss@4.10.0', 'vulcan:core@=1.13.4', 'vulcan:i18n@=1.13.4'],
+    ['fourseven:scss@4.10.0', 'vulcan:core@1.13.4', 'vulcan:i18n@1.13.4'],
     ['client', 'server'],
   );
 
