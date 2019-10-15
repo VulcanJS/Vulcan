@@ -122,12 +122,12 @@ class Datatable extends PureComponent {
 
       return <Components.DatatableContents
         columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-        {...this.props}
         results={this.props.data}
         count={this.props.data.length}
         totalCount={this.props.data.length}
         showEdit={false}
         showNew={false}
+        {...this.props}
       />;
 
     } else {
