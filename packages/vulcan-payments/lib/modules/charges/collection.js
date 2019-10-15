@@ -13,7 +13,7 @@ const Charges = createCollection({
   
   resolvers: getDefaultResolvers('Charges'),
 
-  // mutations,
+  mutations: null,
 
 });
 
