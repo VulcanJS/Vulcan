@@ -20,7 +20,7 @@ updateMovie(input: UpdateMovieInput) : MovieOutput
 
 */
 export const updateMutationTemplate = ({ typeName }) =>
-`update${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+`update${typeName}(where: ${typeName}WhereInput, _id: String, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -30,7 +30,7 @@ upsertMovie(input: UpsertMovieInput) : MovieOutput
 
 */
 export const upsertMutationTemplate = ({ typeName }) =>
-`upsert${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
+`upsert${typeName}(where: ${typeName}WhereInput, _id: String, selector: ${typeName}SelectorUniqueInput, data: Update${typeName}DataInput! ) : ${typeName}Output`;
 
 /*
 
@@ -40,7 +40,7 @@ deleteMovie(input: DeleteMovieInput) : MovieOutput
 
 */
 export const deleteMutationTemplate = ({ typeName }) =>
-`delete${typeName}(where: ${typeName}WhereInput, selector: ${typeName}SelectorUniqueInput) : ${typeName}Output`;
+`delete${typeName}(where: ${typeName}WhereInput, _id: String, selector: ${typeName}SelectorUniqueInput) : ${typeName}Output`;
 
 /* ------------------------------------- Mutation Input Types ------------------------------------- */
 

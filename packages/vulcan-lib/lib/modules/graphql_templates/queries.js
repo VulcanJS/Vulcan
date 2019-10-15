@@ -47,6 +47,7 @@ export const singleInputTemplate = ({ typeName }) =>
   orderBy: ${typeName}OrderByInput
   search: String
   filter: String
+  _id: String
 
   # backwards-compatibility
   selector: ${typeName}SelectorUniqueInput

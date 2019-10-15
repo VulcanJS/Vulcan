@@ -48,7 +48,7 @@ const getFieldNames = expressionArray => {
 };
 
 const filterFunction = (collection, input, context) => {
-  const { where, limit = 20, orderBy, search, filter, offset } = input;
+  const { where, limit = 20, orderBy, search, filter, offset, _id } = input;
   let selector = {};
   let options = {
     sort: {},
@@ -114,6 +114,11 @@ const filterFunction = (collection, input, context) => {
       selector = merge(selector, filterObject.selector);
       options = merge(options, filterObject.options);
     }
+  }
+
+  // _id
+  if (_id) {
+    selector = { _id };
   }
 
   // where
