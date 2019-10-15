@@ -78,7 +78,7 @@ export function getDefaultResolvers(options) {
 
         const docs = await Connectors.find(collection, selector, options);
 
-        let viewableDocs = docs;
+        let viewableDocs;
 
         // new API (Oct 2019)
         const canRead = get(collection, 'options.permissions.canRead');
@@ -101,6 +101,9 @@ export function getDefaultResolvers(options) {
           // old API
           // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
           viewableDocs = docs.filter(doc => collection.checkAccess(currentUser, doc));
+        } else {
+          // default to allowing access to all documents
+          viewableDocs = docs;
         }
 
         // take the remaining documents and remove any fields that shouldn't be accessible
@@ -200,6 +203,9 @@ export function getDefaultResolvers(options) {
         } else if (collection.checkAccess) {
           // old API
           canReadFunction = collection.checkAccess;
+        } else {
+          // default to allowing access to all documents
+          canReadFunction = () => true;
         }
 
         Utils.performCheck(
