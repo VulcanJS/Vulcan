@@ -8,7 +8,7 @@ import intersection from 'lodash/intersection';
 // note: treat checkbox group the same as a nested component, using `path`
 const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties, itemProperties }) => {
 
-  const { options, name } = inputProperties;
+  const { options = [], name } = inputProperties;
 
   // get rid of duplicate values or any values that are not included in the options provided
   value = uniq(intersection(value, options.map(o => o.value)));
