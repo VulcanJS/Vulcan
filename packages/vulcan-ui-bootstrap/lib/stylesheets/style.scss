@@ -156,6 +156,10 @@ div.ReactTags__suggestions mark{
   display: none;
 }
 
+.form-section-hidden {
+  display: none;
+}
+
 .form-errors{
   .alert{
     ul{
@@ -184,7 +188,7 @@ div.ReactTags__suggestions mark{
   }
 }
 
-.form-component-select, .form-component-datetime, .form-component-time, .form-component-date {
+.form-component-select, .form-component-date,  .form-component-date2,  .form-component-datetime, .form-component-time, .form-component-date {
   .col-sm-9{
     padding-right: 40px;
   }

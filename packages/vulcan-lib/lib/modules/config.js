@@ -9,7 +9,7 @@ import SimpleSchema from 'simpl-schema';
 Vulcan = {};
 
 // eslint-disable-next-line no-undef
-Vulcan.VERSION = '1.13.0';
+Vulcan.VERSION = '1.13.4';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -51,7 +51,8 @@ SimpleSchema.extendOptions([
   'query', // field-specific data loading query
   'selectable', // field can be used as part of a selector when querying for data
   'unique', // field can be used as part of a selectorUnique when querying for data
-  'orderable', // field can be used to order results when querying for data
+  'orderable', // field can be used to order results when querying for data (backwards-compatibility)
+  'sortable', // field can be used to order results when querying for data
 
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings

@@ -28,7 +28,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router';
-import { withApollo, compose } from 'react-apollo';
+import { withApollo } from 'react-apollo';
+import compose from 'recompose/compose';
 import {
   Components,
   registerComponent,
@@ -37,7 +38,7 @@ import {
   withNew,
   withUpdate,
   withDelete,
-  getFragment
+  getFragment,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withSingle } from 'meteor/vulcan:core';
@@ -45,7 +46,7 @@ import { graphql } from 'react-apollo';
 import {
   getReadableFields,
   getCreateableFields,
-  getUpdateableFields
+  getUpdateableFields,
 } from '../modules/schema_utils';
 
 import withCollectionProps from './withCollectionProps';
@@ -62,9 +63,7 @@ class FormWrapper extends PureComponent {
   }
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema
-      ? this.props.schema
-      : this.props.collection.simpleSchema()._schema;
+    return this.props.schema ? this.props.schema : this.props.collection.simpleSchema()._schema;
   }
 
   // if a document is being passed, this is an edit form
@@ -75,9 +74,7 @@ class FormWrapper extends PureComponent {
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
   getFragments() {
-    const prefix = `${this.props.collectionName}${Utils.capitalize(
-      this.getFormType()
-    )}`;
+    const prefix = `${this.props.collectionName}${Utils.capitalize(this.getFormType())}`;
     const fragmentName = `${prefix}FormFragment`;
 
     const fields = this.props.fields;
@@ -86,8 +83,7 @@ class FormWrapper extends PureComponent {
     const updatetableFields = getUpdateableFields(this.getSchema());
 
     // get all editable/insertable fields (depending on current form type)
-    let queryFields =
-      this.getFormType() === 'new' ? createableFields : updatetableFields;
+    let queryFields = this.getFormType() === 'new' ? createableFields : updatetableFields;
     // for the mutations's return value, also get non-editable but viewable fields (such as createdAt, userId, etc.)
     let mutationFields =
       this.getFormType() === 'new'
@@ -171,27 +167,21 @@ class FormWrapper extends PureComponent {
     return {
       queryFragment,
       mutationFragment,
-      extraQueries
+      extraQueries,
     };
   }
 
   getComponent() {
     let WrappedComponent;
 
-    const prefix = `${this.props.collectionName}${Utils.capitalize(
-      this.getFormType()
-    )}`;
+    const prefix = `${this.props.collectionName}${Utils.capitalize(this.getFormType())}`;
 
-    const {
-      queryFragment,
-      mutationFragment,
-      extraQueries
-    } = this.getFragments();
+    const { queryFragment, mutationFragment, extraQueries } = this.getFragments();
 
     // props to pass on to child component (i.e. <Form />)
     const childProps = {
       formType: this.getFormType(),
-      schema: this.getSchema()
+      schema: this.getSchema(),
     };
 
     // options for withSingle HoC
@@ -200,15 +190,17 @@ class FormWrapper extends PureComponent {
       collection: this.props.collection,
       fragment: queryFragment,
       extraQueries,
-      fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+      queryOptions: {
+        fetchPolicy: 'network-only', // we always want to load a fresh copy of the document
+        pollInterval: 0, // no polling, only load data once
+      },
       enableCache: false,
-      pollInterval: 0 // no polling, only load data once
     };
 
     // options for withNew, withUpdate, and withDelete HoCs
     const mutationOptions = {
       collection: this.props.collection,
-      fragment: mutationFragment
+      fragment: mutationFragment,
     };
 
     // create a stateless loader component,
@@ -218,12 +210,7 @@ class FormWrapper extends PureComponent {
       return loading ? (
         <Components.Loading />
       ) : (
-        <Components.Form
-          document={document}
-          loading={loading}
-          {...childProps}
-          {...props}
-        />
+        <Components.Form document={document} loading={loading} {...childProps} {...props} />
       );
     };
     Loader.displayName = 'withLoader(Form)';
@@ -240,7 +227,7 @@ class FormWrapper extends PureComponent {
         <WrappedComponent
           selector={{
             documentId: this.props.documentId,
-            slug: this.props.slug
+            slug: this.props.slug,
           }}
         />
       );
@@ -257,10 +244,10 @@ class FormWrapper extends PureComponent {
               const { /* ownProps, */ data } = returnedProps;
               const props = {
                 loading: data.loading,
-                data
+                data,
               };
               return props;
-            }
+            },
           }
         );
 
@@ -297,9 +284,10 @@ FormWrapper.propTypes = {
   mutationFragmentName: PropTypes.string,
 
   // graphQL
-  newMutation: PropTypes.func, // the new mutation
-  editMutation: PropTypes.func, // the edit mutation
-  removeMutation: PropTypes.func, // the remove mutation
+  // createFoo, deleteFoo, updateFoo
+  // newMutation: PropTypes.func, // the new mutation
+  // editMutation: PropTypes.func, // the edit mutation
+  // removeMutation: PropTypes.func, // the remove mutation
 
   // form
   prefilledProps: PropTypes.object,
@@ -318,20 +306,22 @@ FormWrapper.propTypes = {
   ...callbackProps,
 
   currentUser: PropTypes.object,
-  client: PropTypes.object
+  client: PropTypes.object,
 };
 
 FormWrapper.defaultProps = {
-  layout: 'horizontal'
+  layout: 'horizontal',
 };
 
 FormWrapper.contextTypes = {
   closeCallback: PropTypes.func,
-  intl: intlShape
+  intl: intlShape,
 };
 
 registerComponent({
   name: 'SmartForm',
   component: FormWrapper,
-  hocs: [withCurrentUser, withApollo, withRouter, withCollectionProps]
+  hocs: [withCurrentUser, withApollo, withRouter, withCollectionProps],
 });
+
+export default FormWrapper;

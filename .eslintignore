@@ -1,1 +1,2 @@
 packages/_*
+**/*.test.js

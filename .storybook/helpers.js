@@ -11,7 +11,7 @@ Simplified versions of Vulcan APIs and helpers
 Components
 
 */
-export const Components = {}; // will be populated on startup 
+export const Components = {}; // will be populated on startup
 
 export const ComponentsMockProps = {};
 
@@ -136,6 +136,7 @@ export const avatar = {
   getUrl: user => 'https://api.adorable.io/avatars/285/abotaat@adorable.io.png',
   getInitials: user => 'SG',
 }
+
 /*
 
 Helpers

@@ -4,6 +4,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import EditIcon from 'mdi-material-ui/Pencil';
 
+
 const EditButton = (
   {
     collection,
@@ -20,9 +21,9 @@ const EditButton = (
   <Components.ModalTrigger
     classes={triggerClasses}
     component={
-      <Components.TooltipIconButton
+      <Components.TooltipButton
         titleId="datatable.edit"
-        icon={<EditIcon />}
+        icon={<EditIcon/>}
         color={color}
         variant={variant}
         classes={buttonClasses}
@@ -38,53 +39,60 @@ const EditButton = (
   </Components.ModalTrigger>
 );
 
+
 EditButton.propTypes = {
   collection: PropTypes.object.isRequired,
-  document: PropTypes.object.isRequired,
+  document: PropTypes.object,
   color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
   variant: PropTypes.string,
   triggerClasses: PropTypes.object,
   buttonClasses: PropTypes.object,
-  showRemove: PropTypes.bool
+  showRemove: PropTypes.bool,
 };
+
 
 EditButton.contextTypes = {
   intl: intlShape
 };
 
+
 EditButton.displayName = 'EditButton';
 
+
 registerComponent('EditButton', EditButton);
+
 
 /*
 
 EditForm Component
 
 */
-const EditForm = ({
-  collection,
-  document,
-  closeModal,
-  options,
-  successCallback,
-  removeSuccessCallback,
-  showRemove,
-  ...props
-}) => {
+const EditForm = (
+  {
+    collection,
+    document,
+    closeModal,
+    options,
+    successCallback,
+    removeSuccessCallback,
+    showRemove,
+    ...props
+  }) => {
+  
   const success = successCallback
     ? () => {
-        successCallback();
-        closeModal();
-      }
+      successCallback();
+      closeModal();
+    }
     : closeModal;
-
+  
   const remove = removeSuccessCallback
     ? () => {
-        removeSuccessCallback();
-        closeModal();
-      }
+      removeSuccessCallback();
+      closeModal();
+    }
     : closeModal;
-
+  
   return (
     <Components.SmartForm
       {...props}

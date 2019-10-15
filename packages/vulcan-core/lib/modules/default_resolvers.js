@@ -14,10 +14,14 @@ import {
   getCollectionName,
   throwError,
 } from 'meteor/vulcan:lib';
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 const defaultOptions = {
   cacheMaxAge: 300,
 };
+
+const alwaysTrue = () => true;
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
@@ -63,7 +67,13 @@ export function getDefaultResolvers(options) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options } = await collection.getParameters(terms, {}, context);
+        let { selector, options, filteredFields } = isEmpty(terms)
+          ? Connectors.filter(collection, input, context)
+          : await collection.getParameters(terms, {}, context);
+
+        // make sure all filtered fields are allowed
+        Users.checkFields(currentUser, collection, filteredFields);
+
         options.skip = terms.offset;
 
         debug({ selector, options });
@@ -71,9 +81,10 @@ export function getDefaultResolvers(options) {
         const docs = await Connectors.find(collection, selector, options);
 
         // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
-        const viewableDocs = collection.checkAccess
-          ? _.filter(docs, doc => collection.checkAccess(currentUser, doc))
-          : docs;
+        const canReadFunction = collection.checkAccess
+          ? collection.checkAccess
+          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
+        const viewableDocs = docs.filter(doc => canReadFunction(currentUser, doc));
 
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
@@ -91,6 +102,8 @@ export function getDefaultResolvers(options) {
         if (enableTotal) {
           // get total count of documents matching the selector
           data.totalCount = await Connectors.count(collection, selector);
+        } else {
+          data.totalCount = null;
         }
 
         // return results
@@ -104,14 +117,16 @@ export function getDefaultResolvers(options) {
       description: `A single ${typeName} document fetched by ID or slug`,
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
-        const { selector = {}, enableCache = false, allowNull = false } = input;
+        const { selector: oldSelector = {}, enableCache = false, allowNull = false } = input;
+
+        let doc;
 
         debug('');
         debugGroup(
           `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
         );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`Selector: ${JSON.stringify(selector)}`);
+        debug(`Selector: ${JSON.stringify(oldSelector)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
@@ -122,10 +137,22 @@ export function getDefaultResolvers(options) {
         const collection = context[collectionName];
 
         // use Dataloader if doc is selected by documentId/_id
-        const documentId = selector.documentId || selector._id;
-        const doc = documentId
-          ? await collection.loader.load(documentId)
-          : await Connectors.get(collection, selector);
+        const documentId = oldSelector.documentId || oldSelector._id;
+        const slug = oldSelector.slug;
+
+        if (documentId) {
+          doc = await collection.loader.load(documentId);
+        } else if (slug) {
+          // make an exception for slug
+          doc = await Connectors.get(collection, { slug });
+        } else {
+          let { selector, filteredFields } = Connectors.filter(collection, input, context);
+
+          // make sure all filtered fields are allowed
+          Users.checkFields(currentUser, collection, filteredFields);
+
+          doc = await Connectors.get(collection, selector);
+        }
 
         if (!doc) {
           if (allowNull) {
@@ -133,24 +160,26 @@ export function getDefaultResolvers(options) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId, selector },
+              data: { documentId, oldSelector },
             });
           }
         }
 
         // if collection has a checkAccess function defined, use it to perform a check on the current document
         // (will throw an error if check doesn't pass)
-        if (collection.checkAccess) {
-          Utils.performCheck(
-            collection.checkAccess,
-            currentUser,
-            doc,
-            collection,
-            documentId,
-            `${typeName}.read.single`,
-            collectionName
-          );
-        }
+        const canReadFunction = collection.checkAccess
+          ? collection.checkAccess
+          : get(collection, 'options.permissions.canRead', alwaysTrue); // new API (Oct 2019)
+
+        Utils.performCheck(
+          canReadFunction,
+          currentUser,
+          doc,
+          collection,
+          documentId,
+          `${typeName}.read.single`,
+          collectionName
+        );
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 

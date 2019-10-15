@@ -1,5 +1,3 @@
-// setup JSDOM server side for testing (necessary for Enzyme to mount)
-import 'jsdom-global/register';
 import React from 'react';
 import expect from 'expect';
 import { mount, shallow } from 'enzyme';
@@ -41,13 +39,21 @@ describe('vulcan-core/components', function () {
         it('shallow renders DataTable', function () {
             const wrapper = shallow(<Datatable
                 Components={Components}
-                collection={Articles} />);
+                collection={Articles}
+                location={{
+                    search: null
+                }}
+            />);
             expect(wrapper).toBeDefined();
         });
         it('render a static version', function () {
             const wrapper = shallow(<Datatable
                 Components={Components}
-                data={[{ name: 'foo' }, { name: 'bar' }]} />);
+                data={[{ name: 'foo' }, { name: 'bar' }]}
+                location={{
+                    search: null
+                }}
+            />);
             const content = wrapper.find('DatatableContents').first();
             expect(content).toBeDefined();
         });
@@ -70,8 +76,8 @@ describe('vulcan-core/components', function () {
                     data={[{ name: 'foo' }, { name: 'bar' }]}
                 />
                 , {
-                   context,
-                   childContextTypes: context
+                    context,
+                    childContextTypes: context
                 });
             expect(wrapper).toBeDefined();
             //const content = wrapper.find('DatatableContents').first();

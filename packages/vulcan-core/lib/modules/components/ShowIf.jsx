@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import PropTypes from 'prop-types';
-import withCurrentUser from '../containers/withCurrentUser.js';
+import withCurrentUser from '../containers/currentUser.js';
 
 const ShowIf = props => {
   const { check, document, failureComponent = null, currentUser, children } = props;
@@ -18,3 +18,4 @@ ShowIf.propTypes = {
 ShowIf.displayName = 'ShowIf';
 
 registerComponent('ShowIf', ShowIf, withCurrentUser);
+export default ShowIf;

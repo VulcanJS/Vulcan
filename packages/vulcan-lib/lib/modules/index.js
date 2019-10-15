@@ -26,7 +26,7 @@ export * from './startup.js';
 export * from './errors.js';
 export * from './intl.js';
 export * from './detect_locale.js';
-export * from './graphql_templates.js';
+export * from './graphql_templates/index.js';
 export * from './validation.js';
 export * from './handleOptions';
 export * from './ui_utils';

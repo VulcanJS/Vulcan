@@ -31,7 +31,7 @@ export const getString = ({ id, values, defaultMessage, locale }) => {
     message = defaultMessage;
   }
 
-  if (values) {
+  if (values && typeof values === 'object') {
     Object.keys(values).forEach(key => {
       // note: see replaceAll definition in vulcan:lib/utils
       message = message.replaceAll(`{${key}}`, values[key]);
@@ -160,6 +160,6 @@ export const formatLabel = ({ intl, fieldName, collectionName, schema }, values)
   
   // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
   let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
-  return schemaLabel || Utils.camelToSpaces(fieldName);
+  return Utils.toTitleCase(schemaLabel) || Utils.camelToSpaces(fieldName);
 };
 

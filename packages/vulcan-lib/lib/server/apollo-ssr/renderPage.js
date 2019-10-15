@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { renderToStringWithData } from 'react-apollo';
+import { getDataFromTree } from 'react-apollo';
 
 import { runCallbacks } from '../../modules/callbacks';
 import { createClient } from './apolloClient';
@@ -14,6 +14,7 @@ import { createClient } from './apolloClient';
 import Head from './components/Head';
 import ApolloState from './components/ApolloState';
 import AppGenerator from './components/AppGenerator';
+import injectDefaultData from './injectDefaultData';
 
 const makePageRenderer = ({ computeContext }) => {
   // onPageLoad callback
@@ -33,17 +34,42 @@ const makePageRenderer = ({ computeContext }) => {
 
     const App = <AppGenerator req={req} apolloClient={client} context={context} />;
 
-    // run user registered callbacks that wraps the React app
-    const WrappedApp = runCallbacks({
-      name: 'router.server.wrapper',
-      iterator: App,
-      properties: { req, context, apolloClient: client },
-    });
-
-    // equivalent to calling getDataFromTree and then renderToStringWithData
     let htmlContent = '';
     try {
-    htmlContent = await renderToStringWithData(WrappedApp);
+      // run user registered callbacks that wraps the React app
+      // The wrappers must NOT have any side effect during React tree traversal
+      // otherwise SSR may fail
+      const WrappedApp = runCallbacks({
+        name: 'router.server.wrapper',
+        iterator: App,
+        properties: { req, context, apolloClient: client },
+      });
+
+
+      // run wrappers that must only me applied during the data collection step
+      // eg Material UI theming WITHOUT style generation
+      // The wrappers must NOT have any side effect during React tree traversal
+      // otherwise SSR may fail
+      const DataWrappedApp = runCallbacks({
+        name: 'router.server.dataWrapper',
+        iterator: WrappedApp,
+        properties: { req, context, apolloClient: client },
+      });
+      // fill apollo store
+      // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
+      //because react-apollo may trigger style generation while walking the React tree to find query
+      await getDataFromTree(DataWrappedApp);
+
+      // run callback related to rendering
+      // eg Material UI theming WITH style generation
+      // those wrapper can tolerate side effects during React tree traversal (eg className/styles generation)
+      const StyledWrappedApp = runCallbacks({
+        name: 'router.server.renderWrapper',
+        iterator: WrappedApp,
+        properties: { req, context, apolloClient: client },
+      });
+      // equivalent to calling getDataFromTree and then renderToStringWithData
+      htmlContent = await ReactDOM.renderToString(StyledWrappedApp);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`Error while server-rendering. date: ${new Date().toString()} url: ${req.url}`); // eslint-disable-line no-console
@@ -65,6 +91,13 @@ const makePageRenderer = ({ computeContext }) => {
     // add headers using helmet
     const head = ReactDOM.renderToString(<Head />);
     sink.appendToHead(head);
+
+    // add complementary data to the HTML (previously done by inject_data)
+    const dataToInject = injectDefaultData(req, { responseHeaders: sink.responseHeaders });
+    if (dataToInject._injectHtml) {
+      sink.appendToHead(dataToInject._injectHtml);
+    }
+
 
     // add Apollo state, the client will then parse the string
     const initialState = client.extract();

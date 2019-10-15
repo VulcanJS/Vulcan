@@ -354,6 +354,12 @@ export const getCountryLabel = (countryValue) => {
 };
 
 
+export const getCountryCode = (countryName) => {
+  const country = countries.find(country => country.label === countryName);
+  return country ? country.value : '';
+};
+
+
 export const getCountryContinent = (countryValue) => {
   const country = countries.find(country => country.value === countryValue);
   return country ? country.continent : '';
@@ -377,7 +383,7 @@ export const getRegionLabel = (countryValue, regionValue) => {
 };
 
 
-// Given a region value or label, returns the region value (QC or Quebec => QC) 
+// Given a region value or label, returns the region value (QC or Quebec => QC)
 // or false if the regionValue is invalid
 export const validateRegion = (countryValue, regionValue) => {
   if (!countryInfo[countryValue] || !countryInfo[countryValue].regions) {

@@ -1,10 +1,6 @@
-// import Users from 'meteor/vulcan:users';
-// import { getSetting } from 'meteor/vulcan:core';
-// import get from 'lodash/get';
+import Users from 'meteor/vulcan:users';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-// import { formatMessage } from 'meteor/vulcan:i18n';
-// import _isEmpty from 'lodash/isEmpty';
-// import { inspect } from 'util';
 
 export const initFunctions = [];
 export const logFunctions = [];
@@ -48,23 +44,23 @@ export const addScrubFields = fields => {
   }
 };
 
-// export const getUserPayload = function(userOrUserId) {
-//   try {
-//     const user = Users.getUser(userOrUserId);
-//     if (!user) return null;
+export const getUserPayload = function(userOrUserId) {
+  try {
+    const user = Users.getUser(userOrUserId);
+    if (!user) return null;
 
-//     const userPayload = {};
+    const userPayload = {};
 
-//     for (const field in userFields) {
-//       const path = userFields[field];
-//       userPayload[field] = get(user, path);
-//     }
+    for (const field in userFields) {
+      const path = userFields[field];
+      userPayload[field] = get(user, path);
+    }
 
-//     return userPayload;
-//   } catch (error) {
-//     return null;
-//   }
-// };
+    return userPayload;
+  } catch (error) {
+    return null;
+  }
+};
 
 // export const getServerHost = function() {
 //   return process.env.GALAXY_CONTAINER_ID

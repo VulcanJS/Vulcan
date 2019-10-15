@@ -4,6 +4,7 @@ import createReactClass from 'create-react-class';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 
 
 //noinspection JSUnusedGlobalSymbols
@@ -12,60 +13,43 @@ const MuiFormControl = createReactClass({
   propTypes: {
     label: PropTypes.node,
     children: PropTypes.node,
-    required: PropTypes.bool,
+    optional: PropTypes.bool,
     hasErrors: PropTypes.bool,
     fakeLabel: PropTypes.bool,
     hideLabel: PropTypes.bool,
+    shrinkLabel: PropTypes.bool,
     layout: PropTypes.oneOf(['horizontal', 'vertical', 'elementOnly']),
-    htmlFor: PropTypes.string
-  },
-  
-  getDefaultProps: function () {
-    return {
-      label: '',
-      required: false,
-      hasErrors: false,
-      fakeLabel: false,
-      hideLabel: false,
-    };
-  },
-  
-  renderRequiredSymbol: function () {
-    if (this.props.required === false) {
-      return null;
-    }
-    return (
-      <span className="required-symbol"> *</span>
-    );
+    htmlFor: PropTypes.string,
+    inputType: PropTypes.string,
   },
   
   renderLabel: function () {
-    if (this.props.layout === 'elementOnly' || this.props.hideLabel) {
+    const { fakeLabel, hideLabel, shrinkLabel, layout, optional, label, value } = this.props;
+    
+    if (layout === 'elementOnly' || hideLabel) {
       return null;
     }
     
-    if (this.props.fakeLabel) {
+    if (fakeLabel) {
       return (
         <FormLabel className="control-label legend"
                    component="legend"
-                   data-required={this.props.required}
+                   data-required={!optional}
         >
-          {this.props.label}
-          {this.renderRequiredSymbol()}
+          {label}<Components.RequiredIndicator optional={optional} value={value}/>
         </FormLabel>
       );
     }
     
-    const shrink = ['date', 'time', 'datetime'].includes(this.props.inputType) ? true : undefined;
+    const shrink = shrinkLabel || ['date', 'time', 'datetime'].includes(this.props.inputType) ? true : undefined;
     
     return (
       <InputLabel className="control-label"
-                  data-required={this.props.required}
+                  data-required={!optional}
                   htmlFor={this.props.htmlFor}
                   shrink={shrink}
       >
-        {this.props.label}
-        {this.renderRequiredSymbol()}
+        {label}<Components.RequiredIndicator optional={optional} value={value}/>
       </InputLabel>
     );
   },
@@ -89,3 +73,6 @@ const MuiFormControl = createReactClass({
 
 
 export default MuiFormControl;
+
+
+registerComponent('FormControl', MuiFormControl);

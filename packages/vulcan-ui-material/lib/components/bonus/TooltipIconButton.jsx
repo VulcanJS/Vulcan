@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Components, registerComponent, Utils } from 'meteor/vulcan:core';
+import { registerComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
@@ -23,6 +23,9 @@ const styles = theme => ({
 
 
 const TooltipIconButton = (props, { intl }) => {
+  
+  //eslint-disable-next-line no-console
+  console.warn('WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0');
   
   const {
     title,

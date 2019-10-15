@@ -1,2 +1,3 @@
 // import client only tests here
-import './apolloClient.tests.js';
+import './apolloClient.test.js';
+import '../index';

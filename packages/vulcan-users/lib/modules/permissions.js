@@ -1,6 +1,8 @@
 import Users from './collection.js';
-import { Utils } from 'meteor/vulcan:lib';
 import intersection from 'lodash/intersection';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import difference from 'lodash/difference';
 
 /**
  * @summary Users.groups object
@@ -44,7 +46,7 @@ Users.createGroup = groupName => {
  * @summary get a list of a user's groups
  * @param {Object} user
  */
-Users.getGroups = user => {
+Users.getGroups = (user, document) => {
 
   let userGroups = [];
 
@@ -56,6 +58,10 @@ Users.getGroups = user => {
   
     userGroups = ['members'];
 
+    if (document && Users.owns(user, document)) {
+      userGroups.push('owners');
+    }
+    
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
     } 
@@ -93,9 +99,9 @@ Users.getActions = user => {
  * @param {Array} user 
  * @param {String} group or array of groups
  */
-Users.isMemberOf = (user, groupOrGroups) => {
+Users.isMemberOf = (user, groupOrGroups, document) => {
   const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
-  return intersection(Users.getGroups(user), groups).length > 0;
+  return intersection(Users.getGroups(user, document), groups).length > 0;
 };
 
 /**
@@ -204,12 +210,12 @@ export const isAdmin = Users.isAdmin;
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
-  return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+  return compact(map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       if (fieldName.indexOf('.$') > -1) return null;
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
-  )));
+  ));
 };
 
 // collection helper
@@ -218,6 +224,25 @@ Users.helpers({
     return Users.getViewableFields(this, collection, document);
   }
 });
+
+/**
+ * @summary Check if a user can access a list of fields
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} fields - The list of fields
+ */
+Users.checkFields = (user, collection, fields) => {
+  const viewableFields = Users.getViewableFields(user, collection);
+  const diff = difference(fields, viewableFields);
+
+  if (diff.length) {
+    throw new Error(
+      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(
+        ', '
+      )}.`
+    );
+  }
+};
 
 /**
  * @summary For a given document or list of documents, keep only fields viewable by current user
@@ -232,7 +257,7 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
   const restrictDoc = document => {
 
     // get array of all keys viewable by user
-    const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
+    const viewableKeys = Users.getViewableFields(user, collection, document);
     const restrictedDocument = _.clone(document);
     
     // loop over each property in the document and delete it if it's not viewable
@@ -277,6 +302,7 @@ Users.canCreateField = function (user, field) {
  * Check if a user can edit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
+ * @param {Object} document - The document being edited or inserted
  */
 Users.canUpdateField = function (user, field, document) {
   const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility

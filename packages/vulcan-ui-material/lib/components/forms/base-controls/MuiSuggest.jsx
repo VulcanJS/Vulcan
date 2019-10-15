@@ -38,75 +38,169 @@ const maxSuggestions = 100;
   sectionContainerFirst:    'react-autosuggest__section-container--first',
   sectionTitle:             'react-autosuggest__section-title'
 }*/
-const styles = theme => ({
-  container: {
-    flexGrow: 1,
-    position: 'relative',
-  },
-  textField: {
-    width: '100%',
-    'label + div > &': {
-      marginTop: theme.spacing.unit * 2,
+const styles = theme => {
+  const light = theme.palette.type === 'light';
+  const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
+  
+  return {
+    
+    container: {
+      flexGrow: 1,
+      position: 'relative',
     },
-  },
-  input: {
-    outline: 0,
-    font: 'inherit',
-    color: 'currentColor',
-    width: '100%',
-    border: '0',
-    margin: '0',
-    padding: '7px 0',
-    display: 'block',
-    boxSizing: 'content-box',
-    background: 'none',
-    verticalAlign: 'middle',
-    '&::-webkit-search-decoration, &::-webkit-search-cancel-button, &::after, &:after':
-      { display: 'none' },
-    '&::-webkit-search-results, &::-webkit-search-results-decoration':
-      { display: 'none' },
-  },
-  readOnly: {
-    cursor: 'pointer',
-  },
-  suggestionsContainer: {
-    display: 'none',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    zIndex: theme.zIndex.modal,
-    marginBottom: theme.spacing.unit * 3,
-    maxHeight: 48 * 8,
-  },
-  suggestionsContainerOpen: {
-    display: 'flex',
-  },
-  scroller: {
-    flexGrow: 1,
-    overflowY: 'auto',
-  },
-  suggestion: {
-    display: 'block',
-  },
-  suggestionIcon: {
-    marginRight: theme.spacing.unit * 2,
-  },
-  selected: {
-    backgroundColor: theme.palette.secondary.light,
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-  },
-  inputRoot: {
-    '& .clear-enabled': { opacity: 0 },
-    '&:hover .clear-enabled': { opacity: 0.54 },
-  },
-  inputFocused: {
-    '& .clear-enabled': { opacity: 0.54 }
-  },
-});
+    
+    textField: {
+      width: '100%',
+      'label + div > &': {
+        marginTop: theme.spacing.unit * 2,
+      },
+    },
+    
+    input: {
+      outline: 0,
+      font: 'inherit',
+      color: 'currentColor',
+      width: '100%',
+      border: '0',
+      margin: '0',
+      padding: '7px 0',
+      display: 'block',
+      boxSizing: 'content-box',
+      background: 'none',
+      verticalAlign: 'middle',
+      '&::-webkit-search-decoration, &::-webkit-search-cancel-button, &::after, &:after':
+        { display: 'none' },
+      '&::-webkit-search-results, &::-webkit-search-results-decoration':
+        { display: 'none' },
+    },
+    
+    readOnly: {
+      cursor: 'pointer',
+    },
+    
+    suggestionsContainer: {
+      display: 'none',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      zIndex: theme.zIndex.modal,
+      marginBottom: theme.spacing.unit * 3,
+      maxHeight: 48 * 8,
+    },
+    
+    suggestionsContainerOpen: {
+      display: 'flex',
+    },
+    
+    scroller: {
+      flexGrow: 1,
+      overflowY: 'auto',
+    },
+    
+    suggestion: {
+      display: 'block',
+    },
+    
+    suggestionIcon: {
+      marginRight: theme.spacing.unit * 2,
+    },
+    
+    selected: {
+      backgroundColor: theme.palette.secondary.light,
+    },
+    
+    suggestionsList: {
+      margin: 0,
+      padding: 0,
+      listStyleType: 'none',
+    },
+    
+    inputRoot: {
+      '& .clear-enabled': { opacity: 0 },
+      '&:hover .clear-enabled': { opacity: 0.54 },
+      '&:focus .clear-enabled': { opacity: 0.54 },
+    },
+    
+    inputFocused: {
+      '& .clear-enabled': { opacity: 0.54 }
+    },
+    
+    inputDisabled: {},
+    
+    formatted: {
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: 16,
+      paddingTop: 4,
+      paddingRight: 0,
+      paddingBottom: 4,
+      paddingLeft: 0,
+      fontSize: 17.15,
+      cursor: 'pointer',
+    },
+    
+    // From https://github.com/mui-org/material-ui/blob/v3.x/packages/material-ui/src/Input/Input.js
+    /* Styles applied to the root element if the component is focused. */
+    focused: {},
+    /* Styles applied to the root element if `disabled={true}`. */
+    disabled: {},
+    /* Styles applied to the root element if `error={true}`. */
+    error: {},
+
+    underline: {
+      '&:after': {
+        borderBottom: `2px solid ${theme.palette.primary[light ? 'dark' : 'light']}`,
+        left: 0,
+        bottom: 0,
+        // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
+        content: '""',
+        position: 'absolute',
+        right: 0,
+        transform: 'scaleX(0)',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shorter,
+          easing: theme.transitions.easing.easeOut,
+        }),
+        pointerEvents: 'none', // Transparent to the hover style.
+      },
+      '&:focus:after': {
+        transform: 'scaleX(1)',
+      },
+      '&$error:after': {
+        borderBottomColor: theme.palette.error.main,
+        transform: 'scaleX(1)', // error is always underlined in red
+      },
+      '&:before': {
+        borderBottom: `1px solid ${bottomLineColor}`,
+        left: 0,
+        bottom: 0,
+        // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
+        content: '"\\00a0"',
+        position: 'absolute',
+        right: 0,
+        transition: theme.transitions.create('border-bottom-color', {
+          duration: theme.transitions.duration.shorter,
+        }),
+        pointerEvents: 'none', // Transparent to the hover style.
+      },
+      '&:hover:not($disabled):not($focused):not($error):before': {
+        borderBottom: `2px solid ${theme.palette.text.primary}`,
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          borderBottom: `1px solid ${bottomLineColor}`,
+        },
+      },
+      '&$disabled:before': {
+        borderBottomStyle: 'dotted',
+      },
+    },
+    
+    formattedNoLabel: {
+      marginTop: 0,
+    },
+    
+  };
+};
 
 
 const MuiSuggest = createReactClass({
@@ -119,14 +213,16 @@ const MuiSuggest = createReactClass({
     options: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      formatted: PropTypes.node,
       iconComponent: PropTypes.node,
+      formatted: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
       onClick: PropTypes.func,
     })),
     classes: PropTypes.object.isRequired,
     limitToList: PropTypes.bool,
     disableText: PropTypes.bool,
+    disableSelectOnBlur: PropTypes.bool,
     showAllOptions: PropTypes.bool,
+    disableMatchParts: PropTypes.bool,
     className: PropTypes.string,
     autoComplete: PropTypes.string,
     autoFocus: PropTypes.bool,
@@ -139,8 +235,13 @@ const MuiSuggest = createReactClass({
     };
   },
   
-  getOptionFormatted: function (option) {
-    return option.formatted || option.label || option.value || '';
+  getOptionFormatted: function (option, formattedProps) {
+    const formatted = option.formatted &&
+    typeof option.formatted === 'function' ?
+      option.formatted(formattedProps) :
+      option.formatted;
+    
+    return formatted;
   },
   
   getOptionLabel: function (option) {
@@ -155,6 +256,7 @@ const MuiSuggest = createReactClass({
     const selectedOption = this.getSelectedOption();
     return {
       inputValue: this.getOptionLabel(selectedOption),
+      inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
       selectedOption: selectedOption,
       suggestions: [],
     };
@@ -166,6 +268,7 @@ const MuiSuggest = createReactClass({
       const selectedOption = this.getSelectedOption(nextProps);
       this.setState({
         inputValue: this.getOptionLabel(selectedOption),
+        inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
         selectedOption: selectedOption,
       });
     }
@@ -192,14 +295,24 @@ const MuiSuggest = createReactClass({
   },
   
   handleBlur: function (event, { highlightedSuggestion: suggestion }) {
-    if (suggestion) {
+    if (suggestion && !this.props.disableSelectOnBlur) {
       this.changeValue(suggestion);
     } else if (this.props.limitToList) {
       const selectedOption = this.getSelectedOption();
       this.setState({
         inputValue: this.getOptionLabel(selectedOption),
+        inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
       });
     }
+  },
+  
+  highlightFirstSuggestion: function () {
+    if (this.props.disableText) return false;
+    
+    const selectedOption = this.getSelectedOption();
+    if (!selectedOption.value) return true;
+    
+    return selectedOption.label !== this.state.inputValue;
   },
   
   suggestionSelected: function (event, { suggestion }) {
@@ -217,6 +330,7 @@ const MuiSuggest = createReactClass({
     this.setState({
       selectedOption: suggestion,
       inputValue: this.getOptionLabel(suggestion),
+      inputFormatted: this.getOptionFormatted(suggestion, { current: true }),
     });
     this.props.onChange(suggestion.value);
   },
@@ -245,7 +359,8 @@ const MuiSuggest = createReactClass({
   },
   
   render: function () {
-    const value = this.props.value;
+    const { value } = this.props;
+    const { inputValue, inputFormatted } = this.state;
     
     const startAdornment = hideStartAdornment(this.props) ? null :
       <StartAdornment {...this.props}
@@ -266,7 +381,10 @@ const MuiSuggest = createReactClass({
     }
     
     return (
-      <MuiFormControl{...this.getFormControlProperties()} htmlFor={this.getId()}>
+      <MuiFormControl{...this.getFormControlProperties()}
+                     shrinkLabel={inputFormatted && inputFormatted !== inputValue}
+                     htmlFor={this.getId()}
+      >
         {element}
         <MuiFormHelper {...this.getFormHelperProperties()}/>
       </MuiFormControl>
@@ -274,7 +392,8 @@ const MuiSuggest = createReactClass({
   },
   
   renderElement: function (startAdornment, endAdornment) {
-    const { classes, autoFocus, disableText, showAllOptions, inputProperties } = this.props;
+    const { classes, autoFocus, disableText, placeholder, inputProperties } = this.props;
+    const { inputValue, inputFormatted } = this.state;
     
     return (
       <Autosuggest
@@ -286,7 +405,7 @@ const MuiSuggest = createReactClass({
           suggestion: classes.suggestion,
           suggestionsList: classes.suggestionsList,
         }}
-        highlightFirstSuggestion={!disableText && !showAllOptions}
+        highlightFirstSuggestion={this.highlightFirstSuggestion()}
         renderInputComponent={this.renderInputComponent}
         suggestions={this.state.suggestions}
         onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
@@ -297,6 +416,7 @@ const MuiSuggest = createReactClass({
         alwaysRenderSuggestions={false}
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
+        onSuggestionHighlighted={this.suggestionHighlighted}
         onSuggestionSelected={this.suggestionSelected}
         inputProps={{
           ...this.cleanProps(inputProperties),
@@ -305,7 +425,9 @@ const MuiSuggest = createReactClass({
           onChange: this.handleInputChange,
           onFocus: this.handleFocus,
           onBlur: this.handleBlur,
-          value: this.state.inputValue,
+          value: inputValue,
+          formatted: inputFormatted,
+          placeholder: placeholder,
           readOnly: disableText,
           disabled: this.props.disabled,
           name: this.props.name,
@@ -318,16 +440,57 @@ const MuiSuggest = createReactClass({
   },
   
   renderInputComponent: function (inputProps) {
-    const { classes, autoFocus, autoComplete, value, ref, startAdornment, endAdornment, disabled, ...rest } = inputProps;
+    const { classes, autoFocus, autoComplete, value, formatted, ref, startAdornment, endAdornment, disabled, ...rest } = inputProps;
+    const { hideLabel } = this.props;
+    
+    if (formatted && formatted !== value) {
+      return (
+        <div
+          {...rest}
+          tabIndex={0}
+          className={classNames(classes.inputRoot, classes.formatted, classes.underline, hideLabel && classes.formattedNoLabel)}
+        >
+          {startAdornment}
+          {formatted}
+          {endAdornment}
+        </div>
+      );
+    }
+    
+    /*function FormattedInput (props) {
+      const { inputRef, className, ...other } = props;
+      
+      return (
+        <div
+          {...other}
+          ref={ref => {
+            inputRef(ref ? ref.inputElement : null);
+          }}
+          className={classNames(className, classes.formatted)}
+          tabIndex={0}
+          onBlur={()=>{console.log("blur")}}
+        >
+          {formatted}
+        </div>
+      );
+    }
+    
+    FormattedInput.propTypes = {
+      inputRef: PropTypes.func.isRequired,
+    };*/
     
     return (
       <Input
+        //inputComponent={formatted && formatted !== value ? FormattedInput : undefined}
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         className={classes.textField}
         classes={{ root: classes.inputRoot, focused: classes.inputFocused }}
         value={value}
-        inputRef={c => { ref(c); this.inputElement = c; }}
+        inputRef={c => {
+          ref(c);
+          this.inputElement = c;
+        }}
         type="text"
         startAdornment={startAdornment}
         endAdornment={endAdornment}
@@ -340,7 +503,7 @@ const MuiSuggest = createReactClass({
   },
   
   renderSuggestion: function (suggestion, { query, isHighlighted }) {
-    const label = this.getOptionFormatted(suggestion);
+    const label = this.getOptionFormatted(suggestion) || suggestion.label || suggestion.value || '';
     const matches = match(label, query);
     const parts = parse(label, matches);
     const isSelected = suggestion.value === this.props.value;
@@ -360,17 +523,19 @@ const MuiSuggest = createReactClass({
           </div>
         }
         <div>
-          {parts.map((part, index) => {
-            return part.highlight ? (
-              <span key={index} style={{ fontWeight: 500 }}>
-              {part.text}
-            </span>
-            ) : (
-              <strong key={index} style={{ fontWeight: 300 }}>
-                {part.text}
-              </strong>
-            );
-          })}
+          {
+            this.props.disableMatchParts
+              ?
+              label
+              :
+              parts.map((part, index) => {
+                return part.highlight
+                  ?
+                  <span key={index} style={{ fontWeight: 500 }}>{part.text}</span>
+                  :
+                  <strong key={index} style={{ fontWeight: 300 }}>{part.text}</strong>;
+              })
+          }
         </div>
       </MenuItem>
     );

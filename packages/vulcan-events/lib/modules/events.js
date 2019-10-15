@@ -29,7 +29,7 @@ export const track = async (eventName, eventProperties, currentUser) => {
 };
 
 export const addUserFunction = f => {
-  addCallback('users.new.async', f);
+  addCallback('user.create.async', f);
 };
 
 export const addIdentifyFunction = f => {
@@ -45,5 +45,5 @@ export const addPageFunction = f => {
   descriptor.value = f.name;
   Object.defineProperty(f2, 'name', descriptor);
 
-  addCallback('router.onUpdate.async', f2);
+  addCallback('router.onupdate.async', f2);
 };

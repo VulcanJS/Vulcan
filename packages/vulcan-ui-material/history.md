@@ -1,3 +1,39 @@
+1.13.2_1 / 2019-10-02
+=====================
+
+ * ModalTrigger: Moved inner part of `ModalTrigger` to `Modal`
+ * MuiSuggest: Modified component to be able to display pre-formatted values, not just simple strings
+ * MuiSuggest: Added `disableSelectOnBlur` prop to prevent selecting the highlighted option on blur
+ * MuiSuggest: Added `disableMatchParts` prop to prevent highlighting of matched sub-strings
+ * TooltipButton: when passing `true` in `loading` prop the button is disabled... unless you pass `false` in `disabled`
+ * FormGroupDefault, FormGroupLine, FormGroupNone : Implemented `group.hidden property`
+ * LoadMore: Removed dependency on `react-intl`
+ * SearchInput: Removed last usage of `TooltipIntl`
+ * Datatable: Added scroller in case the table is too wide
+ * StaticText: Added missing form control backed by `MuiText` base control
+ * StartAdornment: Fixed bug
+ * FormControl, FormComponentDate2, FormComponentText: Added missing form controls
+ * Button: Added support for 'default' variant prop value
+ * Added `shrinkLabel` option to `inputProperties`
+ 
+1.13.2 / 2019-09-13
+===================
+
+ * Forms: Added indicator for required fields
+ * Forms: Added support for styling of disabled input
+ * LoadMore: Fixed bug that would sometimes display "NaN items"
+ * StartAdornment: url and email inputs are now adorned with an icon button link - unless you pass `hideLink: true` in inputProperties
+ 
+1.13.0_1 / 2019-07-23
+=====================
+
+ * TooltipButton: Deprecated TooltipIntl and TooltipIconButton in favor of TooltipButton - they will be deleted in Vulcan 1.15.0
+ 
+1.13.0 / 2019-07-19
+===================
+
+ * TooltipIntl: Changed display from 'inline-block' to 'inherit' for more flexibility
+ 
 1.12.8_17 / 2019-02-02
 ======================
 

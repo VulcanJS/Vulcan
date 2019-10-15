@@ -1,6 +1,6 @@
 Package.describe({
   name: 'vulcan:ui-material',
-  version: '1.13.0',
+  version: '1.13.4',
   summary: 'Replacement for Vulcan (http://vulcanjs.org/) components using material-ui',
   documentation: 'README.md'
 });
@@ -10,11 +10,11 @@ Package.onUse(function (api) {
 
   api.use([
     'ecmascript',
-    'vulcan:core@1.13.0',
-    'vulcan:accounts@1.13.0',
-    'vulcan:forms@1.13.0'
+    'vulcan:core@=1.13.4',
+    'vulcan:accounts@=1.13.4',
+    'vulcan:forms@=1.13.4'
   ]);
-  
+
   api.addFiles([
     'accounts.css',
     'forms.css',

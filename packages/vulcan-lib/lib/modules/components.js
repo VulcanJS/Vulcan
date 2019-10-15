@@ -1,8 +1,8 @@
-import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
+import { compose } from 'recompose';
 import React from 'react';
 import difference from 'lodash/difference';
 
-export const Components = {}; // will be populated on startup 
+export const Components = {}; // will be populated on startup
 export const ComponentsTable = {}; // storage for infos about components
 
 export const coreComponents = [
@@ -30,7 +30,6 @@ export const coreComponents = [
   'FormComponentInner',
   'FormControl',
   'FormElement',
-  'FormItem',
 ];
 
 /**
