@@ -36,13 +36,13 @@ import {
   fieldWhereInputTemplate,
   fieldOrderByInputTemplate,
 } from '../graphql_templates/index.js';
+import { getNewDefaultResolvers } from '../../server/new_default_resolvers';
+import { getNewDefaultMutations } from '../../server/new_default_mutations';
+import isEmpty from 'lodash/isEmpty';
 
-import { 
-  getSchemaFields
-} from './schemaFields';
+import { getSchemaFields } from './schemaFields';
 
 disableFragmentWarnings();
-
 
 const defaultResolvers = {
   JSON: GraphQLJSON,
@@ -51,7 +51,7 @@ const defaultResolvers = {
 
 export const GraphQLSchema = {
   // reinit the schema (testing purposes only)
-  init(){
+  init() {
     this.collections = [];
     this.schemas = [];
     this.queries = [];
@@ -125,7 +125,6 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
 
-
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
     let graphQLSchema = '';
@@ -144,7 +143,7 @@ export const GraphQLSchema = {
     // register the generated resolvers
     schemaResolvers.forEach(addGraphQLResolvers);
 
-    const { interfaces = [], resolvers, mutations } = collection.options;
+    let { interfaces = [], resolvers, mutations } = collection.options;
 
     const description = collection.options.description
       ? collection.options.description
@@ -183,7 +182,10 @@ export const GraphQLSchema = {
 
       schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
 
-      if (!_.isEmpty(resolvers)) {
+      if (resolvers !== null) {
+        // if resolvers are empty, use defaults
+        resolvers = isEmpty(resolvers) ? getNewDefaultResolvers({ typeName }) : resolvers;
+
         const queryResolvers = {};
 
         // single
@@ -203,8 +205,11 @@ export const GraphQLSchema = {
         }
         addGraphQLResolvers({ Query: { ...queryResolvers } });
       }
+      
+      if (mutations !== null) {
+        // if mutations are undefined, use defaults
+        mutations = isEmpty(mutations) ? getNewDefaultMutations({ typeName }) : mutations;
 
-      if (!_.isEmpty(mutations)) {
         const mutationResolvers = {};
         // create
         if (mutations.create) {
@@ -259,13 +264,8 @@ export const GraphQLSchema = {
         }
         addGraphQLResolvers({ Mutation: { ...mutationResolvers } });
       }
-      graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(
-        `// Warning: collection ${collectionName} doesn't have any GraphQL-enabled fields, so no corresponding type can be generated. Pass generateGraphQLSchema = false to createCollection() to disable this warning`
-      );
     }
+    graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
 
     return graphQLSchema;
   },
@@ -308,4 +308,3 @@ export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSc
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
 export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
-
