@@ -1,4 +1,5 @@
-import { createDummyCollection } from 'meteor/vulcan:test'
+import { createDummyCollection, isoCreateCollection } from 'meteor/vulcan:test'
+import { createCollection } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users'
 import expect from 'expect';
 import { getDefaultResolvers } from '../../lib/modules/default_resolvers';
@@ -210,6 +211,20 @@ describe('vulcan:core/default_resolvers', function () {
         const res = await resolver(null, { input }, context, lastArg)
         expect(findSpy.getCall(0).args[2].year).toBeUndefined()
       })
+      // seems to work eventually...
+      /*
+      it('runs integration test', async () => {
+        const Foobars = createCollection({
+          collectionName: 'Foobars',
+          typeName: 'Foobar',
+          schema: { _id: { type: String, canRead: ['admins'] } }
+        })
+        await Foobars.insert({ _id: '1' })
+        const res = await Foobars.find().fetch()
+        console.log(res)
+        await Foobars.rawCollection().drop()
+      })
+      */
 
     })
   })
