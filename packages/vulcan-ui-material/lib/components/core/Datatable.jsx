@@ -320,7 +320,7 @@ const DatatableContents = ({
         (title) ?
           <Toolbar>
             <Typography variant="h6" id="tableTitle">
-              title
+              {title}
             </Typography>
           </Toolbar>
           : null
