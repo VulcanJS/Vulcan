@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -50,6 +50,10 @@ const LoadMore = ({
   const title = `${loadMoreText} (${count}/${totalCount})`;
   const hasMore = totalCount > count;
   const countValues = { count, totalCount };
+  const loadMoreId = hasMore ? 'loaded_count' :
+    !totalCount ? 'no_items' :
+      totalCount === 1 ? 'one_item' :
+        'total_items';
   showCount = isNaN(totalCount) || isNaN(count) ? false : showCount;
   
   const loadMoreButton = useTextButton
@@ -68,7 +72,7 @@ const LoadMore = ({
         showCount &&
         
         <Typography variant="caption" className={classes.caption}>
-          <FormattedMessage id={`load_more.${hasMore ? 'loaded_count' : 'loaded_all'}`} values={countValues}/>
+          <FormattedMessage id={`load_more.${loadMoreId}`} values={countValues}/>
         </Typography>
       }
       {
@@ -96,7 +100,7 @@ const LoadMore = ({
               
               loadMoreButton
             :
-  
+            
             null
       }
     </div>

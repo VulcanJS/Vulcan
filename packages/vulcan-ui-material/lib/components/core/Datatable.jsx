@@ -34,7 +34,7 @@ const baseStyles = theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
   header: {
     display: 'flex',
@@ -43,8 +43,13 @@ const baseStyles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  scroller: {
+    overflow: 'auto',
+  },
   searchWrapper: {},
-  addButtonWrapper: {},
+  addButtonWrapper: {
+    alignItems: 'center',
+  },
   addButton: {
     // Floating button won't work with multiple datatables, buttons are superposed
     // top: '9.5rem',
@@ -179,14 +184,16 @@ class Datatable extends PureComponent {
             </div>
           )}
 
-          <DatatableWithMulti
-            {...this.props}
-            collection={collection}
-            terms={{ query: this.state.query, orderBy: orderBy }}
-            currentUser={this.props.currentUser}
-            toggleSort={this.toggleSort}
-            currentSort={this.state.currentSort}
-          />
+          <div className={classes.scroller}>
+            <DatatableWithMulti
+              {...this.props}
+              collection={collection}
+              terms={{ query: this.state.query, orderBy: orderBy }}
+              currentUser={this.props.currentUser}
+              toggleSort={this.toggleSort}
+              currentSort={this.state.currentSort}
+            />
+          </div>
         </div>
       );
     }

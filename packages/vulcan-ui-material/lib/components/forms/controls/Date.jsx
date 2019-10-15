@@ -33,3 +33,4 @@ const DateComponent = ({ refFunction, classes, ...properties }) =>
   <MuiPicker {...properties} {...classes} ref={refFunction}/>;
 
 registerComponent('FormComponentDate', DateComponent, [withStyles, styles]);
+registerComponent('FormComponentDate2', DateComponent, [withStyles, styles]);

@@ -137,7 +137,7 @@ describe('vulcan:core/container/mutations', () => {
             expect(res).toEqual({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
         });
 
-        describe('multiQuery update after create mutation', () => {
+        describe('multiQuery update after create mutation for optimistic UI', () => {
             const defaultOptions = {
                 typeName, fragment, fragmentName,
                 collection: Foo,
@@ -237,6 +237,30 @@ describe('vulcan:core/container/mutations', () => {
                     }
                 })
                 expect(writeQuery.notCalled).toBe(true)
+            })
+            test('add document if it does match the mongo selector', () => {
+                const update = multiQueryUpdater(defaultOptions)
+                const writeQuery = sinon.spy()
+                const cache = {
+                    readQuery: () => defaultCacheContent,
+                    writeQuery,
+                    data: defaultCacheData
+                }
+                const newFoo = { ...foo, val: 46 }
+                Foo.getParameters = () => ({
+                    selector: {
+                        val: { $gt: 42 }
+                    },
+                    options: {}
+                })
+                update(cache, {
+                    data: {
+                        createFoo: {
+                            data: newFoo
+                        }
+                    }
+                })
+                expect(writeQuery.calledOnce).toBe(true)
             })
             test('sort documents', () => {
                 const update = multiQueryUpdater(defaultOptions)

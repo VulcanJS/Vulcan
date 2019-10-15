@@ -14,10 +14,10 @@ const NewButton = ({
   
   <Components.ModalTrigger
     className={className}
-    component={<Components.TooltipIconButton titleId="datatable.new"
-                                             icon={<AddIcon/>}
-                                             color={color}
-                                             variant={variant}
+    component={<Components.TooltipButton titleId="datatable.new"
+                                         icon={<AddIcon/>}
+                                         color={color}
+                                         variant={variant}
     />}
   >
     <Components.EditForm collection={collection}/>
