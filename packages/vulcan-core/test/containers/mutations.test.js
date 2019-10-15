@@ -11,8 +11,18 @@ import {
     useDelete
 } from '../../lib/modules';
 import {
-    multiQueryUpdater
+    multiQueryUpdater,
+    buildCreateQuery,
 } from '../../lib/modules/containers/create'
+import {
+    buildUpdateQuery
+} from '../../lib/modules/containers/update'
+import {
+    buildUpsertQuery
+} from '../../lib/modules/containers/upsert'
+import {
+    buildDeleteQuery
+} from '../../lib/modules/containers/delete'
 import { MockedProvider } from 'meteor/vulcan:test';
 import { mount } from 'enzyme';
 import expect from 'expect';
@@ -94,23 +104,7 @@ describe('vulcan:core/container/mutations', () => {
             const CreateComponent = withCreate(defaultOptions)(TestComponent);
             const responses = [{
                 request: {
-                    query: gql`
-                    mutation createFoo($data: CreateFooDataInput!) {
-                      createFoo(data: $data) {
-                        data {
-                          ...FoosDefaultFragment
-                          __typename
-                        }
-                        __typename
-                      }
-                    }
-
-                    fragment FoosDefaultFragment on Foo {
-                      _id
-                      hello
-                      __typename
-                    }
-                    `,
+                    query: buildCreateQuery({ fragmentName, fragment, typeName }),
                     variables: {
                         data: rawFoo
                     }
@@ -303,23 +297,8 @@ describe('vulcan:core/container/mutations', () => {
             const UpdateComponent = withUpdate(defaultOptions)(TestComponent)
             const responses = [{
                 request: {
-                    query: gql`
-                    mutation updateFoo($selector: FooSelectorUniqueInput!, $data: UpdateFooDataInput!) {
-                            updateFoo(selector: $selector, data: $data) {
-                                data {
-                               ...FoosDefaultFragment
-                               __typename
-                    }
-                             __typename
-                }
-            }
-
-            fragment FoosDefaultFragment on Foo {
-                _id
-                hello
-                __typename
-            }
-            `,
+                    query: buildUpdateQuery({ typeName, fragmentName, fragment })
+                    ,
                     variables: {
                         //selector: { documentId: foo._id },
                         data: fooUpdate
@@ -351,23 +330,7 @@ describe('vulcan:core/container/mutations', () => {
             const UpsertComponent = withUpsert(defaultOptions)(TestComponent)
             const responses = [{
                 request: {
-                    query: gql`
-            mutation upsertFoo($selector: FooSelectorUniqueInput!, $data: UpdateFooDataInput!) {
-                upsertFoo(selector: $selector, data: $data) {
-                    data {
-                              ...FoosDefaultFragment
-                              __typename
-                            }
-                            __typename
-                          }
-                    }
-
-    fragment FoosDefaultFragment on Foo {
-        _id
-                      hello
-                      __typename
-    }
-    `,
+                    query: buildUpsertQuery({ typeName, fragmentName, fragment }),
                     variables: {
                         data: fooUpdate
                     }
@@ -398,23 +361,7 @@ describe('vulcan:core/container/mutations', () => {
             const DeleteComponent = withDelete(defaultOptions)(TestComponent)
             const responses = [{
                 request: {
-                    query: gql`
-                    mutation deleteFoo($selector: FooSelectorUniqueInput!) {
-    deleteFoo(selector: $selector) {
-        data {
-                           ...FoosDefaultFragment
-                           __typename
-}
-                         __typename
-                       }
-                    }
-
-    fragment FoosDefaultFragment on Foo {
-        _id
-                      hello
-                      __typename
-    }
-    `,
+                    query: buildDeleteQuery({ typeName, fragment, fragmentName }),
                     variables: {
                         selector: {
                             documentId: "42"
