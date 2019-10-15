@@ -1,5 +1,6 @@
 import Users from './collection.js';
 
+export * from './resolvers.js';
 export * from './avatar.js';
 export * from './fragments.js';
 export * from './helpers.js';
