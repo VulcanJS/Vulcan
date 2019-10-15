@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:subscribe',
   summary: 'Subscribe to posts, users, etc. to be notified of new activity',
-  version: '1.13.3',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 

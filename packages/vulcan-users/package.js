@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:users',
   summary: 'Vulcan permissions.',
-  version: '1.13.3',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 

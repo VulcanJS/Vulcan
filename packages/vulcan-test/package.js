@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:test',
   summary: 'Vulcan test helpers',
-  version: '1.13.3',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 

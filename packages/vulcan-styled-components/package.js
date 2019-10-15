@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:styled-components',
   summary: 'Add Styled Components to Vulcan.',
-  version: '1.13.3',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
