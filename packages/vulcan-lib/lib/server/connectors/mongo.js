@@ -47,6 +47,12 @@ const getFieldNames = expressionArray => {
   });
 };
 
+const isEmptyOrUndefined = value =>
+  typeof value === 'undefined' ||
+  value === null ||
+  value === '' ||
+  (typeof value === 'object' && isEmpty(value));
+
 const filterFunction = (collection, input, context) => {
   const { where, limit = 20, orderBy, search, filter, offset, _id } = input;
   let selector = {};
@@ -78,7 +84,7 @@ const filterFunction = (collection, input, context) => {
     const [fieldName] = Object.keys(fieldExpression);
     const [operator] = Object.keys(fieldExpression[fieldName]);
     const value = fieldExpression[fieldName][operator];
-    if (isEmpty(value)) {
+    if (isEmptyOrUndefined(value)) {
       throw new Error(
         `Detected empty filter value for field ${fieldName} with operator ${operator}`
       );
