@@ -1,6 +1,10 @@
 import React from 'react';
-import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import { getAuthorizedMenuItems, menuItemProps } from 'meteor/vulcan:menu';
+import {
+  getAuthorizedMenuItems,
+  menuItemProps,
+  registerComponent,
+  withCurrentUser,
+} from 'meteor/vulcan:core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 

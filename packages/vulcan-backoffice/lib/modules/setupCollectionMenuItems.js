@@ -1,5 +1,5 @@
 /** Add an item to the menu to access the collection */
-import { registerMenuItem, getMenuItems, getAuthorizedMenuItems } from 'meteor/vulcan:menu';
+import { addMenuItem, getMenuItems, getAuthorizedMenuItems } from 'meteor/vulcan:core';
 import { getBasePath, getCollectionName, getCollectionDisplayName } from './namingHelpers';
 import { mergeDefaultCollectionOptions } from './options';
 
@@ -12,13 +12,13 @@ export const setupCollectionMenuItems = (collection, collectionOptions) => {
     ? options.menuItem.label || getCollectionDisplayName(collection)
     : undefined;
   const collectionName = getCollectionName(collection);
-  registerMenuItem({
+  addMenuItem({
     name: collectionName,
     label,
     labelToken: labelToken,
     path: options.menuItem.basePath || getBasePath(collection, options.basePath),
     groups: options.menuItem.groups,
-    menuName: adminMenuName,
+    menuGroup: adminMenuName,
   });
 };
 // to retrieve the items

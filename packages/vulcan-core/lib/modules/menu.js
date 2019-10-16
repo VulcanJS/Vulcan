@@ -27,32 +27,43 @@ export const menuItemProps = {
   LeftComponent: PropTypes.any, //React component @see https://github.com/facebook/prop-types/issues/200
   RightComponent: PropTypes.any,
   groups: PropTypes.arrayOf(PropTypes.string), // groups that can see the item
-  menuName: PropTypes.string, // submenu name (facultative for main menu)
+  menuGroup: PropTypes.string, // submenu name (facultative for main menu)
 };
 
-const defaultMenuName = 'defaultMenu';
-const registeredMenus = {
-  [defaultMenuName]: {},
+const defaultMenuGroup = 'defaultMenu';
+const Menus = {
+  [defaultMenuGroup]: {},
 };
 
-export const registerMenuItem = config => {
-  const { menuName = defaultMenuName, name, ...otherConfig } = config;
-  if (!registeredMenus[menuName]) {
-    registeredMenus[menuName] = {};
+// only for testing
+export const resetMenus = () => {
+  Object.keys(Menus).forEach(key => {
+    delete Menus[key];
+  });
+  Menus[defaultMenuGroup] = {};
+};
+/**
+ * 
+ * @param {*} config 
+ */
+export const addMenuItem = config => {
+  const { menuGroup = defaultMenuGroup, name, ...otherConfig } = config;
+  if (!Menus[menuGroup]) {
+    Menus[menuGroup] = {};
   }
-  registeredMenus[menuName][name] = { name, menuName, ...otherConfig };
+  Menus[menuGroup][name] = { name, menuGroup, ...otherConfig };
 };
 
-export const removeMenuItem = (itemId, menuName = defaultMenuName) => {
-  delete registeredMenus[menuName][itemId];
-  if (menuName !== defaultMenuName && Objet.isEmpty(registeredMenus[menuName])) {
-    delete registeredMenus[menuName];
+export const removeMenuItem = (itemId, menuGroup = defaultMenuGroup) => {
+  delete Menus[menuGroup][itemId];
+  if (menuGroup !== defaultMenuGroup && Object.isEmpty(Menus[menuGroup])) {
+    delete Menus[menuGroup];
   }
 };
 
 // should not be needed
-export const getMenuItemsConfig = (menuName = defaultMenuName) => registeredMenus[menuName];
-export const getAllMenuItemsConfig = () => registeredMenus;
+export const getMenuItemsConfig = (menuGroup = defaultMenuGroup) => Menus[menuGroup];
+export const getAllMenuItemsConfig = () => Menus;
 
 const filterAuthorized = (currentUser, menuItems) =>
   menuItems.filter(({ groups }) => {
@@ -66,11 +77,11 @@ export const getAuthorizedMenuItems = (currentUser, ...args) =>
   filterAuthorized(currentUser, getMenuItems(...args));
 
 // get menu items as an array
-export const getMenuItems = (menuName = defaultMenuName) => {
-  const menu = registeredMenus[menuName];
+export const getMenuItems = (menuGroup = defaultMenuGroup) => {
+  const menu = Menus[menuGroup];
   if (!menu) {
     console.warn(
-      `Warning: Menu ${menuName} unknown. Menus available: ${Object.keys(registeredMenus)}`
+      `Warning: Menu group ${menuGroup} unknown. Menu groups available: ${Object.keys(Menus)}`
     );
     return [];
   }
@@ -79,7 +90,7 @@ export const getMenuItems = (menuName = defaultMenuName) => {
 
 // { admin: [menuItem1, menuItem2, ...], defaultMenu: [...]}
 export const getMenuItemsMap = () =>
-  Object.keys(registeredMenus).reduce((res, menuName) => ({
+  Object.keys(Menus).reduce((res, menuGroup) => ({
     ...res,
-    [menuName]: getMenuItems(menuName),
+    [menuGroup]: getMenuItems(menuGroup),
   }));

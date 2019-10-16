@@ -47,3 +47,5 @@ export { default as withEdit } from './containers/update.js';
 export { default as withRemove } from './containers/delete.js';
 export { default as withList } from './containers/multi.js';
 export { default as withDocument } from './containers/single.js';
+
+export * from './menu';
