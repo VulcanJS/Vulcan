@@ -9,8 +9,8 @@ and register schema parts based on the application collections
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
-import Vulcan from '../config.js'; // used for global export
-import { Utils } from '../utils.js';
+import Vulcan from '../../modules/config.js'; // used for global export
+import { Utils } from '../../modules/utils.js';
 import { disableFragmentWarnings } from 'graphql-tag';
 import {
   selectorInputTemplate,
@@ -35,11 +35,11 @@ import {
   deleteMutationTemplate,
   fieldWhereInputTemplate,
   fieldOrderByInputTemplate,
-} from '../graphql_templates/index.js';
-import { getNewDefaultResolvers } from '../../server/default_resolvers2.js';
-import { getNewDefaultMutations } from '../../server/default_mutations2.js';
+} from '../../modules/graphql_templates/index.js';
+import { getDefaultResolvers } from '../../server/default_resolvers.js';
+import { getDefaultMutations } from '../../server/default_mutations.js';
 import isEmpty from 'lodash/isEmpty';
-
+import { Collections } from '../../modules/collections.js';
 import { getSchemaFields } from './schemaFields';
 
 disableFragmentWarnings();
@@ -74,7 +74,9 @@ export const GraphQLSchema = {
   },
   // generate GraphQL schemas for all registered collections
   getCollectionsSchemas() {
-    const collectionsSchemas = this.collections
+    const collections = Collections.filter(c => c.options.generateGraphQLSchema !== false);
+    
+    const collectionsSchemas = collections
       .map(collection => {
         return this.generateSchema(collection);
       })
@@ -184,7 +186,7 @@ export const GraphQLSchema = {
 
       if (resolvers !== null) {
         // if resolvers are empty, use defaults
-        resolvers = isEmpty(resolvers) ? getNewDefaultResolvers({ typeName }) : resolvers;
+        resolvers = isEmpty(resolvers) ? getDefaultResolvers({ typeName }) : resolvers;
 
         const queryResolvers = {};
 
@@ -208,7 +210,7 @@ export const GraphQLSchema = {
       
       if (mutations !== null) {
         // if mutations are undefined, use defaults
-        mutations = isEmpty(mutations) ? getNewDefaultMutations({ typeName }) : mutations;
+        mutations = isEmpty(mutations) ? getDefaultMutations({ typeName }) : mutations;
 
         const mutationResolvers = {};
         // create

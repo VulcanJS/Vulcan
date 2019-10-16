@@ -4,6 +4,8 @@ import './site.js';
 
 import './connectors/mongo.js';
 
+export * from './graphql/index.js';
+
 export * from './debug.js';
 export * from './connectors.js';
 export * from './query.js';

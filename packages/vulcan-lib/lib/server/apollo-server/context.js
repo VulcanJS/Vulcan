@@ -15,7 +15,7 @@ import DataLoader from 'dataloader';
 import { Collections } from '../../modules/collections.js';
 import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
-import { GraphQLSchema } from '../../modules/graphql';
+import { GraphQLSchema } from '../graphql/index.js';
 import _merge from 'lodash/merge';
 import { getUser } from 'meteor/apollo';
 import { getHeaderLocale } from '../intl.js';
@@ -27,11 +27,16 @@ import { getSetting } from '../../modules/settings.js';
  */
 export const initContext = currentContext => {
   let context;
+
   if (currentContext) {
     context = { ...currentContext };
   } else {
     context = {};
   }
+
+  // add all collections to context
+  Collections.forEach(c => context[c.collectionName] = c);
+
   // merge with custom context
   // TODO: deepmerge created an infinite loop here
   context = _merge({}, context, GraphQLSchema.context);

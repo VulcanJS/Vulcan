@@ -1,7 +1,7 @@
 /**
  * Generate graphQL for Vulcan schema fields
  */
-import { isIntlField } from '../intl.js';
+import { isIntlField } from '../../modules/intl.js';
 import relations from './relations.js';
 
 // get GraphQL type for a given schema and field name
@@ -107,7 +107,8 @@ export const getSchemaFields = (schema, typeName) => {
 
         // unless addOriginalField option is disabled in one or more fields, also add original field to schema
         const addOriginalField = resolveAsArray.every(resolveAs => resolveAs.addOriginalField !== false);
-        if (addOriginalField && fieldType) {
+        // note: do not add original field if resolved field has same name
+        if (addOriginalField && fieldType && field.resolveAs.fieldName && field.resolveAs.fieldName !== fieldName) {
           fields.mainType.push({
             description: fieldDescription,
             name: fieldName,

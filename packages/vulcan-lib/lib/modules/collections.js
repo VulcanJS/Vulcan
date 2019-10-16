@@ -1,6 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addToGraphQLContext } from './graphql';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
@@ -203,16 +202,6 @@ export const createCollection = options => {
   if (schema) {
     // attach schema to collection
     collection.attachSchema(new SimpleSchema(schema));
-  }
-
-  // add collection to resolver context
-  const context = {};
-  context[collectionName] = collection;
-  addToGraphQLContext(context);
-
-  if (generateGraphQLSchema) {
-    // add collection to list of dynamically generated GraphQL schemas
-    addGraphQLCollection(collection);
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });

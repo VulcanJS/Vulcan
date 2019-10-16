@@ -1,5 +1,5 @@
 import schema from './schema.js';
-import { createCollection, addGraphQLQuery, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 /**
  * @summary Vulcan Users namespace
@@ -22,7 +22,5 @@ export const Users = createCollection({
   description: 'A user object'
 
 });
-
-addGraphQLQuery('currentUser: User');
 
 export default Users;

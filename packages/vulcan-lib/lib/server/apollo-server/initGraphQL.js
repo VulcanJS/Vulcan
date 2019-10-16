@@ -4,7 +4,7 @@
 
 import { makeExecutableSchema } from 'apollo-server';
 import { mergeSchemas } from 'graphql-tools';
-import { GraphQLSchema, generateTypeDefs } from '../../modules/graphql';
+import { GraphQLSchema, generateTypeDefs } from '../graphql/index.js';
 import { runCallbacks } from '../../modules/callbacks.js';
 
 

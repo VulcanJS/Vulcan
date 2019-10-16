@@ -1,4 +1,4 @@
-import { GraphQLSchema } from '../modules/graphql/graphql.js';
+import { GraphQLSchema } from './graphql';
 import Vulcan from '../modules/config.js';
 import fs from 'fs';
 

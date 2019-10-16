@@ -16,7 +16,7 @@ import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
 import { singleClientTemplate } from '../modules/graphql_templates/index.js';
 import { Utils } from './utils';
-import { GraphQLSchema } from '../modules/graphql';
+import { GraphQLSchema } from './graphql/index.js';
 
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context) => {

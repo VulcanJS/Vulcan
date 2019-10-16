@@ -145,6 +145,7 @@ query singleMovieQuery($input: SingleMovieInput) {
 }
 
 */
+// TODO: with hooks, extraQueries becomes less necessary?
 export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
 `query single${typeName}Query($input: Single${typeName}Input) {
   ${Utils.camelCaseify(typeName)}(input: $input) {
