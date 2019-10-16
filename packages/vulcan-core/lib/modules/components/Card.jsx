@@ -1,5 +1,9 @@
-import { registerComponent, Components, formatLabel } from 'meteor/vulcan:lib';
-import withComponents from '../containers/withComponents';
+import {
+  registerComponent,
+  Components,
+  formatLabel,
+  getCollectionByTypeName,
+} from 'meteor/vulcan:lib';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -7,6 +11,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import without from 'lodash/without';
+import withComponents from '../containers/withComponents.js';
 
 /*
 
@@ -23,9 +28,14 @@ const getLabel = (field, fieldName, collection, intl) => {
   });
 };
 
-const getTypeName = (value, fieldName, collection) => {
+const getFieldSchema = (fieldName, collection) => {
   const schema = collection && collection.simpleSchema()._schema;
   const fieldSchema = schema && schema[fieldName];
+  return fieldSchema;
+};
+
+const getTypeName = (value, fieldName, collection) => {
+  const fieldSchema = getFieldSchema(fieldName, collection);
   if (fieldSchema) {
     const type = fieldSchema.type.singleType;
     const typeName = typeof type === 'function' ? type.name : type;
@@ -153,6 +163,76 @@ const CardItemHTML = ({ value }) => (
 );
 registerComponent({ name: 'CardItemHTML', component: CardItemHTML });
 
+// HasOne Relation
+const CardItemRelationHasOne = ({ Components, ...rest }) => (
+  <div className="contents-hasone">
+    {<Components.CardItemRelationItem Components={Components} {...rest} />}
+  </div>
+);
+registerComponent({ name: 'CardItemRelationHasOne', component: CardItemRelationHasOne });
+
+// HasMany Relation
+const CardItemRelationHasMany = ({ relatedDocument: relatedDocuments, Components, ...rest }) => (
+  <div className="contents-hasmany">
+    {relatedDocuments.map(relatedDocument => (
+      <Components.CardItemRelationItem
+        key={relatedDocument._id}
+        relatedDocument={relatedDocument}
+        Components={Components}
+        {...rest}
+      />
+    ))}
+  </div>
+);
+registerComponent({ name: 'CardItemRelationHasMany', component: CardItemRelationHasMany });
+
+/*
+
+Tokens are components used to display an invidual element like a user name, 
+link to a post, category name, etc. 
+
+The naming convention is Type+Token, e.g. UserToken, PostToken, CategoryToken…
+
+*/
+
+// Relation Item
+const CardItemRelationItem = ({ relatedDocument, relatedCollection, Components }) => {
+  const label = relatedCollection.options.getLabel
+    ? relatedCollection.options.getLabel(relatedDocument)
+    : relatedDocument._id;
+  const typeName = relatedDocument.__typename;
+  const Token = Components[`${typeName}Token`];
+  return Token ? (
+    <Token document={relatedDocument} label={label} />
+  ) : (
+    <Components.DefaultToken document={relatedDocument} label={label} />
+  );
+};
+registerComponent({ name: 'CardItemRelationItem', component: CardItemRelationItem });
+
+// Default Token
+const DefaultToken = ({ document, label }) => (
+  <li className="relation-default-token">
+    {document.pagePath ? <Link to={document.pagePath}>{label}</Link> : <span>{label}</span>}
+  </li>
+);
+registerComponent({ name: 'DefaultToken', component: DefaultToken });
+
+// User Token
+const UserToken = ({ document }) => (
+  <div className="contents-user user-item">
+    <Components.Avatar size="small" user={document} />
+    {document.pagePath ? (
+      <Link className="user-item-name" to={document.pagePath}>
+        {document.displayName}
+      </Link>
+    ) : (
+      <span className="user-item-name">{document.displayName}</span>
+    )}
+  </div>
+);
+registerComponent({ name: 'UserToken', component: UserToken });
+
 // Default
 const CardItemDefault = ({ value }) => <span>{value.toString()}</span>;
 registerComponent({ name: 'CardItemDefault', component: CardItemDefault });
@@ -162,7 +242,9 @@ const CardItemSwitcher = props => {
   // if typeName is not provided, default to typeof value
   // note: contents provides additional clues about the contents (image, video, etc.)
 
-  let { value, typeName, contents, Components, fieldName, collection } = props;
+  let { value, typeName, contents, Components, fieldName, collection, document } = props;
+
+  const fieldSchema = getFieldSchema(fieldName, collection);
 
   if (!typeName) {
     if (collection) {
@@ -172,7 +254,7 @@ const CardItemSwitcher = props => {
     }
   }
 
-  const itemProps = { value, Components };
+  const itemProps = { value, Components, document, fieldName, collection, fieldSchema };
 
   // no value; we return an empty string
   if (typeof value === 'undefined' || value === null) {
@@ -182,6 +264,32 @@ const CardItemSwitcher = props => {
   // JSX element
   if (React.isValidElement(value)) {
     return value;
+  }
+
+  // Relation
+  if (fieldSchema && fieldSchema.resolveAs && fieldSchema.resolveAs.relation) {
+    itemProps.relatedFieldName = fieldSchema.resolveAs.fieldName || fieldName;
+    itemProps.relatedDocument = document[itemProps.relatedFieldName];
+    itemProps.relatedCollection = getCollectionByTypeName(fieldSchema.resolveAs.type);
+
+    if (!itemProps.relatedDocument) {
+      return (
+        <span>
+          Missing data for sub-document <code>{value}</code> of type <code>{typeName}</code>
+        </span>
+      );
+    }
+
+    switch (fieldSchema.resolveAs.relation) {
+      case 'hasOne':
+        return <Components.CardItemRelationHasOne {...itemProps} />;
+
+      case 'hasMany':
+        return <Components.CardItemRelationHasMany {...itemProps} />;
+
+      default:
+        return <Components.CardItemDefault {...itemProps} />;
+    }
   }
 
   // Array
@@ -318,6 +426,7 @@ const Card = (
               collection={collection}
               label={getLabel(document[fieldName], fieldName, collection, intl)}
               Components={Components}
+              document={document}
             />
           ))}
         </tbody>
@@ -342,4 +451,8 @@ Card.contextTypes = {
   intl: intlShape,
 };
 
-registerComponent('Card', Card, withComponents);
+registerComponent({
+  name: 'Card',
+  component: Card,
+  hocs: [withComponents],
+});

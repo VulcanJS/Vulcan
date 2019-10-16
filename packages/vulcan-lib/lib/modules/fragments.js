@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import _reject from 'lodash/reject';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
@@ -82,7 +83,7 @@ Create default "dumb" gql fragment object for a given collection
 */
 export const getDefaultFragmentText = (collection, options = { onlyViewable: true }) => {
   const schema = collection.simpleSchema()._schema;
-  const fieldNames = _.reject(_.keys(schema), fieldName => {
+  const fieldNames = _reject(Object.keys(schema), fieldName => {
     /*
 
     Exclude a field from the default fragment if

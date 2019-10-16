@@ -1,5 +1,6 @@
 
 // import and re-export
+import './callbacks';
 export * from 'meteor/vulcan:lib';
 
 export * from './default_mutations.js';
@@ -8,7 +9,7 @@ export * from './default_resolvers.js';
 export * from './components.js';
 
 export { default as App } from './components/App.jsx';
-export { default as Datatable } from './components/Datatable';
+export { default as Datatable } from './components/Datatable/index.js';
 export { default as Dummy } from './components/Dummy.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as Error404 } from './components/Error404.jsx';

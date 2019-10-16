@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { debug } from './debug.js';
 import { Utils } from './utils';
+import merge from 'lodash/merge';
 
 /**
  * @summary Format callback hook names
@@ -214,4 +215,30 @@ export const runCallbacksAsync = function () {
     return _runCallbacksAsync();
   }
   return [];
+};
+
+
+export let globalCallbacks =  {
+  create: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  },
+  update: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  },
+  delete: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  }
+};
+
+export const addGlobalCallbacks = callbacks => {
+  globalCallbacks = merge(globalCallbacks, callbacks);
 };

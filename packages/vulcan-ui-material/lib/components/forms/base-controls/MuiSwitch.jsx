@@ -11,7 +11,9 @@ import MuiFormHelper from './MuiFormHelper';
 
 export const styles = theme => ({
   
-  inputRoot: {},
+  inputRoot: {
+    height: 50,
+  },
   
   inputFocused: {},
   
@@ -57,9 +59,12 @@ const MuiSwitch = createReactClass({
   },
   
   renderElement: function () {
+    const { classes } = this.props;
     const { disabled, value, label } = this.props.inputProperties;
+    
     return (
       <FormControlLabel
+        className={classes.inputRoot}
         control={
           <Switch
             ref={(c) => this.element = c}
