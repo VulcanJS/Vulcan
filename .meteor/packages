@@ -15,5 +15,6 @@ accounts-password@1.5.1
 
 vulcan:debug
 vulcan:backoffice
+vulcan:ui-bootstrap
 meteortesting:mocha
 apollo
