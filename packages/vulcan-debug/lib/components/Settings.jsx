@@ -2,25 +2,29 @@ import React from 'react';
 import { registerComponent, Components } from 'meteor/vulcan:lib';
 import Settings from '../modules/settings/collection.js';
 
-const SettingName = ({ document }) => 
-  <strong>{document.name}</strong>;
+const ObjectAsStr = ({ document, column: { name } }) => {
+  const value = document[name];
+  return typeof value === 'string' ? value : JSON.stringify(value);
+};
+const SettingName = ({ document }) => <strong>{document.name}</strong>;
 
-const SettingsDashboard = props => 
+const SettingsDashboard = props => (
   <div className="settings">
     <Components.Datatable
       showSearch={false}
       showEdit={false}
-      collection={Settings} 
+      collection={Settings}
       columns={[
-        { name: 'name', component: SettingName }, 
-        'value', 
-        'defaultValue', 
-        'isPublic', 
+        { name: 'name', component: SettingName },
+        { name: 'value', component: ObjectAsStr },
+        { name: 'defaultValue', component: ObjectAsStr },
+        'isPublic',
         'description',
-        'serverOnly'
+        'serverOnly',
       ]}
     />
-  </div>;
+  </div>
+);
 
 registerComponent('Settings', SettingsDashboard);
 

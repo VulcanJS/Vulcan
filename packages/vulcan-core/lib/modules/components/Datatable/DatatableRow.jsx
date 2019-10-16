@@ -1,7 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import _isFunction from 'lodash/isFunction';
-import _sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 
@@ -42,11 +41,10 @@ const DatatableRow = (props, { intl }) => {
     ...defaultModalProps,
     ...(_isFunction(modalProps) ? modalProps(document) : modalProps),
   };
-  const sortedColumns = _sortBy(columns, column => column.order);
 
   return (
     <Components.DatatableRowLayout className={`datatable-item ${row}`}>
-      {sortedColumns.map((column, index) => (
+      {columns.map((column, index) => (
         <Components.DatatableCell
           key={index}
           Components={Components}
@@ -57,7 +55,7 @@ const DatatableRow = (props, { intl }) => {
         />
       ))}
       {showEdit && (canEdit || canUpdate) ? ( // openCRUD backwards compatibility
-        <Components.DatatableCellLayout>
+        <Components.DatatableCellLayout className="datatable-edit">
           <Components.EditButton
             collection={collection}
             documentId={document._id}

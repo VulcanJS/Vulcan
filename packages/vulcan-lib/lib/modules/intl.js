@@ -31,7 +31,7 @@ export const getString = ({ id, values, defaultMessage, locale }) => {
     message = defaultMessage;
   }
 
-  if (values) {
+  if (values && typeof values === 'object') {
     Object.keys(values).forEach(key => {
       // note: see replaceAll definition in vulcan:lib/utils
       message = message.replaceAll(`{${key}}`, values[key]);

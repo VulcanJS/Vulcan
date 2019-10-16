@@ -4,6 +4,7 @@ import './site.js';
 
 import './connectors/mongo.js';
 
+export * from './debug.js';
 export * from './connectors.js';
 export * from './query.js';
 export * from '../modules/index.js';

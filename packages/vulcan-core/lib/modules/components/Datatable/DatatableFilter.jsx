@@ -8,16 +8,10 @@ import moment from 'moment';
 const getCount = columnFilters => {
   if (!columnFilters) {
     return 0;
-  } else if (Array.isArray(columnFilters)) {
-    return columnFilters.length;
-  } else if (columnFilters.after || columnFilters.before) {
-    if (columnFilters.after && columnFilters.before) {
-      return 2;
-    } else {
-      return 1;
-    }
-  } else if (columnFilters.gte || columnFilters.lte) {
-    if (columnFilters.gte && columnFilters.lte) {
+  } else if (Array.isArray(columnFilters._in)) {
+    return columnFilters._in.length;
+  } else if (columnFilters._gte || columnFilters._lte) {
+    if (columnFilters._gte && columnFilters._lte) {
       return 2;
     } else {
       return 1;
@@ -64,7 +58,7 @@ const DatatableFilter = props => {
           <FormattedMessage
             id="datatable.filter_column"
             values={{ label }}
-            defaultMessage={`Filter ${label}`}
+            defaultMessage={`Filter “${label}”`}
           />
         }
         size="small"
@@ -123,7 +117,7 @@ const DatatableFilterContents = props => {
 
   if (filterComponent) {
     const CustomFilter = filterComponent;
-    contents = <CustomFilter {...filterProps}/>;
+    contents = <CustomFilter {...filterProps} />;
   } else if (options) {
     contents = <Components.DatatableFilterCheckboxes {...filterProps} />;
   } else {
@@ -137,7 +131,14 @@ const DatatableFilterContents = props => {
         break;
 
       default:
-        contents = <p><FormattedMessage id="datatable.specify_option" defaultMessage="Please specify an options property on your schema field." /></p>;
+        contents = (
+          <p>
+            <FormattedMessage
+              id="datatable.specify_option"
+              defaultMessage="Please specify an options property on your schema field."
+            />
+          </p>
+        );
     }
   }
 
@@ -149,7 +150,7 @@ const DatatableFilterContents = props => {
         className="datatable_filter_clear"
         href="javascript:void(0)"
         onClick={() => {
-          setFilters([]);
+          setFilters(undefined);
         }}>
         <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
       </a>
@@ -169,29 +170,36 @@ registerComponent('DatatableFilterContents', DatatableFilterContents);
 
 /*
 
-Checkboxes
+Filter Types Components
+
+Note: the operators used here should match the ones handled server-side by
+the filtering API (_in, _gte, _lte, etc.)
 
 */
-const DatatableFilterCheckboxes = ({ field, options, filters = [], setFilters }) => {
-  let value = filters;
 
-  // all URL values are stored as strings, so convert them back to numbers if needed
-  if (Utils.getFieldType(field) === Number) {
-    value = filters.map(parseFloat);
-  }
+/*
 
-  return (
-    <Components.FormComponentCheckboxGroup
-      path="filter"
-      itemProperties={{ layout: 'inputOnly' }}
-      inputProperties={{ options }}
-      value={value}
-      updateCurrentValues={newValues => {
-        setFilters(newValues.filter);
-      }}
-    />
-  );
-};
+Checkboxes
+
+Operator: _in
+
+*/
+const checkboxOperator = '_in';
+const DatatableFilterCheckboxes = ({
+  options,
+  filters = { [checkboxOperator]: [] },
+  setFilters,
+}) => (
+  <Components.FormComponentCheckboxGroup
+    path="filter"
+    itemProperties={{ layout: 'inputOnly' }}
+    inputProperties={{ options }}
+    value={filters[checkboxOperator]}
+    updateCurrentValues={({ filter: newValues }) => {
+      setFilters({ [checkboxOperator]: newValues });
+    }}
+  />
+);
 
 registerComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
 
@@ -199,42 +207,44 @@ registerComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
 
 Dates
 
+Operators: _gte and _lte
+
 */
 const DatatableFilterDates = ({ filters, setFilters }) => (
   <div>
     <Components.FormComponentDate
-      path="after"
+      path="_gte"
       itemProperties={{
         label: <FormattedMessage id="datatable.after" defaultMessage="After" />,
         layout: 'horizontal',
       }}
       inputProperties={{}}
-      value={filters && moment(filters.after, 'YYYY-MM-DD')}
+      value={filters && moment(filters._gte, 'YYYY-MM-DD')}
       updateCurrentValues={newValues => {
-        if (!newValues.after || newValues.after === '') {
+        if (!newValues._gte || newValues._gte === '') {
           const newFilters = Object.assign({}, filters);
-          delete newFilters.after;
+          delete newFilters._gte;
           setFilters(newFilters);
         } else {
-          setFilters({ ...filters, after: newValues.after.format('YYYY-MM-DD') });
+          setFilters({ ...filters, _gte: newValues._gte.format('YYYY-MM-DD') });
         }
       }}
     />
     <Components.FormComponentDate
-      path="before"
+      path="_lte"
       itemProperties={{
         label: <FormattedMessage id="datatable.before" defaultMessage="Before" />,
         layout: 'horizontal',
       }}
       inputProperties={{}}
-      value={filters && moment(filters.before, 'YYYY-MM-DD')}
+      value={filters && moment(filters._lte, 'YYYY-MM-DD')}
       updateCurrentValues={newValues => {
-        if (!newValues.before || newValues.before === '') {
+        if (!newValues._lte || newValues._lte === '') {
           const newFilters = Object.assign({}, filters);
-          delete newFilters.before;
+          delete newFilters._lte;
           setFilters(newFilters);
         } else {
-          setFilters({ ...filters, before: newValues.before.format('YYYY-MM-DD') });
+          setFilters({ ...filters, _lte: newValues._lte.format('YYYY-MM-DD') });
         }
       }}
     />
@@ -247,11 +257,13 @@ registerComponent('DatatableFilterDates', DatatableFilterDates);
 
 Numbers
 
+Operators: _gte and _lte
+
 */
 const DatatableFilterNumbers = ({ filters, setFilters }) => (
   <div>
     <Components.FormComponentNumber
-      path="gte"
+      path="_gte"
       itemProperties={{
         label: <FormattedMessage id="datatable.greater_than" defaultMessage="Greater than" />,
         layout: 'horizontal',
@@ -261,17 +273,17 @@ const DatatableFilterNumbers = ({ filters, setFilters }) => (
           const value = event.target.value;
           if (!value || value === '') {
             const newFilters = Object.assign({}, filters);
-            delete newFilters.gte;
+            delete newFilters._gte;
             setFilters(newFilters);
           } else {
-            setFilters({ ...filters, gte: value });
+            setFilters({ ...filters, _gte: value });
           }
         },
-        value: filters && parseFloat(filters.gte),
+        value: filters && parseFloat(filters._gte),
       }}
     />
     <Components.FormComponentNumber
-      path="lte"
+      path="_lte"
       itemProperties={{
         label: <FormattedMessage id="datatable.lower_than" defaultMessage="Lower than" />,
         layout: 'horizontal',
@@ -281,13 +293,13 @@ const DatatableFilterNumbers = ({ filters, setFilters }) => (
           const value = event.target.value;
           if (!value || value === '') {
             const newFilters = Object.assign({}, filters);
-            delete newFilters.lte;
+            delete newFilters._lte;
             setFilters(newFilters);
           } else {
-            setFilters({ ...filters, lte: value });
+            setFilters({ ...filters, _lte: value });
           }
         },
-        value: filters && parseFloat(filters.lte),
+        value: filters && parseFloat(filters._lte),
       }}
     />
   </div>

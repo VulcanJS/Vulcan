@@ -14,7 +14,7 @@ import {
 } from '../modules/fragments.js';
 import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
-import { singleClientTemplate } from '../modules/graphql_templates';
+import { singleClientTemplate } from '../modules/graphql_templates/index.js';
 import { Utils } from './utils';
 import { GraphQLSchema } from '../modules/graphql';
 
@@ -93,10 +93,15 @@ Meteor.startup(() => {
   Collections.forEach(collection => {
     const typeName = collection.options.typeName;
 
-    collection.queryOne = async (documentIdOrSelector, { fragmentName, fragmentText, context }) => {
-      const selector = typeof documentIdOrSelector === 'string' ? { documentId: documentIdOrSelector } : documentIdOrSelector;
+    collection.queryOne = async (inputOrId, { fragmentName, fragmentText, context }) => {
+      let input = inputOrId;
+
+      if (typeof inputOrId === 'string') {
+        input = { selector: { documentId: inputOrId } };
+      }
+
       const query = buildQuery(collection, { fragmentName, fragmentText });
-      const result = await runQuery(query, { input: { selector } }, context);
+      const result = await runQuery(query, { input }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
     };
   });

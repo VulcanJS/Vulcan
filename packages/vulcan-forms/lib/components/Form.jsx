@@ -386,8 +386,9 @@ class SmartForm extends Component {
     // }
 
     // if options are a function, call it
+    const document = this.getDocument();
     if (typeof field.options === 'function') {
-      field.options = field.options.call(fieldSchema, this.props);
+      field.options = field.options.call(fieldSchema, { ...this.props, document });
     }
 
     // if this an intl'd field, use a special intlInput
@@ -401,7 +402,9 @@ class SmartForm extends Component {
     for (const prop in inputProperties) {
       const property = inputProperties[prop];
       field[prop] =
-        typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
+        typeof property === 'function'
+          ? property.call(fieldSchema, { ...this.props, document })
+          : property;
     }
 
     // add description as help prop
@@ -1015,6 +1018,7 @@ class SmartForm extends Component {
     group: omit(group, ['fields']),
     errors: this.state.errors,
     throwError: this.throwError,
+    document: this.getDocument(),
     currentValues: this.state.currentValues,
     updateCurrentValues: this.updateCurrentValues,
     deletedValues: this.state.deletedValues,

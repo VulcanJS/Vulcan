@@ -34,7 +34,7 @@ const baseStyles = theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
   header: {
     display: 'flex',
@@ -43,8 +43,13 @@ const baseStyles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  scroller: {
+    overflow: 'auto',
+  },
   searchWrapper: {},
-  addButtonWrapper: {},
+  addButtonWrapper: {
+    alignItems: 'center',
+  },
   addButton: {
     // Floating button won't work with multiple datatables, buttons are superposed
     // top: '9.5rem',
@@ -115,17 +120,15 @@ class Datatable extends PureComponent {
 
   render() {
     if (this.props.data) {
-      return (
-        <Components.DatatableContents
-          columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-          {...this.props}
-          results={this.props.data}
-          count={this.props.data.length}
-          totalCount={this.props.data.length}
-          showEdit={false}
-          showNew={false}
-        />
-      );
+      return <Components.DatatableContents
+        columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
+        results={this.props.data}
+        count={this.props.data.length}
+        totalCount={this.props.data.length}
+        showEdit={false}
+        showNew={false}
+        {...this.props}
+      />;
     } else {
       const { className, collection, options, showSearch, showNew, classes } = this.props;
 
@@ -179,14 +182,16 @@ class Datatable extends PureComponent {
             </div>
           )}
 
-          <DatatableWithMulti
-            {...this.props}
-            collection={collection}
-            terms={{ query: this.state.query, orderBy: orderBy }}
-            currentUser={this.props.currentUser}
-            toggleSort={this.toggleSort}
-            currentSort={this.state.currentSort}
-          />
+          <div className={classes.scroller}>
+            <DatatableWithMulti
+              {...this.props}
+              collection={collection}
+              terms={{ query: this.state.query, orderBy: orderBy }}
+              currentUser={this.props.currentUser}
+              toggleSort={this.toggleSort}
+              currentSort={this.state.currentSort}
+            />
+          </div>
         </div>
       );
     }
@@ -230,7 +235,7 @@ replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyle
 const DatatableTitle = ({ title }) => (
   <Toolbar>
     <Typography variant="h6" id="tableTitle">
-      title
+      {title}
     </Typography>
   </Toolbar>
 );
