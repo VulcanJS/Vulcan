@@ -243,5 +243,8 @@ export const withMulti = options => C => {
   return Wrapped;
 };
 
+export const useMulti2 = useMulti;
+export const withMulti2 = withMulti;
+
 // legacy
 export default withMulti;

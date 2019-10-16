@@ -36,8 +36,8 @@ import {
   fieldWhereInputTemplate,
   fieldOrderByInputTemplate,
 } from '../graphql_templates/index.js';
-import { getNewDefaultResolvers } from '../../server/new_default_resolvers';
-import { getNewDefaultMutations } from '../../server/new_default_mutations';
+import { getNewDefaultResolvers } from '../../server/default_resolvers2.js';
+import { getNewDefaultMutations } from '../../server/default_mutations2.js';
 import isEmpty from 'lodash/isEmpty';
 
 import { getSchemaFields } from './schemaFields';

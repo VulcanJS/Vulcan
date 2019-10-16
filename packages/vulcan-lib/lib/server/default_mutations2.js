@@ -17,25 +17,33 @@ const getUpdateMutationName = typeName => `update${typeName}`;
 const getDeleteMutationName = typeName => `delete${typeName}`;
 const getUpsertMutationName = typeName => `upsert${typeName}`;
 
+const operationChecks = {
+  create: 'canCreate',
+  update: 'canUpdate',
+  delete: 'canDelete',
+};
+
 /*
 
 Perform security check before calling mutators
 
 */
 export const performMutationCheck = options => {
-  const { user, document, collection, context, operationName } = options;
+  const { user, document, collection, context, typeName, operationName } = options;
   const { Users } = context;
   const documentId = document._id;
-  const permissionsCheck = get(collection, 'options.permissions.canCreate');
+  const permissionsCheck = get(collection, `options.permissions.${operationChecks[operationName]}`);
   let allowOperation = false;
+  const fullOperationName = `${typeName}:${operationName}`;
+  const data = { documentId, operationName: fullOperationName };
 
   // 1. if no permission has been defined, throw error
   if (!permissionsCheck) {
-    throwError({ id: 'app.no_permissions_defined', data: { documentId, operationName } });
+    throwError({ id: 'app.no_permissions_defined', data });
   }
   // 2. if no document is passed, throw error
   if (!document) {
-    throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
+    throwError({ id: 'app.document_not_found', data });
   }
 
   if (typeof permissionsCheck === 'function') {
@@ -46,7 +54,7 @@ export const performMutationCheck = options => {
 
   // 3. if permission check is defined but fails, disallow operation
   if (!allowOperation) {
-    throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
+    throwError({ id: 'app.operation_not_allowed', data });
   }
 };
 
@@ -74,7 +82,8 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
           document: data,
           collection,
           context,
-          operationName: `${typeName}.create`,
+          typeName,
+          operationName: 'create',
         });
 
         return await createMutator({
@@ -107,7 +116,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
           document,
           collection,
           context,
-          operationName: `${typeName}.update`,
+          operationName: 'update',
         });
 
         // call editMutator boilerplate function
@@ -166,7 +175,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
           document,
           collection,
           context,
-          operationName: `${typeName}.delete`,
+          operationName: 'delete',
         });
 
         return await deleteMutator({

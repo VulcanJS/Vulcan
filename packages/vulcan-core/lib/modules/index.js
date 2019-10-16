@@ -24,6 +24,7 @@ export { default as Welcome } from './components/Welcome.jsx';
 export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';
 export { withMulti, useMulti } from './containers/multi.js';
+export { withMulti2, useMulti2 } from './containers/multi2.js';
 export { withSingle, useSingle } from './containers/single.js';
 export { withCreate, useCreate } from './containers/create.js';
 export { withUpdate, useUpdate } from './containers/update.js';

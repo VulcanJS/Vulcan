@@ -105,6 +105,18 @@ export const getSchemaFields = (schema, typeName) => {
 
         const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
+        // unless addOriginalField option is disabled in one or more fields, also add original field to schema
+        const addOriginalField = resolveAsArray.every(resolveAs => resolveAs.addOriginalField !== false);
+        if (addOriginalField && fieldType) {
+          fields.mainType.push({
+            description: fieldDescription,
+            name: fieldName,
+            args: fieldArguments,
+            type: fieldType,
+            directive: fieldDirective,
+          });
+        }
+        
         resolveAsArray.forEach(resolveAs => {
           // get resolver name from resolveAs object, or else default to field name
           const resolverName = resolveAs.fieldName || fieldName;
@@ -150,17 +162,6 @@ export const getSchemaFields = (schema, typeName) => {
             },
           };
           resolvers.push(resolver);
-
-          // if addOriginalField option is enabled, also add original field to schema
-          if (resolveAs.addOriginalField && fieldType) {
-            fields.mainType.push({
-              description: fieldDescription,
-              name: fieldName,
-              args: fieldArguments,
-              type: fieldType,
-              directive: fieldDirective,
-            });
-          }
         });
       } else {
         // try to guess GraphQL type
