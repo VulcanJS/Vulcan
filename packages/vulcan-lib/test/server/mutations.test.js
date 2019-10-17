@@ -1,11 +1,12 @@
-import { getDefaultMutations } from '../../lib/modules/default_mutations';
+import { getDefaultMutations } from '../../lib/server/default_mutations';
 import SimpleSchema from 'simpl-schema';
+import Users from 'meteor/vulcan:users';
 
 import expect from 'expect';
 const test = it;
 
 
-describe('vulcan:core/default_mutations', function () {
+describe('vulcan:lib/default_mutations', function () {
 
     it('returns mutations', function () {
         const mutations = getDefaultMutations({
@@ -31,14 +32,14 @@ describe('vulcan:core/default_mutations', function () {
     describe('delete mutation', () => {
         const foo = { _id: 'foo' };
         const context = {
-            Users: {
+            Users,/*: {
                 options: {
                     collectionName: 'Users',
                     typeName: 'User'
                 },
                 simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } }),
                 restrictViewableFields: (currentUser, collection, doc) => doc
-            },
+            },*/
             Foos: {
                 findOne: () => foo,
                 remove: () => 1,

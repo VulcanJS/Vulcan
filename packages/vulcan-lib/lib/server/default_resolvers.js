@@ -6,7 +6,7 @@ Default list, single, and total resolvers
 
 import { Utils } from '../modules/utils.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
-import { Connectors  }from './connectors.js';
+import { Connectors } from './connectors.js';
 import { getTypeName, getCollectionName } from '../modules/collections.js';
 import { throwError } from './errors.js';
 import isEmpty from 'lodash/isEmpty';
