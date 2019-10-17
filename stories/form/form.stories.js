@@ -6,10 +6,10 @@ import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:forms';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 
-const vulcan_forms = storiesOf('Core/Forms/CoreComponents', module);
-vulcan_forms.addDecorator(withKnobs);
+const vulcanForms = storiesOf('Core/Forms/CoreComponents', module);
+vulcanForms.addDecorator(withKnobs);
 
-vulcan_forms
+vulcanForms
   .add('FormError - message', () => (
     <Components.FormError
       error={{
@@ -35,7 +35,7 @@ vulcan_forms
     />
   ));
 
-vulcan_forms
+vulcanForms
   .add('FormGroupHeader', () => {
     const label = text('Header label', 'myLabel');
     const collapsed = boolean('collapsed', false);
@@ -108,7 +108,7 @@ vulcan_forms
     );
   });
 
-vulcan_forms.add('FormNestedArrayLayout - nested item before/after components', () => (
+vulcanForms.add('FormNestedArrayLayout - nested item before/after components', () => (
   <Components.FormNestedArray
     value={[{ name: 'Jane' }, { name: 'DELETED' }, { name: 'John' }]}
     deletedValues={['peoples.1']}
@@ -133,3 +133,8 @@ vulcan_forms.add('FormNestedArrayLayout - nested item before/after components', 
     }}
   />
 ));
+
+vulcanForms.add('FormSubmit', () => {
+  const submitLabel = text('Submit Label', 'Submit Label');
+  return <Components.FormSubmit submitLabel={submitLabel} />;
+});
