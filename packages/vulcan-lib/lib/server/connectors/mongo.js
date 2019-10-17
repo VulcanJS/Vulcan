@@ -90,6 +90,9 @@ const filterFunction = (collection, input, context) => {
       );
     }
     const mongoOperator = conversionTable[operator];
+    if (!mongoOperator) {
+      throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
+    }
     const isIntl = schema[fieldName].intl;
     const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
     return { [mongoFieldName]: { [mongoOperator]: value } };
@@ -161,7 +164,13 @@ const filterFunction = (collection, input, context) => {
 
   // orderBy
   if (!isEmpty(orderBy)) {
-    options.sort = merge(options.sort, mapValues(orderBy, order => conversionTable[order]));
+    options.sort = merge(options.sort, mapValues(orderBy, order => {
+      const mongoOrder = conversionTable[order];
+      if (!order) {
+        throw new Error(`Operator ${order} is not valid. Possible operators: ${Object.keys(conversionTable)}`);
+      }
+      return mongoOrder;
+    }));
   }
 
   // search
@@ -188,7 +197,7 @@ const filterFunction = (collection, input, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-          collection.options.collectionName
+        collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }
