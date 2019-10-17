@@ -8,14 +8,15 @@ import collectionToGraphQL from '../../lib/server/graphql/collection';
 import { getSchemaFields, getGraphQLType } from '../../lib/server/graphql/schemaFields';
 import { getDefaultFragmentText } from '../../lib/modules/graphql/defaultFragment';
 import SimpleSchema from 'simpl-schema';
+import { createDummyCollection } from 'meteor/vulcan:test'
 const test = it;
 
-const makeDummyCollection = (schema) => ({
-  options: {
-    collectionName: 'Foos'
-  },
+const fooCollection = (schema) => createDummyCollection({
+  collectionName: 'Foos',
   typeName: 'Foo',
-  simpleSchema: () => new SimpleSchema(schema)
+  resolvers: null,
+  mutations: null,
+  schema
 });
 
 // allow to easily test regex on a graphql string
@@ -197,7 +198,7 @@ describe('vulcan:lib/graphql', function () {
   describe('collection to GraphQL type', () => {
     describe('basic', () => {
       test('generate a type for a simple collection', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           field: {
             type: String,
             canRead: ['admins']
@@ -211,11 +212,14 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { field: String }');
       });
       test('use provided graphQL type if any', () => {
-        const collection = makeDummyCollection({
-          field: {
-            type: String,
-            typeName: 'StringEnum',
-            canRead: ['admins']
+        const collection = createDummyCollection({
+          collectionName: 'Foos',
+          schema: {
+            field: {
+              type: String,
+              typeName: 'StringEnum',
+              canRead: ['admins']
+            }
           }
         });
         const res = collectionToGraphQL(collection);
@@ -226,7 +230,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { field: StringEnum }');
       });
       test('generate type for a nested field', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             type: new SimpleSchema({
               subField: {
@@ -243,7 +247,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type FooNestedField { subField: String }');
       });
       test('generate graphQL type for array of nested objects', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           arrayField: {
             type: Array,
             canRead: ['admins']
@@ -268,7 +272,7 @@ describe('vulcan:lib/graphql', function () {
 
     describe('nesting with referenced field', () => {
       test('use referenced graphQL type if provided for nested object', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             type: Object,
             blackbox: true,
@@ -284,7 +288,7 @@ describe('vulcan:lib/graphql', function () {
 
       // TODO: does this test case make any sense?
       test('do NOT generate graphQL type if an existing graphQL type is referenced', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             type: new SimpleSchema({
               subField: {
@@ -302,7 +306,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).not.toMatch('FooNestedField');
       });
       test('do NOT generate graphQL type for array of nested objects if an existing graphQL type is referenced', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           arrayField: {
             type: Array,
             canRead: ['admins']
@@ -328,7 +332,7 @@ describe('vulcan:lib/graphql', function () {
 
     describe('resolveAs', () => {
       test('generate a type for a field with resolveAs', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           field: {
             type: String,
             canRead: ['admins'],
@@ -350,7 +354,7 @@ describe('vulcan:lib/graphql', function () {
       });
       test('generate a type for a field with addOriginalField=true', () => {
 
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           field: {
             type: String,
             optional: true,
@@ -378,7 +382,7 @@ describe('vulcan:lib/graphql', function () {
     generating enums from allowed values automatically => bad idea, could be a manual helper instead
     describe('enums', () => {
       test('don\'t generate enum type when some values are not allowed', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           withAllowedField: {
             type: String,
             canRead: ['admins'],
@@ -395,7 +399,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).not.toMatch('enum FooWithAllowedFieldEnum { français bar }');
       });
       test('fail when allowedValues are not string', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           withAllowedField: {
             type: String,
             canRead: ['admins'],
@@ -405,7 +409,7 @@ describe('vulcan:lib/graphql', function () {
         expect(() => collectionToGraphQL(collection)).toThrow();
       });
       test('generate enum type when allowedValues is defined and field is a string', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           withAllowedField: {
             type: String,
             canRead: ['admins'],
@@ -422,7 +426,7 @@ describe('vulcan:lib/graphql', function () {
       });
       test('generate enum type for nested objects', () => {
         test('generate enum type when allowedValues is defined and field is a string', () => {
-          const collection = makeDummyCollection({
+          const collection = fooCollection({
             nestedField: {
               type: new SimpleSchema({
                 withAllowedField: {
@@ -446,7 +450,7 @@ describe('vulcan:lib/graphql', function () {
       });
  
       test('2 level of nesting', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           entrepreneurLifeCycleHistory: {
             type: Array,
             optional: true,
@@ -500,7 +504,7 @@ describe('vulcan:lib/graphql', function () {
 
     describe('mutation inputs', () => {
       test('generate creation input', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           field: {
             type: String,
             canRead: ['admins'],
@@ -515,7 +519,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooDataInput { field: String }');
       });
       test('generate inputs for nested objects', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             type: new SimpleSchema({
               someField: {
@@ -538,7 +542,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooNestedFieldDataInput { someField: String }');
       });
       test('generate inputs for array of nested objects', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           arrayField: {
             type: Array,
             canRead: ['admins'],
@@ -567,7 +571,7 @@ describe('vulcan:lib/graphql', function () {
       });
 
       test('do NOT generate new inputs for nested objects if a type is provided', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             type: new SimpleSchema({
               someField: {
@@ -590,7 +594,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).not.toMatch('CreateFooNestedFieldDataInput');
       });
       test('do NOT generate new inputs for array of objects if typeName is provided', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           arrayField: {
             type: Array,
             canRead: ['admins'],
@@ -619,7 +623,7 @@ describe('vulcan:lib/graphql', function () {
       });
 
       test('ignore resolveAs', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             canRead: ['admins'],
             canCreate: ['admins'],
@@ -645,7 +649,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).not.toMatch('input CreateFooNestedFieldDataInput');
       });
       test('ignore resolveAs with addOriginalField when generating nested create input', () => {
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           nestedField: {
             canRead: ['admins'],
             canCreate: ['admins'],
@@ -677,7 +681,7 @@ describe('vulcan:lib/graphql', function () {
 
       test('do not generate generic input type for direct nested arrays or objects (only appliable to referenced types)', () => {
         // TODO: test is over complex because of a previous misunderstanding, can be simplified
-        const collection = makeDummyCollection({
+        const collection = fooCollection({
           arrayField: {
             type: Array,
             optional: true,
@@ -713,7 +717,7 @@ describe('vulcan:lib/graphql', function () {
 
   describe('default fragment generation', () => {
     test('generate default fragment for basic collection', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         foo: {
           type: String,
           canRead: ['guests']
@@ -729,7 +733,7 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo bar }');
     });
     test('generate default fragment with nested object', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         foo: {
           type: String,
           canRead: ['guests']
@@ -749,7 +753,7 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo nestedField { bar } }');
     });
     test('generate default fragment with blackbox JSON object (no nesting)', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         foo: {
           type: String,
           canRead: ['guests']
@@ -764,7 +768,7 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo object }');
     });
     test('generate default fragment with nested array of objects', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         arrayField: {
           type: Array,
           canRead: ['admins']
@@ -785,7 +789,7 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField { subField } }');
     });
     test('generate default fragment with array of native values', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         arrayField: {
           type: Array,
           canRead: ['admins']
@@ -803,7 +807,7 @@ describe('vulcan:lib/graphql', function () {
     });
 
     test('add field with resolveAs only if addOriginalField is true', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         // ignored in default fragments
         object: {
           type: Object,
@@ -831,7 +835,7 @@ describe('vulcan:lib/graphql', function () {
 
     });
     test('ignore referenced schemas', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         field: {
           type: String,
           canRead: ['admins']
@@ -848,7 +852,7 @@ describe('vulcan:lib/graphql', function () {
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
     });
     test('ignore referenced schemas in array child', () => {
-      const collection = makeDummyCollection({
+      const collection = fooCollection({
         field: {
           type: String,
           canRead: ['admins']
