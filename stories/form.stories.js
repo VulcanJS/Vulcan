@@ -9,41 +9,6 @@ import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 const vulcan_forms = storiesOf('Core/Forms/vulcan-forms', module);
 vulcan_forms.addDecorator(withKnobs);
 
-const options = [
-  {
-    value: 'Afghan',
-    label: 'Afghan',
-  },
-  {
-    value: 'Albanais',
-    label: 'Albanais',
-  },
-  {
-    value: 'Algérien',
-    label: 'Algérien',
-  },
-  {
-    value: 'Allemand',
-    label: 'Allemand',
-  },
-  {
-    value: 'Belge',
-    label: 'Belge',
-  },
-  {
-    value: 'Beninois',
-    label: 'Beninois',
-  },
-  {
-    value: 'Bosniaque',
-    label: 'Bosniaque',
-  },
-  {
-    value: 'Botswanais',
-    label: 'Botswanais',
-  },
-];
-
 vulcan_forms
   .add('FormError - message', () => (
     <Components.FormError
@@ -93,22 +58,52 @@ vulcan_forms
         afterComponent: props => <div>AFTER</div>,
       }}
     />
-  ))
+  ));
+
+vulcan_forms
+  .add('FormGroupHeader', () => {
+    const label = text('Header label', 'myLabel');
+    const collapsed = boolean('collapsed', false);
+    const hidden = boolean('hidden', false);
+    const hasErrors = boolean('hasErrors', false);
+    const textInside = text('Text inside', 'My text inside');
+    const groupName = text('Group name', 'admin');
+    const collapsible = boolean('collapsible', true);
+    const group = { name: [groupName], collapsible: collapsible };
+    return (
+      <div>
+        <Components.FormGroupHeader label={label} group={group} />
+        <Components.FormGroupLayout
+          label="labelInner"
+          anchorName="anchorNameInner"
+          collapsed={collapsed}
+          hidden={hidden}
+          hasErrors={hasErrors}
+          group={group}>
+          {textInside}
+        </Components.FormGroupLayout>
+      </div>
+    );
+  })
   .add('FormGroupLine', () => {
     const label = text('Header label', 'myLabel');
     const collapsed = boolean('collapsed', false);
     const hidden = boolean('hidden', false);
     const hasErrors = boolean('hasErrors', false);
     const textInside = text('Text inside', 'My text inside');
+    const groupName = text('Group name', 'admin');
+    const collapsible = boolean('collapsible', true);
+    const group = { name: [groupName], collapsible: collapsible };
     return (
       <div>
-        <Components.FormGroupHeaderLine label={label} />
+        <Components.FormGroupHeaderLine label={label} group={group} />
         <Components.FormGroupLayoutLine
           label="labelInner"
           anchorName="anchorNameInner"
           collapsed={collapsed}
           hidden={hidden}
-          hasErrors={hasErrors}>
+          hasErrors={hasErrors}
+          group={group}>
           {textInside}
         </Components.FormGroupLayoutLine>
       </div>
@@ -119,6 +114,9 @@ vulcan_forms
     const hidden = boolean('hidden', false);
     const hasErrors = boolean('hasErrors', false);
     const textInside = text('Text inside', 'My text inside');
+    const groupName = text('Group name', 'admin');
+    const collapsible = boolean('collapsible', true);
+    const group = { name: [groupName], collapsible: collapsible };
     return (
       <div>
         <Components.FormGroupHeaderNone />
@@ -127,12 +125,50 @@ vulcan_forms
           anchorName="anchorNameInner"
           collapsed={collapsed}
           hidden={hidden}
-          hasErrors={hasErrors}>
+          hasErrors={hasErrors}
+          group={group}>
           {textInside}
         </Components.FormGroupLayoutNone>
       </div>
     );
-  })
+  });
+
+const options = [
+  {
+    value: 'Afghan',
+    label: 'Afghan',
+  },
+  {
+    value: 'Albanais',
+    label: 'Albanais',
+  },
+  {
+    value: 'Algérien',
+    label: 'Algérien',
+  },
+  {
+    value: 'Allemand',
+    label: 'Allemand',
+  },
+  {
+    value: 'Belge',
+    label: 'Belge',
+  },
+  {
+    value: 'Beninois',
+    label: 'Beninois',
+  },
+  {
+    value: 'Bosniaque',
+    label: 'Bosniaque',
+  },
+  {
+    value: 'Botswanais',
+    label: 'Botswanais',
+  },
+];
+
+vulcan_forms
   .add('Form base-controls MuiSuggest', () => <Components.MuiSuggest options={options} />)
   .add('Form base-controls MuiRequiredIndicator', () => {
     const optional = boolean('optional', false);
