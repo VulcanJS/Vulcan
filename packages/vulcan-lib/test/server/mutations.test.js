@@ -69,8 +69,8 @@ describe('vulcan:lib/default_mutations', function () {
             const validSlugSelector = { slug: 'foobar' };
 
             // const { mutation } = deleteMutation; // won't work because "this" must equal deleteMutation to access "check"
-            expect(deleteMutation.mutation(null, { selector: emptySelector }, context)).rejects;
-            expect(deleteMutation.mutation(null, { selector: nullSelector }, context)).rejects;
+            await expect(deleteMutation.mutation(null, { selector: emptySelector }, context)).rejects.toThrow();
+            await expect(deleteMutation.mutation(null, { selector: nullSelector }, context)).rejects.toThrow();
 
             await expect(deleteMutation.mutation(null, { selector: validIdSelector }, context)).resolves.toEqual({ data: foo });
             await expect(deleteMutation.mutation(null, { selector: validDocIdSelector }, context)).resolves.toEqual({ data: foo });
