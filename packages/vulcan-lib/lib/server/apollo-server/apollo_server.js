@@ -165,5 +165,8 @@ export const onStart = () => {
     setupToolsMiddlewares(config);
   }
   // ssr
-  enableSSR({ computeContext: context });
+  const disableSSR = getSetting('apolloSsr.disable', false);
+  if (!disableSSR) {
+    enableSSR({ computeContext: context });
+  }
 };
