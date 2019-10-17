@@ -41,18 +41,15 @@ const baseStyles = theme => ({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   scroller: {
     overflow: 'auto',
   },
-  searchWrapper: {
-  },
+  searchWrapper: {},
   addButtonWrapper: {
     alignItems: 'center',
   },
-  searchWrapper: {},
-  addButtonWrapper: {},
   addButton: {
     // Floating button won't work with multiple datatables, buttons are superposed
     // top: '9.5rem',
@@ -123,17 +120,15 @@ class Datatable extends PureComponent {
 
   render() {
     if (this.props.data) {
-      return (
-        <Components.DatatableContents
-          columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-          {...this.props}
-          results={this.props.data}
-          count={this.props.data.length}
-          totalCount={this.props.data.length}
-          showEdit={false}
-          showNew={false}
-        />
-      );
+      return <Components.DatatableContents
+        columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
+        results={this.props.data}
+        count={this.props.data.length}
+        totalCount={this.props.data.length}
+        showEdit={false}
+        showNew={false}
+        {...this.props}
+      />;
     } else {
       const { className, collection, options, showSearch, showNew, classes } = this.props;
 
@@ -185,7 +180,7 @@ class Datatable extends PureComponent {
                 </div>
               )}
             </div>
-          }
+          )}
 
           <div className={classes.scroller}>
             <DatatableWithMulti
@@ -240,7 +235,7 @@ replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyle
 const DatatableTitle = ({ title }) => (
   <Toolbar>
     <Typography variant="h6" id="tableTitle">
-      title
+      {title}
     </Typography>
   </Toolbar>
 );
