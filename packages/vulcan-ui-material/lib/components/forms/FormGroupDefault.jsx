@@ -75,7 +75,7 @@ const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) =
       <Typography
         className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)}
         variant="subtitle1"
-        onClick={this.toggle}
+        onClick={toggle}
       >
         
         <div className={classes.label}>
