@@ -368,7 +368,7 @@ describe('vulcan:lib/graphql', function () {
         const res = collectionToGraphQL(collection);
         expect(res.graphQLSchema).toBeDefined();
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-        expect(normalizedSchema).toMatch('type Foo { resolvedField: Bar field: String }');
+        expect(normalizedSchema).toMatch('type Foo { field: String resolvedField: Bar }');
       });
 
     });
