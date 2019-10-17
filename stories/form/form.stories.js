@@ -6,7 +6,7 @@ import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:forms';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 
-const vulcan_forms = storiesOf('Core/Forms/vulcan-forms', module);
+const vulcan_forms = storiesOf('Core/Forms/CoreComponents', module);
 vulcan_forms.addDecorator(withKnobs);
 
 vulcan_forms
@@ -31,31 +31,6 @@ vulcan_forms
         properties: {
           name: 'address.street',
         },
-      }}
-    />
-  ))
-  .add('FormNestedArrayLayout - nested item before/after components', () => (
-    <Components.FormNestedArray
-      value={[{ name: 'Jane' }, { name: 'DELETED' }, { name: 'John' }]}
-      deletedValues={['peoples.1']}
-      path="peoples"
-      formComponents={{
-        ...Components,
-        FormNestedItem: () => (
-          <div>
-            <input />
-          </div>
-        ),
-      }}
-      errors={[]}
-      updateCurrentValues={action('updateCurrentValues')}
-      arrayField={{
-        beforeComponent: props => (
-          <div>
-            BEFORE {props.itemIndex} {props.visibleItemIndex}
-          </div>
-        ),
-        afterComponent: props => <div>AFTER</div>,
       }}
     />
   ));
@@ -133,44 +108,28 @@ vulcan_forms
     );
   });
 
-const options = [
-  {
-    value: 'Afghan',
-    label: 'Afghan',
-  },
-  {
-    value: 'Albanais',
-    label: 'Albanais',
-  },
-  {
-    value: 'Algérien',
-    label: 'Algérien',
-  },
-  {
-    value: 'Allemand',
-    label: 'Allemand',
-  },
-  {
-    value: 'Belge',
-    label: 'Belge',
-  },
-  {
-    value: 'Beninois',
-    label: 'Beninois',
-  },
-  {
-    value: 'Bosniaque',
-    label: 'Bosniaque',
-  },
-  {
-    value: 'Botswanais',
-    label: 'Botswanais',
-  },
-];
-
-vulcan_forms
-  .add('Form base-controls MuiSuggest', () => <Components.MuiSuggest options={options} />)
-  .add('Form base-controls MuiRequiredIndicator', () => {
-    const optional = boolean('optional', false);
-    return <Components.RequiredIndicator optional={optional} />;
-  });
+vulcan_forms.add('FormNestedArrayLayout - nested item before/after components', () => (
+  <Components.FormNestedArray
+    value={[{ name: 'Jane' }, { name: 'DELETED' }, { name: 'John' }]}
+    deletedValues={['peoples.1']}
+    path="peoples"
+    formComponents={{
+      ...Components,
+      FormNestedItem: () => (
+        <div>
+          <input />
+        </div>
+      ),
+    }}
+    errors={[]}
+    updateCurrentValues={action('updateCurrentValues')}
+    arrayField={{
+      beforeComponent: props => (
+        <div>
+          BEFORE {props.itemIndex} {props.visibleItemIndex}
+        </div>
+      ),
+      afterComponent: props => <div>AFTER</div>,
+    }}
+  />
+));
