@@ -247,6 +247,9 @@ export const createMutator = async ({
   // OpenCRUD backwards compatibility
   document = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, document, currentUser);
 
+  // update document object in properties object
+  properties.document = document;
+  
   /*
 
   Async
