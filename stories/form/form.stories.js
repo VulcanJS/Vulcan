@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
@@ -8,6 +8,26 @@ import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 
 const vulcanForms = storiesOf('Core/Forms/CoreComponents', module);
 vulcanForms.addDecorator(withKnobs);
+
+vulcanForms.add('FormComponentInner with Date component', () => {
+  const name = text('Name', 'myForm');
+  const beforeComponent = text('beforeComponent', 'beforeComponent');
+  const afterComponent = text('afterComponent', 'afterComponent');
+  const help = text('help', 'help');
+  const showCharsRemaining = boolean('showCharsRemaining', false);
+  return (
+    <Components.FormComponentInner
+      name={name}
+      errors={[]}
+      onChange={action('call onChange function')}
+      showCharsRemaining={showCharsRemaining}
+      formInput={Components.FormComponentDate}
+      beforeComponent={<div>{beforeComponent}</div>}
+      afterComponent={<div>{afterComponent}</div>}
+      help={<div>{help}</div>}
+    />
+  );
+});
 
 vulcanForms
   .add('FormError - message', () => (
