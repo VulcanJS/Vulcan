@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { registerComponent, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:lib';
 import { withApollo } from 'react-apollo';
 
@@ -18,11 +19,20 @@ class RouterHook extends PureComponent {
     // note: this item is not used in this specific callback: router.onUpdate
     runCallbacks('router.onUpdate', {}, currentRoute, client.store, client);
 
-    runCallbacksAsync('router.onUpdate.async', props, nextProps);
+    runCallbacksAsync('router.onupdate.async', props, nextProps);
   };
 
   render() {
     return null;
   }
 }
+
+RouterHook.propTypes = {
+  currentRoute: PropTypes.object,
+  client: PropTypes.object,
+};
+
+RouterHook.displayName = 'RouterHook';
+
 registerComponent('RouterHook', RouterHook, withApollo);
+export default RouterHook;

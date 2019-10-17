@@ -5,25 +5,21 @@ import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
 import { Utils, getSetting, registerSetting, runQuery, Strings, getString } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 import { Email } from 'meteor/email';
+import get from 'lodash/get';
 
 /*
 
-Get intl string. Usage: {{__ "posts.create"}}
+Get intl string, accepts a second optional values argument. Usage: {{__ "posts.create"}} or {{__ "posts.create" postValues}}
 
 */
-Handlebars.registerHelper('__', function(id, context) {
-  const s = getString({ id, locale: context.data.root.locale });
-  return new Handlebars.SafeString(s);
-});
-
-/*
-
-Get intl string, accepts a second optional values argument. Usage: {{___ "posts.create"}} or {{___ "posts.create" postValues}}
-TODO: Can we use the "__" helper for both use cases?
-
-*/
-Handlebars.registerHelper('___', function(id, values, context) {
-  const s = getString({ id, values, locale: context.data.root.locale });
+Handlebars.registerHelper('__', function(id, values, context) {
+  if (typeof context === 'undefined') {
+    // if context is undefined, then we only have two arguments and context
+    // should be the second one; and values is undefined
+    context = values;
+    values = undefined;
+  }
+  const s = getString({ id, values, locale: get(context, 'data.root.locale') });
   return new Handlebars.SafeString(s);
 });
 
@@ -94,16 +90,16 @@ VulcanEmail.generateTextVersion = html => {
   });
 };
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments) => {
+VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments, from) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
   if (typeof to === 'object') {
     // eslint-disable-next-line no-redeclare
-    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers, attachments } = to;
+    var { to, cc, bcc, replyTo, subject, html, text, throwErrors, headers, attachments, from } = to;
   }
 
-  const from = getSetting('defaultEmail', 'noreply@example.com');
+  const _from = from || getSetting('defaultEmail', 'noreply@example.com');
   const siteName = getSetting('title', 'Vulcan');
   subject = subject || '[' + siteName + ']';
 
@@ -112,8 +108,14 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
     text = VulcanEmail.generateTextVersion(html);
   }
 
+  // in dev or staging environments, add suffix to email subjects to differentiate them.
+  const environment = getSetting('environment');
+  if (['development', 'staging'].includes(environment)) {
+    subject = `${subject} [${environment}]`;
+  }
+
   const email = {
-    from: from,
+    from: _from,
     to,
     cc,
     bcc,
@@ -128,12 +130,13 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
   const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false);
 
   console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
-  console.log('from: ' + from); // eslint-disable-line
+  console.log('from: ' + _from); // eslint-disable-line
   console.log('to: ' + to); // eslint-disable-line
-  console.log('cc: ' + cc); // eslint-disable-line
-  console.log('bcc: ' + bcc); // eslint-disable-line
-  console.log('replyTo: ' + replyTo); // eslint-disable-line
-  console.log('headers: ' + JSON.stringify(headers)); // eslint-disable-line
+  console.log('subject: ' + subject); // eslint-disable-line
+  // console.log('cc: ' + cc); // eslint-disable-line
+  // console.log('bcc: ' + bcc); // eslint-disable-line
+  // console.log('replyTo: ' + replyTo); // eslint-disable-line
+  // console.log('headers: ' + JSON.stringify(headers)); // eslint-disable-line
 
   if (shouldSendEmail) {
     try {
@@ -161,14 +164,25 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   data.__ = Strings[locale];
   data.locale = locale;
 
-  const html = VulcanEmail.buildTemplate(VulcanEmail.getTemplate(email.template)(data), data, locale);
-
-  return { data, subject, html };
+  try {
+    const htmlContents = VulcanEmail.getTemplate(email.template)(data);
+    const html = VulcanEmail.buildTemplate(htmlContents, data, locale);
+    return { data, subject, html };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+  
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments }) => {
-  const email = await VulcanEmail.build({ to, emailName, variables, locale });
-  return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments });
+VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, from }) => {
+  try {
+    const email = await VulcanEmail.build({ to, emailName, variables, locale });
+    return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
 };
 
 VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));

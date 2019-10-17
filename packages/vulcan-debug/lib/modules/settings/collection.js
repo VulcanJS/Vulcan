@@ -12,6 +12,8 @@ const Settings = createCollection({
   
   resolvers,
 
+  mutations: null,
+
 });
 
 

@@ -12,7 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
-
+import Users from 'meteor/vulcan:users';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection.simpleSchema()._schema;
@@ -169,7 +169,7 @@ const styles = theme => ({
 const Card = ({ className, collection, document, currentUser, fields, classes }, { intl }) => {
   
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canUpdate = currentUser && collection.options.mutations.update.check(currentUser, document);
+  const canUpdate = currentUser && collection.options.mutations.update.check(currentUser, document, { Users });
   
   return (
     <div className={classNames(classes.root, 'datacard', `datacard-${collection._name}`, className)}>

@@ -1,544 +1,456 @@
-/*
+// /*
 
-Default mutations
+// Default mutations
 
-*/
+// */
 
-import {
-  registerCallback,
-  createMutator,
-  updateMutator,
-  deleteMutator,
-  Utils,
-  Connectors,
-  getTypeName,
-  getCollectionName,
-  belongsToSet,
-  addToSet,
-  reorderSet,
-  isInSet,
-  removeFromSet,
-  updateInSet,
-  registerWatchedMutation,
-  Collections,
-} from 'meteor/vulcan:lib';
-import Users from 'meteor/vulcan:users';
-import isEmpty from 'lodash/isEmpty';
+// import {
+//   registerCallback,
+//   createMutator,
+//   updateMutator,
+//   deleteMutator,
+//   Utils,
+//   Connectors,
+//   getTypeName,
+//   getCollectionName,
+//   getCollection,
+// } from 'meteor/vulcan:lib';
+// import Users from 'meteor/vulcan:users';
+// import isEmpty from 'lodash/isEmpty';
+// import get from 'lodash/get';
 
-const defaultOptions = { create: true, update: true, upsert: true, delete: true };
+// const defaultOptions = { create: true, update: true, upsert: true, delete: true };
 
-/**
- * Safe getter
- * Must returns null if the document is absent (eg in case of validation failure)
- * @param {*} mutation 
- * @param {*} mutationName 
- */
-const getDocumentFromMutation = (mutation, mutationName) => {
-  const mutationData = (mutation.result.data[mutationName] || {});
-  const document = mutationData.data;
-  return document;
-};
+// const getCreateMutationName = typeName => `create${typeName}`;
+// const getUpdateMutationName = typeName => `update${typeName}`;
+// const getDeleteMutationName = typeName => `delete${typeName}`;
+// const getUpsertMutationName = typeName => `upsert${typeName}`;
+// //const getMultiQueryName = (typeName) => `multi${typeName}Query`;
 
-const getCreateMutationName = (typeName) => `create${typeName}`;
-const getUpdateMutationName = (typeName) => `update${typeName}`;
-const getDeleteMutationName = (typeName) => `delete${typeName}`;
-const getUpsertMutationName = (typeName) => `upsert${typeName}`;
-const getMultiResolverName = (typeName) => Utils.camelCaseify(Utils.pluralize(typeName));
-const getMultiQueryName = (typeName) => `multi${typeName}Query`;
+// export function getDefaultMutations(options) {
+//   let typeName, collectionName, mutationOptions;
 
-/*
+//   if (typeof arguments[0] === 'object') {
+//     // new single-argument API
+//     typeName = arguments[0].typeName;
+//     collectionName = arguments[0].collectionName || getCollectionName(typeName);
+//     mutationOptions = { ...defaultOptions, ...arguments[0].options };
+//   } else {
+//     // OpenCRUD backwards compatibility
+//     collectionName = arguments[0];
+//     typeName = getTypeName(collectionName);
+//     mutationOptions = { ...defaultOptions, ...arguments[1] };
+//   }
 
-Handle post-mutation updates of the client cache
-TODO: this is a client only function
-it should be called by a callback on collection create?
-*/
-export const registerWatchedMutations = (mutations, typeName) => {
-  if (Meteor.isClient) {
-    const multiQueryName = getMultiQueryName(typeName);
-    const multiResolverName = getMultiResolverName(typeName);
-    // create
-    if (mutations.create) {
-      const mutationName = mutations.create.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to add
-        if (!document) return results;
+//   // register callbacks for documentation purposes
+//   registerCollectionCallbacks(typeName, mutationOptions);
 
-        if (belongsToSet(document, selector)) {
-          if (!isInSet(results[multiResolverName], document)) {
-            // make sure document hasn't been already added as this may be called several times
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(results[multiResolverName], options.sort);
-        }
+//   const mutations = {};
 
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
+//   if (mutationOptions.create) {
+//     // mutation for inserting a new document
 
-        // console.log('// create');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(collection);
-        // console.log(parameters);
-        // console.log(results);
+//     const mutationName = getCreateMutationName(typeName);
 
-        return results;
-      });
-    }
-    //update
-    if (mutations.update) {
-      const mutationName = mutations.update.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        // get mongo selector and options objects based on current terms
-        const terms = query.variables.input.terms;
-        const collection = Collections.find(c => c.typeName === typeName);
-        const parameters = collection.getParameters(terms /* apolloClient */);
-        const { selector, options } = parameters;
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to update
-        if (!document) return results;
+//     const createMutation = {
+//       description: `Mutation for creating new ${typeName} documents`,
+//       name: mutationName,
 
-        if (belongsToSet(document, selector)) {
-          // edited document belongs to the list
-          if (!isInSet(results[multiResolverName], document)) {
-            // if document wasn't already in list, add it
-            results[multiResolverName] = addToSet(results[multiResolverName], document);
-          } else {
-            // if document was already in the list, update it
-            results[multiResolverName] = updateInSet(results[multiResolverName], document);
-          }
-          results[multiResolverName] = reorderSet(
-            results[multiResolverName],
-            options.sort,
-            selector
-          );
-        } else {
-          // if edited doesn't belong to current list anymore (based on view selector), remove it
-          results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        }
+//       // check function called on a user to see if they can perform the operation
+//       check(user, document) {
 
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
+//         // new API
+//         const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canCreate');
+//         if (typeof permissionsCheck === 'function') {
+//           return permissionsCheck(user, document);
+//         } else if (Array.isArray(permissionsCheck)) {
+//           return Users.isMemberOf(user, permissionsCheck, document);
+//         }
 
-        // console.log('// update');
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
+//         // OpenCRUD backwards compatibility
+//         const check = mutationOptions.createCheck || mutationOptions.newCheck;
+//         if (check) {
+//           return check(user, document);
+//         }
 
-        return results;
-      });
-    }
-    //delete
-    if (mutations.delete) {
-      const mutationName = mutations.delete.name;
-      registerWatchedMutation(mutationName, multiQueryName, ({ mutation, query }) => {
-        let results = query.result;
-        const document = getDocumentFromMutation(mutation, mutationName);
-        // nothing to delete
-        if (!document) return results;
-        results[multiResolverName] = removeFromSet(results[multiResolverName], document);
-        results[multiResolverName].__typename = `Multi${typeName}Output`;
-        // console.log('// delete')
-        // console.log(mutation);
-        // console.log(query);
-        // console.log(parameters);
-        // console.log(results);
-        return results;
-      });
-    }
-  }
-};
+//         // check if they can perform "foo.new" operation (e.g. "movie.new")
+//         // OpenCRUD backwards compatibility
+//         return Users.canDo(user, [
+//           `${typeName.toLowerCase()}.create`,
+//           `${collectionName.toLowerCase()}.new`,
+//         ]);
+//       },
 
+//       async mutation(root, { data }, context) {
+//         const collection = context[collectionName];
 
-export function getDefaultMutations(options) {
-  let typeName, collectionName, mutationOptions;
+//         // check if current user can pass check function; else throw error
+//         Utils.performCheck(
+//           this.check,
+//           context.currentUser,
+//           data,
+//           '',
+//           `${typeName}.create`,
+//           collectionName
+//         );
 
-  if (typeof arguments[0] === 'object') {
-    // new single-argument API
-    typeName = arguments[0].typeName;
-    collectionName = arguments[0].collectionName || getCollectionName(typeName);
-    mutationOptions = { ...defaultOptions, ...arguments[0].options };
-  } else {
-    // OpenCRUD backwards compatibility
-    collectionName = arguments[0];
-    typeName = getTypeName(collectionName);
-    mutationOptions = { ...defaultOptions, ...arguments[1] };
-  }
+//         // pass document to boilerplate newMutator function
+//         return await createMutator({
+//           collection,
+//           data,
+//           currentUser: context.currentUser,
+//           validate: true,
+//           context,
+//         });
+//       },
+//     };
+//     mutations.create = createMutation;
+//     // OpenCRUD backwards compatibility
+//     mutations.new = createMutation;
+//   }
 
-  // register callbacks for documentation purposes
-  registerCollectionCallbacks(typeName, mutationOptions);
+//   if (mutationOptions.update) {
+//     // mutation for editing a specific document
 
-  const mutations = {};
+//     const mutationName = getUpdateMutationName(typeName);
 
-  if (mutationOptions.create) {
-    // mutation for inserting a new document
+//     const updateMutation = {
+//       description: `Mutation for updating a ${typeName} document`,
+//       name: mutationName,
 
-    const mutationName = getCreateMutationName(typeName);
+//       // check function called on a user and document to see if they can perform the operation
+//       check(user, document) {
 
-    const createMutation = {
-      description: `Mutation for creating new ${typeName} documents`,
-      name: mutationName,
+//         // new API
+//         const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canUpdate');
+//         if (typeof permissionsCheck === 'function') {
+//           return permissionsCheck(user, document);
+//         } else if (Array.isArray(permissionsCheck)) {
+//           return Users.isMemberOf(user, permissionsCheck, document);
+//         }
+        
+//         // OpenCRUD backwards compatibility
+//         const check = mutationOptions.updateCheck || mutationOptions.editCheck;
+//         if (check) {
+//           return check(user, document);
+//         }
 
-      // check function called on a user to see if they can perform the operation
-      check(user, document) {
-        // OpenCRUD backwards compatibility
-        const check = mutationOptions.createCheck || mutationOptions.newCheck;
-        if (check) {
-          return check(user, document);
-        }
-        // check if they can perform "foo.new" operation (e.g. "movie.new")
-        // OpenCRUD backwards compatibility
-        return Users.canDo(user, [
-          `${typeName.toLowerCase()}.create`,
-          `${collectionName.toLowerCase()}.new`,
-        ]);
-      },
+//         if (!user || !document) return false;
+//         // check if user owns the document being edited.
+//         // if they do, check if they can perform "foo.edit.own" action
+//         // if they don't, check if they can perform "foo.edit.all" action
+//         // OpenCRUD backwards compatibility
+//         return Users.owns(user, document)
+//           ? Users.canDo(user, [
+//               `${typeName.toLowerCase()}.update.own`,
+//               `${collectionName.toLowerCase()}.edit.own`,
+//             ])
+//           : Users.canDo(user, [
+//               `${typeName.toLowerCase()}.update.all`,
+//               `${collectionName.toLowerCase()}.edit.all`,
+//             ]);
+//       },
 
-      async mutation(root, { data }, context) {
-        const collection = context[collectionName];
+//       async mutation(root, { where, selector: oldSelector, data }, context) {
+//         const collection = context[collectionName];
 
-        // check if current user can pass check function; else throw error
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          data,
-          '',
-          `${typeName}.create`,
-          collectionName
-        );
+//         // handle both `where` and `selector` for backwards-compatibility
+//         let selector;
+//         if (!isEmpty(where)) {
+//           const filterParameters = Connectors.filter(collection, { where }, context);
+//           selector = filterParameters.selector;
+//         } else {
+//           if (!isEmpty(oldSelector)) {
+//             selector = oldSelector;
+//           } else {
+//             throw new Error('Selector cannot be empty');
+//           }
+//         }
 
-        // pass document to boilerplate newMutator function
-        return await createMutator({
-          collection,
-          data,
-          currentUser: context.currentUser,
-          validate: true,
-          context,
-        });
-      },
-    };
-    mutations.create = createMutation;
-    // OpenCRUD backwards compatibility
-    mutations.new = createMutation;
-  }
+//         // get entire unmodified document from database
+//         const document = await Connectors.get(collection, selector);
 
-  if (mutationOptions.update) {
-    // mutation for editing a specific document
+//         if (!document) {
+//           throw new Error(
+//             `Could not find document to update for selector: ${JSON.stringify(selector)}`
+//           );
+//         }
 
-    const mutationName = getUpdateMutationName(typeName);
+//         // check if user can perform operation; if not throw error
+//         Utils.performCheck(
+//           this.check,
+//           context.currentUser,
+//           document,
+//           document._id,
+//           `${typeName}.update`,
+//           collectionName
+//         );
 
-    const updateMutation = {
-      description: `Mutation for updating a ${typeName} document`,
-      name: mutationName,
+//         // call editMutator boilerplate function
+//         return await updateMutator({
+//           collection,
+//           selector,
+//           data,
+//           currentUser: context.currentUser,
+//           validate: true,
+//           context,
+//           document,
+//         });
+//       },
+//     };
 
-      // check function called on a user and document to see if they can perform the operation
-      check(user, document) {
-        // OpenCRUD backwards compatibility
-        const check = mutationOptions.updateCheck || mutationOptions.editCheck;
-        if (check) {
-          return check(user, document);
-        }
+//     mutations.update = updateMutation;
+//     // OpenCRUD backwards compatibility
+//     mutations.edit = updateMutation;
+//   }
+//   if (mutationOptions.upsert) {
+//     // mutation for upserting a specific document
+//     const mutationName = getUpsertMutationName(typeName);
+//     mutations.upsert = {
+//       description: `Mutation for upserting a ${typeName} document`,
+//       name: mutationName,
 
-        if (!user || !document) return false;
-        // check if user owns the document being edited.
-        // if they do, check if they can perform "foo.edit.own" action
-        // if they don't, check if they can perform "foo.edit.all" action
-        // OpenCRUD backwards compatibility
-        return Users.owns(user, document)
-          ? Users.canDo(user, [
-            `${typeName.toLowerCase()}.update.own`,
-            `${collectionName.toLowerCase()}.edit.own`,
-          ])
-          : Users.canDo(user, [
-            `${typeName.toLowerCase()}.update.all`,
-            `${collectionName.toLowerCase()}.edit.all`,
-          ]);
-      },
+//       async mutation(root, { where, selector, data }, context) {
+//         const collection = context[collectionName];
 
-      async mutation(root, { selector, data }, context) {
-        const collection = context[collectionName];
+//         // check if documeet exists already
+//         const existingDocument = await Connectors.get(collection, selector, {
+//           fields: { _id: 1 },
+//         });
 
-        if (isEmpty(selector)) {
-          throw new Error('Selector cannot be empty');
-        }
+//         if (existingDocument) {
+//           return await collection.options.mutations.update.mutation(
+//             root,
+//             { where, selector, data },
+//             context
+//           );
+//         } else {
+//           return await collection.options.mutations.create.mutation(root, { data }, context);
+//         }
+//       },
+//     };
+//   }
 
-        // get entire unmodified document from database
-        const document = await Connectors.get(collection, selector);
+//   if (mutationOptions.delete) {
+//     // mutation for removing a specific document (same checks as edit mutation)
 
-        if (!document) {
-          throw new Error(
-            `Could not find document to update for selector: ${JSON.stringify(selector)}`
-          );
-        }
+//     const mutationName = getDeleteMutationName(typeName);
 
-        // check if user can perform operation; if not throw error
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          document,
-          document._id,
-          `${typeName}.update`,
-          collectionName
-        );
+//     const deleteMutation = {
+//       description: `Mutation for deleting a ${typeName} document`,
+//       name: mutationName,
 
-        // call editMutator boilerplate function
-        return await updateMutator({
-          collection,
-          selector,
-          data,
-          currentUser: context.currentUser,
-          validate: true,
-          context,
-          document,
-        });
-      },
-    };
+//       check(user, document) {
 
-    mutations.update = updateMutation;
-    // OpenCRUD backwards compatibility
-    mutations.edit = updateMutation;
+//         // new API
+//         const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canDelete');
+//         if (typeof permissionsCheck === 'function') {
+//           return permissionsCheck(user, document);
+//         } else if (Array.isArray(permissionsCheck)) {
+//           return Users.isMemberOf(user, permissionsCheck, document);
+//         }
 
-  }
-  if (mutationOptions.upsert) {
-    // mutation for upserting a specific document
-    const mutationName = getUpsertMutationName(typeName);
-    mutations.upsert = {
-      description: `Mutation for upserting a ${typeName} document`,
-      name: mutationName,
+//         // OpenCRUD backwards compatibility
+//         const check = mutationOptions.deleteCheck || mutationOptions.removeCheck;
+//         if (check) {
+//           return check(user, document);
+//         }
 
-      async mutation(root, { selector, data }, context) {
-        const collection = context[collectionName];
+//         if (!user || !document) return false;
+//         // OpenCRUD backwards compatibility
+//         return Users.owns(user, document)
+//           ? Users.canDo(user, [
+//               `${typeName.toLowerCase()}.delete.own`,
+//               `${collectionName.toLowerCase()}.remove.own`,
+//             ])
+//           : Users.canDo(user, [
+//               `${typeName.toLowerCase()}.delete.all`,
+//               `${collectionName.toLowerCase()}.remove.all`,
+//             ]);
+//       },
 
-        // check if document exists already
-        const existingDocument = await Connectors.get(collection, selector, {
-          fields: { _id: 1 },
-        });
+//       async mutation(root, { where, selector: oldSelector }, context) {
+//         const collection = context[collectionName];
 
-        if (existingDocument) {
-          return await collection.options.mutations.update.mutation(
-            root,
-            { selector, data },
-            context
-          );
-        } else {
-          return await collection.options.mutations.create.mutation(root, { data }, context);
-        }
-      },
-    };
-  }
-  if (mutationOptions.delete) {
-    // mutation for removing a specific document (same checks as edit mutation)
+//         // handle both `where` and `selector` for backwards-compatibility
+//         let selector;
+//         if (!isEmpty(where)) {
+//           const filterParameters = Connectors.filter(collection, { where }, context);
+//           selector = filterParameters.selector;
+//         } else {
+//           if (!isEmpty(oldSelector)) {
+//             selector = oldSelector;
+//           } else {
+//             throw new Error('Selector cannot be empty');
+//           }
+//         }
 
-    const mutationName = getDeleteMutationName(typeName);
+//         const document = await Connectors.get(collection, selector);
 
-    const deleteMutation = {
-      description: `Mutation for deleting a ${typeName} document`,
-      name: mutationName,
+//         if (!document) {
+//           throw new Error(
+//             `Could not find document to delete for selector: ${JSON.stringify(selector)}`
+//           );
+//         }
 
-      check(user, document) {
-        // OpenCRUD backwards compatibility
-        const check = mutationOptions.deleteCheck || mutationOptions.removeCheck;
-        if (check) {
-          return check(user, document);
-        }
+//         Utils.performCheck(
+//           this.check,
+//           context.currentUser,
+//           document,
+//           context,
+//           document._id,
+//           `${typeName}.delete`,
+//           collectionName
+//         );
 
-        if (!user || !document) return false;
-        // OpenCRUD backwards compatibility
-        return Users.owns(user, document)
-          ? Users.canDo(user, [
-            `${typeName.toLowerCase()}.delete.own`,
-            `${collectionName.toLowerCase()}.remove.own`,
-          ])
-          : Users.canDo(user, [
-            `${typeName.toLowerCase()}.delete.all`,
-            `${collectionName.toLowerCase()}.remove.all`,
-          ]);
-      },
+//         return await deleteMutator({
+//           collection,
+//           selector: { _id: document._id },
+//           currentUser: context.currentUser,
+//           validate: true,
+//           context,
+//           document,
+//         });
+//       },
+//     };
 
-      async mutation(root, { selector }, context) {
-        const collection = context[collectionName];
+//     mutations.delete = deleteMutation;
+//     // OpenCRUD backwards compatibility
+//     mutations.remove = deleteMutation;
+//   }
 
-        if (isEmpty(selector)) {
-          throw new Error('Selector cannot be empty');
-        }
+//   return mutations;
+// }
 
-        const document = await Connectors.get(collection, selector);
+// const registerCollectionCallbacks = (typeName, options) => {
+//   typeName = typeName.toLowerCase();
 
-        if (!document) {
-          throw new Error(
-            `Could not find document to delete for selector: ${JSON.stringify(selector)}`
-          );
-        }
-
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          document,
-          context,
-          document._id,
-          `${typeName}.delete`,
-          collectionName
-        );
-
-        return await deleteMutator({
-          collection,
-          selector,
-          currentUser: context.currentUser,
-          validate: true,
-          context,
-          document,
-        });
-      },
-    };
-
-    mutations.delete = deleteMutation;
-    // OpenCRUD backwards compatibility
-    mutations.remove = deleteMutation;
-
-  }
-
-  if (Meteor.isClient) {
-    registerWatchedMutations(mutations, typeName);
-  }
-
-  return mutations;
-}
-
-const registerCollectionCallbacks = (typeName, options) => {
-  typeName = typeName.toLowerCase();
-
-  if (options.create) {
-    registerCallback({
-      name: `${typeName}.create.validate`,
-      iterator: { validationErrors: 'An array that can be used to accumulate validation errors' },
-      properties: [
-        { document: 'The document being inserted' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' },
-        { context: 'The context of the mutation' },
-      ],
-      runs: 'sync',
-      returns: 'document',
-      description:
-        'Validate a document before insertion (can be skipped when inserting directly on server).',
-    });
-    registerCallback({
-      name: `${typeName}.create.before`,
-      iterator: { document: 'The document being inserted' },
-      properties: [{ currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: 'document',
-      description: "Perform operations on a new document before it's inserted in the database.",
-    });
-    registerCallback({
-      name: `${typeName}.create.after`,
-      iterator: { document: 'The document being inserted' },
-      properties: [{ currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: 'document',
-      description:
-        "Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.",
-    });
-    registerCallback({
-      name: `${typeName}.create.async`,
-      iterator: { document: 'The document being inserted' },
-      properties: [
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' },
-      ],
-      runs: 'async',
-      returns: null,
-      description:
-        "Perform operations on a new document after it's inserted in the database asynchronously.",
-    });
-  }
-  if (options.update) {
-    registerCallback({
-      name: `${typeName}.update.validate`,
-      iterator: { validationErrors: 'An object that can be used to accumulate validation errors' },
-      properties: [
-        { document: 'The document being edited' },
-        { data: 'The client data' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' },
-        { context: 'The context of the mutation' },
-      ],
-      runs: 'sync',
-      returns: 'modifier',
-      description:
-        'Validate a document before update (can be skipped when updating directly on server).',
-    });
-    registerCallback({
-      name: `${typeName}.update.before`,
-      iterator: { data: 'The client data' },
-      properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: 'modifier',
-      description: "Perform operations on a document before it's updated in the database.",
-    });
-    registerCallback({
-      name: `${typeName}.update.after`,
-      iterator: { newDocument: 'The document after the update' },
-      properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: 'document',
-      description:
-        "Perform operations on a document after it's updated in the database but *before* the mutation returns it.",
-    });
-    registerCallback({
-      name: `${typeName}.update.async`,
-      iterator: { newDocument: 'The document after the edit' },
-      properties: [
-        { document: 'The document before the edit' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' },
-      ],
-      runs: 'async',
-      returns: null,
-      description:
-        "Perform operations on a document after it's updated in the database asynchronously.",
-    });
-  }
-  if (options.delete) {
-    registerCallback({
-      name: `${typeName}.delete.validate`,
-      iterator: { validationErrors: 'An object that can be used to accumulate validation errors' },
-      properties: [
-        { currentUser: 'The current user' },
-        { document: 'The document being removed' },
-        { collection: 'The collection the document belongs to' },
-        { context: 'The context of this mutation' },
-      ],
-      runs: 'sync',
-      returns: 'document',
-      description:
-        'Validate a document before removal (can be skipped when removing directly on server).',
-    });
-    registerCallback({
-      name: `${typeName}.delete.before`,
-      iterator: { document: 'The document being removed' },
-      properties: [{ currentUser: 'The current user' }],
-      runs: 'sync',
-      returns: null,
-      description: "Perform operations on a document before it's removed from the database.",
-    });
-    registerCallback({
-      name: `${typeName}.delete.async`,
-      properties: [
-        { document: 'The document being removed' },
-        { currentUser: 'The current user' },
-        { collection: 'The collection the document belongs to' },
-      ],
-      runs: 'async',
-      returns: null,
-      description:
-        "Perform operations on a document after it's removed from the database asynchronously.",
-    });
-  }
-};
+//   if (options.create) {
+//     registerCallback({
+//       name: `${typeName}.create.validate`,
+//       iterator: { validationErrors: 'An array that can be used to accumulate validation errors' },
+//       properties: [
+//         { document: 'The document being inserted' },
+//         { currentUser: 'The current user' },
+//         { collection: 'The collection the document belongs to' },
+//         { context: 'The context of the mutation' },
+//       ],
+//       runs: 'sync',
+//       returns: 'document',
+//       description:
+//         'Validate a document before insertion (can be skipped when inserting directly on server).',
+//     });
+//     registerCallback({
+//       name: `${typeName}.create.before`,
+//       iterator: { document: 'The document being inserted' },
+//       properties: [{ currentUser: 'The current user' }],
+//       runs: 'sync',
+//       returns: 'document',
+//       description: "Perform operations on a new document before it's inserted in the database.",
+//     });
+//     registerCallback({
+//       name: `${typeName}.create.after`,
+//       iterator: { document: 'The document being inserted' },
+//       properties: [{ currentUser: 'The current user' }],
+//       runs: 'sync',
+//       returns: 'document',
+//       description:
+//         "Perform operations on a new document after it's inserted in the database but *before* the mutation returns it.",
+//     });
+//     registerCallback({
+//       name: `${typeName}.create.async`,
+//       iterator: { document: 'The document being inserted' },
+//       properties: [
+//         { currentUser: 'The current user' },
+//         { collection: 'The collection the document belongs to' },
+//       ],
+//       runs: 'async',
+//       returns: null,
+//       description:
+//         "Perform operations on a new document after it's inserted in the database asynchronously.",
+//     });
+//   }
+//   if (options.update) {
+//     registerCallback({
+//       name: `${typeName}.update.validate`,
+//       iterator: { validationErrors: 'An object that can be used to accumulate validation errors' },
+//       properties: [
+//         { document: 'The document being edited' },
+//         { data: 'The client data' },
+//         { currentUser: 'The current user' },
+//         { collection: 'The collection the document belongs to' },
+//         { context: 'The context of the mutation' },
+//       ],
+//       runs: 'sync',
+//       returns: 'modifier',
+//       description:
+//         'Validate a document before update (can be skipped when updating directly on server).',
+//     });
+//     registerCallback({
+//       name: `${typeName}.update.before`,
+//       iterator: { data: 'The client data' },
+//       properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
+//       runs: 'sync',
+//       returns: 'modifier',
+//       description: "Perform operations on a document before it's updated in the database.",
+//     });
+//     registerCallback({
+//       name: `${typeName}.update.after`,
+//       iterator: { newDocument: 'The document after the update' },
+//       properties: [{ document: 'The document being edited' }, { currentUser: 'The current user' }],
+//       runs: 'sync',
+//       returns: 'document',
+//       description:
+//         "Perform operations on a document after it's updated in the database but *before* the mutation returns it.",
+//     });
+//     registerCallback({
+//       name: `${typeName}.update.async`,
+//       iterator: { newDocument: 'The document after the edit' },
+//       properties: [
+//         { document: 'The document before the edit' },
+//         { currentUser: 'The current user' },
+//         { collection: 'The collection the document belongs to' },
+//       ],
+//       runs: 'async',
+//       returns: null,
+//       description:
+//         "Perform operations on a document after it's updated in the database asynchronously.",
+//     });
+//   }
+//   if (options.delete) {
+//     registerCallback({
+//       name: `${typeName}.delete.validate`,
+//       iterator: { validationErrors: 'An object that can be used to accumulate validation errors' },
+//       properties: [
+//         { currentUser: 'The current user' },
+//         { document: 'The document being removed' },
+//         { collection: 'The collection the document belongs to' },
+//         { context: 'The context of this mutation' },
+//       ],
+//       runs: 'sync',
+//       returns: 'document',
+//       description:
+//         'Validate a document before removal (can be skipped when removing directly on server).',
+//     });
+//     registerCallback({
+//       name: `${typeName}.delete.before`,
+//       iterator: { document: 'The document being removed' },
+//       properties: [{ currentUser: 'The current user' }],
+//       runs: 'sync',
+//       returns: null,
+//       description: "Perform operations on a document before it's removed from the database.",
+//     });
+//     registerCallback({
+//       name: `${typeName}.delete.async`,
+//       properties: [
+//         { document: 'The document being removed' },
+//         { currentUser: 'The current user' },
+//         { collection: 'The collection the document belongs to' },
+//       ],
+//       runs: 'async',
+//       returns: null,
+//       description:
+//         "Perform operations on a document after it's removed from the database asynchronously.",
+//     });
+//   }
+// };

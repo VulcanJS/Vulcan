@@ -17,8 +17,10 @@ import './core/Card';
 import './core/Datatable';
 import './core/EditButton';
 import './core/Loading';
-import './core/ModalTrigger';
 import './core/NewButton';
+
+import './forms/base-controls/MuiRequiredIndicator';
+import './forms/base-controls/MuiFormControl';
 
 import './forms/FormComponentInner';
 import './forms/FormErrors';
@@ -28,6 +30,7 @@ import './forms/FormGroupNone';
 import './forms/FormNestedArrayLayout';
 import './forms/FormNestedDivider';
 import './forms/FormSubmit';
+
 import './forms/controls/Checkbox';
 import './forms/controls/CheckboxGroup';
 import './forms/controls/CountrySelect';
@@ -42,6 +45,8 @@ import './forms/controls/PostalCode';
 import './forms/controls/RadioGroup';
 import './forms/controls/RegionSelect';
 import './forms/controls/Select';
+import './forms/controls/SelectMultiple';
+import './forms/controls/StaticText';
 import './forms/controls/Textarea';
 import './forms/controls/Time';
 import './forms/controls/TimeRdt';
@@ -49,8 +54,11 @@ import './forms/controls/Url';
 
 import './theme/ThemeStyles';
 
-import './ui/Button';
 import './ui/Alert';
+import './ui/Button';
+import './ui/Modal';
+import './ui/ModalTrigger';
+import './ui/Table';
 
 import './upload/UploadImage';
 import './upload/UploadInner';

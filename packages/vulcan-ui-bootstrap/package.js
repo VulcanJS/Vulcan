@@ -1,16 +1,16 @@
 Package.describe({
   name: 'vulcan:ui-bootstrap',
   summary: 'Vulcan Bootstrap UI components.',
-  version: '1.13.1',
+  version: '1.13.4',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:lib@1.13.1', 
-  'fourseven:scss@4.10.0'
-]);
+  api.use(['vulcan:lib@=1.13.4',
+    'fourseven:scss@4.10.0'
+  ]);
 
   api.addFiles(['lib/stylesheets/style.scss', 'lib/stylesheets/datetime.scss'], 'client');
 

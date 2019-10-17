@@ -1,4 +1,5 @@
 /* global Package */
+/* eslint-disable no-console */
 import { mochaInstance } from 'meteor/meteortesting:mocha-core';
 import { startBrowser } from 'meteor/meteortesting:browser-tests';
 

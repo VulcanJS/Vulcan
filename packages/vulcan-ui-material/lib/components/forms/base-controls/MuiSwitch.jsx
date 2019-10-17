@@ -1,10 +1,25 @@
+import { Components } from 'meteor/vulcan:lib';
 import React from 'react';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
+import withStyles from '@material-ui/core/styles/withStyles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import MuiFormControl from './MuiFormControl';
 import MuiFormHelper from './MuiFormHelper';
+
+
+export const styles = theme => ({
+  
+  inputRoot: {
+    height: 50,
+  },
+  
+  inputFocused: {},
+  
+  inputDisabled: {},
+  
+});
 
 
 const MuiSwitch = createReactClass({
@@ -14,7 +29,6 @@ const MuiSwitch = createReactClass({
   getDefaultProps: function () {
     return {
       label: '',
-      rowLabel: '',
       value: false
     };
   },
@@ -37,9 +51,7 @@ const MuiSwitch = createReactClass({
     }
     
     return (
-      <MuiFormControl {...this.getFormControlProperties()} label={this.props.rowLabel}
-        htmlFor={this.getId()}
-      >
+      <MuiFormControl {...this.getFormControlProperties()} hideLabel={true} htmlFor={this.getId()}>
         {element}
         <MuiFormHelper {...this.getFormHelperProperties()}/>
       </MuiFormControl>
@@ -47,9 +59,12 @@ const MuiSwitch = createReactClass({
   },
   
   renderElement: function () {
+    const { classes } = this.props;
     const { disabled, value, label } = this.props.inputProperties;
+    
     return (
       <FormControlLabel
+        className={classes.inputRoot}
         control={
           <Switch
             ref={(c) => this.element = c}
@@ -60,7 +75,7 @@ const MuiSwitch = createReactClass({
             disabled={disabled}
           />
         }
-        label={label}
+        label={<>{label}<Components.RequiredIndicator optional={this.props.optional} value={value}/></>}
       />
     );
   },
@@ -68,4 +83,4 @@ const MuiSwitch = createReactClass({
 });
 
 
-export default MuiSwitch;
+export default withStyles(styles)(MuiSwitch);

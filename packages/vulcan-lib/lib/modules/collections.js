@@ -1,6 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addToGraphQLContext } from './graphql';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
@@ -9,6 +8,9 @@ import { getDefaultFragmentText } from './graphql/defaultFragment';
 import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
+import isEmpty from 'lodash/isEmpty';
+import _omit from 'lodash/omit';
+import merge from 'lodash/merge';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -26,11 +28,21 @@ export const getCollection = name =>
       name === collectionName || name === collectionName.toLowerCase()
   );
 
+export const getCollectionByTypeName = name => {
+  // in case typeName is for an array ('[User]'), get rid of brackets
+  let parsedTypeName = name.replace('[', '').replace(']', '');
+  return Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+};
+
 // TODO: find more reliable way to get collection name from type name?
 export const getCollectionName = typeName => Utils.pluralize(typeName);
 
 // TODO: find more reliable way to get type name from collection name?
-export const getTypeName = collectionName => collectionName.slice(0, -1);
+export const getTypeName = collectionName => {
+  return collectionName.slice(-3) === 'ies'
+    ? collectionName.slice(0, -3) + 'y'
+    : collectionName.slice(0, -1);
+};
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
@@ -70,7 +82,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
  */
 Mongo.Collection.prototype.removeField = function (fieldName) {
   var collection = this;
-  var schema = _.omit(collection.simpleSchema()._schema, fieldName);
+  var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
   collection.attachSchema(new SimpleSchema(schema));
@@ -114,16 +126,20 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 
   if (!self._helpers) {
     self._helpers = function Document(doc) {
-      return _.extend(this, doc);
+      return Object.assign(this, doc);
     };
     self._transform = function (doc) {
       return new self._helpers(doc);
     };
   }
 
-  _.each(helpers, function (helper, key) {
-    self._helpers.prototype[key] = helper;
+  Object.keys(helpers).forEach(function (key) {
+    self._helpers.prototype[key] = helpers[key];
   });
+};
+
+export const extendCollection = (collection, options) => {
+  collection.options = merge(collection.options, options);
 };
 
 export const createCollection = options => {
@@ -167,6 +183,15 @@ export const createCollection = options => {
     addCallback(`${typeName.toLowerCase()}.collection`, addIntlFields);
   }
 
+  // add "auto-relations" to schema resolvers
+  Object.keys(schema).map(fieldName => {
+    const field = schema[fieldName];
+    // if no resolver or relation is provided, try to guess relation and add it to schema
+    if (field.resolveAs && !field.resolveAs.resolver && !field.resolveAs.relation) {
+      field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+    }
+  });
+
   //run schema callbacks and run general callbacks last
   schema = runCallbacks({
     name: `${typeName.toLowerCase()}.collection`,
@@ -178,16 +203,6 @@ export const createCollection = options => {
   if (schema) {
     // attach schema to collection
     collection.attachSchema(new SimpleSchema(schema));
-  }
-
-  // add collection to resolver context
-  const context = {};
-  context[collectionName] = collection;
-  addToGraphQLContext(context);
-
-  if (generateGraphQLSchema) {
-    // add collection to list of dynamically generated GraphQL schemas
-    addGraphQLCollection(collection);
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });
@@ -202,6 +217,8 @@ export const createCollection = options => {
 
   collection.getParameters = (terms = {}, apolloClient, context) => {
     // console.log(terms);
+
+    const currentSchema = collection.simpleSchema()._schema;
 
     let parameters = {
       selector: {},
@@ -288,7 +305,7 @@ export const createCollection = options => {
     }
 
     // sort using terms.orderBy (overwrite defaultView's sort)
-    if (terms.orderBy && !_.isEmpty(terms.orderBy)) {
+    if (terms.orderBy && !isEmpty(terms.orderBy)) {
       parameters.options.sort = terms.orderBy;
     }
 
@@ -304,20 +321,18 @@ export const createCollection = options => {
     }
 
     // remove any null fields (setting a field to null means it should be deleted)
-    _.keys(parameters.selector).forEach(key => {
+    Object.keys(parameters.selector).forEach(key => {
       if (parameters.selector[key] === null) delete parameters.selector[key];
     });
     if (parameters.options.sort) {
-      _.keys(parameters.options.sort).forEach(key => {
+      Object.keys(parameters.options.sort).forEach(key => {
         if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
       });
     }
 
     if (terms.query) {
       const query = escapeStringRegexp(terms.query);
-      const currentSchema = collection.simpleSchema()._schema;
-      const searchableFieldNames = _.filter(
-        _.keys(currentSchema),
+      const searchableFieldNames = Object.keys(currentSchema).filter(
         fieldName => currentSchema[fieldName].searchable
       );
       if (searchableFieldNames.length) {
@@ -343,7 +358,7 @@ export const createCollection = options => {
     const limit = terms.limit || parameters.options.limit;
     parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
 
-    // console.log(parameters);
+    // console.log(JSON.stringify(parameters, 2));
 
     return parameters;
   };

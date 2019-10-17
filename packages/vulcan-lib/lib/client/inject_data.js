@@ -1,10 +1,11 @@
-import { Meteor } from 'meteor/meteor';
 import { EJSON } from 'meteor/ejson';
+import { onPageLoad } from 'meteor/server-render';
 
 // InjectData object
 export const InjectData = {
   // data object
   _data: {},
+  _ready: false,
 
   // encode object to string
   _encode(ejson) {
@@ -19,17 +20,35 @@ export const InjectData = {
     return EJSON.parse(decodedEjsonString);
   },
 
+  _checkReady() {
+    if (!this._ready) {
+      const dom = document.querySelector('script[type="text/inject-data"]');
+      const injectedDataString = dom ? dom.textContent.trim() : '';
+      this._data = InjectData._decode(injectedDataString) || {};
+      this._ready = true;
+    }
+  },
+  // sync version
+  // Must always be called inside an onPageLoad callback
+  getDataSync(key) {
+    this._checkReady();
+    return this._data[key];
+  },
+
   // get data when DOM loaded
   getData(key, callback) {
-    Meteor.startup(() => {
+    // promisified version
+    if (!callback) {
+      return new Promise((resolve, reject) => {
+        onPageLoad(() => {
+          this._checkReady();
+          resolve(this._data[key]);
+        });
+      });
+    }
+    onPageLoad(() => {
+      this._checkReady();
       callback(this._data[key]);
     });
   },
 };
-
-// when DOM loaded, decode string from <script> and save the data
-Meteor.startup(() => {
-  const dom = document.querySelector('script[type="text/inject-data"]');
-  const injectedDataString = dom ? dom.textContent.trim() : '';
-  InjectData._data = InjectData._decode(injectedDataString) || {};
-});

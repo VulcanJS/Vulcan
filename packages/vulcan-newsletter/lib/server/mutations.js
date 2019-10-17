@@ -25,7 +25,7 @@ const resolver = {
 
       const currentUser = context.currentUser;
       const user = await Connectors.get(Users, userId);
-      if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
+      if (!user || !Users.options.mutations.edit.check(currentUser, user, context)) {
         throw new Error(Utils.encodeIntlError({id: 'app.noPermission'}));
       }
       return await Newsletters.subscribeUser(user, false);
@@ -36,7 +36,7 @@ const resolver = {
     async removeUserNewsletter(root, { userId }, context) {
       const currentUser = context.currentUser;
       const user = await Connectors.get(Users, userId);
-      if (!user || !Users.options.mutations.edit.check(currentUser, user)) {
+      if (!user || !Users.options.mutations.edit.check(currentUser, user, context)) {
         throw new Error(Utils.encodeIntlError({id: 'app.noPermission'}));
       }
       

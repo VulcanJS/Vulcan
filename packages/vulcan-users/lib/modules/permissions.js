@@ -1,6 +1,8 @@
 import Users from './collection.js';
-import { Utils } from 'meteor/vulcan:lib';
 import intersection from 'lodash/intersection';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import difference from 'lodash/difference';
 
 /**
  * @summary Users.groups object
@@ -11,7 +13,7 @@ Users.groups = {};
  * @summary Group class
  */
 class Group {
-  
+
   constructor() {
     this.actions = [];
   }
@@ -44,22 +46,26 @@ Users.createGroup = groupName => {
  * @summary get a list of a user's groups
  * @param {Object} user
  */
-Users.getGroups = user => {
+Users.getGroups = (user, document) => {
 
   let userGroups = [];
 
   if (!user) { // guests user
 
     userGroups = ['guests'];
-  
+
   } else {
-  
+
     userGroups = ['members'];
+
+    if (document && Users.owns(user, document)) {
+      userGroups.push('owners');
+    }
 
     if (user.groups) { // custom groups
       userGroups = userGroups.concat(user.groups);
-    } 
-    
+    }
+
     if (Users.isAdmin(user)) { // admin
       userGroups.push('admins');
     }
@@ -93,9 +99,9 @@ Users.getActions = user => {
  * @param {Array} user 
  * @param {String} group or array of groups
  */
-Users.isMemberOf = (user, groupOrGroups) => {
+Users.isMemberOf = (user, groupOrGroups, document) => {
   const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
-  return intersection(Users.getGroups(user), groups).length > 0;
+  return intersection(Users.getGroups(user, document), groups).length > 0;
 };
 
 /**
@@ -123,7 +129,7 @@ Users.canDo = (user, actionOrActions) => {
 //   // note(apollo): use of `__typename` given by react-apollo
 //   //const collectionName = document.getCollectionName();
 //   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
-  
+
 //   if (!user || !document) {
 //     return false;
 //   }
@@ -182,23 +188,23 @@ export const isAdmin = Users.isAdmin;
  * @param {Object} field - The full document of the collection
  * @returns {Boolean} - true if the user can read the field, false if not
  */
- Users.canReadField = function (user, field, document) {
-   const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
-   if (canRead) {
-     if (typeof canRead === 'function') {
-       // if canRead is a function, execute it with user and document passed. it must return a boolean
-       return canRead(user, document);
-     } else if (typeof canRead === 'string') {
-       // if canRead is just a string, we assume it's the name of a group and pass it to isMemberOf
-       return canRead === 'guests' || Users.isMemberOf(user, canRead);
-     } else if (Array.isArray(canRead) && canRead.length > 0) {
-       // if canRead is an array, we do a recursion on every item and return true if one of the items return true
-       return canRead.some(group => Users.canReadField(user, { canRead: group }, document));
+Users.canReadField = function (user, field, document) {
+  const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
+  if (canRead) {
+    if (typeof canRead === 'function') {
+      // if canRead is a function, execute it with user and document passed. it must return a boolean
+      return canRead(user, document);
+    } else if (typeof canRead === 'string') {
+      // if canRead is just a string, we assume it's the name of a group and pass it to isMemberOf
+      return canRead === 'guests' || Users.isMemberOf(user, canRead);
+    } else if (Array.isArray(canRead) && canRead.length > 0) {
+      // if canRead is an array, we do a recursion on every item and return true if one of the items return true
+      return canRead.some(group => Users.canReadField(user, { canRead: group }, document));
     }
-   }
-   return false;
- };
- 
+  }
+  return false;
+};
+
 /**
  * @summary Get a list of fields viewable by a user
  * @param {Object} user - The user performing the action
@@ -206,12 +212,12 @@ export const isAdmin = Users.isAdmin;
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
-  return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+  return compact(map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       if (fieldName.indexOf('.$') > -1) return null;
       return Users.canReadField(user, field, document) ? fieldName : null;
     }
-  )));
+  ));
 };
 
 // collection helper
@@ -220,6 +226,25 @@ Users.helpers({
     return Users.getViewableFields(this, collection, document);
   }
 });
+
+/**
+ * @summary Check if a user can access a list of fields
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} fields - The list of fields
+ */
+Users.checkFields = (user, collection, fields) => {
+  const viewableFields = Users.getViewableFields(user, collection);
+  const diff = difference(fields, viewableFields);
+
+  if (diff.length) {
+    throw new Error(
+      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(
+        ', '
+      )}.`
+    );
+  }
+};
 
 /**
  * @summary For a given document or list of documents, keep only fields viewable by current user
@@ -234,20 +259,20 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
   const restrictDoc = document => {
 
     // get array of all keys viewable by user
-    const viewableKeys = _.keys(Users.getViewableFields(user, collection, document));
+    const viewableKeys = Users.getViewableFields(user, collection, document);
     const restrictedDocument = _.clone(document);
-    
+
     // loop over each property in the document and delete it if it's not viewable
     _.forEach(restrictedDocument, (value, key) => {
       if (!viewableKeys.includes(key)) {
         delete restrictedDocument[key];
       }
     });
-  
+
     return restrictedDocument;
-  
+
   };
-  
+
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 
 };
@@ -279,6 +304,7 @@ Users.canCreateField = function (user, field) {
  * Check if a user can edit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
+ * @param {Object} document - The document being edited or inserted
  */
 Users.canUpdateField = function (user, field, document) {
   const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
@@ -311,11 +337,11 @@ Users.createGroup('guests'); // non-logged-in users
 Users.createGroup('members'); // regular users
 
 const membersActions = [
-  'user.create', 
-  'user.update.own', 
+  'user.create',
+  'user.update.own',
   // OpenCRUD backwards compatibility
-  'users.new', 
-  'users.edit.own', 
+  'users.new',
+  'users.edit.own',
   'users.remove.own',
 ];
 Users.groups.members.can(membersActions);
@@ -323,12 +349,12 @@ Users.groups.members.can(membersActions);
 Users.createGroup('admins'); // admin users
 
 const adminActions = [
-  'user.create', 
+  'user.create',
   'user.update.all',
   'user.delete.all',
   'setting.update',
   // OpenCRUD backwards compatibility
-  'users.new', 
+  'users.new',
   'users.edit.all',
   'users.remove.all',
   'settings.edit',

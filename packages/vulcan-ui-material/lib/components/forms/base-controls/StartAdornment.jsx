@@ -4,16 +4,21 @@ import { instantiateComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import WebIcon from 'mdi-material-ui/Web';
+import EmailIcon from 'mdi-material-ui/EmailOutline';
 import { styles } from './EndAdornment';
 
 
 export const hideStartAdornment = (props) => {
-  return !props.addonBefore && !props.isUrl;
+  const { type, hideLink } = props;
+  return !props.addonBefore && (!['url', 'email'].includes(type) || hideLink);
 };
 
 
-export const fixUrl = (url) => {
+export const fixUrl = (url, type) => {
+  if (type === 'email') {
+    return `mailto:${url}`;
+  }
   return url.indexOf('http://') === -1 && url.indexOf('https://') ? 'http://' + url : url;
 };
 
@@ -23,14 +28,20 @@ const StartAdornment = (props) => {
   
   if (hideStartAdornment(props)) return null;
   
-  const urlButton = type === 'url' &&
+  const urlButton = ['url', 'email'].includes(type) &&
     <IconButton
       className={classes.urlButton}
-      href={fixUrl(value)}
+      href={fixUrl(value, type)}
       target="_blank"
       disabled={!value}
     >
-      <OpenInNewIcon/>
+      {
+        type === 'url'
+          ?
+          <WebIcon/>
+          :
+          <EmailIcon/>
+      }
     </IconButton>;
   
   

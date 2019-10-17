@@ -129,6 +129,7 @@ addStrings('en', {
   'app.operation_not_allowed':
     'Sorry, you don\'t have the rights to perform the operation "{value}"',
   'app.document_not_found': 'Document not found (id: {value})',
+  'app.no_permissions_defined': 'No permissions defined for operation [{operationName}]',
   'app.disallowed_property_detected': 'Disallowed property detected: {value}',
   'app.something_bad_happened': 'Something bad happened...',
   'app.embedly_not_authorized':

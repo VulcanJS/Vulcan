@@ -1,12 +1,12 @@
 import expect from 'expect';
 
-import { GraphQLSchema } from '../../lib/modules/graphql';
+import { GraphQLSchema } from '../../lib/server/graphql';
 import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
 
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
-import collectionToGraphQL from '../../lib/modules/graphql/collection';
-import { getSchemaFields, getGraphQLType } from '../../lib/modules/graphql/schemaFields';
-import { getDefaultFragmentText } from '../../lib/modules/graphql/defaultFragment';
+import collectionToGraphQL from '../../lib/server/graphql/collection';
+import { getSchemaFields, getGraphQLType } from '../../lib/server/graphql/schemaFields';
+import { getDefaultFragmentText } from '../../lib/server/graphql/defaultFragment';
 import SimpleSchema from 'simpl-schema';
 const test = it;
 

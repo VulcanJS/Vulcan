@@ -50,7 +50,7 @@ const FormNestedItem = (
             <Components.Button
               className="form-nested-button"
               variant="danger"
-              size="small"
+              size="sm"
               iconButton
               tabIndex="-1"
               onClick={() => {
