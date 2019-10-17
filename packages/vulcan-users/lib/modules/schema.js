@@ -92,7 +92,8 @@ const schema = {
     }
   },
   'emails.$': {
-    ...getType('UserEmail'),
+    type: Object,
+    //...getType('UserEmail'), // nested-schemas experiment
     optional: true,
   },
   createdAt: {

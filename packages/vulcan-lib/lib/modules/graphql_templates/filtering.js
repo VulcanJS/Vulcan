@@ -72,7 +72,9 @@ ${fields.map(({ name }) => `  ${name}: OrderBy`).join('\n')}
 }`;
 
 
+/*
 export const orderByInputTemplate = ({ typeName, fields }) =>
   `enum ${typeName}OrderByInput {
   ${Array.isArray(fields) && fields.length ? fields.join('\n  ') : 'foobar'}
 }`;
+*/

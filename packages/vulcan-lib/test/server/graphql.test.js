@@ -868,6 +868,28 @@ describe('vulcan:lib/graphql', function () {
       const normalizedFragment = normalizeGraphQLSchema(fragment);
       expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
     });
-
   });
+
+  describe('resolvers', () => {
+    test.skip('use default resolvers if none is specified', () => {
+
+    })
+    test.skip('do not add default resolvers if "null" is specified', () => {
+
+    })
+    test.skip('use provided resolvers if any', () => {
+
+    })
+  })
+  describe('mutations', () => {
+    test.skip('use default resolvers if none is specified', () => {
+
+    })
+    test.skip('do not add default resolvers if "null" is specified', () => {
+
+    })
+    test.skip('use provided resolvers if any', () => {
+
+    })
+  })
 });

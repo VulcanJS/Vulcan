@@ -2,6 +2,8 @@
  * Generates the GraphQL schema and
  * the resolvers and mutations for a Vulcan collectio
  */
+import { getDefaultResolvers } from '../default_resolvers';
+import { getDefaultMutations } from '../default_mutations';
 import { getSchemaFields } from './schemaFields';
 import {
   selectorInputTemplate,
@@ -10,7 +12,6 @@ import {
   createDataInputTemplate,
   updateInputTemplate,
   updateDataInputTemplate,
-  orderByInputTemplate,
   selectorUniqueInputTemplate,
   deleteInputTemplate,
   upsertInputTemplate,
@@ -26,6 +27,8 @@ import {
   upsertMutationTemplate,
   deleteMutationTemplate,
   enumTypeTemplate,
+  fieldWhereInputTemplate,
+  fieldOrderByInputTemplate,
   //nestedInputTemplate,
 } from '../../modules/graphql_templates';
 
@@ -56,11 +59,15 @@ const getCollectionInfos = collection => {
   };
 };
 
-const createResolvers = ({ resolvers, typeName }) => {
+const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
   const queryResolvers = {};
   const queriesToAdd = [];
   const resolversToAdd = [];
-  if (_isEmpty(resolvers)) return { queriesToAdd, resolversToAdd };
+  if (providedResolvers === null) { // user explicitely disabled default resolvers
+    return { queriesToAdd, resolversToAdd };
+  }
+  // if resolvers are empty, use defaults
+  const resolvers = _isEmpty(providedResolvers) ? getDefaultResolvers({ typeName }) : providedResolvers;
   // single
   if (resolvers.single) {
     queriesToAdd.push([singleQueryTemplate({ typeName }), resolvers.single.description]);
@@ -82,11 +89,17 @@ const createResolvers = ({ resolvers, typeName }) => {
     resolversToAdd,
   };
 };
-const createMutations = ({ mutations, typeName, collectionName, fields }) => {
+const createMutations = ({ mutations: providedMutations, typeName, collectionName, fields }) => {
   const mutationResolvers = {};
   const mutationsToAdd = [];
   const mutationsResolversToAdd = [];
-  if (_isEmpty(mutations)) return { mutationsToAdd, mutationsResolversToAdd };
+  if (providedMutations === null) { // user explicitely disabled mutations
+    return { mutationsResolversToAdd, mutationsToAdd };
+  }
+  // if mutations are undefined, use defaults
+  const mutations = _isEmpty(providedMutations)
+    ? getDefaultMutations({ typeName })
+    : providedMutations;
 
   const { create, update } = fields;
 
@@ -153,7 +166,14 @@ const generateSchemaFragments = ({
   isNested = false,
 }) => {
   const schemaFragments = [];
-  const { mainType, create, update, selector, selectorUnique, orderBy, enums } = fields;
+  const {
+    mainType,
+    create, update, selector,
+    selectorUnique,
+    //orderBy,
+    readable,
+    enums
+  } = fields;
   schemaFragments.push(mainTypeTemplate({ typeName, description, interfaces, fields: mainType }));
 
   if (enums) {
@@ -183,6 +203,10 @@ const generateSchemaFragments = ({
       //      schemaFragments.push(upsertInputTemplate({ typeName }));
       schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
     }
+    if (readable.length) {
+      schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
+      schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+    }
 
     //   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
 
@@ -209,11 +233,14 @@ const generateSchemaFragments = ({
     schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
   }
 
+  if (readable.length) {
+    schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
+    schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+  }
+
   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
 
   schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));
-
-  schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
 
   return schemaFragments;
 };

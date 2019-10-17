@@ -654,6 +654,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.selector.push(...permissionsFields.selector);
       fields.selectorUnique.push(...permissionsFields.selectorUnique);
       fields.orderBy.push(...permissionsFields.orderBy);
+      fields.readable.push(...permissionsFields.readable);
 
       // check for nested fields if the field does not reference an existing type
       if (!field.typeName && isNestedObject) {
