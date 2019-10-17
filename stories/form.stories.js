@@ -114,6 +114,25 @@ vulcan_forms
       </div>
     );
   })
+  .add('FormGroupNone', () => {
+    const collapsed = boolean('collapsed', false);
+    const hidden = boolean('hidden', false);
+    const hasErrors = boolean('hasErrors', false);
+    const textInside = text('Text inside', 'My text inside');
+    return (
+      <div>
+        <Components.FormGroupHeaderNone />
+        <Components.FormGroupLayoutNone
+          label="labelInner"
+          anchorName="anchorNameInner"
+          collapsed={collapsed}
+          hidden={hidden}
+          hasErrors={hasErrors}>
+          {textInside}
+        </Components.FormGroupLayoutNone>
+      </div>
+    );
+  })
   .add('Form base-controls MuiSuggest', () => <Components.MuiSuggest options={options} />)
   .add('Form base-controls MuiRequiredIndicator', () => {
     const optional = boolean('optional', false);
