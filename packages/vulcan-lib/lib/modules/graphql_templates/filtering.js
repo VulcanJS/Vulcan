@@ -54,19 +54,25 @@ export const fieldWhereInputTemplate = ({ typeName, fields }) =>
   _not: ${typeName}WhereInput
   _or: [${typeName}WhereInput]
 ${fields
-  .map(field => {
-    const { name, type } = field;
-    if (supportedFieldTypes.includes(type)) {
-      const isArrayField = name[0] === '[';
-      return `  ${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
-    } else {
-      return '';
-    }
-  })
-  .join('\n')}
+    .map(field => {
+      const { name, type } = field;
+      if (supportedFieldTypes.includes(type)) {
+        const isArrayField = name[0] === '[';
+        return `  ${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
+      } else {
+        return '';
+      }
+    })
+    .join('\n')}
 }`;
 
 export const fieldOrderByInputTemplate = ({ typeName, fields }) =>
   `input ${typeName}OrderByInput {
 ${fields.map(({ name }) => `  ${name}: OrderBy`).join('\n')}
+}`;
+
+
+export const orderByInputTemplate = ({ typeName, fields }) =>
+  `enum ${typeName}OrderByInput {
+  ${Array.isArray(fields) && fields.length ? fields.join('\n  ') : 'foobar'}
 }`;

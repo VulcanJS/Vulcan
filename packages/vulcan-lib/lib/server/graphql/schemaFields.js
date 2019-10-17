@@ -1,6 +1,7 @@
+
+/*
 /**
  * Generate graphQL for Vulcan schema fields
- */
 import { isIntlField } from '../../modules/intl.js';
 import relations from './relations.js';
 
@@ -233,16 +234,14 @@ export const getSchemaFields = (schema, typeName) => {
   };
 };
 
-
-// -------------- NESTED
-// TODO: add relations
-
+*/
 /**
  * Generate graphQL types for the fields of a Vulcan schema
  */
 /* eslint-disable no-console */
-import { isIntlField } from '../intl.js';
-import { /*hasAllowedValues, getAllowedValues,*/ unarrayfyFieldName } from '../simpleSchema_utils';
+import { isIntlField } from '../../modules/intl.js';
+import { /*hasAllowedValues, getAllowedValues,*/ unarrayfyFieldName } from '../../modules/simpleSchema_utils';
+import relations from './relations.js';
 
 const capitalize = word => {
   if (!word) return word;
@@ -391,37 +390,12 @@ export const getResolveAsFields = ({
   };
   const resolvers = [];
 
-  // get resolver name from resolveAs object, or else default to field name
-  const resolverName = field.resolveAs.fieldName || fieldName;
+  const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
-  // use specified GraphQL type or else convert schema type
-  const fieldGraphQLType = field.resolveAs.type || fieldType;
-
-  // if resolveAs is an object, first push its type definition
-  // include arguments if there are any
-  // note: resolved fields are not internationalized
-  fields.mainType.push({
-    description: field.resolveAs.description,
-    name: resolverName,
-    args: field.resolveAs.arguments,
-    type: fieldGraphQLType,
-  });
-
-  // then build actual resolver object and pass it to addGraphQLResolvers
-  const resolver = {
-    [typeName]: {
-      [resolverName]: (document, args, context, info) => {
-        const { Users, currentUser } = context;
-        // check that current user has permission to access the original non-resolved field
-        const canReadField = Users.canReadField(currentUser, field, document);
-        return canReadField ? field.resolveAs.resolver(document, args, context, info) : null;
-      },
-    },
-  };
-  resolvers.push(resolver);
-
-  // if addOriginalField option is enabled, also add original field to schema
-  if (fieldType && field.resolveAs.addOriginalField) {
+  // unless addOriginalField option is disabled in one or more fields, also add original field to schema
+  const addOriginalField = resolveAsArray.every(resolveAs => resolveAs.addOriginalField !== false);
+  // note: do not add original field if resolved field has same name
+  if (addOriginalField && fieldType && field.resolveAs.fieldName && field.resolveAs.fieldName !== fieldName) {
     fields.mainType.push({
       description: fieldDescription,
       name: fieldName,
@@ -430,6 +404,53 @@ export const getResolveAsFields = ({
       directive: fieldDirective,
     });
   }
+
+  resolveAsArray.forEach(resolveAs => {
+    // get resolver name from resolveAs object, or else default to field name
+    const resolverName = resolveAs.fieldName || fieldName;
+
+    // use specified GraphQL type or else convert schema type
+    const fieldGraphQLType = resolveAs.type || fieldType;
+
+    // if resolveAs is an object, first push its type definition
+    // include arguments if there are any
+    // note: resolved fields are not internationalized
+    fields.mainType.push({
+      description: resolveAs.description,
+      name: resolverName,
+      args: resolveAs.arguments,
+      type: fieldGraphQLType,
+    });
+
+    // then build actual resolver object and pass it to addGraphQLResolvers
+    const resolver = {
+      [typeName]: {
+        [resolverName]: (document, args, context, info) => {
+          const { Users, currentUser } = context;
+          // check that current user has permission to access the original non-resolved field
+          const canReadField = Users.canReadField(currentUser, field, document);
+          const { resolver, relation } = resolveAs;
+          if (canReadField) {
+            if (resolver) {
+              return resolver(document, args, context, info);
+            } else {
+              return relations[relation]({
+                document,
+                args,
+                context,
+                info,
+                fieldName,
+                typeName: fieldGraphQLType,
+              });
+            }
+          } else {
+            return null;
+          }
+        },
+      },
+    };
+    resolvers.push(resolver);
+  });
   return { fields, resolvers };
 };
 
@@ -459,7 +480,18 @@ export const getPermissionFields = ({
     selector: [],
     selectorUnique: [],
     orderBy: [],
+    readable: []
   };
+  const {
+    canRead,
+    canCreate,
+    canUpdate,
+    viewableBy,
+    insertableBy,
+    editableBy,
+    selectable,
+    unique,
+  } = field;
   const createInputFieldType = hasNesting
     ? suffixType(prefixType('Create', fieldType), 'DataInput')
     : inputFieldType;
@@ -467,8 +499,16 @@ export const getPermissionFields = ({
     ? suffixType(prefixType('Update', fieldType), 'DataInput')
     : inputFieldType;
 
+  // if field is readable, make it filterable/orderable too
+  if (canRead || viewableBy) {
+    fields.readable.push({
+      name: fieldName,
+      type: fieldType,
+    });
+  }
+
   // OpenCRUD backwards compatibility
-  if (field.canCreate || field.insertableBy) {
+  if (canCreate || insertableBy) {
     fields.create.push({
       name: fieldName,
       type: createInputFieldType,
@@ -476,7 +516,7 @@ export const getPermissionFields = ({
     });
   }
   // OpenCRUD backwards compatibility
-  if (field.canUpdate || field.editableBy) {
+  if (canUpdate || editableBy) {
     fields.update.push({
       name: fieldName,
       type: updateInputFieldType,
@@ -501,23 +541,20 @@ export const getPermissionFields = ({
   //   });
   // }
 
-  if (field.selectable) {
+  if (selectable) {
     fields.selector.push({
       name: fieldName,
       type: inputFieldType,
     });
   }
 
-  if (field.selectable && field.unique) {
+  if (selectable && unique) {
     fields.selectorUnique.push({
       name: fieldName,
       type: inputFieldType,
     });
   }
 
-  if (field.orderable) {
-    fields.orderBy.push(fieldName);
-  }
   return fields;
 };
 
@@ -533,6 +570,7 @@ export const getSchemaFields = (schema, typeName) => {
     selectorUnique: [],
     orderBy: [],
     enums: [],
+    readable: []
   };
   const nestedFieldsList = [];
   const resolvers = [];
@@ -591,7 +629,7 @@ export const getSchemaFields = (schema, typeName) => {
         // TODO: we can't force value creation
         //if (!isValidEnum(allowedValues)) throw new Error(`Allowed values of field ${ fieldName } can not be used as enum.
         //One or more values are not respecting the Name regex`)
-
+ 
         // ignore arrays containing invalid values
         if (isValidEnum(allowedValues)) {
           fields.enums.push({//

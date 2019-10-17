@@ -9,7 +9,7 @@ and register schema parts based on the application collections
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
-import Vulcan from '../config.js'; // used for global export
+//import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import collectionToGraphQL from './collection';
@@ -44,9 +44,7 @@ import { getDefaultResolvers } from '../../server/default_resolvers.js';
 import { getDefaultMutations } from '../../server/default_mutations.js';
 import isEmpty from 'lodash/isEmpty';
 import { Collections } from '../../modules/collections.js';
-import { getSchemaFields } from './schemaFields';
 
-disableFragmentWarnings();
 
 const defaultResolvers = {
   JSON: GraphQLJSON,
@@ -202,6 +200,7 @@ export const GraphQLSchema = {
     };
   },
 
+  /*
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
     let graphQLSchema = '';
@@ -332,79 +331,80 @@ export const GraphQLSchema = {
       }
     }
     graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
+  }*/
+  // generate a GraphQL schema corresponding to a given collection
+  generateSchema(collection) {
+    const {
+      collectionName,
+      typeName,
+      schema,
+      description,
+      interfaces = [],
+      resolvers,
+      mutations,
+    } = getCollectionInfos(collection);
 
-    // generate a GraphQL schema corresponding to a given collection
-    generateSchema(collection) {
-      const {
-        collectionName,
-        typeName,
-        schema,
-        description,
-        interfaces = [],
-        resolvers,
-        mutations,
-      } = getCollectionInfos(collection);
+    // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
 
-      // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    addTypeAndResolvers({ typeName, schema, description, interfaces });
 
-      addTypeAndResolvers({ typeName, schema, description, interfaces });
+    const {
+      graphQLSchema,
+      resolversToAdd = [],
+      queriesToAdd = [],
+      mutationsToAdd = [],
+      mutationsResolversToAdd = [],
+    } = collectionToGraphQL(collection);
+    // register the generated resolvers
+    // schemaResolvers.forEach(addGraphQLResolvers);
+    queriesToAdd.forEach(([query, description]) => {
+      addGraphQLQuery(query, description);
+    });
+    resolversToAdd.forEach(addGraphQLResolvers);
+    mutationsToAdd.forEach(([mutation, description]) => {
+      addGraphQLMutation(mutation, description);
+    });
+    mutationsResolversToAdd.forEach(addGraphQLResolvers);
+    return graphQLSchema;
+  },
+  // getters
+  getSchema() {
+    if (!(this.finalSchema && this.finalSchema.length)) {
+      throw new Error('Warning: trying to access schema before it has been created by the server.');
+    }
+    return this.finalSchema[0];
+  },
+  getExecutableSchema() {
+    if (!this.executableSchema) {
+      throw new Error(
+        'Warning: trying to access executable schema before it has been created by the server.'
+      );
+    }
+    return this.executableSchema;
+  },
+};
 
-      const {
-        graphQLSchema,
-        resolversToAdd = [],
-        queriesToAdd = [],
-        mutationsToAdd = [],
-        mutationsResolversToAdd = [],
-      } = collectionToGraphQL(collection);
-      // register the generated resolvers
-      // schemaResolvers.forEach(addGraphQLResolvers);
-      queriesToAdd.forEach(([query, description]) => {
-        addGraphQLQuery(query, description);
-      });
-      resolversToAdd.forEach(addGraphQLResolvers);
-      mutationsToAdd.forEach(([mutation, description]) => {
-        addGraphQLMutation(mutation, description);
-      });
-      mutationsResolversToAdd.forEach(addGraphQLResolvers);
-      return graphQLSchema;
-    },
-    // getters
-    getSchema() {
-      if (!(this.finalSchema && this.finalSchema.length)) {
-        throw new Error('Warning: trying to access schema before it has been created by the server.');
-      }
-      return this.finalSchema[0];
-    },
-    getExecutableSchema() {
-      if (!this.executableSchema) {
-        throw new Error(
-          'Warning: trying to access executable schema before it has been created by the server.'
-        );
-      }
-      return this.executableSchema;
-    },
-  };
 
-  // Vulcan.getGraphQLSchema = () => {
-  //   if (!GraphQLSchema.finalSchema) {
-  //     throw new Error(
-  //       'Warning: trying to access graphQL schema before it has been created by the server.'
-  //     );
-  //   }
-  //   const schema = GraphQLSchema.finalSchema[0];
-  //   // eslint-disable-next-line no-console
-  //   console.log(schema);
-  //   return schema;
-  // };
+// Vulcan.getGraphQLSchema = () => {
+//   if (!GraphQLSchema.finalSchema) {
+//     throw new Error(
+//       'Warning: trying to access graphQL schema before it has been created by the server.'
+//     );
+//   }
+//   const schema = GraphQLSchema.finalSchema[0];
+//   // eslint-disable-next-line no-console
+//   console.log(schema);
+//   return schema;
+// };
 
-  export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
-  export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
-  export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
-  export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
-  export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
-  export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
-  export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
-  export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
-  export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
-  export const addTypeAndResolvers = GraphQLSchema.addTypeAndResolvers.bind(GraphQLSchema);
-  export const getType = GraphQLSchema.getType.bind(GraphQLSchema);
+export const addGraphQLCollection = GraphQLSchema.addCollection.bind(GraphQLSchema);
+export const addGraphQLSchema = GraphQLSchema.addSchema.bind(GraphQLSchema);
+export const addGraphQLQuery = GraphQLSchema.addQuery.bind(GraphQLSchema);
+export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
+export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
+export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
+export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
+export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
+export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
+export const addTypeAndResolvers = GraphQLSchema.addTypeAndResolvers.bind(GraphQLSchema);
+export const getType = GraphQLSchema.getType.bind(GraphQLSchema);

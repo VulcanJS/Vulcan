@@ -26,8 +26,8 @@ import {
   upsertMutationTemplate,
   deleteMutationTemplate,
   enumTypeTemplate,
-  nestedInputTemplate,
-} from '../graphql_templates.js';
+  //nestedInputTemplate,
+} from '../../modules/graphql_templates';
 
 import { Utils } from '../utils.js';
 

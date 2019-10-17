@@ -77,26 +77,6 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   return gql.apply(null, gqlArguments);
 };
 
-
-
-// TODO: from the new API, check differences with nested one
-export const getDefaultFragmentText = (collection, options = { onlyViewable: true }) => {
-  const schema = collection.simpleSchema()._schema;
-  const fieldNames = _reject(Object.keys(schema), fieldName => {
-    /*
-
-    Exclude a field from the default fragment if
-    1. it has a resolver and addOriginalField is false
-    2. it has $ in its name
-    3. it's not viewable (if onlyViewable option is true)
-
-    */
-    const field = schema[fieldName];
-    // OpenCRUD backwards compatibility
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
-  });
-}
-
 export const getDefaultFragment = collection => {
   const fragmentText = getDefaultFragmentText(collection);
   return fragmentText ? gql`${fragmentText}` : null;
