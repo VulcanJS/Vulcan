@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:forms';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 
 const vulcan_forms = storiesOf('Core/Forms/vulcan-forms', module);
 vulcan_forms.addDecorator(withKnobs);
@@ -94,6 +94,26 @@ vulcan_forms
       }}
     />
   ))
+  .add('FormGroupLine', () => {
+    const label = text('Header label', 'myLabel');
+    const collapsed = boolean('collapsed', false);
+    const hidden = boolean('hidden', false);
+    const hasErrors = boolean('hasErrors', false);
+    const textInside = text('Text inside', 'My text inside');
+    return (
+      <div>
+        <Components.FormGroupHeaderLine label={label} />
+        <Components.FormGroupLayoutLine
+          label="labelInner"
+          anchorName="anchorNameInner"
+          collapsed={collapsed}
+          hidden={hidden}
+          hasErrors={hasErrors}>
+          {textInside}
+        </Components.FormGroupLayoutLine>
+      </div>
+    );
+  })
   .add('Form base-controls MuiSuggest', () => <Components.MuiSuggest options={options} />)
   .add('Form base-controls MuiRequiredIndicator', () => {
     const optional = boolean('optional', false);
