@@ -15,6 +15,6 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:forms']);
+  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:forms', 'vulcan:ui-bootstrap']);
   api.mainModule('./test/index.js');
 });

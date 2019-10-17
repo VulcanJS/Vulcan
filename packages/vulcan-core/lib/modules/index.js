@@ -1,5 +1,6 @@
 
 // import and re-export
+import './callbacks';
 export * from 'meteor/vulcan:lib';
 
 export * from './components.js';
