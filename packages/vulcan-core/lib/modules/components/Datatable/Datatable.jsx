@@ -279,10 +279,13 @@ Datatable.propTypes = {
   showEdit: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
-  newFormOptions: PropTypes.object,
-  editFormOptions: PropTypes.object,
+  newFormProps: PropTypes.object,
+  editFormProps: PropTypes.object,
+  newFormOptions: PropTypes.object, // backwards compatibility
+  editFormOptions: PropTypes.object, // backwards compatibility
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 };
 
 Datatable.defaultProps = {
@@ -319,6 +322,7 @@ const DatatableAbove = (props, { intl }) => {
     updateSearch,
     options,
     newFormOptions,
+    newFormProps,
     Components,
   } = props;
 
@@ -345,6 +349,7 @@ const DatatableAbove = (props, { intl }) => {
           currentUser={currentUser}
           mutationFragmentName={options && options.fragmentName}
           {...newFormOptions}
+          {...newFormProps}
         />
       )}
     </Components.DatatableAboveLayout>

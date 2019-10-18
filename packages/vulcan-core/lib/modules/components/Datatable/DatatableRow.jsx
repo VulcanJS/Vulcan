@@ -19,6 +19,7 @@ const DatatableRow = (props, { intl }) => {
     currentUser,
     options,
     editFormOptions,
+    editFormProps,
     rowClass,
     Components,
   } = props;
@@ -64,6 +65,7 @@ const DatatableRow = (props, { intl }) => {
             mutationFragmentName={options && options.fragmentName}
             modalProps={customModalProps}
             {...editFormOptions}
+            {...editFormProps}
           />
         </Components.DatatableCellLayout>
       ) : null}
