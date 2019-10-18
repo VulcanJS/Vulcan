@@ -6,7 +6,7 @@ import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:forms';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 
-const vulcanFormsBaseControls = storiesOf('Core/Forms/BaseControls', module);
+const vulcanFormsBaseControls = storiesOf('MUI/Forms/BaseControls', module);
 vulcanFormsBaseControls.addDecorator(withKnobs);
 
 const options = [
