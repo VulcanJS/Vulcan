@@ -57,7 +57,7 @@ Note: look into simplifying this
 
 */
 export const isIntlField = fieldSchema => {
-  return fieldSchema.intl;
+  return !!(fieldSchema.intl || fieldSchema.isIntlData);
 };
 
 /*

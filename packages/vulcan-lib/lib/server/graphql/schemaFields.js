@@ -582,8 +582,9 @@ export const getSchemaFields = (schema, typeName) => {
 
     // find types that have a nested schema or have a reference to antoher type
     const isNestedObject = hasNestedSchema(field);
+    // note: intl fields are an exception and are not considered as nested
     const isNestedArray =
-      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema));
+      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field);
     const isReferencedObject = hasTypeName(field);
     const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
     const hasNesting = isNestedArray || isNestedObject || isReferencedObject || isReferencedArray;

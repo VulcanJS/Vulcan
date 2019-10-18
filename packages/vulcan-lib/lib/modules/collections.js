@@ -146,7 +146,6 @@ export const createCollection = options => {
   const {
     typeName,
     collectionName = getCollectionName(typeName),
-    generateGraphQLSchema = true,
     dbCollectionName,
   } = options;
   let { schema } = options;
