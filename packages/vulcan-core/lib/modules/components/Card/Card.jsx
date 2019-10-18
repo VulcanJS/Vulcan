@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import without from 'lodash/without';
-import withComponents from '../containers/withComponents.js';
+import withComponents from '../../containers/withComponents.js';
 import Users from 'meteor/vulcan:users';
 
 /*
