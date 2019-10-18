@@ -31,6 +31,7 @@ import {
   extractFragmentInfo,
   deprecate,
 } from 'meteor/vulcan:lib';
+import merge from 'lodash/merge';
 
 // default query input object
 const defaultInput = {
@@ -60,13 +61,19 @@ const initialPaginationInput = (options, props) => {
  * @param {*} props
  */
 const buildQueryOptions = (options, paginationInput = {}, props) => {
-  const { input = {} } = props;
 
   let {
+    input: optionsInput,
     pollInterval = getSetting('pollInterval', 20000),
     // generic graphQL options
     queryOptions = {},
   } = options;
+
+  // get dynamic input from props
+  const { input: propsInput = {} } = props;
+
+  // merge static and dynamic inputs
+  const input = merge(optionsInput, propsInput);
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
@@ -82,28 +89,6 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
     // note: pollInterval can be set to 0 to disable polling (20s by default)
     pollInterval,
   };
-
-  if (options.fetchPolicy) {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: fetchPolicy)'
-    );
-    queryOptions.fetchPolicy = options.fetchPolicy;
-  }
-  if (typeof options.pollInterval !== 'undefined') {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: pollInterval)'
-    );
-  }
-  // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
-  if (options.notifyOnNetworkStatusChange) {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: notifyOnNetworkStatusChange)'
-    );
-    queryOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
-  }
 
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
   queryOptions.errorPolicy = 'all';
