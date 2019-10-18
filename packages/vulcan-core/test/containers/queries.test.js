@@ -104,7 +104,9 @@ describe('vulcan:core/queries', function () {
       ]; // need multiple mocks, one per query
       const SingleComponent = withSingle({
         collection: Foo,
-        pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        queryOptions: {
+          pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        },
         fragment
       })(TestComponent);
       const wrapper = mount(
@@ -161,7 +163,9 @@ describe('vulcan:core/queries', function () {
       ]; // need multiple mocks, one per query
       const SingleComponent = withSingle({
         collection: Foo,
-        pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        queryOptions: {
+          pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        },
         fragment
       })(TestComponent);
       const wrapper = mount(
@@ -217,7 +221,9 @@ describe('vulcan:core/queries', function () {
       ]; // need multiple mocks, one per query
       const SingleComponent = withSingle({
         collection: Foo,
-        pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        queryOptions: {
+          pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
+        },
         fragment,
         extraQueries: 'extra { foo }'
       })(TestComponent);
@@ -285,7 +291,9 @@ describe('vulcan:core/queries', function () {
       const MultiComponent = withMulti({
         collection: Foo,
         fragment,
-        pollInterval: 0,
+        queryOptions: {
+          pollInterval: 0,
+        }
       })(TestComponent);
 
       const wrapper = mount(

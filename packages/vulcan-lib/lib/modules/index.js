@@ -29,4 +29,5 @@ export * from './detect_locale.js';
 export * from './validation.js';
 export * from './handleOptions';
 export * from './ui_utils';
+export * from './schema_utils';
 // export * from './resolvers.js';

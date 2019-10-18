@@ -3,8 +3,8 @@
  */
 import { Utils } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import _filter from 'lodash/filter';
 import _keys from 'lodash/keys';
+import _filter from 'lodash/filter';
 
 /* getters */
 // filter out fields with "." or "$"
@@ -17,15 +17,10 @@ export const getReadableFields = schema => {
   return getValidFields(schema).filter(fieldName => schema[fieldName].canRead || schema[fieldName].viewableBy);
 };
 
-export const getCreateableFields = schema => {
-  // OpenCRUD backwards compatibility
-  return getValidFields(schema).filter(fieldName => schema[fieldName].canCreate || schema[fieldName].insertableBy);
-};
+/*
 
-export const getUpdateableFields = schema => {
-  // OpenCRUD backwards compatibility
-  return getValidFields(schema).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
-};
+Convert a nested SimpleSchema schema into a JSON object
+If flatten = true, will create a flat object instead of nested tree
 
 /* permissions */
 
@@ -34,8 +29,8 @@ export const getUpdateableFields = schema => {
  * Get an array of all fields editable by a specific user for a given collection
  * @param {Object} user – the user for which to check field permissions
  */
-export const getInsertableFields = function(schema, user) {
-  const fields = _filter(_keys(schema), function(fieldName) {
+export const getInsertableFields = function (schema, user) {
+  const fields = _filter(_keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return Users.canCreateField(user, field);
   });
@@ -47,20 +42,14 @@ export const getInsertableFields = function(schema, user) {
  * Get an array of all fields editable by a specific user for a given collection (and optionally document)
  * @param {Object} user – the user for which to check field permissions
  */
-export const getEditableFields = function(schema, user, document) {
-  const fields = _.filter(_.keys(schema), function(fieldName) {
+export const getEditableFields = function (schema, user, document) {
+  const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return Users.canUpdateField(user, field, document);
   });
   return fields;
 };
 
-/*
-
-Convert a nested SimpleSchema schema into a JSON object
-If flatten = true, will create a flat object instead of nested tree
-
-*/
 export const convertSchema = (schema, flatten = false) => {
   if (schema._schema) {
     let jsonSchema = {};

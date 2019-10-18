@@ -9,15 +9,14 @@ and register schema parts based on the application collections
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
 import GraphQLDate from 'graphql-date';
-import Vulcan from '../../modules/config.js'; // used for global export
-import { Utils } from '../../modules/utils.js';
+//import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
+
+import collectionToGraphQL from './collection';
+import { generateResolversFromSchema } from './resolvers';
 import {
-  selectorInputTemplate,
   mainTypeTemplate,
-  createInputTemplate,
   createDataInputTemplate,
-  updateInputTemplate,
   updateDataInputTemplate,
   selectorUniqueInputTemplate,
   deleteInputTemplate,
@@ -36,17 +35,40 @@ import {
   fieldWhereInputTemplate,
   fieldOrderByInputTemplate,
 } from '../../modules/graphql_templates/index.js';
+import getSchemaFields from './schemaFields';
+
+disableFragmentWarnings();
+
+
 import { getDefaultResolvers } from '../../server/default_resolvers.js';
 import { getDefaultMutations } from '../../server/default_mutations.js';
 import isEmpty from 'lodash/isEmpty';
 import { Collections } from '../../modules/collections.js';
-import { getSchemaFields } from './schemaFields';
 
-disableFragmentWarnings();
 
 const defaultResolvers = {
   JSON: GraphQLJSON,
   Date: GraphQLDate,
+};
+
+/**
+ * Extract relevant collection information and set default values
+ * @param {*} collection
+ */
+const getCollectionInfos = collection => {
+  const collectionName = collection.options.collectionName;
+  const typeName = collection.typeName;
+  const schema = collection.simpleSchema();
+  const description = collection.options.description
+    ? collection.options.description
+    : `Type for ${collectionName}`;
+  return {
+    ...collection.options,
+    collectionName,
+    typeName,
+    schema,
+    description,
+  };
 };
 
 export const GraphQLSchema = {
@@ -75,7 +97,7 @@ export const GraphQLSchema = {
   // generate GraphQL schemas for all registered collections
   getCollectionsSchemas() {
     const collections = Collections.filter(c => c.options.generateGraphQLSchema !== false);
-    
+
     const collectionsSchemas = collections
       .map(collection => {
         return this.generateSchema(collection);
@@ -127,6 +149,58 @@ export const GraphQLSchema = {
     this.directives = deepmerge(this.directives, directive);
   },
 
+  addTypeAndResolvers({ typeName, schema, description = '', interfaces = [] }) {
+    if (!typeName) {
+      throw Error('Error: trying to add type without typeName');
+    }
+
+    const { fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+    const mainType = fields.mainType;
+
+    // generate a graphql type def from the simpleSchema
+    const mainGraphQLSchema = mainTypeTemplate({
+      typeName,
+      fields: mainType,
+      description,
+      interfaces,
+    });
+
+    // add the type and its resolver
+    this.addSchema(mainGraphQLSchema);
+
+    // createTypeDataInput
+    if ((fields.create || []).length) {
+      this.addSchema(createDataInputTemplate({ typeName, fields: fields.create }));
+    }
+    // updateTypeDataInput
+    if ((fields.update || []).length) {
+      this.addSchema(updateDataInputTemplate({ typeName, fields: fields.update }));
+    }
+    const resolvers = generateResolversFromSchema(schema);
+    // only add resolvers if there is at least one
+    if (typeof resolvers === 'object' && Object.keys(resolvers).length >= 1) {
+      this.addResolvers({ [typeName]: resolvers });
+    }
+    schemaResolvers.forEach(addGraphQLResolvers);
+  },
+
+  /**
+   * getType - pass this into the schema to make a nested object type,
+   * referencing another type. This type sould be declared through
+   * createCollection or addTypeAndResolvers
+   *
+   * @param {*} typeName
+   * @returns
+   */
+  getType(typeName) {
+    return {
+      type: Object,
+      blackbox: true,
+      typeName: typeName,
+    };
+  },
+
+  /*
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
     let graphQLSchema = '';
@@ -134,17 +208,6 @@ export const GraphQLSchema = {
     const schemaFragments = [];
 
     const collectionName = collection.options.collectionName;
-
-    const typeName = collection.typeName
-      ? collection.typeName
-      : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
-
-    const schema = collection.simpleSchema()._schema;
-
-    const { fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
-    // register the generated resolvers
-    schemaResolvers.forEach(addGraphQLResolvers);
-
     let { interfaces = [], resolvers, mutations } = collection.options;
 
     const description = collection.options.description
@@ -207,7 +270,7 @@ export const GraphQLSchema = {
         }
         addGraphQLResolvers({ Query: { ...queryResolvers } });
       }
-      
+
       if (mutations !== null) {
         // if mutations are undefined, use defaults
         mutations = isEmpty(mutations) ? getDefaultMutations({ typeName }) : mutations;
@@ -268,10 +331,42 @@ export const GraphQLSchema = {
       }
     }
     graphQLSchema = schemaFragments.join('\n\n') + '\n\n\n';
+  }*/
+  // generate a GraphQL schema corresponding to a given collection
+  generateSchema(collection) {
+    const {
+      collectionName,
+      typeName,
+      schema,
+      description,
+      interfaces = [],
+      resolvers,
+      mutations,
+    } = getCollectionInfos(collection);
 
+    // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
+
+    addTypeAndResolvers({ typeName, schema, description, interfaces });
+
+    const {
+      graphQLSchema,
+      resolversToAdd = [],
+      queriesToAdd = [],
+      mutationsToAdd = [],
+      mutationsResolversToAdd = [],
+    } = collectionToGraphQL(collection);
+    // register the generated resolvers
+    // schemaResolvers.forEach(addGraphQLResolvers);
+    queriesToAdd.forEach(([query, description]) => {
+      addGraphQLQuery(query, description);
+    });
+    resolversToAdd.forEach(addGraphQLResolvers);
+    mutationsToAdd.forEach(([mutation, description]) => {
+      addGraphQLMutation(mutation, description);
+    });
+    mutationsResolversToAdd.forEach(addGraphQLResolvers);
     return graphQLSchema;
   },
-
   // getters
   getSchema() {
     if (!(this.finalSchema && this.finalSchema.length)) {
@@ -288,6 +383,7 @@ export const GraphQLSchema = {
     return this.executableSchema;
   },
 };
+
 
 // Vulcan.getGraphQLSchema = () => {
 //   if (!GraphQLSchema.finalSchema) {
@@ -310,3 +406,5 @@ export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSc
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
 export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
 export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
+export const addTypeAndResolvers = GraphQLSchema.addTypeAndResolvers.bind(GraphQLSchema);
+export const getType = GraphQLSchema.getType.bind(GraphQLSchema);

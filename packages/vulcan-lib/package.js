@@ -60,6 +60,7 @@ Package.onUse(function (api) {
   api.mainModule('lib/client/main.js', 'client');
 });
 
+
 Package.onTest(function (api) {
   api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:lib', 'vulcan:users']);
   api.mainModule('./test/client/index.js', 'client');
