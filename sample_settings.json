@@ -17,8 +17,11 @@
 
     "googleAnalytics": {
       "apiKey": "foo123"
-    }
+    },
 
+    "apolloSsr": {
+      "disable": false
+    }
   },
 
   "defaultEmail": "hello@world.com",
@@ -33,5 +36,5 @@
       "appId": "foo",
       "secret": "bar"
     }
-  }
+  },
 }

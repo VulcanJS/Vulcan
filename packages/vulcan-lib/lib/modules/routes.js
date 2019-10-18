@@ -1,4 +1,4 @@
-import {Components, getComponent} from './components';
+import { Components, getComponent } from './components';
 
 export const Routes = {}; // will be populated on startup 
 export const RoutesTable = {}; // storage for infos about routes themselves
@@ -27,7 +27,7 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
   } else {
 
     // modify the routes table with the new routes
-    addedRoutes.map(({name, path, ...properties}) => {
+    addedRoutes.map(({ name, path, ...properties }) => {
 
       // check if there is already a route registered to this path
       const routeWithSamePath = _.findWhere(RoutesTable, { path });
@@ -50,7 +50,7 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
 
 export const extendRoute = (routeName, routeProps) => {
 
-  const route = _.findWhere(RoutesTable, {name: routeName});
+  const route = _.findWhere(RoutesTable, { name: routeName });
 
   if (route) {
     RoutesTable[route.name] = {
@@ -82,7 +82,7 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
   }
 
   // modify the routes table with the new routes
-  addedRoutes.map(({name, path, ...properties}) => {
+  addedRoutes.map(({ name, path, ...properties }) => {
 
     // get the current child routes for this Route
     const childRoutes = RoutesTable[parentRouteName]['childRoutes'] || [];
@@ -139,7 +139,7 @@ export const populateRoutesApp = () => {
   // loop over each component in the list
   Object.keys(RoutesTable).map(name => {
     // loop over child routes if available
-    if(typeof RoutesTable[name]['childRoutes'] !== typeof undefined){
+    if (typeof RoutesTable[name]['childRoutes'] !== typeof undefined) {
       RoutesTable[name]['childRoutes'].map((item, index) => {
         RoutesTable[name]['childRoutes'][index] = getChildRoute(name, index);
       });
@@ -153,3 +153,9 @@ export const populateRoutesApp = () => {
   });
 };
 
+// Should be used only in tests
+export const emptyRoutes = () => {
+  Object.keys(Routes).map((key) => {
+    delete Routes[key];
+  });
+};
