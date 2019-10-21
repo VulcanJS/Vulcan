@@ -457,6 +457,29 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { field: String resolvedField: Bar }');
       });
+      test('generate a type for a field with addOriginalField=true for at least one resolver of an array of resolveAs', () => {
+        const collection = fooCollection({
+          field: {
+            type: String,
+            optional: true,
+            canRead: ['admins'],
+            resolveAs: [{
+              fieldName: 'resolvedField',
+              type: 'Bar',
+              resolver: () => 'bar',
+              addOriginalField: true,
+            }, {
+              fieldName: 'anotherResolvedField',
+              type: 'Bar',
+              resolver: () => 'bar'
+            }]
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { field: String resolvedField: Bar anotherResolvedField: Bar }');
+      });
 
     });
 
