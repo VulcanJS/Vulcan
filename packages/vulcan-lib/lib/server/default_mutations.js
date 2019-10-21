@@ -55,11 +55,9 @@ export function getDefaultMutations(options) {
         const { Users } = context;
 
         // new API
-        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canCreate');
-        if (typeof permissionsCheck === 'function') {
-          return permissionsCheck(user, document);
-        } else if (Array.isArray(permissionsCheck)) {
-          return Users.isMemberOf(user, permissionsCheck, document);
+        const permissionCheck = get(getCollection(collectionName), 'options.permissions.canCreate');
+        if (permissionCheck) {
+          return Users.permissionCheck(permissionCheck, user, document, context);
         }
 
         // OpenCRUD backwards compatibility
@@ -119,11 +117,9 @@ export function getDefaultMutations(options) {
         const { Users } = context;
 
         // new API
-        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canUpdate');
-        if (typeof permissionsCheck === 'function') {
-          return permissionsCheck(user, document);
-        } else if (Array.isArray(permissionsCheck)) {
-          return Users.isMemberOf(user, permissionsCheck, document);
+        const permissionCheck = get(getCollection(collectionName), 'options.permissions.canUpdate');
+        if (permissionCheck) {
+          return Users.permissionCheck(permissionCheck, user, document, context);
         }
         
         // OpenCRUD backwards compatibility
@@ -242,11 +238,9 @@ export function getDefaultMutations(options) {
         const { Users } = context;
 
         // new API
-        const permissionsCheck = get(getCollection(collectionName), 'options.permissions.canDelete');
-        if (typeof permissionsCheck === 'function') {
-          return permissionsCheck(user, document);
-        } else if (Array.isArray(permissionsCheck)) {
-          return Users.isMemberOf(user, permissionsCheck, document);
+        const permissionCheck = get(getCollection(collectionName), 'options.permissions.canDelete');
+        if (permissionCheck) {
+          return Users.permissionCheck(permissionCheck, user, document, context);
         }
 
         // OpenCRUD backwards compatibility

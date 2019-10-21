@@ -326,6 +326,21 @@ Users.canUpdateField = function (user, field, document) {
   return false;
 };
 
+/** @function
+ * Check if a user passes a permission check (new API)
+ * @param {Object} check - The permission check being tested
+ * @param {Object} user - The user performing the action
+ * @param {Object} document - The document being edited or inserted
+ */
+Users.permissionCheck = (options) => {
+  const { check, user, document } = options;
+  if (typeof check === 'function') {
+    return check(options);
+  } else if (Array.isArray(check)) {
+    return Users.isMemberOf(user, check, document);
+  }
+};
+
 ////////////////////
 // Initialize     //
 ////////////////////

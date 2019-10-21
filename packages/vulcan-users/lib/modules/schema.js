@@ -52,7 +52,7 @@ const UserEmail = {
     canRead: ['admin']
   },
 };
-addTypeAndResolvers({ typeName: 'UserEmail', schema: new SimpleSchema(UserEmail), description: 'The known emails of the user' });
+// addTypeAndResolvers({ typeName: 'UserEmail', schema: new SimpleSchema(UserEmail), description: 'The known emails of the user' });
 
 /**
  * @summary Users schema

@@ -12,6 +12,7 @@ import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
 import Users from 'meteor/vulcan:users';
+import _get from 'lodash/get';
 
 const ascSortOperator = 'asc';
 const descSortOperator = 'desc';
@@ -190,7 +191,7 @@ class Datatable extends PureComponent {
   };
 
   render() {
-    const { Components, modalProps, data } = this.props;
+    const { Components, modalProps, data, currentUser } = this.props;
 
     if (this.props.data) {
       // static JSON datatable
@@ -217,17 +218,26 @@ class Datatable extends PureComponent {
 
       const DatatableWithMulti = compose(withMulti(options))(Components.DatatableContents);
 
+      let canCreate = false;
+
+      // new APIs
+      const permissionCheck = _get(collection, 'options.permissions.canCreate');
+
       // openCRUD backwards compatibility
-      const canInsert =
-        collection.options &&
-        collection.options.mutations &&
-        collection.options.mutations.new &&
-        collection.options.mutations.new.check(this.props.currentUser, null, { Users });
-      const canCreate =
-        collection.options &&
-        collection.options.mutations &&
-        collection.options.mutations.create &&
-        collection.options.mutations.create.check(this.props.currentUser, null, { Users });
+      const check =
+        _get(collection, 'options.mutations.new.check') ||
+        _get(collection, 'options.mutations.create.check');
+
+      if (permissionCheck) {
+        canCreate = Users.permissionCheck({
+          check: permissionCheck,
+          user: currentUser,
+          context: { Users },
+          operationName: 'create',
+        });
+      } else if (check) {
+        canCreate = check && check(currentUser, document, { Users });
+      }
 
       const input = {};
       if (!_isEmpty(this.state.search)) {
@@ -248,8 +258,8 @@ class Datatable extends PureComponent {
             Components={Components}
             {...this.props}
             collection={collection}
-            canInsert={canInsert || canCreate}
-            canUpdate={canInsert || canCreate}
+            canInsert={canCreate}
+            canCreate={canCreate}
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
           />
