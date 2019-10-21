@@ -3,6 +3,8 @@ import intersection from 'lodash/intersection';
 import compact from 'lodash/compact';
 import map from 'lodash/map';
 import difference from 'lodash/difference';
+import get from 'lodash/get';
+import { getCollection } from 'meteor/vulcan:lib';
 
 /**
  * @summary Users.groups object
@@ -48,15 +50,11 @@ Users.createGroup = groupName => {
  */
 Users.getGroups = (user, document) => {
 
-  let userGroups = [];
+  let userGroups = ['guests'];
 
-  if (!user) { // guests user
+  if (user) {
 
-    userGroups = ['guests'];
-
-  } else {
-
-    userGroups = ['members'];
+    userGroups.push('members');
 
     if (document && Users.owns(user, document)) {
       userGroups.push('owners');
@@ -334,11 +332,44 @@ Users.canUpdateField = function (user, field, document) {
  */
 Users.permissionCheck = (options) => {
   const { check, user, document } = options;
-  if (typeof check === 'function') {
+  if (Users.isAdmin(user)) {
+    // admins always pass all permission checks
+    return true;
+  } else if (typeof check === 'function') {
     return check(options);
   } else if (Array.isArray(check)) {
     return Users.isMemberOf(user, check, document);
   }
+};
+
+Users.canCreate = options => {
+  const { collectionName, collection = getCollection(collectionName) } = options;
+  const check = get(collection, 'options.permissions.canCreate');
+  if (!check) {
+    // eslint-disable-next-line no-console
+    console.warn(`Users.canCreate() was called but no [canCreate] permission was defined for collection [${collection.options.collectionName}]`);
+  }
+  return check && Users.permissionCheck({ ...options, check, operationName: 'create' });
+};
+
+Users.canUpdate = options => {
+  const { collectionName, collection = getCollection(collectionName) } = options;
+  const check = get(collection, 'options.permissions.canUpdate');
+  if (!check) {
+    // eslint-disable-next-line no-console
+    console.warn(`Users.canUpdate() was called but no [canUpdate] permission was defined for collection [${collection.options.collectionName}]`);
+  }
+  return check && Users.permissionCheck({ ...options, check, operationName: 'update' });
+};
+
+Users.canDelete = options => {
+  const { collectionName, collection = getCollection(collectionName) } = options;
+  const check = get(collection, 'options.permissions.canDelete');
+  if (!check) {
+    // eslint-disable-next-line no-console
+    console.warn(`Users.canDelete() was called but no [canDelete] permission was defined for collection [${collection.options.collectionName}]`);
+  }
+  return check && Users.permissionCheck({ ...options, check, operationName: 'delete' });
 };
 
 ////////////////////

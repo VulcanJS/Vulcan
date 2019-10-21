@@ -24,7 +24,7 @@ const getObjectFragment = ({
     return null;
 };
 
-// get fragment for a specific field (eith the field name or a nested fragment)
+// get fragment for a specific field (either the field name or a nested fragment)
 const getFieldFragment = ({
     schema,
     fieldName,

@@ -228,7 +228,9 @@ class Datatable extends PureComponent {
         _get(collection, 'options.mutations.new.check') ||
         _get(collection, 'options.mutations.create.check');
 
-      if (permissionCheck) {
+      if (Users.isAdmin(currentUser)) {
+        canCreate = true;
+      } else if (permissionCheck) {
         canCreate = Users.permissionCheck({
           check: permissionCheck,
           user: currentUser,
