@@ -2,13 +2,14 @@ import expect from 'expect';
 
 import { GraphQLSchema } from '../../lib/server/graphql';
 import initGraphQL from '../../lib/server/apollo-server/initGraphQL';
+//import { getIntlString } from '../../lib/modules/intl'
+import { addIntlFields } from '../../lib/modules/collections'
 
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
 import collectionToGraphQL from '../../lib/server/graphql/collection';
 import { getSchemaFields, getGraphQLType } from '../../lib/server/graphql/schemaFields';
-import { getDefaultFragmentText } from '../../lib/modules/graphql/defaultFragment';
 import SimpleSchema from 'simpl-schema';
-import { createDummyCollection } from 'meteor/vulcan:test'
+import { createDummyCollection, normalizeGraphQLSchema } from 'meteor/vulcan:test'
 const test = it;
 
 const fooCollection = (schema) => createDummyCollection({
@@ -19,9 +20,6 @@ const fooCollection = (schema) => createDummyCollection({
   schema
 });
 
-// allow to easily test regex on a graphql string
-// all blanks and series of blanks are replaces by one single space
-const normalizeGraphQLSchema = gqlSchema => gqlSchema.replace(/\s+/g, ' ').trim();
 
 describe('vulcan:lib/graphql', function () {
   // TODO: handle the graphQL init better to fix those tests
@@ -44,7 +42,7 @@ describe('vulcan:lib/graphql', function () {
 
 
   describe('schemaFields - graphql fields generation from simple schema', () => {
-    describe('getGraphQLType', () => {
+    describe('getGraphQLType - associate a graphQL type to a field', () => {
       test('return nested type for nested objects', () => {
         const schema = new SimpleSchema({
           nestedField: {
@@ -61,9 +59,7 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('FooNestedField');
       });
-      /*test('return JSON for nested objects with blackbox option', () => {
-        // TODO: this test might actually be incorrect,
-        // the schema needs to be initialized by the collection
+      test('return JSON for nested objects with blackbox option', () => {
         const schema = new SimpleSchema({
           nestedField: {
             optional: true,
@@ -78,9 +74,9 @@ describe('vulcan:lib/graphql', function () {
             })
           }
         })._schema;
-        const type = getGraphQLType({schema, fieldName:'nestedField', typeName: 'Foo'});
+        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
-      });*/
+      });
       test('return JSON for nested objects that are actual JSON objects', () => {
         const schema = new SimpleSchema({
           nestedField: {
@@ -91,6 +87,31 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
       });
+
+      test('return JSON for input type if provided typeName is JSON', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: Object,
+            typeName: 'JSON'
+          }
+        })
+          ._schema;
+        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
+        expect(type).toBe('JSON');
+
+      })
+      test('return JSON for input type if provided typeName is JSON', () => {
+        const schema = new SimpleSchema({
+          nestedField: {
+            type: Object,
+            typeName: 'JSON'
+          }
+        })
+          ._schema;
+        const inputType = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
+        expect(inputType).toBe('JSON');
+
+      })
 
       test('return nested  array type for arrays of nested objects', () => {
         const schema = new SimpleSchema({
@@ -125,9 +146,13 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' });
         expect(type).toBe('[String]');
       });
+
+      test('return JSON if blackbox is true', () => {
+
+      })
     });
 
-    describe('getSchemaFields', () => {
+    describe('getSchemaFields - get the fields to add to graphQL schema', () => {
 
       test('fields without permissions are ignored', () => {
         const schema = new SimpleSchema({
@@ -195,7 +220,7 @@ describe('vulcan:lib/graphql', function () {
 
     });
   });
-  describe('collection to GraphQL type', () => {
+  describe('collection to GraphQL schema and type', () => {
     describe('basic', () => {
       test('generate a type for a simple collection', () => {
         const collection = fooCollection({
@@ -327,7 +352,65 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type Foo { arrayField: [AlreadyRegisteredType] }');
         expect(normalizedSchema).not.toMatch('type FooArrayField { subField: String }');
       });
+
     });
+
+    describe('intl', () => {
+      test('generate type for intl fields', () => {
+        const collection = fooCollection(
+          addIntlFields(// we need to do this manually, it is handled by a callback when creating the collection
+            {
+              intlField: {
+                intl: true,
+                type: String,
+                canRead: ['admins']
+              }
+            }
+          )
+        )
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { intlField(locale: String): String @intl intlField_intl(locale: String): [IntlValue] @intl }');
+      })
+      test('generate type for intl fields in array', () => {
+        const collection = fooCollection(
+          addIntlFields(// we need to do this manually, it is handled by a callback when creating the collection
+            {
+              arrayField: {
+                type: Array,
+                canRead: ['admins']
+              },
+              'arrayField.$': {
+                type: String,
+                intl: true,
+                canRead: ['admins']
+              }
+            }));
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { arrayField: [IntlValue] }');
+      })
+      test('generate correct type for nested intl fields', () => {
+        const collection = fooCollection({
+          nestedField: {
+            type: new SimpleSchema(
+              addIntlFields(// we need to do this manually, it is handled by a callback when creating the collection
+                {
+                  intlField: {
+                    type: String,
+                    intl: true,
+                    canRead: ['admins']
+                  }
+                })),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { nestedField: FooNestedField }');
+        expect(normalizedSchema).toMatch('type FooNestedField { intlField(locale: String): String @intl intlField_intl(locale: String): [IntlValue] @intl }');
+      })
+    })
 
 
     describe('resolveAs', () => {
@@ -446,9 +529,9 @@ describe('vulcan:lib/graphql', function () {
           expect(normalizedSchema).toMatch('type Foo { nestedField { withAllowedField: FooNestedFieldWithAllowedFieldEnum } }');
           expect(normalizedSchema).toMatch('enum FooNestedFieldWithAllowedFieldEnum { foo bar }');
         });
- 
+     
       });
- 
+     
       test('2 level of nesting', () => {
         const collection = fooCollection({
           entrepreneurLifeCycleHistory: {
@@ -487,7 +570,7 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('type FooEntrepreneurLifeCycleHistory { entrepreneurLifeCycleState: FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum');
         expect(normalizedSchema).toMatch('enum FooEntrepreneurLifeCycleHistoryEntrepreneurLifeCycleStateEnum { booster explorer starter tester }');
       });
- 
+     
       test("support enum type in array children", () => {
         throw new Error("test not written yet")
         const schema = {
@@ -715,164 +798,6 @@ describe('vulcan:lib/graphql', function () {
     });
   });
 
-  describe('default fragment generation', () => {
-    test('generate default fragment for basic collection', () => {
-      const collection = fooCollection({
-        foo: {
-          type: String,
-          canRead: ['guests']
-        },
-        bar: {
-          type: String,
-          canRead: ['guests']
-        }
-
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo bar }');
-    });
-    test('generate default fragment with nested object', () => {
-      const collection = fooCollection({
-        foo: {
-          type: String,
-          canRead: ['guests']
-        },
-        nestedField: {
-          canRead: ['guests'],
-          type: new SimpleSchema({
-            bar: {
-              type: String,
-              canRead: ['guests']
-            }
-          })
-        }
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo nestedField { bar } }');
-    });
-    test('generate default fragment with blackbox JSON object (no nesting)', () => {
-      const collection = fooCollection({
-        foo: {
-          type: String,
-          canRead: ['guests']
-        },
-        object: {
-          canRead: ['guests'],
-          type: Object
-        }
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo object }');
-    });
-    test('generate default fragment with nested array of objects', () => {
-      const collection = fooCollection({
-        arrayField: {
-          type: Array,
-          canRead: ['admins']
-
-        },
-        'arrayField.$': {
-          type: new SimpleSchema({
-            subField: {
-              type: String,
-              canRead: ['admins']
-            }
-          }),
-          canRead: ['admins']
-        }
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField { subField } }');
-    });
-    test('generate default fragment with array of native values', () => {
-      const collection = fooCollection({
-        arrayField: {
-          type: Array,
-          canRead: ['admins']
-
-        },
-        'arrayField.$': {
-          type: Number,
-          canRead: ['admins']
-        }
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField }');
-
-    });
-
-    test('add field with resolveAs only if addOriginalField is true', () => {
-      const collection = fooCollection({
-        // ignored in default fragments
-        object: {
-          type: Object,
-          canRead: ['admins'],
-          resolveAs: {
-            fieldName: 'resolvedObject',
-            type: 'People',
-            resolver: () => (null)
-          }
-        },
-        json: {
-          type: Object,
-          canRead: ['admins'],
-          resolveAs: {
-            fieldName: 'resolvedJSON',
-            type: 'JSON',
-            resolver: () => null,
-            addOriginalField: true
-          }
-        },
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
-
-    });
-    test('ignore referenced schemas', () => {
-      const collection = fooCollection({
-        field: {
-          type: String,
-          canRead: ['admins']
-        },
-        // ignored in default fragments
-        address: {
-          type: Object,
-          typeName: 'Address',
-          canRead: ['admins'],
-        },
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
-    });
-    test('ignore referenced schemas in array child', () => {
-      const collection = fooCollection({
-        field: {
-          type: String,
-          canRead: ['admins']
-        },
-        emails: {
-          type: Array,
-          optional: true,
-          canRead: ['admin']
-        },
-        'emails.$': {
-          type: Object,
-          typeName: 'UserEmail',
-          optional: true,
-        },
-      });
-      const fragment = getDefaultFragmentText(collection);
-      const normalizedFragment = normalizeGraphQLSchema(fragment);
-      expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { field }');
-    });
-  });
 
   describe('resolvers', () => {
     test.skip('use default resolvers if none is specified', () => {

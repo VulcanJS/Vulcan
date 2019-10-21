@@ -17,3 +17,6 @@ export const hasAllowedValues = field => {
     }
     return !!allowedValues;
 };
+
+
+export const isBlackbox = (field) => field.type.definitions[0].blackbox;

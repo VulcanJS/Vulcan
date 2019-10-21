@@ -396,7 +396,7 @@ registerCallback({
 });
 
 // generate foo_intl fields
-function addIntlFields(schema) {
+export function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema)) {
