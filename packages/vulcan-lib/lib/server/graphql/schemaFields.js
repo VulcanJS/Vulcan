@@ -240,7 +240,7 @@ export const getSchemaFields = (schema, typeName) => {
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
-import { /*hasAllowedValues, getAllowedValues,*/ unarrayfyFieldName } from '../../modules/simpleSchema_utils';
+import { /*hasAllowedValues, getAllowedValues,*/isBlackbox, unarrayfyFieldName } from '../../modules/simpleSchema_utils';
 import relations from './relations.js';
 
 const capitalize = word => {
@@ -326,11 +326,11 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
 
     case 'Object':
       // 3 cases: it's a nested Schema, a referenced schema, or an actual JSON
-      if (!field.blackbox && fieldType._schema) {
+      if (!isBlackbox(field) && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName, isInput);
       }
       // referenced Schema
-      if (field.type.definitions[0].blackbox && field.typeName) {
+      if (/*field.type.definitions[0].blackbox && */field.typeName && field.typeName !== 'JSON') {
         return isInput ? field.typeName + 'Input' : field.typeName;
       }
       // blackbox JSON object

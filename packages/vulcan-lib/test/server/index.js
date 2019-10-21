@@ -7,3 +7,4 @@ import './mutators.test';
 import './apollo-ssr.test';
 import './mutations.test';
 import './resolvers.test';
+import './fragments.test';
