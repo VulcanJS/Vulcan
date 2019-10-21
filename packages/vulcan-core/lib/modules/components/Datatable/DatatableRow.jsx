@@ -34,10 +34,13 @@ const DatatableRow = (props, { intl }) => {
     get(collection, 'options.mutations.edit.check') ||
     get(collection, 'options.mutations.update.check');
 
-  if (permissionCheck) {
+  if (Users.isAdmin(currentUser)) {
+    canUpdate = true;
+  } else if (permissionCheck) {
     canUpdate = Users.permissionCheck({
       check: permissionCheck,
       user: currentUser,
+      document,
       context: { Users },
       operationName: 'update',
     });

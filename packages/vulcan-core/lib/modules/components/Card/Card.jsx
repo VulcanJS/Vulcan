@@ -1,8 +1,4 @@
-import {
-  registerComponent,
-  Components,
-  formatLabel,
-} from 'meteor/vulcan:lib';
+import { registerComponent, Components, formatLabel } from 'meteor/vulcan:lib';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -10,6 +6,7 @@ import classNames from 'classnames';
 import without from 'lodash/without';
 import withComponents from '../../containers/withComponents.js';
 import Users from 'meteor/vulcan:users';
+import get from 'lodash/get';
 
 /*
 
@@ -90,11 +87,28 @@ const Card = (
   { intl }
 ) => {
   const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
-  const canEdit =
-    showEdit &&
-    currentUser &&
-    collection &&
-    collection.options.mutations.update.check(currentUser, document, { Users });
+
+  let canUpdate = false;
+
+  // new APIs
+  const permissionCheck = get(collection, 'options.permissions.canUpdate');
+  // openCRUD backwards compatibility
+  const check =
+    get(collection, 'options.mutations.edit.check') ||
+    get(collection, 'options.mutations.update.check');
+
+  if (Users.isAdmin(currentUser)) {
+    canUpdate = true;
+  } else if (permissionCheck) {
+    canUpdate = Users.permissionCheck({
+      check: permissionCheck,
+      user: currentUser,
+      context: { Users },
+      operationName: 'update',
+    });
+  } else if (check) {
+    canUpdate = check && check(currentUser, document, { Users });
+  }
 
   return (
     <div
@@ -102,7 +116,7 @@ const Card = (
       {title && <div className="datacard-title">{title}</div>}
       <table className="table table-bordered" style={{ maxWidth: '100%' }}>
         <tbody>
-          {canEdit ? (
+          {showEdit && canUpdate ? (
             <CardEdit collection={collection} document={document} {...editFormProps} />
           ) : null}
           {fieldNames.map((fieldName, index) => (
