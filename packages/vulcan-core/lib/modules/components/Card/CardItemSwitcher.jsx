@@ -109,7 +109,7 @@ const CardItemSwitcher = props => {
           return <Components.CardItemImage {...itemProps} force={true} />;
 
         case 'url':
-          return <Components.CardItemUrl {...itemProps} force={true} />;
+          return <Components.CardItemURL {...itemProps} force={true} />;
 
         default:
           // still attempt to parse string as an image or URL if possible

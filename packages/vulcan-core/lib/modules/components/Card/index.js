@@ -3,6 +3,7 @@ import './CardItemDate';
 import './CardItemDefault';
 import './CardItemHTML';
 import './CardItemImage';
+import './CardItemURL';
 import './CardItemNumber';
 import './CardItemObject';
 import './CardItemString';
