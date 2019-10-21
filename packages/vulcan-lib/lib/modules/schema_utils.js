@@ -30,14 +30,14 @@ export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(sche
     /*
    
     Exclude a field from the default fragment if
-    1. it has a resolver and addOriginalField is false
+    1. it has a resolver and addOriginalField is specifically defined as false
     2. it has $ in its name
     3. it's not viewable (if onlyViewable option is true)
     4. it is not a reference type (typeName is defined for the field or an array child)
     */
     const field = schema[fieldName];
     // OpenCRUD backwards compatibility
-    return (field.resolveAs && !field.resolveAs.addOriginalField)
+    return (field.resolveAs && field.resolveAs.addOriginalField === false)
         || fieldName.includes('$') || fieldName.includes('.')
         || options.onlyViewable && !(field.canRead || field.viewableBy)
         || field.typeName || schema[`${fieldName}.$`] && schema[`${fieldName}.$`].typeName;

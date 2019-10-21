@@ -51,13 +51,19 @@ export function getDefaultMutations(options) {
 
       // check function called on a user to see if they can perform the operation
       check(user, document, context) {
-
         const { Users } = context;
 
         // new API
         const permissionCheck = get(getCollection(collectionName), 'options.permissions.canCreate');
         if (permissionCheck) {
-          return Users.permissionCheck(permissionCheck, user, document, context);
+          return Users.permissionCheck({
+            check: permissionCheck,
+            user,
+            document,
+            context,
+            collection: context[collectionName],
+            operationName: 'create',
+          });
         }
 
         // OpenCRUD backwards compatibility
@@ -113,15 +119,21 @@ export function getDefaultMutations(options) {
 
       // check function called on a user and document to see if they can perform the operation
       check(user, document, context) {
-
         const { Users } = context;
 
         // new API
         const permissionCheck = get(getCollection(collectionName), 'options.permissions.canUpdate');
         if (permissionCheck) {
-          return Users.permissionCheck(permissionCheck, user, document, context);
+          return Users.permissionCheck({
+            check: permissionCheck,
+            user,
+            document,
+            context,
+            collection: context[collectionName],
+            operationName: 'update',
+          });
         }
-        
+
         // OpenCRUD backwards compatibility
         const check = mutationOptions.updateCheck || mutationOptions.editCheck;
         if (check) {
@@ -234,13 +246,19 @@ export function getDefaultMutations(options) {
       name: mutationName,
 
       check(user, document, context) {
-
         const { Users } = context;
 
         // new API
         const permissionCheck = get(getCollection(collectionName), 'options.permissions.canDelete');
         if (permissionCheck) {
-          return Users.permissionCheck(permissionCheck, user, document, context);
+          return Users.permissionCheck({
+            check: permissionCheck,
+            user,
+            document,
+            context,
+            collection: context[collectionName],
+            operationName: 'delete',
+          });
         }
 
         // OpenCRUD backwards compatibility
