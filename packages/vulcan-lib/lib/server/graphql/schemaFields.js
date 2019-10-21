@@ -241,6 +241,7 @@ export const getSchemaFields = (schema, typeName) => {
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
 import { /*hasAllowedValues, getAllowedValues,*/isBlackbox, unarrayfyFieldName } from '../../modules/simpleSchema_utils';
+import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
 
 const capitalize = word => {
@@ -393,9 +394,9 @@ export const getResolveAsFields = ({
   const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
   // unless addOriginalField option is disabled in one or more fields, also add original field to schema
-  const addOriginalField = resolveAsArray.every(resolveAs => resolveAs.addOriginalField !== false);
+  const addOriginalField = shouldAddOriginalField(fieldName, field);
   // note: do not add original field if resolved field has same name
-  if (addOriginalField && fieldType && field.resolveAs.fieldName && field.resolveAs.fieldName !== fieldName) {
+  if (addOriginalField) {
     fields.mainType.push({
       description: fieldDescription,
       name: fieldName,
