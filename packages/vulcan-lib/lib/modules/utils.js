@@ -27,7 +27,7 @@ export const Utils = {};
  * @summary Convert a camelCase string to dash-separated string
  * @param {String} str
  */
-Utils.camelToDash = function(str) {
+Utils.camelToDash = function (str) {
   return str
     .replace(/\W+/g, '-')
     .replace(/([a-z\d])([A-Z])/g, '$1-$2')
@@ -39,8 +39,8 @@ Utils.camelToDash = function(str) {
  * See http://stackoverflow.com/questions/4149276/javascript-camelcase-to-regular-form
  * @param {String} str
  */
-Utils.camelToSpaces = function(str) {
-  return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str) {
+Utils.camelToSpaces = function (str) {
+  return str.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
     return str.toUpperCase();
   });
 };
@@ -62,7 +62,7 @@ Utils.toTitleCase = str =>
  * @summary Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */
-Utils.underscoreToDash = function(str) {
+Utils.underscoreToDash = function (str) {
   return str.replace('_', '-');
 };
 
@@ -70,8 +70,8 @@ Utils.underscoreToDash = function(str) {
  * @summary Convert a dash separated string to camelCase.
  * @param {String} str
  */
-Utils.dashToCamel = function(str) {
-  return str.replace(/(\-[a-z])/g, function($1) {
+Utils.dashToCamel = function (str) {
+  return str.replace(/(\-[a-z])/g, function ($1) {
     return $1.toUpperCase().replace('-', '');
   });
 };
@@ -80,7 +80,7 @@ Utils.dashToCamel = function(str) {
  * @summary Convert a string to camelCase and remove spaces.
  * @param {String} str
  */
-Utils.camelCaseify = function(str) {
+Utils.camelCaseify = function (str) {
   str = this.dashToCamel(str.replace(' ', '-'));
   str = str.slice(0, 1).toLowerCase() + str.slice(1);
   return str;
@@ -91,7 +91,7 @@ Utils.camelCaseify = function(str) {
  * @param {String} s - Sentence to trim.
  * @param {Number} numWords - Number of words to trim sentence to.
  */
-Utils.trimWords = function(s, numWords) {
+Utils.trimWords = function (s, numWords) {
   if (!s) return s;
 
   var expString = s.split(/\s+/, numWords);
@@ -103,7 +103,7 @@ Utils.trimWords = function(s, numWords) {
  * @summary Trim a block of HTML code to get a clean text excerpt
  * @param {String} html - HTML to trim.
  */
-Utils.trimHTML = function(html, numWords) {
+Utils.trimHTML = function (html, numWords) {
   var text = Utils.stripHTML(html);
   return Utils.trimWords(text, numWords);
 };
@@ -112,27 +112,27 @@ Utils.trimHTML = function(html, numWords) {
  * @summary Capitalize a string.
  * @param {String} str
  */
-Utils.capitalize = function(str) {
+Utils.capitalize = function (str) {
   return str && str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-Utils.t = function(message) {
+Utils.t = function (message) {
   var d = new Date();
   console.log(
     '### ' + message + ' rendered at ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
   ); // eslint-disable-line
 };
 
-Utils.nl2br = function(str) {
+Utils.nl2br = function (str) {
   var breakTag = '<br />';
   return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 };
 
-Utils.scrollPageTo = function(selector) {
+Utils.scrollPageTo = function (selector) {
   $('body').scrollTop($(selector).offset().top);
 };
 
-Utils.scrollIntoView = function(selector) {
+Utils.scrollIntoView = function (selector) {
   if (!document) return;
 
   const element = document.querySelector(selector);
@@ -141,7 +141,7 @@ Utils.scrollIntoView = function(selector) {
   }
 };
 
-Utils.getDateRange = function(pageNumber) {
+Utils.getDateRange = function (pageNumber) {
   var now = moment(new Date());
   var dayToDisplay = now.subtract(pageNumber - 1, 'days');
   var range = {};
@@ -159,7 +159,7 @@ Utils.getDateRange = function(pageNumber) {
 /**
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Add trailing '/' if missing
  */
-Utils.getSiteUrl = function() {
+Utils.getSiteUrl = function () {
   let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) !== '/') {
     url += '/';
@@ -170,7 +170,7 @@ Utils.getSiteUrl = function() {
 /**
  * @summary Returns the user defined site URL or Meteor.absoluteUrl. Remove trailing '/' if it exists
  */
-Utils.getRootUrl = function() {
+Utils.getRootUrl = function () {
   let url = getSetting('siteUrl', Meteor.absoluteUrl());
   if (url.slice(-1) === '/') {
     url = url.slice(0, -1);
@@ -182,11 +182,11 @@ Utils.getRootUrl = function() {
  * @summary The global namespace for Vulcan utils.
  * @param {String} url - the URL to redirect
  */
-Utils.getOutgoingUrl = function(url) {
+Utils.getOutgoingUrl = function (url) {
   return Utils.getSiteUrl() + 'out?url=' + encodeURIComponent(url);
 };
 
-Utils.slugify = function(s) {
+Utils.slugify = function (s) {
   let slug = getSlug(s, {
     truncate: 60,
   });
@@ -208,7 +208,7 @@ Utils.slugify = function(s) {
  * avoid the slug changing
  * @returns {string} The slug passed in the 2nd param, but may be
  */
-Utils.getUnusedSlug = function(collection, slug, documentId) {
+Utils.getUnusedSlug = function (collection, slug, documentId) {
   // test if slug is already in use
   for (let index = 0; index <= Number.MAX_SAFE_INTEGER; index++) {
     const suffix = index ? '-' + index : '';
@@ -243,15 +243,15 @@ Utils.getUnusedSlug = function(collection, slug, documentId) {
  * @param {string} [documentId]
  * @returns {string}
  */
-Utils.getUnusedSlugByCollectionName = function(collectionName, slug, documentId) {
+Utils.getUnusedSlugByCollectionName = function (collectionName, slug, documentId) {
   return Utils.getUnusedSlug(getCollection(collectionName), slug, documentId);
 };
 
-Utils.getShortUrl = function(post) {
+Utils.getShortUrl = function (post) {
   return post.shortUrl || post.url;
 };
 
-Utils.getDomain = function(url) {
+Utils.getDomain = function (url) {
   try {
     return urlObject.parse(url).hostname.replace('www.', '');
   } catch (error) {
@@ -260,7 +260,7 @@ Utils.getDomain = function(url) {
 };
 
 // add http: if missing
-Utils.addHttp = function(url) {
+Utils.addHttp = function (url) {
   try {
     if (url.substring(0, 5) !== 'http:' && url.substring(0, 6) !== 'https:') {
       url = 'http:' + url;
@@ -275,25 +275,25 @@ Utils.addHttp = function(url) {
 // String Helper Functions //
 /////////////////////////////
 
-Utils.cleanUp = function(s) {
+Utils.cleanUp = function (s) {
   return this.stripHTML(s);
 };
 
-Utils.sanitize = function(s) {
+Utils.sanitize = function (s) {
   return s;
 };
 
-Utils.stripHTML = function(s) {
+Utils.stripHTML = function (s) {
   return s.replace(/<(?:.|\n)*?>/gm, '');
 };
 
-Utils.stripMarkdown = function(s) {
+Utils.stripMarkdown = function (s) {
   var htmlBody = marked(s);
   return Utils.stripHTML(htmlBody);
 };
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key
-Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
+Utils.checkNested = function (obj /*, level1, level2, ... levelN*/) {
   var args = Array.prototype.slice.call(arguments);
   obj = args.shift();
 
@@ -306,14 +306,14 @@ Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
   return true;
 };
 
-Utils.log = function(s) {
+Utils.log = function (s) {
   if (getSetting('debug', false) || process.env.NODE_ENV === 'development') {
     console.log(s); // eslint-disable-line
   }
 };
 
 // see http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
-Utils.getNestedProperty = function(obj, desc) {
+Utils.getNestedProperty = function (obj, desc) {
   var arr = desc.split('.');
   while (arr.length && (obj = obj[arr.shift()]));
   return obj;
@@ -321,9 +321,9 @@ Utils.getNestedProperty = function(obj, desc) {
 
 // see http://stackoverflow.com/a/14058408/649299
 _.mixin({
-  compactObject: function(object) {
+  compactObject: function (object) {
     var clone = _.clone(object);
-    _.each(clone, function(value, key) {
+    _.each(clone, function (value, key) {
       /*
 
         Remove a value if:
@@ -380,7 +380,7 @@ Utils.findIndex = (array, predicate) => {
 };
 
 // adapted from http://stackoverflow.com/a/22072374/649299
-Utils.unflatten = function(array, options, parent, level = 0, tree) {
+Utils.unflatten = function (array, options, parent, level = 0, tree) {
   const {
     idProperty = '_id',
     parentIdProperty = 'parentId',
@@ -519,7 +519,7 @@ Utils.getRoutePath = routeName => {
   return Routes[routeName] && Routes[routeName].path;
 };
 
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.replace(new RegExp(search, 'g'), replacement);
 };
@@ -559,3 +559,17 @@ Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
  * @param {Object} field
  */
 Utils.getFieldType = field => get(field, 'type.definitions.0.type');
+
+
+/**
+ * Convert an array of field names into a Mongo fields specifier
+ * @param {Array} fieldsArray
+ */
+Utils.arrayToFields = fieldsArray => {
+  return _.object(
+    fieldsArray,
+    _.map(fieldsArray, function () {
+      return true;
+    })
+  );
+};
