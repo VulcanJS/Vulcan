@@ -125,3 +125,5 @@ Card.contextTypes = {
 };
 
 registerComponent('Card', Card);
+
+export default Card;
