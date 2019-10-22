@@ -3,7 +3,7 @@ import intersection from 'lodash/intersection';
 import compact from 'lodash/compact';
 import map from 'lodash/map';
 import difference from 'lodash/difference';
-import { Utils } from 'meteor/vulcan:lib';
+import { Utils, deprecate } from 'meteor/vulcan:lib';
 
 
 /**
@@ -212,6 +212,7 @@ Users.canReadField = function (user, field, document) {
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
+  deprecate('1.13.4', 'getViewableFields is deprecated. Use Users.getReadableProjection to get a Mongo projection, or Users.getReadableFields if you need an array of field.');
   return Users.getReadableProjection(user, collection, document);
 };
 
