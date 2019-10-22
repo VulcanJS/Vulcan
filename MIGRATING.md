@@ -5,7 +5,9 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 ## From 1.13.3 to ...
 
+### Material UI
 - `import MuiThemeProvider from @material-ui/core/styles/MuiThemeProvider"` becomes `import { MuiThemeProvider } from "@material-ui/core/styles"`
+- More broadly follow https://material-ui.com/guides/migration-v3/ to update Material UI to v4
 
 ## From 1.13.2 to 1.13.3
 
