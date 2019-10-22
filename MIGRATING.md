@@ -5,6 +5,8 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 ## From 1.13.3 to ...
 
+- Replace `Users.getViewableFields` by `Users.getReadableProjection` 
+
 ### Material UI
 - Update to v4 `meteor npm i --save-exact @material-ui/core@4.5.1`
 - `import MuiThemeProvider from @material-ui/core/styles/MuiThemeProvider"` becomes `import { MuiThemeProvider } from "@material-ui/core/styles"`
