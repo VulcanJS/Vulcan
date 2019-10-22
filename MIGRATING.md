@@ -2,6 +2,11 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
+
+## From 1.13.3 to ...
+
+- `import MuiThemeProvider from @material-ui/core/styles/MuiThemeProvider"` becomes `import { MuiThemeProvider } from "@material-ui/core/styles"`
+
 ## From 1.13.2 to 1.13.3
 
 - Update React to a version over 16.8 (and under 17 which will bring breaking changes) to access hooks
