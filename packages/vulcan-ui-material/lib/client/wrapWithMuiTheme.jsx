@@ -1,21 +1,21 @@
 import React from 'react';
 import { addCallback, registerComponent, Components } from 'meteor/vulcan:core';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { getCurrentTheme } from '../modules/themes';
 import JssCleanup from '../components/theme/JssCleanup';
 
-class ThemeProvider extends React.Component {
+class AppThemeProvider extends React.Component {
   render() {
     const theme = getCurrentTheme();
     return (
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <JssCleanup>{this.props.children}</JssCleanup>
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   }
 }
 
-registerComponent('ThemeProvider', ThemeProvider);
+registerComponent('ThemeProvider', AppThemeProvider);
 
 function wrapWithMuiTheme(app) {
   return <Components.ThemeProvider>{app}</Components.ThemeProvider>;

@@ -1,43 +1,44 @@
 import React from 'react';
 import { addCallback } from 'meteor/vulcan:core';
-import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiThemeProvider, createGenerateClassName } from '@material-ui/core/styles';
+import {
+  StylesProvider,
+  ServerStyleSheets,
+  ThemeProvider,
+  createGenerateClassName
+} from '@material-ui/core/styles';
 import { getCurrentTheme } from '../modules/themes';
-import { SheetsRegistry } from 'react-jss/lib/jss';
 import JssCleanup from '../components/theme/JssCleanup';
 
 function wrapWithMuiTheme(app, { context }) {
-  const sheetsRegistry = new SheetsRegistry();
-  context.sheetsRegistry = sheetsRegistry;
-
-  const sheetsManager = new Map();
+  const sheets = new ServerStyleSheets();
+  context.sheetsRegistry = sheets;
 
   const theme = getCurrentTheme();
-  return (
-    <JssProvider registry={sheetsRegistry} disableStylesGeneration={true}>
-      <MuiThemeProvider theme={theme} sheetsManager={sheetsManager} disableStylesGeneration={true}>
+
+  return sheets.collect(
+    <StylesProvider disableGeneration={true}>
+      <ThemeProvider theme={theme}>
         <JssCleanup>{app}</JssCleanup>
-      </MuiThemeProvider>
-    </JssProvider>
+      </ThemeProvider>
+    </StylesProvider>
   );
 }
 
 function wrapWithMuiStyleGenerator(app, { context }) {
-  const sheetsRegistry = new SheetsRegistry();
-  context.sheetsRegistry = sheetsRegistry;
+  const sheets = new ServerStyleSheets();
+  context.sheetsRegistry = sheets;
 
-  const sheetsManager = new Map();
 
   const theme = getCurrentTheme();
 
   const generateClassName = createGenerateClassName({ seed: '' });
 
-  return (
-    <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-      <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
+  return sheets.collect(
+    <StylesProvider generateClassName={generateClassName}>
+      <ThemeProvider theme={theme}>
         <JssCleanup>{app}</JssCleanup>
-      </MuiThemeProvider>
-    </JssProvider>
+      </ThemeProvider>
+    </StylesProvider>
   );
 }
 
