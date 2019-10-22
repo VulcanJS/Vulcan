@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
+import MuiFab from '@material-ui/core/Fab';
 import MuiButton from '@material-ui/core/Button';
 import MuiIconButton from '@material-ui/core/IconButton';
 import withTheme from '@material-ui/core/styles/withTheme';
@@ -104,6 +105,10 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
       break;
   }
 
+  // switch between Fab or Button
+  const ButtonComponent = ['fab', 'extendedFab'].includes(variant) ? MuiFab : MuiButton;
+  variant = variant === 'extendedFab' ? 'extended' : variant;
+
   const root = ['success', 'warning', 'danger', 'info', 'light', 'dark'].includes(variant)
     ? classes[outline ? outline + '_' + variant : variant]
     : null;
@@ -135,9 +140,9 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
   }
 
   return (
-    <MuiButton color={color} variant={variant} size={size} classes={{ root }} {...rest}>
+    <ButtonComponent color={color} variant={variant} size={size} classes={{ root }} {...rest}>
       {children}
-    </MuiButton>
+    </ButtonComponent>
   );
 };
 
@@ -164,6 +169,8 @@ Button.propTypes = {
     'outline-light',
     'outline-dark',
     'inherit',
+    'fab',
+    'extendedFab',
   ]),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   iconButton: PropTypes.bool,

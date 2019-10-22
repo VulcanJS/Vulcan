@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
+import Fab from '@material-ui/core/Fab';
 
 const styles = theme => ({
   root: {
@@ -83,14 +84,13 @@ const TooltipIntl = (props, { intl }) => {
         }}>
         <span className={classes.buttonWrap}>
           {variant === 'fab' && !!icon ? (
-            <Button
+            <Fab
               className={classNames(classes.button, slug)}
-              variant="fab"
               aria-label={title}
               ref={buttonRef}
               {...properties}>
               {iconWithClass}
-            </Button>
+            </Fab>
           ) : !!icon ? (
             <IconButton
               className={classNames(classes.button, slug)}
