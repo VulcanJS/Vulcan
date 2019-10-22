@@ -1,68 +1,62 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { 
-  Components, registerComponent, instantiateComponent,
-  getHtmlInputProps
- } from 'meteor/vulcan:core';
+import {
+  Components,
+  registerComponent,
+  instantiateComponent,
+  getHtmlInputProps,
+} from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
 
-
 const styles = theme => ({
-  
   formInput: {
     position: 'relative',
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
     '&:last-child': {
       marginBottom: 0,
-    }
+    },
   },
-  
+
   halfWidthLeft: {
     display: 'inline-block',
     width: '48%',
     verticalAlign: 'top',
     marginRight: '4%',
   },
-  
+
   halfWidthRight: {
     display: 'inline-block',
     width: '48%',
     verticalAlign: 'top',
   },
-  
+
   thirdWidthLeft: {
     display: 'inline-block',
     width: '31%',
     verticalAlign: 'top',
     marginRight: '3.5%',
   },
-  
+
   thirdWidthRight: {
     display: 'inline-block',
     width: '31%',
     verticalAlign: 'top',
   },
-  
+
   hidden: {
     display: 'none',
   },
-  
 });
 
-
 class FormComponentInner extends PureComponent {
-  
   getProperties = () => {
-    return _omit(
-      getHtmlInputProps(this.props),
-      'classes'
-    );
+    return _omit(getHtmlInputProps(this.props), 'classes');
   };
-  
-  render () {
+
+  render() {
     const {
       classes,
       inputClassName,
@@ -76,9 +70,9 @@ class FormComponentInner extends PureComponent {
       nestedInput,
       formComponents,
     } = this.props;
-  
+
     const FormComponents = formComponents;
-    
+
     const inputClass = classNames(
       classes.formInput,
       hidden && classes.hidden,
@@ -86,31 +80,28 @@ class FormComponentInner extends PureComponent {
       `input-${name}`,
       `form-component-${input || 'default'}`
     );
-    
+
     const properties = this.getProperties();
-  
+
     const FormInput = formInput;
-  
+
     if (intlInput) {
       return <Components.FormIntl {...properties} />;
     } else {
       return (
         <div className={inputClass}>
           {instantiateComponent(beforeComponent, properties)}
-          <FormInput {...properties}/>
+          <FormInput {...properties} />
           {instantiateComponent(afterComponent, properties)}
         </div>
       );
     }
-    
   }
 }
-
 
 FormComponentInner.contextTypes = {
   intl: intlShape,
 };
-
 
 FormComponentInner.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -129,8 +120,6 @@ FormComponentInner.propTypes = {
   formInput: PropTypes.func.isRequired,
 };
 
-
 FormComponentInner.displayName = 'FormComponentInner';
-
 
 registerComponent('FormComponentInner', FormComponentInner, [withStyles, styles]);

@@ -120,15 +120,17 @@ class Datatable extends PureComponent {
 
   render() {
     if (this.props.data) {
-      return <Components.DatatableContents
-        columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-        results={this.props.data}
-        count={this.props.data.length}
-        totalCount={this.props.data.length}
-        showEdit={false}
-        showNew={false}
-        {...this.props}
-      />;
+      return (
+        <Components.DatatableContents
+          columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
+          results={this.props.data}
+          count={this.props.data.length}
+          totalCount={this.props.data.length}
+          showEdit={false}
+          showNew={false}
+          {...this.props}
+        />
+      );
     } else {
       const { className, collection, options, showSearch, showNew, classes } = this.props;
 
@@ -251,8 +253,8 @@ DatatableContents Component
 const datatableContentsStyles = theme =>
   _assign({}, baseStyles(theme), {
     table: {
-      marginTop: theme.spacing.unit * 3,
-      marginBottom: theme.spacing.unit * 3,
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
     },
     denseTable: theme.utils.denseTable,
     flatTable: theme.utils.flatTable,

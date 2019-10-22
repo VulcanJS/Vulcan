@@ -61,6 +61,7 @@ See https://github.com/truffls/storybook-addon-intl
 
 */
 
+import 'meteor/vulcan:i18n-en-us/lib/en_US.js';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
 import { addLocaleData } from 'react-intl';
 import { Strings, Locales } from './helpers.js';

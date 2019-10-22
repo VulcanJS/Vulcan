@@ -80,7 +80,7 @@ function getColorGroup(options) {
 const styles = theme => ({
   root: {},
   paper: {
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
   },
   name: {
     marginBottom: 60,

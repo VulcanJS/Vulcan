@@ -11,22 +11,22 @@ import _debounce from 'lodash/debounce';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 const styles = theme => ({
-
   '@global': {
-    'input[type=text]::-ms-clear, input[type=text]::-ms-reveal':
-      {
-        display: 'none',
-        width: 0,
-        height: 0,
-      },
-    'input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button':
-      { display: 'none' },
-    'input[type="search"]::-webkit-search-results-button, input[type="search"]::-webkit-search-results-decoration':
-      { display: 'none' },
+    'input[type=text]::-ms-clear, input[type=text]::-ms-reveal': {
+      display: 'none',
+      width: 0,
+      height: 0,
+    },
+    'input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button': {
+      display: 'none',
+    },
+    'input[type="search"]::-webkit-search-results-button, input[type="search"]::-webkit-search-results-decoration': {
+      display: 'none',
+    },
   },
 
   root: {
-    marginTop: 0
+    marginTop: 0,
   },
 
   clear: {
@@ -59,8 +59,8 @@ const styles = theme => ({
 
   icon: {
     color: theme.palette.common.lightBlack,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 
   input: {
@@ -73,13 +73,10 @@ const styles = theme => ({
     }),*/
     minWidth: 130,
   },
-
 });
 
-
 class SearchInput extends PureComponent {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -91,22 +88,20 @@ class SearchInput extends PureComponent {
     this.updateQuery = _debounce(this.updateQuery, 500);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (!document) return;
     const element = document.querySelector(`.search-input-${this.props.name} input[type=search]`);
 
     element._addEventListener = element.addEventListener;
     element.addEventListener = function(type, listener, useCapture) {
-      if(useCapture === undefined)
-        useCapture = false;
+      if (useCapture === undefined) useCapture = false;
       this._addEventListener(type, listener, useCapture);
     };
 
     element.addEventListener = element._addEventListener;
   }
 
-  componentWillUnmount () {
-  }
+  componentWillUnmount() {}
 
   handleShortcutKeys = (key, event) => {
     switch (key) {
@@ -126,7 +121,7 @@ class SearchInput extends PureComponent {
     this.input.select();
   };
 
-  focusInput = (event) => {
+  focusInput = event => {
     this.input.focus();
   };
 
@@ -139,73 +134,75 @@ class SearchInput extends PureComponent {
     }
   };
 
-  updateSearch = (event) => {
+  updateSearch = event => {
     const value = event.target.value;
     this.setState({ value: value });
     this.updateQuery(value);
   };
 
-  updateQuery = (value) => {
+  updateQuery = value => {
     this.props.updateQuery(value);
   };
 
-  render () {
-    const {
-      classes,
-      className,
-      dense,
-      noShortcuts,
-      name,
-    } = this.props;
+  render() {
+    const { classes, className, dense, noShortcuts, name } = this.props;
 
-    const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput}/>;
+    const searchIcon = <SearchIcon className={classes.icon} onClick={this.focusInput} />;
 
-    const clearButton = <Components.TooltipButton
-      titleId="search.clear"
-      icon={<ClearIcon/>}
-      onClick={this.clearSearch}
-      classes={{
-        root: classNames(!this.state.value && classes.clearDisabled),
-        button: classNames('clear-button', classes.clear, dense && classes.clearDense),
-      }}
-      disabled={!this.state.value}
-    />;
+    const clearButton = (
+      <Components.TooltipButton
+        titleId="search.clear"
+        icon={<ClearIcon />}
+        onClick={this.clearSearch}
+        classes={{
+          root: classNames(!this.state.value && classes.clearDisabled),
+          button: classNames('clear-button', classes.clear, dense && classes.clearDense),
+        }}
+        disabled={!this.state.value}
+      />
+    );
 
     return (
       <React.Fragment>
         <TextField
-            label="Search"
-            type="search"
-            id={`search-input-${name}`}
-            name={name}
-            title="Search"
-            value={this.state.value}
-            inputRef={input => this.input = input}
-            fullWidth
-            className={classNames('search-input', `search-input-${name}`, classes.root, dense && classes.inputTypeSearch, className, classes.textField)}
-            margin="normal"
-            variant="outlined"
-            onChange={this.updateSearch}
-            onFocus={this.handleFocus}
-            InputProps={{
-              startAdornment: searchIcon,
-              endAdornment: clearButton
-            }}
+          label="Search"
+          type="search"
+          id={`search-input-${name}`}
+          name={name}
+          title="Search"
+          value={this.state.value}
+          inputRef={input => (this.input = input)}
+          fullWidth
+          className={classNames(
+            'search-input',
+            `search-input-${name}`,
+            classes.root,
+            dense && classes.inputTypeSearch,
+            className,
+            classes.textField
+          )}
+          margin="normal"
+          variant="outlined"
+          onChange={this.updateSearch}
+          onFocus={this.handleFocus}
+          InputProps={{
+            startAdornment: searchIcon,
+            endAdornment: clearButton,
+          }}
         />
         <NoSsr>
-          {
-            // KeyboardEventHandler is not valid on the server, where its name is undefined
-            typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts &&
-
-            <KeyboardEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys}/>
-          }
+          {// KeyboardEventHandler is not valid on the server, where its name is undefined
+          typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts && (
+            <KeyboardEventHandler
+              handleKeys={['s', 'c', 'esc']}
+              onKeyEvent={this.handleShortcutKeys}
+            />
+          )}
         </NoSsr>
       </React.Fragment>
     );
   }
-
 }
-
 
 SearchInput.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -216,13 +213,10 @@ SearchInput.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-
 SearchInput.defaultProps = {
   name: 'search',
 };
 
-
 SearchInput.displayName = 'SearchInput';
-
 
 registerComponent('SearchInput', SearchInput, [withStyles, styles]);

@@ -9,99 +9,87 @@ import ExpandLessIcon from 'mdi-material-ui/ChevronUp';
 import ExpandMoreIcon from 'mdi-material-ui/ChevronDown';
 import classNames from 'classnames';
 
-
 const styles = theme => ({
-  
   layoutRoot: {
-    minWidth: '320px'
+    minWidth: '320px',
   },
-  
+
   headerRoot: {},
-  
+
   paper: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3),
   },
-  
+
   subtitle1: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing.unit / 2,
-    marginTop: theme.spacing.unit * 5,
-    marginBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing(0.5),
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(1),
     color: theme.palette.primary[500],
   },
-  
+
   collapsible: {
     cursor: 'pointer',
   },
-  
+
   label: {},
-  
+
   toggle: {
     '& svg': {
       width: 21,
       height: 21,
       display: 'block',
-    }
+    },
   },
-  
+
   container: {
     paddingLeft: 4,
     paddingRight: 4,
     marginLeft: -4,
     marginRight: -4,
   },
-  
+
   entered: {
     overflow: 'visible',
   },
-  
+
   hidden: {
     display: 'none',
   },
-  
 });
 
-
 const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) => {
-  const collapsible = group && group.collapsible || group && group.name === 'admin';
-  
+  const collapsible = (group && group.collapsible) || (group && group.name === 'admin');
+
   return (
-    <div className={classNames(classes.headerRoot, collapsible && classes.collapsible, 
-      hidden && classes.hidden, 'form-group-header')}
-         onClick={collapsible ? toggle : null}
-    >
-      
+    <div
+      className={classNames(
+        classes.headerRoot,
+        collapsible && classes.collapsible,
+        hidden && classes.hidden,
+        'form-group-header'
+      )}
+      onClick={collapsible ? toggle : null}>
       <Typography
-        className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)}
+        className={classNames(
+          'form-group-header-title',
+          classes.subtitle1,
+          collapsible && classes.collapsible
+        )}
         variant="subtitle1"
-        onClick={toggle}
-      >
-        
-        <div className={classes.label}>
-          {label}
-        </div>
-        
-        {
-          collapsible &&
-          
+        onClick={toggle}>
+        <div className={classes.label}>{label}</div>
+
+        {collapsible && (
           <div className={classes.toggle}>
-            {
-              collapsed
-                ?
-                <ExpandMoreIcon/>
-                :
-                <ExpandLessIcon/>
-            }
+            {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
           </div>
-        }
-      
+        )}
       </Typography>
-    
     </div>
   );
 };
-
 
 FormGroupHeader.propTypes = {
   toggle: PropTypes.func,
@@ -112,31 +100,35 @@ FormGroupHeader.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
 registerComponent('FormGroupHeader', FormGroupHeader, [withStyles, styles]);
 
-
-const FormGroupLayout = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
+const FormGroupLayout = ({
+  label,
+  anchorName,
+  collapsed,
+  hidden,
+  hasErrors,
+  heading,
+  group,
+  children,
+  classes,
+}) => {
   const collapsedIn = (!collapsed && !hidden) || hasErrors;
-  
+
   return (
     <div className={classNames(classes.layoutRoot, 'form-section', `form-section-${anchorName}`)}>
-      
-      <a name={anchorName}/>
-      
+      <a name={anchorName} />
+
       {heading}
-      
-      <Collapse classes={{ container: classes.container, entered: classes.entered }} in={collapsedIn}>
-        <Paper className={classes.paper}>
-          
-          {children}
-          
-        </Paper>
+
+      <Collapse
+        classes={{ container: classes.container, entered: classes.entered }}
+        in={collapsedIn}>
+        <Paper className={classes.paper}>{children}</Paper>
       </Collapse>
     </div>
   );
 };
-
 
 FormGroupLayout.propTypes = {
   label: PropTypes.string.isRequired,
@@ -150,6 +142,4 @@ FormGroupLayout.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
 registerComponent('FormGroupLayout', FormGroupLayout, [withStyles, styles]);
-
