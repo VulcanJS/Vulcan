@@ -71,7 +71,6 @@ const getFieldFragment = ({ schema, fieldName, options }) => {
                             schema: fieldType._schema,
                             options,
                         }) || null;
-                    console.log('nested', fieldFragment);
                 }
                 break;
             case 'Array':
