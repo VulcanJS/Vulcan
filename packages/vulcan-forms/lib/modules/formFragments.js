@@ -46,43 +46,58 @@ const getMutationFieldNames = ({
 
 
 const getFieldFragment = ({ schema, fieldName, options }) => {
-    const field = schema[fieldName];
-    if (!(field && field.type)) return fieldName;
-    const fieldType = field.type.singleType;
-    const fieldTypeName =
-        typeof fieldType === 'object' ? 'Object' : typeof fieldType === 'function' ? fieldType.name : fieldType;
+  let fieldFragment;
+  const field = schema[fieldName];
+  if (!(field && field.type)) return fieldName;
+  const fieldType = field.type.singleType;
+  const fieldTypeName =
+    typeof fieldType === 'object'
+      ? 'Object'
+      : typeof fieldType === 'function'
+      ? fieldType.name
+      : fieldType;
 
+  if (fieldName.slice(-5) === intlSuffix) {
+    fieldFragment = `${fieldName}{ locale value }`;
+  } else {
     switch (fieldTypeName) {
-        // recursive call for nested arrays and objects
-        case 'Object':
-            if (!field.blackbox && fieldType._schema) {
-                return getSchemaFragment({
-                    fragmentName: fieldName,
-                    schema: fieldType._schema,
-                    options
-                }) || null;
-            }
-            return fieldName;
-        case 'Array':
-            const arrayItemFieldName = `${fieldName}.$`;
-            const arrayItemField = schema[arrayItemFieldName];
-            // note: make sure field has an associated array item field
-            if (arrayItemField) {
-                // child will either be native value or a an object (first case)
-                const arrayItemFieldType = arrayItemField.type.singleType;
-                if (!arrayItemField.blackbox && arrayItemFieldType._schema) {
-                    return getSchemaFragment({
-                        fragmentName: fieldName,
-                        schema: arrayItemFieldType._schema,
-                        options
-                    }) || null;
-                }
-            }
-            return fieldName;
-        default:
-            // handle intl or return fieldName
-            return fieldName.slice(-5) === intlSuffix ? `${fieldName}{ locale value }` : fieldName;
+      // recursive call for nested arrays and objects
+      case 'Object':
+        if (!field.blackbox && fieldType._schema) {
+          fieldFragment =
+            getSchemaFragment({
+              fragmentName: fieldName,
+              schema: fieldType._schema,
+              options,
+            }) || null;
+        }
+        fieldFragment = fieldName;
+        break;
+      case 'Array':
+        const arrayItemFieldName = `${fieldName}.$`;
+        const arrayItemField = schema[arrayItemFieldName];
+        // note: make sure field has an associated array item field
+        if (arrayItemField) {
+          // child will either be native value or a an object (first case)
+          const arrayItemFieldType = arrayItemField.type.singleType;
+          if (!arrayItemField.blackbox && arrayItemFieldType._schema) {
+            fieldFragment =
+              getSchemaFragment({
+                fragmentName: fieldName,
+                schema: arrayItemFieldType._schema,
+                options,
+              }) || null;
+          }
+        }
+        fieldFragment = fieldName;
+        break;
+      default:
+        // handle intl or return fieldName
+        fieldFragment = fieldName;
+        break;
     }
+  }
+  return fieldFragment;
 };
 
 // get fragment for a whole schema (root schema or nested schema of an object or an array)
