@@ -20,7 +20,7 @@ const CardItemImage = ({ value, force = false, Components }) => {
       alt={value}
     />
   ) : (
-    <Components.CardItemUrl value={value} Components={Components} />
+    <Components.CardItemURL value={value} Components={Components} />
   );
 };
 registerComponent({ name: 'CardItemImage', component: CardItemImage });

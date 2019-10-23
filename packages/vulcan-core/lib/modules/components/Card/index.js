@@ -7,4 +7,5 @@ import './CardItemNumber';
 import './CardItemObject';
 import './CardItemString';
 import './CardItemSwitcher';
+import './CardItemURL';
 export { default } from './Card';
