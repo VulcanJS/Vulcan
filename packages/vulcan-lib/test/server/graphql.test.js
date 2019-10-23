@@ -8,8 +8,11 @@ import { addIntlFields } from '../../lib/modules/collections'
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
 import collectionToGraphQL from '../../lib/server/graphql/collection';
 import { getSchemaFields, getGraphQLType } from '../../lib/server/graphql/schemaFields';
+import { generateResolversFromSchema } from '../../lib/server/graphql/resolvers';
 import SimpleSchema from 'simpl-schema';
-import { createDummyCollection, normalizeGraphQLSchema } from 'meteor/vulcan:test'
+import { createDummyCollection, normalizeGraphQLSchema } from 'meteor/vulcan:test';
+import Users from 'meteor/vulcan:users';
+
 const test = it;
 
 const fooCollection = (schema) => createDummyCollection({
@@ -40,6 +43,53 @@ describe('vulcan:lib/graphql', function () {
     expect(GraphQLSchema.getExecutableSchema()).toBeDefined();
   });
 
+  describe('generateResolversFromSchema - generate a secure resolver for each field', () => {
+    const context = {
+      currentUser: null,
+      Users
+    }
+    test('get the resolvers for a field', () => {
+      const resolvers = generateResolversFromSchema(new SimpleSchema({
+        foo: {
+          type: String,
+          canRead: ['guests']
+        }
+      }))
+      const fooResolver = resolvers['foo']
+      expect(fooResolver).toBeInstanceOf(Function)
+      expect(fooResolver({ foo: 'bar' }, null, context)).toEqual('bar')
+    })
+    test('ignore non readable fields', () => {
+      const resolvers = generateResolversFromSchema(new SimpleSchema({
+        foo: {
+          type: String,
+          canRead: ['admins']
+        }
+      }))
+      const fooResolver = resolvers['foo']
+      expect(fooResolver({ foo: 'bar' }, null, context)).toBeNull()
+    })
+    test('convert undefined fields into null', () => {
+      const resolvers = generateResolversFromSchema(new SimpleSchema({
+        foo: {
+          type: String,
+          canRead: ['admins']
+        }
+      }))
+      const fooResolver = resolvers['foo']
+      expect(fooResolver({ foo2: 'bar' }, null, context)).toBeNull()
+    })
+    test('do NOT convert other falsy fields into null', () => {
+      const resolvers = generateResolversFromSchema(new SimpleSchema({
+        foo: {
+          type: Number,
+          canRead: ['guests']
+        }
+      }))
+      const fooResolver = resolvers['foo']
+      expect(fooResolver({ foo: 0 }, null, context)).toEqual(0)
+    })
+  })
 
   describe('schemaFields - graphql fields generation from simple schema', () => {
     describe('getGraphQLType - associate a graphQL type to a field', () => {
