@@ -141,7 +141,7 @@ formComponents.forEach(item => {
   const { name } = item;
   const Component = Components[name];
   const componentLabel = name.replace('FormComponent', '');
-  const storyName = `Core/Forms/form-inputs/${componentLabel}`;
+  const storyName = `Core/Forms/Controls/${componentLabel}`;
   if (Component) {
     storiesOf(storyName, module)
       .add('Horizontal Layout', () => <Component {...getFormProps(name)} />)
