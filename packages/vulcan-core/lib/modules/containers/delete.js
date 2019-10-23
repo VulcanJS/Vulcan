@@ -81,7 +81,12 @@ export const useDelete = (options) => {
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
-  const extendedDeleteFunc = (selector) => deleteFunc({ variables: { selector } });
+  const extendedDeleteFunc = (args) => {
+    // support legacy syntax mistake
+    // @see https://github.com/VulcanJS/Vulcan/issues/2417
+    const selector = (args && args.selector) || args;
+    return deleteFunc({ variables: { selector } });
+  };
   return [extendedDeleteFunc, ...rest];
 };
 

@@ -165,7 +165,7 @@ describe('vulcan:core/container/mutations', () => {
                 )
             })
             test('add document to multi query after a creation', () => {
-                const update = multiQueryUpdater(defaultOptions)
+                const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
@@ -182,7 +182,7 @@ describe('vulcan:core/container/mutations', () => {
                 expect(writeQuery.calledOnce).toBe(true)
             })
             test('update document if already there', () => {
-                const update = multiQueryUpdater(defaultOptions)
+                const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => ({
@@ -209,7 +209,7 @@ describe('vulcan:core/container/mutations', () => {
                 })
             })
             test('do not add document if it does not match the mongo selector', () => {
-                const update = multiQueryUpdater(defaultOptions)
+                const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
@@ -233,7 +233,7 @@ describe('vulcan:core/container/mutations', () => {
                 expect(writeQuery.notCalled).toBe(true)
             })
             test('add document if it does match the mongo selector', () => {
-                const update = multiQueryUpdater(defaultOptions)
+                const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
@@ -257,7 +257,7 @@ describe('vulcan:core/container/mutations', () => {
                 expect(writeQuery.calledOnce).toBe(true)
             })
             test('sort documents', () => {
-                const update = multiQueryUpdater(defaultOptions)
+                const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => ({
