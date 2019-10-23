@@ -3,6 +3,7 @@
  * = a fragment containing all fields
  */
 import { getFragmentFieldNames } from '../schema_utils';
+import { isBlackbox } from '../simpleSchema_utils';
 
 // get fragment for a whole object (root schema or nested schema of an object or an array)
 const getObjectFragment = ({
@@ -38,7 +39,7 @@ const getFieldFragment = ({
 
     switch (fieldTypeName) {
         case 'Object':
-            if (!field.blackbox && fieldType._schema) {
+            if (!isBlackbox(field) && fieldType._schema) {
                 return getObjectFragment({
                     fragmentName: fieldName,
                     schema: fieldType._schema,
