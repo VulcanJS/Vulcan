@@ -11,6 +11,7 @@ import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
 import _omit from 'lodash/omit';
 import merge from 'lodash/merge';
+import { isCollectionType } from './schema_utils.js';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -186,8 +187,11 @@ export const createCollection = options => {
   Object.keys(schema).map(fieldName => {
     const field = schema[fieldName];
     // if no resolver or relation is provided, try to guess relation and add it to schema
-    if (field.resolveAs && !field.resolveAs.resolver && !field.resolveAs.relation) {
-      field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+    if (field.resolveAs) {
+      const { resolver, relation, type } = field.resolveAs;
+      if (isCollectionType(type) && !resolver && !relation) {
+        field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+      }
     }
   });
 

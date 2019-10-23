@@ -1,5 +1,6 @@
 import _reject from 'lodash/reject';
 import _keys from 'lodash/keys';
+import { Collections } from './collections.js';
 
 /* getters */
 // filter out fields with "." or "$"
@@ -44,7 +45,7 @@ export const shouldAddOriginalField = (fieldName, field) => {
     resolveAs =>
       resolveAs.addOriginalField === false ||
       resolveAs.fieldName === fieldName ||
-      !resolveAs.fieldName
+      typeof resolveAs.fieldName === 'undefined'
   );
   return !removeOriginalField;
 };
@@ -66,3 +67,11 @@ export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(sche
         || options.onlyViewable && !(field.canRead || field.viewableBy)
         || field.typeName || schema[`${fieldName}.$`] && schema[`${fieldName}.$`].typeName;
 });
+
+/*
+
+Check if a type corresponds to a collection or else 
+is just a regular or custom scalar type.
+
+*/
+export const isCollectionType = typeName => Collections.some(c => c.options.typeName === typeName);

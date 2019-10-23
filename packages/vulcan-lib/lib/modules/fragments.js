@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
-import _reject from 'lodash/reject';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup

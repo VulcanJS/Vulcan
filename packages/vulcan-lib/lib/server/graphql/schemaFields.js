@@ -433,7 +433,7 @@ export const getResolveAsFields = ({
           if (canReadField) {
             if (resolver) {
               return resolver(document, args, context, info);
-            } else {
+            } else if (relation) {
               return relations[relation]({
                 document,
                 args,
