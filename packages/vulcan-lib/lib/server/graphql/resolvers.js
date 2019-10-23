@@ -18,7 +18,7 @@ const generateResolversFromSchema = schema => {
     if(_schema[key] && (_schema[key].canRead || _schema[key].viewableBy)) {
       const resolver = (root, args, context) => {
         const result = root[key];
-        if (!result) return null;
+        if (typeof result === 'undefined') return null;
         const { currentUser, Users } = context;
         if (Users.canReadField(currentUser, _schema[key], root)) {
           return result;
