@@ -103,6 +103,25 @@ describe('default fragment generation', () => {
         expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { arrayField }');
 
     });
+    test('return fieldName for intl fields even if they are objects or arrays', () => {
+        const collection = fooCollection({
+            foo_intl: {
+                type: Array,
+                canRead: ['guests']
+            },
+            "foo_intl.$": {
+                type: String,
+                canRead: ['guests']
+            },
+            bar_intl: {
+                type: Object,
+                canRead: ['guests']
+            },
+        });
+        const fragment = getDefaultFragmentText(collection);
+        const normalizedFragment = normalizeGraphQLSchema(fragment);
+        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo_intl{ locale value } bar_intl{ locale value } }');
+    });
 
     describe('resolveAs', () => {
         test('ignore resolved fields with a an unknown type', () => {
