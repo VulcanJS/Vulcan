@@ -191,7 +191,7 @@ const buildResult = (
   };
 };
 
-export const useMulti = (options, props) => {
+export const useMulti = (options, props = {}) => {
   const [paginationInput, setPaginationInput] = useState(initialPaginationInput(options, props));
 
   let { extraQueries } = options;

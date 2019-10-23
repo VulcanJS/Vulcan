@@ -39,13 +39,14 @@ export const singleQuery = ({
 const buildQueryOptions = (options, props) => {
   let {
     input: optionsInput, // static default inputs defined by the component
+    _id: optionsId,
     pollInterval = getSetting('pollInterval', 20000),
     // generic apollo graphQL options
     queryOptions = {}
   } = options;
 
   // dynamic inputs from props (can be passed by he parent component)
-  const { input: propsInput = {} } = props;
+  const { input: propsInput = {}, _id: propsId } = props;
 
   const input = _merge({}, defaultInput, optionsInput, propsInput);
 
@@ -56,7 +57,8 @@ const buildQueryOptions = (options, props) => {
   // OpenCrud backwards compatibility
   const graphQLOptions = {
     variables: {
-      input
+      input,
+      _id: propsId || optionsId
     },
     pollInterval // note: pollInterval can be set to 0 to disable polling (20s by default)
   };
@@ -94,7 +96,7 @@ const buildResult = (
   return props;
 };
 
-export const useSingle2 = (options, props) => {
+export const useSingle2 = (options, props = {}) => {
   const { extraQueries } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -121,7 +123,7 @@ export const withSingle2 = (options) => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const Wrapped = props => {
-    const res = useSingle(options, props);
+    const res = useSingle2(options, props);
     return <C {...props} {...res} />;
   };
   Wrapped.displayName = `with${typeName}`;

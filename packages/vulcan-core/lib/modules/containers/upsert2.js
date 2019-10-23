@@ -49,6 +49,7 @@ export const useUpsert2 = options => {
   const typeName = collection.options.typeName;
   const {
     input: optionsInput,
+    _id: optionsId,
     mutationOptions = {}
   } = options;
 
@@ -62,12 +63,16 @@ export const useUpsert2 = options => {
     ...mutationOptions
   });
 
-  const extendedUpsertFunc = ({ data, input: argsInput }) => upsertFunc({
-    variables: {
-      data,
-      input: _merge({}, optionsInput, argsInput)
-    }
-  });
+  const extendedUpsertFunc = ({ data, input: argsInput, _id: argsId }) => {
+    const _id = argsId || optionsId;
+    return upsertFunc({
+      variables: {
+        data,
+        _id,
+        input: !_id ? _merge({}, optionsInput, argsInput) : null
+      }
+    });
+  };
 
   return [extendedUpsertFunc, ...rest];
 };
