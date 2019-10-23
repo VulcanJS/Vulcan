@@ -73,13 +73,14 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
   const { input: propsInput = {} } = props;
 
   // merge static and dynamic inputs
-  const input = merge(optionsInput, propsInput);
+  const input = merge({}, optionsInput, propsInput);
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
 
   // get input from options, then props, then pagination
+  // TODO: should be done during the merge with lodash
   const mergedInput = { ...defaultInput, ...options.input, ...input, ...paginationInput };
 
   const graphQLOptions = {
@@ -153,9 +154,9 @@ const buildResult = (
       const newTerms =
         typeof providedTerms === 'undefined'
           ? {
-              ...paginationInput,
-              offset: results.length,
-            }
+            ...paginationInput,
+            offset: results.length,
+          }
           : providedTerms;
 
       return fetchMore({
