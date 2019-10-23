@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import without from 'lodash/without';
+import withComponents from '../../containers/withComponents';
 
 const getLabel = (field, fieldName, collection, intl) => {
   const schema = collection && collection.simpleSchema()._schema;
@@ -124,4 +125,8 @@ Card.contextTypes = {
   intl: intlShape,
 };
 
-registerComponent('Card', Card);
+registerComponent({
+  name: 'Card',
+  component: Card,
+  hocs: [withComponents],
+});
