@@ -29,7 +29,7 @@ export { withMulti2, useMulti2 } from './containers/multi2.js';
 export { withSingle, useSingle } from './containers/single.js';
 export { withSingle2, useSingle2 } from './containers/single2.js';
 export { withCreate, useCreate } from './containers/create.js';
-export { withCreate2, useCreate2 } from './containers/create.js';
+export { withCreate2, useCreate2 } from './containers/create2.js';
 export { withUpdate, useUpdate } from './containers/update.js';
 export { withUpdate2, useUpdate2 } from './containers/update2.js';
 export { withUpsert, useUpsert } from './containers/upsert.js';

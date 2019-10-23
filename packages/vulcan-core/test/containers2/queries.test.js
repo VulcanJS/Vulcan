@@ -33,7 +33,7 @@ import '../../lib/modules';
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
 
-describe('vulcan:core/queries', function () {
+describe('vulcan:core/queries2', function () {
   // increase timeout
   this.timeout(5000);
 

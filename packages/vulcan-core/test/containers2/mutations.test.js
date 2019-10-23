@@ -23,7 +23,7 @@ import {
 import {
     buildDeleteQuery
 } from '../../lib/modules/containers/delete2'
-import { MockedProvider } from 'meteor/vulcan:test';
+import { MockedProvider, createDummyCollection } from 'meteor/vulcan:test';
 import { mount } from 'enzyme';
 import expect from 'expect';
 import gql from 'graphql-tag';
@@ -31,15 +31,16 @@ import sinon from 'sinon'
 
 const test = it;
 
-describe('vulcan:core/container/mutations', () => {
+describe('vulcan:core/container/mutations2', () => {
     const typeName = 'Foo';
-    const Foo = {
+    const Foo = createDummyCollection({
         options: {
             collectionName: 'Foos',
             typeName,
             multiResolverName: 'foos'
-        }
-    };
+        },
+        schema: { val: { type: Number, canRead: ['guests'] } }
+    });
     const fragmentName = 'FoosDefaultFragment';
     const fragment = {
         definitions: [{
@@ -142,20 +143,15 @@ describe('vulcan:core/container/mutations', () => {
                     totalCount: 0
                 }
             }
-            const defaultCacheData = {
+            const makeCacheData = (vars = { input: { where: {} } }) => ({
                 data: {
                     ROOT_QUERY: {
                         // variables are contained in the query name
-                        [`foos(${JSON.stringify(
-                            {
-                                input: {
-                                    where: {}
-                                }
-                            }
-                        )})`]: {}
+                        [`foos(${JSON.stringify(vars)})`]: {}
                     }
                 }
-            }
+            })
+            const defaultCacheData = makeCacheData({})
 
             beforeEach(() => {
                 Foo.getParameters = (terms) => ({
@@ -208,13 +204,17 @@ describe('vulcan:core/container/mutations', () => {
                     data: { 'foos': { results: [updateFoo], totalCount: 1 } }
                 })
             })
-            test('do not add document if it does not match the mongo selector', () => {
+            test('do not add document if it does not match the mongo selector of the query', () => {
                 const update = multiQueryUpdater(defaultOptions)
                 const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
                     writeQuery,
-                    data: defaultCacheData
+                    data: makeCacheData({
+                        input: {
+                            where: { val: { _gt: 42 } }
+                        }
+                    })
                 }
                 const newFoo = { ...foo, val: 41 }
                 update(cache, {
@@ -223,11 +223,6 @@ describe('vulcan:core/container/mutations', () => {
                             data: newFoo
                         }
                     },
-                    input: {
-                        where: {
-                            val: { gte: 42 }
-                        }
-                    }
                 })
                 expect(writeQuery.notCalled).toBe(true)
             })
@@ -237,7 +232,11 @@ describe('vulcan:core/container/mutations', () => {
                 const cache = {
                     readQuery: () => defaultCacheContent,
                     writeQuery,
-                    data: defaultCacheData
+                    data: makeCacheData({
+                        input: {
+                            where: { val: { _gt: 42 } }
+                        }
+                    })
                 }
                 const newFoo = { ...foo, val: 46 }
                 update(cache, {
@@ -245,9 +244,6 @@ describe('vulcan:core/container/mutations', () => {
                         createFoo: {
                             data: newFoo
                         }
-                    },
-                    where: {
-                        val: { gt: 42 }
                     }
                 })
                 expect(writeQuery.calledOnce).toBe(true)
@@ -263,18 +259,19 @@ describe('vulcan:core/container/mutations', () => {
                         }
                     }),
                     writeQuery,
-                    data: defaultCacheData
+                    data: makeCacheData({
+                        input: {
+                            orderBy: {
+                                val: "asc"
+                            }
+                        }
+                    })
                 }
                 const newFoo = { ...foo, val: 42 }
                 update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
-                        }
-                    },
-                    input: {
-                        orderBy: {
-                            val: "asc"
                         }
                     }
                 })
@@ -294,7 +291,8 @@ describe('vulcan:core/container/mutations', () => {
                     ,
                     variables: {
                         //selector: { documentId: foo._id },
-                        data: fooUpdate
+                        data: fooUpdate,
+                        input: {}
                     }
                 },
                 result: {
@@ -325,7 +323,8 @@ describe('vulcan:core/container/mutations', () => {
                 request: {
                     query: buildUpsertQuery({ typeName, fragmentName, fragment }),
                     variables: {
-                        data: fooUpdate
+                        data: fooUpdate,
+                        input: {}
                     }
                 },
                 result: {
@@ -377,7 +376,9 @@ describe('vulcan:core/container/mutations', () => {
             )
             expect(wrapper.find(TestComponent).prop('deleteFoo')).toBeInstanceOf(Function)
             const res = await wrapper.find(TestComponent).prop('deleteFoo')({
-                _id: "42"
+                input: {
+                    _id: "42"
+                }
             })
             expect(res).toEqual({ data: { deleteFoo: { data: foo, __typename: 'Foo' } } })
 
