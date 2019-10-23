@@ -104,66 +104,67 @@ describe('default fragment generation', () => {
 
     });
 
-    test('ignore resolved fields with a an unknown type', () => {
-        const collection = fooCollection({
-            // ignored in default fragments because we don't know People type
-            object: {
-                type: Object,
-                canRead: ['admins'],
-                resolveAs: {
-                    fieldName: 'resolvedObject',
-                    type: 'People',
-                    resolver: () => (null)
+    describe('resolveAs', () => {
+        test('ignore resolved fields with a an unknown type', () => {
+            const collection = fooCollection({
+                // ignored in default fragments because we don't know People type
+                object: {
+                    type: Object,
+                    canRead: ['admins'],
+                    resolveAs: {
+                        fieldName: 'resolvedObject',
+                        type: 'People',
+                        resolver: () => (null)
+                    }
+                },
+                // dummy field to avoid empty fragment
+                foo: {
+                    type: String,
+                    canRead: ['admins']
                 }
-            },
-            // dummy field to avoid empty fragment
-            foo: {
-                type: String,
-                canRead: ['admins']
-            }
+            });
+            const fragment = getDefaultFragmentText(collection);
+            const normalizedFragment = normalizeGraphQLSchema(fragment);
+            expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { object foo }');
+        })
+        test('add original field with resolveAs as a default', () => {
+            const collection = fooCollection({
+                json: {
+                    type: Object,
+                    canRead: ['admins'],
+                    resolveAs: {
+                        fieldName: 'resolvedJSON',
+                        type: 'JSON',
+                        resolver: () => null,
+                    }
+                },
+            });
+            const fragment = getDefaultFragmentText(collection);
+            const normalizedFragment = normalizeGraphQLSchema(fragment);
+            expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
         });
-        const fragment = getDefaultFragmentText(collection);
-        const normalizedFragment = normalizeGraphQLSchema(fragment);
-        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo }');
+        test('do not add original field if at least one addOriginalField is false', () => {
+            const collection = fooCollection({
+                // ignored in default fragments
+                foo: {
+                    type: String,
+                    canRead: ['admins'],
+                    resolveAs: [{
+                        fieldName: 'resolvedObject',
+                        type: 'String',
+                        resolver: () => (null)
+                    }, {
+                        fieldName: 'anotherResolvedObject',
+                        type: 'String', resolver: () => null,
+                        addOriginalField: false
+                    }]
+                },
+            });
+            const fragment = getDefaultFragmentText(collection);
+            const normalizedFragment = normalizeGraphQLSchema(fragment);
+            expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { resolvedObject anotherResolvedObject }');
+        })
 
-    })
-    test('add field with resolveAs only if addOriginalField is true', () => {
-        const collection = fooCollection({
-            json: {
-                type: Object,
-                canRead: ['admins'],
-                resolveAs: {
-                    fieldName: 'resolvedJSON',
-                    type: 'JSON',
-                    resolver: () => null,
-                    addOriginalField: true
-                }
-            },
-        });
-        const fragment = getDefaultFragmentText(collection);
-        const normalizedFragment = normalizeGraphQLSchema(fragment);
-        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
-    });
-    test('add original field if at least one addOriginalField is true', () => {
-        const collection = fooCollection({
-            // ignored in default fragments
-            foo: {
-                type: String,
-                canRead: ['admins'],
-                resolveAs: [{
-                    fieldName: 'resolvedObject',
-                    type: 'String',
-                    resolver: () => (null)
-                }, {
-                    fieldName: 'anotherResolvedObject',
-                    type: 'String', resolver: () => null,
-                    addOriginalField: true
-                }]
-            },
-        });
-        const fragment = getDefaultFragmentText(collection);
-        const normalizedFragment = normalizeGraphQLSchema(fragment);
-        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo resolvedObject anotherResolvedObject }');
     })
     test('ignore referenced schemas', () => {
         const collection = fooCollection({
