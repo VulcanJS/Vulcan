@@ -104,9 +104,9 @@ describe('default fragment generation', () => {
 
     });
 
-    test('add field with resolveAs only if addOriginalField is true', () => {
+    test('ignore resolved fields with a an unknown type', () => {
         const collection = fooCollection({
-            // ignored in default fragments
+            // ignored in default fragments because we don't know People type
             object: {
                 type: Object,
                 canRead: ['admins'],
@@ -116,6 +116,19 @@ describe('default fragment generation', () => {
                     resolver: () => (null)
                 }
             },
+            // dummy field to avoid empty fragment
+            foo: {
+                type: String,
+                canRead: ['admins']
+            }
+        });
+        const fragment = getDefaultFragmentText(collection);
+        const normalizedFragment = normalizeGraphQLSchema(fragment);
+        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo }');
+
+    })
+    test('add field with resolveAs only if addOriginalField is true', () => {
+        const collection = fooCollection({
             json: {
                 type: Object,
                 canRead: ['admins'],
@@ -130,8 +143,28 @@ describe('default fragment generation', () => {
         const fragment = getDefaultFragmentText(collection);
         const normalizedFragment = normalizeGraphQLSchema(fragment);
         expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { json }');
-
     });
+    test('add original field if at least one addOriginalField is true', () => {
+        const collection = fooCollection({
+            // ignored in default fragments
+            foo: {
+                type: String,
+                canRead: ['admins'],
+                resolveAs: [{
+                    fieldName: 'resolvedObject',
+                    type: 'String',
+                    resolver: () => (null)
+                }, {
+                    fieldName: 'anotherResolvedObject',
+                    type: 'String', resolver: () => null,
+                    addOriginalField: true
+                }]
+            },
+        });
+        const fragment = getDefaultFragmentText(collection);
+        const normalizedFragment = normalizeGraphQLSchema(fragment);
+        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo resolvedObject anotherResolvedObject }');
+    })
     test('ignore referenced schemas', () => {
         const collection = fooCollection({
             field: {
