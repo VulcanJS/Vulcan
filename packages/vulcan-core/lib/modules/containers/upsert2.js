@@ -53,12 +53,12 @@ export const useUpsert2 = options => {
   } = options;
 
   const query = buildUpsertQuery({ typeName, fragmentName, fragment });
-
+  const resolverName = `upsert${typeName}`;
   const [upsertFunc, ...rest] = useMutation(query, {
     errorPolicy: 'all',
     // we reuse the update function create, which should actually support
     // upserting
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
     ...mutationOptions
   });
 
