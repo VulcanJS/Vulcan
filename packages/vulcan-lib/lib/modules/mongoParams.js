@@ -2,13 +2,13 @@
  * Converts selector and options to Mongo parameters (selector, fields)
  */
 import mapValues from 'lodash/mapValues';
-import { getSetting } from '../../modules/settings.js';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 
+import { getSetting } from './settings.js';
 // convert GraphQL selector into Mongo-compatible selector
 // TODO: add support for more than just documentId/_id and slug, potentially making conversion unnecessary
 // see https://github.com/VulcanJS/Vulcan/issues/2000

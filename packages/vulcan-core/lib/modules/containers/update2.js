@@ -49,7 +49,6 @@ export const useUpdate2 = (options) => {
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const {
     input: optionsInput, // default static input
-    _id: optionsId,
     mutationOptions = {}
   } = options;
 
@@ -63,13 +62,11 @@ export const useUpdate2 = (options) => {
     ...mutationOptions
   });
 
-  const extendedUpdateFunc = ({ data, input: argsInput, _id: argsId }) => {
-    const _id = argsId || optionsId;
+  const extendedUpdateFunc = ({ data, input: argsInput }) => {
     return updateFunc({
       variables: {
         data,
-        input: !_id ? _merge({}, optionsInput, argsInput) : null,
-        _id
+        input: _merge({}, optionsInput, argsInput),
       },
     });
   };

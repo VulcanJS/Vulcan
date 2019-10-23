@@ -72,7 +72,6 @@ export const useDelete2 = (options) => {
   const typeName = collection.options.typeName;
   const {
     input: optionsInput,
-    _id: optionsId,
     mutationOptions = {},
   } = options;
 
@@ -86,13 +85,11 @@ export const useDelete2 = (options) => {
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
-  const extendedDeleteFunc = ({ input: argsInput, _id: argsId }) => {
-    const _id = argsId || optionsId;
-    const input = !_id ? _merge({}, optionsInput, argsInput) : null;
+  const extendedDeleteFunc = ({ input: argsInput }) => {
+    const input = _merge({}, optionsInput, argsInput);
     return deleteFunc({
       variables: {
-        input,
-        _id
+        input
       }
     });
   };
