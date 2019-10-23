@@ -45,7 +45,7 @@ export function getDefaultResolvers(options) {
           `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
         );
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`Terms: ${JSON.stringify(terms)}`);
+        debug(`Input: ${JSON.stringify(input)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;

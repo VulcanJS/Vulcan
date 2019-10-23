@@ -53,7 +53,7 @@ const isEmptyOrUndefined = value =>
   value === '' ||
   (typeof value === 'object' && isEmpty(value));
 
-const filterFunction = (collection, input, context) => {
+const filterFunction = (collection, input = {}, context) => {
   const { where, limit = 20, orderBy, search, filter, offset, _id } = input;
   let selector = {};
   let options = {
@@ -100,26 +100,14 @@ const filterFunction = (collection, input, context) => {
 
   /*
 
-  When a collection is created, a defaultInput option can be passed
-  in order to specify defaut `where`, `limit`, `orderBy`, etc. 
-  values that should always apply. 
-
-  */
-  if (collection.defaultInput) {
-    selector = merge(selector, collection.defaultInput.selector);
-    options = merge(options, collection.defaultInput.options);
-  }
-
-  /*
-
   The `filter` argument accepts the name of a filter function that will then 
   be called to calculate more complex selector and options objects
 
   */
   if (!isEmpty(filter)) {
-    const filterFunction = get(collection, `options.filters.${filter}`);
-    if (filterFunction) {
-      const filterObject = filterFunction(input, context);
+    const customFilterFunction = get(collection, `options.filters.${filter}`);
+    if (customFilterFunction) {
+      const filterObject = customFilterFunction(input, context);
       selector = merge(selector, filterObject.selector);
       options = merge(options, filterObject.options);
     }
@@ -252,5 +240,22 @@ DatabaseConnectors.mongo = {
   delete: async (collection, selector, options = {}) => {
     return await collection.remove(convertUniqueSelector(selector));
   },
-  filter: filterFunction,
+  filter: (collection, input, context) => {
+    /*
+
+    When a collection is created, a defaultInput option can be passed
+    in order to specify default `where`, `limit`, `orderBy`, etc. 
+    values that should always apply. 
+
+    */
+    const defaultInputObject = filterFunction(collection, collection.options.defaultInput, context);
+    const currentInputObject = filterFunction(collection, input, context);
+    if (defaultInputObject.options.sort && currentInputObject.options.sort) {
+      // for sort only, delete default sort instead of merging to avoid issue with
+      // default sort coming first in list of sort specifiers
+      delete defaultInputObject.options.sort;
+    }
+    const mergedInputObject = merge({}, defaultInputObject, currentInputObject);
+    return mergedInputObject;
+  }
 };
