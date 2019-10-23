@@ -25,17 +25,28 @@ export const getUpdateableFields = schema => {
     return getValidFields(schema).filter(fieldName => schema[fieldName].canUpdate || schema[fieldName].editableBy);
 };
 
+/*
+
+Test if the main schema field should be added to the GraphQL schema or not.
+Rule: we always add it except if:
+
+1. addOriginalField: false is specified in one or more resolveAs fields
+2. A resolveAs field has the same name as the main field (we don't want two fields with same name)
+3. A resolveAs field doesn't have a name (in which case it will take the name of the main field)
+
+*/
 export const shouldAddOriginalField = (fieldName, field) => {
-    if (!field.resolveAs) return true;
-    const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
-    // unless addOriginalField option is disabled in one or more fields, also add original field to schema
-    const addOriginalField =
-        resolveAsArray.some(resolveAs => resolveAs.addOriginalField === true)
-        // we do not add the field if another field has the same name
-        &&
-        resolveAsArray.every(resolveAs => resolveAs.fieldName !== fieldName)
-        ;
-    return addOriginalField;
+  if (!field.resolveAs) return true;
+
+  const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
+
+  const removeOriginalField = resolveAsArray.some(
+    resolveAs =>
+      resolveAs.addOriginalField === false ||
+      resolveAs.fieldName === fieldName ||
+      !resolveAs.fieldName
+  );
+  return !removeOriginalField;
 };
 // list fields that can be included in the default fragment for a schema
 export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(schema), fieldName => {

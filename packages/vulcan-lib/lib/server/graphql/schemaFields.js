@@ -393,9 +393,8 @@ export const getResolveAsFields = ({
 
   const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
-  // unless addOriginalField option is disabled in one or more fields, also add original field to schema
+  // check if original (main schema) field should be added to GraphQL schema
   const addOriginalField = shouldAddOriginalField(fieldName, field);
-  // note: do not add original field if resolved field has same name
   if (addOriginalField) {
     fields.mainType.push({
       description: fieldDescription,
