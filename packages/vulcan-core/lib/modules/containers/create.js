@@ -49,13 +49,13 @@ export const multiQueryUpdater = ({
   typeName,
   fragment,
   fragmentName,
-  collection
+  collection,
+  resolverName
 }) => (cache, { data }) => {
-  const createResolverName = `create${typeName}`;
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
-  const newDoc = data[createResolverName].data;
+  const newDoc = data[resolverName].data;
   // get all the resolvers that match
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
   variablesList.forEach(variables => {
@@ -86,10 +86,11 @@ export const useCreate = (options) => {
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
 
   const typeName = collection.options.typeName;
+  const resolverName = `create${typeName}`;
 
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
   const [createFunc, ...rest] = useMutation(query, {
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
     ...mutationOptions
   });
   // so the syntax is useCreate({collection: ...}, {data: ...})
