@@ -17,7 +17,8 @@ const getObjectFragment = ({
     const childFragments = fieldNames.length && fieldNames.map(fieldName => getFieldFragment({
         schema,
         fieldName,
-        options
+        options,
+        getObjectFragment: getObjectFragment
     }))
         // remove empty values
         .filter(f => !!f);
@@ -28,15 +29,17 @@ const getObjectFragment = ({
 };
 
 // get fragment for a specific field (either the field name or a nested fragment)
-const getFieldFragment = ({
+export const getFieldFragment = ({
     schema,
     fieldName,
-    options
+    options,
+    getObjectFragment = getObjectFragment // a callback to call on nested schema
 }) => {
     // intl
     if (fieldName.slice(-5) === intlSuffix) {
         return `${fieldName}{ locale value }`;
     }
+    if (fieldName === '_id') return fieldName;
     const field = schema[fieldName];
 
     const fieldType = field.type.singleType;

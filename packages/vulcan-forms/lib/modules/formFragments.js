@@ -10,7 +10,8 @@ import {
     getCreateableFields,
     getUpdateableFields,
     getFragmentFieldNames,
-    isBlackbox
+    //isBlackbox,
+    getFieldFragment
 } from 'meteor/vulcan:lib';
 import {
     Utils,
@@ -45,7 +46,7 @@ const getMutationFieldNames = ({
     return _uniq(queryFieldNames.concat(readableFieldNames));
 };
 
-
+/*
 const getFieldFragment = ({ schema, fieldName, options }) => {
     let fieldFragment = fieldName;
     const field = schema[fieldName];
@@ -98,6 +99,7 @@ const getFieldFragment = ({ schema, fieldName, options }) => {
     }
     return fieldFragment;
 };
+*/
 
 // get fragment for a whole schema (root schema or nested schema of an object or an array)
 const getSchemaFragment = ({
@@ -120,7 +122,8 @@ const getSchemaFragment = ({
     const childFragments = fieldNames.length && fieldNames.map(fieldName => getFieldFragment({
         schema,
         fieldName,
-        options
+        options,
+        getObjectFragment: getSchemaFragment // allow to reuse the code from defaultFragment with another behaviour
     }))
         // remove empty values
         .filter(f => !!f);

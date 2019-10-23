@@ -8,6 +8,7 @@ import './deep_extend.js';
 // import './graphql.js';
 import './icons.js';
 
+export * from './graphql/defaultFragment';
 export * from './graphql_templates/index.js';
 export * from './components.js';
 export * from './collections.js';
@@ -33,4 +34,3 @@ export * from './schema_utils';
 export * from './simpleSchema_utils';
 // export * from './resolvers.js';
 export * from './mongoParams';
-
