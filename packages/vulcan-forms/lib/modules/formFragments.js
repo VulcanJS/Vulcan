@@ -47,7 +47,7 @@ const getMutationFieldNames = ({
 
 
 const getFieldFragment = ({ schema, fieldName, options }) => {
-    let fieldFragment;
+    let fieldFragment = fieldName;
     const field = schema[fieldName];
     if (!(field && field.type)) return fieldName;
     const fieldType = field.type.singleType;
@@ -71,8 +71,8 @@ const getFieldFragment = ({ schema, fieldName, options }) => {
                             schema: fieldType._schema,
                             options,
                         }) || null;
+                    console.log('nested', fieldFragment);
                 }
-                fieldFragment = fieldName;
                 break;
             case 'Array':
                 const arrayItemFieldName = `${fieldName}.$`;
@@ -90,7 +90,6 @@ const getFieldFragment = ({ schema, fieldName, options }) => {
                             }) || null;
                     }
                 }
-                fieldFragment = fieldName;
                 break;
             default:
                 // handle intl or return fieldName
