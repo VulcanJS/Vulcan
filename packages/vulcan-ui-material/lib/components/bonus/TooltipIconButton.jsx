@@ -57,7 +57,7 @@ const TooltipIconButton = (props, { intl }) => {
             ?
             
             <Fab className={classNames(classes.button, slug)}
-                    aria-label={title}
+                    aria-label={titleText}
                     ref={buttonRef}
                     {...properties}
             >
@@ -67,7 +67,7 @@ const TooltipIconButton = (props, { intl }) => {
             :
             
             <IconButton className={classNames(classes.button, slug)}
-                        aria-label={title}
+                        aria-label={titleText}
                         ref={buttonRef}
                         {...properties}
             >

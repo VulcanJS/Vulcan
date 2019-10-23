@@ -5,6 +5,8 @@ import map from 'lodash/map';
 import difference from 'lodash/difference';
 import get from 'lodash/get';
 import { getCollection } from 'meteor/vulcan:lib';
+import { Utils, deprecate } from 'meteor/vulcan:lib';
+
 
 /**
  * @summary Users.groups object
@@ -210,6 +212,11 @@ Users.canReadField = function (user, field, document) {
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
+  deprecate('1.13.4', 'getViewableFields is deprecated. Use Users.getReadableProjection to get a Mongo projection, or Users.getReadableFields if you need an array of field.');
+  return Users.getReadableProjection(user, collection, document);
+};
+
+Users.getReadableFields = function (user, collection, document) {
   return compact(map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       if (fieldName.indexOf('.$') > -1) return null;
@@ -217,6 +224,12 @@ Users.getViewableFields = function (user, collection, document) {
     }
   ));
 };
+
+Users.getReadableProjection = function (user, collection, document) {
+  return Utils.arrayToFields(Users.getReadableFields(user, collection, document));
+};
+
+
 
 // collection helper
 Users.helpers({
@@ -232,7 +245,7 @@ Users.helpers({
  * @param {Object} fields - The list of fields
  */
 Users.checkFields = (user, collection, fields) => {
-  const viewableFields = Users.getViewableFields(user, collection);
+  const viewableFields = Users.getReadableFields(user, collection);
   const diff = difference(fields, viewableFields);
 
   if (diff.length) {
@@ -242,6 +255,7 @@ Users.checkFields = (user, collection, fields) => {
       )}.`
     );
   }
+  return true;
 };
 
 /**
@@ -257,7 +271,7 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
   const restrictDoc = document => {
 
     // get array of all keys viewable by user
-    const viewableKeys = Users.getViewableFields(user, collection, document);
+    const viewableKeys = Users.getReadableFields(user, collection, document);
     const restrictedDocument = _.clone(document);
 
     // loop over each property in the document and delete it if it's not viewable

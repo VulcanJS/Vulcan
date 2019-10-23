@@ -5,6 +5,7 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 ## Beyond 1.13.3
 
 - `npm install apollo-utilities` (to run tests)
+- Replace `Users.getViewableFields` by `Users.getReadableProjection` 
 
 ## From 1.13.2 to 1.13.3
 

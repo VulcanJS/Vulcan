@@ -11,4 +11,5 @@ import './CardItemRelationItem';
 import './CardItemRelationHasMany';
 import './CardItemRelationHasOne';
 import './CardItemSwitcher';
+import './CardItemURL';
 export { default } from './Card';
