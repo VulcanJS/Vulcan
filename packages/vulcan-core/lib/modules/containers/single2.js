@@ -3,9 +3,10 @@ import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
   getSetting, singleClientTemplate, Utils, extractCollectionInfo,
-  extractFragmentInfo, deprecate
+  extractFragmentInfo,
 } from 'meteor/vulcan:lib';
 import _merge from 'lodash/merge';
+import { computeQueryVariables } from './variables';
 
 const defaultInput = {
   enableCache: false,
@@ -38,16 +39,11 @@ export const singleQuery = ({
  */
 const buildQueryOptions = (options, props) => {
   let {
-    input: optionsInput, // static default inputs defined by the component
     pollInterval = getSetting('pollInterval', 20000),
     // generic apollo graphQL options
     queryOptions = {}
   } = options;
 
-  // dynamic inputs from props (can be passed by the parent component)
-  const { input: propsInput = {} } = props;
-
-  const input = _merge({}, defaultInput, optionsInput, propsInput);
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
@@ -56,7 +52,10 @@ const buildQueryOptions = (options, props) => {
   // OpenCrud backwards compatibility
   const graphQLOptions = {
     variables: {
-      input,
+      ...computeQueryVariables(
+        { ...options, input: _merge({}, defaultInput, options.input || {}) }, // needed to merge in defaultInput, could be improved
+        props
+      )
     },
     pollInterval // note: pollInterval can be set to 0 to disable polling (20s by default)
   };

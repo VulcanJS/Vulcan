@@ -35,7 +35,7 @@ import { upsertClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 import { multiQueryUpdater } from './create';
-import _merge from 'lodash/merge';
+import { computeQueryVariables } from './variables';
 
 export const buildUpsertQuery = ({ typeName, fragment, fragmentName }) => (
   gql`
@@ -48,7 +48,6 @@ export const useUpsert2 = options => {
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
   const {
-    input: optionsInput,
     mutationOptions = {}
   } = options;
 
@@ -62,11 +61,11 @@ export const useUpsert2 = options => {
     ...mutationOptions
   });
 
-  const extendedUpsertFunc = ({ data, input: argsInput }) => {
+  const extendedUpsertFunc = ({ data, ...args }) => {
     return upsertFunc({
       variables: {
         data,
-        input: _merge({}, optionsInput, argsInput)
+        ...computeQueryVariables(options, args)
       }
     });
   };

@@ -33,7 +33,7 @@ import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import { buildMultiQuery } from './multi';
 import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
-import _merge from 'lodash/merge';
+import { computeQueryVariables } from './variables';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -71,7 +71,8 @@ export const useDelete2 = (options) => {
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
   const {
-    input: optionsInput,
+    //input: optionsInput,
+    //_id: optionsId,
     mutationOptions = {},
   } = options;
 
@@ -85,11 +86,10 @@ export const useDelete2 = (options) => {
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
-  const extendedDeleteFunc = ({ input: argsInput }) => {
-    const input = _merge({}, optionsInput, argsInput);
+  const extendedDeleteFunc = (args/*{ input: argsInput, _id: argsId }*/) => {
     return deleteFunc({
       variables: {
-        input
+        ...computeQueryVariables(options, args)
       }
     });
   };

@@ -29,7 +29,6 @@ import {
   multiClientTemplate,
   extractCollectionInfo,
   extractFragmentInfo,
-  deprecate,
 } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
 

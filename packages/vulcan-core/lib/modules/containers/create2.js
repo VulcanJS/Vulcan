@@ -62,10 +62,10 @@ export const multiQueryUpdater = ({
     try {
       const queryResult = cache.readQuery({ query: multiQuery, variables });
       // get mongo selector and options objects based on current terms
-      const input = variables.input;
+      const multiInput = variables.input;
       // TODO: the 3rd argument is the context, not available here
       // Maybe we could pass the currentUser? The context is passed to custom filters function
-      const { selector, options: paramOptions } = filterFunction(collection, input, {});
+      const { selector, options: paramOptions } = filterFunction(collection, multiInput, {});
       const { sort } = paramOptions;
       // check if the document should be included in this query, given the query filters
       if (matchSelector(newDoc, selector)) {

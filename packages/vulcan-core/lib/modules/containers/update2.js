@@ -35,7 +35,7 @@ import {
   extractCollectionInfo,
   extractFragmentInfo,
 } from 'meteor/vulcan:lib';
-import _merge from 'lodash/merge';
+import { computeQueryVariables } from './variables';
 
 export const buildUpdateQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -48,7 +48,6 @@ export const useUpdate2 = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const {
-    input: optionsInput, // default static input
     mutationOptions = {}
   } = options;
 
@@ -62,11 +61,11 @@ export const useUpdate2 = (options) => {
     ...mutationOptions
   });
 
-  const extendedUpdateFunc = ({ data, input: argsInput }) => {
+  const extendedUpdateFunc = ({ data, ...args }) => {
     return updateFunc({
       variables: {
         data,
-        input: _merge({}, optionsInput, argsInput),
+        ...computeQueryVariables(options, args)
       },
     });
   };
