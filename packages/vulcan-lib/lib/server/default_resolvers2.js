@@ -113,10 +113,10 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
     single: {
       description: `A single ${typeName} document fetched by ID or slug`,
 
-      async resolver(root, { input = {} }, context, { cacheControl }) {
+      async resolver(root, { input = {}, _id }, context, { cacheControl }) {
         const { selector: oldSelector = {}, enableCache = false, allowNull = false } = input;
         const operationName = `${typeName}.read.single`;
-        const { _id } = input;
+        //const { _id } = input; // _id is passed from the root
         let doc;
 
         debug('');

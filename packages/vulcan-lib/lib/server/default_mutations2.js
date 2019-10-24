@@ -97,19 +97,30 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     };
   }
 
+  // get a single document based on the mutation params
+  const getMutationDocument = async ({ input, _id, collection }) => {
+    let document;
+    let selector;
+    if (_id) { // _id bypass input
+      document = await collection.loader.load(_id);
+    } else {
+      const filterParameters = Connectors.filter(collection, input, context);
+      selector = filterParameters.selector;
+      // get entire unmodified document from database
+      document = await Connectors.get(collection, selector);
+    }
+    return { selector, document };
+  };
+
   if (mutationOptions.update) {
     mutations.update = {
       description: `Mutation for updating a ${typeName} document`,
       name: getUpdateMutationName(typeName),
-      async mutation(root, { where, selector: oldSelector, data }, context) {
+      async mutation(root, { input, _id, selector: oldSelector, data }, context) {
         const { currentUser } = context;
         const collection = context[collectionName];
 
-        // handle both `where` and `selector` for backwards-compatibility
-        const filterParameters = Connectors.filter(collection, { where }, context);
-        const selector = filterParameters.selector;
-        // get entire unmodified document from database
-        const document = await Connectors.get(collection, selector);
+        const { document, selector } = await getMutationDocument({ input, _id, collection });
 
         performMutationCheck({
           user: currentUser,
@@ -137,18 +148,16 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
       name: getUpsertMutationName(typeName),
-      async mutation(root, { where, selector, data }, context) {
+      async mutation(root, { input, _id, data }, context) {
         const collection = context[collectionName];
 
         // check if document exists already
-        const existingDocument = await Connectors.get(collection, selector, {
-          fields: { _id: 1 },
-        });
+        const { document: existingDocument, selector } = await getMutationDocument({ input, _id, collection });
 
         if (existingDocument) {
           return await collection.options.mutations.update.mutation(
             root,
-            { where, selector, data },
+            { input, _id, selector, data },
             context
           );
         } else {
@@ -162,13 +171,11 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     mutations.delete = {
       description: `Mutation for deleting a ${typeName} document`,
       name: getDeleteMutationName(typeName),
-      async mutation(root, { where, selector: oldSelector }, context) {
+      async mutation(root, { input, _id }, context) {
         const { currentUser } = context;
         const collection = context[collectionName];
 
-        const filterParameters = Connectors.filter(collection, { where }, context);
-        const selector = filterParameters.selector;
-        const document = await Connectors.get(collection, selector);
+        const { document, /*selector*/ } = await getMutationDocument({ input, _id, collection });
 
         performMutationCheck({
           user: currentUser,
