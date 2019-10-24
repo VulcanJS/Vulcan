@@ -12,7 +12,7 @@ A query for a single document
 movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
-export const singleQueryTemplate = ({ typeName }) => `${getSingleResolverName(typeName)}(input: Single${typeName}Input): Single${typeName}Output`;
+export const singleQueryTemplate = ({ typeName }) => `${getSingleResolverName(typeName)}(_id: String, input: Single${typeName}Input): Single${typeName}Output`;
 
 
 /*
@@ -41,7 +41,7 @@ type SingleMovieInput {
 
 */
 export const singleInputTemplate = ({ typeName }) =>
-`input Single${typeName}Input {
+  `input Single${typeName}Input {
   # filtering
   where: ${typeName}WhereInput
   orderBy: ${typeName}OrderByInput
@@ -72,7 +72,7 @@ type MultiMovieInput {
 
 */
 export const multiInputTemplate = ({ typeName }) =>
-`input Multi${typeName}Input {
+  `input Multi${typeName}Input {
 
   # filtering
   where: ${typeName}WhereInput
@@ -106,7 +106,7 @@ type SingleMovieOuput{
 
 */
 export const singleOutputTemplate = ({ typeName }) =>
-`type Single${typeName}Output{
+  `type Single${typeName}Output{
   result: ${typeName}
 }`;
 
@@ -121,7 +121,7 @@ type MultiMovieOuput{
 
 */
 export const multiOutputTemplate = ({ typeName }) =>
-`type Multi${typeName}Output{
+  `type Multi${typeName}Output{
   results: [${typeName}]
   totalCount: Int
 }`;
@@ -147,7 +147,7 @@ query singleMovieQuery($input: SingleMovieInput) {
 */
 // TODO: with hooks, extraQueries becomes less necessary?
 export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query single${typeName}Query($input: Single${typeName}Input) {
+  `query single${typeName}Query($input: Single${typeName}Input) {
   ${Utils.camelCaseify(typeName)}(input: $input) {
     result {
       ...${fragmentName}
@@ -176,7 +176,7 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 
 */
 export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-`query multi${typeName}Query($input: Multi${typeName}Input) {
+  `query multi${typeName}Query($input: Multi${typeName}Input) {
   ${Utils.camelCaseify(Utils.pluralize(typeName))}(input: $input) {
     results {
       ...${fragmentName}
