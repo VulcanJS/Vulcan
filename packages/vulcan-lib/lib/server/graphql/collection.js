@@ -26,6 +26,7 @@ import {
   updateMutationTemplate,
   upsertMutationTemplate,
   deleteMutationTemplate,
+  mutationInputTemplate,
   enumTypeTemplate,
   fieldWhereInputTemplate,
   fieldOrderByInputTemplate,
@@ -218,6 +219,7 @@ const generateSchemaFragments = ({
   schemaFragments.push(deleteInputTemplate({ typeName }));
   schemaFragments.push(singleInputTemplate({ typeName }));
   schemaFragments.push(multiInputTemplate({ typeName }));
+  schemaFragments.push(mutationInputTemplate({ typeName }));
   schemaFragments.push(singleOutputTemplate({ typeName }));
   schemaFragments.push(multiOutputTemplate({ typeName }));
   schemaFragments.push(mutationOutputTemplate({ typeName }));

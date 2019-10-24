@@ -46,7 +46,7 @@ export const deleteMutationTemplate = ({ typeName }) =>
 
 
 // find a single doc to mutate
-export const mutationSingleInputTemplate = ({ typeName }) =>
+export const mutationInputTemplate = ({ typeName }) =>
   `input Mutation${typeName}Input {
   # filtering
   where: ${typeName}WhereInput
