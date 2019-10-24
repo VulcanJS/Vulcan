@@ -223,8 +223,8 @@ mutation updateMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
-  `mutation update${typeName}($input: Mutation${typeName}Input, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
-  update${typeName}(input: $input, selector: $selector, data: $data) {
+  `mutation update${typeName}($input: Mutation${typeName}Input, $_id: String, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  update${typeName}(input: $input, _id: $_id, selector: $selector, data: $data) {
     data {
       ...${fragmentName}
     }
@@ -248,8 +248,8 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
-  `mutation upsert${typeName}($input: Mutation${typeName}Input, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
-  upsert${typeName}(input: $input, selector: $selector, data: $data) {
+  `mutation upsert${typeName}($input: Mutation${typeName}Input, $_id: String, $selector: ${typeName}SelectorUniqueInput!, $data: Update${typeName}DataInput!) {
+  upsert${typeName}(input: $input, _id: $_id, selector: $selector, data: $data) {
     data {
       ...${fragmentName}
     }
@@ -273,8 +273,8 @@ mutation deleteMovie($selector: MovieSelectorUniqueInput!) {
 
 */
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
-  `mutation delete${typeName}($input: Mutation${typeName}Input, $selector: ${typeName}SelectorUniqueInput!) {
-  delete${typeName}(input: $input, selector: $selector) {
+  `mutation delete${typeName}($input: Mutation${typeName}Input, $_id: String, $selector: ${typeName}SelectorUniqueInput!) {
+  delete${typeName}(input: $input, _id: $_id, selector: $selector) {
     data {
       ...${fragmentName}
     }
