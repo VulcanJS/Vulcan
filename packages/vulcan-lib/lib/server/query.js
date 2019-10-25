@@ -8,10 +8,11 @@ import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
 import {
-  getDefaultFragmentText,
   extractFragmentName,
   getFragmentText,
 } from '../modules/fragments.js';
+import { getDefaultFragmentText } from '../modules/graphql/defaultFragment.js';
+
 import { getSetting } from '../modules/settings';
 import merge from 'lodash/merge';
 import { singleClientTemplate } from '../modules/graphql_templates/index.js';
