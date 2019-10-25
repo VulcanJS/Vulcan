@@ -2,7 +2,9 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
-## From 1.13.3 to XXXX
+## NEXT
+
+## From 1.13.3 to 1.13.5
 
 - Replace `Users.getViewableFields` by `Users.getReadableProjection` 
 
