@@ -154,6 +154,11 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 VulcanEmail.build = async ({ emailName, variables, locale }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
+
+  if (!email) {
+    throw new Error(`Could not find email [${emailName}]`);
+  }
+
   const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
 
   // if email has a data() function, merge its return value with results from the query
