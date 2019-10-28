@@ -148,8 +148,9 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     mutations.upsert = {
       description: `Mutation for upserting a ${typeName} document`,
       name: getUpsertMutationName(typeName),
-      async mutation(root, { input, _id, data }, context) {
+      async mutation(root, { input, _id: argsId, data }, context) {
         const collection = context[collectionName];
+        const _id = argsId || (data && typeof data === 'object' && data._id); // use provided id or documentId if available
 
         // check if document exists already
         const { document: existingDocument, selector } = await getMutationDocument({ input, _id, collection });
