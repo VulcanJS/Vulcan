@@ -116,9 +116,10 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     mutations.update = {
       description: `Mutation for updating a ${typeName} document`,
       name: getUpdateMutationName(typeName),
-      async mutation(root, { input, _id, selector: oldSelector, data }, context) {
+      async mutation(root, { input, _id: argsId, selector: oldSelector, data }, context) {
         const { currentUser } = context;
         const collection = context[collectionName];
+        const _id = argsId || (data && typeof data === 'object' && data._id); // use provided id or documentId if available
 
         const { document, selector } = await getMutationDocument({ input, _id, collection });
 
