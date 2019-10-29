@@ -31,7 +31,7 @@ Users.getUser = function(userOrUserId) {
  */
 Users.getUserName = function(user) {
   try {
-    if (user.username) return user.username;
+    if (user && user.username) return user.username; //Add null check for user
     if (user && user.services && user.services.twitter && user.services.twitter.screenName)
       return user.services.twitter.screenName;
   } catch (error) {
