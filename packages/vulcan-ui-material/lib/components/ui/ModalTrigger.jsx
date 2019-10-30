@@ -50,7 +50,7 @@ class ModalTrigger extends PureComponent {
   };
   
   closeModal = (event) => {
-    if (event) {
+    if (event && event.stopPropagation) {
       event.stopPropagation();
     }
     this.setState({ modalIsOpen: false });
