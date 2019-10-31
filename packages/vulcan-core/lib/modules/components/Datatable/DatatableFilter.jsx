@@ -291,7 +291,7 @@ const DatatableFilterNumbers = ({ filters, setFilters }) => (
       inputProperties={{
         onChange: event => {
           const value = event.target.value;
-          if (!value || value === '') {
+          if (!value) {
             const newFilters = Object.assign({}, filters);
             delete newFilters._lte;
             setFilters(newFilters);
