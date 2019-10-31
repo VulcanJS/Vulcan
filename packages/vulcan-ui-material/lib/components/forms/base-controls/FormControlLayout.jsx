@@ -24,8 +24,10 @@ const FormControlLayout = createReactClass({
   },
 
   renderLabel: function () {
-    const { fakeLabel, hideLabel, shrinkLabel, layout, optional, label, value } = this.props;
 
+    const { fakeLabel, hideLabel, shrinkLabel, layout, label, value } = this.props;
+    const isRequired = !this.props.optional || this.props.required;
+    
     if (layout === 'elementOnly' || hideLabel) {
       return null;
     }
@@ -34,9 +36,9 @@ const FormControlLayout = createReactClass({
       return (
         <FormLabel className="control-label legend"
                    component="legend"
-                   data-required={!optional}
+                   data-required={isRequired}
         >
-          {label}<Components.RequiredIndicator optional={optional} value={value}/>
+          {label}<Components.RequiredIndicator optional={!isRequired} value={value}/>
         </FormLabel>
       );
     }
@@ -45,11 +47,11 @@ const FormControlLayout = createReactClass({
 
     return (
       <InputLabel className="control-label"
-                  data-required={!optional}
+                  data-required={isRequired}
                   htmlFor={this.props.htmlFor}
                   shrink={shrink}
       >
-        {label}<Components.RequiredIndicator optional={optional} value={value}/>
+        {label}<Components.RequiredIndicator optional={!isRequired} value={value}/>
       </InputLabel>
     );
   },
