@@ -36,7 +36,6 @@ const NewForm = ({ closeModal, successCallback, formProps, ...props }) => {
         closeModal();
       }
     : () => {
-
          closeModal();
       };
 
