@@ -35,7 +35,10 @@ const NewForm = ({ closeModal, successCallback, formProps, ...props }) => {
         successCallback(document);
         closeModal();
       }
-    : closeModal;
+    : () => {
+
+         closeModal();
+      };
 
   return <Components.SmartForm successCallback={success} {...formProps} {...props} />;
 };

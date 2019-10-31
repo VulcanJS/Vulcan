@@ -41,14 +41,18 @@ const EditForm = ({ closeModal, successCallback, removeSuccessCallback, formProp
         successCallback(document);
         closeModal();
       }
-    : closeModal;
+    : () => {
+        closeModal();
+      };
 
   const remove = removeSuccessCallback
     ? document => {
         removeSuccessCallback(document);
         closeModal();
       }
-    : closeModal;
+    : () => {
+        closeModal();
+      };
 
   return (
     <Components.SmartForm
