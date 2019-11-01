@@ -49,7 +49,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options, filteredFields } = Connectors.filter(collection, input, context);
+        let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
 
         // make sure all filtered fields are allowed
         Users.checkFields(currentUser, collection, filteredFields);
@@ -138,7 +138,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         if (_id) {
           doc = await collection.loader.load(_id);
         } else {
-          let { selector, options, filteredFields } = Connectors.filter(collection, input, context);
+          let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
           // make sure all filtered fields are allowed
           Users.checkFields(currentUser, collection, filteredFields);
           doc = await Connectors.get(collection, selector, options);

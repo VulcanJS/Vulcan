@@ -47,6 +47,7 @@ export const singleInputTemplate = ({ typeName }) =>
   orderBy: ${typeName}OrderByInput
   search: String
   filter: String
+  filterArguments: JSON
   _id: String
 
   # backwards-compatibility
@@ -81,6 +82,7 @@ export const multiInputTemplate = ({ typeName }) =>
   offset: Int
   limit: Int
   filter: String
+  filterArguments: JSON
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data

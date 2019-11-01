@@ -27,7 +27,7 @@ DatabaseConnectors.mongo = {
   delete: async (collection, selector, options = {}) => {
     return await collection.remove(convertUniqueSelector(selector));
   },
-  filter: (collection, input, context) => {
+  filter: async (collection, input, context) => {
     /*
 
     When a collection is created, a defaultInput option can be passed
@@ -35,8 +35,8 @@ DatabaseConnectors.mongo = {
     values that should always apply. 
 
     */
-    const defaultInputObject = filterFunction(collection, collection.options.defaultInput, context);
-    const currentInputObject = filterFunction(collection, input, context);
+    const defaultInputObject = await filterFunction(collection, collection.options.defaultInput, context);
+    const currentInputObject = await filterFunction(collection, input, context);
     if (defaultInputObject.options.sort && currentInputObject.options.sort) {
       // for sort only, delete default sort instead of merging to avoid issue with
       // default sort coming first in list of sort specifiers

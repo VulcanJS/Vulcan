@@ -162,7 +162,7 @@ export function getDefaultMutations(options) {
         // handle both `where` and `selector` for backwards-compatibility
         let selector;
         if (!isEmpty(where)) {
-          const filterParameters = Connectors.filter(collection, { where }, context);
+          const filterParameters = await Connectors.filter(collection, { where }, context);
           selector = filterParameters.selector;
         } else {
           if (!isEmpty(oldSelector)) {
@@ -286,7 +286,7 @@ export function getDefaultMutations(options) {
         // handle both `where` and `selector` for backwards-compatibility
         let selector;
         if (!isEmpty(where)) {
-          const filterParameters = Connectors.filter(collection, { where }, context);
+          const filterParameters = await Connectors.filter(collection, { where }, context);
           selector = filterParameters.selector;
         } else {
           if (!isEmpty(oldSelector)) {

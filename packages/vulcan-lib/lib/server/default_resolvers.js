@@ -60,14 +60,16 @@ export function getDefaultResolvers(options) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options, filteredFields } = isEmpty(terms)
-          ? Connectors.filter(collection, input, context)
+        let { selector = {}, options = {}, filteredFields = [] } = isEmpty(terms)
+          ? await Connectors.filter(collection, input, context)
           : await collection.getParameters(terms, {}, context);
 
         // make sure all filtered fields are allowed
         Users.checkFields(currentUser, collection, filteredFields);
 
-        options.skip = terms.offset;
+        if (terms) {
+          options.skip = terms.offset;
+        }
 
         debug({ selector, options });
 
@@ -81,7 +83,7 @@ export function getDefaultResolvers(options) {
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to filter list of documents
-            viewableDocs = docs.filter(doc => canRead(currentUser, doc));
+            viewableDocs = docs.filter(document => canRead({ user: currentUser, document }));
           } else if (Array.isArray(canRead)) {
             if (canRead.includes('owners')) {
               // if canReady array includes the owners group, test each document
@@ -159,7 +161,7 @@ export function getDefaultResolvers(options) {
           // make an exception for slug
           doc = await Connectors.get(collection, { slug });
         } else {
-          let { selector, filteredFields } = Connectors.filter(collection, input, context);
+          let { selector, filteredFields } = await Connectors.filter(collection, input, context);
 
           // make sure all filtered fields are allowed
           Users.checkFields(currentUser, collection, filteredFields);
@@ -187,7 +189,7 @@ export function getDefaultResolvers(options) {
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to check current document
-            canReadFunction = canRead;
+            canReadFunction = (user, document, context) => canRead({ user, document, context });
           } else if (Array.isArray(canRead)) {
             // else if it's an array of groups, check if current user belongs to them
             // for the current document

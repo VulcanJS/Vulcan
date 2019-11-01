@@ -104,7 +104,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
     if (_id) { // _id bypass input
       document = await collection.loader.load(_id);
     } else {
-      const filterParameters = Connectors.filter(collection, input, context);
+      const filterParameters = await Connectors.filter(collection, input, context);
       selector = filterParameters.selector;
       // get entire unmodified document from database
       document = await Connectors.get(collection, selector);

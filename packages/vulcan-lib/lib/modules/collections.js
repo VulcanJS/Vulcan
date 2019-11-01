@@ -140,7 +140,7 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = merge(collection.options, options);
+  collection.options = merge({}, collection.options, options);
 };
 
 export const createCollection = options => {

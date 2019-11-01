@@ -74,4 +74,4 @@ Check if a type corresponds to a collection or else
 is just a regular or custom scalar type.
 
 */
-export const isCollectionType = typeName => Collections.some(c => c.options.typeName === typeName);
+export const isCollectionType = typeName => Collections.some(c => c.options.typeName === typeName || `[${c.options.typeName}]` === typeName);
