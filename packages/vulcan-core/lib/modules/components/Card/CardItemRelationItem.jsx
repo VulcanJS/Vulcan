@@ -19,9 +19,9 @@ const CardItemRelationItem = ({ relatedDocument, relatedCollection, Components }
   const typeName = relatedDocument.__typename;
   const Token = Components[`${typeName}Token`];
   return Token ? (
-    <Token document={relatedDocument} label={label} />
+    <Token document={relatedDocument} label={label} Components={Components} />
   ) : (
-    <Components.DefaultToken document={relatedDocument} label={label} />
+    <Components.DefaultToken document={relatedDocument} label={label} Components={Components} />
   );
 };
 registerComponent({ name: 'CardItemRelationItem', component: CardItemRelationItem });
@@ -35,7 +35,7 @@ const DefaultToken = ({ document, label }) => (
 registerComponent({ name: 'DefaultToken', component: DefaultToken });
 
 // User Token
-const UserToken = ({ document }) => (
+const UserToken = ({ document, Components }) => (
   <div className="contents-user user-item">
     <Components.Avatar size="small" user={document} />
     {document.pagePath ? (

@@ -76,7 +76,7 @@ class ModalTrigger extends PureComponent {
 
 ModalTrigger.propTypes = {
   className: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   component: PropTypes.object, // keep for backwards compatibility
   trigger: PropTypes.object,
   size: PropTypes.string,
