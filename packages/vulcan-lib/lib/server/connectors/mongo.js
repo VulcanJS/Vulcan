@@ -31,7 +31,7 @@ DatabaseConnectors.mongo = {
     /*
 
     When a collection is created, a defaultInput option can be passed
-    in order to specify default `where`, `limit`, `orderBy`, etc. 
+    in order to specify default `filter`, `limit`, `sort`, etc. 
     values that should always apply. 
 
     */

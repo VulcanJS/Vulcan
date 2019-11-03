@@ -143,7 +143,7 @@ describe('vulcan:core/container/mutations2', () => {
                     totalCount: 0
                 }
             }
-            const makeCacheData = (vars = { input: { where: {} } }) => ({
+            const makeCacheData = (vars = { input: { filter: {} } }) => ({
                 data: {
                     ROOT_QUERY: {
                         // variables are contained in the query name
@@ -215,7 +215,7 @@ describe('vulcan:core/container/mutations2', () => {
                     writeQuery,
                     data: makeCacheData({
                         input: {
-                            where: { val: { _gt: 42 } }
+                            filter: { val: { _gt: 42 } }
                         }
                     })
                 }
@@ -238,7 +238,7 @@ describe('vulcan:core/container/mutations2', () => {
                     writeQuery,
                     data: makeCacheData({
                         input: {
-                            where: { val: { _gt: 42 } }
+                            filter: { val: { _gt: 42 } }
                         }
                     })
                 }
@@ -266,7 +266,7 @@ describe('vulcan:core/container/mutations2', () => {
                     writeQuery,
                     data: makeCacheData({
                         input: {
-                            orderBy: {
+                            sort: {
                                 val: "asc"
                             }
                         }

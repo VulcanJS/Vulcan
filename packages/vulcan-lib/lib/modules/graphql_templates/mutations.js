@@ -49,10 +49,9 @@ export const deleteMutationTemplate = ({ typeName }) =>
 export const mutationInputTemplate = ({ typeName }) =>
   `input Mutation${typeName}Input {
   # filtering
-  where: ${typeName}WhereInput
-  orderBy: ${typeName}OrderByInput
+  filter: ${typeName}FilterInput
+  sort: ${typeName}SortInput
   search: String
-  filter: String
   _id: String
 
   # backwards-compatibility
@@ -90,7 +89,7 @@ Note: selector is for backwards-compatibility
 */
 export const updateInputTemplate = ({ typeName }) =>
   `input Update${typeName}Input{
-  where: ${typeName}WhereInput
+  filter: ${typeName}FilterInput
   selector: ${typeName}SelectorUniqueInput
   data: Update${typeName}DataInput!
 }`;
@@ -111,7 +110,7 @@ Note: selector is for backwards-compatibility
 */
 export const upsertInputTemplate = ({ typeName }) =>
   `input Upsert${typeName}Input{
-  where: ${typeName}WhereInput
+  filter: ${typeName}FilterInput
   selector: ${typeName}SelectorUniqueInput
   data: Update${typeName}DataInput!
 }`;
@@ -129,7 +128,7 @@ Note: selector is for backwards-compatibility
 */
 export const deleteInputTemplate = ({ typeName }) =>
   `input Delete${typeName}Input{
-  where: ${typeName}WhereInput
+  filter: ${typeName}FilterInput
   selector: ${typeName}SelectorUniqueInput
 }`;
 

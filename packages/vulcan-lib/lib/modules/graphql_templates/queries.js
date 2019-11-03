@@ -31,11 +31,9 @@ export const multiQueryTemplate = ({ typeName }) => `${getMultiResolverName(type
 The argument type when querying for a single document
 
 type SingleMovieInput {
-  selector {
-    documentId: String
-    # or `_id: String`
-    # or `slug: String`
-  }
+  filter: MovieFilterInput
+  sort: MovieSortInput
+  search: String
   enableCache: Boolean
 }
 
@@ -43,17 +41,15 @@ type SingleMovieInput {
 export const singleInputTemplate = ({ typeName }) =>
   `input Single${typeName}Input {
   # filtering
-  where: ${typeName}WhereInput
-  orderBy: ${typeName}OrderByInput
+  filter: ${typeName}FilterInput
+  sort: ${typeName}SortInput
   search: String
-  filter: String
-  filterArguments: JSON
   _id: String
 
   # backwards-compatibility
   selector: ${typeName}SelectorUniqueInput
 
-  # options
+  # options (backwards-compatibility)
   # Whether to enable caching for this query
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
@@ -76,13 +72,11 @@ export const multiInputTemplate = ({ typeName }) =>
   `input Multi${typeName}Input {
 
   # filtering
-  where: ${typeName}WhereInput
-  orderBy: ${typeName}OrderByInput
+  filter: ${typeName}FilterInput
+  sort: ${typeName}SortInput
   search: String
   offset: Int
   limit: Int
-  filter: String
-  filterArguments: JSON
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data

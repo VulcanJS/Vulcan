@@ -135,9 +135,16 @@ input Date_Array_Selector {
 }
 
 # column ordering options
-enum OrderBy {
+enum SortOptions {
   asc
   desc
+}
+
+input OptionsInput {
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # For single document queries, return null instead of throwing MissingDocumentError
+  allowNull: Boolean
 }
 
 ${GraphQLSchema.getAdditionalSchemas()}

@@ -479,7 +479,7 @@ export const getPermissionFields = ({
     update: [],
     selector: [],
     selectorUnique: [],
-    orderBy: [],
+    sort: [],
     readable: []
   };
   const {
@@ -559,7 +559,7 @@ export const getPermissionFields = ({
 };
 
 // for a given schema, return main type fields, selector fields,
-// unique selector fields, orderBy fields, creatable fields, and updatable fields
+// unique selector fields, sort fields, creatable fields, and updatable fields
 export const getSchemaFields = (schema, typeName) => {
   if (!schema) console.log('/////////////////////', typeName, '/////////////////////');
   const fields = {
@@ -568,7 +568,7 @@ export const getSchemaFields = (schema, typeName) => {
     update: [],
     selector: [],
     selectorUnique: [],
-    orderBy: [],
+    sort: [],
     enums: [],
     readable: []
   };
@@ -654,7 +654,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.update.push(...permissionsFields.update);
       fields.selector.push(...permissionsFields.selector);
       fields.selectorUnique.push(...permissionsFields.selectorUnique);
-      fields.orderBy.push(...permissionsFields.orderBy);
+      fields.sort.push(...permissionsFields.sort);
       fields.readable.push(...permissionsFields.readable);
 
       // check for nested fields if the field does not reference an existing type

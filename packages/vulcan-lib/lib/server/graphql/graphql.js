@@ -32,8 +32,8 @@ import {
   updateMutationTemplate,
   upsertMutationTemplate,
   deleteMutationTemplate,
-  fieldWhereInputTemplate,
-  fieldOrderByInputTemplate,
+  fieldFilterInputTemplate,
+  fieldSortInputTemplate,
 } from '../../modules/graphql_templates/index.js';
 import getSchemaFields from './schemaFields';
 
@@ -241,8 +241,8 @@ export const GraphQLSchema = {
       schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
 
       if (readable.length) {
-        schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
-        schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+        schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: readable }));
+        schemaFragments.push(fieldSortInputTemplate({ typeName, fields: readable }));
       }
 
       schemaFragments.push(selectorUniqueInputTemplate({ typeName, fields: selectorUnique }));

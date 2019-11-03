@@ -169,7 +169,7 @@ describe('vulcan:core/default_resolvers', function () {
       it('filter documents based on user input', async () => {
         const resolver = getMultiResolver();
         const input = {
-          where: { year: { _gte: 2000 } }
+          filter: { year: { _gte: 2000 } }
         }
         // TODO: creating a spy on find is tedious, use integration test instead
         const findSpy = sinon.spy(
@@ -194,7 +194,7 @@ describe('vulcan:core/default_resolvers', function () {
         const resolver = getMultiResolver();
         const input = {
           // gte is not valid, _gte is correct
-          where: { year: { gte: 2000 } }
+          filter: { year: { gte: 2000 } }
         }
         // TODO: creating a spy on find is tedious, use integration test instead
         const findSpy = sinon.spy(
@@ -217,7 +217,7 @@ describe('vulcan:core/default_resolvers', function () {
       it('detect non viewable field in filter', async () => {
         const resolver = getMultiResolver();
         const input = {
-          where: { year: { _gte: 2000 } }
+          filter: { year: { _gte: 2000 } }
         }
         const findSpy = sinon.spy(
           () => ({ fetch: () => [], count: () => 0 })

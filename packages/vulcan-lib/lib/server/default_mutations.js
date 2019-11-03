@@ -156,13 +156,13 @@ export function getDefaultMutations(options) {
             ]);
       },
 
-      async mutation(root, { where, selector: oldSelector, data }, context) {
+      async mutation(root, { filter, selector: oldSelector, data }, context) {
         const collection = context[collectionName];
 
-        // handle both `where` and `selector` for backwards-compatibility
+        // handle both `filter` and `selector` for backwards-compatibility
         let selector;
-        if (!isEmpty(where)) {
-          const filterParameters = await Connectors.filter(collection, { where }, context);
+        if (!isEmpty(filter)) {
+          const filterParameters = await Connectors.filter(collection, { filter }, context);
           selector = filterParameters.selector;
         } else {
           if (!isEmpty(oldSelector)) {
@@ -215,7 +215,7 @@ export function getDefaultMutations(options) {
       description: `Mutation for upserting a ${typeName} document`,
       name: mutationName,
 
-      async mutation(root, { where, selector, data }, context) {
+      async mutation(root, { filter, selector, data }, context) {
         const collection = context[collectionName];
 
         // check if documeet exists already
@@ -226,7 +226,7 @@ export function getDefaultMutations(options) {
         if (existingDocument) {
           return await collection.options.mutations.update.mutation(
             root,
-            { where, selector, data },
+            { filter, selector, data },
             context
           );
         } else {
@@ -280,13 +280,13 @@ export function getDefaultMutations(options) {
             ]);
       },
 
-      async mutation(root, { where, selector: oldSelector }, context) {
+      async mutation(root, { filter, selector: oldSelector }, context) {
         const collection = context[collectionName];
 
-        // handle both `where` and `selector` for backwards-compatibility
+        // handle both `filter` and `selector` for backwards-compatibility
         let selector;
-        if (!isEmpty(where)) {
-          const filterParameters = await Connectors.filter(collection, { where }, context);
+        if (!isEmpty(filter)) {
+          const filterParameters = await Connectors.filter(collection, { filter }, context);
           selector = filterParameters.selector;
         } else {
           if (!isEmpty(oldSelector)) {

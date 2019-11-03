@@ -12,8 +12,8 @@ Options:
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   - input: the initial query input
-    - where
-    - orderBy
+    - filter
+    - sort
     - search
     - offset
     - limit

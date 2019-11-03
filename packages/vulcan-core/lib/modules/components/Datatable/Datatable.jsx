@@ -52,8 +52,8 @@ class Datatable extends PureComponent {
         initState.searchValue = initialState.search;
         initState.search = initialState.search;
       }
-      if (initialState.orderBy) {
-        initState.currentSort = initialState.orderBy;
+      if (initialState.sort) {
+        initState.currentSort = initialState.sort;
       }
       if (initialState.filters) {
         initState.currentFilters = initialState.filters;
@@ -67,8 +67,8 @@ class Datatable extends PureComponent {
         initState.searchValue = urlState.search;
         initState.search = urlState.search;
       }
-      if (urlState.orderBy) {
-        const [sortKey, sortValue] = urlState.orderBy.split('|');
+      if (urlState.sort) {
+        const [sortKey, sortValue] = urlState.sort.split('|');
         initState.currentSort = { [sortKey]: parseInt(sortValue) };
       }
       if (urlState.filters) {
@@ -158,7 +158,7 @@ class Datatable extends PureComponent {
       urlValue = null;
     }
     this.setState({ currentSort });
-    this.updateQueryParameter('orderBy', urlValue);
+    this.updateQueryParameter('sort', urlValue);
   };
 
   submitFilters = ({ name, filters }) => {
@@ -246,10 +246,10 @@ class Datatable extends PureComponent {
         input.search = this.state.search;
       }
       if (!_isEmpty(this.state.currentSort)) {
-        input.orderBy = this.state.currentSort;
+        input.sort = this.state.currentSort;
       }
       if (!_isEmpty(this.state.currentFilters)) {
-        input.where = this.state.currentFilters;
+        input.filter = this.state.currentFilters;
       }
 
       return (

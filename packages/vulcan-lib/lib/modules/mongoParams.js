@@ -58,7 +58,7 @@ const isEmptyOrUndefined = value =>
 
 export const filterFunction = async (collection, input = {}, context) => {
   // eslint-disable-next-line no-unused-vars
-  const { where, limit = 20, orderBy, search, filter, filterArguments, offset, _id } = input;
+  const { filter, limit = 20, sort, search, filterArguments, offset, _id } = input;
   let selector = {};
   let options = {
     sort: {},
@@ -106,64 +106,69 @@ export const filterFunction = async (collection, input = {}, context) => {
     return { [mongoFieldName]: mongoObject };
   };
 
-  /*
-  
-    The `filter` argument accepts the name of a filter function that will then 
-    be called to calculate more complex selector and options objects
-  
-    */
-  if (!isEmpty(filter)) {
-    // TODO: what to do client side?
-    const customFilterFunction = get(collection, `options.filters.${filter}`);
-    if (customFilterFunction) {
-      const filterObject = await customFilterFunction({ input, context, filterArguments });
-      selector = merge({}, selector, filterObject.selector);
-      options = merge({}, options, filterObject.options);
-    }
-  }
-
   // _id
   if (_id) {
     selector = { _id };
   }
 
-  // where
-  if (!isEmpty(where)) {
-    Object.keys(where).forEach(fieldName => {
+  // filter
+  if (!isEmpty(filter)) {
+    Object.keys(filter).forEach(async fieldName => {
       switch (fieldName) {
         case '_and':
-          filteredFields = filteredFields.concat(getFieldNames(where._and));
-          selector['$and'] = where._and.map(convertExpression);
+          filteredFields = filteredFields.concat(getFieldNames(filter._and));
+          selector['$and'] = filter._and.map(convertExpression);
           break;
 
         case '_or':
-          filteredFields = filteredFields.concat(getFieldNames(where._or));
-          selector['$or'] = where._or.map(convertExpression);
+          filteredFields = filteredFields.concat(getFieldNames(filter._or));
+          selector['$or'] = filter._or.map(convertExpression);
 
           break;
 
         case '_not':
-          filteredFields = filteredFields.concat(getFieldNames(where._not));
-          selector['$not'] = where._not.map(convertExpression);
+          filteredFields = filteredFields.concat(getFieldNames(filter._not));
+          selector['$not'] = filter._not.map(convertExpression);
           break;
 
         case 'search':
           break;
 
         default:
-          filteredFields.push(fieldName);
-          selector = { ...selector, ...convertExpression({ [fieldName]: where[fieldName] }) };
-
+          const customFilters = collection.options.customFilters;
+          const customFilter = customFilters && customFilters.find(f => f.name === fieldName);
+          if (customFilter) {
+            // field is not actually a field, but a custom filter
+            const filterArguments = filter[customFilter.name];
+            console.log(customFilter.name);
+            console.log(filterArguments);
+            const filterObject = await customFilter.filter({
+              input,
+              context,
+              filterArguments,
+            });
+            console.log('// filterObject')
+            console.log(filterObject)
+            selector = merge({}, selector, filterObject.selector);
+            options = merge({}, options, filterObject.options);
+          } else {
+            // regular field
+            filteredFields.push(fieldName);
+            selector = { ...selector, ...convertExpression({ [fieldName]: filter[fieldName] }) };
+          }
           break;
       }
     });
   }
 
-  // orderBy
-  if (!isEmpty(orderBy)) {
+
+  console.log('// filter done')
+
+  // sort
+  if (!isEmpty(sort)) {
     options.sort = merge(
       options.sort,
-      mapValues(orderBy, order => {
+      mapValues(sort, order => {
         const mongoOrder = conversionTable[order];
         if (!order) {
           throw new Error(
@@ -215,12 +220,15 @@ export const filterFunction = async (collection, input = {}, context) => {
     options.skip = offset;
   }
 
+  // console.log('// input');
   // console.log(JSON.stringify(input, 2));
+  // console.log('// defaultInput');
   // console.log(JSON.stringify(collection.defaultInput, 2));
-  // console.log(JSON.stringify(filter, 2));
-  // console.log(JSON.stringify(where, 2));
+  // console.log('// selector');
   // console.log(JSON.stringify(selector, 2));
+  // console.log('// options');
   // console.log(JSON.stringify(options, 2));
+  // console.log('// filterFields');
   // console.log(uniq(filteredFields));
 
   return {

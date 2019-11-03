@@ -28,8 +28,10 @@ import {
   deleteMutationTemplate,
   mutationInputTemplate,
   enumTypeTemplate,
-  fieldWhereInputTemplate,
-  fieldOrderByInputTemplate,
+  fieldFilterInputTemplate,
+  fieldSortInputTemplate,
+  customFilterTemplate,
+  // customSortTemplate, // not currently used
   //nestedInputTemplate,
 } from '../../modules/graphql_templates';
 
@@ -160,6 +162,7 @@ const createMutations = ({ mutations: providedMutations, typeName, collectionNam
 
 // generate types, input and enums
 const generateSchemaFragments = ({
+  collection,
   typeName,
   description,
   interfaces = [],
@@ -205,8 +208,8 @@ const generateSchemaFragments = ({
       schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
     }
     if (readable.length) {
-      schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
-      schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+      schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: readable }));
+      schemaFragments.push(fieldSortInputTemplate({ typeName, fields: readable }));
     }
 
     //   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
@@ -236,8 +239,21 @@ const generateSchemaFragments = ({
   }
 
   if (readable.length) {
-    schemaFragments.push(fieldWhereInputTemplate({ typeName, fields: readable }));
-    schemaFragments.push(fieldOrderByInputTemplate({ typeName, fields: readable }));
+    const customFilters = collection.options.customFilters;
+    schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: readable, customFilters }));
+    if (customFilters) {
+      customFilters.forEach(filter => {
+        schemaFragments.push(customFilterTemplate({ typeName, filter }));
+      });
+    }
+    const customSorts = collection.options.customSorts;
+    schemaFragments.push(fieldSortInputTemplate({ typeName, fields: readable, customSorts }));
+    // TODO: not currently working
+    // if (customSorts) {
+    //   customSorts.forEach(sort => {
+    //     schemaFragments.push(customSortTemplate({ typeName, sort }));
+    //   });    
+    // }
   }
 
   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
@@ -270,6 +286,7 @@ const collectionToGraphQL = collection => {
   if (mainType.length) {
     schemaFragments.push(
       ...generateSchemaFragments({
+        collection,
         typeName,
         description,
         interfaces,
