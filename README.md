@@ -35,7 +35,7 @@ Find more info in the [documentation](http://docs.vulcanjs.org/#Install).
 
 - [Vulcan Homepage](http://vulcanjs.org)
 - [Documentation](http://docs.vulcanjs.org)
-- [Old Telescope Homepage](http://telescopeapp.org)
+- [Old Telescope Homepage](http://www.telescopeapp.org)
 
 ### Other Versions
 
