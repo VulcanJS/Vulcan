@@ -23,7 +23,7 @@ Utils.performCheck = (operation, user, checkedObject, context, documentId, opera
     throwError({ id: 'app.document_not_found', data: { documentId, operationName } });
   }
 
-  if (!operation || !operation(user, checkedObject, context)) {
+  if (!operation(user, checkedObject, context)) {
     throwError({ id: 'app.operation_not_allowed', data: { documentId, operationName } });
   }
 
