@@ -2,11 +2,15 @@ import SimpleSchema from 'simpl-schema';
 // return a collection object for unit testing
 const createDummyCollection = ({
     collectionName = 'Dummies',
+    typeName = 'Dummy',
     mutations,
     resolvers,
     options = {
         permissions: {
-            canRead: ['admins', 'members', 'guests']
+            canRead: ['admins', 'members', 'guests'],
+            canUpdate: ['members', 'admins'],
+            canCreate: ['members', 'admins'],
+            canDelete: ['members', 'admins']
         }
     },
     schema = {
@@ -23,7 +27,8 @@ const createDummyCollection = ({
     ...otherFields
 }) => {
     const Dummies = {
-        options: { collectionName, mutations, resolvers, ...options },
+        typeName,
+        options: { collectionName, typeName, mutations, resolvers, ...options },
         simpleSchema: () => new SimpleSchema(schema),
         find: () => ({
             fetch: () => results.find,
@@ -34,6 +39,7 @@ const createDummyCollection = ({
             load: () => results.load,
             prime: () => { }
         },
+        remove: () => 1,
         ...otherFields
     };
     return Dummies;

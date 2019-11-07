@@ -1,15 +1,16 @@
-import { getDefaultMutations } from '../../lib/server/default_mutations';
+import { getNewDefaultMutations } from '../../lib/server/default_mutations2';
 import SimpleSchema from 'simpl-schema';
 import Users from 'meteor/vulcan:users';
 
 import expect from 'expect';
+import { createDummyCollection } from 'meteor/vulcan:test';
 const test = it;
 
 
 describe('vulcan:lib/default_mutations', function () {
 
     it('returns mutations', function () {
-        const mutations = getDefaultMutations({
+        const mutations = getNewDefaultMutations({
             typeName: 'Foo',
             collectionName: 'Foos',
             options: {}
@@ -19,7 +20,7 @@ describe('vulcan:lib/default_mutations', function () {
         expect(mutations.delete).toBeDefined();
     });
     it('preserves openCRUD backward compatibility', function () {
-        const mutations = getDefaultMutations({
+        const mutations = getNewDefaultMutations({
             typeName: 'Foo',
             collectionName: 'Foos',
             options: {}
@@ -31,6 +32,13 @@ describe('vulcan:lib/default_mutations', function () {
 
     describe('delete mutation', () => {
         const foo = { _id: 'foo' };
+        const Foos = createDummyCollection({
+            results: {
+                findOne: foo
+            },
+            collectionName: 'Foos',
+            schema: { _id: { type: String, canRead: ['admins'] } }
+        })
         const context = {
             Users,/*: {
                 options: {
@@ -40,22 +48,13 @@ describe('vulcan:lib/default_mutations', function () {
                 simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } }),
                 restrictViewableFields: (currentUser, collection, doc) => doc
             },*/
-            Foos: {
-                findOne: () => foo,
-                remove: () => 1,
-                options: {
-                    collectionName: 'Foos',
-                    typeName: 'Foo'
-                },
-                simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } })
-            }
-            ,
+            Foos,
             currentUser: {
                 isAdmin: true,
                 groups: ['admins']
             }
         };
-        const mutations = getDefaultMutations({
+        const mutations = getNewDefaultMutations({
             typeName: 'Foo',
             collectionName: 'Foos',
             options: {}

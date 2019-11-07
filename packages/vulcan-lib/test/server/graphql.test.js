@@ -289,6 +289,7 @@ describe('vulcan:lib/graphql', function () {
       test('use provided graphQL type if any', () => {
         const collection = createDummyCollection({
           collectionName: 'Foos',
+          typeName: "Foo",
           schema: {
             field: {
               type: String,
