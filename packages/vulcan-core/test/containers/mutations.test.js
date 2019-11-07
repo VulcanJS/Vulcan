@@ -28,7 +28,7 @@ import { mount } from 'enzyme';
 import expect from 'expect';
 import gql from 'graphql-tag';
 import sinon from 'sinon'
-
+import {getVariablesListFromCache} from '../../lib/modules/containers/cacheUpdate'
 const test = it;
 
 describe('vulcan:core/container/mutations', () => {
@@ -63,6 +63,26 @@ describe('vulcan:core/container/mutations', () => {
         fragmentName: fragmentName,
         fragment
     };
+    describe('similar queries in cache', () => {
+        test('return from the cache only the variables which match exactly the query and including variables', async () => {
+          const queryName = 'myCustomQuery';
+          const cacheQueryName = queryName + '({})';
+          const cacheSimilarQueryName = queryName + 'Foo({})';
+          const cacheObject = {
+            data: {
+              data: {
+                ROOT_QUERY: {
+                  [queryName]: { foo: 'bar' },
+                  [cacheQueryName]: { foo: 'bar' },
+                  [cacheSimilarQueryName]: { foo: 'bar' },
+                },
+              },
+            },
+          };
+          const variables = await getVariablesListFromCache(cacheObject, queryName);
+          expect(variables).toHaveLength(1);
+        });
+      });
     describe('common', () => {
         test('export hooks and hocs', () => {
             expect(useCreate).toBeInstanceOf(Function)
