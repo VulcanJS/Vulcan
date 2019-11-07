@@ -126,7 +126,7 @@ FormComponentInner.propTypes = {
   charsRemaining: PropTypes.number,
   charsCount: PropTypes.number,
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(Date)]),
-  formInput: PropTypes.func.isRequired,
+  formInput: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.object.isRequired]),
 };
 
 
