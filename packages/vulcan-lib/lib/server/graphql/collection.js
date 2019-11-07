@@ -26,7 +26,6 @@ import {
   updateMutationTemplate,
   upsertMutationTemplate,
   deleteMutationTemplate,
-  mutationInputTemplate,
   enumTypeTemplate,
   fieldFilterInputTemplate,
   fieldSortInputTemplate,
@@ -198,13 +197,13 @@ const generateSchemaFragments = ({
     //schemaFragments.push(mutationOutputTemplate({ typeName }));
 
     if (create.length) {
-      //   schemaFragments.push(createInputTemplate({ typeName }));
+      schemaFragments.push(createInputTemplate({ typeName }));
       schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
     }
 
     if (update.length) {
-      //        schemaFragments.push(updateInputTemplate({ typeName }));
-      //      schemaFragments.push(upsertInputTemplate({ typeName }));
+      schemaFragments.push(updateInputTemplate({ typeName }));
+      schemaFragments.push(upsertInputTemplate({ typeName }));
       schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
     }
     if (readable.length) {
@@ -222,7 +221,6 @@ const generateSchemaFragments = ({
   schemaFragments.push(deleteInputTemplate({ typeName }));
   schemaFragments.push(singleInputTemplate({ typeName }));
   schemaFragments.push(multiInputTemplate({ typeName }));
-  schemaFragments.push(mutationInputTemplate({ typeName }));
   schemaFragments.push(singleOutputTemplate({ typeName }));
   schemaFragments.push(multiOutputTemplate({ typeName }));
   schemaFragments.push(mutationOutputTemplate({ typeName }));
