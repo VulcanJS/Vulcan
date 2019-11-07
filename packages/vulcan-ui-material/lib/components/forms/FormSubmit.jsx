@@ -10,108 +10,91 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 
-
 const styles = theme => ({
   root: {
     textAlign: 'center',
-    marginTop: theme.spacing.unit * 4,
+    marginTop: theme.spacing(4),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   delete: {
     float: 'left',
   },
   tooltip: {
     margin: 3,
-  }
+  },
 });
 
-
-const FormSubmit = ({
-                      submitLabel,
-                      cancelLabel,
-                      cancelCallback,
-                      revertLabel,
-                      revertCallback,
-                      document,
-                      deleteDocument,
-                      collectionName,
-                      classes
-                    }, {
-                      intl,
-                      isChanged,
-                      clearForm,
-                    }) => {
-
+const FormSubmit = (
+  {
+    submitLabel,
+    cancelLabel,
+    cancelCallback,
+    revertLabel,
+    revertCallback,
+    document,
+    deleteDocument,
+    collectionName,
+    classes,
+  },
+  { intl, isChanged, clearForm }
+) => {
   if (typeof isChanged !== 'function') {
     isChanged = () => true;
   }
 
   return (
     <div className={classes.root}>
+      {deleteDocument ? (
+        <Tooltip
+          id={`tooltip-delete-${collectionName}`}
+          classes={{ tooltip: classNames('delete-button', classes.tooltip) }}
+          title={intl.formatMessage({ id: 'forms.delete' })}
+          placement="bottom">
+          <IconButton onClick={deleteDocument} className={classes.delete}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : null}
 
-      {
-        deleteDocument
-          ?
-          <Tooltip id={`tooltip-delete-${collectionName}`}
-                   classes={{ tooltip: classNames('delete-button', classes.tooltip) }}
-                   title={intl.formatMessage({ id: 'forms.delete' })}
-                   placement="bottom">
-            <IconButton onClick={deleteDocument} className={classes.delete}>
-              <DeleteIcon/>
-            </IconButton>
-          </Tooltip>
-          :
-          null
-      }
+      {cancelCallback ? (
+        <Button
+          variant="contained"
+          className={classNames('cancel-button', classes.button)}
+          onClick={event => {
+            event.preventDefault();
+            cancelCallback(document);
+          }}>
+          {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel" />}
+        </Button>
+      ) : null}
 
-      {
-        cancelCallback
-          ?
-          <Button variant="contained"
-                  className={classNames('cancel-button', classes.button)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    cancelCallback(document);
-                  }}>
-            {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel"/>}
-          </Button>
-          :
-          null
-      }
+      {revertCallback ? (
+        <Button
+          variant="contained"
+          className={classNames('revert-button', classes.button)}
+          disabled={!isChanged()}
+          onClick={event => {
+            event.preventDefault();
+            clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
+            revertCallback(document);
+          }}>
+          {revertLabel ? revertLabel : <FormattedMessage id="forms.revert" />}
+        </Button>
+      ) : null}
 
-      {
-        revertCallback
-          ?
-          <Button variant="contained"
-                  className={classNames('revert-button', classes.button)}
-                  disabled={!isChanged()}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
-                    revertCallback(document);
-                  }}
-          >
-            {revertLabel ? revertLabel : <FormattedMessage id="forms.revert"/>}
-          </Button>
-          :
-          null
-      }
-
-      <Button variant="contained"
-              type="submit"
-              color="secondary"
-              className={classNames('submit-button', classes.button)}
-              disabled={!isChanged()}
-      >
-        {submitLabel ? submitLabel : <FormattedMessage id="forms.submit"/>}
+      <Button
+        variant="contained"
+        type="submit"
+        color="secondary"
+        className={classNames('submit-button', classes.button)}
+        disabled={!isChanged()}>
+        {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" />}
       </Button>
-
     </div>
   );
 };
-
 
 FormSubmit.propTypes = {
   submitLabel: PropTypes.node,
@@ -125,12 +108,10 @@ FormSubmit.propTypes = {
   classes: PropTypes.object,
 };
 
-
 FormSubmit.contextTypes = {
   intl: intlShape,
   isChanged: PropTypes.func,
   clearForm: PropTypes.func,
 };
-
 
 replaceComponent('FormSubmit', FormSubmit, [withStyles, styles]);

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 const styles = theme => ({
   root: {
     justifyContent: 'flex-end',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     height: 'auto',
   },
 });
@@ -15,7 +15,7 @@ const styles = theme => ({
 export class AccountsSocialButtons extends React.Component {
   render() {
     let { oauthServices = {}, className = 'social-buttons', classes } = this.props;
-    return(
+    return (
       <CardActions className={classNames(classes.root, className)}>
         {Object.keys(oauthServices).map((id, i) => {
           return <Components.AccountsButton {...oauthServices[id]} key={i} />;

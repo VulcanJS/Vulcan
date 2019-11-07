@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
 import classNames from 'classnames';
 
-
 const styles = theme => ({
   root: {},
   tooltip: {
@@ -21,65 +20,38 @@ const styles = theme => ({
   button: {},
 });
 
-
 const TooltipIconButton = (props, { intl }) => {
-  
   //eslint-disable-next-line no-console
-  console.warn('WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0');
-  
-  const {
-    title,
-    titleId,
-    placement,
-    icon,
-    className,
-    classes,
-    theme,
-    buttonRef,
-    variant,
-    ...properties
-  } = props;
-  
+  console.warn(
+    'WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0'
+  );
+
+  const { title, titleId, placement, icon, className, classes, theme, buttonRef, variant, ...properties } = props;
+
   const titleText = props.title || intl.formatMessage({ id: titleId });
   const slug = Utils.slugify(titleId);
-  
+
   return (
-    <Tooltip classes={{ tooltip: classNames('tooltip-icon-button', classes.tooltip, className) }}
-             id={`tooltip-${slug}`}
-             title={titleText}
-             placement={placement}
-             enterDelay={theme.utils.tooltipEnterDelay}
-    >
+    <Tooltip
+      classes={{ tooltip: classNames('tooltip-icon-button', classes.tooltip, className) }}
+      id={`tooltip-${slug}`}
+      title={titleText}
+      placement={placement}
+      enterDelay={theme.utils.tooltipEnterDelay}>
       <div className={classes.buttonWrap}>
-        {
-          variant === 'fab'
-            
-            ?
-            
-            <Fab className={classNames(classes.button, slug)}
-                    aria-label={titleText}
-                    ref={buttonRef}
-                    {...properties}
-            >
-              {icon}
-            </Fab>
-            
-            :
-            
-            <IconButton className={classNames(classes.button, slug)}
-                        aria-label={titleText}
-                        ref={buttonRef}
-                        {...properties}
-            >
-              {icon}
-            </IconButton>
-        }
+        {variant === 'fab' ? (
+          <Fab className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
+            {icon}
+          </Fab>
+        ) : (
+          <IconButton className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
+            {icon}
+          </IconButton>
+        )}
       </div>
     </Tooltip>
   );
-  
 };
-
 
 TooltipIconButton.propTypes = {
   title: PropTypes.node,
@@ -93,18 +65,14 @@ TooltipIconButton.propTypes = {
   theme: PropTypes.object,
 };
 
-
 TooltipIconButton.defaultProps = {
   placement: 'bottom',
 };
-
 
 TooltipIconButton.contextTypes = {
   intl: intlShape.isRequired,
 };
 
-
 TooltipIconButton.displayName = 'TooltipIconButton';
 
-
-registerComponent('TooltipIconButton', TooltipIconButton, [withStyles, styles], [withTheme]);
+registerComponent('TooltipIconButton', TooltipIconButton, [withStyles, styles], withTheme);

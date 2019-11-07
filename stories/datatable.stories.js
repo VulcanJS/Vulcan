@@ -4,7 +4,7 @@ import { Components } from 'meteor/vulcan:core';
 import 'meteor/vulcan:core';
 
 import { withKnobs, text, boolean, select, number, object } from '@storybook/addon-knobs';
-import { action } from "@storybook/addon-actions";
+import { action } from '@storybook/addon-actions';
 
 
 const DatatableContentsStories = storiesOf('Core/Datatable/DatatableContents', module);
@@ -132,7 +132,8 @@ DatatableAboveStories
     //    defaultMessage: 'Search',
     //  })}…`}
     .add('DatatableAboveSearchInput - interactive ', () => (
-        < Components.DatatableAboveSearchInput
+        <Components.DatatableAboveSearchInput
+            Components={Components}
             placeholder={text('placeholder', 'placeholder')}
             type={text('text', 'text')}
             onChange={action('onChange')}

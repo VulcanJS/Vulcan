@@ -1,6 +1,6 @@
 import React from 'react';
 import { addCallback, registerComponent, Components } from 'meteor/vulcan:core';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { getCurrentTheme } from '../modules/themes';
 import JssCleanup from '../components/theme/JssCleanup';
 
@@ -18,12 +18,7 @@ class ThemeProvider extends React.Component {
 registerComponent('ThemeProvider', ThemeProvider);
 
 function wrapWithMuiTheme(app) {
-  return (
-    <Components.ThemeProvider>
-      {app}
-    </Components.ThemeProvider>
-  );
+  return <Components.ThemeProvider>{app}</Components.ThemeProvider>;
 }
-
 
 addCallback('router.client.wrapper', wrapWithMuiTheme);

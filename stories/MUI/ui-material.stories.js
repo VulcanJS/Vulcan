@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, select, number, object } from '@storybook/addon-knobs';
-import { wrapInParent } from './helpers';
+import { wrapInParent } from '../helpers';
 import { Components } from 'meteor/vulcan:core';
 
 /*
@@ -16,7 +16,7 @@ TooltipButton
 
 */
 
-const tooltipButton = storiesOf('Material UI Bonus/TooltipButton', module);
+const tooltipButton = storiesOf('MUI/Bonus/TooltipButton', module);
 tooltipButton.addDecorator(withKnobs);
 
 tooltipButton.add('Default', () => {

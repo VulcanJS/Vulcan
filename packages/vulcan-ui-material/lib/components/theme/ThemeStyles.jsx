@@ -9,45 +9,42 @@ import Paper from '@material-ui/core/Paper';
 import { getContrastRatio } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 
-
 const describeTypography = (theme, className) => {
   const typography = className ? theme.typography[className] : theme.typography;
   const fontFamily = typography.fontFamily.split(',')[0];
   return `${fontFamily} ${typography.fontWeight} ${typography.fontSize}px`;
 };
 
-
 const mainPalette = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 const altPalette = ['A100', 'A200', 'A400', 'A700'];
 
-
 function getColorBlock(theme, classes, colorName, colorValue, colorTitle) {
   const bgColor = theme.palette[colorName][colorValue];
-  
+
   let fgColor = theme.palette.common.black;
   if (getContrastRatio(bgColor, fgColor) < 7) {
     fgColor = theme.palette.common.white;
   }
-  
+
   let blockTitle;
   if (colorTitle) {
     blockTitle = <div className={classes.name}>{colorName}</div>;
   }
-  
+
   let rowStyle = {
     backgroundColor: bgColor,
     color: fgColor,
     listStyle: 'none',
     padding: 15,
   };
-  
+
   if (colorValue.toString().indexOf('A1') === 0) {
     rowStyle = {
       ...rowStyle,
       marginTop: 4,
     };
   }
-  
+
   return (
     <li style={rowStyle} key={colorValue}>
       {blockTitle}
@@ -64,13 +61,13 @@ function getColorGroup(options) {
   const cssColor = color.replace(' ', '').replace(color.charAt(0), color.charAt(0).toLowerCase());
   let colorsList = [];
   colorsList = mainPalette.map(mainValue => getColorBlock(theme, classes, cssColor, mainValue));
-  
+
   if (showAltPalette) {
     altPalette.forEach(altValue => {
       colorsList.push(getColorBlock(theme, classes, cssColor, altValue));
     });
   }
-  
+
   return (
     <ul className={classes.colorGroup} key={cssColor}>
       {getColorBlock(theme, classes, cssColor, 500, true)}
@@ -80,11 +77,10 @@ function getColorGroup(options) {
   );
 }
 
-
 const styles = theme => ({
   root: {},
   paper: {
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
   },
   name: {
     marginBottom: 60,
@@ -111,34 +107,24 @@ const styles = theme => ({
   },
 });
 
-
-const latin = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur justo quam, ' +
+const latin =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur justo quam, ' +
   'pellentesque ultrices ex a, aliquet porttitor ante. Donec tellus arcu, viverra ut lorem id, ' +
   'ultrices ultricies enim. Donec enim metus, sollicitudin id lobortis id, iaculis ut arcu. ' +
   'Maecenas sollicitudin congue nisi. Donec convallis, ipsum ac ultricies dignissim, orci ex ' +
   'efficitur lectus, ac lacinia risus nunc at diam. Nam gravida bibendum lectus. Donec ' +
   'scelerisque sem nec urna vestibulum vehicula.';
 
-
 const ThemeStyles = ({ theme, classes }) => {
   return (
     <Grid container className={classNames('theme-styles', classes.root)}>
-      
       <Grid item xs={12}>
-        <Typography variant="h1">
-          h1: {describeTypography(theme, 'h1')}
-        </Typography>
-        <Typography variant="h2">
-          h2: {describeTypography(theme, 'h2')}
-        </Typography>
-        <Typography variant="h3">
-          h3: {describeTypography(theme, 'h3')}
-        </Typography>
-        <Typography variant="h4">
-          h4: {describeTypography(theme, 'h4')}
-        </Typography>
+        <Typography variant="h1">h1: {describeTypography(theme, 'h1')}</Typography>
+        <Typography variant="h2">h2: {describeTypography(theme, 'h2')}</Typography>
+        <Typography variant="h3">h3: {describeTypography(theme, 'h3')}</Typography>
+        <Typography variant="h4">h4: {describeTypography(theme, 'h4')}</Typography>
       </Grid>
-      
+
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <Typography variant="h5" gutterBottom>
@@ -173,60 +159,49 @@ const ThemeStyles = ({ theme, classes }) => {
           </Typography>
         </Paper>
       </Grid>
-      
+
       <Grid item xs={12} sm={6} md={3}>
-        {
-          getColorGroup({
-            theme,
-            classes,
-            color: 'primary',
-            showAltPalette: true,
-          })
-        }
-      </Grid>
-  
-      <Grid item xs={12} sm={6} md={3}>
-        {
-          getColorGroup({
-            theme,
-            classes,
-            color: 'secondary',
-            showAltPalette: true,
-          })
-        }
-      </Grid>
-  
-      <Grid item xs={12} sm={6} md={3}>
-        {
-          getColorGroup({
-            theme,
-            classes,
-            color: 'error',
-            showAltPalette: true,
-          })
-        }
-      </Grid>
-  
-      <Grid item xs={12} sm={6} md={3}>
-        {
-          getColorGroup({
-            theme,
-            classes,
-            color: 'background',
-            showAltPalette: true,
-          })
-        }
+        {getColorGroup({
+          theme,
+          classes,
+          color: 'primary',
+          showAltPalette: true,
+        })}
       </Grid>
 
+      <Grid item xs={12} sm={6} md={3}>
+        {getColorGroup({
+          theme,
+          classes,
+          color: 'secondary',
+          showAltPalette: true,
+        })}
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        {getColorGroup({
+          theme,
+          classes,
+          color: 'error',
+          showAltPalette: true,
+        })}
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        {getColorGroup({
+          theme,
+          classes,
+          color: 'background',
+          showAltPalette: true,
+        })}
+      </Grid>
     </Grid>
   );
 };
-
 
 ThemeStyles.propTypes = {
   theme: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-
-registerComponent('ThemeStyles', ThemeStyles, [withTheme, null], [withStyles, styles]);
+registerComponent('ThemeStyles', ThemeStyles, withTheme, [withStyles, styles]);
