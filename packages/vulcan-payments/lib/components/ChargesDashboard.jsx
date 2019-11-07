@@ -14,6 +14,7 @@ const ChargesDashboard = props =>
     <Components.Datatable
       showSearch={false}
       showEdit={false}
+      showNew={false}
       collectionName="Charges"
       options={{
         fragmentName: 'ChargeFragment'

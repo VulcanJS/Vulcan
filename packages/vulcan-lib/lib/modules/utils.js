@@ -284,7 +284,7 @@ Utils.sanitize = function (s) {
 };
 
 Utils.stripHTML = function (s) {
-  return s.replace(/<(?:.|\n)*?>/gm, '');
+  return s && s.replace(/<(?:.|\n)*?>/gm, '');
 };
 
 Utils.stripMarkdown = function (s) {

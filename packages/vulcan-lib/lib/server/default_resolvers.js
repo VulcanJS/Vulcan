@@ -67,7 +67,7 @@ export function getDefaultResolvers(options) {
         // make sure all filtered fields are allowed
         Users.checkFields(currentUser, collection, filteredFields);
 
-        if (terms) {
+        if (!isEmpty(terms)) {
           options.skip = terms.offset;
         }
 
@@ -83,7 +83,7 @@ export function getDefaultResolvers(options) {
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to filter list of documents
-            viewableDocs = docs.filter(document => canRead({ user: currentUser, document }));
+            viewableDocs = docs.filter(document => canRead({ user: currentUser, document, context, operationName: 'multi' }));
           } else if (Array.isArray(canRead)) {
             if (canRead.includes('owners')) {
               // if canReady array includes the owners group, test each document
@@ -189,7 +189,7 @@ export function getDefaultResolvers(options) {
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to check current document
-            canReadFunction = (user, document, context) => canRead({ user, document, context });
+            canReadFunction = (user, document, context) => canRead({ user, document, context, operationName: 'single' });
           } else if (Array.isArray(canRead)) {
             // else if it's an array of groups, check if current user belongs to them
             // for the current document

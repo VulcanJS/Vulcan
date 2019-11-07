@@ -35,14 +35,21 @@ DatabaseConnectors.mongo = {
     values that should always apply. 
 
     */
-    const defaultInputObject = await filterFunction(collection, collection.options.defaultInput, context);
+    const defaultInputObject = await filterFunction(
+      collection,
+      collection.options.defaultInput,
+      context
+    );
     const currentInputObject = await filterFunction(collection, input, context);
     if (defaultInputObject.options.sort && currentInputObject.options.sort) {
       // for sort only, delete default sort instead of merging to avoid issue with
       // default sort coming first in list of sort specifiers
       delete defaultInputObject.options.sort;
     }
-    const mergedInputObject = merge({}, defaultInputObject, currentInputObject);
+    const mergedInputObject = {
+      selector: { ...defaultInputObject.selector, ...currentInputObject.selector },
+      options: { ...defaultInputObject.options, ...currentInputObject.options },
+    };
     return mergedInputObject;
-  }
+  },
 };

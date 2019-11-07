@@ -77,10 +77,10 @@ const DatatableHeader = (
       </Components.DatatableHeaderCellLayout>
     );
   } else {
-    const formattedLabel = intl.formatMessage({ id: columnLabel, defaultMessage: columnLabel });
+    const formattedLabel = column.label || intl.formatMessage({ id: column.name, defaultMessage: column.name });
     return (
       <Components.DatatableHeaderCellLayout
-        className={`datatable-th-${columnLabel.toLowerCase().replace(/\s/g, '-')}`}>
+        className={`datatable-th-${formattedLabel.toLowerCase().replace(/\s/g, '-')}`}>
         {formattedLabel}
       </Components.DatatableHeaderCellLayout>
     );

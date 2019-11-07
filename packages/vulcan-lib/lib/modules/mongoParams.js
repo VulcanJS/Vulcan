@@ -140,15 +140,11 @@ export const filterFunction = async (collection, input = {}, context) => {
           if (customFilter) {
             // field is not actually a field, but a custom filter
             const filterArguments = filter[customFilter.name];
-            console.log(customFilter.name);
-            console.log(filterArguments);
             const filterObject = await customFilter.filter({
               input,
               context,
               filterArguments,
             });
-            console.log('// filterObject')
-            console.log(filterObject)
             selector = merge({}, selector, filterObject.selector);
             options = merge({}, options, filterObject.options);
           } else {
@@ -161,9 +157,6 @@ export const filterFunction = async (collection, input = {}, context) => {
     });
   }
 
-
-  console.log('// filter done')
-
   // sort
   if (!isEmpty(sort)) {
     options.sort = merge(
@@ -172,7 +165,7 @@ export const filterFunction = async (collection, input = {}, context) => {
         const mongoOrder = conversionTable[order];
         if (!order) {
           throw new Error(
-            `Operator ${order} is not valid. Possible operators: ${Object.keys(conversionTable)}`
+            `Operator ${order} is not valid. Possible operators: asc, desc`
           );
         }
         return mongoOrder;
@@ -220,10 +213,10 @@ export const filterFunction = async (collection, input = {}, context) => {
     options.skip = offset;
   }
 
+  // console.log('// collection');
+  // console.log(collection.options.collectionName);
   // console.log('// input');
   // console.log(JSON.stringify(input, 2));
-  // console.log('// defaultInput');
-  // console.log(JSON.stringify(collection.defaultInput, 2));
   // console.log('// selector');
   // console.log(JSON.stringify(selector, 2));
   // console.log('// options');

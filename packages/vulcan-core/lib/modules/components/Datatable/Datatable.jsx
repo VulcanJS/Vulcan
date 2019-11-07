@@ -55,8 +55,8 @@ class Datatable extends PureComponent {
       if (initialState.sort) {
         initState.currentSort = initialState.sort;
       }
-      if (initialState.filters) {
-        initState.currentFilters = initialState.filters;
+      if (initialState.filter) {
+        initState.currentFilters = initialState.filter;
       }
     }
 
@@ -69,11 +69,11 @@ class Datatable extends PureComponent {
       }
       if (urlState.sort) {
         const [sortKey, sortValue] = urlState.sort.split('|');
-        initState.currentSort = { [sortKey]: parseInt(sortValue) };
+        initState.currentSort = { [sortKey]: sortValue };
       }
-      if (urlState.filters) {
+      if (urlState.filter) {
         // all URL values are stored as strings, so convert them back to numbers if needed
-        initState.currentFilters = this.convertToNumbers(urlState.filters, props);
+        initState.currentFilters = this.convertToNumbers(urlState.filter, props);
       }
     }
 
@@ -172,7 +172,7 @@ class Datatable extends PureComponent {
       newFilters[name] = filters;
     }
     this.setState({ currentFilters: newFilters });
-    this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
+    this.updateQueryParameter('filter', _isEmpty(newFilters) ? null : newFilters);
   };
 
   updateSearch = e => {
