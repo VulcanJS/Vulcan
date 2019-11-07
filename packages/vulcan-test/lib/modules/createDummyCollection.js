@@ -4,7 +4,11 @@ const createDummyCollection = ({
     collectionName = 'Dummies',
     mutations,
     resolvers,
-    options = {},
+    options = {
+        permissions: {
+            canRead: ['admins', 'members', 'guests']
+        }
+    },
     schema = {
         _id: {
             type: String, canRead: ['admins']
@@ -25,6 +29,7 @@ const createDummyCollection = ({
             fetch: () => results.find,
             count: () => results.length
         }),
+        findOne: () => results.findOne,
         loader: {
             load: () => results.load,
             prime: () => { }

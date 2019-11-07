@@ -59,8 +59,8 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         debug({ selector, options });
 
         const docs = await Connectors.find(collection, selector, options);
-
-        let viewableDocs;
+        // in restrictViewableFields, null value will return {} instead of [] (because it works both for array and single doc)
+        let viewableDocs = [];
 
         // new API (Oct 2019)
         const canRead = get(collection, 'options.permissions.canRead');
@@ -78,7 +78,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
             } else {
               // else, we don't need a per-document check and just allow or disallow
               // access to all documents at once
-              viewableDocs = Users.isMemberOf(currentUser, canRead) ? viewableDocs : [];
+              viewableDocs = Users.isMemberOf(currentUser, canRead) ? docs : [];
             }
           }
         }

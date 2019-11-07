@@ -2,7 +2,7 @@ import { createDummyCollection, isoCreateCollection } from 'meteor/vulcan:test'
 import { createCollection } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users'
 import expect from 'expect';
-import { getDefaultResolvers } from '../../lib/server/default_resolvers';
+import { getNewDefaultResolvers } from '../../lib/server/default_resolvers2';
 import sinon from 'sinon'
 
 describe('vulcan:core/default_resolvers', function () {
@@ -27,12 +27,12 @@ describe('vulcan:core/default_resolvers', function () {
   const loggedInUser = { _id: 'foobar', groups: [], isAdmin: false };
   // eslint-disable-next-line no-unused-vars
   const adminUser = { _id: 'foobar', groups: [], isAdmin: true };
-  const getSingleResolver = () => getDefaultResolvers(resolversOptions).single.resolver;
-  const getMultiResolver = () => getDefaultResolvers(resolversOptions).multi.resolver;
+  const getSingleResolver = () => getNewDefaultResolvers(resolversOptions).single.resolver;
+  const getMultiResolver = () => getNewDefaultResolvers(resolversOptions).multi.resolver;
 
   describe('single', function () {
     it('defines the correct fields', function () {
-      const { single } = getDefaultResolvers(resolversOptions);
+      const { single } = getNewDefaultResolvers(resolversOptions);
       const { description, resolver } = single;
       expect(description).toBeDefined();
       expect(resolver).toBeDefined();
@@ -62,7 +62,7 @@ describe('vulcan:core/default_resolvers', function () {
       // non empty db
       const context = buildContext({
         Dummies: createDummyCollection({
-          results: { load: document }
+          results: { findOne: document }
         })
       });
       const res = resolver(null, { input }, context, lastArg);
@@ -93,7 +93,7 @@ describe('vulcan:core/default_resolvers', function () {
 
   describe('multi', () => {
     it('defines the correct fields', function () {
-      const { multi } = getDefaultResolvers(resolversOptions);
+      const { multi } = getNewDefaultResolvers(resolversOptions);
       const { description, resolver } = multi;
       expect(description).toBeDefined();
       expect(resolver).toBeDefined();
@@ -111,7 +111,8 @@ describe('vulcan:core/default_resolvers', function () {
       const context = buildContext({
         Dummies: createDummyCollection({
           results: { find: dbDocuments }
-        })
+        }),
+        currentUser: adminUser
       });
       const res = resolver(null, { input }, context, lastArg);
       return expect(res).resolves.toMatchObject({ results: dbDocuments });
@@ -131,8 +132,12 @@ describe('vulcan:core/default_resolvers', function () {
             results: {
               find: dbDocuments,
             },
-            // filter out doc 1
-            checkAccess: (currentUser, { _id }) => _id !== '1'
+            options: {
+              permissions: {
+                // filter out doc 1
+                canRead: ({ document: { _id } }) => _id !== '1'
+              }
+            },
           }),
         });
         const res = resolver(null, { input }, context, lastArg);
@@ -190,7 +195,8 @@ describe('vulcan:core/default_resolvers', function () {
           year: { $gte: 2000 }
         })
       })
-      it('detect invalid filters', async () => {
+      // TODO: API changed, this test is not valid anymore
+      it.skip('detect invalid filters', async () => {
         const resolver = getMultiResolver();
         const input = {
           // gte is not valid, _gte is correct
