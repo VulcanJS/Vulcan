@@ -9,25 +9,25 @@ import classNames from 'classnames';
 const styles = theme => ({
   root: {
     flexDirection: 'row-reverse',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     height: 'auto',
   },
 });
 
 
 export class AccountsButtons extends Component {
-  render () {
-    
+  render() {
+
     const {
       classes,
       buttons = {},
       className = 'buttons',
     } = this.props;
-  
+
     return (
       <CardActions className={classNames(classes.root, className)}>
         {Object.keys(buttons).map((id, i) =>
-          <Components.AccountsButton {...buttons[id]} key={i}/>
+          <Components.AccountsButton {...buttons[id]} key={i} />
         )}
       </CardActions>
     );

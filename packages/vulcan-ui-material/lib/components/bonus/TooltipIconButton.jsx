@@ -40,11 +40,11 @@ const TooltipIconButton = (props, { intl }) => {
       enterDelay={theme.utils.tooltipEnterDelay}>
       <div className={classes.buttonWrap}>
         {variant === 'fab' ? (
-          <Fab className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
+          <Fab className={classNames(classes.button, slug)} aria-label={titleText} ref={buttonRef} {...properties}>
             {icon}
           </Fab>
         ) : (
-          <IconButton className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
+          <IconButton className={classNames(classes.button, slug)} aria-label={titleText} ref={buttonRef} {...properties}>
             {icon}
           </IconButton>
         )}
