@@ -269,7 +269,7 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 
 */
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
-  `mutation ${upsertMutationType(typeName)}($input: ${upsertInputType(typeName)}, $selector: ${selectorUniqueInputType(selectorUniqueInputType)(
+  `mutation ${upsertMutationType(typeName)}($input: ${upsertInputType(typeName)}, $selector: ${selectorUniqueInputType(
     typeName
   )}, $data: ${updateDataInputType(typeName, true)}) {
   ${upsertMutationType(typeName)}(input: $input, selector: $selector, data: $data) {
