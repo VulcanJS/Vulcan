@@ -36,7 +36,7 @@ export const getVariablesListFromCache = (proxy, queryName) => {
     const matchQueryReducer = (names, name) => {
         // TODO: can be improved with a regex so "customer" matched only "customer(*)"
         // this may match too many items
-        if (name.startsWith(queryName)) {
+        if (name.startsWith(queryName + '(')) {
             names.push(name);
         }
         return names;
