@@ -51,21 +51,22 @@ export const multiQueryUpdater = ({
   fragmentName,
   collection,
   resolverName
-}) => (cache, { data }) => {
+}) => async (cache, { data }) => {
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
   const newDoc = data[resolverName].data;
   // get all the resolvers that match
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
-  variablesList.forEach(variables => {
+  variablesList.forEach(async variables => {
     try {
       const queryResult = cache.readQuery({ query: multiQuery, variables });
       // get mongo selector and options objects based on current terms
       const multiInput = variables.input;
       // TODO: the 3rd argument is the context, not available here
       // Maybe we could pass the currentUser? The context is passed to custom filters function
-      const { selector, options: paramOptions } = filterFunction(collection, multiInput, {});
+      const filter = await filterFunction(collection, multiInput, {});
+      const { selector, options: paramOptions } = filter;
       const { sort } = paramOptions;
       // check if the document should be included in this query, given the query filters
       if (matchSelector(newDoc, selector)) {

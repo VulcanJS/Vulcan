@@ -160,6 +160,7 @@ export const filterFunction = async (collection, input = {}, context) => {
   // sort
   if (!isEmpty(sort)) {
     options.sort = merge(
+      {},
       options.sort,
       mapValues(sort, order => {
         const mongoOrder = conversionTable[order];
@@ -197,7 +198,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-          collection.options.collectionName
+        collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }
@@ -219,8 +220,6 @@ export const filterFunction = async (collection, input = {}, context) => {
   // console.log(JSON.stringify(input, 2));
   // console.log('// selector');
   // console.log(JSON.stringify(selector, 2));
-  // console.log('// options');
-  // console.log(JSON.stringify(options, 2));
   // console.log('// filterFields');
   // console.log(uniq(filteredFields));
 

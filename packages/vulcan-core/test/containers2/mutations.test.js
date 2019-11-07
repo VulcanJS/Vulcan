@@ -160,7 +160,7 @@ describe('vulcan:core/container/mutations2', () => {
                 }
                 )
             })
-            test('add document to multi query after a creation', () => {
+            test('add document to multi query after a creation', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
                 const writeQuery = sinon.spy()
@@ -169,7 +169,7 @@ describe('vulcan:core/container/mutations2', () => {
                     writeQuery,
                     data: defaultCacheData
                 }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: foo
@@ -178,7 +178,7 @@ describe('vulcan:core/container/mutations2', () => {
                 })
                 expect(writeQuery.calledOnce).toBe(true)
             })
-            test('update document if already there', () => {
+            test('update document if already there', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
                 const writeQuery = sinon.spy()
@@ -194,7 +194,7 @@ describe('vulcan:core/container/mutations2', () => {
                     data: defaultCacheData
                 }
                 const updateFoo = { ...foo, UPDATED: true }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: updateFoo
@@ -206,7 +206,7 @@ describe('vulcan:core/container/mutations2', () => {
                     data: { 'foos': { results: [updateFoo], totalCount: 1 } }
                 })
             })
-            test('do not add document if it does not match the mongo selector of the query', () => {
+            test('do not add document if it does not match the mongo selector of the query', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
                 const writeQuery = sinon.spy()
@@ -220,7 +220,7 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 41 }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
@@ -229,7 +229,7 @@ describe('vulcan:core/container/mutations2', () => {
                 })
                 expect(writeQuery.notCalled).toBe(true)
             })
-            test('add document if it does match the mongo selector', () => {
+            test('add document if it does match the mongo selector', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
                 const writeQuery = sinon.spy()
@@ -243,7 +243,7 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 46 }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
@@ -252,7 +252,7 @@ describe('vulcan:core/container/mutations2', () => {
                 })
                 expect(writeQuery.calledOnce).toBe(true)
             })
-            test('sort documents', () => {
+            test('sort documents', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
                 const writeQuery = sinon.spy()
@@ -273,7 +273,7 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 42 }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo

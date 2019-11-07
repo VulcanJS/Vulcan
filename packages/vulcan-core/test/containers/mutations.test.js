@@ -164,7 +164,8 @@ describe('vulcan:core/container/mutations', () => {
                 }
                 )
             })
-            test('add document to multi query after a creation', () => {
+            // TODO: tests not passing but I am not sure why, the spy should have been called...
+            test('add document to multi query after a creation', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
@@ -172,7 +173,7 @@ describe('vulcan:core/container/mutations', () => {
                     writeQuery,
                     data: defaultCacheData
                 }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: foo
@@ -181,7 +182,7 @@ describe('vulcan:core/container/mutations', () => {
                 })
                 expect(writeQuery.calledOnce).toBe(true)
             })
-            test('update document if already there', () => {
+            test('update document if already there', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
@@ -196,7 +197,7 @@ describe('vulcan:core/container/mutations', () => {
                     data: defaultCacheData
                 }
                 const updateFoo = { ...foo, UPDATED: true }
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: updateFoo
@@ -208,7 +209,7 @@ describe('vulcan:core/container/mutations', () => {
                     data: { 'foos': { results: [updateFoo], totalCount: 1 } }
                 })
             })
-            test('do not add document if it does not match the mongo selector', () => {
+            test('do not add document if it does not match the mongo selector', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
@@ -223,7 +224,7 @@ describe('vulcan:core/container/mutations', () => {
                     },
                     options: {}
                 })
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
@@ -232,7 +233,7 @@ describe('vulcan:core/container/mutations', () => {
                 })
                 expect(writeQuery.notCalled).toBe(true)
             })
-            test('add document if it does match the mongo selector', () => {
+            test('add document if it does match the mongo selector', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
@@ -247,7 +248,7 @@ describe('vulcan:core/container/mutations', () => {
                     },
                     options: {}
                 })
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
@@ -256,7 +257,7 @@ describe('vulcan:core/container/mutations', () => {
                 })
                 expect(writeQuery.calledOnce).toBe(true)
             })
-            test('sort documents', () => {
+            test('sort documents', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
                 const writeQuery = sinon.spy()
                 const cache = {
@@ -278,7 +279,7 @@ describe('vulcan:core/container/mutations', () => {
                         }
                     }
                 })
-                update(cache, {
+                await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
