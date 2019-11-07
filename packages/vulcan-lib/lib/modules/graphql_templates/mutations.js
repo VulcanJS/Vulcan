@@ -4,6 +4,8 @@ import { filterInputType, selectorUniqueInputType } from './filtering.js';
 // eslint-disable-next-line
 const deprecated = `"Deprecated (use 'input' field instead)."`;
 
+const mutationReturnProperty = 'data';
+
 /* ------------------------------------- Mutation Types ------------------------------------- */
 
 /*
@@ -193,7 +195,7 @@ type MovieOutput {
 export const mutationOutputType = typeName => `${typeName}MutationOutput`;
 export const mutationOutputTemplate = ({ typeName }) =>
   `type ${mutationOutputType(typeName)}{
-  data: ${typeName}
+  ${mutationReturnProperty}: ${typeName}
 }`;
 
 /* ------------------------------------- Mutation Queries ------------------------------------- */
@@ -217,7 +219,7 @@ mutation createMovie($data: CreateMovieDataInput!) {
 export const createClientTemplate = ({ typeName, fragmentName }) =>
   `mutation ${createMutationType(typeName)}($input: ${createInputType(typeName)}, $data: ${createDataInputType(typeName, true)}) {
   ${createMutationType(typeName)}(input: $input, data: $data) {
-    data {
+    ${mutationReturnProperty} {
       ...${fragmentName}
     }
   }
@@ -244,7 +246,7 @@ export const updateClientTemplate = ({ typeName, fragmentName }) =>
     typeName
   )}, $data: ${updateDataInputType(typeName, true)}) {
   ${updateMutationType(typeName)}(input: $input, selector: $selector, data: $data) {
-    data {
+    ${mutationReturnProperty} {
       ...${fragmentName}
     }
   }
@@ -271,7 +273,7 @@ export const upsertClientTemplate = ({ typeName, fragmentName }) =>
     typeName
   )}, $data: ${updateDataInputType(typeName, true)}) {
   ${upsertMutationType(typeName)}(input: $input, selector: $selector, data: $data) {
-    data {
+    ${mutationReturnProperty} {
       ...${fragmentName}
     }
   }
@@ -296,7 +298,7 @@ mutation deleteMovie($selector: MovieSelectorUniqueInput!) {
 export const deleteClientTemplate = ({ typeName, fragmentName }) =>
   `mutation ${deleteMutationType(typeName)}($input: ${deleteInputType(typeName)}, $selector: ${selectorUniqueInputType(typeName)}) {
   ${deleteMutationType(typeName)}(input: $input, selector: $selector) {
-    data {
+    ${mutationReturnProperty} {
       ...${fragmentName}
     }
   }

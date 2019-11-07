@@ -3,10 +3,11 @@ import { selectorUniqueInputType, filterInputType, sortInputType } from './filte
 
 // eslint-disable-next-line
 const deprecated1 = `"Deprecated (use 'filter/id' fields instead)."`;
+// eslint-disable-next-line
 const deprecated2 = `"Deprecated (use 'filter/id' fields instead)."`;
 
-export const getSingleResolverName = typeName => Utils.camelCaseify(typeName);
-export const getMultiResolverName = typeName => Utils.camelCaseify(Utils.pluralize(typeName));
+const singleReturnProperty = 'result';
+const multiReturnProperty = 'results';
 
 /* ------------------------------------- Query Types ------------------------------------- */
 
@@ -17,8 +18,9 @@ A query for a single document
 movie(input: SingleMovieInput) : SingleMovieOutput
 
 */
+export const singleQueryType = typeName => Utils.camelCaseify(typeName);
 export const singleQueryTemplate = ({ typeName }) =>
-  `${getSingleResolverName(typeName)}(input: ${singleInputType(typeName, true)}): ${singleOutputType(typeName)}`;
+  `${singleQueryType(typeName)}(input: ${singleInputType(typeName, true)}): ${singleOutputType(typeName)}`;
 
 /*
 
@@ -27,8 +29,9 @@ A query for multiple documents
 movies(input: MultiMovieInput) : MultiMovieOutput
 
 */
+export const multiQueryType = typeName => Utils.camelCaseify(Utils.pluralize(typeName));
 export const multiQueryTemplate = ({ typeName }) =>
-  `${getMultiResolverName(typeName)}(input: ${multiInputType(typeName, true)}): ${multiOutputType(typeName)}`;
+  `${multiQueryType(typeName)}(input: ${multiInputType(typeName, true)}): ${multiOutputType(typeName)}`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
@@ -114,7 +117,7 @@ type SingleMovieOuput{
 export const singleOutputType = typeName => `Single${typeName}Output`;
 export const singleOutputTemplate = ({ typeName }) =>
   `type ${singleOutputType(typeName)}{
-  result: ${typeName}
+  ${singleReturnProperty}: ${typeName}
 }`;
 
 /*
@@ -130,7 +133,7 @@ type MultiMovieOuput{
 export const multiOutputType = typeName => ` Multi${typeName}Output`;
 export const multiOutputTemplate = ({ typeName }) =>
   `type ${multiOutputType(typeName)}{
-  results: [${typeName}]
+  ${multiReturnProperty}: [${typeName}]
   totalCount: Int
 }`;
 
@@ -154,9 +157,9 @@ query singleMovieQuery($input: SingleMovieInput) {
 */
 // TODO: with hooks, extraQueries becomes less necessary?
 export const singleClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-  `query single${typeName}Query($input: ${singleInputType(typeName, true)}) {
-  ${getSingleResolverName(typeName)}(input: $input) {
-    result {
+  `query ${singleQueryType(typeName)}($input: ${singleInputType(typeName, true)}) {
+  ${singleQueryType(typeName)}(input: $input) {
+    ${singleReturnProperty} {
       ...${fragmentName}
     }
     __typename
@@ -182,9 +185,9 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 
 */
 export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-  `query multi${typeName}Query($input: ${multiInputType(typeName, true)}) {
-  ${getMultiResolverName(typeName)}(input: $input) {
-    results {
+  `query ${multiQueryType(typeName)}($input: ${multiInputType(typeName, true)}) {
+  ${multiQueryType(typeName)}(input: $input) {
+    ${multiReturnProperty} {
       ...${fragmentName}
     }
     totalCount
