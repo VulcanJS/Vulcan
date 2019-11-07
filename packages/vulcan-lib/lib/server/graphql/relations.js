@@ -3,7 +3,7 @@
 Default Relation Resolvers
 
 */
-import { getCollectionByTypeName } from '../collections.js';
+import { getCollectionByTypeName } from '../../modules/collections.js';
 
 export const hasOne = async ({ document, fieldName, context, typeName }) => {
   // if document doesn't have a "foreign key" field, return null

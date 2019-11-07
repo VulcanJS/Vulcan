@@ -2,6 +2,8 @@ import SimpleSchema from 'simpl-schema';
 // return a collection object for unit testing
 const createDummyCollection = ({
     collectionName = 'Dummies',
+    mutations,
+    resolvers,
     options = {},
     schema = {
         _id: {
@@ -17,7 +19,7 @@ const createDummyCollection = ({
     ...otherFields
 }) => {
     const Dummies = {
-        options: { collectionName, ...options },
+        options: { collectionName, mutations, resolvers, ...options },
         simpleSchema: () => new SimpleSchema(schema),
         find: () => ({
             fetch: () => results.find,

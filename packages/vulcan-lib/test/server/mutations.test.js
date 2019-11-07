@@ -1,11 +1,12 @@
-import { getDefaultMutations } from '../../lib/modules/default_mutations';
+import { getDefaultMutations } from '../../lib/server/default_mutations';
 import SimpleSchema from 'simpl-schema';
+import Users from 'meteor/vulcan:users';
 
 import expect from 'expect';
 const test = it;
 
 
-describe('vulcan:core/default_mutations', function () {
+describe('vulcan:lib/default_mutations', function () {
 
     it('returns mutations', function () {
         const mutations = getDefaultMutations({
@@ -31,14 +32,14 @@ describe('vulcan:core/default_mutations', function () {
     describe('delete mutation', () => {
         const foo = { _id: 'foo' };
         const context = {
-            Users: {
+            Users,/*: {
                 options: {
                     collectionName: 'Users',
                     typeName: 'User'
                 },
                 simpleSchema: () => new SimpleSchema({ _id: { type: String, canRead: ['admins'] } }),
                 restrictViewableFields: (currentUser, collection, doc) => doc
-            },
+            },*/
             Foos: {
                 findOne: () => foo,
                 remove: () => 1,
@@ -68,8 +69,8 @@ describe('vulcan:core/default_mutations', function () {
             const validSlugSelector = { slug: 'foobar' };
 
             // const { mutation } = deleteMutation; // won't work because "this" must equal deleteMutation to access "check"
-            expect(deleteMutation.mutation(null, { selector: emptySelector }, context)).rejects;
-            expect(deleteMutation.mutation(null, { selector: nullSelector }, context)).rejects;
+            await expect(deleteMutation.mutation(null, { selector: emptySelector }, context)).rejects.toThrow();
+            await expect(deleteMutation.mutation(null, { selector: nullSelector }, context)).rejects.toThrow();
 
             await expect(deleteMutation.mutation(null, { selector: validIdSelector }, context)).resolves.toEqual({ data: foo });
             await expect(deleteMutation.mutation(null, { selector: validDocIdSelector }, context)).resolves.toEqual({ data: foo });

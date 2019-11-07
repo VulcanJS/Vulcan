@@ -1,5 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
+
 // URL
 const CardItemURL = ({ value, force, Components }) => {
   return force || value.slice(0, 4) === 'http' ? (

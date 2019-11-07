@@ -2,7 +2,7 @@ import { createDummyCollection, isoCreateCollection } from 'meteor/vulcan:test'
 import { createCollection } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users'
 import expect from 'expect';
-import { getDefaultResolvers } from '../../lib/modules/default_resolvers';
+import { getDefaultResolvers } from '../../lib/server/default_resolvers';
 import sinon from 'sinon'
 
 describe('vulcan:core/default_resolvers', function () {
@@ -169,10 +169,11 @@ describe('vulcan:core/default_resolvers', function () {
       it('filter documents based on user input', async () => {
         const resolver = getMultiResolver();
         const input = {
-          where: { year: { gte: 2000 } }
+          filter: { year: { _gte: 2000 } }
         }
+        // TODO: creating a spy on find is tedious, use integration test instead
         const findSpy = sinon.spy(
-          () => ({ fetch: () => [] })
+          () => ({ fetch: () => [], count: () => 0 })
         )
         const context = buildContext({
           Dummies: createDummyCollection({
@@ -185,18 +186,41 @@ describe('vulcan:core/default_resolvers', function () {
         })
         const res = await resolver(null, { input }, context, lastArg)
         // TODO: 
-        expect(findSpy.getCall(0).args[2]).toMatchObject({
+        expect(findSpy.getCall(0).args[0]).toMatchObject({
           year: { $gte: 2000 }
         })
       })
-      // important to avoid indirect access to the value (filtering is indirectly equivalent to reading)
-      it('do not filter based on non viewable field', async () => {
+      it('detect invalid filters', async () => {
         const resolver = getMultiResolver();
         const input = {
-          where: { year: { gte: 2000 } }
+          // gte is not valid, _gte is correct
+          filter: { year: { gte: 2000 } }
+        }
+        // TODO: creating a spy on find is tedious, use integration test instead
+        const findSpy = sinon.spy(
+          () => ({ fetch: () => [], count: () => 0 })
+        )
+        const context = buildContext({
+          Dummies: createDummyCollection({
+            schema: {
+              _id: { type: String, canRead: ['guests'] },
+              year: { type: Number, canRead: ['guests'] }
+            },
+            find: findSpy,
+          }),
+        })
+        await expect(
+          resolver(null, { input }, context, lastArg)
+        ).rejects.toThrow()
+      })
+      // important to avoid indirect access to the value (filtering is indirectly equivalent to reading)
+      it('detect non viewable field in filter', async () => {
+        const resolver = getMultiResolver();
+        const input = {
+          filter: { year: { _gte: 2000 } }
         }
         const findSpy = sinon.spy(
-          () => ({ fetch: () => [] })
+          () => ({ fetch: () => [], count: () => 0 })
         )
         const context = buildContext({
           Dummies: createDummyCollection({
@@ -204,12 +228,13 @@ describe('vulcan:core/default_resolvers', function () {
               _id: { type: String, canRead: ['admins', 'members'] },
               year: { type: Number, canRead: ['admins'] }
             },
-            currentUser: loggedInUser, // not an admin so can't filter on year,
             find: findSpy,
-          })
+          }),
+          currentUser: loggedInUser, // not an admin so can't filter on year,
         })
-        const res = await resolver(null, { input }, context, lastArg)
-        expect(findSpy.getCall(0).args[2].year).toBeUndefined()
+        await expect(
+          resolver(null, { input }, context, lastArg)
+        ).rejects.toThrow()
       })
       // seems to work eventually...
       /*

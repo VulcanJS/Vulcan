@@ -3,6 +3,8 @@ import React from 'react';
 import _isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
+import Users from 'meteor/vulcan:users';
+import get from 'lodash/get';
 
 /*
 
@@ -18,22 +20,34 @@ const DatatableRow = (props, { intl }) => {
     currentUser,
     options,
     editFormOptions,
+    editFormProps,
     rowClass,
     Components,
   } = props;
+
+  let canUpdate = false;
+
+  // new APIs
+  const permissionCheck = get(collection, 'options.permissions.canUpdate');
   // openCRUD backwards compatibility
-  const canEdit =
-    collection &&
-    collection.options &&
-    collection.options.mutations &&
-    collection.options.mutations.edit &&
-    collection.options.mutations.edit.check(currentUser, document);
-  const canUpdate =
-    collection &&
-    collection.options &&
-    collection.options.mutations &&
-    collection.options.mutations.update &&
-    collection.options.mutations.update.check(currentUser, document);
+  const check =
+    get(collection, 'options.mutations.edit.check') ||
+    get(collection, 'options.mutations.update.check');
+
+  if (Users.isAdmin(currentUser)) {
+    canUpdate = true;
+  } else if (permissionCheck) {
+    canUpdate = Users.permissionCheck({
+      check: permissionCheck,
+      user: currentUser,
+      document,
+      context: { Users },
+      operationName: 'update',
+    });
+  } else if (check) {
+    canUpdate = check && check(currentUser, document, { Users });
+  }
+
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
   const { modalProps = {} } = props;
   const defaultModalProps = { title: <code>{document._id}</code> };
@@ -54,7 +68,7 @@ const DatatableRow = (props, { intl }) => {
           collection={collection}
         />
       ))}
-      {showEdit && (canEdit || canUpdate) ? ( // openCRUD backwards compatibility
+      {showEdit && canUpdate ? ( // openCRUD backwards compatibility
         <Components.DatatableCellLayout className="datatable-edit">
           <Components.EditButton
             collection={collection}
@@ -63,6 +77,7 @@ const DatatableRow = (props, { intl }) => {
             mutationFragmentName={options && options.fragmentName}
             modalProps={customModalProps}
             {...editFormOptions}
+            {...editFormProps}
           />
         </Components.DatatableCellLayout>
       ) : null}
