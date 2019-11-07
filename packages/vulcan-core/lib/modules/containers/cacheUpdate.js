@@ -33,9 +33,9 @@ export const getVariablesListFromCache = (proxy, queryName) => {
     // another cache that doesn't contain the root query.
     if (!rootQuery) return [];
 
+    // Customer(*) will be matched but no customer. This last one would cause an error in
+    // JSON.parse. If wanted to be treated, parseQueryNameToVariables should be adapted
     const matchQueryReducer = (names, name) => {
-        // TODO: can be improved with a regex so "customer" matched only "customer(*)"
-        // this may match too many items
         if (name.startsWith(queryName + '(')) {
             names.push(name);
         }
