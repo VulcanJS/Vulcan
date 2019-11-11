@@ -64,7 +64,7 @@ describe('vulcan:core/container/mutations', () => {
         fragment
     };
     describe('similar queries in cache', () => {
-        test('return from the cache only the variables which match exactly the query and including variables', async () => {
+        test('return from the cache only the variables which match exactly the query', async () => {
           const queryName = 'myCustomQuery';
           const cacheQueryName = queryName + '({})';
           const cacheSimilarQueryName = queryName + 'Foo({})';
@@ -72,7 +72,6 @@ describe('vulcan:core/container/mutations', () => {
             data: {
               data: {
                 ROOT_QUERY: {
-                  [queryName]: { foo: 'bar' },
                   [cacheQueryName]: { foo: 'bar' },
                   [cacheSimilarQueryName]: { foo: 'bar' },
                 },
@@ -82,7 +81,23 @@ describe('vulcan:core/container/mutations', () => {
           const variables = await getVariablesListFromCache(cacheObject, queryName);
           expect(variables).toHaveLength(1);
         });
+      test('ignore the queries from the cache not including variables', async () => {
+        const queryName = 'myCustomQuery';
+        const cacheQueryName = queryName + '({})';
+        const cacheObject = {
+          data: {
+            data: {
+              ROOT_QUERY: {
+                [queryName]: { foo: 'bar' },
+                [cacheQueryName]: { foo: 'bar' },
+              },
+            },
+          },
+        };
+        const variables = await getVariablesListFromCache(cacheObject, queryName);
+        expect(variables).toHaveLength(1);
       });
+    });
     describe('common', () => {
         test('export hooks and hocs', () => {
             expect(useCreate).toBeInstanceOf(Function)
