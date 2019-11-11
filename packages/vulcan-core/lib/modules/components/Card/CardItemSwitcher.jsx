@@ -56,7 +56,7 @@ const CardItemSwitcher = props => {
     if (!itemProps.relatedDocument) {
       return (
         <span>
-          Missing data for sub-document <code>{value}</code> of type <code>{typeName}</code>
+          Missing data for sub-document <code>{value}</code> of type <code>{typeName}</code> (<code>{itemProps.relatedFieldName}</code>)
         </span>
       );
     }

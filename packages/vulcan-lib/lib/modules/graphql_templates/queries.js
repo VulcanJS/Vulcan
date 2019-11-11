@@ -31,7 +31,7 @@ movies(input: MultiMovieInput) : MultiMovieOutput
 */
 export const multiQueryType = typeName => Utils.camelCaseify(Utils.pluralize(typeName));
 export const multiQueryTemplate = ({ typeName }) =>
-  `${multiQueryType(typeName)}(input: ${multiInputType(typeName, true)}): ${multiOutputType(typeName)}`;
+  `${multiQueryType(typeName)}(input: ${multiInputType(typeName, false)}): ${multiOutputType(typeName)}`;
 
 /* ------------------------------------- Query Input Types ------------------------------------- */
 
@@ -185,7 +185,7 @@ mutation multiMovieQuery($input: MultiMovieInput) {
 
 */
 export const multiClientTemplate = ({ typeName, fragmentName, extraQueries }) =>
-  `query ${multiQueryType(typeName)}($input: ${multiInputType(typeName, true)}) {
+  `query ${multiQueryType(typeName)}($input: ${multiInputType(typeName, false)}) {
   ${multiQueryType(typeName)}(input: $input) {
     ${multiReturnProperty} {
       ...${fragmentName}

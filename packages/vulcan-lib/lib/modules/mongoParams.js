@@ -140,7 +140,8 @@ export const filterFunction = async (collection, input = {}, context) => {
           if (customFilter) {
             // field is not actually a field, but a custom filter
             const filterArguments = filter[customFilter.name];
-            const filterObject = await customFilter.filter({
+            // TODO: make this work with await
+            const filterObject = customFilter.filter({
               input,
               context,
               filterArguments,

@@ -106,11 +106,13 @@ export const createMutator = async ({
     validationErrors = validationErrors.concat(validateDocument(document, collection, context));
     // new callback API (Oct 2019)
     validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.create.validate`,
       callbacks: get(collection, 'options.callbacks.create.validate', []),
       iterator: validationErrors,
       properties,
     });
     validationErrors = await runCallbacks({
+      name: `*.create.validate`,
       callbacks: get(globalCallbacks, 'create.validate', []),
       iterator: validationErrors,
       properties,
@@ -188,11 +190,13 @@ export const createMutator = async ({
   */
   // new callback API (Oct 2019)
   document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.create.before`,
     callbacks: get(collection, 'options.callbacks.create.before', []),
     iterator: document,
     properties,
   });
   document = await runCallbacks({
+    name: `*.create.before`,
     callbacks: get(globalCallbacks, 'create.before', []),
     iterator: document,
     properties,
@@ -228,11 +232,13 @@ export const createMutator = async ({
   document = await Connectors.get(collection, document._id);
   // new callback API (Oct 2019)
   document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.create.after`,
     callbacks: get(collection, 'options.callbacks.create.after', []),
     iterator: document,
     properties,
   });
   document = await runCallbacks({
+    name: `*.create.after`,
     callbacks: get(globalCallbacks, 'create.after', []),
     iterator: document,
     properties,
@@ -257,10 +263,12 @@ export const createMutator = async ({
   */
   // new callback API (Oct 2019)
   await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.create.async`,
     callbacks: get(collection, 'options.callbacks.create.async', []),
     properties,
   });
   await runCallbacksAsync({
+    name: `*.create.async`,
     callbacks: get(globalCallbacks, 'create.async', []),
     properties,
   });
@@ -362,11 +370,13 @@ export const updateMutator = async ({
 
     // new callback API (Oct 2019)
     validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.update.validate`,
       callbacks: get(collection, 'options.callbacks.update.validate', []),
       iterator: validationErrors,
       properties,
     });
     validationErrors = await runCallbacks({
+      name: `*.update.validate`,
       callbacks: get(globalCallbacks, 'update.validate', []),
       iterator: validationErrors,
       properties,
@@ -430,11 +440,13 @@ export const updateMutator = async ({
   */
   // new callback API (Oct 2019)
   data = await runCallbacks({
+    name: `${typeName.toLowerCase()}.update.before`,
     callbacks: get(collection, 'options.callbacks.update.before', []),
     iterator: data,
     properties,
   });
   data = await runCallbacks({
+    name: `*.update.before`,
     callbacks: get(globalCallbacks, 'update.before', []),
     iterator: data,
     properties,
@@ -504,11 +516,13 @@ export const updateMutator = async ({
   */
   // new callback API (Oct 2019)
   document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.update.after`,
     callbacks: get(collection, 'options.callbacks.update.after', []),
     iterator: document,
     properties,
   });
   document = await runCallbacks({
+    name: `*.update.after`,
     callbacks: get(globalCallbacks, 'update.after', []),
     iterator: document,
     properties,
@@ -535,10 +549,12 @@ export const updateMutator = async ({
   */
   // new callback API (Oct 2019)
   await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.update.async`,
     callbacks: get(collection, 'options.callbacks.update.async', []),
     properties,
   });
   await runCallbacksAsync({
+    name: `*.update.async`,
     callbacks: get(globalCallbacks, 'update.async', []),
     properties,
   });
@@ -616,11 +632,13 @@ export const deleteMutator = async ({
 
     // new API (Oct 2019)
     validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.delete.validate`,
       callbacks: get(collection, 'options.callbacks.delete.validate', []),
       iterator: validationErrors,
       properties,
     });
     validationErrors = await runCallbacks({
+      name: `*.delete.validate`,
       callbacks: get(globalCallbacks, 'delete.validate', []),
       iterator: validationErrors,
       properties,
@@ -670,11 +688,13 @@ export const deleteMutator = async ({
   */
   // new API (Oct 2019)
   document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.delete.before`,
     callbacks: get(collection, 'options.callbacks.delete.before', []),
     iterator: document,
     properties,
   });
   document = await runCallbacks({
+    name: `*.delete.before`,
     callbacks: get(globalCallbacks, 'delete.before', []),
     iterator: document,
     properties,
@@ -712,11 +732,13 @@ export const deleteMutator = async ({
   */
   // new API (Oct 2019)
   document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.delete.after`,
     callbacks: get(collection, 'options.callbacks.delete.after', []),
     iterator: document,
     properties,
   });
   document = await runCallbacks({
+    name: `*.delete.after`,
     callbacks: get(globalCallbacks, 'delete.after', []),
     iterator: document,
     properties,
@@ -748,10 +770,12 @@ export const deleteMutator = async ({
   */
   // new API (Oct 2019)
   await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.delete.async`,
     callbacks: get(collection, 'options.callbacks.delete.async', []),
     properties,
   });
   await runCallbacksAsync({
+    name: `*.delete.async`,
     callbacks: get(globalCallbacks, 'delete.async', []),
     properties,
   });

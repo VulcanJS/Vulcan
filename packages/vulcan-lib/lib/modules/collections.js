@@ -143,6 +143,30 @@ export const extendCollection = (collection, options) => {
   collection.options = merge({}, collection.options, options);
 };
 
+/*
+
+Note: this currently isn't used because it would need to be called
+after all collections have been initialized, otherwise we can't figure out
+if resolved field is resolving to a collection type or not
+
+*/
+export const addAutoRelations = () => {
+  Collections.forEach(collection => {
+    const schema = collection.simpleSchema()._schema;
+    // add "auto-relations" to schema resolvers
+    Object.keys(schema).map(fieldName => {
+      const field = schema[fieldName];
+      // if no resolver or relation is provided, try to guess relation and add it to schema
+      if (field.resolveAs) {
+        const { resolver, relation, type } = field.resolveAs;
+        if (isCollectionType(type) && !resolver && !relation) {
+          field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+        }
+      }
+    });
+  });
+};
+
 export const createCollection = options => {
   const {
     typeName,
@@ -182,18 +206,6 @@ export const createCollection = options => {
     hasIntlFields = true; // we have at least one intl field
     addCallback(`${typeName.toLowerCase()}.collection`, addIntlFields);
   }
-
-  // add "auto-relations" to schema resolvers
-  Object.keys(schema).map(fieldName => {
-    const field = schema[fieldName];
-    // if no resolver or relation is provided, try to guess relation and add it to schema
-    if (field.resolveAs) {
-      const { resolver, relation, type } = field.resolveAs;
-      if (isCollectionType(type) && !resolver && !relation) {
-        field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
-      }
-    }
-  });
 
   //run schema callbacks and run general callbacks last
   schema = runCallbacks({
