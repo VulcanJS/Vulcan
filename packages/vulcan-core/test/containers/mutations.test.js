@@ -66,8 +66,8 @@ describe('vulcan:core/container/mutations', () => {
     describe('similar queries in cache', () => {
         test('return from the cache only the variables which match exactly the query', async () => {
           const queryName = 'myCustomQuery';
-          const cacheQueryName = queryName + '({})';
-          const cacheSimilarQueryName = queryName + 'Foo({})';
+          const cacheQueryName = queryName + '({"correct":"variables"})';
+          const cacheSimilarQueryName = queryName + 'Foo({"foo":"bar"})';
           const cacheObject = {
             data: {
               data: {
@@ -80,10 +80,11 @@ describe('vulcan:core/container/mutations', () => {
           };
           const variables = await getVariablesListFromCache(cacheObject, queryName);
           expect(variables).toHaveLength(1);
+          expect(variables[0].correct).toBe("variables")
         });
       test('ignore the queries from the cache not including variables', async () => {
         const queryName = 'myCustomQuery';
-        const cacheQueryName = queryName + '({})';
+        const cacheQueryName = queryName + '({"correct":"variables"})';
         const cacheObject = {
           data: {
             data: {
@@ -96,6 +97,7 @@ describe('vulcan:core/container/mutations', () => {
         };
         const variables = await getVariablesListFromCache(cacheObject, queryName);
         expect(variables).toHaveLength(1);
+        expect(variables[0].correct).toBe("variables")
       });
     });
     describe('common', () => {
