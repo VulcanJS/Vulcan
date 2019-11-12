@@ -10,6 +10,8 @@ import { Components } from 'meteor/vulcan:lib';
 import { CookiesProvider } from 'react-cookie';
 
 import Cookies from 'universal-cookie';
+import { getHeaderLocale } from '../../intl.js';
+
 // The client-side App will instead use <BrowserRouter>
 // see client-side vulcan:core/lib/client/start.jsx implementation
 // we do the same server side
@@ -21,7 +23,7 @@ const AppGenerator = ({ req, apolloClient, context }) => {
     <ApolloProvider client={apolloClient}>
       <StaticRouter location={req.url} context={context}>
         <CookiesProvider cookies={cookies}>
-          <Components.App />
+          <Components.App locale={getHeaderLocale(req.headers)}/>
         </CookiesProvider>
       </StaticRouter>
     </ApolloProvider>
