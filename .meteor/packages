@@ -16,5 +16,3 @@ accounts-password@1.5.1
 vulcan:debug
 meteortesting:mocha
 apollo
-vulcan:lib
-vulcan:ui-bootstrap
