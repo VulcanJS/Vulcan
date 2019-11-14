@@ -157,6 +157,10 @@ export const GraphQLSchema = {
     const { fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
     const mainType = fields.mainType;
 
+    if (!mainType || mainType.length === 0) {
+      throw new Error(`GraphQL type ${typeName} has no fields. Please add readable fields or remove the type.`);
+    }
+    
     // generate a graphql type def from the simpleSchema
     const mainGraphQLSchema = mainTypeTemplate({
       typeName,

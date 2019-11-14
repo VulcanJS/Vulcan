@@ -6,7 +6,6 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
-import get from 'lodash/get';
 
 import { getSetting } from './settings.js';
 // convert GraphQL selector into Mongo-compatible selector
@@ -54,11 +53,11 @@ const isEmptyOrUndefined = value =>
   typeof value === 'undefined' ||
   value === null ||
   value === '' ||
-  (typeof value === 'object' && isEmpty(value));
+  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
 
 export const filterFunction = async (collection, input = {}, context) => {
   // eslint-disable-next-line no-unused-vars
-  const { filter, limit = 20, sort, search, filterArguments, offset, _id } = input;
+  const { filter, limit = 20, sort, search, filterArguments, offset, id } = input;
   let selector = {};
   let options = {
     sort: {},
@@ -106,9 +105,9 @@ export const filterFunction = async (collection, input = {}, context) => {
     return { [mongoFieldName]: mongoObject };
   };
 
-  // _id
-  if (_id) {
-    selector = { _id };
+  // id
+  if (id) {
+    selector = { _id: id };
   }
 
   // filter
@@ -123,7 +122,6 @@ export const filterFunction = async (collection, input = {}, context) => {
         case '_or':
           filteredFields = filteredFields.concat(getFieldNames(filter._or));
           selector['$or'] = filter._or.map(convertExpression);
-
           break;
 
         case '_not':
