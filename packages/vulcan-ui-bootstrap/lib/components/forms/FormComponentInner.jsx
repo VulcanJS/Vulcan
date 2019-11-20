@@ -30,6 +30,10 @@ class FormComponentInner extends PureComponent {
     const withInputProps = getHtmlInputProps(this.props);
     withInputProps.onChange = enhancedOnChange; // TODO: legacy code?
     withInputProps.inputProperties.onChange = enhancedOnChange;
+    withInputProps.itemProperties = {
+      ...this.props.itemProperties, 
+      description: this.props.description
+    };
     return withInputProps;
   };
 

@@ -13,6 +13,8 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
   // get rid of duplicate values or any values that are not included in the options provided
   value = uniq(intersection(value, options.map(o => o.value)));
 
+  const hasValue = value.length > 0;
+
   // if this is a "new document" form check options' "checked" property to populate value
   if (formType === 'new' && value.length === 0) {
     const checkedValues = _.where(options, { checked: true }).map(option => option.value);
@@ -24,24 +26,28 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
   return (
     <Components.FormItem path={path} label={label} {...itemProperties}>
       <div>
-        {options.map((option, i) => (
-          <Form.Check
-            name={name}
-            layout="elementOnly"
-            key={i}
-            label={option.label}
-            value={value.includes(option.value)}
-            checked={!!value.includes(option.value)}
-            id={`${path}.${i}`}
-            path={`${path}.${i}`}
-            ref={refFunction}
-            onChange={event => {
-              const isChecked = event.target.checked;
-              const newValue = isChecked ? [...value, option.value] : without(value, option.value);
-              updateCurrentValues({ [path]: newValue });
-            }}
-          />
-        ))}
+        {options.map((option, i) => {
+          const isChecked = value.includes(option.value);
+          const checkClass = hasValue ? isChecked ? 'form-check-checked' : 'form-check-unchecked' : '';
+          return (
+            <Form.Check
+              name={name}
+              layout="elementOnly"
+              key={i}
+              label={option.label}
+              value={isChecked}
+              checked={isChecked}
+              id={`${path}.${i}`}
+              path={`${path}.${i}`}
+              ref={refFunction}
+              onChange={event => {
+                const isChecked = event.target.checked;
+                const newValue = isChecked ? [...value, option.value] : without(value, option.value);
+                updateCurrentValues({ [path]: newValue });
+              }}
+              className={checkClass}
+            />
+          );})}
       </div>
     </Components.FormItem>
   );
