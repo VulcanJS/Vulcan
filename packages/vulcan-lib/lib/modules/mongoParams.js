@@ -57,7 +57,7 @@ const isEmptyOrUndefined = value =>
 
 export const filterFunction = async (collection, input = {}, context) => {
   // eslint-disable-next-line no-unused-vars
-  const { filter, limit = 20, sort, search, filterArguments, offset, id } = input;
+  const { filter, limit, sort, search, filterArguments, offset, id } = input;
   let selector = {};
   let options = {
     sort: {},
@@ -88,20 +88,15 @@ export const filterFunction = async (collection, input = {}, context) => {
     const [operator] = Object.keys(fieldExpression[fieldName]);
     const value = fieldExpression[fieldName][operator];
     if (isEmptyOrUndefined(value)) {
-      throw new Error(
-        `Detected empty filter value for field ${fieldName} with operator ${operator}`
-      );
+      throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
     }
     const mongoOperator = conversionTable[operator];
     if (!mongoOperator) {
-      throw new Error(
-        `Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`
-      );
+      throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
     }
     const isIntl = schema[fieldName].intl;
     const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
-    const mongoObject =
-      typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
+    const mongoObject = typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
     return { [mongoFieldName]: mongoObject };
   };
 
@@ -164,9 +159,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       mapValues(sort, order => {
         const mongoOrder = conversionTable[order];
         if (!order) {
-          throw new Error(
-            `Operator ${order} is not valid. Possible operators: asc, desc`
-          );
+          throw new Error(`Operator ${order} is not valid. Possible operators: asc, desc`);
         }
         return mongoOrder;
       })
@@ -197,16 +190,15 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-        collection.options.collectionName
+          collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }
   }
 
   // limit
-  if (limit) {
-    options.limit = Math.min(limit, getSetting('maxDocumentsPerRequest', 1000));
-  }
+  const maxLimit = getSetting('maxDocumentsPerRequest', 1000);
+  options.limit = limit ? Math.min(limit, maxLimit) : maxLimit;
 
   // offest
   if (offset) {
