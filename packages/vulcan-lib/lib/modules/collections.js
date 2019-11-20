@@ -23,27 +23,37 @@ export let hasIntlFields = false;
 
 export const Collections = [];
 
-export const getCollection = name =>
-  Collections.find(
-    ({ options: { collectionName } }) =>
-      name === collectionName || name === collectionName.toLowerCase()
+export const getCollection = name => {
+  const collection = Collections.find(
+    ({ options: { collectionName } }) => name === collectionName || name === collectionName.toLowerCase()
   );
+  if (!collection) {
+    throw new Error(`Could not find collection named “${name}”`);
+  }
+  return collection;
+};
 
-export const getCollectionByTypeName = name => {
+export const getCollectionByTypeName = typeName => {
   // in case typeName is for an array ('[User]'), get rid of brackets
-  let parsedTypeName = name.replace('[', '').replace(']', '');
-  return Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+  let parsedTypeName = typeName.replace('[', '').replace(']', '');
+  const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+  if (!collection) {
+    throw new Error(`Could not find collection for type “${typeName}”`);
+  }
+  return collection;
 };
 
-// TODO: find more reliable way to get collection name from type name?
-export const getCollectionName = typeName => Utils.pluralize(typeName);
+export const generateCollectionNameFromTypeName = typeName => Utils.pluralize(typeName);
 
-// TODO: find more reliable way to get type name from collection name?
-export const getTypeName = collectionName => {
-  return collectionName.slice(-3) === 'ies'
-    ? collectionName.slice(0, -3) + 'y'
-    : collectionName.slice(0, -1);
+export const getTypeNameByCollectionName = collectionName => {
+  const collection = Collections.find(({ options }) => options.collectionName === collectionName);
+  if (!collection) {
+    throw new Error(`Could not find type for collection “${collectionName}”`);
+  }
+  return collection.options.typeName;
 };
+
+export const generateTypeNameFromCollectionName = collectionName => Utils.singularize(collectionName);
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
@@ -168,11 +178,7 @@ export const addAutoRelations = () => {
 };
 
 export const createCollection = options => {
-  const {
-    typeName,
-    collectionName = getCollectionName(typeName),
-    dbCollectionName,
-  } = options;
+  const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
   let { schema } = options;
 
   // initialize new Mongo collection

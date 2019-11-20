@@ -14,6 +14,7 @@ import { getCollection } from './collections.js';
 import set from 'lodash/set';
 import get from 'lodash/get';
 import isFunction from 'lodash/isFunction';
+import pluralize from 'pluralize';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -526,11 +527,9 @@ String.prototype.replaceAll = function (search, replacement) {
 
 Utils.isPromise = value => isFunction(get(value, 'then'));
 
-Utils.pluralize = s => {
-  const plural =
-    s.slice(-1) === 'y' ? `${s.slice(0, -1)}ies` : s.slice(-1) === 's' ? `${s}es` : `${s}s`;
-  return plural;
-};
+Utils.pluralize = pluralize;
+
+Utils.singularize = pluralize.singular;
 
 Utils.removeProperty = (obj, propertyName) => {
   for (const prop in obj) {

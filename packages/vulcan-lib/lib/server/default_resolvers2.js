@@ -6,7 +6,7 @@ Default list, single, and total resolvers
 
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
-import { getCollectionName } from '../modules/collections.js';
+import { getCollectionByTypeName } from '../modules/collections.js';
 import { throwError } from './errors.js';
 import get from 'lodash/get';
 
@@ -16,7 +16,7 @@ const defaultOptions = {
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getNewDefaultResolvers({ typeName, collectionName, options }) {
-  collectionName = collectionName || getCollectionName(typeName);
+  collectionName = collectionName || getCollectionByTypeName(typeName);
   const resolverOptions = { ...defaultOptions, ...options };
 
   return {

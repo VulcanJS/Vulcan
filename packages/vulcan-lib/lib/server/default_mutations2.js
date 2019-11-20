@@ -6,7 +6,7 @@ Default mutations
 
 import { createMutator, updateMutator, deleteMutator } from './mutators.js';
 import { Connectors } from './connectors.js';
-import { getCollectionName } from '../modules/collections.js';
+import { getCollectionByTypeName } from '../modules/collections.js';
 import get from 'lodash/get';
 import { throwError } from './errors.js';
 
@@ -64,7 +64,7 @@ Default Mutations
 
 */
 export function getNewDefaultMutations({ typeName, collectionName, options }) {
-  collectionName = collectionName || getCollectionName(typeName);
+  collectionName = collectionName || getCollectionByTypeName(typeName);
   const mutationOptions = { ...defaultOptions, ...options };
 
   const mutations = {};

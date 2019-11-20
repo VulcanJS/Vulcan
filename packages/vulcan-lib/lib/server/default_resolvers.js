@@ -7,7 +7,7 @@ Default list, single, and total resolvers
 import { Utils } from '../modules/utils.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
-import { getTypeName, getCollectionName } from '../modules/collections.js';
+import { generateTypeNameFromCollectionName, getTypeNameByCollectionName, getCollectionByTypeName } from '../modules/collections.js';
 import { throwError } from './errors.js';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
@@ -18,16 +18,17 @@ const defaultOptions = {
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
+  
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
     typeName = arguments[0].typeName;
-    collectionName = arguments[0].collectionName || getCollectionName(typeName);
+    // collectionName = arguments[0].collectionName || getCollectionByTypeName(typeName).options.collectionName;
     resolverOptions = { ...defaultOptions, ...arguments[0].options };
   } else {
     // OpenCRUD backwards compatibility
     collectionName = arguments[0];
-    typeName = getTypeName(collectionName);
+    typeName = generateTypeNameFromCollectionName(collectionName);
     resolverOptions = { ...defaultOptions, ...arguments[1] };
   }
 
@@ -39,6 +40,8 @@ export function getDefaultResolvers(options) {
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
+
+        collectionName = getCollectionByTypeName(typeName).options.collectionName;
 
         debug('');
         debugGroup(
@@ -133,6 +136,8 @@ export function getDefaultResolvers(options) {
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
         const { selector: oldSelector = {}, enableCache = false, allowNull = false } = input;
+
+        collectionName = getCollectionByTypeName(typeName).options.collectionName;
 
         let doc;
 
