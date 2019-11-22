@@ -20,3 +20,8 @@ export const hasAllowedValues = field => {
 
 
 export const isBlackbox = (field) => field.type.definitions[0].blackbox;
+
+
+export const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
+
+export const getNestedSchema = field => field.type.singleType._schema;
