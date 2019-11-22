@@ -98,7 +98,7 @@ Meteor.startup(() => {
       let input = inputOrId;
 
       if (typeof inputOrId === 'string') {
-        input = { _id: inputOrId };
+        input = { id: inputOrId };
       }
 
       const query = buildQuery(collection, { fragmentName, fragmentText });

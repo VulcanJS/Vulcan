@@ -18,15 +18,9 @@ import {
 } from 'meteor/vulcan:core';
 const intlSuffix = '_intl';
 
-// NewFoobarFormFragment || EditFoobarFormFragment
-const getFragmentName = (formType, collectionName) => {
-    const prefix = `${collectionName}${Utils.capitalize(
-        formType
-    )}`;
-    const fragmentName = `${prefix}FormFragment`;
-    return fragmentName;
-};
-
+// PostsEditFormQueryFragment/PostsNewFormMutationFragment/etc.
+const getFragmentName = (formType, collectionName, fragmentType) => 
+  [collectionName, formType, 'form', fragmentType, 'fragment'].map(Utils.capitalize).join('');
 
 // get modifiable fields in the query either for update or create operations
 const getQueryFieldNames = ({
@@ -144,7 +138,6 @@ const getFormFragments = ({
     fields, // restrict on certain fields
     addFields, // add additional fields (eg to display static fields)
 }) => {
-    const fragmentName = getFragmentName(formType, collectionName);
 
     // get the root schema fieldNames
     let queryFieldNames = getQueryFieldNames({ schema, options: { formType } });
@@ -180,7 +173,7 @@ const getFormFragments = ({
     // TODO: support nesting
     const queryFragmentText = getSchemaFragment({
         schema,
-        fragmentName: `fragment ${fragmentName} on ${typeName}`,
+        fragmentName: `fragment ${getFragmentName(formType, collectionName, 'query')} on ${typeName}`,
         options: { formType, isMutation: false },
         fieldNames: queryFieldNames
     });
@@ -188,7 +181,7 @@ const getFormFragments = ({
 
     const mutationFragmentText = getSchemaFragment({
         schema,
-        fragmentName: `fragment ${fragmentName} on ${typeName}`,
+        fragmentName: `fragment ${getFragmentName(formType, collectionName, 'mutation')} on ${typeName}`,
         options: { formType, isMutation: true },
         fieldNames: mutationFieldNames
     });
