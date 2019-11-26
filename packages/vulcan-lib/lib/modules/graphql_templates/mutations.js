@@ -244,7 +244,7 @@ mutation updateMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 export const updateClientTemplate = ({ typeName, fragmentName }) =>
   `mutation ${updateMutationType(typeName)}($input: ${updateInputType(typeName)}, $selector: ${selectorUniqueInputType(
     typeName
-  )}, $data: ${updateDataInputType(typeName, true)}) {
+  )}, $data: ${updateDataInputType(typeName, false)}) {
   ${updateMutationType(typeName)}(input: $input, selector: $selector, data: $data) {
     ${mutationReturnProperty} {
       ...${fragmentName}
@@ -271,7 +271,7 @@ mutation upsertMovie($selector: MovieSelectorUniqueInput!, $data: UpdateMovieDat
 export const upsertClientTemplate = ({ typeName, fragmentName }) =>
   `mutation ${upsertMutationType(typeName)}($input: ${upsertInputType(typeName)}, $selector: ${selectorUniqueInputType(
     typeName
-  )}, $data: ${updateDataInputType(typeName, true)}) {
+  )}, $data: ${updateDataInputType(typeName, false)}) {
   ${upsertMutationType(typeName)}(input: $input, selector: $selector, data: $data) {
     ${mutationReturnProperty} {
       ...${fragmentName}
