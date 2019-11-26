@@ -21,7 +21,8 @@ const createDummyCollection = (typeName, schema) => {
 };
 const Articles = createDummyCollection('Article', {
     name: {
-        type: String
+        type: String,
+        canRead: ['members']
     }
 });
 registerFragment(`

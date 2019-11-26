@@ -95,10 +95,12 @@ export const addMiddleware = (middlewareOrMiddlewareArray, options = {}) => {
 export const getMiddlewares = () => middlewares;
 
 let store;
-export const initStore = () => {
+export const initStore = initialState => {
   if (!store) {
-    store = configureStore();
+    store = configureStore(getReducers, initialState, []);
   }
   return store;
 };
-export const getStore = () => store;
+export const getStore = () => {
+  return store;
+};

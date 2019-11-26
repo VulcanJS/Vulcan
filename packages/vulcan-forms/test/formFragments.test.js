@@ -34,8 +34,8 @@ describe('vulcan:form/formFragments', function () {
         });
         expect(queryFragment).toBeDefined();
         expect(mutationFragment).toBeDefined();
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field nonCreateableField }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field nonCreateableField }');
     });
     test('take formType into account', function () {
         const schema = new SimpleSchema({
@@ -56,8 +56,8 @@ describe('vulcan:form/formFragments', function () {
             formType: 'edit',
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosEditFormFragment on Foo { _id field }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosEditFormFragment on Foo { _id field nonUpdateableField }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosEditFormQueryFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosEditFormMutationFragment on Foo { _id field nonUpdateableField }');
 
     });
     test('create subfields for nested objects', () => {
@@ -80,8 +80,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
     });
     test('create subfields for arrays of nested objects', () => {
         const schema = new SimpleSchema({
@@ -108,8 +108,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
     });
     test('add readable fields to mutation fragment', () => {
         const schema = new SimpleSchema({
@@ -128,7 +128,7 @@ describe('vulcan:form/formFragments', function () {
             schema,
         });
         expect(normalizeFragment(queryFragment)).not.toMatch('readOnlyField'); // this does not affect the queryFragment;
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field readOnlyField }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field readOnlyField }');
     });
     test('ignore virtual/resolved fields', () => {
         const schema = new SimpleSchema({
@@ -157,7 +157,7 @@ describe('vulcan:form/formFragments', function () {
             schema,
         });
         expect(normalizeFragment(queryFragment)).not.toMatch('virtual');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field }');
 
     });
 });
