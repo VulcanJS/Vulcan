@@ -172,7 +172,7 @@ export function getDefaultMutations(options) {
       async mutation(root, args, context) {
 
         const { input = {}, selector: oldSelector, data: backwardsCompatibilityData } = args;
-        const { filter } = input;
+        const { filter, id } = input;
         const data = input.data || backwardsCompatibilityData;
 
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
@@ -181,7 +181,9 @@ export function getDefaultMutations(options) {
 
         // handle both `filter` and `selector` for backwards-compatibility
         let selector;
-        if (!isEmpty(filter)) {
+        if (id) {
+          selector = { _id: id };
+        } else if (!isEmpty(filter)) {
           const filterParameters = await Connectors.filter(collection, { filter }, context);
           selector = filterParameters.selector;
         } else {
@@ -311,7 +313,7 @@ export function getDefaultMutations(options) {
       async mutation(root, args, context) {
 
         const { input = {}, selector: oldSelector } = args;
-        const { filter } = input;
+        const { filter, id } = input;
 
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
@@ -319,7 +321,9 @@ export function getDefaultMutations(options) {
 
         // handle both `filter` and `selector` for backwards-compatibility
         let selector;
-        if (!isEmpty(filter)) {
+        if (id) {
+          selector = { _id: id };
+        } else if (!isEmpty(filter)) {
           const filterParameters = await Connectors.filter(collection, { filter }, context);
           selector = filterParameters.selector;
         } else {
