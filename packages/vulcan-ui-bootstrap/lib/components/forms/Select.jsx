@@ -17,6 +17,7 @@ const SelectComponent = ({ refFunction, inputProperties, itemProperties, datatyp
       ? inputProperties.options
       : [];
   const options = [noneOption, ...otherOptions];
+  delete inputProperties.options;
   return (
     <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
       <Form.Control as="select" {...inputProperties} ref={refFunction}>
