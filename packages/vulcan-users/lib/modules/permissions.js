@@ -191,7 +191,7 @@ Users.canReadField = function (user, field, document) {
       return canRead(user, document);
     } else if (typeof canRead === 'string') {
       // if canRead is just a string, we assume it's the name of a group and pass it to isMemberOf
-      return canRead === 'guests' || Users.isMemberOf(user, canRead);
+      return canRead === 'guests' || Users.isMemberOf(user, canRead, document);
     } else if (Array.isArray(canRead) && canRead.length > 0) {
       // if canRead is an array, we do a recursion on every item and return true if one of the items return true
       return canRead.some(group => Users.canReadField(user, { canRead: group }, document));
