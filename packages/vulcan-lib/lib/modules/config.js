@@ -18,6 +18,7 @@ SimpleSchema.extendOptions([
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
   'inputProperties', // extra form properties
+  'itemProperties', // extra properties for the form row
   'input', // SmartForm control (String or React component)
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
