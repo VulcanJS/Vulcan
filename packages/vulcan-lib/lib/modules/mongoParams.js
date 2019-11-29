@@ -107,7 +107,7 @@ export const filterFunction = async (collection, input = {}, context) => {
 
   // filter
   if (!isEmpty(filter)) {
-    Object.keys(filter).forEach(async fieldName => {
+    Object.keys(filter).forEach(fieldName => {
       switch (fieldName) {
         case '_and':
           filteredFields = filteredFields.concat(getFieldNames(filter._and));
