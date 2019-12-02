@@ -46,7 +46,7 @@ export const buildMultiQuery = ({ typeName, fragmentName, extraQueries, fragment
 
 const initialPaginationInput = (options, props) => {
   // get initial limit from props, or else options, or else default value
-  const limit = (props.input && props.input.limit) || options.limit || defaultInput.limit;
+  const limit = (props.input && props.input.limit) || (options.input && options.input.limit) || options.limit || defaultInput.limit;
   const paginationInput = {
     limit,
   };
@@ -147,19 +147,16 @@ const buildResult = (
     // incremental loading version (only load new content)
     // note: not compatible with polling
     // TODO
-    loadMoreInc(providedTerms) {
+    loadMoreInc(providedInput) {
       // get terms passed as argument or else just default to incrementing the offset
 
-      const newTerms =
-        typeof providedTerms === 'undefined'
-          ? {
-            ...paginationInput,
-            offset: results.length,
-          }
-          : providedTerms;
+      const newInput = providedInput || {
+        ...paginationInput,
+        offset: results.length,
+      }
 
       return fetchMore({
-        variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
+        variables: { input: newInput },
         updateQuery(previousResults, { fetchMoreResult }) {
           // no more post to fetch
           if (
