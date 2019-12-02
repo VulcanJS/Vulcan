@@ -6,11 +6,8 @@ import difference from 'lodash/difference';
 import get from 'lodash/get';
 import unset from 'lodash/unset';
 import cloneDeep from 'lodash/cloneDeep';
-import { getCollection } from 'meteor/vulcan:lib';
-import { Utils, deprecate } from 'meteor/vulcan:lib';
+import { getCollection, forEachDocumentField, Utils, deprecate } from 'meteor/vulcan:lib';
 
-import isArray from 'lodash/isArray';
-import { getNestedSchema, getArrayChild } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
 /**
  * @summary Users.groups object
  */
@@ -259,47 +256,9 @@ Users.checkFields = (user, collection, fields) => {
 };
 
 
-/**
- * Iterate over a document fields and run a callback with side effect
- * Works recursively for nested fields and arrays
- * @param {*} document Current document
- * @param {*} schema Document schema
- * @param {*} callback Called on each field, with the corresponding field schema
- * @param {*} currentPath Global path of the document (to track recursive calls)
- */
-const forEachField = (document, schema, callback, currentPath = '') => {
-  if (!document) return;
-  Object.keys(document).forEach(fieldName => {
-    const fieldSchema = schema[fieldName];
-    callback(fieldName, fieldSchema, currentPath, document, schema);
-    // Check if we need a recursive call
-    const value = document[fieldName];
-    if (!value) return;
-    // if value is an array, validate permissions for all children
-    if (isArray(value)) {
-      const arrayChildField = getArrayChild(fieldName, schema);
-      if (arrayChildField) {
-        const arrayFieldSchema = getNestedSchema(arrayChildField);
-        // apply only if the field is an array of objects
-        if (arrayFieldSchema) {
-          value.forEach((item, idx) => {
-            forEachField(item, arrayFieldSchema, callback, `${currentPath}${fieldName}[${idx}].`);
-          });
-        }
-      }
-      // if value is an object, validate recursively
-    } else if (typeof value === 'object') {
-      const nestedFieldSchema = getNestedSchema(fieldSchema);
-      if (nestedFieldSchema) {
-        forEachField(value, nestedFieldSchema, callback, `${currentPath}${fieldName}.`);
-      }
-    }
-  });
-};
-
 const restrictDocument = (document, schema, currentUser) => {
   let restrictedDocument = cloneDeep(document);
-  forEachField(document, schema, (fieldName, fieldSchema, currentPath) => {
+  forEachDocumentField(document, schema, (fieldName, fieldSchema, currentPath) => {
     if (!fieldSchema || !Users.canReadField(currentUser, fieldSchema, document)) {
       unset(restrictedDocument, `${currentPath}${fieldName}`);
     }
