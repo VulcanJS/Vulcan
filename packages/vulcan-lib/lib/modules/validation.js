@@ -1,7 +1,6 @@
 import pickBy from 'lodash/pickBy';
 import mapValues from 'lodash/mapValues';
-import _isArray from 'lodash/isArray';
-import { getNestedSchema, getArrayChild } from './simpleSchema_utils';
+import { forEachDocumentField } from './schema_utils';
 
 export const dataToModifier = data => ({
   $set: pickBy(data, f => f !== null),
@@ -26,48 +25,20 @@ export const modifierToData = modifier => ({
 const validateDocumentPermissions = (document, schema, context, mode = 'create', currentPath = '') => {
   let validationErrors = [];
   const { Users, currentUser } = context;
-  // Check validity of inserted document
-  Object.keys(document).forEach(key => {
-    const fieldSchema = schema[key];
-
-    // check that the current user has permission to insert the field
-    if (!fieldSchema
-      || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema))
-    ) {
-      validationErrors.push({
-        id: 'errors.disallowed_property_detected',
-        properties: {
-          name: `${currentPath}${key}`
-        },
-      });
-      return;
-    }
-
-    // Check if we need a recursive call
-    const value = document[key];
-    if (!value) return;
-    // if value is an array, validate permissions for all children
-    if (_isArray(value)) {
-      const arrayChildField = getArrayChild(key, schema);
-      if (arrayChildField) {
-        const arrayFieldSchema = getNestedSchema(arrayChildField);
-        // apply only if the field is an array of objects
-        if (arrayFieldSchema) {
-          value.forEach((item, idx) => {
-            validationErrors = validationErrors.concat(
-              validateDocumentPermissions(item, arrayFieldSchema, context, mode, `${currentPath}${key}[${idx}].`)
-            );
-          });
-        }
+  forEachDocumentField(document, schema,
+    (fieldName, fieldSchema, currentPath) => {
+      if (!fieldSchema
+        || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, document))
+      ) {
+        validationErrors.push({
+          id: 'errors.disallowed_property_detected',
+          properties: {
+            name: `${currentPath}${fieldName}`
+          },
+        });
+        return;
       }
-      // if value is an object, validate recursively
-    } else if (typeof value === 'object') {
-      const nestedFieldSchema = getNestedSchema(fieldSchema);
-      if (nestedFieldSchema) {
-        validationErrors = validationErrors.concat(validateDocumentPermissions(value, nestedFieldSchema, context, mode, `${currentPath}${key}.`));
-      }
-    }
-  });
+    });
   return validationErrors;
 };
 /*
