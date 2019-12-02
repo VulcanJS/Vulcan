@@ -55,7 +55,7 @@ const validateDocumentPermissions = (document, schema, context, mode = 'create',
         if (arrayFieldSchema) {
           value.forEach((item, idx) => {
             validationErrors = validationErrors.concat(
-              validateDocumentPermissions(item, arrayFieldSchema, context, mode, `${key}[${idx}].`)
+              validateDocumentPermissions(item, arrayFieldSchema, context, mode, `${currentPath}${key}[${idx}].`)
             );
           });
         }
@@ -64,7 +64,7 @@ const validateDocumentPermissions = (document, schema, context, mode = 'create',
     } else if (typeof value === 'object') {
       const nestedFieldSchema = getNestedSchema(fieldSchema);
       if (nestedFieldSchema) {
-        validationErrors = validationErrors.concat(validateDocumentPermissions(value, nestedFieldSchema, context, mode, `${key}.`));
+        validationErrors = validationErrors.concat(validateDocumentPermissions(value, nestedFieldSchema, context, mode, `${currentPath}${key}.`));
       }
     }
   });
