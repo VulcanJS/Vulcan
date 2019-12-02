@@ -1,7 +1,7 @@
 import _reject from 'lodash/reject';
 import _keys from 'lodash/keys';
 import { Collections } from './collections.js';
-import { getNestedSchema, getArrayChild } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
+import { getNestedSchema, getArrayChild, isBlackbox } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
 import _isArray from 'lodash/isArray';
 
 /* getters */
@@ -80,7 +80,7 @@ export const isCollectionType = typeName => Collections.some(c => c.options.type
 
 /**
  * Iterate over a document fields and run a callback with side effect
- * Works recursively for nested fields and arrays
+ * Works recursively for nested fields and arrays of objects (but excluding blackboxed objects, native JSON, and arrays of native values)
  * @param {*} document Current document
  * @param {*} schema Document schema
  * @param {*} callback Called on each field with the corresponding field schema, including fields of nested objects and arrays of nested object
@@ -107,7 +107,7 @@ export const forEachDocumentField = (document, schema, callback, currentPath = '
                 }
             }
             // if value is an object, run recursively
-        } else if (typeof value === 'object') {
+        } else if (typeof value === 'object' && !isBlackbox(fieldSchema)) {
             const nestedFieldSchema = getNestedSchema(fieldSchema);
             if (nestedFieldSchema) {
                 forEachDocumentField(value, nestedFieldSchema, callback, `${currentPath}${fieldName}.`);

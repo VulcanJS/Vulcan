@@ -145,7 +145,7 @@ describe("vulcan:lib/validation", () => {
             const collection = createDummyCollection({
                 schema: {
                     nested: {
-                        type: Object,
+                        type: new SimpleSchema({ foo: { type: String, canCreate: ['members'], canUpdate: ['members'] } }),
                         blackbox: true,
                         canCreate: ["guests"],
                         canUpdate: ["guests"],
