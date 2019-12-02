@@ -170,6 +170,7 @@ export const schemaProperties = [
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // form placeholder
   'inputProperties', // form placeholder
+  'itemProperties',
   'control', // SmartForm control (String or React component)
   'input', // SmartForm control (String or React component)
   'autoform', // legacy form placeholder; backward compatibility (not used anymore)
@@ -218,6 +219,7 @@ export const formProperties = [
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // form placeholder
   'inputProperties', // form placeholder
+  'itemProperties',
   'control', // SmartForm control (String or React component)
   'input', // SmartForm control (String or React component)
   'order', // position in the form
