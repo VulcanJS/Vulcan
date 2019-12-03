@@ -18,7 +18,7 @@ Changes will be tracked in the changelog file.
 - Go to `master` branch
 - Create a tag for this version `git tag 1.x.x`.
 - Generate changelog `npm run generate-changelog`
-- Push with `--tags` option: `git push --tags`
+- Push with `--tags` option: `git push && git push --tags`
 - Deploy on Atmosphere
 
 ### In Vulcan-Starter
@@ -31,8 +31,8 @@ We only use `devel` and `master` branches.
 - Check that the packages are working as expected, solve breaking changes.
 - Check that `package.json` versions matches Vulcan's `package.json`.
 - Merge devel in to  `master`.
-- Create a tag for this version.
-- Push with `--tags`.
+- Create a tag for this version `git tag 1.x.x`.
+- Push with `--tags`: `git push && git push --tags`.
 
 ### In the docs
 
