@@ -17,6 +17,7 @@ Changes will be tracked in the changelog file.
 - Merge release branch into `devel` (so that fixes from the release branch are shared) and then `master`.
 - Go to `master` branch
 - Create a tag for this version `git tag 1.x.x`.
+- Generate changelog `npm run generate-changelog`
 - Push with `--tags` option: `git push --tags`
 - Deploy on Atmosphere
 
