@@ -338,7 +338,7 @@ Users.canUpdateField = function (user, field, document) {
     } else if (typeof canUpdate === 'string') {
       // if canUpdate is just a string, we assume it's the name of a group and pass it to isMemberOf
       // note: if canUpdate is 'guests' then anybody can create it
-      return canUpdate === 'guests' || Users.isMemberOf(user, canUpdate);
+      return canUpdate === 'guests' || Users.isMemberOf(user, canUpdate, document);
     } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
       // if canUpdate is an array, we look at every item and return true if one of the items return true
       return canUpdate.some(group => Users.canUpdateField(user, { canUpdate: group }, document));
