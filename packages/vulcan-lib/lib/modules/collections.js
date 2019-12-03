@@ -236,6 +236,7 @@ export const createCollection = options => {
 
   // ------------------------------------- Parameters -------------------------------- //
 
+  // legacy
   collection.getParameters = (terms = {}, apolloClient, context) => {
     // console.log(terms);
 
@@ -337,9 +338,9 @@ export const createCollection = options => {
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
-    if (!(parameters.options.sort && parameters.options.sort._id)) {
-      parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
-    }
+    //if (!(parameters.options.sort && parameters.options.sort._id)) {
+    //  parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
+    //}
 
     // remove any null fields (setting a field to null means it should be deleted)
     Object.keys(parameters.selector).forEach(key => {
