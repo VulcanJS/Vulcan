@@ -79,7 +79,7 @@
     "meteor-node-stubs": "^0.2.3",
     "mingo": "^2.2.0",
     "moment": "^2.13.0",
-    "pluralize": "^8.0.0",
+    "pluralize": "7.0.0",
     "prop-types": "^15.6.0",
     "qs": "^6.6.0",
     "react": "^16.4.1",
