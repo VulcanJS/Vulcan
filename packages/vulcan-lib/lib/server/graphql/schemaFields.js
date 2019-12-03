@@ -402,6 +402,7 @@ export const getResolveAsFields = ({
       args: fieldArguments,
       type: fieldType,
       directive: fieldDirective,
+      required: !field.optional,
     });
   }
 
@@ -412,6 +413,9 @@ export const getResolveAsFields = ({
     // use specified GraphQL type or else convert schema type
     const fieldGraphQLType = resolveAs.type || fieldType;
 
+    // if either is optional, do not make required
+    const required = !field.optional && !resolveAs.optional;
+
     // if resolveAs is an object, first push its type definition
     // include arguments if there are any
     // note: resolved fields are not internationalized
@@ -420,6 +424,7 @@ export const getResolveAsFields = ({
       name: resolverName,
       args: resolveAs.arguments,
       type: fieldGraphQLType,
+      required,
     });
 
     // then build actual resolver object and pass it to addGraphQLResolvers
@@ -619,6 +624,7 @@ export const getSchemaFields = (schema, typeName) => {
             args: fieldArguments,
             type: fieldType,
             directive: fieldDirective,
+            required: !field.optional
           });
         }
       }
