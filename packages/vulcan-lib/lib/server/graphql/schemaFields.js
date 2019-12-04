@@ -240,7 +240,7 @@ export const getSchemaFields = (schema, typeName) => {
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
-import { /*hasAllowedValues, getAllowedValues,*/isBlackbox, unarrayfyFieldName } from '../../modules/simpleSchema_utils';
+import { /*hasAllowedValues, getAllowedValues,*/isBlackbox, unarrayfyFieldName, getFieldType, getFieldTypeName } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
 
@@ -270,13 +270,6 @@ const isValidName = name => {
 
 // export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
-const getFieldType = field => field.type.singleType;
-const getFieldTypeName = fieldType =>
-  typeof fieldType === 'object'
-    ? 'Object'
-    : typeof fieldType === 'function'
-      ? fieldType.name
-      : fieldType;
 
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false }) => {

@@ -15,6 +15,8 @@ import set from 'lodash/set';
 import get from 'lodash/get';
 import isFunction from 'lodash/isFunction';
 import pluralize from 'pluralize';
+import { getFieldType } from './simpleSchema_utils';
+import { forEachDocumentField } from './schema_utils';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -451,12 +453,27 @@ Utils.getComponentDisplayName = WrappedComponent => {
  * @param {Array} list
  */
 Utils.convertDates = (collection, listOrDocument) => {
+  // TODO: should be rewritten with forEachDocumentField (see other examples in the code) in order to support nested objects
   // if undefined, just return
-  if (!listOrDocument || !listOrDocument.length) return listOrDocument;
-
+  if (!(listOrDocument || listOrDocument.length)) return listOrDocument;
   const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
   const schema = collection.simpleSchema()._schema;
-  const dateFields = _.filter(_.keys(schema), fieldName => schema[fieldName].type === Date);
+  /*
+  //Nested version
+    return list.map((document) => {
+      forEachDocumentField(document, schema, (fieldName, fieldSchema, currentPath) => {
+        if (fieldSchema && getFieldType(fieldSchema) === Date) {
+          const valuePath = `̂${currentPath}${fieldName}`;
+          const value = get(document, valuePath);
+          set(document, valuePath, new Date(value));
+        }
+      });
+      return document
+    });
+    */
+  // TODO: legacy version don't work with nested
+  // comment this and uncomment the forEachDocumentField version
+  const dateFields = _.filter(_.keys(schema), fieldName => getFieldType(schema[fieldName]) === Date);
   const convertedList = list.map(result => {
     dateFields.forEach(fieldName => {
       if (result[fieldName] && typeof result[fieldName] === 'string') {
