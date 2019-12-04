@@ -855,7 +855,8 @@ class SmartForm extends Component {
   
   */
   formKeyDown = event => {
-    if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
       this.submitForm();
     }
   };
