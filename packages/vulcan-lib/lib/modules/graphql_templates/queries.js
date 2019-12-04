@@ -133,7 +133,7 @@ type MultiMovieOuput{
 export const multiOutputType = typeName => ` Multi${typeName}Output`;
 export const multiOutputTemplate = ({ typeName }) =>
   `type ${multiOutputType(typeName)}{
-  ${multiReturnProperty}: [${typeName}]
+  ${multiReturnProperty}: [${typeName}!]
   totalCount: Int
 }`;
 
