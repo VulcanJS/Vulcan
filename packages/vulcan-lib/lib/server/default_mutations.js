@@ -158,12 +158,12 @@ export function getDefaultMutations(options) {
         // if they do, check if they can perform "foo.edit.own" action
         // if they don't, check if they can perform "foo.edit.all" action
         // OpenCRUD backwards compatibility
-        return Users.owns(user, document)
-          ? Users.canDo(user, [
+        return (Users.owns(user, document)
+          && Users.canDo(user, [
               `${typeName.toLowerCase()}.update.own`,
               `${collectionName.toLowerCase()}.edit.own`,
-            ])
-          : Users.canDo(user, [
+            ]))
+          || Users.canDo(user, [
               `${typeName.toLowerCase()}.update.all`,
               `${collectionName.toLowerCase()}.edit.all`,
             ]);
@@ -299,12 +299,12 @@ export function getDefaultMutations(options) {
 
         if (!user || !document) return false;
         // OpenCRUD backwards compatibility
-        return Users.owns(user, document)
-          ? Users.canDo(user, [
+        return (Users.owns(user, document)
+          && Users.canDo(user, [
               `${typeName.toLowerCase()}.delete.own`,
               `${collectionName.toLowerCase()}.remove.own`,
-            ])
-          : Users.canDo(user, [
+            ]))
+          || Users.canDo(user, [
               `${typeName.toLowerCase()}.delete.all`,
               `${collectionName.toLowerCase()}.remove.all`,
             ]);
