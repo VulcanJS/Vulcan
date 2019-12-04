@@ -60,6 +60,13 @@ if (Meteor.isServer) {
     });
   };
 
+  /*
+  This function is aimed at enabling generation of typescript definitions
+  for the default queries provided by Vulcan.
+
+  Tools like apollo codegen:generate generate typescript definitions when
+  provided with a schema and queries/fragments.
+  */
   Vulcan.generateGraphQLQueries = fileName => {
     let fd;
 
