@@ -65,7 +65,7 @@ export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(sche
     return (field.resolveAs && !shouldAddOriginalField(fieldName, field))
         || fieldName.includes('$') || fieldName.includes('.')
         || options.onlyViewable && !(field.canRead || field.viewableBy)
-        || field.typeName || schema[`${fieldName}.$`] && schema[`${fieldName}.$`].typeName;
+        || schema[`${fieldName}.$`] && schema[`${fieldName}.$`].typeName;
 });
 
 /*
