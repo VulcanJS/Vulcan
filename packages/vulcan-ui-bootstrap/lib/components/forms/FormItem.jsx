@@ -16,6 +16,7 @@ const FormItem = ({
   children,
   beforeInput,
   afterInput,
+  description,
   layout = 'horizontal',
   ...rest
 }) => {
@@ -26,19 +27,21 @@ const FormItem = ({
         {beforeInput}
         {children}
         {afterInput}
+        {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
       </Form.Group>
     );
   } else if (layout === 'vertical') {
     // vertical layout
     return (
       <Form.Group controlId={path} {...rest}>
-        <Form.Label>
-          {label}
-        </Form.Label>
-        <div>
-          {beforeInput}
-          {children}
-          {afterInput}
+        <Form.Label>{label}</Form.Label>
+        <div className="form-item-contents">
+          <div className="form-item-input">
+            {beforeInput}
+            {children}
+            {afterInput}
+          </div>
+          {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
         </div>
       </Form.Group>
     );
@@ -53,6 +56,7 @@ const FormItem = ({
           {beforeInput}
           {children}
           {afterInput}
+          {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
         </Col>
       </Form.Group>
     );

@@ -12,26 +12,32 @@ const DatatableHeader = (
   { collection, column, toggleSort, currentSort, submitFilters, currentFilters, Components },
   { intl }
 ) => {
-  const columnLabel = column.label || column.name;
+  // column label
+  let formattedLabel;
 
   if (collection) {
     const schema = collection.simpleSchema()._schema;
     const field = schema[column.name];
-    /*
 
-    use either:
-
-    1. the column name translation : `${collectionName}.${columnName}`, `global.${columnName}`, columnName
-    2. the column name label in the schema (if the column name matches a schema field)
-    3. the raw column name.
-
-    */
-    const formattedLabel = formatLabel({
-      intl,
-      fieldName: columnLabel,
-      collectionName: collection._name,
-      schema: schema,
-    });
+    if (column.label) {
+      formattedLabel = column.label;
+    } else {
+      /*
+  
+      use either:
+  
+      1. the column name translation : `${collectionName}.${columnName}`, `global.${columnName}`, columnName
+      2. the column name label in the schema (if the column name matches a schema field)
+      3. the raw column name.
+  
+      */
+      formattedLabel = formatLabel({
+        intl,
+        fieldName: column.name,
+        collectionName: collection._name,
+        schema: schema,
+      });
+    }
 
     const fieldOptions = field && field.options;
 
@@ -71,10 +77,10 @@ const DatatableHeader = (
       </Components.DatatableHeaderCellLayout>
     );
   } else {
-    const formattedLabel = intl.formatMessage({ id: columnLabel, defaultMessage: columnLabel });
+    const formattedLabel = column.label || intl.formatMessage({ id: column.name, defaultMessage: column.name });
     return (
       <Components.DatatableHeaderCellLayout
-        className={`datatable-th-${columnLabel.toLowerCase().replace(/\s/g, '-')}`}>
+        className={`datatable-th-${formattedLabel.toLowerCase().replace(/\s/g, '-')}`}>
         {formattedLabel}
       </Components.DatatableHeaderCellLayout>
     );

@@ -12,8 +12,8 @@ Options:
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   - input: the initial query input
-    - where
-    - orderBy
+    - filter
+    - sort
     - search
     - offset
     - limit
@@ -29,8 +29,8 @@ import {
   multiClientTemplate,
   extractCollectionInfo,
   extractFragmentInfo,
-  deprecate,
 } from 'meteor/vulcan:lib';
+import merge from 'lodash/merge';
 
 // default query input object
 const defaultInput = {
@@ -46,7 +46,7 @@ export const buildMultiQuery = ({ typeName, fragmentName, extraQueries, fragment
 
 const initialPaginationInput = (options, props) => {
   // get initial limit from props, or else options, or else default value
-  const limit = (props.input && props.input.limit) || options.limit || defaultInput.limit;
+  const limit = (props.input && props.input.limit) || (options.input && options.input.limit) || options.limit || defaultInput.limit;
   const paginationInput = {
     limit,
   };
@@ -60,19 +60,26 @@ const initialPaginationInput = (options, props) => {
  * @param {*} props
  */
 const buildQueryOptions = (options, paginationInput = {}, props) => {
-  const { input = {} } = props;
 
   let {
+    input: optionsInput,
     pollInterval = getSetting('pollInterval', 20000),
     // generic graphQL options
     queryOptions = {},
   } = options;
+
+  // get dynamic input from props
+  const { input: propsInput = {} } = props;
+
+  // merge static and dynamic inputs
+  const input = merge({}, optionsInput, propsInput);
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
 
   // get input from options, then props, then pagination
+  // TODO: should be done during the merge with lodash
   const mergedInput = { ...defaultInput, ...options.input, ...input, ...paginationInput };
 
   const graphQLOptions = {
@@ -82,28 +89,6 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
     // note: pollInterval can be set to 0 to disable polling (20s by default)
     pollInterval,
   };
-
-  if (options.fetchPolicy) {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: fetchPolicy)'
-    );
-    queryOptions.fetchPolicy = options.fetchPolicy;
-  }
-  if (typeof options.pollInterval !== 'undefined') {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: pollInterval)'
-    );
-  }
-  // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
-  if (options.notifyOnNetworkStatusChange) {
-    deprecate(
-      '1.13.3',
-      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: notifyOnNetworkStatusChange)'
-    );
-    queryOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
-  }
 
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
   queryOptions.errorPolicy = 'all';
@@ -162,19 +147,16 @@ const buildResult = (
     // incremental loading version (only load new content)
     // note: not compatible with polling
     // TODO
-    loadMoreInc(providedTerms) {
+    loadMoreInc(providedInput) {
       // get terms passed as argument or else just default to incrementing the offset
 
-      const newTerms =
-        typeof providedTerms === 'undefined'
-          ? {
-              ...paginationInput,
-              offset: results.length,
-            }
-          : providedTerms;
+      const newInput = providedInput || {
+        ...paginationInput,
+        offset: results.length,
+      }
 
       return fetchMore({
-        variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
+        variables: { input: newInput },
         updateQuery(previousResults, { fetchMoreResult }) {
           // no more post to fetch
           if (
@@ -205,7 +187,7 @@ const buildResult = (
   };
 };
 
-export const useMulti = (options, props) => {
+export const useMulti = (options, props = {}) => {
   const [paginationInput, setPaginationInput] = useState(initialPaginationInput(options, props));
 
   let { extraQueries } = options;
@@ -242,6 +224,9 @@ export const withMulti = options => C => {
   Wrapped.displayName = `with${typeName}`;
   return Wrapped;
 };
+
+export const useMulti2 = useMulti;
+export const withMulti2 = withMulti;
 
 // legacy
 export default withMulti;

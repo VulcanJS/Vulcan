@@ -9,9 +9,9 @@ const Votes = createCollection({
 
   schema,
   
-  // resolvers: getDefaultResolvers('Votes'),
+  resolvers: null,
 
-  // mutations: getDefaultMutations('Votes'),
+  mutations: null,
 
 });
 

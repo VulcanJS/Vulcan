@@ -11,6 +11,8 @@ import _cloneDeep from 'lodash/cloneDeep';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
+import Users from 'meteor/vulcan:users';
+import _get from 'lodash/get';
 
 const ascSortOperator = 'asc';
 const descSortOperator = 'desc';
@@ -50,11 +52,11 @@ class Datatable extends PureComponent {
         initState.searchValue = initialState.search;
         initState.search = initialState.search;
       }
-      if (initialState.orderBy) {
-        initState.currentSort = initialState.orderBy;
+      if (initialState.sort) {
+        initState.currentSort = initialState.sort;
       }
-      if (initialState.filters) {
-        initState.currentFilters = initialState.filters;
+      if (initialState.filter) {
+        initState.currentFilters = initialState.filter;
       }
     }
 
@@ -65,13 +67,13 @@ class Datatable extends PureComponent {
         initState.searchValue = urlState.search;
         initState.search = urlState.search;
       }
-      if (urlState.orderBy) {
-        const [sortKey, sortValue] = urlState.orderBy.split('|');
-        initState.currentSort = { [sortKey]: parseInt(sortValue) };
+      if (urlState.sort) {
+        const [sortKey, sortValue] = urlState.sort.split('|');
+        initState.currentSort = { [sortKey]: sortValue };
       }
-      if (urlState.filters) {
+      if (urlState.filter) {
         // all URL values are stored as strings, so convert them back to numbers if needed
-        initState.currentFilters = this.convertToNumbers(urlState.filters, props);
+        initState.currentFilters = this.convertToNumbers(urlState.filter, props);
       }
     }
 
@@ -156,7 +158,7 @@ class Datatable extends PureComponent {
       urlValue = null;
     }
     this.setState({ currentSort });
-    this.updateQueryParameter('orderBy', urlValue);
+    this.updateQueryParameter('sort', urlValue);
   };
 
   submitFilters = ({ name, filters }) => {
@@ -170,7 +172,7 @@ class Datatable extends PureComponent {
       newFilters[name] = filters;
     }
     this.setState({ currentFilters: newFilters });
-    this.updateQueryParameter('filters', _isEmpty(newFilters) ? null : newFilters);
+    this.updateQueryParameter('filter', _isEmpty(newFilters) ? null : newFilters);
   };
 
   updateSearch = e => {
@@ -189,7 +191,7 @@ class Datatable extends PureComponent {
   };
 
   render() {
-    const { Components, modalProps, data } = this.props;
+    const { Components, modalProps, data, currentUser } = this.props;
 
     if (this.props.data) {
       // static JSON datatable
@@ -216,27 +218,38 @@ class Datatable extends PureComponent {
 
       const DatatableWithMulti = compose(withMulti(options))(Components.DatatableContents);
 
+      let canCreate = false;
+
+      // new APIs
+      const permissionCheck = _get(collection, 'options.permissions.canCreate');
+
       // openCRUD backwards compatibility
-      const canInsert =
-        collection.options &&
-        collection.options.mutations &&
-        collection.options.mutations.new &&
-        collection.options.mutations.new.check(this.props.currentUser);
-      const canCreate =
-        collection.options &&
-        collection.options.mutations &&
-        collection.options.mutations.create &&
-        collection.options.mutations.create.check(this.props.currentUser);
+      const check =
+        _get(collection, 'options.mutations.new.check') ||
+        _get(collection, 'options.mutations.create.check');
+
+      if (Users.isAdmin(currentUser)) {
+        canCreate = true;
+      } else if (permissionCheck) {
+        canCreate = Users.permissionCheck({
+          check: permissionCheck,
+          user: currentUser,
+          context: { Users },
+          operationName: 'create',
+        });
+      } else if (check) {
+        canCreate = check && check(currentUser, document, { Users });
+      }
 
       const input = {};
       if (!_isEmpty(this.state.search)) {
         input.search = this.state.search;
       }
       if (!_isEmpty(this.state.currentSort)) {
-        input.orderBy = this.state.currentSort;
+        input.sort = this.state.currentSort;
       }
       if (!_isEmpty(this.state.currentFilters)) {
-        input.where = this.state.currentFilters;
+        input.filter = this.state.currentFilters;
       }
 
       return (
@@ -247,8 +260,8 @@ class Datatable extends PureComponent {
             Components={Components}
             {...this.props}
             collection={collection}
-            canInsert={canInsert || canCreate}
-            canUpdate={canInsert || canCreate}
+            canInsert={canCreate}
+            canCreate={canCreate}
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
           />
@@ -278,10 +291,13 @@ Datatable.propTypes = {
   showEdit: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
-  newFormOptions: PropTypes.object,
-  editFormOptions: PropTypes.object,
+  newFormProps: PropTypes.object,
+  editFormProps: PropTypes.object,
+  newFormOptions: PropTypes.object, // backwards compatibility
+  editFormOptions: PropTypes.object, // backwards compatibility
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 };
 
 Datatable.defaultProps = {
@@ -318,6 +334,7 @@ const DatatableAbove = (props, { intl }) => {
     updateSearch,
     options,
     newFormOptions,
+    newFormProps,
     Components,
   } = props;
 
@@ -344,6 +361,7 @@ const DatatableAbove = (props, { intl }) => {
           currentUser={currentUser}
           mutationFragmentName={options && options.fragmentName}
           {...newFormOptions}
+          {...newFormProps}
         />
       )}
     </Components.DatatableAboveLayout>

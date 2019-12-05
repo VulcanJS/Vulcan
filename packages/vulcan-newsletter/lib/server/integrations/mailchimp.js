@@ -53,8 +53,8 @@ if (settings) {
         const message = error.message;
         if (error.code == 214) {
           name = 'has_unsubscribed';
-        } else if (error.code == 214) {
-          name = 'already_subscribed';
+        //} else if (error.code != 214) { // TODO should get the right code for already_subscribed
+        //  name = 'already_subscribed';
         } else {
           name = 'subscription_failed';
         }

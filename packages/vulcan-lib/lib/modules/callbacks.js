@@ -109,7 +109,7 @@ export const runCallbacks = function () {
   // flag used to detect the callback that initiated the async context
   let asyncContext = false;
   
-  if (typeof callbacks !== 'undefined' && !!callbacks.length) { // if the hook exists, and contains callbacks to run
+  if (typeof callbacks !== 'undefined' && callbacks.length > 0) { // if the hook exists, and contains callbacks to run
 
     const runCallback = (accumulator, callback) => {
       debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${formattedHook}]\x1b[0m`);

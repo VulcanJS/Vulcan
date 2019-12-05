@@ -1,4 +1,4 @@
-import { addGraphQLSchema, addGraphQLResolvers, addGraphQLQuery } from '../modules/graphql';
+import { addGraphQLSchema, addGraphQLResolvers, addGraphQLQuery } from './graphql';
 import { Utils } from '../modules/utils';
 import { getSetting } from '../modules/settings.js';
 import { getSourceVersion } from './source_version.js';

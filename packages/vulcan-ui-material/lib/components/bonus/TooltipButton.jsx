@@ -11,63 +11,61 @@ import Fab from '@material-ui/core/Fab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import classNames from 'classnames';
 
-
 const styles = theme => ({
-  
   root: {
     display: 'contents',
   },
-  
+
   tooltip: {
     margin: '4px !important',
   },
-  
+
   buttonWrap: {
     position: 'relative',
     display: 'inline-block',
   },
-  
+
   button: {
     zIndex: 2,
   },
-  
+
   popoverPopper: {
     zIndex: 1700,
   },
-  
+
   popoverTooltip: {
     zIndex: 1701,
   },
-  
+
   iconWrap: {
     position: 'relative',
   },
-  
+
   icon: {
     width: 24,
     height: 24,
   },
-  
+
   xsmall: {
     width: 32,
     height: 32,
   },
-  
+
   small: {
     width: 40,
     height: 40,
   },
-  
+
   medium: {
     width: 48,
     height: 48,
   },
-  
+
   large: {
     width: 56,
     height: 56,
   },
-  
+
   progress: {
     color: theme.palette.secondary.main,
     position: 'absolute',
@@ -77,7 +75,7 @@ const styles = theme => ({
     left: 0,
     zIndex: 1,
   },
-  
+
   buttonProgress: {
     color: theme.palette.secondary.main,
     position: 'absolute',
@@ -87,12 +85,9 @@ const styles = theme => ({
     left: -2,
     zIndex: 1,
   },
-  
 });
 
-
 const TooltipButton = (props, { intl }) => {
-  
   const {
     title,
     titleId,
@@ -115,12 +110,14 @@ const TooltipButton = (props, { intl }) => {
     children,
     ...properties
   } = props;
-  
-  const iconWithClass =  instantiateComponent(icon, { className: classes.icon });
+
+  const iconWithClass = instantiateComponent(icon, { className: classes.icon });
   const popperClass = parent === 'popover' && classes.popoverPopper;
   const tooltipClass = parent === 'popover' && classes.popoverTooltip;
-  const tooltipEnterDelay = typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
-  const tooltipLeaveDelay = typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
+  const tooltipEnterDelay =
+    typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
+  const tooltipLeaveDelay =
+    typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
   let titleText = title || (titleId ? intl.formatMessage({ id: titleId }, titleValues) : '');
   let labelText = label || (labelId ? intl.formatMessage({ id: labelId }, titleValues) : '');
   if (type === 'button') {
@@ -128,97 +125,75 @@ const TooltipButton = (props, { intl }) => {
     if (titleText === labelText) titleText = '';
   }
   const slug = Utils.slugify(titleId);
-  
+
   return (
     <span className={classNames('tooltip-button', classes.root, className)}>
-      
-      <Tooltip id={`tooltip-${slug}`}
-               title={titleText}
-               placement={placement}
-               enterDelay={tooltipEnterDelay}
-               leaveDelay={tooltipLeaveDelay}
-               classes={{
-                 tooltip: classNames(classes.tooltip, tooltipClass),
-                 popper: popperClass,
-               }}
-               PopperProps={{
-                 ref: (popper) => { if (popper && popper.popper) popper.popper.scheduleUpdate(); }
-               }}
-      >
+      <Tooltip
+        id={`tooltip-${slug}`}
+        title={titleText}
+        placement={placement}
+        enterDelay={tooltipEnterDelay}
+        leaveDelay={tooltipLeaveDelay}
+        classes={{
+          tooltip: classNames(classes.tooltip, tooltipClass),
+          popper: popperClass,
+        }}
+        PopperProps={{
+          ref: popper => {
+            if (popper && popper.popper) popper.popper.scheduleUpdate();
+          },
+        }}>
         <span className={classes.buttonWrap}>
-          {
-            type === 'fab' && !!icon
-    
-              ?
-    
-              <>
-                <Fab className={classNames(classes.button, slug)}
-                     {...properties}
-                     size={size}
-                     aria-label={title}
-                     ref={buttonRef}
-                     disabled={loading || disabled}
-                >
+          {type === 'fab' && !!icon ? (
+            <>
+              <Fab
+                className={classNames(classes.button, slug)}
+                {...properties}
+                size={size}
+                aria-label={title}
+                ref={buttonRef}
+                disabled={loading || disabled}>
+                {iconWithClass}
+              </Fab>
+              {loading && <CircularProgress size="auto" className={classes.progress} />}
+            </>
+          ) : ['button', 'submit'].includes(type) ? (
+            <Button
+              className={classNames(classes.button, slug)}
+              {...properties}
+              type={type}
+              size={size}
+              aria-label={title}
+              ref={buttonRef}
+              disabled={loading || disabled}>
+              {iconWithClass && (
+                <span className={classNames('icon-wrap', classes.iconWrap)}>
                   {iconWithClass}
-                </Fab>
-                {loading && <CircularProgress size="auto" className={classes.progress}/>}
-              </>
-    
-              :
-    
-              ['button', 'submit'].includes(type)
-      
-                ?
-      
-                <Button className={classNames(classes.button, slug)}
-                        {...properties}
-                        type={type}
-                        size={size}
-                        aria-label={title}
-                        ref={buttonRef}
-                        disabled={loading || disabled}
-                >
-                  {
-                    iconWithClass &&
-          
-                    <span className={classNames('icon-wrap', classes.iconWrap)}>
-                        {iconWithClass}
-                      {loading && <CircularProgress size="auto" className={classes.buttonProgress}/>}
-                      </span>
-                  }
-                  {labelText}
-                </Button>
-      
-                :
-      
-                !!icon
-        
-                  ?
-        
-                  <>
-                    <IconButton className={classNames(classes.button, classes[size], slug)}
-                                {...properties}
-                                aria-label={title}
-                                ref={buttonRef}
-                                disabled={(loading && !(disabled === false)) || disabled}
-                    >
-                      {iconWithClass}
-                    </IconButton>
-                    {loading && <CircularProgress size="auto" className={classes.progress}/>}
-                  </>
-        
-                  :
-        
-                  children
-          }
+                  {loading && <CircularProgress size="auto" className={classes.buttonProgress} />}
+                </span>
+              )}
+              {labelText}
+            </Button>
+          ) : !!icon ? (
+            <>
+              <IconButton
+                className={classNames(classes.button, classes[size], slug)}
+                {...properties}
+                aria-label={title}
+                ref={buttonRef}
+                disabled={(loading && !(disabled === false)) || disabled}>
+                {iconWithClass}
+              </IconButton>
+              {loading && <CircularProgress size="auto" className={classes.progress} />}
+            </>
+          ) : (
+            children
+          )}
         </span>
       </Tooltip>
-      
     </span>
   );
-  
 };
-
 
 TooltipButton.propTypes = {
   title: PropTypes.node,
@@ -242,20 +217,16 @@ TooltipButton.propTypes = {
   children: PropTypes.node,
 };
 
-
 TooltipButton.defaultProps = {
   placement: 'bottom',
   parent: 'default',
   size: 'medium',
 };
 
-
 TooltipButton.contextTypes = {
   intl: intlShape.isRequired,
 };
 
-
 TooltipButton.displayName = 'TooltipButton';
 
-
-registerComponent('TooltipButton', TooltipButton, [withStyles, styles], [withTheme]);
+registerComponent('TooltipButton', TooltipButton, [withStyles, styles], withTheme);

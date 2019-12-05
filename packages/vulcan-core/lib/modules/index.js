@@ -1,15 +1,12 @@
-
 // import and re-export
 import './callbacks';
 export * from 'meteor/vulcan:lib';
 
-export * from './default_mutations.js';
-export * from './default_resolvers.js';
-
 export * from './components.js';
 
 export { default as App } from './components/App.jsx';
-export { default as Datatable } from './components/Datatable/index.js';
+export { default as Card } from './components/Card';
+export { default as Datatable } from './components/Datatable';
 export { default as Dummy } from './components/Dummy.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as Error404 } from './components/Error404.jsx';
@@ -28,11 +25,17 @@ export { default as Welcome } from './components/Welcome.jsx';
 export { default as withAccess } from './containers/withAccess.js';
 export { default as withMessages } from './containers/withMessages.js';
 export { withMulti, useMulti } from './containers/multi.js';
+export { withMulti2, useMulti2 } from './containers/multi2.js';
 export { withSingle, useSingle } from './containers/single.js';
+export { withSingle2, useSingle2 } from './containers/single2.js';
 export { withCreate, useCreate } from './containers/create.js';
+export { withCreate2, useCreate2 } from './containers/create2.js';
 export { withUpdate, useUpdate } from './containers/update.js';
+export { withUpdate2, useUpdate2 } from './containers/update2.js';
 export { withUpsert, useUpsert } from './containers/upsert.js';
+export { withUpsert2, useUpsert2 } from './containers/upsert2.js';
 export { withDelete, useDelete } from './containers/delete.js';
+export { withDelete2, useDelete2 } from './containers/delete2.js';
 export { withCurrentUser, useCurrentUser } from './containers/currentUser.js';
 export { withMutation, useRegisteredMutation } from './containers/registeredMutation.js';
 export { withSiteData, useSiteData } from './containers/siteData.js';

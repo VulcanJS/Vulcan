@@ -57,7 +57,7 @@ Note: look into simplifying this
 
 */
 export const isIntlField = fieldSchema => {
-  return fieldSchema.intl;
+  return !!(fieldSchema.intl || fieldSchema.isIntlData);
 };
 
 /*
@@ -160,6 +160,6 @@ export const formatLabel = ({ intl, fieldName, collectionName, schema }, values)
   
   // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
   let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
-  return Utils.toTitleCase(schemaLabel) || Utils.camelToSpaces(fieldName);
+  return Utils.capitalize(schemaLabel) || Utils.camelToSpaces(fieldName);
 };
 

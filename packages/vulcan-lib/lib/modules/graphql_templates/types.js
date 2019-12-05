@@ -1,4 +1,3 @@
-
 export const convertToGraphQL = (fields, indentation) => {
   return fields.length > 0 ? fields.map(f => fieldTemplate(f, indentation)).join('\n') : '';
 };
@@ -27,7 +26,9 @@ export const getArguments = args => {
 
 // version that does not make any fields required
 export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-`${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${directive ? directive : ''}`;
+  `${description ? `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${
+    directive ? directive : ''
+  }`;
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
@@ -44,7 +45,7 @@ type Movie{
 
 */
 export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
-`# ${description}
+  `${description ? `# ${description}` : ''}
 type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }

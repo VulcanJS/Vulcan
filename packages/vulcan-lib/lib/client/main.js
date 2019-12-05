@@ -8,5 +8,5 @@ export * from './apollo-client';
 // createCollection, resolvers and mutations mocks
 // avoid warnings when building with webpack
 export * from './connectors';
-export * from './mutators';
+export * from './mock';
 export * from './errors';

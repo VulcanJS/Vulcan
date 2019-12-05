@@ -25,7 +25,7 @@ import './settings';
 import { engineConfig } from './engine';
 import { initContext, computeContextFromReq } from './context.js';
 
-import { GraphQLSchema } from '../../modules/graphql';
+import { GraphQLSchema } from '../graphql/index.js';
 
 import { enableSSR } from '../apollo-ssr';
 
@@ -165,5 +165,8 @@ export const onStart = () => {
     setupToolsMiddlewares(config);
   }
   // ssr
-  enableSSR({ computeContext: context });
+  const disableSSR = getSetting('apolloSsr.disable', false);
+  if (!disableSSR) {
+    enableSSR({ computeContext: context });
+  }
 };
