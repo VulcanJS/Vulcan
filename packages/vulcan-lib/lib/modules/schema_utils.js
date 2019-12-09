@@ -90,7 +90,7 @@ export const forEachDocumentField = (document, schema, callback, currentPath = '
     if (!document) return;
     Object.keys(document).forEach(fieldName => {
         const fieldSchema = schema[fieldName];
-        callback(fieldName, fieldSchema, currentPath, document, schema);
+        callback({ fieldName, fieldSchema, currentPath, document, schema });
         // Check if we need a recursive call
         const value = document[fieldName];
         if (!value) return;

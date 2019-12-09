@@ -26,7 +26,7 @@ const validateDocumentPermissions = (document, schema, context, mode = 'create',
   let validationErrors = [];
   const { Users, currentUser } = context;
   forEachDocumentField(document, schema,
-    (fieldName, fieldSchema, currentPath) => {
+    ({ fieldName, fieldSchema, currentPath }) => {
       if (!fieldSchema
         || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, document))
       ) {
