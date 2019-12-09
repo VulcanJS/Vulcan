@@ -78,7 +78,7 @@ const buildResult = (
   const propertyName = options.propertyName || 'document';
   const props = {
     ...returnedProps,
-    // document: Utils.convertDates(collection, data[singleResolverName]),
+    // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
     [propertyName]: data && data[resolverName] && data[resolverName].result,
     fragmentName,
     fragment,
