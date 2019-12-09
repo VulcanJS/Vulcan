@@ -240,7 +240,7 @@ export const getSchemaFields = (schema, typeName) => {
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
-import { /*hasAllowedValues, getAllowedValues,*/isBlackbox, unarrayfyFieldName } from '../../modules/simpleSchema_utils';
+import { isBlackbox, unarrayfyFieldName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
 
@@ -254,21 +254,6 @@ const capitalize = word => {
 export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
   `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
-// @see https://graphql.github.io/graphql-spec/June2018/#sec-Enums
-// @see https://graphql.github.io/graphql-spec/June2018/#sec-Names
-/*
-const isValidName = name => {
-  if (typeof name !== 'string') {
-    throw new Error(
-      `Allowed value of field of type String is not a string (value: ${name}, type:${typeof name})`
-    );
-  }
-  return name.match(/^[_A-Za-z][_0-9A-Za-z]*$/);
-};
-*/
-// const isValidEnum = values => !values.find(val => !isValidName(val));
-
-// export const getEnumType = (typeName, fieldName) => `${typeName}${capitalize(unarrayfyFieldName(fieldName))}Enum`;
 
 const getFieldType = field => field.type.singleType;
 const getFieldTypeName = fieldType =>
@@ -348,10 +333,8 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
 const hasTypeName = field => !!(field || {}).typeName;
 
 const hasNestedSchema = field => !!getNestedSchema(field);
-const getNestedSchema = field => field.type.singleType._schema;
 
 const isArrayChildField = fieldName => fieldName.indexOf('$') !== -1;
-const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
 const hasArrayChild = (fieldName, schema) => !!getArrayChild(fieldName, schema);
 
 const getArrayChildSchema = (fieldName, schema) => {
