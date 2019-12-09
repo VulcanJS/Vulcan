@@ -1,67 +1,53 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import VulcanEmail from 'meteor/vulcan:email';
+import React from 'react';
+import Emails from '../modules/emails/collection.js';
 
-class Email extends PureComponent {
+const Template = ({ document: email }) => (
+  <a href={'/email/template/' + email.template} target="_blank" rel="noopener noreferrer">
+    {email.template}
+  </a>
+);
 
-  constructor() {
-    super();
-    this.sendTest = this.sendTest.bind(this);
-    this.state = {
-      loading: false
-    };
-  }
+const HTMLPreview = ({ document: email }) => (
+  <a
+    href={email.path && email.path.replace(':_id?', '').replace(':documentId?', '')}
+    target="_blank"
+    rel="noopener noreferrer">
+    {email.path}
+  </a>
+);
 
-  sendTest() {
-    this.setState({loading: true});
+const Test = ({ document: email, loading = false }) => (
+  <Components.Button disabled={loading} onClick={this.sendTest} variant="primary">
+    Send Test
+  </Components.Button>
+);
 
-    // TODO fix this
-    // Actions.call("email.test", this.props.name, (error, result) => {
-    //   this.setState({loading: false});
-    //   if (error) {
-    //     Messages.flash(error.message, "error");
-    //   } else {
-    //     Messages.flash(`Test email sent (“${result}”).`, "success");
-    //   }
-    // });
-  }
-
-  render() {
-    
-    const { email, name } = this.props;
-
-    return (
-      <tr>
-        <td>{name}</td>
-        <td><a href={'/email/template/'+email.template} target="_blank" rel="noopener noreferrer">{email.template}</a></td>
-        <td>{typeof email.subject === 'function' ? email.subject({}) : email.subject}</td>
-        <td><a href={email.path.replace(':_id?', '').replace(':documentId?', '')} target="_blank" rel="noopener noreferrer">{email.path}</a></td>
-        <td>
-          <div className={this.state.loading ? 'test-email loading' : 'test-email'}>
-            <Components.Button disabled={this.state.loading} onClick={this.sendTest} variant="primary">Send Test</Components.Button>
-            {this.state.loading ? <Components.Loading color="white"/> : null}
-          </div>
-        </td>
-      </tr>
-    );
-  }
-}
-
-Email.propTypes = {
-  email: PropTypes.object,
-  name: PropTypes.string
-};
-
-const Emails = (/* props*/) => {
-
-  const emails = VulcanEmail.emails;
-
+const EmailsDashboard = () => {
   return (
     <div className="emails">
       <h1>Emails</h1>
 
-      <div className="emails-wrapper">
+      <Components.Datatable
+        collection={Emails}
+        columns={[
+          'name',
+          { name: 'template', component: Template },
+          { name: 'subject' },
+          {
+            label: 'HTML Preview',
+            component: HTMLPreview,
+          },
+          {
+            label: 'Send Test',
+            component: Test,
+          },
+        ]}
+        showEdit={false}
+        showNew={false}
+        showSearch={false}
+      />
+      {/* <div className="emails-wrapper">
 
         <table className="table">
           <thead>
@@ -78,12 +64,11 @@ const Emails = (/* props*/) => {
           </tbody>
         </table>
 
-      </div>
-    
+      </div> */}
     </div>
   );
 };
 
-registerComponent('Emails', Emails);
+registerComponent('Emails', EmailsDashboard);
 
-export default Emails;
+export default EmailsDashboard;

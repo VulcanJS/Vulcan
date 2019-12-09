@@ -35,17 +35,17 @@ Find more info in the [documentation](http://docs.vulcanjs.org/#Install).
 
 - [Vulcan Homepage](http://vulcanjs.org)
 - [Documentation](http://docs.vulcanjs.org)
-- [Old Telescope Homepage](http://telescopeapp.org)
+- [Old Telescope Homepage](http://www.telescopeapp.org)
 
 ### Other Versions
 
 [See all releases](https://github.com/VulcanJS/Vulcan/releases).
 
-To update an existing Vulcan app, [see migration doc](https://github.com/VulcanJS/Vulcan/)) and [changelog](https://github.com/VulcanJS/Vulcan/).
+To update an existing Vulcan app, [see migration doc](MIGRATING.md)) and [changelog](CHANGELOG.md).
 
-You can find the older, non-Apollo version of Telescope Nova on the [nova-classic](https://github.com/TelescopeJS/Telescope/tree/nova-classic) branch. 
+You can find the older, non-Apollo version of Telescope Nova on the [nova-classic](https://github.com/VulcanJS/Vulcan/tree/nova-classic) branch. 
 
-You can find the even older, non-React version of Telescope on the [legacy](https://github.com/TelescopeJS/Telescope/tree/legacy) branch.
+You can find the even older, non-React version of Telescope on the [legacy](https://github.com/VulcanJS/Vulcan/tree/legacy) branch.
 
 ## Credits
 

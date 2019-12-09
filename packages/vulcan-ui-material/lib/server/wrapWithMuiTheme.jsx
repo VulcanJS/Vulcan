@@ -1,44 +1,44 @@
 import React from 'react';
 import { addCallback } from 'meteor/vulcan:core';
-import JssProvider from 'react-jss/lib/JssProvider';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createGenerateClassName from '@material-ui/core/styles/createGenerateClassName';
+import {
+  ServerStyleSheets,
+  ThemeProvider,
+} from '@material-ui/core/styles';
 import { getCurrentTheme } from '../modules/themes';
-import { SheetsRegistry } from 'react-jss/lib/jss';
 import JssCleanup from '../components/theme/JssCleanup';
 
 function wrapWithMuiTheme(app, { context }) {
-  const sheetsRegistry = new SheetsRegistry();
-  context.sheetsRegistry = sheetsRegistry;
-
-  const sheetsManager = new Map();
+  // will spawn a StylesProvider automatically during render
+  // replaces the manual setup of JSSProvider
+  // @see https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/ServerStyleSheets/ServerStyleSheets.js
+  const sheets = new ServerStyleSheets({ disableGeneration: true });
+  context.sheetsRegistry = sheets;
 
   const theme = getCurrentTheme();
-  return (
-    <JssProvider registry={sheetsRegistry} disableStylesGeneration={true}>
-      <MuiThemeProvider theme={theme} sheetsManager={sheetsManager} disableStylesGeneration={true}>
-        <JssCleanup>{app}</JssCleanup>
-      </MuiThemeProvider>
-    </JssProvider>
+
+  return sheets.collect(
+    <ThemeProvider theme={theme}>
+      <JssCleanup>{app}</JssCleanup>
+    </ThemeProvider>
   );
 }
 
 function wrapWithMuiStyleGenerator(app, { context }) {
-  const sheetsRegistry = new SheetsRegistry();
-  context.sheetsRegistry = sheetsRegistry;
-
-  const sheetsManager = new Map();
+  const sheets = new ServerStyleSheets();
+  context.sheetsRegistry = sheets;
 
   const theme = getCurrentTheme();
 
-  const generateClassName = createGenerateClassName({ seed: '' });
+  // NOTE: The sheets.collect API does not allow to pass a seed
+  // do we still need to force a specific seed?
+  // if yes reenable this code and create the StylesProvider manually as we
+  // used to do for JSSProvider
+  //const generateClassName = createGenerateClassName({ seed: '' });
 
-  return (
-    <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-      <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-        <JssCleanup>{app}</JssCleanup>
-      </MuiThemeProvider>
-    </JssProvider>
+  return sheets.collect(
+    <ThemeProvider theme={theme}>
+      <JssCleanup>{app}</JssCleanup>
+    </ThemeProvider>
   );
 }
 

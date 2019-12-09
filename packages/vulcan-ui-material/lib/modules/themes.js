@@ -22,7 +22,7 @@ export const registerTheme = (name, theme) => {
     name,
     theme,
   };
-  
+
   ThemesTable[name] = themeInfo;
 };
 
@@ -37,7 +37,7 @@ export const registerTheme = (name, theme) => {
 export const getTheme = (name) => {
   const themeInfo = ThemesTable[name];
   if (!themeInfo) return null;
-  themeInfo.theme.typography = { ...themeInfo.theme.typography, useNextVariants: true };
+  themeInfo.theme.typography = { ...themeInfo.theme.typography };
   return createMuiTheme(themeInfo.theme);
 };
 

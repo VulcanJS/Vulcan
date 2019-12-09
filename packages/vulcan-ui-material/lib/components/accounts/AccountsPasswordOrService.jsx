@@ -10,13 +10,13 @@ import classNames from 'classnames';
 const styles = theme => ({
   root: {
     flexDirection: 'row-reverse',
-    paddingRight: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
     height: 'auto',
   },
   typography: {
-    marginRight: theme.spacing.unit,
-  }
+    marginRight: theme.spacing(1),
+  },
 });
 
 export function hasPasswordService() {
@@ -25,7 +25,7 @@ export function hasPasswordService() {
 }
 
 export class AccountsPasswordOrService extends PureComponent {
-  render () {
+  render() {
     let { className = 'password-or-service', classes } = this.props;
     const services = Object.keys(this.props.oauthServices).map(service => {
       return this.props.oauthServices[service].label;
@@ -36,10 +36,12 @@ export class AccountsPasswordOrService extends PureComponent {
     }
 
     if (hasPasswordService() && services.length > 0) {
-      return (<CardActions  className={classNames(className, classes.root)}>
-        <Typography variant="caption" className={classes.typography} align="right">
-          { `${this.context.intl.formatMessage({id: 'accounts.or_use'})} ${ labels.join(' / ') }` }
-        </Typography></CardActions>
+      return (
+        <CardActions className={classNames(className, classes.root)}>
+          <Typography variant="caption" className={classes.typography} align="right">
+            {`${this.context.intl.formatMessage({ id: 'accounts.or_use' })} ${labels.join(' / ')}`}
+          </Typography>
+        </CardActions>
       );
     }
     return null;
@@ -47,11 +49,11 @@ export class AccountsPasswordOrService extends PureComponent {
 }
 
 AccountsPasswordOrService.propTypes = {
-  oauthServices: PropTypes.object
+  oauthServices: PropTypes.object,
 };
 
 AccountsPasswordOrService.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
 };
 
 replaceComponent('AccountsPasswordOrService', AccountsPasswordOrService, [withStyles, styles]);

@@ -3,6 +3,7 @@ import { Components } from 'meteor/vulcan:lib';
 import withCurrentUser from './currentUser';
 import { withRouter } from 'react-router';
 import Users from 'meteor/vulcan:users';
+import withMessages from './withMessages.js';
 
 /**
  * withAccess - description
@@ -16,12 +17,7 @@ import Users from 'meteor/vulcan:users';
  */
 
 export default function withAccess(options) {
-  const {
-    groups = [],
-    redirect = null,
-    failureComponent = null,
-    failureComponentName = null,
-  } = options;
+  const { groups = [], redirect = null, failureComponent = null, failureComponentName = null, message } = options;
 
   // we return a function that takes a component and itself returns a component
   return WrappedComponent => {
@@ -34,11 +30,12 @@ export default function withAccess(options) {
       // redirect on constructor if user cannot access
       constructor(props) {
         super(props);
-        if (
-          !this.canAccess(props.currentUser) &&
-          typeof redirect === 'string'
-        ) {
-          props.history.push(redirect);
+        const { currentUser, history, flash } = props;
+        if (!this.canAccess(currentUser) && typeof redirect === 'string') {
+          history.push(redirect);
+          if (message) {
+            flash(message);
+          }
         }
       }
 
@@ -53,16 +50,12 @@ export default function withAccess(options) {
       }
 
       render() {
-        return this.canAccess(this.props.currentUser) ? (
-          <WrappedComponent {...this.props} />
-        ) : (
-            this.renderFailureComponent()
-          );
+        return this.canAccess(this.props.currentUser) ? <WrappedComponent {...this.props} /> : this.renderFailureComponent();
       }
     }
 
     AccessComponent.displayName = `withAccess(${WrappedComponent.displayName})`;
 
-    return withRouter(withCurrentUser(AccessComponent));
+    return withMessages(withRouter(withCurrentUser(AccessComponent)));
   };
 }

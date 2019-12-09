@@ -2,6 +2,25 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
+## NEXT
+
+## From 1.13.5 to 1.14
+
+- See migration article from [Vulcan Blog](https://blog.vulcanjs.org/)
+- `serverTimezoneOffset` object is no longer injected in the head during SSR. Use `import { InjectData} from 'meteor/vulcan:lib; ...; await InjectData.getData("utcOffset");` instead. The value is the reverse from `getTimezoneOffset`, see [Moment doc](https://momentjscom.readthedocs.io/en/latest/moment/03-manipulating/09-utc-offset/)
+
+### Material UI
+- Update to v4 `meteor npm i --save-exact @material-ui/core@4.5.1`
+- `import MuiThemeProvider from @material-ui/core/styles/MuiThemeProvider"` becomes `import { MuiThemeProvider } from "@material-ui/core/styles"`
+- More broadly follow https://material-ui.com/guides/migration-v3/ to update Material UI to v4
+- Follow the composition doc to handle `forwardRef` warnings: https://material-ui.com/guides/composition/#caveat-with-refs
+
+## From 1.13.3 to 1.13.5
+
+- `npm install apollo-utilities` (to run tests)
+- Replace `Users.getViewableFields` by `Users.getReadableProjection` 
+
+
 ## From 1.13.2 to 1.13.3
 
 - Update React to a version over 16.8 (and under 17 which will bring breaking changes) to access hooks

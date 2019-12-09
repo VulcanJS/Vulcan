@@ -21,8 +21,11 @@
 
     "backoffice": {
       "enabled": true
-    }
+    },
 
+    "apolloSsr": {
+      "disable": false
+    }
   },
 
   "defaultEmail": "hello@world.com",
@@ -37,5 +40,5 @@
       "appId": "foo",
       "secret": "bar"
     }
-  }
+  },
 }

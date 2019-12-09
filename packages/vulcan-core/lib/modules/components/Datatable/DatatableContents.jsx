@@ -14,7 +14,7 @@ const getColumns = (columns, results, data) => {
     );
     const sortedColumns = _sortBy(convertedColums, column => column.order);
     return sortedColumns;
-  } else if (results) {
+  } else if (results && results.length > 0) {
     // if no columns are provided, default to using keys of first array item
     return Object.keys(results[0])
       .filter(k => k !== '__typename')

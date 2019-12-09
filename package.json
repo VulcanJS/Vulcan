@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.13.4",
+  "version": "1.14.0",
   "engines": {
     "npm": "^3.0"
   },
@@ -9,6 +9,7 @@
     "visualizer": "meteor --extra-packages bundle-visualizer --production --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages",
     "lintfix": "eslint --cache --fix --ext .jsx,js packages",
+    "test-ci": "npm run test-server -- --once",
     "test-unit": "meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha",
     "open-test-client": "xdg-open http://localhost:60859",
     "test-client": "TEST_SERVER=0 meteor test-packages ./packages/* --port 60859 --driver-package meteortesting:mocha",
@@ -40,6 +41,7 @@
     "apollo-link-state": "^0.4.2",
     "apollo-server": "2.3.3",
     "apollo-server-express": "2.3.3",
+    "apollo-utilities": "^1.3.2",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.2",
@@ -77,6 +79,7 @@
     "meteor-node-stubs": "^0.2.3",
     "mingo": "^2.2.0",
     "moment": "^2.13.0",
+    "pluralize": "7.0.0",
     "prop-types": "^15.6.0",
     "qs": "^6.6.0",
     "react": "^16.4.1",
@@ -115,7 +118,7 @@
   "devDependencies": {
     "@apollo/react-testing": "^3.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@material-ui/core": "^3.9.3",
+    "@material-ui/core": "^4.5.1",
     "@storybook/addon-actions": "5.0.8",
     "@storybook/addon-knobs": "5.0.8",
     "@storybook/addon-links": "5.0.1",

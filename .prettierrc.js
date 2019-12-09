@@ -7,7 +7,7 @@ module.exports = {
   singleQuote: true,
   jsxBracketSameLine: true,
   trailingComma: 'es5',
-  printWidth: 100,
+  printWidth: 140,
   parser: 'babylon',
 
   overrides: [

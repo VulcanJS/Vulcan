@@ -7,13 +7,11 @@ import { Components, replaceComponent, Utils } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 
-
 const drawerWidth = 240;
 const topBarHeight = 100;
 
-
 const styles = theme => {
-  const contentPadding = theme.spacing.unit * 8;
+  const contentPadding = theme.spacing(8);
 
   return {
     '@global': {
@@ -73,65 +71,57 @@ const styles = theme => {
   };
 };
 
-
-
-  class Layout extends React.Component {
-    state = {
-      isOpen: { sideNav: true }
-    };
-
-    toggle = (item, openOrClose) => {
-      const newState = { isOpen: {} };
-      newState.isOpen[item] = typeof openOrClose === 'string' ?
-        openOrClose === 'open' :
-        !this.state.isOpen[item];
-      this.setState(newState);
-    };
-
-    render = () => {
-      const routeName = Utils.slugify(this.props.currentRoute.name);
-      const classes = this.props.classes;
-      const isOpen = this.state.isOpen;
-
-      return (
-        <div className={classNames(classes.root, 'wrapper', `wrapper-${routeName}`)}>
-          <div className={classes.appFrame}>
-
-            <Components.Header isSideNavOpen={isOpen.sideNav}
-              toggleSideNav={openOrClose =>
-                this.toggle('sideNav', openOrClose)} />
-
-            <Drawer variant="persistent"
-              classes={{ paper: classes.drawerPaper, }}
-              open={isOpen.sideNav}
-            >
-              <AppBar className={classes.drawerHeader} elevation={4} square={true}>
-                <Toolbar>
-                </Toolbar>
-              </AppBar>
-              <Components.SideNavigation />
-            </Drawer>
-
-            <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>
-              {this.props.children}
-            </main>
-
-            <Components.FlashMessages />
-
-          </div>
-        </div>
-      );
-    };
-  }
-
-
-  Layout.propTypes = {
-    classes: PropTypes.object.isRequired,
-    children: PropTypes.node,
+class Layout extends React.Component {
+  state = {
+    isOpen: { sideNav: true },
   };
 
+  toggle = (item, openOrClose) => {
+    const newState = { isOpen: {} };
+    newState.isOpen[item] =
+      typeof openOrClose === 'string' ? openOrClose === 'open' : !this.state.isOpen[item];
+    this.setState(newState);
+  };
 
-  Layout.displayName = 'Layout';
+  render = () => {
+    const routeName = Utils.slugify(this.props.currentRoute.name);
+    const classes = this.props.classes;
+    const isOpen = this.state.isOpen;
 
+    return (
+      <div className={classNames(classes.root, 'wrapper', `wrapper-${routeName}`)}>
+        <div className={classes.appFrame}>
+          <Components.Header
+            isSideNavOpen={isOpen.sideNav}
+            toggleSideNav={openOrClose => this.toggle('sideNav', openOrClose)}
+          />
 
-  replaceComponent('Layout', Layout, [withStyles, styles]);
+          <Drawer
+            variant="persistent"
+            classes={{ paper: classes.drawerPaper }}
+            open={isOpen.sideNav}>
+            <AppBar className={classes.drawerHeader} elevation={4} square={true}>
+              <Toolbar></Toolbar>
+            </AppBar>
+            <Components.SideNavigation />
+          </Drawer>
+
+          <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>
+            {this.props.children}
+          </main>
+
+          <Components.FlashMessages />
+        </div>
+      </div>
+    );
+  };
+}
+
+Layout.propTypes = {
+  classes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+};
+
+Layout.displayName = 'Layout';
+
+replaceComponent('Layout', Layout, [withStyles, styles]);

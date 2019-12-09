@@ -21,7 +21,7 @@ const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
   } : { display: 'none'};
 
   return (
-    <Components.Button onClick={onClick} {...rest}>
+    <Components.Button className={loading ? 'loading-button-loading' : 'loading-button-notloading'} onClick={onClick} {...rest}>
       <span style={wrapperStyle}>
         <span style={labelStyle}>{label || children}</span>
         <span style={loadingStyle}><Components.Loading/></span>

@@ -5,25 +5,21 @@ import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
 import { Utils, getSetting, registerSetting, runQuery, Strings, getString } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core is not loaded yet
 import { Email } from 'meteor/email';
+import get from 'lodash/get';
 
 /*
 
-Get intl string. Usage: {{__ "posts.create"}}
+Get intl string, accepts a second optional values argument. Usage: {{__ "posts.create"}} or {{__ "posts.create" postValues}}
 
 */
-Handlebars.registerHelper('__', function(id, context) {
-  const s = getString({ id, locale: context.data.root.locale });
-  return new Handlebars.SafeString(s);
-});
-
-/*
-
-Get intl string, accepts a second optional values argument. Usage: {{___ "posts.create"}} or {{___ "posts.create" postValues}}
-TODO: Can we use the "__" helper for both use cases?
-
-*/
-Handlebars.registerHelper('___', function(id, values, context) {
-  const s = getString({ id, values, locale: context.data.root.locale });
+Handlebars.registerHelper('__', function(id, values, context) {
+  if (typeof context === 'undefined') {
+    // if context is undefined, then we only have two arguments and context
+    // should be the second one; and values is undefined
+    context = values;
+    values = undefined;
+  }
+  const s = getString({ id, values, locale: get(context, 'data.root.locale') });
   return new Handlebars.SafeString(s);
 });
 
@@ -158,6 +154,11 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 VulcanEmail.build = async ({ emailName, variables, locale }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
+
+  if (!email) {
+    throw new Error(`Could not find email [${emailName}]`);
+  }
+
   const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
 
   // if email has a data() function, merge its return value with results from the query

@@ -89,6 +89,7 @@ class FormGroup extends PureComponent {
               currentUser={this.props.currentUser}
               prefilledProps={this.props.prefilledProps}
               formComponents={FormComponents}
+              itemProperties={this.props.itemProperties}
             />
           ))}
   

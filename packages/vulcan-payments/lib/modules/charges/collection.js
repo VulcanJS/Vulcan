@@ -4,22 +4,26 @@ import schema from './schema.js';
 import Users from 'meteor/vulcan:users';
 
 const Charges = createCollection({
-
   collectionName: 'Charges',
-  
+
   typeName: 'Charge',
 
   schema,
-  
+
   resolvers: getDefaultResolvers('Charges'),
 
-  // mutations,
+  mutations: null,
 
+  defaultInput: {
+    sort: {
+      createdAt: 'desc',
+    },
+  },
 });
 
 Charges.addDefaultView(terms => {
   return {
-    options: { sort: { createdAt: -1 } }
+    options: { sort: { createdAt: -1 } },
   };
 });
 
