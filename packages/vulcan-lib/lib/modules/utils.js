@@ -458,31 +458,17 @@ Utils.convertDates = (collection, listOrDocument) => {
   if (!(listOrDocument || listOrDocument.length)) return listOrDocument;
   const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
   const schema = collection.simpleSchema()._schema;
-  /*
   //Nested version
-    return list.map((document) => {
-      forEachDocumentField(document, schema, (fieldName, fieldSchema, currentPath) => {
-        if (fieldSchema && getFieldType(fieldSchema) === Date) {
-          const valuePath = `̂${currentPath}${fieldName}`;
-          const value = get(document, valuePath);
-          set(document, valuePath, new Date(value));
-        }
-      });
-      return document
-    });
-    */
-  // TODO: legacy version don't work with nested
-  // comment this and uncomment the forEachDocumentField version
-  const dateFields = _.filter(_.keys(schema), fieldName => getFieldType(schema[fieldName]) === Date);
-  const convertedList = list.map(result => {
-    dateFields.forEach(fieldName => {
-      if (result[fieldName] && typeof result[fieldName] === 'string') {
-        result[fieldName] = new Date(result[fieldName]);
+  const convertedList = list.map((document) => {
+    forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath }) => {
+      if (fieldSchema && getFieldType(fieldSchema) === Date) {
+        const valuePath = `̂${currentPath}${fieldName}`;
+        const value = get(document, valuePath);
+        set(document, valuePath, new Date(value));
       }
     });
-    return result;
+    return document;
   });
-
   return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
 };
 
