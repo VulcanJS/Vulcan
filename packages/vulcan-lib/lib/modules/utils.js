@@ -453,23 +453,24 @@ Utils.getComponentDisplayName = WrappedComponent => {
  * @param {Array} list
  */
 Utils.convertDates = (collection, listOrDocument) => {
-  // TODO: should be rewritten with forEachDocumentField (see other examples in the code) in order to support nested objects
   // if undefined, just return
-  if (!(listOrDocument || listOrDocument.length)) return listOrDocument;
-  const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
+  if (!listOrDocument) return listOrDocument;
+  const isArray = listOrDocument && Array.isArray(listOrDocument);
+  if (isArray && !listOrDocument.length) return listOrDocument;
+  const list = isArray ? listOrDocument : [listOrDocument];
   const schema = collection.simpleSchema()._schema;
   //Nested version
   const convertedList = list.map((document) => {
     forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath }) => {
       if (fieldSchema && getFieldType(fieldSchema) === Date) {
-        const valuePath = `̂${currentPath}${fieldName}`;
+        const valuePath = `${currentPath}${fieldName}`;
         const value = get(document, valuePath);
         set(document, valuePath, new Date(value));
       }
     });
     return document;
   });
-  return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
+  return isArray ? convertedList : convertedList[0];
 };
 
 Utils.encodeIntlError = error => (typeof error !== 'object' ? error : JSON.stringify(error));
