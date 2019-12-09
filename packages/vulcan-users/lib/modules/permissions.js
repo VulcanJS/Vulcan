@@ -4,8 +4,9 @@ import compact from 'lodash/compact';
 import map from 'lodash/map';
 import difference from 'lodash/difference';
 import get from 'lodash/get';
-import { getCollection } from 'meteor/vulcan:lib';
-import { Utils, deprecate } from 'meteor/vulcan:lib';
+import unset from 'lodash/unset';
+import cloneDeep from 'lodash/cloneDeep';
+import { getCollection, forEachDocumentField, Utils, deprecate } from 'meteor/vulcan:lib';
 
 /**
  * @summary Users.groups object
@@ -254,6 +255,19 @@ Users.checkFields = (user, collection, fields) => {
   return true;
 };
 
+
+const restrictDocument = (document, schema, currentUser) => {
+  let restrictedDocument = cloneDeep(document);
+  forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath, isNested }) => {
+    if (isNested && !fieldSchema.canRead) return; // ignore nested fields without permissions
+    if (!fieldSchema
+      || !Users.canReadField(currentUser, fieldSchema, document)
+    ) {
+      unset(restrictedDocument, `${currentPath}${fieldName}`);
+    }
+  });
+  return restrictedDocument;
+};
 /**
  * @summary For a given document or list of documents, keep only fields viewable by current user
  * @param {Object} user - The user performing the action
@@ -262,21 +276,8 @@ Users.checkFields = (user, collection, fields) => {
  */
 Users.restrictViewableFields = function (user, collection, docOrDocs) {
   if (!docOrDocs) return {};
-
-  const restrictDoc = document => {
-    // get array of all keys viewable by user
-    const viewableKeys = Users.getReadableFields(user, collection, document);
-    const restrictedDocument = _.clone(document);
-
-    // loop over each property in the document and delete it if it's not viewable
-    _.forEach(restrictedDocument, (value, key) => {
-      if (!viewableKeys.includes(key)) {
-        delete restrictedDocument[key];
-      }
-    });
-
-    return restrictedDocument;
-  };
+  const schema = collection.simpleSchema()._schema;
+  const restrictDoc = (document) => restrictDocument(document, schema, user);
 
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 };
@@ -338,7 +339,7 @@ Users.canUpdateField = function (user, field, document) {
     } else if (typeof canUpdate === 'string') {
       // if canUpdate is just a string, we assume it's the name of a group and pass it to isMemberOf
       // note: if canUpdate is 'guests' then anybody can create it
-      return canUpdate === 'guests' || Users.isMemberOf(user, canUpdate);
+      return canUpdate === 'guests' || Users.isMemberOf(user, canUpdate, document);
     } else if (Array.isArray(canUpdate) && canUpdate.length > 0) {
       // if canUpdate is an array, we look at every item and return true if one of the items return true
       return canUpdate.some(group => Users.canUpdateField(user, { canUpdate: group }, document));
