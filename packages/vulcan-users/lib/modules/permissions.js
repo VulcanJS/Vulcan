@@ -258,8 +258,11 @@ Users.checkFields = (user, collection, fields) => {
 
 const restrictDocument = (document, schema, currentUser) => {
   let restrictedDocument = cloneDeep(document);
-  forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath }) => {
-    if (!fieldSchema || !Users.canReadField(currentUser, fieldSchema, document)) {
+  forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath, isNested }) => {
+    if (isNested && !fieldSchema.canRead) return; // ignore nested fields without permissions
+    if (!fieldSchema
+      || !Users.canReadField(currentUser, fieldSchema, document)
+    ) {
       unset(restrictedDocument, `${currentPath}${fieldName}`);
     }
   });

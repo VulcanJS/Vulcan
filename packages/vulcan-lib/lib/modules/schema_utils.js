@@ -85,12 +85,13 @@ export const isCollectionType = typeName => Collections.some(c => c.options.type
  * @param {*} schema Document schema
  * @param {*} callback Called on each field with the corresponding field schema, including fields of nested objects and arrays of nested object
  * @param {*} currentPath Global path of the document (to track recursive calls)
+ * @param {*} isNested Differentiate nested fields
  */
 export const forEachDocumentField = (document, schema, callback, currentPath = '') => {
     if (!document) return;
     Object.keys(document).forEach(fieldName => {
         const fieldSchema = schema[fieldName];
-        callback({ fieldName, fieldSchema, currentPath, document, schema });
+        callback({ fieldName, fieldSchema, currentPath, document, schema, isNested: !!currentPath });
         // Check if we need a recursive call
         const value = document[fieldName];
         if (!value) return;

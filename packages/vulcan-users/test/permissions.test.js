@@ -95,5 +95,26 @@ describe('vulcan:users/permissions', () => {
             const fields = Users.restrictViewableFields(null, Dummies, { "array": [{ ok: "foo", nok: "bar" }] })
             expect(fields).toEqual({ array: [{ ok: "foo" }] })
         })
+        test('ignore fields without read permission (parent permissions are used)', () => {
+            const Dummies = createDummyCollection({
+                schema: {
+                    nested: {
+                        canRead: ['guests'],
+                        type: new SimpleSchema({
+                            ok: {
+                                type: String,
+                            },
+                            nok: {
+                                type: String,
+                                canRead: ['members']
+                            }
+
+                        })
+                    }
+                }
+            })
+            const fields = Users.restrictViewableFields(null, Dummies, { "nested": { ok: "foo", nok: "bar" } })
+            expect(fields).toEqual({ nested: { ok: "foo" } })
+        })
     })
 })
