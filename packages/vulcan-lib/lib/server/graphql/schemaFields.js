@@ -240,7 +240,7 @@ export const getSchemaFields = (schema, typeName) => {
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
-import { isBlackbox, unarrayfyFieldName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
+import { isBlackbox, unarrayfyFieldName, getFieldType, getFieldTypeName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
 
@@ -255,13 +255,6 @@ export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
   `${typeName}${capitalize(unarrayfyFieldName(fieldName))}${isInput ? 'Input' : ''}`;
 
 
-const getFieldType = field => field.type.singleType;
-const getFieldTypeName = fieldType =>
-  typeof fieldType === 'object'
-    ? 'Object'
-    : typeof fieldType === 'function'
-      ? fieldType.name
-      : fieldType;
 
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false }) => {
