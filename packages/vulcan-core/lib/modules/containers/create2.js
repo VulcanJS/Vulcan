@@ -29,7 +29,7 @@ Child Props:
 import React from 'react';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
-import { extractCollectionInfo, extractFragmentInfo, filterFunction } from 'meteor/vulcan:lib';
+import { extractCollectionInfo, extractFragmentInfo, filterFunction, getApolloClient } from 'meteor/vulcan:lib';
 import { useMutation } from '@apollo/react-hooks';
 import { buildMultiQuery } from './multi';
 import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
@@ -50,13 +50,14 @@ export const multiQueryUpdater = ({
   fragment,
   fragmentName,
   collection,
-  resolverName
+  resolverName,
 }) => async (cache, { data }) => {
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
   const newDoc = data[resolverName].data;
   // get all the resolvers that match
+  const client = getApolloClient();
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
   variablesList.forEach(async variables => {
     try {
@@ -72,7 +73,7 @@ export const multiQueryUpdater = ({
       if (matchSelector(newDoc, selector)) {
         // TODO: handle order using the selector
         const newData = addToData({ queryResult, multiResolverName, document: newDoc, sort, selector });
-        cache.writeQuery({ query: multiQuery, variables, data: newData });
+        client.writeQuery({ query: multiQuery, variables, data: newData });
       }
     } catch (err) {
       // could not find the query
