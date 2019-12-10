@@ -8,24 +8,21 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-
 /*
 
 Material UI GUI for Cloudinary Image Upload component
 
 */
 
-
 const styles = theme => ({
-  
   root: {},
-  
+
   label: {},
-  
+
   uploadField: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
-  
+
   dropzoneBase: {
     borderWidth: 3,
     borderStyle: 'dashed',
@@ -42,21 +39,21 @@ const styles = theme => ({
     '&[aria-disabled="false"]:hover': {
       color: theme.palette.common.midBlack,
       borderColor: theme.palette.background['A200'],
-    }
+    },
   },
-  
+
   dropzoneActive: {
     borderStyle: 'solid',
     borderColor: theme.palette.status.info,
   },
-  
+
   dropzoneReject: {
     borderStyle: 'solid',
     borderColor: theme.palette.status.danger,
   },
-  
+
   uploadState: {},
-  
+
   uploadImages: {
     border: `1px solid ${theme.palette.background[500]}`,
     backgroundColor: theme.palette.background[100],
@@ -64,15 +61,14 @@ const styles = theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    paddingTop: theme.spacing.unit,
-    paddingRight: theme.spacing.unit * 0.5,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 0.5,
+    paddingTop: theme.spacing(1),
+    paddingRight: theme.spacing(0.5),
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(0.5),
   },
 });
 
-
-const UploadInner = (props) => {
+const UploadInner = props => {
   const {
     uploading,
     images,
@@ -85,52 +81,44 @@ const UploadInner = (props) => {
     onDrop,
     isDeleted,
     clearImage,
-    classes
+    classes,
   } = props;
-  
+
   const UploadImage = getComponent(options.uploadImageComponentName || 'UploadImage');
-  
+
   return (
     <FormControl component="fieldset" fullWidth={true} className={classes.root}>
-      
       <FormLabel component="legend" className={classes.label}>
         {label}
       </FormLabel>
-      {
-        help &&
-        
-        <FormHelperText>{help}</FormHelperText>
-      }
+      {help && <FormHelperText>{help}</FormHelperText>}
       <div className={classes.uploadField}>
-        {
-          (disabled && !enableMultiple)
-            ?
-            null
-            :
-            <Dropzone
-              style={options.dropzoneStyle}
-              multiple={enableMultiple}
-              onDrop={onDrop}
-              accept="image/*"
-              className={classes.dropzoneBase}
-              activeClassName={classes.dropzoneActive}
-              rejectClassName={classes.dropzoneReject}
-              disabled={disabled}
-            >
-              <div>
-                <FormattedMessage id={`upload.${disabled ? 'maxReached' : 'prompt'}`}
-                                  values={{ maxCount }}/>
+        {disabled && !enableMultiple ? null : (
+          <Dropzone
+            style={options.dropzoneStyle}
+            multiple={enableMultiple}
+            onDrop={onDrop}
+            accept="image/*"
+            className={classes.dropzoneBase}
+            activeClassName={classes.dropzoneActive}
+            rejectClassName={classes.dropzoneReject}
+            disabled={disabled}>
+            <div>
+              <FormattedMessage
+                id={`upload.${disabled ? 'maxReached' : 'prompt'}`}
+                values={{ maxCount }}
+              />
+            </div>
+            {uploading && (
+              <div className="upload-uploading">
+                <span>
+                  <FormattedMessage id={'upload.uploading'} />
+                </span>
               </div>
-              {uploading && (
-                <div className="upload-uploading">
-                  <span>
-                    <FormattedMessage id={'upload.uploading'}/>
-                  </span>
-                </div>
-              )}
-            </Dropzone>
-        }
-        
+            )}
+          </Dropzone>
+        )}
+
         {!!images.length && (
           <div className={classes.uploadState}>
             <div className={classes.uploadImages}>
@@ -153,11 +141,9 @@ const UploadInner = (props) => {
           </div>
         )}
       </div>
-    
     </FormControl>
   );
 };
-
 
 UploadInner.propTypes = {
   uploading: PropTypes.bool,
@@ -174,8 +160,6 @@ UploadInner.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
 UploadInner.displayName = 'UploadInnerMui';
-
 
 registerComponent('UploadInner', UploadInner, [withStyles, styles]);

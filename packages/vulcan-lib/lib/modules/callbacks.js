@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { debug } from './debug.js';
 import { Utils } from './utils';
+import merge from 'lodash/merge';
 
 /**
  * @summary Format callback hook names
@@ -108,7 +109,7 @@ export const runCallbacks = function () {
   // flag used to detect the callback that initiated the async context
   let asyncContext = false;
   
-  if (typeof callbacks !== 'undefined' && !!callbacks.length) { // if the hook exists, and contains callbacks to run
+  if (typeof callbacks !== 'undefined' && callbacks.length > 0) { // if the hook exists, and contains callbacks to run
 
     const runCallback = (accumulator, callback) => {
       debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${formattedHook}]\x1b[0m`);
@@ -214,4 +215,30 @@ export const runCallbacksAsync = function () {
     return _runCallbacksAsync();
   }
   return [];
+};
+
+
+export let globalCallbacks =  {
+  create: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  },
+  update: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  },
+  delete: {
+    validate: [],
+    before: [],
+    after: [],
+    async: [],
+  }
+};
+
+export const addGlobalCallbacks = callbacks => {
+  globalCallbacks = merge(globalCallbacks, callbacks);
 };

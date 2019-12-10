@@ -17,88 +17,97 @@ import HomeIcon from 'mdi-material-ui/Home';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Users from 'meteor/vulcan:users';
 
-
 const styles = theme => ({
   root: {},
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing(4),
   },
 });
 
-
 class SideNavigation extends React.Component {
   state = {
-    isOpen: { admin: false }
+    isOpen: { admin: false },
   };
-  
-  toggle = (item) => {
+
+  toggle = item => {
     const newState = { isOpen: {} };
     newState.isOpen[item] = !this.state.isOpen[item];
     this.setState(newState);
   };
-  
-  render () {
+
+  render() {
     const { currentUser, classes, history } = this.props;
     const isOpen = this.state.isOpen;
-    
+
     return (
       <div className={classes.root}>
-        
         <List>
-          <ListItem button onClick={() => {history.push('/');}}>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/');
+            }}>
             <ListItemIcon>
-              <HomeIcon/>
+              <HomeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Home"/>
+            <ListItemText inset primary="Home" />
           </ListItem>
         </List>
-        
-        {
-          Users.isAdmin(currentUser) &&
-          
+
+        {Users.isAdmin(currentUser) && (
           <div>
-            <Divider/>
+            <Divider />
             <List>
               <ListItem button onClick={e => this.toggle('admin')}>
                 <ListItemIcon>
-                  <LockIcon/>
+                  <LockIcon />
                 </ListItemIcon>
-                <ListItemText primary="Admin"/>
-                {isOpen.admin ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
+                <ListItemText primary="Admin" />
+                {isOpen.admin ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
               <Collapse in={isOpen.admin} transitionduration="auto" unmountOnExit>
-                <ListItem button className={classes.nested}
-                          onClick={() => {history.push('/admin');}}>
+                <ListItem
+                  button
+                  className={classes.nested}
+                  onClick={() => {
+                    history.push('/admin');
+                  }}>
                   <ListItemIcon>
-                    <UsersIcon/>
+                    <UsersIcon />
                   </ListItemIcon>
-                  <ListItemText inset primary="Users"/>
+                  <ListItemText inset primary="Users" />
                 </ListItem>
-                <ListItem button className={classes.nested}
-                          onClick={() => {history.push('/theme');}}>
+                <ListItem
+                  button
+                  className={classes.nested}
+                  onClick={() => {
+                    history.push('/theme');
+                  }}>
                   <ListItemIcon>
-                    <ThemeIcon/>
+                    <ThemeIcon />
                   </ListItemIcon>
-                  <ListItemText inset primary="Theme"/>
+                  <ListItemText inset primary="Theme" />
                 </ListItem>
               </Collapse>
             </List>
           </div>
-        }
-      
+        )}
       </div>
     );
   }
 }
-
 
 SideNavigation.propTypes = {
   classes: PropTypes.object.isRequired,
   currentUser: PropTypes.object,
 };
 
-
 SideNavigation.displayName = 'SideNavigation';
 
-
-registerComponent('SideNavigation', SideNavigation, [withStyles, styles], withCurrentUser, withRouter);
+registerComponent(
+  'SideNavigation',
+  SideNavigation,
+  [withStyles, styles],
+  withCurrentUser,
+  withRouter
+);

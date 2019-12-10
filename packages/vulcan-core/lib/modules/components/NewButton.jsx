@@ -5,6 +5,7 @@ import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 const NewButton = ({ collection, size, label, style = 'primary', formProps, ...props }, { intl }) => (
   <Components.ModalTrigger
     label={label || intl.formatMessage({ id: 'datatable.new' })}
+    title={label || intl.formatMessage({ id: 'datatable.new' })}
     component={
       <Components.Button variant={style} size={size}>
        {label || <FormattedMessage id="datatable.new" />}
@@ -35,7 +36,9 @@ const NewForm = ({ closeModal, successCallback, formProps, ...props }) => {
         successCallback(document);
         closeModal();
       }
-    : closeModal;
+    : () => {
+         closeModal();
+      };
 
   return <Components.SmartForm successCallback={success} {...formProps} {...props} />;
 };

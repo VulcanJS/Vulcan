@@ -9,7 +9,7 @@ import SimpleSchema from 'simpl-schema';
 Vulcan = {};
 
 // eslint-disable-next-line no-undef
-Vulcan.VERSION = '1.13.3';
+Vulcan.VERSION = '1.14.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -18,6 +18,7 @@ SimpleSchema.extendOptions([
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
   'inputProperties', // extra form properties
+  'itemProperties', // extra properties for the form row
   'input', // SmartForm control (String or React component)
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
@@ -41,6 +42,7 @@ SimpleSchema.extendOptions([
   'canUpdate', // who can edit the field
   'editableBy', // who can edit the field (OpenCRUD backwards compatibility)
 
+  'typeName', // the type to resolve the field with
   'resolveAs', // field-level resolver
   'searchable', // whether a field is searchable
   'description', // description/help

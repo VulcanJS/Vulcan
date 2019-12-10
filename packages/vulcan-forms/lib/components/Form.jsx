@@ -386,8 +386,9 @@ class SmartForm extends Component {
     // }
 
     // if options are a function, call it
+    const document = this.getDocument();
     if (typeof field.options === 'function') {
-      field.options = field.options.call(fieldSchema, this.props);
+      field.options = field.options.call(fieldSchema, { ...this.props, document });
     }
 
     // if this an intl'd field, use a special intlInput
@@ -401,7 +402,9 @@ class SmartForm extends Component {
     for (const prop in inputProperties) {
       const property = inputProperties[prop];
       field[prop] =
-        typeof property === 'function' ? property.call(fieldSchema, this.props) : property;
+        typeof property === 'function'
+          ? property.call(fieldSchema, { ...this.props, document })
+          : property;
     }
 
     // add description as help prop
@@ -924,7 +927,7 @@ class SmartForm extends Component {
   Submit form handler
   
   */
-  submitForm = event => {
+  submitForm = async event => {
     event && event.preventDefault();
 
     // if form is disabled (there is already a submit handler running) don't do anything
@@ -946,18 +949,24 @@ class SmartForm extends Component {
 
     if (this.getFormType() === 'new') {
       // create document form
-      this.props[`create${this.props.typeName}`]({ data })
-        .then(this.newMutationSuccessCallback)
-        .catch(error => this.mutationErrorCallback(document, error));
+      try {
+        const result = await this.props[`create${this.props.typeName}`]({ data });
+        this.newMutationSuccessCallback(result);
+      } catch (error) {
+        this.mutationErrorCallback(document, error);
+      }
     } else {
       // update document form
-      const documentId = this.getDocument()._id;
-      this.props[`update${this.props.typeName}`]({
-        selector: { documentId },
-        data,
-      })
-        .then(this.editMutationSuccessCallback)
-        .catch(error => this.mutationErrorCallback(document, error));
+      try {
+        const documentId = this.getDocument()._id;
+        const result = await this.props[`update${this.props.typeName}`]({
+          selector: { documentId },
+          data,
+        });
+        this.editMutationSuccessCallback(result);
+      } catch (error) {
+        this.mutationErrorCallback(document, error);
+      }
     }
   };
 
@@ -1015,6 +1024,7 @@ class SmartForm extends Component {
     group: omit(group, ['fields']),
     errors: this.state.errors,
     throwError: this.throwError,
+    document: this.getDocument(),
     currentValues: this.state.currentValues,
     updateCurrentValues: this.updateCurrentValues,
     deletedValues: this.state.deletedValues,
@@ -1025,9 +1035,11 @@ class SmartForm extends Component {
     disabled: this.state.disabled,
     prefilledProps: this.props.prefilledProps,
     formComponents: mergeWithComponents(this.props.formComponents),
+    itemProperties: this.props.itemProperties,
   });
 
   getFormSubmitProps = () => ({
+    submitForm: this.submitForm, 
     submitLabel: this.props.submitLabel,
     cancelLabel: this.props.cancelLabel,
     revertLabel: this.props.revertLabel,
@@ -1035,7 +1047,7 @@ class SmartForm extends Component {
     revertCallback: this.props.revertCallback,
     document: this.getDocument(),
     deleteDocument:
-      (this.getFormType() === 'edit' && this.props.showRemove && this.deleteDocument) || null,
+      (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
     collectionName: this.props.collectionName,
     currentValues: this.state.currentValues,
     deletedValues: this.state.deletedValues,
@@ -1047,20 +1059,19 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   render() {
-    const FormComponents = mergeWithComponents(this.props.formComponents);
+    const FormComponents = mergeWithComponents(this.props.formComponents || this.props.Components);
 
     return (
-      <FormComponents.FormElement {...this.getFormProps()}>
-        <FormComponents.FormErrors {...this.getFormErrorsProps()} />
-
+      <FormComponents.FormLayout
+        FormComponents={FormComponents}
+        formProps={this.getFormProps()}
+        errorProps={this.getFormErrorsProps()}
+        repeatErrors={this.props.repeatErrors}
+        submitProps={this.getFormSubmitProps()}>
         {this.getFieldGroups().map((group, i) => (
           <FormComponents.FormGroup key={i} {...this.getFormGroupProps(group)} />
         ))}
-
-        {this.props.repeatErrors && <FormComponents.FormErrors {...this.getFormErrorsProps()} />}
-
-        <FormComponents.FormSubmit {...this.getFormSubmitProps()} />
-      </FormComponents.FormElement>
+      </FormComponents.FormLayout>
     );
   }
 }
@@ -1088,6 +1099,7 @@ SmartForm.propTypes = {
   removeFields: PropTypes.arrayOf(PropTypes.string),
   hideFields: PropTypes.arrayOf(PropTypes.string), // OpenCRUD backwards compatibility
   showRemove: PropTypes.bool,
+  showDelete: PropTypes.bool,
   submitLabel: PropTypes.node,
   cancelLabel: PropTypes.node,
   revertLabel: PropTypes.node,
@@ -1095,6 +1107,7 @@ SmartForm.propTypes = {
   warnUnsavedChanges: PropTypes.bool,
   formComponents: PropTypes.object,
   disabled: PropTypes.bool,
+  itemProperties: PropTypes.object,
 
   // callbacks
   ...callbackProps,
@@ -1108,6 +1121,7 @@ SmartForm.defaultProps = {
   prefilledProps: {},
   repeatErrors: false,
   showRemove: true,
+  showDelete: true,
 };
 
 SmartForm.contextTypes = {

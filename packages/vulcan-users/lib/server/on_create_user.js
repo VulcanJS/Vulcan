@@ -26,7 +26,8 @@ function onCreateUserCallback(options, user) {
   options = runCallbacks('users.new.validate.before', options);
 
   // validate options since they can't be trusted
-  Users.simpleSchema().validate(options);
+  // omit username since we deleted it above
+  Users.simpleSchema().omit('username').validate(options);
 
   // check that the current user has permission to insert each option field
   _.keys(options).forEach(fieldName => {

@@ -163,8 +163,7 @@ class App extends PureComponent {
     const detectedLocale = detectLocale();
 
     if (locale) {
-      // 1. locale is passed through SSR process
-      // TODO: currently SSR locale is passed through cookies as a hack
+      // 1. locale is passed from AppGenerator through SSR process
       userLocale = locale;
       localeMethod = 'SSR';
     } else if (cookies && cookies.get('locale')) {

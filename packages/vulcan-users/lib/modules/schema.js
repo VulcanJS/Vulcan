@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { Utils, getCollection, Connectors, Locales } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { Utils, getCollection, Connectors, Locales, getType, addTypeAndResolvers } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit:
@@ -38,6 +38,21 @@ const adminGroup = {
 const ownsOrIsAdmin = (user, document) => {
   return getCollection('Users').owns(user, document) || getCollection('Users').isAdmin(user);
 };
+
+const UserEmail = {
+  address: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+    canRead: ['admin']
+  },
+  verified: {
+    type: Boolean,
+    optional: true,
+    canRead: ['admin']
+  },
+};
+// addTypeAndResolvers({ typeName: 'UserEmail', schema: new SimpleSchema(UserEmail), description: 'The known emails of the user' });
 
 /**
  * @summary Users schema
@@ -78,15 +93,7 @@ const schema = {
   },
   'emails.$': {
     type: Object,
-    optional: true,
-  },
-  'emails.$.address': {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email,
-    optional: true,
-  },
-  'emails.$.verified': {
-    type: Boolean,
+    //...getType('UserEmail'), // nested-schemas experiment
     optional: true,
   },
   createdAt: {
@@ -284,6 +291,7 @@ const schema = {
           _.keys(getCollection('Users').groups),
           'guests',
           'members',
+          'owners',
           'admins'
         );
         return groups.map(group => {

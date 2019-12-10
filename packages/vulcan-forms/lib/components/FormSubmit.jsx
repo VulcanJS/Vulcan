@@ -5,6 +5,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const FormSubmit = ({
+  submitForm,
   submitLabel,
   cancelLabel,
   cancelCallback,

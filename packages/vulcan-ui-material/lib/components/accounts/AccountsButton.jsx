@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 
 export class AccountsButton extends Component {
-  render () {
-    
+  render() {
+
     const {
       label,
       type,
@@ -15,14 +15,14 @@ export class AccountsButton extends Component {
       className,
       onClick
     } = this.props;
-    
+
     return (
       <Button
         variant={type === 'link' ? 'text' : 'contained'}
         size={type === 'link' ? 'small' : undefined}
         color="primary"
         className={classNames(`button-${Utils.slugify(label)}`, className)}
-        type={type}
+        type={type === 'link' ? 'button' : type}
         disabled={disabled}
         onClick={onClick}
         disableRipple={true}

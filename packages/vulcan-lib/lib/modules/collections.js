@@ -1,16 +1,17 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { addGraphQLCollection, addToGraphQLContext } from './graphql';
 import { Utils } from './utils.js';
 import { runCallbacks, runCallbacksAsync, registerCallback, addCallback } from './callbacks.js';
 import { getSetting, registerSetting } from './settings.js';
-import { registerFragment, getDefaultFragmentText } from './fragments.js';
+import { registerFragment } from './fragments.js';
+import { getDefaultFragmentText } from './graphql/defaultFragment';
 import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
 import _omit from 'lodash/omit';
+import merge from 'lodash/merge';
+import { isCollectionType } from './schema_utils.js';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -22,24 +23,44 @@ export let hasIntlFields = false;
 
 export const Collections = [];
 
-export const getCollection = name =>
-  Collections.find(
-    ({ options: { collectionName } }) =>
-      name === collectionName || name === collectionName.toLowerCase()
+export const getCollection = name => {
+  const collection = Collections.find(
+    ({ options: { collectionName } }) => name === collectionName || name === collectionName.toLowerCase()
   );
+  if (!collection) {
+    throw new Error(`Could not find collection named “${name}”`);
+  }
+  return collection;
+};
 
-// TODO: find more reliable way to get collection name from type name?
-export const getCollectionName = typeName => Utils.pluralize(typeName);
+export const getCollectionByTypeName = typeName => {
+  // in case typeName is for an array ('[User]'), get rid of brackets
+  let parsedTypeName = typeName.replace('[', '').replace(']', '');
+  const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
+  if (!collection) {
+    throw new Error(`Could not find collection for type “${typeName}”`);
+  }
+  return collection;
+};
 
-// TODO: find more reliable way to get type name from collection name?
-export const getTypeName = collectionName => collectionName.slice(0, -1);
+export const generateCollectionNameFromTypeName = typeName => Utils.pluralize(typeName);
+
+export const getTypeNameByCollectionName = collectionName => {
+  const collection = Collections.find(({ options }) => options.collectionName === collectionName);
+  if (!collection) {
+    throw new Error(`Could not find type for collection “${collectionName}”`);
+  }
+  return collection.options.typeName;
+};
+
+export const generateTypeNameFromCollectionName = collectionName => Utils.singularize(collectionName);
 
 /**
  * @summary replacement for Collection2's attachSchema. Pass either a schema, to
  * initialize or replace the schema, or some fields, to extend the current schema
  * @class Mongo.Collection
  */
-Mongo.Collection.prototype.attachSchema = function(schemaOrFields) {
+Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
   if (schemaOrFields instanceof SimpleSchema) {
     this.simpleSchema = () => schemaOrFields;
   } else {
@@ -51,14 +72,14 @@ Mongo.Collection.prototype.attachSchema = function(schemaOrFields) {
  * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} field
  */
-Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
+Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   const collection = this;
   const fieldSchema = {};
 
   const fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
 
   // loop over fields and add them to schema (or extend existing fields)
-  fieldArray.forEach(function(field) {
+  fieldArray.forEach(function (field) {
     fieldSchema[field.fieldName] = field.fieldSchema;
   });
 
@@ -70,7 +91,7 @@ Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
  * @summary Remove a field from a schema.
  * @param {String} fieldName
  */
-Mongo.Collection.prototype.removeField = function(fieldName) {
+Mongo.Collection.prototype.removeField = function (fieldName) {
   var collection = this;
   var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
@@ -82,7 +103,7 @@ Mongo.Collection.prototype.removeField = function(fieldName) {
  * @summary Add a default view function.
  * @param {Function} view
  */
-Mongo.Collection.prototype.addDefaultView = function(view) {
+Mongo.Collection.prototype.addDefaultView = function (view) {
   this.defaultView = view;
 };
 
@@ -91,7 +112,7 @@ Mongo.Collection.prototype.addDefaultView = function(view) {
  * @param {String} viewName
  * @param {Function} view
  */
-Mongo.Collection.prototype.addView = function(viewName, view) {
+Mongo.Collection.prototype.addView = function (viewName, view) {
   this.views[viewName] = view;
 };
 
@@ -100,13 +121,13 @@ Mongo.Collection.prototype.addView = function(viewName, view) {
  * @param {Array} pipelines mongodb pipeline
  * @param {Object} options mongodb option object
  */
-Mongo.Collection.prototype.aggregate = function(pipelines, options) {
+Mongo.Collection.prototype.aggregate = function (pipelines, options) {
   var coll = this.rawCollection();
   return wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
 };
 
 // see https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js
-Mongo.Collection.prototype.helpers = function(helpers) {
+Mongo.Collection.prototype.helpers = function (helpers) {
   var self = this;
 
   if (self._transform && !self._helpers)
@@ -118,23 +139,46 @@ Mongo.Collection.prototype.helpers = function(helpers) {
     self._helpers = function Document(doc) {
       return Object.assign(this, doc);
     };
-    self._transform = function(doc) {
+    self._transform = function (doc) {
       return new self._helpers(doc);
     };
   }
 
-  Object.keys(helpers).forEach(function(key) {
+  Object.keys(helpers).forEach(function (key) {
     self._helpers.prototype[key] = helpers[key];
   });
 };
 
+export const extendCollection = (collection, options) => {
+  collection.options = merge({}, collection.options, options);
+};
+
+/*
+
+Note: this currently isn't used because it would need to be called
+after all collections have been initialized, otherwise we can't figure out
+if resolved field is resolving to a collection type or not
+
+*/
+export const addAutoRelations = () => {
+  Collections.forEach(collection => {
+    const schema = collection.simpleSchema()._schema;
+    // add "auto-relations" to schema resolvers
+    Object.keys(schema).map(fieldName => {
+      const field = schema[fieldName];
+      // if no resolver or relation is provided, try to guess relation and add it to schema
+      if (field.resolveAs) {
+        const { resolver, relation, type } = field.resolveAs;
+        if (isCollectionType(type) && !resolver && !relation) {
+          field.resolveAs.relation = field.type === Array ? 'hasMany' : 'hasOne';
+        }
+      }
+    });
+  });
+};
+
 export const createCollection = options => {
-  const {
-    typeName,
-    collectionName = getCollectionName(typeName),
-    generateGraphQLSchema = true,
-    dbCollectionName,
-  } = options;
+  const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
   let { schema } = options;
 
   // initialize new Mongo collection
@@ -182,16 +226,6 @@ export const createCollection = options => {
     collection.attachSchema(new SimpleSchema(schema));
   }
 
-  // add collection to resolver context
-  const context = {};
-  context[collectionName] = collection;
-  addToGraphQLContext(context);
-
-  if (generateGraphQLSchema) {
-    // add collection to list of dynamically generated GraphQL schemas
-    addGraphQLCollection(collection);
-  }
-
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });
   runCallbacksAsync({ name: `${collectionName}.collection.async`, properties: { options } });
 
@@ -202,6 +236,7 @@ export const createCollection = options => {
 
   // ------------------------------------- Parameters -------------------------------- //
 
+  // legacy
   collection.getParameters = (terms = {}, apolloClient, context) => {
     // console.log(terms);
 
@@ -291,42 +326,6 @@ export const createCollection = options => {
       );
     }
 
-    /*
-
-    Add filters. Note: array filters work by addition. Specifying { category: ['foo', 'bar']}
-    returns the sum of all items that have category `foo` *or* have category `bar`
-
-    */
-    if (!isEmpty(terms.filterBy)) {
-      Object.keys(terms.filterBy).forEach(fieldName => {
-        const filter = terms.filterBy[fieldName];
-
-        if (filter) {
-          if (Array.isArray(filter)) {
-            parameters.selector[fieldName] = { $in: filter };
-          } else if (filter.after || filter.before) {
-            const dateFilter = {};
-            if (filter.after) {
-              dateFilter.$gte = moment(filter.after, 'YYYY-MM-DD').toDate();
-            }
-            if (filter.before) {
-              dateFilter.$lte = moment(filter.before, 'YYYY-MM-DD').toDate();
-            }
-            parameters.selector[fieldName] = dateFilter;
-          } else if (filter.gte || filter.lte) {
-            const numberFilter = {};
-            if (filter.gte) {
-              numberFilter.$gte = parseFloat(filter.gte);
-            }
-            if (filter.lte) {
-              numberFilter.$lte = parseFloat(filter.lte);
-            }
-            parameters.selector[fieldName] = numberFilter;
-          }
-        }
-      });
-    }
-
     // sort using terms.orderBy (overwrite defaultView's sort)
     if (terms.orderBy && !isEmpty(terms.orderBy)) {
       parameters.options.sort = terms.orderBy;
@@ -339,9 +338,9 @@ export const createCollection = options => {
 
     // extend sort to sort posts by _id to break ties, unless there's already an id sort
     // NOTE: always do this last to avoid overriding another sort
-    if (!(parameters.options.sort && parameters.options.sort._id)) {
-      parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
-    }
+    //if (!(parameters.options.sort && parameters.options.sort._id)) {
+    //  parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
+    //}
 
     // remove any null fields (setting a field to null means it should be deleted)
     Object.keys(parameters.selector).forEach(key => {
@@ -370,7 +369,7 @@ export const createCollection = options => {
         // eslint-disable-next-line no-console
         console.warn(
           `Warning: terms.query is set but schema ${
-            collection.options.typeName
+          collection.options.typeName
           } has no searchable field. Set "searchable: true" for at least one field to enable search.`
         );
       }
@@ -420,7 +419,7 @@ registerCallback({
 });
 
 // generate foo_intl fields
-function addIntlFields(schema) {
+export function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema)) {

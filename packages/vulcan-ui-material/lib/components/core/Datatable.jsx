@@ -34,7 +34,7 @@ const baseStyles = theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
   header: {
     display: 'flex',
@@ -43,8 +43,13 @@ const baseStyles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  scroller: {
+    overflow: 'auto',
+  },
   searchWrapper: {},
-  addButtonWrapper: {},
+  addButtonWrapper: {
+    alignItems: 'center',
+  },
   addButton: {
     // Floating button won't work with multiple datatables, buttons are superposed
     // top: '9.5rem',
@@ -118,12 +123,12 @@ class Datatable extends PureComponent {
       return (
         <Components.DatatableContents
           columns={this.props.data.length ? Object.keys(this.props.data[0]) : undefined}
-          {...this.props}
           results={this.props.data}
           count={this.props.data.length}
           totalCount={this.props.data.length}
           showEdit={false}
           showNew={false}
+          {...this.props}
         />
       );
     } else {
@@ -179,14 +184,16 @@ class Datatable extends PureComponent {
             </div>
           )}
 
-          <DatatableWithMulti
-            {...this.props}
-            collection={collection}
-            terms={{ query: this.state.query, orderBy: orderBy }}
-            currentUser={this.props.currentUser}
-            toggleSort={this.toggleSort}
-            currentSort={this.state.currentSort}
-          />
+          <div className={classes.scroller}>
+            <DatatableWithMulti
+              {...this.props}
+              collection={collection}
+              terms={{ query: this.state.query, orderBy: orderBy }}
+              currentUser={this.props.currentUser}
+              toggleSort={this.toggleSort}
+              currentSort={this.state.currentSort}
+            />
+          </div>
         </div>
       );
     }
@@ -230,7 +237,7 @@ replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyle
 const DatatableTitle = ({ title }) => (
   <Toolbar>
     <Typography variant="h6" id="tableTitle">
-      title
+      {title}
     </Typography>
   </Toolbar>
 );
@@ -246,8 +253,8 @@ DatatableContents Component
 const datatableContentsStyles = theme =>
   _assign({}, baseStyles(theme), {
     table: {
-      marginTop: theme.spacing.unit * 3,
-      marginBottom: theme.spacing.unit * 3,
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
     },
     denseTable: theme.utils.denseTable,
     flatTable: theme.utils.flatTable,

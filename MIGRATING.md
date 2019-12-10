@@ -2,10 +2,27 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
-## From 1.13.3 to 1.14.0
+## NEXT
 
 - Update React-Router to v5+. Versions must match exactly between react-router and react-router-dom `npm i --save-exact react-router@5.0.1 react-router-dom@5.0.1`. Note: v4 to v5 is supposed to be a minor update so there are not many breaking changes.
 - Optionally update react-router-bootstrap to v0.25.0 `npm i --save-exact react-router-bootstrap@0.25.0`
+
+## From 1.13.5 to 1.14
+
+- See migration article from [Vulcan Blog](https://blog.vulcanjs.org/)
+- `serverTimezoneOffset` object is no longer injected in the head during SSR. Use `import { InjectData} from 'meteor/vulcan:lib; ...; await InjectData.getData("utcOffset");` instead. The value is the reverse from `getTimezoneOffset`, see [Moment doc](https://momentjscom.readthedocs.io/en/latest/moment/03-manipulating/09-utc-offset/)
+- `validateModifier` takes `data` as the second param (`validateModifier(modifier, data, document)` instead of `validateModifier(modifier, document)`)
+
+### Material UI
+- Update to v4 `meteor npm i --save-exact @material-ui/core@4.5.1`
+- `import MuiThemeProvider from @material-ui/core/styles/MuiThemeProvider"` becomes `import { MuiThemeProvider } from "@material-ui/core/styles"`
+- More broadly follow https://material-ui.com/guides/migration-v3/ to update Material UI to v4
+- Follow the composition doc to handle `forwardRef` warnings: https://material-ui.com/guides/composition/#caveat-with-refs
+
+## From 1.13.3 to 1.13.5
+
+- `npm install apollo-utilities` (to run tests)
+- Replace `Users.getViewableFields` by `Users.getReadableProjection` 
 
 ## From 1.13.2 to 1.13.3
 

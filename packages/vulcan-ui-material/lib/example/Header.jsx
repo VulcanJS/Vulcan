@@ -10,10 +10,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { getSetting, registerComponent } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
-
 const drawerWidth = 240;
 const topBarHeight = 100;
-
 
 const styles = theme => ({
   appBar: {
@@ -43,47 +41,40 @@ const styles = theme => ({
       margin: '0 24px 0 0',
       fontSize: '18px',
       lineHeight: 1,
-    }
+    },
   },
   menuButton: {
-    marginRight: theme.spacing.unit * 3,
+    marginRight: theme.spacing(3),
   },
 });
-
 
 const Header = (props, context) => {
   const classes = props.classes;
   const isSideNavOpen = props.isSideNavOpen;
   const toggleSideNav = props.toggleSideNav;
-  
+
   const siteTitle = getSetting('title', 'My App');
-  
+
   return (
     <AppBar className={classNames(classes.appBar, isSideNavOpen && classes.appBarShift)}>
       <Toolbar className={classes.toolbar}>
-        
         <IconButton
           aria-label="open drawer"
           onClick={e => toggleSideNav()}
           className={classNames(classes.menuButton)}
-          color="inherit"
-        >
-          {isSideNavOpen ? <ChevronLeftIcon/> : <MenuIcon/>}
+          color="inherit">
+          {isSideNavOpen ? <ChevronLeftIcon /> : <MenuIcon />}
         </IconButton>
-        
-        <div className={classNames(classes.headerMid)}>
-          
-            <Typography variant="h6" color="inherit" className="tagline">
-              {siteTitle}
-            </Typography>
 
+        <div className={classNames(classes.headerMid)}>
+          <Typography variant="h6" color="inherit" className="tagline">
+            {siteTitle}
+          </Typography>
         </div>
-        
       </Toolbar>
     </AppBar>
   );
 };
-
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -91,8 +82,6 @@ Header.propTypes = {
   toggleSideNav: PropTypes.func,
 };
 
-
 Header.displayName = 'Header';
-
 
 registerComponent('Header', Header, [withStyles, styles]);

@@ -13,7 +13,7 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['admins'],
-    onInsert: (document, currentUser) => {
+    onCreate: () => {
       return new Date();
     },
   },

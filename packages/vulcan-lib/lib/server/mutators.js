@@ -38,6 +38,7 @@ import {
   dataToModifier,
   modifierToData,
 } from '../modules/validation.js';
+import { globalCallbacks } from '../modules/callbacks.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { throwError } from './errors.js';
@@ -45,6 +46,7 @@ import { Connectors } from './connectors.js';
 import pickBy from 'lodash/pickBy';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 registerSetting('database', 'mongo', 'Which database to use for your back-end');
 
@@ -82,7 +84,17 @@ export const createMutator = async ({
   Note: keep newDocument for backwards compatibility
   
   */
-  const properties = { data, originalData: clone(data), currentUser, collection, context, document, newDocument: document, schema };
+  const properties = {
+    data,
+    originalData: clone(data),
+    currentUser,
+    collection,
+    context,
+    document,
+    originalDocument: clone(document),
+    newDocument: document,
+    schema,
+  };
 
   /*
 
@@ -92,6 +104,19 @@ export const createMutator = async ({
   if (validate) {
     let validationErrors = [];
     validationErrors = validationErrors.concat(validateDocument(document, collection, context));
+    // new callback API (Oct 2019)
+    validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.create.validate`,
+      callbacks: get(collection, 'options.callbacks.create.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
+    validationErrors = await runCallbacks({
+      name: `*.create.validate`,
+      callbacks: get(globalCallbacks, 'create.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
     // run validation callbacks
     validationErrors = await runCallbacks({
       name: `${typeName.toLowerCase()}.create.validate`,
@@ -163,6 +188,20 @@ export const createMutator = async ({
   Before
   
   */
+  // new callback API (Oct 2019)
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.create.before`,
+    callbacks: get(collection, 'options.callbacks.create.before', []),
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({
+    name: `*.create.before`,
+    callbacks: get(globalCallbacks, 'create.before', []),
+    iterator: document,
+    properties,
+  });
+  // old callback API
   document = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.before`,
     iterator: document,
@@ -191,6 +230,19 @@ export const createMutator = async ({
   */
   // note: query for document to get fresh document with collection-hooks effects applied
   document = await Connectors.get(collection, document._id);
+  // new callback API (Oct 2019)
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.create.after`,
+    callbacks: get(collection, 'options.callbacks.create.after', []),
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({
+    name: `*.create.after`,
+    callbacks: get(globalCallbacks, 'create.after', []),
+    iterator: document,
+    properties,
+  });
   // run any post-operation sync callbacks
   document = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.after`,
@@ -201,16 +253,29 @@ export const createMutator = async ({
   // OpenCRUD backwards compatibility
   document = await runCallbacks(`${collectionName.toLowerCase()}.new.after`, document, currentUser);
 
-
+  // update document object in properties object
+  properties.document = document;
+  
   /*
 
   Async
 
   */
+  // new callback API (Oct 2019)
+  await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.create.async`,
+    callbacks: get(collection, 'options.callbacks.create.async', []),
+    properties,
+  });
+  await runCallbacksAsync({
+    name: `*.create.async`,
+    callbacks: get(globalCallbacks, 'create.async', []),
+    properties,
+  });
   // note: make sure properties.document is up to date
   await runCallbacksAsync({
     name: `${typeName.toLowerCase()}.create.async`,
-    properties: { ...properties, document: document },
+    properties,
   });
   await runCallbacksAsync({ name: '*.create.async', properties });
   // OpenCRUD backwards compatibility
@@ -281,7 +346,17 @@ export const updateMutator = async ({
   Properties
 
   */
-  const properties = { data, oldDocument, document, currentUser, collection, context, schema };
+  const properties = {
+    data,
+    originalData: clone(data),
+    oldDocument,
+    originalDocument: oldDocument,
+    document,
+    currentUser,
+    collection,
+    context,
+    schema,
+  };
 
   /*
 
@@ -293,6 +368,20 @@ export const updateMutator = async ({
 
     validationErrors = validationErrors.concat(validateData(data, document, collection, context));
 
+    // new callback API (Oct 2019)
+    validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.update.validate`,
+      callbacks: get(collection, 'options.callbacks.update.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
+    validationErrors = await runCallbacks({
+      name: `*.update.validate`,
+      callbacks: get(globalCallbacks, 'update.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
+    // old API
     validationErrors = await runCallbacks({
       name: `${typeName.toLowerCase()}.update.validate`,
       iterator: validationErrors,
@@ -349,6 +438,20 @@ export const updateMutator = async ({
   Before
 
   */
+  // new callback API (Oct 2019)
+  data = await runCallbacks({
+    name: `${typeName.toLowerCase()}.update.before`,
+    callbacks: get(collection, 'options.callbacks.update.before', []),
+    iterator: data,
+    properties,
+  });
+  data = await runCallbacks({
+    name: `*.update.before`,
+    callbacks: get(globalCallbacks, 'update.before', []),
+    iterator: data,
+    properties,
+  });
+  // old API
   data = await runCallbacks({
     name: `${typeName.toLowerCase()}.update.before`,
     iterator: data,
@@ -411,6 +514,20 @@ export const updateMutator = async ({
   After
 
   */
+  // new callback API (Oct 2019)
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.update.after`,
+    callbacks: get(collection, 'options.callbacks.update.after', []),
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({
+    name: `*.update.after`,
+    callbacks: get(globalCallbacks, 'update.after', []),
+    iterator: document,
+    properties,
+  });
+  // old API
   document = await runCallbacks({
     name: `${typeName.toLowerCase()}.update.after`,
     iterator: document,
@@ -430,6 +547,17 @@ export const updateMutator = async ({
   Async
 
   */
+  // new callback API (Oct 2019)
+  await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.update.async`,
+    callbacks: get(collection, 'options.callbacks.update.async', []),
+    properties,
+  });
+  await runCallbacksAsync({
+    name: `*.update.async`,
+    callbacks: get(globalCallbacks, 'update.async', []),
+    properties,
+  });
   // run async callbacks
   await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties });
   await runCallbacksAsync({ name: '*.update.async', properties });
@@ -502,6 +630,20 @@ export const deleteMutator = async ({
   if (validate) {
     let validationErrors = [];
 
+    // new API (Oct 2019)
+    validationErrors = await runCallbacks({
+      name: `${typeName.toLowerCase()}.delete.validate`,
+      callbacks: get(collection, 'options.callbacks.delete.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
+    validationErrors = await runCallbacks({
+      name: `*.delete.validate`,
+      callbacks: get(globalCallbacks, 'delete.validate', []),
+      iterator: validationErrors,
+      properties,
+    });
+    // old API
     validationErrors = await runCallbacks({
       name: `${typeName.toLowerCase()}.delete.validate`,
       iterator: validationErrors,
@@ -544,15 +686,37 @@ export const deleteMutator = async ({
   Before
 
   */
-  await runCallbacks({
+  // new API (Oct 2019)
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.delete.before`,
+    callbacks: get(collection, 'options.callbacks.delete.before', []),
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({
+    name: `*.delete.before`,
+    callbacks: get(globalCallbacks, 'delete.before', []),
+    iterator: document,
+    properties,
+  });
+  // old API
+  document = await runCallbacks({
     name: `${typeName.toLowerCase()}.delete.before`,
     iterator: document,
     properties,
   });
-  await runCallbacks({ name: '*.delete.before', iterator: document, properties });
+  document = await runCallbacks({ name: '*.delete.before', iterator: document, properties });
   // OpenCRUD backwards compatibility
-  await runCallbacks(`${collectionName.toLowerCase()}.remove.before`, document, currentUser);
-  await runCallbacks(`${collectionName.toLowerCase()}.remove.sync`, document, currentUser);
+  document = await runCallbacks(
+    `${collectionName.toLowerCase()}.remove.before`,
+    document,
+    currentUser
+  );
+  document = await runCallbacks(
+    `${collectionName.toLowerCase()}.remove.sync`,
+    document,
+    currentUser
+  );
 
   /*
 
@@ -560,6 +724,38 @@ export const deleteMutator = async ({
 
   */
   await Connectors.delete(collection, selector);
+
+  /*
+
+  After
+
+  */
+  // new API (Oct 2019)
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.delete.after`,
+    callbacks: get(collection, 'options.callbacks.delete.after', []),
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({
+    name: `*.delete.after`,
+    callbacks: get(globalCallbacks, 'delete.after', []),
+    iterator: document,
+    properties,
+  });
+  // old API
+  document = await runCallbacks({
+    name: `${typeName.toLowerCase()}.delete.after`,
+    iterator: document,
+    properties,
+  });
+  document = await runCallbacks({ name: '*.delete.after', iterator: document, properties });
+  // OpenCRUD backwards compatibility
+  document = await runCallbacks(
+    `${collectionName.toLowerCase()}.remove.after`,
+    document,
+    currentUser
+  );
 
   // TODO: add support for caching by other indexes to Dataloader
   // clear cache if needed
@@ -572,6 +768,18 @@ export const deleteMutator = async ({
   Async
 
   */
+  // new API (Oct 2019)
+  await runCallbacksAsync({
+    name: `${typeName.toLowerCase()}.delete.async`,
+    callbacks: get(collection, 'options.callbacks.delete.async', []),
+    properties,
+  });
+  await runCallbacksAsync({
+    name: `*.delete.async`,
+    callbacks: get(globalCallbacks, 'delete.async', []),
+    properties,
+  });
+  // old API
   await runCallbacksAsync({ name: `${typeName.toLowerCase()}.delete.async`, properties });
   await runCallbacksAsync({ name: '*.delete.async', properties });
   // OpenCRUD backwards compatibility

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Vulcan libraries.',
-  version: '1.13.3',
+  version: '1.14.0',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
@@ -46,8 +46,7 @@ Package.onUse(function (api) {
 
     // 'aldeed:collection2-core@2.0.0',
     'meteorhacks:picker@1.0.3',
-    'littledata:synced-cron@1.5.1',
-    'meteorhacks:inject-initial@1.0.4',
+    'littledata:synced-cron@1.5.1'
   ];
 
   api.use(packages);
@@ -60,8 +59,9 @@ Package.onUse(function (api) {
   api.mainModule('lib/client/main.js', 'client');
 });
 
+
 Package.onTest(function (api) {
-  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:lib']);
+  api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:lib', 'vulcan:users']);
   api.mainModule('./test/client/index.js', 'client');
   api.mainModule('./test/server/index.js', 'server');
 });

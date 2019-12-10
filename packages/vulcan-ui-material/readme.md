@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.13.2
+# vulcan:ui-material 1.13.2_1
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -6,7 +6,7 @@ Replacement for [Vulcan](http://vulcanjs.org/) components using [Material-UI](ht
 
 There are some nice bonus features like a CountrySelect with autocomplete and theming.
 
-All components in vulcan:ui-bootstrap, vulcan:forms and vulcan:accounts have been implemented except for Icon.
+All components in vulcan:ui-bootstrap, vulcan:forms and vulcan:accounts have been implemented.
 
 
 ## Installation
@@ -16,8 +16,10 @@ To add vulcan-material-ui to an existing Vulcan project, run the following in th
 ``` sh
 meteor add vulcan:ui-material
 
-meteor npm install --save @material-ui/core@3.9.3
-meteor npm install --save react-jss@8.1.0
+meteor npm install --save @material-ui/core@4.5.1
+meteor npm install --save @material-ui/icons
+meteor npm install --save @material-ui/styles
+meteor npm install --save react-jss@8.6.1
 meteor npm install --save mdi-material-ui
 meteor npm install --save react-autosuggest
 meteor npm install --save autosuggest-highlight
@@ -109,6 +111,7 @@ You can pass a couple of extra options to inputs from the `form` property of you
       inputClassName: 'halfWidthLeft', // use 'halfWidthLeft' or 'halfWidthRight'
                                        //   to display two controls side by side
       hideLabel: true,                 // hide the label
+      shrinkLabel: true,               // shrink the label even if the field is empty
       hideLink: true,                  // url and email inputs are are adorned with
                                        // an icon button link - unless you hide them
       rows: 10,                        // for textareas you can specify the rows
@@ -134,6 +137,9 @@ You can pass a couple of extra options to form groups as well:
     order: 4,
     beforeComponent: 'ShopsPlatformTitle',  // component to put at the top of the form group
     afterComponent:  'ShopsConnectButtons', // component to put at the bottom of the form group
+    hidden: function ({ document }) {       // hide the group based on the value of a field
+      return !document.listing;
+    },
   };
 ```
 
@@ -166,18 +172,18 @@ AgendaJobActionsInner.propTypes = {
 
 You can also control the spacing of the table cells using the `dense` property. Valid values are:
 
-| Value   | Description  |
-| ------- | ------------ |
-| dense   | right cell padding of 16px instead of 56px |
-| flat    | right cell padding of 16px and nowrap |
-| denser  | right cell padding of 16px, nowrap, and row height of 40px instead of 56px |
+| Value     | Description  |
+| --------- | ------------ |
+| `dense`   | right cell padding of 16px instead of 56px |
+| `flat`    | right cell padding of 16px and nowrap |
+| `denser`  | right cell padding of 16px, nowrap, and row height of 40px instead of 56px |
 
 You can also use other string values, as long as you define a `utils` entry named the same + `Table`, for example `myCustomTable`. Check out the sample theme for examples.
 
 
 ## CountrySelect
 
-One of the bonus components is **CountrySelect**, a country autosuggest.
+One of the bonus components is **CountrySelect**, a country autosuggest. For an example, see **CountrySelect**.
 
 ```
   country: {
@@ -201,31 +207,56 @@ import { getCountryLabel } from 'meteor/erikdakoda:vulcan-material-ui';
 </Typography>
 ```
 
+## MuiSuggest
+
+**MuiSuggest** is a base control that you can use to build custom autosuggest controls. Refer to **CountrySelect** for an example.
+
+You can use the following additional props:
+
+| Property              | Type   | Description  |
+| --------------------- | ------ | ------------ |
+| `limitToList`         | bool   | Don't allow values that are not in the options |
+| `disableText`         | bool   | Don't allow editing of the text |
+| `disableSelectOnBlur` | bool   | When you blur (tab or click away) the suggest, the highlighted option is selected... unless this is true |
+| `showAllOptions`      | bool   | When typing show all options, not just matching ones |
+| `disableMatchParts`   | bool   | Prevent highlighting of matched sub-strings |
+| `autoComplete`        | string | Autocomplete is turned off by default |
+
+In addition, the `options` that you pass to any select control have additional properties supported by **MuiSuggest**:
+
+| Property              | Type   | Description  |
+| --------------------- | ------ | ------------ |
+| `label`         | string           | The option's text label (standard) |
+| `value`         | string \| number | The options's value (standard) |
+| `iconComponent` | node             | An icon to put to the left of the label (optional) |
+| `formatted`     | node \| func     | Instead of just an icon, you can pass a component for each options for (optional) |
+| `onClick`       | func             | Instead of selecting the option, your onClick handler can do something else, like open an modal to edit the options (optional) |
+
 
 ## TooltipButton
 
 **TooltipButton** is an easy way to add icons, icon buttons, buttons, and static elements with a tooltip. It takes intl string IDs for easy localization.
 
-| Property    | Type    | Description  |
-| ----------- | ------- | ------------ |
-| title       | node    | Popover title as a string or a node |
-| titleId     | string  | Popover title as an intl string ID |
-| titleValues | object  | Values for the intl string |
-| label       | node    | Button label as a string or node |
-| labelId     | string  | Button label as an intl string ID |
-| type        | enum    | `simple`, `fab`, `button`, `submit`, `icon` |
-| size        | enum    | `icon`, `xsmall`, `small`, `medium`, `large` |
-| variant     | enum    | `text`, `outlined`, `contained` |
-| placement   | enum    | Tooltip placement: `bottom-end`, `bottom-start`, `bottom`, `left-end`, `left-start`, `left`, `right-end`, `right-start`, `right`, `top-end`, `top-start`, `top` |
-| icon        | node    | Icon element or component name |
-| loading     | bool    | When true, a loading spinner will be displayed |
-| disabled    | bool    | When true, the button will be disabled |
-| className   | string  | Class name for the element root |
-| classes     | object  | Classes to override the defaults |
-| buttonRef   | func    | Function for grabbing the a reference to the button |
-| enterDelay  | number  | Tooltip enter delay |
-| leaveDelay  | number  | Tooltip leave delay |
-| parent      | enum    | Set parent to `popover` if the button's parent is a popover to increase the z-index of the tooltip |
-| children    | node    | You can optionally render arbitrary content (instead of a button) |
+| Property      | Type    | Description  |
+| ------------- | ------- | ------------ |
+| `title`       | node    | Popover title as a string or a node |
+| `titleId`     | string  | Popover title as an intl string ID |
+| `titleValues` | object  | Values for the intl string |
+| `label`       | node    | Button label as a string or node |
+| `labelId`     | string  | Button label as an intl string ID |
+| `type`        | enum    | `simple`, `fab`, `button`, `submit`, `icon` |
+| `size`        | enum    | `icon`, `xsmall`, `small`, `medium`, `large` |
+| `variant`     | enum    | `text`, `outlined`, `contained` |
+| `placement`   | enum    | Tooltip placement: `bottom-end`, `bottom-start`, `bottom`, `left-end`, `left-start`, `left`, `right-end`, `right-start`, `right`, `top-end`, `top-start`, `top` |
+| `icon`        | node    | Icon element or component name |
+| `loading`     | bool    | When `true`, a loading spinner will be displayed and the button will be disabled |
+| `disabled`    | bool    | When `true`, the button will be disabled, when `false` it will be enabled even when loading is `true` |
+| `className`   | string  | Class name for the element root |
+| `classes`     | object  | Classes to override the defaults |
+| `buttonRef`   | func    | Function for grabbing the a reference to the button |
+| `enterDelay`  | number  | Tooltip enter delay |
+| `leaveDelay`  | number  | Tooltip leave delay |
+| `parent`      | enum    | Set parent to `popover` if the button's parent is a popover to increase the z-index of the tooltip |
+| `children`    | node    | You can optionally render arbitrary content (instead of a button) |
 
 See the Storybook example by running the script `storybook-material`.

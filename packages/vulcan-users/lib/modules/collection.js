@@ -1,7 +1,8 @@
 import schema from './schema.js';
-import mutations from './mutations.js';
-import resolvers from './resolvers.js';
-import { createCollection, addGraphQLQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+
+// check if user is mutating their own user document
+const isCurrentUser = ({ user, document }) => user._id === document._id;
 
 /**
  * @summary Vulcan Users namespace
@@ -17,14 +18,19 @@ export const Users = createCollection({
 
   schema,
 
-  resolvers,
+  resolvers: getDefaultResolvers({ typeName: 'User' }),
 
-  mutations,
+  mutations: getDefaultMutations({ typeName: 'User' }),
 
-  description: 'A user object'
+  description: 'A user object',
+
+  permissions: {
+    canRead: ['guests'],
+    canCreate: ['admins'], // non-admins have to create new users by signing up 
+    canUpdate: isCurrentUser,
+    canDelete: isCurrentUser
+  }
 
 });
-
-addGraphQLQuery('currentUser: User');
 
 export default Users;
