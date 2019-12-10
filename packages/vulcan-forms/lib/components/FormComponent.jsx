@@ -77,6 +77,7 @@ class FormComponent extends Component {
       'date',
       'time',
       'text',
+      'password',
     ].includes(inputType);
     return !isStandardInput;
   };
@@ -230,6 +231,9 @@ class FormComponent extends Component {
       switch (inputType) {
         case 'text':
           return FormComponents.FormComponentDefault;
+
+        case 'password':
+          return FormComponents.FormComponentPassword;
 
         case 'number':
           return FormComponents.FormComponentNumber;

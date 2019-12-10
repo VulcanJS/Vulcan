@@ -68,6 +68,7 @@ const formComponents = [
   },
   { name: 'FormComponentDefault' },
   { name: 'FormComponentText' },
+  { name: 'FormComponentPassword' },
   {
     name: 'FormComponentEmail',
     props: {
