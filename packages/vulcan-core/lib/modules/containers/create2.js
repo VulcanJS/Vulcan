@@ -83,6 +83,16 @@ export const multiQueryUpdater = ({
   });
 };
 
+const buildResult = (options, resolverName, executionResult) => {
+  const { data } = executionResult;
+  const propertyName = options.propertyName || 'document';
+  const props = {
+    ...executionResult,
+    [propertyName]: data && data[resolverName] && data[resolverName].data,
+  };
+  return props;
+};
+
 export const useCreate2 = (options) => {
   const { mutationOptions = {} } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -100,7 +110,12 @@ export const useCreate2 = (options) => {
   });
 
   // so the syntax is useCreate({collection: ...}, {data: ...})
-  const extendedCreateFunc = (args) => createFunc({ variables: { data: args.data } });
+  const extendedCreateFunc = async (args) => {
+    const executionResult = await createFunc({
+      variables: { data: args.data },
+    });
+    return buildResult(options, resolverName, executionResult);
+  };
   return [extendedCreateFunc, ...rest];
 };
 
