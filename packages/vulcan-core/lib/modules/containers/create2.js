@@ -50,8 +50,8 @@ export const multiQueryUpdater = ({
   fragment,
   fragmentName,
   collection,
-  resolverName,
 }) => async (cache, { data }) => {
+  const resolverName = `create${typeName}`;
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
@@ -102,10 +102,8 @@ export const useCreate2 = (options) => {
 
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
 
-  const resolverName = `create${typeName}`;
-
   const [createFunc, ...rest] = useMutation(query, {
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
     ...mutationOptions
   });
 
@@ -114,6 +112,7 @@ export const useCreate2 = (options) => {
     const executionResult = await createFunc({
       variables: { data: args.data },
     });
+    const resolverName = `create${typeName}`;
     return buildResult(options, resolverName, executionResult);
   };
   return [extendedCreateFunc, ...rest];
