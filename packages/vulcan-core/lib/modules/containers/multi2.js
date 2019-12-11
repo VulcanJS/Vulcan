@@ -107,7 +107,7 @@ const buildResult = (
 ) => {
   //console.log('returnedProps', returnedProps);
   const { refetch, networkStatus, error, fetchMore, data } = returnedProps;
-  // results = Utils.convertDates(collection, props.data[listResolverName]),
+  // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
   const results = data && data[resolverName] && data[resolverName].results;
   const totalCount = data && data[resolverName] && data[resolverName].totalCount;
   // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
@@ -153,7 +153,7 @@ const buildResult = (
       const newInput = providedInput || {
         ...paginationInput,
         offset: results.length,
-      }
+      };
 
       return fetchMore({
         variables: { input: newInput },

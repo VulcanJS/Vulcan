@@ -8,6 +8,7 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 - See migration article from [Vulcan Blog](https://blog.vulcanjs.org/)
 - `serverTimezoneOffset` object is no longer injected in the head during SSR. Use `import { InjectData} from 'meteor/vulcan:lib; ...; await InjectData.getData("utcOffset");` instead. The value is the reverse from `getTimezoneOffset`, see [Moment doc](https://momentjscom.readthedocs.io/en/latest/moment/03-manipulating/09-utc-offset/)
+- `validateModifier` takes `data` as the second param (`validateModifier(modifier, data, document)` instead of `validateModifier(modifier, document)`)
 
 ### Material UI
 - Update to v4 `meteor npm i --save-exact @material-ui/core@4.5.1`

@@ -1,5 +1,6 @@
 /**
- * Helpers for Simple Schema
+ * Helpers specific to Simple Schema
+ * See "schema_utils" for more generic methods
 */
 
 // remove ".$" at the end of array child fieldName
@@ -20,3 +21,16 @@ export const hasAllowedValues = field => {
 
 
 export const isBlackbox = (field) => field.type.definitions[0].blackbox;
+
+export const getFieldType = field => field.type.singleType;
+export const getFieldTypeName = fieldType =>
+    typeof fieldType === 'object'
+        ? 'Object'
+        : typeof fieldType === 'function'
+            ? fieldType.name
+            : fieldType;
+
+export const getArrayChild = (fieldName, schema) => schema[`${fieldName}.$`];
+
+export const getNestedSchema = field => field.type.singleType._schema;
+
