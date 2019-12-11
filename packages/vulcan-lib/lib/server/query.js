@@ -37,8 +37,10 @@ export const runGraphQL = async (query, variables = {}, context) => {
     queryContext[collection.options.collectionName] = collection;
   });
 
+  const fullQueryContext = merge({}, queryContext, GraphQLSchema.context);
+
   // see http://graphql.org/graphql-js/graphql/#graphql
-  const result = await graphql(executableSchema, query, {}, queryContext, variables);
+  const result = await graphql(executableSchema, query, {}, fullQueryContext, variables);
 
   if (result.errors) {
     // eslint-disable-next-line no-console
