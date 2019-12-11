@@ -43,7 +43,7 @@ export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
 );
 
 // remove value from the cached lists
-const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
+export const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
   const multiResolverName = collection.options.multiResolverName;
   const deleteResolverName = `delete${typeName}`;
   return (cache, { data }) => {
