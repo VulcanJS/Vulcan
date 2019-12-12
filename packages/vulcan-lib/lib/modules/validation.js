@@ -16,20 +16,21 @@ export const modifierToData = modifier => ({
 
 /**
  * Validate a document permission recursively
- * @param {*} document document to validate (can be partial in case of update or recursive call)
+ * @param {*} fullDocument (must not be partial since permission logic may rely on full document)
+ * @param {*} documentToValidate document to validate
  * @param {*} schema Simple schema
  * @param {*} context Current user and Users collectionœ
  * @param {*} mode create or update
  * @param {*} currentPath current path for recursive calls (nested, nested[0].foo, ...)
  */
-const validateDocumentPermissions = (document, schema, context, mode = 'create', currentPath = '') => {
+const validateDocumentPermissions = (fullDocument, documentToValidate, schema, context, mode = 'create', currentPath = '') => {
   let validationErrors = [];
   const { Users, currentUser } = context;
-  forEachDocumentField(document, schema,
+  forEachDocumentField(documentToValidate, schema,
     ({ fieldName, fieldSchema, currentPath, isNested }) => {
       if (isNested && mode === 'create' ? !fieldSchema.canCreate : !fieldSchema.canUpdate) return; // ignore nested without permission
       if (!fieldSchema
-        || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, document))
+        || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, fullDocument))
       ) {
         validationErrors.push({
           id: 'errors.disallowed_property_detected',
@@ -57,7 +58,7 @@ export const validateDocument = (document, collection, context) => {
 
   // validate creation permissions (and other Vulcan-specific constraints)
   validationErrors = validationErrors.concat(
-    validateDocumentPermissions(document, schema, context, 'create')
+    validateDocumentPermissions(document, document, schema, context, 'create')
   );
 
   // run simple schema validation (will check the actual types, required fields, etc....)
@@ -106,7 +107,7 @@ export const validateModifier = (modifier, data, document, collection, context) 
 
   // 1. check that the current user has permission to edit each field
   validationErrors = validationErrors.concat(
-    validateDocumentPermissions(data, schema, context, 'update')
+    validateDocumentPermissions(document, data, schema, context, 'update')
   );
 
   // 2. run SS validation
