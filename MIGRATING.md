@@ -4,6 +4,9 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 ## NEXT
 
+- Update React-Router to v5+. Versions must match exactly between react-router and react-router-dom `npm i --save-exact react-router@5.0.1 react-router-dom@5.0.1`. Note: v4 to v5 is supposed to be a minor update so there are not many breaking changes.
+- Optionally update react-router-bootstrap to v0.25.0 `npm i --save-exact react-router-bootstrap@0.25.0`
+
 ## From 1.13.5 to 1.14
 
 - See migration article from [Vulcan Blog](https://blog.vulcanjs.org/)
@@ -20,7 +23,6 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 - `npm install apollo-utilities` (to run tests)
 - Replace `Users.getViewableFields` by `Users.getReadableProjection` 
-
 
 ## From 1.13.2 to 1.13.3
 
