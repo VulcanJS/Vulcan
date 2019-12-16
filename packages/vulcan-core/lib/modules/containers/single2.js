@@ -82,13 +82,12 @@ const buildResult = (
     [propertyName]: data && data[resolverName] && data[resolverName].result,
     fragmentName,
     fragment,
-    data
+    data,
+    error
   };
   if (error) {
     // eslint-disable-next-line no-console
     console.log(error);
-    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-    props.error = error.graphQLErrors[0];
   }
   return props;
 };
