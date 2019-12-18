@@ -6,11 +6,11 @@ const Head = () => {
   //@see https://github.com/nfl/react-helmet/releases/tag/5.0.0
   const helmet = Helmet.renderStatic();
   return (
-    <head>
+    <React.Fragment>
       {helmet.title.toComponent()}
       {helmet.meta.toComponent()}
       {helmet.link.toComponent()}
-    </head>
+    </React.Fragment>
   );
 };
 export default Head;
