@@ -109,13 +109,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
 
     //add the headers to the context
     context.headers = headers;
-    // add a relevant infos from the request (eg connection adress to get the IP)
-    context.req = {};
-    if (req.connection) {
-      context.req.connection = {
-        remoteAddress: req.connection.remoteAddress
-      };
-    }
+    // pass the whole req for advanced usage, like fetching IP from connection
+    context.req = req;
 
     // if apiKey is present, assign "fake" currentUser with admin rights
     if (headers.apikey && headers.apikey === getSetting('vulcan.apiKey')) {
