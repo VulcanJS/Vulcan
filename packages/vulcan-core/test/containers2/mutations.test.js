@@ -99,6 +99,40 @@ describe('vulcan:core/container/mutations2', () => {
         })
     })
 
+    describe('create', () => {
+
+        test('run a create mutation', async () => {
+            const CreateComponent = withCreate2(defaultOptions)(TestComponent);
+            const responses = [{
+                request: {
+                    query: buildCreateQuery({ fragmentName, fragment, typeName }),
+                    variables: {
+                        data: rawFoo
+                    }
+                },
+                result: {
+                    data: {
+                        createFoo: {
+                            data: foo,
+                            __typename: 'Foo'
+                        },
+                    }
+                }
+            }];
+            const wrapper = mount(
+                <MockedProvider mocks={responses}>
+                    <CreateComponent />
+                </MockedProvider>
+            );
+            // trigger the query
+            expect(wrapper.find(TestComponent).prop('createFoo')).toBeInstanceOf(Function);
+            const res = await wrapper.find(TestComponent).prop('createFoo')({
+                data: rawFoo
+            });
+            expect(res).toMatchObject({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
+        });
+    })
+
     describe('update', () => {
         test('run update mutation', async () => {
             const UpdateComponent = withUpdate2(defaultOptions)(TestComponent)

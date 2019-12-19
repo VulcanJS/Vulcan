@@ -1,16 +1,8 @@
-import React from 'react';
-import {
-    withCreate2,
-    useCreate2,
-} from '../../lib/modules';
 import {
     multiQueryUpdater,
-    buildCreateQuery,
 } from '../../lib/modules/containers/create2'
-import { MockedProvider, createDummyCollection } from 'meteor/vulcan:test';
-import { mount } from 'enzyme';
+import { createDummyCollection } from 'meteor/vulcan:test';
 import expect from 'expect';
-import gql from 'graphql-tag';
 import sinon from 'sinon'
 
 const test = it;
@@ -39,50 +31,11 @@ describe('vulcan:core/container/mutations2', () => {
       }`
     };
 
-    const rawFoo = { hello: 'world' };
-    const fooUpdate = { _id: 1, hello: 'world' };
     const foo = { _id: 1, hello: 'world', __typename: 'Foo' };
-    const TestComponent = () => 'test';
-    const defaultOptions = {
-        collection: Foo,
-        fragmentName: fragmentName,
-        fragment
-    };
-    describe('withCreate', () => {
-        // NOT passing for no reason...
-        // @see https://github.com/apollographql/react-apollo/issues/3478
-        test('run a create mutation', async () => {
-            const CreateComponent = withCreate2(defaultOptions)(TestComponent);
-            const responses = [{
-                request: {
-                    query: buildCreateQuery({ fragmentName, fragment, typeName }),
-                    variables: {
-                        data: rawFoo
-                    }
-                },
-                result: {
-                    data: {
-                        createFoo: {
-                            data: foo,
-                            __typename: 'Foo'
-                        },
-                    }
-                }
-            }];
-            const wrapper = mount(
-                <MockedProvider mocks={responses}>
-                    <CreateComponent />
-                </MockedProvider>
-            );
-            // trigger the query
-            expect(wrapper.find(TestComponent).prop('createFoo')).toBeInstanceOf(Function);
-            const res = await wrapper.find(TestComponent).prop('createFoo')({
-                data: rawFoo
-            });
-            expect(res).toEqual({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
-        });
 
-        describe('multiQuery update after create mutation for optimistic UI', () => {
+    describe('multiQuery update after mutations', () => {
+
+        describe('update after a document creation', () => {
             const defaultOptions = {
                 typeName, fragment, fragmentName,
                 collection: Foo,
@@ -110,28 +63,29 @@ describe('vulcan:core/container/mutations2', () => {
                 }
                 )
             })
+
             test('add document to multi query after a creation', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
-
-                const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
-                    writeQuery,
+                    //writeQuery, // we write to the client instead
                     data: defaultCacheData
                 }
-                await update(cache, {
+                const updates = await update(cache, {
                     data: {
                         createFoo: {
                             data: foo
                         }
                     }
                 })
-                expect(writeQuery.calledOnce).toBe(true)
+                expect(updates).toHaveLength(1)
+                expect(updates[0].data).toEqual({
+                    'foos': { results: [foo], totalCount: 1 }
+                })
             })
             test('update document if already there', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
-                const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => ({
                         ...defaultCacheContent,
@@ -140,29 +94,26 @@ describe('vulcan:core/container/mutations2', () => {
                             totalCount: 1
                         }
                     }),
-                    writeQuery,
                     data: defaultCacheData
                 }
                 const updateFoo = { ...foo, UPDATED: true }
-                await update(cache, {
+                const updates = await update(cache, {
                     data: {
                         createFoo: {
                             data: updateFoo
                         }
                     }
                 })
-                expect(writeQuery.calledOnce).toBe(true)
-                expect(writeQuery.getCall(0).args[0]).toMatchObject({
-                    data: { 'foos': { results: [updateFoo], totalCount: 1 } }
+                expect(updates).toHaveLength(1)
+                expect(updates[0].data).toMatchObject({
+                    'foos': { results: [updateFoo], totalCount: 1 }
                 })
             })
             test('do not add document if it does not match the mongo selector of the query', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
-                const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
-                    writeQuery,
                     data: makeCacheData({
                         input: {
                             filter: { val: { _gt: 42 } }
@@ -170,22 +121,20 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 41 }
-                await update(cache, {
+                const updates = await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
                         }
                     },
                 })
-                expect(writeQuery.notCalled).toBe(true)
+                expect(updates).toHaveLength(0)
             })
             test('add document if it does match the mongo selector', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
-                const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => defaultCacheContent,
-                    writeQuery,
                     data: makeCacheData({
                         input: {
                             filter: { val: { _gt: 42 } }
@@ -193,19 +142,18 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 46 }
-                await update(cache, {
+                const updates = await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
                         }
                     }
                 })
-                expect(writeQuery.calledOnce).toBe(true)
+                expect(updates).toHaveLength(1)
             })
             test('sort documents', async () => {
                 const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' })
 
-                const writeQuery = sinon.spy()
                 const cache = {
                     readQuery: () => ({
                         foos: {
@@ -213,7 +161,6 @@ describe('vulcan:core/container/mutations2', () => {
                             totalCount: 2
                         }
                     }),
-                    writeQuery,
                     data: makeCacheData({
                         input: {
                             sort: {
@@ -223,16 +170,16 @@ describe('vulcan:core/container/mutations2', () => {
                     })
                 }
                 const newFoo = { ...foo, val: 42 }
-                await update(cache, {
+                const updates = await update(cache, {
                     data: {
                         createFoo: {
                             data: newFoo
                         }
                     }
                 })
-                const res = writeQuery.getCall(0).args[0].data.foos.results
-                expect(res).toHaveLength(3)
-                expect(res[1]).toEqual(newFoo)
+                expect(updates).toHaveLength(1)
+                expect(updates[0].data.foos.results).toHaveLength(3)
+                expect(updates[0].data.foos.results[1]).toEqual(newFoo)
             })
         })
     });
