@@ -62,7 +62,10 @@ DatatableContentsStories
         );
     })
     .add('DatatableContents - loading', () => (
-        <Components.DatatableContents loading={true} />
+        <Components.DatatableContents
+          {...defaultProps.DatatableContents}
+          loading={true}
+        />
     ))
     .add('DatatableContents - error', () => (
         <Components.DatatableContents

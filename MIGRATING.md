@@ -4,6 +4,8 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 ## NEXT
 
+- `single2` hoc and hooks will return the whole `error` object, not just `error.graphQLErrors[0]`. This will help catching network errors too.
+
 ## From 1.13.5 to 1.14
 
 - See migration article from [Vulcan Blog](https://blog.vulcanjs.org/)
