@@ -150,9 +150,9 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  mergeWith({}, collection.options, options, 
-    function(a, b) {
-      if (_.isArray(a)) {
+  collection.options = mergeWith({}, collection.options, options, 
+    (a, b) => {
+      if (Array.isArray(a)) {
         return b.concat(a);
       }
     }
