@@ -150,7 +150,13 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
+  export const extendCollection = (collection, options) => {
+  if (!collection.options.customFilters) collection.options.customFilters = [];
+  if (!options.customFilters) options.customFilters = [];
+  const mergedCustomFilters = collection.options.customFilters.concat(options.customFilters);
   collection.options = merge({}, collection.options, options);
+  collection.options.customFilters = mergedCustomFilters;
+};
 };
 
 /*
