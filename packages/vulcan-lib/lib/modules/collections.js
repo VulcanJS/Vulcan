@@ -10,7 +10,7 @@ import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } fr
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
 import _omit from 'lodash/omit';
-import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import { isCollectionType } from './schema_utils.js';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
@@ -150,7 +150,13 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = merge({}, collection.options, options);
+  collection.options = mergeWith({}, collection.options, options, 
+    (a, b) => {
+      if (Array.isArray(a)) {
+        return b.concat(a);
+      }
+    }
+  );
 };
 
 /*
