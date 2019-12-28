@@ -114,6 +114,22 @@ export const useCreate2 = (options) => {
 
   const query = buildCreateQuery({ typeName, fragmentName, fragment });
 
+  const resolverName = `create${typeName}`;
+
+  const originalUpdate = options.mutationOptions && options.mutationOptions.update;
+  if (originalUpdate) {
+    const propertyName = options.propertyName || 'document';
+    const extendedUpdateFunc = (cache, executionResult) => {
+      const {data} = executionResult;
+      executionResult.extensions = {
+        ...executionResult.extensions,
+        [propertyName]: data && data[resolverName] && data[resolverName].data,
+      }
+      return originalUpdate(cache, executionResult);
+    }
+    options.mutationOptions.update = extendedUpdateFunc;
+  }
+
   const [createFunc, ...rest] = useMutation(query, {
     update: multiQueryUpdater({ typeName, fragment, fragmentName, collection }),
     ...mutationOptions
@@ -124,7 +140,6 @@ export const useCreate2 = (options) => {
     const executionResult = await createFunc({
       variables: { data: args.data },
     });
-    const resolverName = `create${typeName}`;
     return buildResult(options, resolverName, executionResult);
   };
   return [extendedCreateFunc, ...rest];
