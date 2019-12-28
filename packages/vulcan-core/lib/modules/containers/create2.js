@@ -105,6 +105,18 @@ const buildResult = (options, resolverName, executionResult) => {
   return props;
 };
 
+const extendUpdateFunc = (originalUpdate, options, resolverName) => {
+  const propertyName = options.propertyName || 'document';
+  return (cache, executionResult) => {
+    const {data} = executionResult;
+    executionResult.extensions = {
+      ...executionResult.extensions,
+      [propertyName]: data && data[resolverName] && data[resolverName].data,
+    }
+    return originalUpdate(cache, executionResult);
+  }
+}
+
 export const useCreate2 = (options) => {
   const { mutationOptions = {} } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
@@ -116,10 +128,13 @@ export const useCreate2 = (options) => {
 
   const resolverName = `create${typeName}`;
 
-  const [createFunc, ...rest] = useMutation(query, {
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
-    ...mutationOptions
-  });
+  if (mutationOptions.update) {
+    mutationOptions.update = extendUpdateFunc(mutationOptions.update, options, resolverName);
+  } else {
+    mutationOptions.update = multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName });
+  }
+
+  const [createFunc, ...rest] = useMutation(query, mutationOptions);
 
   // so the syntax is useCreate({collection: ...}, {data: ...})
   const extendedCreateFunc = async (args) => {
