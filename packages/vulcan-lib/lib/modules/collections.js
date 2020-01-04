@@ -35,7 +35,7 @@ export const getCollection = name => {
 
 export const getCollectionByTypeName = typeName => {
   // in case typeName is for an array ('[User]'), get rid of brackets
-  let parsedTypeName = typeName.replace('[', '').replace(']', '');
+  let parsedTypeName = typeName.replace('[', '').replace(']', '').replace(/!/g, '');
   const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
   if (!collection) {
     throw new Error(`Could not find collection for type “${typeName}”`);
