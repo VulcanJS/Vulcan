@@ -37,6 +37,8 @@ import {
 } from 'meteor/vulcan:lib';
 import { computeQueryVariables } from './variables';
 
+import { multiQueryUpdater } from './create';
+
 export const buildUpdateQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
     ${updateClientTemplate({ typeName, fragmentName })}
@@ -58,6 +60,7 @@ export const useUpdate2 = (options) => {
   const [updateFunc, ...rest] = useMutation(query, {
     // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
     errorPolicy: 'all',
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName: `update{typeName}` }),
     ...mutationOptions
   });
 
