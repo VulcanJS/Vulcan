@@ -60,7 +60,7 @@ export const useUpdate2 = (options) => {
   const [updateFunc, ...rest] = useMutation(query, {
     // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
     errorPolicy: 'all',
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName: `update{typeName}` }),
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName: `update${typeName}` }),
     ...mutationOptions
   });
 
