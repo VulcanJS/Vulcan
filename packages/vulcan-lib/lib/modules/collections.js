@@ -150,13 +150,17 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = mergeWith({}, collection.options, options, 
-    (a, b) => {
-      if (Array.isArray(a)) {
-        return b.concat(a);
-      }
+  collection.options = mergeWith({}, collection.options, options, (a, b) => {
+    if (Array.isArray(a) && Array.isArray(b)) {
+      return a.concat(b);
     }
-  );
+    if (Array.isArray(a) && b) {
+      return a.concat([b]);
+    }
+    if (Array.isArray(b) && a) {
+      return b.concat([a]);
+    }
+  });
 };
 
 /*
