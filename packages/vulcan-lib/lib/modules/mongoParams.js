@@ -35,6 +35,7 @@ const conversionTable = {
   _lte: '$lte',
   _neq: '$ne',
   _nin: '$nin',
+  _is_null: value => ({ $exists: !value}),
   _is: value => value,
   _arrayContains: value => value,
   asc: 1,
