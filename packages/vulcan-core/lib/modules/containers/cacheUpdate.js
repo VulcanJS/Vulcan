@@ -107,7 +107,7 @@ export const addToData = ({ queryResult, resolverName, document, sort, selector 
     };
 };
 
-export const addToDataSingle = (({ queryResult, resolverName, document }) => {
+export const addToDataSingle = ({ queryResult, resolverName, document }) => {
   const queryData = queryResult[resolverName];
 
   return {
