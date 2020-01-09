@@ -1005,7 +1005,7 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   getFormProps = () => ({
-    className: 'document-' + this.getFormType(),
+    className: `document-${this.getFormType()}-${this.props.typeName.toLowerCase()}`,
     id: this.props.id,
     onSubmit: this.submitForm,
     onKeyDown: this.formKeyDown,
