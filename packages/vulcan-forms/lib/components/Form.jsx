@@ -1004,15 +1004,20 @@ class SmartForm extends Component {
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //
 
-  getFormProps = () => ({
-    className: `document-${this.getFormType()}-${this.props.typeName.toLowerCase()}`,
-    id: this.props.id,
-    onSubmit: this.submitForm,
-    onKeyDown: this.formKeyDown,
-    ref: e => {
-      this.form = e;
-    },
-  });
+  getFormProps = () => {
+    const docClassName = `document-${this.getFormType()}`
+    const typeName = this.props.typeName.toLowerCase()
+
+    return {
+      className: `${docClassName} ${docClassName}-${typeName}`,
+      id: this.props.id,
+      onSubmit: this.submitForm,
+      onKeyDown: this.formKeyDown,
+      ref: e => {
+        this.form = e;
+      },
+    }
+  };
 
   getFormErrorsProps = () => ({
     errors: this.state.errors,
