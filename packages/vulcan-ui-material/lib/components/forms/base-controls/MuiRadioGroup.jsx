@@ -59,6 +59,9 @@ const styles = theme => ({
   line: {
     marginBottom: '12px',
   },
+  label: {
+    marginBottom: '0px',
+  },
   inputDisabled: {},
 });
 
@@ -114,6 +117,7 @@ const MuiRadioGroup = createReactClass({
             />
           }
           className={this.props.classes.line}
+          classes={{ label: this.props.classes.label }}
           label={radio.label}
         />
       );
