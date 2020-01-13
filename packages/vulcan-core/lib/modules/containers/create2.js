@@ -117,11 +117,11 @@ const extendUpdateFunc = (originalUpdate, options, resolverName) => {
   const propertyName = options.propertyName || 'document';
   return (cache, executionResult) => {
     const {data} = executionResult;
-    executionResult.extensions = {
-      ...executionResult.extensions,
+    const resultWithDocument = {
+      ...executionResult,
       [propertyName]: data && data[resolverName] && data[resolverName].data,
     }
-    return originalUpdate(cache, executionResult);
+    return originalUpdate(cache, resultWithDocument);
   }
 }
 
