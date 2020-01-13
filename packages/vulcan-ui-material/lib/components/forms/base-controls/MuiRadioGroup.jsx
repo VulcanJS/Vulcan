@@ -22,6 +22,7 @@ const styles = theme => ({
   },
   twoColumn: {
     display: 'block',
+
     [theme.breakpoints.down('md')]: {
       '& > label': {
         marginRight: theme.spacing(5),
@@ -35,6 +36,26 @@ const styles = theme => ({
   },
   threeColumn: {
     display: 'block',
+
+    [theme.breakpoints.down('xs')]: {
+      '& > label': {
+        marginRight: theme.spacing(5),
+      },
+    },
+
+    [theme.breakpoints.up('sm')]: {
+      '& > label': {
+        width: '48%',
+      },
+    },
+    [theme.breakpoints.up('md')]: {
+      '& > label': {
+        width: '32%',
+      },
+    },
+  },
+  fiveColumn: {
+    display: 'block',
     [theme.breakpoints.down('xs')]: {
       '& > label': {
         marginRight: theme.spacing(5),
@@ -42,12 +63,65 @@ const styles = theme => ({
     },
     [theme.breakpoints.up('xs')]: {
       '& > label': {
-        width: '49%',
+        width: '38%',
+      },
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& > label': {
+        width: '32%',
       },
     },
     [theme.breakpoints.up('md')]: {
       '& > label': {
+        width: '19%',
+      },
+    },
+  },
+  eightColumn: {
+    display: 'block',
+
+    [theme.breakpoints.down('xs')]: {
+      '& > label': {
+        marginRight: theme.spacing(1),
+      },
+    },
+    [theme.breakpoints.up('xs')]: {
+      '& > label': {
+        width: '49%',
+      },
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& > label': {
         width: '32%',
+      },
+    },
+    [theme.breakpoints.up('md')]: {
+      '& > label': {
+        width: '12%',
+      },
+    },
+  },
+  tenColumn: {
+    display: 'block',
+
+    [theme.breakpoints.down('xs')]: {
+      '& > label': {
+        marginRight: theme.spacing(1),
+      },
+    },
+    [theme.breakpoints.up('xs')]: {
+      '& > label': {
+        width: '24%',
+      },
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& > label': {
+        width: '14%',
+      },
+    },
+    [theme.breakpoints.up('md')]: {
+      '& > label': {
+        width: '9%',
       },
     },
   },
@@ -128,7 +202,27 @@ const MuiRadioGroup = createReactClass({
       0
     );
 
-    let columnClass = maxLength < 18 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';
+
+    const getColumnClass = maxLength => {
+      if (maxLength < 3) {
+        return 'tenColumn';
+      }
+      if (maxLength < 7) {
+        return 'eightColumn';
+      }
+      if (maxLength < 12) {
+        return 'fiveColumn';
+      }
+      if (maxLength < 18) {
+        return 'threeColumn';
+      }
+      if (maxLength < 30) {
+        return 'twoColumn';
+      }
+    };
+
+    let columnClass = getColumnClass(maxLength);
+
     if (this.props.type === 'inline') columnClass = 'inline';
 
     return (
