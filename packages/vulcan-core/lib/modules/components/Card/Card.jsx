@@ -95,8 +95,15 @@ const Card = ({ title, className, collection, document, currentUser, fields, sho
     canUpdate = check && check(currentUser, document, { Users });
   }
 
+  const collectionName = `datacard-${collection.typeName.toLowerCase()}`
+  const semantizedClassName = classNames(
+    className,
+    'datacard',
+    collection && collectionName,
+    document && collection && `${collectionName}-${document._id}`);
+
   return (
-    <div className={classNames(className, 'datacard', collection && `datacard-${collection._name}`)}>
+    <div className={semantizedClassName}>
       {title && <div className="datacard-title">{title}</div>}
       <table className="table table-bordered" style={{ maxWidth: '100%' }}>
         <tbody>
