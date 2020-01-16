@@ -1,0 +1,43 @@
+import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { registerComponent } from 'meteor/vulcan:lib';
+
+const styleSide = {
+  zIndex: 1,
+  top: 0,
+  left: 0,
+  paddingTop: '60px',
+  height: '100vh',
+  overflowX: 'hidden'
+}
+
+const styleSideClose = {
+  width : 0,
+  display: 'none',
+  position: 'fixed'
+}
+
+const styleSideOpen = {
+  width : 'auto',
+  display: 'block',
+  position: 'relative'
+}
+
+const VerticalMenuLayout = ({side, main, open}) => {
+  const style = open ? { ...styleSide, ...styleSideOpen } : { ...styleSide, ...styleSideClose }
+
+  console.log(style)
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col sm="auto" xs="auto" style={style}>{side}</Col>
+        <Col style={{whiteSpace: 'nowrap', overflow: 'auto', height: '100vh'}}>{main}</Col>
+      </Row>
+    </Container>
+  )
+}
+
+registerComponent('VerticalMenuLayout', VerticalMenuLayout);

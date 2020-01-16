@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState} from 'react';
 import {
   getAuthorizedMenuItems,
   menuItemProps,
   registerComponent,
   withCurrentUser,
+  Components,
 } from 'meteor/vulcan:core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -37,14 +38,51 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
+
 const Layout = ({ children, currentUser }) => {
+  const [open, setOpen] = useState(true)
+
   const backofficeMenuItems = getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
+
+  const side = (
+    <React.Fragment>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+    </React.Fragment>
+  );
   return (
     <div>
-      <div>
-        <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      </div>
-      <div>{children}</div>
+      <button onClick={() => { setOpen(!open); console.log(open) }}>Burger menu</button>
+      <Components.VerticalMenuLayout side={side} main={children} open={open} />
     </div>
   );
 };

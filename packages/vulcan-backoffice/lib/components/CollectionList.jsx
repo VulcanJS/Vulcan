@@ -7,7 +7,9 @@
 import React from 'react';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 
-export const CollectionList = props => <Components.Datatable {...props} />;
+export const CollectionList = props => {
+  return <Components.Datatable collection={props.collection} />;
+}
 
 export default CollectionList;
 registerComponent({
