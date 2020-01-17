@@ -19,6 +19,10 @@
       "apiKey": "foo123"
     },
 
+    "backoffice": {
+      "enabled": true
+    },
+
     "apolloSsr": {
       "disable": false
     }

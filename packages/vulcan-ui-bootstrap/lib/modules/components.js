@@ -27,3 +27,5 @@ import '../components/ui/ModalTrigger.jsx';
 import '../components/ui/TooltipTrigger.jsx';
 import '../components/ui/Dropdown.jsx';
 import '../components/ui/Table.jsx';
+
+import '../components/layout/VerticalMenuLayout.jsx';
