@@ -4,9 +4,10 @@ import {
   Components,
   replaceComponent,
   withCurrentUser,
-  withMulti,
   Utils,
+  withMulti
 } from 'meteor/vulcan:core';
+import compose from 'recompose/compose';
 import { intlShape } from 'meteor/vulcan:i18n';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Table from '@material-ui/core/Table';
@@ -23,6 +24,7 @@ import Typography from '@material-ui/core/Typography';
 import { getFieldValue } from './Card';
 import _assign from 'lodash/assign';
 import classNames from 'classnames';
+import { getCollection } from 'meteor/vulcan:lib'
 
 /*
 
@@ -132,14 +134,16 @@ class Datatable extends PureComponent {
         />
       );
     } else {
-      const { className, collection, options, showSearch, showNew, classes } = this.props;
+      const { className, options, showSearch, showNew, classes } = this.props;
+
+      const collection = this.props.collection || getCollection(this.props.collectionName);
 
       const listOptions = {
         collection: collection,
         ...options,
       };
 
-      const DatatableWithMulti = withMulti(listOptions)(Components.DatatableContents);
+      const DatatableWithMulti = compose(withMulti(listOptions))(Components.DatatableContents);
 
       // add _id to orderBy when we want to sort a column, to avoid breaking the graphql() hoc;
       // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
@@ -250,6 +254,30 @@ replaceComponent('DatatableContentsInnerLayout', DatatableContentsInnerLayout);
 DatatableContents Component
 
 */
+
+const wrapColumns = c => ({ name: c });
+
+const getColumns = (columns, results, data) => {
+  if (columns) {
+    // convert all columns to objects
+    const convertedColums = columns.map(column =>
+      typeof column === 'object' ? column : { name: column }
+    );
+    const sortedColumns = _sortBy(convertedColums, column => column.order);
+    return sortedColumns;
+  } else if (results && results.length > 0) {
+    // if no columns are provided, default to using keys of first array item
+    return Object.keys(results[0])
+      .filter(k => k !== '__typename')
+      .map(wrapColumns);
+  } else if (data) {
+    // note: withMulti HoC also passes a prop named data, but in this case
+    // data should be the prop passed to the Datatable
+    return Object.keys(data[0]).map(wrapColumns);
+  }
+  return [];
+};
+
 const datatableContentsStyles = theme =>
   _assign({}, baseStyles(theme), {
     table: {
@@ -297,7 +325,8 @@ const DatatableContents = ({
   }
 
   if (queryDataRef) queryDataRef(this.props);
-
+  let sortedColumns = getColumns(columns, results);
+  
   const denseClass = dense && classes[dense + 'Table'];
 
   // Pagination functions
@@ -331,10 +360,10 @@ const DatatableContents = ({
       {error && <Components.Alert variant="danger">{error.message}</Components.Alert>}
       {title && <Components.DatatableTitle title={title} />}
       <Components.DatatableContentsInnerLayout className={classNames(classes.table, denseClass)}>
-        {columns && (
+        {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
-              {_.sortBy(columns, column => column.order).map((column, index) => (
+              {_.sortBy(sortedColumns, column => column.order).map((column, index) => (
                 <Components.DatatableHeader
                   key={index}
                   collection={collection}
@@ -355,7 +384,7 @@ const DatatableContents = ({
             {results.map((document, index) => (
               <Components.DatatableRow
                 collection={collection}
-                columns={columns}
+                columns={sortedColumns}
                 document={document}
                 refetch={refetch}
                 key={index}
