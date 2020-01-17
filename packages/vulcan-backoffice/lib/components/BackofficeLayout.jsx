@@ -38,11 +38,14 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
+const style = {
+}
 
 const Layout = ({ children, currentUser }) => {
   const [open, setOpen] = useState(true)
 
-  const backofficeMenuItems = getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
+  const backofficeMenuItems =
+		getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
 
   const side = (
     <React.Fragment>
@@ -81,8 +84,14 @@ const Layout = ({ children, currentUser }) => {
   );
   return (
     <div>
-      <button onClick={() => { setOpen(!open); console.log(open) }}>Burger menu</button>
-      <Components.VerticalMenuLayout side={side} main={children} open={open} />
+      {/* <button onClick={() => { setOpen(!open) }}>Burger menu</button> */}
+			<Components.BackofficeNavbar />
+      <Components.VerticalMenuLayout
+				topPadding={56}
+				side={side}
+				main={children}
+				open={open}
+			/>
     </div>
   );
 };

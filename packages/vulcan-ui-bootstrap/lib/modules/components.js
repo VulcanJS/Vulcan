@@ -29,3 +29,4 @@ import '../components/ui/Dropdown.jsx';
 import '../components/ui/Table.jsx';
 
 import '../components/layout/VerticalMenuLayout.jsx';
+import '../components/backoffice/BackofficeNavbar.jsx';
