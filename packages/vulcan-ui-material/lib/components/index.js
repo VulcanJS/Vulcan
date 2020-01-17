@@ -64,4 +64,6 @@ import './ui/Table';
 import './upload/UploadImage';
 import './upload/UploadInner';
 
+import './layout/VerticalMenuLayout';
+
 export * from './forms/controls/countries';
