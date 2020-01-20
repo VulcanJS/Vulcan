@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   getAuthorizedMenuItems,
   menuItemProps,
@@ -38,14 +38,17 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
-const style = {
-}
-
 const Layout = ({ children, currentUser }) => {
   const [open, setOpen] = useState(true)
+	const [height, setHeight] = useState(0)
+	const navbarRef = useRef(null)
 
   const backofficeMenuItems =
 		getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
+
+	useEffect(() => {
+		setHeight(navbarRef.clientHeight)
+	})
 
   const side = (
     <React.Fragment>
@@ -84,8 +87,13 @@ const Layout = ({ children, currentUser }) => {
   );
   return (
     <div>
-      {/* <button onClick={() => { setOpen(!open) }}>Burger menu</button> */}
-			<Components.BackofficeNavbar />
+      <Components.BackofficeBurgerMenu
+				onClick={() => { setOpen(!open) }}
+			/>
+			<Components.BackofficeNavbar 
+				// forwardRef={ (navbar) => { setHeight(navbar.clientHeight) } }
+				forwardRef={navbarRef}
+			/>
       <Components.VerticalMenuLayout
 				topPadding={56}
 				side={side}
