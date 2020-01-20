@@ -5,48 +5,53 @@ import Col from 'react-bootstrap/Col';
 import { registerComponent } from 'meteor/vulcan:lib';
 import styled from 'styled-components';
 
-const styleSide = {
-	zIndex: 1,
-	top: 0,
-	left: 0,
-	height: '100%',
-	overflowX: 'hidden',
-	backgroundColor: '#f7f7f7',
-	borderRight: '1px solid #ececec'
-}
+const StyledContainer = styled(({topPadding, ...rest}) => <Container {...rest} />)`
+	height: ${props => `calc(100vh - ${props.topPadding}px);`}
+`
 
-const styleSideClose = {
-  width : 0,
-  display: 'none',
-  position: 'sticky'
-}
+const StyledSideCol = styled(props => <Col {...props} />)`
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	overflow-x: hidden;
+	background-color: #f7f7f7;
+	border-right: 1px solid #ececec;
+	padding: 0;
+	transition: all 0.5s ease-out;
 
-const styleSideOpen = {
-  width : '200px',
-  display: 'block',
-  position: 'relative'
-}
+	${props => props.open ? `
+		width: 200px;
+		visibility: visible;
+	` : `
+		width: 0;
+		visibility: hidden;
+	`}
+`
 
 const StyledRow = styled(props => <Row {...props} />)`
 	height: 100%;
 `
 
-const StyledMainComponent = styled(props => <Col {...props} />)`
+const StyledMainCol = styled(props => <Col {...props} />)`
 	white-space: nowrap;
 	overflow: auto;
-	margin-top: 10px;
+	padding: 0;
 `
 
 const VerticalMenuLayout = ({side, main, open, topPadding = 0}) => {
-  const style = open ? { ...styleSide, ...styleSideOpen } : { ...styleSide, ...styleSideClose }
 
   return (
-		<Container fluid style={{ height: `calc(100vh - ${topPadding}px)` }}>
+		<StyledContainer fluid topPadding={topPadding}>
 			<StyledRow>
-        <Col sm="auto" xs="auto" style={style}>{side}</Col>
-        <StyledMainComponent>{main}</StyledMainComponent>
+        <StyledSideCol open={open} sm="auto" xs="auto">
+					{side}
+				</StyledSideCol>
+        <StyledMainCol>
+					{main}
+				</StyledMainCol>
       </StyledRow>
-    </Container>
+    </StyledContainer>
   )
 }
 

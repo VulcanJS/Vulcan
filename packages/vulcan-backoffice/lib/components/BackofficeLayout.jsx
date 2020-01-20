@@ -8,6 +8,7 @@ import {
 } from 'meteor/vulcan:core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const MenuItem = (
   { name, label, path, onClick, labelToken, LeftComponent, RightComponent },
@@ -38,20 +39,29 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
+const SideWrapper = styled.div`
+	padding-left: 16px;
+	padding-right: 16px;
+`
+
+const MainWrapper = styled.div`
+	margin: 16px;
+`
+
 const Layout = ({ children, currentUser }) => {
   const [open, setOpen] = useState(true)
 	const [height, setHeight] = useState(0)
-	const navbarRef = useRef(null)
 
   const backofficeMenuItems =
 		getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
 
+	const ref = useRef(null)
 	useEffect(() => {
-		setHeight(navbarRef.clientHeight)
-	})
+		setHeight(ref.current.clientHeight)
+	}, [ref])
 
   const side = (
-    <React.Fragment>
+		<SideWrapper>
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
@@ -83,21 +93,24 @@ const Layout = ({ children, currentUser }) => {
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
       <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-    </React.Fragment>
+    </SideWrapper>
   );
   return (
     <div>
       <Components.BackofficeBurgerMenu
 				onClick={() => { setOpen(!open) }}
 			/>
-			<Components.BackofficeNavbar 
-				// forwardRef={ (navbar) => { setHeight(navbar.clientHeight) } }
-				forwardRef={navbarRef}
-			/>
+			<div ref={ref}>
+				<Components.BackofficeNavbar />
+			</div>
       <Components.VerticalMenuLayout
-				topPadding={56}
+				topPadding={height}
 				side={side}
-				main={children}
+				main={
+					<MainWrapper>
+						{children}
+					</MainWrapper>
+				}
 				open={open}
 			/>
     </div>
