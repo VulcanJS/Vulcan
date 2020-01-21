@@ -60,6 +60,7 @@ import './ui/Button';
 import './ui/Modal';
 import './ui/ModalTrigger';
 import './ui/Table';
+import './ui/VerticalNavigation';
 
 import './upload/UploadImage';
 import './upload/UploadInner';
