@@ -8,6 +8,7 @@ import {
   debugGroupEnd,
 } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import clone from 'lodash/clone';
+import get from 'lodash/get';
 
 // TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
 function onCreateUserCallback(options, user) {
@@ -21,7 +22,7 @@ function onCreateUserCallback(options, user) {
   delete options.password; // we don't need to store the password digest
   delete options.username; // username is already in user object
 
-  options = runCallbacks({ name: 'user.create.validate.before', iterator: options });
+  options = runCallbacks({ name: 'user.create.validate.before', iterator: options, callbacks: get(Users, 'options.callbacks.create.validate.before', []) });
   // OpenCRUD backwards compatibility
   options = runCallbacks('users.new.validate.before', options);
 
@@ -43,7 +44,7 @@ function onCreateUserCallback(options, user) {
   user = Object.assign(user, options);
 
   // run validation callbacks
-  user = runCallbacks({ name: 'user.create.validate', iterator: user, properties: {} });
+  user = runCallbacks({ name: 'user.create.validate', iterator: user, properties: {}, callbacks: get(Users, 'options.callbacks.create.validate', []) });
   // OpenCRUD backwards compatibility
   user = runCallbacks('users.new.validate', user);
 
@@ -63,10 +64,10 @@ function onCreateUserCallback(options, user) {
       user[fieldName] = autoValue;
     }
   }
-  user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {} });
+  user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {}, callbacks: get(Users, 'options.callbacks.create.before', []) });
   user = runCallbacks('users.new.sync', user);
 
-  runCallbacksAsync({ name: 'user.create.async', properties: { data: user, document: user, user, collection: Users } });
+  runCallbacksAsync({ name: 'user.create.async', properties: { data: user, document: user, user, collection: Users }, callbacks: get(Users, 'options.callbacks.create.async', []) });
   // OpenCRUD backwards compatibility
   runCallbacksAsync('users.new.async', user);
 
