@@ -62,37 +62,7 @@ const Layout = ({ children, currentUser }) => {
 
   const side = (
 		<SideWrapper>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
-      <ul>{backofficeMenuItems.map(MenuItem)}</ul>
+      <Components.VerticalNavigation links={backofficeMenuItems} />
     </SideWrapper>
   );
   return (
