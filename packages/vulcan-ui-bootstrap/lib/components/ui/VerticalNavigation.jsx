@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
+import { Link } from 'react-router-dom';
 
 import { registerComponent } from 'meteor/vulcan:lib';
 
@@ -9,7 +10,7 @@ const MenuItem = (
 ) => {
   let Wrapper = React.Fragment;
   if (path) {
-    const LinkToPath = ({ children }) => <Nav.Link href={path}>{children}</Nav.Link>;
+    const LinkToPath = ({ children }) => <Nav.Link as={Link} to={path}>{children}</Nav.Link>;
     Wrapper = LinkToPath;
   }
   return (
