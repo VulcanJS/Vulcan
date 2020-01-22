@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from '@material-ui/core/Link';
+import { Link as RLink } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
@@ -11,7 +12,7 @@ const MenuItem = (
 ) => {
   let Wrapper = React.Fragment;
   if (path) {
-    const LinkToPath = ({ children }) => <Link href={path}>{children}</Link>;
+    const LinkToPath = ({ children }) => <Link component={RLink} to={path}>{children}</Link>;
     Wrapper = LinkToPath;
   }
   return (
