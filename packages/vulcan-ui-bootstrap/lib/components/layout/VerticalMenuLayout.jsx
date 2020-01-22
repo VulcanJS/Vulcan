@@ -34,6 +34,7 @@ const StyledRow = styled(props => <Row {...props} />)`
 `
 
 const StyledMainCol = styled(props => <Col {...props} />)`
+	height: 100%;
 	white-space: nowrap;
 	overflow: auto;
 	padding: 0;
