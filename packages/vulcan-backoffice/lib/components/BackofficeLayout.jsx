@@ -40,8 +40,6 @@ MenuItem.propTypes = {
 };
 
 const SideWrapper = styled.div`
-	padding-left: 16px;
-	padding-right: 16px;
 `
 
 const MainWrapper = styled.div`
@@ -73,7 +71,7 @@ const Layout = ({ children, currentUser }) => {
 			<div ref={ref}>
 				<Components.BackofficeNavbar />
 			</div>
-      <Components.VerticalMenuLayout
+      <Components.BackofficeVerticalMenuLayout
 				topPadding={height}
 				side={side}
 				main={

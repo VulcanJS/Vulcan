@@ -4,3 +4,4 @@ import '../components/CollectionList';
 import '../components/BackofficeLayout';
 import '../components/BackofficeBurgerMenu';
 import '../components/BackofficeIndex';
+import '../components/BackofficeVerticalMenuLayout';
