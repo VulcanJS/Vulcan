@@ -1,8 +1,8 @@
 import React from 'react';
+import { registerComponent } from 'meteor/vulcan:lib';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { registerComponent } from 'meteor/vulcan:lib';
 import styled from 'styled-components';
 
 const StyledContainer = styled(({topPadding, ...rest}) => <Container {...rest} />)`
@@ -41,7 +41,6 @@ const StyledMainCol = styled(props => <Col {...props} />)`
 `
 
 const VerticalMenuLayout = ({side, main, open, topPadding = 0}) => {
-
   return (
 		<StyledContainer fluid topPadding={topPadding}>
 			<StyledRow>
