@@ -1,13 +1,13 @@
 import React from 'react';
 import { registerComponent } from 'meteor/vulcan:lib';
-import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 
-const StyledGridContainer = styled(({topPadding, ...rest}) => <Grid {...rest} />)`
+const StyleWrapper = styled(({topPadding, ...rest}) => <div {...rest} />)`
+	display: flex;
 	height: ${props => `calc(100vh - ${props.topPadding}px);`}
 `
 
-const StyledSideGrid = styled(props => <Grid {...props} />)`
+const StyleSide = styled(props => <div {...props} />)`
 	z-index: 1000;
 	height: 100%;
 	overflow-x: hidden;
@@ -24,22 +24,21 @@ const StyledSideGrid = styled(props => <Grid {...props} />)`
 	`}
 `
 
-const StyledMainGrid = styled(props => <Grid {...props} />)`
-	display: flex;
+const StyleMain = styled(props => <div {...props} />)`
 	flex-grow: 1;
 `
 
 const VerticalMenuLayout = ({side, main, open, topPadding = 0}) => {
   return (
-		<StyledGridContainer container topPadding={topPadding}>
-			<StyledSideGrid item open={open}>
+		<StyleWrapper topPadding={topPadding}>
+			<StyleSide open={open}>
 				{side}
-			</StyledSideGrid>
+			</StyleSide>
 
-			<StyledMainGrid item>
+			<StyleMain>
 				{main}
-			</StyledMainGrid>
-		</StyledGridContainer>
+			</StyleMain>
+		</StyleWrapper>
 	)
 }
 
