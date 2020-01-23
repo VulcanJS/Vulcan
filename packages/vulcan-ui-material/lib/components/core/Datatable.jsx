@@ -44,7 +44,7 @@ const baseStyles = theme => ({
     alignItems: 'center',
   },
   scroller: {
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   searchWrapper: {},
   addButtonWrapper: {
