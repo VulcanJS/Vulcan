@@ -31,7 +31,6 @@ const MenuItem = (
 };
 
 const VerticalNavigation = ({links}) => {
-  console.log(links);
   return (
     <List component="nav">
       { links.map(MenuItem) }

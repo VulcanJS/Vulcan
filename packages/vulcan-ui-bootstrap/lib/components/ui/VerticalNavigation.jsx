@@ -27,7 +27,6 @@ const MenuItem = (
 };
 
 const VerticalNavigation = ({links}) => {
-  console.log(links);
   return (
     <Nav className="flex-column">
       { links.map(MenuItem) }
