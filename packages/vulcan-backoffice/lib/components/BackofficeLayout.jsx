@@ -39,9 +39,6 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
-const SideWrapper = styled.div`
-`
-
 const MainWrapper = styled.div`
 	margin: 16px;
 `
@@ -59,9 +56,7 @@ const Layout = ({ children, currentUser }) => {
 	}, [ref])
 
   const side = (
-		<SideWrapper>
-      <Components.VerticalNavigation links={backofficeMenuItems} />
-    </SideWrapper>
+		<Components.VerticalNavigation links={backofficeMenuItems} />
   );
   return (
     <div>
