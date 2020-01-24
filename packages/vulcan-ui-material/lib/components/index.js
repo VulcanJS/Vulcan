@@ -65,4 +65,6 @@ import './ui/VerticalNavigation';
 import './upload/UploadImage';
 import './upload/UploadInner';
 
+import './backoffice/BackofficeNavbar';
+
 export * from './forms/controls/countries';
