@@ -60,12 +60,16 @@ const Layout = ({ children, currentUser }) => {
   );
   return (
     <div>
-      <Components.BackofficeBurgerMenu
-				onClick={() => { setOpen(!open) }}
-			/>
+      {/* <Components.BackofficeBurgerMenu */}
+				{/* onClick={() => { setOpen(!open) }} */}
+			{/* /> */}
+
 			<div ref={ref}>
-				<Components.BackofficeNavbar />
+				<Components.BackofficeNavbar
+					onClick={ () => { setOpen(!open) }}
+				/>
 			</div>
+
       <Components.BackofficeVerticalMenuLayout
 				topPadding={height}
 				side={side}

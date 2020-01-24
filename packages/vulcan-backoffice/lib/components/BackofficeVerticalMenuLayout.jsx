@@ -8,7 +8,6 @@ const StyledWrapper = styled(({topPadding, ...rest}) => <div {...rest} />)`
 `
 
 const StyledSide = styled(props => <div {...props} />)`
-	z-index: 1000;
 	top: 0;
 	left: 0;
 	height: 100%;
