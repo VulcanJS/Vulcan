@@ -27,7 +27,7 @@ const options = [
 const defaultFormProps = {
   inputProperties: {
     value: 'hello world',
-    onChange: () => {},
+    onChange: () => { },
   },
 };
 
@@ -68,6 +68,7 @@ const formComponents = [
   },
   { name: 'FormComponentDefault' },
   { name: 'FormComponentText' },
+  { name: 'FormComponentPassword' },
   {
     name: 'FormComponentEmail',
     props: {
@@ -139,18 +140,24 @@ const getFormProps = (componentName, storyProps) => {
 
 formComponents.forEach(item => {
   const { name } = item;
-  const Component = Components[name];
   const componentLabel = name.replace('FormComponent', '');
   const storyName = `Core/Forms/Controls/${componentLabel}`;
-  if (Component) {
-    storiesOf(storyName, module)
-      .add('Horizontal Layout', () => <Component {...getFormProps(name)} />)
-      .add('Input Only', () => (
+  storiesOf(storyName, module)
+    .add('Horizontal Layout', () => {
+      const Component = Components[name];
+      if (!Component) return `Component ${name} not found. Are you importing an UI package?`;
+      <Component {...getFormProps(name)} />;
+    })
+    .add('Input Only', () => {
+      const Component = Components[name];
+      if (!Component) return `Component ${name} not found. Are you importing an UI package?`;
+      return (
+
         <Component
           {...getFormProps(name, {
             itemProperties: { layout: 'inputOnly' },
           })}
         />
-      ));
-  }
+      );
+    });
 });

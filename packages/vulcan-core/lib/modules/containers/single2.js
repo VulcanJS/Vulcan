@@ -78,17 +78,16 @@ const buildResult = (
   const propertyName = options.propertyName || 'document';
   const props = {
     ...returnedProps,
-    // document: Utils.convertDates(collection, data[singleResolverName]),
+    // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
     [propertyName]: data && data[resolverName] && data[resolverName].result,
     fragmentName,
     fragment,
-    data
+    data,
+    error
   };
   if (error) {
     // eslint-disable-next-line no-console
     console.log(error);
-    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
-    props.error = error.graphQLErrors[0];
   }
   return props;
 };

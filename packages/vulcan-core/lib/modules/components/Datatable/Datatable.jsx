@@ -314,7 +314,7 @@ registerComponent({
 export default Datatable;
 
 const DatatableLayout = ({ collectionName, children }) => (
-  <div className={`datatable datatable-${collectionName}`}>{children}</div>
+  <div className={`datatable datatable-${collectionName.toLowerCase()}`}>{children}</div>
 );
 registerComponent({ name: 'DatatableLayout', component: DatatableLayout });
 

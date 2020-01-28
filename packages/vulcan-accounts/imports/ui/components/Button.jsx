@@ -10,15 +10,24 @@ export class AccountsButton extends PureComponent {
       // href = null,
       type,
       disabled = false,
+      id,
       className,
       onClick
     } = this.props;
 
     return type === 'link' ? 
-      <a href="#" className={className} onClick={onClick} style={{marginRight: '10px'}}>{label}</a> :
+      <a
+        href="#"
+        id={id}
+        className={className}
+        onClick={onClick}
+        style={{marginRight: '10px'}}>
+        {label}
+      </a> :
       <Components.Button
         style={{marginRight: '10px'}}
         variant="primary"
+        id={id}
         className={className}
         type={type}
         disabled={disabled}

@@ -10,7 +10,7 @@ import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } fr
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
 import _omit from 'lodash/omit';
-import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import { isCollectionType } from './schema_utils.js';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
@@ -35,7 +35,7 @@ export const getCollection = name => {
 
 export const getCollectionByTypeName = typeName => {
   // in case typeName is for an array ('[User]'), get rid of brackets
-  let parsedTypeName = typeName.replace('[', '').replace(']', '');
+  let parsedTypeName = typeName.replace('[', '').replace(']', '').replace(/!/g, '');
   const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
   if (!collection) {
     throw new Error(`Could not find collection for type “${typeName}”`);
@@ -150,7 +150,17 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = merge({}, collection.options, options);
+  collection.options = mergeWith({}, collection.options, options, (a, b) => {
+    if (Array.isArray(a) && Array.isArray(b)) {
+      return a.concat(b);
+    }
+    if (Array.isArray(a) && b) {
+      return a.concat([b]);
+    }
+    if (Array.isArray(b) && a) {
+      return b.concat([a]);
+    }
+  });
 };
 
 /*
