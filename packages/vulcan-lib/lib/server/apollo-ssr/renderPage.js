@@ -81,12 +81,7 @@ const makePageRenderer = ({ computeContext }) => {
       }
     }
 
-    // TODO: there should be a cleaner way to set this wrapper
-    // id must always match the client side start.jsx file
-    const wrappedHtmlContent = `<div id="react-app">${htmlContent}</div>`;
-    sink.appendToBody(wrappedHtmlContent);
-    // TODO: this sounds cleaner but where do we add the <div id="react-app"> ?
-    //sink.renderIntoElementById('react-app', content)
+    sink.appendToBody(htmlContent);
 
     // add headers using helmet
     const head = ReactDOM.renderToString(<Head />);
