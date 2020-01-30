@@ -39,39 +39,37 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
+const PageLayout = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow: hidden;
+`
+
 const MainWrapper = styled.div`
 	margin: 16px;
 `
 
 const Layout = ({ children, currentUser }) => {
   const [open, setOpen] = useState(true)
-	const [height, setHeight] = useState(0)
 
   const backofficeMenuItems =
 		getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
 
-	const ref = useRef(null)
-	useEffect(() => {
-		setHeight(ref.current.clientHeight)
-	}, [ref])
-
   const side = (
-		<Components.VerticalNavigation links={backofficeMenuItems} />
+		<Components.VerticalNavigation
+			links={backofficeMenuItems}
+		/>
   );
   return (
-    <div>
-      {/* <Components.BackofficeBurgerMenu */}
-				{/* onClick={() => { setOpen(!open) }} */}
-			{/* /> */}
-
-			<div ref={ref}>
+    <PageLayout>
+			<div>
 				<Components.BackofficeNavbar
 					onClick={ () => { setOpen(!open) }}
 				/>
 			</div>
 
       <Components.BackofficeVerticalMenuLayout
-				topPadding={height}
 				side={side}
 				main={
 					<MainWrapper>
@@ -80,7 +78,7 @@ const Layout = ({ children, currentUser }) => {
 				}
 				open={open}
 			/>
-    </div>
+    </PageLayout>
   );
 };
 

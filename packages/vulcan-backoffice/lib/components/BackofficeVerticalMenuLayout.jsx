@@ -2,12 +2,13 @@ import React from 'react';
 import { registerComponent } from 'meteor/vulcan:lib';
 import styled from 'styled-components';
 
-const StyledWrapper = styled(({topPadding, ...rest}) => <div {...rest} />)`
+const StyledWrapper = styled.div`
 	display: flex;
-	height: ${props => `calc(100vh - ${props.topPadding}px);`}
+	overflow: auto;
+	height: 100%;
 `
 
-const StyledSide = styled(props => <div {...props} />)`
+const StyledSide = styled.div`
 	top: 0;
 	left: 0;
 	height: 100%;
@@ -33,9 +34,9 @@ const StyledMain = styled.div`
 	overflow: auto;
 `
 
-const BackofficeVerticalMenuLayout = ({side, main, open, topPadding = 0}) => {
+const BackofficeVerticalMenuLayout = ({side, main, open}) => {
   return (
-		<StyledWrapper fluid topPadding={topPadding}>
+		<StyledWrapper>
 
 			<StyledSide open={open}>
 				{side}
