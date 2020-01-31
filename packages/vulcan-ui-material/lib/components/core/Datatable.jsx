@@ -264,6 +264,7 @@ const getColumns = (columns, results, data) => {
     const convertedColums = columns.map(column =>
       typeof column === 'object' ? column : { name: column }
     );
+    const sortedColumns = _sortBy(convertedColums, column => column.order);
     return sortedColumns;
   } else if (results && results.length > 0) {
     // if no columns are provided, default to using keys of first array item
