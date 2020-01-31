@@ -14,5 +14,7 @@ accounts-password@1.5.1
 # accounts-facebook
 
 vulcan:debug
+vulcan:backoffice
+vulcan:ui-bootstrap
 meteortesting:mocha
 apollo
