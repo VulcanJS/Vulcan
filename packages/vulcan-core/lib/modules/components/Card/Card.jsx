@@ -95,12 +95,12 @@ const Card = ({ title, className, collection, document, currentUser, fields, sho
     canUpdate = check && check(currentUser, document, { Users });
   }
 
-  const collectionName = `datacard-${collection.typeName.toLowerCase()}`
+  const typeName = collection && collection.typeName.toLowerCase();
   const semantizedClassName = classNames(
     className,
     'datacard',
-    collection && collectionName,
-    document && collection && `${collectionName}-${document._id}`);
+    typeName && `datacard-${typeName}`,
+    document && document._id && `datacard-${document._id}`);
 
   return (
     <div className={semantizedClassName}>
