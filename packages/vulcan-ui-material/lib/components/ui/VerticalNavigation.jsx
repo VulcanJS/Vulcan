@@ -16,8 +16,8 @@ const MenuItem = (
     Wrapper = LinkToPath;
   }
   return (
-    <ListItem button>
-      <Wrapper key={name}>
+    <ListItem key={name} button>
+      <Wrapper>
         <div
           //selected={path && router.isActive(path)}
           onClick={onClick}>

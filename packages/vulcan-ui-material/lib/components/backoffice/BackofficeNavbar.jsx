@@ -14,10 +14,10 @@ const BackofficeNavbar = ({onClick}) => (
 			<IconButton
 				edge="start"
 				color="inherit"
-				aria-label="menu">
-				<MenuIcon
-					onClick={onClick}
-				/>
+				aria-label="menu"
+				onClick={onClick}
+			>
+				<MenuIcon />
 			</IconButton>
 
 			<Typography variant="h6">

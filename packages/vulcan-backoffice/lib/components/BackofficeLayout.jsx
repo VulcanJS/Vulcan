@@ -8,7 +8,6 @@ import {
 } from 'meteor/vulcan:core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
 const MenuItem = (
   { name, label, path, onClick, labelToken, LeftComponent, RightComponent },
@@ -39,17 +38,6 @@ MenuItem.propTypes = {
   afterClick: PropTypes.func,
 };
 
-const PageLayout = styled.div`
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	overflow: hidden;
-`
-
-const MainWrapper = styled.div`
-	margin: 16px;
-`
-
 const Layout = ({ children, currentUser }) => {
   const [open, setOpen] = useState(true)
 
@@ -61,24 +49,21 @@ const Layout = ({ children, currentUser }) => {
 			links={backofficeMenuItems}
 		/>
   );
-  return (
-    <PageLayout>
-			<div>
-				<Components.BackofficeNavbar
-					onClick={ () => { setOpen(!open) }}
-				/>
-			</div>
 
-      <Components.BackofficeVerticalMenuLayout
+  return (
+    <Components.BackofficePageLayout>
+
+			<Components.BackofficeNavbar
+				onClick={ () => { setOpen(!open) }}
+			/>
+			
+			<Components.BackofficeVerticalMenuLayout
 				side={side}
-				main={
-					<MainWrapper>
-						{children}
-					</MainWrapper>
-				}
+				main={children}
 				open={open}
 			/>
-    </PageLayout>
+
+    </Components.BackofficePageLayout>
   );
 };
 
