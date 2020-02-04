@@ -70,9 +70,9 @@ const stripeSettings = getSetting('stripe');
 
 // initialize Stripe
 const keySecret =
-  Meteor.isDevelopment || stripeSettings.alwaysUseTest
-    ? stripeSettings.secretKeyTest
-    : stripeSettings.secretKey;
+  Meteor.isDevelopment || stripeSettings && stripeSettings.alwaysUseTest
+    ? stripeSettings && stripeSettings.secretKeyTest
+    : stripeSettings && stripeSettings.secretKey;
 export const stripe = new Stripe(keySecret);
 
 const sampleProduct = {

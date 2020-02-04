@@ -29,7 +29,7 @@ Child Props:
 import React from 'react';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
-import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import { extractCollectionInfo, extractFragmentInfo, filterFunction } from 'meteor/vulcan:lib';
 import { useMutation } from '@apollo/react-hooks';
 import { buildMultiQuery } from './multi';
 import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
@@ -58,12 +58,12 @@ export const multiQueryUpdater = ({
   const newDoc = data[resolverName].data;
   // get all the resolvers that match
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
-  variablesList.forEach(variables => {
+  variablesList.forEach(async variables => {
     try {
       const queryResult = cache.readQuery({ query: multiQuery, variables });
       // get mongo selector and options objects based on current terms
       const terms = variables.input.terms;
-      const parameters = collection.getParameters(terms);
+      const parameters = terms ? collection.getParameters(terms) : await filterFunction(collection, variables.input, {});
       const { selector, options: paramOptions } = parameters;
       const { sort } = paramOptions;
       // check if the document should be included in this query, given the query filters

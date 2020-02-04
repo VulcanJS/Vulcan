@@ -93,6 +93,7 @@ export const forEachDocumentField = (document, schema, callback, currentPath = '
         const fieldSchema = schema[fieldName];
         callback({ fieldName, fieldSchema, currentPath, document, schema, isNested: !!currentPath });
         // Check if we need a recursive call
+        if (!fieldSchema) return; // field has no corresponding schema, we are done
         const value = document[fieldName];
         if (!value) return;
         // if value is an array, validate permissions for all children

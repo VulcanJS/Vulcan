@@ -28,7 +28,7 @@ const validateDocumentPermissions = (fullDocument, documentToValidate, schema, c
   const { Users, currentUser } = context;
   forEachDocumentField(documentToValidate, schema,
     ({ fieldName, fieldSchema, currentPath, isNested }) => {
-      if (isNested && mode === 'create' ? !fieldSchema.canCreate : !fieldSchema.canUpdate) return; // ignore nested without permission
+      if (isNested && (mode === 'create' ? !fieldSchema.canCreate : !fieldSchema.canUpdate)) return; // ignore nested without permission
       if (!fieldSchema
         || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, fullDocument))
       ) {

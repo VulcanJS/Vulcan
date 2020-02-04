@@ -35,7 +35,7 @@ const conversionTable = {
   _lte: '$lte',
   _neq: '$ne',
   _nin: '$nin',
-  _is_null: value => ({ $exists: !value}),
+  _is_null: value => ({ $exists: !value }),
   _is: value => value,
   _arrayContains: value => value,
   asc: 1,
@@ -165,6 +165,8 @@ export const filterFunction = async (collection, input = {}, context) => {
         return mongoOrder;
       })
     );
+  } else {
+    options.sort = { createdAt: -1 }; // reliable default order
   }
 
   // search
@@ -191,7 +193,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-          collection.options.collectionName
+        collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }

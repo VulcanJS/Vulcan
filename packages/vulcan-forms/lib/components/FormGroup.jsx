@@ -77,6 +77,7 @@ class FormGroup extends PureComponent {
             <FormComponents.FormComponent
               key={field.name}
               disabled={this.props.disabled}
+              itemProperties={this.props.itemProperties}
               {...field}
               errors={this.props.errors}
               throwError={this.props.throwError}
@@ -89,7 +90,6 @@ class FormGroup extends PureComponent {
               currentUser={this.props.currentUser}
               prefilledProps={this.props.prefilledProps}
               formComponents={FormComponents}
-              itemProperties={this.props.itemProperties}
             />
           ))}
   

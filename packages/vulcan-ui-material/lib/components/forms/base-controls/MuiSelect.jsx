@@ -73,7 +73,7 @@ const MuiSelect = createReactClass({
   handleChange: function (event) {
     const target = event.target;
     let value;
-    if (this.props.multiple) {
+    if (this.props.multiple && this.props.native) {
       value = [];
       for (let i = 0; i < target.length; i++) {
         const option = target.options[i];
