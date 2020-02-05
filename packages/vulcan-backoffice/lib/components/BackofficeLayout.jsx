@@ -1,18 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  getAuthorizedMenuItems,
-  menuItemProps,
-  registerComponent,
-  withCurrentUser,
-  Components,
-} from 'meteor/vulcan:core';
+import { getAuthorizedMenuItems, menuItemProps, registerComponent, withCurrentUser, Components } from 'meteor/vulcan:core';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 
-const MenuItem = (
-  { name, label, path, onClick, labelToken, LeftComponent, RightComponent },
-  { intl }
-) => {
+const MenuItem = ({ name, label, path, onClick, labelToken, LeftComponent, RightComponent }, { intl }) => {
   let Wrapper = React.Fragment;
   if (path) {
     const LinkToPath = ({ children }) => <Link to={path}>{children}</Link>;
@@ -39,30 +31,22 @@ MenuItem.propTypes = {
 };
 
 const Layout = ({ children, currentUser }) => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
-  const backofficeMenuItems =
-		getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
+  const backofficeMenuItems = getAuthorizedMenuItems(currentUser, 'vulcan-backoffice');
 
-  const side = (
-		<Components.VerticalNavigation
-			links={backofficeMenuItems}
-		/>
-  );
+  const side = <Components.VerticalNavigation links={backofficeMenuItems} />;
 
   return (
     <Components.BackofficePageLayout>
+      <Components.BackofficeNavbar
+        onClick={() => {
+          setOpen(!open);
+        }}
+        basePath={'/backoffice'}
+      />
 
-			<Components.BackofficeNavbar
-				onClick={ () => { setOpen(!open) }}
-			/>
-			
-			<Components.BackofficeVerticalMenuLayout
-				side={side}
-				main={children}
-				open={open}
-			/>
-
+      <Components.BackofficeVerticalMenuLayout side={side} main={children} open={open} />
     </Components.BackofficePageLayout>
   );
 };
@@ -70,5 +54,5 @@ const Layout = ({ children, currentUser }) => {
 registerComponent({
   name: 'VulcanBackofficeLayout',
   component: Layout,
-  hocs: [withCurrentUser],
+  hocs: [withRouter, withCurrentUser],
 });

@@ -3,7 +3,7 @@
  * - create routes
  * - register menu items
  */
-import { addRoute } from 'meteor/vulcan:core'
+import { addRoute } from 'meteor/vulcan:core';
 import { mergeDefaultBackofficeOptions, mergeDefaultCollectionOptions } from './options';
 import { getCollectionName } from './namingHelpers';
 import createCollectionComponents from './createCollectionComponents';
@@ -27,7 +27,12 @@ const setupBackoffice = (collections, providedOptions = {}, collectionsOptions =
     setupCollectionMenuItems(collection, collectionOptions);
   });
   // index
+  addRoute({
+    name: 'vulcan-backoffice', path: options.basePath,
+    componentName: 'VulcanBackofficeIndex',
+    layoutName: 'VulcanBackofficeLayout',
+    options
+  }); // setup the route
 };
-addRoute({ name: 'vulcan-backoffice', path: '/backoffice', componentName: 'VulcanBackofficeIndex', layoutName: 'VulcanBackofficeLayout' }) // setup the route
 
 export default setupBackoffice;
