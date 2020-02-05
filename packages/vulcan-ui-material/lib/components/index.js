@@ -66,5 +66,7 @@ import './upload/UploadImage';
 import './upload/UploadInner';
 
 import './backoffice/BackofficeNavbar';
+import './backoffice/BackofficePageLayout';
+import './backoffice/BackofficeVerticalMenuLayout';
 
 export * from './forms/controls/countries';

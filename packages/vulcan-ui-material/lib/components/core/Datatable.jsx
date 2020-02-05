@@ -23,6 +23,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { getFieldValue } from './Card';
 import _assign from 'lodash/assign';
+import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
 import { getCollection } from 'meteor/vulcan:lib'
 
@@ -364,7 +365,7 @@ const DatatableContents = ({
         {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
-              {_.sortBy(sortedColumns, column => column.order).map((column, index) => (
+              {_sortBy(sortedColumns, column => column.order).map((column, index) => (
                 <Components.DatatableHeader
                   key={index}
                   collection={collection}
@@ -403,7 +404,7 @@ const DatatableContents = ({
         {footerData && (
           <TableFooter className={classes.tableFooter}>
             <TableRow className={classes.tableRow}>
-              {_.sortBy(columns, column => column.order).map((column, index) => (
+              {_sortBy(columns, column => column.order).map((column, index) => (
                 <TableCell
                   key={index}
                   className={classNames(classes.tableCell, column.footerClass)}>
@@ -590,7 +591,7 @@ const DatatableRow = (
       )}
       onClick={handleRowClick && (event => handleRowClick(event, document))}
       hover>
-      {_.sortBy(columns, column => column.order).map((column, index) => (
+      {_sortBy(columns, column => column.order).map((column, index) => (
         <Components.DatatableCell
           key={index}
           column={column}

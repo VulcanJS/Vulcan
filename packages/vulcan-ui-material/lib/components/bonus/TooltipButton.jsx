@@ -150,7 +150,7 @@ const TooltipButton = (props, { intl }) => {
                 className={classNames(classes.button, slug)}
                 {...properties}
                 size={size}
-                aria-label={title}
+                aria-label={titleText}
                 ref={buttonRef}
                 disabled={loading || disabled}>
                 {iconWithClass}
@@ -163,7 +163,7 @@ const TooltipButton = (props, { intl }) => {
               {...properties}
               type={type}
               size={size}
-              aria-label={title}
+              aria-label={titleText}
               ref={buttonRef}
               disabled={loading || disabled}>
               {iconWithClass && (
@@ -179,7 +179,7 @@ const TooltipButton = (props, { intl }) => {
               <IconButton
                 className={classNames(classes.button, classes[size], slug)}
                 {...properties}
-                aria-label={title}
+                aria-label={titleText}
                 ref={buttonRef}
                 disabled={(loading && !(disabled === false)) || disabled}>
                 {iconWithClass}

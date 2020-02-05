@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:backoffice',
   summary: 'Vulcan automated backoffice generator',
-  version: '1.13.3',
+  version: '1.14.1',
   git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
