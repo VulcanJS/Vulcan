@@ -6,18 +6,19 @@ import ListItem from '@material-ui/core/ListItem';
 
 import { registerComponent } from 'meteor/vulcan:lib';
 
-const MenuItem = (
-  { name, label, path, onClick, labelToken, LeftComponent, RightComponent },
-  { intl }
-) => {
+const MenuItem = ({ name, label, path, onClick, labelToken, LeftComponent, RightComponent }, { intl }) => {
   let Wrapper = React.Fragment;
   if (path) {
-    const LinkToPath = ({ children }) => <Link component={RLink} to={path}>{children}</Link>;
+    const LinkToPath = ({ children }) => (
+      <Link component={RLink} to={path}>
+        {children}
+      </Link>
+    );
     Wrapper = LinkToPath;
   }
   return (
-    <ListItem key={name} button>
-      <Wrapper>
+    <Wrapper key={name}>
+      <ListItem button>
         <div
           //selected={path && router.isActive(path)}
           onClick={onClick}>
@@ -25,17 +26,13 @@ const MenuItem = (
           <span>{label || intl.formatMessage({ id: labelToken })}</span>
           {RightComponent && <RightComponent />}
         </div>
-      </Wrapper>
-    </ListItem>
+      </ListItem>
+    </Wrapper>
   );
 };
 
-const VerticalNavigation = ({links}) => {
-  return (
-    <List component="nav">
-      { links.map(MenuItem) }
-    </List>
-  );
+const VerticalNavigation = ({ links }) => {
+  return <List component="nav">{links.map(MenuItem)}</List>;
 };
 
 registerComponent('VerticalNavigation', VerticalNavigation);
