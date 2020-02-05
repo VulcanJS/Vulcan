@@ -51,8 +51,8 @@ addStrings('fr', {
   'forms.previous': 'Précédent',
   'forms.revert': 'Retour',
   'forms.confirm_discard': 'Supprimer les modifications ?',
-  'forms.start_adornment_web_icon': 'Icone de sphere',
-  'forms.start_adornment_email_icon': 'Icone de courriel',
+  'forms.start_adornment_web_icon': 'Icône de internet',
+  'forms.start_adornment_email_icon': 'Icône de courriel',
 
   'users.profile': 'Profil',
   'users.complete_profile': 'Complétez votre profil',
