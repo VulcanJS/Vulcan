@@ -42,6 +42,7 @@ addStrings('en', {
   'forms.cancel': 'انصراف',
   'forms.select_option': '-- انتخاب گزینه --',
   'forms.add_nested_field': '{label}أضف',
+  'forms.delete_nested_field': '{label}این را حذف کنید',
   'forms.delete': 'حذف',
   "forms.delete_field" : "حذف الحقل",
   'forms.delete_confirm': 'سند حذف شود؟',

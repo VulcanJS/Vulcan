@@ -42,6 +42,7 @@ addStrings('en', {
   'forms.cancel': 'Cancel',
   'forms.select_option': '-- select option --',
   'forms.add_nested_field': 'Add a {label}',
+  'forms.delete_nested_field': 'Delete this {label}?',
   'forms.delete': 'Delete',
   'forms.delete_field': 'Delete the field?',
   'forms.delete_confirm': 'Delete document?',
