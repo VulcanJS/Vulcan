@@ -48,6 +48,8 @@ addStrings('es', {
   'forms.delete_confirm': '¿Eliminar documento?',
   'forms.revert': 'Revertir',
   'forms.confirm_discard': '¿Descartar los cambios?',
+  'forms.start_adornment_web_icon': 'Icono de esfera',
+  'forms.start_adornment_email_icon': 'icono de correo electrónico',
 
   'users.profile': 'Perfil',
   'users.complete_profile': 'Complete su perfil',

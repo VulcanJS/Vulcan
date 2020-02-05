@@ -41,7 +41,7 @@ addStrings('en', {
   'forms.submit': 'تایید',
   'forms.cancel': 'انصراف',
   'forms.select_option': '-- انتخاب گزینه --',
-  'forms.add_nested_field': 'أضف {label}',
+  'forms.add_nested_field': '{label}أضف',
   'forms.delete': 'حذف',
   "forms.delete_field" : "حذف الحقل",
   'forms.delete_confirm': 'سند حذف شود؟',
@@ -50,6 +50,8 @@ addStrings('en', {
   'forms.day': 'روز',
   'forms.month': 'ماه',
   'forms.year': 'سال',
+  'forms.start_adornment_web_icon': 'رمز الكرة',
+  'forms.start_adornment_email_icon': 'أيقونة البريد الإلكتروني',
 
   'users.profile': 'مشخصات',
   'users.complete_profile': 'مشخصات خود را تکمیل فرمایید.',

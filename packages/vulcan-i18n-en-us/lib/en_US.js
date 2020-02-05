@@ -50,6 +50,8 @@ addStrings('en', {
   'forms.day': 'Day',
   'forms.month': 'Month',
   'forms.year': 'Year',
+  'forms.start_adornment_web_icon': 'web icon',
+  'forms.start_adornment_email_icon': 'Email icon',
 
   'users.profile': 'Profile',
   'users.complete_profile': 'Complete your Profile',
