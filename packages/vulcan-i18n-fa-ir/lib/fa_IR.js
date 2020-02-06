@@ -42,6 +42,7 @@ addStrings('en', {
   'forms.cancel': 'انصراف',
   'forms.select_option': '-- انتخاب گزینه --',
   'forms.delete': 'حذف',
+  "forms.delete_field" : "حذف الحقل",
   'forms.delete_confirm': 'سند حذف شود؟',
   'forms.revert': 'بازگردانی',
   'forms.confirm_discard': 'تغییرات لغو شوند؟',

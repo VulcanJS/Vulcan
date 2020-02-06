@@ -42,6 +42,7 @@ addStrings('en', {
   'forms.cancel': 'Cancel',
   'forms.select_option': '-- select option --',
   'forms.delete': 'Delete',
+  'forms.delete_field': 'Delete the field?',
   'forms.delete_confirm': 'Delete document?',
   'forms.revert': 'Revert',
   'forms.confirm_discard': 'Discard changes?',
