@@ -43,7 +43,7 @@ addStrings('es', {
   'forms.cancel': 'Cancelar',
   'forms.select_option': '-- seleccionar opción --',
   'forms.add_nested_field': 'Agregar un {label}',
-  'forms.delete_nested_field': 'Eliminar este {label}?',
+  'forms.delete_nested_field': '¿Eliminar este {label}?',
   'forms.delete': 'Eliminar',
   'forms.delete_field': '¿Eliminar campo?',
   'forms.delete_confirm': '¿Eliminar documento?',
