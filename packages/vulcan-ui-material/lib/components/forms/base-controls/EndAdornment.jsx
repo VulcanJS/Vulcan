@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { instantiateComponent } from 'meteor/vulcan:core';
+import { intlShape } from 'meteor/vulcan:i18n';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -55,9 +56,10 @@ export const styles = theme => ({
 });
 
 
-const EndAdornment = (props) => {
+const EndAdornment = (props, context) => {
   const { classes, value, addonAfter, changeValue, hideClear, disabled } = props;
-  
+  const { intl } = context;
+
   if (!addonAfter && (!changeValue || hideClear || disabled)) return null;
   const hasValue = !!value || value === 0;
   
@@ -68,6 +70,7 @@ const EndAdornment = (props) => {
                   changeValue(null);
                 }}
                 tabIndex="-1"
+                aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
     >
       <CloseIcon/>
     </IconButton>;
@@ -89,5 +92,8 @@ EndAdornment.propTypes = {
   addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.func]),
 };
 
+EndAdornment.contextTypes = {
+  intl: intlShape,
+};
 
 export default withStyles(styles)(EndAdornment);
