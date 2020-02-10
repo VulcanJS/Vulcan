@@ -202,6 +202,8 @@ class SmartForm extends Component {
   */
   getData = customArgs => {
     // we want to keep prefilled data even for hidden/removed fields
+    let data = this.props.prefilledProps || {};
+    
     const args = {
       excludeRemovedFields: false,
       excludeHiddenFields: false,
@@ -213,7 +215,7 @@ class SmartForm extends Component {
     // only keep relevant fields
     // for intl fields, make sure we look in foo_intl and not foo
     const fields = this.getFieldNames(args);
-    let data = pick(this.getDocument(), ...fields);
+    data = { ...data, ...pick(this.getDocument(), ...fields) };
 
     // compact deleted values
     this.state.deletedValues.forEach(path => {
@@ -853,9 +855,11 @@ class SmartForm extends Component {
   
   Key down handler
   
+  TODO: why do we even need this?
+
   */
   formKeyDown = event => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && event.target && event.target.type !== 'textarea') {
       event.preventDefault();
       this.submitForm();
     }
@@ -870,7 +874,7 @@ class SmartForm extends Component {
   };
 
   mutationSuccessCallback = (result, mutationType) => {
-    this.setState(prevState => ({ disabled: false }));
+    this.setState(prevState => ({ disabled: false, success: true }));
     let document = result.data[Object.keys(result.data)[0]].data; // document is always on first property
 
     // for new mutation, run refetch function if it exists
@@ -1065,14 +1069,17 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   render() {
-    const FormComponents = mergeWithComponents(this.props.formComponents || this.props.Components);
+    const { formComponents, Components, successComponent, repeatErrors } = this.props;
+    const FormComponents = mergeWithComponents(formComponents || Components);
 
-    return (
+    return this.state.success && successComponent ? (
+      successComponent
+    ) : (
       <FormComponents.FormLayout
         FormComponents={FormComponents}
         formProps={this.getFormProps()}
         errorProps={this.getFormErrorsProps()}
-        repeatErrors={this.props.repeatErrors}
+        repeatErrors={repeatErrors}
         submitProps={this.getFormSubmitProps()}>
         {this.getFieldGroups().map((group, i) => (
           <FormComponents.FormGroup key={i} {...this.getFormGroupProps(group)} />
@@ -1114,6 +1121,7 @@ SmartForm.propTypes = {
   formComponents: PropTypes.object,
   disabled: PropTypes.bool,
   itemProperties: PropTypes.object,
+  successComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 
   // callbacks
   ...callbackProps,

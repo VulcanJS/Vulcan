@@ -25,7 +25,7 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, upd
   
   return (
     <Components.FormItem path={path} label={label} {...itemProperties}>
-      <div>
+      <div className="form-item-options">
         {options.map((option, i) => {
           const isChecked = value.includes(option.value);
           const checkClass = hasValue ? isChecked ? 'form-check-checked' : 'form-check-unchecked' : '';
