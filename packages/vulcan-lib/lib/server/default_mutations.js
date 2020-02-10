@@ -99,6 +99,7 @@ export function getDefaultMutations(options) {
           context.currentUser,
           data,
           context,
+          '',
           `${typeName}.create`,
           collectionName
         );
@@ -209,6 +210,7 @@ export function getDefaultMutations(options) {
           context.currentUser,
           document,
           context,
+          document._id,
           `${typeName}.update`,
           collectionName
         );
