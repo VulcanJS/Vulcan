@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 const FormNestedItemLayout = ({ content, removeButton }) => (
   <div className="form-nested-item">
@@ -26,8 +27,8 @@ registerComponent({
 });
 
 const FormNestedItem = (
-  { nestedFields, name, path, removeItem, itemIndex, formComponents, hideRemove, ...props },
-  { errors }
+  { nestedFields, name, path, removeItem, itemIndex, formComponents, hideRemove, label, ...props },
+  { errors, intl }
 ) => {
   const FormComponents = mergeWithComponents(formComponents);
   const isArray = typeof itemIndex !== 'undefined';
@@ -56,6 +57,7 @@ const FormNestedItem = (
               onClick={() => {
                 removeItem(name);
               }}
+              aria-label={intl.formatMessage({ id: 'forms.delete_nested_field' }, { label: label })}
             >
               <Components.IconRemove height={12} width={12} />
             </Components.Button>
@@ -78,7 +80,8 @@ FormNestedItem.propTypes = {
 };
 
 FormNestedItem.contextTypes = {
-  errors: PropTypes.array
+  errors: PropTypes.array,
+  intl: intlShape
 };
 
 registerComponent('FormNestedItem', FormNestedItem);
