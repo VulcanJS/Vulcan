@@ -51,8 +51,14 @@ const Layout = ({ children, currentUser }) => {
   );
 };
 
+const accessOptions = {
+  groups: ['admins'],
+  redirect: '/',
+  message: 'Sorry, you do not have the rights to access this page.',
+};
+
 registerComponent({
   name: 'VulcanBackofficeLayout',
   component: Layout,
-  hocs: [withRouter, withCurrentUser],
+  hocs: [withRouter, withCurrentUser, [withAccess, accessOptions]],
 });
