@@ -21,7 +21,7 @@ export const hasAllowedValues = field => {
 
 
 export const isArrayChildField = fieldName => fieldName.indexOf('$') !== -1;
-export const isBlackbox = (field) => field.type.definitions[0].blackbox;
+export const isBlackbox = (field) => !!field.type.definitions[0].blackbox;
 //export const isBlackbox = (fieldName, schema) => {
 //    const field = schema[fieldName];
 //    // for array field, check parent recursively to find a blackbox

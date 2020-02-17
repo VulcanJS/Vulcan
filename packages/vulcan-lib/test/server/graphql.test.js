@@ -762,6 +762,53 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [CreateFooArrayFieldDataInput] }');
         expect(normalizedSchema).toMatch('input CreateFooArrayFieldDataInput { someField: String }');
       });
+      test('do NOT generate new inputs for array of JSON', () => {
+        const collection = fooCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            type: Object
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% sure of the syntax
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [JSON] }');
+        expect(normalizedSchema).not.toMatch('CreateJSONDataInput');
+      });
+      test('do NOT generate new inputs for blackboxed array', () => {
+        const collection = fooCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            blackbox: true
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            type: new SimpleSchema({
+              foo: {
+                type: String, canRead: ['admins'], canUpdate: ['admins']
+              }
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [JSON] }');
+        expect(normalizedSchema).not.toMatch('CreateJSONDataInput');
+      });
+
 
       test('do NOT generate new inputs for nested objects if a type is provided', () => {
         const collection = fooCollection({

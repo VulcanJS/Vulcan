@@ -567,7 +567,7 @@ export const getSchemaFields = (schema, typeName) => {
       hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field);
     const isReferencedObject = hasTypeName(field);
     const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
-    const hasNesting = isNestedArray || isNestedObject || isReferencedObject || isReferencedArray;
+    const hasNesting = !isBlackbox(field) && (isNestedArray || isNestedObject || isReferencedObject || isReferencedArray);
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation
