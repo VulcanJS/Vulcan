@@ -60,8 +60,13 @@ import './ui/Button';
 import './ui/Modal';
 import './ui/ModalTrigger';
 import './ui/Table';
+import './ui/VerticalNavigation';
 
 import './upload/UploadImage';
 import './upload/UploadInner';
+
+import './backoffice/BackofficeNavbar';
+import './backoffice/BackofficePageLayout';
+import './backoffice/BackofficeVerticalMenuLayout';
 
 export * from './forms/controls/countries';
