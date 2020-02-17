@@ -123,6 +123,29 @@ describe('default fragment generation', () => {
         expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo_intl{ locale value } bar_intl{ locale value } }');
     });
 
+    test('do not generate subfield for blackboxed array', () => {
+        const collection = fooCollection({
+            foo: {
+                type: Array,
+                canRead: ['guests'],
+                blackbox: true
+            },
+            "foo.$": {
+                type: new SimpleSchema({
+                    bar: {
+                        type: String,
+                        canRead: ['guests']
+                    }
+                }),
+                canRead: ['guests']
+            },
+        });
+        const fragment = getDefaultFragmentText(collection);
+        const normalizedFragment = normalizeGraphQLSchema(fragment);
+        expect(normalizedFragment).toMatch('fragment FoosDefaultFragment on Foo { foo }');
+
+    })
+
     describe('resolveAs', () => {
         test('ignore resolved fields with a an unknown type', () => {
             const collection = fooCollection({
