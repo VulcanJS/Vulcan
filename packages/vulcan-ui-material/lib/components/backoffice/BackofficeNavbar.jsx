@@ -21,4 +21,4 @@ const BackofficeNavbar = ({ onClick, basePath }) => (
   </AppBar>
 );
 
-registerComponent('BackofficeNavbar', BackofficeNavbar);
+registerComponent('VulcanBackofficeNavbar', BackofficeNavbar);

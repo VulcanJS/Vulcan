@@ -38,16 +38,16 @@ const Layout = ({ children, currentUser }) => {
   const side = <Components.VerticalNavigation links={backofficeMenuItems} />;
 
   return (
-    <Components.BackofficePageLayout>
-      <Components.BackofficeNavbar
+    <Components.VulcanBackofficePageLayout>
+      <Components.VulcanBackofficeNavbar
         onClick={() => {
           setOpen(!open);
         }}
         basePath={'/backoffice'}
       />
 
-      <Components.BackofficeVerticalMenuLayout side={side} main={children} open={open} />
-    </Components.BackofficePageLayout>
+      <Components.VulcanBackofficeVerticalMenuLayout side={side} main={children} open={open} />
+    </Components.VulcanBackofficePageLayout>
   );
 };
 

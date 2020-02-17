@@ -3,20 +3,16 @@ import { registerComponent } from 'meteor/vulcan:lib';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const baseStyles = theme => ({
-	pageLayout: {
-		display: 'flex',
-		flexDirection: 'column',
-		height: '100vh',
-		overflow: 'hidden'
-	}
+  pageLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'hidden',
+  },
 });
 
-const BackofficePageLayout = ({children, classes}) => {
-	return (
-		<div className={classes.pageLayout}>
-			{children}
-		</div>
-	)
-}
+const BackofficePageLayout = ({ children, classes }) => {
+  return <div className={classes.pageLayout}>{children}</div>;
+};
 
-registerComponent('BackofficePageLayout', BackofficePageLayout, [withStyles, baseStyles]);
+registerComponent('VulcanBackofficePageLayout', BackofficePageLayout, [withStyles, baseStyles]);

@@ -109,7 +109,6 @@
     "simpl-schema": "^1.4.2",
     "speakingurl": "^9.0.0",
     "stripe": "^4.23.1",
-    "styled-components": "^2.1.1",
     "underscore": "^1.8.3",
     "universal-cookie-express": "^2.1.5",
     "url": "^0.11.0"
