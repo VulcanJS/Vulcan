@@ -258,7 +258,6 @@ export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
 
 // get GraphQL type for a given schema and field name
 export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false, isParentBlackbox = false }) => {
-  if (isParentBlackbox) { console.log('FIELDNAME', fieldName); }
   const field = schema[fieldName];
   if (field.typeName) return field.typeName; // respect typeName provided by user
 
