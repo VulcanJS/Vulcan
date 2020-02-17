@@ -6,8 +6,14 @@
  */
 
 import React from 'react';
-import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
+import { registerComponent, Components, withCurrentUser, withAccess } from 'meteor/vulcan:core';
 
+// TODO: get options from backoffice config
+const accessOptions = {
+  groups: ['admins'],
+  redirect: '/backoffice',
+  message: 'Sorry, you do not have the rights to access this page.',
+};
 const CollectionItemDetails = props => {
   if (props.loading) return <Components.Loading />;
   if (!props.document) return 'Document not found';
@@ -17,5 +23,5 @@ const CollectionItemDetails = props => {
 registerComponent({
   name: 'VulcanBackofficeCollectionItem',
   component: CollectionItemDetails,
-  hocs: [withCurrentUser],
+  hocs: [withCurrentUser, [withAccess, accessOptions]],
 });
