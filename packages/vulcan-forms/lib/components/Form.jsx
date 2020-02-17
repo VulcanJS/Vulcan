@@ -851,20 +851,6 @@ class SmartForm extends Component {
     }));
   };
 
-  /*
-  
-  Key down handler
-  
-  TODO: why do we even need this?
-
-  */
-  formKeyDown = event => {
-    if (event.key === 'Enter' && event.target && event.target.type !== 'textarea') {
-      event.preventDefault();
-      this.submitForm();
-    }
-  };
-
   newMutationSuccessCallback = result => {
     this.mutationSuccessCallback(result, 'new');
   };
@@ -1010,14 +996,13 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   getFormProps = () => {
-    const docClassName = `document-${this.getFormType()}`
-    const typeName = this.props.typeName.toLowerCase()
+    const docClassName = `document-${this.getFormType()}`;
+    const typeName = this.props.typeName.toLowerCase();
 
     return {
       className: `${docClassName} ${docClassName}-${typeName}`,
       id: this.props.id,
       onSubmit: this.submitForm,
-      onKeyDown: this.formKeyDown,
       ref: e => {
         this.form = e;
       },
