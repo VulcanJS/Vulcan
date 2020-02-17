@@ -137,35 +137,24 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
       });
-      //test('return JSON for child of blackboxed array', () => {
-      //  const schema = new SimpleSchema({
-      //    arrayField: {
-      //      type: Object
-      //    },
-      //    "arrayField.$": {
-      //      type: new SimpleSchema({
-      //        someField: {
-      //          type: String
-      //        }
-      //      }),
-      //    }
-      //  })._schema
-      //  const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' })
-      //  expect(type).toBe('JSON')
-      //})
-
-      test('return JSON for input type if provided typeName is JSON', () => {
+      test('return JSON for child of blackboxed array', () => {
         const schema = new SimpleSchema({
-          nestedField: {
-            type: Object,
-            typeName: 'JSON'
+          arrayField: {
+            type: Array,
+            blackbox: true
+          },
+          "arrayField.$": {
+            type: new SimpleSchema({
+              someField: {
+                type: String
+              }
+            }),
           }
-        })
-          ._schema;
-        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
-        expect(type).toBe('JSON');
-
+        })._schema
+        const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' })
+        expect(type).toBe('[JSON]')
       })
+
       test('return JSON for input type if provided typeName is JSON', () => {
         const schema = new SimpleSchema({
           nestedField: {
@@ -176,7 +165,6 @@ describe('vulcan:lib/graphql', function () {
           ._schema;
         const inputType = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
         expect(inputType).toBe('JSON');
-
       })
 
       test('return nested  array type for arrays of nested objects', () => {
@@ -321,6 +309,8 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { field: StringEnum }');
       });
+    })
+    describe('nested objects and arrays', () => {
       test('generate type for a nested field', () => {
         const collection = fooCollection({
           nestedField: {
@@ -359,6 +349,36 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
         expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
+      });
+      test('ignore field if parent is blackboxed', () => {
+        const collection = fooCollection({
+          blocks: {
+            type: Array,
+            canRead: ['admins'],
+            blackbox: true,
+          },
+          'blocks.$': {
+            type: new SimpleSchema({
+              "addresses": {
+                type: Array,
+                canRead: ['admins']
+              },
+              "addresses.$": {
+                type: new SimpleSchema({
+                  street: {
+                    type: String,
+                    canRead: ['adminst']
+                  }
+                }),
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { blocks: [JSON] }');
       });
     });
 
