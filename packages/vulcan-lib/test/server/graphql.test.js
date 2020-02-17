@@ -137,6 +137,22 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
       });
+      //test('return JSON for child of blackboxed array', () => {
+      //  const schema = new SimpleSchema({
+      //    arrayField: {
+      //      type: Object
+      //    },
+      //    "arrayField.$": {
+      //      type: new SimpleSchema({
+      //        someField: {
+      //          type: String
+      //        }
+      //      }),
+      //    }
+      //  })._schema
+      //  const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' })
+      //  expect(type).toBe('JSON')
+      //})
 
       test('return JSON for input type if provided typeName is JSON', () => {
         const schema = new SimpleSchema({
