@@ -1,9 +1,10 @@
+import expect from 'expect';
 import {
   mergeDefaultBackofficeOptions,
   mergeDefaultCollectionOptions,
 } from '../lib/modules/options';
-describe('options', function() {
-  it('merge defaultOptions', function() {
+describe('options', function () {
+  it('merge defaultOptions', function () {
     const givenOptions = {
       menuItem: { groups: ['members', 'admins', 'foobars'] },
     };
