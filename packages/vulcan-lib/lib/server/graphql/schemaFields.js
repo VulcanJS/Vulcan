@@ -265,7 +265,7 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false, i
   const fieldType = getFieldType(field);
   const fieldTypeName = getFieldTypeName(fieldType);
 
-  if (field.isIntlData) {
+  if (isIntlField(field)) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
   }
 
