@@ -57,7 +57,7 @@ const OtherComponent = ({ value, path, updateCurrentValues }) => {
   );
 };
 
-const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProperties, itemProperties }) => {
+const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProperties, itemProperties = {} }) => {
   const { options = [], value } = inputProperties;
   const hasValue = value !== '';
   return (

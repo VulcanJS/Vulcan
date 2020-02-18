@@ -75,12 +75,12 @@ const OtherComponent = ({ value, path, updateCurrentValues }) => {
 };
 
 // note: treat checkbox group the same as a nested component, using `path`
-const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties, itemProperties }) => {
+const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, updateCurrentValues, inputProperties, itemProperties = {} }) => {
   const { options = [], name } = inputProperties;
 
   // get rid of duplicate values; or any values that are not included in the options provided
   // (unless they have the "other" marker)
-  value = uniq(value.filter(v => isOtherValue(v) || options.map(o => o.value).includes(v)));
+  value = value ? uniq(value.filter(v => isOtherValue(v) || options.map(o => o.value).includes(v))) : [];
 
   const hasValue = value.length > 0;
 
