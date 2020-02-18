@@ -106,10 +106,11 @@ const getInitialStateFromProps = nextProps => {
     errors: [],
     deletedValues: [],
     currentValues: {},
+    originalSchema: convertSchema(schema, { removeArrays: false }),
     // convert SimpleSchema schema into JSON object
     schema: convertedSchema,
     // Also store all field schemas (including nested schemas) in a flat structure
-    flatSchema: convertSchema(schema, true),
+    flatSchema: convertSchema(schema, { flatten: true }),
     // the initial document passed as props
     initialDocument,
     // initialize the current document to be the same as the initial document
@@ -165,11 +166,7 @@ class SmartForm extends Component {
   Get a list of all editable fields
   */
   getEditableFields = schema => {
-    return getEditableFields(
-      schema || this.state.schema,
-      this.props.currentUser,
-      this.state.initialDocument
-    );
+    return getEditableFields(schema || this.state.schema, this.props.currentUser, this.state.initialDocument);
   };
 
   /*
@@ -178,9 +175,7 @@ class SmartForm extends Component {
 
   */
   getMutableFields = schema => {
-    return this.getFormType() === 'edit'
-      ? this.getEditableFields(schema)
-      : this.getInsertableFields(schema);
+    return this.getFormType() === 'edit' ? this.getEditableFields(schema) : this.getInsertableFields(schema);
   };
 
   /*
@@ -203,7 +198,7 @@ class SmartForm extends Component {
   getData = customArgs => {
     // we want to keep prefilled data even for hidden/removed fields
     let data = this.props.prefilledProps || {};
-    
+
     const args = {
       excludeRemovedFields: false,
       excludeHiddenFields: false,
@@ -271,10 +266,7 @@ class SmartForm extends Component {
 
     // for each group, add relevant fields
     groups = groups.map(group => {
-      group.label =
-        group.label ||
-        this.context.intl.formatMessage({ id: group.name }) ||
-        Utils.capitalize(group.name);
+      group.label = group.label || this.context.intl.formatMessage({ id: group.name }) || Utils.capitalize(group.name);
       group.fields = _.filter(fields, field => {
         return field.group && field.group.name === group.name;
       });
@@ -355,9 +347,7 @@ class SmartForm extends Component {
 
     // replace intl fields
     if (replaceIntlFields) {
-      relevantFields = relevantFields.map(fieldName =>
-        isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName
-      );
+      relevantFields = relevantFields.map(fieldName => (isIntlField(schema[fieldName]) ? `${fieldName}_intl` : fieldName));
     }
 
     // remove any duplicates
@@ -376,6 +366,13 @@ class SmartForm extends Component {
       layout: this.props.layout,
       input: fieldSchema.input || fieldSchema.control,
     };
+
+    // if this is an array field also store its array item type
+    if (get(fieldSchema, 'type.0.type') === Array) {
+      const itemField = this.state.originalSchema[`${fieldName}.$`];
+      field.itemDataType = get(itemField, 'type.0.type');
+    }
+
     field.label = this.getLabel(fieldName);
     // // replace value by prefilled value if value is empty
     // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
@@ -403,10 +400,7 @@ class SmartForm extends Component {
     const inputProperties = fieldSchema.form || fieldSchema.inputProperties || {};
     for (const prop in inputProperties) {
       const property = inputProperties[prop];
-      field[prop] =
-        typeof property === 'function'
-          ? property.call(fieldSchema, { ...this.props, document })
-          : property;
+      field[prop] = typeof property === 'function' ? property.call(fieldSchema, { ...this.props, document }) : property;
     }
 
     // add description as help prop
@@ -971,17 +965,13 @@ class SmartForm extends Component {
     const documentId = this.props.document._id;
     const documentTitle = document.title || document.name || '';
 
-    const deleteDocumentConfirm = this.context.intl.formatMessage(
-      { id: 'forms.delete_confirm' },
-      { title: documentTitle }
-    );
+    const deleteDocumentConfirm = this.context.intl.formatMessage({ id: 'forms.delete_confirm' }, { title: documentTitle });
 
     if (window.confirm(deleteDocumentConfirm)) {
       this.props[`delete${this.props.typeName}`]({ documentId })
         .then(mutationResult => {
           // the mutation result looks like {data:{collectionRemove: null}} if succeeded
-          if (this.props.removeSuccessCallback)
-            this.props.removeSuccessCallback({ documentId, documentTitle });
+          if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({ documentId, documentTitle });
           if (this.props.refetch) this.props.refetch();
         })
         .catch(error => {
@@ -1006,7 +996,7 @@ class SmartForm extends Component {
       ref: e => {
         this.form = e;
       },
-    }
+    };
   };
 
   getFormErrorsProps = () => ({
@@ -1034,15 +1024,14 @@ class SmartForm extends Component {
   });
 
   getFormSubmitProps = () => ({
-    submitForm: this.submitForm, 
+    submitForm: this.submitForm,
     submitLabel: this.props.submitLabel,
     cancelLabel: this.props.cancelLabel,
     revertLabel: this.props.revertLabel,
     cancelCallback: this.props.cancelCallback,
     revertCallback: this.props.revertCallback,
     document: this.getDocument(),
-    deleteDocument:
-      (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
+    deleteDocument: (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
     collectionName: this.props.collectionName,
     currentValues: this.state.currentValues,
     deletedValues: this.state.deletedValues,

@@ -9,10 +9,10 @@ import isEmpty from 'lodash/isEmpty';
 export const otherMarker = '[other]';
 
 // check if a string is an "other" value
-export const isOtherValue = s => s && s.substr(0, otherMarker.length) === otherMarker;
+export const isOtherValue = s => s && typeof s === 'string' && s.substr(0, otherMarker.length) === otherMarker;
 
 // remove the "other" marker from a string
-export const removeOtherMarker = s => s && s.substr(otherMarker.length);
+export const removeOtherMarker = s => s && typeof s === 'string' && s.substr(otherMarker.length);
 
 // add the "other" marker to a string
 export const addOtherMarker = s => `${otherMarker}${s}`;
