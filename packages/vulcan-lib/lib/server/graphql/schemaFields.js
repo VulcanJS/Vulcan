@@ -240,7 +240,7 @@ export const getSchemaFields = (schema, typeName) => {
  */
 /* eslint-disable no-console */
 import { isIntlField } from '../../modules/intl.js';
-import { isBlackbox, unarrayfyFieldName, getFieldType, getFieldTypeName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
+import { isBlackbox, isArrayChildField, unarrayfyFieldName, getFieldType, getFieldTypeName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
 
@@ -257,14 +257,14 @@ export const getNestedGraphQLType = (typeName, fieldName, isInput) =>
 
 
 // get GraphQL type for a given schema and field name
-export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false }) => {
+export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false, isParentBlackbox = false }) => {
   const field = schema[fieldName];
   if (field.typeName) return field.typeName; // respect typeName provided by user
 
   const fieldType = getFieldType(field);
   const fieldTypeName = getFieldTypeName(fieldType);
 
-  if (field.isIntlData) {
+  if (isIntlField(field)) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
   }
 
@@ -298,13 +298,18 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false })
           fieldName: arrayItemFieldName,
           typeName,
           isInput,
+          isParentBlackbox: isParentBlackbox || isBlackbox(field) // blackbox field may not be nested items
         });
         return arrayItemType ? `[${arrayItemType}]` : null;
       }
       return null;
 
     case 'Object':
-      // 3 cases: it's a nested Schema, a referenced schema, or an actual JSON
+      // 4 cases: 
+      // - it's the child of a blackboxed array  => will be blackbox JSON
+      // - a nested Schema, 
+      // - a referenced schema, or an actual JSON
+      if (isParentBlackbox) return 'JSON';
       if (!isBlackbox(field) && fieldType._schema) {
         return getNestedGraphQLType(typeName, fieldName, isInput);
       }
@@ -327,7 +332,6 @@ const hasTypeName = field => !!(field || {}).typeName;
 
 const hasNestedSchema = field => !!getNestedSchema(field);
 
-const isArrayChildField = fieldName => fieldName.indexOf('$') !== -1;
 const hasArrayChild = (fieldName, schema) => !!getArrayChild(fieldName, schema);
 
 const getArrayChildSchema = (fieldName, schema) => {
@@ -563,7 +567,7 @@ export const getSchemaFields = (schema, typeName) => {
       hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field);
     const isReferencedObject = hasTypeName(field);
     const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
-    const hasNesting = isNestedArray || isNestedObject || isReferencedObject || isReferencedArray;
+    const hasNesting = !isBlackbox(field) && (isNestedArray || isNestedObject || isReferencedObject || isReferencedArray);
 
     // only include fields that are viewable/insertable/editable and don't contain "$" in their name
     // note: insertable/editable fields must be included in main schema in case they're returned by a mutation

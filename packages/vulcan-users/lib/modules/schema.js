@@ -120,7 +120,7 @@ const schema = {
     optional: true,
     input: 'select',
     canCreate: ['members'],
-    canUpdate: ['members'],
+    canUpdate: ownsOrIsAdmin,
     canRead: ['guests'],
     options: () => Locales.map(({ id, label }) => ({ value: id, label })),
   },
@@ -151,7 +151,7 @@ const schema = {
     optional: true,
     input: 'text',
     canCreate: ['members'],
-    canUpdate: ['members'],
+    canUpdate: ownsOrIsAdmin,
     canRead: ['guests'],
     order: 10,
     onCreate: ({ document: user }) => {
@@ -169,7 +169,7 @@ const schema = {
     mustComplete: true,
     input: 'text',
     canCreate: ['members'],
-    canUpdate: ['members'],
+    canUpdate: ownsOrIsAdmin,
     canRead: ownsOrIsAdmin,
     order: 20,
     onCreate: ({ document: user }) => {

@@ -19,16 +19,6 @@ describe('vulcan:lib/default_mutations', function () {
         expect(mutations.update).toBeDefined();
         expect(mutations.delete).toBeDefined();
     });
-    it('preserves openCRUD backward compatibility', function () {
-        const mutations = getNewDefaultMutations({
-            typeName: 'Foo',
-            collectionName: 'Foos',
-            options: {}
-        });
-        expect(mutations.new).toBeDefined();
-        expect(mutations.edit).toBeDefined();
-        expect(mutations.remove).toBeDefined();
-    });
 
     describe('delete mutation', () => {
         const foo = { _id: 'foo' };
@@ -59,22 +49,24 @@ describe('vulcan:lib/default_mutations', function () {
             collectionName: 'Foos',
             options: {}
         });
-        test('refuse deletion if selector is empty', async () => {
-            const { delete: deleteMutation } = mutations;
-            const emptySelector = {};
-            const nullSelector = { documentId: null };
-            const validIdSelector = { _id: 'foobar' };
-            const validDocIdSelector = { documentId: 'foobar' };
-            const validSlugSelector = { slug: 'foobar' };
-
-            // const { mutation } = deleteMutation; // won't work because "this" must equal deleteMutation to access "check"
-            await expect(deleteMutation.mutation(null, { selector: emptySelector }, context)).rejects.toThrow();
-            await expect(deleteMutation.mutation(null, { selector: nullSelector }, context)).rejects.toThrow();
-
-            await expect(deleteMutation.mutation(null, { selector: validIdSelector }, context)).resolves.toEqual({ data: foo });
-            await expect(deleteMutation.mutation(null, { selector: validDocIdSelector }, context)).resolves.toEqual({ data: foo });
-            await expect(deleteMutation.mutation(null, { selector: validSlugSelector }, context)).resolves.toEqual({ data: foo });
-        });
+        // We do not need this test anymore because the delete mutator (called by the mutation)
+        // will test the selector itself (selector should return a document, otherwise it is ignored)
+        //test('refuse deletion if selector is empty', async () => {
+        //    const { delete: deleteMutation } = mutations;
+        //    const emptySelector = {};
+        //    const nullSelector = { documentId: null };
+        //    const validIdSelector = { _id: 'foobar' };
+        //    const validDocIdSelector = { documentId: 'foobar' };
+        //    const validSlugSelector = { slug: 'foobar' };
+        //
+        //            // const { mutation } = deleteMutation; // won't work because "this" must equal deleteMutation to access "check"
+        //            await expect(deleteMutation.mutation(null, { input: { selector: emptySelector } }, context)).rejects.toThrow();
+        //            await expect(deleteMutation.mutation(null, { input: { selector: nullSelector } }, context)).rejects.toThrow();
+        //
+        //            await expect(deleteMutation.mutation(null, { input: { selector: validIdSelector } }, context)).resolves.toEqual({ data: foo });
+        //            await expect(deleteMutation.mutation(null, { input: { selector: validDocIdSelector } }, context)).resolves.toEqual({ data: foo });
+        //            await expect(deleteMutation.mutation(null, { input: { selector: validSlugSelector } }, context)).resolves.toEqual({ data: foo });
+        //        });
 
     });
 

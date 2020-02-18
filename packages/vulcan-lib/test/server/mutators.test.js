@@ -141,6 +141,47 @@ describe('vulcan:lib/mutators', function () {
     });
   });
 
+  describe('delete mutator', () => {
+    test('refuse deletion if selector is empty', async () => {
+      const emptySelector = {};
+
+      const defaultParams = {
+        collection: Foo2s
+      }
+
+      await expect(deleteMutator({ ...defaultParams, selector: emptySelector })).rejects.toThrow();
+    });
+    test('refuse deletion if doucment is not found', async () => {
+      const nullSelector = { documentId: null };
+
+      const defaultParams = {
+        collection: {
+          ...Foo2s,
+          // document not found
+          findOne: () => null
+        }
+      }
+
+      await expect(deleteMutator({ ...defaultParams, selector: nullSelector })).rejects.toThrow();
+
+    })
+    test('accept valid deletions', async () => {
+      const validIdSelector = { _id: 'foobar' };
+      const validDocIdSelector = { documentId: 'foobar' };
+      const validSlugSelector = { slug: 'foobar' };
+      const foo = { hello: "world" }
+
+      const defaultParams = {
+        collection: { ...Foo2s, findOne: () => foo, remove: () => foo }
+      }
+
+      await expect(deleteMutator({ ...defaultParams, selector: validIdSelector })).resolves.toEqual({ data: foo });
+      await expect(deleteMutator({ ...defaultParams, selector: validDocIdSelector })).resolves.toEqual({ data: foo });
+      await expect(deleteMutator({ ...defaultParams, selector: validSlugSelector })).resolves.toEqual({ data: foo });
+
+    })
+  })
+
   describe('onCreate/onUpdate/onDelete', () => {
     test('run onCreate callbacks during creation and assign returned value', async () => {
       const { data: resultDocument } = await createMutator({

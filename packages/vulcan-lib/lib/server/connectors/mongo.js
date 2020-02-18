@@ -49,6 +49,7 @@ DatabaseConnectors.mongo = {
     const mergedInputObject = {
       selector: { ...defaultInputObject.selector, ...currentInputObject.selector },
       options: { ...defaultInputObject.options, ...currentInputObject.options },
+      filteredFields: currentInputObject.filteredFields || []
     };
     return mergedInputObject;
   },
