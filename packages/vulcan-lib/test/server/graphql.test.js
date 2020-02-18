@@ -459,7 +459,7 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { intlField(locale: String): String @intl intlField_intl(locale: String): [IntlValue] @intl }');
       })
-      test('generate type for array of intl fields', () => {
+      test.skip('generate type for array of intl fields', () => {
         const collection = fooCollection(
           addIntlFields(// we need to do this manually, it is handled by a callback when creating the collection
             {

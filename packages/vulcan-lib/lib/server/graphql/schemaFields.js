@@ -264,7 +264,26 @@ export const getGraphQLType = ({ schema, fieldName, typeName, isInput = false, i
   const fieldType = getFieldType(field);
   const fieldTypeName = getFieldTypeName(fieldType);
 
-  if (isIntlField(field)) {
+  // NOTE: we DON't USE isInputField! we don't want to match "field.intl", only "field.intlData"
+  /**
+   * Expected GraphQL Schema:
+   * 
+   *   # The room name
+  * name(locale: String): String @intl
+  * # The room name
+  * name_intl(locale: String): [IntlValue] @intl
+  * 
+  * JS schema:
+  * 
+  * name: {
+  *   type: String,
+  *   optional: false,
+  *   canRead: ['guests'],
+  *   canCreate: ['admins'],
+  *   intl: true,
+  * },
+   */
+  if (field.isIntlData) {
     return isInput ? '[IntlValueInput]' : '[IntlValue]';
   }
 
