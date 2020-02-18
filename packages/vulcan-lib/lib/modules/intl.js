@@ -24,10 +24,10 @@ export const getString = ({ id, values, defaultMessage, locale }) => {
   if (Strings[locale] && Strings[locale][id]) {
     message = Strings[locale][id];
   } else if (Strings[defaultLocale] && Strings[defaultLocale][id]) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
+    // debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
     message = Strings[defaultLocale] && Strings[defaultLocale][id];
   } else if (defaultMessage) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
+    // debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
     message = defaultMessage;
   }
 
