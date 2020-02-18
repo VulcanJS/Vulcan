@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:core@=1.14.1', 'vulcan:forms@=1.14.1', 'fourseven:scss@4.10.0']);
+  api.use(['vulcan:core@=1.14.1', 'vulcan:forms@=1.14.1', 'fourseven:scss@4.12.0']);
 
   api.addFiles(['lib/Upload.scss'], 'client');
 

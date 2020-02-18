@@ -9,7 +9,7 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password@1.5.1
+accounts-password@1.5.2
 # accounts-twitter
 # accounts-facebook
 
@@ -18,3 +18,4 @@ vulcan:backoffice
 vulcan:ui-bootstrap
 meteortesting:mocha
 apollo
+fourseven:scss

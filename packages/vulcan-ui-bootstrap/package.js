@@ -9,7 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use(['vulcan:lib@=1.14.1',
-    'fourseven:scss@4.10.0'
+    'fourseven:scss@4.12.0'
   ]);
 
   api.addFiles(['lib/stylesheets/style.scss', 'lib/stylesheets/datetime.scss'], 'client');
