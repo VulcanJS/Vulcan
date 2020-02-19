@@ -1,6 +1,8 @@
 import _reject from 'lodash/reject';
 import _keys from 'lodash/keys';
 import { Collections } from './collections.js';
+import { getNestedSchema, getArrayChild, isBlackbox } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
+import _isArray from 'lodash/isArray';
 
 /* getters */
 // filter out fields with "." or "$"
@@ -28,7 +30,7 @@ export const getUpdateableFields = schema => {
 
 /*
 
-Test if the main schema field should be added to the GraphQL schema or not.
+Test if a schema non-nested  field should be added to the GraphQL schema or not.
 Rule: we always add it except if:
 
 1. addOriginalField: false is specified in one or more resolveAs fields
@@ -37,17 +39,17 @@ Rule: we always add it except if:
 
 */
 export const shouldAddOriginalField = (fieldName, field) => {
-  if (!field.resolveAs) return true;
+    if (!field.resolveAs) return true;
 
-  const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
+    const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
-  const removeOriginalField = resolveAsArray.some(
-    resolveAs =>
-      resolveAs.addOriginalField === false ||
-      resolveAs.fieldName === fieldName ||
-      typeof resolveAs.fieldName === 'undefined'
-  );
-  return !removeOriginalField;
+    const removeOriginalField = resolveAsArray.some(
+        resolveAs =>
+            resolveAs.addOriginalField === false ||
+            resolveAs.fieldName === fieldName ||
+            typeof resolveAs.fieldName === 'undefined'
+    );
+    return !removeOriginalField;
 };
 // list fields that can be included in the default fragment for a schema
 export const getFragmentFieldNames = ({ schema, options }) => _reject(_keys(schema), fieldName => {
@@ -75,3 +77,43 @@ is just a regular or custom scalar type.
 
 */
 export const isCollectionType = typeName => Collections.some(c => c.options.typeName === typeName || `[${c.options.typeName}]` === typeName);
+
+/**
+ * Iterate over a document fields and run a callback with side effect
+ * Works recursively for nested fields and arrays of objects (but excluding blackboxed objects, native JSON, and arrays of native values)
+ * @param {*} document Current document
+ * @param {*} schema Document schema
+ * @param {*} callback Called on each field with the corresponding field schema, including fields of nested objects and arrays of nested object
+ * @param {*} currentPath Global path of the document (to track recursive calls)
+ * @param {*} isNested Differentiate nested fields
+ */
+export const forEachDocumentField = (document, schema, callback, currentPath = '') => {
+    if (!document) return;
+    Object.keys(document).forEach(fieldName => {
+        const fieldSchema = schema[fieldName];
+        callback({ fieldName, fieldSchema, currentPath, document, schema, isNested: !!currentPath });
+        // Check if we need a recursive call
+        if (!fieldSchema) return; // field has no corresponding schema, we are done
+        const value = document[fieldName];
+        if (!value) return;
+        // if value is an array, validate permissions for all children
+        if (_isArray(value)) {
+            const arrayChildField = getArrayChild(fieldName, schema);
+            if (arrayChildField) {
+                const arrayFieldSchema = getNestedSchema(arrayChildField);
+                // apply only if the field is an array of objects
+                if (arrayFieldSchema) {
+                    value.forEach((item, idx) => {
+                        forEachDocumentField(item, arrayFieldSchema, callback, `${currentPath}${fieldName}[${idx}].`);
+                    });
+                }
+            }
+            // if value is an object, run recursively
+        } else if (typeof value === 'object' && !isBlackbox(fieldSchema)) {
+            const nestedFieldSchema = getNestedSchema(fieldSchema);
+            if (nestedFieldSchema) {
+                forEachDocumentField(value, nestedFieldSchema, callback, `${currentPath}${fieldName}.`);
+            }
+        }
+    });
+};

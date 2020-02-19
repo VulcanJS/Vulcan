@@ -1,0 +1,16 @@
+{
+  "name": "vulcan-backoffice",
+  "version": "0.0.1",
+  "description": "",
+  "main": "package.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "npm run test-unit",
+    "test-unit": "TEST_WATCH=1 meteor test-packages ./ --port 3002 --driver-package meteortesting:mocha --raw-logs"
+  },
+  "devDependencies": {
+    "expect": "^23.6.0"
+  }
+}

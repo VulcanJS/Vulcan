@@ -200,17 +200,17 @@ describe('vulcan-forms/Form', function () {
         const getFields = arrayFormGroup => arrayFormGroup.prop('fields');
         describe('basic collection - no nesting', function () {
             it('shallow render', function () {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={Addresses} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={Addresses} />);
                 expect(wrapper).toBeDefined();
             });
         });
         describe('nested object (not in array)', function () {
             it('shallow render', () => {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={Objects} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={Objects} />);
                 expect(wrapper).toBeDefined();
             });
             it('define one field', () => {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={Objects} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={Objects} />);
                 const defaultGroup = wrapper.find('FormGroup').first();
                 const fields = defaultGroup.prop('fields');
                 expect(fields).toHaveLength(1); // addresses field
@@ -222,7 +222,7 @@ describe('vulcan-forms/Form', function () {
                 return fields;
             };
             const getFirstField = () => {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={Objects} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={Objects} />);
                 const fields = getFormFields(wrapper);
                 return fields[0];
             };
@@ -234,13 +234,13 @@ describe('vulcan-forms/Form', function () {
         describe('array of objects', function () {
             it('shallow render', () => {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayOfObjects} />
+                    <Form {...defaultProps} collection={ArrayOfObjects} />
                 );
                 expect(wrapper).toBeDefined();
             });
             it('render a FormGroup for addresses', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayOfObjects} />
+                    <Form {...defaultProps} collection={ArrayOfObjects} />
                 );
                 const formGroup = wrapper.find('FormGroup').find({ name: 'addresses' });
                 expect(formGroup).toBeDefined();
@@ -248,7 +248,7 @@ describe('vulcan-forms/Form', function () {
             });
             it('passes down the array child fields', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayOfObjects} />
+                    <Form {...defaultProps} collection={ArrayOfObjects} />
                 );
                 const formGroup = getArrayFormGroup(wrapper);
                 const fields = getFields(formGroup);
@@ -307,11 +307,11 @@ describe('vulcan-forms/Form', function () {
         });
         describe('array with custom children inputs (e.g array of url)', function () {
             it('shallow render', function () {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={ArrayOfUrls} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={ArrayOfUrls} />);
                 expect(wrapper).toBeDefined();
             });
             it('passes down the array item custom input', () => {
-                const wrapper = shallowWithContext(<Form collectionName="" collection={ArrayOfUrls} />);
+                const wrapper = shallowWithContext(<Form {...defaultProps} collection={ArrayOfUrls} />);
                 const formGroup = getArrayFormGroup(wrapper);
                 const fields = getFields(formGroup);
                 const arrayField = fields[0];
@@ -321,14 +321,14 @@ describe('vulcan-forms/Form', function () {
         describe('array of objects with custom children inputs', function () {
             it('shallow render', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayOfCustomObjects} />
+                    <Form {...defaultProps} collection={ArrayOfCustomObjects} />
                 );
                 expect(wrapper).toBeDefined();
             });
             // TODO: does not work, schema_utils needs an update
             it.skip('passes down the custom input', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayOfCustomObjects} />
+                    <Form {...defaultProps} collection={ArrayOfCustomObjects} />
                 );
                 const formGroup = getArrayFormGroup(wrapper);
                 const fields = getFields(formGroup);
@@ -339,13 +339,13 @@ describe('vulcan-forms/Form', function () {
         describe('array with a fully custom input (array itself and children)', function () {
             it('shallow render', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayFullCustom} />
+                    <Form {...defaultProps} collection={ArrayFullCustom} />
                 );
                 expect(wrapper).toBeDefined();
             });
             it('passes down the custom input', function () {
                 const wrapper = shallowWithContext(
-                    <Form collectionName="" collection={ArrayFullCustom} />
+                    <Form {...defaultProps} collection={ArrayFullCustom} />
                 );
                 const formGroup = getArrayFormGroup(wrapper);
                 const fields = getFields(formGroup);

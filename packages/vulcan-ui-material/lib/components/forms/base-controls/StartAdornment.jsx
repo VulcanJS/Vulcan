@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { instantiateComponent } from 'meteor/vulcan:core';
+import { intlShape } from 'meteor/vulcan:i18n';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,20 +24,26 @@ export const fixUrl = (url, type) => {
 };
 
 
-const StartAdornment = (props) => {
+const StartAdornment = (props, context) => {
   const { classes, value, type, addonBefore } = props;
-  
+  const { intl } = context;
+
   if (hideStartAdornment(props)) return null;
   
+  const isUrl = type === 'url' ? true : false;
+
   const urlButton = ['url', 'email'].includes(type) &&
     <IconButton
       className={classes.urlButton}
       href={fixUrl(value, type)}
       target="_blank"
       disabled={!value}
+      aria-label={intl.formatMessage({ 
+        id: isUrl ? 'forms.start_adornment_web_icon' : 'forms.start_adornment_email_icon'
+      })}
     >
       {
-        type === 'url'
+        isUrl
           ?
           <WebIcon/>
           :
@@ -61,5 +68,8 @@ StartAdornment.propTypes = {
   addonBefore: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.func]),
 };
 
+StartAdornment.contextTypes = {
+  intl: intlShape,
+};
 
 export default withStyles(styles)(StartAdornment);

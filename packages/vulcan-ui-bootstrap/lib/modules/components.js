@@ -4,6 +4,7 @@ import '../components/forms/Date.jsx';
 import '../components/forms/Date2.jsx';
 import '../components/forms/Datetime.jsx';
 import '../components/forms/Default.jsx';
+import '../components/forms/Password.jsx';
 import '../components/forms/Email.jsx';
 import '../components/forms/FormComponentInner.jsx';
 import '../components/forms/FormControl.jsx'; // note: only used by old accounts package, remove soon?
@@ -26,3 +27,8 @@ import '../components/ui/ModalTrigger.jsx';
 import '../components/ui/TooltipTrigger.jsx';
 import '../components/ui/Dropdown.jsx';
 import '../components/ui/Table.jsx';
+import '../components/ui/VerticalNavigation.jsx';
+
+import '../components/backoffice/BackofficeNavbar.jsx';
+import '../components/backoffice/BackofficeVerticalMenuLayout.jsx';
+import '../components/backoffice/BackofficePageLayout.jsx';

@@ -39,6 +39,7 @@ import './forms/controls/DateRdt';
 import './forms/controls/DateTime';
 import './forms/controls/DateTimeRdt';
 import './forms/controls/Default';
+import './forms/controls/Password';
 import './forms/controls/Email';
 import './forms/controls/Number';
 import './forms/controls/PostalCode';
@@ -59,8 +60,13 @@ import './ui/Button';
 import './ui/Modal';
 import './ui/ModalTrigger';
 import './ui/Table';
+import './ui/VerticalNavigation';
 
 import './upload/UploadImage';
 import './upload/UploadInner';
+
+import './backoffice/BackofficeNavbar';
+import './backoffice/BackofficePageLayout';
+import './backoffice/BackofficeVerticalMenuLayout';
 
 export * from './forms/controls/countries';

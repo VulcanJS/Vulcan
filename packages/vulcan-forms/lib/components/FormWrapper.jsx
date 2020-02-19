@@ -245,6 +245,10 @@ FormWrapper.propTypes = {
   revertLabel: PropTypes.node,
   repeatErrors: PropTypes.bool,
   warnUnsavedChanges: PropTypes.bool,
+  formComponents: PropTypes.object,
+  disabled: PropTypes.bool,
+  itemProperties: PropTypes.object,
+  successComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 
   // callbacks
   ...callbackProps,

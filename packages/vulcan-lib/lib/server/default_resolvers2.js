@@ -49,7 +49,8 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
+        let { selector, options } = await Connectors.filter(collection, input, context);
+        const filteredFields = Object.keys(selector);
 
         // make sure all filtered fields are allowed
         Users.checkFields(currentUser, collection, filteredFields);

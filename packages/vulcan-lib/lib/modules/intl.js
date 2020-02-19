@@ -24,10 +24,10 @@ export const getString = ({ id, values, defaultMessage, locale }) => {
   if (Strings[locale] && Strings[locale][id]) {
     message = Strings[locale][id];
   } else if (Strings[defaultLocale] && Strings[defaultLocale][id]) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
+    // debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
     message = Strings[defaultLocale] && Strings[defaultLocale][id];
   } else if (defaultMessage) {
-    debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
+    // debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using default message "${defaultMessage}".\x1b[0m`);
     message = defaultMessage;
   }
 
@@ -96,7 +96,7 @@ Custom validation function to check for required locales
 See https://github.com/aldeed/simple-schema-js#custom-field-validation
 
 */
-export const validateIntlField = function() {
+export const validateIntlField = function () {
   let errors = [];
 
   // go through locales to check which one are required
@@ -157,7 +157,7 @@ export const formatLabel = ({ intl, fieldName, collectionName, schema }, values)
   if (intlLabel) {
     return intlLabel;
   }
-  
+
   // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
   let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
   return Utils.capitalize(schemaLabel) || Utils.camelToSpaces(fieldName);

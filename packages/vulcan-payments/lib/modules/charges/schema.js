@@ -31,13 +31,14 @@ const schema = {
       addOriginalField: true
     },
   },
+  
+  // custom properties
+
   type: {
     type: String,
     optional: true,
     canRead: ['admins'],
   },
-  
-  // custom properties
 
   associatedCollection: {
     type: String,
@@ -76,7 +77,7 @@ const schema = {
 
   data: {
     type: Object,
-    canRead: ['admins'],
+    // canRead: ['admins'], // for security's sake don't expose this through GraphQL API
     blackbox: true,
   },
 

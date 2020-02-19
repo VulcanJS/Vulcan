@@ -29,8 +29,8 @@ If flatten = true, will create a flat object instead of nested tree
  * Get an array of all fields editable by a specific user for a given collection
  * @param {Object} user – the user for which to check field permissions
  */
-export const getInsertableFields = function (schema, user) {
-  const fields = _filter(_keys(schema), function (fieldName) {
+export const getInsertableFields = function(schema, user) {
+  const fields = _filter(_keys(schema), function(fieldName) {
     var field = schema[fieldName];
     return Users.canCreateField(user, field);
   });
@@ -42,21 +42,24 @@ export const getInsertableFields = function (schema, user) {
  * Get an array of all fields editable by a specific user for a given collection (and optionally document)
  * @param {Object} user – the user for which to check field permissions
  */
-export const getEditableFields = function (schema, user, document) {
-  const fields = _.filter(_.keys(schema), function (fieldName) {
+export const getEditableFields = function(schema, user, document) {
+  const fields = _.filter(_.keys(schema), function(fieldName) {
     var field = schema[fieldName];
     return Users.canUpdateField(user, field, document);
   });
   return fields;
 };
 
-export const convertSchema = (schema, flatten = false) => {
+export const convertSchema = (schema, options = {}) => {
+  
+  const { flatten = false, removeArrays = true } = options;
+
   if (schema._schema) {
     let jsonSchema = {};
 
     Object.keys(schema._schema).forEach(fieldName => {
       // exclude array fields
-      if (fieldName.includes('$')) {
+      if (removeArrays && fieldName.includes('$')) {
         return;
       }
 
@@ -71,12 +74,12 @@ export const convertSchema = (schema, flatten = false) => {
         jsonSchema[fieldName].arrayFieldSchema = getFieldSchema(`${fieldName}.$`, schema);
 
         // call convertSchema recursively on the subSchema
-        const convertedSubSchema = convertSchema(subSchemaOrType);
+        const convertedSubSchema = convertSchema(subSchemaOrType, options);
         // nested schema can be a field schema ({type, canRead, etc.}) (convertedSchema will be null)
         // or a schema on its own with subfields (convertedSchema will return smth)
         if (!convertedSubSchema) {
           // subSchema is a simple field in this case (eg array of numbers)
-          jsonSchema[fieldName].isSimpleArrayField = true;//getFieldSchema(`${fieldName}.$`, schema);
+          jsonSchema[fieldName].isSimpleArrayField = true; //getFieldSchema(`${fieldName}.$`, schema);
         } else {
           // subSchema is a full schema with multiple fields (eg array of objects)
           if (flatten) {
@@ -197,7 +200,7 @@ export const schemaProperties = [
   'options',
   'query',
   'fieldProperties',
-  'intl'
+  'intl',
 ];
 
 export const formProperties = [
@@ -230,5 +233,5 @@ export const formProperties = [
   'placeholder',
   'options',
   'query',
-  'fieldProperties'
+  'fieldProperties',
 ];

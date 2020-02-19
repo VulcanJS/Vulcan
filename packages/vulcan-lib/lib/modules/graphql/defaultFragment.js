@@ -63,7 +63,7 @@ export const getFieldFragment = ({
             if (arrayItemField) {
                 // child will either be native value or a an object (first case)
                 const arrayItemFieldType = arrayItemField.type.singleType;
-                if (!arrayItemField.blackbox && arrayItemFieldType._schema) {
+                if (!isBlackbox(field) && arrayItemFieldType._schema) {
                     return getObjectFragment({
                         fragmentName: fieldName,
                         schema: arrayItemFieldType._schema,

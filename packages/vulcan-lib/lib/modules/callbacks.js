@@ -178,21 +178,20 @@ export const runCallbacks = function () {
  * @param {String} hook - First argument: the name of the hook
  * @param {Any} args - Other arguments will be passed to each successive iteration
  */
-export const runCallbacksAsync = function () {
-
-  let hook, formattedHook, args, callbacks;
+export const runCallbacksAsync = function() {
+  let hook, args, callbacks, formattedHook;
   if (typeof arguments[0] === 'object' && arguments.length === 1) {
     const singleArgument = arguments[0];
     hook = singleArgument.name;
     formattedHook = formatHookName(hook);
     args = [singleArgument.properties]; // wrap in array for apply
-    // if callbacks option is passed used that, else use formatted hook name
     callbacks = singleArgument.callbacks ? singleArgument.callbacks : Callbacks[formattedHook];
   } else {
     // OpenCRUD backwards compatibility
     // the first argument is the name of the hook or an array of functions
     hook = arguments[0];
     formattedHook = formatHookName(hook);
+    callbacks = Array.isArray(hook) ? hook : Callbacks[formattedHook];
     // successive arguments are passed to each iteration
     args = Array.prototype.slice.call(arguments).slice(1);
     // if first argument is an array, use that as callbacks array; else use formatted hook name

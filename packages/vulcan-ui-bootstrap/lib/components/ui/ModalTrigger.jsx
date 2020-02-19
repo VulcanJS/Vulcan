@@ -19,10 +19,12 @@ class ModalTrigger extends PureComponent {
   }
 
   openModal = () => {
+    this.props.openCallback && this.props.openCallback();
     this.setState({ modalIsOpen: true });
   }
 
   closeModal = () => {
+    this.props.closeCallback && this.props.closeCallback();
     this.setState({ modalIsOpen: false });
   }
 

@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 import { registerComponent } from 'meteor/vulcan:core';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
+import get from 'lodash/get';
 
 const FormError = ({ error, errorContext, getLabel }) => {
-  // if we explictely provide a message
-  if (error.message) {
-    return error.message;
-  }
+
+  // use the error or error message as default message
+  const defaultMessage = JSON.stringify(error.message || error);
+  const id = error.id;
+
   // default props for all errors
   let messageProps = {
-    id: error.id,
-    defaultMessage:JSON.stringify(error),
-    values:{
-      errorContext
-    }
+    id,
+    defaultMessage,
+    values: {
+      errorContext,
+    },
   };
+
   // additional properties to enhance the message
   if (error.properties) {
     // in case this is a nested fields, only keep last segment of path
@@ -28,18 +31,24 @@ const FormError = ({ error, errorContext, getLabel }) => {
       ...error.properties,
     };
   }
-  if (error.data){
-    messageProps.values={
+
+  if (error.data) {
+    messageProps.values = {
       ...messageProps.values,
       ...error.data, // backwards compatibility
     };
   }
-  return (
-    <FormattedMessage
-      {...messageProps}
-    />
-  )
-;};
+
+  const exception = get(error, 'extensions.exception');
+  if (exception) {
+    messageProps = {
+      ...messageProps,
+      id: exception.id,
+      values: exception.data,
+    };
+  }
+  return <FormattedMessage html={true} {...messageProps} />;
+};
 
 FormError.defaultProps = {
   errorContext: '', // default context so format message does not complain
@@ -47,6 +56,10 @@ FormError.defaultProps = {
 };
 
 // TODO: pass getLabel as prop instead for consistency?
-registerComponent('FormError', FormError, getContext({
-  getLabel: PropTypes.func,
-}));
+registerComponent(
+  'FormError',
+  FormError,
+  getContext({
+    getLabel: PropTypes.func,
+  })
+);

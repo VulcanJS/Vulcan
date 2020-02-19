@@ -137,19 +137,24 @@ describe('vulcan:lib/graphql', function () {
         const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo' });
         expect(type).toBe('JSON');
       });
-
-      test('return JSON for input type if provided typeName is JSON', () => {
+      test('return JSON for child of blackboxed array', () => {
         const schema = new SimpleSchema({
-          nestedField: {
-            type: Object,
-            typeName: 'JSON'
+          arrayField: {
+            type: Array,
+            blackbox: true
+          },
+          "arrayField.$": {
+            type: new SimpleSchema({
+              someField: {
+                type: String
+              }
+            }),
           }
-        })
-          ._schema;
-        const type = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
-        expect(type).toBe('JSON');
-
+        })._schema
+        const type = getGraphQLType({ schema, fieldName: 'arrayField', typeName: 'Foo' })
+        expect(type).toBe('[JSON]')
       })
+
       test('return JSON for input type if provided typeName is JSON', () => {
         const schema = new SimpleSchema({
           nestedField: {
@@ -160,7 +165,6 @@ describe('vulcan:lib/graphql', function () {
           ._schema;
         const inputType = getGraphQLType({ schema, fieldName: 'nestedField', typeName: 'Foo', isInput: true });
         expect(inputType).toBe('JSON');
-
       })
 
       test('return nested  array type for arrays of nested objects', () => {
@@ -305,6 +309,8 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { field: StringEnum }');
       });
+    })
+    describe('nested objects and arrays', () => {
       test('generate type for a nested field', () => {
         const collection = fooCollection({
           nestedField: {
@@ -343,6 +349,36 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
         expect(normalizedSchema).toMatch('type FooArrayField { subField: String }');
+      });
+      test('ignore field if parent is blackboxed', () => {
+        const collection = fooCollection({
+          blocks: {
+            type: Array,
+            canRead: ['admins'],
+            blackbox: true,
+          },
+          'blocks.$': {
+            type: new SimpleSchema({
+              "addresses": {
+                type: Array,
+                canRead: ['admins']
+              },
+              "addresses.$": {
+                type: new SimpleSchema({
+                  street: {
+                    type: String,
+                    canRead: ['adminst']
+                  }
+                }),
+                canRead: ['admins']
+              }
+            }),
+            canRead: ['admins']
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { blocks: [JSON] }');
       });
     });
 
@@ -423,7 +459,7 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { intlField(locale: String): String @intl intlField_intl(locale: String): [IntlValue] @intl }');
       })
-      test('generate type for intl fields in array', () => {
+      test.skip('generate type for array of intl fields', () => {
         const collection = fooCollection(
           addIntlFields(// we need to do this manually, it is handled by a callback when creating the collection
             {
@@ -439,7 +475,7 @@ describe('vulcan:lib/graphql', function () {
             }));
         const res = collectionToGraphQL(collection);
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
-        expect(normalizedSchema).toMatch('type Foo { arrayField: [IntlValue] }');
+        expect(normalizedSchema).toMatch('type Foo { arrayField: [[IntlValue]] }');
       })
       test('generate correct type for nested intl fields', () => {
         const collection = fooCollection({
@@ -726,6 +762,53 @@ describe('vulcan:lib/graphql', function () {
         expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [CreateFooArrayFieldDataInput] }');
         expect(normalizedSchema).toMatch('input CreateFooArrayFieldDataInput { someField: String }');
       });
+      test('do NOT generate new inputs for array of JSON', () => {
+        const collection = fooCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            type: Object
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        // TODO: not 100% sure of the syntax
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [JSON] }');
+        expect(normalizedSchema).not.toMatch('CreateJSONDataInput');
+      });
+      test('do NOT generate new inputs for blackboxed array', () => {
+        const collection = fooCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            blackbox: true
+          },
+          'arrayField.$': {
+            canRead: ['admins'],
+            canCreate: ['admins'],
+            type: new SimpleSchema({
+              foo: {
+                type: String, canRead: ['admins'], canUpdate: ['admins']
+              }
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        // debug
+        //console.log(res.graphQLSchema);
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('input CreateFooDataInput { arrayField: [JSON] }');
+        expect(normalizedSchema).not.toMatch('CreateJSONDataInput');
+      });
+
 
       test('do NOT generate new inputs for nested objects if a type is provided', () => {
         const collection = fooCollection({

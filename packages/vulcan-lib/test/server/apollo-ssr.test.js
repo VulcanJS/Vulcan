@@ -41,8 +41,14 @@ describe('vulcan:lib/renderPage', () => {
         const sink = createDummySink();
         await renderPage(sink);
         expect(sink.result.body).toMatch('<div id="react-app">');
-        expect(sink.result.head).toMatch('<head');
+        expect(sink.result.head).toMatch('<title');
+        expect(sink.result.head).not.toMatch('<head');
     });
+    test('should NOT render an additional <head> tag', async () => {
+        const sink = createDummySink();
+        await renderPage(sink);
+        expect(sink.result.head).not.toMatch('<head');
+    })
 
     test('should inject default data', async () => {
         const sink = createDummySink();

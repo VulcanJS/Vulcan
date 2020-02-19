@@ -10,6 +10,6 @@ An error should have:
 
 */
 export const throwError = error => {
-  const { id, } = error;
+  const { id } = error;
   throw new UserInputError(id, error);
 };

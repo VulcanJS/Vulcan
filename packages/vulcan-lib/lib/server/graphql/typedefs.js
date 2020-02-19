@@ -56,7 +56,7 @@ input String_Selector {
   #_gte: String
   #_ilike: String
   _in: [String!]
-  #_is_null: Boolean
+  _is_null: Boolean
   #_like: String
   #_lt: String
   #_lte: String

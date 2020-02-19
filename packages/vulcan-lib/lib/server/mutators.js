@@ -112,7 +112,7 @@ export const createMutator = async ({
       properties,
     });
     validationErrors = await runCallbacks({
-      name: `*.create.validate`,
+      name: '*.create.validate',
       callbacks: get(globalCallbacks, 'create.validate', []),
       iterator: validationErrors,
       properties,
@@ -196,7 +196,7 @@ export const createMutator = async ({
     properties,
   });
   document = await runCallbacks({
-    name: `*.create.before`,
+    name: '*.create.before',
     callbacks: get(globalCallbacks, 'create.before', []),
     iterator: document,
     properties,
@@ -238,7 +238,7 @@ export const createMutator = async ({
     properties,
   });
   document = await runCallbacks({
-    name: `*.create.after`,
+    name: '*.create.after',
     callbacks: get(globalCallbacks, 'create.after', []),
     iterator: document,
     properties,
@@ -255,7 +255,7 @@ export const createMutator = async ({
 
   // update document object in properties object
   properties.document = document;
-  
+
   /*
 
   Async
@@ -268,7 +268,7 @@ export const createMutator = async ({
     properties,
   });
   await runCallbacksAsync({
-    name: `*.create.async`,
+    name: '*.create.async',
     callbacks: get(globalCallbacks, 'create.async', []),
     properties,
   });
@@ -376,7 +376,7 @@ export const updateMutator = async ({
       properties,
     });
     validationErrors = await runCallbacks({
-      name: `*.update.validate`,
+      name: '*.update.validate',
       callbacks: get(globalCallbacks, 'update.validate', []),
       iterator: validationErrors,
       properties,
@@ -446,7 +446,7 @@ export const updateMutator = async ({
     properties,
   });
   data = await runCallbacks({
-    name: `*.update.before`,
+    name: '*.update.before',
     callbacks: get(globalCallbacks, 'update.before', []),
     iterator: data,
     properties,
@@ -522,7 +522,7 @@ export const updateMutator = async ({
     properties,
   });
   document = await runCallbacks({
-    name: `*.update.after`,
+    name: '*.update.after',
     callbacks: get(globalCallbacks, 'update.after', []),
     iterator: document,
     properties,
@@ -554,7 +554,7 @@ export const updateMutator = async ({
     properties,
   });
   await runCallbacksAsync({
-    name: `*.update.async`,
+    name: '*.update.async',
     callbacks: get(globalCallbacks, 'update.async', []),
     properties,
   });
@@ -638,7 +638,7 @@ export const deleteMutator = async ({
       properties,
     });
     validationErrors = await runCallbacks({
-      name: `*.delete.validate`,
+      name: '*.delete.validate',
       callbacks: get(globalCallbacks, 'delete.validate', []),
       iterator: validationErrors,
       properties,
@@ -694,7 +694,7 @@ export const deleteMutator = async ({
     properties,
   });
   document = await runCallbacks({
-    name: `*.delete.before`,
+    name: '*.delete.before',
     callbacks: get(globalCallbacks, 'delete.before', []),
     iterator: document,
     properties,
@@ -738,7 +738,7 @@ export const deleteMutator = async ({
     properties,
   });
   document = await runCallbacks({
-    name: `*.delete.after`,
+    name: '*.delete.after',
     callbacks: get(globalCallbacks, 'delete.after', []),
     iterator: document,
     properties,
@@ -775,7 +775,7 @@ export const deleteMutator = async ({
     properties,
   });
   await runCallbacksAsync({
-    name: `*.delete.async`,
+    name: '*.delete.async',
     callbacks: get(globalCallbacks, 'delete.async', []),
     properties,
   });
