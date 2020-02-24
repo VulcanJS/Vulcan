@@ -123,7 +123,7 @@ export const authenticateWithPassword = async (options) => {
     Accounts._insertLoginToken(userId, stampedLoginToken);
     return {
         userId,
-        stampedToken: stampedLoginToken.token
+        token: stampedLoginToken.token
     };
 };
 
