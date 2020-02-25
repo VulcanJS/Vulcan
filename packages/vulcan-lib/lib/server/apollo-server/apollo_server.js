@@ -12,6 +12,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { WebApp } from 'meteor/webapp';
 import bodyParser from 'body-parser';
+import _get from 'lodash/get';
 
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
@@ -37,6 +38,7 @@ import { getSetting } from '../../modules/settings.js';
 import { formatError } from 'apollo-errors';
 import { runCallbacks } from '../../modules/callbacks';
 
+
 export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
@@ -49,6 +51,7 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
 
   // parse cookies and assign req.universalCookies object
   WebApp.connectHandlers.use(universalCookiesMiddleware());
+
 
   // parse request (order matters)
   WebApp.connectHandlers.use(
@@ -144,6 +147,22 @@ export const onStart = () => {
 
   // define executableSchema
   initGraphQL();
+
+  // setup CORS
+  // @see https://expressjs.com/en/resources/middleware/cors.html
+  // @see https://www.apollographql.com/docs/apollo-server/api/apollo-server/#apolloserver
+  const corsWhitelist = _get(Meteor.settings, 'apolloServer.corsWhitelist', []);
+  const corsOptions = corsWhitelist && corsWhitelist.length ?
+    {
+      origin: function (origin, callback) {
+        if (corsWhitelist.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    } : (process.env.NODE_ENV === 'development'); // default behaviour is activating in dev, deactivating in production
+
   // create server
   const apolloServer = createApolloServer({
     config,
@@ -153,6 +172,7 @@ export const onStart = () => {
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
       cacheControl: true,
+      cors: corsOptions,
       context: ({ req }) => context(req),
       ...getApolloServerOptions(),
     },
