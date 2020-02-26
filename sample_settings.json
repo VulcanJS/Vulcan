@@ -42,6 +42,7 @@
     }
   },
   "apolloServer": {
-    "corsWhitelist": []
+    "corsWhitelist": [],
+    "corsEnableAll": false
   }
 }

@@ -135,6 +135,7 @@
     "@storybook/react": "5.0.8",
     "@storybook/theming": "5.0.8",
     "@userfrosting/merge-package-dependencies": "^1.2.0",
+    "apollo-server-testing": "^2.10.1",
     "auto-changelog": "^1.16.1",
     "autoprefixer": "^6.3.6",
     "autosuggest-highlight": "^3.1.1",

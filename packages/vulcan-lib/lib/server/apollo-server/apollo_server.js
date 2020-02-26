@@ -96,6 +96,31 @@ export const setupToolsMiddlewares = config => {
 };
 
 /**
+ *  setup CORS
+ *  @see https://expressjs.com/en/resources/middleware/cors.html
+ *  @see https://www.apollographql.com/docs/apollo-server/api/apollo-server/#apolloserver
+ *  In Apollo, default cors is defined in packages/apollo-server/src/index.ts, it's too permissive so we use "false" in production
+ */
+const getCorsOptions = () => {
+  // enable all cors
+  const enableAllcors = _get(Meteor.settings, 'apolloServer.corsEnableAll', false);
+  if (enableAllcors) return true; // will allow all distant queries DANGEROUS
+  // enable only a whitelist or nothing
+  const corsWhitelist = _get(Meteor.settings, 'apolloServer.corsWhitelist', []);
+  const corsOptions = corsWhitelist && corsWhitelist.length ?
+    {
+      origin: function (origin, callback) {
+        if (corsWhitelist.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    } : (process.env.NODE_ENV === 'development'); // default behaviour is activating all in dev, deactivating all in production
+  return corsOptions;
+};
+
+/**
  * Options: Apollo server usual options
  * Config: a config specific to Vulcan
  */
@@ -130,12 +155,14 @@ export const onStart = () => {
     graphiqlPath: '/graphiql',
     // customConfigFromReq
   };
+  const corsOptions = getCorsOptions();
   const apolloApplyMiddlewareOptions = {
     // @see https://github.com/meteor/meteor/blob/master/packages/webapp/webapp_server.js
     // @see https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#Parameters-2
     bodyParser: false, // added manually later
     path: config.path,
     app: WebApp.connectHandlers,
+    cors: corsOptions,
     ...getApolloApplyMiddlewareOptions(),
   };
   // init context
@@ -148,20 +175,6 @@ export const onStart = () => {
   // define executableSchema
   initGraphQL();
 
-  // setup CORS
-  // @see https://expressjs.com/en/resources/middleware/cors.html
-  // @see https://www.apollographql.com/docs/apollo-server/api/apollo-server/#apolloserver
-  const corsWhitelist = _get(Meteor.settings, 'apolloServer.corsWhitelist', []);
-  const corsOptions = corsWhitelist && corsWhitelist.length ?
-    {
-      origin: function (origin, callback) {
-        if (corsWhitelist.indexOf(origin) !== -1) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      }
-    } : (process.env.NODE_ENV === 'development'); // default behaviour is activating in dev, deactivating in production
 
   // create server
   const apolloServer = createApolloServer({
@@ -172,7 +185,6 @@ export const onStart = () => {
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
       cacheControl: true,
-      cors: corsOptions,
       context: ({ req }) => context(req),
       ...getApolloServerOptions(),
     },
@@ -189,4 +201,5 @@ export const onStart = () => {
   if (!disableSSR) {
     enableSSR({ computeContext: context });
   }
+  return apolloServer;
 };
