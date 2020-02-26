@@ -2,9 +2,12 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
-## NEXT
+## From 1.14.0 to 1.14.2
 
 - `single2` hoc and hooks will return the whole `error` object, not just `error.graphQLErrors[0]`. This will help catching network errors too.
+- Install `npm i --save body-parser-graphql`
+- CORS are now disabled as a default in production. Use `apolloServer.corsWhitelist` to whitelist some domains, or `apolloServer.corsEnableAll` to allow all 
+connections.
 
 ## From 1.13.5 to 1.14
 
