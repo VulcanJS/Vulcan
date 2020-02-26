@@ -64,6 +64,9 @@ userSelectorSchema.addDocValidator((userSelector) => {
  * const res = Meteor.call('login', { user: usernameOrEmail, password }); // WON'T WORK this.connection is not defined
  * @see https://github.com/meteor/meteor/issues/10937
  * 
+ * Inspiration
+ * @see https://github.com/stubailo/meteor-rest/blob/master/packages/rest-accounts-password/rest-login.js
+ * 
  * NOTE: this won't work with DDP. If you want to use usual DDP features (eg you develop an actual Meteor client), 
  * use the usual Meteor connection pattern instead (see Meteor doc)
  * 
