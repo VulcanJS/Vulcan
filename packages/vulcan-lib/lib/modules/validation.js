@@ -53,13 +53,17 @@ const validateDocumentPermissions = (fullDocument, documentToValidate, schema, c
 */
 export const validateDocument = (document, collection, context) => {
   const schema = collection.simpleSchema()._schema;
+  const { skipPermissionCheck } = context;
+
 
   let validationErrors = [];
 
   // validate creation permissions (and other Vulcan-specific constraints)
-  validationErrors = validationErrors.concat(
-    validateDocumentPermissions(document, document, schema, context, 'create')
-  );
+  if (!skipPermissionCheck) {
+    validationErrors = validationErrors.concat(
+      validateDocumentPermissions(document, document, schema, context, 'create')
+    );
+  }
 
   // run simple schema validation (will check the actual types, required fields, etc....)
   const validationContext = collection.simpleSchema().newContext();
@@ -102,13 +106,16 @@ export const validateModifier = (modifier, data, document, collection, context) 
   const schema = collection.simpleSchema()._schema;
   const set = modifier.$set;
   const unset = modifier.$unset;
+  const { skipPermissionCheck } = context;
 
   let validationErrors = [];
 
   // 1. check that the current user has permission to edit each field
-  validationErrors = validationErrors.concat(
-    validateDocumentPermissions(document, data, schema, context, 'update')
-  );
+  if (!skipPermissionCheck) {
+    validationErrors = validationErrors.concat(
+      validateDocumentPermissions(document, data, schema, context, 'update')
+    );
+  }
 
   // 2. run SS validation
   const validationContext = collection.simpleSchema().newContext();
