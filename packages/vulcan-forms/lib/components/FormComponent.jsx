@@ -277,6 +277,9 @@ class FormComponent extends Component {
         case 'statictext':
           return FormComponents.FormComponentStaticText;
 
+        case 'likert':
+            return FormComponents.FormComponentLikert;
+
         default:
           const CustomComponent = FormComponents[this.props.input];
           return CustomComponent ? CustomComponent : FormComponents.FormComponentDefault;

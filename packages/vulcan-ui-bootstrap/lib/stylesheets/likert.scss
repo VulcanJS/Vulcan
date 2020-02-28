@@ -1,0 +1,15 @@
+.likert-scale{
+
+}
+.likert-row{
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+.likert-heading{
+  font-weight: bold;
+}
+.likert-row-contents{
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}

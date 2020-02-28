@@ -23,7 +23,7 @@ SimpleSchema.extendOptions([
   'control', // SmartForm control (String or React component) (legacy)
   'order', // position in the form
   'group', // form fieldset group
-  'itemType', // type for array items
+  'arrayItem', // properties for array items
 
   'onCreate', // field insert callback
   'onInsert', // field insert callback (OpenCRUD backwards compatibility)

@@ -19,6 +19,7 @@ import '../components/forms/StaticText.jsx';
 import '../components/forms/Textarea.jsx';
 import '../components/forms/Time.jsx';
 import '../components/forms/Url.jsx';
+import '../components/forms/Likert.jsx';
 
 import '../components/ui/Button.jsx';
 import '../components/ui/Alert.jsx';

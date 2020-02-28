@@ -5,14 +5,12 @@ Package.describe({
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function (api) {
+Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:lib@=1.14.1',
-    'fourseven:scss@4.10.0'
-  ]);
+  api.use(['vulcan:lib@=1.14.1', 'fourseven:scss@4.10.0']);
 
-  api.addFiles(['lib/stylesheets/style.scss', 'lib/stylesheets/datetime.scss'], 'client');
+  api.addFiles(['lib/stylesheets/style.scss', 'lib/stylesheets/datetime.scss', 'lib/stylesheets/likert.scss'], 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
