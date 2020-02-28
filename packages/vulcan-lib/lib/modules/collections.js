@@ -11,7 +11,7 @@ import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
 import _omit from 'lodash/omit';
 import mergeWith from 'lodash/mergeWith';
-import { isCollectionType } from './schema_utils.js';
+import { createSchema, isCollectionType } from './schema_utils.js';
 
 const wrapAsync = Meteor.wrapAsync ? Meteor.wrapAsync : Meteor._wrapAsync;
 // import { debug } from './debug.js';
@@ -233,7 +233,7 @@ export const createCollection = options => {
 
   if (schema) {
     // attach schema to collection
-    collection.attachSchema(new SimpleSchema(schema));
+    collection.attachSchema(createSchema(schema));
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });
