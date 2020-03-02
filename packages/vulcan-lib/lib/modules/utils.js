@@ -531,7 +531,20 @@ String.prototype.replaceAll = function (search, replacement) {
 
 Utils.isPromise = value => isFunction(get(value, 'then'));
 
-Utils.pluralize = pluralize;
+/**
+ * Pluralize helper with clash name prevention (adds an S)
+ */
+Utils.pluralize = (text, ...args) => {
+  const res = pluralize(text, ...args);
+  // avoid edge case like "people" where plural is identical to singular, leading to name clash
+  // in resolvers
+  if (res === text) {
+    return res + 's';
+  }
+  return res;
+};
+
+
 
 Utils.singularize = pluralize.singular;
 

@@ -3,6 +3,8 @@ import expect from 'expect';
 import { createDummyCollection } from "meteor/vulcan:test"
 import SimpleSchema from "simpl-schema"
 
+// prepare Jest migration
+const test = it
 
 describe('vulcan:lib/utils', function () {
 
@@ -128,6 +130,13 @@ describe('vulcan:lib/utils', function () {
       const now = new Date()
       const res = Utils.convertDates(Dummies, { array: [{ begin: now.toISOString() }] })
       expect(res.array[0].begin).toBeInstanceOf(Date)
+    })
+  })
+
+  describe('pluralize', () => {
+    test('force a plural for words where plural = singular', () => {
+      const peoples = Utils.pluralize("people")
+      expect(peoples).toEqual("peoples")
     })
   })
 });
