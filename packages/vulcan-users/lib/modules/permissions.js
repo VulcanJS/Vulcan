@@ -91,13 +91,28 @@ Users.getActions = user => {
 };
 
 /**
- * @summary check if a user is a member of a group
+ * @summary check if a user is at least member of one group
+ * @param {Array} user
+ * @param {String} group or array of groups
+ */
+Users.isAtLeastMemberOfOne = (user, groupOrGroups, document) => {
+  const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
+  return intersection(Users.getGroups(user, document), groups).length > 0;
+};
+
+// DEPRECATED
+// TODO: remove this
+/**
+ * @summary check if a user is at least member of one group
  * @param {Array} user
  * @param {String} group or array of groups
  */
 Users.isMemberOf = (user, groupOrGroups, document) => {
-  const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
-  return intersection(Users.getGroups(user, document), groups).length > 0;
+  deprecate(
+    '1.14.2',
+    'getViewableFields is deprecated. Use Users.isAtLeastMemberOfOne to check if a user is at least member of one group'
+  );
+  return Users.isAtLeastMemberOfOne(user, groupOrGroups, document);
 };
 
 /**
