@@ -78,9 +78,6 @@ Users.getGroups = (user, document) => {
  */
 Users.getActions = user => {
   let userGroups = Users.getGroups(user);
-
-  // always give everybody permission for guests actions, too
-  userGroups.push('guests');
   
   let groupActions = userGroups.map(groupName => {
     // note: make sure groupName corresponds to an actual group
