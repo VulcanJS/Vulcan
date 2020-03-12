@@ -70,6 +70,7 @@ class ModalTrigger extends PureComponent {
       dialogProps,
       labelId,
       component,
+      trigger,
       titleId,
       type,
       children,
@@ -81,9 +82,9 @@ class ModalTrigger extends PureComponent {
     const label = labelId ? intl.formatMessage({ id: labelId }) : this.props.label;
     const title = titleId ? intl.formatMessage({ id: titleId }) : this.props.title;
     
-    const triggerComponent = component
+    const triggerComponent = component || trigger
       ?
-      React.cloneElement(component, {
+      React.cloneElement(component || trigger, {
         className: classNames('modal-trigger', classes.root, className),
         onClick: this.openModal
       })
@@ -143,6 +144,7 @@ ModalTrigger.propTypes = {
   label: PropTypes.string,
   labelId: PropTypes.string,
   component: PropTypes.object,
+  trigger: PropTypes.object,
   title: PropTypes.node,
   titleId: PropTypes.string,
   type: PropTypes.oneOf(['link', 'button']),
