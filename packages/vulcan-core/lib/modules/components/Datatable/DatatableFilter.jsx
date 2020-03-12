@@ -62,7 +62,7 @@ const DatatableFilter = props => {
           />
         }
         size="small"
-        trigger={<Filter count={getCount(columnFilters)} />}>
+        trigger={Filter({ count: getCount(columnFilters) })}>
         {query ? (
           <Components.DatatableFilterContentsWithData {...props} />
         ) : (
