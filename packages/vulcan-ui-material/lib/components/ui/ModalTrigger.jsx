@@ -84,10 +84,14 @@ class ModalTrigger extends PureComponent {
     
     const triggerComponent = component || trigger
       ?
-      React.cloneElement(component || trigger, {
-        className: classNames('modal-trigger', classes.root, className),
-        onClick: this.openModal
-      })
+      <span onClick={this.openModal} className={classNames('modal-trigger', classes.root, className)}>
+        {component || trigger}
+      </span>
+// Ideal pattern 
+// React.cloneElement(component || trigger, {
+//   className: classNames('modal-trigger', classes.root, className),
+//   onClick: this.openModal
+// })
       :
       type === 'button'
         ?
