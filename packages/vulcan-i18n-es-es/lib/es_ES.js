@@ -157,7 +157,12 @@ addStrings('es', {
   'errors.notAllowed':'El valor del campo “{label}” no està permitido.',
   'errors.noDecimal':'El campo “{label}” no puede ser un decimal.',
 
-  'errors.minNumberExclusive':'',
-  'errors.maxNumberExclusive':'',
-  'errors.keyNotInSchema':'',
+  'errors.minNumberExclusive': '',
+  'errors.maxNumberExclusive': '',
+  'errors.keyNotInSchema': '',
+
+  'exportbutton.error': 'Error',
+  'exportbutton.download': 'Descargar',
+  'exportbutton.create': 'Crear CSV',
+  'exportbutton.noResults': 'Ningún resultado',
 });

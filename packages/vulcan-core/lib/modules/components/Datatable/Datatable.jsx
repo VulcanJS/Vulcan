@@ -318,6 +318,7 @@ Datatable.propTypes = {
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
   showSelect: PropTypes.bool,
+  showExport: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility
@@ -357,6 +358,7 @@ const DatatableAbove = (props, { intl }) => {
     currentUser,
     showSearch,
     showNew,
+    showExport,
     canInsert,
     searchValue,
     updateSearch,
@@ -391,6 +393,12 @@ const DatatableAbove = (props, { intl }) => {
           {...newFormOptions}
           {...newFormProps}
         />
+      )}
+      {showExport && (
+        <Components.CSVExportButton
+          collection={collection}
+          options={{ ...options, limit:10000 }}
+$        />
       )}
     </Components.DatatableAboveLayout>
   );

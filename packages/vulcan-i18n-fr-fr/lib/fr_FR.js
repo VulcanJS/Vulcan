@@ -164,4 +164,9 @@ addStrings('fr', {
   'errors.minNumberExclusive':'',
   'errors.maxNumberExclusive':'',
   'errors.keyNotInSchema':'',
+
+  'exportbutton.error': 'Erreur',
+  'exportbutton.download': 'Télécharger',
+  'exportbutton.create': 'Créer CSV',
+  'exportbutton.noResults': 'Aucun résultat',
 });
