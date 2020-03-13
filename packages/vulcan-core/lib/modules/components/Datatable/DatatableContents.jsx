@@ -45,7 +45,7 @@ const DatatableContents = props => {
     count,
     totalCount,
     networkStatus,
-    selectable,
+    showSelect,
     showEdit,
     showDelete,
     currentUser,
@@ -82,7 +82,7 @@ const DatatableContents = props => {
       {title && <Components.DatatableTitle title={title} />}
       <Components.DatatableContentsInnerLayout>
         <Components.DatatableContentsHeadLayout>
-          {selectable ? (
+          {showSelect ? (
             <th>
               <Components.FormComponentCheckbox
                 path="select"
@@ -121,7 +121,7 @@ const DatatableContents = props => {
           ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
-          {selectable && currentSelection.length ? (
+          {showSelect && currentSelection.length ? (
             <Components.DatatableSelections
               currentSelection={currentSelection}
               toggleSelection={toggleSelection}

@@ -317,7 +317,7 @@ Datatable.propTypes = {
   showDelete: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
-  selectable: PropTypes.bool,
+  showSelect: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility

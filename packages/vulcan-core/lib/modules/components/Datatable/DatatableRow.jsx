@@ -16,7 +16,7 @@ const DatatableRow = (props, { intl }) => {
     collection,
     columns,
     document,
-    selectable,
+    showSelect,
     showEdit,
     showDelete,
     currentUser,
@@ -87,7 +87,7 @@ const DatatableRow = (props, { intl }) => {
 
   return (
     <Components.DatatableRowLayout className={`datatable-item ${row}`}>
-      {selectable ? (
+      {showSelect ? (
         <Components.DatatableCellLayout className="datatable-edit">
           <Components.FormComponentCheckbox
             path="select"
