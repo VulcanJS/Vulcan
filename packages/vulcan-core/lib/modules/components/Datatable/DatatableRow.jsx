@@ -17,6 +17,7 @@ const DatatableRow = (props, { intl }) => {
     columns,
     document,
     showEdit,
+    showDelete,
     currentUser,
     options,
     editFormOptions,
@@ -46,6 +47,30 @@ const DatatableRow = (props, { intl }) => {
     });
   } else if (check) {
     canUpdate = check && check(currentUser, document, { Users });
+  }
+
+
+  let canDelete = false;
+
+  // new APIs
+  const deletePermissionCheck = get(collection, 'options.permissions.canDelete');
+  // openCRUD backwards compatibility
+  const deleteCheck =
+    get(collection, 'options.mutations.delete.check') ||
+    get(collection, 'options.mutations.remove.check');
+
+  if (Users.isAdmin(currentUser)) {
+    canDelete = true;
+  } else if (deletePermissionCheck) {
+    canDelete = Users.permissionCheck({
+      check: deletePermissionCheck,
+      user: currentUser,
+      document,
+      context: { Users },
+      operationName: 'delete',
+    });
+  } else if (deleteCheck) {
+    canDelete = deleteCheck && deleteCheck(currentUser, document, { Users });
   }
 
   const row = typeof rowClass === 'function' ? rowClass(document) : rowClass || '';
@@ -78,6 +103,16 @@ const DatatableRow = (props, { intl }) => {
             modalProps={customModalProps}
             {...editFormOptions}
             {...editFormProps}
+          />
+        </Components.DatatableCellLayout>
+      ) : null}
+      {showDelete && canDelete ? ( // openCRUD backwards compatibility
+        <Components.DatatableCellLayout className="datatable-delete">
+          <Components.DeleteButton
+            collection={collection}
+            documentId={document._id}
+            currentUser={currentUser}
+            modalProps={customModalProps}
           />
         </Components.DatatableCellLayout>
       ) : null}

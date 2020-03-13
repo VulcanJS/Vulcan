@@ -203,6 +203,7 @@ class Datatable extends PureComponent {
           datatableData={data}
           results={this.props.data}
           showEdit={false}
+          showDelete={false}
           showNew={false}
           modalProps={modalProps}
         />
@@ -289,6 +290,7 @@ Datatable.propTypes = {
   data: PropTypes.array,
   options: PropTypes.object,
   showEdit: PropTypes.bool,
+  showDelete: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
   newFormProps: PropTypes.object,
@@ -303,6 +305,7 @@ Datatable.propTypes = {
 Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
+  showDelete: true,
   showSearch: true,
   useUrlState: true,
 };

@@ -46,6 +46,7 @@ const DatatableContents = props => {
     totalCount,
     networkStatus,
     showEdit,
+    showDelete,
     currentUser,
     toggleSort,
     currentSort,
@@ -93,6 +94,11 @@ const DatatableContents = props => {
               <FormattedMessage id="datatable.edit" />
             </th>
           ) : null}
+          {showDelete ? (
+            <th>
+              <FormattedMessage id="datatable.delete" />
+            </th>
+          ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
           {results && results.length ? (
@@ -104,6 +110,7 @@ const DatatableContents = props => {
                 document={document}
                 key={index}
                 showEdit={showEdit}
+                showDelete={showDelete}
                 currentUser={currentUser}
                 modalProps={modalProps}
               />
