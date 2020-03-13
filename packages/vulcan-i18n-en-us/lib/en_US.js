@@ -143,6 +143,7 @@ addStrings('en', {
   'cards.edit': 'Edit',
   'datatable.new': 'New',
   'datatable.edit': 'Edit',
+  'datatable.delete': 'Delete',
   'datatable.search': 'Search',
 
   admin: 'Admin',

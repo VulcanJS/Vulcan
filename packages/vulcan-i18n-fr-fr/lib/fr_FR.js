@@ -139,6 +139,8 @@ addStrings('fr', {
   'cards.edit': 'Modifier',
   'datatable.new': 'Nouveau',
   'datatable.edit': 'Modifier',
+  'datatable.delete': 'Supprimer',
+  'datatable.deleteConfirmation': 'Vous êtes sûr de vouloir supprimer le document ?',
   'datatable.search': 'Rechercher',
   
   'admin': 'Admin',

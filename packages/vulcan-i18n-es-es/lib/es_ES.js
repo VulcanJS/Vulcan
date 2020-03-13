@@ -137,6 +137,7 @@ addStrings('es', {
   'cards.edit': 'Editar',
   'datatable.new': 'Nuevo',
   'datatable.edit': 'Editar',
+  'datatable.delete': 'Suprimir',
 
   'admin': 'Administrador',
   'notifications': 'Notificaciones',
