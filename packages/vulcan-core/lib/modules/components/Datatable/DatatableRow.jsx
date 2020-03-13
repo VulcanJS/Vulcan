@@ -16,13 +16,16 @@ const DatatableRow = (props, { intl }) => {
     collection,
     columns,
     document,
+    selectable,
     showEdit,
     showDelete,
     currentUser,
+    currentSelection,
     options,
     editFormOptions,
     editFormProps,
     rowClass,
+    toggleSelection,
     Components,
   } = props;
 
@@ -80,8 +83,22 @@ const DatatableRow = (props, { intl }) => {
     ...(_isFunction(modalProps) ? modalProps(document) : modalProps),
   };
 
+  const isSelected = (currentSelection.includes("all") || currentSelection.includes("allVisible")) ? !currentSelection.includes(document._id) : currentSelection.includes(document._id)
+
   return (
     <Components.DatatableRowLayout className={`datatable-item ${row}`}>
+      {selectable ? (
+        <Components.DatatableCellLayout className="datatable-edit">
+          <Components.FormComponentCheckbox
+            path="select"
+            inputProperties={{value:isSelected}}
+            itemProperties={{}}
+            variant="checkbox"
+            optional
+            onChange={()=>{toggleSelection(document._id)}}
+          />
+        </Components.DatatableCellLayout>
+      ) : null}
       {columns.map((column, index) => (
         <Components.DatatableCell
           key={index}

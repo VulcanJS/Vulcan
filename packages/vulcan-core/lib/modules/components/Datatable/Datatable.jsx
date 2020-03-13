@@ -8,6 +8,7 @@ import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
+import _remove from 'lodash/remove';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
@@ -43,6 +44,7 @@ class Datatable extends PureComponent {
       search: '',
       currentSort: {},
       currentFilters: {},
+      currentSelection: []
     };
 
     // initial state can be defined via props
@@ -190,6 +192,26 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
+  toggleSelection = (element, replace) => {
+    if (replace) {
+      this.setState({ currentSelection: element });
+    } else {
+      let currentSelection = [...this.state.currentSelection];
+      if (element == 'all') {
+        if (this.state.currentSelection.includes('all')) {
+          currentSelection = [];
+        } else {
+          currentSelection = [element];
+        }
+      } else if (this.state.currentSelection.includes(element)) {
+        _remove(currentSelection, o => o == element);
+      } else {
+        currentSelection.push(element);
+      }
+      this.setState({ currentSelection });
+    }
+  };
+
   render() {
     const { Components, modalProps, data, currentUser } = this.props;
 
@@ -274,6 +296,8 @@ class Datatable extends PureComponent {
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
+            currentSelection={this.state.currentSelection}
+            toggleSelection={this.toggleSelection}
             submitFilters={this.submitFilters}
             currentFilters={this.state.currentFilters}
           />
@@ -293,6 +317,7 @@ Datatable.propTypes = {
   showDelete: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  selectable: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility

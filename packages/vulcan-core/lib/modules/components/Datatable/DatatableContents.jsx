@@ -45,10 +45,13 @@ const DatatableContents = props => {
     count,
     totalCount,
     networkStatus,
+    selectable,
     showEdit,
     showDelete,
     currentUser,
+    currentSelection,
     toggleSort,
+    toggleSelection,
     currentSort,
     submitFilters,
     currentFilters,
@@ -70,6 +73,8 @@ const DatatableContents = props => {
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
+  const isSelected = currentSelection.includes('all') || currentSelection.includes('allVisible');
+
   return (
     <Components.DatatableContentsLayout>
       {/* note: we want to be able to show potential errors while still showing the data below */}
@@ -77,6 +82,21 @@ const DatatableContents = props => {
       {title && <Components.DatatableTitle title={title} />}
       <Components.DatatableContentsInnerLayout>
         <Components.DatatableContentsHeadLayout>
+          {selectable ? (
+            <th>
+              <Components.FormComponentCheckbox
+                path="select"
+                inputProperties={{ value: isSelected }}
+                itemProperties={{}}
+                variant="checkbox"
+                optional
+                onChange={() => {
+                  if (currentSelection.length) toggleSelection([], true);
+                  else toggleSelection(results.map(o => o._id), true);
+                }}
+              />
+            </th>
+          ) : null}
           {sortedColumns.map((column, index) => (
             <Components.DatatableHeader
               Components={Components}
@@ -101,6 +121,14 @@ const DatatableContents = props => {
           ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
+          {selectable && currentSelection.length ? (
+            <Components.DatatableSelections
+              currentSelection={currentSelection}
+              toggleSelection={toggleSelection}
+              totalCount={totalCount}
+              Components={Components}
+            />
+          ) : null}
           {results && results.length ? (
             results.map((document, index) => (
               <Components.DatatableRow
@@ -112,6 +140,8 @@ const DatatableContents = props => {
                 showEdit={showEdit}
                 showDelete={showDelete}
                 currentUser={currentUser}
+                currentSelection={currentSelection}
+                toggleSelection={toggleSelection}
                 modalProps={modalProps}
               />
             ))
@@ -168,7 +198,6 @@ registerComponent({ name: 'DatatableContentsBodyLayout', component: DatatableCon
 const DatatableContentsMoreLayout = ({ children }) => (
   <div className="datatable-list-load-more">{children}</div>
 );
-
 registerComponent({ name: 'DatatableContentsMoreLayout', component: DatatableContentsMoreLayout });
 
 const DatatableLoadMoreButton = ({ count, totalCount, Components, children, ...otherProps }) => (
@@ -203,3 +232,37 @@ const DatatableEmpty = () => (
 );
 
 registerComponent('DatatableEmpty', DatatableEmpty);
+/*
+
+DatatableSelections Component
+
+*/
+const DatatableSelections = props => {
+  const { totalCount, currentSelection, toggleSelection, Components } = props;
+  const individualElementsSelected = currentSelection.filter(o => !['all'].includes(o)).length;
+  let selectedElements = 0;
+  if (currentSelection.includes('all')) selectedElements = totalCount - individualElementsSelected;
+  else selectedElements = individualElementsSelected;
+
+  return (
+    <td colSpan="99">
+      <div style={{ textAlign: 'center', padding: 10 }}>
+        {selectedElements} éléments sélectionnés
+        {!currentSelection.includes('all') ? (
+          <Components.Button
+            onClick={() => {
+              toggleSelection('all');
+            }}>
+            Sélectionner tous ({totalCount})
+          </Components.Button>
+        ) : null}
+      </div>
+    </td>
+  );
+};
+
+DatatableSelections.propTypes = {
+  Components: PropTypes.object.isRequired,
+};
+
+registerComponent('DatatableSelections', DatatableSelections);
