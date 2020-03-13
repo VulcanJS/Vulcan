@@ -49,7 +49,6 @@ const DatatableRow = (props, { intl }) => {
     canUpdate = check && check(currentUser, document, { Users });
   }
 
-
   let canDelete = false;
 
   // new APIs
@@ -113,6 +112,7 @@ const DatatableRow = (props, { intl }) => {
             documentId={document._id}
             currentUser={currentUser}
             modalProps={customModalProps}
+            fragmentName={options && options.fragmentName}
           />
         </Components.DatatableCellLayout>
       ) : null}
