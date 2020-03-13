@@ -73,7 +73,7 @@ const DatatableContents = props => {
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
-  const isSelected = currentSelection.includes('all') || currentSelection.includes('allVisible');
+  const isSelected = !!currentSelection.length;
 
   return (
     <Components.DatatableContentsLayout>
