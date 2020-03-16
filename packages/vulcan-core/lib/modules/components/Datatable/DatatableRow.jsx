@@ -95,7 +95,7 @@ const DatatableRow = (props, { intl }) => {
             itemProperties={{}}
             variant="checkbox"
             optional
-            onChange={()=>{toggleSelection(document._id)}}
+            onChange={()=>{toggleSelection(document._id, isSelected)}}
           />
         </Components.DatatableCellLayout>
       ) : null}

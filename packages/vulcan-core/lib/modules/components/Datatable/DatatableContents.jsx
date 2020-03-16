@@ -73,8 +73,8 @@ const DatatableContents = props => {
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
-  const isSelected = !!currentSelection.length;
-
+  const isSelected = results.every(result => currentSelection.includes(result._id));
+  const selectedLabel = currentSelection.length ? `(${currentSelection.length})` : '';
   return (
     <Components.DatatableContentsLayout>
       {/* note: we want to be able to show potential errors while still showing the data below */}
@@ -86,13 +86,16 @@ const DatatableContents = props => {
             <th>
               <Components.FormComponentCheckbox
                 path="select"
-                inputProperties={{ value: isSelected }}
+                inputProperties={{ value: isSelected, label: selectedLabel }}
                 itemProperties={{}}
                 variant="checkbox"
                 optional
                 onChange={() => {
-                  if (currentSelection.length) toggleSelection([], true);
-                  else toggleSelection(results.map(o => o._id), true);
+                  if (isSelected) {
+                    toggleSelection(currentSelection, true);
+                  } else {
+                    toggleSelection(results.map(o => o._id), false);
+                  }
                 }}
               />
             </th>
@@ -121,14 +124,16 @@ const DatatableContents = props => {
           ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
-          {showSelect && currentSelection.length ? (
+          {/* {showSelect && currentSelection.length ? (
             <Components.DatatableSelections
               currentSelection={currentSelection}
               toggleSelection={toggleSelection}
               totalCount={totalCount}
               Components={Components}
+              showExport={showExport}
+              collection={collection}
             />
-          ) : null}
+          ) : null} */}
           {results && results.length ? (
             results.map((document, index) => (
               <Components.DatatableRow
@@ -237,32 +242,40 @@ registerComponent('DatatableEmpty', DatatableEmpty);
 DatatableSelections Component
 
 */
-const DatatableSelections = props => {
-  const { totalCount, currentSelection, toggleSelection, Components } = props;
-  const individualElementsSelected = currentSelection.filter(o => !['all'].includes(o)).length;
-  let selectedElements = 0;
-  if (currentSelection.includes('all')) selectedElements = totalCount - individualElementsSelected;
-  else selectedElements = individualElementsSelected;
+// const DatatableSelections = props => {
+//   const { totalCount, currentSelection, toggleSelection, Components, showExport,collection } = props;
+//   const individualElementsSelected = currentSelection.filter(o => !['all'].includes(o)).length;
+//   let selectedElements = 0;
+//   if (currentSelection.includes('all')) selectedElements = totalCount - individualElementsSelected;
+//   else selectedElements = individualElementsSelected;
 
-  return (
-    <td colSpan="99">
-      <div style={{ textAlign: 'center', padding: 10 }}>
-        {selectedElements} éléments sélectionnés
-        {!currentSelection.includes('all') ? (
-          <Components.Button
-            onClick={() => {
-              toggleSelection('all');
-            }}>
-            Sélectionner tous ({totalCount})
-          </Components.Button>
-        ) : null}
-      </div>
-    </td>
-  );
-};
+//   return (
+//     <td colSpan="99">
+//       <div style={{ textAlign: 'center', padding: 10 }}>
+//         {selectedElements} éléments sélectionnés
+//         {!currentSelection.includes('all') ? (
+//           <Components.Button
+//             onClick={() => {
+//               toggleSelection('all');
+//             }}>
+//             Sélectionner tous ({totalCount})
+//           </Components.Button>
+//         ) : null}
+//        {showExport && (
+//         <Components.CSVExportButton
+//           collection={collection}
+//           options={{ limit:10000 }}
+//           // input={input}
+// $        />
+//       )}
+       
+//       </div>
+//     </td>
+//   );
+// };
 
-DatatableSelections.propTypes = {
-  Components: PropTypes.object.isRequired,
-};
+// DatatableSelections.propTypes = {
+//   Components: PropTypes.object.isRequired,
+// };
 
-registerComponent('DatatableSelections', DatatableSelections);
+// registerComponent('DatatableSelections', DatatableSelections);

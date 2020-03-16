@@ -9,6 +9,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 import _remove from 'lodash/remove';
+import _union from 'lodash/union';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
@@ -192,24 +193,32 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
-  toggleSelection = (element, replace) => {
-    if (replace) {
-      this.setState({ currentSelection: element });
+  toggleSelection = (element, remove) => {
+    const elementsArray = Array.isArray(element) ? element : [element];
+    let currentSelection = [...this.state.currentSelection];
+    if (remove) {
+      _remove(currentSelection, o => elementsArray.includes(o));
     } else {
-      let currentSelection = [...this.state.currentSelection];
-      if (element == 'all') {
-        if (this.state.currentSelection.includes('all')) {
-          currentSelection = [];
-        } else {
-          currentSelection = [element];
-        }
-      } else if (this.state.currentSelection.includes(element)) {
-        _remove(currentSelection, o => o == element);
-      } else {
-        currentSelection.push(element);
-      }
-      this.setState({ currentSelection });
+      currentSelection = _union(currentSelection, elementsArray);
     }
+    this.setState({ currentSelection });
+    // if (replace) {
+    //   this.setState({ currentSelection: element });
+    // } else {
+    //   let currentSelection = [...this.state.currentSelection];
+    //   if (element == 'all') {
+    //     if (this.state.currentSelection.includes('all')) {
+    //       currentSelection = [];
+    //     } else {
+    //       currentSelection = [element];
+    //     }
+    //   } else if (this.state.currentSelection.includes(element)) {
+    //     _remove(currentSelection, o => o == element);
+    //   } else {
+    //     currentSelection.push(element);
+    //   }
+    //   this.setState({ currentSelection });
+    // }
   };
 
   render() {
@@ -274,7 +283,6 @@ class Datatable extends PureComponent {
       if (!_isEmpty(this.state.currentFilters)) {
         input.filter = this.state.currentFilters;
       }
-
       return (
         <Components.DatatableLayout
           Components={Components}
@@ -288,6 +296,7 @@ class Datatable extends PureComponent {
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
             input={input}
+            currentSelection={this.state.currentSelection}
           />
           <DatatableWithMulti
             Components={Components}
@@ -357,6 +366,7 @@ const DatatableAbove = (props, { intl }) => {
   const {
     collection,
     currentUser,
+    currentSelection,
     showSearch,
     showNew,
     showExport,
@@ -367,9 +377,9 @@ const DatatableAbove = (props, { intl }) => {
     newFormOptions,
     newFormProps,
     Components,
-    input
+    input: _input
   } = props;
-
+  const input = (currentSelection && currentSelection.length) ? { filter: { _id: { _in: currentSelection } } } : _input;
   return (
     <Components.DatatableAboveLayout>
       {showSearch && (
