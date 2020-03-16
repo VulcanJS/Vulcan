@@ -1,5 +1,5 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
-import { useDelete } from 'meteor/vulcan:core';
+import { useDelete2 } from 'meteor/vulcan:core';
 import React from 'react';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
@@ -13,7 +13,8 @@ const DeleteButton = (
     component,
     document,
     documentId: _documentId,
-    selector: _selector,
+    documentIds: _documentIds,
+    input: _input,
     collectionName,
     collection,
     fragmentName,
@@ -22,9 +23,10 @@ const DeleteButton = (
   { intl }
 ) => {
   const documentId = document ? document._id : _documentId;
-  const selector = _selector || { _id: documentId };
-  const [deleteFunc] = useDelete({ collectionName, collection, fragmentName });
-
+  const documentIds = _documentIds || [documentId];
+  //TODO : accept input when delete2 can delete >1 docs
+  //const input = _input || { id: documentId };
+  const [deleteFunc] = useDelete2({ collectionName, collection, fragmentName });
   const DeleteConfirmation = props => (
     <div>
       <FormattedMessage id="datatable.deleteConfirmation" />
@@ -32,7 +34,11 @@ const DeleteButton = (
         size={size}
         variant={variant || style}
         onClick={async () => {
-          await deleteFunc(selector);
+          //TODO : accept input when delete2 can delete >1 docs
+          //await deleteFunc({ input });
+          documentIds.forEach(async id => {
+            await deleteFunc({ input: { id } });
+          });
           props.closeModal();
         }}>
         {label || <FormattedMessage id="datatable.delete" />}
