@@ -370,6 +370,7 @@ const DatatableAbove = (props, { intl }) => {
     showSearch,
     showNew,
     showExport,
+    showDelete,
     canInsert,
     searchValue,
     updateSearch,
@@ -379,7 +380,8 @@ const DatatableAbove = (props, { intl }) => {
     Components,
     input: _input
   } = props;
-  const input = (currentSelection && currentSelection.length) ? { filter: { _id: { _in: currentSelection } } } : _input;
+  const isSelected = currentSelection && currentSelection.length;
+  const input = (isSelected) ? { filter: { _id: { _in: currentSelection } } } : _input;
   return (
     <Components.DatatableAboveLayout>
       {showSearch && (
@@ -411,8 +413,17 @@ const DatatableAbove = (props, { intl }) => {
           collection={collection}
           options={{ ...options, limit:10000 }}
           input={input}
-$        />
+        />
       )}
+      {(showDelete && isSelected) ? (
+        <Components.DeleteButton
+          collection={collection}
+          currentUser={currentUser}
+          fragmentName={options && options.fragmentName}
+          //input={input}
+          documentIds={currentSelection}
+        />
+    ) : null}
     </Components.DatatableAboveLayout>
   );
 };
