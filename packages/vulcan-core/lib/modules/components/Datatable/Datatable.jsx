@@ -287,6 +287,7 @@ class Datatable extends PureComponent {
             canCreate={canCreate}
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
+            input={input}
           />
           <DatatableWithMulti
             Components={Components}
@@ -366,6 +367,7 @@ const DatatableAbove = (props, { intl }) => {
     newFormOptions,
     newFormProps,
     Components,
+    input
   } = props;
 
   return (
@@ -398,6 +400,7 @@ const DatatableAbove = (props, { intl }) => {
         <Components.CSVExportButton
           collection={collection}
           options={{ ...options, limit:10000 }}
+          input={input}
 $        />
       )}
     </Components.DatatableAboveLayout>

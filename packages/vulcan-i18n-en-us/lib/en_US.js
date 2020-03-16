@@ -171,7 +171,7 @@ addStrings('en', {
   'errors.keyNotInSchema': '',
 
   'exportbutton.error': 'Error',
-  'exportbutton.download': 'Download',
+  'exportbutton.download': 'Download ({totalCount})',
   'exportbutton.create': 'Create CSV',
   'exportbutton.noResults': 'No results',
 });

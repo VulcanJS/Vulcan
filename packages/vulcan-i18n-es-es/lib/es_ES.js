@@ -162,7 +162,7 @@ addStrings('es', {
   'errors.keyNotInSchema': '',
 
   'exportbutton.error': 'Error',
-  'exportbutton.download': 'Descargar',
+  'exportbutton.download': 'Descargar ({totalCount})',
   'exportbutton.create': 'Crear CSV',
   'exportbutton.noResults': 'Ningún resultado',
 });

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import flatten from 'flat';
 
-import { withMulti } from '../containers/multi.js';
+import withMulti from '../containers/multi2.js';
 import { registerComponent, Components, extractCollectionInfo } from 'meteor/vulcan:lib';
 import { CSVLink } from 'react-csv';
 
@@ -45,8 +45,8 @@ const removeElementsErrorCausing = ({ results, headers }) => {
 
 const CSVExportButton = props => {
   const [stage, setStage] = useState('create');
-
   const { collection } = extractCollectionInfo(props);
+  const { input, options } = props;
   switch (stage) {
     case 'create':
       return (
@@ -60,10 +60,10 @@ const CSVExportButton = props => {
     case 'download':
       const listOptions = {
         collection,
-        ...props.options,
+        ...options,
       };
       const CSVExportWithList = withMulti(listOptions)(CSVExport);
-      return <CSVExportWithList collection={collection} terms={props.terms} />;
+      return <CSVExportWithList collection={collection} input={input} />;
     default:
       return (
         <Components.Button onClick={reloadPage}>
@@ -85,7 +85,7 @@ function reloadPage() {
 }
 
 const CSVExport = props => {
-  const { results, loading, emptyState, collection, error } = props;
+  const { results, loading, totalCount, collection, error } = props;
 
   const fieldsNotExport = ['__typename'];
   if (loading) {
@@ -119,7 +119,7 @@ const CSVExport = props => {
   return (
     <CSVLink headers={headers} data={validateResults} separator=";" filename={filename}>
       <Components.Button>
-        <FormattedMessage id="exportbutton.download" />
+        <FormattedMessage id="exportbutton.download" values={{ totalCount }} />
       </Components.Button>
     </CSVLink>
   );
