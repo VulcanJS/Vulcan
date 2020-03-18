@@ -336,6 +336,7 @@ Datatable.propTypes = {
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  aboveComponents: PropTypes.array
 };
 
 Datatable.defaultProps = {
@@ -378,7 +379,8 @@ const DatatableAbove = (props, { intl }) => {
     newFormOptions,
     newFormProps,
     Components,
-    input: _input
+    input: _input,
+    aboveComponents
   } = props;
   const isSelected = currentSelection && currentSelection.length;
   const input = (isSelected) ? { filter: { _id: { _in: currentSelection } } } : _input;
@@ -424,6 +426,21 @@ const DatatableAbove = (props, { intl }) => {
           documentIds={currentSelection}
         />
     ) : null}
+      {aboveComponents
+        ? aboveComponents.map(component => {
+            const Component = typeof component === 'string' ? Components[component] : component;
+            return (
+              <Component
+                collection={collection}
+                input={_input}
+                options={options}
+                currentSelection={currentSelection}
+                currentUser={currentUser}
+                key={component}
+              />
+            );
+          })
+        : null}
     </Components.DatatableAboveLayout>
   );
 };
