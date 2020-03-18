@@ -3,18 +3,19 @@
  */
 import { addDecorator, configure } from '@storybook/react';
 
-
 if (process.env.STORYBOOK_UI === 'material') {
   // init UI using a Decorator
-  const MaterialUIDecorator = require('./decorators/MaterialUIDecorator').default
-  addDecorator(MaterialUIDecorator)
+  console.log('Running storybook with Material UI');
+  const MaterialUIDecorator = require('./decorators/MaterialUIDecorator').default;
+  addDecorator(MaterialUIDecorator);
 } else {
-  const BootstrapDecorator = require('./decorators/BootstrapDecorator').default
+  console.log('Running storybook with Bootstrap');
+  const BootstrapDecorator = require('./decorators/BootstrapDecorator').default;
   addDecorator(BootstrapDecorator);
 }
 
-import onStorybookStart from "./startup"
-onStorybookStart(() => console.log("Storybook started"))
+import onStorybookStart from './startup';
+onStorybookStart(() => console.log('Storybook started'));
 // load the components in the app so that <Component.Whatever /> is defined
 import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib';
 onStorybookStart(() => {
@@ -23,7 +24,7 @@ onStorybookStart(() => {
   initializeFragments();
   // actually fills the Components object
   populateComponentsApp();
-})
+});
 
 /*
 
@@ -51,7 +52,7 @@ Vulcan core Components
 
 */
 
-import 'meteor/vulcan:core'
+import 'meteor/vulcan:core';
 
 /*
 
