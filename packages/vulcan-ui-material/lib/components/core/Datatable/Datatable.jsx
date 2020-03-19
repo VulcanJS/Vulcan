@@ -240,19 +240,4 @@ const DatatableContentsInnerLayout = Table;
 replaceComponent('DatatableContentsInnerLayout', DatatableContentsInnerLayout);
 
 
-const checkboxOperator = '_in';
-const DatatableFilterCheckboxes = ({
-  options,
-  filters = { [checkboxOperator]: [] },
-  setFilters,
-}) => (
-  <Components.FormComponentCheckboxGroup
-    layout= 'inputOnly'
-    inputProperties={{ options, value: filters[checkboxOperator] }}
-    onChange={(newValues) => {
-      setFilters({ [checkboxOperator]: newValues });
-    }}
-  />
-);
 
-replaceComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
