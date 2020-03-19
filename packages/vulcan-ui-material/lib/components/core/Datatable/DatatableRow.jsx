@@ -10,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import _assign from 'lodash/assign';
 import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
+import { baseStyles } from './Datatable'
 
 /*
 
