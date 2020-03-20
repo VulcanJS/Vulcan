@@ -1,15 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Components,
-  replaceComponent,
-  withCurrentUser,
-  withMulti
-} from 'meteor/vulcan:core';
+import { Components, replaceComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core';
 import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
-import { getCollection } from 'meteor/vulcan:lib'
+import { getCollection } from 'meteor/vulcan:lib';
 
 /*
 
@@ -31,8 +26,8 @@ export const baseStyles = theme => ({
     alignItems: 'center',
   },
   scroller: {
-		overflowX: 'auto',
-		overflowY: 'hidden'
+    overflowX: 'auto',
+    overflowY: 'hidden',
   },
   searchWrapper: {},
   addButtonWrapper: {
@@ -135,19 +130,10 @@ class Datatable extends PureComponent {
       // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
       // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays
       // {}. So we test on the length of keys for this object.
-      const orderBy =
-        Object.keys(this.state.currentSort).length == 0
-          ? {}
-          : { ...this.state.currentSort, _id: -1 };
+      const orderBy = Object.keys(this.state.currentSort).length == 0 ? {} : { ...this.state.currentSort, _id: -1 };
 
       return (
-        <div
-          className={classNames(
-            'datatable',
-            `datatable-${collection._name}`,
-            classes.root,
-            className
-          )}>
+        <div className={classNames('datatable', `datatable-${collection._name}`, classes.root, className)}>
           {/* DatatableAbove Component part*/}
           {(showSearch || showNew) && (
             <div className={classes.header}>
@@ -163,12 +149,7 @@ class Datatable extends PureComponent {
               )}
               {showNew && (
                 <div className={classes.addButtonWrapper}>
-                  <Components.NewButton
-                    collection={collection}
-                    variant="fab"
-                    color="primary"
-                    className={classes.addButton}
-                  />
+                  <Components.NewButton collection={collection} variant="fab" color="primary" className={classes.addButton} />
                 </div>
               )}
             </div>
@@ -223,6 +204,3 @@ Datatable.defaultProps = {
 };
 
 replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyles]);
-
-
-

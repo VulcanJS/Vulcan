@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Components,
-  replaceComponent,
-} from 'meteor/vulcan:core';
+import { Components, replaceComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import _assign from 'lodash/assign';
 import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
-import { baseStyles } from './Datatable'
+import { baseStyles } from './Datatable';
 
 /*
 
@@ -29,9 +26,7 @@ const wrapColumns = c => ({ name: c });
 const getColumns = (columns, results, data) => {
   if (columns) {
     // convert all columns to objects
-    const convertedColums = columns.map(column =>
-      typeof column === 'object' ? column : { name: column }
-    );
+    const convertedColums = columns.map(column => (typeof column === 'object' ? column : { name: column }));
     const sortedColumns = _sortBy(convertedColums, column => column.order);
     return sortedColumns;
   } else if (results && results.length > 0) {
@@ -95,12 +90,11 @@ const DatatableContents = ({
 
   if (queryDataRef) queryDataRef(this.props);
   let sortedColumns = getColumns(columns, results);
-  
+
   const denseClass = dense && classes[dense + 'Table'];
 
   // Pagination functions
-  const getPage = paginationTerms =>
-    parseInt((paginationTerms.limit - 1) / paginationTerms.itemsPerPage);
+  const getPage = paginationTerms => parseInt((paginationTerms.limit - 1) / paginationTerms.itemsPerPage);
 
   const onChangePage = (event, page) => {
     setPaginationTerms({
@@ -112,10 +106,7 @@ const DatatableContents = ({
 
   const onChangeRowsPerPage = event => {
     let value = event.target.value;
-    let offset = Math.max(
-      0,
-      parseInt((paginationTerms.limit - paginationTerms.itemsPerPage) / value) * value
-    );
+    let offset = Math.max(0, parseInt((paginationTerms.limit - paginationTerms.itemsPerPage) / value) * value);
     let limit = Math.min(offset + value, totalCount);
     setPaginationTerms({
       itemsPerPage: value,
@@ -172,9 +163,7 @@ const DatatableContents = ({
           <TableFooter className={classes.tableFooter}>
             <TableRow className={classes.tableRow}>
               {_sortBy(columns, column => column.order).map((column, index) => (
-                <TableCell
-                  key={index}
-                  className={classNames(classes.tableCell, column.footerClass)}>
+                <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
                   {footerData[index]}
                 </TableCell>
               ))}
@@ -225,4 +214,3 @@ replaceComponent('DatatableTitle', DatatableTitle);
 
 const DatatableContentsInnerLayout = Table;
 replaceComponent('DatatableContentsInnerLayout', DatatableContentsInnerLayout);
-

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Components,
-  replaceComponent,
-  Utils,
-} from 'meteor/vulcan:core';
+import { Components, replaceComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
@@ -13,10 +9,7 @@ import classNames from 'classnames';
 DatatableHeader Component
 
 */
-const DatatableHeader = (
-  { collection, intlNamespace, column, classes, toggleSort, currentSort },
-  { intl }
-) => {
+const DatatableHeader = ({ collection, intlNamespace, column, classes, toggleSort, currentSort }, { intl }) => {
   const columnName = typeof column === 'string' ? column : column.name || column.label;
   let formattedLabel = '';
 
@@ -30,9 +23,7 @@ const DatatableHeader = (
     2. the column name label in the schema (if the column name matches a schema field)
     3. the raw column name.
     */
-    const defaultMessage = schema[columnName]
-      ? schema[columnName].label
-      : Utils.camelToSpaces(columnName);
+    const defaultMessage = schema[columnName] ? schema[columnName].label : Utils.camelToSpaces(columnName);
     formattedLabel =
       (typeof columnName === 'string' &&
         intl.formatMessage({
@@ -68,11 +59,7 @@ const DatatableHeader = (
     formattedLabel = intl.formatMessage({ id: columnName, defaultMessage: columnName });
   }
 
-  return (
-    <TableCell className={classNames(classes.tableHeadCell, column.headerClass)}>
-      {formattedLabel}
-    </TableCell>
-  );
+  return <TableCell className={classNames(classes.tableHeadCell, column.headerClass)}>{formattedLabel}</TableCell>;
 };
 
 DatatableHeader.contextTypes = {
