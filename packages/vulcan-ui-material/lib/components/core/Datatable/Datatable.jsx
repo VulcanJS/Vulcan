@@ -8,9 +8,6 @@ import {
 } from 'meteor/vulcan:core';
 import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Table from '@material-ui/core/Table';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import { getCollection } from 'meteor/vulcan:lib'
 
@@ -226,18 +223,6 @@ Datatable.defaultProps = {
 };
 
 replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyles]);
-
-const DatatableTitle = ({ title }) => (
-  <Toolbar>
-    <Typography variant="h6" id="tableTitle">
-      {title}
-    </Typography>
-  </Toolbar>
-);
-replaceComponent('DatatableTitle', DatatableTitle);
-
-const DatatableContentsInnerLayout = Table;
-replaceComponent('DatatableContentsInnerLayout', DatatableContentsInnerLayout);
 
 
 

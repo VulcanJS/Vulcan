@@ -10,6 +10,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+import Table from '@material-ui/core/Table';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import _assign from 'lodash/assign';
 import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
@@ -210,4 +213,16 @@ const DatatableContents = ({
 };
 
 replaceComponent('DatatableContents', DatatableContents, [withStyles, datatableContentsStyles]);
+
+const DatatableTitle = ({ title }) => (
+  <Toolbar>
+    <Typography variant="h6" id="tableTitle">
+      {title}
+    </Typography>
+  </Toolbar>
+);
+replaceComponent('DatatableTitle', DatatableTitle);
+
+const DatatableContentsInnerLayout = Table;
+replaceComponent('DatatableContentsInnerLayout', DatatableContentsInnerLayout);
 
