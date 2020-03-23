@@ -219,10 +219,7 @@ class Datatable extends PureComponent {
     this.updateQueryParameter('filter', _isEmpty(newFilters) ? null : newFilters);
   };
 
-  updateSearch = e => {
-    e.persist();
-    e.preventDefault();
-    const searchValue = e.target.value;
+  updateSearch = searchValue => {
     this.setState({
       searchValue,
     });
