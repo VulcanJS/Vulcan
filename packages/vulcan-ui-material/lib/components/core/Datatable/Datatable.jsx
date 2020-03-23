@@ -330,6 +330,10 @@ Datatable.propTypes = {
   editComponent: PropTypes.func,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  newFormProps: PropTypes.object,
+  editFormProps: PropTypes.object,
+  newFormOptions: PropTypes.object, // backwards compatibility
+  editFormOptions: PropTypes.object, // backwards compatibility
   emptyState: PropTypes.node,
   currentUser: PropTypes.object,
   classes: PropTypes.object,
@@ -341,15 +345,18 @@ Datatable.propTypes = {
   handleRowClick: PropTypes.func,
   intlNamespace: PropTypes.string,
   toggleSort: PropTypes.func,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   currentSort: PropTypes.object,
-  paginate: PropTypes.bool,
+  // paginate: PropTypes.bool,
+  aboveComponents: PropTypes.array,
 };
 
 Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
   showSearch: true,
-  paginate: false,
+  // paginate: false,
+  useUrlState: true,
 };
 
 replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyles]);
@@ -441,9 +448,6 @@ const DatatableAbove = (props, { intl }) => {
 };
 DatatableAbove.contextTypes = {
   intl: intlShape,
-};
-DatatableAbove.propTypes = {
-  Components: PropTypes.object.isRequired,
 };
 replaceComponent('DatatableAbove', DatatableAbove);
 
