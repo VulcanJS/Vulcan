@@ -55,6 +55,7 @@ const datatableContentsStyles = theme =>
 
 const DatatableContents = ({
   collection,
+  datatableData,
   error,
   columns,
   results,
@@ -78,9 +79,11 @@ const DatatableContents = ({
   title,
   toggleSort,
   currentSort,
-  paginate,
-  paginationTerms,
-  setPaginationTerms,
+  // paginate,
+  // paginationTerms,
+  // setPaginationTerms,
+  submitFilters,
+  currentFilters,
 }) => {
   if (loading) {
     return <Components.Loading />;
@@ -89,31 +92,32 @@ const DatatableContents = ({
   }
 
   if (queryDataRef) queryDataRef(this.props);
-  let sortedColumns = getColumns(columns, results);
 
   const denseClass = dense && classes[dense + 'Table'];
 
   // Pagination functions
-  const getPage = paginationTerms => parseInt((paginationTerms.limit - 1) / paginationTerms.itemsPerPage);
+  // const getPage = paginationTerms => parseInt((paginationTerms.limit - 1) / paginationTerms.itemsPerPage);
 
-  const onChangePage = (event, page) => {
-    setPaginationTerms({
-      itemsPerPage: paginationTerms.itemsPerPage,
-      limit: (page + 1) * paginationTerms.itemsPerPage,
-      offset: page * paginationTerms.itemsPerPage,
-    });
-  };
+  // const onChangePage = (event, page) => {
+  //   setPaginationTerms({
+  //     itemsPerPage: paginationTerms.itemsPerPage,
+  //     limit: (page + 1) * paginationTerms.itemsPerPage,
+  //     offset: page * paginationTerms.itemsPerPage,
+  //   });
+  // };
 
-  const onChangeRowsPerPage = event => {
-    let value = event.target.value;
-    let offset = Math.max(0, parseInt((paginationTerms.limit - paginationTerms.itemsPerPage) / value) * value);
-    let limit = Math.min(offset + value, totalCount);
-    setPaginationTerms({
-      itemsPerPage: value,
-      limit: limit,
-      offset: offset,
-    });
-  };
+  // const onChangeRowsPerPage = event => {
+  //   let value = event.target.value;
+  //   let offset = Math.max(0, parseInt((paginationTerms.limit - paginationTerms.itemsPerPage) / value) * value);
+  //   let limit = Math.min(offset + value, totalCount);
+  //   setPaginationTerms({
+  //     itemsPerPage: value,
+  //     limit: limit,
+  //     offset: offset,
+  //   });
+  // };
+
+  const sortedColumns = getColumns(columns, results, datatableData);
 
   return (
     <React.Fragment>
@@ -123,7 +127,7 @@ const DatatableContents = ({
         {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
-              {_sortBy(sortedColumns, column => column.order).map((column, index) => (
+              {sortedColumns.map((column, index) => (
                 <Components.DatatableHeader
                   key={index}
                   collection={collection}
@@ -132,6 +136,8 @@ const DatatableContents = ({
                   classes={classes}
                   toggleSort={toggleSort}
                   currentSort={currentSort}
+                  submitFilters={submitFilters}
+                  currentFilters={currentFilters}
                 />
               ))}
               {(showEdit || editComponent) && <TableCell className={classes.tableCell} />}
@@ -162,7 +168,7 @@ const DatatableContents = ({
         {footerData && (
           <TableFooter className={classes.tableFooter}>
             <TableRow className={classes.tableRow}>
-              {_sortBy(columns, column => column.order).map((column, index) => (
+              {sortedColumns.map((column, index) => (
                 <TableCell key={index} className={classNames(classes.tableCell, column.footerClass)}>
                   {footerData[index]}
                 </TableCell>
@@ -172,7 +178,7 @@ const DatatableContents = ({
           </TableFooter>
         )}
       </Components.DatatableContentsInnerLayout>
-      {paginate && (
+      {/*paginate && (
         <TablePagination
           component="div"
           count={totalCount}
@@ -187,8 +193,8 @@ const DatatableContents = ({
           onChangePage={onChangePage}
           onChangeRowsPerPage={onChangeRowsPerPage}
         />
-      )}
-      {!paginate && loadMore && (
+        )*/}
+      {loadMore && (
         <Components.LoadMore
           className={classes.loadMore}
           count={count}
