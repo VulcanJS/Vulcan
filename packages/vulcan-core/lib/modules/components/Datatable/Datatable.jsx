@@ -190,6 +190,17 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
+  toggleSelection = (element, remove) => {
+    const elementsArray = Array.isArray(element) ? element : [element];
+    let currentSelection = [...this.state.currentSelection];
+    if (remove) {
+      _remove(currentSelection, o => elementsArray.includes(o));
+    } else {
+      currentSelection = _union(currentSelection, elementsArray);
+    }
+    this.setState({ currentSelection });
+  };
+
   render() {
     const { Components, modalProps, data, currentUser } = this.props;
 
