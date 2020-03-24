@@ -15,6 +15,8 @@ import './bonus/TooltipIntl';
 export { default as Datatable } from './core/Datatable';
 import './core/Avatar';
 import './core/Card';
+import './core/CSVExportButton';
+import './core/DeleteButton';
 import './core/EditButton';
 import './core/Loading';
 import './core/NewButton';
