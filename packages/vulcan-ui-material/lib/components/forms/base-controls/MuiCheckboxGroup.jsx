@@ -52,10 +52,12 @@ const MuiCheckboxGroup = createReactClass({
   mixins: [ComponentMixin],
 
   propTypes: {
-    name: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     variant: PropTypes.oneOf(['checkbox', 'switch']),
+    inputProperties: PropTypes.shape({
+      name: PropTypes.string,
+      options: PropTypes.array.isRequired,
+    }).isRequired,
   },
 
   componentDidMount: function() {
