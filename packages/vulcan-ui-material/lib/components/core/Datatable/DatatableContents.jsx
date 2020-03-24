@@ -95,7 +95,7 @@ const DatatableContents = props => {
 
   if (loading) {
     return <Components.Loading />;
-  } else if (!results || !results.length) {
+  } else if (!results) {
     return emptyState || null;
   }
 
