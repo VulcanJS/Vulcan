@@ -408,7 +408,7 @@ const DatatableAbove = (props, { intl }) => {
     <div className={classes.header}>
       {showSearch && (
         <Components.SearchInput
-          value={searchValue}
+          defaultValue={searchValue}
           updateQuery={updateSearch}
           className={classes.search}
           labelId={'datatable.search'}
