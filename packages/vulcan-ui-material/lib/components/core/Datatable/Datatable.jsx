@@ -345,6 +345,7 @@ Datatable.propTypes = {
   editComponent: PropTypes.func,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  showDelete: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility
@@ -370,6 +371,7 @@ Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
   showSearch: true,
+  showDelete: false,
   // paginate: false,
   useUrlState: true,
 };

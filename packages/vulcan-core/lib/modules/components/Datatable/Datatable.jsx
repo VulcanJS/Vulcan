@@ -314,6 +314,7 @@ Datatable.propTypes = {
 Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
+  showDelete: false,
   showSearch: true,
   useUrlState: true,
 };
