@@ -30,7 +30,26 @@ const datatableRowStyles = theme =>
   });
 
 const DatatableRow = (
-  { collection, columns, document, refetch, showEdit, editComponent, currentUser, rowClass, handleRowClick, classes, modalProps = {} },
+  {
+    collection,
+    columns,
+    document,
+    refetch,
+    showEdit,
+    editComponent,
+    currentUser,
+    rowClass,
+    handleRowClick,
+    classes,
+    modalProps = {},
+    currentSelection,
+    options,
+    showSelect,
+    showDelete,
+    toggleSelection,
+    editFormProps,
+    editFormOptions,
+  },
   { intl }
 ) => {
   const EditComponent = editComponent;
@@ -55,17 +74,58 @@ const DatatableRow = (
     canUpdate = check && check(currentUser, document, { Users });
   }
 
+  let canDelete = false;
+
+  // new APIs
+  const deletePermissionCheck = get(collection, 'options.permissions.canDelete');
+  // openCRUD backwards compatibility
+  const deleteCheck = get(collection, 'options.mutations.delete.check') || get(collection, 'options.mutations.remove.check');
+
+  if (Users.isAdmin(currentUser)) {
+    canDelete = true;
+  } else if (deletePermissionCheck) {
+    canDelete = Users.permissionCheck({
+      check: deletePermissionCheck,
+      user: currentUser,
+      document,
+      context: { Users },
+      operationName: 'delete',
+    });
+  } else if (deleteCheck) {
+    canDelete = deleteCheck && deleteCheck(currentUser, document, { Users });
+  }
+
   const defaultModalProps = { title: <code>{document._id}</code> };
   const customModalProps = {
     ...defaultModalProps,
     ...(_isFunction(modalProps) ? modalProps(document) : modalProps),
   };
 
+  const isSelected =
+    currentSelection.includes('all') || currentSelection.includes('allVisible')
+      ? !currentSelection.includes(document._id)
+      : currentSelection.includes(document._id);
+
   return (
     <TableRow
       className={classNames('datatable-item', classes.tableRow, rowClass, handleRowClick && classes.clickRow)}
       onClick={handleRowClick && (event => handleRowClick(event, document))}
       hover>
+      {showSelect ? (
+        <TableCell className={classes.selectCell}>
+          <Components.FormComponentCheckbox
+            path="select"
+            inputProperties={{ value: isSelected }}
+            itemProperties={{}}
+            variant="checkbox"
+            optional
+            onChange={() => {
+              toggleSelection(document._id, isSelected);
+            }}
+          />
+        </TableCell>
+      ) : null}
+
       {columns.map((column, index) => (
         <Components.DatatableCell key={index} column={column} document={document} currentUser={currentUser} classes={classes} />
       ))}
@@ -79,10 +139,24 @@ const DatatableRow = (
               document={document}
               modalProps={customModalProps}
               buttonClasses={{ button: classes.editButton }}
+              mutationFragmentName={options && options.fragmentName}
+              {...editFormOptions}
+              {...editFormProps}
             />
           )}
         </TableCell>
       )}
+      {showDelete && canDelete ? ( // openCRUD backwards compatibility
+        <Components.DatatableCellLayout className="datatable-delete">
+          <Components.DeleteButton
+            collection={collection}
+            documentId={document._id}
+            currentUser={currentUser}
+            modalProps={customModalProps}
+            fragmentName={options && options.fragmentName}
+          />
+        </Components.DatatableCellLayout>
+      ) : null}
     </TableRow>
   );
 };

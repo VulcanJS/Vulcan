@@ -53,38 +53,46 @@ const datatableContentsStyles = theme =>
     denserTable: theme.utils.denserTable,
   });
 
-const DatatableContents = ({
-  collection,
-  datatableData,
-  error,
-  columns,
-  results,
-  loading,
-  loadMore,
-  count,
-  totalCount,
-  networkStatus,
-  refetch,
-  showEdit,
-  editComponent,
-  emptyState,
-  currentUser,
-  classes,
-  footerData,
-  dense,
-  queryDataRef,
-  rowClass,
-  handleRowClick,
-  intlNamespace,
-  title,
-  toggleSort,
-  currentSort,
-  // paginate,
-  // paginationTerms,
-  // setPaginationTerms,
-  submitFilters,
-  currentFilters,
-}) => {
+const DatatableContents = props => {
+  let {
+    collection,
+    datatableData,
+    error,
+    columns,
+    results,
+    loading,
+    loadMore,
+    count,
+    totalCount,
+    networkStatus,
+    refetch,
+    showEdit,
+    showSelect,
+    showDelete,
+    editComponent,
+    deleteComponent,
+    emptyState,
+    currentUser,
+    currentSelection,
+    classes,
+    footerData,
+    dense,
+    queryDataRef,
+    rowClass,
+    handleRowClick,
+    toggleSelection,
+    intlNamespace,
+    title,
+    toggleSort,
+    currentSort,
+    modalProps,
+    // paginate,
+    // paginationTerms,
+    // setPaginationTerms,
+    submitFilters,
+    currentFilters,
+  } = props;
+
   if (loading) {
     return <Components.Loading />;
   } else if (!results || !results.length) {
@@ -118,6 +126,8 @@ const DatatableContents = ({
   // };
 
   const sortedColumns = getColumns(columns, results, datatableData);
+  const isSelected = results.every(result => currentSelection.includes(result._id));
+  const selectedLabel = currentSelection.length ? `(${currentSelection.length})` : '';
 
   return (
     <React.Fragment>
@@ -127,6 +137,24 @@ const DatatableContents = ({
         {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
+              {showSelect ? (
+                <TableCell className={classes.tableCell}>
+                  <Components.FormComponentCheckbox
+                    path="select"
+                    inputProperties={{ value: isSelected, label: selectedLabel }}
+                    itemProperties={{}}
+                    variant="checkbox"
+                    optional
+                    onChange={() => {
+                      if (isSelected) {
+                        toggleSelection(currentSelection, true);
+                      } else {
+                        toggleSelection(results.map(o => o._id), false);
+                      }
+                    }}
+                  />
+                </TableCell>
+              ) : null}
               {sortedColumns.map((column, index) => (
                 <Components.DatatableHeader
                   key={index}
@@ -141,6 +169,7 @@ const DatatableContents = ({
                 />
               ))}
               {(showEdit || editComponent) && <TableCell className={classes.tableCell} />}
+              {(showDelete || deleteComponent) && <TableCell className={classes.tableCell} />}
             </TableRow>
           </TableHead>
         )}
@@ -149,14 +178,19 @@ const DatatableContents = ({
           <TableBody className={classes.tableBody}>
             {results.map((document, index) => (
               <Components.DatatableRow
+                {...props}
                 collection={collection}
                 columns={sortedColumns}
                 document={document}
                 refetch={refetch}
                 key={index}
                 showEdit={showEdit}
+                showDelete={showDelete}
                 editComponent={editComponent}
                 currentUser={currentUser}
+                currentSelection={currentSelection}
+                toggleSelection={toggleSelection}
+                modalProps={modalProps}
                 classes={classes}
                 rowClass={rowClass}
                 handleRowClick={handleRowClick}

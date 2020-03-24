@@ -7,6 +7,8 @@ import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import _get from 'lodash/get';
+import _remove from 'lodash/remove';
+import _union from 'lodash/union';
 import _cloneDeep from 'lodash/cloneDeep';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
@@ -231,6 +233,17 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
+  toggleSelection = (element, remove) => {
+    const elementsArray = Array.isArray(element) ? element : [element];
+    let currentSelection = [...this.state.currentSelection];
+    if (remove) {
+      _remove(currentSelection, o => elementsArray.includes(o));
+    } else {
+      currentSelection = _union(currentSelection, elementsArray);
+    }
+    this.setState({ currentSelection });
+  };
+
   render() {
     const { modalProps, data, currentUser } = this.props;
 
@@ -310,6 +323,8 @@ class Datatable extends PureComponent {
               currentUser={this.props.currentUser}
               toggleSort={this.toggleSort}
               currentSort={this.state.currentSort}
+              currentSelection={this.state.currentSelection}
+              toggleSelection={this.toggleSelection}
               submitFilters={this.submitFilters}
               currentFilters={this.state.currentFilters}
             />
@@ -450,9 +465,3 @@ DatatableAbove.contextTypes = {
   intl: intlShape,
 };
 replaceComponent('DatatableAbove', DatatableAbove);
-
-// const DatatableAboveSearchInput = props => {
-//   const { Components } = props;
-//   return <Components.FormComponentText {...props} />;
-// };
-// replaceComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput });
