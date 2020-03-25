@@ -1,5 +1,6 @@
 import { getCollectionByTypeName, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
+import withComponents from '../../containers/withComponents';
 
 const getTypeName = (value, fieldName, collection) => {
   const schema = collection && collection.simpleSchema()._schema;
@@ -120,4 +121,4 @@ const CardItemSwitcher = props => {
       return <Components.CardItemDefault {...itemProps} />;
   }
 };
-registerComponent({ name: 'CardItemSwitcher', component: CardItemSwitcher });
+registerComponent({ name: 'CardItemSwitcher', component: CardItemSwitcher, hocs: [withComponents] });
