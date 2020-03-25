@@ -145,15 +145,15 @@ const DatatableFilterContents = props => {
   return (
     <form>
       {contents}
-      <a
+      <Components.Button
         style={{ display: 'inline-block', marginRight: 10 }}
+        type="button"
         className="datatable_filter_clear"
-        href="javascript:void(0)"
         onClick={() => {
           setFilters(undefined);
         }}>
         <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
-      </a>
+      </Components.Button>
       <Components.Button
         type="submit"
         className="datatable_filter_submit"
