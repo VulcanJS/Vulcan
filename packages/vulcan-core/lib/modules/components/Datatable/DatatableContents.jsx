@@ -3,6 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 import _sortBy from 'lodash/sortBy';
+import Form from 'react-bootstrap/Form';
 
 const wrapColumns = c => ({ name: c });
 
@@ -71,8 +72,11 @@ const DatatableContents = props => {
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
-  const isSelected = results.every(result => currentSelection.includes(result._id));
-  const selectedLabel = currentSelection.length ? `(${currentSelection.length})` : '';
+  const hasResults = results && results.length;
+  const hasSelection = currentSelection && currentSelection.length;
+  const isAllSelected = results.every(result => currentSelection.includes(result._id)); // TODO: would be more efficient with a map instead of an array
+  // show number of selected items
+  const selectedLabel = hasSelection ? `(${currentSelection.length})` : '';
   return (
     <Components.DatatableContentsLayout>
       {/* note: we want to be able to show potential errors while still showing the data below */}
@@ -82,16 +86,20 @@ const DatatableContents = props => {
         <Components.DatatableContentsHeadLayout>
           {showSelect ? (
             <th>
-              <Components.FormComponentCheckbox
-                path="select"
-                inputProperties={{ value: isSelected, label: selectedLabel }}
-                itemProperties={{}}
-                variant="checkbox"
+              <Form.Check
+                value={isAllSelected}
+                label={selectedLabel}
+                disabled={!hasResults}
+                checked={isAllSelected}
+                //path="select"
+                //variant="checkbox"
                 optional
                 onChange={() => {
-                  if (isSelected) {
+                  if (isAllSelected) {
+                    // reenable current selection
                     toggleSelection(currentSelection, true);
                   } else {
+                    // select all
                     toggleSelection(results.map(o => o._id), false);
                   }
                 }}
