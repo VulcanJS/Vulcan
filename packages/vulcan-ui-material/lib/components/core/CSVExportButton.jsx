@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import flatten from 'flat';
 
-import withMulti from '../containers/multi2.js';
-import { registerComponent, Components, extractCollectionInfo } from 'meteor/vulcan:lib';
+import { Components, extractCollectionInfo } from 'meteor/vulcan:lib';
+import { replaceComponent, withMulti2 } from 'meteor/vulcan:core';
 import { CSVLink } from 'react-csv';
+
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+
+import File from 'mdi-material-ui/File';
+import FileRemove from 'mdi-material-ui/FileRemove';
+import CloudDownload from 'mdi-material-ui/CloudDownload';
+import AlertCircle from 'mdi-material-ui/AlertCircle';
 
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 
@@ -43,25 +51,29 @@ const CSVExportButton = props => {
   switch (stage) {
     case 'create':
       return (
-        <Components.Button
-          onClick={() => {
-            setStage('download');
-          }}>
-          <FormattedMessage id="exportbutton.create" />
-        </Components.Button>
+        <Tooltip title={<FormattedMessage id="exportbutton.create" />}>
+          <IconButton
+            onClick={() => {
+              setStage('download');
+            }}>
+            <File />
+          </IconButton>
+        </Tooltip>
       );
     case 'download':
       const listOptions = {
         collection,
         ...options,
       };
-      const CSVExportWithList = withMulti(listOptions)(CSVExport);
+      const CSVExportWithList = withMulti2(listOptions)(CSVExport);
       return <CSVExportWithList collection={collection} input={input} />;
     default:
       return (
-        <Components.Button onClick={reloadPage}>
-          <FormattedMessage id="exportbutton.error" />
-        </Components.Button>
+        <Tooltip title={<FormattedMessage id="exportbutton.error" />}>
+          <IconButton onClick={reloadPage}>
+            <AlertCircle color="error" />
+          </IconButton>
+        </Tooltip>
       );
   }
 };
@@ -71,7 +83,7 @@ CSVExportButton.propTypes = {
   options: PropTypes.object,
   terms: PropTypes.object,
 };
-registerComponent('CSVExportButton', CSVExportButton);
+replaceComponent('CSVExportButton', CSVExportButton);
 
 function reloadPage() {
   window.location.reload();
@@ -85,15 +97,19 @@ const CSVExport = props => {
     return <Components.Loading />;
   } else if (error) {
     return (
-      <Components.Button onClick={reloadPage}>
-        <FormattedMessage id="exportbutton.error" />
-      </Components.Button>
+      <Tooltip title={<FormattedMessage id="exportbutton.error" />}>
+        <IconButton onClick={reloadPage}>
+          <AlertCircle color="error" />
+        </IconButton>
+      </Tooltip>
     );
   } else if (!results || !results.length) {
     return (
-      <Components.Button>
-        <FormattedMessage id="exportbutton.noResults" />
-      </Components.Button>
+      <Tooltip title={<FormattedMessage id="exportbutton.noResults" />}>
+        <IconButton>
+          <FileRemove />
+        </IconButton>
+      </Tooltip>
     );
   }
   // merge all flattened reduces and take their keys
@@ -112,10 +128,12 @@ const CSVExport = props => {
   const validateResults = removeElementsErrorCausing({ results, headers });
   const filename = collection._name + moment(new Date()).format('YYYY-MM-DD HH:mm') + '.csv';
   return (
-    <CSVLink headers={headers} data={validateResults} separator=";" filename={filename}>
-      <Components.Button>
-        <FormattedMessage id="exportbutton.download" values={{ totalCount }} />
-      </Components.Button>
-    </CSVLink>
+    <Tooltip title={<FormattedMessage id="exportbutton.download" values={{ totalCount }} />}>
+      <CSVLink headers={headers} data={validateResults} separator=";" filename={filename}>
+        <IconButton>
+          <CloudDownload color="secondary" />
+        </IconButton>
+      </CSVLink>
+    </Tooltip>
   );
 };
