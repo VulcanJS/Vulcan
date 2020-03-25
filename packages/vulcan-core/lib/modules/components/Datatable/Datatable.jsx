@@ -8,6 +8,8 @@ import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
+import _remove from 'lodash/remove';
+import _union from 'lodash/union';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
 import withMulti from '../../containers/multi2.js';
@@ -43,6 +45,7 @@ class Datatable extends PureComponent {
       search: '',
       currentSort: {},
       currentFilters: {},
+      currentSelection: []
     };
 
     // initial state can be defined via props
@@ -190,6 +193,34 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
+  toggleSelection = (element, remove) => {
+    const elementsArray = Array.isArray(element) ? element : [element];
+    let currentSelection = [...this.state.currentSelection];
+    if (remove) {
+      _remove(currentSelection, o => elementsArray.includes(o));
+    } else {
+      currentSelection = _union(currentSelection, elementsArray);
+    }
+    this.setState({ currentSelection });
+    // if (replace) {
+    //   this.setState({ currentSelection: element });
+    // } else {
+    //   let currentSelection = [...this.state.currentSelection];
+    //   if (element == 'all') {
+    //     if (this.state.currentSelection.includes('all')) {
+    //       currentSelection = [];
+    //     } else {
+    //       currentSelection = [element];
+    //     }
+    //   } else if (this.state.currentSelection.includes(element)) {
+    //     _remove(currentSelection, o => o == element);
+    //   } else {
+    //     currentSelection.push(element);
+    //   }
+    //   this.setState({ currentSelection });
+    // }
+  };
+
   render() {
     const { Components, modalProps, data, currentUser } = this.props;
 
@@ -203,6 +234,7 @@ class Datatable extends PureComponent {
           datatableData={data}
           results={this.props.data}
           showEdit={false}
+          showDelete={false}
           showNew={false}
           modalProps={modalProps}
         />
@@ -251,7 +283,6 @@ class Datatable extends PureComponent {
       if (!_isEmpty(this.state.currentFilters)) {
         input.filter = this.state.currentFilters;
       }
-
       return (
         <Components.DatatableLayout
           Components={Components}
@@ -264,6 +295,8 @@ class Datatable extends PureComponent {
             canCreate={canCreate}
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
+            input={input}
+            currentSelection={this.state.currentSelection}
           />
           <DatatableWithMulti
             Components={Components}
@@ -273,6 +306,8 @@ class Datatable extends PureComponent {
             currentUser={this.props.currentUser}
             toggleSort={this.toggleSort}
             currentSort={this.state.currentSort}
+            currentSelection={this.state.currentSelection}
+            toggleSelection={this.toggleSelection}
             submitFilters={this.submitFilters}
             currentFilters={this.state.currentFilters}
           />
@@ -289,8 +324,11 @@ Datatable.propTypes = {
   data: PropTypes.array,
   options: PropTypes.object,
   showEdit: PropTypes.bool,
+  showDelete: PropTypes.bool,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
+  showSelect: PropTypes.bool,
+  showExport: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility
@@ -298,11 +336,13 @@ Datatable.propTypes = {
   Components: PropTypes.object.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  aboveComponents: PropTypes.array
 };
 
 Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
+  showDelete: true,
   showSearch: true,
   useUrlState: true,
 };
@@ -327,8 +367,11 @@ const DatatableAbove = (props, { intl }) => {
   const {
     collection,
     currentUser,
+    currentSelection,
     showSearch,
     showNew,
+    showExport,
+    showDelete,
     canInsert,
     searchValue,
     updateSearch,
@@ -336,8 +379,11 @@ const DatatableAbove = (props, { intl }) => {
     newFormOptions,
     newFormProps,
     Components,
+    input: _input,
+    aboveComponents
   } = props;
-
+  const isSelected = currentSelection && currentSelection.length;
+  const input = (isSelected) ? { filter: { _id: { _in: currentSelection } } } : _input;
   return (
     <Components.DatatableAboveLayout>
       {showSearch && (
@@ -364,6 +410,37 @@ const DatatableAbove = (props, { intl }) => {
           {...newFormProps}
         />
       )}
+      {showExport && (
+        <Components.CSVExportButton
+          collection={collection}
+          options={{ ...options, limit:10000 }}
+          input={input}
+        />
+      )}
+      {(showDelete && isSelected) ? (
+        <Components.DeleteButton
+          collection={collection}
+          currentUser={currentUser}
+          fragmentName={options && options.fragmentName}
+          //input={input}
+          documentIds={currentSelection}
+        />
+    ) : null}
+      {aboveComponents
+        ? aboveComponents.map(component => {
+            const Component = typeof component === 'string' ? Components[component] : component;
+            return (
+              <Component
+                collection={collection}
+                input={_input}
+                options={options}
+                currentSelection={currentSelection}
+                currentUser={currentUser}
+                key={component}
+              />
+            );
+          })
+        : null}
     </Components.DatatableAboveLayout>
   );
 };
