@@ -11242,6 +11242,11 @@ react-cookie@^2.1.6:
     prop-types "^15.0.0"
     universal-cookie "^2.2.0"
 
+react-csv@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-2.0.1.tgz#5b21d2170f705285d25476a0e28de7f8cab7f0ff"
+  integrity sha512-GK2MVXvEQW1PxaDja2Ksyb487Ae8jC8Kq70vrqwl1KFQojQleK2q/nDxeExe8482jAVLOE+w1qCCZN5Gu5ekKA==
+
 react-datetime@^2.11.1:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/react-datetime/-/react-datetime-2.16.3.tgz#7f9ac7d4014a939c11c761d0c22d1fb506cb505e"
