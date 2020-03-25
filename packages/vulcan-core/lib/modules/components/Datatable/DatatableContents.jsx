@@ -9,9 +9,7 @@ const wrapColumns = c => ({ name: c });
 const getColumns = (columns, results, data) => {
   if (columns) {
     // convert all columns to objects
-    const convertedColums = columns.map(column =>
-      typeof column === 'object' ? column : { name: column }
-    );
+    const convertedColums = columns.map(column => (typeof column === 'object' ? column : { name: column }));
     const sortedColumns = _sortBy(convertedColums, column => column.order);
     return sortedColumns;
   } else if (results && results.length > 0) {
@@ -49,7 +47,7 @@ const DatatableContents = props => {
     showEdit,
     showDelete,
     currentUser,
-    currentSelection,
+    currentSelection = [],
     toggleSort,
     toggleSelection,
     currentSort,
@@ -69,7 +67,7 @@ const DatatableContents = props => {
   }
 
   const isLoadingMore = networkStatus === 2;
-  const hasMore = results && (totalCount > results.length);
+  const hasMore = results && totalCount > results.length;
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
@@ -176,6 +174,7 @@ const DatatableContents = props => {
 };
 DatatableContents.propTypes = {
   Components: PropTypes.object.isRequired,
+  currentSelection: PropTypes.arrayOf(PropTypes.string),
 };
 registerComponent('DatatableContents', DatatableContents);
 
@@ -200,9 +199,7 @@ const DatatableContentsBodyLayout = ({ children }) => <tbody>{children}</tbody>;
 
 registerComponent({ name: 'DatatableContentsBodyLayout', component: DatatableContentsBodyLayout });
 
-const DatatableContentsMoreLayout = ({ children }) => (
-  <div className="datatable-list-load-more">{children}</div>
-);
+const DatatableContentsMoreLayout = ({ children }) => <div className="datatable-list-load-more">{children}</div>;
 registerComponent({ name: 'DatatableContentsMoreLayout', component: DatatableContentsMoreLayout });
 
 const DatatableLoadMoreButton = ({ count, totalCount, Components, children, ...otherProps }) => (
@@ -268,7 +265,7 @@ DatatableSelections Component
 //           // input={input}
 // $        />
 //       )}
-       
+
 //       </div>
 //     </td>
 //   );
