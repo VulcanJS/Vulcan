@@ -86,19 +86,23 @@ export const filterFunction = async (collection, input = {}, context) => {
     */
   const convertExpression = fieldExpression => {
     const [fieldName] = Object.keys(fieldExpression);
-    const [operator] = Object.keys(fieldExpression[fieldName]);
-    const value = fieldExpression[fieldName][operator];
-    if (isEmptyOrUndefined(value)) {
-      throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
-    }
-    const mongoOperator = conversionTable[operator];
-    if (!mongoOperator) {
-      throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
-    }
+    const operators = Object.keys(fieldExpression[fieldName]);
+    const mongoExpression = {};
+    operators.forEach(operator => {
+      const value = fieldExpression[fieldName][operator];
+      if (isEmptyOrUndefined(value)) {
+        throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
+      }
+      const mongoOperator = conversionTable[operator];
+      if (!mongoOperator) {
+        throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
+      }
+      const mongoObject = typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
+      merge(mongoExpression, mongoObject);
+    });
     const isIntl = schema[fieldName].intl;
     const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
-    const mongoObject = typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
-    return { [mongoFieldName]: mongoObject };
+    return { [mongoFieldName]: mongoExpression };
   };
 
   // id
@@ -193,7 +197,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-        collection.options.collectionName
+          collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }
