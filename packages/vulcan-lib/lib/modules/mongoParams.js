@@ -84,7 +84,7 @@ export const filterFunction = async (collection, input = {}, context) => {
     { title_intl.value: { $in: ["foo", "bar"] } }
   
     */
-   const convertExpression = fieldExpression => {
+  const convertExpression = fieldExpression => {
     const [fieldName] = Object.keys(fieldExpression);
     const operators = Object.keys(fieldExpression[fieldName]);
     const mongoExpression = {};
@@ -197,7 +197,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-        collection.options.collectionName
+          collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }
