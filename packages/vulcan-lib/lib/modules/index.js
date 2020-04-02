@@ -8,7 +8,7 @@ import './deep_extend.js';
 // import './graphql.js';
 import './icons.js';
 
-export * from './graphql/defaultFragment';
+export * from './graphql/';
 export * from './graphql_templates/index.js';
 export * from './components.js';
 export * from './collections.js';
