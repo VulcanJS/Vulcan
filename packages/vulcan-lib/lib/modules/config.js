@@ -52,6 +52,7 @@ SimpleSchema.extendOptions([
   'placeholder', // form field placeholder value
   'options', // form options
   'query', // field-specific data loading query
+  'autocompleteQuery', // query used to populate autocomplete
   'selectable', // field can be used as part of a selector when querying for data
   'unique', // field can be used as part of a selectorUnique when querying for data
   'orderable', // field can be used to order results when querying for data (backwards-compatibility)
