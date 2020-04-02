@@ -10,41 +10,47 @@ const Likert = ({ refFunction, path, updateCurrentValues, inputProperties, itemP
   return (
     <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
       <div className="likert-scale">
+        <div className="likert-row">
+          <div />
+            {getRange().map((rating, i) => (
+              <div key={i} className="likert-row-cell">
+                {i+1}
+              </div>
+            ))}
+        </div>
         {options.map((option, i) => {
-          console.log('// option');
-          console.log(value);
           const optionPath = `${path}.${option.value}`;
-          console.log(optionPath);
           const optionValue = value && value[option.value];
-          console.log(optionValue);
           return (
             <div key={i} className="likert-row">
               <div className="likert-row-heading">{option.label}</div>
-              <div className="likert-row-contents">
+              {/* <div className="likert-row-contents"> */}
                 {getRange().map((rating, i) => {
                   const isChecked = optionValue === rating.value;
                   const checkClass = hasValue ? (isChecked ? 'form-check-checked' : 'form-check-unchecked') : '';
                   return (
-                    <Form.Check
-                      {...inputProperties}
-                      key={i}
-                      layout="elementOnly"
-                      type="radio"
-                      label={rating.label}
-                      value={rating.value}
-                      name={optionPath}
-                      id={optionPath}
-                      path={optionPath}
-                      ref={refFunction}
-                      checked={isChecked}
-                      className={checkClass}
-                      onChange={() => {
-                        updateCurrentValues({ [optionPath]: rating.value });
-                      }}
-                    />
+                    <div key={i} className="likert-row-cell">
+                      <Form.Check
+                        {...inputProperties}
+                        key={i}
+                        layout="elementOnly"
+                        type="radio"
+                        label={rating.label}
+                        value={rating.value}
+                        name={optionPath}
+                        id={optionPath}
+                        path={optionPath}
+                        ref={refFunction}
+                        checked={isChecked}
+                        className={checkClass}
+                        onChange={() => {
+                          updateCurrentValues({ [optionPath]: rating.value });
+                        }}
+                      />
+                    </div>
                   );
                 })}
-              </div>
+              {/* </div> */}
             </div>
           );
         })}
