@@ -321,21 +321,24 @@ class FormComponent extends Component {
         );
       }
     }
-    return (
-      <FormComponents.FormComponentInner
-        {...this.props}
-        {...this.state}
-        inputType={this.getInputType()}
-        value={this.getValue()}
-        errors={this.getErrors()}
-        document={this.context.getDocument()}
-        showCharsRemaining={!!this.showCharsRemaining()}
-        onChange={this.handleChange}
-        clearField={this.clearField}
-        formInput={this.getFormInput()}
-        formComponents={FormComponents}
-      />
-    );
+
+    const fciProps = {
+      ...this.props,
+      ...this.state,
+      inputType: this.getInputType(),
+      value: this.getValue(),
+      errors: this.getErrors(),
+      document: this.context.getDocument(),
+      showCharsRemaining: !!this.showCharsRemaining(),
+      onChange: this.handleChange,
+      clearField: this.clearField,
+      formInput: this.getFormInput(),
+      formComponents: FormComponents,
+    };
+
+    const fci = <FormComponents.FormComponentInner {...fciProps} />;
+
+    return this.props.query ? <FormComponents.FormComponentLoader {...fciProps}>{fci}</FormComponents.FormComponentLoader> : fci;
   }
 }
 

@@ -21,7 +21,7 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { onChange, inputType } = this.props;
+    const { onChange, inputType, itemProperties, description, queryLoading } = this.props;
     const enhancedOnChange = event => {
       // FormComponent's handleChange expects value as argument; look in target.checked or target.value
       const inputValue = inputType === 'checkbox' ? event.target.checked : event.target.value;
@@ -31,8 +31,9 @@ class FormComponentInner extends PureComponent {
     withInputProps.onChange = enhancedOnChange; // TODO: legacy code?
     withInputProps.inputProperties.onChange = enhancedOnChange;
     withInputProps.itemProperties = {
-      ...this.props.itemProperties, 
-      description: this.props.description
+      ...itemProperties,
+      description,
+      queryLoading,
     };
     return withInputProps;
   };

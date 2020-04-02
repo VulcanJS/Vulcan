@@ -14,3 +14,4 @@ import '../components/FormSubmit.jsx';
 import '../components/FormWrapper.jsx';
 import '../components/Form.jsx';
 import '../components/FormLayout.jsx';
+import '../components/FormComponentLoader.jsx';
