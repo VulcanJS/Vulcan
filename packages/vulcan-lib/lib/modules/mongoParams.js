@@ -40,6 +40,10 @@ const conversionTable = {
   _arrayContains: value => value,
   asc: 1,
   desc: -1,
+  _like: value => ({
+    $regex: value,
+    $options: 'i',
+  }),
 };
 
 // get all fields mentioned in an expression like [ { foo: { _gt: 2 } }, { bar: { _eq : 3 } } ]
@@ -90,7 +94,7 @@ export const filterFunction = async (collection, input = {}, context) => {
     const mongoExpression = {};
     operators.forEach(operator => {
       const value = fieldExpression[fieldName][operator];
-      if (isEmptyOrUndefined(value)) {
+      if (isEmptyOrUndefined(value) && operator !== '_in') {
         throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
       }
       const mongoOperator = conversionTable[operator];
