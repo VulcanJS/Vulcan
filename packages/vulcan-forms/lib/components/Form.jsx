@@ -390,6 +390,11 @@ class SmartForm extends Component {
       field.options = field.options.call(fieldSchema, { ...this.props, document });
     }
 
+    // internationalize field options labels
+    if (field.options && Array.isArray(field.options)) {
+      field.options = field.options.map(option => ({ ...option, label: this.getOptionLabel(fieldName, option) }));
+    }
+
     // if this an intl'd field, use a special intlInput
     if (isIntlField(fieldSchema)) {
       field.intlInput = true;
@@ -506,6 +511,19 @@ class SmartForm extends Component {
     } else {
       return label;
     }
+  };
+
+  /*
+
+  Get a field option's label
+
+  */
+  getOptionLabel = (fieldName, option) => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    return this.context.intl.formatMessage({
+      id: `${collectionName}.${fieldName}.${option.value}`,
+      defaultMessage: option.label,
+    });
   };
 
   // --------------------------------------------------------------------- //
