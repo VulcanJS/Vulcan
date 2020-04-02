@@ -357,6 +357,8 @@ class SmartForm extends Component {
   };
 
   initField = (fieldName, fieldSchema) => {
+    const isArray = get(fieldSchema, 'type.0.type') === Array;
+
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
@@ -368,9 +370,9 @@ class SmartForm extends Component {
     };
 
     // if this is an array field also store its array item type
-    if (get(fieldSchema, 'type.0.type') === Array) {
-      const itemField = this.state.originalSchema[`${fieldName}.$`];
-      field.itemDataType = get(itemField, 'type.0.type');
+    if (isArray) {
+      const itemFieldSchema = this.state.originalSchema[`${fieldName}.$`];
+      field.itemDatatype = get(itemFieldSchema, 'type.0.type');
     }
 
     field.label = this.getLabel(fieldName);
@@ -384,11 +386,7 @@ class SmartForm extends Component {
     //   }
     // }
 
-    // if options are a function, call it
     const document = this.getDocument();
-    if (typeof field.options === 'function') {
-      field.options = field.options.call(fieldSchema, { ...this.props, document });
-    }
 
     // internationalize field options labels
     if (field.options && Array.isArray(field.options)) {
