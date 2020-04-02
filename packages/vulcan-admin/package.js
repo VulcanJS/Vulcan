@@ -9,7 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom('1.6.1');
 
   api.use([
-    'fourseven:scss@4.10.0',
+    'fourseven:scss@4.12.0',
     'dynamic-import@0.1.1',
     // Vulcan packages
     'vulcan:core@=1.14.1',
