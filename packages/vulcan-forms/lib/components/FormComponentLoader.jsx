@@ -1,20 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Utils, Components, registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
+import { Utils, Components, registerComponent } from 'meteor/vulcan:core';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
+const hasQueryKeyword = q => q.trim().substr(0, 5) === 'query';
+
 const FormComponentLoader = props => {
   const { name, query, children, options, value } = props;
-  // use field's `query` property to load field-specific data
-  // pass current field value as variable to the query just in case
-  // for legacy reasons, also handle case where only query fragment is specified
-  const hasQueryKeyword = q => q.trim().substr(0, 5) === 'query';
-  const formComponentQueryText = hasQueryKeyword(query) ? query : `query FormComponent${Utils.capitalize(name)}Query {${query}}`;
-  const formComponentQuery = gql(formComponentQueryText);
-  const { loading, error, data } = useQuery(formComponentQuery, { variables: { value } });
-  if (error) {
-    throw new Error(error);
+  let loading = false,
+    error,
+    data;
+
+  // if query is a function, execute it
+  const queryText = typeof query === 'function' ? query({ value }) : query;
+
+  if (queryText) {
+    // if queryText exists or query function returned something, execute query
+    // use field's `query` property to load field-specific data
+    // pass current field value as variable to the query just in case
+    // for legacy reasons, also handle case where only query fragment is specified
+    const formComponentQueryText = hasQueryKeyword(queryText) ? queryText : `query FormComponent${Utils.capitalize(name)}Query {${queryText}}`;
+    const formComponentQuery = gql(formComponentQueryText);
+    const queryResult = useQuery(formComponentQuery, { variables: { value } });
+    loading = queryResult.loading;
+    error = queryResult.error;
+    data = queryResult.data;
+    if (error) {
+      throw new Error(error);
+    }
   }
 
   // pass newly loaded data (and options if needed) to child component

@@ -1,5 +1,3 @@
-// WIP
-
 import { AsyncTypeahead } from 'react-bootstrap-typeahead'; // ES2015
 import React, { useState } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
@@ -34,15 +32,21 @@ const Autocomplete = props => {
 
   // apply same function to loaded data; filter by current value to avoid displaying any
   // extra unwanted items if field-level data loading loaded too many items
-  const selectedItems = queryData && optionsFunction({ data: queryData }).filter(d => value.includes(d.value));
+  // note: should be an array even if there is only one item in it
+  const selectedItem = queryData ? optionsFunction({ data: queryData }).filter(d => value === d.value) : [];
 
   return (
     <Components.FormItem path={path} label={label} {...itemProperties}>
       <AsyncTypeahead
         {...inputProperties}
+        multiple={false}
         onChange={selected => {
-          const selectedIds = selected.map(({ value }) => value);
-          updateCurrentValues({ [path]: selectedIds });
+          if (selected.length === 0) {
+            updateCurrentValues({ [path]: null });
+          } else {
+            const selectedId = selected[0].value;
+            updateCurrentValues({ [path]: selectedId });
+          }
         }}
         options={autocompleteOptions}
         id={path}
@@ -51,7 +55,7 @@ const Autocomplete = props => {
           setQueryString(queryString);
         }}
         isLoading={loading}
-        selected={selectedItems}
+        selected={selectedItem}
       />
     </Components.FormItem>
   );

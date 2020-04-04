@@ -6,6 +6,7 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
+import { isEmptyOrUndefined } from './utils';
 
 import { getSetting } from './settings.js';
 // convert GraphQL selector into Mongo-compatible selector
@@ -54,12 +55,6 @@ const getFieldNames = expressionArray => {
   });
 };
 
-const isEmptyOrUndefined = value =>
-  typeof value === 'undefined' ||
-  value === null ||
-  value === '' ||
-  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
-
 export const filterFunction = async (collection, input = {}, context) => {
   // eslint-disable-next-line no-unused-vars
   const { filter, limit, sort, search, filterArguments, offset, id } = input;
@@ -94,7 +89,7 @@ export const filterFunction = async (collection, input = {}, context) => {
     const mongoExpression = {};
     operators.forEach(operator => {
       const value = fieldExpression[fieldName][operator];
-      if (isEmptyOrUndefined(value) && operator !== '_in') {
+      if (isEmptyOrUndefined(value)) {
         throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
       }
       const mongoOperator = conversionTable[operator];

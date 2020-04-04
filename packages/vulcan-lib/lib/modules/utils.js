@@ -17,6 +17,7 @@ import isFunction from 'lodash/isFunction';
 import pluralize from 'pluralize';
 import { getFieldType } from './simpleSchema_utils';
 import { forEachDocumentField } from './schema_utils';
+import isEmpty from 'lodash/isEmpty';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -589,3 +590,11 @@ Utils.arrayToFields = fieldsArray => {
     })
   );
 };
+
+export const isEmptyOrUndefined = value =>
+  typeof value === 'undefined' ||
+  value === null ||
+  value === '' ||
+  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
+
+Utils.isEmptyOrUndefined = isEmptyOrUndefined;
