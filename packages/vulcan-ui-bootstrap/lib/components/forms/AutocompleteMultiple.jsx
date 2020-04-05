@@ -4,7 +4,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-const AutocompleteMultiple = props => {
+const MultiAutocomplete = props => {
   const {
     queryData,
     updateCurrentValues,
@@ -56,4 +56,4 @@ const AutocompleteMultiple = props => {
   );
 };
 
-registerComponent('FormComponentAutocompleteMultiple', AutocompleteMultiple);
+registerComponent('FormComponentMultiAutocomplete', MultiAutocomplete);

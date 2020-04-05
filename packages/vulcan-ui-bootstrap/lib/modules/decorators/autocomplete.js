@@ -1,4 +1,9 @@
-import { Utils, isEmptyOrUndefined } from 'meteor/vulcan:core';
+import {
+  isEmptyOrUndefined,
+  fieldMultiQueryTemplate,
+  fieldSingleQueryTemplate,
+  autocompleteQueryTemplate,
+} from 'meteor/vulcan:core';
 
 // note: the following decorator function is called both for autocomplete and autocompletemultiple
 export const makeAutocomplete = (field = {}, options = {}) => {
@@ -8,48 +13,21 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   - labelPropertyName: the name of the property used as the label for each item
 
   */
-  const { queryResolverName, labelPropertyName, isMultiple = false } = options;
+  const { queryResolverName, labelPropertyName, multi } = options;
+
+  // if field stores an array, use multi autocomplete
+  const isMultiple = multi || field.type === Array;
 
   // define query to load extra data for input values
   // note: we don't want to run queries with empty filters, so if there is no value
   // defined the query function will return `undefined` and not run at all
   const query = ({ value }) =>
-    !isEmptyOrUndefined(value) &&
-    `
-    query FormComponent${Utils.capitalize(queryResolverName)}Query($value: ${isMultiple ? '[String!]' : 'String'}) {
-      ${queryResolverName}(
-        input: {
-          filter: {
-            ${isMultiple ? '_id: { _in: $value }' : '_id: { _eq: $value }'}
-          }
-        }
-      ){
-        results{
-          _id
-          ${labelPropertyName}
-        }
-      }
-    }
-  `;
+    isMultiple
+      ? !isEmptyOrUndefined(value) && fieldMultiQueryTemplate({ queryResolverName, labelPropertyName })
+      : !isEmptyOrUndefined(value) && fieldSingleQueryTemplate({ queryResolverName, labelPropertyName });
 
   // query to load autocomplete suggestions
-  const autocompleteQuery = `
-    query Autocomplete${Utils.capitalize(queryResolverName)}Query($queryString: String) {
-      ${queryResolverName}(
-        input: {
-          filter: {
-            ${labelPropertyName}: { _like: $queryString }
-          },
-          limit: 20
-        }
-      ){
-        results{
-          _id
-          ${labelPropertyName}
-        }
-      }
-    }
-  `;
+  const autocompleteQuery = autocompleteQueryTemplate({ queryResolverName, labelPropertyName });
 
   // define a function that takes the options returned by the queries
   // and transforms them into { value, label } pairs.
@@ -68,13 +46,8 @@ export const makeAutocomplete = (field = {}, options = {}) => {
     query,
     autocompleteQuery,
     options: optionsFunction,
-    input: 'autocomplete',
+    input: isMultiple ? 'multiautocomplete' : 'autocomplete',
   };
 
   return acField;
 };
-
-export const makeAutocompleteMultiple = (field = {}, options = {}) => ({
-  ...makeAutocomplete(field, { ...options, isMultiple: true }),
-  input: 'autocompletemultiple',
-});

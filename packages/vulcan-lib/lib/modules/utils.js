@@ -116,9 +116,11 @@ Utils.trimHTML = function (html, numWords) {
  * @summary Capitalize a string.
  * @param {String} str
  */
-Utils.capitalize = function (str) {
+export const capitalize = function (str) {
   return str && str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+Utils.capitalize = capitalize;
 
 Utils.t = function (message) {
   var d = new Date();
