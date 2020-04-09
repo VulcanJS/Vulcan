@@ -14,12 +14,12 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   const isMultiple = multi || field.type === Array;
 
   // define query to load extra data for input values
-  // note: we don't want to run queries with empty filters, so if there is no value
+  // note: we don't want to run dynamic queries with empty filters, so if there is no value
   // defined the query function will return `undefined` and not run at all
   const query = ({ value, mode = 'dynamic' }) =>
     mode === 'dynamic'
       ? !isEmptyOrUndefined(value) && fieldDynamicQueryTemplate({ queryResolverName, labelPropertyName })
-      : !isEmptyOrUndefined(value) && fieldStaticQueryTemplate({ queryResolverName, labelPropertyName });
+      : fieldStaticQueryTemplate({ queryResolverName, labelPropertyName });
 
   // query to load autocomplete suggestions
   const autocompleteQuery = autocompleteQueryTemplate({ queryResolverName, labelPropertyName });

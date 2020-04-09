@@ -1,12 +1,10 @@
 import React from 'react';
-import { Utils, Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-const hasQueryKeyword = q => q.trim().substr(0, 5) === 'query';
-
 const FormComponentLoader = props => {
-  const { name, query, children, options, value } = props;
+  const { query, children, options, value } = props;
   let loading = false,
     error,
     data;
@@ -18,9 +16,7 @@ const FormComponentLoader = props => {
     // if queryText exists or query function returned something, execute query
     // use field's `query` property to load field-specific data
     // pass current field value as variable to the query just in case
-    // for legacy reasons, also handle case where only query fragment is specified
-    const formComponentQueryText = hasQueryKeyword(queryText) ? queryText : `query FormComponent${Utils.capitalize(name)}Query {${queryText}}`;
-    const formComponentQuery = gql(formComponentQueryText);
+    const formComponentQuery = gql(queryText);
     const queryResult = useQuery(formComponentQuery, { variables: { value } });
     loading = queryResult.loading;
     error = queryResult.error;
