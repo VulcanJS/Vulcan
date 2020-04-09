@@ -3,6 +3,12 @@ import { Utils } from '../utils.js';
 
 // field types that support filtering
 const supportedFieldTypes = ['String', 'Int', 'Float', 'Boolean', 'Date'];
+const getContentType = type =>
+  type
+    .replace('[', '')
+    .replace(']', '')
+    .replace('!', '');
+const isSupportedFieldType = type => supportedFieldTypes.includes(type);
 
 /* ------------------------------------- Selector Types ------------------------------------- */
 
@@ -54,12 +60,7 @@ See https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#
  
 */
 export const filterInputType = typeName => `${typeName}FilterInput`;
-export const fieldFilterInputTemplate = ({
-  typeName,
-  fields,
-  customFilters = [],
-  customSorts = [],
-}) =>
+export const fieldFilterInputTemplate = ({ typeName, fields, customFilters = [], customSorts = [] }) =>
   `input ${filterInputType(typeName)} {
   _and: [${filterInputType(typeName)}]
   _not: ${filterInputType(typeName)}
@@ -69,9 +70,10 @@ ${customSorts.map(sort => `  ${sort.name}: ${customSortType(typeName, sort)}`)}
 ${fields
   .map(field => {
     const { name, type } = field;
-    if (supportedFieldTypes.includes(type)) {
-      const isArrayField = name[0] === '[';
-      return `  ${name}: ${type}_${isArrayField ? 'Array_' : ''}Selector`;
+    const contentType = getContentType(type);
+    if (isSupportedFieldType(contentType)) {
+      const isArrayField = type[0] === '[';
+      return `  ${name}: ${contentType}_${isArrayField ? 'Array_' : ''}Selector`;
     } else {
       return '';
     }

@@ -69,8 +69,9 @@ input String_Selector {
 }
 
 input String_Array_Selector {
-  contains: String_Selector
-  # contains_all: [String_Selector]
+  _in: [String!]
+  # _contains: String_Selector
+  # _contains_all: [String_Selector]
 }
 
 input Int_Selector {
