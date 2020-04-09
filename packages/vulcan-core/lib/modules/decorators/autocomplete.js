@@ -1,9 +1,4 @@
-import {
-  isEmptyOrUndefined,
-  fieldMultiQueryTemplate,
-  fieldSingleQueryTemplate,
-  autocompleteQueryTemplate,
-} from 'meteor/vulcan:core';
+import { isEmptyOrUndefined, fieldDynamicQueryTemplate, fieldStaticQueryTemplate, autocompleteQueryTemplate } from 'meteor/vulcan:core';
 
 // note: the following decorator function is called both for autocomplete and autocompletemultiple
 export const makeAutocomplete = (field = {}, options = {}) => {
@@ -21,10 +16,10 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   // define query to load extra data for input values
   // note: we don't want to run queries with empty filters, so if there is no value
   // defined the query function will return `undefined` and not run at all
-  const query = ({ value }) =>
-    isMultiple
-      ? !isEmptyOrUndefined(value) && fieldMultiQueryTemplate({ queryResolverName, labelPropertyName })
-      : !isEmptyOrUndefined(value) && fieldSingleQueryTemplate({ queryResolverName, labelPropertyName });
+  const query = ({ value, mode = 'dynamic' }) =>
+    mode === 'dynamic'
+      ? !isEmptyOrUndefined(value) && fieldDynamicQueryTemplate({ queryResolverName, labelPropertyName })
+      : !isEmptyOrUndefined(value) && fieldStaticQueryTemplate({ queryResolverName, labelPropertyName });
 
   // query to load autocomplete suggestions
   const autocompleteQuery = autocompleteQueryTemplate({ queryResolverName, labelPropertyName });
@@ -34,6 +29,7 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   const optionsFunction = props => {
     return (
       props.data &&
+      props.data[queryResolverName] &&
       props.data[queryResolverName].results.map(document => ({
         value: document._id,
         label: document[labelPropertyName],

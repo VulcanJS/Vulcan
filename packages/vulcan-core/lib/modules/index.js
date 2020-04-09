@@ -41,6 +41,8 @@ export { withCurrentUser, useCurrentUser } from './containers/currentUser.js';
 export { withMutation, useRegisteredMutation } from './containers/registeredMutation.js';
 export { withSiteData, useSiteData } from './containers/siteData.js';
 
+export * from './decorators';
+
 export { default as withComponents } from './containers/withComponents';
 
 export { default as MessageContext } from './messages.js';

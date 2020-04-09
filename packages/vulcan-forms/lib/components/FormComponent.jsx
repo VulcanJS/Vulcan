@@ -283,8 +283,8 @@ class FormComponent extends Component {
         case 'autocomplete':
           return FormComponents.FormComponentAutocomplete;
 
-        case 'autocompletemultiple':
-          return FormComponents.FormComponentAutocompleteMultiple;
+        case 'multiautocomplete':
+          return FormComponents.FormComponentMultiAutocomplete;
   
         default:
           const CustomComponent = FormComponents[this.props.input];
