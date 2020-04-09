@@ -31,12 +31,19 @@ send
 
 */
 
+export const testProvider = () => {
+  if (!Newsletters[provider]) {
+    throw new Error(`Could not find newsletter provider “${provider}”. Please make sure your settings are configured correctly.`);
+  }
+};
+
 /**
  * @summary Subscribe a user to the newsletter
  * @param {Object} user
  * @param {Boolean} confirm
  */
-Newsletters.subscribeUser = async (user, confirm = false) => {
+export const subscribeUser = async (user, confirm = false) => {
+  testProvider();
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
@@ -46,247 +53,146 @@ Newsletters.subscribeUser = async (user, confirm = false) => {
   console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
-  if (result) {console.log ('-> added');}
-  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: true}});
+  if (result) {
+    console.log('-> added');
+  }
+  await Connectors.update(Users, user._id, { $set: { newsletter_subscribeToNewsletter: true } });
 };
+Newsletters.subscribeUser = subscribeUser;
 
 /**
  * @summary Subscribe an email to the newsletter
  * @param {String} email
  */
-Newsletters.subscribeEmail = (email, confirm = false) => {
+export const subscribeEmail = (email, confirm = false) => {
+  testProvider();
   // eslint-disable-next-line no-console
   console.log(`// Adding ${email} to ${provider} list…`);
   const result = Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
-  if (result) {console.log ('-> added');}
+  if (result) {
+    console.log('-> added');
+  }
 };
-
+Newsletters.subscribeEmail = subscribeEmail;
 
 /**
  * @summary Unsubscribe a user from the newsletter
  * @param {Object} user
  */
-Newsletters.unsubscribeUser = async (user) => {
+export const unsubscribeUser = async user => {
+  testProvider();
   const email = Users.getEmail(user);
   if (!email) {
     throw 'User must have an email address';
   }
 
   // eslint-disable-next-line no-console
-  console.log('// Removing "'+email+'" from list…');
+  console.log('// Removing "' + email + '" from list…');
   Newsletters[provider].unsubscribe(email);
-  await Connectors.update(Users, user._id, {$set: {newsletter_subscribeToNewsletter: false}}); 
+  await Connectors.update(Users, user._id, { $set: { newsletter_subscribeToNewsletter: false } });
 };
+Newsletters.unsubscribeUser = unsubscribeUser;
 
 /**
  * @summary Unsubscribe an email from the newsletter
  * @param {String} email
  */
-Newsletters.unsubscribeEmail = (email) => {
+export const unsubscribeEmail = email => {
+  testProvider();
   // eslint-disable-next-line no-console
-  console.log('// Removing "'+email+'" from list…');
+  console.log('// Removing "' + email + '" from list…');
   Newsletters[provider].unsubscribe(email);
 };
-
+Newsletters.unsubscribeEmail = unsubscribeEmail;
 /**
  * @summary Build a newsletter subject from an array of posts
  * (Called from Newsletter.send)
  * @param {Array} posts
  */
-Newsletters.getSubject = posts => {
-  const subject = posts.map((post, index) => index > 0 ? `, ${post.title}` : post.title).join('');
+export const getSubject = posts => {
+  const subject = posts.map((post, index) => (index > 0 ? `, ${post.title}` : post.title)).join('');
   return Utils.trimWords(subject, 15);
 };
-
-/**
- * @summary Build a newsletter campaign from an array of posts
- * (Called from Newsletter.send)
- * @param {Array} posts
- */
-// Newsletters.build = posts => {
-//   let postsHTML = '';
-//   const excerptLength = getSetting('newsletterExcerptLength', 20);
-
-//   // 1. Iterate through posts and pass each of them through a handlebars template
-//   posts.forEach(function (post, index) {
-    
-//     // get author of the current post
-//     var postUser = Users.findOne(post.userId);
-
-//     // the naked post object as stored in the database is missing a few properties, so let's add them
-//     var properties = _.extend(post, {
-//       authorName: Posts.getAuthorName(post),
-//       postLink: Posts.getLink(post, true),
-//       profileUrl: Users.getProfileUrl(postUser, true),
-//       postPageLink: Posts.getPageUrl(post, true),
-//       date: moment(post.postedAt).format("MMMM D YYYY"),
-//       authorAvatarUrl: Users.avatar.getUrl(postUser),
-//       emailShareUrl: Posts.getEmailShareUrl(post),
-//       twitterShareUrl: Posts.getTwitterShareUrl(post),
-//       facebookShareUrl: Posts.getFacebookShareUrl(post)
-//     });
-
-//     // if post author's avatar returns an error, remove it from properties object
-//     try {
-//       HTTP.get(post.authorAvatarUrl);
-//     } catch (error) {
-//       post.authorAvatarUrl = false;
-//     }
-
-//     // trim the body and remove any HTML tags
-//     if (post.body) {
-//       properties.body = Utils.trimHTML(post.htmlBody, excerptLength);
-//     }
-
-//     // if post has comments
-//     if (post.commentCount > 0) {
-
-//       // get the two highest-scoring comments
-//       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
-
-//         // get comment author
-//         var user = Users.findOne(comment.userId);
-
-//         // add properties to comment
-//         comment.body = Utils.trimHTML(comment.htmlBody, excerptLength);
-//         comment.authorProfileUrl = Users.getProfileUrl(user, true);
-//         comment.authorAvatarUrl = Users.avatar.getUrl(user);
-
-//         try {
-//           HTTP.get(comment.authorAvatarUrl);
-//         } catch (error) {
-//           comment.authorAvatarUrl = false;
-//         }
-
-//         return comment;
-
-//       }}).fetch();
-
-//     }
-
-//     // if post has an URL, at the link domain as a property
-//     if(post.url) {
-//       properties.domain = Utils.getDomain(post.url);
-//     }
-
-//     // if post has a thumbnail, add the thumbnail URL as a property
-//     if (properties.thumbnailUrl) {
-//       properties.thumbnailUrl = Utils.addHttp(properties.thumbnailUrl);
-//     }
-
-//     // if post has categories, add them
-//     if (post.categories) {
-//       properties.categories = post.categories.map(categoryID => {
-//         const category = Categories.findOne(categoryID);
-//         if (category) {
-//           return {
-//             name: category.name,
-//             url: Categories.getUrl(category, true)
-//           }
-//         }
-//       });
-//     }
-//     // console.log(properties)
-//     // generate post item HTML and add it to the postsHTML string
-//     postsHTML += VulcanEmail.getTemplate('postItem')(properties);
-//   });
-
-//   // 2. Wrap posts HTML in newsletter template
-//   var newsletterHTML = VulcanEmail.getTemplate('newsletter')({
-//     siteName: getSetting('title', 'My App'),
-//     date: moment().format("dddd, MMMM D YYYY"),
-//     content: postsHTML
-//   });
-
-//   // 3. wrap newsletter HTML in email wrapper template
-//   // (also pass date to wrapper as extra property just in case we need it)
-//   var emailHTML = VulcanEmail.buildTemplate(newsletterHTML, {
-//     date: moment().format("dddd, MMMM D YYYY")
-//   });
-
-//   // 4. build campaign object and return it
-//   var campaign = {
-//     postIds: _.pluck(posts, '_id'),
-//     subject: Newsletters.getSubject(posts),
-//     html: emailHTML,
-//     text: htmlToText.fromString(emailHTML, {wordwrap: 130})
-//   };
-
-//   return campaign;
-// };
+Newsletters.getSubject = getSubject;
 
 /**
  * @summary Get info about the next scheduled newsletter
  */
-Newsletters.getNext = () => {
+export const getNext = () => {
   var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
   return nextJob;
 };
+Newsletters.getNext = getNext;
 
 /**
  * @summary Get the last sent newsletter
  */
-Newsletters.getLast = () => {
-  return Newsletters.findOne({}, {sort: {createdAt: -1}});
+export const getLast = () => {
+  return Newsletters.findOne({}, { sort: { createdAt: -1 } });
 };
+Newsletters.getLast = getLast;
 
 /**
  * @summary Send the newsletter
  * @param {Boolean} isTest
  */
-Newsletters.send = async (isTest = false) => {
+export const send = async ({ newsletterId, isTest = false }) => {
+  testProvider();
+  let result = { _id: newsletterId };
+
+  if (!newsletterId) {
+    throw new Error('You must specify a newsletterId argument');
+  }
+
+  const newsletter = await Connectors.get(Newsletters, { _id: newsletterId });
 
   const newsletterEmail = VulcanEmail.emails.newsletter;
-  const email = await VulcanEmail.build({ emailName: 'newsletter', variables: {terms: {view: 'newsletter'}}});
-  const { subject, html, data } = email;
+  // if newsletter document already has its own subject, html, and data use them;
+  // else get them from email object
+  const email = await VulcanEmail.build({ emailName: 'newsletter', variables: { terms: { view: 'newsletter' } } });
+
+  const { subject, html, data } = { ...email, ...newsletter };
   const text = VulcanEmail.generateTextVersion(html);
 
-  if(newsletterEmail.isValid(data)){
-
+  if (!newsletterEmail.isValid || newsletterEmail.isValid(data)) {
     // eslint-disable-next-line no-console
     console.log('// Sending newsletter…');
     // eslint-disable-next-line no-console
-    console.log('// Subject: '+subject);
+    console.log('// Subject: ' + subject);
 
-    const newsletter = Newsletters[provider].send({ subject, text, html, isTest });
+    try {
+      const sendResult = await Newsletters[provider].send({ subject, text, html, isTest });
+      // console.log('// newsletter sending success!');
+      // console.log(sendResult);
 
-    // if newsletter sending is successufl and this is not a test, mark posts as sent and log newsletter
-    if (newsletter && !isTest) {
+      //   // send confirmation email
+      //   const confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
+      //     time: createdAt.toString(),
+      //     newsletterLink: sendResult.archive_url,
+      //     subject: subject,
+      //   });
+      //   VulcanEmail.send(getSetting('defaultEmail'), 'Newsletter scheduled', VulcanEmail.buildTemplate(confirmationHtml));
 
-      runCallbacksAsync('newsletter.send.async', email);
+      await runCallbacksAsync('newsletter.send.async', email);
 
-      const createdAt = new Date();
-
-      // log newsletter
-      await Connectors.create(Newsletters, {
-        createdAt,
-        subject,
-        html,
-        provider,
-        data,
-      });
-
-      // send confirmation email
-      const confirmationHtml = VulcanEmail.getTemplate('newsletterConfirmation')({
-        time: createdAt.toString(),
-        newsletterLink: newsletter.archive_url,
-        subject: subject
-      });
-      VulcanEmail.send(getSetting('defaultEmail'), 'Newsletter scheduled', VulcanEmail.buildTemplate(confirmationHtml));
-
+      // status 2 = scheduled
+      result = { scheduledAt: new Date(), status: 2 };
+    } catch (error) {
+      console.log('// Newsletter sending error!');
+      console.log(error);
+      // status 4 = error
+      result = { error, status: 4 };
     }
 
-  } else {
-
-    // eslint-disable-next-line no-console
-    console.log('No newsletter to schedule today…');
-  
+    await Connectors.update(Newsletters, { _id: newsletterId }, { $set: result });
+    return result;
   }
 };
+Newsletters.send = send;
 
 Meteor.startup(() => {
-  if(!Newsletters[provider]) {
+  if (!Newsletters[provider]) {
     // eslint-disable-next-line no-console
     console.log(`// Warning: please configure your settings for ${provider} support, or else disable the vulcan:newsletter package.`);
   }

@@ -1,37 +1,12 @@
-import SimpleSchema from 'simpl-schema';
+import { createCollection } from 'meteor/vulcan:core';
+import schema from './schema';
 
-const Newsletters = new Mongo.Collection('newsletters');
+const Newsletters = createCollection({
+  collectionName: 'Newsletters',
 
-const schema = {
-  _id: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    optional: true,
-  },
-  userId: {
-    type: String,
-    optional: true,
-  },
-  scheduledAt: {
-    type: Date,
-    optional: true,
-  },
-  subject: {
-    type: String,
-    optional: true,
-  },
-  html: {
-    type: String,
-    optional: true,
-  },
-  provider: {
-    type: String,
-    optional: true,
-  },
-};
+  typeName: 'Newsletter',
 
-Newsletters.attachSchema(new SimpleSchema(schema));
+  schema,
+});
 
 export default Newsletters;
