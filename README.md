@@ -22,8 +22,8 @@ Clone the [Vulcan Starter repo](https://github.com/VulcanJS/Vulcan-Starter) loca
 Rename your `sample_settings.json` file to `settings.json`, then:
 
 ```sh
-npm install
-npm start
+meteor npm install
+meteor npm start
 ```
 
 And open `http://localhost:3000/` in your browser.
