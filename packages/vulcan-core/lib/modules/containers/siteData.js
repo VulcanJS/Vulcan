@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 const siteDataQuery = gql`
       query getSiteData {
-        SiteData {
+        siteData {
           url
           title
           sourceVersion
@@ -42,7 +42,7 @@ return graphql(
       const { data } = props;
       return {
         siteDataLoading: data.loading,
-        siteData: data.SiteData,
+        siteData: data.siteData,
         siteDataData: data,
       };
     },
