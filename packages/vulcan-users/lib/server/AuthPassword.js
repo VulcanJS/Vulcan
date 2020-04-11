@@ -70,17 +70,16 @@ userSelectorSchema.addDocValidator(userSelector => {
  * @param {*} usernameOrEmail
  * @param {*} password
  */
-export const authenticateWithPassword = async options => {
+export const authenticateWithPassword = async (email, password) => {
   // We reproduce the usual password auth strategy
   // Code taken from the loginHandler defined by accounts-password
   // @see https://github.com/meteor/meteor/blob/devel/packages/accounts-password/password_server.js#L282
-  const { userSelector, password } = options;
   // To be done in the resolver
   //check(options, {
   //  user: userQueryValidator,
   //  password: passwordValidator
   //});
-  const user = Accounts._findUserByQuery(userSelector);
+  const user = Accounts.findUserByEmail(email);
   if (!user) {
     // TODO: handle errors
     throw new Error('User not found');
@@ -149,6 +148,25 @@ export const logout = async userId => {
   return { userId };
 };
 
+export const signup = async (email, password) => {
+  if (Accounts._options.forbidClientAccountCreation) {
+    throw new Error('Signups forbidden');
+  }
+  const options = { email, password };
+  // Create user. result contains id and token.
+  const userId = await Accounts.createUser(options);
+  // safety belt. createUser is supposed to throw on error. send 500 error
+  // instead of sending a verification email with empty userid.
+  if (!userId) throw new Error('createUser failed to insert new user');
+
+  // If `Accounts._options.sendVerificationEmail` is set, register
+  // a token to verify the user's primary email, and send it to
+  // that address.
+  if (options.email && Accounts._options.sendVerificationEmail) Accounts.sendVerificationEmail(userId, options.email);
+  // client gets logged in as the new user afterwards.
+  return { userId: userId };
+};
+
 /**
  *  Set password for a connected user
  * /!\ WILL LOGOUT AND LOG IN AGAIN THE USER in order to invalidate previous token
@@ -158,7 +176,7 @@ export const setPassword = async (userId, newPassword) => {
   // logout active connexions
   await logout(userId);
   // relog in and return new token
-  return await authenticateWithPassword({ userSelector: { _id: userUd }, password: newPassword });
+  return await authenticateWithPassword({ userSelector: { _id: userId }, password: newPassword });
 };
 
 export const sendResetPasswordEmail = async email => {

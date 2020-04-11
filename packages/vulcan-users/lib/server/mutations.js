@@ -6,29 +6,18 @@
 import { addGraphQLResolvers, addGraphQLMutation, addGraphQLSchema } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import {
   authenticateWithPassword,
-  userSelectorSchema,
   logout,
   setPassword,
   sendResetPasswordEmail,
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  signup,
 } from './AuthPassword';
 
 addGraphQLSchema(`
-  input AuthEmailSelector { 
-    email: String 
-  }
-  input AuthUsernameSelector {
-    username: String
-  }
-  # we can't mix Email and Username inputs yet (no union/merge of inputs)
-  input AuthUserSelector {
-    email: String
-    username: String
-  }
   input AuthPasswordInput {
-    userSelector: AuthUserSelector
+    email: String
     password: String
   }
   type AuthResult {
@@ -36,6 +25,14 @@ addGraphQLSchema(`
     userId: String
   }
   type LogoutResult {
+    userId: String
+  }
+
+  input SignupInput {
+    email: String
+    password: String
+  }
+  type SignupResult {
     userId: String
   }
 
@@ -66,6 +63,7 @@ addGraphQLSchema(`
 `);
 addGraphQLMutation('authenticateWithPassword(input: AuthPasswordInput): AuthResult');
 addGraphQLMutation('logout: LogoutResult');
+addGraphQLMutation('signup(input: SignupInput): SignupResult');
 addGraphQLMutation('setPassword(input: SetPasswordInput): AuthResult');
 addGraphQLMutation('sendResetPasswordEmail(input: AuthEmailInput): Boolean');
 addGraphQLMutation('resetPassword(input: ResetPasswordInput): ResetPasswordResult');
@@ -82,10 +80,12 @@ const specificResolvers = {
       if (!input) {
         throw new Error('Empty input');
       }
-      const { userSelector, password } = input;
-      userSelectorSchema.validate(userSelector);
+      const { email, password } = input;
       if (!(password && typeof password === 'string')) {
         throw new Error('Invalid password');
+      }
+      if (!email) {
+        throw new Error('Invalid email');
       }
       return await authenticateWithPassword(input);
     },
@@ -95,6 +95,14 @@ const specificResolvers = {
       }
       const { userId } = context;
       return await logout(userId);
+    },
+    async signup(root, args, context) {
+      if (context && context.userId) {
+        throw new Error('User already logged in');
+      }
+      const { input } = args;
+      const { email, password } = input;
+      return await signup(email, password);
     },
     async setPassword(root, args, context) {
       if (!(context && context.userId)) {
