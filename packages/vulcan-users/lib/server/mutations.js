@@ -87,7 +87,7 @@ const specificResolvers = {
       if (!email) {
         throw new Error('Invalid email');
       }
-      return await authenticateWithPassword(input);
+      return await authenticateWithPassword(email, password);
     },
     async logout(root, args, context) {
       if (!(context && context.userId)) {
