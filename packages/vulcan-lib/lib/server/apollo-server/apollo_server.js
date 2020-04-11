@@ -38,7 +38,6 @@ import { getSetting } from '../../modules/settings.js';
 import { formatError } from 'apollo-errors';
 import { runCallbacks } from '../../modules/callbacks';
 
-
 export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
@@ -52,20 +51,15 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
   // parse cookies and assign req.universalCookies object
   WebApp.connectHandlers.use(universalCookiesMiddleware());
 
-
   // parse request (order matters)
-  WebApp.connectHandlers.use(
-    config.path,
-    bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
-  );
+  WebApp.connectHandlers.use(config.path, bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') }));
   WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
-
 
   // enhance webapp
   runCallbacks({
     name: 'graphql.middlewares.setup',
     iterator: WebApp,
-    properties: {}
+    properties: {},
   });
 
   // Provide the Meteor WebApp Connect server instance to Apollo
@@ -107,16 +101,19 @@ const getCorsOptions = () => {
   if (enableAllcors) return true; // will allow all distant queries DANGEROUS
   // enable only a whitelist or nothing
   const corsWhitelist = _get(Meteor.settings, 'apolloServer.corsWhitelist', []);
-  const corsOptions = corsWhitelist && corsWhitelist.length ?
-    {
-      origin: function (origin, callback) {
-        if (corsWhitelist.indexOf(origin) !== -1) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
+  const corsOptions =
+    corsWhitelist && corsWhitelist.length
+      ? {
+          origin: function(origin, callback) {
+            if (!origin) callback(null, true); // same origin
+            if (corsWhitelist.indexOf(origin) !== -1) {
+              callback(null, true);
+            } else {
+              callback(new Error('Not allowed by CORS'));
+            }
+          },
         }
-      }
-    } : (process.env.NODE_ENV === 'development'); // default behaviour is activating all in dev, deactivating all in production
+      : process.env.NODE_ENV === 'development'; // default behaviour is activating all in dev, deactivating all in production
   return corsOptions;
 };
 
@@ -150,7 +147,7 @@ export const onStart = () => {
   const config = {
     path: '/graphql',
     maxAccountsCacheSizeInMB: 1,
-    configServer: apolloServer => { },
+    configServer: apolloServer => {},
     voyagerPath: '/graphql-voyager',
     graphiqlPath: '/graphiql',
     // customConfigFromReq
@@ -174,7 +171,6 @@ export const onStart = () => {
 
   // define executableSchema
   initGraphQL();
-
 
   // create server
   const apolloServer = createApolloServer({
