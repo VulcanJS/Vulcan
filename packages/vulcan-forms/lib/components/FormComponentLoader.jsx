@@ -26,6 +26,8 @@ const FormComponentLoader = props => {
     }
   }
 
+  if (loading) return <Components.Loading />;
+
   // pass newly loaded data (and options if needed) to child component
   const extraProps = { data, queryData: data, queryError: error, queryLoading: loading };
   if (typeof options === 'function') {
@@ -35,7 +37,7 @@ const FormComponentLoader = props => {
 
   const fci = React.cloneElement(children, extraProps);
 
-  return <div className="form-component-loader">{loading ? <Components.Loading /> : fci}</div>;
+  return <div className="form-component-loader">{fci}</div>;
 };
 
 FormComponentLoader.propTypes = {};
