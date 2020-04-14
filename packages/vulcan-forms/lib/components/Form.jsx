@@ -755,7 +755,8 @@ class SmartForm extends Component {
   handleRouteLeave = () => {
     const set = this.getData();
     if (this.isChanged()) {
-      this.props.editMutation({ documentId: this.props.documentId, set: set });
+      const { typeName, documentId } = this.props;
+      this.props['update' + typeName]({ selector: { _id: documentId }, data: set });
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
@@ -773,7 +774,8 @@ class SmartForm extends Component {
   handlePageLeave = event => {
     const set = this.getData();
     if (this.isChanged()) {
-      this.props.editMutation({ documentId: this.props.documentId, set: set });
+      const { typeName, documentId } = this.props;
+      this.props['update' + typeName]({ selector: { _id: documentId }, data: set });
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
