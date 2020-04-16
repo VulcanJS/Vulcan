@@ -92,6 +92,7 @@
     "react-apollo": "3.0.0",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-datetimepicker": "0.0.22",
+    "react-bootstrap-typeahead": "^4.2.0",
     "react-cookie": "^2.1.6",
     "react-datetime": "^2.11.1",
     "react-dom": "16.12.0",

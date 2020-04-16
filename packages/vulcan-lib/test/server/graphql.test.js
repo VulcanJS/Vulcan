@@ -7,7 +7,8 @@ import { addIntlFields } from '../../lib/modules/collections'
 
 //import collectionToGraphQL from '../../lib/modules/graphql/collectionToSchema';
 import collectionToGraphQL from '../../lib/server/graphql/collection';
-import { getSchemaFields, getGraphQLType } from '../../lib/server/graphql/schemaFields';
+import { getSchemaFields } from '../../lib/server/graphql/schemaFields';
+import { getGraphQLType } from "../..//lib/modules/graphql/utils.js"
 import { generateResolversFromSchema } from '../../lib/server/graphql/resolvers';
 import SimpleSchema from 'simpl-schema';
 import { createDummyCollection, normalizeGraphQLSchema } from 'meteor/vulcan:test';
