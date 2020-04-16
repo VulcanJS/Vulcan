@@ -8,6 +8,8 @@ if (getSetting('mailUrl')) {
 }
 
 Meteor.startup(function () {
+  // eslint-disable-next-line no-undef
+  Vulcan.getGraphQLSchema();
   if (typeof SyncedCron !== 'undefined') {
     SyncedCron.start();
   }

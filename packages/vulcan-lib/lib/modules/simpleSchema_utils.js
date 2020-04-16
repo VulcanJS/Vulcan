@@ -32,7 +32,7 @@ export const isBlackbox = (field) => !!field.type.definitions[0].blackbox;
 //    return field.type.definitions[0].blackbox;
 //};
 
-export const getFieldType = field => field.type.singleType;
+export const getFieldType = field => field.type.singleType || field.type[0].type;
 export const getFieldTypeName = fieldType =>
     typeof fieldType === 'object'
         ? 'Object'

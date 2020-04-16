@@ -1,3 +1,19 @@
+/*
+
+Example Usage
+
+<Components.MutationButton
+  label="Cancel Subscription"
+  variant="primary"
+  mutationOptions={{
+    name: 'cancelSubscription',
+    args: { bookingId: 'String' },
+    fragmentName: 'BookingsStripeDataFragment',
+  }}
+  mutationArguments={{ bookingId: booking._id }}
+/>
+
+*/
 import React, { PureComponent } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import withMutation from '../containers/registeredMutation';
@@ -17,31 +33,46 @@ class MutationButton extends PureComponent {
 class MutationButtonInner extends PureComponent {
   state = {
     loading: false,
+    error: null,
   };
 
-  handleClick = e => {
+  handleClick = async e => {
     e.preventDefault();
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: null });
     const { mutationOptions, mutationArguments, successCallback, errorCallback } = this.props;
     const mutationName = mutationOptions.name;
     const mutation = this.props[mutationName];
-    mutation(mutationArguments)
-      .then(result => {
-        this.setState({ loading: false });
-        if (successCallback) {
-          successCallback(result);
-        }
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        if (errorCallback) {
-          errorCallback(error);
-        }
-      });
+
+    try {
+      const result = await mutation(mutationArguments);
+      this.setState({ loading: false });
+      if (successCallback) {
+        successCallback(result);
+      }
+    } catch (error) {
+      this.setState({ loading: false, error });
+      if (errorCallback) {
+        errorCallback(error);
+      }
+    }
+
+    // mutation(mutationArguments)
+    //   .then(result => {
+    //     this.setState({ loading: false });
+    //     if (successCallback) {
+    //       successCallback(result);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false });
+    //     if (errorCallback) {
+    //       errorCallback(error);
+    //     }
+    //   });
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, error } = this.state;
     const mutationName = this.props.mutationOptions.name;
 
     const { label, ...rest } = this.props;
@@ -51,14 +82,12 @@ class MutationButtonInner extends PureComponent {
     delete rest.successCallback;
     delete rest.errorCallback;
 
-    return (
-      <Components.LoadingButton
-        loading={loading}
-        onClick={this.handleClick}
-        label={label}
-        {...rest}
-      />
-    );
+    const loadingButton = <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest} />
+    
+    if (error) {
+      return <Components.TooltipTrigger trigger={loadingButton} defaultShow={true}>{error.message}</Components.TooltipTrigger>
+    }
+    return loadingButton;
   }
 }
 

@@ -17,6 +17,7 @@ import isFunction from 'lodash/isFunction';
 import pluralize from 'pluralize';
 import { getFieldType } from './simpleSchema_utils';
 import { forEachDocumentField } from './schema_utils';
+import isEmpty from 'lodash/isEmpty';
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');
 
@@ -115,9 +116,11 @@ Utils.trimHTML = function (html, numWords) {
  * @summary Capitalize a string.
  * @param {String} str
  */
-Utils.capitalize = function (str) {
+export const capitalize = function (str) {
   return str && str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+Utils.capitalize = capitalize;
 
 Utils.t = function (message) {
   var d = new Date();
@@ -531,7 +534,20 @@ String.prototype.replaceAll = function (search, replacement) {
 
 Utils.isPromise = value => isFunction(get(value, 'then'));
 
-Utils.pluralize = pluralize;
+/**
+ * Pluralize helper with clash name prevention (adds an S)
+ */
+Utils.pluralize = (text, ...args) => {
+  const res = pluralize(text, ...args);
+  // avoid edge case like "people" where plural is identical to singular, leading to name clash
+  // in resolvers
+  if (res === text) {
+    return res + 's';
+  }
+  return res;
+};
+
+
 
 Utils.singularize = pluralize.singular;
 
@@ -576,3 +592,11 @@ Utils.arrayToFields = fieldsArray => {
     })
   );
 };
+
+export const isEmptyOrUndefined = value =>
+  typeof value === 'undefined' ||
+  value === null ||
+  value === '' ||
+  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
+
+Utils.isEmptyOrUndefined = isEmptyOrUndefined;

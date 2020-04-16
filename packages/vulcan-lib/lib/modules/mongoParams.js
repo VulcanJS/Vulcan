@@ -6,6 +6,7 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
+import { isEmptyOrUndefined } from './utils';
 
 import { getSetting } from './settings.js';
 // convert GraphQL selector into Mongo-compatible selector
@@ -40,6 +41,10 @@ const conversionTable = {
   _arrayContains: value => value,
   asc: 1,
   desc: -1,
+  _like: value => ({
+    $regex: value,
+    $options: 'i',
+  }),
 };
 
 // get all fields mentioned in an expression like [ { foo: { _gt: 2 } }, { bar: { _eq : 3 } } ]
@@ -49,12 +54,6 @@ const getFieldNames = expressionArray => {
     return fieldName;
   });
 };
-
-const isEmptyOrUndefined = value =>
-  typeof value === 'undefined' ||
-  value === null ||
-  value === '' ||
-  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
 
 export const filterFunction = async (collection, input = {}, context) => {
   // eslint-disable-next-line no-unused-vars
@@ -86,19 +85,23 @@ export const filterFunction = async (collection, input = {}, context) => {
     */
   const convertExpression = fieldExpression => {
     const [fieldName] = Object.keys(fieldExpression);
-    const [operator] = Object.keys(fieldExpression[fieldName]);
-    const value = fieldExpression[fieldName][operator];
-    if (isEmptyOrUndefined(value)) {
-      throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
-    }
-    const mongoOperator = conversionTable[operator];
-    if (!mongoOperator) {
-      throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
-    }
+    const operators = Object.keys(fieldExpression[fieldName]);
+    const mongoExpression = {};
+    operators.forEach(operator => {
+      const value = fieldExpression[fieldName][operator];
+      if (isEmptyOrUndefined(value)) {
+        throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
+      }
+      const mongoOperator = conversionTable[operator];
+      if (!mongoOperator) {
+        throw new Error(`Operator ${operator} is not valid. Possible operators are: ${Object.keys(conversionTable)}`);
+      }
+      const mongoObject = typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
+      merge(mongoExpression, mongoObject);
+    });
     const isIntl = schema[fieldName].intl;
     const mongoFieldName = isIntl ? `${fieldName}_intl.value` : fieldName;
-    const mongoObject = typeof mongoOperator === 'function' ? mongoOperator(value) : { [mongoOperator]: value };
-    return { [mongoFieldName]: mongoObject };
+    return { [mongoFieldName]: mongoExpression };
   };
 
   // id
@@ -193,7 +196,7 @@ export const filterFunction = async (collection, input = {}, context) => {
       // eslint-disable-next-line no-console
       console.warn(
         `Warning: search argument is set but schema ${
-        collection.options.collectionName
+          collection.options.collectionName
         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
       );
     }

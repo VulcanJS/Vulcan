@@ -292,8 +292,8 @@ Users.restrictDocuments = function ({ user, collection, documents }) {
   const check = get(collection, 'options.permissions.canRead');
   let readableDocuments = documents;
   if (check) {
-    readableDocuments = documents.filter(comment =>
-      Users.canRead({ collection, document: comment, user })
+    readableDocuments = documents.filter(document =>
+      Users.canRead({ collection, document, user })
     );
   }
   const restrictedDocuments = Users.restrictViewableFields(user, collection, readableDocuments);

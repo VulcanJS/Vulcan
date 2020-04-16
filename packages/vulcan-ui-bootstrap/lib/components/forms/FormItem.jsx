@@ -8,26 +8,25 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, Components } from 'meteor/vulcan:core';
 
-const FormItem = ({
-  path,
-  label,
-  children,
-  beforeInput,
-  afterInput,
-  description,
-  layout = 'horizontal',
-  ...rest
-}) => {
+const FormItem = props => {
+
+  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', queryLoading, ...rest } = props;
+  const innerComponent = queryLoading ? <Components.Loading/> : children;
+
   if (layout === 'inputOnly' || !label) {
     // input only layout
     return (
       <Form.Group controlId={path} {...rest}>
         {beforeInput}
-        {children}
+        {innerComponent}
         {afterInput}
-        {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
+        {description && (
+          <Form.Text>
+            <div dangerouslySetInnerHTML={{ __html: description }} />
+          </Form.Text>
+        )}
       </Form.Group>
     );
   } else if (layout === 'vertical') {
@@ -38,10 +37,14 @@ const FormItem = ({
         <div className="form-item-contents">
           <div className="form-item-input">
             {beforeInput}
-            {children}
+            {innerComponent}
             {afterInput}
           </div>
-          {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
+          {description && (
+            <Form.Text>
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            </Form.Text>
+          )}
         </div>
       </Form.Group>
     );
@@ -54,7 +57,7 @@ const FormItem = ({
         </Form.Label>
         <Col sm={9}>
           {beforeInput}
-          {children}
+          {innerComponent}
           {afterInput}
           {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
         </Col>

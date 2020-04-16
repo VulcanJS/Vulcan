@@ -1,11 +1,11 @@
 import Newsletters from '../modules/index.js';
 
-import './newsletters.js';
-import './cron.js';
-import './mutations.js';
-import './callbacks.js';
+export * from './newsletters.js';
+export * from './cron.js';
+export * from './mutations.js';
+export * from './callbacks.js';
 
 // import './integrations/sendy.js';
-import './integrations/mailchimp.js';
+export * from './integrations/mailchimp.js';
 
 export default Newsletters;

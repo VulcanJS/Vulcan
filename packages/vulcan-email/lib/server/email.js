@@ -23,6 +23,10 @@ Handlebars.registerHelper('__', function(id, values, context) {
   return new Handlebars.SafeString(s);
 });
 
+Handlebars.registerHelper('log', function(value) {
+  console.log(JSON.stringify(value, '', 2));
+});
+
 registerSetting('secondaryColor', '#444444');
 registerSetting('accentColor', '#DD3416');
 registerSetting('title', 'My App');

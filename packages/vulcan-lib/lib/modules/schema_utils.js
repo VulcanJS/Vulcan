@@ -3,6 +3,25 @@ import _keys from 'lodash/keys';
 import { Collections } from './collections.js';
 import { getNestedSchema, getArrayChild, isBlackbox } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
 import _isArray from 'lodash/isArray';
+import SimpleSchema from 'simpl-schema';
+
+export const createSchema = (schema, options) => {
+  const modifiedSchema = schema;
+  Object.keys(modifiedSchema).forEach(fieldName => {
+    const field = schema[fieldName];
+    const { arrayItem, resolveAs } = field;
+    // find any field with an `arrayItem` property defined and add corresponding
+    // `foo.$` array item field to schema
+    if (arrayItem) {
+      modifiedSchema[`${fieldName}.$`] = arrayItem;
+    }
+    // backwards compatibility: copy resolveAs.type to resolveAs.typeName
+    if (resolveAs) {
+      field.resolveAs.typeName = field.resolveAs.type;
+    }
+  });
+  return new SimpleSchema(modifiedSchema);
+};
 
 /* getters */
 // filter out fields with "." or "$"

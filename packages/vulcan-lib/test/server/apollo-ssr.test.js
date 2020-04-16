@@ -32,7 +32,7 @@ describe('vulcan:lib/renderPage', () => {
         renderPage = makePageRenderer({
             computeContext: () => ({
                 currentUser: null,
-                SiteData: null
+                siteData: null
             })
         });
     });

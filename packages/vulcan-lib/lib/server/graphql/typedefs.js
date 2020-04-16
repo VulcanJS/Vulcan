@@ -57,7 +57,7 @@ input String_Selector {
   #_ilike: String
   _in: [String!]
   _is_null: Boolean
-  #_like: String
+  _like: String
   #_lt: String
   #_lte: String
   #_neq: String
@@ -69,8 +69,9 @@ input String_Selector {
 }
 
 input String_Array_Selector {
-  contains: String_Selector
-  # contains_all: [String_Selector]
+  _in: [String!]
+  # _contains: String_Selector
+  # _contains_all: [String_Selector]
 }
 
 input Int_Selector {

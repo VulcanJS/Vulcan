@@ -277,6 +277,15 @@ class FormComponent extends Component {
         case 'statictext':
           return FormComponents.FormComponentStaticText;
 
+        case 'likert':
+          return FormComponents.FormComponentLikert;
+        
+        case 'autocomplete':
+          return FormComponents.FormComponentAutocomplete;
+
+        case 'multiautocomplete':
+          return FormComponents.FormComponentMultiAutocomplete;
+  
         default:
           const CustomComponent = FormComponents[this.props.input];
           return CustomComponent ? CustomComponent : FormComponents.FormComponentDefault;
@@ -318,21 +327,24 @@ class FormComponent extends Component {
         );
       }
     }
-    return (
-      <FormComponents.FormComponentInner
-        {...this.props}
-        {...this.state}
-        inputType={this.getInputType()}
-        value={this.getValue()}
-        errors={this.getErrors()}
-        document={this.context.getDocument()}
-        showCharsRemaining={!!this.showCharsRemaining()}
-        onChange={this.handleChange}
-        clearField={this.clearField}
-        formInput={this.getFormInput()}
-        formComponents={FormComponents}
-      />
-    );
+
+    const fciProps = {
+      ...this.props,
+      ...this.state,
+      inputType: this.getInputType(),
+      value: this.getValue(),
+      errors: this.getErrors(),
+      document: this.context.getDocument(),
+      showCharsRemaining: !!this.showCharsRemaining(),
+      onChange: this.handleChange,
+      clearField: this.clearField,
+      formInput: this.getFormInput(),
+      formComponents: FormComponents,
+    };
+
+    const fci = <FormComponents.FormComponentInner {...fciProps} />;
+
+    return this.props.query ? <FormComponents.FormComponentLoader {...fciProps}>{fci}</FormComponents.FormComponentLoader> : fci;
   }
 }
 

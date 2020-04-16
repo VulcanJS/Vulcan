@@ -5,14 +5,15 @@
 
 // Meteor WebApp use a Connect server, so we need to
 // use apollo-server-express integration
-//import express from 'express';
+// We also add Express to WebApp in order to use any kind of middlewares
+import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
 import { Meteor } from 'meteor/meteor';
 
 import { WebApp } from 'meteor/webapp';
-import bodyParser from 'body-parser';
 import _get from 'lodash/get';
+import { bodyParserGraphQL } from 'body-parser-graphql';
 
 // import cookiesMiddleware from 'universal-cookie-express';
 // import Cookies from 'universal-cookie';
@@ -47,13 +48,21 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
 
   // WebApp.connectHandlers is a connect server
   // you can add middlware as usual when using Express/Connect
-
+  // Use the Express app instead of just Node connect (allow better middleware chaining)
+  const app = express();
   // parse cookies and assign req.universalCookies object
-  WebApp.connectHandlers.use(universalCookiesMiddleware());
-
+  app.use(universalCookiesMiddleware());
   // parse request (order matters)
-  WebApp.connectHandlers.use(config.path, bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') }));
-  WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
+
+  app.use(
+    config.path,
+    // won't handle graphql
+    //bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
+    bodyParserGraphQL({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
+  );
+
+  //WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
+  WebApp.connectHandlers.use(app);
 
   // enhance webapp
   runCallbacks({

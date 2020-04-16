@@ -9,7 +9,7 @@ const initGraphQLTest = () => {
     /*addGraphQLSchema(`
     type Query {
             currentUser: JSON
-            SiteData: JSON
+            siteData: JSON
         }
         `);*/
     initGraphQL();
