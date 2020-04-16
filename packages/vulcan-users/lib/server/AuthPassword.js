@@ -174,9 +174,16 @@ export const signup = async (email, password) => {
 export const setPassword = async (userId, newPassword) => {
   await Accounts.setPassword(userId, newPassword);
   // logout active connexions
+  console.log('logging out');
   await logout(userId);
   // relog in and return new token
-  return await authenticateWithPassword({ userSelector: { _id: userId }, password: newPassword });
+  const user = await Meteor.users.findOne({ _id: userId });
+  if (!(user.emails && user.emails.length)) {
+    throw new Error("User email not found, couldn't authenticate after password change");
+  }
+  const email = user.emails[0].address;
+  console.log('email', email);
+  return await authenticateWithPassword(email, newPassword);
 };
 
 export const sendResetPasswordEmail = async email => {
@@ -213,7 +220,7 @@ export const resetPassword = async (token, newPassword) => {
   if (!user) {
     throw new Error('Token expired or invalid');
   }
-  const userId = user.id;
+  const userId = user._id;
   // check the token validity
   const { when, reason, email } = user.services.password.reset;
   let tokenLifetimeMs = Accounts._getPasswordResetTokenLifetimeMs();
@@ -229,9 +236,10 @@ export const resetPassword = async (token, newPassword) => {
     };
 
   // Prepare rollback in case of failure
-  const oldToken = Accounts._getLoginToken(this.connection.id);
-  Accounts._setLoginToken(user._id, this.connection, null);
-  const resetToOldToken = () => Accounts._setLoginToken(user._id, this.connection, oldToken);
+  // => this.connection is not defined
+  // const oldToken = Accounts._getLoginToken(this.connection.id);
+  // Accounts._setLoginToken(user._id, this.connection, null);
+  // const resetToOldToken = () => Accounts._setLoginToken(user._id, this.connection, oldToken);
 
   // Meteor had a more complex logic here for some reason
   // we just reuse the setPassword logic
@@ -266,7 +274,7 @@ export const resetPassword = async (token, newPassword) => {
       };
     }
   } catch (err) {
-    resetToOldToken();
+    // resetToOldToken();
     throw err;
   }
 
@@ -302,12 +310,13 @@ export const verifyEmail = async token => {
     }
   );
   if (!user) throw new Error('Verify email link expired or invalid');
+  const userId = user._id;
 
   // check validity
   const tokenRecord = user.services.email.verificationTokens.find(t => t.token == token);
   if (!tokenRecord)
     return {
-      userId: user._id,
+      userId: userId,
       error: new Error('Verify email link expired'),
     };
 
@@ -315,7 +324,7 @@ export const verifyEmail = async token => {
   const emailsRecord = user.emails.find(e => e.address == tokenRecord.address);
   if (!emailsRecord) {
     return {
-      userId: user._id,
+      userId: userId,
       error: new Error('Verify email link is for unknown address'),
     };
   }
@@ -330,5 +339,5 @@ export const verifyEmail = async token => {
     { $set: { 'emails.$.verified': true }, $pull: { 'services.email.verificationTokens': { address: tokenRecord.address } } }
   );
 
-  return { userId: user._id };
+  return { userId: userId };
 };
