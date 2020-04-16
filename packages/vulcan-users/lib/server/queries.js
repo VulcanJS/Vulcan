@@ -1,4 +1,4 @@
-import { addGraphQLResolvers, Connectors, addGraphQLQuery } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { addGraphQLResolvers, Connectors, addGraphQLQuery, addGraphQLSchema } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 addGraphQLQuery('currentUser: User');
 

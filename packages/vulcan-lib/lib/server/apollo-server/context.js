@@ -52,10 +52,13 @@ const getAuthToken = req => {
 };
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
 const setupAuthToken = async (context, req) => {
-  const user = await getUser(getAuthToken(req));
+  const authToken = getAuthToken(req);
+  const user = await getUser(authToken);
   if (user) {
     context.userId = user._id;
     context.currentUser = user;
+    // Not useful
+    //context.authToken = authToken;
     // identify user to any server-side analytics providers
     runCallbacks('events.identify', user);
   } else {
