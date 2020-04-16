@@ -7,9 +7,9 @@ import './imports/oauth_config.js';
 import './imports/emailTemplates.js';
 import { redirect, STATES } from './imports/helpers.js';
 import './imports/api/server/servicesListPublication.js';
-import useSignout from './imports/useSignout.js';
+import useMeteorLogout from './imports/useMeteorLogout.js';
 
 import './imports/ui/components/LoginForm.jsx';
 
-export { Accounts, redirect, STATES, useSignout };
+export { Accounts, redirect, STATES, useMeteorLogout };
 export default Accounts;
