@@ -22,8 +22,7 @@ const MultiAutocomplete = props => {
   const [queryString, setQueryString] = useState();
 
   // get component's autocomplete query and use it to load autocomplete suggestions
-  const autoCompleteQuery = gql(autocompleteQuery);
-  const { loading, error, data } = useQuery(autoCompleteQuery, { variables: { queryString } });
+  const { loading, error, data } = useQuery(gql(autocompleteQuery()), { variables: { queryString } });
   if (error) {
     throw new Error(error);
   }

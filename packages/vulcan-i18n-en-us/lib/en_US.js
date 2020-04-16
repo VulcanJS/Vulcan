@@ -144,6 +144,7 @@ addStrings('en', {
   'datatable.new': 'New',
   'datatable.edit': 'Edit',
   'datatable.search': 'Search',
+  'datatable.submit': 'Submit',
 
   admin: 'Admin',
   notifications: 'Notifications',

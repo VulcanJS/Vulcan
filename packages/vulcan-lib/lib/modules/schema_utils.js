@@ -9,11 +9,15 @@ export const createSchema = (schema, options) => {
   const modifiedSchema = schema;
   Object.keys(modifiedSchema).forEach(fieldName => {
     const field = schema[fieldName];
-    const { arrayItem } = field;
+    const { arrayItem, resolveAs } = field;
     // find any field with an `arrayItem` property defined and add corresponding
     // `foo.$` array item field to schema
     if (arrayItem) {
       modifiedSchema[`${fieldName}.$`] = arrayItem;
+    }
+    // backwards compatibility: copy resolveAs.type to resolveAs.typeName
+    if (resolveAs) {
+      field.resolveAs.typeName = field.resolveAs.type;
     }
   });
   return new SimpleSchema(modifiedSchema);
