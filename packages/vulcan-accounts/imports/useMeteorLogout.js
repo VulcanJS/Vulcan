@@ -7,7 +7,7 @@ import { useApolloClient } from '@apollo/react-hooks';
  * @returns {function} a function to execute when you log the user out
  */
 
-const useSignOut = (callback = () => {}) => {
+const useMeteorLogout = (callback = () => {}) => {
   const client = useApolloClient();
   return () =>
     Meteor.logout(() => {
@@ -20,4 +20,4 @@ const useSignOut = (callback = () => {}) => {
     });
 };
 
-export default useSignOut;
+export default useMeteorLogout;
