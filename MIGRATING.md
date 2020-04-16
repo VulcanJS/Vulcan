@@ -2,6 +2,10 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
+## From 1.14 to 1.15
+
+- Update Meteor with `meteor update`
+
 ## From 1.14.0 to 1.14.2
 
 - `single2` hoc and hooks will return the whole `error` object, not just `error.graphQLErrors[0]`. This will help catching network errors too.
