@@ -1,5 +1,8 @@
 import _merge from 'lodash/merge';
-// import { registerSetting } from '../../client/main';
+import { registerSetting } from '../../modules/settings';
+
+registerSetting('apolloServer.corsWhitelist', [], "Array of domains allowed for CORS e.g ['https://my-frontend.com', 'https://my-admin-dashboard']", false);
+
 
 //import { registerSetting } from '../../modules/settings.js';
 // TODO: is this still necessary?
