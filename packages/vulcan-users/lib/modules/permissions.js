@@ -28,7 +28,10 @@ class Group {
 
   cannot(actions) {
     actions = Array.isArray(actions) ? actions : [actions];
-    this.actions = _.difference(this.actions, actions.map(a => a.toLowerCase()));
+    this.actions = _.difference(
+      this.actions,
+      actions.map(a => a.toLowerCase())
+    );
   }
 }
 
@@ -147,7 +150,7 @@ Users.canDo = (user, actionOrActions) => {
  * @param {Object|string} userOrUserId - The user or their userId
  * @param {Object} document - The document to check (post, comment, user object, etc.)
  */
-Users.owns = function (user, document) {
+Users.owns = function(user, document) {
   try {
     if (!!document.userId) {
       // case 1: document is a post or a comment, use userId to check
@@ -165,7 +168,7 @@ Users.owns = function (user, document) {
  * @summary Check if a user is an admin
  * @param {Object|string} userOrUserId - The user or their userId
  */
-Users.isAdmin = function (userOrUserId) {
+Users.isAdmin = function(userOrUserId) {
   try {
     var user = Users.getUser(userOrUserId);
     return !!user && !!user.isAdmin;
@@ -184,7 +187,7 @@ export const isAdmin = Users.isAdmin;
  * @param {Object} field - The full document of the collection
  * @returns {Boolean} - true if the user can read the field, false if not
  */
-Users.canReadField = function (user, field, document) {
+Users.canReadField = function(user, field, document) {
   const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
   if (canRead) {
     if (typeof canRead === 'function') {
@@ -207,7 +210,7 @@ Users.canReadField = function (user, field, document) {
  * @param {Object} collection - The collection
  * @param {Object} document - Optionally, get a list for a specific document
  */
-Users.getViewableFields = function (user, collection, document) {
+Users.getViewableFields = function(user, collection, document) {
   deprecate(
     '1.13.4',
     'getViewableFields is deprecated. Use Users.getReadableProjection to get a Mongo projection, or Users.getReadableFields if you need an array of field.'
@@ -215,7 +218,7 @@ Users.getViewableFields = function (user, collection, document) {
   return Users.getReadableProjection(user, collection, document);
 };
 
-Users.getReadableFields = function (user, collection, document) {
+Users.getReadableFields = function(user, collection, document) {
   return compact(
     map(collection.simpleSchema()._schema, (field, fieldName) => {
       if (fieldName.indexOf('.$') > -1) return null;
@@ -224,8 +227,41 @@ Users.getReadableFields = function (user, collection, document) {
   );
 };
 
-Users.getReadableProjection = function (user, collection, document) {
+Users.getReadableProjection = function(user, collection, document) {
   return Utils.arrayToFields(Users.getReadableFields(user, collection, document));
+};
+
+/**
+ * Check if field canRead include a permission that needs to be checked against the actual document and not just from the user
+ */
+Users.isDocumentBasedPermissionField = field => {
+  const canRead = field.canRead || field.viewableBy; //OpenCRUD backwards compatibility
+  if (canRead) {
+    if (typeof canRead === 'function') {
+      return true;
+    } else if (canRead === 'owners') {
+      return true;
+    } else if (Array.isArray(canRead) && canRead.length > 0) {
+      // recursive call on if canRead is an array
+      return canRead.some(group => Users.isDocumentBasedPermissionField({ canRead: group }));
+    }
+  }
+  return false;
+};
+
+/**
+ * Retrieve fields that needs the document to be already fetched to be checked, and not just the user
+ * => owners permissions, custom permissions etc.
+ */
+Users.getDocumentBasedPermissionFieldNames = function(collection) {
+  const schema = collection.simpleSchema()._schema;
+  const documentBasedFieldNames = Object.keys(schema).filter(fieldName => {
+    if (fieldName.indexOf('.$') > -1) return false; // ignore arrays
+    const field = schema[fieldName];
+    if (Users.isDocumentBasedPermissionField(field)) return true;
+    return false;
+  });
+  return documentBasedFieldNames;
 };
 
 // collection helper
@@ -247,22 +283,17 @@ Users.checkFields = (user, collection, fields) => {
 
   if (diff.length) {
     throw new Error(
-      `You don't have permission to filter collection ${
-      collection.options.collectionName
-      } by the following fields: ${diff.join(', ')}.`
+      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(', ')}.`
     );
   }
   return true;
 };
 
-
 const restrictDocument = (document, schema, currentUser) => {
   let restrictedDocument = cloneDeep(document);
   forEachDocumentField(document, schema, ({ fieldName, fieldSchema, currentPath, isNested }) => {
     if (isNested && !fieldSchema.canRead) return; // ignore nested fields without permissions
-    if (!fieldSchema
-      || !Users.canReadField(currentUser, fieldSchema, document)
-    ) {
+    if (!fieldSchema || !Users.canReadField(currentUser, fieldSchema, document)) {
       unset(restrictedDocument, `${currentPath}${fieldName}`);
     }
   });
@@ -274,10 +305,10 @@ const restrictDocument = (document, schema, currentUser) => {
  * @param {Object} collection - The collection
  * @param {Object} document - The document being returned by the resolver
  */
-Users.restrictViewableFields = function (user, collection, docOrDocs) {
+Users.restrictViewableFields = function(user, collection, docOrDocs) {
   if (!docOrDocs) return {};
   const schema = collection.simpleSchema()._schema;
-  const restrictDoc = (document) => restrictDocument(document, schema, user);
+  const restrictDoc = document => restrictDocument(document, schema, user);
 
   return Array.isArray(docOrDocs) ? docOrDocs.map(restrictDoc) : restrictDoc(docOrDocs);
 };
@@ -288,13 +319,11 @@ Users.restrictViewableFields = function (user, collection, docOrDocs) {
  * @param {Object} collection - The collection
  * @param {Object} document - The document being returned by the resolver
  */
-Users.restrictDocuments = function ({ user, collection, documents }) {
+Users.restrictDocuments = function({ user, collection, documents }) {
   const check = get(collection, 'options.permissions.canRead');
   let readableDocuments = documents;
   if (check) {
-    readableDocuments = documents.filter(document =>
-      Users.canRead({ collection, document, user })
-    );
+    readableDocuments = documents.filter(document => Users.canRead({ collection, document, user }));
   }
   const restrictedDocuments = Users.restrictViewableFields(user, collection, readableDocuments);
   return restrictedDocuments;
@@ -305,7 +334,7 @@ Users.restrictDocuments = function ({ user, collection, documents }) {
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canCreateField = function (user, field) {
+Users.canCreateField = function(user, field) {
   const canCreate = field.canCreate || field.insertableBy; //OpenCRUD backwards compatibility
   if (canCreate) {
     if (typeof canCreate === 'function') {
@@ -329,7 +358,7 @@ Users.canCreateField = function (user, field) {
  * @param {Object} field - The field being edited or inserted
  * @param {Object} document - The document being edited or inserted
  */
-Users.canUpdateField = function (user, field, document) {
+Users.canUpdateField = function(user, field, document) {
   const canUpdate = field.canUpdate || field.editableBy; //OpenCRUD backwards compatibility
 
   if (canUpdate) {
@@ -372,9 +401,7 @@ Users.canRead = options => {
   if (!check) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Users.canRead() was called but no [canRead] permission was defined for collection [${
-      collection.options.collectionName
-      }]`
+      `Users.canRead() was called but no [canRead] permission was defined for collection [${collection.options.collectionName}]`
     );
   }
   return check && Users.permissionCheck({ ...options, check, operationName: 'read' });
@@ -386,9 +413,7 @@ Users.canCreate = options => {
   if (!check) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Users.canCreate() was called but no [canCreate] permission was defined for collection [${
-      collection.options.collectionName
-      }]`
+      `Users.canCreate() was called but no [canCreate] permission was defined for collection [${collection.options.collectionName}]`
     );
   }
   return check && Users.permissionCheck({ ...options, check, operationName: 'create' });
@@ -400,9 +425,7 @@ Users.canUpdate = options => {
   if (!check) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Users.canUpdate() was called but no [canUpdate] permission was defined for collection [${
-      collection.options.collectionName
-      }]`
+      `Users.canUpdate() was called but no [canUpdate] permission was defined for collection [${collection.options.collectionName}]`
     );
   }
   return check && Users.permissionCheck({ ...options, check, operationName: 'update' });
@@ -414,9 +437,7 @@ Users.canDelete = options => {
   if (!check) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Users.canDelete() was called but no [canDelete] permission was defined for collection [${
-      collection.options.collectionName
-      }]`
+      `Users.canDelete() was called but no [canDelete] permission was defined for collection [${collection.options.collectionName}]`
     );
   }
   return check && Users.permissionCheck({ ...options, check, operationName: 'delete' });
