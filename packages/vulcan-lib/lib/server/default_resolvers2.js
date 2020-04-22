@@ -83,6 +83,10 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
           }
         }
 
+        // check again that the fields used for filtering were all valid, this time based on documents
+        // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+        viewableDocs.forEach(document => Users.checkFields(currentUser, collection, filteredFields, document));
+
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
 
@@ -137,9 +141,13 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
           doc = await collection.loader.load(_id);
         } else {
           let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
-          // make sure all filtered fields are allowed
+          // make sure all filtered fields are actually readable, for basic roles
           Users.checkFields(currentUser, collection, filteredFields);
           doc = await Connectors.get(collection, selector, options);
+
+          // check again that the fields used for filtering were all valid, this time based on retrieved document
+          // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+          Users.checkFields(currentUser, collection, filteredFields, doc);
         }
 
         if (!doc) {

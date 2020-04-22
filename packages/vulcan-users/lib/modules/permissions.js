@@ -277,10 +277,14 @@ Users.helpers({
  * @param {Object} collection - The collection
  * @param {Object} fields - The list of fields
  */
-Users.checkFields = (user, collection, fields) => {
+Users.checkFields = (user, collection, fields, document) => {
   const viewableFields = Users.getReadableFields(user, collection);
-  const ambiguousFields = Users.getDocumentBasedPermissionFieldNames(collection); // these fields need to wait for the document to be present before being checked
-  const fieldsToTest = difference(fields, ambiguousFields);
+  let fieldsToTest = fields;
+  // Initial case without document => we ignore fields that need the document to be checked
+  if (!document) {
+    const ambiguousFields = Users.getDocumentBasedPermissionFieldNames(collection); // these fields need to wait for the document to be present before being checked
+    fieldsToTest = difference(fields, ambiguousFields); // we only check non-ambiguous fields (canRead: ["guests", "admins"] for instance)
+  }
   const diff = difference(fieldsToTest, viewableFields);
 
   if (diff.length) {
