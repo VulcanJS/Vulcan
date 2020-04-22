@@ -156,7 +156,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId: doc._id, input },
+              data: { documentId: _id, input },
             });
           }
         }

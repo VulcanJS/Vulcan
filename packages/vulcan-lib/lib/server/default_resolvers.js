@@ -18,7 +18,6 @@ const defaultOptions = {
 
 // note: for some reason changing resolverOptions to "options" throws error
 export function getDefaultResolvers(options) {
-  
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
@@ -44,9 +43,7 @@ export function getDefaultResolvers(options) {
         collectionName = getCollectionByTypeName(typeName).options.collectionName;
 
         debug('');
-        debugGroup(
-          `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
-        );
+        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Input: ${JSON.stringify(input)}`);
 
@@ -103,7 +100,11 @@ export function getDefaultResolvers(options) {
           // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
           viewableDocs = docs.filter(doc => collection.checkAccess(currentUser, doc));
         }
-        
+
+        // check again that the fields used for filtering were all valid, this time based on documents
+        // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+        viewableDocs.forEach(document => Users.checkFields(currentUser, collection, filteredFields, document));
+
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);
 
@@ -142,9 +143,7 @@ export function getDefaultResolvers(options) {
         let doc;
 
         debug('');
-        debugGroup(
-          `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
-        );
+        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Selector: ${JSON.stringify(oldSelector)}`);
 
@@ -172,6 +171,10 @@ export function getDefaultResolvers(options) {
           Users.checkFields(currentUser, collection, filteredFields);
 
           doc = await Connectors.get(collection, selector);
+
+          // check again that the fields used for filtering were all valid, this time based on retrieved document
+          // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+          Users.checkFields(currentUser, collection, filteredFields, doc);
         }
 
         if (!doc) {
@@ -208,15 +211,7 @@ export function getDefaultResolvers(options) {
           canReadFunction = () => true;
         }
 
-        Utils.performCheck(
-          canReadFunction,
-          currentUser,
-          doc,
-          collection,
-          documentId,
-          `${typeName}.read.single`,
-          collectionName
-        );
+        Utils.performCheck(canReadFunction, currentUser, doc, collection, documentId, `${typeName}.read.single`, collectionName);
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 
