@@ -86,26 +86,31 @@ describe('vulcan:core/default_resolvers', function() {
       return expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
     });
     describe('filtering', () => {
-      it('throws if filtering on field readable by owners and user is not owner', () => {
+      const schema = {
+        adminOnlyField: {
+          type: String,
+          canRead: ['admins'],
+        },
+        year: {
+          type: Number,
+          canRead: 'owners',
+        },
+        userId: {
+          type: String,
+          canRead: ['guests'],
+        },
+      };
+      it('throws if filtering on field never readable by user, whatever the document is', () => {
         const resolver = getSingleResolver();
         const filter = {
-          year: { _gte: 1, _lte: 5 },
+          adminOnyField: { _gte: 'hello' },
         };
-        const input = { selector: {}, filter };
+        const input = { selector: {}, filter, allowNull: true };
         const doc = { userId: '1', year: 3 };
         // empty db
         const context = buildContext({
           Dummies: createDummyCollection({
-            schema: {
-              year: {
-                type: Number,
-                canRead: 'owners',
-              },
-              userId: {
-                type: String,
-                canRead: ['guests'],
-              },
-            },
+            schema,
             results: {
               load: doc, // load is used when using _id
               findOne: doc, // get is used with custom selectors => uses findOne under the hood
@@ -114,6 +119,26 @@ describe('vulcan:core/default_resolvers', function() {
           currentUser: { _id: '2' },
         });
         return expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
+      });
+      it('return null if filtering on field readable by owners but user is not owner', () => {
+        const resolver = getSingleResolver();
+        const filter = {
+          year: { _gte: 1, _lte: 5 },
+        };
+        const input = { selector: {}, filter, allowNull: true };
+        const doc = { userId: '1', year: 3 };
+        // empty db
+        const context = buildContext({
+          Dummies: createDummyCollection({
+            schema,
+            results: {
+              load: doc, // load is used when using _id
+              findOne: doc, // get is used with custom selectors => uses findOne under the hood
+            },
+          }),
+          currentUser: { _id: '2' },
+        });
+        return expect(resolver(null, { input }, context, lastArg)).resolves.toEqual({ result: null });
       });
       it('return doc if filtering on field readable by owners and user is owner', () => {
         const resolver = getSingleResolver();
@@ -125,16 +150,7 @@ describe('vulcan:core/default_resolvers', function() {
         // empty db
         const context = buildContext({
           Dummies: createDummyCollection({
-            schema: {
-              year: {
-                type: Number,
-                canRead: 'owners',
-              },
-              userId: {
-                type: String,
-                canRead: ['guests'],
-              },
-            },
+            schema,
             results: {
               load: doc, // load is used when using _id
               findOne: doc, // get is used with custom selectors => uses findOne under the hood
@@ -225,35 +241,6 @@ describe('vulcan:core/default_resolvers', function() {
           results: [{ _id: '1' }, { _id: '2' }],
         });
       });
-      it('apply document based canRead functions to filtered documents', () => {
-        const resolver = getMultiResolver();
-        const doc1 = { userId: '1', year: 3 };
-        const doc2 = { userId: '2', year: 3 }; // filter is applied to year, but user cannot read the year of this document because he is not owner
-        const filter = {
-          year: { _gte: 1, _lte: 5 },
-        };
-        const input = { selector: {}, filter };
-        // empty db
-        const context = buildContext({
-          Dummies: createDummyCollection({
-            schema: {
-              year: {
-                type: Number,
-                canRead: 'owners',
-              },
-              userId: {
-                type: String,
-                canRead: ['guests'],
-              },
-            },
-            results: {
-              find: [doc1, doc2],
-            },
-          }),
-          currentUser: { _id: '1' },
-        });
-        return expect(resolver(null, { input }, context, lastArg)).resolves.toEqual({ results: [doc1] });
-      });
     });
     // @see https://5da5072ecae7f900081d6d9a--happy-villani-6ca506.netlify.com/
     describe('user defined search', () => {
@@ -302,7 +289,7 @@ describe('vulcan:core/default_resolvers', function() {
         await expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
       });
       // important to avoid indirect access to the value (filtering is indirectly equivalent to reading)
-      it('detect non viewable field in filter', async () => {
+      it('throw if field in filter is never-readable', async () => {
         const resolver = getMultiResolver();
         const input = {
           filter: { year: { _gte: 2000 } },
@@ -319,6 +306,35 @@ describe('vulcan:core/default_resolvers', function() {
           currentUser: loggedInUser, // not an admin so can't filter on year,
         });
         await expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
+      });
+      it('apply document based canRead functions to filtered documents', () => {
+        const resolver = getMultiResolver();
+        const doc1 = { userId: '1', year: 3 };
+        const doc2 = { userId: '2', year: 3 }; // filter is applied to year, but user cannot read the year of this document because he is not owner
+        const filter = {
+          year: { _gte: 1, _lte: 5 },
+        };
+        const input = { selector: {}, filter };
+        // empty db
+        const context = buildContext({
+          Dummies: createDummyCollection({
+            schema: {
+              year: {
+                type: Number,
+                canRead: 'owners',
+              },
+              userId: {
+                type: String,
+                canRead: ['guests'],
+              },
+            },
+            results: {
+              find: [doc1, doc2],
+            },
+          }),
+          currentUser: { _id: '1' },
+        });
+        return expect(resolver(null, { input }, context, lastArg)).resolves.toEqual({ results: [doc1] });
       });
       // seems to work eventually...
       /*
