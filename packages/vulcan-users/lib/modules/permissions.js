@@ -279,11 +279,15 @@ Users.helpers({
  */
 Users.checkFields = (user, collection, fields) => {
   const viewableFields = Users.getReadableFields(user, collection);
-  const diff = difference(fields, viewableFields);
+  const ambiguousFields = Users.getDocumentBasedPermissionFieldNames(collection); // these fields need to wait for the document to be present before being checked
+  const fieldsToTest = difference(fields, ambiguousFields);
+  const diff = difference(fieldsToTest, viewableFields);
 
   if (diff.length) {
     throw new Error(
-      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(', ')}.`
+      `You don't have permission to filter collection ${collection.options.collectionName} by the following fields: ${diff.join(
+        ', '
+      )}. Field is not readable or do not exist.`
     );
   }
   return true;
