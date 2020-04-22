@@ -103,7 +103,9 @@ export function getDefaultResolvers(options) {
 
         // check again that the fields used for filtering were all valid, this time based on documents
         // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
-        viewableDocs.forEach(document => Users.checkFields(currentUser, collection, filteredFields, document));
+        if (filteredFields.length) {
+          viewableDocs = viewableDocs.filter(document => Users.canFilterDocument(currentUser, collection, filteredFields, document));
+        }
 
         // take the remaining documents and remove any fields that shouldn't be accessible
         const restrictedDocs = Users.restrictViewableFields(currentUser, collection, viewableDocs);

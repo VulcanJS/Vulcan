@@ -277,16 +277,11 @@ Users.helpers({
  * @param {Object} collection - The collection
  * @param {Object} fields - The list of fields
  */
-Users.checkFields = (user, collection, fields, document) => {
-  const viewableFields =
-    typeof document === 'undefined' ? Users.getReadableFields(user, collection) : Users.getReadableFields(user, collection, document);
-  let fieldsToTest = fields;
+Users.checkFields = (user, collection, fields) => {
+  const viewableFields = Users.getReadableFields(user, collection);
   // Initial case without document => we ignore fields that need the document to be checked
-  // Note: undefined !== null, a null document should be checked
-  if (typeof document === 'undefined') {
-    const ambiguousFields = Users.getDocumentBasedPermissionFieldNames(collection); // these fields need to wait for the document to be present before being checked
-    fieldsToTest = difference(fields, ambiguousFields); // we only check non-ambiguous fields (canRead: ["guests", "admins"] for instance)
-  }
+  const ambiguousFields = Users.getDocumentBasedPermissionFieldNames(collection); // these fields need to wait for the document to be present before being checked
+  const fieldsToTest = difference(fields, ambiguousFields); // we only check non-ambiguous fields (canRead: ["guests", "admins"] for instance)
   const diff = difference(fieldsToTest, viewableFields);
 
   if (diff.length) {
@@ -297,6 +292,19 @@ Users.checkFields = (user, collection, fields, document) => {
     );
   }
   return true;
+};
+
+/**
+ * Check if user was allowed to filter this document based on some fields
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} fields - The list of filtered fields
+ * @param {Object} document - The retrieved document
+ */
+Users.canFilterDocument = (user, collection, fields, document) => {
+  const viewableFields = Users.getReadableFields(user, collection, document);
+  const diff = difference(fields, viewableFields);
+  return !diff.length; // if length is > 0, it means that this document wasn't filterable by user in the first place, based on provided filter, we must remove it
 };
 
 const restrictDocument = (document, schema, currentUser) => {

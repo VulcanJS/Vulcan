@@ -115,7 +115,7 @@ describe('vulcan:core/default_resolvers', function() {
         });
         return expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
       });
-      it('return doc if filtering on field readable by owners and user is not owner', () => {
+      it('return doc if filtering on field readable by owners and user is owner', () => {
         const resolver = getSingleResolver();
         const filter = {
           year: { _gte: 1, _lte: 5 },
@@ -225,9 +225,10 @@ describe('vulcan:core/default_resolvers', function() {
           results: [{ _id: '1' }, { _id: '2' }],
         });
       });
-      it('throws if filtering on field readable by owners and user is not owner', () => {
+      it('apply document based canRead functions to filtered documents', () => {
         const resolver = getMultiResolver();
-        const doc = { userId: '1', year: 3 };
+        const doc1 = { userId: '1', year: 3 };
+        const doc2 = { userId: '2', year: 3 }; // filter is applied to year, but user cannot read the year of this document because he is not owner
         const filter = {
           year: { _gte: 1, _lte: 5 },
         };
@@ -246,41 +247,12 @@ describe('vulcan:core/default_resolvers', function() {
               },
             },
             results: {
-              find: [doc],
-            },
-          }),
-          currentUser: { _id: '2' },
-        });
-        return expect(resolver(null, { input }, context, lastArg)).rejects.toThrow();
-      });
-      it('return doc if filtering on field readable by owners and user is not owner', () => {
-        const resolver = getMultiResolver();
-        const filter = {
-          year: { _gte: 1, _lte: 5 },
-        };
-        const input = { selector: {}, filter };
-        const doc = { userId: '1', year: 3 };
-        // empty db
-        const context = buildContext({
-          Dummies: createDummyCollection({
-            schema: {
-              year: {
-                type: Number,
-                canRead: 'owners',
-              },
-              userId: {
-                type: String,
-                canRead: ['guests'],
-              },
-            },
-            results: {
-              find: [doc],
+              find: [doc1, doc2],
             },
           }),
           currentUser: { _id: '1' },
         });
-        const res = resolver(null, { input }, context, lastArg);
-        return expect(res).resolves.toEqual({ results: [doc] });
+        return expect(resolver(null, { input }, context, lastArg)).resolves.toEqual({ results: [doc1] });
       });
     });
     // @see https://5da5072ecae7f900081d6d9a--happy-villani-6ca506.netlify.com/
