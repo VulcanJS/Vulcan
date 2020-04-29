@@ -20,6 +20,10 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   */
   const { autocompletePropertyName, multi } = options;
 
+  if (!autocompletePropertyName) {
+    throw new Error('makeAutocomplete decorator is missing an autocompletePropertyName option.');
+  }
+  
   // if field stores an array, use multi autocomplete
   const isMultiple = multi || field.type === Array;
 
