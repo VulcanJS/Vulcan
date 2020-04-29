@@ -39,11 +39,14 @@ class MutationButtonInner extends PureComponent {
   handleClick = async e => {
     e.preventDefault();
     this.setState({ loading: true, error: null });
-    const { mutationOptions, mutationArguments, successCallback, errorCallback } = this.props;
+    const { mutationOptions, mutationArguments, submitCallback, successCallback, errorCallback } = this.props;
     const mutationName = mutationOptions.name;
     const mutation = this.props[mutationName];
 
     try {
+      if (submitCallback) {
+        submitCallback();
+      }
       const result = await mutation(mutationArguments);
       this.setState({ loading: false });
       if (successCallback) {
@@ -82,10 +85,14 @@ class MutationButtonInner extends PureComponent {
     delete rest.successCallback;
     delete rest.errorCallback;
 
-    const loadingButton = <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest} />
-    
+    const loadingButton = <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest} />;
+
     if (error) {
-      return <Components.TooltipTrigger trigger={loadingButton} defaultShow={true}>{error.message}</Components.TooltipTrigger>
+      return (
+        <Components.TooltipTrigger trigger={loadingButton} defaultShow={true}>
+          {error.message.replace('GraphQL error: ', '')}
+        </Components.TooltipTrigger>
+      );
     }
     return loadingButton;
   }
