@@ -41,4 +41,8 @@
       "secret": "bar"
     }
   },
+  "apolloServer": {
+    "corsWhitelist": [],
+    "corsEnableAll": false
+  }
 }

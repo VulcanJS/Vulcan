@@ -423,7 +423,7 @@ export const updateMutator = async ({
       // eslint-disable-next-line no-await-in-loop
       autoValue = await schema[fieldName].onEdit(
         dataToModifier(clone(data)),
-        document,
+        oldDocument || document,
         currentUser,
         document
       );

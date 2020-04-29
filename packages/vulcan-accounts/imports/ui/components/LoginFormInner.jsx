@@ -3,13 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
-import {
-  Components,
-  registerComponent,
-  withCurrentUser,
-  Callbacks,
-  runCallbacks,
-} from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withApollo } from 'react-apollo';
 import TrackerComponent from './TrackerComponent.jsx';
@@ -161,16 +155,10 @@ export class AccountsLoginFormInner extends TrackerComponent {
       if (this.state.formState == STATES.PROFILE) {
         if (!this.props.currentUser && this.state.messages.length === 0) {
           // this.showMessage(loggingInMessage); // don't show logging in message for now
-        } else if (
-          this.props.currentUser &&
-          this.state.messages.find(({ message }) => message === loggingInMessage)
-        ) {
+        } else if (this.props.currentUser && this.state.messages.find(({ message }) => message === loggingInMessage)) {
           this.clearMessage(loggingInMessage);
         }
-      } else if (
-        prevState.formState == STATES.PROFILE &&
-        this.state.messages.find(({ message }) => message === loggingInMessage)
-      ) {
+      } else if (prevState.formState == STATES.PROFILE && this.state.messages.find(({ message }) => message === loggingInMessage)) {
         this.clearMessage(loggingInMessage);
       }
     } else {
@@ -190,12 +178,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       case 'password':
         return validatePassword(value, this.showMessage.bind(this), this.clearMessage.bind(this));
       case 'username':
-        return validateUsername(
-          value,
-          this.showMessage.bind(this),
-          this.clearMessage.bind(this),
-          formState
-        );
+        return validateUsername(value, this.showMessage.bind(this), this.clearMessage.bind(this), formState);
     }
   }
 
@@ -308,9 +291,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     }
 
     if (hasPasswordService() && formState == STATES.SIGN_IN) {
-      if (
-        _.contains(['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL'], passwordSignupFields())
-      ) {
+      if (_.contains(['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL'], passwordSignupFields())) {
         loginFields.push(this.getUsernameOrEmailField());
       }
 
@@ -326,12 +307,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     }
 
     if (hasPasswordService() && formState == STATES.SIGN_UP) {
-      if (
-        _.contains(
-          ['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL', 'USERNAME_ONLY'],
-          passwordSignupFields()
-        )
-      ) {
+      if (_.contains(['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL', 'USERNAME_ONLY'], passwordSignupFields())) {
         loginFields.push(this.getUsernameField());
       }
 
@@ -374,10 +350,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     } = this.props;
     const { formState, waiting } = this.state;
     let loginButtons = [];
-    const currentUser =
-      typeof this.props.currentUser !== 'undefined'
-        ? this.props.currentUser
-        : this.state.currentUser;
+    const currentUser = typeof this.props.currentUser !== 'undefined' ? this.props.currentUser : this.state.currentUser;
 
     if (currentUser && formState == STATES.PROFILE) {
       loginButtons.push({
@@ -398,10 +371,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       });
     }
 
-    if (
-      (formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) &&
-      this.props.showSignInLink
-    ) {
+    if ((formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) && this.props.showSignInLink) {
       loginButtons.push({
         id: 'switchToSignIn',
         label: this.context.intl.formatMessage({ id: 'accounts.sign_in' }),
@@ -500,9 +470,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     // Sort the button array so that the submit button always comes first, and
     // buttons should also come before links.
     loginButtons.sort((a, b) => {
-      return (
-        (b.type == 'submit' && a.type != undefined) - (a.type == 'submit' && b.type != undefined)
-      );
+      return (b.type == 'submit' && a.type != undefined) - (a.type == 'submit' && b.type != undefined);
     });
 
     return _.indexBy(loginButtons, 'id');
@@ -521,21 +489,14 @@ export class AccountsLoginFormInner extends TrackerComponent {
   }
 
   showCreateAccountLink() {
-    return (
-      this.state.formState == STATES.SIGN_IN &&
-      !Accounts._options.forbidClientAccountCreation &&
-      Package['accounts-password']
-    );
+    return this.state.formState == STATES.SIGN_IN && !Accounts._options.forbidClientAccountCreation && Package['accounts-password'];
   }
 
   showForgotPasswordLink() {
     return (
       this.state.formState == STATES.SIGN_IN &&
       hasPasswordService() &&
-      _.contains(
-        ['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL', 'EMAIL_ONLY'],
-        passwordSignupFields()
-      )
+      _.contains(['USERNAME_AND_EMAIL', 'USERNAME_AND_OPTIONAL_EMAIL', 'EMAIL_ONLY'], passwordSignupFields())
     );
   }
 
@@ -563,10 +524,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
   getDefaultFieldValues() {
     if (typeof localStorage !== 'undefined' && localStorage) {
       const defaultFieldValues = JSON.parse(localStorage.getItem('accounts_ui') || null);
-      if (
-        defaultFieldValues &&
-        defaultFieldValues.passwordSignupFields === passwordSignupFields()
-      ) {
+      if (defaultFieldValues && defaultFieldValues.passwordSignupFields === passwordSignupFields()) {
         return defaultFieldValues;
       }
     }
@@ -655,14 +613,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
   }
 
   signIn() {
-    const {
-      username = null,
-      email = null,
-      usernameOrEmail = null,
-      password,
-      formState,
-      onSubmitHook,
-    } = this.state;
+    const { username = null, email = null, usernameOrEmail = null, password, formState, onSubmitHook } = this.state;
     let error = false;
     let loginSelector;
     this.clearMessages();
@@ -794,6 +745,12 @@ export class AccountsLoginFormInner extends TrackerComponent {
     });
   }
 
+  /**
+   * Do NOT try to rewrite using GraphQL calls instead of Meteor methods
+   * This would break all Meteor related code
+   * If you want a form that uses GraphQL calls instead, duplicate this component or refactor
+   * so custom methods can be provided. However the version with Meteor methods must be kept.
+   */
   signUp(options = {}) {
     const {
       username = null,
@@ -826,10 +783,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         options.username = username;
       }
     } else {
-      if (
-        _.contains(['USERNAME_AND_EMAIL'], passwordSignupFields()) &&
-        !this.validateField('username', username)
-      ) {
+      if (_.contains(['USERNAME_AND_EMAIL'], passwordSignupFields()) && !this.validateField('username', username)) {
         if (this.state.formState == STATES.SIGN_UP) {
           this.state.onSubmitHook('error.accounts.usernameRequired', this.state.formState);
         }
