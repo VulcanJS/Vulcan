@@ -31,6 +31,7 @@ import {
   extractFragmentInfo,
 } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
+import get from 'lodash/get';
 
 // default query input object
 const defaultInput = {
@@ -106,7 +107,7 @@ const buildResult = (
   returnedProps
 ) => {
   //console.log('returnedProps', returnedProps);
-  const { refetch, networkStatus, error, fetchMore, data } = returnedProps;
+  const { refetch, networkStatus, error, fetchMore, data, graphQLErrors } = returnedProps;
   // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
   const results = data && data[resolverName] && data[resolverName].results;
   const totalCount = data && data[resolverName] && data[resolverName].totalCount;
@@ -132,6 +133,8 @@ const buildResult = (
     refetch,
     networkStatus,
     error,
+    networkError: error && error.networkError,
+    graphQLErrors,
     count: results && results.length,
 
     // regular load more (reload everything)
@@ -204,6 +207,9 @@ export const useMulti = (options, props = {}) => {
   const queryOptions = buildQueryOptions(options, paginationInput, props);
   const queryRes = useQuery(query, queryOptions);
 
+  // workaround for https://github.com/apollographql/apollo-client/issues/2810
+  queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
+  
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
