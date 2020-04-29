@@ -17,25 +17,25 @@ const CardItemRelationItem = ({ relatedDocument, relatedCollection, Components }
     ? relatedCollection.options.getLabel(relatedDocument)
     : relatedDocument._id;
   const typeName = relatedDocument.__typename;
-  const Token = Components[`${typeName}Token`];
-  return Token ? (
-    <Token document={relatedDocument} label={label} Components={Components} />
+  const Cell = Components[`${typeName}Cell`];
+  return Cell ? (
+    <Cell document={relatedDocument} label={label} Components={Components} />
   ) : (
-    <Components.DefaultToken document={relatedDocument} label={label} Components={Components} />
+    <Components.DefaultCell document={relatedDocument} label={label} Components={Components} />
   );
 };
 registerComponent({ name: 'CardItemRelationItem', component: CardItemRelationItem });
 
-// Default Token
-const DefaultToken = ({ document, label }) => (
-  <li className="relation-default-token">
+// Default Cell
+const DefaultCell = ({ document, label }) => (
+  <li className="relation-default-cell">
     {document.pagePath ? <Link to={document.pagePath}>{label}</Link> : <span>{label}</span>}
   </li>
 );
-registerComponent({ name: 'DefaultToken', component: DefaultToken });
+registerComponent({ name: 'DefaultCell', component: DefaultCell });
 
 // User Token
-const UserToken = ({ document, Components }) => (
+const UserCell = ({ document, Components }) => (
   <div className="contents-user user-item">
     <Components.Avatar size="small" user={document} />
     {document.pagePath ? (
@@ -47,4 +47,4 @@ const UserToken = ({ document, Components }) => (
     )}
   </div>
 );
-registerComponent({ name: 'UserToken', component: UserToken });
+registerComponent({ name: 'UserCell', component: UserCell });

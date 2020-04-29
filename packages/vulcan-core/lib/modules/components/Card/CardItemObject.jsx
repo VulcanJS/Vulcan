@@ -11,7 +11,7 @@ const CardItemObject = ({ value: object, Components }) => {
     return (
       <div className="dashboard-user" style={{ whiteSpace: 'nowrap' }}>
         <Components.Avatar size="small" user={user} link />
-        <Link to={user.pagePath}>{user.displayName}</Link>
+        {user.pagePath ? <Link to={user.pagePath}>{user.displayName}</Link> : <span>{user.displayName}</span>}
       </div>
     );
   } else {
@@ -24,11 +24,7 @@ const CardItemObject = ({ value: object, Components }) => {
                 <strong>{key}</strong>
               </td>
               <td>
-                <Components.CardItemSwitcher
-                  value={object[key]}
-                  typeName={typeof object[key]}
-                  Components={Components}
-                />
+                <Components.CardItemSwitcher value={object[key]} typeName={typeof object[key]} Components={Components} />
               </td>
             </tr>
           ))}
