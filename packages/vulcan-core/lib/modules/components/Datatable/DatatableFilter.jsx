@@ -50,7 +50,6 @@ const Filter = ({ count }) => (
 
 const DatatableFilter = props => {
   const { columnFilters, label, query, Components } = props;
-
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
@@ -84,11 +83,9 @@ DatatableFilterContents Components
 const DatatableFilterContentsWithData = props => {
   const { query, options } = props;
 
-  const filterQuery = gql`
-    query ${name}FilterQuery {
-      ${query}
-    }
-  `;
+  const queryText = typeof query === 'function' ? query({ mode: 'all' }) : query;
+
+  const filterQuery = gql(queryText);
 
   const { loading, error, data } = useQuery(filterQuery);
 
