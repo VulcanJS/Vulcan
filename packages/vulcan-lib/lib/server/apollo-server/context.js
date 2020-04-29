@@ -20,6 +20,7 @@ import _merge from 'lodash/merge';
 import { getUser } from 'meteor/apollo';
 import { getHeaderLocale } from '../intl.js';
 import { getSetting } from '../../modules/settings.js';
+import { WebApp } from 'meteor/webapp';
 
 /**
  * Called once on server creation
@@ -35,7 +36,7 @@ export const initContext = currentContext => {
   }
 
   // add all collections to context
-  Collections.forEach(c => context[c.collectionName] = c);
+  Collections.forEach(c => (context[c.collectionName] = c));
 
   // merge with custom context
   // TODO: deepmerge created an infinite loop here
@@ -65,27 +66,20 @@ const setupAuthToken = async (context, req) => {
 };
 
 // @see https://github.com/facebook/dataloader#caching-per-request
-const generateDataLoaders = (context) => {
+const generateDataLoaders = context => {
   // go over context and add Dataloader to each collection
   Collections.forEach(collection => {
-    context[collection.options.collectionName].loader = new DataLoader(
-      ids => findByIds(collection, ids, context),
-      {
-        cache: true,
-      }
-    );
+    context[collection.options.collectionName].loader = new DataLoader(ids => findByIds(collection, ids, context), {
+      cache: true,
+    });
   });
   return context;
 };
 
-
 // Returns a function called on every request to compute context
 export const computeContextFromReq = (currentContext, customContextFromReq) => {
   // givenOptions can be either a function of the request or an object
-  const getBaseContext = req =>
-    customContextFromReq
-      ? { ...currentContext, ...customContextFromReq(req) }
-      : { ...currentContext };
+  const getBaseContext = req => (customContextFromReq ? { ...currentContext, ...customContextFromReq(req) } : { ...currentContext });
 
   // create options given the current request
   const handleReq = async req => {
@@ -118,6 +112,13 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     }
 
     context.locale = getHeaderLocale(headers, context.currentUser && context.currentUser.locale);
+
+    // see https://forums.meteor.com/t/can-i-edit-html-tag-in-meteor/5867/7
+    WebApp.addHtmlAttributeHook(function() {
+      return {
+        lang: context.locale,
+      };
+    });
 
     return context;
   };
