@@ -1,12 +1,11 @@
 import Users from 'meteor/vulcan:users';
-import { addGraphQLMutation, addGraphQLResolvers, Connectors } from 'meteor/vulcan:core';
+import { addGraphQLSchema, addGraphQLMutation, addGraphQLResolvers, Connectors } from 'meteor/vulcan:core';
 import { subscribeUser, subscribeEmail, send, unsubscribeUser } from './newsletters';
 
 export const sendNewsletter = async (root, { newsletterId }, context) => {
   if (Users.isAdmin(context.currentUser)) {
-    const foo = await send({ newsletterId });
-    console.log(foo);
-    return foo;
+    const response = await send({ newsletterId });
+    return response;
   } else {
     throw new Error({ id: 'app.noPermission' });
   }
@@ -14,10 +13,8 @@ export const sendNewsletter = async (root, { newsletterId }, context) => {
 
 export const testNewsletter = async (root, { newsletterId }, context) => {
   if (Users.isAdmin(context.currentUser)) {
-    const foo = await send({ newsletterId, isTest: true });
-    console.log('// foo');
-    console.log(foo);
-    return foo;
+    const response = await send({ newsletterId, isTest: true });
+    return response;
   } else {
     throw new Error({ id: 'app.noPermission' });
   }
@@ -52,11 +49,19 @@ export const removeUserNewsletter = async (root, { userId }, context) => {
 };
 
 export const addNewsletterMutations = () => {
+
+  const newsletterResponseSchema = `type NewsletterResponse {
+    email: String
+    success: JSON
+    error: String
+  }`;
+  addGraphQLSchema(newsletterResponseSchema);
+
   addGraphQLMutation('sendNewsletter(newsletterId: String) : Newsletter');
   addGraphQLMutation('testNewsletter(newsletterId: String) : Newsletter');
-  addGraphQLMutation('addUserNewsletter(userId: String) : JSON');
-  addGraphQLMutation('addEmailNewsletter(email: String) : JSON');
-  addGraphQLMutation('removeUserNewsletter(userId: String) : JSON');
+  addGraphQLMutation('addUserNewsletter(userId: String) : NewsletterResponse');
+  addGraphQLMutation('addEmailNewsletter(email: String) : NewsletterResponse');
+  addGraphQLMutation('removeUserNewsletter(userId: String) : NewsletterResponse');
 
   const resolver = {
     Mutation: {

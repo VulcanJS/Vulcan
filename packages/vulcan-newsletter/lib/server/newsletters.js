@@ -51,12 +51,13 @@ export const subscribeUser = async (user, confirm = false) => {
 
   // eslint-disable-next-line no-console
   console.log(`// Adding ${email} to ${provider} list…`);
-  const result = Newsletters[provider].subscribe(email, confirm);
+  const result = await Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
   if (result) {
     console.log('-> added');
   }
   await Connectors.update(Users, user._id, { $set: { newsletter_subscribeToNewsletter: true } });
+  return { email, success: result };
 };
 Newsletters.subscribeUser = subscribeUser;
 
@@ -64,14 +65,15 @@ Newsletters.subscribeUser = subscribeUser;
  * @summary Subscribe an email to the newsletter
  * @param {String} email
  */
-export const subscribeEmail = (email, confirm = false) => {
+export const subscribeEmail = async (email, confirm = false) => {
   testProvider();
   // eslint-disable-next-line no-console
   console.log(`// Adding ${email} to ${provider} list…`);
-  const result = Newsletters[provider].subscribe(email, confirm);
+  const result = await Newsletters[provider].subscribe(email, confirm);
   // eslint-disable-next-line no-console
   if (result) {
     console.log('-> added');
+    return { email, success: result };
   }
 };
 Newsletters.subscribeEmail = subscribeEmail;
