@@ -243,6 +243,8 @@ class SmartForm extends Component {
   Get form components, in case any has been overwritten for this specific form
 
   */
+  getMergedComponents = () => mergeWithComponents(this.props.components || this.props.formComponents)
+
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -1001,6 +1003,28 @@ class SmartForm extends Component {
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //
 
+  getCommonProps = () => {
+    const { errors, currentValues, deletedValues, disabled } = this.state;
+    const { currentUser, prefilledProps, formComponents, itemProperties } = this.props;
+    return {
+      errors,
+      throwError: this.throwError,
+      document: this.getDocument(),
+      currentValues,
+      updateCurrentValues: this.updateCurrentValues,
+      deletedValues,
+      addToDeletedValues: this.addToDeletedValues,
+      clearFieldErrors: this.clearFieldErrors,
+      formType: this.getFormType(),
+      currentUser,
+      disabled,
+      prefilledProps,
+      formComponents: this.getMergedComponents(),
+      FormComponents: this.getMergedComponents(),
+      itemProperties,
+    };
+  };
+
   getFormProps = () => {
     const docClassName = `document-${this.getFormType()}`;
     const typeName = this.props.typeName.toLowerCase();
@@ -1015,6 +1039,20 @@ class SmartForm extends Component {
     };
   };
 
+  getFormLayoutProps = () => {
+    const { formComponents, repeatErrors } = this.props;
+    const FormComponents = this.getMergedComponents();
+
+    return {
+      FormComponents,
+      formProps: this.getFormProps(),
+      errorProps: this.getFormErrorsProps(),
+      repeatErrors: repeatErrors,
+      submitProps: this.getFormSubmitProps(),
+      commonProps: this.getCommonProps(),
+    };
+  };
+
   getFormErrorsProps = () => ({
     errors: this.state.errors,
   });
@@ -1023,54 +1061,40 @@ class SmartForm extends Component {
     key: group.name,
     ...group,
     group: omit(group, ['fields']),
-    errors: this.state.errors,
-    throwError: this.throwError,
-    document: this.getDocument(),
-    currentValues: this.state.currentValues,
-    updateCurrentValues: this.updateCurrentValues,
-    deletedValues: this.state.deletedValues,
-    addToDeletedValues: this.addToDeletedValues,
-    clearFieldErrors: this.clearFieldErrors,
-    formType: this.getFormType(),
-    currentUser: this.props.currentUser,
-    disabled: this.state.disabled,
-    prefilledProps: this.props.prefilledProps,
-    formComponents: mergeWithComponents(this.props.formComponents),
-    itemProperties: this.props.itemProperties,
+    ...this.getCommonProps(),
   });
 
-  getFormSubmitProps = () => ({
-    submitForm: this.submitForm,
-    submitLabel: this.props.submitLabel,
-    cancelLabel: this.props.cancelLabel,
-    revertLabel: this.props.revertLabel,
-    cancelCallback: this.props.cancelCallback,
-    revertCallback: this.props.revertCallback,
-    document: this.getDocument(),
-    deleteDocument: (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
-    collectionName: this.props.collectionName,
-    currentValues: this.state.currentValues,
-    deletedValues: this.state.deletedValues,
-    errors: this.state.errors,
-  });
+  getFormSubmitProps = () => {
+    const { submitLabel, cancelLabel, revertLabel, cancelCallback, revertCallback, collectionName } = this.props;
+    const { currentValues, deletedValues, errors } = this.state;
+    return {
+      submitForm: this.submitForm,
+      submitLabel,
+      cancelLabel,
+      revertLabel,
+      cancelCallback,
+      revertCallback,
+      document: this.getDocument(),
+      deleteDocument: (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
+      collectionName,
+      currentValues,
+      deletedValues,
+      errors,
+    };
+  };
 
   // --------------------------------------------------------------------- //
   // ----------------------------- Render -------------------------------- //
   // --------------------------------------------------------------------- //
 
   render() {
-    const { formComponents, Components, successComponent, repeatErrors } = this.props;
-    const FormComponents = mergeWithComponents(formComponents || Components);
+    const { formComponents, Components, successComponent } = this.props;
+    const FormComponents = this.getMergedComponents();
 
     return this.state.success && successComponent ? (
       successComponent
     ) : (
-      <FormComponents.FormLayout
-        FormComponents={FormComponents}
-        formProps={this.getFormProps()}
-        errorProps={this.getFormErrorsProps()}
-        repeatErrors={repeatErrors}
-        submitProps={this.getFormSubmitProps()}>
+      <FormComponents.FormLayout {...this.getFormLayoutProps()}>
         {this.getFieldGroups().map((group, i) => (
           <FormComponents.FormGroup key={i} {...this.getFormGroupProps(group)} />
         ))}
