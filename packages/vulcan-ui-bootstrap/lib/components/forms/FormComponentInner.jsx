@@ -1,21 +1,24 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'meteor/vulcan:i18n';
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent, instantiateComponent, getHtmlInputProps } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
 class FormComponentInner extends PureComponent {
-
   renderClear = () => {
     if (['date', 'date2', 'datetime', 'time', 'select', 'radiogroup'].includes(this.props.inputType) && !this.props.disabled) {
       return (
-        <a
-          href="javascript:void(0)"
-          className="form-component-clear"
-          title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
-          onClick={this.props.clearField}>
-          <span>✕</span>
-        </a>
+        <Components.TooltipTrigger
+          trigger={
+            <button
+              className="form-component-clear"
+              title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
+              onClick={this.props.clearField}>
+              <span>✕</span>
+            </button>
+          }>
+          <FormattedMessage id="forms.clear_field" />
+        </Components.TooltipTrigger>
       );
     }
   };
@@ -58,13 +61,9 @@ class FormComponentInner extends PureComponent {
     const hasErrors = errors && errors.length;
 
     const inputName = typeof input === 'function' ? input.name : inputType;
-    const inputClass = classNames(
-      'form-input',
-      inputClassName,
-      `input-${name}`,
-      `form-component-${inputName || 'default'}`,
-      { 'input-error': hasErrors }
-    );
+    const inputClass = classNames('form-input', inputClassName, `input-${name}`, `form-component-${inputName || 'default'}`, {
+      'input-error': hasErrors,
+    });
     const properties = this.getProperties();
 
     const FormInput = this.props.formInput;
@@ -75,11 +74,7 @@ class FormComponentInner extends PureComponent {
         <FormInput {...properties} />
         {hasErrors ? <FormComponents.FieldErrors errors={errors} /> : null}
         {this.renderClear()}
-        {showCharsRemaining && (
-          <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>
-            {charsRemaining}
-          </div>
-        )}
+        {showCharsRemaining && <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>}
         {instantiateComponent(afterComponent, properties)}
       </div>
     );

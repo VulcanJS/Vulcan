@@ -53,6 +53,7 @@ addStrings('en', {
   'forms.year': 'Year',
   'forms.start_adornment_web_icon': 'Web icon',
   'forms.start_adornment_email_icon': 'Email icon',
+  'forms.clear_field': 'Clear field value',
 
   'users.profile': 'Profile',
   'users.complete_profile': 'Complete your Profile',
