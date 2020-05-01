@@ -11,8 +11,9 @@ Changes will be tracked in the changelog file.
 - Go to a `release/your-version` branch.
 - Update packages versions in each package.
 - Update the CHANGELOG.md.
-- Update package.json version. 
-- Run `npm install` and `yarn` to update `package-lock.json` and `yarn.lock`
+- Update package.json version.
+- Run `meteor reset` to reinit the project and test install again.
+- Run `meteor npm install` and `yarn` to update `package-lock.json` and `yarn.lock`
 - Test that Storybook runs correctly `npm run storybook`
 - Test the Starter, test apps, run unit tests, and apply relevant fixes
 - Run tests, apply fixes if necessary
@@ -32,6 +33,7 @@ We only use `devel` and `master` branches.
 - Update Vulcan packages versions in `.meteor/packages`.
 - Check that the packages are working as expected, solve breaking changes.
 - Check that `package.json` versions matches Vulcan's `package.json`.
+- Run `meteor reset` to reinit the packages versions
 - Run `npm install` and `yarn` to update lock files
 - Merge devel in to  `master`.
 - Create a tag for this version `git tag 1.x.x`.
