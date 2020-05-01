@@ -56,6 +56,7 @@ const getFieldNames = expressionArray => {
 };
 
 export const filterFunction = async (collection, input = {}, context) => {
+
   // eslint-disable-next-line no-unused-vars
   const { filter, limit, sort, search, filterArguments, offset, id } = input;
   let selector = {};
@@ -90,7 +91,7 @@ export const filterFunction = async (collection, input = {}, context) => {
     operators.forEach(operator => {
       const value = fieldExpression[fieldName][operator];
       if (isEmptyOrUndefined(value)) {
-        throw new Error(`Detected empty filter value for field ${fieldName} with operator ${operator}`);
+        throw new Error(`Detected empty filter value for field “${fieldName}” with operator “${operator}”`);
       }
       const mongoOperator = conversionTable[operator];
       if (!mongoOperator) {

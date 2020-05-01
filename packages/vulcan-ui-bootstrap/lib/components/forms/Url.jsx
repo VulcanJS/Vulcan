@@ -4,7 +4,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 const UrlComponent = ({ refFunction, inputProperties, itemProperties }) => (
   <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
-    <Form.Control ref={refFunction} {...inputProperties} {...itemProperties} type="url" />
+    <Form.Control ref={refFunction} {...inputProperties} type="url" />
   </Components.FormItem>
 );
 
