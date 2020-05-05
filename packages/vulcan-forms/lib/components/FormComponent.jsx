@@ -6,6 +6,18 @@ import isEqual from 'lodash/isEqual';
 import SimpleSchema from 'simpl-schema';
 import { isEmptyValue, getNullValue } from '../modules/utils.js';
 
+// extract this as a pure function so that it can be used inside getDerivedStateFromProps
+const getCharacterCounts = (value, max) => {
+  const characterCount = value ? value.length : 0;
+  return { charsRemaining: max - characterCount, charsCount: characterCount };
+};
+
+// If this is an intl input, get _intl field instead
+// extract this as a pure function so that it can be used inside getDerivedStateFromProps
+const getPath = p => {
+  return p.intlInput ? `${p.path}_intl` : p.path;
+};
+
 class FormComponent extends Component {
   constructor(props) {
     super(props);
@@ -13,11 +25,14 @@ class FormComponent extends Component {
     this.state = {};
   }
 
-  UNSAFE_componentWillMount() {
-    if (this.showCharsRemaining()) {
-      const value = this.getValue();
-      this.updateCharacterCount(value);
+  static getDerivedStateFromProps(props) {
+    const { currentValues, max } = props;
+    if (!max) {
+      return null;
     }
+    const path = getPath(props);
+    const value = get(currentValues, path);
+    return getCharacterCounts(value, max);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -27,34 +42,21 @@ class FormComponent extends Component {
     }
 
     const { currentValues, deletedValues, errors } = nextProps;
-    const path = this.getPath(this.props);
+    const path = getPath(this.props);
 
     // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
-    const includesPathOrChildren = deletedValues =>
-      deletedValues.some(deletedPath => deletedPath.includes(path));
+    const includesPathOrChildren = deletedValues => deletedValues.some(deletedPath => deletedPath.includes(path));
 
     const valueChanged = !isEqual(get(currentValues, path), get(this.props.currentValues, path));
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
-    const deleteChanged =
-      includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
+    const deleteChanged = includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
     const disabledChanged = nextProps.disabled !== this.props.disabled;
 
-    const shouldUpdate =
-      valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
+    const shouldUpdate = valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
 
     return shouldUpdate;
   }
-
-  /*
-
-  If this is an intl input, get _intl field instead
-
-  */
-  getPath = props => {
-    const p = props || this.props;
-    return p.intlInput ? `${p.path}_intl` : p.path;
-  };
 
   /*
   
@@ -100,7 +102,7 @@ class FormComponent extends Component {
     }
 
     const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
-    this.props.updateCurrentValues({ [this.getPath()]: updateValue });
+    this.props.updateCurrentValues({ [getPath(this.props)]: updateValue });
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -114,11 +116,7 @@ class FormComponent extends Component {
   
   */
   updateCharacterCount = value => {
-    const characterCount = value ? value.length : 0;
-    this.setState({
-      charsRemaining: this.props.max - characterCount,
-      charsCount: characterCount,
-    });
+    this.setState(getCharacterCounts(value, this.props.max));
   };
 
   /*
@@ -130,7 +128,7 @@ class FormComponent extends Component {
     const p = props || this.props;
     const c = context || this.context;
     const { locale, defaultValue, deletedValues, formType, datatype } = p;
-    const path = locale ? `${this.getPath(p)}.value` : this.getPath(p);
+    const path = locale ? `${getPath(p)}.value` : getPath(p);
     const currentDocument = c.getDocument();
     let value = get(currentDocument, path);
     // note: force intl fields to be treated like strings
@@ -279,13 +277,13 @@ class FormComponent extends Component {
 
         case 'likert':
           return FormComponents.FormComponentLikert;
-        
+
         case 'autocomplete':
           return FormComponents.FormComponentAutocomplete;
 
         case 'multiautocomplete':
           return FormComponents.FormComponentMultiAutocomplete;
-  
+
         default:
           const CustomComponent = FormComponents[this.props.input];
           return CustomComponent ? CustomComponent : FormComponents.FormComponentDefault;

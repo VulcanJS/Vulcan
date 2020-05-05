@@ -12,8 +12,8 @@ import { registerComponent, Components } from 'meteor/vulcan:core';
 
 const FormItem = props => {
 
-  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', queryLoading, ...rest } = props;
-  const innerComponent = queryLoading ? <Components.Loading/> : children;
+  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', loading, ...rest } = props;
+  const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
 
   if (layout === 'inputOnly' || !label) {
     // input only layout

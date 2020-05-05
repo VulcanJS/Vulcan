@@ -29,7 +29,7 @@ const FormComponentLoader = props => {
   if (loading) return <div className="form-component-loader"><Components.Loading /></div>;
 
   // pass newly loaded data (and options if needed) to child component
-  const extraProps = { data, queryData: data, queryError: error, queryLoading: loading };
+  const extraProps = { data, queryData: data, queryError: error, loading };
   if (typeof options === 'function') {
     extraProps.optionsFunction = options;
     extraProps.options = options.call({}, { ...props, data });
