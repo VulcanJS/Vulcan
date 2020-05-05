@@ -30,9 +30,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         const operationName = `${typeName}.read.multi`;
 
         debug('');
-        debugGroup(
-          `--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`
-        );
+        debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Terms: ${JSON.stringify(terms)}`);
 
@@ -52,7 +50,8 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         let { selector, options } = await Connectors.filter(collection, input, context);
         const filteredFields = Object.keys(selector);
 
-        // make sure all filtered fields are allowed
+        // make sure all filtered fields are allowed, before fetching the document
+        // (ignore ambiguous field that will need the document to be checked)
         Users.checkFields(currentUser, collection, filteredFields);
 
         options.skip = terms.offset;
@@ -63,14 +62,14 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         // in restrictViewableFields, null value will return {} instead of [] (because it works both for array and single doc)
         let viewableDocs = [];
 
+        // check again if all fields used for filtering were actually allowed, this time based on actually retrieved documents
+
         // new API (Oct 2019)
         const canRead = get(collection, 'options.permissions.canRead');
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to filter list of documents
-            viewableDocs = docs.filter(doc =>
-              canRead({ user: currentUser, document: doc, collection, context, operationName })
-            );
+            viewableDocs = docs.filter(doc => canRead({ user: currentUser, document: doc, collection, context, operationName }));
           } else if (Array.isArray(canRead)) {
             if (canRead.includes('owners')) {
               // if canReady array includes the owners group, test each document
@@ -82,6 +81,12 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
               viewableDocs = Users.isMemberOf(currentUser, canRead) ? docs : [];
             }
           }
+        }
+
+        // check again that the fields used for filtering were all valid, this time based on documents
+        // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+        if (filteredFields.length) {
+          viewableDocs = viewableDocs.filter(document => Users.canFilterDocument(currentUser, collection, filteredFields, document));
         }
 
         // take the remaining documents and remove any fields that shouldn't be accessible
@@ -121,9 +126,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
         let doc;
 
         debug('');
-        debugGroup(
-          `--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`
-        );
+        debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Selector: ${JSON.stringify(oldSelector)}`);
 
@@ -140,9 +143,15 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
           doc = await collection.loader.load(_id);
         } else {
           let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
-          // make sure all filtered fields are allowed
+          // make sure all filtered fields are actually readable, for basic roles
           Users.checkFields(currentUser, collection, filteredFields);
           doc = await Connectors.get(collection, selector, options);
+
+          // check again that the fields used for filtering were all valid, this time based on retrieved document
+          // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
+          if (filteredFields.length) {
+            doc = Users.canFilterDocument(currentUser, collection, filteredFields, doc) ? doc : null;
+          }
         }
 
         if (!doc) {
@@ -151,7 +160,7 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId: doc._id, input },
+              data: { documentId: _id, input },
             });
           }
         }
