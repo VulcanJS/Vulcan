@@ -166,7 +166,13 @@ export function getDefaultResolvers(options) {
           // make an exception for slug
           doc = await Connectors.get(collection, { slug });
         } else {
-          let { selector, filteredFields } = await Connectors.filter(collection, input, context);
+
+          if (isEmpty(input)) {
+            throwError({
+              id: 'app.empty_input'
+            });
+          }
+          
           let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
 
           // make sure all filtered fields are allowed

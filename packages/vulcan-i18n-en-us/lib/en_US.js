@@ -95,8 +95,7 @@ addStrings('en', {
   'users.email_already_taken': 'This email is already taken: {value}',
 
   settings: 'Settings',
-  'settings.json_message':
-    'Note: settings already provided in your <code>settings.json</code> file will be disabled.',
+  'settings.json_message': 'Note: settings already provided in your <code>settings.json</code> file will be disabled.',
   'settings.edit': 'Edit Settings',
   'settings.edited': 'Settings edited (please reload).',
   'settings.title': 'Title',
@@ -128,12 +127,12 @@ addStrings('en', {
 
   'app.loading': 'Loading…',
   'app.404': "Sorry, we couldn't find what you were looking for.",
+  'app.empty_input': 'Single resolver cannot receive an empty input object.',
   'app.missing_document': "Sorry, we couldn't find the document you were looking for.",
   'app.powered_by': 'Built with Vulcan.js',
   'app.or': 'Or',
   'app.noPermission': 'Sorry, you do not have the permission to do this at this time.',
-  'app.operation_not_allowed':
-    'Sorry, you don\'t have the rights to perform the operation "{value}"',
+  'app.operation_not_allowed': 'Sorry, you don\'t have the rights to perform the operation "{value}"',
   'app.document_not_found': 'Document not found (id: {value})',
   'app.no_permissions_defined': 'No permissions defined for operation [{operationName}]',
   'app.disallowed_property_detected': 'Disallowed property detected: {value}',
@@ -150,14 +149,12 @@ addStrings('en', {
   admin: 'Admin',
   notifications: 'Notifications',
 
-  'errors.expectedType':
-    'Expected type {dataType} for field “{label}”, received “{value}” instead.',
+  'errors.expectedType': 'Expected type {dataType} for field “{label}”, received “{value}” instead.',
   'errors.required': 'Field “{label}” is required.',
   'errors.minString': 'Field “{label}” needs to have at least {min} characters',
   'errors.maxString': 'Field “{label}” is limited to {max} characters.',
   'errors.generic': 'Sorry, something went wrong: <code>{errorMessage}</code>.',
-  'errors.generic_report':
-    'Sorry, something went wrong:  <code>{errorMessage}</code>. <br/>An error report has been generated.',
+  'errors.generic_report': 'Sorry, something went wrong:  <code>{errorMessage}</code>. <br/>An error report has been generated.',
   'errors.minNumber': 'Field “{label}” must be higher than {min}. ',
   'errors.maxNumber': 'Field “{label}” must be lower than {max}. ',
   'errors.minCount': 'There needs to be at least {count} in field “{label}”.',
