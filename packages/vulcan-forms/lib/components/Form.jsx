@@ -44,6 +44,7 @@ import isObject from 'lodash/isObject';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
 import omit from 'lodash/omit';
+import without from 'lodash/without';
 import _filter from 'lodash/filter';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
@@ -668,7 +669,6 @@ class SmartForm extends Component {
         currentValues,
         currentDocument,
         deletedValues,
-        foo: {},
       };
 
       Object.keys(newValues).forEach(key => {
@@ -679,7 +679,7 @@ class SmartForm extends Component {
           // delete value
           unset(newState.currentValues, path);
           set(newState.currentDocument, path, null);
-          newState.deletedValues = [...prevState.deletedValues, path];
+          newState.deletedValues = [...newState.deletedValues, path];
         } else {
           // 1. update currentValues
           set(newState.currentValues, path, value);
@@ -692,9 +692,10 @@ class SmartForm extends Component {
           } else {
             set(newState.currentDocument, path, value);
           }
-
+          
           // 3. in case value had previously been deleted, "undelete" it
-          newState.deletedValues = _.without(prevState.deletedValues, path);
+          newState.deletedValues = without(newState.deletedValues, path);
+
         }
       });
       if (changeCallback) changeCallback(newState.currentDocument);
