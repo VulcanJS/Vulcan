@@ -167,11 +167,13 @@ export function getDefaultResolvers(options) {
           doc = await Connectors.get(collection, { slug });
         } else {
           let { selector, filteredFields } = await Connectors.filter(collection, input, context);
+          let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
 
           // make sure all filtered fields are allowed
           Users.checkFields(currentUser, collection, filteredFields);
 
-          doc = await Connectors.get(collection, selector);
+          doc = await Connectors.get(collection, selector, options);
+
         }
 
         if (!doc) {
