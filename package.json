@@ -168,7 +168,7 @@
     "jsdom-global": "^3.0.2",
     "mdi-material-ui": "^5.11.0",
     "moment-timezone": "^0.5.25",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.14.0",
     "prettier": "^1.15.2",
     "react-autosuggest": "^9.4.3",
     "react-isolated-scroll": "^0.1.1",
