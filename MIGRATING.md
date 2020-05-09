@@ -2,16 +2,15 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
-## From 1.14 to 1.15
+## From 1.14.1 to 1.15
 
 - Update Meteor with `meteor update`
-
-## From 1.14.0 to 1.14.2
-
+- /!\ Carefully update NPM packages versions based on the current package.json, otherwise install will fail
 - `single2` hoc and hooks will return the whole `error` object, not just `error.graphQLErrors[0]`. This will help catching network errors too.
 - Install `npm i --save body-parser-graphql`
 - CORS are now disabled as a default in production. Use `apolloServer.corsWhitelist` to whitelist some domains, or `apolloServer.corsEnableAll` to allow all 
 connections.
+
 
 ## From 1.13.5 to 1.14
 
