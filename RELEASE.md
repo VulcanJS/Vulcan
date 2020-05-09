@@ -33,8 +33,8 @@ We only use `devel` and `master` branches.
 - Check that the packages are working as expected, solve breaking changes.
 - Check that `package.json` versions matches Vulcan's `package.json`.
 - Cleanup and reinstall everything `meteor reset && rm -Rf node_modules &&  meteor npm install`
-- Run unit tests, and apply relevant fixes `meteor npm run test`
-- Test that Storybook runs correctly `meteor npm run storybook`
+- Run unit tests, and apply relevant fixes `METEOR_PACKAGE_DIRS="X/Vulcan/packages" meteor npm run test`
+- Test that Storybook runs correctly `METEOR_PACKAGE_DIRS="X/Vulcan/packages" meteor npm run storybook`
 - Test different example packages
 - Merge devel in to  `master`.
 - Create a tag for this version `git tag 1.x.x`.
