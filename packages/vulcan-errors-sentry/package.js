@@ -5,7 +5,7 @@ Package.describe({
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
-Package.onUse(function (api) {
+Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
   api.use(['ecmascript', 'vulcan:core@=1.15.0', 'vulcan:users@=1.15.0', 'vulcan:errors@=1.15.0']);

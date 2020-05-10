@@ -2,7 +2,7 @@ Package.describe({
   name: 'vulcan:backoffice',
   summary: 'Vulcan automated backoffice generator',
   version: '1.15.0',
-  git: 'https://github.com/VulcanJS/Vulcan.git'
+  git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(api => {
@@ -12,7 +12,7 @@ Package.onUse(api => {
   api.mainModule('lib/client/main.js', 'client');
 });
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:core']);
   api.mainModule('./test/index.js');
 });
