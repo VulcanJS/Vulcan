@@ -5,7 +5,7 @@ Package.describe({
   git: 'https://github.com/meteor-utilities/react-form-containers.git',
 });
 
-Package.onUse(function (api) {
+Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
   api.use(['vulcan:core@=1.15.0']);
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.mainModule('lib/server/main.js', ['server']);
 });
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use(['ecmascript', 'meteortesting:mocha', 'vulcan:test', 'vulcan:forms', 'vulcan:ui-bootstrap']);
   api.mainModule('./test/index.js');
 });
