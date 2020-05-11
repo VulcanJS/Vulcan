@@ -933,11 +933,7 @@ class SmartForm extends Component {
   */
   submitForm = async event => {
     event && event.preventDefault();
-
-    // Check event.target.id is equal to this.props.id
-    if(this.props.id && this.props.id !== event.target.id) {
-      return;
-    }
+    event && event.stopPropagation();
 
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
