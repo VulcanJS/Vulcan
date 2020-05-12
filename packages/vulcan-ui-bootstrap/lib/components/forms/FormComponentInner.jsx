@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import { Components, registerComponent, instantiateComponent, getHtmlInputProps } from 'meteor/vulcan:core';
+import { Components, registerComponent, instantiateComponent, whitelistInputProps } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
 class FormComponentInner extends PureComponent {
@@ -24,21 +24,31 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { onChange, inputType, itemProperties, description, loading } = this.props;
-    const enhancedOnChange = event => {
-      // FormComponent's handleChange expects value as argument; look in target.checked or target.value
-      const inputValue = inputType === 'checkbox' ? event.target.checked : event.target.value;
-      onChange(inputValue);
+    const { handleChange, inputType, itemProperties, description, loading, submitForm } = this.props;
+    const properties = {
+      ...this.props,
+
+      inputProperties: {
+        ...whitelistInputProps(this.props),
+        onChange: event => {
+          // FormComponent's handleChange expects value as argument; look in target.checked or target.value
+          const inputValue = inputType === 'checkbox' ? event.target.checked : event.target.value;
+          handleChange(inputValue);
+        },
+        onKeyPress: event => {
+          if (event.key === 'Enter' && inputType !== 'textarea') {
+            submitForm();
+          }
+        },
+      },
+
+      itemProperties: {
+        ...itemProperties,
+        description,
+        loading,
+      },
     };
-    const withInputProps = getHtmlInputProps(this.props);
-    withInputProps.onChange = enhancedOnChange; // TODO: legacy code?
-    withInputProps.inputProperties.onChange = enhancedOnChange;
-    withInputProps.itemProperties = {
-      ...itemProperties,
-      description,
-      loading,
-    };
-    return withInputProps;
+    return properties;
   };
 
   render() {
@@ -90,7 +100,7 @@ FormComponentInner.propTypes = {
   clearField: PropTypes.func.isRequired,
   errors: PropTypes.array.isRequired,
   help: PropTypes.node,
-  onChange: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   showCharsRemaining: PropTypes.bool.isRequired,
   charsRemaining: PropTypes.number,
   charsCount: PropTypes.number,

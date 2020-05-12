@@ -26,12 +26,13 @@ class FormComponent extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    const { currentValues, max } = props;
+    const { document, max } = props;
     if (!max) {
       return null;
     }
     const path = getPath(props);
-    const value = get(currentValues, path);
+    const value = get(document, path);
+    
     return getCharacterCounts(value, max);
   }
 
@@ -332,7 +333,7 @@ class FormComponent extends Component {
       value: this.getValue(),
       errors: this.getErrors(),
       showCharsRemaining: !!this.showCharsRemaining(),
-      onChange: this.handleChange,
+      handleChange: this.handleChange,
       clearField: this.clearField,
       formInput: this.getFormInput(),
       formComponents: FormComponents,

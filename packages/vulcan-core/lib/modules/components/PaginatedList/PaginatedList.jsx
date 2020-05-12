@@ -119,7 +119,7 @@ const PaginatedListLoadMore = ({ Components, loadMore, count, totalCount }) => (
       e.preventDefault();
       loadMore();
     }}>
-    <FormattedMessage id="paginatedlist.load_more" />
+    <FormattedMessage id="paginatedlist.load_more" defaultMessage="Load More" />
     &nbsp;{' '}
     <span className="list-loadedcount">
       ({count}/{totalCount})

@@ -84,6 +84,7 @@ class FormGroup extends PureComponent {
             formType={this.props.formType}
             currentUser={this.props.currentUser}
             prefilledProps={this.props.prefilledProps}
+            submitForm={this.props.submitForm}
             formComponents={FormComponents}
           />
         ))}
