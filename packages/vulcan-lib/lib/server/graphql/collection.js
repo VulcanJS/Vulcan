@@ -175,6 +175,7 @@ const generateSchemaFragments = ({
     selectorUnique,
     //orderBy,
     readable,
+    filterable,
     enums
   } = fields;
 
@@ -211,9 +212,9 @@ const generateSchemaFragments = ({
       schemaFragments.push(upsertInputTemplate({ typeName }));
       schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
     }
-    if (readable.length) {
-      schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: readable }));
-      schemaFragments.push(fieldSortInputTemplate({ typeName, fields: readable }));
+    if (filterable.length) {
+      schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: filterable }));
+      schemaFragments.push(fieldSortInputTemplate({ typeName, fields: filterable }));
     }
 
     //   schemaFragments.push(selectorInputTemplate({ typeName, fields: selector }));
@@ -241,16 +242,16 @@ const generateSchemaFragments = ({
     schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
   }
 
-  if (readable.length) {
+  if (filterable.length) {
     const customFilters = collection.options.customFilters;
-    schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: readable, customFilters }));
+    schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: filterable, customFilters }));
     if (customFilters) {
       customFilters.forEach(filter => {
         schemaFragments.push(customFilterTemplate({ typeName, filter }));
       });
     }
     const customSorts = collection.options.customSorts;
-    schemaFragments.push(fieldSortInputTemplate({ typeName, fields: readable, customSorts }));
+    schemaFragments.push(fieldSortInputTemplate({ typeName, fields: filterable, customSorts }));
     // TODO: not currently working
     // if (customSorts) {
     //   customSorts.forEach(sort => {

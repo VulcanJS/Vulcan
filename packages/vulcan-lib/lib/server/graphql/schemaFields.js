@@ -482,7 +482,8 @@ export const getPermissionFields = ({
     selector: [],
     selectorUnique: [],
     sort: [],
-    readable: []
+    readable: [],
+    filterable: [],
   };
   const {
     canRead,
@@ -493,6 +494,7 @@ export const getPermissionFields = ({
     editableBy,
     selectable,
     unique,
+    apiOnly,
   } = field;
   const createInputFieldType = hasNesting
     ? suffixType(prefixType('Create', fieldType), 'DataInput')
@@ -507,6 +509,13 @@ export const getPermissionFields = ({
       name: fieldName,
       type: fieldType,
     });
+    // we can only filter based on fields that actually exist in the db
+    if (!apiOnly) {
+      fields.filterable.push({
+        name: fieldName,
+        type: fieldType,
+      });
+    }
   }
 
   // OpenCRUD backwards compatibility
@@ -572,7 +581,8 @@ export const getSchemaFields = (schema, typeName) => {
     selectorUnique: [],
     sort: [],
     enums: [],
-    readable: []
+    readable: [],
+    filterable: [],
   };
   const nestedFieldsList = [];
   const resolvers = [];
@@ -658,6 +668,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.selectorUnique.push(...permissionsFields.selectorUnique);
       fields.sort.push(...permissionsFields.sort);
       fields.readable.push(...permissionsFields.readable);
+      fields.filterable.push(...permissionsFields.filterable);
 
       // check for nested fields if the field does not reference an existing type
       if (!field.typeName && isNestedObject) {
