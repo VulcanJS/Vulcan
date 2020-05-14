@@ -412,7 +412,7 @@ export const getResolveAsFields = ({
     const resolverName = resolveAs.fieldName || fieldName;
 
     // use specified GraphQL type or else convert schema type
-    const fieldGraphQLType = resolveAs.type || fieldType;
+    const fieldGraphQLType = resolveAs.typeName || resolveAs.type || fieldType;
 
     // if resolveAs is an object, first push its type definition
     // include arguments if there are any

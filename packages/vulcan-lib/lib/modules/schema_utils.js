@@ -35,6 +35,16 @@ export const createSchema = (schema, apiSchema = {}) => {
       }
     }
 
+    if (field.relation) {
+      // for now, "translate" new relation field syntax into resolveAs
+      const { typeName, fieldName, kind } = field.relation;
+      field.resolveAs = {
+        typeName,
+        fieldName,
+        relation: kind,
+      };
+    }
+
     // find any field with an `arrayItem` property defined and add corresponding
     // `foo.$` array item field to schema
     if (arrayItem) {
