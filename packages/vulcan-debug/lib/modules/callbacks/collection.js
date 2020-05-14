@@ -1,6 +1,5 @@
 import { createCollection } from 'meteor/vulcan:lib';
 import schema from './schema.js';
-import resolvers from './resolvers.js';
 import './fragments.js';
 
 const Callbacks = createCollection({
@@ -11,7 +10,7 @@ const Callbacks = createCollection({
 
   schema,
   
-  resolvers,
+  resolvers: null,
 
   mutations: null,
 
