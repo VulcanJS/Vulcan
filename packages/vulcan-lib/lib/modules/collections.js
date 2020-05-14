@@ -189,7 +189,7 @@ export const addAutoRelations = () => {
 
 export const createCollection = options => {
   const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
-  let { schema } = options;
+  let { schema, apiSchema } = options;
 
   // initialize new Mongo collection
   const collection =
@@ -233,7 +233,7 @@ export const createCollection = options => {
 
   if (schema) {
     // attach schema to collection
-    collection.attachSchema(createSchema(schema));
+    collection.attachSchema(createSchema(schema, apiSchema));
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });
