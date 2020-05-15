@@ -150,7 +150,7 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = mergeWith({}, collection.options, options, (a, b) => {
+  const newOptions = mergeWith({}, collection.options, options, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return a.concat(b);
     }
@@ -161,6 +161,8 @@ export const extendCollection = (collection, options) => {
       return b.concat([a]);
     }
   });
+  collection = createCollection(newOptions);
+  return collection;
 };
 
 /*
@@ -187,15 +189,24 @@ export const addAutoRelations = () => {
   });
 };
 
-export const createCollection = options => {
+/*
+
+Pass an existing collection to overwrite it instead of creating a new one
+
+*/
+export const createCollection = (options) => {
   const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
   let { schema, apiSchema } = options;
 
-  // initialize new Mongo collection
+  const existingCollectionIndex = Collections.findIndex(c => c.collectionName === collectionName);
+  const existingCollection = existingCollectionIndex >= 0 ? Collections[existingCollectionIndex] : null;
+
+  // initialize new Mongo collection or get existing collection when overwriting
   const collection =
-    collectionName === 'Users' && Meteor.users
+    existingCollection ||
+    (collectionName === 'Users' && Meteor.users
       ? Meteor.users
-      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase()));
 
   // decorate collection with options
   collection.options = options;
@@ -244,158 +255,119 @@ export const createCollection = options => {
   const defaultFragment = getDefaultFragmentText(collection);
   if (defaultFragment) registerFragment(defaultFragment);
 
-  // ------------------------------------- Parameters -------------------------------- //
+  // // ------------------------------------- Parameters -------------------------------- //
 
-  // legacy
-  collection.getParameters = (terms = {}, apolloClient, context) => {
-    // console.log(terms);
+  // // legacy
+  // collection.getParameters = (terms = {}, apolloClient, context) => {
+  //   // console.log(terms);
 
-    const currentSchema = collection.simpleSchema()._schema;
+  //   const currentSchema = collection.simpleSchema()._schema;
 
-    let parameters = {
-      selector: {},
-      options: {},
-    };
+  //   let parameters = {
+  //     selector: {},
+  //     options: {},
+  //   };
 
-    if (collection.defaultView) {
-      parameters = Utils.deepExtend(
-        true,
-        parameters,
-        collection.defaultView(terms, apolloClient, context)
-      );
-    }
+  //   if (collection.defaultView) {
+  //     parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient, context));
+  //   }
 
-    // handle view option
-    if (terms.view && collection.views[terms.view]) {
-      const viewFn = collection.views[terms.view];
-      const view = viewFn(terms, apolloClient, context);
-      let mergedParameters = Utils.deepExtend(true, parameters, view);
+  //   // handle view option
+  //   if (terms.view && collection.views[terms.view]) {
+  //     const viewFn = collection.views[terms.view];
+  //     const view = viewFn(terms, apolloClient, context);
+  //     let mergedParameters = Utils.deepExtend(true, parameters, view);
 
-      if (
-        mergedParameters.options &&
-        mergedParameters.options.sort &&
-        view.options &&
-        view.options.sort
-      ) {
-        // If both the default view and the selected view have sort options,
-        // don't merge them together; take the selected view's sort. (Otherwise
-        // they merge in the wrong order, so that the default-view's sort takes
-        // precedence over the selected view's sort.)
-        mergedParameters.options.sort = view.options.sort;
-      }
-      parameters = mergedParameters;
-    }
+  //     if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
+  //       // If both the default view and the selected view have sort options,
+  //       // don't merge them together; take the selected view's sort. (Otherwise
+  //       // they merge in the wrong order, so that the default-view's sort takes
+  //       // precedence over the selected view's sort.)
+  //       mergedParameters.options.sort = view.options.sort;
+  //     }
+  //     parameters = mergedParameters;
+  //   }
 
-    // iterate over posts.parameters callbacks
-    parameters = runCallbacks(
-      `${typeName.toLowerCase()}.parameters`,
-      parameters,
-      clone(terms),
-      apolloClient,
-      context
-    );
-    // OpenCRUD backwards compatibility
-    parameters = runCallbacks(
-      `${collectionName.toLowerCase()}.parameters`,
-      parameters,
-      clone(terms),
-      apolloClient,
-      context
-    );
+  //   // iterate over posts.parameters callbacks
+  //   parameters = runCallbacks(`${typeName.toLowerCase()}.parameters`, parameters, clone(terms), apolloClient, context);
+  //   // OpenCRUD backwards compatibility
+  //   parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, clone(terms), apolloClient, context);
 
-    if (Meteor.isClient) {
-      parameters = runCallbacks(
-        `${typeName.toLowerCase()}.parameters.client`,
-        parameters,
-        clone(terms),
-        apolloClient
-      );
-      // OpenCRUD backwards compatibility
-      parameters = runCallbacks(
-        `${collectionName.toLowerCase()}.parameters.client`,
-        parameters,
-        clone(terms),
-        apolloClient
-      );
-    }
+  //   if (Meteor.isClient) {
+  //     parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.client`, parameters, clone(terms), apolloClient);
+  //     // OpenCRUD backwards compatibility
+  //     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.client`, parameters, clone(terms), apolloClient);
+  //   }
 
-    // note: check that context exists to avoid calling this from withList during SSR
-    if (Meteor.isServer && context) {
-      parameters = runCallbacks(
-        `${typeName.toLowerCase()}.parameters.server`,
-        parameters,
-        clone(terms),
-        context
-      );
-      // OpenCRUD backwards compatibility
-      parameters = runCallbacks(
-        `${collectionName.toLowerCase()}.parameters.server`,
-        parameters,
-        clone(terms),
-        context
-      );
-    }
+  //   // note: check that context exists to avoid calling this from withList during SSR
+  //   if (Meteor.isServer && context) {
+  //     parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.server`, parameters, clone(terms), context);
+  //     // OpenCRUD backwards compatibility
+  //     parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, clone(terms), context);
+  //   }
 
-    // sort using terms.orderBy (overwrite defaultView's sort)
-    if (terms.orderBy && !isEmpty(terms.orderBy)) {
-      parameters.options.sort = terms.orderBy;
-    }
+  //   // sort using terms.orderBy (overwrite defaultView's sort)
+  //   if (terms.orderBy && !isEmpty(terms.orderBy)) {
+  //     parameters.options.sort = terms.orderBy;
+  //   }
 
-    // if there is no sort, default to sorting by createdAt descending
-    if (!parameters.options.sort) {
-      parameters.options.sort = { createdAt: -1 };
-    }
+  //   // if there is no sort, default to sorting by createdAt descending
+  //   if (!parameters.options.sort) {
+  //     parameters.options.sort = { createdAt: -1 };
+  //   }
 
-    // extend sort to sort posts by _id to break ties, unless there's already an id sort
-    // NOTE: always do this last to avoid overriding another sort
-    //if (!(parameters.options.sort && parameters.options.sort._id)) {
-    //  parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
-    //}
+  //   // extend sort to sort posts by _id to break ties, unless there's already an id sort
+  //   // NOTE: always do this last to avoid overriding another sort
+  //   //if (!(parameters.options.sort && parameters.options.sort._id)) {
+  //   //  parameters = Utils.deepExtend(true, parameters, { options: { sort: { _id: -1 } } });
+  //   //}
 
-    // remove any null fields (setting a field to null means it should be deleted)
-    Object.keys(parameters.selector).forEach(key => {
-      if (parameters.selector[key] === null) delete parameters.selector[key];
-    });
-    if (parameters.options.sort) {
-      Object.keys(parameters.options.sort).forEach(key => {
-        if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
-      });
-    }
+  //   // remove any null fields (setting a field to null means it should be deleted)
+  //   Object.keys(parameters.selector).forEach(key => {
+  //     if (parameters.selector[key] === null) delete parameters.selector[key];
+  //   });
+  //   if (parameters.options.sort) {
+  //     Object.keys(parameters.options.sort).forEach(key => {
+  //       if (parameters.options.sort[key] === null) delete parameters.options.sort[key];
+  //     });
+  //   }
 
-    if (terms.query) {
-      const query = escapeStringRegexp(terms.query);
-      const searchableFieldNames = Object.keys(currentSchema).filter(
-        fieldName => currentSchema[fieldName].searchable
-      );
-      if (searchableFieldNames.length) {
-        parameters = Utils.deepExtend(true, parameters, {
-          selector: {
-            $or: searchableFieldNames.map(fieldName => ({
-              [fieldName]: { $regex: query, $options: 'i' },
-            })),
-          },
-        });
-      } else {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `Warning: terms.query is set but schema ${
-          collection.options.typeName
-          } has no searchable field. Set "searchable: true" for at least one field to enable search.`
-        );
-      }
-    }
+  //   if (terms.query) {
+  //     const query = escapeStringRegexp(terms.query);
+  //     const searchableFieldNames = Object.keys(currentSchema).filter(fieldName => currentSchema[fieldName].searchable);
+  //     if (searchableFieldNames.length) {
+  //       parameters = Utils.deepExtend(true, parameters, {
+  //         selector: {
+  //           $or: searchableFieldNames.map(fieldName => ({
+  //             [fieldName]: { $regex: query, $options: 'i' },
+  //           })),
+  //         },
+  //       });
+  //     } else {
+  //       // eslint-disable-next-line no-console
+  //       console.warn(
+  //         `Warning: terms.query is set but schema ${
+  //           collection.options.typeName
+  //         } has no searchable field. Set "searchable: true" for at least one field to enable search.`
+  //       );
+  //     }
+  //   }
 
-    // limit number of items to 1000 by default
-    const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
-    const limit = terms.limit || parameters.options.limit;
-    parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
+  //   // limit number of items to 1000 by default
+  //   const maxDocuments = getSetting('maxDocumentsPerRequest', 1000);
+  //   const limit = terms.limit || parameters.options.limit;
+  //   parameters.options.limit = !limit || limit < 1 || limit > maxDocuments ? maxDocuments : limit;
 
-    // console.log(JSON.stringify(parameters, 2));
+  //   // console.log(JSON.stringify(parameters, 2));
 
-    return parameters;
-  };
+  //   return parameters;
+  // };
 
-  Collections.push(collection);
+  if (existingCollection) {
+    Collections[existingCollectionIndex] = existingCollection;
+  } else {
+    Collections.push(collection);
+  }
 
   return collection;
 };
