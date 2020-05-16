@@ -125,12 +125,13 @@ class FormComponent extends Component {
   Get value from Form state through document and currentValues props
 
   */
-  getValue = (props) => {
+  getValue = (props, context) => {
     const p = props || this.props;
-    const { locale, defaultValue, deletedValues, formType, datatype, document } = p;
+    const c = context || this.context;
+    const { locale, defaultValue, deletedValues, formType, datatype } = p;
     const path = locale ? `${getPath(p)}.value` : getPath(p);
-    let value = get(document, path);
-
+    const currentDocument = c.getDocument();
+    let value = get(currentDocument, path);
     // note: force intl fields to be treated like strings
     const nullValue = locale ? '' : getNullValue(datatype);
 
@@ -332,6 +333,7 @@ class FormComponent extends Component {
       inputType: this.getInputType(),
       value: this.getValue(),
       errors: this.getErrors(),
+      document: this.context.getDocument(),
       showCharsRemaining: !!this.showCharsRemaining(),
       handleChange: this.handleChange,
       clearField: this.clearField,
@@ -367,6 +369,10 @@ FormComponent.propTypes = {
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
   prefilledProps: PropTypes.object,
+};
+
+FormComponent.contextTypes = {
+  getDocument: PropTypes.func.isRequired,
 };
 
 //module.exports = FormComponent;
