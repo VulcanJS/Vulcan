@@ -51,7 +51,7 @@ const CardItemSwitcher = props => {
   if (fieldSchema && fieldSchema.resolveAs && fieldSchema.resolveAs.relation) {
     itemProps.relatedFieldName = fieldSchema.resolveAs.fieldName || fieldName;
     itemProps.relatedDocument = document[itemProps.relatedFieldName];
-    itemProps.relatedCollection = getCollectionByTypeName(fieldSchema.resolveAs.type);
+    itemProps.relatedCollection = getCollectionByTypeName(fieldSchema.resolveAs.typeName || fieldSchema.resolveAs.type);
 
     if (!itemProps.relatedDocument) {
       return (

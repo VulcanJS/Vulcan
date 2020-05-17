@@ -2,9 +2,9 @@ import { getCollectionByTypeName, isEmptyOrUndefined, fieldDynamicQueryTemplate,
 import get from 'lodash/get';
 
 const getQueryResolverName = field => {
-  const isRelation = get(field, 'resolveAs.relation');
+  const isRelation = field.relation || get(field, 'resolveAs.relation');
   if (isRelation) {
-    const typeName = get(field, 'resolveAs.typeName');
+    const typeName = get(field, 'relation.typeName') || get(field, 'resolveAs.typeName');
     const collection = getCollectionByTypeName(typeName);
     return get(collection, 'options.multiResolverName');
   }
