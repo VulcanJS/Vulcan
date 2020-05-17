@@ -49,7 +49,7 @@ class FormGroup extends PureComponent {
       return null;
     }
 
-    const { name, fields, formComponents, label, group, document } = this.props;
+    const { name, fields, formComponents, label, group } = this.props;
     const { collapsed } = this.state;
 
     const FormComponents = mergeWithComponents(formComponents);
@@ -72,7 +72,6 @@ class FormGroup extends PureComponent {
             key={field.name}
             disabled={this.props.disabled}
             {...field}
-            document={document}
             itemProperties={{ ...this.props.itemProperties, ...field.itemProperties }}
             errors={this.props.errors}
             throwError={this.props.throwError}
