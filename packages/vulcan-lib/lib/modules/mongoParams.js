@@ -26,6 +26,9 @@ export const convertUniqueSelector = selector => {
 
 Filtering
 
+Note: we use $elemMatch syntax for consistency so that we can be sure that every mongo operator function
+returns an object.
+
 */
 const conversionTable = {
   _eq: '$eq',
@@ -37,8 +40,8 @@ const conversionTable = {
   _neq: '$ne',
   _nin: '$nin',
   _is_null: value => ({ $exists: !value }),
-  _is: value => value,
-  _arrayContains: value => value,
+  _is: value => ({$elemMatch: {$eq: value }}),
+  _contains: value => ({$elemMatch: {$eq: value }}),
   asc: 1,
   desc: -1,
   _like: value => ({

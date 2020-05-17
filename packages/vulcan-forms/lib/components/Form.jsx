@@ -1023,6 +1023,7 @@ class SmartForm extends Component {
       formComponents: this.getMergedComponents(),
       FormComponents: this.getMergedComponents(),
       itemProperties,
+      submitForm: this.submitForm,
     };
   };
 

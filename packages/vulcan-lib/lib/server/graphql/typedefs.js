@@ -70,7 +70,7 @@ input String_Selector {
 
 input String_Array_Selector {
   _in: [String!]
-  # _contains: String_Selector
+  _contains: String
   # _contains_all: [String_Selector]
 }
 

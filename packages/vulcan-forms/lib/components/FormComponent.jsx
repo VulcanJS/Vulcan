@@ -26,12 +26,13 @@ class FormComponent extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    const { currentValues, max } = props;
+    const { document, max } = props;
     if (!max) {
       return null;
     }
     const path = getPath(props);
-    const value = get(currentValues, path);
+    const value = get(document, path);
+    
     return getCharacterCounts(value, max);
   }
 
@@ -124,12 +125,13 @@ class FormComponent extends Component {
   Get value from Form state through document and currentValues props
 
   */
-  getValue = (props) => {
+  getValue = (props, context) => {
     const p = props || this.props;
-    const { locale, defaultValue, deletedValues, formType, datatype, document } = p;
+    const c = context || this.context;
+    const { locale, defaultValue, deletedValues, formType, datatype } = p;
     const path = locale ? `${getPath(p)}.value` : getPath(p);
-    let value = get(document, path);
-
+    const currentDocument = c.getDocument();
+    let value = get(currentDocument, path);
     // note: force intl fields to be treated like strings
     const nullValue = locale ? '' : getNullValue(datatype);
 
@@ -331,8 +333,9 @@ class FormComponent extends Component {
       inputType: this.getInputType(),
       value: this.getValue(),
       errors: this.getErrors(),
+      document: this.context.getDocument(),
       showCharsRemaining: !!this.showCharsRemaining(),
-      onChange: this.handleChange,
+      handleChange: this.handleChange,
       clearField: this.clearField,
       formInput: this.getFormInput(),
       formComponents: FormComponents,
@@ -366,6 +369,10 @@ FormComponent.propTypes = {
   clearFieldErrors: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
   prefilledProps: PropTypes.object,
+};
+
+FormComponent.contextTypes = {
+  getDocument: PropTypes.func.isRequired,
 };
 
 //module.exports = FormComponent;
