@@ -84,11 +84,9 @@ DatatableFilterContents Components
 const DatatableFilterContentsWithData = props => {
   const { query, options } = props;
 
-  const filterQuery = gql`
-    query ${name}FilterQuery {
-      ${query}
-    }
-  `;
+  // if query is a function, execute it
+  const queryText = typeof query === 'function' ? query({ mode: 'static' }) : query;
+  const filterQuery = gql(queryText);
 
   const { loading, error, data } = useQuery(filterQuery);
 
