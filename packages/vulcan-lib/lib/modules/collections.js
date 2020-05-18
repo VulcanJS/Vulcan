@@ -9,6 +9,7 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
+import merge from 'lodash/merge';
 import _omit from 'lodash/omit';
 import mergeWith from 'lodash/mergeWith';
 import { createSchema, isCollectionType } from './schema_utils.js';
@@ -84,7 +85,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   });
 
   // add field schema to collection schema
-  collection.attachSchema(fieldSchema);
+  collection.attachSchema(createSchema(merge(collection.options.schema, fieldSchema)));
 };
 
 /**
