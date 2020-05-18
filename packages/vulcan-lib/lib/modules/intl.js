@@ -56,9 +56,22 @@ Look for type name in a few different places
 Note: look into simplifying this
 
 */
-export const isIntlField = fieldSchema => {
-  return !!(fieldSchema.intl || fieldSchema.isIntlData);
-};
+export const isIntlField = fieldSchema => !!fieldSchema.intl;
+
+/*
+
+Look for type name in a few different places
+Note: look into simplifying this
+
+*/
+export const isIntlDataField = fieldSchema => !!fieldSchema.isIntlData;
+
+/*
+
+Check if a schema already has a corresponding intl field
+
+*/
+export const schemaHasIntlField = (schema, fieldName) => !!schema[`${fieldName}_intl`];
 
 /*
 

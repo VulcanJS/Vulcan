@@ -239,7 +239,7 @@ export const getSchemaFields = (schema, typeName) => {
  * Generate graphQL types for the fields of a Vulcan schema
  */
 /* eslint-disable no-console */
-import { isIntlField } from '../../modules/intl.js';
+import { isIntlField, isIntlDataField } from '../../modules/intl.js';
 import { isBlackbox, isArrayChildField, unarrayfyFieldName, getFieldType, getFieldTypeName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
@@ -596,7 +596,7 @@ export const getSchemaFields = (schema, typeName) => {
     const isNestedObject = hasNestedSchema(field);
     // note: intl fields are an exception and are not considered as nested
     const isNestedArray =
-      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field);
+      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field) && !isIntlDataField(field);
     const isReferencedObject = hasTypeName(field);
     const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
     const hasNesting = !isBlackbox(field) && (isNestedArray || isNestedObject || isReferencedObject || isReferencedArray);

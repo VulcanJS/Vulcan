@@ -6,7 +6,7 @@ import { getSetting, registerSetting } from './settings.js';
 import { registerFragment } from './fragments.js';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
 import escapeStringRegexp from 'escape-string-regexp';
-import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
+import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields, schemaHasIntlField } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
@@ -405,7 +405,8 @@ registerCallback({
 export function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
-    if (isIntlField(fieldSchema)) {
+    if (isIntlField(fieldSchema) && !schemaHasIntlField(schema, fieldName)) {
+
       // remove `intl` to avoid treating new _intl field as a field to internationalize
       // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];
