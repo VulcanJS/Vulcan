@@ -97,7 +97,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
   var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
-  collection.attachSchema(new SimpleSchema(schema));
+  collection.attachSchema(createSchema(schema));
 };
 
 /**
@@ -197,7 +197,7 @@ Pass an existing collection to overwrite it instead of creating a new one
 */
 export const createCollection = (options) => {
   const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
-  let { schema, apiSchema } = options;
+  let { schema, apiSchema, dbSchema } = options;
 
   const existingCollectionIndex = Collections.findIndex(c => c.collectionName === collectionName);
   const existingCollection = existingCollectionIndex >= 0 ? Collections[existingCollectionIndex] : null;
@@ -245,7 +245,7 @@ export const createCollection = (options) => {
 
   if (schema) {
     // attach schema to collection
-    collection.attachSchema(createSchema(schema, apiSchema));
+    collection.attachSchema(createSchema(schema, apiSchema, dbSchema));
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });

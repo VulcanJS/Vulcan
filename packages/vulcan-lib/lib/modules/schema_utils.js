@@ -5,13 +5,15 @@ import { getNestedSchema, getArrayChild, isBlackbox } from 'meteor/vulcan:lib/li
 import _isArray from 'lodash/isArray';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import _omit from 'lodash/omit';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment-timezone';
+import { getSetting } from './settings';
 
 export const formattedDateResolver = fieldName => {
   return (document = {}, args = {}, context = {}) => {
     const { format } = args;
-    const { timezone } = context;
+    const { timezone = getSetting('timezone') } = context;
     if (!document[fieldName]) return;
     let m = moment(document[fieldName]);
     if (timezone) {
@@ -21,8 +23,8 @@ export const formattedDateResolver = fieldName => {
   };
 };
 
-export const createSchema = (schema, apiSchema = {}) => {
-  const modifiedSchema = { ...schema };
+export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
+  let modifiedSchema = { ...schema };
 
   Object.keys(modifiedSchema).forEach(fieldName => {
     const field = schema[fieldName];
@@ -65,19 +67,32 @@ export const createSchema = (schema, apiSchema = {}) => {
     }
   });
 
+  // if apiSchema contains fields, copy them over to main schema
   if (!_isEmpty(apiSchema)) {
     Object.keys(apiSchema).forEach(fieldName => {
       const field = apiSchema[fieldName];
-      const { canRead = ['guests'], ...resolveAs } = field;
+      const { canRead = ['guests'], description, ...resolveAs } = field;
       modifiedSchema[fieldName] = {
         type: Object,
         optional: true,
         apiOnly: true,
         canRead,
+        description,
         resolveAs,
       };
     });
   }
+
+  // for added security, remove any API-related permission checks from db fields
+  const filteredDbSchema = {};
+  const blacklistedFields = [ 'canRead', 'canCreate', 'canUpdate'];
+  Object.keys(dbSchema).forEach(dbFieldName => {
+    filteredDbSchema[dbFieldName] = _omit(dbSchema[dbFieldName], blacklistedFields);
+  });
+  // add dbSchema *after* doing the apiSchema stuff so we are sure
+  // its fields are not exposed through the GraphQL API
+  modifiedSchema = { ...modifiedSchema, ...filteredDbSchema };
+
   return new SimpleSchema(modifiedSchema);
 };
 
@@ -168,6 +183,7 @@ export const isCollectionType = typeName =>
  */
 export const forEachDocumentField = (document, schema, callback, currentPath = '') => {
   if (!document) return;
+
   Object.keys(document).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     callback({ fieldName, fieldSchema, currentPath, document, schema, isNested: !!currentPath });
