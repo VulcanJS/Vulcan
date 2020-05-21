@@ -254,26 +254,26 @@ const schema = {
   /**
   The user's Twitter username
 */
-  twitterUsername: {
-    type: String,
-    optional: true,
-    input: 'text',
-    canCreate: ['members'],
-    canUpdate: ['members'],
-    canRead: ['guests'],
-    order: 60,
-    resolveAs: {
-      type: 'String',
-      resolver: async (user, args, { Users }) => {
-        return Users.getTwitterName(await Connectors.get(Users, user._id));
-      },
-    },
-    onCreate: ({ document: user }) => {
-      if (user.services && user.services.twitter && user.services.twitter.screenName) {
-        return user.services.twitter.screenName;
-      }
-    },
-  },
+  // twitterUsername: {
+  //   type: String,
+  //   optional: true,
+  //   input: 'text',
+  //   canCreate: ['members'],
+  //   canUpdate: ['members'],
+  //   canRead: ['guests'],
+  //   order: 60,
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: async (user, args, { Users }) => {
+  //       return Users.getTwitterName(await Connectors.get(Users, user._id));
+  //     },
+  //   },
+  //   onCreate: ({ document: user }) => {
+  //     if (user.services && user.services.twitter && user.services.twitter.screenName) {
+  //       return user.services.twitter.screenName;
+  //     }
+  //   },
+  // },
   /**
     Groups
   */
