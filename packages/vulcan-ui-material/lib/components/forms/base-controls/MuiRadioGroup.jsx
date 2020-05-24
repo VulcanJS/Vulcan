@@ -162,7 +162,7 @@ const MuiRadioGroup = createReactClass({
   changeRadio: function(event) {
     const value = event.target.value;
     //this.setValue(value);
-    this.props.onChange(value);
+    this.props.handleChange(value);
   },
 
   validate: function() {
