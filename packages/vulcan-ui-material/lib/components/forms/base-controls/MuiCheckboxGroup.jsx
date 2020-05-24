@@ -89,7 +89,7 @@ const MuiCheckboxGroup = createReactClass({
       }.bind(this)
     );
 
-    this.props.onChange(value);
+    this.props.handleChange(value);
   },
 
   validate: function() {

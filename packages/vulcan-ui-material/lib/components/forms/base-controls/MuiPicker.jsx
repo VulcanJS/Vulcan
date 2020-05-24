@@ -54,7 +54,7 @@ const MuiPicker = createReactClass({
     if (this.props.scrubValue) {
       value = this.props.scrubValue(value);
     }
-    this.props.onChange(value);
+    this.props.handleChange(value);
   },
 
   render: function () {
