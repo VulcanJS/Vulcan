@@ -45,7 +45,7 @@ export const buildMultiQuery = ({ typeName, fragmentName, extraQueries, fragment
   ${fragment}
 `;
 
-const initialPaginationInput = (options, props) => {
+const getInitialPaginationInput = (options, props) => {
   // get initial limit from props, or else options, or else default value
   const limit = (props.input && props.input.limit) || (options.input && options.input.limit) || options.limit || defaultInput.limit;
   const paginationInput = {
@@ -103,7 +103,7 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
 const buildResult = (
   options,
   { fragmentName, fragment, resolverName },
-  { setPaginationInput, paginationInput },
+  { setPaginationInput, paginationInput, initialPaginationInput },
   returnedProps
 ) => {
   //console.log('returnedProps', returnedProps);
@@ -114,7 +114,7 @@ const buildResult = (
   // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loadingInitial = networkStatus === 1;
   const loading = networkStatus === 1;
-  const loadingMore = networkStatus === 3;
+  const loadingMore = networkStatus === 3 || networkStatus === 2;
   const propertyName = options.propertyName || 'results';
 
   if (error) {
@@ -142,7 +142,7 @@ const buildResult = (
       // if new terms are provided by presentational component use them, else default to incrementing current limit once
       const newInput = providedInput || {
         ...paginationInput,
-        limit: results.length + paginationInput.limit,
+        limit: results.length + initialPaginationInput.limit,
       };
       setPaginationInput(newInput);
     },
@@ -191,7 +191,8 @@ const buildResult = (
 };
 
 export const useMulti = (options, props = {}) => {
-  const [paginationInput, setPaginationInput] = useState(initialPaginationInput(options, props));
+  const initialPaginationInput = getInitialPaginationInput(options, props);
+  const [paginationInput, setPaginationInput] = useState(initialPaginationInput);
 
   let { extraQueries } = options;
 
@@ -213,7 +214,7 @@ export const useMulti = (options, props = {}) => {
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
-    { setPaginationInput, paginationInput },
+    { setPaginationInput, paginationInput, initialPaginationInput },
     queryRes
   );
 
