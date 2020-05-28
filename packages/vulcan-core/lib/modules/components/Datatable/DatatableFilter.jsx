@@ -50,7 +50,6 @@ const Filter = ({ count }) => (
 
 const DatatableFilter = props => {
   const { columnFilters, label, query, Components } = props;
-
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
