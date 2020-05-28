@@ -139,6 +139,8 @@ addStrings('fr', {
   'cards.edit': 'Modifier',
   'datatable.new': 'Nouveau',
   'datatable.edit': 'Modifier',
+  'datatable.delete': 'Supprimer',
+  'datatable.deleteConfirmation': 'Vous êtes sûr de vouloir supprimer le document ?',
   'datatable.search': 'Rechercher',
   
   'admin': 'Admin',
@@ -162,4 +164,9 @@ addStrings('fr', {
   'errors.minNumberExclusive':'',
   'errors.maxNumberExclusive':'',
   'errors.keyNotInSchema':'',
+
+  'exportbutton.error': 'Erreur',
+  'exportbutton.download': 'Télécharger ({totalCount})',
+  'exportbutton.create': 'Créer CSV',
+  'exportbutton.noResults': 'Aucun résultat',
 });

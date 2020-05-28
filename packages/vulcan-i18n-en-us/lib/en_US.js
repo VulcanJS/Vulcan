@@ -143,6 +143,7 @@ addStrings('en', {
   'cards.edit': 'Edit',
   'datatable.new': 'New',
   'datatable.edit': 'Edit',
+  'datatable.delete': 'Delete',
   'datatable.search': 'Search',
   'datatable.submit': 'Submit',
 
@@ -167,4 +168,9 @@ addStrings('en', {
   'errors.minNumberExclusive': '',
   'errors.maxNumberExclusive': '',
   'errors.keyNotInSchema': '',
+
+  'exportbutton.error': 'Error',
+  'exportbutton.download': 'Download ({totalCount})',
+  'exportbutton.create': 'Create CSV',
+  'exportbutton.noResults': 'No results',
 });

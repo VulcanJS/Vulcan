@@ -9,3 +9,5 @@ import './components/Loading.jsx';
 import './components/LoadingButton.jsx';
 import './components/NewButton.jsx';
 import './components/EditButton.jsx';
+import './components/DeleteButton.jsx';
+import './components/CSVExportButton.jsx';

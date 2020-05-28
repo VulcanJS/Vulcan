@@ -3,15 +3,14 @@ import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 import _sortBy from 'lodash/sortBy';
+import Form from 'react-bootstrap/Form';
 
 const wrapColumns = c => ({ name: c });
 
 const getColumns = (columns, results, data) => {
   if (columns) {
     // convert all columns to objects
-    const convertedColums = columns.map(column =>
-      typeof column === 'object' ? column : { name: column }
-    );
+    const convertedColums = columns.map(column => (typeof column === 'object' ? column : { name: column }));
     const sortedColumns = _sortBy(convertedColums, column => column.order);
     return sortedColumns;
   } else if (results && results.length > 0) {
@@ -45,9 +44,13 @@ const DatatableContents = props => {
     count,
     totalCount,
     networkStatus,
+    showSelect,
     showEdit,
+    showDelete,
     currentUser,
+    currentSelection = [],
     toggleSort,
+    toggleSelection,
     currentSort,
     submitFilters,
     currentFilters,
@@ -65,10 +68,15 @@ const DatatableContents = props => {
   }
 
   const isLoadingMore = networkStatus === 2;
-  const hasMore = results && (totalCount > results.length);
+  const hasMore = results && totalCount > results.length;
 
   const sortedColumns = getColumns(columns, results, datatableData);
 
+  const hasResults = results && results.length;
+  const hasSelection = currentSelection && currentSelection.length;
+  const isAllSelected = results.every(result => currentSelection.includes(result._id)); // TODO: would be more efficient with a map instead of an array
+  // show number of selected items
+  const selectedLabel = hasSelection ? `(${currentSelection.length})` : '';
   return (
     <Components.DatatableContentsLayout>
       {/* note: we want to be able to show potential errors while still showing the data below */}
@@ -76,6 +84,28 @@ const DatatableContents = props => {
       {title && <Components.DatatableTitle title={title} />}
       <Components.DatatableContentsInnerLayout>
         <Components.DatatableContentsHeadLayout>
+          {showSelect ? (
+            <th>
+              <Form.Check
+                value={isAllSelected}
+                label={selectedLabel}
+                disabled={!hasResults}
+                checked={isAllSelected}
+                //path="select"
+                //variant="checkbox"
+                optional
+                onChange={() => {
+                  if (isAllSelected) {
+                    // reenable current selection
+                    toggleSelection(currentSelection, true);
+                  } else {
+                    // select all
+                    toggleSelection(results.map(o => o._id), false);
+                  }
+                }}
+              />
+            </th>
+          ) : null}
           {sortedColumns.map((column, index) => (
             <Components.DatatableHeader
               Components={Components}
@@ -93,8 +123,23 @@ const DatatableContents = props => {
               <FormattedMessage id="datatable.edit" />
             </th>
           ) : null}
+          {showDelete ? (
+            <th>
+              <FormattedMessage id="datatable.delete" />
+            </th>
+          ) : null}
         </Components.DatatableContentsHeadLayout>
         <Components.DatatableContentsBodyLayout>
+          {/* {showSelect && currentSelection.length ? (
+            <Components.DatatableSelections
+              currentSelection={currentSelection}
+              toggleSelection={toggleSelection}
+              totalCount={totalCount}
+              Components={Components}
+              showExport={showExport}
+              collection={collection}
+            />
+          ) : null} */}
           {results && results.length ? (
             results.map((document, index) => (
               <Components.DatatableRow
@@ -104,7 +149,10 @@ const DatatableContents = props => {
                 document={document}
                 key={index}
                 showEdit={showEdit}
+                showDelete={showDelete}
                 currentUser={currentUser}
+                currentSelection={currentSelection}
+                toggleSelection={toggleSelection}
                 modalProps={modalProps}
               />
             ))
@@ -134,6 +182,7 @@ const DatatableContents = props => {
 };
 DatatableContents.propTypes = {
   Components: PropTypes.object.isRequired,
+  currentSelection: PropTypes.arrayOf(PropTypes.string),
 };
 registerComponent('DatatableContents', DatatableContents);
 
@@ -158,10 +207,7 @@ const DatatableContentsBodyLayout = ({ children }) => <tbody>{children}</tbody>;
 
 registerComponent({ name: 'DatatableContentsBodyLayout', component: DatatableContentsBodyLayout });
 
-const DatatableContentsMoreLayout = ({ children }) => (
-  <div className="datatable-list-load-more">{children}</div>
-);
-
+const DatatableContentsMoreLayout = ({ children }) => <div className="datatable-list-load-more">{children}</div>;
 registerComponent({ name: 'DatatableContentsMoreLayout', component: DatatableContentsMoreLayout });
 
 const DatatableLoadMoreButton = ({ count, totalCount, Components, children, ...otherProps }) => (
@@ -196,3 +242,45 @@ const DatatableEmpty = () => (
 );
 
 registerComponent('DatatableEmpty', DatatableEmpty);
+/*
+
+DatatableSelections Component
+
+*/
+// const DatatableSelections = props => {
+//   const { totalCount, currentSelection, toggleSelection, Components, showExport,collection } = props;
+//   const individualElementsSelected = currentSelection.filter(o => !['all'].includes(o)).length;
+//   let selectedElements = 0;
+//   if (currentSelection.includes('all')) selectedElements = totalCount - individualElementsSelected;
+//   else selectedElements = individualElementsSelected;
+
+//   return (
+//     <td colSpan="99">
+//       <div style={{ textAlign: 'center', padding: 10 }}>
+//         {selectedElements} éléments sélectionnés
+//         {!currentSelection.includes('all') ? (
+//           <Components.Button
+//             onClick={() => {
+//               toggleSelection('all');
+//             }}>
+//             Sélectionner tous ({totalCount})
+//           </Components.Button>
+//         ) : null}
+//        {showExport && (
+//         <Components.CSVExportButton
+//           collection={collection}
+//           options={{ limit:10000 }}
+//           // input={input}
+// $        />
+//       )}
+
+//       </div>
+//     </td>
+//   );
+// };
+
+// DatatableSelections.propTypes = {
+//   Components: PropTypes.object.isRequired,
+// };
+
+// registerComponent('DatatableSelections', DatatableSelections);

@@ -95,6 +95,7 @@
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-bootstrap-typeahead": "^4.2.0",
     "react-cookie": "^2.1.6",
+    "react-csv": "^2.0.1",
     "react-datetime": "^2.11.1",
     "react-dom": "16.12.0",
     "react-dropzone": "10.1.5",
