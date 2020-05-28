@@ -427,14 +427,14 @@ const DatatableAbove = (props, { intl }) => {
           {...newFormProps}
         />
       )}
-      {showExport && (
+      {/*showExport && (
         <Components.CSVExportButton
           collection={collection}
           options={{ ...options, limit: 10000 }}
           input={input}
           className={classes.csvExportButton}
         />
-      )}
+      )*/}
       {showDelete && isSelected ? (
         <Components.DeleteButton
           collection={collection}

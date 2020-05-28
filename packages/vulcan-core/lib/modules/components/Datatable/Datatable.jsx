@@ -389,7 +389,7 @@ const DatatableAbove = (props, { intl }) => {
           {...newFormProps}
         />
       )}
-      {showExport && <Components.CSVExportButton collection={collection} options={{ ...options, limit: 10000 }} input={input} />}
+      {/*showExport && <Components.CSVExportButton collection={collection} options={{ ...options, limit: 10000 }} input={input} /> */}
       {showDelete && isSelected ? (
         <Components.DeleteButton
           collection={collection}
