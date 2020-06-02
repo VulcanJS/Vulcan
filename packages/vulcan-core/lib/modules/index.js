@@ -5,6 +5,7 @@ export * from 'meteor/vulcan:lib';
 export * from './components.js';
 
 export { default as App } from './components/App.jsx';
+export { default as AccessControl } from './components/AccessControl.jsx';
 export { default as Card } from './components/Card';
 export { default as Datatable } from './components/Datatable';
 export { default as Dummy } from './components/Dummy.jsx';
