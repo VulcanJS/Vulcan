@@ -14,9 +14,9 @@ const DatatableSelect = ({ toggleItem, selectedItems, document, Components }) =>
     toggleItem(document._id);
   };
   return (
-    <div className="datatable-check" style={{ padding: 10 }}>
+    <Components.DatatableCellLayout className="datatable-check">
       <Components.FormComponentCheckbox inputProperties={{ value, onChange }} itemProperties={{ layout: 'elementOnly' }} />
-    </div>
+    </Components.DatatableCellLayout>
   );
 };
 
