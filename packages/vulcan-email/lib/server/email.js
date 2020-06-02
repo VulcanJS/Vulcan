@@ -155,7 +155,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
   return email;
 };
 
-VulcanEmail.build = async ({ emailName, variables, locale }) => {
+VulcanEmail.build = async ({ to: staticTo, emailName, variables, locale }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
 
@@ -169,6 +169,7 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   const data = email.data ? { ...result.data, ...email.data({ data: result.data, variables, locale }) } : result.data;
 
   const subject = typeof email.subject === 'function' ? email.subject({ data, variables, locale }) : email.subject;
+  const to = staticTo || typeof email.to === 'function' ? email.to({ data, variables, locale }) : email.to;
 
   data.__ = Strings[locale];
   data.locale = locale;
@@ -176,7 +177,7 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
   try {
     const htmlContents = VulcanEmail.getTemplate(email.template)(data);
     const html = VulcanEmail.buildTemplate(htmlContents, data, locale);
-    return { data, subject, html };
+    return { data, subject, html, to };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
@@ -187,7 +188,7 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
 VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, from }) => {
   try {
     const email = await VulcanEmail.build({ to, emailName, variables, locale });
-    return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
+    return VulcanEmail.send({ to: email.to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);

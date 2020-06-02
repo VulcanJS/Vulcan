@@ -3,9 +3,14 @@ import { getSetting } from 'meteor/vulcan:lib';
 import VulcanEmail from '../namespace.js';
 
 Meteor.startup(function() {
-  _.forEach(VulcanEmail.emails, (email, key) => {
+  Object.keys(VulcanEmail.emails).forEach((key) => {
+    const email = VulcanEmail.emails[key];
+
+    // backwards-compatibility
+    const path = email.testPath || email.path;
+    
     // template live preview routes
-    Picker.route(email.path, async (params, req, res) => {
+    Picker.route(path, async (params, req, res) => {
       let html;
       // if email has a custom way of generating test HTML, use it
       if (typeof email.getTestHTML !== 'undefined') {
@@ -18,10 +23,10 @@ Meteor.startup(function() {
           (typeof email.testVariables === 'function' ? email.testVariables(params) : email.testVariables) || {};
         // delete params.query so we don't pass it to GraphQL query
         delete params.query;
-        // merge test variables with params from URL
-        const variables = { ...testVariables, ...params };
 
-        const { data: emailTestData, subject, html: builtHtml } = await VulcanEmail.build({
+        const variables = testVariables;
+
+        const { data: emailTestData, subject, to, html: builtHtml } = await VulcanEmail.build({
           emailName: key,
           variables,
           locale
@@ -33,7 +38,8 @@ Meteor.startup(function() {
         html = `
           ${builtHtml}
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
-          <h5 style="margin: 20px;">Variables:</h5>
+          <h4 style="margin: 20px;"><code>To: ${to}</code></h4>
+          <h5 style="margin: 20px;">Test Variables:</h5>
           <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px;">
             <pre><code>${JSON.stringify(variables, null, 2)}</code></pre>
           </div>

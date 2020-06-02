@@ -10,10 +10,10 @@ const Template = ({ document: email }) => (
 
 const HTMLPreview = ({ document: email }) => (
   <a
-    href={email.path && email.path.replace(':_id?', '').replace(':documentId?', '')}
+    href={email.testPath && email.testPath.replace(':_id?', '').replace(':documentId?', '')}
     target="_blank"
     rel="noopener noreferrer">
-    {email.path}
+    {email.testPath}
   </a>
 );
 

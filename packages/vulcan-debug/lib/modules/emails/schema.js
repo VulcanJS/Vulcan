@@ -15,7 +15,7 @@ const schema = {
     canRead: ['admins'],
   },
 
-  path: {
+  testPath: {
     type: String,
     canRead: ['admins'],
   },
