@@ -114,6 +114,7 @@ const schema = {
     canRead: ['guests'],
     group: adminGroup,
   },
+
   locale: {
     type: String,
     label: 'Preferred Language',
@@ -123,7 +124,9 @@ const schema = {
     canUpdate: ownsOrIsAdmin,
     canRead: ['guests'],
     options: () => Locales.map(({ id, label }) => ({ value: id, label })),
+    hidden: () => Locales.length <= 1,
   },
+
   profile: {
     type: Object,
     optional: true,
