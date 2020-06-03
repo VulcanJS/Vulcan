@@ -341,6 +341,12 @@ class FormComponent extends Component {
       formComponents: FormComponents,
     };
 
+    // if there is no query, handle options here; otherwise they will be handled by
+    // the FormComponentLoader component
+    if (!this.props.query && typeof this.props.options === 'function') {
+      fciProps.options = this.props.options(fciProps);
+    }
+
     const fci = <FormComponents.FormComponentInner {...fciProps} />;
 
     return this.props.query ? <FormComponents.FormComponentLoader {...fciProps}>{fci}</FormComponents.FormComponentLoader> : fci;
