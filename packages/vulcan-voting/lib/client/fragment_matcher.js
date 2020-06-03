@@ -5,7 +5,7 @@ function AddVoteableFragmentMatcher() {
   addToFragmentMatcher({
     kind: 'UNION',
     name: 'Voteable',
-    possibleTypes: VoteableCollections.map(collection => ({name: collection.options.collectionName}))
+    possibleTypes: VoteableCollections.map(collection => ({ name: collection.options.typeName })),
   });
   return {};
 }
