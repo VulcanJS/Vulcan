@@ -88,7 +88,7 @@ const MuiSelect = createReactClass({
   },
 
   changeValue: function (value) {
-    this.props.onChange(value);
+    this.props.handleChange(value);
   },
 
   render: function () {

@@ -37,7 +37,7 @@ const MuiSwitch = createReactClass({
     const target = event.target;
     const value = target.checked;
     
-    this.props.onChange(value);
+    this.props.handleChange(value);
     
     setTimeout(() => {document.activeElement.blur();});
   },
