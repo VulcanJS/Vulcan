@@ -219,6 +219,9 @@ export const instantiateComponent = (component, props) => {
     return <Component {...props} />;
   } else if (typeof component === 'function') {
     return component(props);
+  } else if (typeof component === 'object' && component.$$typeof && component.render) {
+    const Component = component;
+    return <Component {...props} />;
   } else {
     return component;
   }
