@@ -23,7 +23,7 @@ const styles = theme => ({
 const TooltipIconButton = (props, { intl }) => {
   //eslint-disable-next-line no-console
   console.warn(
-    'WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0'
+    'WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.1'
   );
 
   const { title, titleId, placement, icon, className, classes, theme, buttonRef, variant, ...properties } = props;
