@@ -1,6 +1,7 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import Emails from '../modules/emails/collection.js';
+import get from 'lodash/get';
 
 const Template = ({ document: email }) => (
   <a href={'/email/template/' + email.template} target="_blank" rel="noopener noreferrer">
@@ -9,24 +10,33 @@ const Template = ({ document: email }) => (
 );
 
 const HTMLPreview = ({ document: email }) => (
-  <a
-    href={email.testPath && email.testPath.replace(':_id?', '').replace(':documentId?', '')}
-    target="_blank"
-    rel="noopener noreferrer">
+  <a href={email.testPath && email.testPath.replace(':_id?', '').replace(':documentId?', '')} target="_blank" rel="noopener noreferrer">
     {email.testPath}
   </a>
 );
 
-const Test = ({ document: email, loading = false }) => (
-  <Components.Button disabled={loading} onClick={this.sendTest} variant="primary">
-    Send Test
-  </Components.Button>
+const Test = ({ document: email }) => (
+  <Components.MutationButton
+    label="Send Test"
+    variant="primary"
+    mutationOptions={{
+      name: 'testEmail',
+      args: { emailName: 'String' },
+      fragmentName: 'EmailFragment',
+    }}
+    mutationArguments={{ emailName: email.name }}
+    successCallback={result => {
+      const email = get(result, 'data.testEmail');
+      const { to, subject } = email;
+      alert(`Email “${subject}” sent to ${to}`);
+    }}
+  />
 );
 
 const EmailsDashboard = () => {
   return (
     <div className="emails">
-      <h1>Emails</h1>
+      <h2 className="dashboard-heading dashboard-heading-emails">Emails</h2>
 
       <Components.Datatable
         collection={Emails}

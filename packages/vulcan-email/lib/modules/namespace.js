@@ -2,7 +2,7 @@
  * @summary Vulcan VulcanEmail namespace
  * @namespace VulcanEmail
  */
-const VulcanEmail = {};
+export const VulcanEmail = {};
 
 VulcanEmail.emails = {};
 

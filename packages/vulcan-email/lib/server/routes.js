@@ -1,6 +1,7 @@
 import { Picker } from 'meteor/meteorhacks:picker';
 import { getSetting } from 'meteor/vulcan:lib';
-import VulcanEmail from '../namespace.js';
+import { VulcanEmail } from '../modules/index.js';
+import pickBy from 'lodash/pickBy';
 
 Meteor.startup(function() {
   Object.keys(VulcanEmail.emails).forEach((key) => {
@@ -17,10 +18,14 @@ Meteor.startup(function() {
         html = email.getTestHTML.bind(email)(params);
       } else {
         const locale = params.query.locale || getSetting('locale');
+        delete params.query;
+
+        // filter out ":foo" placeholder param segments
+        const cleanedParams = pickBy(params, (value, key) => value.charAt(0)!== ':');
 
         // else get test object (sample post, comment, user, etc.)
         const testVariables =
-          (typeof email.testVariables === 'function' ? email.testVariables(params) : email.testVariables) || {};
+          (typeof email.testVariables === 'function' ? email.testVariables(cleanedParams) : email.testVariables) || {};
         // delete params.query so we don't pass it to GraphQL query
         delete params.query;
 

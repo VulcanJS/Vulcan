@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import VulcanEmail from '../namespace.js';
+import { VulcanEmail } from '../modules/index.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
