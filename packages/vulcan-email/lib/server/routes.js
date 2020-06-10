@@ -4,43 +4,44 @@ import { VulcanEmail } from '../modules/index.js';
 import pickBy from 'lodash/pickBy';
 
 Meteor.startup(function() {
-  Object.keys(VulcanEmail.emails).forEach((key) => {
+  Object.keys(VulcanEmail.emails).forEach(key => {
     const email = VulcanEmail.emails[key];
 
     // backwards-compatibility
     const path = email.testPath || email.path;
-    
-    // template live preview routes
-    Picker.route(path, async (params, req, res) => {
-      let html;
-      // if email has a custom way of generating test HTML, use it
-      if (typeof email.getTestHTML !== 'undefined') {
-        html = email.getTestHTML.bind(email)(params);
-      } else {
-        const locale = params.query.locale || getSetting('locale');
-        delete params.query;
 
-        // filter out ":foo" placeholder param segments
-        const cleanedParams = pickBy(params, (value, key) => value.charAt(0)!== ':');
+    if (path) {
+      // template live preview routes
+      Picker.route(path, async (params, req, res) => {
+        let html;
+        // if email has a custom way of generating test HTML, use it
+        if (typeof email.getTestHTML !== 'undefined') {
+          html = email.getTestHTML.bind(email)(params);
+        } else {
+          const locale = params.query.locale || getSetting('locale');
+          delete params.query;
 
-        // else get test object (sample post, comment, user, etc.)
-        const testVariables =
-          (typeof email.testVariables === 'function' ? email.testVariables(cleanedParams) : email.testVariables) || {};
-        // delete params.query so we don't pass it to GraphQL query
-        delete params.query;
+          // filter out ":foo" placeholder param segments
+          const cleanedParams = pickBy(params, (value, key) => value.charAt(0) !== ':');
 
-        const variables = testVariables;
+          // else get test object (sample post, comment, user, etc.)
+          const testVariables =
+            (typeof email.testVariables === 'function' ? email.testVariables(cleanedParams) : email.testVariables) || {};
+          // delete params.query so we don't pass it to GraphQL query
+          delete params.query;
 
-        const { data: emailTestData, subject, to, html: builtHtml } = await VulcanEmail.build({
-          emailName: key,
-          variables,
-          locale
-        });
+          const variables = testVariables;
 
-        // remove Strings object to avoid echoing it out
-        delete emailTestData.__;
+          const { data: emailTestData, subject, to, html: builtHtml } = await VulcanEmail.build({
+            emailName: key,
+            variables,
+            locale,
+          });
 
-        html = `
+          // remove Strings object to avoid echoing it out
+          delete emailTestData.__;
+
+          html = `
           ${builtHtml}
           <h4 style="margin: 20px;"><code>Subject: ${subject}</code></h4>
           <h4 style="margin: 20px;"><code>To: ${to}</code></h4>
@@ -49,15 +50,16 @@ Meteor.startup(function() {
             <pre><code>${JSON.stringify(variables, null, 2)}</code></pre>
           </div>
           <h5 style="margin: 20px;">Data:</h5>
-          <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px;">
+          <div style="border: 1px solid #999; padding: 10px 20px; margin: 20px; overflow-x: scroll">
             <pre><code>${JSON.stringify(emailTestData, null, 2)}</code></pre>
           </div>
         `;
-      }
+        }
 
-      // return html
-      res.end(html);
-    });
+        // return html
+        res.end(html);
+      });
+    }
 
     // raw template
     Picker.route('/email/template/:template', (params, req, res) => {
