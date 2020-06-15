@@ -17,7 +17,7 @@ function setToken(loginToken, expires) {
       path: '/',
       expires,
       sameSite: 'lax',
-      secure: true,
+      secure: document.domain !== 'localhost',
     });
   } else {
     cookie.remove('meteor_login_token', {
