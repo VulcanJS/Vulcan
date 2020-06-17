@@ -1,31 +1,74 @@
-import { Utils, registerComponent, getCollection } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import qs from 'qs';
-import { withRouter } from 'react-router';
+import { replaceComponent, withCurrentUser, withMulti2, Components } from 'meteor/vulcan:core';
 import compose from 'recompose/compose';
 import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
-import _cloneDeep from 'lodash/cloneDeep';
+import _get from 'lodash/get';
 import _remove from 'lodash/remove';
 import _union from 'lodash/union';
-import withCurrentUser from '../../containers/currentUser.js';
-import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/multi2.js';
+import _cloneDeep from 'lodash/cloneDeep';
+import withStyles from '@material-ui/core/styles/withStyles';
+import classNames from 'classnames';
+import { Utils, getCollection } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
-import _get from 'lodash/get';
-
-const ascSortOperator = 'asc';
-const descSortOperator = 'desc';
 
 /*
 
 Datatable Component
 
 */
+export const baseStyles = theme => ({
+  root: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  scroller: {
+    overflowX: 'auto',
+    overflowY: 'hidden',
+  },
+  searchWrapper: {},
+  addButtonWrapper: {
+    alignItems: 'center',
+  },
+  addButton: {
+    // Floating button won't work with multiple datatables, buttons are superposed
+    // top: '9.5rem',
+    // right: '2rem',
+    // position: 'fixed',
+    // bottom: 'auto',
+  },
+  table: {
+    marginTop: 0,
+  },
+  denseTable: {},
+  denserTable: {},
+  flatTable: {},
+  tableHead: {},
+  tableBody: {},
+  tableFooter: {},
+  tableRow: {},
+  tableHeadCell: {},
+  tableCell: {},
+  clickRow: {},
+  editCell: {},
+  editButton: {},
+});
 
-// see: http://stackoverflow.com/questions/1909441/jquery-keyup-delay
+const ascSortOperator = 'asc';
+const descSortOperator = 'desc';
+
 const delay = (function() {
   var timer = 0;
   return function(callback, ms) {
@@ -167,7 +210,7 @@ class Datatable extends PureComponent {
   submitFilters = ({ name, filters }) => {
     // clone state filters object
     let newFilters = Object.assign({}, this.state.currentFilters);
-    if (_isEmpty(filters)) {
+    if (_isEmpty(filters) || Object.values(filters).every(value => _isEmpty(value) && typeof value !== 'number')) {
       // if there are no filter options, remove column filter from state altogether
       delete newFilters[name];
     } else {
@@ -178,10 +221,7 @@ class Datatable extends PureComponent {
     this.updateQueryParameter('filter', _isEmpty(newFilters) ? null : newFilters);
   };
 
-  updateSearch = e => {
-    e.persist();
-    e.preventDefault();
-    const searchValue = e.target.value;
+  updateSearch = searchValue => {
     this.setState({
       searchValue,
     });
@@ -205,14 +245,11 @@ class Datatable extends PureComponent {
   };
 
   render() {
-    const { Components, modalProps, data, currentUser } = this.props;
+    const { modalProps, data, currentUser } = this.props;
 
     if (this.props.data) {
-      // static JSON datatable
-
       return (
         <Components.DatatableContents
-          Components={Components}
           {...this.props}
           datatableData={data}
           results={this.props.data}
@@ -223,15 +260,16 @@ class Datatable extends PureComponent {
         />
       );
     } else {
-      // dynamic datatable with data loading
+      const { className, options, classes } = this.props;
 
       const collection = this.props.collection || getCollection(this.props.collectionName);
-      const options = {
-        collection,
-        ...this.props.options,
+
+      const listOptions = {
+        collection: collection,
+        ...options,
       };
 
-      const DatatableWithMulti = compose(withMulti(options))(Components.DatatableContents);
+      const DatatableWithMulti = compose(withMulti2(listOptions))(Components.DatatableContents);
 
       let canCreate = false;
 
@@ -265,9 +303,8 @@ class Datatable extends PureComponent {
         input.filter = this.state.currentFilters;
       }
       return (
-        <Components.DatatableLayout Components={Components} collectionName={collection.options.collectionName}>
+        <div className={classNames('datatable', `datatable-${collection._name}`, classes.root, className)}>
           <Components.DatatableAbove
-            Components={Components}
             {...this.props}
             collection={collection}
             canInsert={canCreate}
@@ -277,20 +314,22 @@ class Datatable extends PureComponent {
             input={input}
             currentSelection={this.state.currentSelection}
           />
-          <DatatableWithMulti
-            Components={Components}
-            {...this.props}
-            collection={collection}
-            input={input}
-            currentUser={this.props.currentUser}
-            toggleSort={this.toggleSort}
-            currentSort={this.state.currentSort}
-            currentSelection={this.state.currentSelection}
-            toggleSelection={this.toggleSelection}
-            submitFilters={this.submitFilters}
-            currentFilters={this.state.currentFilters}
-          />
-        </Components.DatatableLayout>
+
+          <div className={classes.scroller}>
+            <DatatableWithMulti
+              {...this.props}
+              collection={collection}
+              input={input}
+              currentUser={this.props.currentUser}
+              toggleSort={this.toggleSort}
+              currentSort={this.state.currentSort}
+              currentSelection={this.state.currentSelection}
+              toggleSelection={this.toggleSelection}
+              submitFilters={this.submitFilters}
+              currentFilters={this.state.currentFilters}
+            />
+          </div>
+        </div>
       );
     }
   }
@@ -298,44 +337,46 @@ class Datatable extends PureComponent {
 
 Datatable.propTypes = {
   title: PropTypes.string,
+  className: PropTypes.string,
   collection: PropTypes.object,
-  columns: PropTypes.array,
-  data: PropTypes.array,
   options: PropTypes.object,
+  columns: PropTypes.array,
   showEdit: PropTypes.bool,
-  showDelete: PropTypes.bool,
+  editComponent: PropTypes.func,
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
-  showSelect: PropTypes.bool,
-  showExport: PropTypes.bool,
+  showDelete: PropTypes.bool,
   newFormProps: PropTypes.object,
   editFormProps: PropTypes.object,
   newFormOptions: PropTypes.object, // backwards compatibility
   editFormOptions: PropTypes.object, // backwards compatibility
-  Components: PropTypes.object.isRequired,
-  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  emptyState: PropTypes.node,
+  currentUser: PropTypes.object,
+  classes: PropTypes.object,
+  data: PropTypes.array,
+  footerData: PropTypes.array,
+  dense: PropTypes.string,
+  queryDataRef: PropTypes.func,
   rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  handleRowClick: PropTypes.func,
+  intlNamespace: PropTypes.string,
+  toggleSort: PropTypes.func,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  currentSort: PropTypes.object,
+  // paginate: PropTypes.bool,
   aboveComponents: PropTypes.array,
 };
 
 Datatable.defaultProps = {
   showNew: true,
   showEdit: true,
-  showDelete: false,
   showSearch: true,
+  showDelete: false,
+  // paginate: false,
   useUrlState: true,
 };
-registerComponent({
-  name: 'Datatable',
-  component: Datatable,
-  hocs: [withCurrentUser, withComponents, withRouter],
-});
-export default Datatable;
 
-const DatatableLayout = ({ collectionName, children }) => (
-  <div className={`datatable datatable-${collectionName.toLowerCase()}`}>{children}</div>
-);
-registerComponent({ name: 'DatatableLayout', component: DatatableLayout });
+replaceComponent('Datatable', Datatable, withCurrentUser, [withStyles, baseStyles]);
 
 /*
 
@@ -357,44 +398,49 @@ const DatatableAbove = (props, { intl }) => {
     options,
     newFormOptions,
     newFormProps,
-    Components,
     input: _input,
     aboveComponents,
+    classes,
   } = props;
   const isSelected = currentSelection && currentSelection.length;
   const input = isSelected ? { filter: { _id: { _in: currentSelection } } } : _input;
   return (
-    <Components.DatatableAboveLayout>
+    <div className={classes.header}>
       {showSearch && (
-        <Components.DatatableAboveSearchInput
-          className="datatable-search form-control"
-          inputProperties={{
-            path: 'datatableSearchQuery',
-            placeholder: `${intl.formatMessage({
-              id: 'datatable.search',
-              defaultMessage: 'Search',
-            })}…`,
-            value: searchValue,
-            onChange: updateSearch,
-          }}
-          Components={Components}
+        <Components.SearchInput
+          defaultValue={searchValue}
+          updateQuery={updateSearch}
+          className={classes.search}
+          labelId={'datatable.search'}
+          //should include placeholder
         />
       )}
       {showNew && canInsert && (
         <Components.NewButton
           collection={collection}
+          variant="fab"
+          color="primary"
           currentUser={currentUser}
           mutationFragmentName={options && options.fragmentName}
+          className={classes.addButton}
           {...newFormOptions}
           {...newFormProps}
         />
       )}
-      {/*showExport && <Components.CSVExportButton collection={collection} options={{ ...options, limit: 10000 }} input={input} /> */}
+      {/*showExport && (
+        <Components.CSVExportButton
+          collection={collection}
+          options={{ ...options, limit: 10000 }}
+          input={input}
+          className={classes.csvExportButton}
+        />
+      )*/}
       {showDelete && isSelected ? (
         <Components.DeleteButton
           collection={collection}
           currentUser={currentUser}
           fragmentName={options && options.fragmentName}
+          className={classes.deleteButton}
           //input={input}
           documentIds={currentSelection}
         />
@@ -414,22 +460,10 @@ const DatatableAbove = (props, { intl }) => {
             );
           })
         : null}
-    </Components.DatatableAboveLayout>
+    </div>
   );
 };
 DatatableAbove.contextTypes = {
   intl: intlShape,
 };
-DatatableAbove.propTypes = {
-  Components: PropTypes.object.isRequired,
-};
-registerComponent('DatatableAbove', DatatableAbove);
-
-const DatatableAboveSearchInput = props => {
-  const { Components } = props;
-  return <Components.FormComponentText {...props} />;
-};
-registerComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput });
-
-const DatatableAboveLayout = ({ children }) => <div className="datatable-above">{children}</div>;
-registerComponent({ name: 'DatatableAboveLayout', component: DatatableAboveLayout });
+replaceComponent('DatatableAbove', DatatableAbove);
