@@ -5,9 +5,11 @@ export const makeRadiogroup = (field = {}) => {
 
   const rgField = {
     ...field,
+    type: Array,
     input: 'radiogroup',
-    allowedValues: field.options.map(({ value }) => value),
   };
+
+  rgField.arrayItem = { ...rgField.arrayItem, allowedValues: field.options.map(({ value }) => value) };
 
   return rgField;
 };
