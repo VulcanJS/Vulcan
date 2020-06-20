@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
+import get from 'lodash/get';
 import Users from 'meteor/vulcan:users';
 
 const getLabel = (field, fieldName, collection, intl) => {
