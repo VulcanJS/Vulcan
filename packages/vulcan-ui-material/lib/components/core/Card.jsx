@@ -169,8 +169,8 @@ const styles = theme => ({
 const Card = ({ className, collection, document, currentUser, fields, classes }, { intl }) => {
   
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canUpdate = currentUser && collection.options.mutations.update.check(currentUser, document, { Users });
-  
+  const canUpdate = currentUser && get(collection, 'options.mutations.update.check');
+
   return (
     <div className={classNames(classes.root, 'datacard', `datacard-${collection._name}`, className)}>
       <Table className={classNames(classes.table, 'table')} style={{ maxWidth: '100%' }}>
