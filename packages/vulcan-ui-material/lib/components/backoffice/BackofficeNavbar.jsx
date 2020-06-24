@@ -7,7 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from 'mdi-material-ui/Menu';
 import { Link } from 'react-router-dom';
 
-const BackofficeNavbar = ({ onClick, basePath }) => (
+const BackofficeNavbar = ({ onClick, basePath }) => {
+  // console.log('Icon render', MenuIcon); // @see https://github.com/VulcanJS/Vulcan/issues/2580
+  return (
   <AppBar position="static">
     <Toolbar>
       <IconButton edge="start" color="inherit" aria-label="menu" onClick={onClick}>
@@ -19,6 +21,6 @@ const BackofficeNavbar = ({ onClick, basePath }) => (
       </Link>
     </Toolbar>
   </AppBar>
-);
+);};
 
 registerComponent('VulcanBackofficeNavbar', BackofficeNavbar);

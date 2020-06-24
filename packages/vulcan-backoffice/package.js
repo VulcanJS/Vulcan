@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(api => {
-  api.use(['vulcan:core@=1.15.1', 'vulcan:i18n@=1.15.1']);
+  api.use(['vulcan:core@=1.15.1', 'vulcan:i18n@=1.15.1', 'vulcan:accounts@1.15.1']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
