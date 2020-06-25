@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import classNames from 'classnames';
+import _isArray from 'lodash/isArray';
 
 const styles = theme => ({
   group: {
@@ -173,7 +174,9 @@ const MuiRadioGroup = createReactClass({
   },
 
   renderElement: function() {
-    const { options, value, name, disabled: _disabled } = this.props.inputProperties;
+    const {options, name, disabled: _disabled} = this.props.inputProperties;
+    let value = this.props.inputProperties.value;
+    if (_isArray(value)) value = value[0];
     const controls = options.map((radio, key) => {
       let checked = value === radio.value;
       let disabled = radio.disabled || _disabled;
@@ -191,7 +194,7 @@ const MuiRadioGroup = createReactClass({
             />
           }
           className={this.props.classes.line}
-          classes={{ label: this.props.classes.label }}
+          classes={{label: this.props.classes.label}}
           label={radio.label}
         />
       );
@@ -199,9 +202,8 @@ const MuiRadioGroup = createReactClass({
 
     const maxLength = options.reduce(
       (max, option) => (option.label.length > max ? option.label.length : max),
-      0
+      0,
     );
-
 
     const getColumnClass = maxLength => {
       if (maxLength < 3) {
