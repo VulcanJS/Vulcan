@@ -221,6 +221,8 @@ export const filterFunction = async (collection, input = {}, context) => {
   // console.log(JSON.stringify(input, 2));
   // console.log('// selector');
   // console.log(JSON.stringify(selector, 2));
+  // console.log('// options');
+  // console.log(JSON.stringify(options, 2));
   // console.log('// filterFields');
   // console.log(uniq(filteredFields));
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import { useCurrentUser } from '../containers/currentUser';
 import Users from 'meteor/vulcan:users';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import withMessages from '../containers/withMessages';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
 
