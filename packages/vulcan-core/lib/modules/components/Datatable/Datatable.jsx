@@ -17,6 +17,8 @@ import _get from 'lodash/get';
 const ascSortOperator = 'asc';
 const descSortOperator = 'desc';
 
+const convertToBoolean = s => (s === 'true' ? true : false);
+
 /*
 
 Datatable Component
@@ -83,7 +85,7 @@ class Datatable extends PureComponent {
 
   /*
 
-  Take a complex filter object and convert its "leaves" to numbers when needed
+  Take a complex filter object and convert its "leaves" to numbers or booleans when needed
 
   */
   convertToNumbers = (urlStateFilters, props) => {
@@ -97,16 +99,21 @@ class Datatable extends PureComponent {
 
       Object.keys(urlStateFilters).forEach(fieldName => {
         const field = schema[fieldName];
+        const fieldType = Utils.getFieldType(field);
+        const filter = urlStateFilters[fieldName];
+        // the "operator" can be _in, _eq, _gte, etc.
+        const [operator] = Object.keys(filter);
+        const value = urlStateFilters[fieldName][operator];
+        let convertedValue = value;
         // for each field, check if it's supposed to be a number
-        if (Utils.getFieldType(field) === Number) {
-          const filter = urlStateFilters[fieldName];
-          // the "operator" can be _in, _eq, _gte, etc.
-          const [operator] = Object.keys(filter);
-          const value = urlStateFilters[fieldName][operator];
+        if (fieldType === Number) {
           // value can be a single value or an array, depending on filter type
-          const convertedValue = Array.isArray(value) ? value.map(parseFloat) : parseFloat(value);
-          _set(convertedFilters, `${fieldName}.${operator}`, convertedValue);
+          convertedValue = Array.isArray(value) ? value.map(parseFloat) : parseFloat(value);
+        } else if (fieldType === Boolean) {
+          // value can be a single value or an array, depending on filter type
+          convertedValue = Array.isArray(value) ? value.map(convertToBoolean) : convertToBoolean(value);
         }
+        _set(convertedFilters, `${fieldName}.${operator}`, convertedValue);
       });
     }
     return convertedFilters;
