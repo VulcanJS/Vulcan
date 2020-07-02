@@ -7,9 +7,11 @@ if (getSetting('mailUrl')) {
   process.env.MAIL_URL = getSetting('mailUrl');
 }
 
-Meteor.startup(function () {
-  // eslint-disable-next-line no-undef
-  Vulcan.getGraphQLSchema();
+Meteor.startup(function() {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-undef
+    Vulcan.getGraphQLSchema();
+  }
   if (typeof SyncedCron !== 'undefined') {
     SyncedCron.start();
   }

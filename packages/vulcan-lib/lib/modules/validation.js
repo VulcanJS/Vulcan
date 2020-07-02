@@ -62,7 +62,7 @@ export const validateDocument = (document, collection, context) => {
   );
 
   // run simple schema validation (will check the actual types, required fields, etc....)
-  const validationContext = collection.simpleSchema().newContext();
+  const validationContext = collection.simpleSchema().namedContext('formContext');
   validationContext.validate(document);
 
   if (!validationContext.isValid()) {

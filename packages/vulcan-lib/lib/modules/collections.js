@@ -6,9 +6,10 @@ import { getSetting, registerSetting } from './settings.js';
 import { registerFragment } from './fragments.js';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
 import escapeStringRegexp from 'escape-string-regexp';
-import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields } from './intl';
+import { validateIntlField, getIntlString, isIntlField, schemaHasIntlFields, schemaHasIntlField } from './intl';
 import clone from 'lodash/clone';
 import isEmpty from 'lodash/isEmpty';
+import merge from 'lodash/merge';
 import _omit from 'lodash/omit';
 import mergeWith from 'lodash/mergeWith';
 import { createSchema, isCollectionType } from './schema_utils.js';
@@ -84,7 +85,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   });
 
   // add field schema to collection schema
-  collection.attachSchema(fieldSchema);
+  collection.attachSchema(createSchema(merge(collection.options.schema, fieldSchema)));
 };
 
 /**
@@ -96,7 +97,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
   var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
   // add field schema to collection schema
-  collection.attachSchema(new SimpleSchema(schema));
+  collection.attachSchema(createSchema(schema));
 };
 
 /**
@@ -150,7 +151,7 @@ Mongo.Collection.prototype.helpers = function (helpers) {
 };
 
 export const extendCollection = (collection, options) => {
-  collection.options = mergeWith({}, collection.options, options, (a, b) => {
+  const newOptions = mergeWith({}, collection.options, options, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return a.concat(b);
     }
@@ -161,6 +162,8 @@ export const extendCollection = (collection, options) => {
       return b.concat([a]);
     }
   });
+  collection = createCollection(newOptions);
+  return collection;
 };
 
 /*
@@ -187,15 +190,24 @@ export const addAutoRelations = () => {
   });
 };
 
-export const createCollection = options => {
-  const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
-  let { schema } = options;
+/*
 
-  // initialize new Mongo collection
+Pass an existing collection to overwrite it instead of creating a new one
+
+*/
+export const createCollection = (options) => {
+  const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
+  let { schema, apiSchema, dbSchema } = options;
+
+  const existingCollectionIndex = Collections.findIndex(c => c.collectionName === collectionName);
+  const existingCollection = existingCollectionIndex >= 0 ? Collections[existingCollectionIndex] : null;
+
+  // initialize new Mongo collection or get existing collection when overwriting
   const collection =
-    collectionName === 'Users' && Meteor.users
+    existingCollection ||
+    (collectionName === 'Users' && Meteor.users
       ? Meteor.users
-      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase());
+      : new Mongo.Collection(dbCollectionName ? dbCollectionName : collectionName.toLowerCase()));
 
   // decorate collection with options
   collection.options = options;
@@ -233,7 +245,7 @@ export const createCollection = options => {
 
   if (schema) {
     // attach schema to collection
-    collection.attachSchema(createSchema(schema));
+    collection.attachSchema(createSchema(schema, apiSchema, dbSchema));
   }
 
   runCallbacksAsync({ name: '*.collection.async', properties: { options } });
@@ -258,11 +270,7 @@ export const createCollection = options => {
     };
 
     if (collection.defaultView) {
-      parameters = Utils.deepExtend(
-        true,
-        parameters,
-        collection.defaultView(terms, apolloClient, context)
-      );
+      parameters = Utils.deepExtend(true, parameters, collection.defaultView(terms, apolloClient, context));
     }
 
     // handle view option
@@ -271,12 +279,7 @@ export const createCollection = options => {
       const view = viewFn(terms, apolloClient, context);
       let mergedParameters = Utils.deepExtend(true, parameters, view);
 
-      if (
-        mergedParameters.options &&
-        mergedParameters.options.sort &&
-        view.options &&
-        view.options.sort
-      ) {
+      if (mergedParameters.options && mergedParameters.options.sort && view.options && view.options.sort) {
         // If both the default view and the selected view have sort options,
         // don't merge them together; take the selected view's sort. (Otherwise
         // they merge in the wrong order, so that the default-view's sort takes
@@ -287,53 +290,21 @@ export const createCollection = options => {
     }
 
     // iterate over posts.parameters callbacks
-    parameters = runCallbacks(
-      `${typeName.toLowerCase()}.parameters`,
-      parameters,
-      clone(terms),
-      apolloClient,
-      context
-    );
+    parameters = runCallbacks(`${typeName.toLowerCase()}.parameters`, parameters, clone(terms), apolloClient, context);
     // OpenCRUD backwards compatibility
-    parameters = runCallbacks(
-      `${collectionName.toLowerCase()}.parameters`,
-      parameters,
-      clone(terms),
-      apolloClient,
-      context
-    );
+    parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters`, parameters, clone(terms), apolloClient, context);
 
     if (Meteor.isClient) {
-      parameters = runCallbacks(
-        `${typeName.toLowerCase()}.parameters.client`,
-        parameters,
-        clone(terms),
-        apolloClient
-      );
+      parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.client`, parameters, clone(terms), apolloClient);
       // OpenCRUD backwards compatibility
-      parameters = runCallbacks(
-        `${collectionName.toLowerCase()}.parameters.client`,
-        parameters,
-        clone(terms),
-        apolloClient
-      );
+      parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.client`, parameters, clone(terms), apolloClient);
     }
 
     // note: check that context exists to avoid calling this from withList during SSR
     if (Meteor.isServer && context) {
-      parameters = runCallbacks(
-        `${typeName.toLowerCase()}.parameters.server`,
-        parameters,
-        clone(terms),
-        context
-      );
+      parameters = runCallbacks(`${typeName.toLowerCase()}.parameters.server`, parameters, clone(terms), context);
       // OpenCRUD backwards compatibility
-      parameters = runCallbacks(
-        `${collectionName.toLowerCase()}.parameters.server`,
-        parameters,
-        clone(terms),
-        context
-      );
+      parameters = runCallbacks(`${collectionName.toLowerCase()}.parameters.server`, parameters, clone(terms), context);
     }
 
     // sort using terms.orderBy (overwrite defaultView's sort)
@@ -364,9 +335,7 @@ export const createCollection = options => {
 
     if (terms.query) {
       const query = escapeStringRegexp(terms.query);
-      const searchableFieldNames = Object.keys(currentSchema).filter(
-        fieldName => currentSchema[fieldName].searchable
-      );
+      const searchableFieldNames = Object.keys(currentSchema).filter(fieldName => currentSchema[fieldName].searchable);
       if (searchableFieldNames.length) {
         parameters = Utils.deepExtend(true, parameters, {
           selector: {
@@ -379,7 +348,7 @@ export const createCollection = options => {
         // eslint-disable-next-line no-console
         console.warn(
           `Warning: terms.query is set but schema ${
-          collection.options.typeName
+            collection.options.typeName
           } has no searchable field. Set "searchable: true" for at least one field to enable search.`
         );
       }
@@ -395,7 +364,11 @@ export const createCollection = options => {
     return parameters;
   };
 
-  Collections.push(collection);
+  if (existingCollection) {
+    Collections[existingCollectionIndex] = existingCollection;
+  } else {
+    Collections.push(collection);
+  }
 
   return collection;
 };
@@ -432,7 +405,8 @@ registerCallback({
 export function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
-    if (isIntlField(fieldSchema)) {
+    if (isIntlField(fieldSchema) && !schemaHasIntlField(schema, fieldName)) {
+
       // remove `intl` to avoid treating new _intl field as a field to internationalize
       // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];

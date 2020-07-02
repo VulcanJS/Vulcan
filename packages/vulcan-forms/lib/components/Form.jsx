@@ -46,6 +46,7 @@ import pickBy from 'lodash/pickBy';
 import omit from 'lodash/omit';
 import without from 'lodash/without';
 import _filter from 'lodash/filter';
+import omitBy from 'lodash/omitBy';
 
 import { convertSchema, formProperties } from '../modules/schema_utils';
 import { isEmptyValue } from '../modules/utils';
@@ -81,6 +82,8 @@ const getDefaultValues = convertedSchema => {
   return pickBy(mapValues(convertedSchema, field => field.defaultValue), value => value);
 };
 
+const compactObject = o => omitBy(o, f => f === null || f === undefined);
+
 const getInitialStateFromProps = nextProps => {
   const collection = nextProps.collection;
   const schema = nextProps.schema ? new SimpleSchema(nextProps.schema) : collection.simpleSchema();
@@ -88,7 +91,8 @@ const getInitialStateFromProps = nextProps => {
   const formType = nextProps.document ? 'edit' : 'new';
   // for new document forms, add default values to initial document
   const defaultValues = formType === 'new' ? getDefaultValues(convertedSchema) : {};
-  const initialDocument = merge({}, defaultValues, nextProps.prefilledProps, nextProps.document);
+  // note: we remove null/undefined values from the loaded document so they don't overwrite possible prefilledProps
+  const initialDocument = merge({}, defaultValues, nextProps.prefilledProps, compactObject(nextProps.document));
 
   //if minCount is specified, go ahead and create empty nested documents
   Object.keys(convertedSchema).forEach(key => {
@@ -244,7 +248,7 @@ class SmartForm extends Component {
   Get form components, in case any has been overwritten for this specific form
 
   */
-  getMergedComponents = () => mergeWithComponents(this.props.components || this.props.formComponents)
+  getMergedComponents = () => mergeWithComponents(this.props.components || this.props.formComponents);
 
   // --------------------------------------------------------------------- //
   // -------------------------------- Fields ----------------------------- //
@@ -692,10 +696,9 @@ class SmartForm extends Component {
           } else {
             set(newState.currentDocument, path, value);
           }
-          
+
           // 3. in case value had previously been deleted, "undelete" it
           newState.deletedValues = without(newState.deletedValues, path);
-
         }
       });
       if (changeCallback) changeCallback(newState.currentDocument);

@@ -217,7 +217,7 @@ mutation createMovie($data: CreateMovieDataInput!) {
 
 */
 export const createClientTemplate = ({ typeName, fragmentName }) =>
-  `mutation ${createMutationType(typeName)}($input: ${createInputType(typeName)}, $data: ${createDataInputType(typeName, true)}) {
+  `mutation ${createMutationType(typeName)}($input: ${createInputType(typeName)}, $data: ${createDataInputType(typeName)}) {
   ${createMutationType(typeName)}(input: $input, data: $data) {
     ${mutationReturnProperty} {
       ...${fragmentName}

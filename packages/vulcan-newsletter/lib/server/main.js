@@ -6,6 +6,6 @@ export * from './mutations.js';
 export * from './callbacks.js';
 
 // import './integrations/sendy.js';
-export * from './integrations/mailchimp.js';
+export * from './integrations/index.js';
 
 export default Newsletters;

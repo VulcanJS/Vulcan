@@ -1,5 +1,5 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
-import React from 'react';
+import React, { memo } from 'react';
 import _isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -23,6 +23,9 @@ const DatatableRow = (props, { intl }) => {
     editFormProps,
     rowClass,
     Components,
+    showSelect,
+    toggleItem,
+    selectedItems,
   } = props;
 
   let canUpdate = false;
@@ -30,9 +33,7 @@ const DatatableRow = (props, { intl }) => {
   // new APIs
   const permissionCheck = get(collection, 'options.permissions.canUpdate');
   // openCRUD backwards compatibility
-  const check =
-    get(collection, 'options.mutations.edit.check') ||
-    get(collection, 'options.mutations.update.check');
+  const check = get(collection, 'options.mutations.edit.check') || get(collection, 'options.mutations.update.check');
 
   if (Users.isAdmin(currentUser)) {
     canUpdate = true;
@@ -56,8 +57,20 @@ const DatatableRow = (props, { intl }) => {
     ...(_isFunction(modalProps) ? modalProps(document) : modalProps),
   };
 
+  const isSelected = selectedItems && selectedItems.includes(document._id);
+
   return (
-    <Components.DatatableRowLayout className={`datatable-item ${row}`}>
+    <Components.DatatableRowLayout className={`datatable-item ${row} ${isSelected ? 'datatable-item-selected' : ''}`}>
+      {showSelect && (
+        <Components.DatatableSelect
+          Components={Components}
+          document={document}
+          currentUser={currentUser}
+          collection={collection}
+          toggleItem={toggleItem}
+          selectedItems={selectedItems}
+        />
+      )}
       {columns.map((column, index) => (
         <Components.DatatableCell
           key={index}
@@ -87,10 +100,10 @@ const DatatableRow = (props, { intl }) => {
 DatatableRow.propTypes = {
   Components: PropTypes.object.isRequired,
 };
-registerComponent('DatatableRow', DatatableRow);
+registerComponent({ name: 'DatatableRow', component: DatatableRow, hocs: [memo] });
 
 DatatableRow.contextTypes = {
   intl: intlShape,
 };
 const DatatableRowLayout = ({ children, ...otherProps }) => <tr {...otherProps}>{children}</tr>;
-registerComponent({ name: 'DatatableRowLayout', component: DatatableRowLayout });
+registerComponent({ name: 'DatatableRowLayout', component: DatatableRowLayout, hocs: [memo] });

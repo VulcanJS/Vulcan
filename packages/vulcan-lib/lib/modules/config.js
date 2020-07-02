@@ -58,6 +58,9 @@ SimpleSchema.extendOptions([
   'orderable', // field can be used to order results when querying for data (backwards-compatibility)
   'sortable', // field can be used to order results when querying for data
 
+  'apiOnly', // field should not be inserted in database
+  'relation', // define a relation to another model
+  
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings
 ]);

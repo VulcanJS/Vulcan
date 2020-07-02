@@ -21,6 +21,7 @@ export * from './utils.js';
 export * from './intl.js';
 export * from './accounts_helpers.js';
 export * from './source_version.js';
+export * from './caching.js';
 
 export * from './apollo-server/settings.js';
 

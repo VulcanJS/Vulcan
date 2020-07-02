@@ -51,4 +51,10 @@ addRoute([
     componentName: 'I18n',
     layoutName: 'DebugLayout',
   },
+  {
+    name: 'debugDatabase',
+    path: '/debug/database',
+    componentName: 'DebugDatabase',
+    layoutName: 'DebugLayout',
+  },
 ]);

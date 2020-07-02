@@ -14,6 +14,8 @@ import { GraphQLSchema } from '../graphql/index.js';
 import { createStateLink } from '../../modules/apollo-common';
 import { ApolloLink } from 'apollo-link';
 
+import { getFragmentMatcher } from '../../modules/fragment_matcher';
+
 // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
 // import { createHttpLink } from 'apollo-link-http';
 // import fetch from 'node-fetch'
@@ -21,7 +23,7 @@ import { ApolloLink } from 'apollo-link';
 export const createClient = async ({ req, computeContext }) => {
   // init
   // stateLink will init the client internal state
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({ fragmentMatcher: getFragmentMatcher() });
   const stateLink = createStateLink({ cache });
   // schemaLink will fetch data directly based on the executable schema
   const schema = GraphQLSchema.getExecutableSchema();

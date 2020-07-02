@@ -161,15 +161,23 @@ const getFormFragments = ({
         mutationFieldNames = mutationFieldNames.concat(addFields);
     }
 
-    queryFieldNames.unshift('_id');
-    mutationFieldNames.unshift('_id');
+    // userId is used to check for permissions, so add it to fragments if possible
+    if (schema.userId) {
+        queryFieldNames.unshift('userId');
+        mutationFieldNames.unshift('userId');
+    }
+
+    if (schema._id) {
+        queryFieldNames.unshift('_id');
+        mutationFieldNames.unshift('_id');
+    }
 
     // check unicity (_id can be added twice)
     queryFieldNames = _uniq(queryFieldNames);
     mutationFieldNames = _uniq(mutationFieldNames);
 
 
-    // generate query fragment based on the fields that can be edited. Note: always add _id.
+    // generate query fragment based on the fields that can be edited. Note: always add _id, and userId if possible.
     // TODO: support nesting
     const queryFragmentText = getSchemaFragment({
         schema,
@@ -185,7 +193,7 @@ const getFormFragments = ({
         options: { formType, isMutation: true },
         fieldNames: mutationFieldNames
     });
-    // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id.
+    // generate mutation fragment based on the fields that can be edited and/or viewed. Note: always add _id, and userId if possible.
     // TODO: support nesting
     const generatedMutationFragment = gql(mutationFragmentText);
 

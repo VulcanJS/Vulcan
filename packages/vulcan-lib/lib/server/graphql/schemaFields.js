@@ -239,7 +239,7 @@ export const getSchemaFields = (schema, typeName) => {
  * Generate graphQL types for the fields of a Vulcan schema
  */
 /* eslint-disable no-console */
-import { isIntlField } from '../../modules/intl.js';
+import { isIntlField, isIntlDataField } from '../../modules/intl.js';
 import { isBlackbox, isArrayChildField, unarrayfyFieldName, getFieldType, getFieldTypeName, getArrayChild, getNestedSchema } from '../../modules/simpleSchema_utils';
 import { shouldAddOriginalField } from '../../modules/schema_utils';
 import relations from './relations.js';
@@ -412,7 +412,7 @@ export const getResolveAsFields = ({
     const resolverName = resolveAs.fieldName || fieldName;
 
     // use specified GraphQL type or else convert schema type
-    const fieldGraphQLType = resolveAs.type || fieldType;
+    const fieldGraphQLType = resolveAs.typeName || resolveAs.type || fieldType;
 
     // if resolveAs is an object, first push its type definition
     // include arguments if there are any
@@ -482,7 +482,8 @@ export const getPermissionFields = ({
     selector: [],
     selectorUnique: [],
     sort: [],
-    readable: []
+    readable: [],
+    filterable: [],
   };
   const {
     canRead,
@@ -493,6 +494,7 @@ export const getPermissionFields = ({
     editableBy,
     selectable,
     unique,
+    apiOnly,
   } = field;
   const createInputFieldType = hasNesting
     ? suffixType(prefixType('Create', fieldType), 'DataInput')
@@ -507,6 +509,13 @@ export const getPermissionFields = ({
       name: fieldName,
       type: fieldType,
     });
+    // we can only filter based on fields that actually exist in the db
+    if (!apiOnly) {
+      fields.filterable.push({
+        name: fieldName,
+        type: fieldType,
+      });
+    }
   }
 
   // OpenCRUD backwards compatibility
@@ -572,7 +581,8 @@ export const getSchemaFields = (schema, typeName) => {
     selectorUnique: [],
     sort: [],
     enums: [],
-    readable: []
+    readable: [],
+    filterable: [],
   };
   const nestedFieldsList = [];
   const resolvers = [];
@@ -586,7 +596,7 @@ export const getSchemaFields = (schema, typeName) => {
     const isNestedObject = hasNestedSchema(field);
     // note: intl fields are an exception and are not considered as nested
     const isNestedArray =
-      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field);
+      hasArrayNestedChild(fieldName, schema) && hasNestedSchema(getArrayChild(fieldName, schema)) && !isIntlField(field) && !isIntlDataField(field);
     const isReferencedObject = hasTypeName(field);
     const isReferencedArray = hasTypeName(getArrayChild(fieldName, schema));
     const hasNesting = !isBlackbox(field) && (isNestedArray || isNestedObject || isReferencedObject || isReferencedArray);
@@ -658,6 +668,7 @@ export const getSchemaFields = (schema, typeName) => {
       fields.selectorUnique.push(...permissionsFields.selectorUnique);
       fields.sort.push(...permissionsFields.sort);
       fields.readable.push(...permissionsFields.readable);
+      fields.filterable.push(...permissionsFields.filterable);
 
       // check for nested fields if the field does not reference an existing type
       if (!field.typeName && isNestedObject) {

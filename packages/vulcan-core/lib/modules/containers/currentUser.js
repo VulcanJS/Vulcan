@@ -2,32 +2,34 @@ import React from 'react';
 import { getFragment } from 'meteor/vulcan:lib';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import get from 'lodash/get';
 
 // NOTE: this needs to be a function to avoid fragment registration issue at build time
 export const buildCurrentUserQuery = () => gql`
-      query getCurrentUser {
-        currentUser {
-          ...UsersCurrent
-        }
-      }
-      ${getFragment('UsersCurrent')}
-    `;
+  query getCurrentUser {
+    currentUser {
+      ...UsersCurrent
+    }
+  }
+  ${getFragment('UsersCurrent')}
+`;
 
-export const useCurrentUser = () => (
-  useQuery(
-    buildCurrentUserQuery()
-  )
-);
+export const useCurrentUser = () => {
+  const result = useQuery(buildCurrentUserQuery());
+  return {
+    ...result,
+    currentUser: get(result, 'data.currentUser'),
+  };
+};
 
 export const withCurrentUser = C => {
-  const Wrapped = (props) => {
+  const Wrapped = props => {
     const res = useCurrentUser();
     const { loading, data } = res;
-    const namedRes =
-    {
+    const namedRes = {
       currentUserLoading: loading,
       currentUser: data && data.currentUser,
-      currentUserData: data
+      currentUserData: data,
     };
     return <C {...props} {...namedRes} />;
   };
