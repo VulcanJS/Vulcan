@@ -39,7 +39,7 @@ const styles = theme => ({
 const TooltipIntl = (props, { intl }) => {
   //eslint-disable-next-line no-console
   console.warn(
-    'WARNING! TooltipIntl is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.1'
+    'WARNING! TooltipIntl is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.2'
   );
 
   const {
