@@ -936,6 +936,7 @@ class SmartForm extends Component {
   */
   submitForm = async event => {
     event && event.preventDefault();
+    event && event.stopPropagation();
 
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
@@ -1006,7 +1007,7 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //
-
+  
   getCommonProps = () => {
     const { errors, currentValues, deletedValues, disabled } = this.state;
     const { currentUser, prefilledProps, formComponents, itemProperties } = this.props;
