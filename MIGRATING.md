@@ -6,6 +6,7 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 
 - `meteor npm i --save node-cache`
 - Read Vulcan blog article related to 1.16
+- Schemas without "_id" or "userId" won't have those fields in the default form fragment anymore (extremely edge case)
 
 ## From 1.14.1 to 1.15
 
