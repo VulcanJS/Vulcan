@@ -28,7 +28,7 @@ class FormNestedArray extends PureComponent {
   }
 
   addItem = () => {
-    const {prefilledProps, path } = this.props;
+    const { prefilledProps, path } = this.props;
     const value = this.getCurrentValue();
     this.props.updateCurrentValues(
       { [`${path}.${value.length}`]: _get(prefilledProps, `${path}.$`) || {} },
@@ -136,6 +136,10 @@ FormNestedArray.propTypes = {
   deletedValues: PropTypes.array.isRequired,
   formComponents: PropTypes.object.isRequired,
   itemProperties: PropTypes.object,
+};
+
+FormNestedArray.defaultProps = {
+  itemProperties: {}
 };
 
 export default FormNestedArray;

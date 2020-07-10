@@ -63,6 +63,7 @@ describe('vulcan:form/formFragments', function () {
     test('create subfields for nested objects', () => {
         const schema = new SimpleSchema({
             nestedField: {
+
                 canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
