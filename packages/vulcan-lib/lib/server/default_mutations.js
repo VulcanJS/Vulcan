@@ -111,6 +111,7 @@ export function getDefaultMutations(options) {
           currentUser: context.currentUser,
           validate: true,
           context,
+          contextName: input.contextName,
         });
       },
     };
@@ -224,6 +225,7 @@ export function getDefaultMutations(options) {
           validate: true,
           context,
           document,
+          contextName: input.contextName,
         });
       },
     };

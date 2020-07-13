@@ -62,6 +62,7 @@ export const createMutator = async ({
   currentUser,
   validate,
   context = {},
+  contextName,
 }) => {
   // OpenCRUD backwards compatibility: accept either data or document
   // we don't want to modify the original document
@@ -94,6 +95,7 @@ export const createMutator = async ({
     originalDocument: clone(document),
     newDocument: document,
     schema,
+    contextName,
   };
 
   /*
@@ -103,7 +105,7 @@ export const createMutator = async ({
   */
   if (validate) {
     let validationErrors = [];
-    validationErrors = validationErrors.concat(validateDocument(document, collection, context));
+    validationErrors = validationErrors.concat(validateDocument(document, collection, context, contextName));
     // new callback API (Oct 2019)
     validationErrors = await runCallbacks({
       name: `${typeName.toLowerCase()}.create.validate`,
@@ -311,6 +313,7 @@ export const updateMutator = async ({
   validate,
   context = {},
   document: oldDocument,
+  contextName,
 }) => {
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
@@ -356,6 +359,7 @@ export const updateMutator = async ({
     collection,
     context,
     schema,
+    contextName,
   };
 
   /*
@@ -366,7 +370,7 @@ export const updateMutator = async ({
   if (validate) {
     let validationErrors = [];
 
-    validationErrors = validationErrors.concat(validateData(data, document, collection, context));
+    validationErrors = validationErrors.concat(validateData(data, document, collection, context, contextName));
 
     // new callback API (Oct 2019)
     validationErrors = await runCallbacks({

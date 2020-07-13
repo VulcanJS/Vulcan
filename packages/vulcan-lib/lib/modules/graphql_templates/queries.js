@@ -65,6 +65,8 @@ export const singleInputTemplate = ({ typeName }) =>
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }`;
 
 /*
@@ -100,6 +102,8 @@ export const multiInputTemplate = ({ typeName }) =>
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
   
 }`;
 

@@ -87,6 +87,8 @@ export const createInputType = typeName => `Create${typeName}Input`;
 export const createInputTemplate = ({ typeName }) =>
   `input ${createInputType(typeName)} {
   data: ${createDataInputType(typeName, true)}
+  # An identifier to name the mutation's execution context
+  contextName: String
 }`;
 
 /*
@@ -107,6 +109,8 @@ export const updateInputTemplate = ({ typeName }) =>
   filter: ${filterInputType(typeName)}
   id: String
   data: ${updateDataInputType(typeName, true)}
+  # An identifier to name the mutation's execution context
+  contextName: String
 }`;
 
 /*
@@ -129,6 +133,8 @@ export const upsertInputTemplate = ({ typeName }) =>
   filter: ${filterInputType(typeName)}
   id: String
   data: ${updateDataInputType(typeName, true)}
+  # An identifier to name the mutation's execution context
+  contextName: String
 }`;
 
 /*
@@ -147,6 +153,8 @@ export const deleteInputTemplate = ({ typeName }) =>
   `input ${deleteInputType(typeName)}{
   filter: ${filterInputType(typeName)}
   id: String
+  # An identifier to name the mutation's execution context
+  contextName: String
 }`;
 
 /*

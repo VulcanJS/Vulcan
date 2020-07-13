@@ -937,6 +937,8 @@ class SmartForm extends Component {
   submitForm = async event => {
     event && event.preventDefault();
 
+    const { contextName } = this.props;
+    
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
       return;
@@ -957,7 +959,10 @@ class SmartForm extends Component {
     if (this.getFormType() === 'new') {
       // create document form
       try {
-        const result = await this.props[`create${this.props.typeName}`]({ data });
+        const result = await this.props[`create${this.props.typeName}`]({ input: {
+          data,
+          contextName,
+        } });
         this.newMutationSuccessCallback(result);
       } catch (error) {
         this.mutationErrorCallback(document, error);
@@ -967,8 +972,11 @@ class SmartForm extends Component {
       try {
         const documentId = this.getDocument()._id;
         const result = await this.props[`update${this.props.typeName}`]({
-          selector: { documentId },
-          data,
+          input: {
+            id: documentId,
+            data,
+            contextName,
+          }
         });
         this.editMutationSuccessCallback(result);
       } catch (error) {
@@ -1009,7 +1017,7 @@ class SmartForm extends Component {
 
   getCommonProps = () => {
     const { errors, currentValues, deletedValues, disabled } = this.state;
-    const { currentUser, prefilledProps, formComponents, itemProperties } = this.props;
+    const { currentUser, prefilledProps, formComponents, itemProperties, contextName } = this.props;
     return {
       errors,
       throwError: this.throwError,
@@ -1027,6 +1035,7 @@ class SmartForm extends Component {
       FormComponents: this.getMergedComponents(),
       itemProperties,
       submitForm: this.submitForm,
+      contextName,
     };
   };
 
@@ -1141,6 +1150,7 @@ SmartForm.propTypes = {
   disabled: PropTypes.bool,
   itemProperties: PropTypes.object,
   successComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  contextName: PropTypes.string,
 
   // callbacks
   ...callbackProps,
