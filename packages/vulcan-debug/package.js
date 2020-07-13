@@ -19,6 +19,8 @@ Package.onUse(function(api) {
     'vulcan:email@=1.15.2',
   ]);
 
+  api.use(['vulcan:errors@=1.15.2']), ['server', 'client'], { weak: true };
+
   api.addFiles(['lib/stylesheets/debug.scss'], ['client']);
 
   api.mainModule('lib/server/main.js', 'server');

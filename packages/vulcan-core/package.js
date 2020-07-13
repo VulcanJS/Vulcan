@@ -8,7 +8,9 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:lib@=1.15.2', 'vulcan:i18n@=1.15.2', 'vulcan:users@=1.15.2', 'vulcan:debug@=1.15.2']);
+  api.use(['vulcan:lib@=1.15.2', 'vulcan:i18n@=1.15.2', 'vulcan:users@=1.15.2']);
+
+  api.use(['vulcan:i18n@=1.15.2'], ['server', 'client'], { weak: true });
 
   api.imply(['vulcan:lib@=1.15.2']);
 

@@ -9,3 +9,4 @@ import '../components/Components.jsx';
 import '../components/I18n.jsx';
 import '../components/Dashboard.jsx';
 import '../components/Database.jsx';
+import '../components/ErrorCatcherContents.jsx';

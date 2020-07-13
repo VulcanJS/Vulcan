@@ -47,16 +47,16 @@ class ErrorCatcher extends Component {
 
   render() {
     const { error } = this.state;
-    return error ? (
-      <div className="error-catcher">
-        <Components.Flash
-          message={{ id: 'errors.generic_report', properties: { errorMessage: error.message } }}
-        />
-      </div>
-    ) : (
-      this.props.children
-    );
+    return error ? <Components.ErrorCatcherContents error={error} /> : this.props.children;
   }
 }
 
 registerComponent('ErrorCatcher', ErrorCatcher, withCurrentUser, withSiteData, withRouter);
+
+const ErrorCatcherContents = ({ error }) => (
+  <div className="error-catcher">
+    <Components.Flash message={{ id: 'errors.generic_report', properties: { errorMessage: error.message } }} />
+  </div>
+);
+
+registerComponent('ErrorCatcherContents', ErrorCatcherContents);
