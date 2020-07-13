@@ -39,6 +39,8 @@ export function getDefaultResolvers(options) {
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
+        // get currentUser and Users collection from context
+        const { currentUser, Users } = context;
 
         collectionName = getCollectionByTypeName(typeName).options.collectionName;
 
@@ -47,13 +49,10 @@ export function getDefaultResolvers(options) {
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Input: ${JSON.stringify(input)}`);
 
-        if (cacheControl && enableCache) {
+        if (cacheControl && enableCache ) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
           cacheControl.setCacheHint({ maxAge });
         }
-
-        // get currentUser and Users collection from context
-        const { currentUser, Users } = context;
 
         // get collection based on collectionName argument
         const collection = context[collectionName];
@@ -71,7 +70,7 @@ export function getDefaultResolvers(options) {
           options.skip = terms.offset;
         }
 
-        debug({ selector, options });
+        // debug({ selector, options });
 
         const docs = await Connectors.find(collection, selector, options);
 

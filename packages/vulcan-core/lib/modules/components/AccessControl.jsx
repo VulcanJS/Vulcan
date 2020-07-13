@@ -30,10 +30,12 @@ const AccessControl = ({ currentRoute, children, flash }, { intl }) => {
       return <Components.DefaultLogInFailureComponent {...access} />;
     }
   } else {
-    const canAccess = check ? check(currentUser) : groups ? Users.isMemberOf(currentUser, groups) : true;
+    const canAccess = check ? check(currentUser, currentRoute) : groups ? Users.isMemberOf(currentUser, groups) : true;
     return canAccess ? children : <FailureComponent {...access} />;
   }
 };
+
+AccessControl.displayName = 'AccessControl';
 
 AccessControl.contextTypes = {
   intl: intlShape,

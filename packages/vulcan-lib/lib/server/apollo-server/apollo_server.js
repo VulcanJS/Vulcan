@@ -189,7 +189,9 @@ export const onStart = () => {
       schema: GraphQLSchema.executableSchema,
       formatError,
       tracing: getSetting('apolloTracing', Meteor.isDevelopment),
-      cacheControl: true,
+      cacheControl: {
+        defaultMaxAge: 1000,
+      },
       context: ({ req }) => context(req),
       ...getApolloServerOptions(),
     },
