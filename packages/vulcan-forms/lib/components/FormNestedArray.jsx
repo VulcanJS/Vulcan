@@ -63,6 +63,10 @@ class FormNestedArray extends PureComponent {
     return visibleIndexes;
   };
 
+  componentDidMount() {
+    if (this.props.itemProperties.openNested) this.addItem();
+  }
+
   render() {
     const value = this.getCurrentValue();
     const visibleItemIndexes = this.computeVisibleIndex(value);
@@ -131,6 +135,11 @@ FormNestedArray.propTypes = {
   errors: PropTypes.array.isRequired,
   deletedValues: PropTypes.array.isRequired,
   formComponents: PropTypes.object.isRequired,
+  itemProperties: PropTypes.object,
+};
+
+FormNestedArray.defaultProps = {
+  itemProperties: {}
 };
 
 export default FormNestedArray;

@@ -936,6 +936,7 @@ class SmartForm extends Component {
   */
   submitForm = async event => {
     event && event.preventDefault();
+    event && event.stopPropagation();
 
     const { contextName } = this.props;
     
@@ -1014,7 +1015,7 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //
-
+  
   getCommonProps = () => {
     const { errors, currentValues, deletedValues, disabled } = this.state;
     const { currentUser, prefilledProps, formComponents, itemProperties, contextName } = this.props;
