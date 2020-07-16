@@ -51,7 +51,7 @@
     ts-invariant "^0.4.4"
     tslib "^1.10.0"
 
-"@apollo/react-hooks@^3.1.1", "@apollo/react-hooks@^3.1.5":
+"@apollo/react-hooks@3.1.5", "@apollo/react-hooks@^3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@apollo/react-hooks/-/react-hooks-3.1.5.tgz#7e710be52461255ae7fc0b3b9c2ece64299c10e6"
   integrity sha512-y0CJ393DLxIIkksRup4nt+vSjxalbZBXnnXxYbviq/woj+zKa431zy0yT4LqyRKpFy9ahMIwxBnBwfwIoupqLQ==
@@ -70,7 +70,7 @@
     "@apollo/react-hooks" "^3.1.5"
     tslib "^1.10.0"
 
-"@apollo/react-testing@^3.1.0":
+"@apollo/react-testing@3.1.4":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@apollo/react-testing/-/react-testing-3.1.4.tgz#f2e1b9b65a0bd773facf54db4fdb5995d162a72a"
   integrity sha512-1eKjN36UfIAnBVmfLbl12vQ/eCjTqYdaU95chGIQzT2uHd5BnasJu0z+MwXBrEs57A9WY9mFvLZxdjzQJXaacA==
@@ -4758,7 +4758,7 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-clone@^2.1.1, clone@^2.1.2:
+clone@2.x, clone@^2.1.1, clone@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
   integrity sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=
@@ -9094,10 +9094,10 @@ lodash.without@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.without/-/lodash.without-4.4.0.tgz#3cd4574a00b67bae373a94b748772640507b7aac"
   integrity sha1-PNRXSgC2e643OpS3SHcmQFB7eqw=
 
-lodash@^4.0.0, lodash@^4.0.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.2.1, lodash@~4.17.12:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+lodash@^4.0.0, lodash@^4.0.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.2.1, lodash@~4.17.12:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loglevel@^1.6.7:
   version "1.6.8"
@@ -9708,6 +9708,13 @@ no-case@^3.0.3:
   dependencies:
     lower-case "^2.0.1"
     tslib "^1.10.0"
+
+node-cache@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/node-cache/-/node-cache-5.1.2.tgz#f264dc2ccad0a780e76253a694e9fd0ed19c398d"
+  integrity sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==
+  dependencies:
+    clone "2.x"
 
 node-dir@^0.1.10:
   version "0.1.17"
@@ -11009,7 +11016,7 @@ react-addons-pure-render-mixin@^15.4.1:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-apollo@^3.1.2:
+react-apollo@3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-3.1.5.tgz#36692d393c47e7ccc37f0a885c7cc5a8b4961c91"
   integrity sha512-xOxMqxORps+WHrUYbjVHPliviomefOpu5Sh35oO3osuOyPTxvrljdfTLGCggMhcXBsDljtS5Oy4g+ijWg3D4JQ==
