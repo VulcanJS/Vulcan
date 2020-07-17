@@ -344,3 +344,9 @@ div.ReactTags__suggestions mark{
   align-items: center;
   justify-content: center;
 }
+
+.form-component-checkbox{
+  .col-sm-9{
+    padding-top: calc(.375rem + 1px);
+  }
+}
