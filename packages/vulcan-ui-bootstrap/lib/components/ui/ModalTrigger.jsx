@@ -47,9 +47,9 @@ class ModalTrigger extends PureComponent {
     triggerComponent = triggerComponent ? (
       <span onClick={this.clickHandler}>{triggerComponent}</span>
     ) : (
-      <a href="javascript:void(0)" onClick={this.clickHandler}>
+      <Components.Button variant="link" onClick={this.clickHandler}>
         {label}
-      </a>
+      </Components.Button>
     );
     const childrenComponent = React.cloneElement(children, { closeModal: this.closeModal });
     const headerComponent = header && React.cloneElement(header, { closeModal: this.closeModal });

@@ -52,9 +52,9 @@ const FormSubmit = ({
     {deleteDocument ? (
       <div>
         <hr />
-        <a href="javascript:void(0)" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
+        <Components.Button variant="link" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
           <Components.Icon name="close" /> <FormattedMessage id="forms.delete" />
-        </a>
+        </Components.Button>
       </div>
     ) : null}
   </div>

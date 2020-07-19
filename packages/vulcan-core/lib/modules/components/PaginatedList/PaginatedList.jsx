@@ -114,7 +114,6 @@ registerComponent('PaginatedListLoadingMore', PaginatedListLoadingMore);
 const PaginatedListLoadMore = ({ Components, loadMore, count, totalCount }) => (
   <Components.Button
     className="list-loadmore"
-    // href="javascript:void(0)"
     onClick={e => {
       e.preventDefault();
       loadMore();
