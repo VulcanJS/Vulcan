@@ -568,6 +568,36 @@ describe('vulcan:lib/graphql', function () {
         const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
         expect(normalizedSchema).toMatch('type Foo { field: String resolvedField: Bar anotherResolvedField: Bar }');
       });
+      test('generate a type for a nested array of objects with resolveAs', () => {
+        const collection = fooCollection({
+          arrayField: {
+            type: Array,
+            canRead: ['admins'],
+          },
+          'arrayField.$': {
+            type: new SimpleSchema({
+              someField: {
+                type: String,
+                canRead: ['admins'],
+                canCreate: ['admins'],
+                resolveAs: {
+                  fieldName: 'resolvedField',
+                  type: 'Bar',
+                  resolver: () => {
+                    return 'bar';
+                  },
+                  addOriginalField: true,
+                }
+              }
+            })
+          }
+        });
+        const res = collectionToGraphQL(collection);
+        expect(res.graphQLSchema).toBeDefined();
+        const normalizedSchema = normalizeGraphQLSchema(res.graphQLSchema);
+        expect(normalizedSchema).toMatch('type Foo { arrayField: [FooArrayField] }');
+        expect(normalizedSchema).toMatch('type FooArrayField { someField: String resolvedField: Bar }');
+      });
 
     });
 
