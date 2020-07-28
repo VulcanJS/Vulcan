@@ -153,8 +153,6 @@ export const deleteInputTemplate = ({ typeName }) =>
   `input ${deleteInputType(typeName)}{
   filter: ${filterInputType(typeName)}
   id: String
-  # An identifier to name the mutation's execution context
-  contextName: String
 }`;
 
 /*
