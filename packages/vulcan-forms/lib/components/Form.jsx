@@ -999,7 +999,7 @@ class SmartForm extends Component {
     const deleteDocumentConfirm = this.context.intl.formatMessage({ id: 'forms.delete_confirm' }, { title: documentTitle });
 
     if (window.confirm(deleteDocumentConfirm)) {
-      this.props[`delete${this.props.typeName}`]({ documentId })
+      this.props[`delete${this.props.typeName}`]({ input: { id: documentId } })
         .then(mutationResult => {
           // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({ documentId, documentTitle });
