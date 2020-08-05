@@ -30,10 +30,11 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { deleteClientTemplate } from 'meteor/vulcan:core';
-import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
+import { extractCollectionInfo, extractFragmentInfo, getApolloClient } from 'meteor/vulcan:lib';
 import { buildMultiQuery } from './multi';
-import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
+import { getVariablesListFromCache, removeFromData, removeFromDataSingle } from './cacheUpdate';
 import { computeQueryVariables } from './variables';
+import { singleQuery as singleQueryFn } from './single2';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   gql`
@@ -42,28 +43,40 @@ export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
   `
 );
 
-// remove value from the cached lists
-const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
-  const multiResolverName = collection.options.multiResolverName;
+const queryUpdaterCommon = async ({collection, typeName, queryResolverName, query, cache, data, removeDataFunc }) => {
   const deleteResolverName = `delete${typeName}`;
-  return (cache, { data }) => {
-    // update multi queries
-    const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
-    const removedDoc = data[deleteResolverName].data;
-    // get all the resolvers that match
-    const variablesList = getVariablesListFromCache(cache, multiResolverName);
-    variablesList.forEach(variables => {
-      try {
-        const queryResult = cache.readQuery({ query: multiQuery, variables });
-        const newData = removeFromData({ queryResult, multiResolverName, document: removedDoc });
-        cache.writeQuery({ query: multiQuery, variables, data: newData });
-      } catch (err) {
-        // could not find the query
-        // TODO: be smarter about the error cases and check only for cache mismatch
-        console.log(err);
-      }
-    });
-  };
+  const removedDoc = data[deleteResolverName].data;
+  const variablesList = getVariablesListFromCache(cache, queryResolverName);
+  const client = getApolloClient();
+  variablesList.forEach(variables => {
+    try {
+      const queryResult = cache.readQuery({ query: query, variables });
+      const newData = removeDataFunc({ queryResult, resolverName: queryResolverName, document: removedDoc });
+      client.writeQuery({ query: query, variables, data: newData });
+    } catch (err) {
+      // could not find the query
+      // TODO: be smarter about the error cases and check only for cache mismatch
+      console.log(err);
+    }
+  });
+};
+
+// remove value from the cached lists
+export const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => async (cache, { data }) => {
+  const multiResolverName = collection.options.multiResolverName;
+  const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
+  return await queryUpdaterCommon({collection, typeName, queryResolverName: multiResolverName, query: multiQuery, cache, data, removeDataFunc: removeFromData })
+};
+
+export const singleQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => async (cache, { data }) => {
+  const singleResolverName = collection.options.singleResolverName;
+  const singleQuery = singleQueryFn({ typeName, fragmentName, fragment });
+  return await queryUpdaterCommon({collection, typeName, queryResolverName: singleResolverName, query: singleQuery, cache, data, removeDataFunc: removeFromDataSingle })
+};
+
+const queryUpdaters = (args) => async (cache, { data }) => {
+  await multiQueryUpdater(args)(cache, { data });
+  await singleQueryUpdater(args)(cache, { data });
 };
 
 export const useDelete2 = (options) => {
@@ -83,7 +96,7 @@ export const useDelete2 = (options) => {
 
   const [deleteFunc, ...rest] = useMutation(query, {
     // optimistic update
-    update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
+    update: queryUpdaters({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
   const extendedDeleteFunc = (args/*{ input: argsInput, _id: argsId }*/) => {
