@@ -25,6 +25,7 @@ export default {
       hasErrors: this.hasErrors(),
       className: this.props.className,
       inputType: this.props.inputType,
+      required: this.props.required,
     };
   },
 
