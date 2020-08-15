@@ -1,6 +1,7 @@
 import withStyles from '@material-ui/core/styles/withStyles';
 import React from 'react';
 import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 import ComponentMixin from './mixins/component';
 import MuiFormControl from './MuiFormControl';
 import MuiFormHelper from './MuiFormHelper';
@@ -12,36 +13,8 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
 import _isArray from 'lodash/isArray';
-
-
-export const styles = theme => ({
-
-  inputRoot: {
-    '& .clear-enabled': { opacity: 0 },
-    '&:hover .clear-enabled': { opacity: 0.54 },
-  },
-
-  inputFocused: {
-    '& .clear-enabled': { opacity: 0.54 }
-  },
-
-  menuItem: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingLeft: 9,
-    fontFamily: theme.typography.fontFamily,
-    color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white,
-    fontSize: theme.typography.pxToRem(16),
-    lineHeight: '1.1875em',
-  },
-
-  input: {
-    //paddingLeft: 8,
-  },
-  
-  inputDisabled: {},
-  
-});
+import classNames from 'classnames';
+import { styles } from './MuiSuggest';
 
 
 const MuiSelect = createReactClass({
@@ -49,6 +22,21 @@ const MuiSelect = createReactClass({
   element: null,
 
   mixins: [ComponentMixin],
+
+  propTypes: {
+    options: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    })),
+    classes: PropTypes.object.isRequired,
+    showMenuIndicator: PropTypes.bool,
+  },
+
+  getDefaultProps: function () {
+    return {
+      showMenuIndicator: true,
+    };
+  },
 
   getInitialState: function () {
     return {
@@ -112,7 +100,7 @@ const MuiSelect = createReactClass({
         ?
         <option key={key} {...rest}>{label}</option>
         :
-        <MenuItem key={key} {...rest} className={classes.menuItem}>{label}</MenuItem>;
+        <MenuItem key={key} {...rest} className={classes.selectItem}>{label}</MenuItem>;
     };
 
     const renderGroup = (label, key, nodes) => {
@@ -176,11 +164,13 @@ const MuiSelect = createReactClass({
       <StartAdornment {...this.props}
                       value={value}
                       classes={null}
+                      changeValue={this.changeValue}
       />;
     const endAdornment =
       <EndAdornment {...this.props}
                     value={value}
-                    classes={null}
+                    classes={{ inputAdornment: classes.inputAdornment }}
+                    changeValue={this.changeValue}
       />;
 
     return (

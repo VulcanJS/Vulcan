@@ -207,7 +207,7 @@ export const instantiateComponent = (component, props) => {
   if (!component) {
     return null;
   } else if (typeof component === 'string') {
-    const Component = getComponent(component);
+    const Component = Components[component];
     return <Component {...props} />;
   } else if (React.isValidElement(component)) {
     return React.cloneElement(component, props);

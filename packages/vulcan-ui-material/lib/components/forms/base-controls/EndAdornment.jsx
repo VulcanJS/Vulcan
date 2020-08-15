@@ -6,7 +6,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from 'mdi-material-ui/CloseCircle';
+import MenuDownIcon from 'mdi-material-ui/MenuDown';
 import classNames from 'classnames';
+import _omit from 'lodash/omit';
 
 
 export const styles = theme => ({
@@ -25,7 +27,21 @@ export const styles = theme => ({
     },
     height: 'auto',
   },
-  
+
+  menuIndicator: {
+    padding: 10,
+    marginRight: -40,
+    marginLeft: -16,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.midBlack,
+    pointerEvents: 'none',
+    transition: theme.transitions.create(['opacity'], {
+      duration: theme.transitions.duration.short,
+    }),
+  },
+
   clearButton: {
     opacity: 0,
     '& svg': {
@@ -57,7 +73,7 @@ export const styles = theme => ({
 
 
 const EndAdornment = (props, context) => {
-  const { classes, value, addonAfter, changeValue, hideClear, disabled } = props;
+  const { classes, value, addonAfter, changeValue, showMenuIndicator, hideClear, disabled } = props;
   const { intl } = context;
 
   if (!addonAfter && (!changeValue || hideClear || disabled)) return null;
@@ -74,10 +90,16 @@ const EndAdornment = (props, context) => {
     >
       <CloseIcon/>
     </IconButton>;
-  
+
+  const menuIndicator = showMenuIndicator && !disabled &&
+    <div className={classNames('menu-indicator', classes.menuIndicator, hasValue && 'has-value')}>
+      <MenuDownIcon/>
+    </div>;
+
   return (
     <InputAdornment classes={{ root: classes.inputAdornment }} position="end">
-      {instantiateComponent(addonAfter)}
+      {instantiateComponent(addonAfter, _omit(props, ['classes']))}
+      {menuIndicator}
       {clearButton}
     </InputAdornment>
   );
@@ -88,6 +110,7 @@ EndAdornment.propTypes = {
   classes: PropTypes.object.isRequired,
   value: PropTypes.any,
   changeValue: PropTypes.func,
+  showMenuIndicator: PropTypes.bool,
   hideClear: PropTypes.bool,
   addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.func]),
 };
