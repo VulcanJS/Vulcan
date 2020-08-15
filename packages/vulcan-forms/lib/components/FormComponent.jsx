@@ -53,15 +53,16 @@ class FormComponent extends Component {
     const deleteChanged = includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
     const disabledChanged = nextProps.disabled !== this.props.disabled;
+    const helpChanged = nextProps.help !== this.props.help;
 
-    const shouldUpdate = valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged;
+    const shouldUpdate = valueChanged || errorChanged || deleteChanged || charsChanged || disabledChanged || helpChanged;
 
     return shouldUpdate;
   }
 
   /*
   
-  Returns true if the passed input type is a custom 
+  Returns true if the passed input type is a custom
   
   */
   isCustomInput = inputType => {
@@ -102,8 +103,13 @@ class FormComponent extends Component {
       value = parseInt(value);
     }
 
-    const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
-    this.props.updateCurrentValues({ [getPath(this.props)]: updateValue });
+    if (value !== this.getValue()) {
+      const updateValue = this.props.locale ?
+          { locale: this.props.locale, value } :
+          value;
+      this.props.updateCurrentValues({ [getPath(this.props)]: updateValue });
+      this.props.clearFieldErrors(getPath(this.props));
+    }
 
     // for text fields, update character count on change
     if (this.showCharsRemaining()) {
@@ -354,7 +360,7 @@ class FormComponent extends Component {
 }
 
 FormComponent.propTypes = {
-  document: PropTypes.object,
+  document: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.any,

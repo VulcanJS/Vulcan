@@ -135,12 +135,15 @@ addStrings('fr', {
   'app.disallowed_property_detected': 'Propriété refusée détectée: {value}',
   'app.something_bad_happened': 'Quelque chose s\'est mal passé...',
   'app.embedly_not_authorized': 'Clé d\'API Embedly invalide renseignée dans les paramètres. Pour trouver votre clé, connectez-vous sur: https://app.embed.ly -> API',
+  'app.defaultError': '{defaultMessage}',
+  'app.please_sign_up_log_in': 'Please sign up or log in',
+  'app.no_access_permissions': 'Sorry, you are not allowed to access this page.',
 
   'cards.edit': 'Modifier',
   'datatable.new': 'Nouveau',
   'datatable.edit': 'Modifier',
   'datatable.search': 'Rechercher',
-  
+
   'admin': 'Admin',
   'notifications': 'Notifications',
 
@@ -158,7 +161,7 @@ addStrings('fr', {
   'errors.badDate':'Le champ “{label}” n\'est pas une date',
   'errors.notAllowed':'La valeur du champ "{label}" est interdite.',
   'errors.noDecimal':'La valeur du champ "{label}" ne peut être décimale.',
-  
+
   'errors.minNumberExclusive':'',
   'errors.maxNumberExclusive':'',
   'errors.keyNotInSchema':'',
