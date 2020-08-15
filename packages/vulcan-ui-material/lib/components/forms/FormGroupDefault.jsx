@@ -20,6 +20,8 @@ const styles = theme => ({
     padding: theme.spacing(3),
   },
 
+  testPaper: theme.utils.testPaper,
+
   subtitle1: {
     display: 'flex',
     alignItems: 'center',
@@ -70,7 +72,8 @@ const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) =
         hidden && classes.hidden,
         'form-group-header'
       )}
-      onClick={collapsible ? toggle : null}>
+      onClick={collapsible ? toggle : (event) => { event.preventDefault(); }}
+    >
       <Typography
         className={classNames(
           'form-group-header-title',
@@ -78,7 +81,7 @@ const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) =
           collapsible && classes.collapsible
         )}
         variant="subtitle1"
-        onClick={toggle}>
+      >
         <div className={classes.label}>{label}</div>
 
         {collapsible && (
@@ -112,6 +115,7 @@ const FormGroupLayout = ({
   group,
   children,
   classes,
+  document,
 }) => {
   const collapsedIn = (!collapsed && !hidden) || hasErrors;
 
@@ -124,7 +128,7 @@ const FormGroupLayout = ({
       <Collapse
         classes={{ container: classes.container, entered: classes.entered }}
         in={collapsedIn}>
-        <Paper className={classes.paper}>{children}</Paper>
+        <Paper className={classNames(classes.paper, document.test && classes.testPaper)}>{children}</Paper>
       </Collapse>
     </div>
   );

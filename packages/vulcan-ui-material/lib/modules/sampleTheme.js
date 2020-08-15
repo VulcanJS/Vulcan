@@ -6,7 +6,6 @@ import info from '@material-ui/core/colors/blue';
 import success from '@material-ui/core/colors/green';
 import warning from '@material-ui/core/colors/orange';
 
-
 /** @ignore */
 
 /**
@@ -18,65 +17,64 @@ import warning from '@material-ui/core/colors/orange';
  *
  */
 
-
 const theme = {
-  
+
   palette: {
-    
+
     primary: {
       light: primary[200],
       main: primary[500],
       dark: primary[800],
       contrastText: '#fff',
-      ...primary
+      ...primary,
     },
-  
+
     secondary: {
       light: secondary[200],
       main: secondary[500],
       dark: secondary[800],
       contrastText: '#fff',
-      ...secondary
+      ...secondary,
     },
-  
+
     error: {
       light: error[200],
       main: error[500],
       dark: error[800],
       contrastText: '#fff',
-      ...error
+      ...error,
     },
-  
+
     warning: {
       light: warning[100],
       main: warning[500],
       dark: warning[900],
       contrastText: '#fff',
-      ...warning
+      ...warning,
     },
-  
+
     success: {
       light: success[100],
       main: success[500],
       dark: success[900],
       contrastText: '#fff',
-      ...success
+      ...success,
     },
-  
+
     info: {
       light: info[100],
       main: info[500],
       dark: info[900],
       contrastText: '#fff',
-      ...info
+      ...info,
     },
-  
+
   },
-  
+
   utils: {
-    
+
     tooltipEnterDelay: 700,
-    
+
     errorMessage: {
       textAlign: 'center',
       backgroundColor: error[500],
@@ -84,7 +82,7 @@ const theme = {
       borderRadius: '4px',
       fontWeight: 'bold',
     },
-    
+
     denseTable: {
       '& > thead > tr > th, & > tbody > tr > td': {
         padding: '4px 16px 4px 16px',
@@ -93,7 +91,7 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+
     flatTable: {
       '& > thead > tr > th, & > tbody > tr > td': {
         padding: '4px 16px 4px 16px',
@@ -103,7 +101,7 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+
     denserTable: {
       '& > thead > tr, & > tbody > tr': {
         height: '40px',
@@ -116,9 +114,11 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+testPaper: {
+      backgroundColor: warning[50],
+    },
   },
-  
+
   overrides: {
     MuiButton: {
       root: {
@@ -152,8 +152,7 @@ const theme = {
       },
     },
   },
-  
-};
 
+};
 
 registerTheme('Sample', theme);
