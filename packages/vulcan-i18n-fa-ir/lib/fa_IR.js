@@ -51,8 +51,9 @@ addStrings('en', {
   'forms.day': 'روز',
   'forms.month': 'ماه',
   'forms.year': 'سال',
-  'forms.start_adornment_web_icon': 'آیکون اینترنت',
+  'forms.start_adornment_url_icon': 'آیکون اینترنت',
   'forms.start_adornment_email_icon': 'نماد ایمیل',
+  'forms.start_adornment_social_icon': '',
 
   'users.profile': 'مشخصات',
   'users.complete_profile': 'مشخصات خود را تکمیل فرمایید.',

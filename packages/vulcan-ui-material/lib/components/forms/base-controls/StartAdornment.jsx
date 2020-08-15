@@ -10,48 +10,52 @@ import EmailIcon from 'mdi-material-ui/EmailOutline';
 import { styles } from './EndAdornment';
 
 
+const linkTypes = ['url', 'email', 'social'];
+
+
 export const hideStartAdornment = (props) => {
   const { type, hideLink } = props;
-  return !props.addonBefore && (!['url', 'email'].includes(type) || hideLink);
-};
-
-
-export const fixUrl = (url, type) => {
-  if (type === 'email') {
-    return `mailto:${url}`;
-  }
-  return url.indexOf('http://') === -1 && url.indexOf('https://') ? 'http://' + url : url;
+  return !props.addonBefore && (!linkTypes.includes(type) || hideLink);
 };
 
 
 const StartAdornment = (props, context) => {
-  const { classes, value, type, addonBefore } = props;
   const { intl } = context;
 
   if (hideStartAdornment(props)) return null;
-  
-  const isUrl = type === 'url' ? true : false;
 
-  const urlButton = ['url', 'email'].includes(type) &&
-    <IconButton
-      className={classes.urlButton}
-      href={fixUrl(value, type)}
-      target="_blank"
-      disabled={!value}
-      aria-label={intl.formatMessage({ 
-        id: isUrl ? 'forms.start_adornment_web_icon' : 'forms.start_adornment_email_icon'
-      })}
+  const { classes, type, scrubValue, getUrl } = props;
+  let value = props.value;
+  if (scrubValue) {
+    value = scrubValue(value, props);
+  }
+  const url = getUrl ? getUrl(value, props) : value;
+  const socialIcon = type === 'social' ? props.addonBefore : undefined;
+  const addonBefore = type === 'social' ? undefined : props.addonBefore;
+
+  const urlButton = linkTypes.includes(type) &&
+    <IconButton className={classes.urlButton}
+                href={url}
+                target="_blank"
+                disabled={!value}
+                aria-label={intl.formatMessage({
+                  id: `forms.start_adornment_${type}_icon`,
+                })}
     >
       {
-        isUrl
+        type === 'email'
           ?
-          <WebIcon/>
-          :
           <EmailIcon/>
+          :
+          socialIcon
+            ?
+            instantiateComponent(socialIcon)
+            :
+            <WebIcon/>
       }
     </IconButton>;
-  
-  
+
+
   return (
     <InputAdornment classes={{ root: classes.inputAdornment }} position="start">
       {instantiateComponent(addonBefore)}

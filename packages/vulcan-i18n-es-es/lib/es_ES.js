@@ -49,8 +49,9 @@ addStrings('es', {
   'forms.delete_confirm': '¿Eliminar documento?',
   'forms.revert': 'Revertir',
   'forms.confirm_discard': '¿Descartar los cambios?',
-  'forms.start_adornment_web_icon': 'Icono de internet',
+  'forms.start_adornment_url_icon': 'Icono de internet',
   'forms.start_adornment_email_icon': 'Icono de correo electrónico',
+  'forms.start_adornment_social_icon': '',
 
   'users.profile': 'Perfil',
   'users.complete_profile': 'Complete su perfil',

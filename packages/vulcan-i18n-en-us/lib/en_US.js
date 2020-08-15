@@ -51,8 +51,9 @@ addStrings('en', {
   'forms.day': 'Day',
   'forms.month': 'Month',
   'forms.year': 'Year',
-  'forms.start_adornment_web_icon': 'Web icon',
+  'forms.start_adornment_url_icon': 'Web icon',
   'forms.start_adornment_email_icon': 'Email icon',
+  'forms.start_adornment_social_icon': 'Social icon',
   'forms.clear_field': 'Clear field value',
 
   'users.profile': 'Profile',
