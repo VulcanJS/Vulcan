@@ -5,7 +5,9 @@ import {
   replaceComponent,
   withCurrentUser,
   Utils,
-  withMulti
+  withMulti,
+  getCollection,
+  instantiateComponent,
 } from 'meteor/vulcan:core';
 import compose from 'recompose/compose';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -25,7 +27,6 @@ import { getFieldValue } from './Card';
 import _assign from 'lodash/assign';
 import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
-import { getCollection } from 'meteor/vulcan:lib'
 
 /*
 
@@ -213,7 +214,7 @@ Datatable.propTypes = {
   options: PropTypes.object,
   columns: PropTypes.array,
   showEdit: PropTypes.bool,
-  editComponent: PropTypes.func,
+  editComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
   emptyState: PropTypes.node,
@@ -575,8 +576,6 @@ const DatatableRow = (
   },
   { intl }
 ) => {
-  const EditComponent = editComponent;
-
   if (typeof rowClass === 'function') {
     rowClass = rowClass(document);
   }
@@ -603,9 +602,7 @@ const DatatableRow = (
 
       {(showEdit || editComponent) && (
         <TableCell className={classes.editCell}>
-          {EditComponent && (
-            <EditComponent collection={collection} document={document} refetch={refetch} />
-          )}
+          {editComponent && instantiateComponent(editComponent, { collection, document, refetch })}
           {showEdit && (
             <Components.EditButton
               collection={collection}

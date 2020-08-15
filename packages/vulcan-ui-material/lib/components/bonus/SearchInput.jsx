@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import NoSsr from '@material-ui/core/NoSsr';
 import classNames from 'classnames';
 import _debounce from 'lodash/debounce';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 const styles = theme => ({
   '@global': {
@@ -191,13 +190,14 @@ class SearchInput extends PureComponent {
           }}
         />
         <NoSsr>
-          {// KeyboardEventHandler is not valid on the server, where its name is undefined
-          typeof window !== 'undefined' && KeyboardEventHandler.name && !noShortcuts && (
-            <KeyboardEventHandler
+          {
+            !noShortcuts &&
+
+            <Components.KeyEventHandler
               handleKeys={['s', 'c', 'esc']}
               onKeyEvent={this.handleShortcutKeys}
             />
-          )}
+          }
         </NoSsr>
       </React.Fragment>
     );
