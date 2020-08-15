@@ -18,22 +18,17 @@ const styles = theme => ({
   dialogTitleEmpty: {
     padding: 0,
     height: theme.spacing(3),
+    borderBottomStyle: 'none',
   },
 
-  dialogContent: {
-    paddingTop: '4px',
-  },
+  dialogContent: {},
 
   dialogOverflow: {
     overflowY: 'visible',
   },
 
-  closeButton: {
-    display: 'block !important',
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-  },
+  closeButton: theme.utils.closeButton,
+
 });
 
 const Modal = props => {
@@ -44,6 +39,7 @@ const Modal = props => {
     onHide,
     title,
     showCloseButton = true,
+    dontWrapDialogContent,
     dialogOverflow,
     dialogProps,
     classes,
@@ -62,24 +58,33 @@ const Modal = props => {
       }}
       fullWidth={true}
       classes={{ paper: classNames(classes.dialogPaper, overflowClass) }}
-      {...dialogProps}>
+      {...dialogProps}
+    >
       <DialogTitle className={title ? classes.dialogTitle : classes.dialogTitleEmpty}>
         {title}
 
-        {showCloseButton && (
+        {
+          showCloseButton &&
+
           <Components.TooltipButton
             className={classes.closeButton}
-            icon={<Close />}
+            icon={<Close/>}
             titleId="global.close"
             onClick={onHide}
             aria-label="Close"
           />
-        )}
+        }
       </DialogTitle>
 
-      <DialogContent className={classNames(classes.dialogContent, overflowClass)}>
-        {children}
-      </DialogContent>
+      {
+        dontWrapDialogContent
+          ?
+          children
+          :
+          <DialogContent className={classNames(classes.dialogContent, overflowClass)}>
+            {children}
+          </DialogContent>
+      }
     </Dialog>
   );
 };
@@ -91,6 +96,7 @@ Modal.propTypes = {
   onHide: PropTypes.func,
   title: PropTypes.node,
   showCloseButton: PropTypes.bool,
+  dontWrapDialogContent: PropTypes.bool,
   dialogOverflow: PropTypes.bool,
   dialogProps: PropTypes.object,
   classes: PropTypes.object,
