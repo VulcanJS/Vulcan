@@ -6,6 +6,7 @@ import './accounts/AccountsForm';
 import './accounts/AccountsPasswordOrService';
 import './accounts/AccountsSocialButtons';
 
+import './bonus/DatatableFromArray';
 import './bonus/LoadMore';
 import './bonus/SearchInput';
 import './bonus/TooltipButton';

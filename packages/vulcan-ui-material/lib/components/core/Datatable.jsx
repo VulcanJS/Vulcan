@@ -70,6 +70,7 @@ const baseStyles = theme => ({
   tableHead: {},
   tableBody: {},
   tableFooter: {},
+  tablePagination: {},
   tableRow: {},
   tableHeadCell: {},
   tableCell: {},
@@ -136,7 +137,8 @@ class Datatable extends PureComponent {
         />
       );
     } else {
-      const { className, options, showSearch, showNew, classes } = this.props;
+      const { className, options, showSearch, showNew, classes, TableProps, SearchInputProps } = this.props;
+      const wrapComponent = this.props.wrapComponent || <div className={classes.scroller}/>;
 
       const collection = this.props.collection || getCollection(this.props.collectionName);
 
@@ -174,6 +176,7 @@ class Datatable extends PureComponent {
                     updateQuery={this.updateQuery}
                     className={classes.search}
                     labelId={'datatable.search'}
+                    {...SearchInputProps}
                   />
                 </div>
               )}
@@ -190,16 +193,18 @@ class Datatable extends PureComponent {
             </div>
           )}
 
-          <div className={classes.scroller}>
-            <DatatableWithMulti
+          {instantiateComponent(wrapComponent, {
+            children: <DatatableWithMulti
               {...this.props}
               collection={collection}
               terms={{ query: this.state.query, orderBy: orderBy }}
               currentUser={this.props.currentUser}
               toggleSort={this.toggleSort}
               currentSort={this.state.currentSort}
+              {...TableProps}
             />
-          </div>
+          })}
+
         </div>
       );
     }
@@ -229,6 +234,9 @@ Datatable.propTypes = {
   toggleSort: PropTypes.func,
   currentSort: PropTypes.object,
   paginate: PropTypes.bool,
+  wrapComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  TableProps: PropTypes.object,
+  SearchInputProps: PropTypes.object,
 };
 
 Datatable.defaultProps = {
@@ -317,8 +325,13 @@ const DatatableContents = ({
   toggleSort,
   currentSort,
   paginate,
-  paginationTerms,
+  paginationTerms = {
+    itemsPerPage: 25,
+    limit: 25,
+    offset: 0,
+  },
   setPaginationTerms,
+  TableProps,
 }) => {
   if (loading) {
     return <Components.Loading />;
@@ -327,8 +340,9 @@ const DatatableContents = ({
   }
 
   if (queryDataRef) queryDataRef(this.props);
+
   let sortedColumns = getColumns(columns, results);
-  
+
   const denseClass = dense && classes[dense + 'Table'];
 
   // Pagination functions
@@ -361,7 +375,7 @@ const DatatableContents = ({
     <React.Fragment>
       {error && <Components.Alert variant="danger">{error.message}</Components.Alert>}
       {title && <Components.DatatableTitle title={title} />}
-      <Components.DatatableContentsInnerLayout className={classNames(classes.table, denseClass)}>
+      <Components.DatatableContentsInnerLayout className={classNames(classes.table, denseClass)} {...TableProps}>
         {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
@@ -418,6 +432,7 @@ const DatatableContents = ({
       </Components.DatatableContentsInnerLayout>
       {paginate && (
         <TablePagination
+          className={classes.tablePagination}
           component="div"
           count={totalCount}
           rowsPerPage={paginationTerms.itemsPerPage}
@@ -643,9 +658,15 @@ const DatatableCell = ({ column, document, currentUser, classes }) => {
       : typeof column.cellClass === 'string'
       ? column.cellClass
       : null;
+  const cellStyle =
+    typeof column.cellStyle === 'function'
+      ? column.cellStyle({ column, document, currentUser })
+      : typeof column.cellStyle === 'object'
+      ? column.cellStyle
+      : null;
 
   return (
-    <TableCell className={classNames(classes.tableCell, cellClass, className)}>
+    <TableCell className={classNames(classes.tableCell, cellClass, className)} style={cellStyle}>
       <Component column={column} document={document} currentUser={currentUser} />
     </TableCell>
   );
