@@ -1,34 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import _throttle from 'lodash/throttle';
 
-
 class ScrollTrigger extends Component {
-  
+
   constructor (props) {
-    super(props);
-    
+    super();
+
     this.onScroll = _throttle(this.onScroll.bind(this), 100, {
       leading: true,
       trailing: true,
     });
-    
+
     this.onResize = _throttle(this.onResize.bind(this), 100, {
       leading: true,
       trailing: true,
     });
-    
-    this.inViewport = false;
-    this.passive = this.supportsPassive ? { passive: true } : false;
+
+    this.element = React.createRef();
+    this.passive = this.supportsPassive() ? { passive: true } : false;
   }
-  
+
   supportsPassive () {
     let supportsPassive = false;
     try {
       const opts = Object.defineProperty({}, 'passive', {
         //eslint-disable-next-line getter-return
-        get: function() {
+        get: function () {
           supportsPassive = true;
         }
       });
@@ -38,68 +36,81 @@ class ScrollTrigger extends Component {
     } catch (e) {}
     return supportsPassive;
   }
-  
+
   componentDidMount () {
-    this.scroller = document.getElementById('main');
-    this.scroller.addEventListener('resize', this.onResize, this.passive);
-    this.scroller.addEventListener('scroll', this.onScroll, this.passive);
-  
-    this.inViewport = false;
+    this.addEventListeners();
+  }
+
+  componentWillUnmount () {
+    this.removeEventListeners();
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.scroller !== this.props.scroller) {
+      if (this.props.scroller) {
+        this.addEventListeners();
+      } else {
+        this.removeEventListeners();
+      }
+    }
+  }
+
+  addEventListeners () {
+    if (this.props.scroller === window) {
+      window.addEventListener('scroll', this.onScroll);
+    } else if (this.props.scroller) {
+      this.props.scroller.addEventListener('scroll', this.onScroll, this.passive);
+    }
+
+    if (window) {
+      window.addEventListener('resize', this.onResize, this.passive);
+    }
 
     if (this.props.triggerOnLoad) {
       this.checkStatus();
     }
   }
-  
-  componentWillUnmount () {
-    if (!this.scroller) return;
-    this.scroller.removeEventListener('resize', this.onResize);
-    this.scroller.removeEventListener('scroll', this.onScroll);
-    this.scroller = null;
+
+  removeEventListeners () {
+    if (this.props.scroller === window) {
+      window.removeEventListener('scroll', this.onScroll);
+    } else if (this.props.scroller) {
+      this.props.scroller.removeEventListener('scroll', this.onScroll);
+    }
+
+    if (window) {
+      window.removeEventListener('resize', this.onResize);
+    }
   }
-  
+
   onResize () {
     this.checkStatus();
   }
-  
+
   onScroll () {
     this.checkStatus();
   }
-  
+
   checkStatus () {
-    if (!this.scroller) return;
-  
-    const {
-      onEnter,
-    } = this.props;
-    
-    //eslint-disable-next-line
-    const element = ReactDOM.findDOMNode(this.element);
-    const elementRect = element.getBoundingClientRect();
-    const viewportEnd = this.scroller.clientHeight + this.props.preload;
+    const { onTrigger, scroller } = this.props;
+    if (!onTrigger || !scroller || !this.element.current) return;
+
+    const elementRect = this.element.current.getBoundingClientRect();
+    const viewportEnd = this.props.scroller.clientHeight + this.props.preloadHeight;
     const inViewport = elementRect.top < viewportEnd;
-    
+
     if (inViewport) {
-      if (!this.inViewport) {
-        this.inViewport = true;
-        
-        onEnter(this);
-      }
-      
-    } else {
-      if (this.inViewport) {
-        this.inViewport = false;
-      }
+      onTrigger(this);
     }
   }
-  
+
   render () {
     const {
       children,
     } = this.props;
-    
+
     return (
-      <div ref={(element) => {this.element = element;}}>
+      <div ref={this.element}>
         {children}
       </div>
     );
@@ -108,18 +119,17 @@ class ScrollTrigger extends Component {
 
 
 ScrollTrigger.propTypes = {
-  scrollerId: PropTypes.string,
+  scroller: PropTypes.object,
   triggerOnLoad: PropTypes.bool,
-  preload: PropTypes.number,
-  onEnter: PropTypes.func,
+  preloadHeight: PropTypes.number,
+  onTrigger: PropTypes.func,
 };
 
 
 ScrollTrigger.defaultProps = {
-  scrollerId: 'main',
-  preload: 1000,
+  scroller: typeof window !== 'undefined' ? window : null,
+  preloadHeight: 1000,
   triggerOnLoad: true,
-  onEnter: () => {},
 };
 
 
