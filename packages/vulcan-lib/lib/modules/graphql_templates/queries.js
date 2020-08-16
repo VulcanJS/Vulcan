@@ -2,9 +2,9 @@ import { Utils } from '../utils.js';
 import { selectorUniqueInputType, filterInputType, sortInputType } from './filtering.js';
 
 // eslint-disable-next-line
-const deprecated1 = `"Deprecated (use 'filter/id' fields instead)."`;
+const deprecated1 = `# Deprecated (use 'filter/id' fields instead).`;
 // eslint-disable-next-line
-const deprecated2 = `"Deprecated (use 'filter/id' fields instead)."`;
+const deprecated2 = `# Deprecated (use 'filter/id' fields instead).`;
 
 const singleReturnProperty = 'result';
 const multiReturnProperty = 'results';
@@ -104,7 +104,7 @@ export const multiInputTemplate = ({ typeName }) =>
   enableTotal: Boolean
   # An identifier to name the query's execution context
   contextName: String
-  
+
 }`;
 
 /* ------------------------------------- Query Output Types ------------------------------------- */
