@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.13.2_1
+# vulcan:ui-material 1.16.0
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -16,7 +16,7 @@ To add vulcan-material-ui to an existing Vulcan project, run the following in th
 ``` sh
 meteor add vulcan:ui-material
 
-meteor npm install --save @material-ui/core@4.5.1
+meteor npm install --save @material-ui/core@4.11.0
 meteor npm install --save @material-ui/icons
 meteor npm install --save @material-ui/styles
 meteor npm install --save react-jss@8.6.1
@@ -117,6 +117,9 @@ You can pass a couple of extra options to inputs from the `form` property of you
       rows: 10,                        // for textareas you can specify the rows
       variant: 'switch',               // for checkboxgroups you can use either 
                                        //   'checkbox' (default) or 'switch'
+      columnClass: 'twoColumn'         // for checkboxgroups you can set columnClass to
+                                       //   'twoColumn' or 'threeColumn'; if you don't specify
+                                       //   we will guess based on the length of the labels
       inputProps: { step: 'any' }      // Attributes applied to the input element, for
                                        //   ex pass the step attr to a number input
     },
@@ -239,8 +242,8 @@ In addition, the `options` that you pass to any select control have additional p
 
 | Property      | Type    | Description  |
 | ------------- | ------- | ------------ |
-| `title`       | node    | Popover title as a string or a node |
-| `titleId`     | string  | Popover title as an intl string ID |
+| `title`       | node    | Tooltip title as a string or a node |
+| `titleId`     | string  | Tooltip title as an intl string ID |
 | `titleValues` | object  | Values for the intl string |
 | `label`       | node    | Button label as a string or node |
 | `labelId`     | string  | Button label as an intl string ID |
