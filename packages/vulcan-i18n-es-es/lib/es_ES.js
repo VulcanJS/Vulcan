@@ -133,6 +133,9 @@ addStrings('es', {
   'app.disallowed_property_detected': 'Propiedad no permitida detectada: {value}',
   'app.something_bad_happened': 'Algo malo pasó...',
   'app.embedly_not_authorized': 'Clave API incrustada no válida incluida en el archivo de configuración. Para encontrar su clave, inicie sesión en https://app.embed.ly -> API',
+  'app.defaultError': '{defaultMessage}',
+  'app.please_sign_up_log_in': 'Please sign up or log in',
+  'app.no_access_permissions': 'Sorry, you are not allowed to access this page.',
 
   'cards.edit': 'Editar',
   'datatable.new': 'Nuevo',

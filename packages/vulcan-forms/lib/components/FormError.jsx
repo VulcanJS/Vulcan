@@ -9,7 +9,7 @@ const FormError = ({ error, errorContext, getLabel }) => {
 
   // use the error or error message as default message
   const defaultMessage = JSON.stringify(error.message || error);
-  const id = error.id;
+  const id = error.id || 'app.defaultError';
 
   // default props for all errors
   let messageProps = {
@@ -17,6 +17,7 @@ const FormError = ({ error, errorContext, getLabel }) => {
     defaultMessage,
     values: {
       errorContext,
+      defaultMessage,
     },
   };
 
