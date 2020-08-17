@@ -41,7 +41,7 @@ import './forms/controls/DateTime';
 import './forms/controls/DateTimeRdt';
 import './forms/controls/Default';
 import './forms/controls/Password';
-import './forms/controls/Email';
+export * from './forms/controls/Email';
 import './forms/controls/Number';
 import './forms/controls/PostalCode';
 import './forms/controls/RadioGroup';
@@ -52,7 +52,7 @@ import './forms/controls/StaticText';
 import './forms/controls/Textarea';
 import './forms/controls/Time';
 import './forms/controls/TimeRdt';
-import './forms/controls/Url';
+export * from './forms/controls/Url';
 
 import './theme/ThemeStyles';
 
