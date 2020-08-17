@@ -14,6 +14,7 @@ const styles = theme => ({
   root: {
     textAlign: 'center',
     flexBasis: '100%',
+    marginTop: theme.spacing(3),
   },
 
   textButton: {
@@ -23,7 +24,6 @@ const styles = theme => ({
   iconButton: {},
 
   caption: {
-    marginTop: theme.spacing(3),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -40,6 +40,7 @@ const LoadMore = (
     useTextButton,
     className,
     infiniteScroll,
+    scroller,
   },
   { intl }
 ) => {
@@ -78,7 +79,9 @@ const LoadMore = (
         <Components.Loading />
       ) : hasMore ? (
         infiniteScroll ? (
-          <ScrollTrigger onEnter={() => loadMore()}>{loadMoreButton}</ScrollTrigger>
+          <ScrollTrigger scroller={scroller} onTrigger={() => loadMore()}>
+            {loadMoreButton}
+          </ScrollTrigger>
         ) : (
           loadMoreButton
         )
@@ -97,6 +100,7 @@ LoadMore.propTypes = {
   useTextButton: PropTypes.bool,
   className: PropTypes.string,
   infiniteScroll: PropTypes.bool,
+  scroller: PropTypes.object,
 };
 
 LoadMore.defaultProps = {
