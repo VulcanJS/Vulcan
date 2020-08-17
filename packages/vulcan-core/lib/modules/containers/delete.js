@@ -69,6 +69,7 @@ export const useDelete = (options) => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
+  const resolverName = `delete${typeName}`;
   const { mutationOptions = {} } = options;
 
   const query = buildDeleteQuery({
@@ -81,13 +82,16 @@ export const useDelete = (options) => {
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions
   });
-  const extendedDeleteFunc = (args) => {
-    // support legacy syntax mistake
-    // @see https://github.com/VulcanJS/Vulcan/issues/2417
-    const selector = (args && args.selector) || args;
-    return deleteFunc({ variables: { selector } });
-  };
-  return [extendedDeleteFunc, ...rest];
+
+  const extendedDeleteFunc = {
+    [resolverName]: (args) => {
+      // support legacy syntax mistake
+      // @see https://github.com/VulcanJS/Vulcan/issues/2417
+      const selector = (args && args.selector) || args;
+      return deleteFunc({ variables: { selector } });
+    }
+  }
+  return [extendedDeleteFunc[resolverName], ...rest];
 };
 
 export const withDelete = options => C => {

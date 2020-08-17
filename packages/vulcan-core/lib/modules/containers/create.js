@@ -94,8 +94,10 @@ export const useCreate = (options) => {
     ...mutationOptions
   });
 
-  const extendedCreateFunc = (args) => createFunc({ variables: { input: args.input, data: args.data } });
-  return [extendedCreateFunc, ...rest];
+  const extendedCreateFunc = {
+    [resolverName]: (args) => createFunc({ variables: { input: args.input, data: args.data } })
+  };
+  return [extendedCreateFunc[resolverName], ...rest];
 };
 
 export const withCreate = options => C => {
