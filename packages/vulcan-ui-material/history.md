@@ -1,3 +1,9 @@
+1.13.2_2 / 2020-01-20
+=====================
+
+ * MuiSuggest: Removed `selectedOption` and `inputFormatted` from the component state
+ * TooltipIntl: Fixed bug: `titleValues` prop was not implemented
+
 1.13.2_1 / 2019-10-02
 =====================
 
