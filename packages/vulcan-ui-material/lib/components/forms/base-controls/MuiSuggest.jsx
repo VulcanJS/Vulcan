@@ -7,6 +7,7 @@ import Input from '@material-ui/core/Input';
 import Autosuggest from 'react-autosuggest';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { registerComponent } from 'meteor/vulcan:core';
@@ -36,7 +37,7 @@ const maxSuggestions = 100;
   sectionContainerFirst:    'react-autosuggest__section-container--first',
   sectionTitle:             'react-autosuggest__section-title'
 }*/
-const styles = theme => {
+export const styles = theme => {
   const light = theme.palette.type === 'light';
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
@@ -71,6 +72,10 @@ const styles = theme => {
       '&::-webkit-search-results, &::-webkit-search-results-decoration': { display: 'none' },
     },
 
+    inputPlaceholder: {
+      color: theme.palette.common.lightBlack,
+    },
+
     readOnly: {
       cursor: 'pointer',
     },
@@ -102,7 +107,7 @@ const styles = theme => {
       marginRight: theme.spacing(2),
     },
 
-    selected: {
+    current: {
       backgroundColor: theme.palette.secondary.light,
     },
 
@@ -113,13 +118,15 @@ const styles = theme => {
     },
 
     inputRoot: {
-      '& .clear-enabled': { opacity: 0 },
-      '&:hover .clear-enabled': { opacity: 0.54 },
-      '&:focus .clear-enabled': { opacity: 0.54 },
+      '&:hover .clear-button.has-value': { opacity: 0.54, pointerEvents: 'initial' },
+      '&:focus .clear-button.has-value': { opacity: 0.54, pointerEvents: 'initial' },
+      '&:hover .menu-indicator.has-value': { opacity: 0 },
+      '&:focus .menu-indicator.has-value': { opacity: 0 },
     },
 
     inputFocused: {
-      '& .clear-enabled': { opacity: 0.54 },
+      '& .clear-button.has-value': { opacity: 0.54, pointerEvents: 'initial' },
+      '& .menu-indicator.has-value': { opacity: 0 },
     },
 
     inputDisabled: {},
@@ -134,8 +141,11 @@ const styles = theme => {
       paddingLeft: 0,
       fontSize: 17.15,
       cursor: 'pointer',
+      '&$disabled': {
+        pointerEvents: 'none',
+      }
     },
-
+  
     // From https://github.com/mui-org/material-ui/blob/v3.x/packages/material-ui/src/Input/Input.js
     /* Styles applied to the root element if the component is focused. */
     focused: {},
@@ -195,6 +205,27 @@ const styles = theme => {
     formattedNoLabel: {
       marginTop: 0,
     },
+
+    selectItem: {
+      paddingTop: 4,
+      paddingBottom: 4,
+      paddingLeft: 9,
+      fontFamily: theme.typography.fontFamily,
+      color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white,
+      fontSize: theme.typography.pxToRem(16),
+      lineHeight: '1.1875em',
+    },
+
+    muiIcon: {
+      display: 'none',
+    },
+
+    inputAdornment: {
+      position: 'absolute',
+      right: 0,
+      pointerEvents: 'none',
+    },
+
   };
 };
 
@@ -219,29 +250,30 @@ const MuiSuggest = createReactClass({
     disableSelectOnBlur: PropTypes.bool,
     showAllOptions: PropTypes.bool,
     disableMatchParts: PropTypes.bool,
-    className: PropTypes.string,
     autoComplete: PropTypes.string,
     autoFocus: PropTypes.bool,
+    showMenuIndicator: PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
       autoComplete: 'off',
       autoFocus: false,
+      showMenuIndicator: true,
     };
   },
 
   getOptionFormatted: function(option, formattedProps) {
+    if (!option) return;
     const formatted =
       option.formatted && typeof option.formatted === 'function'
         ? option.formatted(formattedProps)
         : option.formatted;
-
     return formatted;
   },
 
   getOptionLabel: function(option) {
-    return option.label || option.value || '';
+    return option && option.label || option && option.value || '';
   },
 
   getInitialState: function() {
@@ -249,40 +281,47 @@ const MuiSuggest = createReactClass({
       this.props.refFunction(this);
     }
 
-    const selectedOption = this.getSelectedOption();
+    const inputValue = this.getInputValue(this.props);
     return {
-      inputValue: this.getOptionLabel(selectedOption),
-      inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
-      selectedOption: selectedOption,
+      inputValue,
       suggestions: [],
     };
   },
 
-  UNSAFE_componentWillReceiveProps: function(nextProps) {
-    if (nextProps.value !== this.state.value || nextProps.options !== this.props.options) {
-      const selectedOption = this.getSelectedOption(nextProps);
+  UNSAFE_componentWillReceiveProps: function (nextProps) {
+    if (nextProps.value !== this.props.value ||
+      nextProps.options !== this.props.options) {
+      const inputValue = this.getInputValue(nextProps);
       this.setState({
-        inputValue: this.getOptionLabel(selectedOption),
-        inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
-        selectedOption: selectedOption,
+        inputValue,
       });
     }
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return (
-      !_isEqual(nextState, this.state) ||
+  shouldComponentUpdate: function (nextProps, nextState) {
+    const shouldUpdate = !_isEqual(nextState, this.state) ||
+      nextProps.disabled !== this.props.disabled ||
       nextProps.help !== this.props.help ||
       nextProps.charsCount !== this.props.charsCount ||
       !_isEqual(nextProps.errors, this.props.errors) ||
-      nextProps.options !== this.props.options
-    );
+      nextProps.options !== this.props.options;
+    return shouldUpdate;
+  },
+
+  getInputValue: function (props) {
+    const selectedOption = this.getSelectedOption(props);
+    const inputValue = selectedOption ?
+      this.getOptionLabel(selectedOption) :
+      props.limitToList ?
+        '' :
+        props.value;
+    return inputValue;
   },
 
   getSelectedOption: function(props) {
     props = props || this.props;
     const selectedOption = props.options && props.options.find(opt => opt.value === props.value);
-    return selectedOption || { label: '', value: null };
+    return selectedOption;
   },
 
   handleFocus: function(event) {
@@ -294,11 +333,12 @@ const MuiSuggest = createReactClass({
   handleBlur: function(event, { highlightedSuggestion: suggestion }) {
     if (suggestion && !this.props.disableSelectOnBlur) {
       this.changeValue(suggestion);
-    } else if (this.props.limitToList) {
+    } else {
       const selectedOption = this.getSelectedOption();
+      this.changeValue(selectedOption);
+      const inputValue = this.getInputValue(this.props);
       this.setState({
-        inputValue: this.getOptionLabel(selectedOption),
-        inputFormatted: this.getOptionFormatted(selectedOption, { current: true }),
+        inputValue,
       });
     }
   },
@@ -307,8 +347,7 @@ const MuiSuggest = createReactClass({
     if (this.props.disableText) return false;
 
     const selectedOption = this.getSelectedOption();
-    if (!selectedOption.value) return true;
-
+    if (!selectedOption || selectedOption.value) return true;
     return selectedOption.label !== this.state.inputValue;
   },
 
@@ -319,15 +358,15 @@ const MuiSuggest = createReactClass({
 
   changeValue: function(suggestion) {
     if (!suggestion) {
-      suggestion = { label: '', value: null };
+      suggestion = this.props.limitToList || suggestion === null ?
+        { label: '', value: null } :
+        { label: this.state.inputValue, value: this.state.inputValue };
     }
     if (suggestion.onClick) {
       return;
     }
     this.setState({
-      selectedOption: suggestion,
       inputValue: this.getOptionLabel(suggestion),
-      inputFormatted: this.getOptionFormatted(suggestion, { current: true }),
     });
     this.props.handleChange(suggestion.value);
   },
@@ -355,16 +394,26 @@ const MuiSuggest = createReactClass({
     return true;
   },
 
-  render: function() {
-    const { value } = this.props;
-    const { inputValue, inputFormatted } = this.state;
+  render: function () {
+    const { value, disabled, classes } = this.props;
+    const { inputValue } = this.state;
+    const selectedOption = this.getSelectedOption();
+    const inputFormatted = this.getOptionFormatted(selectedOption, {
+      current: true,
+      disabled,
+    });
 
-    const startAdornment = hideStartAdornment(this.props) ? null : (
-      <StartAdornment {...this.props} value={value} classes={null} />
-    );
-    const endAdornment = (
-      <EndAdornment {...this.props} value={value} classes={null} changeValue={this.changeValue} />
-    );
+    const startAdornment = hideStartAdornment(this.props) ? null :
+      <StartAdornment {...this.props}
+                      value={value}
+                      classes={null}
+      />;
+    const endAdornment =
+      <EndAdornment {...this.props}
+                    value={value}
+                    classes={{ inputAdornment: classes.inputAdornment }}
+                    changeValue={this.changeValue}
+      />;
 
     const element = this.renderElement(startAdornment, endAdornment);
 
@@ -384,9 +433,13 @@ const MuiSuggest = createReactClass({
   },
 
   renderElement: function(startAdornment, endAdornment) {
-    const { classes, autoFocus, disableText, placeholder, inputProperties } = this.props;
-    const { inputValue, inputFormatted } = this.state;
-
+    const { classes, autoFocus, disableText, placeholder, inputProperties, disabled } = this.props;
+    const { inputValue } = this.state;
+    const selectedOption = this.getSelectedOption();
+    const inputFormatted = this.getOptionFormatted(selectedOption, {
+      current: true,
+      disabled,
+    });
     return (
       <Autosuggest
         theme={{
@@ -408,7 +461,6 @@ const MuiSuggest = createReactClass({
         alwaysRenderSuggestions={false}
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
-        onSuggestionHighlighted={this.suggestionHighlighted}
         onSuggestionSelected={this.suggestionSelected}
         inputProps={{
           ...this.cleanProps(inputProperties),
@@ -449,12 +501,14 @@ const MuiSuggest = createReactClass({
     if (formatted && formatted !== value) {
       return (
         <div
+          aria-readonly={disabled}
           {...rest}
           tabIndex={0}
           className={classNames(
             classes.inputRoot,
-            classes.formatted,
             classes.underline,
+            classes.formatted,
+            disabled && classes.disabled,
             hideLabel && classes.formattedNoLabel
           )}>
           {startAdornment}
@@ -464,31 +518,8 @@ const MuiSuggest = createReactClass({
       );
     }
 
-    /*function FormattedInput (props) {
-      const { inputRef, className, ...other } = props;
-      
-      return (
-        <div
-          {...other}
-          ref={ref => {
-            inputRef(ref ? ref.inputElement : null);
-          }}
-          className={classNames(className, classes.formatted)}
-          tabIndex={0}
-          onBlur={()=>{console.log("blur")}}
-        >
-          {formatted}
-        </div>
-      );
-    }
-    
-    FormattedInput.propTypes = {
-      inputRef: PropTypes.func.isRequired,
-    };*/
-
     return (
       <Input
-        //inputComponent={formatted && formatted !== value ? FormattedInput : undefined}
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         className={classes.textField}
@@ -509,13 +540,29 @@ const MuiSuggest = createReactClass({
     );
   },
 
-  renderSuggestion: function(suggestion, { query, isHighlighted }) {
-    const label = this.getOptionFormatted(suggestion) || suggestion.label || suggestion.value || '';
+  renderSuggestion: function (suggestion, { query, isHighlighted }) {
+    const formatted = this.getOptionFormatted(suggestion, {
+      disabled: this.props.disabled,
+      selected: isHighlighted,
+    });
+    if (formatted) return formatted;
+
+    const label = suggestion.label || suggestion.value || '';
     const matches = match(label, query);
     const parts = parse(label, matches);
-    const isSelected = suggestion.value === this.props.value;
-    const className = isSelected ? this.props.classes.selected : null;
-
+    const primary = this.props.disableMatchParts
+      ?
+      label
+      :
+      parts.map((part, index) => {
+        return part.highlight
+          ?
+          <span key={index} style={{ fontWeight: 500 }}>{part.text}</span>
+          :
+          <strong key={index} style={{ fontWeight: 300 }}>{part.text}</strong>;
+      });
+    const isCurrent = suggestion.value === this.props.value;
+    const className = isCurrent ? this.props.classes.current : null;
     return (
       <MenuItem
         selected={isHighlighted}
@@ -524,22 +571,11 @@ const MuiSuggest = createReactClass({
         onClick={suggestion.onClick}
         data-value={suggestion.value}>
         {suggestion.iconComponent && (
-          <div className={this.props.classes.suggestionIcon}>{suggestion.iconComponent}</div>
+
+          <ListItemIcon>{suggestion.iconComponent}</ListItemIcon>
         )}
         <div>
-          {this.props.disableMatchParts
-            ? label
-            : parts.map((part, index) => {
-                return part.highlight ? (
-                  <span key={index} style={{ fontWeight: 500 }}>
-                    {part.text}
-                  </span>
-                ) : (
-                  <strong key={index} style={{ fontWeight: 300 }}>
-                    {part.text}
-                  </strong>
-                );
-              })}
+          {primary}
         </div>
       </MenuItem>
     );
@@ -585,6 +621,7 @@ const MuiSuggest = createReactClass({
           return keep;
         });
   },
+
 });
 
 export default withStyles(styles)(MuiSuggest);
