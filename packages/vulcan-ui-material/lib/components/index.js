@@ -71,3 +71,7 @@ import './backoffice/BackofficePageLayout';
 import './backoffice/BackofficeVerticalMenuLayout';
 
 export * from './forms/controls/countries';
+
+import { dynamicLoader, registerComponent } from 'meteor/vulcan:lib';
+
+registerComponent('KeyEventHandler', dynamicLoader(() => import('./bonus/KeyEventHandler'), true));

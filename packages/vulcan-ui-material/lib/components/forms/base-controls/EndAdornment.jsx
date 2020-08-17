@@ -69,7 +69,10 @@ const EndAdornment = (props, context) => {
                   event.preventDefault();
                   changeValue(null);
                 }}
-                tabIndex="-1"
+                onMouseDown={event => {
+                  event.preventDefault();
+                }}
+                tabIndex={-1}
                 aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
     >
       <CloseIcon/>

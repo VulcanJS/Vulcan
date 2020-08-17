@@ -24,12 +24,12 @@ meteor npm install --save mdi-material-ui
 meteor npm install --save react-autosuggest
 meteor npm install --save autosuggest-highlight
 meteor npm install --save react-isolated-scroll
-meteor npm install --save-exact react-keyboard-event-handler@1.3.2
+meteor npm install --save react-keyboard-event-handler
 #meteor npm install --save autosize-input
 meteor npm install --save moment-timezone
 ```
 
-This package no longer depends on `vulcan:ui-boostrap`, so you can remove it.
+This package does not depend on `vulcan:ui-boostrap`, so you can remove it.
 
 To activate the example layout copy the three components to your project and import them:
 
