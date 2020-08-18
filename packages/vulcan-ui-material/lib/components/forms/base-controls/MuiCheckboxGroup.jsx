@@ -152,8 +152,6 @@ const MuiCheckboxGroup = createReactClass({
     };
   },
 
-
-
   validate: function () {
     if (this.props.onBlur) {
       this.props.onBlur();
