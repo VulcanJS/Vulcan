@@ -80,7 +80,7 @@ const EndAdornment = (props, context) => {
   const hasValue = !!value || value === 0;
   
   const clearButton = changeValue && !hideClear && !disabled &&
-    <IconButton className={classNames('clear-button', classes.clearButton, hasValue && 'clear-enabled')}
+    <IconButton className={classNames('clear-button', classes.clearButton, hasValue && 'has-value')}
                 onClick={event => {
                   event.preventDefault();
                   changeValue(null);

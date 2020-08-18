@@ -188,9 +188,10 @@ const MuiSelect = createReactClass({
                             classes={{
                               root: classes.inputRoot,
                               focused: classes.inputFocused,
-                              input: classes.input,
+                              input: classNames(classes.input, !value && classes.inputPlaceholder),
                             }}
               />}
+              classes={{ icon: classes.muiIcon }}
       >
         {optionNodes}
       </Select>

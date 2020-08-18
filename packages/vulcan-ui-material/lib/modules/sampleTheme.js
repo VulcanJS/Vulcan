@@ -117,6 +117,10 @@ const theme = {
       },
     },
 
+    testPaper: {
+      backgroundColor: warning[50],
+    },
+
     closeButton: {
       display: 'block !important',
       position: 'absolute',

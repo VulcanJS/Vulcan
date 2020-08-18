@@ -78,7 +78,7 @@ const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) =
           collapsible && classes.collapsible
         )}
         variant="subtitle1"
-        onClick={toggle}>
+      >
         <div className={classes.label}>{label}</div>
 
         {collapsible && (

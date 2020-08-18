@@ -19,7 +19,7 @@ export const styles = theme => ({
 });
 
 //noinspection JSUnusedGlobalSymbols
-const MuiInput = createReactClass({
+const MuiText = createReactClass({
   element: null,
 
   mixins: [ComponentMixin],
@@ -75,4 +75,4 @@ const MuiInput = createReactClass({
   },
 });
 
-export default withStyles(styles)(MuiInput);
+export default withStyles(styles)(MuiText);
