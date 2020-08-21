@@ -114,11 +114,11 @@ const getCorsOptions = () => {
     corsWhitelist && corsWhitelist.length
       ? {
           origin: function(origin, callback) {
-            if (!origin) callback(null, true); // same origin
+            if (!origin) return callback(null, true); // same origin
             if (corsWhitelist.indexOf(origin) !== -1) {
-              callback(null, true);
+              return callback(null, true);
             } else {
-              callback(new Error(`Origin ${origin} not allowed by CORS`));
+              return callback(new Error(`Origin ${origin} not allowed by CORS`));
             }
           },
         }
