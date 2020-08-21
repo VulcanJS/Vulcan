@@ -122,6 +122,7 @@ const getCorsOptions = () => {
               callback(new Error(`Origin ${origin} not allowed by CORS`));
             }
           },
+          credentials: true,
         }
       : process.env.NODE_ENV === 'development'; // default behaviour is activating all in dev, deactivating all in production
   return corsOptions;
