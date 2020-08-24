@@ -1,8 +1,16 @@
 import gql from 'graphql-tag';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
+import uniq from 'lodash/uniq';
+import flattenDeep from 'lodash/flattenDeep';
+import stringSimilarity from 'string-similarity';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
+
+export const throwUnregisteredFragmentError = fragmentName => {
+  const similarFragments = stringSimilarity.findBestMatch(fragmentName, Object.keys(Fragments));
+  throw new Error(`A registered fragment named "${fragmentName}" cannot be found, did you mean "${similarFragments.bestMatch.target}"?`);
+};
 
 /**
  * @param {*} collectionOrName A collection name, or a whole collection
@@ -137,7 +145,7 @@ Get actual gql fragment
 */
 export const getFragment = fragmentName => {
   if (!Fragments[fragmentName]) {
-    throw new Error(`Fragment "${fragmentName}" not registered.`);
+    throwUnregisteredFragmentError(fragmentName);
   }
   if (!Fragments[fragmentName].fragmentObject) {
     initializeFragments([fragmentName]);
@@ -153,7 +161,7 @@ Get gql fragment text
 */
 export const getFragmentText = fragmentName => {
   if (!Fragments[fragmentName]) {
-    throw new Error(`Fragment "${fragmentName}" not registered.`);
+    throwUnregisteredFragmentError(fragmentName);
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentText;
@@ -214,3 +222,54 @@ export const initializeFragments = (fragments = getNonInitializedFragmentNames()
   });
 
 };
+
+/*
+
+Take a query, and expand any subfragments inside it
+
+*/
+export const expandQueryFragments = query => {
+  let expandedQuery = query;
+  // get all fragment names
+  const fragmentNames = extractSubFragmentsFlat(query);
+  // append each fragment text to the end of the query
+  fragmentNames.forEach(fragmentName => {
+    expandedQuery = expandedQuery + '\n' + Fragments[fragmentName].fragmentText;
+  });
+  return expandedQuery;
+};
+
+/*
+
+Recursively extract all nested fragment dependency names into nested arrays
+
+Works on any string (query or fragment)
+
+Note: only extracts *sub*fragments (e.g. not the current fragment itself)
+
+*/
+export const extractSubFragments = (text) => {
+  // extract subFragments from text
+  const matchedSubFragments = text.match(/\.{3}([_A-Za-z][_0-9A-Za-z]*)/g) || [];
+  if (matchedSubFragments.length > 0) {
+    // return an array of arrays
+    return matchedSubFragments.map(s => {
+      const subFragmentName = s.replace('...', '');
+      if (!Fragments[subFragmentName]) {
+        throwUnregisteredFragmentError(subFragmentName);
+      }
+      const subFragmentText = Fragments[subFragmentName].fragmentText;
+      // Return the name of the matched subfragment, then call function recursively
+      return [subFragmentName, ...extractSubFragments(subFragmentText)];
+    });
+  } else {
+    return [];
+  }
+};
+
+/*
+
+Flatten nested fragments array and only keep unique fragment names
+
+*/
+export const extractSubFragmentsFlat = text => uniq(flattenDeep(extractSubFragments(text)));
