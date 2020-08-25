@@ -47,7 +47,7 @@ class ModalTrigger extends PureComponent {
     triggerComponent = triggerComponent ? (
       <span onClick={this.clickHandler}>{triggerComponent}</span>
     ) : (
-      <Components.Button variant="link" onClick={this.clickHandler}>
+      <Components.Button onClick={this.clickHandler}>
         {label}
       </Components.Button>
     );

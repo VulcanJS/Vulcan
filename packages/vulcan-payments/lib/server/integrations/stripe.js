@@ -858,7 +858,7 @@ Meteor.startup(() => {
   });
 
   // Create plans if they don't exist
-  if (stripeSettings.createPlans) {
+  if (stripeSettings && stripeSettings.createPlans) {
     // eslint-disable-next-line no-console
     console.log('Creating stripe plans...');
     Promise.awaitAll(

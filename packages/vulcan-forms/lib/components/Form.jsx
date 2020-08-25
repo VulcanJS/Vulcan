@@ -398,8 +398,6 @@ class SmartForm extends Component {
     // internationalize field options labels
     if (field.options && Array.isArray(field.options)) {
       field.options = field.options.map(option => ({ ...option, label: this.getOptionLabel(fieldName, option) }));
-    } else if (typeof field.options === 'function') {
-      field.options = field.options.call(fieldSchema, { ...this.props, fieldName, document, intl: this.context.intl });
     }
 
     // if this an intl'd field, use a special intlInput

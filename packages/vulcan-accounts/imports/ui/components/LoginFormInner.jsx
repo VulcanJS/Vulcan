@@ -727,7 +727,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         if (error instanceof Accounts.LoginCancelledError) {
           // do nothing
         } else {
-          const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
+          const errorId = `accounts.error_${error.message.toLowerCase().replace(/ /g, '_')}`;
           if (self.context.intl.formatMessage({ id: errorId })) {
             self.showMessage(errorId);
           } else {
