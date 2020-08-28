@@ -11,6 +11,7 @@ Example Usage
     fragmentName: 'BookingsStripeDataFragment',
   }}
   mutationArguments={{ bookingId: booking._id }}
+  successCallback={result => { console.log(result) }}
 />
 
 */

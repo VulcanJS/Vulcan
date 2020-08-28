@@ -339,15 +339,61 @@ registerComponent({ name: 'DatatableLayout', component: DatatableLayout, hocs: [
 DatatableAbove Component
 
 */
-const DatatableAbove = (props, { intl }) => {
+const DatatableAbove = props => {
+  const { Components } = props;
+
+  return (
+    <Components.DatatableAboveLayout>
+      <Components.DatatableAboveLeft {...props} />
+      <Components.DatatableAboveRight {...props} />
+    </Components.DatatableAboveLayout>
+  );
+};
+DatatableAbove.propTypes = {
+  Components: PropTypes.object.isRequired,
+};
+registerComponent({ name: 'DatatableAbove', component: DatatableAbove, hocs: [memo] });
+
+const DatatableAboveLeft = (props, { intl }) => {
+  const {
+    showSearch,
+    searchValue,
+    updateSearch,
+    Components,
+  } = props;
+  return (
+    <div className="datatable-above-left">
+      {showSearch && (
+        <Components.DatatableAboveSearchInput
+          className="datatable-search form-control"
+          inputProperties={{
+            path: 'datatableSearchQuery',
+            placeholder: `${intl.formatMessage({
+              id: 'datatable.search',
+              defaultMessage: 'Search',
+            })}…`,
+            value: searchValue,
+            onChange: updateSearch,
+          }}
+          Components={Components}
+        />
+      )}
+    </div>
+  );
+};
+
+DatatableAboveLeft.contextTypes = {
+  intl: intlShape,
+};
+
+registerComponent({ name: 'DatatableAboveLeft', component: DatatableAboveLeft, hocs: [memo] });
+
+const DatatableAboveRight = (props) => {
   const {
     collection,
     currentUser,
-    showSearch,
     showNew,
     canInsert,
-    searchValue,
-    updateSearch,
     options,
     newFormOptions,
     newFormProps,
@@ -356,54 +402,29 @@ const DatatableAbove = (props, { intl }) => {
     selectedItems,
     onSubmitSelected,
   } = props;
-
   return (
-    <Components.DatatableAboveLayout>
-      <div className="datatable-above-left">
-        {showSearch && (
-          <Components.DatatableAboveSearchInput
-            className="datatable-search form-control"
-            inputProperties={{
-              path: 'datatableSearchQuery',
-              placeholder: `${intl.formatMessage({
-                id: 'datatable.search',
-                defaultMessage: 'Search',
-              })}…`,
-              value: searchValue,
-              onChange: updateSearch,
-            }}
-            Components={Components}
+    <div className="datatable-above-right">
+      {showSelect && selectedItems.length > 0 && (
+        <div className="datatable-above-item">
+          <Components.DatatableSubmitSelected selectedItems={selectedItems} onSubmitSelected={onSubmitSelected} />
+        </div>
+      )}
+      {showNew && canInsert && (
+        <div className="datatable-above-item">
+          <Components.NewButton
+            collection={collection}
+            currentUser={currentUser}
+            mutationFragmentName={options && options.fragmentName}
+            {...newFormOptions}
+            {...newFormProps}
           />
-        )}
-      </div>
-      <div className="datatable-above-right">
-        {showSelect && selectedItems.length > 0 && (
-          <div className="datatable-above-item">
-            <Components.DatatableSubmitSelected selectedItems={selectedItems} onSubmitSelected={onSubmitSelected} />
-          </div>
-        )}
-        {showNew && canInsert && (
-          <div className="datatable-above-item">
-            <Components.NewButton
-              collection={collection}
-              currentUser={currentUser}
-              mutationFragmentName={options && options.fragmentName}
-              {...newFormOptions}
-              {...newFormProps}
-            />
-          </div>
-        )}
-      </div>
-    </Components.DatatableAboveLayout>
+        </div>
+      )}
+    </div>
   );
 };
-DatatableAbove.contextTypes = {
-  intl: intlShape,
-};
-DatatableAbove.propTypes = {
-  Components: PropTypes.object.isRequired,
-};
-registerComponent({ name: 'DatatableAbove', component: DatatableAbove, hocs: [memo] });
+
+registerComponent({ name: 'DatatableAboveRight', component: DatatableAboveRight, hocs: [memo] });
 
 const DatatableAboveSearchInput = props => {
   const { Components } = props;
