@@ -5,7 +5,25 @@ import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
 import { createStateLink } from '../../modules/apollo-common';
 import createCache from './cache';
-import { getTerminatingLinks, getLinks } from './links/registerLinks';
+import { registerTerminatingLink, getTerminatingLinks, getLinks } from './links/registerLinks';
+
+// Temp oneGraph Auth link
+const DEFAULT_HEADER = 'og_authorization'
+
+export const oneGraphAuthLink = ({ headerName = DEFAULT_HEADER } = {}) => {
+  new ApolloLink((operation, forward) => {
+    const token = localStorage.getItem('oneGraph:9550429e-f67e-46d8-8722-5682336ed191') || 'no_token';
+
+    operation.setContext(() => ({
+      headers: {
+        [headerName]: token,
+      },
+    }));
+    return forward(operation);
+  });
+};
+
+// registerTerminatingLink(oneGraphAuthLink)
 
 // these links do not change once created
 const staticLinks = [errorLink, meteorAccountsLink];
