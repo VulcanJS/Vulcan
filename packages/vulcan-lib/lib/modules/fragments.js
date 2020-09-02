@@ -2,13 +2,13 @@ import gql from 'graphql-tag';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
 import uniq from 'lodash/uniq';
 import flattenDeep from 'lodash/flattenDeep';
-// import stringSimilarity from 'string-similarity';
+import stringSimilarity from 'string-similarity';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
 
 export const throwUnregisteredFragmentError = fragmentName => {
-  // const similarFragments = stringSimilarity.findBestMatch(fragmentName, Object.keys(Fragments));
+  const similarFragments = stringSimilarity.findBestMatch(fragmentName, Object.keys(Fragments));
   throw new Error(`A registered fragment named "${fragmentName}" cannot be found, did you mean "${similarFragments.bestMatch.target}"?`);
 };
 
