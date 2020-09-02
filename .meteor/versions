@@ -30,6 +30,8 @@ ejson@1.1.1
 email@1.2.3
 es5-shim@4.8.0
 fetch@0.1.1
+force-ssl@1.1.0
+force-ssl-common@1.1.0
 fourseven:scss@4.12.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
