@@ -2,13 +2,13 @@ import gql from 'graphql-tag';
 import { getDefaultFragmentText } from './graphql/defaultFragment';
 import uniq from 'lodash/uniq';
 import flattenDeep from 'lodash/flattenDeep';
-import stringSimilarity from 'string-similarity';
+// import stringSimilarity from 'string-similarity';
 
 export const Fragments = {};
 export const FragmentsExtensions = {}; // will be used on startup
 
 export const throwUnregisteredFragmentError = fragmentName => {
-  const similarFragments = stringSimilarity.findBestMatch(fragmentName, Object.keys(Fragments));
+  // const similarFragments = stringSimilarity.findBestMatch(fragmentName, Object.keys(Fragments));
   throw new Error(`A registered fragment named "${fragmentName}" cannot be found, did you mean "${similarFragments.bestMatch.target}"?`);
 };
 
@@ -89,23 +89,23 @@ export const getDefaultFragment = collection => {
   return fragmentText ? gql`${fragmentText}` : null;
 };
 /*
- 
+
 Queue a fragment to be extended with additional properties.
- 
-Note: can be used even before the fragment has been registered. 
- 
+
+Note: can be used even before the fragment has been registered.
+
 */
 export const extendFragment = (fragmentName, newProperties) => {
   FragmentsExtensions[fragmentName] = FragmentsExtensions[fragmentName] ? [...FragmentsExtensions[fragmentName], newProperties] : [newProperties];
 };
 
 /*
- 
+
 Perform fragment extension (called from initializeFragments()
- 
+
 Note: will call registerFragment again each time, resulting in multiple fragments
 with the same name (but duplicate fragments warning is disabled).
- 
+
 */
 export const extendFragmentWithProperties = (fragmentName, newProperties) => {
   const fragment = Fragments[fragmentName];
@@ -119,11 +119,11 @@ export const extendFragmentWithProperties = (fragmentName, newProperties) => {
 };
 
 /*
- 
+
 Remove a property from a fragment
- 
+
 Note: can only be called *after* a fragment is registered
- 
+
 */
 export const removeFromFragment = (fragmentName, propertyName) => {
   const fragment = Fragments[fragmentName];
@@ -132,16 +132,16 @@ export const removeFromFragment = (fragmentName, propertyName) => {
 };
 
 /*
- 
+
 Get fragment name from fragment object
- 
+
 */
 export const getFragmentName = fragment => fragment && fragment.definitions[0] && fragment.definitions[0].name.value;
 
 /*
- 
+
 Get actual gql fragment
- 
+
 */
 export const getFragment = fragmentName => {
   if (!Fragments[fragmentName]) {
@@ -155,9 +155,9 @@ export const getFragment = fragmentName => {
 };
 
 /*
- 
+
 Get gql fragment text
- 
+
 */
 export const getFragmentText = fragmentName => {
   if (!Fragments[fragmentName]) {
@@ -168,17 +168,17 @@ export const getFragmentText = fragmentName => {
 };
 
 /*
- 
+
 Get names of non initialized fragments.
- 
+
 */
 export const getNonInitializedFragmentNames = () =>
   _.keys(Fragments).filter(name => !Fragments[name].fragmentObject);
 
 /*
- 
+
 Perform all fragment extensions (called from routing)
- 
+
 */
 export const initializeFragments = (fragments = getNonInitializedFragmentNames()) => {
 

@@ -4,6 +4,7 @@ export * from '../modules/index.js';
 export * from './inject_data.js';
 
 export * from './apollo-client';
+export * from './serviceWorker';
 
 // createCollection, resolvers and mutations mocks
 // avoid warnings when building with webpack

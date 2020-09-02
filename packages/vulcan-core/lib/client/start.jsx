@@ -6,6 +6,7 @@ import { InjectData } from 'meteor/vulcan:lib';
 
 import {
   createApolloClient,
+  createServiceWorker,
   populateComponentsApp,
   populateRoutesApp,
   initializeFragments,
@@ -22,6 +23,7 @@ Meteor.startup(() => {
   initializeFragments();
   populateComponentsApp();
   populateRoutesApp();
+  createServiceWorker();
   const apolloClient = createApolloClient();
 
   // Create the root element
