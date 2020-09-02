@@ -63,6 +63,7 @@ class HeadTags extends PureComponent {
           <link rel='canonical' href={url}/>
           <link name='favicon' rel='shortcut icon' href={getSetting('faviconUrl', '/img/favicon.ico')}/>
           <link rel="manifest" href="/manifest.json"/>
+          <link rel="apple-touch-icon" sizes="192x192" href="/images/icons-192.png"/>
           {Head.meta.map((tag, index) => <meta key={index} {...tag}/>)}
           {Head.link.map((tag, index) => <link key={index} {...tag}/>)}
           {Head.script.map((tag, index) => <script key={index} {...tag}>{tag.contents}</script>)}
