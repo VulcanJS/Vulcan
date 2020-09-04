@@ -87,7 +87,18 @@ const specificResolvers = {
       if (!email) {
         throw new Error('Invalid email');
       }
-      return await authenticateWithPassword(email, password);
+      const authResult = await authenticateWithPassword(email, password);
+      // set an HTTP-only cookie so the user is authenticated
+      const { /*userId,*/ token } = authResult;
+      const tokenCookie = {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'development' ? false : true,
+        // expires: //
+        //sameSite: ''
+      };
+      context.req.res.cookie('meteor_login_token', token, tokenCookie);
+      return authResult;
     },
     async logout(root, args, context) {
       if (!(context && context.userId)) {
