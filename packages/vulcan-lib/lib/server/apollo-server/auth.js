@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import Cookies from 'universal-cookie';
 import { makeOneGraphJwtVerifier } from '@sgrove/onegraph-apollo-server-auth';
 import { getSetting } from '../../modules/settings.js';
+import get from 'lodash/get';
 
 /* -------------------- Meteor -------------------- */
 
@@ -88,6 +89,7 @@ Get user based on OneGraph token
 
 */
 export const getOneGraphUser = async authToken => {
+  let user;
   const dummyReq = {
     headers: {
       Authorization: 'Bearer ' + authToken,
@@ -96,7 +98,13 @@ export const getOneGraphUser = async authToken => {
   const decoded = await verifyAndDecodeAuthToken(dummyReq);
   // eslint-disable-next-line
   console.log('Decoded auth token:', decoded);
-  return;
+  const twitterId = get(decoded, 'user.twitterId');
+  if (twitterId) {
+    user = await Meteor.users.rawCollection().findOne({
+      'services.twitter.id': twitterId,
+    });
+  }
+  return user;
 };
 
 /* -------------------- Commong -------------------- */
@@ -113,9 +121,11 @@ export const getCurrentUserFromReq = async req => {
   console.log('meteorAuthToken: ' + meteorAuthToken);
   console.log('ogAuthToken: ' + ogAuthToken);
   if (meteorAuthToken) {
-    user = getMeteorUser(meteorAuthToken);
+    user = await getMeteorUser(meteorAuthToken);
   } else if (ogAuthToken) {
-    user = getOneGraphUser(meteorAuthToken);
+    user = await getOneGraphUser(meteorAuthToken);
   }
+  console.log('// found user: ')
+  console.log(user)
   return user;
 };
