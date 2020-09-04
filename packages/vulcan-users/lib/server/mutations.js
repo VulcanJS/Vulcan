@@ -105,6 +105,7 @@ const specificResolvers = {
         throw new Error('User already logged out');
       }
       const { userId } = context;
+      context.req.res.clearCookie('meteor_login_token');
       return await logout(userId);
     },
     async signup(root, args, context) {
