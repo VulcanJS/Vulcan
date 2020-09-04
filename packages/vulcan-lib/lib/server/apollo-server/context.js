@@ -17,23 +17,10 @@ import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
 import { GraphQLSchema } from '../graphql/index.js';
 import _merge from 'lodash/merge';
-import { getMeteorUser } from './getUser.js';
+import { getCurrentUserFromReq } from './auth.js';
 import { getHeaderLocale } from '../intl.js';
 import { getSetting } from '../../modules/settings.js';
 import { WebApp } from 'meteor/webapp';
-import { hasRole, isAuthenticated, makeOneGraphJwtVerifier } from '@sgrove/onegraph-apollo-server-auth';
-import Cookies from 'universal-cookie';
-
-// OneGraph configuration
-const ONEGRAPH_APP_ID = getSetting('oneGraph.appId');
-
-// 1. Find your APP_ID by logging into the OneGraph dashboard
-const verifyJwtFromHeaders = makeOneGraphJwtVerifier(ONEGRAPH_APP_ID, {
-  // Advanced usage: Uncomment this line if you want to allow shared-secret JWTs.
-  // This is optional, as by default OneGraph will use public/private signatures.
-  // sharedSecret: "passwordpasswordpasswordpasswo
-  // rdpasswordpasswordpasswordpasswordpassword"
-});
 
 /**
  * Called once on server creation
@@ -57,44 +44,10 @@ export const initContext = currentContext => {
   return context;
 };
 
-// initial request will get the login token from a cookie, subsequent requests from
-// the header
-
-export const getAuthToken = req => {
-  return req.headers.og_authorization;
-};
-
-const verifyAndDecodeAuthToken = async req => {
-  let jwtContext;
-
-  // Extract and verify the JWT using OneGraph's helper function
-  try {
-    jwtContext = await verifyJwtFromHeaders(req.headers);
-  } catch (e) {
-    throw new Error(e);
-  }
-  return jwtContext;
-};
-
-const dummyToken = 'foo';
-
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
 const setupAuthToken = async (context, req) => {
-  const dummyReq = {
-    headers: {
-      Authorization:
-        // 'Bearer ' + req.headers.authorization
-        'Bearer ' + dummyToken,
-    },
-  };
 
-  const authToken = getAuthToken(req);
-
-  const decoded = await verifyAndDecodeAuthToken(dummyReq);
-  // eslint-disable-next-line
-  console.log('Decoded auth token:', decoded);
-
-  const user = await getMeteorUser(authToken);
+  const user = await getCurrentUserFromReq(req);
 
   if (user) {
     // decoded.user.id is from the AuthGuardian rules set up
