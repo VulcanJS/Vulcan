@@ -100,6 +100,30 @@ export const createMutator = async ({
 
   /*
 
+  onCreate
+
+  note: cannot use forEach with async/await.
+  See https://stackoverflow.com/a/37576787/649299
+
+  note: clone arguments in case callbacks modify them
+
+  */
+  for (let fieldName of Object.keys(schema)) {
+    let autoValue;
+    if (schema[fieldName].onCreate) {
+      // OpenCRUD backwards compatibility: keep both newDocument and data for now, but phase out newDocument eventually
+      autoValue = await schema[fieldName].onCreate(properties); // eslint-disable-line no-await-in-loop
+    } else if (schema[fieldName].onInsert) {
+      // OpenCRUD backwards compatibility
+      autoValue = await schema[fieldName].onInsert(clone(document), currentUser); // eslint-disable-line no-await-in-loop
+    }
+    if (typeof autoValue !== 'undefined') {
+      document[fieldName] = autoValue;
+    }
+  }
+
+  /*
+
   Validation
 
   */
@@ -153,30 +177,6 @@ export const createMutator = async ({
   if (currentUser) {
     const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
     if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
-  }
-
-  /* 
-  
-  onCreate
-
-  note: cannot use forEach with async/await. 
-  See https://stackoverflow.com/a/37576787/649299
-
-  note: clone arguments in case callbacks modify them
-
-  */
-  for (let fieldName of Object.keys(schema)) {
-    let autoValue;
-    if (schema[fieldName].onCreate) {
-      // OpenCRUD backwards compatibility: keep both newDocument and data for now, but phase out newDocument eventually
-      autoValue = await schema[fieldName].onCreate(properties); // eslint-disable-line no-await-in-loop
-    } else if (schema[fieldName].onInsert) {
-      // OpenCRUD backwards compatibility
-      autoValue = await schema[fieldName].onInsert(clone(document), currentUser); // eslint-disable-line no-await-in-loop
-    }
-    if (typeof autoValue !== 'undefined') {
-      document[fieldName] = autoValue;
-    }
   }
 
   // TODO: find that info in GraphQL mutations
