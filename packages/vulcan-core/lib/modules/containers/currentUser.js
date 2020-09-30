@@ -1,6 +1,6 @@
 import React from 'react';
 import { getFragment } from 'meteor/vulcan:lib';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import get from 'lodash/get';
 

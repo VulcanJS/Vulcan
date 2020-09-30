@@ -12,7 +12,7 @@ export default withMutation({
 */
 
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { getFragment } from 'meteor/vulcan:lib';
 import isEmpty from 'lodash/isEmpty';

@@ -28,7 +28,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/react-hoc';
 import compose from 'recompose/compose';
 import {
   Components,
@@ -42,7 +42,7 @@ import {
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withSingle } from 'meteor/vulcan:core';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client';
 
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';

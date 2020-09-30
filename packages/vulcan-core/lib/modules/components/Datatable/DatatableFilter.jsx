@@ -1,7 +1,7 @@
 import { Components, registerComponent, Utils } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import moment from 'moment';
 

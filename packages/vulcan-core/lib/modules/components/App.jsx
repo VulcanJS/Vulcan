@@ -14,7 +14,7 @@ import { IntlProvider, intlShape } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/currentUser.js';
 import withUpdate from '../containers/update.js';
 import withSiteData from '../containers/siteData.js';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/react-hoc';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';

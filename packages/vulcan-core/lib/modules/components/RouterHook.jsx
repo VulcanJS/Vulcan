@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, runCallbacks, runCallbacksAsync } from 'meteor/vulcan:lib';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/react-hoc';
 
 class RouterHook extends PureComponent {
   constructor(props) {

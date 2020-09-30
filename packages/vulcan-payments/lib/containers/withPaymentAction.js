@@ -1,4 +1,4 @@
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client';
 import gql from 'graphql-tag';
 import { getFragment, getFragmentName } from 'meteor/vulcan:core';
 

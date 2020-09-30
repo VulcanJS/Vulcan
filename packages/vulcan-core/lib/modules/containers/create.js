@@ -30,7 +30,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo, filterFunction } from 'meteor/vulcan:lib';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { buildMultiQuery } from './multi';
 import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
 
