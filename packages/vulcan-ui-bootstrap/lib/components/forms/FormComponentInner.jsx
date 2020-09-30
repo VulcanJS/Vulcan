@@ -24,7 +24,7 @@ class FormComponentInner extends PureComponent {
   };
 
   getProperties = () => {
-    const { handleChange, inputType, itemProperties, description, loading, submitForm } = this.props;
+    const { handleChange, inputType, itemProperties, help, description, loading, submitForm } = this.props;
     const properties = {
       ...this.props,
 
@@ -44,7 +44,7 @@ class FormComponentInner extends PureComponent {
 
       itemProperties: {
         ...itemProperties,
-        description,
+        description: description || help,
         loading,
       },
     };

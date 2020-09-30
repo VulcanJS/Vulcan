@@ -134,8 +134,14 @@ export const validateIntlField = function () {
   }
 };
 
+
 /**
- * formatLabel - Get a label for a field, for a given collection, in the current language. The evaluation is as follows : i18n(collectionName.fieldName) > i18n(global.fieldName) > i18n(fieldName) > schema.fieldName.label > fieldName
+ * getIntlLabel - Get a label for a field, for a given collection, in the current language.
+ * The evaluation is as follows :
+ * i18n(intlId) >
+ * i18n(collectionName.fieldName) >
+ * i18n(global.fieldName) >
+ * i18n(fieldName) 
  *
  * @param  {object} params
  * @param  {object} params.intl               An intlShape object obtained from the react context for example
@@ -145,34 +151,43 @@ export const validateIntlField = function () {
  * @param  {object} values                    The values to pass to format the i18n string
  * @return {string}                           The translated label
  */
-
-export const formatLabel = ({ intl, fieldName, collectionName, schema }, values) => {
+export const getIntlLabel = ({ intl, fieldName, collectionName, schema, isDescription }, values) => {
+  const fieldSchema = (schema && schema[fieldName]) || {};
+  const { intlId } = fieldSchema;
   if (!fieldName) {
     throw new Error('fieldName option passed to formatLabel cannot be empty or undefined');
   }
-  const defaultMessage = '|*|*|';
-  // Get the intl label
-  let intlLabel = defaultMessage;
-  // try collectionName.fieldName as intl id
-  if (collectionName) {
-    intlLabel = intl.formatMessage(
-      { id: `${collectionName.toLowerCase()}.${fieldName}`, defaultMessage },
-      values
-    );
-  }
-  // try global.fieldName then just fieldName as intl id
-  if (intlLabel === defaultMessage) {
-    intlLabel = intl.formatMessage({ id: `global.${fieldName}`, defaultMessage }, values);
-    if (intlLabel === defaultMessage) {
-      intlLabel = intl.formatMessage({ id: fieldName }, values);
+
+  // if this is a description, just add .description at the end of the intl key
+  const suffix = isDescription ? '.description' : '';
+
+  const intlKeys = [
+    intlId, 
+    `${collectionName.toLowerCase()}.${fieldName}`, 
+    `global.${fieldName}`, 
+    fieldName
+  ];
+  let intlLabel;
+
+  for (const intlKey of intlKeys) {
+    const intlString = intl.formatMessage({ id: intlKey+suffix }, values);
+
+    if (intlString !== '') {
+      intlLabel = intlString;
+      break;
     }
   }
-  if (intlLabel) {
-    return intlLabel;
-  }
-
-  // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
-  let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
-  return Utils.capitalize(schemaLabel) || Utils.camelToSpaces(fieldName);
+  return intlLabel;
 };
 
+/*
+
+Get intl label or fallback
+
+*/
+export const formatLabel = (options, values) => {
+  const { fieldName, schema } = options;
+  const fieldSchema = (schema && schema[fieldName]) || {};
+  const { label: schemaLabel } = fieldSchema;
+  return getIntlLabel(options, values) || schemaLabel || Utils.camelToSpaces(fieldName);
+};

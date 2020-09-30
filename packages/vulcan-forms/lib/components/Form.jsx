@@ -22,6 +22,7 @@ import {
   isIntlField,
   mergeWithComponents,
   formatLabel,
+  getIntlLabel,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -417,8 +418,9 @@ class SmartForm extends Component {
     }
 
     // add description as help prop
-    if (fieldSchema.description) {
-      field.help = fieldSchema.description;
+    const description = this.getDescription(fieldName);
+    if (description) {
+      field.help = description;
     }
 
     return field;
@@ -523,13 +525,32 @@ class SmartForm extends Component {
 
   /*
 
+   Get a field's description
+
+   (Same as getLabel but pass isDescription: true )
+   */
+  getDescription = (fieldName) => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    const description = getIntlLabel({
+      intl: this.context.intl,
+      fieldName: fieldName,
+      collectionName: collectionName,
+      schema: this.state.flatSchema,
+      isDescription: true,
+    });
+    return description || null;
+  }
+
+  /*
+
   Get a field option's label
 
   */
   getOptionLabel = (fieldName, option) => {
     const collectionName = this.props.collectionName.toLowerCase();
+    const intlId = option.intlId || `${collectionName}.${fieldName}.${option.value}`;
     return this.context.intl.formatMessage({
-      id: `${collectionName}.${fieldName}.${option.value}`,
+      id: intlId,
       defaultMessage: option.label,
     });
   };

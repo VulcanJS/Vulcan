@@ -63,6 +63,7 @@ SimpleSchema.extendOptions([
   
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings
+  'intlId', // set an explicit i18n key for a field
 ]);
 
 // eslint-disable-next-line no-undef

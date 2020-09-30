@@ -202,6 +202,7 @@ export const schemaProperties = [
   'autocompleteQuery',
   'fieldProperties',
   'intl',
+  'intlId',
 ];
 
 export const formProperties = [
