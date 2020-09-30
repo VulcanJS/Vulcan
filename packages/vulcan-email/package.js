@@ -12,4 +12,6 @@ Package.onUse(function(api) {
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
+
+  api.addAssets(['lib/server/templates/template_error.handlebars'], ['server']);
 });

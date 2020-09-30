@@ -42,18 +42,20 @@ registerSetting('enableDevelopmentEmails', false);
 
 VulcanEmail.templates = {};
 
-VulcanEmail.addTemplates = templates => {
+export const addTemplates = templates => {
   _.extend(VulcanEmail.templates, templates);
 };
+VulcanEmail.addTemplates = addTemplates;
 
-VulcanEmail.getTemplate = templateName => {
+export const getTemplate = templateName => {
   if (!VulcanEmail.templates[templateName]) {
     throw new Error(`Couldn't find email template named  “${templateName}”`);
   }
   return Handlebars.compile(VulcanEmail.templates[templateName], { noEscape: true, strict: true });
 };
+VulcanEmail.getTemplate = getTemplate;
 
-VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
+export const buildTemplate = (htmlContent, data = {}, locale) => {
   const emailProperties = {
     secondaryColor: getSetting('secondaryColor', '#444444'),
     accentColor: getSetting('accentColor', '#DD3416'),
@@ -91,14 +93,16 @@ VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
 
   return doctype + inlinedHTML;
 };
+VulcanEmail.buildTemplate = buildTemplate;
 
-VulcanEmail.generateTextVersion = html => {
+export const generateTextVersion = html => {
   return htmlToText.fromString(html, {
     wordwrap: 130,
   });
 };
+VulcanEmail.generateTextVersion = generateTextVersion;
 
-VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments, from) => {
+export const send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, headers, attachments, from) => {
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
@@ -158,8 +162,10 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
 
   return email;
 };
+VulcanEmail.send = send;
 
-VulcanEmail.build = async ({ to: staticTo, emailName, variables, locale }) => {
+export const build = async ({ to: staticTo, emailName, variables, locale }) => {
+  let html, htmlContents;
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
 
@@ -179,8 +185,17 @@ VulcanEmail.build = async ({ to: staticTo, emailName, variables, locale }) => {
     data.__ = Strings[locale];
     data.locale = locale;
 
-    const htmlContents = VulcanEmail.getTemplate(email.template)(data);
-    const html = VulcanEmail.buildTemplate(htmlContents, data, locale);
+    // try generating htmlContents, if it fails default to using templateError template instead
+    try {
+      htmlContents = VulcanEmail.getTemplate(email.template)(data);
+    } catch (error) {
+      htmlContents = VulcanEmail.getTemplate('templateError')({ ...data, email, error: error.message });
+      console.log('// getTemplate error');
+      console.log(error);
+    }
+
+    html = VulcanEmail.buildTemplate(htmlContents, data, locale);
+
     return { data, subject, html, to };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -189,8 +204,9 @@ VulcanEmail.build = async ({ to: staticTo, emailName, variables, locale }) => {
     console.log(error);
   }
 };
+VulcanEmail.build = build;
 
-VulcanEmail.buildAndSend = async ({
+export const buildAndSend = async ({
   to,
   cc,
   bcc,
@@ -210,5 +226,7 @@ VulcanEmail.buildAndSend = async ({
     console.log(error);
   }
 };
+VulcanEmail.buildAndSend = buildAndSend;
 
-VulcanEmail.buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));
+export const buildAndSendHTML = (to, subject, html) => VulcanEmail.send(to, subject, VulcanEmail.buildTemplate(html));
+VulcanEmail.buildAndSendHTML = buildAndSendHTML;
