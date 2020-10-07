@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import gql from 'graphql-tag';
 import { performVoteClient } from '../modules/vote.js';
 import { VoteableCollections } from '../modules/make_voteable.js';

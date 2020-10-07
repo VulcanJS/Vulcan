@@ -8,7 +8,7 @@ HoC that provides access to flash messages stored in Redux state and actions to 
 
 import React from 'react';
 import { registerStateLinkMutation, registerStateLinkDefault } from 'meteor/vulcan:lib';
-import { graphql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import gql from 'graphql-tag';
 import compose from 'recompose/compose';
 

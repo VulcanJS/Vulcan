@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
-import { graphql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'recompose/compose';
 import gql from 'graphql-tag';
 import Users from 'meteor/vulcan:users';

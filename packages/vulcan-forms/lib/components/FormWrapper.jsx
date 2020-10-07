@@ -42,7 +42,6 @@ import {
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
 import { withSingle } from 'meteor/vulcan:core';
-import { graphql } from '@apollo/client';
 
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';
