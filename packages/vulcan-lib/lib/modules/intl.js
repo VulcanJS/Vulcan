@@ -161,12 +161,16 @@ export const getIntlLabel = ({ intl, fieldName, collectionName, schema, isDescri
   // if this is a description, just add .description at the end of the intl key
   const suffix = isDescription ? '.description' : '';
 
-  const intlKeys = [
-    intlId, 
-    `${collectionName.toLowerCase()}.${fieldName}`, 
-    `global.${fieldName}`, 
-    fieldName
-  ];
+  const intlKeys = [];
+  if (intlId) {
+    intlKeys.push(intlId);
+  }
+  if (collectionName) {
+    intlKeys.push(`${collectionName.toLowerCase()}.${fieldName}`);
+  }
+  intlKeys.push(`global.${fieldName}`);
+  intlKeys.push(fieldName);
+
   let intlLabel;
 
   for (const intlKey of intlKeys) {
