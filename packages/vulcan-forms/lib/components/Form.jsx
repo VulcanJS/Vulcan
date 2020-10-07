@@ -991,11 +991,20 @@ class SmartForm extends Component {
     if (this.getFormType() === 'new') {
       // create document form
       try {
-        const result = await this.props[`create${this.props.typeName}`]({ input: {
-          data,
-          contextName,
-        } });
-        this.newMutationSuccessCallback(result);
+        const result = await this.props[`create${this.props.typeName}`]({
+          input: {
+            data,
+            contextName,
+          },
+        });
+        const meta = this.props[`create${this.props.typeName}Meta`];
+        // in new versions of Apollo Client errors are no longer thrown/caught
+        // but can instead be provided as props by the useMutation hook
+        if (meta.error) {
+          this.mutationErrorCallback(document, meta.error);
+        } else {
+          this.newMutationSuccessCallback(result);
+        }
       } catch (error) {
         this.mutationErrorCallback(document, error);
       }
@@ -1008,9 +1017,16 @@ class SmartForm extends Component {
             id: documentId,
             data,
             contextName,
-          }
+          },
         });
-        this.editMutationSuccessCallback(result);
+        const meta = this.props[`update${this.props.typeName}Meta`];
+        // in new versions of Apollo Client errors are no longer thrown/caught
+        // but can instead be provided as props by the useMutation hook
+        if (meta.error) {
+          this.mutationErrorCallback(document, meta.error);
+        } else {
+          this.editMutationSuccessCallback(result);
+        }
       } catch (error) {
         this.mutationErrorCallback(document, error);
       }

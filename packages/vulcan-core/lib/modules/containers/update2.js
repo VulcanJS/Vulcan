@@ -79,15 +79,17 @@ export const withUpdate2 = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const funcName = `update${typeName}`;
+  const metaName = `update${typeName}Meta`;
 
   const legacyError = () => {
     throw new Error(`editMutation function has been removed. Use ${funcName} function instead.`);
   };
   const Wrapper = props => {
-    const [updateFunc] = useUpdate2(options);
+    const [updateFunc, updateMeta] = useUpdate2(options);
     return <C
       {...props}
       {...{ [funcName]: updateFunc }}
+      {...{ [metaName]: updateMeta }}
       editMutation={legacyError}
     />;
   };

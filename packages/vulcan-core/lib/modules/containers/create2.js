@@ -134,14 +134,17 @@ export const withCreate2 = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const funcName = `create${typeName}`;
+  const metaName = `update${typeName}Meta`;
+
   const legacyError = () => {
     throw new Error(`newMutation function has been removed. Use ${funcName} instead.`);
   };
   const Wrapper = props => {
-    const [createFunc] = useCreate2(options);
+    const [createFunc, createMeta] = useCreate2(options);
     return <C
       {...props}
       {...{ [funcName]: createFunc }}
+      {...{ [metaName]: createMeta }}
       newMutation={legacyError}
     />;
   };

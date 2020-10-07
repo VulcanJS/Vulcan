@@ -35,12 +35,11 @@ import { buildMultiQuery } from './multi';
 import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
 import { computeQueryVariables } from './variables';
 
-export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) => (
+export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) =>
   gql`
     ${deleteClientTemplate({ typeName, fragmentName })}
     ${fragment}
-  `
-);
+  `;
 
 // remove value from the cached lists
 const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => {
@@ -66,7 +65,7 @@ const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => 
   };
 };
 
-export const useDelete2 = (options) => {
+export const useDelete2 = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
@@ -78,19 +77,20 @@ export const useDelete2 = (options) => {
 
   const query = buildDeleteQuery({
     fragment,
-    fragmentName, typeName
+    fragmentName,
+    typeName,
   });
 
   const [deleteFunc, ...rest] = useMutation(query, {
     // optimistic update
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
-    ...mutationOptions
+    ...mutationOptions,
   });
-  const extendedDeleteFunc = (args/*{ input: argsInput, _id: argsId }*/) => {
+  const extendedDeleteFunc = (args /*{ input: argsInput, _id: argsId }*/) => {
     return deleteFunc({
       variables: {
-        ...computeQueryVariables(options, args)
-      }
+        ...computeQueryVariables(options, args),
+      },
     });
   };
   return [extendedDeleteFunc, ...rest];
@@ -100,15 +100,15 @@ export const withDelete2 = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const funcName = `delete${typeName}`;
+  const metaName = `delete${typeName}Meta`;
+
   const legacyError = () => {
     throw new Error(`removeMutation function has been removed. Use ${funcName} function instead.`);
   };
 
-  const Wrapper = (props) => {
-    const [deleteFunc] = useDelete2(options);
-    return (
-      <C {...props} {...{ [funcName]: deleteFunc }} removeMutation={legacyError} />
-    );
+  const Wrapper = props => {
+    const [deleteFunc, deleteMeta] = useDelete2(options);
+    return <C {...props} {...{ [funcName]: deleteFunc }} {...{ [metaName]: deleteMeta }} removeMutation={legacyError} />;
   };
   Wrapper.displayName = `withDelete${typeName}`;
   return Wrapper;
