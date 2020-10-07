@@ -6,12 +6,12 @@ try {
 }
 export const loginButtonsSession = Accounts._loginButtonsSession;
 export const STATES = {
-  SIGN_IN: Symbol('SIGN_IN'),
-  SIGN_UP: Symbol('SIGN_UP'),
-  PROFILE: Symbol('PROFILE'),
-  PASSWORD_CHANGE: Symbol('PASSWORD_CHANGE'),
-  PASSWORD_RESET: Symbol('PASSWORD_RESET'),
-  ENROLL_ACCOUNT: Symbol('ENROLL_ACCOUNT')
+  SIGN_IN: Symbol.for('SIGN_IN'),
+  SIGN_UP: Symbol.for('SIGN_UP'),
+  PROFILE: Symbol.for('PROFILE'),
+  PASSWORD_CHANGE: Symbol.for('PASSWORD_CHANGE'),
+  PASSWORD_RESET: Symbol.for('PASSWORD_RESET'),
+  ENROLL_ACCOUNT: Symbol.for('ENROLL_ACCOUNT')
 };
 
 export function getLoginServices() {
