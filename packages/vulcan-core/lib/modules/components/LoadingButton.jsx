@@ -1,7 +1,7 @@
 import React from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 
-const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
+const LoadingButton = ({ loading, label, onClick, children, className = '', ...rest }) => {
 
   const wrapperStyle = {
     position: 'relative',
@@ -21,7 +21,7 @@ const LoadingButton = ({ loading, label, onClick, children, ...rest }) => {
   } : { display: 'none'};
 
   return (
-    <Components.Button className={loading ? 'loading-button-loading' : 'loading-button-notloading'} onClick={onClick} {...rest}>
+    <Components.Button className={`${loading ? 'loading-button-loading' : 'loading-button-notloading'} ${className}`} onClick={onClick} {...rest}>
       <span style={wrapperStyle}>
         <span style={labelStyle}>{label || children}</span>
         <span style={loadingStyle}><Components.Loading/></span>

@@ -33,7 +33,7 @@ const FormItem = props => {
     // vertical layout
     return (
       <Form.Group controlId={path} {...rest}>
-        <Form.Label>{label}</Form.Label>
+        <Form.Label><span dangerouslySetInnerHTML={{ __html: label }}/></Form.Label>
         <div className="form-item-contents">
           <div className="form-item-input">
             {beforeInput}

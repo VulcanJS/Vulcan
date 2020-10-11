@@ -71,7 +71,7 @@ const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProp
             key={i}
             layout="elementOnly"
             type="radio"
-            label={option.label}
+            label={itemProperties.optionsHTML ? <span dangerouslySetInnerHTML={{ __html: option.label }} /> : option.label}
             value={option.value}
             name={path}
             id={`${path}.${i}`}

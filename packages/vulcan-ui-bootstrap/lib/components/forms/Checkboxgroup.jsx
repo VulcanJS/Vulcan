@@ -104,7 +104,7 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, dis
               name={name}
               layout="elementOnly"
               key={i}
-              label={option.label}
+              label={itemProperties.optionsHTML ? <span dangerouslySetInnerHTML={{ __html: option.label }} /> : option.label}
               value={isChecked}
               checked={isChecked}
               id={`${path}.${i}`}
