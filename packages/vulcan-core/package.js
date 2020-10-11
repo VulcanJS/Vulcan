@@ -1,18 +1,20 @@
+const version = '1.16.0';
+
 Package.describe({
   name: 'vulcan:core',
   summary: 'Vulcan core package',
-  version: '1.16.0',
+  version,
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(function(api) {
   api.versionsFrom('1.6.1');
 
-  api.use(['vulcan:lib@=1.16.0', 'vulcan:i18n@=1.16.0', 'vulcan:users@=1.16.0']);
+  api.use([`vulcan:lib@=${version}`, `vulcan:i18n@=${version}`, `vulcan:users@=${version}`]);
 
-  api.use(['vulcan:i18n@=1.16.0'], ['server', 'client'], { weak: true });
+  api.use([`vulcan:i18n@=${version}`], ['server', 'client'], { weak: true });
 
-  api.imply(['vulcan:lib@=1.16.0']);
+  api.imply([`vulcan:lib@=${version}`]);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

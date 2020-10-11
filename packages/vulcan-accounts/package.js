@@ -17,7 +17,7 @@ Package.onUse(function(api) {
   api.use('accounts-base');
   api.use('check');
   api.use('random');
-  api.use('email');
+  api.use('email@2.0.0');
   api.use('session');
   api.use('service-configuration');
 
