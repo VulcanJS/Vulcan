@@ -23,6 +23,7 @@ import {
   mergeWithComponents,
   formatLabel,
   getIntlLabel,
+  getIntlKeys,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -384,6 +385,7 @@ class SmartForm extends Component {
     }
 
     field.label = this.getLabel(fieldName);
+    field.intlKeys = this.getIntlKeys(fieldName);
     // // replace value by prefilled value if value is empty
     // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
     // if (prefill) {
@@ -497,6 +499,20 @@ class SmartForm extends Component {
     // we do not allow nesting yet
     //subField = this.handleFieldChildren(field, fieldSchema)
     return subField;
+  };
+
+  /*
+  
+  Get a field's intl keys (useful for debugging)
+
+  */
+  getIntlKeys = fieldName => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    return getIntlKeys({
+      fieldName: fieldName,
+      collectionName,
+      schema: this.state.flatSchema,
+    });
   };
 
   /*
