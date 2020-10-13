@@ -1,4 +1,14 @@
-import { Components, registerComponent, getSetting, Strings, runCallbacks, detectLocale, hasIntlFields, Routes, getLocale } from 'meteor/vulcan:lib';
+import {
+  Components,
+  registerComponent,
+  getSetting,
+  Strings,
+  runCallbacks,
+  detectLocale,
+  hasIntlFields,
+  Routes,
+  getLocale,
+} from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape, IntlContext } from 'meteor/vulcan:i18n';
@@ -106,7 +116,7 @@ class App extends PureComponent {
 
   componentDidMount = async () => {
     runCallbacks('app.mounted', this.props);
-  }
+  };
 
   // initLocale = () => {
   //   let userLocale = '';
@@ -156,16 +166,16 @@ class App extends PureComponent {
   setLocale = async localeId => {
     const localeObject = getLocale(localeId);
     const { cookies, updateUser, client, currentUser } = this.props;
+    // if this is a dynamic locale, fetch its data from the server
+    if (localeObject.dynamic) {
+      await this.loadLocale(localeId);
+    }
     this.setState({ locale: localeId });
     cookies.remove('locale', { path: '/' });
     cookies.set('locale', localeId, { path: '/' });
     // if user is logged in, change their `locale` profile property
     if (currentUser) {
       await updateUser({ selector: { documentId: currentUser._id }, data: { locale: localeId } });
-    }
-    // if this is a dynamic locale, fetch its data from the server
-    if (localeObject.dynamic) {
-      await this.loadLocale(localeId);
     }
     moment.locale(localeId);
     if (hasIntlFields) {
@@ -182,10 +192,10 @@ class App extends PureComponent {
   loadLocale = async localeId => {
     this.setState({ localeLoading: true });
     const result = await this.props.locale.refetch({ localeId });
-    const fetchedLocaleStrings = { [localeId]: get(result, 'data.locale.strings', [])};
+    const fetchedLocaleStrings = { [localeId]: get(result, 'data.locale.strings', []) };
     const localeStrings = merge({}, this.state.localeStrings, fetchedLocaleStrings);
     this.setState({ localeLoading: false, localeStrings });
-  }
+  };
 
   getChildContext() {
     return {
@@ -226,7 +236,9 @@ class App extends PureComponent {
             <div className={`locale-${locale}`}>
               <Components.HeadTags />
               {this.props.currentUserLoading ? (
-                <Components.Loading />
+                <div className="app-initial-loading">
+                  <Components.Loading />
+                </div>
               ) : routeNames.length ? (
                 <Switch>
                   {routeNames.map(key => (
@@ -240,6 +252,11 @@ class App extends PureComponent {
                 </Switch>
               ) : (
                 <Components.Welcome />
+              )}
+              {this.state.localeLoading && (
+                <div className="app-secondary-loading">
+                  <Components.Loading />
+                </div>
               )}
             </div>
           </MessageContext.Provider>
@@ -266,6 +283,16 @@ const updateOptions = {
   fragmentName: 'UsersCurrent',
 };
 
-registerComponent('App', App, withCurrentUser, withSiteData, withLocaleData, [withUpdate, updateOptions], withApollo, withCookies, withRouter);
+registerComponent(
+  'App',
+  App,
+  withCurrentUser,
+  withSiteData,
+  withLocaleData,
+  [withUpdate, updateOptions],
+  withApollo,
+  withCookies,
+  withRouter
+);
 
 export default App;

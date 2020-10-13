@@ -8,11 +8,11 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 
 const FormItem = props => {
 
-  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', loading, ...rest } = props;
+  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', loading, optionsHTML, Components, ...rest } = props;
   const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
 
   if (layout === 'inputOnly' || !label) {
@@ -33,7 +33,7 @@ const FormItem = props => {
     // vertical layout
     return (
       <Form.Group controlId={path} {...rest}>
-        <Form.Label><span dangerouslySetInnerHTML={{ __html: label }}/></Form.Label>
+        <Components.FormLabel {...props}/>
         <div className="form-item-contents">
           <div className="form-item-input">
             {beforeInput}
@@ -52,9 +52,7 @@ const FormItem = props => {
     // horizontal layout (default)
     return (
       <Form.Group as={Row} controlId={path} {...rest}>
-        <Form.Label column sm={3}>
-          {label}
-        </Form.Label>
+        <Components.FormLabel {...props}/>
         <Col sm={9}>
           {beforeInput}
           {innerComponent}

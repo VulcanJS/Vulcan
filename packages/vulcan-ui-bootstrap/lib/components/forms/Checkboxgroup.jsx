@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { registerComponent } from 'meteor/vulcan:core';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
@@ -22,7 +22,7 @@ export const removeOtherValue = a => {
   return a.filter(s => !isOtherValue(s));
 };
 
-const OtherComponent = ({ value, path, updateCurrentValues }) => {
+const OtherComponent = ({ value, path, updateCurrentValues, Components }) => {
   const otherValue = removeOtherMarker(value.find(isOtherValue));
   // get copy of checkbox group values with "other" value removed
   const withoutOtherValue = removeOtherValue(value);
@@ -75,7 +75,18 @@ const OtherComponent = ({ value, path, updateCurrentValues }) => {
 };
 
 // note: treat checkbox group the same as a nested component, using `path`
-const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, disabled, updateCurrentValues, inputProperties, itemProperties = {} }) => {
+const CheckboxGroupComponent = ({
+  refFunction,
+  label,
+  path,
+  value,
+  formType,
+  disabled,
+  updateCurrentValues,
+  inputProperties,
+  itemProperties = {},
+  formComponents: Components,
+}) => {
   const { options = [], name } = inputProperties;
 
   // get rid of duplicate values; or any values that are not included in the options provided
@@ -104,7 +115,7 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, dis
               name={name}
               layout="elementOnly"
               key={i}
-              label={itemProperties.optionsHTML ? <span dangerouslySetInnerHTML={{ __html: option.label }} /> : option.label}
+              label={<Components.FormOptionLabel option={option} name={name} />}
               value={isChecked}
               checked={isChecked}
               id={`${path}.${i}`}
@@ -119,7 +130,9 @@ const CheckboxGroupComponent = ({ refFunction, label, path, value, formType, dis
             />
           );
         })}
-        {itemProperties.showOther && <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} />}
+        {itemProperties.showOther && (
+          <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} Components={Components} />
+        )}
       </div>
     </Components.FormItem>
   );
