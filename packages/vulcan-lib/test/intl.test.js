@@ -31,7 +31,7 @@ const schema = {
 };
 
 // add the strings for formatLabel
-addStrings('en', {
+addStrings(['en', 'en-US'], {
   // fieldName only
   [fieldName]: labelFromFieldName,
   // fieldName + global - we expect labelFromGlobal

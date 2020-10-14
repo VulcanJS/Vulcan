@@ -1,6 +1,6 @@
 import { addStrings } from 'meteor/vulcan:core';
 
-addStrings('en', {
+addStrings(['en', 'en-US'], {
   'newsletter': 'Newsletter',
   'newsletter.subscribe': 'Subscribe',
   'newsletter.unsubscribe': 'Unsubscribe',

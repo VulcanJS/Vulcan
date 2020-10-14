@@ -19,7 +19,7 @@ const valueTestStringDynamic = 'testValue';
 const valueTestString = `${valueTestStringStatic}{${valueTestStringDynamic}}`;
 
 // add the strings for formatMessage
-addStrings('en', {
+addStrings(['en', 'en-US'], {
   [stringId]: ENTestString,
   [valueStringId]: valueTestString,
 });

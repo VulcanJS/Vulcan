@@ -2,20 +2,23 @@ import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
 import { debug, Utils } from 'meteor/vulcan:lib';
 
-export const defaultLocale = getSetting('locale', 'en');
+export const defaultLocale = getSetting('locale', 'en-US');
 
 export const Strings = {};
 
 export const Domains = {};
 
-export const addStrings = (localeId, strings) => {
-  if (typeof Strings[localeId] === 'undefined') {
-    Strings[localeId] = {};
-  }
-  Strings[localeId] = {
-    ...Strings[localeId],
-    ...strings,
-  };
+export const addStrings = (localeIdorIds, strings) => {
+  const localeIds = Array.isArray(localeIdorIds) ? localeIdorIds : [localeIdorIds];
+  localeIds.forEach(localeId => {
+    if (typeof Strings[localeId] === 'undefined') {
+      Strings[localeId] = {};
+    }
+    Strings[localeId] = {
+      ...Strings[localeId],
+      ...strings,
+    };
+  });
 };
 
 export const getString = ({ id, values, defaultMessage, messages, locale }) => {
