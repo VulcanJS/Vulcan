@@ -6,12 +6,12 @@ intl polyfill. See https://github.com/andyearnshaw/Intl.js/
 
 import { getSetting, registerSetting } from '../modules/settings.js';
 
-registerSetting('locale', 'en');
+registerSetting('locale', 'en-US');
 
 import areIntlLocalesSupported from 'intl-locales-supported'
 
 var localesMyAppSupports = [
-  getSetting('locale', 'en')
+  getSetting('locale', 'en-US')
 ];
 
 if (global.Intl) {

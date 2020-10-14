@@ -1,7 +1,7 @@
 import { addStrings } from 'meteor/vulcan:core';
 
 
-addStrings('en', {
+addStrings(['en', 'en-US'], {
 
   'search.search': 'Search',
   'search.clear': 'Clear search',

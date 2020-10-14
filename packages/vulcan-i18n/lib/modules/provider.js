@@ -4,7 +4,8 @@ import { intlShape } from './shape.js';
 
 export default class IntlProvider extends Component {
   formatMessage = ({ id, defaultMessage }, values) => {
-    return getString({ id, defaultMessage, values, locale: this.props.locale });
+    const { messages, locale } = this.props;
+    return getString({ id, defaultMessage, values, messages, locale });
   };
 
   formatStuff = something => {
