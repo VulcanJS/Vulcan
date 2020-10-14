@@ -18,7 +18,7 @@ const FormItem = props => {
   if (layout === 'inputOnly' || !label) {
     // input only layout
     return (
-      <Form.Group controlId={path} {...rest}>
+      <Form.Group controlId={path}>
         {beforeInput}
         {innerComponent}
         {afterInput}
@@ -32,7 +32,7 @@ const FormItem = props => {
   } else if (layout === 'vertical') {
     // vertical layout
     return (
-      <Form.Group controlId={path} {...rest}>
+      <Form.Group controlId={path}>
         <Components.FormLabel {...props}/>
         <div className="form-item-contents">
           <div className="form-item-input">
@@ -51,7 +51,7 @@ const FormItem = props => {
   } else {
     // horizontal layout (default)
     return (
-      <Form.Group as={Row} controlId={path} {...rest}>
+      <Form.Group as={Row} controlId={path}>
         <Components.FormLabel {...props}/>
         <Col sm={9}>
           {beforeInput}
