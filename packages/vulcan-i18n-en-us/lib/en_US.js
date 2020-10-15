@@ -1,6 +1,6 @@
 import { addStrings } from 'meteor/vulcan:core';
 
-addStrings(['en', 'en-US'], {
+addStrings('en', {
   'accounts.error_incorrect_password': 'Incorrect password',
   'accounts.error_email_required': 'Email required',
   'accounts.error_email_already_exists': 'Email already exists',
