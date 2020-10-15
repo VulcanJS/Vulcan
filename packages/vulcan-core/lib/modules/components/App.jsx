@@ -8,6 +8,7 @@ import {
   hasIntlFields,
   Routes,
   getLocale,
+  getStrings,
 } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -60,22 +61,27 @@ const RouteWithLayout = ({ layoutComponent, layoutName, component, currentRoute,
 class App extends PureComponent {
   constructor(props) {
     super(props);
-    if (props.currentUser) {
-      runCallbacks('events.identify', props.currentUser);
+    const { currentUser, locale } = props;
+    if (currentUser) {
+      runCallbacks('events.identify', currentUser);
     }
-    const { localeId, localeMethod } = props.locale;
+
     // get translation strings loaded dynamically
-    const loadedStrings = { [localeId]: get(props.locale, 'data.locale.strings') };
+    const loadedStrings = get(props.locale, 'data.locale.strings');
     // get translation strings bundled statically
-    const bundledStrings = Strings[localeId];
+    const bundledStrings = Strings[locale.id];
+
     this.state = {
-      locale: localeId,
-      localeMethod,
+      locale: {
+        id: locale.id,
+        method: locale.method,
+        loading: false,
+        strings: merge({}, loadedStrings, bundledStrings),
+      },
       messages: [],
-      localeLoading: false,
-      localeStrings: merge({}, loadedStrings, bundledStrings),
     };
-    moment.locale(localeId);
+
+    moment.locale(locale.id);
   }
 
   /*
@@ -118,59 +124,26 @@ class App extends PureComponent {
     runCallbacks('app.mounted', this.props);
   };
 
-  // initLocale = () => {
-  //   let userLocale = '';
-  //   let localeMethod = '';
-  //   const { currentUser, cookies, locale } = this.props;
-  //   const availableLocales = Object.keys(Strings);
-  //   const detectedLocale = detectLocale();
-
-  //   if (locale) {
-  //     // 1. locale is passed from AppGenerator through SSR process
-  //     userLocale = locale.localeId;
-  //     localeMethod = 'SSR';
-  //   } else if (cookies && cookies.get('locale')) {
-  //     // 2. look for a cookie
-  //     userLocale = cookies.get('locale');
-  //     localeMethod = 'cookie';
-  //   } else if (currentUser && currentUser.locale) {
-  //     // 3. if user is logged in, check for their preferred locale
-  //     userLocale = currentUser.locale;
-  //     localeMethod = 'user';
-  //   } else if (detectedLocale) {
-  //     // 4. else, check for browser settings
-  //     userLocale = detectedLocale;
-  //     localeMethod = 'browser';
-  //   }
-  //   console.log('app.jsx initlocale')
-  //   console.log(userLocale)
-  //   console.log(localeMethod)
-  //   // if user locale is available, use it; else compare first two chars
-  //   // of user locale with first two chars of available locales
-  //   const availableLocale = Strings[userLocale]
-  //     ? userLocale
-  //     : availableLocales.find(locale => locale.slice(0, 2) === userLocale.slice(0, 2));
-
-  //   // 4. if user-defined locale is available, use it; else default to setting or `en-US`
-  //   if (availableLocale) {
-  //     return { locale: availableLocale, localeMethod };
-  //   } else {
-  //     return { locale: getSetting('locale', 'en-US'), localeMethod: 'setting' };
-  //   }
-  // };
-
-  getLocale = truncate => {
-    return truncate ? this.state.locale.slice(0, 2) : this.state.locale;
+  // actually returns an id, not a locale
+  getLocale = () => {
+    return this.state.locale.id;
   };
 
   setLocale = async localeId => {
+    // note: this is the getLocale in intl.js, not this.getLocale()!
     const localeObject = getLocale(localeId);
     const { cookies, updateUser, client, currentUser } = this.props;
+    let localeStrings;
+
     // if this is a dynamic locale, fetch its data from the server
     if (localeObject.dynamic) {
-      await this.loadLocale(localeId);
+      this.setState({ locale: { ...this.state.locale, loading: true } });
+      localeStrings = await this.loadLocaleStrings(localeId);
+    } else {
+      localeStrings = getStrings(localeId);
     }
-    this.setState({ locale: localeId });
+    this.setState({ locale: { ...this.state.locale, loading: false, id: localeId, strings: localeStrings } });
+
     cookies.remove('locale', { path: '/' });
     cookies.set('locale', localeId, { path: '/' });
     // if user is logged in, change their `locale` profile property
@@ -189,12 +162,11 @@ class App extends PureComponent {
   withLocalData HoC
   
   */
-  loadLocale = async localeId => {
-    this.setState({ localeLoading: true });
+  loadLocaleStrings = async localeId => {
     const result = await this.props.locale.refetch({ localeId });
-    const fetchedLocaleStrings = { [localeId]: get(result, 'data.locale.strings', []) };
+    const fetchedLocaleStrings = get(result, 'data.locale.strings', []);
     const localeStrings = merge({}, this.state.localeStrings, fetchedLocaleStrings);
-    this.setState({ localeLoading: false, localeStrings });
+    return localeStrings;
   };
 
   getChildContext() {
@@ -216,24 +188,22 @@ class App extends PureComponent {
     const routeNames = Object.keys(Routes);
     const { flash } = this;
     const { messages } = this.state;
-    const locale = this.getLocale();
+    const localeId = this.state.locale.id;
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
 
-    // combine both strings loaded via the Strings object and strings loaded dynamically
-    const currentLocaleStrings = this.state.localeStrings[locale];
+    const intlObject = {
+      locale: localeId,
+      key: localeId,
+      messages: this.state.locale.strings,
+    };
 
     // keep IntlProvider for now for backwards compatibility with legacy Context API
     return (
-      <IntlProvider locale={locale} key={locale} messages={currentLocaleStrings}>
-        <IntlContext.Provider
-          value={{
-            locale,
-            key: locale,
-            messages: currentLocaleStrings,
-          }}>
+      <IntlProvider {...intlObject}>
+        <IntlContext.Provider value={intlObject}>
           <MessageContext.Provider value={{ messages, flash }}>
             <Components.ScrollToTop />
-            <div className={`locale-${locale}`}>
+            <div className={`locale-${localeId}`}>
               <Components.HeadTags />
               {this.props.currentUserLoading ? (
                 <div className="app-initial-loading">
@@ -253,7 +223,7 @@ class App extends PureComponent {
               ) : (
                 <Components.Welcome />
               )}
-              {this.state.localeLoading && (
+              {this.state.locale.loading && (
                 <div className="app-secondary-loading">
                   <Components.Loading />
                 </div>
