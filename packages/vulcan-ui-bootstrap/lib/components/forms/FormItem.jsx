@@ -52,7 +52,7 @@ const FormItem = props => {
     // horizontal layout (default)
     return (
       <Form.Group as={Row} controlId={path}>
-        <Components.FormLabel {...props}/>
+        <Components.FormLabel layout="horizontal" {...props} />
         <Col sm={9}>
           {beforeInput}
           {innerComponent}
