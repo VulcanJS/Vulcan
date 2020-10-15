@@ -29,7 +29,6 @@ export const useLocaleData = props => {
   const [cookies] = useCookies(['locale']);
   const { currentUser } = useCurrentUser();
   const init = initLocale({ currentUser, cookies, locale: props.locale });
-  console.log(init);
   const queryResult = useQuery(localeDataQuery, { variables: { localeId: init.id } });
   return { ...queryResult, ...init };
 };
