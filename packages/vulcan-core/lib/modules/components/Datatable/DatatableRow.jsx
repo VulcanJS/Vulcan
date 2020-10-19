@@ -17,6 +17,7 @@ const DatatableRow = (props, { intl }) => {
     columns,
     document,
     showEdit,
+    showDelete,
     currentUser,
     options,
     editFormOptions,
@@ -91,6 +92,16 @@ const DatatableRow = (props, { intl }) => {
             modalProps={customModalProps}
             {...editFormOptions}
             {...editFormProps}
+          />
+        </Components.DatatableCellLayout>
+      ) : null}
+      {showDelete && canUpdate ? ( // openCRUD backwards compatibility
+        <Components.DatatableCellLayout className="datatable-delete">
+          <Components.DeleteButton
+            collection={collection}
+            documentId={document._id}
+            currentUser={currentUser}
+            mutationFragmentName={options && options.fragmentName}
           />
         </Components.DatatableCellLayout>
       ) : null}
