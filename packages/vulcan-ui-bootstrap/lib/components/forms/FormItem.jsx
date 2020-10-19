@@ -8,12 +8,24 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 
 const FormItem = props => {
-
-  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', loading, optionsHTML, Components, ...rest } = props;
+  const {
+    path,
+    label,
+    children,
+    beforeInput,
+    afterInput,
+    description,
+    layout = 'horizontal',
+    loading,
+    Components: propsComponents,
+    ...rest
+  } = props;
   const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
+
+  const Components = mergeWithComponents(propsComponents);
 
   if (layout === 'inputOnly' || !label) {
     // input only layout
@@ -33,7 +45,7 @@ const FormItem = props => {
     // vertical layout
     return (
       <Form.Group controlId={path}>
-        <Components.FormLabel {...props}/>
+        <Components.FormLabel {...props} />
         <div className="form-item-contents">
           <div className="form-item-input">
             {beforeInput}
@@ -57,7 +69,11 @@ const FormItem = props => {
           {beforeInput}
           {innerComponent}
           {afterInput}
-          {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
+          {description && (
+            <Form.Text>
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            </Form.Text>
+          )}
         </Col>
       </Form.Group>
     );

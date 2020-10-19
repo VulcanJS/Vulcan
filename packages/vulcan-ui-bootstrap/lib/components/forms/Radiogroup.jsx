@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 import isEmpty from 'lodash/isEmpty';
 import { isOtherValue, removeOtherMarker, addOtherMarker } from './Checkboxgroup.jsx';
 
-const OtherComponent = ({ value, path, updateCurrentValues, Components }) => {
+const OtherComponent = ({ value, path, updateCurrentValues, formComponents }) => {
+  const Components = mergeWithComponents(formComponents);
   const otherValue = removeOtherMarker(value);
 
   // keep track of whether "other" field is shown or not
@@ -63,8 +64,9 @@ const RadioGroupComponent = ({
   updateCurrentValues,
   inputProperties,
   itemProperties = {},
-  formComponents: Components,
+  formComponents,
 }) => {
+  const Components = mergeWithComponents(formComponents);
   const { options = [], value } = inputProperties;
   const hasValue = value !== '';
   return (
@@ -90,7 +92,7 @@ const RadioGroupComponent = ({
         );
       })}
       {itemProperties.showOther && (
-        <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} Components={Components} />
+        <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} formComponents={formComponents} />
       )}
     </Components.FormItem>
   );

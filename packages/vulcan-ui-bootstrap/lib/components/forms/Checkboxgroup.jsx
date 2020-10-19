@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
@@ -22,7 +22,9 @@ export const removeOtherValue = a => {
   return a.filter(s => !isOtherValue(s));
 };
 
-const OtherComponent = ({ value, path, updateCurrentValues, Components }) => {
+const OtherComponent = ({ value, path, updateCurrentValues, formComponents }) => {
+  const Components = mergeWithComponents(formComponents);
+
   const otherValue = removeOtherMarker(value.find(isOtherValue));
   // get copy of checkbox group values with "other" value removed
   const withoutOtherValue = removeOtherValue(value);
@@ -85,8 +87,10 @@ const CheckboxGroupComponent = ({
   updateCurrentValues,
   inputProperties,
   itemProperties = {},
-  formComponents: Components,
+  formComponents,
 }) => {
+  const Components = mergeWithComponents(formComponents);
+
   const { options = [], name } = inputProperties;
 
   // get rid of duplicate values; or any values that are not included in the options provided
@@ -131,7 +135,7 @@ const CheckboxGroupComponent = ({
           );
         })}
         {itemProperties.showOther && (
-          <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} Components={Components} />
+          <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} formComponents={formComponents} />
         )}
       </div>
     </Components.FormItem>
