@@ -34,6 +34,6 @@ export const getHtmlInputProps = props => {
  * @returns Initial props + props specific to the HTML input in an inputProperties object
  */
 export const whitelistInputProps = props => {
-  const whitelist = ['name', 'path', 'options', 'label', 'onChange', 'onBlur', 'value', 'disabled'];
+  const whitelist = ['name', 'path', 'options', 'label', 'onChange', 'onBlur', 'value', 'disabled', 'placeholder'];
   return pick(props, whitelist);
 };
