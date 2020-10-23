@@ -5,10 +5,10 @@
  * /!\ It must be recreated on every request
  */
 
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient } from '@apollo/client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import { SchemaLink } from 'apollo-link-schema';
+import { SchemaLink } from '@apollo/client/link/schema';
 import { GraphQLSchema } from '../graphql/index.js';
 
 import { createStateLink } from '../../modules/apollo-common';
