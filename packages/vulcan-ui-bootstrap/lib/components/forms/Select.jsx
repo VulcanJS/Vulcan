@@ -14,10 +14,10 @@ const SelectComponent = ({ refFunction, inputProperties, itemProperties, datatyp
   };
   let otherOptions = Array.isArray(options) && options.length ? options : [];
   const allOptions = [noneOption, ...otherOptions];
-  delete inputProperties.options;
+  const { options: deleteOptions, ...newInputProperties } = inputProperties;
   return (
     <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
-      <Form.Control as="select" {...inputProperties} ref={refFunction}>
+      <Form.Control as="select" {...newInputProperties} ref={refFunction}>
         {allOptions.map(({ value, label, intlId, ...rest }) => (
           <option key={value} value={value} {...rest}>
             {label}
