@@ -1,8 +1,8 @@
 /*
 
 Generate the appropriate fragment for the current form, then
-wrap the main Form component with the necessary HoCs while passing 
-them the fragment. 
+wrap the main Form component with the necessary HoCs while passing
+them the fragment.
 
 This component is itself wrapped with:
 
@@ -13,7 +13,7 @@ And wraps the Form component with:
 
 - withNew
 
-Or: 
+Or:
 
 - withSingle
 - withUpdate
