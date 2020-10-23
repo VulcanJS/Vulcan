@@ -5,7 +5,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
 import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { withApollo } from '@apollo/react-hoc';
+import { withApollo } from '@apollo/client/react/hoc';
+
 import TrackerComponent from './TrackerComponent.jsx';
 
 import {
