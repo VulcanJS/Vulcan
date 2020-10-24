@@ -219,7 +219,7 @@ Datatable.propTypes = {
   options: PropTypes.object,
   columns: PropTypes.array,
   showEdit: PropTypes.bool,
-  editComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  editComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
   emptyState: PropTypes.node,
@@ -235,7 +235,7 @@ Datatable.propTypes = {
   toggleSort: PropTypes.func,
   currentSort: PropTypes.object,
   paginate: PropTypes.bool,
-  wrapComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  wrapComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
   TableProps: PropTypes.object,
   SearchInputProps: PropTypes.object,
 };
@@ -475,9 +475,10 @@ const DatatableHeader = (
   const columnName = typeof column === 'string' ? column : column.name || column.label;
   let formattedLabel = '';
 
-  if (collection) {
+  if (column.label) {
+    formattedLabel = column.label;
+  } else if (collection) {
     const schema = collection.simpleSchema()._schema;
-
     /*
     use either:
 

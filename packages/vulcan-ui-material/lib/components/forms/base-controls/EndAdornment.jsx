@@ -12,7 +12,7 @@ import _omit from 'lodash/omit';
 
 
 export const styles = theme => ({
-  
+
   inputAdornment: {
     whiteSpace: 'nowrap',
     marginTop: '0 !important',
@@ -57,18 +57,15 @@ export const styles = theme => ({
       duration: theme.transitions.duration.short,
     }),
   },
-  
+
   urlButton: {
     width: 40,
     height: 40,
     fontSize: 20,
-    margin: -8,
-    marginRight: 0,
-    '&:last-child': {
-      margin: -8,
-    },
+    marginLeft: -4,
+    marginRight: -4,
   },
-  
+
 });
 
 
@@ -78,7 +75,7 @@ const EndAdornment = (props, context) => {
 
   if (!addonAfter && (!changeValue || hideClear || disabled)) return null;
   const hasValue = !!value || value === 0;
-  
+
   const clearButton = changeValue && !hideClear && !disabled &&
     <IconButton className={classNames('clear-button', classes.clearButton, hasValue && 'has-value')}
                 onClick={event => {
@@ -115,7 +112,7 @@ EndAdornment.propTypes = {
   changeValue: PropTypes.func,
   showMenuIndicator: PropTypes.bool,
   hideClear: PropTypes.bool,
-  addonAfter: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.func]),
+  addonAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
 };
 
 EndAdornment.contextTypes = {

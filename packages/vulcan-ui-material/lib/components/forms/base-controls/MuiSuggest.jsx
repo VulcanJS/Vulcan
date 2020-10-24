@@ -42,6 +42,9 @@ export const styles = theme => {
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
   return {
+    
+    root: {},
+    
     container: {
       flexGrow: 1,
       position: 'relative',
@@ -141,19 +144,11 @@ export const styles = theme => {
       paddingLeft: 0,
       fontSize: 17.15,
       cursor: 'pointer',
-      '&$disabled': {
+      '&.Mui-disabled': {
         pointerEvents: 'none',
-      }
+      },
     },
-  
-    // From https://github.com/mui-org/material-ui/blob/v3.x/packages/material-ui/src/Input/Input.js
-    /* Styles applied to the root element if the component is focused. */
-    focused: {},
-    /* Styles applied to the root element if `disabled={true}`. */
-    disabled: {},
-    /* Styles applied to the root element if `error={true}`. */
-    error: {},
-
+    
     underline: {
       '&:after': {
         borderBottom: `2px solid ${theme.palette.primary[light ? 'dark' : 'light']}`,
@@ -173,7 +168,7 @@ export const styles = theme => {
       '&:focus:after': {
         transform: 'scaleX(1)',
       },
-      '&$error:after': {
+      '&.Mui-error:after': {
         borderBottomColor: theme.palette.error.main,
         transform: 'scaleX(1)', // error is always underlined in red
       },
@@ -190,14 +185,14 @@ export const styles = theme => {
         }),
         pointerEvents: 'none', // Transparent to the hover style.
       },
-      '&:hover:not($disabled):not($focused):not($error):before': {
+      '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before': {
         borderBottom: `2px solid ${theme.palette.text.primary}`,
         // Reset on touch devices, it doesn't add specificity
         '@media (hover: none)': {
           borderBottom: `1px solid ${bottomLineColor}`,
         },
       },
-      '&$disabled:before': {
+      '&.Mui-disabled:before': {
         borderBottomStyle: 'dotted',
       },
     },
@@ -216,15 +211,19 @@ export const styles = theme => {
       lineHeight: '1.1875em',
     },
 
-    muiIcon: {
+    selectIcon: {
       display: 'none',
     },
 
     inputAdornment: {
-      position: 'absolute',
-      right: 0,
       pointerEvents: 'none',
     },
+  
+    menuItem: {},
+  
+    menuItemHighlight: {},
+  
+    menuItemIcon: {},
 
   };
 };
@@ -240,9 +239,9 @@ const MuiSuggest = createReactClass({
         label: PropTypes.string,
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         iconComponent: PropTypes.node,
-        formatted: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+        formatted: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
         onClick: PropTypes.func,
-      })
+      }),
     ),
     classes: PropTypes.object.isRequired,
     limitToList: PropTypes.bool,
@@ -331,10 +330,10 @@ const MuiSuggest = createReactClass({
   },
 
   handleBlur: function(event, { highlightedSuggestion: suggestion }) {
-    if (suggestion && !this.props.disableSelectOnBlur) {
-      this.changeValue(suggestion);
-    } else {
+    if (!this.props.disableSelectOnBlur) {
       const selectedOption = this.getSelectedOption();
+      if (!selectedOption) return;
+      
       this.changeValue(selectedOption);
       const inputValue = this.getInputValue(this.props);
       this.setState({
@@ -347,7 +346,7 @@ const MuiSuggest = createReactClass({
     if (this.props.disableText) return false;
 
     const selectedOption = this.getSelectedOption();
-    if (!selectedOption || selectedOption.value) return true;
+    if (!selectedOption || !selectedOption.value) return true;
     return selectedOption.label !== this.state.inputValue;
   },
 
@@ -496,7 +495,7 @@ const MuiSuggest = createReactClass({
       disabled,
       ...rest
     } = inputProps;
-    const { hideLabel } = this.props;
+    const { hideLabel, inputRef } = this.props;
 
     if (formatted && formatted !== value) {
       return (
@@ -508,8 +507,7 @@ const MuiSuggest = createReactClass({
             classes.inputRoot,
             classes.underline,
             classes.formatted,
-            disabled && classes.disabled,
-            hideLabel && classes.formattedNoLabel
+            hideLabel && classes.formattedNoLabel,
           )}>
           {startAdornment}
           {formatted}
@@ -523,10 +521,17 @@ const MuiSuggest = createReactClass({
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         className={classes.textField}
-        classes={{ root: classes.inputRoot, focused: classes.inputFocused }}
+        classes={{
+          root: classes.inputRoot,
+          underline: classes.underline,
+          focused: classes.inputFocused,
+        }}
         value={value}
         inputRef={c => {
           ref(c);
+          if (inputRef) {
+            inputRef(c);
+          }
           this.inputElement = c;
         }}
         type="text"
@@ -541,6 +546,7 @@ const MuiSuggest = createReactClass({
   },
 
   renderSuggestion: function (suggestion, { query, isHighlighted }) {
+    const { classes } = this.props;
     const formatted = this.getOptionFormatted(suggestion, {
       disabled: this.props.disabled,
       selected: isHighlighted,
@@ -557,23 +563,23 @@ const MuiSuggest = createReactClass({
       parts.map((part, index) => {
         return part.highlight
           ?
-          <span key={index} style={{ fontWeight: 500 }}>{part.text}</span>
+          <span key={index} className={classes.menuItemHighlight}>{part.text}</span>
           :
-          <strong key={index} style={{ fontWeight: 300 }}>{part.text}</strong>;
+          <span key={index}>{part.text}</span>;
       });
     const isCurrent = suggestion.value === this.props.value;
-    const className = isCurrent ? this.props.classes.current : null;
+    const className = classNames(classes.menuItem, isCurrent && classes.current);
     return (
-      <MenuItem
-        selected={isHighlighted}
-        component="div"
-        className={className}
-        onClick={suggestion.onClick}
-        data-value={suggestion.value}>
-        {suggestion.iconComponent && (
-
-          <ListItemIcon>{suggestion.iconComponent}</ListItemIcon>
-        )}
+      <MenuItem selected={isHighlighted}
+                component="div"
+                className={className}
+                onClick={suggestion.onClick}
+                data-value={suggestion.value}
+      >
+        {
+          suggestion.iconComponent &&
+          <ListItemIcon classes={{ root: classes.menuItemIcon }}>{suggestion.iconComponent}</ListItemIcon>
+        }
         <div>
           {primary}
         </div>
@@ -603,14 +609,14 @@ const MuiSuggest = createReactClass({
 
     return (this.props.disableText || this.props.showAllOptions) && inputMatchesSelection
       ? this.props.options.filter(suggestion => {
-          return true;
-        })
+        return true;
+      })
       : inputLength === 0
-      ? this.props.options.filter(suggestion => {
+        ? this.props.options.filter(suggestion => {
           count++;
           return count <= maxSuggestions;
         })
-      : this.props.options.filter(suggestion => {
+        : this.props.options.filter(suggestion => {
           const label = this.getOptionLabel(suggestion);
           const keep = count < maxSuggestions && label.toLowerCase().includes(inputValue);
 
