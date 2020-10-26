@@ -1,4 +1,4 @@
-import { HttpLink } from 'apollo-link-http';
+import { HttpLink } from '@apollo/client';
 
 const httpLink = new HttpLink({
   uri: '/graphql',
