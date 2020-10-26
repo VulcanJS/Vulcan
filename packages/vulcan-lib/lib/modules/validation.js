@@ -111,7 +111,7 @@ export const validateModifier = (modifier, data, document, collection, context, 
 
   // 2. run SS validation
   const validationContext = collection.simpleSchema().namedContext(validationContextName);
-  validationContext.validate({ $set: set, $unset: unset }, { modifier: true });
+  validationContext.validate({ $set: set, $unset: unset }, { modifier: true, extendedCustomContext: { documentId: document._id } });
 
   if (!validationContext.isValid()) {
     const errors = validationContext.validationErrors();

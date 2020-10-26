@@ -191,7 +191,7 @@ export function getDefaultResolvers(options) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId, oldSelector },
+              data: { documentId, oldSelector, collectionName },
             });
           }
         }
