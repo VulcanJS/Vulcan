@@ -4,7 +4,7 @@
 
 Paginated items container
 
-Options: 
+Options:
 
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
@@ -17,7 +17,7 @@ Options:
     - search
     - offset
     - limit
-         
+    
 */
 
 import React from 'react';

@@ -32,7 +32,7 @@ class FormComponent extends Component {
     }
     const path = getPath(props);
     const value = get(document, path);
-    
+
     return getCharacterCounts(value, max);
   }
 
@@ -61,9 +61,9 @@ class FormComponent extends Component {
   }
 
   /*
-  
+
   Returns true if the passed input type is a custom
-  
+
   */
   isCustomInput = inputType => {
     const isStandardInput = [
@@ -87,9 +87,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to form controls (always controlled) to update their value
-  
+
   */
   handleChange = value => {
     // if value is an empty string, delete the field
@@ -118,9 +118,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Updates the state of charsCount and charsRemaining as the users types
-  
+
   */
   updateCharacterCount = value => {
     this.setState(getCharacterCounts(value, this.props.max));
@@ -204,9 +204,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to form controls to clear their contents (set their value to null)
-  
+
   */
   clearField = event => {
     event.preventDefault();
@@ -218,9 +218,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to FormComponentInner to help with rendering the component
-  
+
   */
   getFormInput = () => {
     const inputType = this.getInputType();

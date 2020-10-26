@@ -505,7 +505,7 @@ class SmartForm extends Component {
   };
 
   /*
-  
+
   Get a field's intl keys (useful for debugging)
 
   */
