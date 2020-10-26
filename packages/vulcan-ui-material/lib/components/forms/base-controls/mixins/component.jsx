@@ -7,7 +7,7 @@ import classNames from 'classnames';
 export default {
 
   propTypes: {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    label: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     hideLabel: PropTypes.bool,
     layout: PropTypes.string,
     optional: PropTypes.bool,
@@ -142,7 +142,16 @@ export default {
       'validateOnSubmit',
       'validatePristine',
       'visibleItemIndex',
-    ];
+      'itemDatatype',
+      'limitToList',
+      'disableText',
+      'disableSelectOnBlur',
+      'showAllOptions',
+      'disableMatchParts',
+      'autoComplete',
+      'autoFocus',
+      'intlKeys',
+  ];
 
     return _omit(props, removedFields);
   },

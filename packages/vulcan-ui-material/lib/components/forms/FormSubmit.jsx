@@ -13,7 +13,8 @@ import classNames from 'classnames';
 const styles = theme => ({
   root: {
     textAlign: 'center',
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
   button: {
     margin: theme.spacing(1),

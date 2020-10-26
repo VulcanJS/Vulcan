@@ -13,7 +13,8 @@ import classNames from 'classnames';
 const describeTypography = (theme, className) => {
   const typography = className ? theme.typography[className] : theme.typography;
   const fontFamily = typography.fontFamily.split(',')[0];
-  return `${fontFamily} ${typography.fontWeight} ${typography.fontSize}px`;
+  const fontSize = `${typography.fontSize}${typeof typography.fontSize === 'number' ? 'px' : ''}`;
+  return `${fontFamily} ${typography.fontWeight} ${fontSize}`;
 };
 
 function getColorBlock(theme, classes, colorName, colorValue, colorTitle) {
@@ -38,7 +39,7 @@ function getColorBlock(theme, classes, colorName, colorValue, colorTitle) {
   };
 
   return (
-      <>
+      <div key={colorName+colorValue}>
         {
           colorValue.toString().match(/^(A100|light|contrastText)$/) &&
           <div className={classes.blockSpace}/>
@@ -50,7 +51,7 @@ function getColorBlock(theme, classes, colorName, colorValue, colorTitle) {
             <span className={classes.colorValue}>{bgColor.toUpperCase()}</span>
           </div>
         </li>
-      </>
+      </div>
   );
 }
 
@@ -146,7 +147,7 @@ const ThemeStyles = ({theme, classes}) => {
             <Typography variant="subtitle1" gutterBottom>
               Subtitle1: {describeTypography(theme, 'subtitle1')}
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle2" gutterBottom>
               Subtitle2: {describeTypography(theme, 'subtitle2')}
             </Typography>
 

@@ -25,12 +25,10 @@ const styles = theme => ({
 
   buttonWrap: {
     position: 'relative',
-    display: 'inline-block',
+    display: 'inline-flex',
   },
 
-  button: {
-    //zIndex: 2,
-  },
+  button: {},
 
   fab: {},
 

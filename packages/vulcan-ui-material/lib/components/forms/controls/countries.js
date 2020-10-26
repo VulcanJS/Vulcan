@@ -306,7 +306,7 @@ export const countryInfo = {
       { value: 'WV', label: 'West Virginia' },
       { value: 'WI', label: 'Wisconsin' },
       { value: 'WY', label: 'Wyoming' },
-    ]
+    ],
   },
   CA: {
     regionLabel: 'Province',
@@ -370,11 +370,11 @@ export const getRegionLabel = (countryValue, regionValue) => {
   if (!countryInfo[countryValue] || !countryInfo[countryValue].regions) {
     return regionValue;
   }
-  
+
   const regions = countryInfo[countryValue].regions;
-  
+
   let region = regions.find(nextRegion => nextRegion.value === regionValue);
-  
+
   if (region) {
     return region.label;
   } else {
@@ -389,20 +389,26 @@ export const validateRegion = (countryValue, regionValue) => {
   if (!countryInfo[countryValue] || !countryInfo[countryValue].regions) {
     return regionValue;
   }
-  
+
   const regions = countryInfo[countryValue].regions;
-  
+
   let region = regions.find(nextRegion => nextRegion.value === regionValue);
-  
+
   if (region) {
     return regionValue;
   }
-  
+
   region = regions.find(nextRegion => nextRegion.label === regionValue);
-  
+
   if (region) {
     return region.value;
   } else {
     return false;
   }
+};
+
+
+export const getRegionCode = (countryValue, regionValue) => {
+  const regionCode = validateRegion(countryValue, regionValue);
+  return regionCode || regionValue;
 };
