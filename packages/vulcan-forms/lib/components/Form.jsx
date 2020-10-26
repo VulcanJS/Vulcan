@@ -206,6 +206,9 @@ class SmartForm extends Component {
     // we want to keep prefilled data even for hidden/removed fields
     let data = this.props.prefilledProps || {};
 
+    // omit prefilled props for nested fields
+    data = omitBy(data, (value, key) => key.endsWith('.$'));
+
     const args = {
       excludeRemovedFields: false,
       excludeHiddenFields: false,
