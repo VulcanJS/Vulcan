@@ -141,6 +141,7 @@ const buildResult = (options, { fragmentName, fragment, resolverName }, { setPag
   return {
     // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
     // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
+    ...returnedProps,
     loading,
     loadingInitial,
     loadingMore,
