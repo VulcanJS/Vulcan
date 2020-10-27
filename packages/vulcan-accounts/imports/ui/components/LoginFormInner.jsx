@@ -821,13 +821,13 @@ export class AccountsLoginFormInner extends TrackerComponent {
             .replace(/ /g, '_')
             .replace('.', '')}`;
 
-          if (this.context.intl.formatMessage({ id: errorId })) {
-            this.showMessage(errorId, 'error');
+          if (self.context.intl.formatMessage({ id: errorId })) {
+            self.showMessage(errorId, 'error');
           } else {
-            this.showMessage('accounts.error_unknown', 'error');
+            self.showMessage('accounts.error_unknown', 'error');
           }
 
-          if (this.context.intl.formatMessage({ id: `error.accounts_${error.reason}` })) {
+          if (self.context.intl.formatMessage({ id: `error.accounts_${error.reason}` })) {
             onSubmitHook(`error.accounts.${error.reason}`, formState);
           } else {
             onSubmitHook('Unknown error', formState);
