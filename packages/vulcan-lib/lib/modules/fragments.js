@@ -225,7 +225,7 @@ export const initializeFragments = (fragments = getNonInitializedFragmentNames()
 
 /*
 
-Take a query, and expand any subfragments inside it
+Take a text query, and expand any subfragments inside it
 
 */
 export const expandQueryFragments = query => {

@@ -1,32 +1,40 @@
-import React from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
-import { useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
+import { Components, registerComponent, expandQueryFragments } from 'meteor/vulcan:core';
+import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
+import isEmpty from 'lodash/isEmpty';
 
 const FormComponentLoader = props => {
-  const { query, children, options, value } = props;
-  let loading = false,
-    error,
-    data;
+  const { query, children, options, value, queryWaitsForValue } = props;
 
   // if query is a function, execute it
   const queryText = typeof query === 'function' ? query({ value }) : query;
 
-  if (queryText) {
-    // if queryText exists or query function returned something, execute query
-    // use field's `query` property to load field-specific data
-    // pass current field value as variable to the query just in case
-    const formComponentQuery = gql(queryText);
-    const queryResult = useQuery(formComponentQuery, { variables: { value } });
-    loading = queryResult.loading;
-    error = queryResult.error;
-    data = queryResult.data;
-    if (error) {
-      throw new Error(error);
+  const [loadFieldQuery, { loading, error, data }] = useLazyQuery(gql(expandQueryFragments(queryText)));
+
+  const valueIsEmpty = isEmpty(value) || (Array.isArray(value) && value.length) === 0;
+
+  useEffect(() => {
+    if (queryWaitsForValue && valueIsEmpty) {
+      // we don't want to run this query until we have a value to pass to it
+      // so do nothing
+    } else {
+      loadFieldQuery({
+        variables: { value },
+      });
     }
+  }, [valueIsEmpty, value, queryWaitsForValue]);
+
+  if (error) {
+    throw new Error(error);
   }
 
-  if (loading) return <div className="form-component-loader"><Components.Loading /></div>;
+  if (loading)
+    return (
+      <div className="form-component-loader">
+        <Components.Loading />
+      </div>
+    );
 
   // pass newly loaded data (and options if needed) to child component
   const extraProps = { data, queryData: data, queryError: error, loading };

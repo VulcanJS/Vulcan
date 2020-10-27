@@ -1,6 +1,6 @@
 import { AsyncTypeahead } from 'react-bootstrap-typeahead'; // ES2015
 import React, { useState } from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, expandQueryFragments } from 'meteor/vulcan:core';
 import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 
@@ -24,7 +24,7 @@ const MultiAutocomplete = props => {
   // get component's autocomplete query and use it to load autocomplete suggestions
   // note: we use useLazyQuery because 
   // we don't want to trigger the query until the user has actually typed in something
-  const [loadAutocompleteOptions, { loading, error, data }] = useLazyQuery(gql(autocompleteQuery()), {
+  const [loadAutocompleteOptions, { loading, error, data }] = useLazyQuery(gql(expandQueryFragments(autocompleteQuery())), {
     variables: { queryString },
   });
 
@@ -38,6 +38,11 @@ const MultiAutocomplete = props => {
   // extra unwanted items if field-level data loading loaded too many items
   const selectedItems = queryData && optionsFunction({ data: queryData }).filter(d => value.includes(d.value));
 
+  // console.log(queryData)
+  // console.log(queryData && optionsFunction({ data: queryData }));
+  // console.log(value)
+  // console.log(selectedItems)
+  
   return (
     <Components.FormItem path={path} label={label} {...itemProperties}>
       <AsyncTypeahead

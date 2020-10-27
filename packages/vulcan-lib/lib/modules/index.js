@@ -8,6 +8,7 @@ import './deep_extend.js';
 // import './graphql.js';
 import './icons.js';
 
+export * from './config';
 export * from './graphql/';
 export * from './graphql_templates/index.js';
 export * from './components.js';
