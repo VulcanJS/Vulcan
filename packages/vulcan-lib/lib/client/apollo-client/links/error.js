@@ -1,4 +1,4 @@
-import { onError } from 'apollo-link-error';
+import { onError } from '@apollo/client/link/error';
 
 const locationsToStr = (locations=[]) => locations.map(({column, line}) => `line ${line}, col ${column}`).join(';');
 const errorLink = onError(error => {

@@ -22,14 +22,14 @@ const styles = theme => ({
 });
 
 class ModalTrigger extends PureComponent {
-  
-  constructor (props) {
+
+  constructor(props) {
     super(props);
-    
+
     this.state = { modalIsOpen: false };
   }
-  
-  componentDidMount () {
+
+  componentDidMount() {
     if (this.props.action) {
       this.props.action({
         openModal: this.openModal,
@@ -37,7 +37,7 @@ class ModalTrigger extends PureComponent {
       });
     }
   }
-  
+
   openModal = event => {
     if (event) {
       event.preventDefault();
@@ -48,7 +48,7 @@ class ModalTrigger extends PureComponent {
       this.props.openStateChanged(true);
     }
   };
-  
+
   closeModal = event => {
     if (event) {
       event.stopPropagation();
@@ -58,8 +58,8 @@ class ModalTrigger extends PureComponent {
       this.props.openStateChanged(false);
     }
   };
-  
-  render () {
+
+  render() {
     const {
       className,
       dialogClassName,
@@ -78,22 +78,23 @@ class ModalTrigger extends PureComponent {
       contentProps,
       classes,
     } = this.props;
-    
+
     if (dialogProperties) {
       deprecate('1.15.2', 'ModalTrigger’s "dialogProperties" prop has been renamed "dialogProps"');
     }
-    
+
     const intl = this.context.intl;
-    
+
     const label = labelId ? intl.formatMessage({ id: labelId }) : this.props.label;
     const title = titleId ? intl.formatMessage({ id: titleId }) : this.props.title;
-    
+
     const triggerComponent =
       (component || trigger)
         ?
-        <span onClick={this.openModal} className={classNames('modal-trigger', classes.root, className)}>
-          {component || trigger}
-        </span>
+        instantiateComponent(component || trigger, {
+          onClick: this.openModal,
+          className: classNames('modal-trigger', classes.root, className),
+        })
         :
         type === 'button'
           ?
@@ -108,7 +109,7 @@ class ModalTrigger extends PureComponent {
              onClick={this.openModal}>
             {label}
           </a>;
-    
+
     return (
       <>
         {triggerComponent}
@@ -138,7 +139,7 @@ class ModalTrigger extends PureComponent {
       </>
     );
   }
-  
+
 }
 
 ModalTrigger.propTypes = {
@@ -156,7 +157,7 @@ ModalTrigger.propTypes = {
   dialogOverflow: PropTypes.bool,
   showCloseButton: PropTypes.bool,
   dontWrapDialogContent: PropTypes.bool,
-  dialogProperties: PropTypes.object, // deprecated
+  dialogProperties: PropTypes.object, // deprecated — use dialogProps
   dialogProps: PropTypes.object,
   label: PropTypes.string,
   labelId: PropTypes.string,
@@ -167,7 +168,7 @@ ModalTrigger.propTypes = {
   type: PropTypes.oneOf(['link', 'button']),
   openStateChanged: PropTypes.func,
   children: PropTypes.node,
-  contentComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  contentComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
   contentProps: PropTypes.object,
   classes: PropTypes.object,
 };

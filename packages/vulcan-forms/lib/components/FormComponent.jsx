@@ -32,7 +32,7 @@ class FormComponent extends Component {
     }
     const path = getPath(props);
     const value = get(document, path);
-    
+
     return getCharacterCounts(value, max);
   }
 
@@ -42,13 +42,13 @@ class FormComponent extends Component {
       return true;
     }
 
-    const { currentValues, deletedValues, errors } = nextProps;
+    const { document, deletedValues, errors } = nextProps;
     const path = getPath(this.props);
 
     // when checking for deleted values, both current path ('foo') and child path ('foo.0.bar') should trigger updates
     const includesPathOrChildren = deletedValues => deletedValues.some(deletedPath => deletedPath.includes(path));
 
-    const valueChanged = !isEqual(get(currentValues, path), get(this.props.currentValues, path));
+    const valueChanged = !isEqual(get(document, path), get(this.props.document, path));
     const errorChanged = !isEqual(this.getErrors(errors), this.getErrors());
     const deleteChanged = includesPathOrChildren(deletedValues) !== includesPathOrChildren(this.props.deletedValues);
     const charsChanged = nextState.charsRemaining !== this.state.charsRemaining;
@@ -61,9 +61,9 @@ class FormComponent extends Component {
   }
 
   /*
-  
+
   Returns true if the passed input type is a custom
-  
+
   */
   isCustomInput = inputType => {
     const isStandardInput = [
@@ -87,9 +87,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to form controls (always controlled) to update their value
-  
+
   */
   handleChange = value => {
     // if value is an empty string, delete the field
@@ -118,9 +118,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Updates the state of charsCount and charsRemaining as the users types
-  
+
   */
   updateCharacterCount = value => {
     this.setState(getCharacterCounts(value, this.props.max));
@@ -204,9 +204,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to form controls to clear their contents (set their value to null)
-  
+
   */
   clearField = event => {
     event.preventDefault();
@@ -218,9 +218,9 @@ class FormComponent extends Component {
   };
 
   /*
-  
+
   Function passed to FormComponentInner to help with rendering the component
-  
+
   */
   getFormInput = () => {
     const inputType = this.getInputType();

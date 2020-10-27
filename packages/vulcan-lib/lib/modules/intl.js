@@ -91,7 +91,7 @@ export const detectLocale = () => {
 
 /*
 
-Figure out the correct locale to use based on the current user, cookies, 
+Figure out the correct locale to use based on the current user, cookies,
 and browser settings
 
 */
@@ -118,8 +118,8 @@ export const initLocale = ({ currentUser = {}, cookies = {}, locale }) => {
     localeMethod = 'browser';
   }
 
-  /* 
-  
+  /*
+
   NOTE: locale fallback doesn't work anymore because we can now load locales dynamically
   and Strings[userLocale] will then be empty
 
@@ -146,7 +146,7 @@ Find best matching locale
 en-US -> en-US
 en-us -> en-US
 en-gb -> en-US
-etc. 
+etc.
 
 */
 export const truncateKey = key => key.split('-')[0];

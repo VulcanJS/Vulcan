@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.16.0
+# vulcan:ui-material 1.16.0_1
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -17,16 +17,14 @@ To add vulcan-material-ui to an existing Vulcan project, run the following in th
 meteor add vulcan:ui-material
 
 meteor npm install --save @material-ui/core@4.11.0
-meteor npm install --save @material-ui/icons
-meteor npm install --save @material-ui/styles
-meteor npm install --save react-jss@8.6.1
-meteor npm install --save mdi-material-ui
-meteor npm install --save react-autosuggest
-meteor npm install --save autosuggest-highlight
-meteor npm install --save react-isolated-scroll
-meteor npm install --save react-keyboard-event-handler
-#meteor npm install --save autosize-input
-meteor npm install --save moment-timezone
+meteor npm install --save @material-ui/icons@4.9.1
+meteor npm install --save @material-ui/styles@4.10.0
+meteor npm install --save react-jss@10.4.0
+meteor npm install --save mdi-material-ui@6.19.0
+meteor npm install --save react-autosuggest@10.0.2
+meteor npm install --save autosuggest-highlight@3.1.1
+meteor npm install --save react-isolated-scroll@0.1.1
+meteor npm install --save react-keyboard-event-handler@1.5.4
 ```
 
 This package does not depend on `vulcan:ui-boostrap`, so you can remove it.
@@ -146,19 +144,23 @@ You can pass a couple of extra options to form groups as well:
   };
 ```
 
+
 ## DataTable
 
 You can pass the DataTable component an `editComponent` property in addition to or instead of `showEdit`. Here is a simplified example:
 
-``` javascript
+``` jsx
 const AgendaJobActions = ({ collection, document }) => {
   const scheduleAgent = () => {
     Meteor.call('scheduleAgent', document.agentId);
   };
   
-  return <Components.TooltipIconButton titleId="executions.execute_now"
-                                       icon={<Components.ExecutionsIcon/>}
-                                       onClick={scheduleAgent}/>;
+  return (
+    <Components.TooltipIconButton 
+      titleId="executions.execute_now"
+      icon={<ExecutionsIcon/>}
+      onClick={scheduleAgent}
+    />;
 };
 
 AgendaJobActionsInner.propTypes = {
@@ -184,6 +186,25 @@ You can also control the spacing of the table cells using the `dense` property. 
 You can also use other string values, as long as you define a `utils` entry named the same + `Table`, for example `myCustomTable`. Check out the sample theme for examples.
 
 
+## DatatableFromArray
+
+This is a wrapper component for Datatable that enables pagination even if you pass the data as an array instead of a query.
+
+``` jsx
+<Components.DatatableFromArray
+  columns={[
+             { name: 'message', component: TextCell },
+             { name: 'type', component: TypeCell },
+             { name: 'properties', component: JsonCell, cellClass: classes.widerCell },
+           ]}
+  data={errorArray}
+  paginate={true}
+  itemsPerPage={10}
+  intlNamespace="shops.reports"
+/>
+```
+
+
 ## CountrySelect
 
 One of the bonus components is **CountrySelect**, a country autosuggest. For an example, see **CountrySelect**.
@@ -201,7 +222,7 @@ One of the bonus components is **CountrySelect**, a country autosuggest. For an 
 
 Countries are stored as their 2-letter country codes. I have included a helper function for displaying the country name:
 
-``` javascript
+``` jsx
 import Typography from '@material-ui/core/Typography';
 import { getCountryLabel } from 'meteor/erikdakoda:vulcan-material-ui';
 
@@ -230,9 +251,9 @@ In addition, the `options` that you pass to any select control have additional p
 | Property              | Type   | Description  |
 | --------------------- | ------ | ------------ |
 | `label`         | string           | The option's text label (standard) |
-| `value`         | string \| number | The options's value (standard) |
+| `value`         | string or number | The options's value (standard) |
 | `iconComponent` | node             | An icon to put to the left of the label (optional) |
-| `formatted`     | node \| func     | Instead of just an icon, you can pass a component for each options for (optional) |
+| `formatted`     | node or func     | Instead of just an icon, you can pass a component for each options for (optional) |
 | `onClick`       | func             | Instead of selecting the option, your onClick handler can do something else, like open an modal to edit the options (optional) |
 
 

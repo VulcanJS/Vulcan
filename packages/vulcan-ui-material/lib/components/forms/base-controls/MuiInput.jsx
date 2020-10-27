@@ -8,6 +8,7 @@ import MuiFormHelper from './MuiFormHelper';
 import Input from '@material-ui/core/Input';
 import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
+import _debounce from 'lodash/debounce';
 import classNames from 'classnames';
 
 
@@ -21,7 +22,7 @@ export const styles = theme => ({
   },
 
   inputFocused: {
-    '& .clear-button.has-value': { opacity: 0.54 }
+    '& .clear-button.has-value': { opacity: 0.54 },
   },
 
   inputDisabled: {},
@@ -82,6 +83,13 @@ const MuiInput = createReactClass({
   },
 
   getInitialState: function () {
+    this.changeValue = _debounce((value) => {
+        if (!this.props.handleChange) return;
+        if (value !== this.props.value) {
+          this.props.handleChange(value);
+        }
+      }, 500);
+
     if (this.props.refFunction) {
       this.props.refFunction(this);
     }
@@ -93,6 +101,7 @@ const MuiInput = createReactClass({
 
   UNSAFE_componentWillReceiveProps: function (nextProps) {
     if (nextProps.value !== this.state.value) {
+      this.changeValue.flush();
       this.setState({ value: nextProps.value });
     }
   },
@@ -103,16 +112,15 @@ const MuiInput = createReactClass({
       value = this.props.scrubValue(value, this.props);
     }
     this.setState({ value });
-  },
 
-  changeValue: function (value) {
-    this.props.handleChange(value);
+    this.changeValue(value);
   },
 
   handleBlur: function (event) {
     const { value } = this.state;
 
     this.changeValue(value);
+    this.changeValue.flush();
   },
 
   render: function () {
@@ -142,21 +150,22 @@ const MuiInput = createReactClass({
   },
 
   renderElement: function (startAdornment, endAdornment) {
-    const { classes, disabled, autoFocus, formatValue, label, inputProps } = this.props;
+    const { classes, disabled, autoFocus, formatValue, label, multiline, rows, rowsMax, inputProps } = this.props;
     const value = formatValue ? formatValue(this.state.value) : this.state.value;
     const options = this.props.options || {};
 
     return (
       <Input
         ref={c => (this.element = c)}
-        {...this.cleanProps(this.props)}
         id={this.getId()}
         value={value || ''}
         label={label}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         disabled={disabled}
-        rows={options.rows || this.props.rows}
+        multiline={multiline}
+        rows={options.rows || rows}
+        rowsMax={options.rowsMax || rowsMax}
         autoFocus={options.autoFocus || autoFocus}
         startAdornment={startAdornment}
         endAdornment={endAdornment}

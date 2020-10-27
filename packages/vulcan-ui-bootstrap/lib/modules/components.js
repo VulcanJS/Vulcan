@@ -11,6 +11,7 @@ import '../components/forms/FormControl.jsx'; // note: only used by old accounts
 import '../components/forms/FormElement.jsx';
 import '../components/forms/FormGroupDefault';
 import '../components/forms/FormItem.jsx';
+import '../components/forms/FormLabel.jsx';
 import '../components/forms/FormInputLoading.jsx';
 import '../components/forms/Number.jsx';
 import '../components/forms/Radiogroup.jsx';

@@ -37,6 +37,11 @@ class ScrollTrigger extends Component {
     return supportsPassive;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    this.checkStatus();
+    return false;
+  }
+
   componentDidMount () {
     this.addEventListeners();
   }
@@ -47,12 +52,12 @@ class ScrollTrigger extends Component {
 
   componentDidUpdate (prevProps, prevState, snapshot) {
     if (prevProps.scroller !== this.props.scroller) {
+      this.removeEventListeners();
       if (this.props.scroller) {
         this.addEventListeners();
-      } else {
-        this.removeEventListeners();
       }
     }
+    this.checkStatus();
   }
 
   addEventListeners () {

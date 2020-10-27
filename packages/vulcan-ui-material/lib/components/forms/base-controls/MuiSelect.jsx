@@ -115,7 +115,7 @@ const MuiSelect = createReactClass({
         </MenuList>;
     };
 
-    const { options, classes } = this.props;
+    const { options = [], classes } = this.props;
 
     let groups = options.filter(function (item) {
       return item.group;
@@ -191,7 +191,7 @@ const MuiSelect = createReactClass({
                               input: classNames(classes.input, !value && classes.inputPlaceholder),
                             }}
               />}
-              classes={{ icon: classes.muiIcon }}
+              classes={{ icon: classes.selectIcon }}
       >
         {optionNodes}
       </Select>

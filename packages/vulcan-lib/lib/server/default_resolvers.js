@@ -172,7 +172,7 @@ export function getDefaultResolvers(options) {
               id: 'app.empty_input'
             });
           }
-          
+
           let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
 
           // make sure all filtered fields are allowed
@@ -191,7 +191,7 @@ export function getDefaultResolvers(options) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId, oldSelector },
+              data: { documentId, oldSelector, collectionName },
             });
           }
         }
