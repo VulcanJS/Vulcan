@@ -76,6 +76,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     // Set inital state.
     this.state = {
+      email: props.email || '',
       messages: [],
       waiting: false,
       formState: props.formState ? props.formState : currentUser ? STATES.PROFILE : STATES.SIGN_IN,
