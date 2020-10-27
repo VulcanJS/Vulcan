@@ -1,68 +1,69 @@
 import { Callbacks } from 'meteor/vulcan:lib';
+import { readPermissions } from "../permissions";
 
 const schema = {
   name: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   iterator: {
     type: Object,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   properties: {
     type: Array,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   'properties.$': {
     type: Object,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   // iterator: {
   //   label: 'Iterator',
   //   type: String,
-  //   canRead: ['admins'],
+  //   canRead: readPermissions,
   // },
 
   // options: {
   //   label: 'Options',
   //   type: Array,
-  //   canRead: ['admins'],
+  //   canRead: readPermissions,
   // },
 
   // 'options.$': {
   //   type: Object,
-  //   canRead: ['admins'],
+  //   canRead: readPermissions,
   // },
 
   runs: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   newSyntax: {
     label: 'New Syntax',
     type: Boolean,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   returns: {
     label: 'Should Return',
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   description: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   hooks: {
     type: Array,
-    canRead: ['admins'],
+    canRead: readPermissions,
     resolveAs: {
       type: '[String]',
       resolver: callback => {

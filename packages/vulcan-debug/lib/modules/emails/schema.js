@@ -1,23 +1,25 @@
+import { readPermissions } from "../permissions";
+
 const schema = {
 
   name: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   template: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   subject: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   testPath: {
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
 };
