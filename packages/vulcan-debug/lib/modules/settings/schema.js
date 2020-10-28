@@ -1,33 +1,35 @@
+import { readPermissions } from "../permissions";
+
 const schema = {
 
   name: {
     label: 'Name',
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   value: {
     label: 'Value',
     type: Object,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   defaultValue: {
     label: 'Default Value',
     type: Object,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   isPublic: {
     label: 'Public',
     type: Boolean,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
   description: {
     label: 'Description',
     type: String,
-    canRead: ['admins'],
+    canRead: readPermissions,
   },
 
 };
