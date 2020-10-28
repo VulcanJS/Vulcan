@@ -16,7 +16,7 @@ export const fieldDynamicQueryTemplate = ({ queryResolverName, autocompletePrope
       results{
         ${valuePropertyName}
         ${autocompletePropertyName}
-        ${fragmentName && `...${fragmentName}`}
+        ${fragmentName && `...${fragmentName}` || ''}
       }
     }
   }
@@ -35,7 +35,7 @@ export const fieldStaticQueryTemplate = ({ queryResolverName, autocompleteProper
     results{
       ${valuePropertyName}
       ${autocompletePropertyName}
-      ${fragmentName && `...${fragmentName}`}
+      ${fragmentName && `...${fragmentName}` || ''}
     }
   }
 }
@@ -60,7 +60,7 @@ export const autocompleteQueryTemplate = ({ queryResolverName, autocompletePrope
       results{
         ${valuePropertyName}
         ${autocompletePropertyName}
-        ${fragmentName && `...${fragmentName}`}
+        ${fragmentName && `...${fragmentName}` || ''}
       }
     }
   }
