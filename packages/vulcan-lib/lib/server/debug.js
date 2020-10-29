@@ -53,13 +53,31 @@ export const logToFile = (fileName, object, options = {}) => {
     stream.write(text + '\n\n');
     stream.end();
   } else {
-    fs.writeFile(fullPath, text, error => {
-      // throws an error, you could also catch it here
-      if (error) throw error;
+    fs.readFile(fullPath, (error, data) => {
+      let shouldWrite = false;
+      if (error && error.code === 'ENOENT') {
+        // the file just does not exist, ok to write
+        shouldWrite = true;
+      } else if (error) {
+        // maybe EACCESS or something wrong with the disk
+        throw error;
+      } else {
+        const fileContent = data.toString();
+        if (fileContent !== text) {
+          shouldWrite = true;
+        }
+      }
 
-      // eslint-disable-next-line no-console
-      console.log(`Object saved to ${fullPath}`);
-    });
+      if (shouldWrite) {
+        fs.writeFile(fullPath, text, error => {
+          // throws an error, you could also catch it here
+          if (error) throw error;
+          
+          // eslint-disable-next-line no-console
+          console.log(`New graphql schema saved to ${fullPath}`);
+        });
+      }
+    })
   }
 };
 
