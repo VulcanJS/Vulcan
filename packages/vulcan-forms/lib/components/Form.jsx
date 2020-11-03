@@ -772,7 +772,10 @@ class SmartForm extends Component {
   and nothing if not
   */
   handleRouteLeave = () => {
+    // const set = this.getData();
     if (this.isChanged()) {
+      // const { typeName, documentId } = this.props;
+      // this.props['update' + typeName]({ selector: { _id: documentId }, data: set });
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
@@ -788,7 +791,10 @@ class SmartForm extends Component {
    * the message returned is actually ignored by most browsers and a default message 'Are you sure you want to leave this page? You might have unsaved changes' is displayed. See the Notes section on the mozilla docs above
    */
   handlePageLeave = event => {
+    // const set = this.getData();
     if (this.isChanged()) {
+      // const { typeName, documentId } = this.props;
+      // this.props['update' + typeName]({ selector: { _id: documentId }, data: set });
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
