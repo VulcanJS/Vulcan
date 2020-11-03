@@ -1,6 +1,8 @@
 import { Components } from 'meteor/vulcan:lib';
 import React from 'react';
 import createReactClass from 'create-react-class';
+import StartAdornment, { hideStartAdornment } from './StartAdornment';
+import EndAdornment from './EndAdornment';
 import ComponentMixin from './mixins/component';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -18,6 +20,10 @@ export const styles = theme => ({
   inputFocused: {},
   
   inputDisabled: {},
+  
+  checkboxRoot: {},
+  
+  checkboxDisabled: {},
   
 });
 
@@ -43,9 +49,17 @@ const MuiCheckbox = createReactClass({
   },
   
   render: function () {
-    
-    const element = this.renderElement();
-    
+    const startAdornment = hideStartAdornment(this.props) ? null :
+      <StartAdornment {...this.props}
+                      classes={null}
+      />;
+    const endAdornment =
+      <EndAdornment {...this.props}
+                    classes={null}
+      />;
+  
+    const element = this.renderElement(startAdornment, endAdornment);
+  
     if (this.props.layout === 'elementOnly') {
       return element;
     }
@@ -58,13 +72,17 @@ const MuiCheckbox = createReactClass({
     );
   },
   
-  renderElement: function () {
-    const { classes } = this.props;
-    const { disabled, value, label } = this.props.inputProperties;
+  renderElement: function (startAdornment, endAdornment) {
+    const { classes, disabled, value, label } = this.props;
     
     return (
+      <>
+        {startAdornment}
       <FormControlLabel
-        className={classes.inputRoot}
+        classes={{
+          root: classes.inputRoot,
+          disabled: classes.inputDisabled,
+        }}
         control={
           <Checkbox
             ref={(c) => this.element = c}
@@ -73,10 +91,16 @@ const MuiCheckbox = createReactClass({
             checked={value === true}
             onChange={this.changeValue}
             disabled={disabled}
+            classes={{
+              root: classes.checkboxRoot,
+              disabled: classes.checkboxDisabled,
+            }}
           />
         }
         label={<>{label}<Components.RequiredIndicator optional={this.props.optional} value={value}/></>}
       />
+        {endAdornment}
+      </>
     );
   },
   

@@ -26,7 +26,7 @@ const styles = theme => ({
     paddingLeft: theme.spacing(0.5),
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(1),
-    color: theme.palette.primary[500],
+    color: theme.palette.primary.main,
   },
 
   collapsible: {

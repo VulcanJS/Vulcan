@@ -28,7 +28,7 @@ export const styles = theme => ({
 });
 
 
-const MuiSwitch = createReactClass({
+const SwitchBase = createReactClass({
 
   mixins: [ComponentMixin],
 
@@ -107,4 +107,4 @@ const MuiSwitch = createReactClass({
 });
 
 
-export default withStyles(styles)(MuiSwitch);
+export default withStyles(styles)(SwitchBase);

@@ -87,6 +87,7 @@ const EndAdornment = (props, context) => {
                 }}
                 tabIndex={-1}
                 aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
+                disabled={!hasValue}
     >
       <CloseIcon/>
     </IconButton>;
