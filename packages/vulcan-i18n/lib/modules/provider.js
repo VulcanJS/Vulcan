@@ -3,7 +3,7 @@ import { getString } from 'meteor/vulcan:lib';
 import { intlShape } from './shape.js';
 
 export default class IntlProvider extends Component {
-  formatMessage = ({ id, defaultMessage }, values) => {
+  formatMessage = ({ id, defaultMessage }, values = null) => {
     const { messages, locale } = this.props;
     return getString({ id, defaultMessage, values, messages, locale });
   };
