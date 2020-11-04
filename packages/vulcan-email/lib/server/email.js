@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import VulcanEmail from '../namespace.js';
+import { VulcanEmail } from '../modules/index.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
@@ -73,17 +73,21 @@ VulcanEmail.buildTemplate = (htmlContent, data = {}, locale) => {
     __: Strings[locale],
   };
 
-  let emailHTML;
-  
-  try { 
-    emailHTML = VulcanEmail.getTemplate('wrapper')(emailProperties);
-  } catch(e) {
-    emailHTML = htmlContent;
+  let emailHTML = htmlContent;
+
+  const wrapper = VulcanEmail.getTemplate('wrapper');
+  if (typeof wrapper === 'function') {
+    try {
+      emailHTML = VulcanEmail.getTemplate('wrapper')(emailProperties);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('// getTemplate error, email wrapper template cannot be used');
+      console.log(error);
+    }
   }
 
   const inlinedHTML = Juice(emailHTML, { preserveMediaQueries: true });
-  const doctype =
-    '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+  const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 
   return doctype + inlinedHTML;
 };
@@ -155,7 +159,7 @@ VulcanEmail.send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, head
   return email;
 };
 
-VulcanEmail.build = async ({ emailName, variables, locale }) => {
+VulcanEmail.build = async ({ to: staticTo, emailName, variables, locale }) => {
   // execute email's GraphQL query
   const email = VulcanEmail.emails[emailName];
 
@@ -163,31 +167,44 @@ VulcanEmail.build = async ({ emailName, variables, locale }) => {
     throw new Error(`Could not find email [${emailName}]`);
   }
 
-  const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
-
-  // if email has a data() function, merge its return value with results from the query
-  const data = email.data ? { ...result.data, ...email.data({ data: result.data, variables, locale }) } : result.data;
-
-  const subject = typeof email.subject === 'function' ? email.subject({ data, variables, locale }) : email.subject;
-
-  data.__ = Strings[locale];
-  data.locale = locale;
-
   try {
+    const result = email.query ? await runQuery(email.query, variables, { locale }) : { data: {} };
+
+    // if email has a data() function, merge its return value with results from the query
+    const data = email.data ? { ...result.data, ...email.data({ data: result.data, variables, locale }) } : result.data;
+
+    const subject = typeof email.subject === 'function' ? email.subject({ data, variables, locale }) : email.subject;
+    const to = staticTo || (typeof email.to === 'function' ? email.to({ data, variables, locale }) : email.to);
+
+    data.__ = Strings[locale];
+    data.locale = locale;
+
     const htmlContents = VulcanEmail.getTemplate(email.template)(data);
     const html = VulcanEmail.buildTemplate(htmlContents, data, locale);
-    return { data, subject, html };
+    return { data, subject, html, to };
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`Error while building email [${emailName}]`);
     // eslint-disable-next-line no-console
     console.log(error);
   }
-  
 };
 
-VulcanEmail.buildAndSend = async ({ to, cc, bcc, replyTo, emailName, variables, locale = getSetting('locale'), headers, attachments, from }) => {
+VulcanEmail.buildAndSend = async ({
+  to,
+  cc,
+  bcc,
+  replyTo,
+  emailName,
+  variables,
+  locale = getSetting('locale'),
+  headers,
+  attachments,
+  from,
+}) => {
   try {
     const email = await VulcanEmail.build({ to, emailName, variables, locale });
-    return VulcanEmail.send({ to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
+    return VulcanEmail.send({ to: email.to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);

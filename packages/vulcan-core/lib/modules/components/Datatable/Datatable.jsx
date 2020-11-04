@@ -1,5 +1,5 @@
 import { Utils, registerComponent, getCollection } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import qs from 'qs';
@@ -16,6 +16,8 @@ import _get from 'lodash/get';
 
 const ascSortOperator = 'asc';
 const descSortOperator = 'desc';
+
+const convertToBoolean = s => (s === 'true' ? true : false);
 
 /*
 
@@ -43,6 +45,7 @@ class Datatable extends PureComponent {
       search: '',
       currentSort: {},
       currentFilters: {},
+      selectedItems: [],
     };
 
     // initial state can be defined via props
@@ -82,7 +85,7 @@ class Datatable extends PureComponent {
 
   /*
 
-  Take a complex filter object and convert its "leaves" to numbers when needed
+  Take a complex filter object and convert its "leaves" to numbers or booleans when needed
 
   */
   convertToNumbers = (urlStateFilters, props) => {
@@ -96,16 +99,21 @@ class Datatable extends PureComponent {
 
       Object.keys(urlStateFilters).forEach(fieldName => {
         const field = schema[fieldName];
+        const fieldType = Utils.getFieldType(field);
+        const filter = urlStateFilters[fieldName];
+        // the "operator" can be _in, _eq, _gte, etc.
+        const [operator] = Object.keys(filter);
+        const value = urlStateFilters[fieldName][operator];
+        let convertedValue = value;
         // for each field, check if it's supposed to be a number
-        if (Utils.getFieldType(field) === Number) {
-          const filter = urlStateFilters[fieldName];
-          // the "operator" can be _in, _eq, _gte, etc.
-          const [operator] = Object.keys(filter);
-          const value = urlStateFilters[fieldName][operator];
+        if (fieldType === Number) {
           // value can be a single value or an array, depending on filter type
-          const convertedValue = Array.isArray(value) ? value.map(parseFloat) : parseFloat(value);
-          _set(convertedFilters, `${fieldName}.${operator}`, convertedValue);
+          convertedValue = Array.isArray(value) ? value.map(parseFloat) : parseFloat(value);
+        } else if (fieldType === Boolean) {
+          // value can be a single value or an array, depending on filter type
+          convertedValue = Array.isArray(value) ? value.map(convertToBoolean) : convertToBoolean(value);
         }
+        _set(convertedFilters, `${fieldName}.${operator}`, convertedValue);
       });
     }
     return convertedFilters;
@@ -190,8 +198,16 @@ class Datatable extends PureComponent {
     }, 700);
   };
 
+  toggleItem = id => {
+    const { selectedItems } = this.state;
+    const newSelectedItems = selectedItems.includes(id) ? selectedItems.filter(x => x !== id) : [...selectedItems, id];
+    this.setState({
+      selectedItems: newSelectedItems,
+    });
+  };
+
   render() {
-    const { Components, modalProps, data, currentUser } = this.props;
+    const { Components, modalProps, data, currentUser, onSubmitSelected } = this.props;
 
     if (this.props.data) {
       // static JSON datatable
@@ -224,9 +240,7 @@ class Datatable extends PureComponent {
       const permissionCheck = _get(collection, 'options.permissions.canCreate');
 
       // openCRUD backwards compatibility
-      const check =
-        _get(collection, 'options.mutations.new.check') ||
-        _get(collection, 'options.mutations.create.check');
+      const check = _get(collection, 'options.mutations.new.check') || _get(collection, 'options.mutations.create.check');
 
       if (Users.isAdmin(currentUser)) {
         canCreate = true;
@@ -238,7 +252,7 @@ class Datatable extends PureComponent {
           operationName: 'create',
         });
       } else if (check) {
-        canCreate = check && check(currentUser, document, { Users });
+        canCreate = check && check(currentUser, {}, { Users });
       }
 
       const input = {};
@@ -253,9 +267,7 @@ class Datatable extends PureComponent {
       }
 
       return (
-        <Components.DatatableLayout
-          Components={Components}
-          collectionName={collection.options.collectionName}>
+        <Components.DatatableLayout Components={Components} collectionName={collection.options.collectionName}>
           <Components.DatatableAbove
             Components={Components}
             {...this.props}
@@ -264,6 +276,8 @@ class Datatable extends PureComponent {
             canCreate={canCreate}
             searchValue={this.state.searchValue}
             updateSearch={this.updateSearch}
+            selectedItems={this.state.selectedItems}
+            onSubmitSelected={onSubmitSelected}
           />
           <DatatableWithMulti
             Components={Components}
@@ -275,6 +289,8 @@ class Datatable extends PureComponent {
             currentSort={this.state.currentSort}
             submitFilters={this.submitFilters}
             currentFilters={this.state.currentFilters}
+            toggleItem={this.toggleItem}
+            selectedItems={this.state.selectedItems}
           />
         </Components.DatatableLayout>
       );
@@ -309,14 +325,14 @@ Datatable.defaultProps = {
 registerComponent({
   name: 'Datatable',
   component: Datatable,
-  hocs: [withCurrentUser, withComponents, withRouter],
+  hocs: [withCurrentUser, withComponents, withRouter, memo],
 });
 export default Datatable;
 
 const DatatableLayout = ({ collectionName, children }) => (
   <div className={`datatable datatable-${collectionName.toLowerCase()}`}>{children}</div>
 );
-registerComponent({ name: 'DatatableLayout', component: DatatableLayout });
+registerComponent({ name: 'DatatableLayout', component: DatatableLayout, hocs: [memo] });
 
 /*
 
@@ -336,34 +352,48 @@ const DatatableAbove = (props, { intl }) => {
     newFormOptions,
     newFormProps,
     Components,
+    showSelect,
+    selectedItems,
+    onSubmitSelected,
   } = props;
 
   return (
     <Components.DatatableAboveLayout>
-      {showSearch && (
-        <Components.DatatableAboveSearchInput
-          className="datatable-search form-control"
-          inputProperties={{
-            path: 'datatableSearchQuery',
-            placeholder: `${intl.formatMessage({
-              id: 'datatable.search',
-              defaultMessage: 'Search',
-            })}…`,
-            value: searchValue,
-            onChange: updateSearch,
-          }}
-          Components={Components}
-        />
-      )}
-      {showNew && canInsert && (
-        <Components.NewButton
-          collection={collection}
-          currentUser={currentUser}
-          mutationFragmentName={options && options.fragmentName}
-          {...newFormOptions}
-          {...newFormProps}
-        />
-      )}
+      <div className="datatable-above-left">
+        {showSearch && (
+          <Components.DatatableAboveSearchInput
+            className="datatable-search form-control"
+            inputProperties={{
+              path: 'datatableSearchQuery',
+              placeholder: `${intl.formatMessage({
+                id: 'datatable.search',
+                defaultMessage: 'Search',
+              })}…`,
+              value: searchValue,
+              onChange: updateSearch,
+            }}
+            Components={Components}
+          />
+        )}
+      </div>
+      <div className="datatable-above-right">
+        {showSelect && selectedItems.length > 0 && (
+          <div className="datatable-above-item">
+            <Components.DatatableSubmitSelected selectedItems={selectedItems} onSubmitSelected={onSubmitSelected} />
+          </div>
+        )}
+        {showNew && canInsert && (
+          <div className="datatable-above-item">
+            <Components.NewButton
+              collection={collection}
+              currentUser={currentUser}
+              mutationFragmentName={options && options.fragmentName}
+              {...newFormOptions}
+              {...newFormProps}
+            />
+          </div>
+        )}
+      </div>
     </Components.DatatableAboveLayout>
   );
 };
@@ -373,13 +403,13 @@ DatatableAbove.contextTypes = {
 DatatableAbove.propTypes = {
   Components: PropTypes.object.isRequired,
 };
-registerComponent('DatatableAbove', DatatableAbove);
+registerComponent({ name: 'DatatableAbove', component: DatatableAbove, hocs: [memo] });
 
 const DatatableAboveSearchInput = props => {
   const { Components } = props;
   return <Components.FormComponentText {...props} />;
 };
-registerComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput });
+registerComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput, hocs: [memo] });
 
 const DatatableAboveLayout = ({ children }) => <div className="datatable-above">{children}</div>;
-registerComponent({ name: 'DatatableAboveLayout', component: DatatableAboveLayout });
+registerComponent({ name: 'DatatableAboveLayout', component: DatatableAboveLayout, hocs: [memo] });

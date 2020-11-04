@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
@@ -10,6 +10,10 @@ import MuiFormHelper from './MuiFormHelper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
 import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
+import { Components } from 'meteor/vulcan:core';
+import without from 'lodash/without';
+import uniq from 'lodash/uniq';
 
 const styles = theme => ({
   group: {
@@ -48,6 +52,80 @@ const styles = theme => ({
   },
 });
 
+// this marker is used to identify "other" values
+export const otherMarker = '[other]';
+
+// check if a string is an "other" value
+export const isOtherValue = s => s && typeof s === 'string' && s.substr(0, otherMarker.length) === otherMarker;
+
+// remove the "other" marker from a string
+export const removeOtherMarker = s => s && typeof s === 'string' && s.substr(otherMarker.length);
+
+// add the "other" marker to a string
+export const addOtherMarker = s => `${otherMarker}${s}`;
+
+// return array of values without the "other" value
+export const removeOtherValue = a => {
+  return a.filter(s => !isOtherValue(s));
+};
+
+const OtherComponent = ({ value: _values, path, updateCurrentValues }) => {
+  const otherValue = removeOtherMarker(_values.find(isOtherValue));
+  // get copy of checkbox group values with "other" value removed
+  const withoutOtherValue = removeOtherValue(_values);
+
+  // keep track of whether "other" field is shown or not
+  const [showOther, setShowOther] = useState(!!otherValue);
+
+  // keep track of "other" field value locally
+  const [textFieldValue, setTextFieldValue] = useState(otherValue);
+
+  // textfield properties
+  const textFieldInputProperties = {
+    value: textFieldValue,
+    onChange: fieldValue => {
+      // first, update local state
+      setTextFieldValue(fieldValue);
+      // then update global form state
+      const newValue = isEmpty(fieldValue) ? withoutOtherValue : [...withoutOtherValue, addOtherMarker(fieldValue)];
+      updateCurrentValues({ [path]: newValue });
+    },
+  };
+
+  const textFieldItemProperties = {layout: 'elementOnly'};
+
+  return (
+    <div className="form-option-other">
+      <FormControlLabel
+        control={
+          <Checkbox
+            inputRef={c => (this[name + '-' + 'other'] = c)}
+            checked={showOther}
+            onChange={event => {
+              const isChecked = event.target.checked;
+              setShowOther(isChecked);
+              if (isChecked) {
+                // if checkbox is checked and textfield has value, update global form state with current textfield value
+                if (textFieldValue) {
+                  updateCurrentValues({ [path]: [...withoutOtherValue, addOtherMarker(textFieldValue)] });
+                }
+              } else {
+                // if checkbox is unchecked, also clear out field value from global form state
+                updateCurrentValues({ [path]: withoutOtherValue });
+              }
+            }}
+            value={'other'}
+          />
+        }
+        label={'Other'}
+      />
+      {showOther && <Components.FormComponentText itemProperties={textFieldItemProperties}
+                                                  value={textFieldInputProperties.value}
+                                                  handleChange={textFieldInputProperties.onChange}/>}
+    </div>
+  );
+};
+
 const MuiCheckboxGroup = createReactClass({
   mixins: [ComponentMixin],
 
@@ -74,24 +152,6 @@ const MuiCheckboxGroup = createReactClass({
     };
   },
 
-  changeCheckbox: function(event) {
-    const { options, name } = this.props.inputProperties;
-
-    const checkedValue = this[name + '-' + event.target.value].checked && event.target.value;
-    const value = checkedValue ? [checkedValue] : [];
-
-    options.forEach(
-      function(option, key) {
-        if (this.props.maxCount && value.length >= this.props.maxCount) return;
-        if (this[name + '-' + option.value].checked && option.value !== checkedValue) {
-          value.push(option.value);
-        }
-      }.bind(this)
-    );
-
-    this.props.onChange(value);
-  },
-
   validate: function() {
     if (this.props.onBlur) {
       this.props.onBlur();
@@ -100,7 +160,14 @@ const MuiCheckboxGroup = createReactClass({
   },
 
   renderElement: function() {
-    const { name, options, disabled: _disabled, value: _values } = this.props.inputProperties;
+    const {name, options, disabled: _disabled} = this.props.inputProperties;
+    let {value: _values} = this.props.inputProperties;
+    const {itemProperties, updateCurrentValues, value, path} = this.props;
+
+    // get rid of duplicate values; or any values that are not included in the options provided
+    // (unless they have the "other" marker)
+    _values = _values ? uniq(value.filter(v => isOtherValue(v) || options.map(o => o.value).includes(v))) : [];
+
     const controls = options.map((checkbox, key) => {
       let checkboxValue = checkbox.value;
       let checked = _values.indexOf(checkboxValue) !== -1;
@@ -114,7 +181,11 @@ const MuiCheckboxGroup = createReactClass({
             <Component
               inputRef={c => (this[name + '-' + checkboxValue] = c)}
               checked={checked}
-              onChange={this.changeCheckbox}
+              onChange={event => {
+                const isChecked = event.target.checked;
+                const newValue = isChecked ? [..._values, checkbox.value] : without(_values, checkbox.value);
+                updateCurrentValues({ [path]: newValue });
+              }}
               value={checkboxValue}
               disabled={disabled}
             />
@@ -126,7 +197,7 @@ const MuiCheckboxGroup = createReactClass({
 
     const maxLength = options.reduce(
       (max, option) => (option.label.length > max ? option.label.length : max),
-      0
+      0,
     );
 
     const columnClass = maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';
@@ -134,6 +205,7 @@ const MuiCheckboxGroup = createReactClass({
     return (
       <FormGroup className={classNames(this.props.classes.group, this.props.classes[columnClass])}>
         {controls}
+        {itemProperties.showOther && <OtherComponent value={_values} path={path} updateCurrentValues={updateCurrentValues}/>}
       </FormGroup>
     );
   },

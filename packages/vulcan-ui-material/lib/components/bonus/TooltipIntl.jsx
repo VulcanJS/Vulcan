@@ -39,7 +39,7 @@ const styles = theme => ({
 const TooltipIntl = (props, { intl }) => {
   //eslint-disable-next-line no-console
   console.warn(
-    'WARNING! TooltipIntl is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.0'
+    'WARNING! TooltipIntl is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.2'
   );
 
   const {
@@ -63,10 +63,8 @@ const TooltipIntl = (props, { intl }) => {
   const iconWithClass = icon && React.cloneElement(icon, { className: classes.icon });
   const popperClass = parent === 'popover' && classes.popoverPopper;
   const tooltipClass = parent === 'popover' && classes.popoverTooltip;
-  const tooltipEnterDelay =
-    typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
-  const tooltipLeaveDelay =
-    typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
+  const tooltipEnterDelay = typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
+  const tooltipLeaveDelay = typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
   const titleText = props.title || intl.formatMessage({ id: titleId }, titleValues);
   const slug = Utils.slugify(titleId);
 
@@ -84,27 +82,15 @@ const TooltipIntl = (props, { intl }) => {
         }}>
         <span className={classes.buttonWrap}>
           {variant === 'fab' && !!icon ? (
-            <Fab
-              className={classNames(classes.button, slug)}
-              aria-label={title}
-              ref={buttonRef}
-              {...properties}>
+            <Fab className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
               {iconWithClass}
             </Fab>
           ) : !!icon ? (
-            <IconButton
-              className={classNames(classes.button, slug)}
-              aria-label={title}
-              ref={buttonRef}
-              {...properties}>
+            <IconButton className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
               {iconWithClass}
             </IconButton>
           ) : variant === 'button' ? (
-            <Button
-              className={classNames(classes.button, slug)}
-              aria-label={title}
-              ref={buttonRef}
-              {...properties}>
+            <Button className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties}>
               {children}
             </Button>
           ) : (

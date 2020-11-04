@@ -202,6 +202,9 @@ export const runCallbacksAsync = function() {
     const _runCallbacksAsync = () =>
         Promise.all(
             callbacks.map(callback => {
+                if (!callback) {
+                  throw new Error(`Found undefined callback on hook ${hook}`);
+                }
                 debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
                 return callback.apply(this, args);
             }),

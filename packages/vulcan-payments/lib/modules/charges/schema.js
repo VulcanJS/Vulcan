@@ -93,52 +93,28 @@ const schema = {
     optional: true,
   },
 
-  // GraphQL only
-
   amount: {
     type: Number,
     optional: true,
     canRead: ['admins'],
-    resolveAs: {
-      type: 'Int',
-      resolver: charge => charge.data.amount,
-    }  
-  },
-
-  createdAtFormatted: {
-    type: String,
-    optional: true,
-    canRead: ['admins'],
-    resolveAs: {
-      type: 'String',
-      resolver: (charge, args, context) => {
-        return moment(charge.createdAt).format('dddd, MMMM Do YYYY');
-      }
-    }  
-  },
-
-  createdAtFormattedShort: {
-    type: String,
-    optional: true,
-    canRead: ['admins'],
-    resolveAs: {
-      type: 'String',
-      resolver: (charge, args, context) => {
-        return moment(charge.createdAt).format('YYYY/MM/DD, hh:mm');
-      }
-    }  
+    onCreate: ({ data: charge }) => charge.data && charge.data.amount,
+    // resolveAs: {
+    //   type: 'Int',
+    //   resolver: charge => {console.log(charge); return charge.data && charge.data.amount},
+    // }  
   },
 
   stripeId: {
     type: String,
     optional: true,
     canRead: ['admins'],
-    resolveAs: {
-      type: 'String',
-      resolver: (charge, args, context) => {
-        return charge.data && charge.data.id;
-      }
-    } 
+    onCreate: ({ data: charge }) => charge.data && charge.data.id,
+    // resolveAs: {
+    //   type: 'String',
+    //   resolver: (charge, args, context) => {
+    //     return charge.data && charge.data.id;
+    //   }
+    // } 
   },
 
   stripeChargeUrl: {
@@ -148,7 +124,7 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (charge, args, context) => {
-        return `https://dashboard.stripe.com/payments/${charge.data.id}`;
+        return `https://dashboard.stripe.com/payments/${charge.stripeId}`;
       }
     } 
   },

@@ -1,3 +1,5 @@
+import pick from 'lodash/pick';
+
 /**
  * Extract input props for the FormComponentInner
  * @param {*} props All component props
@@ -24,4 +26,14 @@ export const getHtmlInputProps = props => {
     ...props,
     inputProperties,
   };
+};
+
+/**
+ * Extract input props for the FormComponentInner
+ * @param {*} props All component props
+ * @returns Initial props + props specific to the HTML input in an inputProperties object
+ */
+export const whitelistInputProps = props => {
+  const whitelist = ['name', 'path', 'options', 'label', 'onChange', 'onBlur', 'value', 'disabled'];
+  return pick(props, whitelist);
 };

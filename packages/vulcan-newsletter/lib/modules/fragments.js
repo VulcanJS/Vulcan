@@ -1,5 +1,5 @@
-import { extendFragment } from 'meteor/vulcan:core';
+// import { extendFragment } from 'meteor/vulcan:core';
 
-extendFragment('UsersCurrent', `
-  newsletter_subscribeToNewsletter
-`);
+// extendFragment('UsersCurrent', `
+//   newsletter_subscribeToNewsletter
+// `);

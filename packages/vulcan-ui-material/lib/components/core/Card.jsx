@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
+import get from 'lodash/get';
 import Users from 'meteor/vulcan:users';
 
 const getLabel = (field, fieldName, collection, intl) => {
@@ -169,8 +170,26 @@ const styles = theme => ({
 const Card = ({ className, collection, document, currentUser, fields, classes }, { intl }) => {
   
   const fieldNames = fields ? fields : _.without(_.keys(document), '__typename');
-  const canUpdate = currentUser && collection.options.mutations.update.check(currentUser, document, { Users });
-  
+  let canUpdate = false;
+
+  // new APIs
+  const permissionCheck = get(collection, 'options.permissions.canUpdate');
+  // openCRUD backwards compatibility
+  const check = get(collection, 'options.mutations.edit.check') || get(collection, 'options.mutations.update.check');
+
+  if (Users.isAdmin(currentUser)) {
+    canUpdate = true;
+  } else if (permissionCheck) {
+    canUpdate = Users.permissionCheck({
+      check: permissionCheck,
+      user: currentUser,
+      context: { Users },
+      operationName: 'update',
+    });
+  } else if (check) {
+    canUpdate = check && check(currentUser, document, { Users });
+  }
+
   return (
     <div className={classNames(classes.root, 'datacard', `datacard-${collection._name}`, className)}>
       <Table className={classNames(classes.table, 'table')} style={{ maxWidth: '100%' }}>

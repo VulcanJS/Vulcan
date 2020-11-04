@@ -13,7 +13,7 @@ const parseUrl = value => {
 
 const StaticComponent = ({ inputProperties, itemProperties }) => (
   <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
-    <div>{parseUrl(inputProperties.value)}</div>
+    <div style={{ paddingTop: 'calc(.375rem + 1px)', paddingBottom: 'calc(.375rem + 1px)' }}>{parseUrl(inputProperties.value)}</div>
   </Components.FormItem>
 );
 

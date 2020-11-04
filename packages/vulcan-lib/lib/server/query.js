@@ -18,13 +18,15 @@ import merge from 'lodash/merge';
 import { singleClientTemplate } from '../modules/graphql_templates/index.js';
 import { Utils } from './utils';
 import { GraphQLSchema } from './graphql/index.js';
+import { useQueryCache } from './caching.js';
 
 // note: if no context is passed, default to running requests with full admin privileges
-export const runGraphQL = async (query, variables = {}, context) => {
+export const runGraphQL = async (query, variables = {}, context = {}, options = {}) => {
   const defaultContext = {
     currentUser: { isAdmin: true },
     locale: getSetting('locale'),
   };
+  const { useCache = false, key } = options;
   const queryContext = merge(defaultContext, context);
   const executableSchema = GraphQLSchema.getExecutableSchema();
 
@@ -40,7 +42,7 @@ export const runGraphQL = async (query, variables = {}, context) => {
   const fullQueryContext = merge({}, queryContext, GraphQLSchema.context);
 
   // see http://graphql.org/graphql-js/graphql/#graphql
-  const result = await graphql(executableSchema, query, {}, fullQueryContext, variables);
+  const result = useCache ? await useQueryCache({ query, variables, context: fullQueryContext, key }) : await graphql(executableSchema, query, {}, fullQueryContext, variables);
 
   if (result.errors) {
     // eslint-disable-next-line no-console

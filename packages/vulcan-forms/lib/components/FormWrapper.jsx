@@ -35,9 +35,9 @@ import {
   registerComponent,
   withCurrentUser,
   Utils,
-  withNew,
-  withUpdate,
-  withDelete,
+  withCreate2,
+  withUpdate2,
+  withDelete2,
   getFragment,
 } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
@@ -161,8 +161,8 @@ class FormWrapper extends PureComponent {
     if (this.getFormType() === 'edit') {
       WrappedComponent = compose(
         withSingle(queryOptions),
-        withUpdate(mutationOptions),
-        withDelete(mutationOptions)
+        withUpdate2(mutationOptions),
+        withDelete2(mutationOptions)
       )(Loader);
 
       return (
@@ -175,7 +175,7 @@ class FormWrapper extends PureComponent {
       );
     } else {
 
-      WrappedComponent = compose(withNew(mutationOptions))(Components.Form);
+      WrappedComponent = compose(withCreate2(mutationOptions))(Components.Form);
 
       return <WrappedComponent {...childProps} />;
     }
@@ -223,6 +223,7 @@ FormWrapper.propTypes = {
   disabled: PropTypes.bool,
   itemProperties: PropTypes.object,
   successComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  contextName: PropTypes.string,
 
   // callbacks
   ...callbackProps,

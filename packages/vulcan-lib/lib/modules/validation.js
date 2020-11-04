@@ -51,7 +51,7 @@ const validateDocumentPermissions = (fullDocument, documentToValidate, schema, c
   2. Run SimpleSchema validation step
 
 */
-export const validateDocument = (document, collection, context) => {
+export const validateDocument = (document, collection, context, validationContextName = 'defaultContext') => {
   const schema = collection.simpleSchema()._schema;
 
   let validationErrors = [];
@@ -62,7 +62,7 @@ export const validateDocument = (document, collection, context) => {
   );
 
   // run simple schema validation (will check the actual types, required fields, etc....)
-  const validationContext = collection.simpleSchema().newContext();
+  const validationContext = collection.simpleSchema().namedContext(validationContextName);
   validationContext.validate(document);
 
   if (!validationContext.isValid()) {
@@ -98,7 +98,7 @@ export const validateDocument = (document, collection, context) => {
   2. Run SimpleSchema validation step
   
 */
-export const validateModifier = (modifier, data, document, collection, context) => {
+export const validateModifier = (modifier, data, document, collection, context, validationContextName = 'defaultContext') => {
   const schema = collection.simpleSchema()._schema;
   const set = modifier.$set;
   const unset = modifier.$unset;
@@ -111,7 +111,7 @@ export const validateModifier = (modifier, data, document, collection, context) 
   );
 
   // 2. run SS validation
-  const validationContext = collection.simpleSchema().newContext();
+  const validationContext = collection.simpleSchema().namedContext(validationContextName);
   validationContext.validate({ $set: set, $unset: unset }, { modifier: true });
 
   if (!validationContext.isValid()) {

@@ -46,7 +46,9 @@ const RouteWithLayout = ({ layoutComponent, layoutName, component, currentRoute,
         const children = (
           <ErrorCatcher>
             <Components.RouterHook currentRoute={currentRoute} />
-            {React.createElement(component, childComponentProps)}
+            <Components.AccessControl currentRoute={currentRoute}>
+              {React.createElement(component, childComponentProps)}
+            </Components.AccessControl>
           </ErrorCatcher>
         );
         return React.createElement(layout, layoutProps, children);

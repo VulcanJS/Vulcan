@@ -4,7 +4,7 @@ import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
 import { createStateLink } from '../../modules/apollo-common';
-import cache from './cache';
+import createCache from './cache';
 import { getTerminatingLinks, getLinks } from './links/registerLinks';
 
 // these links do not change once created
@@ -13,6 +13,7 @@ const staticLinks = [errorLink, meteorAccountsLink];
 let apolloClient;
 export const createApolloClient = () => {
   // links registered by packages
+  const cache = createCache();
   const registeredLinks = getLinks();
   const terminatingLinks = getTerminatingLinks();
   if (terminatingLinks.length > 1) console.warn('Warning: You registered more than one terminating Apollo link.');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
@@ -9,6 +9,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import classNames from 'classnames';
+import _isArray from 'lodash/isArray';
+import {
+  addOtherMarker,
+  isOtherValue,
+  removeOtherMarker,
+} from './MuiCheckboxGroup';
+import isEmpty from 'lodash/isEmpty';
+import { Components } from 'meteor/vulcan:core';
 
 const styles = theme => ({
   group: {
@@ -139,6 +147,61 @@ const styles = theme => ({
   inputDisabled: {},
 });
 
+const OtherComponent = ({value, path, updateCurrentValues, classes, key, disabled}) => {
+  const otherValue = removeOtherMarker(value);
+
+  // keep track of whether "other" field is shown or not
+  const [showOther, setShowOther] = useState(isOtherValue(value));
+
+  // keep track of "other" field value locally
+  const [textFieldValue, setTextFieldValue] = useState(otherValue);
+
+  // whenever value changes (and is not empty), if it's not an "other" value
+  // this means another option has been selected and we need to uncheck the "other" radio button
+  useEffect(() => {
+    if (value) {
+      setShowOther(isOtherValue(value));
+    }
+  }, [value]);
+
+  // textfield properties
+  const textFieldInputProperties = {
+    name: path,
+    value: textFieldValue,
+    onChange: fieldValue => {
+      // first, update local state
+      setTextFieldValue(fieldValue);
+      // then update global form state
+      const newValue = isEmpty(fieldValue) ? null : addOtherMarker(fieldValue);
+      updateCurrentValues({[path]: newValue});
+    },
+  };
+  const textFieldItemProperties = {layout: 'elementOnly'};
+
+  return (
+    <React.Fragment>
+      <FormControlLabel
+        key={key}
+        value={'[other]'}
+        control={
+          <Radio
+            className={classes.radio}
+            inputRef={c => (this['element-' + 'other'] = c)}
+            checked={showOther}
+            disabled={disabled}
+          />
+        }
+        className={classes.line}
+        classes={{label: classes.label}}
+        label={'Other'}
+      />
+      {showOther && <Components.FormComponentText itemProperties={textFieldItemProperties}
+                                                  value={textFieldInputProperties.value}
+                                                  handleChange={textFieldInputProperties.onChange}/>}
+    </React.Fragment>
+  );
+};
+
 const MuiRadioGroup = createReactClass({
   mixins: [ComponentMixin],
 
@@ -162,7 +225,7 @@ const MuiRadioGroup = createReactClass({
   changeRadio: function(event) {
     const value = event.target.value;
     //this.setValue(value);
-    this.props.onChange(value);
+    this.props.handleChange(value);
   },
 
   validate: function() {
@@ -173,8 +236,11 @@ const MuiRadioGroup = createReactClass({
   },
 
   renderElement: function() {
-    const { options, value, name, disabled: _disabled } = this.props.inputProperties;
+    const {options, name, disabled: _disabled} = this.props.inputProperties;
+    const {itemProperties, updateCurrentValues, path} = this.props;
+    let value = this.props.inputProperties.value;
     const valueString = String(value);
+    if (_isArray(value)) value = value[0];
     const controls = options.map((radio, key) => {
       let checked = valueString === radio.value;
       let disabled = radio.disabled || _disabled;
@@ -192,7 +258,7 @@ const MuiRadioGroup = createReactClass({
             />
           }
           className={this.props.classes.line}
-          classes={{ label: this.props.classes.label }}
+          classes={{label: this.props.classes.label}}
           label={radio.label}
         />
       );
@@ -200,9 +266,8 @@ const MuiRadioGroup = createReactClass({
 
     const maxLength = options.reduce(
       (max, option) => (option.label.length > max ? option.label.length : max),
-      0
+      0,
     );
-
 
     const getColumnClass = maxLength => {
       if (maxLength < 3) {
@@ -234,6 +299,9 @@ const MuiRadioGroup = createReactClass({
         value={value}
         onChange={this.changeRadio}>
         {controls}
+        {itemProperties.showOther &&
+        <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues}
+                        classes={this.props.classes} key={controls.length + 1} disabled={_disabled}/>}
       </RadioGroup>
     );
   },

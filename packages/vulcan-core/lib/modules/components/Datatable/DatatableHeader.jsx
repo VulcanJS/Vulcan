@@ -1,5 +1,5 @@
 import { registerComponent, formatLabel } from 'meteor/vulcan:lib';
-import React from 'react';
+import React, { memo } from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 
@@ -8,10 +8,7 @@ import PropTypes from 'prop-types';
 DatatableHeader Component
 
 */
-const DatatableHeader = (
-  { collection, column, toggleSort, currentSort, submitFilters, currentFilters, Components },
-  { intl }
-) => {
+const DatatableHeader = ({ collection, column, toggleSort, currentSort, submitFilters, currentFilters, Components }, { intl }) => {
   // column label
   let formattedLabel;
 
@@ -79,8 +76,7 @@ const DatatableHeader = (
   } else {
     const formattedLabel = column.label || intl.formatMessage({ id: column.name, defaultMessage: column.name });
     return (
-      <Components.DatatableHeaderCellLayout
-        className={`datatable-th-${formattedLabel.toLowerCase().replace(/\s/g, '-')}`}>
+      <Components.DatatableHeaderCellLayout className={`datatable-th-${formattedLabel.toLowerCase().replace(/\s/g, '-')}`}>
         {formattedLabel}
       </Components.DatatableHeaderCellLayout>
     );
@@ -92,11 +88,11 @@ DatatableHeader.contextTypes = {
 DatatableHeader.propTypes = {
   Components: PropTypes.object.isRequired,
 };
-registerComponent('DatatableHeader', DatatableHeader);
+registerComponent({ name: 'DatatableHeader', component: DatatableHeader, hocs: [memo] });
 
 const DatatableHeaderCellLayout = ({ children, ...otherProps }) => (
   <th {...otherProps}>
     <div className="datatable-header-cell-inner">{children}</div>
   </th>
 );
-registerComponent({ name: 'DatatableHeaderCellLayout', component: DatatableHeaderCellLayout });
+registerComponent({ name: 'DatatableHeaderCellLayout', component: DatatableHeaderCellLayout, hocs: [memo] });

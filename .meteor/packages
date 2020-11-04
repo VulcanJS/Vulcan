@@ -14,7 +14,12 @@ accounts-password@1.6.0
 # accounts-facebook
 
 vulcan:debug
+# To run the backoffice
 vulcan:backoffice
+vulcan:accounts
+# Ui
 vulcan:ui-bootstrap
+# vulcan:ui-material
+
 meteortesting:mocha
 apollo

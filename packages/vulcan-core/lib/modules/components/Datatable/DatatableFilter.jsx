@@ -28,14 +28,7 @@ const Filter = ({ count }) => (
       fillOpacity={count ? 0.8 : 0.3}
     />
     {count ? (
-      <text
-        x="50%"
-        y="55%"
-        fill="#000"
-        fontSize="300px"
-        textAnchor="middle"
-        alignmentBaseline="middle"
-        fillOpacity={0.8}>
+      <text x="50%" y="55%" fill="#000" fontSize="300px" textAnchor="middle" alignmentBaseline="middle" fillOpacity={0.8}>
         {count}
       </text>
     ) : (
@@ -50,24 +43,13 @@ const Filter = ({ count }) => (
 
 const DatatableFilter = props => {
   const { columnFilters, label, query, Components } = props;
-
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
-        title={
-          <FormattedMessage
-            id="datatable.filter_column"
-            values={{ label }}
-            defaultMessage={`Filter “${label}”`}
-          />
-        }
+        title={<FormattedMessage id="datatable.filter_column" values={{ label }} defaultMessage={`Filter “${label}”`} />}
         size="small"
         trigger={<Filter count={getCount(columnFilters)} />}>
-        {query ? (
-          <Components.DatatableFilterContentsWithData {...props} />
-        ) : (
-          <Components.DatatableFilterContents {...props} />
-        )}
+        {query ? <Components.DatatableFilterContentsWithData {...props} /> : <Components.DatatableFilterContents {...props} />}
       </Components.ModalTrigger>
     </span>
   );
@@ -84,11 +66,9 @@ DatatableFilterContents Components
 const DatatableFilterContentsWithData = props => {
   const { query, options } = props;
 
-  const filterQuery = gql`
-    query ${name}FilterQuery {
-      ${query}
-    }
-  `;
+  // if query is a function, execute it
+  const queryText = typeof query === 'function' ? query({ mode: 'static' }) : query;
+  const filterQuery = gql(queryText);
 
   const { loading, error, data } = useQuery(filterQuery);
 
@@ -130,13 +110,14 @@ const DatatableFilterContents = props => {
         contents = <Components.DatatableFilterNumbers {...filterProps} />;
         break;
 
+      case Boolean:
+        contents = <Components.DatatableFilterBooleans {...filterProps} />;
+        break;
+
       default:
         contents = (
           <p>
-            <FormattedMessage
-              id="datatable.specify_option"
-              defaultMessage="Please specify an options property on your schema field."
-            />
+            <FormattedMessage id="datatable.specify_option" defaultMessage="Please specify an options property on your schema field." />
           </p>
         );
     }
@@ -185,11 +166,7 @@ Operator: _in
 
 */
 const checkboxOperator = '_in';
-const DatatableFilterCheckboxes = ({
-  options,
-  filters = { [checkboxOperator]: [] },
-  setFilters,
-}) => (
+const DatatableFilterCheckboxes = ({ options, filters = { [checkboxOperator]: [] }, setFilters }) => (
   <Components.FormComponentCheckboxGroup
     path="filter"
     itemProperties={{ layout: 'inputOnly' }}
@@ -202,6 +179,29 @@ const DatatableFilterCheckboxes = ({
 );
 
 registerComponent('DatatableFilterCheckboxes', DatatableFilterCheckboxes);
+
+/*
+
+Booleans
+
+*/
+const booleanOptions = [{ label: 'True', value: true }, { label: 'False', value: false }];
+const DatatableFilterBooleans = ({ filters = { _eq: [] }, setFilters }) => (
+  <Components.FormComponentRadioGroup
+    path="filter"
+    itemProperties={{ layout: 'inputOnly' }}
+    inputProperties={{
+      options: booleanOptions,
+      value:filters['_eq'],
+      onChange: (e) => {
+        const value = e.target.value; // note: this will be a string
+        setFilters({ _eq: value === 'true' ? true : false });
+      },
+    }}
+  />
+);
+
+registerComponent('DatatableFilterBooleans', DatatableFilterBooleans);
 
 /*
 

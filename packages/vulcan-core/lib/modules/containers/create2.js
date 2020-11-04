@@ -121,10 +121,9 @@ export const useCreate2 = (options) => {
     ...mutationOptions
   });
 
-  // so the syntax is useCreate({collection: ...}, {data: ...})
   const extendedCreateFunc = async (args) => {
     const executionResult = await createFunc({
-      variables: { data: args.data },
+      variables: { input: args.input, data: args.data },
     });
     return buildResult(options, resolverName, executionResult);
   };

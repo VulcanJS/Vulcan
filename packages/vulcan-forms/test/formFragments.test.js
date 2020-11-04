@@ -34,8 +34,8 @@ describe('vulcan:form/formFragments', function () {
         });
         expect(queryFragment).toBeDefined();
         expect(mutationFragment).toBeDefined();
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id field }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field nonCreateableField }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { field nonCreateableField }');
     });
     test('take formType into account', function () {
         const schema = new SimpleSchema({
@@ -56,13 +56,14 @@ describe('vulcan:form/formFragments', function () {
             formType: 'edit',
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosEditFormQueryFragment on Foo { _id field }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosEditFormMutationFragment on Foo { _id field nonUpdateableField }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosEditFormQueryFragment on Foo { field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosEditFormMutationFragment on Foo { field nonUpdateableField }');
 
     });
     test('create subfields for nested objects', () => {
         const schema = new SimpleSchema({
             nestedField: {
+
                 canCreate: ['admins'],
                 type: new SimpleSchema({
                     firstNestedField: {
@@ -80,8 +81,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { nestedField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { nestedField { firstNestedField secondNestedField } }');
     });
     test('create subfields for arrays of nested objects', () => {
         const schema = new SimpleSchema({
@@ -108,8 +109,8 @@ describe('vulcan:form/formFragments', function () {
             ...defaultArgs,
             schema,
         });
-        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(queryFragment)).toMatch('fragment FoosNewFormQueryFragment on Foo { arrayField { firstNestedField secondNestedField } }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { arrayField { firstNestedField secondNestedField } }');
     });
     test('add readable fields to mutation fragment', () => {
         const schema = new SimpleSchema({
@@ -128,7 +129,7 @@ describe('vulcan:form/formFragments', function () {
             schema,
         });
         expect(normalizeFragment(queryFragment)).not.toMatch('readOnlyField'); // this does not affect the queryFragment;
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field readOnlyField }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { field readOnlyField }');
     });
     test('ignore virtual/resolved fields', () => {
         const schema = new SimpleSchema({
@@ -157,8 +158,45 @@ describe('vulcan:form/formFragments', function () {
             schema,
         });
         expect(normalizeFragment(queryFragment)).not.toMatch('virtual');
-        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { _id field }');
+        expect(normalizeFragment(mutationFragment)).toMatch('fragment FoosNewFormMutationFragment on Foo { field }');
 
     });
+    test("add userId and _id when they are present in the schema", () => {
+        const schemaWithIds = new SimpleSchema({
+            _id: {
+                type: String,
+                canRead: ['guests'],
+            },
+            userId: {
+                type: String,
+                canRead: ['guests']
+            }
+        })._schema;
+        const { queryFragment, mutationFragment } = getFormFragments({
+            ...defaultArgs,
+            schema: schemaWithIds,
+        });
+        expect(normalizeFragment(queryFragment)).toMatch(/_id/);
+        expect(normalizeFragment(mutationFragment)).toMatch(/_id/);
+        expect(normalizeFragment(queryFragment)).toMatch(/userId/);
+        expect(normalizeFragment(mutationFragment)).toMatch(/userId/);
+    })
+    test("do not add _id and userId if not in the schema", () => {
+        const schemaWithoutIds = new SimpleSchema({
+            field: {
+                type: String,
+                canRead: ['guests'],
+                canCreate: ['guests']
+            },
+        })._schema;
+        const { queryFragment, mutationFragment } = getFormFragments({
+            ...defaultArgs,
+            schema: schemaWithoutIds,
+        });
+        expect(normalizeFragment(queryFragment)).not.toMatch(/_id/);
+        expect(normalizeFragment(mutationFragment)).not.toMatch(/_id/);
+        expect(normalizeFragment(queryFragment)).not.toMatch(/userId/);
+        expect(normalizeFragment(mutationFragment)).not.toMatch(/userId/);
+    })
 });
 

@@ -93,8 +93,8 @@ export const useCreate = (options) => {
     update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
     ...mutationOptions
   });
-  // so the syntax is useCreate({collection: ...}, {data: ...})
-  const extendedCreateFunc = (args) => createFunc({ variables: { data: args.data } });
+
+  const extendedCreateFunc = (args) => createFunc({ variables: { input: args.input, data: args.data } });
   return [extendedCreateFunc, ...rest];
 };
 

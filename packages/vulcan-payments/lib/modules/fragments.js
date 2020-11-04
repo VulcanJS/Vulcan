@@ -4,8 +4,8 @@ registerFragment(`
   fragment ChargeFragment on Charge {
     _id
     createdAt
-    createdAtFormatted
-    createdAtFormattedShort
+    createdAtFormatted(format: "dddd, MMMM Do YYYY")
+    createdAtFormattedShort: createdAtFormatted(format: "YYYY/MM/DD, hh:mm")
     user{
       _id
       slug

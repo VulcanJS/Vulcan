@@ -538,6 +538,9 @@ export const processAction = async ({
       properties: { collection, document, chargeDoc, user },
     });
 
+    context.event = 'stripe.process.sync';
+    context.chargeDoc = chargeDoc;
+
     const updateResult = await updateMutator({
       collection,
       documentId: associatedId,

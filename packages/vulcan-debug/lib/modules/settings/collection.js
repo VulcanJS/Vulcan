@@ -1,6 +1,5 @@
 import { createCollection } from 'meteor/vulcan:lib';
 import schema from './schema.js';
-import resolvers from './resolvers.js';
 
 const Settings = createCollection({
 
@@ -10,7 +9,7 @@ const Settings = createCollection({
 
   schema,
   
-  resolvers,
+  resolvers: null,
 
   mutations: null,
 
