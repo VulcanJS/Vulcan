@@ -9,7 +9,7 @@
 
 // in react-apollo v3, this will be imported from the independant package "@apollo/react-testing" instead
 // currently we use v2
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import React from 'react';
 
 //const ExtendedMockedProvider = props => {

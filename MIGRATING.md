@@ -2,6 +2,18 @@ Doc to help updating downstream applications. Breaking changes and packages upda
 
 Please open an issue or a pull request if you feel this doc is incomplete.
 
+## Updating Meteor
+
+- Check that your version of `boilerplate-generator` is right. If not, overwrite it manually in `packages/_boilerplate/package.js`. This package is a hack to support SSR, so it's ok to manually change the version without actually updating
+- Check that you don't have hard dependency on core packages, like `accounts-password@1.16.0`. They could conflict with Meteor core package version.
+- Run `meteor update`. Note: when running the update on the Starter, remember to setup `METEOR_PACKAGES_DIRS=...` correctly, so it points to your local `devel` install of Vulcan.
+
+## From 1.16 to 1.17
+
+- `meteor update`
+- `meteor npm i --save string-similarity @apollo/client`
+- Migrate your code to Apollo client v3: https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/
+ 
 ## From 1.15 to 1.16
 
 - `meteor npm i --save node-cache`
