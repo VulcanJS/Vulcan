@@ -5,7 +5,8 @@ import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 
 class FormGroup extends PureComponent {
-  constructor(props) {
+
+  constructor (props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.renderHeading = this.renderHeading.bind(this);
@@ -14,13 +15,13 @@ class FormGroup extends PureComponent {
     };
   }
 
-  toggle() {
+  toggle () {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   }
 
-  renderHeading(FormComponents) {
+  renderHeading (FormComponents) {
     return (
       <FormComponents.FormGroupHeader
         toggle={this.toggle}
@@ -64,8 +65,11 @@ class FormGroup extends PureComponent {
         hidden={this.isHidden()}
         group={group}
         heading={name === 'default' ? null : this.renderHeading(FormComponents)}
-        hasErrors={this.hasErrors()}>
-        {instantiateComponent(group.beforeComponent)}
+        hasErrors={this.hasErrors()}
+        document={document}
+      >
+
+        {instantiateComponent(group.beforeComponent, this.props)}
 
         {fields.map(field => (
           <FormComponents.FormComponent
@@ -89,7 +93,7 @@ class FormGroup extends PureComponent {
           />
         ))}
 
-        {instantiateComponent(group.afterComponent)}
+        {instantiateComponent(group.afterComponent, this.props)}
       </FormComponents.FormGroupLayout>
     );
   }

@@ -9,25 +9,30 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 
+
 const styles = theme => ({
+
   root: {
     display: 'contents',
   },
 
-  tooltip: {
-    margin: '4px !important',
-  },
+  tooltip: {},
 
   buttonWrap: {
     position: 'relative',
-    display: 'inline-block',
+    display: 'inline-flex',
   },
 
-  button: {
-    zIndex: 2,
-  },
+  button: {},
+
+  fab: {},
+
+  menu: {},
 
   popoverPopper: {
     zIndex: 1700,
@@ -66,6 +71,10 @@ const styles = theme => ({
     height: 56,
   },
 
+  dangerButton: {
+    ...theme.utils.dangerButton,
+  },
+
   progress: {
     color: theme.palette.secondary.main,
     position: 'absolute',
@@ -73,18 +82,20 @@ const styles = theme => ({
     right: 0,
     bottom: 0,
     left: 0,
-    zIndex: 1,
+    //zIndex: 1,
+    pointerEvents: 'none',
   },
 
   buttonProgress: {
     color: theme.palette.secondary.main,
     position: 'absolute',
-    top: -2,
-    right: -2,
-    bottom: -2,
-    left: -2,
-    zIndex: 1,
+    top: -4,
+    right: -4,
+    bottom: -4,
+    left: -4,
+    //zIndex: 1,
   },
+
 });
 
 const TooltipButton = (props, { intl }) => {
@@ -98,101 +109,144 @@ const TooltipButton = (props, { intl }) => {
     icon,
     loading,
     disabled,
+    type,
     size,
+    danger,
     className,
     classes,
     theme,
     enterDelay,
     leaveDelay,
     buttonRef,
-    type,
     parent,
     children,
+    cursor,
+    TooltipProps,
     ...properties
   } = props;
 
-  const iconWithClass = instantiateComponent(icon, { className: classes.icon });
+  const iconWithClass = instantiateComponent(icon, { className: classNames('icon', classes.icon) });
   const popperClass = parent === 'popover' && classes.popoverPopper;
   const tooltipClass = parent === 'popover' && classes.popoverTooltip;
-  const tooltipEnterDelay =
-    typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
-  const tooltipLeaveDelay =
-    typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
+  const tooltipEnterDelay = typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
+  const tooltipLeaveDelay = typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
   let titleText = title || (titleId ? intl.formatMessage({ id: titleId }, titleValues) : '');
   let labelText = label || (labelId ? intl.formatMessage({ id: labelId }, titleValues) : '');
-  if (type === 'button') {
+  if (type === 'button' || type === 'menu') {
     if (!labelText) labelText = titleText;
     if (titleText === labelText) titleText = '';
   }
-  const slug = Utils.slugify(titleId);
+  const slug = Utils.slugify(titleId || labelId);
+  const buttonWrapStyle = cursor ? { cursor: cursor } : null;
 
   return (
     <span className={classNames('tooltip-button', classes.root, className)}>
-      <Tooltip
-        id={`tooltip-${slug}`}
-        title={titleText}
-        placement={placement}
-        enterDelay={tooltipEnterDelay}
-        leaveDelay={tooltipLeaveDelay}
-        classes={{
-          tooltip: classNames(classes.tooltip, tooltipClass),
-          popper: popperClass,
-        }}
-        PopperProps={{
-          ref: popper => {
-            if (popper && popper.popper) popper.popper.scheduleUpdate();
-          },
-        }}>
-        <span className={classes.buttonWrap}>
-          {type === 'fab' && !!icon ? (
-            <>
-              <Fab
-                className={classNames(classes.button, slug)}
-                {...properties}
-                size={size}
-                aria-label={titleText}
-                ref={buttonRef}
-                disabled={loading || disabled}>
-                {iconWithClass}
-              </Fab>
-              {loading && <CircularProgress size="auto" className={classes.progress} />}
-            </>
-          ) : ['button', 'submit'].includes(type) ? (
-            <Button
-              className={classNames(classes.button, slug)}
-              {...properties}
-              type={type}
-              size={size}
-              aria-label={titleText}
-              ref={buttonRef}
-              disabled={loading || disabled}>
-              {iconWithClass && (
-                <span className={classNames('icon-wrap', classes.iconWrap)}>
-                  {iconWithClass}
-                  {loading && <CircularProgress size="auto" className={classes.buttonProgress} />}
-                </span>
-              )}
-              {labelText}
-            </Button>
-          ) : !!icon ? (
-            <>
-              <IconButton
-                className={classNames(classes.button, classes[size], slug)}
-                {...properties}
-                aria-label={titleText}
-                ref={buttonRef}
-                disabled={(loading && !(disabled === false)) || disabled}>
-                {iconWithClass}
-              </IconButton>
-              {loading && <CircularProgress size="auto" className={classes.progress} />}
-            </>
-          ) : (
-            children
-          )}
+
+      <Tooltip id={`tooltip-${slug}`}
+               title={titleText}
+               placement={placement}
+               arrow
+               enterDelay={tooltipEnterDelay}
+               leaveDelay={tooltipLeaveDelay}
+               classes={{
+                 tooltip: classNames(classes.tooltip, tooltipClass),
+                 popper: popperClass,
+               }}
+               PopperProps={{
+                 ref: (popper) => { if (popper && popper.popper) popper.popper.scheduleUpdate(); },
+               }}
+               {...TooltipProps}
+      >
+        <span className={classes.buttonWrap} style={buttonWrapStyle}>
+          {
+            type === 'menu'
+
+              ?
+
+              <MenuItem className={classNames(classes.menu, slug)}
+                        {...properties}
+                        button={true}
+                        disabled={loading || disabled}
+              >
+                <ListItemIcon>
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={labelText}/>
+              </MenuItem>
+
+              :
+
+              type === 'fab' && !!icon
+
+                ?
+
+                <>
+                  <Fab className={classNames(classes.button, classes.fab, danger && classes.dangerButton, slug)}
+                       {...properties}
+                       size={size}
+                       aria-label={title}
+                       ref={buttonRef}
+                       disabled={loading || disabled}
+                  >
+                    {iconWithClass}
+                  </Fab>
+                  {loading && <CircularProgress size="auto" className={classes.progress}/>}
+                </>
+
+                :
+
+                ['button', 'submit'].includes(type)
+
+                  ?
+
+                  <Button className={classNames(classes.button, danger && classes.dangerButton, slug)}
+                          {...properties}
+                          type={type}
+                          size={size}
+                          aria-label={title}
+                          ref={buttonRef}
+                          disabled={loading || disabled}
+                  >
+                    {
+                      iconWithClass &&
+
+                      <span className={classNames('icon-wrap', classes.iconWrap)}>
+                        {iconWithClass}
+                        {loading && <CircularProgress size="auto" className={classes.buttonProgress}/>}
+                      </span>
+                    }
+                    {labelText}
+                  </Button>
+
+                  :
+
+                  !!icon
+
+                    ?
+
+                    <>
+                      <IconButton
+                        className={classNames(classes.button, danger && classes.dangerButton, classes[size], slug)}
+                        {...properties}
+                        aria-label={title}
+                        ref={buttonRef}
+                        disabled={(loading && !(disabled === false)) || disabled}
+                      >
+                        {iconWithClass}
+                      </IconButton>
+                      {loading && <CircularProgress size="auto" className={classes.progress}/>}
+                    </>
+
+                    :
+
+                    children
+          }
         </span>
       </Tooltip>
+
     </span>
   );
+
 };
 
 TooltipButton.propTypes = {
@@ -201,9 +255,11 @@ TooltipButton.propTypes = {
   titleValues: PropTypes.object,
   label: PropTypes.node,
   labelId: PropTypes.string,
-  type: PropTypes.oneOf(['simple', 'fab', 'button', 'submit', 'icon']),
+  type: PropTypes.oneOf(['simple', 'fab', 'button', 'submit', 'icon', 'menu']),
   size: PropTypes.oneOf(['icon', 'xsmall', 'small', 'medium', 'large']),
-  placement: PropTypes.string,
+  danger: PropTypes.bool,
+  placement: PropTypes.oneOf(['bottom-end', 'bottom-start', 'bottom',
+    'left-end', 'left-start', 'left', 'right-end', 'right-start', 'right', 'top-end', 'top-start', 'top']),
   icon: PropTypes.node,
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -215,6 +271,8 @@ TooltipButton.propTypes = {
   leaveDelay: PropTypes.number,
   parent: PropTypes.oneOf(['default', 'popover']),
   children: PropTypes.node,
+  cursor: PropTypes.string,
+  TooltipProps: PropTypes.object,
 };
 
 TooltipButton.defaultProps = {

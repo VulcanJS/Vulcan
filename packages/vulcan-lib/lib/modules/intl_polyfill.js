@@ -9,7 +9,7 @@ import { getSetting } from './settings.js';
 import areIntlLocalesSupported from 'intl-locales-supported'
 
 var localesMyAppSupports = [
-  getSetting('locale', 'en')
+  getSetting('locale', 'en-US')
 ];
 
 if (global.Intl) {

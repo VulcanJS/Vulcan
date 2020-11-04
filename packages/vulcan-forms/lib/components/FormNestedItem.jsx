@@ -53,7 +53,7 @@ const FormNestedItem = (
               variant="danger"
               size="sm"
               iconButton
-              tabIndex="-1"
+              tabIndex={-1}
               onClick={() => {
                 removeItem(name);
               }}

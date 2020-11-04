@@ -8,6 +8,7 @@ import './deep_extend.js';
 // import './graphql.js';
 import './icons.js';
 
+export * from './config';
 export * from './graphql/';
 export * from './graphql_templates/index.js';
 export * from './components.js';
@@ -26,7 +27,6 @@ export * from './debug.js';
 export * from './startup.js';
 export * from './errors.js';
 export * from './intl.js';
-export * from './detect_locale.js';
 export * from './validation.js';
 export * from './handleOptions';
 export * from './ui_utils';

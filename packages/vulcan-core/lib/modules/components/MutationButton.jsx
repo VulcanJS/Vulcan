@@ -11,6 +11,7 @@ Example Usage
     fragmentName: 'BookingsStripeDataFragment',
   }}
   mutationArguments={{ bookingId: booking._id }}
+  successCallback={result => { console.log(result) }}
 />
 
 */
@@ -45,17 +46,17 @@ class MutationButtonInner extends PureComponent {
 
     try {
       if (submitCallback) {
-        submitCallback();
+        await submitCallback();
       }
       const result = await mutation(mutationArguments);
       this.setState({ loading: false });
       if (successCallback) {
-        successCallback(result);
+        await successCallback(result);
       }
     } catch (error) {
       this.setState({ loading: false, error });
       if (errorCallback) {
-        errorCallback(error);
+        await errorCallback(error);
       }
     }
 

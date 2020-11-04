@@ -5,7 +5,9 @@ import {
   replaceComponent,
   withCurrentUser,
   Utils,
-  withMulti
+  withMulti,
+  getCollection,
+  instantiateComponent,
 } from 'meteor/vulcan:core';
 import compose from 'recompose/compose';
 import { intlShape } from 'meteor/vulcan:i18n';
@@ -25,7 +27,6 @@ import { getFieldValue } from './Card';
 import _assign from 'lodash/assign';
 import _sortBy from 'lodash/sortBy';
 import classNames from 'classnames';
-import { getCollection } from 'meteor/vulcan:lib'
 
 /*
 
@@ -70,6 +71,7 @@ const baseStyles = theme => ({
   tableHead: {},
   tableBody: {},
   tableFooter: {},
+  tablePagination: {},
   tableRow: {},
   tableHeadCell: {},
   tableCell: {},
@@ -136,7 +138,8 @@ class Datatable extends PureComponent {
         />
       );
     } else {
-      const { className, options, showSearch, showNew, classes } = this.props;
+      const { className, options, showSearch, showNew, classes, TableProps, SearchInputProps } = this.props;
+      const wrapComponent = this.props.wrapComponent || <div className={classes.scroller}/>;
 
       const collection = this.props.collection || getCollection(this.props.collectionName);
 
@@ -174,6 +177,7 @@ class Datatable extends PureComponent {
                     updateQuery={this.updateQuery}
                     className={classes.search}
                     labelId={'datatable.search'}
+                    {...SearchInputProps}
                   />
                 </div>
               )}
@@ -190,16 +194,18 @@ class Datatable extends PureComponent {
             </div>
           )}
 
-          <div className={classes.scroller}>
-            <DatatableWithMulti
+          {instantiateComponent(wrapComponent, {
+            children: <DatatableWithMulti
               {...this.props}
               collection={collection}
               terms={{ query: this.state.query, orderBy: orderBy }}
               currentUser={this.props.currentUser}
               toggleSort={this.toggleSort}
               currentSort={this.state.currentSort}
+              {...TableProps}
             />
-          </div>
+          })}
+
         </div>
       );
     }
@@ -213,7 +219,7 @@ Datatable.propTypes = {
   options: PropTypes.object,
   columns: PropTypes.array,
   showEdit: PropTypes.bool,
-  editComponent: PropTypes.func,
+  editComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
   showNew: PropTypes.bool,
   showSearch: PropTypes.bool,
   emptyState: PropTypes.node,
@@ -229,6 +235,9 @@ Datatable.propTypes = {
   toggleSort: PropTypes.func,
   currentSort: PropTypes.object,
   paginate: PropTypes.bool,
+  wrapComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
+  TableProps: PropTypes.object,
+  SearchInputProps: PropTypes.object,
 };
 
 Datatable.defaultProps = {
@@ -317,8 +326,13 @@ const DatatableContents = ({
   toggleSort,
   currentSort,
   paginate,
-  paginationTerms,
+  paginationTerms = {
+    itemsPerPage: 25,
+    limit: 25,
+    offset: 0,
+  },
   setPaginationTerms,
+  TableProps,
 }) => {
   if (loading) {
     return <Components.Loading />;
@@ -327,8 +341,9 @@ const DatatableContents = ({
   }
 
   if (queryDataRef) queryDataRef(this.props);
+
   let sortedColumns = getColumns(columns, results);
-  
+
   const denseClass = dense && classes[dense + 'Table'];
 
   // Pagination functions
@@ -361,7 +376,7 @@ const DatatableContents = ({
     <React.Fragment>
       {error && <Components.Alert variant="danger">{error.message}</Components.Alert>}
       {title && <Components.DatatableTitle title={title} />}
-      <Components.DatatableContentsInnerLayout className={classNames(classes.table, denseClass)}>
+      <Components.DatatableContentsInnerLayout className={classNames(classes.table, denseClass)} {...TableProps}>
         {sortedColumns && (
           <TableHead className={classes.tableHead}>
             <TableRow className={classes.tableRow}>
@@ -418,6 +433,7 @@ const DatatableContents = ({
       </Components.DatatableContentsInnerLayout>
       {paginate && (
         <TablePagination
+          className={classes.tablePagination}
           component="div"
           count={totalCount}
           rowsPerPage={paginationTerms.itemsPerPage}
@@ -459,9 +475,10 @@ const DatatableHeader = (
   const columnName = typeof column === 'string' ? column : column.name || column.label;
   let formattedLabel = '';
 
-  if (collection) {
+  if (column.label) {
+    formattedLabel = column.label;
+  } else if (collection) {
     const schema = collection.simpleSchema()._schema;
-
     /*
     use either:
 
@@ -575,8 +592,6 @@ const DatatableRow = (
   },
   { intl }
 ) => {
-  const EditComponent = editComponent;
-
   if (typeof rowClass === 'function') {
     rowClass = rowClass(document);
   }
@@ -603,9 +618,7 @@ const DatatableRow = (
 
       {(showEdit || editComponent) && (
         <TableCell className={classes.editCell}>
-          {EditComponent && (
-            <EditComponent collection={collection} document={document} refetch={refetch} />
-          )}
+          {editComponent && instantiateComponent(editComponent, { collection, document, refetch })}
           {showEdit && (
             <Components.EditButton
               collection={collection}
@@ -643,9 +656,15 @@ const DatatableCell = ({ column, document, currentUser, classes }) => {
       : typeof column.cellClass === 'string'
       ? column.cellClass
       : null;
+  const cellStyle =
+    typeof column.cellStyle === 'function'
+      ? column.cellStyle({ column, document, currentUser })
+      : typeof column.cellStyle === 'object'
+      ? column.cellStyle
+      : null;
 
   return (
-    <TableCell className={classNames(classes.tableCell, cellClass, className)}>
+    <TableCell className={classNames(classes.tableCell, cellClass, className)} style={cellStyle}>
       <Component column={column} document={document} currentUser={currentUser} />
     </TableCell>
   );

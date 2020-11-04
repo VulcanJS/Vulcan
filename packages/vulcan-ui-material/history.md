@@ -1,3 +1,69 @@
+1.16.0_1 / 2020-10-24
+=====================
+
+ * MuiSuggest
+   * Fixed how styles are applied for focused, disabled, and error states
+   * Enabled the styling of `menuItem`, `menuItemHighlight`, and `menuItemIcon` classes
+   * Renamed `muiIcon` class to `selectIcon`
+   * Fixed a bug when `disableSelectOnBlur` prop was passed
+   * Tweaked the behavior of `highlightFirstSuggestion()`
+   * Added support for `inputRef` prop
+ * MuiInput: Previously the field value was not updated until the user exited the input (`blur` event); now the value is updated as you type, enabling the form submit button sooner
+ * Various components: Changed the type of component props to `PropTypes.oneOfType([PropTypes.node, PropTypes.elementType])`
+ * Various components: Updated spacing to comply with linting rules
+ * ScrollTrigger: Refined functionality
+ * TooltipButton: Changed `buttonWrap` display to `inline-flex`
+ * Datatable: Added support for the `label` column prop where you can pass text, or a React element
+ * Component mixin: Updated list of fields in `cleanProps()`
+ * EndAdornment: Tweaked button spacing
+ * StartAdornment: Changed icon button to a `TooltipButton`
+ * Countries: Added `getRegionCode()` function
+ * FormSubmit: Tweaked button spacing
+ * ThemeStyles: Fixed minor bugs
+ * ModalTrigger: Now the trigger component is rendered using `instantiateComponent()`, the same as component props are rendered elsewhere
+ 
+1.16.0 / 2020-08-17
+===================
+
+ * Updated Material UI to version 4.11.0 and updated related packages to the latest version
+ * Fixed minor bugs related to the MUI update
+ * MuiInput, Email, Url
+   * The value of `url` and `email` type inputs are scrubbed to make sure they output a valid url; `url`, `email`, and `social` type inputs display an active link
+   * MuiInput: The input now supports an empty label and adjusts the spacing accordingly
+ * EndAdornment: refactored the menu indicator  
+ * MuiFormControl: new `layout` prop value of 'shrink' turns off the `fullWidth` option for the control  
+ * MuiSelect: added clear button to select controls the same as input and suggest controls  
+ * MuiSwitch: added support for `addonBefore` and `addonAfter` the same as input and suggest controls
+ * Modal
+   * Removed bottom border when `Modal` dialog title is empty
+   * Moved `closeButton` style to `theme.utils`
+   * New `dontWrapDialogContent` prop prevents wrapping the children in a `DialogContent` component
+   * `DialogTrigger`'s content is now lazy rendered
+   * Added deprecation warning: _ModalTrigger’s "dialogProperties" prop has been renamed "dialogProps"_
+ * LoadMore, ScrollTrigger
+   * Added `scroller` prop which defaults to `window`, but can be set to the ref of another element
+   * Refactored for more reliable performance
+ * MuiSuggest
+   * Wrapped option icon in ListItemIcon component
+   * Fixed bug: `MuiSuggest` would not accept or display values that don't match an option value, even when `limitToList` was false
+   * Numerous other bug fixes and refactoring 
+ * TooltipButtonUpgrades
+   * Added new props: `danger` and `cursor`
+   * Added new value for `type` prop: `menu`
+ * Datatable
+   * Changed `editComponent` prop type from `func` to `node`
+   * New `SearchInputProps` and `TableProps` props allow sending props to the `SearchInput` and `Table` components
+   * New `wrapComponent` prop allows overriding the scroller that the `Table` is wrapped in by default
+   * New `cellStyle` prop of column definitions accepts a function or object to add style to individual cells
+   * Added default value for `paginationTerms`
+   * New bonus component `DatatableFromArray` is a wrapper for `Datatable` that takes an array of objects and supports pagination
+   
+1.13.2_2 / 2020-01-20
+=====================
+
+ * MuiSuggest: Removed `selectedOption` and `inputFormatted` from the component state
+ * TooltipIntl: Fixed bug: `titleValues` prop was not implemented
+
 1.13.2_1 / 2019-10-02
 =====================
 

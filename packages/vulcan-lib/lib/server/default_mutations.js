@@ -89,6 +89,10 @@ export function getDefaultMutations(options) {
 
         const data = input.data || backwardsCompatibilityData;
         
+        if (isEmpty(data)) {
+          throw new Error(`create${typeName} received empty data object`);
+        }
+
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
         const collection = context[collectionName];

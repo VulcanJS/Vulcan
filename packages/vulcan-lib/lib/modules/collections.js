@@ -71,7 +71,7 @@ Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
 
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
- * @param {Object|Object[]} field
+ * @param {Object|Object[]} fieldOrFieldArray
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   const collection = this;
@@ -85,7 +85,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   });
 
   // add field schema to collection schema
-  collection.attachSchema(createSchema(merge(collection.options.schema, fieldSchema)));
+  collection.attachSchema(createSchema(merge(collection.simpleSchema()._schema, fieldSchema)));
 };
 
 /**

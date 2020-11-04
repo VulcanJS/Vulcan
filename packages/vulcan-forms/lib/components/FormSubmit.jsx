@@ -21,7 +21,7 @@ const FormSubmit = ({
 }) => (
   <div className="form-submit">
     <Components.Button type="submit" variant="primary">
-      {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" />}
+      {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" defaultMessage="Submit" />}
     </Components.Button>
 
     {cancelCallback ? (
@@ -32,7 +32,7 @@ const FormSubmit = ({
           cancelCallback(document);
         }}
       >
-        {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel" />}
+        {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel" defaultMessage="Cancel" />}
       </a>
     ) : null}
   
@@ -45,16 +45,16 @@ const FormSubmit = ({
           revertCallback(document);
         }}
       >
-      {revertLabel ? revertLabel : <FormattedMessage id="forms.revert"/>}
+      {revertLabel ? revertLabel : <FormattedMessage id="forms.revert" defaultMessage="Revert" />}
       </a>
     ) : null}
   
     {deleteDocument ? (
       <div>
         <hr />
-        <a href="javascript:void(0)" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
-          <Components.Icon name="close" /> <FormattedMessage id="forms.delete" />
-        </a>
+        <Components.Button variant="link" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
+          <Components.Icon name="close" /> <FormattedMessage id="forms.delete" defaultMessage="Delete" />
+        </Components.Button>
       </div>
     ) : null}
   </div>

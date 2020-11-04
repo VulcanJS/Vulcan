@@ -37,8 +37,8 @@ export const coreComponents = [
  * and one or more optional higher order components.
  *
  * @param {String} name The name of the component to register.
- * @param {React Component} rawComponent Interchangeable/extendable component.
- * @param {...Function} hocs The HOCs to compose with the raw component.
+ * @param {Component} rawComponent Interchangeable/extendable react component.
+ * @param {...(Function|Array)} hocs The HOCs to compose with the raw component.
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok!
@@ -207,7 +207,7 @@ export const instantiateComponent = (component, props) => {
   if (!component) {
     return null;
   } else if (typeof component === 'string') {
-    const Component = getComponent(component);
+    const Component = Components[component];
     return <Component {...props} />;
   } else if (React.isValidElement(component)) {
     return React.cloneElement(component, props);

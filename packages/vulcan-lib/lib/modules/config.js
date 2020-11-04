@@ -13,7 +13,7 @@ Vulcan.VERSION = '1.16.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 
-SimpleSchema.extendOptions([
+export const additionalFieldKeys = [
   'hidden', // hidden: true means the field is never shown in a form no matter what
   'mustComplete', // mustComplete: true means the field is required to have a complete profile
   'form', // extra form properties
@@ -52,6 +52,7 @@ SimpleSchema.extendOptions([
   'placeholder', // form field placeholder value
   'options', // form options
   'query', // field-specific data loading query
+  'queryWaitsForValue', // whether the data loading query should wait for a field to have a value to run
   'autocompleteQuery', // query used to populate autocomplete
   'selectable', // field can be used as part of a selector when querying for data
   'unique', // field can be used as part of a selectorUnique when querying for data
@@ -63,7 +64,10 @@ SimpleSchema.extendOptions([
   
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings
-]);
+  'intlId', // set an explicit i18n key for a field
+];
+
+SimpleSchema.extendOptions(additionalFieldKeys);
 
 // eslint-disable-next-line no-undef
 export default Vulcan;

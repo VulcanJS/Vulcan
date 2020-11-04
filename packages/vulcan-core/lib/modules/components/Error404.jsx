@@ -5,7 +5,9 @@ import { FormattedMessage } from 'meteor/vulcan:i18n';
 const Error404 = () => {
   return (
     <div className="error404">
-      <h3><FormattedMessage id="app.404"/></h3>
+      <h3>
+        <FormattedMessage id="app.404" defaultMessage="Sorry, we couldn't find what you were looking for." />
+      </h3>
     </div>
   );
 };

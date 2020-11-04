@@ -20,9 +20,9 @@ import warning from '@material-ui/core/colors/orange';
 
 
 const theme = {
-  
+
   palette: {
-    
+
     primary: {
       light: primary[200],
       main: primary[500],
@@ -30,7 +30,7 @@ const theme = {
       contrastText: '#fff',
       ...primary
     },
-  
+
     secondary: {
       light: secondary[200],
       main: secondary[500],
@@ -38,7 +38,7 @@ const theme = {
       contrastText: '#fff',
       ...secondary
     },
-  
+
     error: {
       light: error[200],
       main: error[500],
@@ -46,7 +46,7 @@ const theme = {
       contrastText: '#fff',
       ...error
     },
-  
+
     warning: {
       light: warning[100],
       main: warning[500],
@@ -54,7 +54,7 @@ const theme = {
       contrastText: '#fff',
       ...warning
     },
-  
+
     success: {
       light: success[100],
       main: success[500],
@@ -62,7 +62,7 @@ const theme = {
       contrastText: '#fff',
       ...success
     },
-  
+
     info: {
       light: info[100],
       main: info[500],
@@ -70,13 +70,13 @@ const theme = {
       contrastText: '#fff',
       ...info
     },
-  
+
   },
-  
+
   utils: {
-    
+
     tooltipEnterDelay: 700,
-    
+
     errorMessage: {
       textAlign: 'center',
       backgroundColor: error[500],
@@ -84,7 +84,7 @@ const theme = {
       borderRadius: '4px',
       fontWeight: 'bold',
     },
-    
+
     denseTable: {
       '& > thead > tr > th, & > tbody > tr > td': {
         padding: '4px 16px 4px 16px',
@@ -93,7 +93,7 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+
     flatTable: {
       '& > thead > tr > th, & > tbody > tr > td': {
         padding: '4px 16px 4px 16px',
@@ -103,7 +103,7 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+
     denserTable: {
       '& > thead > tr, & > tbody > tr': {
         height: '40px',
@@ -116,9 +116,20 @@ const theme = {
         paddingRight: '16px',
       },
     },
-    
+
+    testPaper: {
+      backgroundColor: warning[50],
+    },
+
+    closeButton: {
+      display: 'block !important',
+      position: 'absolute',
+      right: 8,
+      top: 8,
+    },
+
   },
-  
+
   overrides: {
     MuiButton: {
       root: {
@@ -152,7 +163,7 @@ const theme = {
       },
     },
   },
-  
+
 };
 
 

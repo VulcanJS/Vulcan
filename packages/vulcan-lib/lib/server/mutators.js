@@ -57,8 +57,8 @@ Create
 */
 export const createMutator = async ({
   collection,
-  document: providedDocument,
-  data,
+  document: originalDocument,
+  data: originalData,
   currentUser,
   validate,
   context = {},
@@ -66,7 +66,7 @@ export const createMutator = async ({
 }) => {
   // OpenCRUD backwards compatibility: accept either data or document
   // we don't want to modify the original document
-  let document = { ...(data || providedDocument) };
+  let data = clone(originalData || originalDocument);
 
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
@@ -76,7 +76,7 @@ export const createMutator = async ({
     currentUser = context.currentUser;
   }
 
-  startDebugMutator(collectionName, 'Create', { validate, document });
+  startDebugMutator(collectionName, 'Create', { validate, data });
 
   /*
 
@@ -87,13 +87,13 @@ export const createMutator = async ({
   */
   const properties = {
     data,
-    originalData: clone(data),
+    originalData,
     currentUser,
     collection,
     context,
-    document,
-    originalDocument: clone(document),
-    newDocument: document,
+    document: data, // backwards compatibility
+    originalDocument, // backwards compatibility
+    newDocument: data, // backwards compatibility
     schema,
     contextName,
   };
@@ -105,7 +105,7 @@ export const createMutator = async ({
   */
   if (validate) {
     let validationErrors = [];
-    validationErrors = validationErrors.concat(validateDocument(document, collection, context, contextName));
+    validationErrors = validationErrors.concat(validateDocument(data, collection, context, contextName));
     // new callback API (Oct 2019)
     validationErrors = await runCallbacks({
       name: `${typeName.toLowerCase()}.create.validate`,
@@ -131,9 +131,9 @@ export const createMutator = async ({
       properties,
     });
     // OpenCRUD backwards compatibility
-    document = await runCallbacks(
+    data = await runCallbacks(
       `${collectionName.toLowerCase()}.new.validate`,
-      document,
+      data,
       currentUser,
       validationErrors
     );
@@ -142,7 +142,6 @@ export const createMutator = async ({
       throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
     }
   }
-
   /*
 
   userId
@@ -152,9 +151,8 @@ export const createMutator = async ({
   */
   if (currentUser) {
     const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
-    if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
+    if (!!userIdInSchema && !data.userId) data.userId = currentUser._id;
   }
-
   /* 
   
   onCreate
@@ -166,19 +164,23 @@ export const createMutator = async ({
 
   */
   for (let fieldName of Object.keys(schema)) {
-    let autoValue;
-    if (schema[fieldName].onCreate) {
-      // OpenCRUD backwards compatibility: keep both newDocument and data for now, but phase out newDocument eventually
-      autoValue = await schema[fieldName].onCreate(properties); // eslint-disable-line no-await-in-loop
-    } else if (schema[fieldName].onInsert) {
-      // OpenCRUD backwards compatibility
-      autoValue = await schema[fieldName].onInsert(clone(document), currentUser); // eslint-disable-line no-await-in-loop
-    }
-    if (typeof autoValue !== 'undefined') {
-      document[fieldName] = autoValue;
+    try {
+      let autoValue;
+      if (schema[fieldName].onCreate) {
+        // OpenCRUD backwards compatibility: keep both newDocument and data for now, but phase out newDocument eventually
+        autoValue = await schema[fieldName].onCreate(properties); // eslint-disable-line no-await-in-loop
+      } else if (schema[fieldName].onInsert) {
+        // OpenCRUD backwards compatibility
+        autoValue = await schema[fieldName].onInsert(clone(data), currentUser); // eslint-disable-line no-await-in-loop
+      }
+      if (typeof autoValue !== 'undefined') {
+        data[fieldName] = autoValue;
+      }
+    } catch(e) {
+      console.log(`// Autovalue error on field ${fieldName}`);
+      console.log(e);
     }
   }
-
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
   //   post.userIP = this.connection.clientAddress;
@@ -191,39 +193,39 @@ export const createMutator = async ({
   
   */
   // new callback API (Oct 2019)
-  document = await runCallbacks({
+  data = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.before`,
     callbacks: get(collection, 'options.callbacks.create.before', []),
-    iterator: document,
+    iterator: data,
     properties,
   });
-  document = await runCallbacks({
+  data = await runCallbacks({
     name: '*.create.before',
     callbacks: get(globalCallbacks, 'create.before', []),
-    iterator: document,
+    iterator: data,
     properties,
   });
   // old callback API
-  document = await runCallbacks({
+  data = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.before`,
-    iterator: document,
+    iterator: data,
     properties,
   });
-  document = await runCallbacks({ name: '*.create.before', iterator: document, properties });
+  data = await runCallbacks({ name: '*.create.before', iterator: data, properties });
   // OpenCRUD backwards compatibility
-  document = await runCallbacks(
+  data = await runCallbacks(
     `${collectionName.toLowerCase()}.new.before`,
-    document,
+    data,
     currentUser
   );
-  document = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, document, currentUser);
+  data = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, data, currentUser);
 
   /*
 
   DB Operation
 
   */
-  document._id = await Connectors.create(collection, document);
+  data._id = await Connectors.create(collection, data);
 
   /*
 
@@ -231,7 +233,7 @@ export const createMutator = async ({
 
   */
   // note: query for document to get fresh document with collection-hooks effects applied
-  document = await Connectors.get(collection, document._id);
+  let document = await Connectors.get(collection, data._id);
   // new callback API (Oct 2019)
   document = await runCallbacks({
     name: `${typeName.toLowerCase()}.create.after`,

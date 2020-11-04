@@ -28,7 +28,7 @@ Child Props:
 */
 
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import {
   updateClientTemplate,
@@ -49,6 +49,7 @@ export const useUpdate = (options) => {
   const { mutationOptions = {} } = options;
 
   const typeName = collection.options.typeName;
+  const resolverName = `update${typeName}`;
   const query = buildUpdateQuery({ typeName, fragmentName, fragment });
 
   const [updateFunc, ...rest] = useMutation(query, {
@@ -57,10 +58,13 @@ export const useUpdate = (options) => {
     ...mutationOptions
   }
   );
-  const extendedUpdateFunc = ({ data, selector }) => updateFunc({
-    variables: { data, selector },
-  });
-  return [extendedUpdateFunc, ...rest];
+
+  const extendedUpdateFunc = {
+    [resolverName]: ({ data, selector }) => updateFunc({
+      variables: { data, selector },
+    })
+  }
+  return [extendedUpdateFunc[resolverName], ...rest];
 };
 
 export const withUpdate = options => C => {

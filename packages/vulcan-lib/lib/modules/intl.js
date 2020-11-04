@@ -2,26 +2,31 @@ import SimpleSchema from 'simpl-schema';
 import { getSetting } from '../modules/settings';
 import { debug, Utils } from 'meteor/vulcan:lib';
 
-export const defaultLocale = getSetting('locale', 'en');
+export const defaultLocale = getSetting('locale', 'en-US');
 
 export const Strings = {};
 
 export const Domains = {};
 
-export const addStrings = (language, strings) => {
-  if (typeof Strings[language] === 'undefined') {
-    Strings[language] = {};
+export const addStrings = (localeId, strings) => {
+  if (typeof Strings[localeId] === 'undefined') {
+    Strings[localeId] = {};
   }
-  Strings[language] = {
-    ...Strings[language],
+  Strings[localeId] = {
+    ...Strings[localeId],
     ...strings,
   };
 };
 
-export const getString = ({ id, values, defaultMessage, locale }) => {
+export const getString = ({ id, values, defaultMessage, messages, locale }) => {
   let message = '';
 
-  if (Strings[locale] && Strings[locale][id]) {
+  if (messages && messages[id]) {
+    // first, look in messages object passed through arguments
+    // note: if defined, messages should also contain Strings[locale]
+    message = messages[id];
+  } else if (Strings[locale] && Strings[locale][id]) {
+    // then look in bundled Strings object
     message = Strings[locale][id];
   } else if (Strings[defaultLocale] && Strings[defaultLocale][id]) {
     // debug(`\x1b[32m>> INTL: No string found for id "${id}" in locale "${locale}", using defaultLocale "${defaultLocale}".\x1b[0m`);
@@ -40,6 +45,10 @@ export const getString = ({ id, values, defaultMessage, locale }) => {
   return message;
 };
 
+export const getStrings = localeId => {
+  return Strings[localeId];
+};
+
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
 };
@@ -48,6 +57,106 @@ export const Locales = [];
 
 export const registerLocale = locale => {
   Locales.push(locale);
+};
+
+export const getLocale = localeId => {
+  return Locales.find(locale => locale.id === localeId);
+};
+
+/*
+
+Helper to detect current browser locale
+
+*/
+export const detectLocale = () => {
+  var lang;
+
+  if (typeof navigator === 'undefined') {
+    return null;
+  }
+
+  if (navigator.languages && navigator.languages.length) {
+    // latest versions of Chrome and Firefox set this correctly
+    lang = navigator.languages[0];
+  } else if (navigator.userLanguage) {
+    // IE only
+    lang = navigator.userLanguage;
+  } else {
+    // latest versions of Chrome, Firefox, and Safari set this correctly
+    lang = navigator.language;
+  }
+
+  return lang;
+};
+
+/*
+
+Figure out the correct locale to use based on the current user, cookies,
+and browser settings
+
+*/
+export const initLocale = ({ currentUser = {}, cookies = {}, locale }) => {
+  let userLocaleId = '';
+  let localeMethod = '';
+  const detectedLocale = detectLocale();
+
+  if (locale) {
+    // 1. locale is passed from AppGenerator through SSR process
+    userLocaleId = locale;
+    localeMethod = 'SSR';
+  } else if (cookies.locale) {
+    // 2. look for a cookie
+    userLocaleId = cookies.locale;
+    localeMethod = 'cookie';
+  } else if (currentUser && currentUser.locale) {
+    // 3. if user is logged in, check for their preferred locale
+    userLocaleId = currentUser.locale;
+    localeMethod = 'user';
+  } else if (detectedLocale) {
+    // 4. else, check for browser settings
+    userLocaleId = detectedLocale;
+    localeMethod = 'browser';
+  }
+
+  /*
+
+  NOTE: locale fallback doesn't work anymore because we can now load locales dynamically
+  and Strings[userLocale] will then be empty
+
+  */
+  // if user locale is available, use it; else compare first two chars
+  // of user locale with first two chars of available locales
+  // const availableLocales = Object.keys(Strings);
+  // const availableLocale = Strings[userLocale] ? userLocale : availableLocales.find(locale => locale.slice(0, 2) === userLocale.slice(0, 2));
+
+  const validLocale = getValidLocale(userLocaleId);
+
+  // 4. if user-defined locale is available, use it; else default to setting or `en-US`
+  if (validLocale) {
+    return { id: validLocale.id, originalId: userLocaleId, method: localeMethod };
+  } else {
+    return { id: getSetting('locale', 'en-US'), originalId: userLocaleId, method: 'setting' };
+  }
+};
+
+/*
+
+Find best matching locale
+
+en-US -> en-US
+en-us -> en-US
+en-gb -> en-US
+etc.
+
+*/
+export const truncateKey = key => key.split('-')[0];
+
+export const getValidLocale = localeId => {
+  const validLocale = Locales.find(locale => {
+    const { id } = locale;
+    return id.toLowerCase() === localeId.toLowerCase() || truncateKey(id) === truncateKey(localeId);
+  });
+  return validLocale;
 };
 
 /*
@@ -82,12 +191,12 @@ export const getIntlString = () => {
   const schema = {
     locale: {
       type: String,
-      optional: true
+      optional: true,
     },
     value: {
       type: String,
-      optional: true
-    }
+      optional: true,
+    },
   };
 
   const IntlString = new SimpleSchema(schema);
@@ -109,7 +218,7 @@ Custom validation function to check for required locales
 See https://github.com/aldeed/simple-schema-js#custom-field-validation
 
 */
-export const validateIntlField = function () {
+export const validateIntlField = function() {
   let errors = [];
 
   // go through locales to check which one are required
@@ -123,7 +232,7 @@ export const validateIntlField = function () {
       errors.push({
         id: 'errors.required',
         path: `${this.key}.${index}`,
-        properties: { name: originalFieldName, locale: locale.id }
+        properties: { name: originalFieldName, locale: locale.id },
       });
     }
   });
@@ -134,8 +243,36 @@ export const validateIntlField = function () {
   }
 };
 
+/*
+
+Get an array of intl keys to try for a field
+
+*/
+export const getIntlKeys = ({ fieldName, collectionName, schema }) => {
+  const fieldSchema = (schema && schema[fieldName]) || {};
+
+  const { intlId } = fieldSchema;
+
+  const intlKeys = [];
+  if (intlId) {
+    intlKeys.push(intlId);
+  }
+  if (collectionName) {
+    intlKeys.push(`${collectionName.toLowerCase()}.${fieldName}`);
+  }
+  intlKeys.push(`global.${fieldName}`);
+  intlKeys.push(fieldName);
+
+  return intlKeys;
+};
+
 /**
- * formatLabel - Get a label for a field, for a given collection, in the current language. The evaluation is as follows : i18n(collectionName.fieldName) > i18n(global.fieldName) > i18n(fieldName) > schema.fieldName.label > fieldName
+ * getIntlLabel - Get a label for a field, for a given collection, in the current language.
+ * The evaluation is as follows :
+ * i18n(intlId) >
+ * i18n(collectionName.fieldName) >
+ * i18n(global.fieldName) >
+ * i18n(fieldName)
  *
  * @param  {object} params
  * @param  {object} params.intl               An intlShape object obtained from the react context for example
@@ -145,34 +282,37 @@ export const validateIntlField = function () {
  * @param  {object} values                    The values to pass to format the i18n string
  * @return {string}                           The translated label
  */
-
-export const formatLabel = ({ intl, fieldName, collectionName, schema }, values) => {
+export const getIntlLabel = ({ intl, fieldName, collectionName, schema, isDescription }, values) => {
   if (!fieldName) {
     throw new Error('fieldName option passed to formatLabel cannot be empty or undefined');
   }
-  const defaultMessage = '|*|*|';
-  // Get the intl label
-  let intlLabel = defaultMessage;
-  // try collectionName.fieldName as intl id
-  if (collectionName) {
-    intlLabel = intl.formatMessage(
-      { id: `${collectionName.toLowerCase()}.${fieldName}`, defaultMessage },
-      values
-    );
-  }
-  // try global.fieldName then just fieldName as intl id
-  if (intlLabel === defaultMessage) {
-    intlLabel = intl.formatMessage({ id: `global.${fieldName}`, defaultMessage }, values);
-    if (intlLabel === defaultMessage) {
-      intlLabel = intl.formatMessage({ id: fieldName }, values);
+
+  // if this is a description, just add .description at the end of the intl key
+  const suffix = isDescription ? '.description' : '';
+
+  const intlKeys = getIntlKeys({ fieldName, collectionName, schema });
+
+  let intlLabel;
+
+  for (const intlKey of intlKeys) {
+    const intlString = intl.formatMessage({ id: intlKey + suffix }, values);
+
+    if (intlString !== '') {
+      intlLabel = intlString;
+      break;
     }
   }
-  if (intlLabel) {
-    return intlLabel;
-  }
-
-  // define the schemaLabel. If the schema has been initialized with SimpleSchema, the label should be here even if it has not been declared https://github.com/aldeed/simple-schema-js#label
-  let schemaLabel = schema && schema[fieldName] ? schema[fieldName].label : null;
-  return Utils.capitalize(schemaLabel) || Utils.camelToSpaces(fieldName);
+  return intlLabel;
 };
 
+/*
+
+Get intl label or fallback
+
+*/
+export const formatLabel = (options, values) => {
+  const { fieldName, schema } = options;
+  const fieldSchema = (schema && schema[fieldName]) || {};
+  const { label: schemaLabel } = fieldSchema;
+  return getIntlLabel(options, values) || schemaLabel || Utils.camelToSpaces(fieldName);
+};

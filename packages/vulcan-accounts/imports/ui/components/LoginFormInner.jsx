@@ -5,7 +5,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { KEY_PREFIX } from '../../login_session.js';
 import { Components, registerComponent, withCurrentUser, Callbacks, runCallbacks } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/client/react/hoc';
+
 import TrackerComponent from './TrackerComponent.jsx';
 
 import {
@@ -75,6 +76,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
 
     // Set inital state.
     this.state = {
+      email: props.email || '',
       messages: [],
       waiting: false,
       formState: props.formState ? props.formState : currentUser ? STATES.PROFILE : STATES.SIGN_IN,
@@ -727,7 +729,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
         if (error instanceof Accounts.LoginCancelledError) {
           // do nothing
         } else {
-          const errorId = `accounts.error_${error.reason.toLowerCase().replace(/ /g, '_')}`;
+          const errorId = `accounts.error_${error.message.toLowerCase().replace(/ /g, '_')}`;
           if (self.context.intl.formatMessage({ id: errorId })) {
             self.showMessage(errorId);
           } else {
@@ -820,13 +822,13 @@ export class AccountsLoginFormInner extends TrackerComponent {
             .replace(/ /g, '_')
             .replace('.', '')}`;
 
-          if (this.context.intl.formatMessage({ id: errorId })) {
-            this.showMessage(errorId, 'error');
+          if (self.context.intl.formatMessage({ id: errorId })) {
+            self.showMessage(errorId, 'error');
           } else {
-            this.showMessage('accounts.error_unknown', 'error');
+            self.showMessage('accounts.error_unknown', 'error');
           }
 
-          if (this.context.intl.formatMessage({ id: `error.accounts_${error.reason}` })) {
+          if (self.context.intl.formatMessage({ id: `error.accounts_${error.reason}` })) {
             onSubmitHook(`error.accounts.${error.reason}`, formState);
           } else {
             onSubmitHook('Unknown error', formState);

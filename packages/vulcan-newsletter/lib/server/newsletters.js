@@ -192,10 +192,3 @@ export const send = async ({ newsletterId, isTest = false }) => {
   }
 };
 Newsletters.send = send;
-
-Meteor.startup(() => {
-  if (!Newsletters[provider]) {
-    // eslint-disable-next-line no-console
-    console.log(`// Warning: please configure your settings for ${provider} support, or else disable the vulcan:newsletter package.`);
-  }
-});

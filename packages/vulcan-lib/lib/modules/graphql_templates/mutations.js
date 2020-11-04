@@ -2,7 +2,7 @@ import { convertToGraphQL } from './types.js';
 import { filterInputType, selectorUniqueInputType } from './filtering.js';
 
 // eslint-disable-next-line
-const deprecated = `"Deprecated (use 'input' field instead)."`;
+const deprecated = `# Deprecated (use 'input' field instead).`;
 
 const mutationReturnProperty = 'data';
 
@@ -37,7 +37,7 @@ export const updateMutationTemplate = ({ typeName }) =>
   ${deprecated}
   selector: ${selectorUniqueInputType(typeName)},
   ${deprecated}
-  data: ${updateDataInputType(typeName)} 
+  data: ${updateDataInputType(typeName)}
 ) : ${mutationOutputType(typeName)}`;
 
 /*
@@ -153,8 +153,6 @@ export const deleteInputTemplate = ({ typeName }) =>
   `input ${deleteInputType(typeName)}{
   filter: ${filterInputType(typeName)}
   id: String
-  # An identifier to name the mutation's execution context
-  contextName: String
 }`;
 
 /*

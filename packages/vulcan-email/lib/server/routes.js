@@ -22,7 +22,7 @@ Meteor.startup(function() {
           delete params.query;
 
           // filter out ":foo" placeholder param segments
-          const cleanedParams = pickBy(params, (value, key) => value.charAt(0) !== ':');
+          const cleanedParams = pickBy(params, (value, key) => value && value.charAt(0) !== ':');
 
           // else get test object (sample post, comment, user, etc.)
           const testVariables =

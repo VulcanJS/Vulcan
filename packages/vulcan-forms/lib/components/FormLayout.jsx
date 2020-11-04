@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
 
-const FormLayout = ({ FormComponents, formProps, errorProps, repeatErrors, submitProps, children }) => (
+const FormLayout = ({ FormComponents, commonProps, formProps, errorProps, repeatErrors, submitProps, children }) => (
   <FormComponents.FormElement {...formProps}>
-    <FormComponents.FormErrors {...errorProps} />
+    <FormComponents.FormErrors {...commonProps} {...errorProps} />
 
     {children}
 
-    {repeatErrors && <FormComponents.FormErrors {...errorProps} />}
+    {repeatErrors && <FormComponents.FormErrors {...commonProps} {...errorProps} />}
 
-    <FormComponents.FormSubmit {...submitProps} />
+    <FormComponents.FormSubmit {...commonProps} {...submitProps} />
   </FormComponents.FormElement>
 );
 

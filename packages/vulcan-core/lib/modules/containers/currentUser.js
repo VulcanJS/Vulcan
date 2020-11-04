@@ -1,6 +1,6 @@
 import React from 'react';
 import { getFragment } from 'meteor/vulcan:lib';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import get from 'lodash/get';
 
@@ -25,11 +25,12 @@ export const useCurrentUser = () => {
 export const withCurrentUser = C => {
   const Wrapped = props => {
     const res = useCurrentUser();
-    const { loading, data } = res;
+    const { loading, data, refetch } = res;
     const namedRes = {
       currentUserLoading: loading,
       currentUser: data && data.currentUser,
       currentUserData: data,
+      currentUserRefetch: refetch,
     };
     return <C {...props} {...namedRes} />;
   };

@@ -1,7 +1,7 @@
 import { AsyncTypeahead } from 'react-bootstrap-typeahead'; // ES2015
 import React, { useState } from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { Components, registerComponent, expandQueryFragments } from 'meteor/vulcan:core';
+import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 
 const Autocomplete = props => {
@@ -24,7 +24,7 @@ const Autocomplete = props => {
   // get component's autocomplete query and use it to load autocomplete suggestions
   // note: we use useLazyQuery because 
   // we don't want to trigger the query until the user has actually typed in something
-  const [loadAutocompleteOptions, { loading, error, data }] = useLazyQuery(gql(autocompleteQuery()), {
+  const [loadAutocompleteOptions, { loading, error, data }] = useLazyQuery(gql(expandQueryFragments(autocompleteQuery())), {
     variables: { queryString },
   });
 

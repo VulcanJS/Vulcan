@@ -65,7 +65,7 @@ const TooltipIntl = (props, { intl }) => {
   const tooltipClass = parent === 'popover' && classes.popoverTooltip;
   const tooltipEnterDelay = typeof enterDelay === 'number' ? enterDelay : theme.utils.tooltipEnterDelay;
   const tooltipLeaveDelay = typeof leaveDelay === 'number' ? leaveDelay : theme.utils.tooltipLeaveDelay;
-  const titleText = props.title || intl.formatMessage({ id: titleId }, titleValues);
+  const titleText = props.title || intl.formatMessage({ id: titleId });
   const slug = Utils.slugify(titleId);
 
   return (

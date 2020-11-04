@@ -12,9 +12,11 @@ export default withMutation({
 */
 
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { getFragment } from 'meteor/vulcan:lib';
+import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
 
 export const useRegisteredMutation = (options) => {
   const { name, args, fragmentName, mutationOptions = {} } = options;
@@ -27,9 +29,9 @@ export const useRegisteredMutation = (options) => {
     }`;
   }
 
-  if (args) {
-    const args1 = _.map(args, (type, name) => `$${name}: ${type}`); // e.g. $url: String
-    const args2 = _.map(args, (type, name) => `${name}: $${name}`); // e.g. url: $url
+  if (args && !isEmpty(args)) {
+    const args1 = map(args, (type, name) => `$${name}: ${type}`); // e.g. $url: String
+    const args2 = map(args, (type, name) => `${name}: $${name}`); // e.g. url: $url
     mutation = `
       mutation ${name}(${args1}) {
         ${name}(${args2})${fragmentBlock}

@@ -83,9 +83,9 @@ class Image extends PureComponent {
             </div>
           )}
         </div>
-        <a href="javascript:void(0)" onClick={this.clearImage}>
+        <Components.Button variant="link" onClick={this.clearImage}>
           <Components.Icon name="close" /> Remove image
-        </a>
+        </Components.Button>
       </div>
     );
   }

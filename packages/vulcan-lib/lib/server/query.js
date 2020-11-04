@@ -7,10 +7,7 @@ import { graphql } from 'graphql';
 import { Collections } from '../modules/collections.js';
 import DataLoader from 'dataloader';
 import findByIds from '../modules/findbyids.js';
-import {
-  extractFragmentName,
-  getFragmentText,
-} from '../modules/fragments.js';
+import { extractFragmentName, getFragmentText } from '../modules/fragments.js';
 import { getDefaultFragmentText } from '../modules/graphql/defaultFragment.js';
 
 import { getSetting } from '../modules/settings';
@@ -19,6 +16,7 @@ import { singleClientTemplate } from '../modules/graphql_templates/index.js';
 import { Utils } from './utils';
 import { GraphQLSchema } from './graphql/index.js';
 import { useQueryCache } from './caching.js';
+import { expandQueryFragments } from '../modules/fragments.js';
 
 // note: if no context is passed, default to running requests with full admin privileges
 export const runGraphQL = async (query, variables = {}, context = {}, options = {}) => {
@@ -41,8 +39,12 @@ export const runGraphQL = async (query, variables = {}, context = {}, options = 
 
   const fullQueryContext = merge({}, queryContext, GraphQLSchema.context);
 
+  const queryWithFragments = expandQueryFragments(query);
+
   // see http://graphql.org/graphql-js/graphql/#graphql
-  const result = useCache ? await useQueryCache({ query, variables, context: fullQueryContext, key }) : await graphql(executableSchema, query, {}, fullQueryContext, variables);
+  const result = useCache
+    ? await useQueryCache({ query: queryWithFragments, variables, context: fullQueryContext, key })
+    : await graphql(executableSchema, queryWithFragments, {}, fullQueryContext, variables);
 
   if (result.errors) {
     // eslint-disable-next-line no-console
@@ -77,9 +79,10 @@ export const buildQuery = (collection, { fragmentName, fragmentText }) => {
   let text = defaultFragmentText;
 
   if (fragmentName) {
-    // if fragmentName is passed, use that to get name and text
+    // if fragmentName is passed, use that to get name
     name = fragmentName;
-    text = getFragmentText(fragmentName);
+    // any registered fragment's text will be automatically added by runGraphQL()
+    text = '';
   } else if (fragmentText) {
     // if fragmentText is passed, use that to get name and text
     name = extractFragmentName(fragmentText);
@@ -106,7 +109,7 @@ Meteor.startup(() => {
       }
 
       const query = buildQuery(collection, { fragmentName, fragmentText });
-      const result = await runQuery(query, { input }, context);
+      const result = await runGraphQL(query, { input }, context);
       return result.data[Utils.camelCaseify(typeName)].result;
     };
   });

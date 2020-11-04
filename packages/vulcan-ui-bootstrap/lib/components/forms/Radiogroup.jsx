@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 import isEmpty from 'lodash/isEmpty';
 import { isOtherValue, removeOtherMarker, addOtherMarker } from './Checkboxgroup.jsx';
 
-const OtherComponent = ({ value, path, updateCurrentValues }) => {
+const OtherComponent = ({ value, path, updateCurrentValues, formComponents }) => {
+  const Components = mergeWithComponents(formComponents);
   const otherValue = removeOtherMarker(value);
 
   // keep track of whether "other" field is shown or not
@@ -57,7 +58,15 @@ const OtherComponent = ({ value, path, updateCurrentValues }) => {
   );
 };
 
-const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProperties, itemProperties = {} }) => {
+const RadioGroupComponent = ({
+  refFunction,
+  path,
+  updateCurrentValues,
+  inputProperties,
+  itemProperties = {},
+  formComponents,
+}) => {
+  const Components = mergeWithComponents(formComponents);
   const { options = [], value } = inputProperties;
   const hasValue = value !== '';
   return (
@@ -71,7 +80,7 @@ const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProp
             key={i}
             layout="elementOnly"
             type="radio"
-            label={option.label}
+            label={<Components.FormOptionLabel option={option} />}
             value={option.value}
             name={path}
             id={`${path}.${i}`}
@@ -82,7 +91,9 @@ const RadioGroupComponent = ({ refFunction, path, updateCurrentValues, inputProp
           />
         );
       })}
-      {itemProperties.showOther && <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} />}
+      {itemProperties.showOther && (
+        <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues} formComponents={formComponents} />
+      )}
     </Components.FormItem>
   );
 };

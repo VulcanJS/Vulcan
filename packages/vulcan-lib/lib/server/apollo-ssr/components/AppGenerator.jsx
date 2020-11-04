@@ -2,7 +2,7 @@
  * The App + relevant wrappers
  */
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/client';
 import { StaticRouter } from 'react-router';
 
 import { Components } from 'meteor/vulcan:lib';

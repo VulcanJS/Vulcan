@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Generates the boilerplate html from program's manifest",
-  version: '1.7.0',
-  name: 'boilerplate-generator',
+  version: '1.7.1',
+  name: 'boilerplate-generator-not-used',
 });
 
 Npm.depends({

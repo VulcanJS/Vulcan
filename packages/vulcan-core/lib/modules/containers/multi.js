@@ -4,7 +4,7 @@
 
 Paginated items container
 
-Options: 
+Options:
 
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
@@ -13,7 +13,7 @@ Options:
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
   - terms: an object that defines which documents to fetch
 
-Props Received: 
+Props Received:
 
   - terms: an object that defines which documents to fetch
 
@@ -31,11 +31,11 @@ Terms object can have the following properties:
   - query: String # search query
   - postId: String
   - limit: String
-         
+  
 */
 
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import gql from 'graphql-tag';
 import {
@@ -67,9 +67,9 @@ const defaultPaginationTerms = ({ limit = 10 }, props) => {
 
 /**
  * Build the graphQL query options
- * @param {*} options 
- * @param {*} state 
- * @param {*} props 
+ * @param {*} options
+ * @param {*} state
+ * @param {*} props
  */
 const buildQueryOptions = (options, { paginationTerms }, { terms }) => {
   let {
@@ -141,6 +141,7 @@ const buildResult = (options, { fragmentName, fragment, resolverName }, { setPag
   return {
     // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
     // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
+    ...returnedProps,
     loading,
     loadingInitial,
     loadingMore,

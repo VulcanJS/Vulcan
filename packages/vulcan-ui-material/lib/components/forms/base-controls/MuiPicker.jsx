@@ -15,11 +15,11 @@ const dateFormat = 'YYYY-MM-DD';
 export const styles = theme => ({
   inputRoot: {
     'marginTop': '16px',
-    '& .clear-enabled': { opacity: 0 },
-    '&:hover .clear-enabled': { opacity: 0.54 },
+    '& .clear-button.has-value': { opacity: 0 },
+    '&:hover .clear-button.has-value': { opacity: 0.54 },
   },
   inputFocused: {
-    '& .clear-enabled': { opacity: 0.54 }
+    '& .clear-button.has-value': { opacity: 0.54 }
   },
   inputDisabled: {},
 });
@@ -52,7 +52,7 @@ const MuiPicker = createReactClass({
   handleChange: function (event) {
     let value = event.target.value;
     if (this.props.scrubValue) {
-      value = this.props.scrubValue(value);
+      value = this.props.scrubValue(value, this.props);
     }
     this.props.handleChange(value);
   },

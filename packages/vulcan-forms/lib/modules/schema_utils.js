@@ -199,9 +199,11 @@ export const schemaProperties = [
   'placeholder',
   'options',
   'query',
+  'queryWaitsForValue',
   'autocompleteQuery',
   'fieldProperties',
   'intl',
+  'intlId',
 ];
 
 export const formProperties = [
@@ -234,6 +236,7 @@ export const formProperties = [
   'placeholder',
   'options',
   'query',
+  'queryWaitsForValue',
   'autocompleteQuery',
   'fieldProperties',
 ];

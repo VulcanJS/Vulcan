@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.6.1');
+  
 
   // note: if used, accounts-base should be loaded before vulcan:lib
   api.use('accounts-base', { weak: true });
@@ -38,9 +38,9 @@ Package.onUse(function(api) {
     'mongo',
     'check',
     'http',
-    'email',
+    'email@2.0.0',
     'random',
-    'apollo@3.1.0',
+    'apollo@4.0.0',
 
     // Third-party packages
 

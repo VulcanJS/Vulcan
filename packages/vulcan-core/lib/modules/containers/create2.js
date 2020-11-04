@@ -30,7 +30,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { createClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo, filterFunction, getApolloClient } from 'meteor/vulcan:lib';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { buildMultiQuery } from './multi';
 import { addToData, getVariablesListFromCache, matchSelector } from './cacheUpdate';
 
@@ -134,14 +134,17 @@ export const withCreate2 = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const funcName = `create${typeName}`;
+  const metaName = `update${typeName}Meta`;
+
   const legacyError = () => {
     throw new Error(`newMutation function has been removed. Use ${funcName} instead.`);
   };
   const Wrapper = props => {
-    const [createFunc] = useCreate2(options);
+    const [createFunc, createMeta] = useCreate2(options);
     return <C
       {...props}
       {...{ [funcName]: createFunc }}
+      {...{ [metaName]: createMeta }}
       newMutation={legacyError}
     />;
   };

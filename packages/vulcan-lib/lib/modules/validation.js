@@ -28,7 +28,7 @@ const validateDocumentPermissions = (fullDocument, documentToValidate, schema, c
   const { Users, currentUser } = context;
   forEachDocumentField(documentToValidate, schema,
     ({ fieldName, fieldSchema, currentPath, isNested }) => {
-      if (isNested && (mode === 'create' ? !fieldSchema.canCreate : !fieldSchema.canUpdate)) return; // ignore nested without permission
+      if (isNested && (!fieldSchema || (mode === 'create' ? !fieldSchema.canCreate : !fieldSchema.canUpdate))) return; // ignore nested without permission
       if (!fieldSchema
         || (mode === 'create' ? !Users.canCreateField(currentUser, fieldSchema) : !Users.canUpdateField(currentUser, fieldSchema, fullDocument))
       ) {
@@ -38,7 +38,6 @@ const validateDocumentPermissions = (fullDocument, documentToValidate, schema, c
             name: `${currentPath}${fieldName}`
           },
         });
-        return;
       }
     });
   return validationErrors;
@@ -96,7 +95,7 @@ export const validateDocument = (document, collection, context, validationContex
 
   1. Check that the current user has permission to insert each field
   2. Run SimpleSchema validation step
-  
+
 */
 export const validateModifier = (modifier, data, document, collection, context, validationContextName = 'defaultContext') => {
   const schema = collection.simpleSchema()._schema;
@@ -112,7 +111,7 @@ export const validateModifier = (modifier, data, document, collection, context, 
 
   // 2. run SS validation
   const validationContext = collection.simpleSchema().namedContext(validationContextName);
-  validationContext.validate({ $set: set, $unset: unset }, { modifier: true });
+  validationContext.validate({ $set: set, $unset: unset }, { modifier: true, extendedCustomContext: { documentId: document._id } });
 
   if (!validationContext.isValid()) {
     const errors = validationContext.validationErrors();
@@ -226,7 +225,7 @@ export const validateDocumentNotUsed = (document, collection, context) => {
   3. Check field types
   4. Check for missing fields
   5. Run SimpleSchema validation step (for now)
-  
+
 */
 export const validateModifierNotUsed = (modifier, document, collection, context) => {
   const { Users, currentUser } = context;

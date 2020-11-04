@@ -6,6 +6,7 @@ import './accounts/AccountsForm';
 import './accounts/AccountsPasswordOrService';
 import './accounts/AccountsSocialButtons';
 
+import './bonus/DatatableFromArray';
 import './bonus/LoadMore';
 import './bonus/SearchInput';
 import './bonus/TooltipButton';
@@ -40,7 +41,7 @@ import './forms/controls/DateTime';
 import './forms/controls/DateTimeRdt';
 import './forms/controls/Default';
 import './forms/controls/Password';
-import './forms/controls/Email';
+export * from './forms/controls/Email';
 import './forms/controls/Number';
 import './forms/controls/PostalCode';
 import './forms/controls/RadioGroup';
@@ -51,7 +52,7 @@ import './forms/controls/StaticText';
 import './forms/controls/Textarea';
 import './forms/controls/Time';
 import './forms/controls/TimeRdt';
-import './forms/controls/Url';
+export * from './forms/controls/Url';
 
 import './theme/ThemeStyles';
 
@@ -70,3 +71,7 @@ import './backoffice/BackofficePageLayout';
 import './backoffice/BackofficeVerticalMenuLayout';
 
 export * from './forms/controls/countries';
+
+import { dynamicLoader, registerComponent } from 'meteor/vulcan:lib';
+
+registerComponent('KeyEventHandler', dynamicLoader(() => import('./bonus/KeyEventHandler'), true));

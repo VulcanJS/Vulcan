@@ -1,6 +1,6 @@
 import { addStrings } from 'meteor/vulcan:core';
 
-addStrings('en', {
+addStrings('fa-IR', {
   'accounts.error_incorrect_password': 'رمزعبور نادرست است',
   'accounts.error_email_required': 'ایمیل الزامی است',
   'accounts.error_email_already_exists': 'ایمیل از قبل وجود دارد',
@@ -51,8 +51,9 @@ addStrings('en', {
   'forms.day': 'روز',
   'forms.month': 'ماه',
   'forms.year': 'سال',
-  'forms.start_adornment_web_icon': 'آیکون اینترنت',
+  'forms.start_adornment_url_icon': 'آیکون اینترنت',
   'forms.start_adornment_email_icon': 'نماد ایمیل',
+  'forms.start_adornment_social_icon': '',
 
   'users.profile': 'مشخصات',
   'users.complete_profile': 'مشخصات خود را تکمیل فرمایید.',
@@ -138,6 +139,9 @@ addStrings('en', {
   'app.something_bad_happened': 'اتفاق بدی افتاد ...',
   'app.embedly_not_authorized':
     'Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API',
+  'app.defaultError': '{defaultMessage}',
+  'app.please_sign_up_log_in': 'Please sign up or log in',
+  'app.no_access_permissions': 'Sorry, you are not allowed to access this page.',
 
   'cards.edit': 'ویرایش',
   'datatable.new': 'جدید',

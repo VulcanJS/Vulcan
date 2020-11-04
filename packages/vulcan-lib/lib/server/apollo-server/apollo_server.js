@@ -114,13 +114,15 @@ const getCorsOptions = () => {
     corsWhitelist && corsWhitelist.length
       ? {
           origin: function(origin, callback) {
-            if (!origin) callback(null, true); // same origin
-            if (corsWhitelist.indexOf(origin) !== -1) {
+            if (!origin) {
+              callback(null, true); // same origin
+            } else if (corsWhitelist.indexOf(origin) !== -1) {
               callback(null, true);
             } else {
               callback(new Error(`Origin ${origin} not allowed by CORS`));
             }
           },
+          credentials: true,
         }
       : process.env.NODE_ENV === 'development'; // default behaviour is activating all in dev, deactivating all in production
   return corsOptions;

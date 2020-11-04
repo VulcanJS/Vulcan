@@ -1,7 +1,7 @@
 import { Components, registerComponent, Utils } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import moment from 'moment';
 
@@ -126,15 +126,15 @@ const DatatableFilterContents = props => {
   return (
     <form>
       {contents}
-      <a
+      <Components.Button 
+        variant="link"
         style={{ display: 'inline-block', marginRight: 10 }}
         className="datatable_filter_clear"
-        href="javascript:void(0)"
         onClick={() => {
           setFilters(undefined);
         }}>
         <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
-      </a>
+      </Components.Button>
       <Components.Button
         type="submit"
         className="datatable_filter_submit"

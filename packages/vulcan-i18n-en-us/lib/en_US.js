@@ -51,8 +51,9 @@ addStrings('en', {
   'forms.day': 'Day',
   'forms.month': 'Month',
   'forms.year': 'Year',
-  'forms.start_adornment_web_icon': 'Web icon',
+  'forms.start_adornment_url_icon': 'Web icon',
   'forms.start_adornment_email_icon': 'Email icon',
+  'forms.start_adornment_social_icon': 'Social icon',
   'forms.clear_field': 'Clear field value',
 
   'users.profile': 'Profile',
@@ -139,9 +140,10 @@ addStrings('en', {
   'app.something_bad_happened': 'Something bad happened...',
   'app.embedly_not_authorized':
     'Invalid Embedly API key provided in the settings file. To find your key, log into https://app.embed.ly -> API',
+  'app.defaultError': '{defaultMessage}',
   'app.please_sign_up_log_in': 'Please sign up or log in',
   'app.no_access_permissions': 'Sorry, you are not allowed to access this page.',
-  
+
   'cards.edit': 'Edit',
   'datatable.new': 'New',
   'datatable.edit': 'Edit',

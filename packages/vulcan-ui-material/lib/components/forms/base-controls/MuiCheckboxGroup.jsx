@@ -131,35 +131,35 @@ const MuiCheckboxGroup = createReactClass({
 
   propTypes: {
     classes: PropTypes.object.isRequired,
-    variant: PropTypes.oneOf(['checkbox', 'switch']),
     inputProperties: PropTypes.shape({
+      variant: PropTypes.oneOf(['checkbox', 'switch']),
       name: PropTypes.string,
       options: PropTypes.array.isRequired,
+      columnClass: PropTypes.oneOf(['twoColumn', 'threeColumn']),
     }).isRequired,
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     if (this.props.refFunction) {
       this.props.refFunction(this);
     }
   },
 
-  getDefaultProps: function() {
+  getDefaultProps: function () {
     return {
       label: '',
       help: null,
-      variant: 'checkbox',
     };
   },
 
-  validate: function() {
+  validate: function () {
     if (this.props.onBlur) {
       this.props.onBlur();
     }
     return true;
   },
 
-  renderElement: function() {
+  renderElement: function () {
     const {name, options, disabled: _disabled} = this.props.inputProperties;
     let {value: _values} = this.props.inputProperties;
     const {itemProperties, updateCurrentValues, value, path} = this.props;
@@ -167,7 +167,6 @@ const MuiCheckboxGroup = createReactClass({
     // get rid of duplicate values; or any values that are not included in the options provided
     // (unless they have the "other" marker)
     _values = _values ? uniq(value.filter(v => isOtherValue(v) || options.map(o => o.value).includes(v))) : [];
-
     const controls = options.map((checkbox, key) => {
       let checkboxValue = checkbox.value;
       let checked = _values.indexOf(checkboxValue) !== -1;
@@ -200,7 +199,8 @@ const MuiCheckboxGroup = createReactClass({
       0,
     );
 
-    const columnClass = maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '';
+    const columnClass = this.props.inputProperties.columnClass ||
+      (maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '');
 
     return (
       <FormGroup className={classNames(this.props.classes.group, this.props.classes[columnClass])}>
@@ -210,7 +210,7 @@ const MuiCheckboxGroup = createReactClass({
     );
   },
 
-  render: function() {
+  render: function () {
     if (this.props.layout === 'elementOnly') {
       return <div>{this.renderElement()}</div>;
     }

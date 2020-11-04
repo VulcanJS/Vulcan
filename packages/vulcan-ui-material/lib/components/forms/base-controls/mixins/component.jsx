@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _omit from 'lodash/omit';
+import classNames from 'classnames';
 
 
 export default {
 
   propTypes: {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    label: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     hideLabel: PropTypes.bool,
     layout: PropTypes.string,
     optional: PropTypes.bool,
@@ -23,7 +24,7 @@ export default {
       optional: this.props.optional,
       value: this.props.value,
       hasErrors: this.hasErrors(),
-      className: this.props.className,
+      className: classNames(this.props.className, this.props.classes?.root),
       inputType: this.props.inputType,
       required: this.props.required,
     };
@@ -78,20 +79,19 @@ export default {
   cleanProps: function (props) {
     const removedFields = [
       'addItem',
+      'addToDeletedValues',
       'addonAfter',
       'addonBefore',
-      'addToDeletedValues',
       'afterComponent',
       'allowedValues',
       'arrayField',
       'arrayFieldSchema',
       'autoValue',
       'beforeComponent',
-      'blackbox',
       'charsCount',
       'charsRemaining',
-      'classes',
       'className',
+      'classes',
       'clearField',
       'clearFieldErrors',
       'currentUser',
@@ -101,10 +101,11 @@ export default {
       'description',
       'document',
       'errors',
-      'formatValue',
       'formComponents',
       'formInput',
       'formType',
+      'formatValue',
+      'getUrl',
       'handleChange',
       'hasErrors',
       'help',
@@ -113,17 +114,20 @@ export default {
       'hideLink',
       'inputClassName',
       'inputProperties',
+      'inputProps',
       'inputType',
       'itemDataType',
       'itemIndex',
       'itemProperties',
       'label',
+      'labelId',
       'layout',
       'maxCount',
       'minCount',
       'mustComplete',
       'nestedArrayErrors',
       'nestedSchema',
+      'networkId',
       'optional',
       'options',
       'parentFieldName',
@@ -132,12 +136,23 @@ export default {
       'renderComponent',
       'scrubValue',
       'showCharsRemaining',
+      'showMenuIndicator',
+      'submitForm',
       'throwError',
       'updateCurrentValues',
       'validateOnSubmit',
       'validatePristine',
       'visibleItemIndex',
-    ];
+      'itemDatatype',
+      'limitToList',
+      'disableText',
+      'disableSelectOnBlur',
+      'showAllOptions',
+      'disableMatchParts',
+      'autoComplete',
+      'autoFocus',
+      'intlKeys',
+  ];
 
     return _omit(props, removedFields);
   },

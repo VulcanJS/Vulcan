@@ -22,6 +22,8 @@ import {
   isIntlField,
   mergeWithComponents,
   formatLabel,
+  getIntlLabel,
+  getIntlKeys,
 } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -204,6 +206,9 @@ class SmartForm extends Component {
     // we want to keep prefilled data even for hidden/removed fields
     let data = this.props.prefilledProps || {};
 
+    // omit prefilled props for nested fields
+    data = omitBy(data, (value, key) => key.endsWith('.$'));
+
     const args = {
       excludeRemovedFields: false,
       excludeHiddenFields: false,
@@ -221,9 +226,9 @@ class SmartForm extends Component {
     this.state.deletedValues.forEach(path => {
       if (path.includes('.')) {
         /*
-        
+
         If deleted field is a nested field, nested array, or nested array item, try to compact its parent array
-        
+
         - Nested field: 'address.city'
         - Nested array: 'addresses.1'
         - Nested array item: 'addresses.1.city'
@@ -383,6 +388,7 @@ class SmartForm extends Component {
     }
 
     field.label = this.getLabel(fieldName);
+    field.intlKeys = this.getIntlKeys(fieldName);
     // // replace value by prefilled value if value is empty
     // const prefill = fieldSchema.prefill || (fieldSchema.form && fieldSchema.form.prefill);
     // if (prefill) {
@@ -410,12 +416,16 @@ class SmartForm extends Component {
     const inputProperties = fieldSchema.form || fieldSchema.inputProperties || {};
     for (const prop in inputProperties) {
       const property = inputProperties[prop];
-      field[prop] = typeof property === 'function' ? property.call(fieldSchema, { ...this.props, document }) : property;
+      field[prop] =
+          typeof property === 'function' ?
+              property.call(fieldSchema, { ...this.props, fieldName, document, intl: this.context.intl }) :
+              property;
     }
 
     // add description as help prop
-    if (fieldSchema.description) {
-      field.help = fieldSchema.description;
+    const description = this.getDescription(fieldName);
+    if (description) {
+      field.help = description;
     }
 
     return field;
@@ -471,7 +481,7 @@ class SmartForm extends Component {
   /*
   Given a field's name, the containing schema, and parent, create the
   complete field object to be passed to the component
-  
+
   */
   createField = (fieldName, schema, parentFieldName, parentPath) => {
     const fieldSchema = schema[fieldName];
@@ -495,9 +505,23 @@ class SmartForm extends Component {
   };
 
   /*
-  
+
+  Get a field's intl keys (useful for debugging)
+
+  */
+  getIntlKeys = fieldName => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    return getIntlKeys({
+      fieldName: fieldName,
+      collectionName,
+      schema: this.state.flatSchema,
+    });
+  };
+
+  /*
+
    Get a field's label
-  
+
    */
   getLabel = (fieldName, fieldLocale) => {
     const collectionName = this.props.collectionName.toLowerCase();
@@ -520,13 +544,32 @@ class SmartForm extends Component {
 
   /*
 
+   Get a field's description
+
+   (Same as getLabel but pass isDescription: true )
+   */
+  getDescription = (fieldName) => {
+    const collectionName = this.props.collectionName.toLowerCase();
+    const description = getIntlLabel({
+      intl: this.context.intl,
+      fieldName: fieldName,
+      collectionName: collectionName,
+      schema: this.state.flatSchema,
+      isDescription: true,
+    });
+    return description || null;
+  }
+
+  /*
+
   Get a field option's label
 
   */
   getOptionLabel = (fieldName, option) => {
     const collectionName = this.props.collectionName.toLowerCase();
+    const intlId = option.intlId || `${collectionName}.${fieldName}.${option.value}`;
     return this.context.intl.formatMessage({
-      id: `${collectionName}.${fieldName}.${option.value}`,
+      id: intlId,
       defaultMessage: option.label,
     });
   };
@@ -536,15 +579,15 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-  
+
   Add error to form state
-  
+
   Errors can have the following properties:
     - id: used as an internationalization key, for example `errors.required`
     - path: for field-specific errors, the path of the field with the issue
     - properties: additional data. Will be passed to vulcan-i18n as values
     - message: if id cannot be used as i81n key, message will be used
-    
+
   */
   throwError = error => {
     let formErrors = getErrors(error);
@@ -559,13 +602,14 @@ class SmartForm extends Component {
   };
 
   /*
-  
+
   Clear errors for a field
-  
+
   */
   clearFieldErrors = path => {
-    const errors = this.state.errors.filter(error => error.path !== path);
-    this.setState({ errors });
+    this.setState((prevState) => ({
+      errors: prevState.errors.filter(error => error.path !== path)
+    }));
   };
 
   // --------------------------------------------------------------------- //
@@ -592,6 +636,12 @@ class SmartForm extends Component {
   // add a callback to form submission failure
   addToFailureForm = callback => {
     this.failureFormCallbacks.push(callback);
+  };
+
+  clearFormCallbacks = () => {
+    this.submitFormCallbacks = [];
+    this.successFormCallbacks = [];
+    this.failureFormCallbacks = [];
   };
 
   setFormState = fn => {
@@ -630,6 +680,7 @@ class SmartForm extends Component {
       addToSubmitForm: this.addToSubmitForm,
       addToSuccessForm: this.addToSuccessForm,
       addToFailureForm: this.addToFailureForm,
+      clearFormCallbacks: this.clearFormCallbacks,
       errors: this.state.errors,
       currentValues: this.state.currentValues,
       deletedValues: this.state.deletedValues,
@@ -641,12 +692,12 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
 
   /*
-  
+
   When props change, reinitialize the form  state
   Triggered only for data related props (collection, document, currentUser etc.)
 
   @see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-   
+
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
     const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]));
@@ -656,9 +707,9 @@ class SmartForm extends Component {
   }
 
   /*
-   
+
   Manually update the current values of one or more fields(i.e. on change or blur).
-   
+
   */
   updateCurrentValues = (newValues, options = {}) => {
     // default to overwriting old value with new
@@ -668,11 +719,10 @@ class SmartForm extends Component {
     // keep the previous ones and extend (with possible replacement) with new ones
     this.setState(prevState => {
       // keep only the relevant properties
-      const { currentValues, currentDocument, deletedValues } = cloneDeep(prevState);
       const newState = {
-        currentValues,
-        currentDocument,
-        deletedValues,
+        currentValues: cloneDeep(prevState.currentValues),
+        currentDocument: cloneDeep(prevState.currentDocument),
+        deletedValues: cloneDeep(prevState.deletedValues),
       };
 
       Object.keys(newValues).forEach(key => {
@@ -707,9 +757,9 @@ class SmartForm extends Component {
   };
 
   /*
-   
+
   Install a route leave hook to warn the user if there are unsaved changes
-   
+
   */
   componentDidMount = () => {
     this.checkRouteChange();
@@ -759,7 +809,7 @@ class SmartForm extends Component {
             const routes = this.props.router.routes;
             const currentRoute = routes[routes.length - 1];
             this.props.router.setRouteLeaveHook(currentRoute, this.handleRouteLeave);
-      
+
             */
       });
     }
@@ -810,9 +860,9 @@ class SmartForm extends Component {
     }
   };
   /*
-   
+
   Returns true if there are any differences between the initial document and the current one
-   
+
   */
   isChanged = () => {
     const initialDocument = this.state.initialDocument;
@@ -828,13 +878,13 @@ class SmartForm extends Component {
   };
 
   /*
-   
+
   Refetch the document from the database (in case it was updated by another process or to reset the form)
-   
+
   */
   refetchForm = () => {
-    if (this.props.data && this.props.data.refetch) {
-      this.props.data.refetch();
+    if (this.props.refetch) {
+      this.props.refetch();
     }
   };
 
@@ -936,16 +986,16 @@ class SmartForm extends Component {
   };
 
   /*
-  
+
   Submit form handler
-  
+
   */
   submitForm = async event => {
     event && event.preventDefault();
     event && event.stopPropagation();
 
     const { contextName } = this.props;
-    
+
     // if form is disabled (there is already a submit handler running) don't do anything
     if (this.state.disabled) {
       return;
@@ -966,11 +1016,20 @@ class SmartForm extends Component {
     if (this.getFormType() === 'new') {
       // create document form
       try {
-        const result = await this.props[`create${this.props.typeName}`]({ input: {
-          data,
-          contextName,
-        } });
-        this.newMutationSuccessCallback(result);
+        const result = await this.props[`create${this.props.typeName}`]({
+          input: {
+            data,
+            contextName,
+          },
+        });
+        const meta = this.props[`create${this.props.typeName}Meta`];
+        // in new versions of Apollo Client errors are no longer thrown/caught
+        // but can instead be provided as props by the useMutation hook
+        if (meta.error) {
+          this.mutationErrorCallback(document, meta.error);
+        } else {
+          this.newMutationSuccessCallback(result);
+        }
       } catch (error) {
         this.mutationErrorCallback(document, error);
       }
@@ -983,9 +1042,16 @@ class SmartForm extends Component {
             id: documentId,
             data,
             contextName,
-          }
+          },
         });
-        this.editMutationSuccessCallback(result);
+        const meta = this.props[`update${this.props.typeName}Meta`];
+        // in new versions of Apollo Client errors are no longer thrown/caught
+        // but can instead be provided as props by the useMutation hook
+        if (meta.error) {
+          this.mutationErrorCallback(document, meta.error);
+        } else {
+          this.editMutationSuccessCallback(result);
+        }
       } catch (error) {
         this.mutationErrorCallback(document, error);
       }
@@ -993,9 +1059,9 @@ class SmartForm extends Component {
   };
 
   /*
-  
+
   Delete document handler
-  
+
   */
   deleteDocument = () => {
     const document = this.getDocument();
@@ -1005,7 +1071,7 @@ class SmartForm extends Component {
     const deleteDocumentConfirm = this.context.intl.formatMessage({ id: 'forms.delete_confirm' }, { title: documentTitle });
 
     if (window.confirm(deleteDocumentConfirm)) {
-      this.props[`delete${this.props.typeName}`]({ documentId })
+      this.props[`delete${this.props.typeName}`]({ input: { id: documentId } })
         .then(mutationResult => {
           // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({ documentId, documentTitle });
@@ -1021,7 +1087,7 @@ class SmartForm extends Component {
   // --------------------------------------------------------------------- //
   // ------------------------- Props to Pass ----------------------------- //
   // --------------------------------------------------------------------- //
-  
+
   getCommonProps = () => {
     const { errors, currentValues, deletedValues, disabled } = this.state;
     const { currentUser, prefilledProps, formComponents, itemProperties, contextName } = this.props;
@@ -1184,6 +1250,7 @@ SmartForm.childContextTypes = {
   addToSubmitForm: PropTypes.func,
   addToFailureForm: PropTypes.func,
   addToSuccessForm: PropTypes.func,
+  clearFormCallbacks: PropTypes.func,
   updateCurrentValues: PropTypes.func,
   setFormState: PropTypes.func,
   throwError: PropTypes.func,

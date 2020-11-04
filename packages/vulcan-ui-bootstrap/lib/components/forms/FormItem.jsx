@@ -8,17 +8,29 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent, mergeWithComponents } from 'meteor/vulcan:core';
 
 const FormItem = props => {
-
-  const { path, label, children, beforeInput, afterInput, description, layout = 'horizontal', loading, ...rest } = props;
+  const {
+    path,
+    label,
+    children,
+    beforeInput,
+    afterInput,
+    description,
+    layout = 'horizontal',
+    loading,
+    Components: propsComponents,
+    ...rest
+  } = props;
   const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
+
+  const Components = mergeWithComponents(propsComponents);
 
   if (layout === 'inputOnly' || !label) {
     // input only layout
     return (
-      <Form.Group controlId={path} {...rest}>
+      <Form.Group controlId={path}>
         {beforeInput}
         {innerComponent}
         {afterInput}
@@ -32,8 +44,8 @@ const FormItem = props => {
   } else if (layout === 'vertical') {
     // vertical layout
     return (
-      <Form.Group controlId={path} {...rest}>
-        <Form.Label>{label}</Form.Label>
+      <Form.Group controlId={path}>
+        <Components.FormLabel {...props} />
         <div className="form-item-contents">
           <div className="form-item-input">
             {beforeInput}
@@ -51,15 +63,17 @@ const FormItem = props => {
   } else {
     // horizontal layout (default)
     return (
-      <Form.Group as={Row} controlId={path} {...rest}>
-        <Form.Label column sm={3}>
-          {label}
-        </Form.Label>
+      <Form.Group as={Row} controlId={path}>
+        <Components.FormLabel layout="horizontal" {...props} />
         <Col sm={9}>
           {beforeInput}
           {innerComponent}
           {afterInput}
-          {description && <Form.Text><div dangerouslySetInnerHTML={{__html: description}}/></Form.Text>}
+          {description && (
+            <Form.Text>
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            </Form.Text>
+          )}
         </Col>
       </Form.Group>
     );

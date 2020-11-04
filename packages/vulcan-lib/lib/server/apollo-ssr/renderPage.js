@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { getDataFromTree } from 'react-apollo';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 
 import { runCallbacks } from '../../modules/callbacks';
 import { createClient } from './apolloClient';
