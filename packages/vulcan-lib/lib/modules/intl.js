@@ -41,12 +41,53 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
       // note: see replaceAll definition in vulcan:lib/utils
       message = message.replaceAll(`{${key}}`, values[key]);
     });
+    message = pluralizeString(message, values);
   }
   return message;
 };
 
 export const getStrings = localeId => {
   return Strings[localeId];
+};
+
+/**
+ * Pluralize a string using [ICU Message syntax used by react-intl](https://formatjs.io/docs/core-concepts/icu-syntax/#plural-format).
+ * Note: `few` and `many` categories are not supported.
+ *
+ * @param {string} message
+ * @param {object} values
+ * @return {string}
+ */
+export const pluralizeString = (message, values) => {
+  const results = message.match(/{[^,]+, plural, .+?}}/g);
+  if (!results || !values) {
+    return message;
+  }
+
+  let pluralizedMessage = message;
+
+  for (let result of results) {
+    const parts = result.replace(/^{|}$/g, '').split(', ');
+    const key = parts[0];
+    const value = values[key];
+    const matches = parts[2].replace(/}$/, '').split('} ');
+    let translation;
+    for (const match of matches) {
+      const category = match.split(' {')[0];
+      if ((category === 'zero' && value === 0) ||
+        (category === 'one' && value === 1) ||
+        (category === 'two' && value === 2) ||
+        (category.startsWith('=') && parseInt(category.replace(/^=/, '')) === value) ||
+        (category === 'other')) {
+        const phrase = match.split(' {')[1];
+        translation = phrase.replace('#', value);
+        break;
+      }
+    }
+    pluralizedMessage = pluralizedMessage.replace(result, translation);
+  }
+
+  return pluralizedMessage;
 };
 
 export const registerDomain = (locale, domain) => {
