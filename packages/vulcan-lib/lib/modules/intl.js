@@ -37,12 +37,34 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
   }
 
   if (values && typeof values === 'object') {
+    message = pluralizeString(message, values);
+
+    let messageArray = [message];
     Object.keys(values).forEach(key => {
-      // note: see replaceAll definition in vulcan:lib/utils
-      message = message.replaceAll(`{${key}}`, values[key]);
+      const value = values[key];
+
+      messageArray = messageArray.reduce((accumulator, message) => {
+        if (typeof message !== 'string') {
+          accumulator.push(message);
+        } else if (typeof value === 'string') {
+          accumulator.push(message.replaceAll(`{${key}}`, value));
+        } else {
+          const parts = message.split(new RegExp(`{${key}}`, 'g'));
+          parts.forEach((part, index, array) => {
+            accumulator.push(part);
+            if (index < array.length - 1) {
+              accumulator.push(value);
+            }
+          });
+        }
+        return accumulator;
+      }, []);
     });
+
+    message = messageArray.length === 1 ? messageArray[0] : messageArray;
     message = pluralizeString(message, values);
   }
+
   return message;
 };
 
