@@ -13,10 +13,14 @@ class AccountsVerifyEmail extends PureComponent {
       error: null
     };
   }
-  
+
   componentDidMount() {
     const token = this.props.match.params.token;
+    const currentUserRefetch = this.props.currentUserRefetch;
+
     Accounts.verifyEmail(token, (verifyEmailResult) => {
+      currentUserRefetch();
+
       if(verifyEmailResult && verifyEmailResult.error) {
         this.setState({
           pending: false,
@@ -30,7 +34,7 @@ class AccountsVerifyEmail extends PureComponent {
       }
     });
   }
-  
+
   render() {
     if(this.state.pending) {
       return <Components.Loading />;
