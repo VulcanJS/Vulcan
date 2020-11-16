@@ -1,10 +1,10 @@
 import React from 'react';
-import MuiInput from '../base-controls/MuiInput';
+import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
 const Default = ({ refFunction, ...properties }) =>
-  <MuiInput {...properties} ref={refFunction}/>;
+  <FormInput {...properties} ref={refFunction}/>;
 
 
 registerComponent('FormComponentDefault', Default);

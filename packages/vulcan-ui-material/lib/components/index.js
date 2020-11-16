@@ -20,8 +20,8 @@ import './core/EditButton';
 import './core/Loading';
 import './core/NewButton';
 
-import './forms/base-controls/MuiRequiredIndicator';
-import './forms/base-controls/MuiFormControl';
+import './forms/base-controls/RequiredIndicator';
+import './forms/base-controls/FormControlLayout';
 
 import './forms/FormComponentInner';
 import './forms/FormErrors';

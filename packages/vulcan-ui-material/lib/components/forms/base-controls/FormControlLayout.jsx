@@ -8,7 +8,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core';
 
 
 //noinspection JSUnusedGlobalSymbols
-const MuiFormControl = createReactClass({
+const FormControlLayout = createReactClass({
 
   propTypes: {
     label: PropTypes.node,
@@ -72,7 +72,7 @@ const MuiFormControl = createReactClass({
 });
 
 
-export default MuiFormControl;
+export default FormControlLayout;
 
 
-registerComponent('FormControl', MuiFormControl);
+registerComponent('FormControl', FormControlLayout);

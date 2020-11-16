@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
 import withStyles from '@material-ui/core/styles/withStyles';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -14,7 +14,7 @@ import {
   addOtherMarker,
   isOtherValue,
   removeOtherMarker,
-} from './MuiCheckboxGroup';
+} from './FormCheckboxGroup';
 import isEmpty from 'lodash/isEmpty';
 import { Components } from 'meteor/vulcan:core';
 
@@ -202,7 +202,7 @@ const OtherComponent = ({value, path, updateCurrentValues, classes, key, disable
   );
 };
 
-const MuiRadioGroup = createReactClass({
+const FormRadioGroup = createReactClass({
   mixins: [ComponentMixin],
 
   propTypes: {
@@ -311,12 +311,12 @@ const MuiRadioGroup = createReactClass({
     }
 
     return (
-      <MuiFormControl {...this.getFormControlProperties()} fakeLabel={true}>
+      <FormControlLayout {...this.getFormControlProperties()} fakeLabel={true}>
         {this.renderElement()}
-        <MuiFormHelper {...this.getFormHelperProperties()} />
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()} />
+      </FormControlLayout>
     );
   },
 });
 
-export default withStyles(styles)(MuiRadioGroup);
+export default withStyles(styles)(FormRadioGroup);

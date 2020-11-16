@@ -1,10 +1,10 @@
 import React from 'react';
-import MuiRadioGroup from '../base-controls/MuiRadioGroup';
+import FormRadioGroup from '../base-controls/FormRadioGroup';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
 const RadioGroupComponent = ({ refFunction, ...properties }) => {
-  return <MuiRadioGroup {...properties} ref={refFunction}/>;
+  return <FormRadioGroup {...properties} ref={refFunction}/>;
 };
 
 

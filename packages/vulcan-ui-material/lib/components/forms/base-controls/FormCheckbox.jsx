@@ -6,9 +6,9 @@ import EndAdornment from './EndAdornment';
 import ComponentMixin from './mixins/component';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 
 
 export const styles = theme => ({
@@ -21,14 +21,14 @@ export const styles = theme => ({
 
   inputDisabled: {},
 
-  switchRoot: {},
+  checkboxRoot: {},
 
-  switchDisabled: {},
+  checkboxDisabled: {},
 
 });
 
 
-const SwitchBase = createReactClass({
+const FormCheckbox = createReactClass({
 
   mixins: [ComponentMixin],
 
@@ -65,10 +65,10 @@ const SwitchBase = createReactClass({
     }
 
     return (
-      <MuiFormControl {...this.getFormControlProperties()} hideLabel={true} htmlFor={this.getId()}>
+      <FormControlLayout {...this.getFormControlProperties()} hideLabel={true} htmlFor={this.getId()}>
         {element}
-        <MuiFormHelper {...this.getFormHelperProperties()}/>
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()}/>
+      </FormControlLayout>
     );
   },
 
@@ -78,27 +78,27 @@ const SwitchBase = createReactClass({
     return (
       <>
         {startAdornment}
-        <FormControlLabel
-          classes={{
-            root: classes.inputRoot,
-            disabled: classes.inputDisabled,
-          }}
-          control={
-            <Switch
-              classes={{
-                root: classes.switchRoot,
-                disabled: classes.switchDisabled,
-              }}
-              ref={(c) => this.element = c}
-              {...this.cleanSwitchProps(this.cleanProps(this.props))}
-              id={this.getId()}
-              checked={value === true}
-              onChange={this.changeValue}
-              disabled={disabled}
-            />
-          }
-          label={<>{label}<Components.RequiredIndicator optional={this.props.optional} value={value}/></>}
-        />
+      <FormControlLabel
+        classes={{
+          root: classes.inputRoot,
+          disabled: classes.inputDisabled,
+        }}
+        control={
+          <Checkbox
+            ref={(c) => this.element = c}
+            {...this.cleanSwitchProps(this.cleanProps(this.props))}
+            id={this.getId()}
+            checked={value === true}
+            onChange={this.changeValue}
+            disabled={disabled}
+            classes={{
+              root: classes.checkboxRoot,
+              disabled: classes.checkboxDisabled,
+            }}
+          />
+        }
+        label={<>{label}<Components.RequiredIndicator optional={this.props.optional} value={value}/></>}
+      />
         {endAdornment}
       </>
     );
@@ -107,4 +107,4 @@ const SwitchBase = createReactClass({
 });
 
 
-export default withStyles(styles)(SwitchBase);
+export default withStyles(styles)(FormCheckbox);

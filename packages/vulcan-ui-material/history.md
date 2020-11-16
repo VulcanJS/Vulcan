@@ -1,3 +1,27 @@
+1.16.0_2 / 2020-11-16
+=====================
+
+ * Base controls
+   * I have renamed components in `vulcan-ui-material/lib/components/forms/base-controls/` because their names conflict with the style sheet names (used for [Global theme overrides](https://material-ui.com/customization/components/#global-theme-override)) of some core MUI components - for example `MuiInput`.
+   * These components are not registered with `registerComponent`, only exported.
+   * This will be a breaking change for anyone who has built custom components based on these base controls using import - the file and component names have to be updated.
+   * The new names are:
+     * **/forms/helpers/**
+       * MuiFormControl => FormControlLayout
+       * MuiFormHelper => FormHelper
+       * MuiRequiredIndicator => RequiredIndicator
+     * **/forms/base-controls/**
+       * MuiCheckbox => FormCheckbox
+       * MuiCheckboxGroup => FormCheckboxGroup
+       * MuiInput => FormInput
+       * MuiPicker => FormPicker
+       * MuiRadioGroup => FormRadioGroup
+       * MuiSelect => FormSelect
+       * MuiSuggest => FormSuggest
+       * MuiSwitch => FormSwitch
+       * MuiText => FormText
+ * The sample **Theme styles** page now displays sample buttons in addition to typography and color palettes
+ 
 1.16.0_1 / 2020-10-24
 =====================
 

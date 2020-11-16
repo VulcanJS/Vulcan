@@ -13,8 +13,8 @@ import parse from 'autosuggest-highlight/parse';
 import { registerComponent } from 'meteor/vulcan:core';
 import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import _isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import IsolatedScroll from 'react-isolated-scroll';
@@ -42,9 +42,9 @@ export const styles = theme => {
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
   return {
-    
+
     root: {},
-    
+
     container: {
       flexGrow: 1,
       position: 'relative',
@@ -144,11 +144,17 @@ export const styles = theme => {
       paddingLeft: 0,
       fontSize: 17.15,
       cursor: 'pointer',
-      '&.Mui-disabled': {
+      '&$disabled': {
         pointerEvents: 'none',
       },
     },
-    
+
+    error: {},
+
+    disabled: {},
+
+    focused: {},
+
     underline: {
       '&:after': {
         borderBottom: `2px solid ${theme.palette.primary[light ? 'dark' : 'light']}`,
@@ -168,7 +174,7 @@ export const styles = theme => {
       '&:focus:after': {
         transform: 'scaleX(1)',
       },
-      '&.Mui-error:after': {
+      '&$error:after': {
         borderBottomColor: theme.palette.error.main,
         transform: 'scaleX(1)', // error is always underlined in red
       },
@@ -185,15 +191,19 @@ export const styles = theme => {
         }),
         pointerEvents: 'none', // Transparent to the hover style.
       },
-      '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before': {
+      '&:hover:not($disabled):not($focused):not($error):before': {
         borderBottom: `2px solid ${theme.palette.text.primary}`,
         // Reset on touch devices, it doesn't add specificity
         '@media (hover: none)': {
           borderBottom: `1px solid ${bottomLineColor}`,
         },
       },
-      '&.Mui-disabled:before': {
+      '&$disabled:before': {
         borderBottomStyle: 'dotted',
+        '@media print': {
+          borderBottomStyle: 'solid',
+          borderBottomWidth: 'thin',
+        },
       },
     },
 
@@ -218,17 +228,17 @@ export const styles = theme => {
     inputAdornment: {
       pointerEvents: 'none',
     },
-  
+
     menuItem: {},
-  
+
     menuItemHighlight: {},
-  
+
     menuItemIcon: {},
 
   };
 };
 
-const MuiSuggest = createReactClass({
+const FormSuggest = createReactClass({
   inputElement: null,
 
   mixins: [ComponentMixin],
@@ -333,7 +343,7 @@ const MuiSuggest = createReactClass({
     if (!this.props.disableSelectOnBlur) {
       const selectedOption = this.getSelectedOption();
       if (!selectedOption) return;
-      
+
       this.changeValue(selectedOption);
       const inputValue = this.getInputValue(this.props);
       this.setState({
@@ -421,13 +431,13 @@ const MuiSuggest = createReactClass({
     }
 
     return (
-      <MuiFormControl
+      <FormControlLayout
         {...this.getFormControlProperties()}
         shrinkLabel={inputFormatted && inputFormatted !== inputValue}
         htmlFor={this.getId()}>
         {element}
-        <MuiFormHelper {...this.getFormHelperProperties()} />
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()} />
+      </FormControlLayout>
     );
   },
 
@@ -493,6 +503,7 @@ const MuiSuggest = createReactClass({
       startAdornment,
       endAdornment,
       disabled,
+      errors,
       ...rest
     } = inputProps;
     const { hideLabel, inputRef } = this.props;
@@ -506,6 +517,8 @@ const MuiSuggest = createReactClass({
           className={classNames(
             classes.inputRoot,
             classes.underline,
+            disabled && classes.disabled,
+            errors?.length && classes.error,
             classes.formatted,
             hideLabel && classes.formattedNoLabel,
           )}>
@@ -630,5 +643,5 @@ const MuiSuggest = createReactClass({
 
 });
 
-export default withStyles(styles)(MuiSuggest);
-registerComponent('MuiSuggest', MuiSuggest, [withStyles, styles]);
+export default withStyles(styles)(FormSuggest);
+registerComponent('FormSuggest', FormSuggest, [withStyles, styles]);

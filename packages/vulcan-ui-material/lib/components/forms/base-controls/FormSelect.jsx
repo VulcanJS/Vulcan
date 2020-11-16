@@ -3,8 +3,8 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import ComponentMixin from './mixins/component';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,10 +14,10 @@ import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
 import _isArray from 'lodash/isArray';
 import classNames from 'classnames';
-import { styles } from './MuiSuggest';
+import { styles } from './FormSuggest';
 
 
-const MuiSelect = createReactClass({
+const FormSelect = createReactClass({
 
   element: null,
 
@@ -85,10 +85,10 @@ const MuiSelect = createReactClass({
     }
 
     return (
-      <MuiFormControl{...this.getFormControlProperties()} htmlFor={this.getId()}>
+      <FormControlLayout{...this.getFormControlProperties()} htmlFor={this.getId()}>
         {this.renderElement()}
-        <MuiFormHelper {...this.getFormHelperProperties()}/>
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()}/>
+      </FormControlLayout>
     );
   },
 
@@ -200,4 +200,4 @@ const MuiSelect = createReactClass({
 });
 
 
-export default withStyles(styles)(MuiSelect);
+export default withStyles(styles)(FormSelect);

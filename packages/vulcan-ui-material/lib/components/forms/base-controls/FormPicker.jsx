@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ComponentMixin from './mixins/component';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import TextField from '@material-ui/core/TextField';
 
 import moment from 'moment';
@@ -25,11 +25,11 @@ export const styles = theme => ({
 });
 
 //noinspection JSUnusedGlobalSymbols
-const MuiPicker = createReactClass({
+const FormPicker = createReactClass({
 
   mixins: [ComponentMixin],
 
-  displayName: 'MuiPicker',
+  displayName: 'FormPicker',
 
   propTypes: {
     type: PropTypes.oneOf([
@@ -64,7 +64,7 @@ const MuiPicker = createReactClass({
     const options = this.props.options || {};
 
     return (
-      <MuiFormControl {...this.getFormControlProperties()} htmlFor={this.getId()}>
+      <FormControlLayout {...this.getFormControlProperties()} htmlFor={this.getId()}>
         <TextField
             ref={c => (this.element = c)}
             {...this.cleanProps(this.props)}
@@ -76,11 +76,11 @@ const MuiPicker = createReactClass({
             placeholder={this.props.placeholder}
             classes={{ root: classes.inputRoot }}
         />
-        <MuiFormHelper {...this.getFormHelperProperties()}/>
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()}/>
+      </FormControlLayout>
     );
   }
 });
 
 
-export default withStyles(styles)(MuiPicker);
+export default withStyles(styles)(FormPicker);

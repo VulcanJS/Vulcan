@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.16.0_1
+# vulcan:ui-material 1.16.0_2
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -231,9 +231,9 @@ import { getCountryLabel } from 'meteor/erikdakoda:vulcan-material-ui';
 </Typography>
 ```
 
-## MuiSuggest
+## FormSuggest
 
-**MuiSuggest** is a base control that you can use to build custom autosuggest controls. Refer to **CountrySelect** for an example.
+**FormSuggest** is a base control that you can use to build custom autosuggest controls. Refer to **CountrySelect** for an example.
 
 You can use the following additional props:
 
@@ -246,7 +246,7 @@ You can use the following additional props:
 | `disableMatchParts`   | bool   | Prevent highlighting of matched sub-strings |
 | `autoComplete`        | string | Autocomplete is turned off by default |
 
-In addition, the `options` that you pass to any select control have additional properties supported by **MuiSuggest**:
+In addition, the `options` that you pass to any select control have additional properties supported by **FormSuggest**:
 
 | Property              | Type   | Description  |
 | --------------------- | ------ | ------------ |

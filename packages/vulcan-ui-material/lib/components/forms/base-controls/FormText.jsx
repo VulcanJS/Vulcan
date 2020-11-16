@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ComponentMixin from './mixins/component';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import Typography from '@material-ui/core/Typography';
 
 export const styles = theme => ({
@@ -19,12 +19,12 @@ export const styles = theme => ({
 });
 
 //noinspection JSUnusedGlobalSymbols
-const MuiText = createReactClass({
+const FormText = createReactClass({
   element: null,
 
   mixins: [ComponentMixin],
 
-  displayName: 'MuiText',
+  displayName: 'FormText',
 
   propTypes: {},
 
@@ -64,15 +64,15 @@ const MuiText = createReactClass({
     }
 
     return (
-      <MuiFormControl
+      <FormControlLayout
         {...this.getFormControlProperties()}
         shrinkLabel={true}
         htmlFor={this.getId()}>
         {element}
-        <MuiFormHelper {...this.getFormHelperProperties()} />
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()} />
+      </FormControlLayout>
     );
   },
 });
 
-export default withStyles(styles)(MuiText);
+export default withStyles(styles)(FormText);

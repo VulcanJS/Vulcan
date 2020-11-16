@@ -13,6 +13,7 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 - `meteor update`
 - `meteor npm i --save string-similarity @apollo/client`
 - Migrate your code to Apollo client v3: https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/
+- Migrate the names of base form controls in `vulcan:ui-material` if import them into your code. See `Vulcan/packages/vulcan-ui-material/history.md`.
  
 ## From 1.15 to 1.16
 

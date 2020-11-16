@@ -4,9 +4,10 @@ import { Components, registerComponent, getComponent } from 'meteor/vulcan:lib';
 import Dropzone from 'react-dropzone';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import ComponentMixin from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/mixins/component';
+import FormControlLayout from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormControlLayout';
+import FormHelper from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormHelper';
+import classNames from 'classnames';
 
 /*
 
