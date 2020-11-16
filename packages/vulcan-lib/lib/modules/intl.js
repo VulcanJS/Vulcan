@@ -62,7 +62,6 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
     });
 
     message = messageArray.length === 1 ? messageArray[0] : messageArray;
-    message = pluralizeString(message, values);
   }
 
   return message;
