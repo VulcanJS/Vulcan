@@ -137,10 +137,11 @@ const getInitialStateFromProps = nextProps => {
 class SmartForm extends Component {
   constructor(props) {
     super(props);
-
+    const state = getInitialStateFromProps(props);
     this.state = {
-      ...getInitialStateFromProps(props),
+      ...state,
     };
+    if(props.initCallback) props.initCallback(state.currentDocument);
   }
 
   defaultValues = {};
@@ -651,7 +652,9 @@ class SmartForm extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     const needReset = !!RESET_PROPS.find(prop => !isEqual(this.props[prop], nextProps[prop]));
     if (needReset) {
-      this.setState(getInitialStateFromProps(nextProps));
+      const newState = getInitialStateFromProps(nextProps);
+      this.setState(newState);
+      if (nextProps.initCallback) nextProps.initCallback(newState.currentDocument);
     }
   }
 

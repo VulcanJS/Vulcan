@@ -37,6 +37,7 @@ export const groupProps = {
 };
 
 export const callbackProps = {
+  initCallback: PropTypes.func,
   changeCallback: PropTypes.func,
   submitCallback: PropTypes.func,
   successCallback: PropTypes.func,
