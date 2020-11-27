@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ComponentMixin from './mixins/component';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import Input from '@material-ui/core/Input';
 import StartAdornment, {hideStartAdornment} from './StartAdornment';
 import EndAdornment from './EndAdornment';
@@ -141,11 +141,11 @@ const MuiInput = createReactClass({
     }
 
     return (
-        <MuiFormControl {...this.getFormControlProperties()}
+        <FormControlLayout {...this.getFormControlProperties()}
                         htmlFor={this.getId()}>
           {element}
-          <MuiFormHelper {...this.getFormHelperProperties()}/>
-        </MuiFormControl>
+          <FormHelper {...this.getFormHelperProperties()}/>
+        </FormControlLayout>
     );
   },
 
