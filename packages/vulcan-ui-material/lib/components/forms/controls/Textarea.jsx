@@ -1,10 +1,10 @@
 import React from 'react';
-import MuiInput from '../base-controls/MuiInput';
+import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
 const TextareaComponent = ({ refFunction, inputProperties, ...properties }) =>
-  <MuiInput {...properties}
+  <FormInput {...properties}
             ref={refFunction}
             multiline={true}
             inputProperties={inputProperties}

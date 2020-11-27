@@ -33,7 +33,7 @@ export const styles = theme => ({
 
   inputInput: {},
 
-  multiline: {},
+  rootMultiline: {},
 
   inputMultiline: {},
 
@@ -174,7 +174,7 @@ const MuiInput = createReactClass({
               input: classes.inputInput,
               focused: classes.inputFocused,
               disabled: classes.inputDisabled,
-              multiline: classes.multiline,
+              multiline: classes.rootMultiline,
               inputMultiline: classes.inputMultiline,
             }}
             {...inputProps}

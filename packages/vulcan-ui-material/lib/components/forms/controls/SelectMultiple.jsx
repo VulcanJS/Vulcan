@@ -1,10 +1,10 @@
 import React from 'react';
-import MuiSelect from '../base-controls/MuiSelect';
+import FormSelect from '../base-controls/FormSelect';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
 const SelectMultiple = ({ refFunction, ...properties }) => {
-  return <MuiSelect {...properties} multiple={true} ref={refFunction}/>;
+  return <FormSelect {...properties} multiple={true} ref={refFunction}/>;
 };
 
 

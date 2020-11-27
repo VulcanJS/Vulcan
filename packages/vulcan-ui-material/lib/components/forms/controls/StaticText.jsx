@@ -1,10 +1,10 @@
 import React from 'react';
-import MuiText from '../base-controls/MuiText';
+import FormText from '../base-controls/FormText';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
 const StaticText = ({ refFunction, ...properties }) =>
-  <MuiText {...properties} ref={refFunction}/>;
+  <FormText {...properties} ref={refFunction}/>;
 
 
 registerComponent('FormComponentStaticText', StaticText);

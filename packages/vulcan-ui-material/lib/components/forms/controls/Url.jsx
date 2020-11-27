@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiInput from '../base-controls/MuiInput';
+import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
@@ -16,7 +16,7 @@ export const scrubValue = function (value, props) {
 
 
 const UrlComponent = ({ refFunction, ...properties }) =>
-  <MuiInput {...properties} ref={refFunction} scrubValue={scrubValue} type="url"/>;
+  <FormInput {...properties} ref={refFunction} scrubValue={scrubValue} type="url"/>;
 
 
 registerComponent('FormComponentUrl', UrlComponent);

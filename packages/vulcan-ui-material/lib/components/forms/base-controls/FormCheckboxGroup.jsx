@@ -5,8 +5,8 @@ import ComponentMixin from './mixins/component';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import MuiFormControl from './MuiFormControl';
-import MuiFormHelper from './MuiFormHelper';
+import FormControlLayout from './FormControlLayout';
+import FormHelper from './FormHelper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
 import classNames from 'classnames';
@@ -126,7 +126,7 @@ const OtherComponent = ({ value: _values, path, updateCurrentValues }) => {
   );
 };
 
-const MuiCheckboxGroup = createReactClass({
+const FormCheckboxGroup = createReactClass({
   mixins: [ComponentMixin],
 
   propTypes: {
@@ -216,12 +216,12 @@ const MuiCheckboxGroup = createReactClass({
     }
 
     return (
-      <MuiFormControl {...this.getFormControlProperties()} fakeLabel={true}>
+      <FormControlLayout {...this.getFormControlProperties()} fakeLabel={true}>
         {this.renderElement()}
-        <MuiFormHelper {...this.getFormHelperProperties()} />
-      </MuiFormControl>
+        <FormHelper {...this.getFormHelperProperties()} />
+      </FormControlLayout>
     );
   },
 });
 
-export default withStyles(styles)(MuiCheckboxGroup);
+export default withStyles(styles)(FormCheckboxGroup);

@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiInput from '../base-controls/MuiInput';
+import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
 
 
@@ -14,7 +14,7 @@ export const getUrl = function (value, props) {
 
 
 const EmailComponent = ({ refFunction, ...properties }) =>
-  <MuiInput {...properties} ref={refFunction} type="email" getUrl={getUrl}/>;
+  <FormInput {...properties} ref={refFunction} type="email" getUrl={getUrl}/>;
 
 
 registerComponent('FormComponentEmail', EmailComponent);

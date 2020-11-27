@@ -1,6 +1,6 @@
 import React from 'react';
-import MuiSuggest from '../base-controls/MuiSuggest';
-import MuiInput from '../base-controls/MuiInput';
+import FormSuggest from '../base-controls/FormSuggest';
+import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
 import { countryInfo } from './countries';
 import _get from 'lodash/get';
@@ -19,11 +19,11 @@ const RegionSelect = ({ classes, refFunction, ...properties }) => {
   const currentCountryInfo = getCountryInfo(properties);
   const options = currentCountryInfo ? currentCountryInfo.regions : null;
   const regionLabel = currentCountryInfo ? currentCountryInfo.regionLabel : 'Region';
-  
+
   if (options) {
-    return <MuiSuggest {...properties} ref={refFunction} options={options} label={regionLabel}/>;
+    return <FormSuggest {...properties} ref={refFunction} options={options} label={regionLabel}/>;
   } else {
-    return <MuiInput {...properties} ref={refFunction} label={regionLabel}/>;
+    return <FormInput {...properties} ref={refFunction} label={regionLabel}/>;
   }
 };
 

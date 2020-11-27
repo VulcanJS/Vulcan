@@ -6,22 +6,22 @@ import classNames from 'classnames';
 
 
 export const styles = theme => ({
-  
+
   root: {
     marginLeft: 4,
   },
-  
+
   missing: {
     color: theme.palette.error.main,
   },
-  
+
 });
 
 
-const MuiRequiredIndicator = (props) => {
+const RequiredIndicator = (props) => {
   const { classes, optional, value } = props;
   const className = classNames('required-indicator', 'optional-symbol', classes.root, !value && classes.missing);
-  
+
   return optional
     ?
     null
@@ -30,11 +30,11 @@ const MuiRequiredIndicator = (props) => {
 };
 
 
-MuiRequiredIndicator.propTypes = {
+RequiredIndicator.propTypes = {
   classes: PropTypes.object.isRequired,
   optional: PropTypes.bool,
   value: PropTypes.any,
 };
 
 
-registerComponent('RequiredIndicator', MuiRequiredIndicator, [withStyles, styles]);
+registerComponent('RequiredIndicator', RequiredIndicator, [withStyles, styles]);

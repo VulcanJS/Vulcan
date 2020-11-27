@@ -22,7 +22,7 @@ export const styles = theme => ({
 });
 
 
-const MuiFormHelper = (props) => {
+const FormHelper = (props) => {
   const {
     className,
     classes,
@@ -64,7 +64,7 @@ const MuiFormHelper = (props) => {
 };
 
 
-MuiFormHelper.propTypes = {
+FormHelper.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object.isRequired,
   value: PropTypes.any,
@@ -73,4 +73,4 @@ MuiFormHelper.propTypes = {
 };
 
 
-export default withStyles(styles)(MuiFormHelper);
+export default withStyles(styles)(FormHelper);
