@@ -123,6 +123,7 @@ class FormWrapper extends PureComponent {
 
   getComponent() {
     let WrappedComponent;
+    const { createMutationOptions = {}, updateMutationOptions = {} } = this.props
 
     const prefix = `${this.props.collectionName}${Utils.capitalize(this.getFormType())}`;
 
@@ -168,7 +169,7 @@ class FormWrapper extends PureComponent {
     if (this.getFormType() === 'edit') {
       WrappedComponent = compose(
         withSingle(queryOptions),
-        withUpdate2(mutationOptions),
+        withUpdate2({...mutationOptions,...updateMutationOptions}),
         withDelete2(mutationOptions)
       )(Loader);
 
@@ -182,7 +183,7 @@ class FormWrapper extends PureComponent {
       );
     } else {
 
-      WrappedComponent = compose(withCreate2(mutationOptions))(Components.Form);
+      WrappedComponent = compose(withCreate2({...mutationOptions, ...createMutationOptions))(Components.Form);
 
       return <WrappedComponent {...childProps} />;
     }
@@ -207,6 +208,9 @@ FormWrapper.propTypes = {
   queryFragmentName: PropTypes.string,
   mutationFragment: PropTypes.object,
   mutationFragmentName: PropTypes.string,
+
+  updateMutationOptions: PropTypes.object,
+  createMutationOptions: PropTypes.object,
 
   // graphQL
   // createFoo, deleteFoo, updateFoo
