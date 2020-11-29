@@ -41,12 +41,12 @@ export const styles = theme => ({
 
 
 //noinspection JSUnusedGlobalSymbols
-const MuiInput = createReactClass({
+const FormInput = createReactClass({
   element: null,
 
   mixins: [ComponentMixin],
 
-  displayName: 'MuiInput',
+  displayName: 'FormInput',
 
   propTypes: {
     type: PropTypes.oneOf([
@@ -186,4 +186,4 @@ const MuiInput = createReactClass({
 });
 
 
-export default withStyles(styles)(MuiInput);
+export default withStyles(styles)(FormInput);
