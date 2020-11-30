@@ -1,5 +1,6 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import { getSetting } from '../modules/settings';
+import { getSetting } from './settings';
 import { debug, Utils } from 'meteor/vulcan:lib';
 
 export const defaultLocale = getSetting('locale', 'en-US');
@@ -37,12 +38,44 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
   }
 
   if (values && typeof values === 'object') {
-    Object.keys(values).forEach(key => {
-      // note: see replaceAll definition in vulcan:lib/utils
-      message = message.replaceAll(`{${key}}`, values[key]);
-    });
     message = pluralizeString(message, values);
+
+    let messageArray = [message];
+    Object.keys(values).forEach(key => {
+      const value = values[key];
+
+      messageArray = messageArray.reduce((accumulator, message) => {
+        if (typeof message !== 'string') {
+          accumulator.push(message);
+        } else if (typeof value === 'string' || typeof value === 'number') {
+          accumulator.push(message.replaceAll(`{${key}}`, value));
+        } else {
+          const parts = message.split(new RegExp(`{${key}}`, 'g'));
+          parts.forEach((part, index, array) => {
+            accumulator.push(part);
+            if (index < array.length - 1) {
+              accumulator.push(value);
+            }
+          });
+        }
+        return accumulator;
+      }, []);
+    });
+
+    if (messageArray.length === 1) {
+      message = messageArray[0];
+    } else {
+      message = messageArray.reduce((accumulator, message, index) => {
+        if (typeof message === 'string' && message.length) {
+          accumulator.push(message);
+        } else if (!!message) {
+          accumulator.push(React.cloneElement(message, { key: index }));
+        }
+        return accumulator;
+      }, []);
+    }
   }
+
   return message;
 };
 
