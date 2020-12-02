@@ -85,7 +85,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
   });
 
   // add field schema to collection schema
-  collection.attachSchema(createSchema(merge(collection.simpleSchema()._schema, fieldSchema)));
+  collection.attachSchema(createSchema(merge(collection.options.schema, fieldSchema)));
 };
 
 /**

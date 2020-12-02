@@ -141,7 +141,7 @@ export const send = (to, subject, html, text, throwErrors, cc, bcc, replyTo, hea
 
   const shouldSendEmail = process.env.NODE_ENV === 'production' || getSetting('enableDevelopmentEmails', false);
 
-  console.log(`//////// sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
+  console.log(`✉️  sending email${shouldSendEmail ? '' : ' (simulation)'}…`); // eslint-disable-line
   console.log('from: ' + _from); // eslint-disable-line
   console.log('to: ' + to); // eslint-disable-line
   console.log('subject: ' + subject); // eslint-disable-line
@@ -219,8 +219,8 @@ export const buildAndSend = async ({
   from,
 }) => {
   try {
-    const email = await VulcanEmail.build({ to, emailName, variables, locale });
-    return VulcanEmail.send({ to: email.to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
+    const email = await build({ to, emailName, variables, locale });
+    return send({ to: email.to, cc, bcc, replyTo, subject: email.subject, html: email.html, headers, attachments, from });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);

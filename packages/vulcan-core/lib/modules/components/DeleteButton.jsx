@@ -1,10 +1,9 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import { useDelete2 } from '../containers/delete2';
 
 const DeleteButton = (props) => {
-  const { label, collection, collectionName, fragment, fragmentName, documentId, mutationOptions, ...rest } = props;
+  const { label, collection, collectionName, fragment, fragmentName, documentId, mutationOptions, currentUser, ...rest } = props;
   const [deleteFunction, { loading }] = useDelete2({
     collection,
     collectionName,
@@ -19,7 +18,7 @@ const DeleteButton = (props) => {
       onClick={() => {
         deleteFunction({ input: { id: documentId } });
       }}
-      label={label || <FormattedMessage id="datatable.delete" defaultMessage="Delete" />}
+      label={label || <Components.FormattedMessage id="datatable.delete" defaultMessage="Delete" />}
       {...rest}
     />
   );

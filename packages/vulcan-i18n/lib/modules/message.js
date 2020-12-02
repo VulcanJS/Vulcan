@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { intlShape } from './shape';
+import { registerComponent } from 'meteor/vulcan:lib';
 
 const FormattedMessage = ({ id, values, defaultMessage = '', html = false, className = '' }, { intl }) => {
   let message = intl.formatMessage({ id, defaultMessage }, values);
@@ -11,12 +12,14 @@ const FormattedMessage = ({ id, values, defaultMessage = '', html = false, class
   }
 
   return html ? 
-    <span className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :
-    <span className={cssClass}>{message}</span>;
+    <span data-key={id} className={cssClass} dangerouslySetInnerHTML={{__html: message}}/> :
+    <span data-key={id} className={cssClass}>{message}</span>;
 };
 
 FormattedMessage.contextTypes = {
   intl: intlShape
 };
+
+registerComponent('FormattedMessage', FormattedMessage);
 
 export default FormattedMessage;

@@ -2,7 +2,7 @@ import { Components, registerComponent, Utils, getSetting } from 'meteor/vulcan:
 import { withMutation } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 class EmbedURL extends Component {
   constructor(props) {
@@ -133,10 +133,10 @@ class EmbedURL extends Component {
         </div>
         <div className="embedly-thumbnail-actions">
           <a className="thumbnail-edit" onClick={this.editThumbnail}>
-            <Components.Icon name="edit" /> <FormattedMessage id="posts.enter_thumbnail_url" />
+            <Components.Icon name="edit" /> <Components.FormattedMessage id="posts.enter_thumbnail_url" />
           </a>
           <a className="thumbnail-clear" onClick={this.clearThumbnail}>
-            <Components.Icon name="delete" /> <FormattedMessage id="posts.clear_thumbnail" />
+            <Components.Icon name="delete" /> <Components.FormattedMessage id="posts.clear_thumbnail" />
           </a>
         </div>
       </div>
@@ -151,7 +151,7 @@ class EmbedURL extends Component {
           onClick={this.editThumbnail}
           className="embedly-thumbnail-placeholder">
           <Components.Icon name="image" />
-          <FormattedMessage id="posts.enter_thumbnail_url" />
+          <Components.FormattedMessage id="posts.enter_thumbnail_url" />
         </div>
 
         <div className="embedly-url-field-loading" style={this.getLoadingStyle()}>

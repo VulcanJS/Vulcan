@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 import { graphql } from '@apollo/client/react/hoc';
 import compose from 'recompose/compose';
 import gql from 'graphql-tag';
 import Users from 'meteor/vulcan:users';
-import { withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/vulcan:core';
+import { Components, withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/vulcan:core';
 
 // boolean -> unsubscribe || subscribe
 const getSubscribeAction = subscribed => subscribed ? 'unsubscribe' : 'subscribe'; 
@@ -61,7 +61,7 @@ class SubscribeToActionHandler extends PureComponent {
 
     const className = this.props.className ? this.props.className : '';
     
-    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}><FormattedMessage id={action} /></a> : null;
+    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}><Components.FormattedMessage id={action} /></a> : null;
   }
 
 }

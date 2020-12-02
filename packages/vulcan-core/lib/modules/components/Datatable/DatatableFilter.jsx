@@ -2,7 +2,6 @@ import { Components, registerComponent, Utils } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import moment from 'moment';
 
 const getCount = columnFilters => {
@@ -46,7 +45,7 @@ const DatatableFilter = props => {
   return (
     <span className="datatable-filter">
       <Components.ModalTrigger
-        title={<FormattedMessage id="datatable.filter_column" values={{ label }} defaultMessage={`Filter “${label}”`} />}
+        title={<Components.FormattedMessage id="datatable.filter_column" values={{ label }} defaultMessage={`Filter “${label}”`} />}
         size="small"
         trigger={<Filter count={getCount(columnFilters)} />}>
         {query ? <Components.DatatableFilterContentsWithData {...props} /> : <Components.DatatableFilterContents {...props} />}
@@ -117,7 +116,7 @@ const DatatableFilterContents = props => {
       default:
         contents = (
           <p>
-            <FormattedMessage id="datatable.specify_option" defaultMessage="Please specify an options property on your schema field." />
+            <Components.FormattedMessage id="datatable.specify_option" defaultMessage="Please specify an options property on your schema field." />
           </p>
         );
     }
@@ -133,7 +132,7 @@ const DatatableFilterContents = props => {
         onClick={() => {
           setFilters(undefined);
         }}>
-        <FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
+        <Components.FormattedMessage id="datatable.clear_all" defaultMessage="Clear All" />
       </Components.Button>
       <Components.Button
         type="submit"
@@ -141,7 +140,7 @@ const DatatableFilterContents = props => {
         onClick={() => {
           submitFilters({ name, filters });
         }}>
-        <FormattedMessage id="datatable.submit" defaultMessage="Submit" />
+        <Components.FormattedMessage id="datatable.submit" defaultMessage="Submit" />
       </Components.Button>
     </form>
   );
@@ -215,7 +214,7 @@ const DatatableFilterDates = ({ filters, setFilters }) => (
     <Components.FormComponentDate
       path="_gte"
       itemProperties={{
-        label: <FormattedMessage id="datatable.after" defaultMessage="After" />,
+        label: <Components.FormattedMessage id="datatable.after" defaultMessage="After" />,
         layout: 'horizontal',
       }}
       inputProperties={{}}
@@ -233,7 +232,7 @@ const DatatableFilterDates = ({ filters, setFilters }) => (
     <Components.FormComponentDate
       path="_lte"
       itemProperties={{
-        label: <FormattedMessage id="datatable.before" defaultMessage="Before" />,
+        label: <Components.FormattedMessage id="datatable.before" defaultMessage="Before" />,
         layout: 'horizontal',
       }}
       inputProperties={{}}
@@ -265,7 +264,7 @@ const DatatableFilterNumbers = ({ filters, setFilters }) => (
     <Components.FormComponentNumber
       path="_gte"
       itemProperties={{
-        label: <FormattedMessage id="datatable.greater_than" defaultMessage="Greater than" />,
+        label: <Components.FormattedMessage id="datatable.greater_than" defaultMessage="Greater than" />,
         layout: 'horizontal',
       }}
       inputProperties={{
@@ -285,7 +284,7 @@ const DatatableFilterNumbers = ({ filters, setFilters }) => (
     <Components.FormComponentNumber
       path="_lte"
       itemProperties={{
-        label: <FormattedMessage id="datatable.lower_than" defaultMessage="Lower than" />,
+        label: <Components.FormattedMessage id="datatable.lower_than" defaultMessage="Lower than" />,
         layout: 'horizontal',
       }}
       inputProperties={{

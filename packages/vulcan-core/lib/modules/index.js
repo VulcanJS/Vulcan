@@ -2,6 +2,7 @@
 import './callbacks';
 export * from 'meteor/vulcan:lib';
 
+export * from './containers';
 export * from './components.js';
 
 export { default as App } from './components/App.jsx';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -72,7 +72,7 @@ const LoadMore = (
     <div className={classNames('load-more', classes.root, className)}>
       {showCount && (
         <Typography variant="caption" className={classes.caption}>
-          <FormattedMessage id={`load_more.${loadMoreId}`} values={countValues} />
+          <Components.FormattedMessage id={`load_more.${loadMoreId}`} values={countValues} />
         </Typography>
       )}
       {isLoadingMore ? (

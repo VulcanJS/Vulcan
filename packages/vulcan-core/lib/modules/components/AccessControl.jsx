@@ -4,7 +4,7 @@ import { useCurrentUser } from '../containers/currentUser';
 import Users from 'meteor/vulcan:users';
 import { useHistory } from 'react-router-dom';
 import withMessages from '../containers/withMessages';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 const AccessControl = ({ currentRoute, children, flash }, { intl }) => {
   const { loading, currentUser } = useCurrentUser();
@@ -56,7 +56,7 @@ const FailureComponent = props => {
 
 const DefaultLogInFailureComponent = () => (
   <Components.Alert className="access-control-failure" variant="danger">
-    <FormattedMessage id="app.please_sign_up_log_in" defaultMessage="Please log in first." />
+    <Components.FormattedMessage id="app.please_sign_up_log_in" defaultMessage="Please log in first." />
   </Components.Alert>
 );
 
@@ -64,7 +64,7 @@ registerComponent({ name: 'DefaultLogInFailureComponent', component: DefaultLogI
 
 const DefaultPermissionFailureComponent = () => (
   <Components.Alert className="access-control-failure" variant="danger">
-    <FormattedMessage id="app.no_access_permissions" defaultMessage="Sorry, you are not allowed to access this page." />
+    <Components.FormattedMessage id="app.no_access_permissions" defaultMessage="Sorry, you are not allowed to access this page." />
   </Components.Alert>
 );
 
