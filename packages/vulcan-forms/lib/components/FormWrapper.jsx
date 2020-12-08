@@ -183,7 +183,7 @@ class FormWrapper extends PureComponent {
       );
     } else {
 
-      WrappedComponent = compose(withCreate2({...mutationOptions, ...createMutationOptions))(Components.Form);
+      WrappedComponent = compose(withCreate2({...mutationOptions, ...createMutationOptions}))(Components.Form);
 
       return <WrappedComponent {...childProps} />;
     }
