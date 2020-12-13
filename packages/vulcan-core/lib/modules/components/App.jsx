@@ -147,6 +147,8 @@ class App extends PureComponent {
     if (document && typeof document.getElementsByTagName === "function" && document.getElementsByTagName("html")) {
       const htmlTag = document.getElementsByTagName("html");
       if (htmlTag && htmlTag.length === 1) {
+        // change in locale didn't change the html lang as well, which is fixed by this PR
+        htmlTag[0].lang = localeId;
         if (localeObject?.rtl === true) {
           htmlTag[0].classList.add("rtl")
         } else {
