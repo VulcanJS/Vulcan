@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
-import { registerComponent } from 'meteor/vulcan:core';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
+import { Components, registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 
 const FormError = ({ error, errorContext, getLabel }) => {
@@ -48,7 +47,7 @@ const FormError = ({ error, errorContext, getLabel }) => {
       values: exception.data,
     };
   }
-  return <FormattedMessage html={true} {...messageProps} />;
+  return <Components.FormattedMessage html={true} {...messageProps} />;
 };
 
 FormError.defaultProps = {

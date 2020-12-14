@@ -31,8 +31,8 @@ class FormComponent extends Component {
       return null;
     }
     const path = getPath(props);
-    const value = get(document, path);
-
+    const intlOrRegularValue = get(document, path);
+    const value = typeof intlOrRegularValue === 'object' ? intlOrRegularValue.value : intlOrRegularValue;
     return getCharacterCounts(value, max);
   }
 

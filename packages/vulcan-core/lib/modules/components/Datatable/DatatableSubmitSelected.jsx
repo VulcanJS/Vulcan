@@ -1,6 +1,5 @@
 import { registerComponent, Components } from 'meteor/vulcan:lib';
 import React, { memo } from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 
 /*
@@ -15,7 +14,7 @@ const DatatableSubmitSelected = ({ selectedItems, onSubmitSelected }) => (
       e.preventDefault();
       onSubmitSelected(selectedItems);
     }}>
-    <FormattedMessage id="datatable.submit" />
+    <Components.FormattedMessage id="datatable.submit" />
   </Components.Button>
 );
 

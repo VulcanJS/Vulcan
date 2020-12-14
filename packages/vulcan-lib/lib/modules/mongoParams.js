@@ -22,6 +22,10 @@ export const convertUniqueSelector = selector => {
   }
   return selector;
 };
+
+// see https://stackoverflow.com/a/3561711
+export const escapeRegex = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
 /*
 
 Filtering
@@ -40,12 +44,12 @@ const conversionTable = {
   _neq: '$ne',
   _nin: '$nin',
   _is_null: value => ({ $exists: !value }),
-  _is: value => ({$elemMatch: {$eq: value }}),
-  _contains: value => ({$elemMatch: {$eq: value }}),
+  _is: value => ({ $elemMatch: { $eq: value } }),
+  _contains: value => ({ $elemMatch: { $eq: value } }),
   asc: 1,
   desc: -1,
   _like: value => ({
-    $regex: value,
+    $regex: escapeRegex(value),
     $options: 'i',
   }),
 };
@@ -59,7 +63,6 @@ const getFieldNames = expressionArray => {
 };
 
 export const filterFunction = async (collection, input = {}, context) => {
-
   // eslint-disable-next-line no-unused-vars
   const { filter, limit, sort, search, filterArguments, offset, id } = input;
   let selector = {};

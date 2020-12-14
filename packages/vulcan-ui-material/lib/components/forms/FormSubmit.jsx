@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -67,7 +66,7 @@ const FormSubmit = (
             event.preventDefault();
             cancelCallback(document);
           }}>
-          {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel" />}
+          {cancelLabel ? cancelLabel : <Components.FormattedMessage id="forms.cancel" />}
         </Button>
       ) : null}
 
@@ -81,7 +80,7 @@ const FormSubmit = (
             clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
             revertCallback(document);
           }}>
-          {revertLabel ? revertLabel : <FormattedMessage id="forms.revert" />}
+          {revertLabel ? revertLabel : <Components.FormattedMessage id="forms.revert" />}
         </Button>
       ) : null}
 
@@ -91,7 +90,7 @@ const FormSubmit = (
         color="secondary"
         className={classNames('submit-button', classes.button)}
         disabled={!isChanged()}>
-        {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" />}
+        {submitLabel ? submitLabel : <Components.FormattedMessage id="forms.submit" />}
       </Button>
     </div>
   );

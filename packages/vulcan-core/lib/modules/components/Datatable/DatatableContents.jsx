@@ -1,6 +1,5 @@
-import { registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React, { memo } from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import PropTypes from 'prop-types';
 import _sortBy from 'lodash/sortBy';
 
@@ -91,12 +90,12 @@ const DatatableContents = props => {
           ))}
           {showEdit ? (
             <th>
-              <FormattedMessage id="datatable.edit" defaultMessage="Edit" />
+              <Components.FormattedMessage id="datatable.edit" defaultMessage="Edit" />
             </th>
           ) : null}
           {showDelete ? (
             <th>
-              <FormattedMessage id="datatable.delete" defaultMessage="Delete" />
+              <Components.FormattedMessage id="datatable.delete" defaultMessage="Delete" />
             </th>
           ) : null}
         </Components.DatatableContentsHeadLayout>
@@ -195,7 +194,7 @@ const DatatableEmpty = () => (
   <tr>
     <td colSpan="99">
       <div style={{ textAlign: 'center', padding: 10 }}>
-        <FormattedMessage id="datatable.empty" defaultMessage="No items to display." />
+        <Components.FormattedMessage id="datatable.empty" defaultMessage="No items to display." />
       </div>
     </td>
   </tr>

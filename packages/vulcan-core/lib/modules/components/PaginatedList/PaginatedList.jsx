@@ -1,6 +1,5 @@
-import { registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import withComponents from '../../containers/withComponents';
 import { useMulti2 } from '../../containers/multi2';
 
@@ -101,7 +100,7 @@ registerComponent('PaginatedListItem', PaginatedListItem);
 
 const PaginatedListNoResults = () => (
   <p className="list-noresults">
-    <FormattedMessage id="paginatedlist.no_results" />
+    <Components.FormattedMessage id="paginatedlist.no_results" />
   </p>
 );
 
@@ -118,7 +117,7 @@ const PaginatedListLoadMore = ({ Components, loadMore, count, totalCount }) => (
       e.preventDefault();
       loadMore();
     }}>
-    <FormattedMessage id="paginatedlist.load_more" defaultMessage="Load More" />
+    <Components.FormattedMessage id="paginatedlist.load_more" defaultMessage="Load More" />
     &nbsp;{' '}
     <span className="list-loadedcount">
       ({count}/{totalCount})

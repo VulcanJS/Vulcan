@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent, instantiateComponent, whitelistInputProps } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
@@ -17,7 +17,7 @@ class FormComponentInner extends PureComponent {
               <span>✕</span>
             </button>
           }>
-          <FormattedMessage id="forms.clear_field" />
+          <Components.FormattedMessage id="forms.clear_field" />
         </Components.TooltipTrigger>
       );
     }

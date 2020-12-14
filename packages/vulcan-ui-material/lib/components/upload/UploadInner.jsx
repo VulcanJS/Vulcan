@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Components, registerComponent, getComponent } from 'meteor/vulcan:lib';
 import Dropzone from 'react-dropzone';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import ComponentMixin from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/mixins/component';
 import FormControlLayout from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormControlLayout';
 import FormHelper from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormHelper';
@@ -105,7 +104,7 @@ const UploadInner = props => {
             rejectClassName={classes.dropzoneReject}
             disabled={disabled}>
             <div>
-              <FormattedMessage
+              <Components.FormattedMessage
                 id={`upload.${disabled ? 'maxReached' : 'prompt'}`}
                 values={{ maxCount }}
               />
@@ -113,7 +112,7 @@ const UploadInner = props => {
             {uploading && (
               <div className="upload-uploading">
                 <span>
-                  <FormattedMessage id={'upload.uploading'} />
+                  <Components.FormattedMessage id={'upload.uploading'} />
                 </span>
               </div>
             )}

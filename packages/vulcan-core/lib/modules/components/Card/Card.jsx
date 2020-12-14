@@ -1,5 +1,5 @@
 import { registerComponent, Components, formatLabel } from 'meteor/vulcan:lib';
-import { intlShape, FormattedMessage } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -49,7 +49,7 @@ const CardEdit = (props, context) => (
         label={context.intl.formatMessage({ id: 'cards.edit' })}
         component={
           <Components.Button variant="info">
-            <FormattedMessage id="cards.edit" />
+            <Components.FormattedMessage id="cards.edit" />
           </Components.Button>
         }>
         <CardEditForm {...props} />

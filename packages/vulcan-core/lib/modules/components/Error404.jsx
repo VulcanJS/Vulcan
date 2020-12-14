@@ -1,12 +1,11 @@
-import { registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const Error404 = () => {
   return (
     <div className="error404">
       <h3>
-        <FormattedMessage id="app.404" defaultMessage="Sorry, we couldn't find what you were looking for." />
+        <Components.FormattedMessage id="app.404" defaultMessage="Sorry, we couldn't find what you were looking for." />
       </h3>
     </div>
   );

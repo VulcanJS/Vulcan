@@ -1,7 +1,7 @@
 import { GraphQLSchema } from './graphql/graphql.js';
 import { generateTypeDefs } from './graphql/typedefs.js';
 import Vulcan from '../modules/config.js';
-import fs from 'fs';
+import fs, { promises as fsAsync } from 'fs';
 
 import { Collections } from '../modules/collections.js';
 import { extractCollectionInfo, extractFragmentInfo } from '../modules/handleOptions';
@@ -35,7 +35,9 @@ export const getGraphQLSchema = fileName => {
 
 Vulcan.getGraphQLSchema = getGraphQLSchema;
 
-export const logToFile = (fileName, object, options = {}) => {
+const logsDirectory = '.logs';
+
+export const logToFile = async (fileName, object, options = {}) => {
   const { mode = 'append', timestamp = false } = options;
   // the server path is of type "/Users/foo/bar/appName/.meteor/local/build/programs/server"
   // we remove the last five segments to get the app directory
@@ -44,13 +46,17 @@ export const logToFile = (fileName, object, options = {}) => {
     .split('/')
     .slice(1, -5)
     .join('/');
-  const fullPath = `/${path}/${fileName}`;
+  const logsDirPath = `/${path}/${logsDirectory}`;
+  if (!fs.existsSync(logsDirPath)) {
+    fs.mkdirSync(logsDirPath, { recursive: true });
+  }
+  const fullPath = `${logsDirPath}/${fileName}`;
   const contents = typeof object === 'string' ? object : JSON.stringify(object, null, 2);
   const now = new Date();
   const text = timestamp ? now.toString() + '\n---\n' + contents : contents;
   if (mode === 'append') {
     const stream = fs.createWriteStream(fullPath, { flags: 'a' });
-    stream.write(text + '\n\n');
+    stream.write(text + '\n');
     stream.end();
   } else {
     fs.readFile(fullPath, (error, data) => {
@@ -102,11 +108,11 @@ export const generateGraphQLQueries = fileName => {
       .slice(1, -5)
       .join('/');
     const fullPath = `/${path}/${name}`;
-    fd = fs.openSync(fullPath, 'w');
+    fd = fsAsync.openSync(fullPath, 'w');
 
-    Object.keys(Fragments).forEach(fragment => fs.appendFileSync(fd, Fragments[fragment].fragmentText + '\n'));
+    Object.keys(Fragments).forEach(fragment => fsAsync.appendFileSync(fd, Fragments[fragment].fragmentText + '\n'));
 
-    fs.appendFileSync(fd, '\n');
+    fsAsync.appendFileSync(fd, '\n');
 
     Collections.forEach(collection => {
       const { collectionName } = extractCollectionInfo({ collection });
@@ -119,7 +125,7 @@ export const generateGraphQLQueries = fileName => {
           typeName,
           fragmentName,
         });
-        fs.appendFileSync(fd, singleQueryString + '\n');
+        fsAsync.appendFileSync(fd, singleQueryString + '\n');
       }
 
       if (get(GraphQLSchema.resolvers, `Query.${Utils.camelCaseify(Utils.pluralize(typeName))}`)) {
@@ -127,13 +133,13 @@ export const generateGraphQLQueries = fileName => {
           typeName,
           fragmentName,
         });
-        fs.appendFileSync(fd, multiQueryString + '\n');
+        fsAsync.appendFileSync(fd, multiQueryString + '\n');
       }
     });
   } catch (err) {
     console.log(err);
   } finally {
-    if (fd !== undefined) fs.closeSync(fd);
+    if (fd !== undefined) fsAsync.closeSync(fd);
   }
 };
 

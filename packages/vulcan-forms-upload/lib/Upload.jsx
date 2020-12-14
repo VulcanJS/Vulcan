@@ -16,7 +16,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 import set from 'lodash/set';
 
 registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
@@ -302,12 +301,12 @@ class Upload extends PureComponent {
                   <div {...getRootProps()} style={styles}>
                     <input {...getInputProps()} />
                     <div>
-                      <FormattedMessage id="upload.prompt" />
+                      <Components.FormattedMessage id="upload.prompt" />
                     </div>
                     {uploading && (
                       <div className="upload-uploading">
                         <span>
-                          <FormattedMessage id="upload.uploading" />
+                          <Components.FormattedMessage id="upload.uploading" />
                         </span>
                       </div>
                     )}

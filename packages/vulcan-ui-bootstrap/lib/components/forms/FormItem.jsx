@@ -34,11 +34,7 @@ const FormItem = props => {
         {beforeInput}
         {innerComponent}
         {afterInput}
-        {description && (
-          <Form.Text>
-            <div dangerouslySetInnerHTML={{ __html: description }} />
-          </Form.Text>
-        )}
+        {description && <Components.FormDescription {...props} />}
       </Form.Group>
     );
   } else if (layout === 'vertical') {
@@ -52,11 +48,7 @@ const FormItem = props => {
             {innerComponent}
             {afterInput}
           </div>
-          {description && (
-            <Form.Text>
-              <div dangerouslySetInnerHTML={{ __html: description }} />
-            </Form.Text>
-          )}
+          {description && <Components.FormDescription {...props} />}
         </div>
       </Form.Group>
     );
@@ -69,11 +61,7 @@ const FormItem = props => {
           {beforeInput}
           {innerComponent}
           {afterInput}
-          {description && (
-            <Form.Text>
-              <div dangerouslySetInnerHTML={{ __html: description }} />
-            </Form.Text>
-          )}
+          {description && <Components.FormDescription {...props} />}
         </Col>
       </Form.Group>
     );

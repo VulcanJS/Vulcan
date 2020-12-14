@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { registerComponent } from 'meteor/vulcan:lib';
+import { Components, registerComponent } from 'meteor/vulcan:lib';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { LinkContainer } from 'react-router-bootstrap';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 /*
 
@@ -40,7 +39,7 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
   if (component) {
     menuComponent = React.cloneElement(component, componentProps);
   } else if (labelId) {
-    menuComponent = <FormattedMessage id={labelId} />;
+    menuComponent = <Components.FormattedMessage id={labelId} />;
   } else {
     menuComponent = <span>{label}</span>;
   }
@@ -89,7 +88,7 @@ const BootstrapDropdown = ({ label, labelId, trigger, menuItems, menuContents, v
     } else {
       // else default to DropdownButton
       return (
-        <DropdownButton {...buttonProps} title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
+        <DropdownButton {...buttonProps} title={labelId ? <Components.FormattedMessage id={labelId} /> : label} {...dropdownProps}>
           {menuBody}
         </DropdownButton>
       );

@@ -153,11 +153,14 @@ Users.canDo = (user, actionOrActions) => {
 Users.owns = function(user, document) {
   try {
     if (!!document.userId) {
-      // case 1: document is a post or a comment, use userId to check
+      // case 1: use userId to check
       return user._id === document.userId;
-    } else {
-      // case 2: document is a user, use _id or slug to check
-      return document.slug ? user.slug === document.slug : user._id === document._id;
+    } else if (document.user) {
+      // case 2: use user._id to check
+      return user._id === document.user._id;
+    }else {
+      // case 3: document is a user, use _id to check
+      return user._id === document._id;
     }
   } catch (e) {
     return false; // user not logged in

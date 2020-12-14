@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import moment from 'moment';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const isEmptyValue = value =>
   typeof value === 'undefined' ||
@@ -129,7 +128,7 @@ class DateComponent2 extends PureComponent {
         <div style={{ display: 'flex' }}>
           <div>
             <label>
-              <FormattedMessage id="forms.month" />
+              <Components.FormattedMessage id="forms.month" />
             </label>
             <Components.FormComponentSelect
               inputProperties={monthProperties}
@@ -138,13 +137,13 @@ class DateComponent2 extends PureComponent {
           </div>
           <div style={{ marginLeft: 10, width: 60 }}>
             <label>
-              <FormattedMessage id="forms.day" />
+              <Components.FormattedMessage id="forms.day" />
             </label>
             <Components.FormComponentText inputProperties={dayProperties} />
           </div>
           <div style={{ marginLeft: 10, width: 80 }}>
             <label>
-              <FormattedMessage id="forms.year" />
+              <Components.FormattedMessage id="forms.year" />
             </label>
             <Components.FormComponentText inputProperties={yearProperties} />
           </div>

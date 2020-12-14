@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
+import { intlShape } from 'meteor/vulcan:i18n';
 
 const NewButton = ({ collection, size, label, style = 'primary', formProps, ...props }, { intl }) => (
   <Components.ModalTrigger
@@ -8,7 +8,7 @@ const NewButton = ({ collection, size, label, style = 'primary', formProps, ...p
     title={label || intl.formatMessage({ id: 'datatable.new' })}
     component={
       <Components.Button variant={style} size={size}>
-       {label || <FormattedMessage id="datatable.new" />}
+       {label || <Components.FormattedMessage id="datatable.new" />}
       </Components.Button>
     }
   >

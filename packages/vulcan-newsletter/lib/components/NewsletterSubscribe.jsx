@@ -1,7 +1,6 @@
 import { Components, registerComponent, withMutation, withMessages } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends PureComponent {
@@ -44,7 +43,7 @@ class NewsletterSubscribe extends PureComponent {
               onClick={this.subscribeUnsubscribe}
               variant="primary"
             >
-              <FormattedMessage id={this.isSubscribed() ? 'newsletter.unsubscribe' : 'newsletter.subscribe'}/>
+              <Components.FormattedMessage id={this.isSubscribed() ? 'newsletter.unsubscribe' : 'newsletter.subscribe'}/>
             </Components.Button>
         </div>
       </div>
