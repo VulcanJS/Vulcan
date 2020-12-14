@@ -87,11 +87,11 @@ const UploadInner = props => {
   const UploadImage = getComponent(options.uploadImageComponentName || 'UploadImage');
 
   return (
-    <FormControl component="fieldset" fullWidth={true} className={classes.root}>
-      <FormLabel component="legend" className={classes.label}>
+    <FormControlLayout component="fieldset" fullWidth={true} className={classes.root}>
+      <label component="legend" className={classes.label}>
         {label}
-      </FormLabel>
-      {help && <FormHelperText>{help}</FormHelperText>}
+      </label>
+      {help && <FormHelper>{help}</FormHelper>}
       <div className={classes.uploadField}>
         {disabled && !enableMultiple ? null : (
           <Dropzone
@@ -141,7 +141,7 @@ const UploadInner = props => {
           </div>
         )}
       </div>
-    </FormControl>
+    </FormControlLayout>
   );
 };
 
