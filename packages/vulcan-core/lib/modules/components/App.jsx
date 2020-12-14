@@ -74,6 +74,7 @@ class App extends PureComponent {
     this.state = {
       locale: {
         id: locale.id,
+        rtl: locale.rtl ?? false,
         method: locale.method,
         loading: false,
         strings: merge({}, loadedStrings, bundledStrings),
@@ -137,12 +138,25 @@ class App extends PureComponent {
 
     // if this is a dynamic locale, fetch its data from the server
     if (localeObject.dynamic) {
-      this.setState({ locale: { ...this.state.locale, loading: true } });
+      this.setState({ locale: { ...this.state.locale, loading: true, rtl: localeObject?.rtl ?? false } });
       localeStrings = await this.loadLocaleStrings(localeId);
     } else {
       localeStrings = getStrings(localeId);
     }
-    this.setState({ locale: { ...this.state.locale, loading: false, id: localeId, strings: localeStrings } });
+    // before removing the loading we have to change the rtl class on HTML tag if it exists
+    if (document && typeof document.getElementsByTagName === "function" && document.getElementsByTagName("html")) {
+      const htmlTag = document.getElementsByTagName("html");
+      if (htmlTag && htmlTag.length === 1) {
+        // change in locale didn't change the html lang as well, which is fixed by this PR
+        htmlTag[0].lang = localeId;
+        if (localeObject?.rtl === true) {
+          htmlTag[0].classList.add("rtl")
+        } else {
+          htmlTag[0].classList.remove("rtl")
+        }
+      }
+    }
+    this.setState({ locale: { ...this.state.locale, loading: false, id: localeId, rtl: localeObject?.rtl ?? false, strings: localeStrings } });
 
     cookies.remove('locale', { path: '/' });
     cookies.set('locale', localeId, { path: '/' });

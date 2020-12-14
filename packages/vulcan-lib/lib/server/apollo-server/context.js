@@ -19,6 +19,7 @@ import { GraphQLSchema } from '../graphql/index.js';
 import _merge from 'lodash/merge';
 import { getUser } from 'meteor/apollo';
 import { getHeaderLocale } from '../intl.js';
+import { getLocale } from '../../modules/intl.js';
 import { getSetting } from '../../modules/settings.js';
 import { WebApp } from 'meteor/webapp';
 
@@ -116,12 +117,17 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
     }
 
     context.locale = getHeaderLocale(headers, context.currentUser && context.currentUser.locale);
+    const locale = getLocale(context.locale);
 
     // see https://forums.meteor.com/t/can-i-edit-html-tag-in-meteor/5867/7
     WebApp.addHtmlAttributeHook(function() {
-      return {
-        lang: context.locale,
+      let htmlAttributes = {
+        lang: context.locale
       };
+      if (locale?.rtl === true) {
+        htmlAttributes.class = 'rtl';
+      }
+      return htmlAttributes;
     });
 
     return context;
