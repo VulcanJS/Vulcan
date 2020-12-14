@@ -126,6 +126,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
       };
       if (locale?.rtl === true) {
         htmlAttributes.class = 'rtl';
+      } else {
+        htmlAttributes.class = 'ltr';
       }
       return htmlAttributes;
     });
