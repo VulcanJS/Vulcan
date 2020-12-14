@@ -15,6 +15,8 @@ import { withRouter } from 'react-router';
 import React, { Component } from 'react';
 import { Errors } from '../modules/errors.js';
 
+const getMessage = error => error.message || error.errorMessage;
+
 class ErrorCatcher extends Component {
   state = {
     error: null,
@@ -25,7 +27,7 @@ class ErrorCatcher extends Component {
     const { sourceVersion } = siteData;
     this.setState({ error });
     Errors.log({
-      message: error.message,
+      message: getMessage(error),
       error,
       details: { ...errorInfo, sourceVersion },
       currentUser,
@@ -47,15 +49,15 @@ class ErrorCatcher extends Component {
 
   render() {
     const { error } = this.state;
-    return error ? <Components.ErrorCatcherContents error={error} /> : this.props.children;
+    return error ? <Components.ErrorCatcherContents error={error} message={getMessage(error)} /> : this.props.children;
   }
 }
 
 registerComponent('ErrorCatcher', ErrorCatcher, withCurrentUser, withSiteData, withRouter);
 
-const ErrorCatcherContents = ({ error }) => (
+const ErrorCatcherContents = ({ error, message }) => (
   <div className="error-catcher">
-    <Components.Flash message={{ id: 'errors.generic_report', properties: { errorMessage: error.message } }} />
+    <Components.Flash message={{ id: 'errors.generic_report', message, properties: error }} />
   </div>
 );
 
