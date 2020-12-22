@@ -129,7 +129,7 @@ addStrings('es', {
   'app.powered_by': 'Construido con VulcanJS',
   'app.or': 'O',
   'app.noPermission': 'Lo siento, no tiene permiso para hacer esto en este momento.',
-  'app.operation_not_allowed': 'Lo sentimos, no tiene los derechos para realizar la operación “{value}”',
+  'app.operation_not_allowed': 'Lo sentimos, no tiene los derechos para realizar la operación “{operationName}”',
   'app.document_not_found': 'Documento no encontrado (id: {value})',
   'app.disallowed_property_detected': 'Propiedad no permitida detectada: {value}',
   'app.something_bad_happened': 'Algo malo pasó...',

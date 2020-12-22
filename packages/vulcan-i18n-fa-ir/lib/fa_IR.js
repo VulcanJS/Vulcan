@@ -133,7 +133,7 @@ addStrings('fa-IR', {
   'app.or': 'یا',
   'app.noPermission': 'متاسفانه شما اکنون دسترسی به انجام اینکار را ندارید.',
   'app.operation_not_allowed':
-    'متاسفانه شما اجازه اجرای این درخواست را ندارید: "{value}"',
+    'متاسفانه شما اجازه اجرای این درخواست را ندارید: "{operationName}"',
   'app.document_not_found': 'سند یافت نشد (شناسه: {value})',
   'app.disallowed_property_detected': 'Disallowed property detected: {value}',
   'app.something_bad_happened': 'اتفاق بدی افتاد ...',
