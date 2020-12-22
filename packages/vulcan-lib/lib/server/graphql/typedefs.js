@@ -4,7 +4,7 @@
 
 
 // schema generation
-const generateQueryType = (queries = []) => 
+const generateQueryType = (queries = []) =>
   queries.length === 0
   ? ''
   : `type Query {
@@ -23,7 +23,7 @@ ${queries
 }
   `;
 
-const generateMutationType = (mutations = []) => 
+const generateMutationType = (mutations = []) =>
   mutations.length === 0
   ? ''
   : `type Mutation {
@@ -52,26 +52,27 @@ scalar Date
 
 input String_Selector {
   _eq: String
-  #_gt: String
-  #_gte: String
-  #_ilike: String
+  _gt: String
+  _gte: String
   _in: [String!]
+  _nin: [String!]
   _is_null: Boolean
   _like: String
-  #_lt: String
-  #_lte: String
-  #_neq: String
+  _lt: String
+  _lte: String
+  _neq: String
+  #_ilike: String
   #_nilike: String
-  #_nin: [String!]
   #_nlike: String
-  #_nsimilar: String
   #_similar: String
+  #_nsimilar: String
 }
 
 input String_Array_Selector {
   _in: [String!]
+  _nin: [String!]
   _contains: String
-  # _contains_all: [String_Selector]
+  _contains_all: [String_Selector]
 }
 
 input Int_Selector {
@@ -79,16 +80,18 @@ input Int_Selector {
   _gt: Int
   _gte: Int
   _in: [Int!]
-  #_is_null: Boolean
+  _nin: [Int!]
+  _is_null: Boolean
   _lt: Int
   _lte: Int
-  #_neq: Int
-  #_nin: [Int!]
+  _neq: Int
 }
 
 input Int_Array_Selector {
-  contains: Int_Selector
-  # contains_all: [Int_Selector]
+  _in: [Int!]
+  _nin: [Int!]
+  _contains: Int_Selector
+  _contains_all: [Int_Selector]
 }
 
 input Float_Selector {
@@ -96,26 +99,27 @@ input Float_Selector {
   _gt: Float
   _gte: Float
   _in: [Float!]
-  #_is_null: Boolean
+  _nin: [Float!]
+  _is_null: Boolean
   _lt: Float
   _lte: Float
-  #_neq: Float
-  #_nin: [Float!]
+  _neq: Float
 }
 
 input Float_Array_Selector {
-  contains: Float_Selector
-  # contains_all: [Float_Selector]
+  _in: [Int!]
+  _nin: [Int!]
+  _contains: Float_Selector
+  _contains_all: [Float_Selector]
 }
 
 input Boolean_Selector {
   _eq: Boolean
-  #_neq: Boolean
+  _neq: Boolean
 }
 
 input Boolean_Array_Selector {
-  contains: Boolean_Selector
-  # contains_all: [Boolean_Selector]
+  _contains: Boolean_Selector
 }
 
 input Date_Selector {
@@ -123,16 +127,16 @@ input Date_Selector {
   _gt: Date
   _gte: Date
   _in: [Date!]
-  #_is_null: Boolean
+  _nin: [Date!]
+  _is_null: Boolean
   _lt: Date
   _lte: Date
-  #_neq: Date
-  #_nin: [Date!]
+  _neq: Date
 }
 
 input Date_Array_Selector {
-  contains: Date_Selector
-  # contains_all: [Date_Selector]
+  _contains: Date_Selector
+  _contains_all: [Date_Selector]
 }
 
 # column ordering options

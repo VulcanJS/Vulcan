@@ -6,7 +6,7 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import escapeStringRegexp from 'escape-string-regexp';
 import merge from 'lodash/merge';
-import { isEmptyOrUndefined } from './utils';
+import { Utils } from './utils';
 
 import { getSetting } from './settings.js';
 // convert GraphQL selector into Mongo-compatible selector
@@ -46,6 +46,7 @@ const conversionTable = {
   _is_null: value => ({ $exists: !value }),
   _is: value => ({ $elemMatch: { $eq: value } }),
   _contains: value => ({ $elemMatch: { $eq: value } }),
+  _contains_all: '$all',
   asc: 1,
   desc: -1,
   _like: value => ({
@@ -74,21 +75,21 @@ export const filterFunction = async (collection, input = {}, context) => {
   const schema = collection.simpleSchema()._schema;
 
   /*
-  
+
     Convert GraphQL expression into MongoDB expression, for example
-  
+
     { fieldName: { operator: value } }
-  
+
     { title: { _in: ["foo", "bar"] } }
-  
+
     to:
-  
+
     { title: { $in: ["foo", "bar"] } }
-  
+
     or (intl fields):
-  
+
     { title_intl.value: { $in: ["foo", "bar"] } }
-  
+
     */
   const convertExpression = fieldExpression => {
     const [fieldName] = Object.keys(fieldExpression);
@@ -96,7 +97,7 @@ export const filterFunction = async (collection, input = {}, context) => {
     const mongoExpression = {};
     operators.forEach(operator => {
       const value = fieldExpression[fieldName][operator];
-      if (isEmptyOrUndefined(value)) {
+      if (Utils.isEmptyOrUndefined(value)) {
         throw new Error(`Detected empty filter value for field “${fieldName}” with operator “${operator}”`);
       }
       const mongoOperator = conversionTable[operator];

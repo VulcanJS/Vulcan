@@ -579,7 +579,6 @@ Utils.getSchemaFieldAllowedValues = schemaFieldOptionsArray => {
  */
 Utils.getFieldType = field => get(field, 'type.definitions.0.type');
 
-
 /**
  * Convert an array of field names into a Mongo fields specifier
  * @param {Array} fieldsArray
@@ -593,10 +592,13 @@ Utils.arrayToFields = fieldsArray => {
   );
 };
 
-export const isEmptyOrUndefined = value =>
+Utils.isEmptyOrUndefined = value =>
   typeof value === 'undefined' ||
   value === null ||
   value === '' ||
-  (typeof value === 'object' && isEmpty(value) && !(value instanceof Date));
-
-Utils.isEmptyOrUndefined = isEmptyOrUndefined;
+  (
+    typeof value === 'object' &&
+    isEmpty(value) &&
+    !(value instanceof Date) &&
+    !(value instanceof RegExp)
+  );
