@@ -74,6 +74,30 @@ describe.only('vulcan:lib/mongoParams', function () {
           type: Number,
           canRead: ['admins'],
         },
+        scores: {
+          type: Array,
+          canRead: ['admins'],
+        },
+        'scores.$': {
+          type: Number,
+          canRead: ['admins'],
+        },
+        forcesOfFriends: {
+          type: Array,
+          canRead: ['admins'],
+        },
+        'forcesOfFriends.$': {
+          type: Number,
+          canRead: ['admins'],
+        },
+        birthdaysOfFriends: {
+          type: Array,
+          canRead: ['admins'],
+        },
+        'birthdaysOfFriends.$': {
+          type: Number,
+          canRead: ['admins'],
+        },
       },
       results: [{
         _id: "1", name: 'Han', age: 140, withTheForce: false,

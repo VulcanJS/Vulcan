@@ -595,7 +595,7 @@ Utils.arrayToFields = fieldsArray => {
 Utils.isEmptyOrUndefined = value =>
   typeof value === 'undefined' ||
   value === null ||
-  value === '' ||
+  //value === '' ||
   (
     typeof value === 'object' &&
     isEmpty(value) &&

@@ -155,7 +155,7 @@ describe('vulcan:lib/utils', function () {
       expect(result).toEqual(false);
     })
 
-    it('reports empty for empty string values', () => {
+    it('reports not empty for string values of zero length', () => {
       const result = Utils.isEmptyOrUndefined('');
       expect(result).toEqual(true);
     })
