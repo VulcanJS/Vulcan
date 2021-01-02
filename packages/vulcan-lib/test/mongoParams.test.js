@@ -7,7 +7,7 @@ const test = it;
 const mayTheFourth = new Date('1977-05-04T22:00:00');
 const summerSolstice = new Date('1972-06-20T12:41:00');
 
-describe.only('vulcan:lib/mongoParams', function () {
+describe('vulcan:lib/mongoParams', function () {
 
   let collection;
 
@@ -47,30 +47,6 @@ describe.only('vulcan:lib/mongoParams', function () {
           canRead: ['admins'],
         },
         'agesOfFriends.$': {
-          type: Number,
-          canRead: ['admins'],
-        },
-        scores: {
-          type: Array,
-          canRead: ['admins'],
-        },
-        'scores.$': {
-          type: Number,
-          canRead: ['admins'],
-        },
-        forcesOfFriends: {
-          type: Array,
-          canRead: ['admins'],
-        },
-        'forcesOfFriends.$': {
-          type: Number,
-          canRead: ['admins'],
-        },
-        birthdaysOfFriends: {
-          type: Array,
-          canRead: ['admins'],
-        },
-        'birthdaysOfFriends.$': {
           type: Number,
           canRead: ['admins'],
         },
