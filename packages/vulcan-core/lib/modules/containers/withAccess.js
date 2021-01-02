@@ -3,7 +3,7 @@ import { Components } from 'meteor/vulcan:lib';
 import withCurrentUser from './currentUser';
 import { withRouter } from 'react-router';
 import Users from 'meteor/vulcan:users';
-import withMessages from './withMessages.js';
+import { withMessages } from './withMessages.js';
 
 /**
  * withAccess - description

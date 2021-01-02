@@ -3,7 +3,7 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import { useCurrentUser } from '../containers/currentUser';
 import Users from 'meteor/vulcan:users';
 import { useHistory } from 'react-router-dom';
-import withMessages from '../containers/withMessages';
+import { withMessages } from '../containers/withMessages';
 import { intlShape } from 'meteor/vulcan:i18n';
 
 const AccessControl = ({ currentRoute, children, flash }, { intl }) => {

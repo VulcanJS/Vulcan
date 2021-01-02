@@ -13,6 +13,7 @@ export { default as Dummy } from './components/Dummy.jsx';
 export { default as DynamicLoading } from './components/DynamicLoading.jsx';
 export { default as Error404 } from './components/Error404.jsx';
 export { default as Flash } from './components/Flash.jsx';
+export { default as FlashMessages } from './components/FlashMessages.jsx';
 export { default as HeadTags } from './components/HeadTags.jsx';
 export { default as HelloWorld } from './components/HelloWorld.jsx';
 export { default as Icon } from './components/Icon.jsx';
@@ -24,10 +25,10 @@ export { default as ScrollToTop } from './components/ScrollToTop.jsx';
 export { default as ShowIf } from './components/ShowIf.jsx';
 export { default as Welcome } from './components/Welcome.jsx';
 export { default as VerticalMenuLayout } from './components/VerticalMenuLayout/VerticalMenuLayout.jsx';
-export * from './components/PaginatedList';
+export * from './components/PaginatedList/index';
 
 export { default as withAccess } from './containers/withAccess.js';
-export { default as withMessages } from './containers/withMessages.js';
+export { withMessages, useMessages } from './containers/withMessages.js';
 export { withMulti, useMulti } from './containers/multi.js';
 export { withMulti2, useMulti2 } from './containers/multi2.js';
 export { withSingle, useSingle } from './containers/single.js';
@@ -46,9 +47,7 @@ export { withSiteData, useSiteData } from './containers/siteData.js';
 
 export * from './decorators';
 
-export { default as withComponents } from './containers/withComponents';
-
-export { default as MessageContext } from './messages.js';
+export { default as withComponents } from './containers/withComponents.js';
 
 // OpenCRUD backwards compatibility
 export { default as withNew } from './containers/create.js';
@@ -57,4 +56,4 @@ export { default as withRemove } from './containers/delete.js';
 export { default as withList } from './containers/multi.js';
 export { default as withDocument } from './containers/single.js';
 
-export * from './menu';
+export * from './menu.js';
