@@ -9,7 +9,7 @@ export const devOptions = {
   item: { accessGroups: ['guests', 'members', 'admins'] },
   menuItem: { groups: ['guests', 'members', 'admins'] },
   layoutName: 'VulcanBackofficeLayout'
-}
+};
 
 const defaultCollectionOptions = {
   list: { accessGroups: ['admins'], accessRedirect: '/' },

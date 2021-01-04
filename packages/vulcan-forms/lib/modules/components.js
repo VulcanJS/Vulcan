@@ -16,4 +16,3 @@ import '../components/Form.jsx';
 import '../components/FormLayout.jsx';
 import '../components/FormComponentLoader.jsx';
 import '../components/FormOptionLabel.jsx';
-import '../components/FormDescription.jsx';
