@@ -102,7 +102,7 @@ const FormInput = createReactClass({
   componentDidUpdate(prevProps, prevState) {
     if (this.props.value !== prevProps.value) {
       this.handleChangeDebounced.cancel();
-      this.setState({ value: this.props.value });
+      this.setState({ value: String(this.props.value) });
     }
   },
 
@@ -112,6 +112,7 @@ const FormInput = createReactClass({
   },
 
   changeValue: function (value) {
+    value = String(value);
     if (this.props.scrubValue) {
       value = this.props.scrubValue(value, this.props);
     }

@@ -18,6 +18,11 @@ export const styles = theme => ({
       flexGrow: 1,
     }
   },
+  
+  charCount: {
+    whiteSpace: 'nowrap',
+    marginLeft: theme.spacing(1),
+  },
 
 });
 
@@ -54,7 +59,7 @@ const FormHelper = (props) => {
       {
         showCharsRemaining &&
 
-        <span className={charsRemaining < 0 ? classes.error : null}>
+        <span className={classNames(classes.charCount, charsRemaining < 0 ? classes.error : null)}>
           {charsCount} / {max}
         </span>
       }
