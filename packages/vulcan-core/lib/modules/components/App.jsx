@@ -1,15 +1,4 @@
-import {
-  Components,
-  registerComponent,
-  getSetting,
-  Strings,
-  runCallbacks,
-  detectLocale,
-  hasIntlFields,
-  Routes,
-  getLocale,
-  getStrings,
-} from 'meteor/vulcan:lib';
+import { Components, registerComponent, Strings, runCallbacks, hasIntlFields, Routes, getLocale, getStrings } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape, IntlContext } from 'meteor/vulcan:i18n';
@@ -22,7 +11,6 @@ import { withCookies } from 'react-cookie';
 import moment from 'moment';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import MessageContext from '../messages.js';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 
@@ -79,47 +67,10 @@ class App extends PureComponent {
         loading: false,
         strings: merge({}, loadedStrings, bundledStrings),
       },
-      messages: [],
     };
 
     moment.locale(locale.id);
   }
-
-  /*
-
-  Clear messages on route change
-  See https://stackoverflow.com/a/45373907/649299
-
-  */
-  UNSAFE_componentWillMount() {
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.clear();
-    });
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  /* 
-  
-  Show a flash message
-  
-  */
-  flash = message => {
-    this.setState({
-      messages: [...this.state.messages, message],
-    });
-  };
-
-  /*
-
-  Clear all flash messages
-
-  */
-  clear = () => {
-    this.setState({ messages: [] });
-  };
 
   componentDidMount = async () => {
     runCallbacks('app.mounted', this.props);
@@ -165,7 +116,10 @@ class App extends PureComponent {
     cookies.set('locale', localeId, { path: '/' });
     // if user is logged in, change their `locale` profile property
     if (currentUser) {
-      await updateUser({ selector: { documentId: currentUser._id }, data: { locale: localeId } });
+      await updateUser({
+        selector: { documentId: currentUser._id },
+        data: { locale: localeId },
+      });
     }
     moment.locale(localeId);
     if (hasIntlFields) {
@@ -177,7 +131,7 @@ class App extends PureComponent {
 
   Load a locale by triggering the refetch() method passed down by
   withLocalData HoC
-  
+
   */
   loadLocaleStrings = async localeId => {
     const result = await this.props.locale.refetch({ localeId });
@@ -193,7 +147,7 @@ class App extends PureComponent {
     };
   }
 
-  UNSAFE_componentWillUpdate(nextProps) {
+  componentDidUpdate(nextProps) {
     const currentUser = this.props.currentUser;
     const nextUser = nextProps.currentUser;
     if (nextUser && (!currentUser || currentUser._id !== nextUser._id)) {
@@ -203,8 +157,6 @@ class App extends PureComponent {
 
   render() {
     const routeNames = Object.keys(Routes);
-    const { flash } = this;
-    const { messages } = this.state;
     const localeId = this.state.locale.id;
     //const LayoutComponent = currentRoute.layoutName ? Components[currentRoute.layoutName] : Components.Layout;
 
@@ -218,35 +170,33 @@ class App extends PureComponent {
     return (
       <IntlProvider {...intlObject}>
         <IntlContext.Provider value={intlObject}>
-          <MessageContext.Provider value={{ messages, flash }}>
-            <Components.ScrollToTop />
-            <div className={`locale-${localeId}`}>
-              <Components.HeadTags />
-              {this.props.currentUserLoading ? (
-                <div className="app-initial-loading">
-                  <Components.Loading />
-                </div>
-              ) : routeNames.length ? (
-                <Switch>
-                  {routeNames.map(key => (
-                    // NOTE: if we want the exact props to be taken into account
-                    // we have to pass it to the RouteWithLayout, not the underlying Route,
-                    // because it is the direct child of Switch
-                    <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
-                  ))}
-                  <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404' }} component={Components.Error404} />
-                  {/* <Route component={Components.Error404} />  */}
-                </Switch>
-              ) : (
-                <Components.Welcome />
-              )}
-              {this.state.locale.loading && (
-                <div className="app-secondary-loading">
-                  <Components.Loading />
-                </div>
-              )}
-            </div>
-          </MessageContext.Provider>
+          <Components.ScrollToTop />
+          <div className={`locale-${localeId}`}>
+            <Components.HeadTags />
+            {this.props.currentUserLoading ? (
+              <div className="app-initial-loading">
+                <Components.Loading />
+              </div>
+            ) : routeNames.length ? (
+              <Switch>
+                {routeNames.map(key => (
+                  // NOTE: if we want the exact props to be taken into account
+                  // we have to pass it to the RouteWithLayout, not the underlying Route,
+                  // because it is the direct child of Switch
+                  <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
+                ))}
+                <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404' }} component={Components.Error404} />
+                {/* <Route component={Components.Error404} />  */}
+              </Switch>
+            ) : (
+              <Components.Welcome />
+            )}
+            {this.state.locale.loading && (
+              <div className="app-secondary-loading">
+                <Components.Loading />
+              </div>
+            )}
+          </div>
         </IntlContext.Provider>
       </IntlProvider>
     );
