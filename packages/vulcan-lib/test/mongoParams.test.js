@@ -7,7 +7,7 @@ const test = it;
 const mayTheFourth = new Date('1977-05-04T22:00:00');
 const summerSolstice = new Date('1972-06-20T12:41:00');
 
-describe.only('vulcan:lib/mongoParams', function () {
+describe('vulcan:lib/mongoParams', function () {
 
   let collection;
 
