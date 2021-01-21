@@ -250,7 +250,7 @@ const TooltipButton = (props, { intl }) => {
 };
 
 TooltipButton.propTypes = {
-  title: PropTypes.node,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleId: PropTypes.string,
   titleValues: PropTypes.object,
   label: PropTypes.node,
@@ -273,6 +273,8 @@ TooltipButton.propTypes = {
   children: PropTypes.node,
   cursor: PropTypes.string,
   TooltipProps: PropTypes.object,
+  variant: PropTypes.oneOf(['contained', 'outlined', 'text']),
+  color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
 };
 
 TooltipButton.defaultProps = {
@@ -288,3 +290,5 @@ TooltipButton.contextTypes = {
 TooltipButton.displayName = 'TooltipButton';
 
 registerComponent('TooltipButton', TooltipButton, [withStyles, styles], withTheme);
+
+export default TooltipButton;
