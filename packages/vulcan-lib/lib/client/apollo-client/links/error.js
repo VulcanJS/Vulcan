@@ -10,7 +10,7 @@ const errorLink = onError(error => {
     });
   if (networkError) {
     // eslint-disable-next-line no-console
-    console.log(`[Network error]: ${networkError}`);
+    console.log(`[${networkError.statusCode} ${networkError.response?.statusText}]: ${networkError.message}`);
   }
 });
 

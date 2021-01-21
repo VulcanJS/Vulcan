@@ -17,6 +17,7 @@ import './core/Avatar';
 import './core/Card';
 import './core/Datatable';
 import './core/EditButton';
+import './core/Flash';
 import './core/Loading';
 import './core/NewButton';
 
