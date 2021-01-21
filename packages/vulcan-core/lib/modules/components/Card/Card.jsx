@@ -146,3 +146,5 @@ registerComponent({
   component: Card,
   hocs: [withComponents],
 });
+
+export default Card;
