@@ -375,7 +375,6 @@ class SmartForm extends Component {
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
-      document: this.state.initialDocument,
       name: fieldName,
       datatype: fieldSchema.type,
       layout: this.props.layout,
@@ -401,6 +400,7 @@ class SmartForm extends Component {
     // }
 
     const document = this.getDocument();
+    field.document = document;
 
     // internationalize field options labels
     if (field.options && Array.isArray(field.options)) {
