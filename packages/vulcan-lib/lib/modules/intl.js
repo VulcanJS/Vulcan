@@ -37,7 +37,7 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
     message = defaultMessage;
   }
 
-  if (values && typeof values === 'object') {
+  if (values && typeof values === 'object' && typeof message === 'string') {
     message = pluralizeString(message, values);
     message = substituteStringValues(message, values);
   }
