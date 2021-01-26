@@ -132,6 +132,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
       return htmlAttributes;
     });
 
+    context = await runCallbacks({ name: 'graphql.context', iterator: context });
+
     return context;
   };
 
