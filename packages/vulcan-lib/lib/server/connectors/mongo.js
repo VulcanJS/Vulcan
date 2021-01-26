@@ -36,11 +36,7 @@ DatabaseConnectors.mongo = {
     values that should always apply. 
 
     */
-    const defaultInputObject = await filterFunction(
-      collection,
-      collection.options.defaultInput,
-      context
-    );
+    const defaultInputObject = await filterFunction(collection, collection.options.defaultInput, context);
     const currentInputObject = await filterFunction(collection, input, context);
     if (defaultInputObject.options.sort && currentInputObject.options.sort) {
       // for sort only, delete default sort instead of merging to avoid issue with
@@ -50,14 +46,14 @@ DatabaseConnectors.mongo = {
     const mergedInputObject = {
       selector: { ...defaultInputObject.selector, ...currentInputObject.selector },
       options: { ...defaultInputObject.options, ...currentInputObject.options },
-      filteredFields: currentInputObject.filteredFields || []
+      filteredFields: currentInputObject.filteredFields || [],
     };
 
     const { typeName } = collection.options;
     const finalInputObject = await runCallbacks({
       name: `${typeName.toLowerCase()}.connector.filter`,
       iterator: mergedInputObject,
-      properties: { collection, context }
+      properties: { collection, context },
     });
     return finalInputObject;
   },
