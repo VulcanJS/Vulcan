@@ -2,6 +2,7 @@ import { DatabaseConnectors } from '../connectors.js';
 import merge from 'lodash/merge';
 
 import { convertSelector, convertUniqueSelector, filterFunction } from '../../modules/mongoParams';
+import { runCallbacks } from '../../modules/index.js';
 
 /*
 
@@ -51,6 +52,13 @@ DatabaseConnectors.mongo = {
       options: { ...defaultInputObject.options, ...currentInputObject.options },
       filteredFields: currentInputObject.filteredFields || []
     };
-    return mergedInputObject;
+
+    const { typeName } = collection.options;
+    const finalInputObject = await runCallbacks({
+      name: `${typeName.toLowerCase()}.connector.filter`,
+      iterator: mergedInputObject,
+      properties: { collection, context }
+    });
+    return finalInputObject;
   },
 };
