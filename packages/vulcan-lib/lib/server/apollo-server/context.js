@@ -124,6 +124,8 @@ export const computeContextFromReq = (currentContext, customContextFromReq) => {
       };
     });
 
+    context = await runCallbacks({ name: 'graphql.context', iterator: context });
+
     return context;
   };
 
