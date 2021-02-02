@@ -9,7 +9,11 @@ function wrapWithMuiTheme(app, { context, apolloClient }) {
   const sheets = new ServerStyleSheets({ disableGeneration: true });
   context.sheetsRegistry = sheets;
 
-  return sheets.collect(<Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>);
+  return sheets.collect(
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
+  );
 }
 
 function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
@@ -22,7 +26,11 @@ function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
   // used to do for JSSProvider
   //const generateClassName = createGenerateClassName({ seed: '' });
 
-  return sheets.collect(<Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>);
+  return sheets.collect(
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
+  );
 }
 
 function injectJss(sink, { context }) {
