@@ -62,7 +62,10 @@ export const useMessages = (intl) => {
 
     flash: (message) => {
       message = normalizeMessage(message, intl);
-      messagesState({ messages: { $push: [message] } });
+      messagesState(state => {
+        state.messages.push(message);
+        return state;
+      });
     },
 
     dismissFlash: (_id) => {
