@@ -88,7 +88,7 @@ const FormInput = createReactClass({
       if (value !== this.props.value) {
         this.props.handleChange(value);
       }
-    }, 500);
+    }, 500, { leading: true });
 
     if (this.props.refFunction) {
       this.props.refFunction(this);
