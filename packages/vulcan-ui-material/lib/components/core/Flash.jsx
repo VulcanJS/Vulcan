@@ -84,7 +84,7 @@ const Flash = (props, context) => {
               ]}
     >
       <Alert onClose={handleClose}
-             severity={type}
+             severity={infoOrError}
              variant="filled"
              classes={{
                root: classes.alert,
