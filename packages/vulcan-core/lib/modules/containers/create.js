@@ -1,9 +1,9 @@
 /*
 
 Generic mutation wrapper to insert a new document in a collection and update
-a related query on the client with the new item and a new total item count. 
+a related query on the client with the new item and a new total item count.
 
-Sample mutation: 
+Sample mutation:
 
   mutation createMovie($data: CreateMovieData) {
     createMovie(data: $data) {
@@ -16,14 +16,14 @@ Sample mutation:
     }
   }
 
-Arguments: 
+Arguments:
 
   - data: the document to insert
 
 Child Props:
 
   - createMovie({ data })
-    
+
 */
 
 import React from 'react';
@@ -55,7 +55,7 @@ export const multiQueryUpdater = ({
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
-  const newDoc = data[resolverName].data;
+  const newDoc = data[resolverName]?.data;
   // get all the resolvers that match
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
   variablesList.forEach(async variables => {
