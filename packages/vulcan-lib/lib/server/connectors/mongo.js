@@ -2,6 +2,7 @@ import { DatabaseConnectors } from '../connectors.js';
 import merge from 'lodash/merge';
 
 import { convertSelector, convertUniqueSelector, filterFunction } from '../../modules/mongoParams';
+import { runCallbacks } from '../../modules/index.js';
 
 /*
 
@@ -35,11 +36,7 @@ DatabaseConnectors.mongo = {
     values that should always apply. 
 
     */
-    const defaultInputObject = await filterFunction(
-      collection,
-      collection.options.defaultInput,
-      context
-    );
+    const defaultInputObject = await filterFunction(collection, collection.options.defaultInput, context);
     const currentInputObject = await filterFunction(collection, input, context);
     if (defaultInputObject.options.sort && currentInputObject.options.sort) {
       // for sort only, delete default sort instead of merging to avoid issue with
@@ -49,8 +46,15 @@ DatabaseConnectors.mongo = {
     const mergedInputObject = {
       selector: { ...defaultInputObject.selector, ...currentInputObject.selector },
       options: { ...defaultInputObject.options, ...currentInputObject.options },
-      filteredFields: currentInputObject.filteredFields || []
+      filteredFields: currentInputObject.filteredFields || [],
     };
-    return mergedInputObject;
+
+    const { typeName } = collection.options;
+    const finalInputObject = await runCallbacks({
+      name: `${typeName.toLowerCase()}.connector.filter`,
+      iterator: mergedInputObject,
+      properties: { collection, context },
+    });
+    return finalInputObject;
   },
 };
