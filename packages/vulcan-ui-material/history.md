@@ -1,3 +1,8 @@
+1.16.0_3 / 2021-02-16
+=====================
+
+ * Theme provider now uses Components.ThemeProvider on the server side, similar to client side, in order to enable theming overrides in SSR.
+
 1.16.0_2 / 2020-11-16
 =====================
 
