@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.16.0_2
+# vulcan:ui-material 1.16.0_3
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
@@ -76,6 +76,49 @@ const theme = {
 You can use tooltipEnterDelay (or any other variable you define in utils) anywhere you include the withTheme HOC. See `/components/bonus/TooltipButton.jsx` for an example.
 
 You can use errorMessage (or any other style fragment you define in utils) anywhere you include the withStyles HOC. See `/components/accounts/Form.jsx` for an example.
+
+Material-ui uses context to provide the theme to all its components. By default, the entire app is wrapped with the following component to provide the current theme to the components underneath:
+
+```jsx
+const AppThemeProvider = ({ children }) => {
+  const theme = getCurrentTheme();
+  return (
+    <ThemeProvider theme={theme}>
+      <JssCleanup>{children}</JssCleanup>
+    </ThemeProvider>
+  );
+};
+```
+
+The theme provider is a component registered under `ThemeProvider` so you can replace it as you want with `replaceComponent` from the `vulcan:core` package.
+
+Its props are `apolloClient` (client & server) and `context` (server only, context similar to the graphql requests).
+
+### Example: dynamic theme
+
+Lets say your user schema has a field called "theme" that is a key to one of your registered themes. You can replace the `ThemeProvider` component to give you a dynamic theme as follows:
+
+```jsx
+import { ThemeProvider } from '@material-ui/core/styles';
+import { JssCleanup } from "meteor/vulcan:ui-material";
+import { replaceComponent } from "meteor/vulcan:core";
+import { useQuery } from "@apollo/client";
+
+const CustomThemeProvider = ({ children, apolloClient }) => {
+  const { currentUser } = useQuery(currentUserThemeQuery, { client: apolloClient });
+  const themeKey = currentUser?.theme || defaultThemeKey; // fallback in case of loading or error
+  const theme = getTheme(themeKey);
+  return (
+    <ThemeProvider theme={theme}>
+      <JssCleanup>{children}</JssCleanup>
+    </ThemeProvider>
+  );
+};
+
+replaceComponent("ThemeProvider", CustomThemeProvider);
+```
+
+This way the theme depends on the cache  and can update dynamically with the user setting. Note the option `client` given to `useQuery` because the ThemeProvider is higher in the react tree than the ApolloClientProvider, so we have to pass the Apollo client manually.
 
 ## Server Side Rendering (SSR)
 

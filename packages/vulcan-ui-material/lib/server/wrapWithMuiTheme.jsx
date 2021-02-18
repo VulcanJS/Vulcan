@@ -1,33 +1,24 @@
 import React from 'react';
-import { addCallback } from 'meteor/vulcan:core';
-import {
-  ServerStyleSheets,
-  ThemeProvider,
-} from '@material-ui/core/styles';
-import { getCurrentTheme } from '../modules/themes';
-import JssCleanup from '../components/theme/JssCleanup';
+import { addCallback, Components } from 'meteor/vulcan:core';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 
-function wrapWithMuiTheme(app, { context }) {
+function wrapWithMuiTheme(app, { context, apolloClient }) {
   // will spawn a StylesProvider automatically during render
   // replaces the manual setup of JSSProvider
   // @see https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/ServerStyleSheets/ServerStyleSheets.js
   const sheets = new ServerStyleSheets({ disableGeneration: true });
   context.sheetsRegistry = sheets;
 
-  const theme = getCurrentTheme();
-
   return sheets.collect(
-    <ThemeProvider theme={theme}>
-      <JssCleanup>{app}</JssCleanup>
-    </ThemeProvider>
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
   );
 }
 
-function wrapWithMuiStyleGenerator(app, { context }) {
+function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
   const sheets = new ServerStyleSheets();
   context.sheetsRegistry = sheets;
-
-  const theme = getCurrentTheme();
 
   // NOTE: The sheets.collect API does not allow to pass a seed
   // do we still need to force a specific seed?
@@ -36,9 +27,9 @@ function wrapWithMuiStyleGenerator(app, { context }) {
   //const generateClassName = createGenerateClassName({ seed: '' });
 
   return sheets.collect(
-    <ThemeProvider theme={theme}>
-      <JssCleanup>{app}</JssCleanup>
-    </ThemeProvider>
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
   );
 }
 
