@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import get from 'lodash/get';
 
 const FormSubmit = ({
   submitForm,
@@ -14,35 +13,13 @@ const FormSubmit = ({
   revertCallback,
   document,
   deleteDocument,
-  collection,
   collectionName,
   classes,
   currentUser,
 }, {
   isChanged,
   clearForm,
-}) => {
-
-  // Delete permission check
-  let canDelete = false;
-
-  if (Users.isAdmin(currentUser)) {
-    canDelete = true;
-  } else {
-    // new APIs
-    const permissionCheckDelete = get(collection, 'options.permissions.canDelete');
-    if (permissionCheckDelete) {
-      canDelete = Users.permissionCheck({
-        check: permissionCheckDelete,
-        user: currentUser,
-        document,
-        context: { Users },
-        operationName: 'delete',
-      });
-    }
-  }
-
-  return (
+}) => (
   <div className="form-submit">
     <Components.Button type="submit" variant="primary">
       {submitLabel ? submitLabel : <Components.FormattedMessage id="forms.submit" defaultMessage="Submit" />}
@@ -73,7 +50,12 @@ const FormSubmit = ({
       </a>
     ) : null}
   
-    {canDelete && deleteDocument ? (
+    { deleteDocument && Users.canDelete({
+        context: { Users },
+        user: currentUser,
+        document,
+        collectionName
+      }) ? (
       <div>
         <hr />
         <Components.Button variant="link" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
@@ -82,7 +64,7 @@ const FormSubmit = ({
       </div>
     ) : null}
   </div>
-)};
+);
 
 FormSubmit.propTypes = {
   submitLabel: PropTypes.node,
@@ -93,8 +75,7 @@ FormSubmit.propTypes = {
   document: PropTypes.object,
   deleteDocument: PropTypes.func,
   collectionName: PropTypes.string,
-  classes: PropTypes.object,
-  collection: PropTypes.object
+  classes: PropTypes.object
 };
 
 FormSubmit.contextTypes = {
