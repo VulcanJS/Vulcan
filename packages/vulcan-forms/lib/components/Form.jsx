@@ -1149,7 +1149,7 @@ class SmartForm extends Component {
   });
 
   getFormSubmitProps = () => {
-    const { submitLabel, cancelLabel, revertLabel, cancelCallback, revertCallback, collectionName } = this.props;
+    const { submitLabel, cancelLabel, revertLabel, cancelCallback, revertCallback, collection, collectionName } = this.props;
     const { currentValues, deletedValues, errors } = this.state;
     return {
       submitForm: this.submitForm,
@@ -1160,6 +1160,7 @@ class SmartForm extends Component {
       revertCallback,
       document: this.getDocument(),
       deleteDocument: (this.getFormType() === 'edit' && (this.props.showRemove && this.props.showDelete) && this.deleteDocument) || null,
+      collection,
       collectionName,
       currentValues,
       deletedValues,
