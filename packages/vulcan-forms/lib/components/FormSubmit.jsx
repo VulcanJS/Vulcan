@@ -51,7 +51,6 @@ const FormSubmit = ({
     ) : null}
   
     { deleteDocument && Users.canDelete({
-        context: { Users },
         user: currentUser,
         document,
         collectionName
