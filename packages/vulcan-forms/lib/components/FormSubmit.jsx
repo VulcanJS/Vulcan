@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components } from 'meteor/vulcan:core';
 import { registerComponent } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 
 const FormSubmit = ({
   submitForm,
@@ -14,6 +15,7 @@ const FormSubmit = ({
   deleteDocument,
   collectionName,
   classes,
+  currentUser,
 }, {
   isChanged,
   clearForm,
@@ -48,7 +50,11 @@ const FormSubmit = ({
       </a>
     ) : null}
   
-    {deleteDocument ? (
+    { deleteDocument && Users.canDelete({
+        user: currentUser,
+        document,
+        collectionName
+      }) ? (
       <div>
         <hr />
         <Components.Button variant="link" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link`}>
@@ -68,7 +74,7 @@ FormSubmit.propTypes = {
   document: PropTypes.object,
   deleteDocument: PropTypes.func,
   collectionName: PropTypes.string,
-  classes: PropTypes.object,
+  classes: PropTypes.object
 };
 
 FormSubmit.contextTypes = {
