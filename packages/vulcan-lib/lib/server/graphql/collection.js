@@ -2,8 +2,8 @@
  * Generates the GraphQL schema and
  * the resolvers and mutations for a Vulcan collectio
  */
-import { getDefaultResolvers } from '../default_resolvers_old';
-import { getDefaultMutations } from '../default_mutations_old';
+import { getDefaultResolvers } from '../default_resolvers';
+import { getDefaultMutations } from '../default_mutations';
 import { getSchemaFields } from './schemaFields';
 import {
   selectorInputTemplate,
