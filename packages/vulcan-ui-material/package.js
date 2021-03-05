@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@1.6');
 
-  api.use(['ecmascript', 'vulcan:core@=1.16.0', 'vulcan:accounts@=1.16.0', 'vulcan:forms@=1.16.0']);
+  api.use(['ecmascript', 'vulcan:core@=1.16.1', 'vulcan:accounts@=1.16.1', 'vulcan:forms@=1.16.1']);
 
   api.addFiles(['accounts.css', 'forms.css', 'en_US.js', 'fr_FR.js'], ['client', 'server']);
 

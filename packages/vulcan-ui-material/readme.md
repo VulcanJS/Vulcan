@@ -25,6 +25,7 @@ meteor npm install --save react-autosuggest@10.0.2
 meteor npm install --save autosuggest-highlight@3.1.1
 meteor npm install --save react-isolated-scroll@0.1.1
 meteor npm install --save react-keyboard-event-handler@1.5.4
+meteor npm install --save dompurify
 ```
 
 This package does not depend on `vulcan:ui-boostrap`, so you can remove it.

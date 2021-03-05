@@ -1,13 +1,11 @@
 Package.describe({
   name: 'vulcan:lib',
   summary: 'Vulcan libraries.',
-  version: '1.16.0',
+  version: '1.16.1',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(function(api) {
-  
-
   // note: if used, accounts-base should be loaded before vulcan:lib
   api.use('accounts-base', { weak: true });
 

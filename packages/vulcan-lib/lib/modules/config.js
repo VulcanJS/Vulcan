@@ -9,7 +9,7 @@ import SimpleSchema from 'simpl-schema';
 Vulcan = {};
 
 // eslint-disable-next-line no-undef
-Vulcan.VERSION = '1.16.0';
+Vulcan.VERSION = '1.16.1';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -61,7 +61,7 @@ export const additionalFieldKeys = [
 
   'apiOnly', // field should not be inserted in database
   'relation', // define a relation to another model
-  
+
   'intl', // set to `true` to make a field international
   'isIntlData', // marker for the actual schema fields that hold intl strings
   'intlId', // set an explicit i18n key for a field

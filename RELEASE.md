@@ -25,7 +25,6 @@ meteor npm run storybook
 - Update package.json version.
 
 ```sh
-npm version patch
 meteor npm run generate-changelog
 ```
 

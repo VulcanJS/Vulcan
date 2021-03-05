@@ -51,7 +51,7 @@
  * ThemeStyles: Fixed minor bugs
  * ModalTrigger: Now the trigger component is rendered using `instantiateComponent()`, the same as component props are rendered elsewhere
  
-1.16.0 / 2020-08-17
+1.16.1 / 2020-08-17
 ===================
 
  * Updated Material UI to version 4.11.0 and updated related packages to the latest version
