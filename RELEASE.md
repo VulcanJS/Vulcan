@@ -1,3 +1,5 @@
+# Release process
+
 ## Updating
 
 We try to respect semantic versioning as much as possible. Going from 1.13.1 to 1.13.2 should cause almost no breaking changes, except for packages version update, small tweaks, etc. Going from 1.13 to 1.14 could cause multiple breaking changes. Going from 1.x to 2.x is a full rework. 
@@ -21,8 +23,8 @@ meteor npm run storybook
 ```
 
 - Update packages versions in each package.
-- Update the CHANGELOG.md.
 - Update package.json version.
+- Update the CHANGELOG.md.
 
 ```sh
 meteor npm run generate-changelog
