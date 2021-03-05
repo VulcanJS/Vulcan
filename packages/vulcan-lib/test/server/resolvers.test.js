@@ -1,8 +1,8 @@
-import { createDummyCollection, isoCreateCollection } from 'meteor/vulcan:test';
+import { createDummyCollection /*isoCreateCollection*/ } from 'meteor/vulcan:test';
 //import { createCollection } from 'meteor/vulcan:lib';
 import Users from 'meteor/vulcan:users';
 import expect from 'expect';
-import { getNewDefaultResolvers } from '../../lib/server/default_resolvers2';
+import { getDefaultResolvers } from '../../lib/server/default_resolvers';
 import sinon from 'sinon';
 
 describe('vulcan:core/default_resolvers', function() {
@@ -23,12 +23,12 @@ describe('vulcan:core/default_resolvers', function() {
   const loggedInUser = { _id: 'foobar', groups: [], isAdmin: false };
   // eslint-disable-next-line no-unused-vars
   const adminUser = { _id: 'foobar', groups: [], isAdmin: true };
-  const getSingleResolver = () => getNewDefaultResolvers(resolversOptions).single.resolver;
-  const getMultiResolver = () => getNewDefaultResolvers(resolversOptions).multi.resolver;
+  const getSingleResolver = () => getDefaultResolvers(resolversOptions).single.resolver;
+  const getMultiResolver = () => getDefaultResolvers(resolversOptions).multi.resolver;
 
   describe('single', function() {
     it('defines the correct fields', function() {
-      const { single } = getNewDefaultResolvers(resolversOptions);
+      const { single } = getDefaultResolvers(resolversOptions);
       const { description, resolver } = single;
       expect(description).toBeDefined();
       expect(resolver).toBeDefined();
@@ -166,7 +166,7 @@ describe('vulcan:core/default_resolvers', function() {
 
   describe('multi', () => {
     it('defines the correct fields', function() {
-      const { multi } = getNewDefaultResolvers(resolversOptions);
+      const { multi } = getDefaultResolvers(resolversOptions);
       const { description, resolver } = multi;
       expect(description).toBeDefined();
       expect(resolver).toBeDefined();

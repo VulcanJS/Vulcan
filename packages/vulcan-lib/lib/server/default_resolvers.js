@@ -15,8 +15,7 @@ const defaultOptions = {
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
-export function getNewDefaultResolvers({ typeName, collectionName, options }) {
-  collectionName = collectionName || getCollectionByTypeName(typeName);
+export function getDefaultResolvers({ typeName, collectionName, options }) {
   const resolverOptions = { ...defaultOptions, ...options };
 
   return {
@@ -41,6 +40,8 @@ export function getNewDefaultResolvers({ typeName, collectionName, options }) {
 
         // get currentUser and Users collection from context
         const { currentUser, Users } = context;
+
+        collectionName = collectionName || getCollectionByTypeName(typeName);
 
         // get collection based on collectionName argument
         const collection = context[collectionName];

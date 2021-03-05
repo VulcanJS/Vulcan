@@ -2,8 +2,8 @@
  * Generates the GraphQL schema and
  * the resolvers and mutations for a Vulcan collectio
  */
-import { getDefaultResolvers } from '../default_resolvers';
-import { getDefaultMutations } from '../default_mutations';
+import { getDefaultResolvers } from '../default_resolvers_old';
+import { getDefaultMutations } from '../default_mutations_old';
 import { getSchemaFields } from './schemaFields';
 import {
   selectorInputTemplate,
@@ -45,13 +45,9 @@ import _initial from 'lodash/initial';
  */
 const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
-  const typeName = collection.typeName
-    ? collection.typeName
-    : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
+  const typeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
   const schema = collection.simpleSchema()._schema;
-  const description = collection.options.description
-    ? collection.options.description
-    : `Type for ${collectionName}`;
+  const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`;
   return {
     ...collection.options,
     collectionName,
@@ -65,7 +61,8 @@ const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
   const queryResolvers = {};
   const queriesToAdd = [];
   const resolversToAdd = [];
-  if (providedResolvers === null) { // user explicitely disabled default resolvers
+  if (providedResolvers === null) {
+    // user explicitely disabled default resolvers
     return { queriesToAdd, resolversToAdd };
   }
   // if resolvers are empty, use defaults
@@ -80,9 +77,7 @@ const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
   if (resolvers.multi) {
     queriesToAdd.push([multiQueryTemplate({ typeName }), resolvers.multi.description]);
     //addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-    queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(
-      resolvers.multi
-    );
+    queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(resolvers.multi);
   }
   //addGraphQLResolvers({ Query: { ...queryResolvers } });
   resolversToAdd.push({ Query: { ...queryResolvers } });
@@ -95,13 +90,12 @@ const createMutations = ({ mutations: providedMutations, typeName, collectionNam
   const mutationResolvers = {};
   const mutationsToAdd = [];
   const mutationsResolversToAdd = [];
-  if (providedMutations === null) { // user explicitely disabled mutations
+  if (providedMutations === null) {
+    // user explicitely disabled mutations
     return { mutationsResolversToAdd, mutationsToAdd };
   }
   // if mutations are undefined, use defaults
-  const mutations = _isEmpty(providedMutations)
-    ? getDefaultMutations({ typeName })
-    : providedMutations;
+  const mutations = _isEmpty(providedMutations) ? getDefaultMutations({ typeName }) : providedMutations;
 
   const { create, update } = fields;
 
@@ -160,23 +154,18 @@ const createMutations = ({ mutations: providedMutations, typeName, collectionNam
 };
 
 // generate types, input and enums
-const generateSchemaFragments = ({
-  collection,
-  typeName,
-  description,
-  interfaces = [],
-  fields,
-  isNested = false,
-}) => {
+const generateSchemaFragments = ({ collection, typeName, description, interfaces = [], fields, isNested = false }) => {
   const schemaFragments = [];
   const {
     mainType,
-    create, update, selector,
+    create,
+    update,
+    selector,
     selectorUnique,
     //orderBy,
-    readable,
+    // readable,
     filterable,
-    enums
+    enums,
   } = fields;
 
   if (!mainType || mainType.length === 0) {
@@ -256,7 +245,7 @@ const generateSchemaFragments = ({
     // if (customSorts) {
     //   customSorts.forEach(sort => {
     //     schemaFragments.push(customSortTemplate({ typeName, sort }));
-    //   });    
+    //   });
     // }
   }
 
@@ -270,20 +259,9 @@ const collectionToGraphQL = collection => {
   let graphQLSchema = '';
   const schemaFragments = [];
 
-  const {
-    collectionName,
-    typeName,
-    schema,
-    description,
-    interfaces = [],
-    resolvers,
-    mutations,
-  } = getCollectionInfos(collection);
+  const { collectionName, typeName, schema, description, interfaces = [], resolvers, mutations } = getCollectionInfos(collection);
 
-  const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(
-    schema,
-    typeName
-  );
+  const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
 
   const { mainType } = fields;
 

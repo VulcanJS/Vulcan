@@ -1,10 +1,10 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import withComponents from '../../containers/withComponents';
-import { useMulti2 } from '../../containers/multi2';
+import { useMulti } from '../../containers/multi';
 
 export const PaginatedList = ({ className, options, Components }) => {
-  const useMultiResults = useMulti2(options);
+  const useMultiResults = useMulti(options);
 
   const {
     results = [],

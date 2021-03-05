@@ -33,7 +33,6 @@ import { deleteClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import { buildMultiQuery } from './multi';
 import { getVariablesListFromCache, removeFromData } from './cacheUpdate';
-import { computeQueryVariables } from './variables';
 
 export const buildDeleteQuery = ({ typeName, fragmentName, fragment }) =>
   gql`
@@ -65,15 +64,12 @@ const multiQueryUpdater = ({ collection, typeName, fragmentName, fragment }) => 
   };
 };
 
-export const useDelete2 = options => {
+export const useDeleteOld = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
-  const {
-    //input: optionsInput,
-    //_id: optionsId,
-    mutationOptions = {},
-  } = options;
+  const resolverName = `delete${typeName}`;
+  const { mutationOptions = {} } = options;
 
   const query = buildDeleteQuery({
     fragment,
@@ -86,32 +82,32 @@ export const useDelete2 = options => {
     update: multiQueryUpdater({ collection, typeName, fragment, fragmentName }),
     ...mutationOptions,
   });
-  const extendedDeleteFunc = (args /*{ input: argsInput, _id: argsId }*/) => {
-    return deleteFunc({
-      variables: {
-        ...computeQueryVariables(options, args),
-      },
-    });
+
+  const extendedDeleteFunc = {
+    [resolverName]: args => {
+      // support legacy syntax mistake
+      // @see https://github.com/VulcanJS/Vulcan/issues/2417
+      const selector = (args && args.selector) || args;
+      return deleteFunc({ variables: { selector } });
+    },
   };
-  return [extendedDeleteFunc, ...rest];
+  return [extendedDeleteFunc[resolverName], ...rest];
 };
 
-export const withDelete2 = options => C => {
+export const withDeleteOld = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const funcName = `delete${typeName}`;
-  const metaName = `delete${typeName}Meta`;
-
   const legacyError = () => {
     throw new Error(`removeMutation function has been removed. Use ${funcName} function instead.`);
   };
 
   const Wrapper = props => {
-    const [deleteFunc, deleteMeta] = useDelete2(options);
-    return <C {...props} {...{ [funcName]: deleteFunc }} {...{ [metaName]: deleteMeta }} removeMutation={legacyError} />;
+    const [deleteFunc] = useDeleteOld(options);
+    return <C {...props} {...{ [funcName]: deleteFunc }} removeMutation={legacyError} />;
   };
-  Wrapper.displayName = `withDelete${typeName}`;
+  Wrapper.displayName = `withDeleteOld${typeName}`;
   return Wrapper;
 };
 
-export default withDelete2;
+export default withDeleteOld;

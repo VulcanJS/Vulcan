@@ -4,27 +4,21 @@ import { mount } from 'enzyme';
 //import gql from 'graphql-tag';
 import { initComponentTest } from 'meteor/vulcan:test';
 import {
-  withSingle,
-  withMulti,
+  withSingleOld,
+  withMultiOld,
   withCurrentUser,
   withSiteData,
   useCurrentUser,
-  useMulti,
-  useSingle,
-  useSiteData
+  useMultiOld,
+  useSingleOld,
+  useSiteData,
 } from '../../lib/modules';
-import {
-  singleQuery
-} from '../../lib/modules/containers/single';
-import {
-  buildMultiQuery
-} from '../../lib/modules/containers/multi';
-
+import { singleQuery } from '../../lib/modules/containers/single';
+import { buildMultiQuery } from '../../lib/modules/containers/multi';
 
 import wait from 'waait';
 
 import { MockedProvider } from 'meteor/vulcan:test';
-
 
 const test = it;
 
@@ -33,7 +27,7 @@ import '../../lib/modules';
 // setup Vulcan (load components, initialize fragments)
 initComponentTest();
 
-describe('vulcan:core/queries2', function () {
+describe('vulcan:core/queries', function() {
   // increase timeout
   this.timeout(5000);
 
@@ -42,43 +36,45 @@ describe('vulcan:core/queries2', function () {
     options: {
       collectionName: 'Foos',
       typeName,
-      multiResolverName: 'foos'
-    }
+      multiResolverName: 'foos',
+    },
   };
   const fragmentName = 'FoosDefaultFragment';
   const fragment = {
-    definitions: [{
-      name: {
-        value: fragmentName
-      }
-    }],
+    definitions: [
+      {
+        name: {
+          value: fragmentName,
+        },
+      },
+    ],
     toString: () => `fragment FoosDefaultFragment on Foo { 
         id
         hello
         __typename
-      }`
+      }`,
   };
   const foo = { id: 1, hello: 'world', __typename: 'Foo' };
-  const TestComponent = (props) => {
+  const TestComponent = props => {
     return <div>test</div>;
   };
 
   describe('exports', () => {
-    expect(useSingle).toBeDefined();
-    expect(useMulti).toBeDefined();
-    expect(useCurrentUser).toBeDefined();
-    expect(useSiteData).toBeDefined();
-    expect(withSingle).toBeDefined();
-    expect(withMulti).toBeDefined();
-    expect(withCurrentUser).toBeDefined();
-    expect(withSiteData).toBeDefined();
+    expect(typeof (useSingleOld || 'single not defined')).toBe('function');
+    expect(typeof (useMultiOld || 'multi not defined')).toBe('function');
+    expect(typeof (useCurrentUser || 'currentUser not defined')).toBe('function');
+    expect(typeof (useSiteData || 'siteData not defined')).toBe('function');
+    expect(typeof (withSingleOld || 'single hoc not defined')).toBe('function');
+    expect(typeof (withMultiOld || 'multi not defined')).toBe('function');
+    expect(typeof (withCurrentUser || 'currentUser hoc not defined')).toBe('function');
+    expect(typeof (withSiteData || 'siteData hoc not defined')).toBe('function');
   });
 
-  describe('withSingle', () => {
+  describe('withSingleOld', () => {
     test('returns a graphql component', () => {
-      const wrapper = withSingle({
+      const wrapper = withSingleOld({
         collection: Foo,
-        fragment
+        fragment,
       });
       expect(wrapper).toBeDefined();
       expect(wrapper).toBeInstanceOf(Function);
@@ -90,27 +86,25 @@ describe('vulcan:core/queries2', function () {
           variables: {
             // variables must absolutely match with the emitted request,
             // including undefined values
-            'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
-          }
+            input: { selector: { documentId: undefined, slug: undefined }, enableCache: false },
+          },
         },
         result: {
           data: {
-            foo: { result: foo, __typename: 'Foo' }
+            foo: { result: foo, __typename: 'Foo' },
           },
         },
       };
-      const mocks = [
-        mock,
-      ]; // need multiple mocks, one per query
-      const SingleComponent = withSingle({
+      const mocks = [mock]; // need multiple mocks, one per query
+      const SingleComponent = withSingleOld({
         collection: Foo,
         queryOptions: {
           pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
         },
-        fragment
+        fragment,
       })(TestComponent);
       const wrapper = mount(
-        <MockedProvider removeTypename mocks={mocks} >
+        <MockedProvider removeTypename mocks={mocks}>
           <SingleComponent />
         </MockedProvider>
       );
@@ -135,12 +129,12 @@ describe('vulcan:core/queries2', function () {
           variables: {
             // variables must absolutely match with the emitted request,
             // including undefined values
-            'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
-          }
+            input: { selector: { documentId: undefined, slug: undefined }, enableCache: false },
+          },
         },
         result: {
           data: {
-            foo: { result: null, __typename: 'Foo' }
+            foo: { result: null, __typename: 'Foo' },
           },
         },
       };
@@ -148,28 +142,25 @@ describe('vulcan:core/queries2', function () {
         request: {
           query,
           variables: {
-            input: { selector: { documentId: '42', slug: undefined }, 'enableCache': false }
-          }
+            input: { selector: { documentId: '42', slug: undefined }, enableCache: false },
+          },
         },
         result: {
           data: {
-            foo: { result: foo, __typename: 'Foo' }
-          }
-        }
+            foo: { result: foo, __typename: 'Foo' },
+          },
+        },
       };
-      const mocks = [
-        firstRequest,
-        documentIdRequest
-      ]; // need multiple mocks, one per query
-      const SingleComponent = withSingle({
+      const mocks = [firstRequest, documentIdRequest]; // need multiple mocks, one per query
+      const SingleComponent = withSingleOld({
         collection: Foo,
         queryOptions: {
           pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
         },
-        fragment
+        fragment,
       })(TestComponent);
       const wrapper = mount(
-        <MockedProvider mocks={mocks} >
+        <MockedProvider mocks={mocks}>
           <SingleComponent />
         </MockedProvider>
       );
@@ -189,12 +180,11 @@ describe('vulcan:core/queries2', function () {
       expect(finalRes.prop('loading')).toBe(false);
       expect(finalRes.prop('data').error).toBeFalsy();
       expect(finalRes.prop('document')).toEqual(foo);
-
     });
     test('work if fragment is not yet defined', () => {
-      const hoc = withSingle({
+      const hoc = withSingleOld({
         collection: Foo,
-        fragmentName: 'NotRegisteredYetFragment'
+        fragmentName: 'NotRegisteredYetFragment',
       });
       expect(hoc).toBeDefined();
       expect(hoc).toBeInstanceOf(Function);
@@ -206,29 +196,27 @@ describe('vulcan:core/queries2', function () {
           variables: {
             // variables must absolutely match with the emitted request,
             // including undefined values
-            'input': { 'selector': { documentId: undefined, slug: undefined, }, 'enableCache': false }
-          }
+            input: { selector: { documentId: undefined, slug: undefined }, enableCache: false },
+          },
         },
         result: {
           data: {
             foo: { result: foo, __typename: 'Foo' },
-            extra: { foo: 'bar', __typename: 'Foo' }
+            extra: { foo: 'bar', __typename: 'Foo' },
           },
         },
       };
-      const mocks = [
-        mock,
-      ]; // need multiple mocks, one per query
-      const SingleComponent = withSingle({
+      const mocks = [mock]; // need multiple mocks, one per query
+      const SingleComponent = withSingleOld({
         collection: Foo,
         queryOptions: {
           pollInterval: 0, // disable polling otherwise it will fail (we need 1 mock per request)
         },
         fragment,
-        extraQueries: 'extra { foo }'
+        extraQueries: 'extra { foo }',
       })(TestComponent);
       const wrapper = mount(
-        <MockedProvider removeTypename mocks={mocks} >
+        <MockedProvider removeTypename mocks={mocks}>
           <SingleComponent />
         </MockedProvider>
       );
@@ -241,66 +229,63 @@ describe('vulcan:core/queries2', function () {
     });
   });
 
-  describe('withMulti', () => {
+  describe('withMultiOld', () => {
     const defaultQuery = buildMultiQuery({
       fragment,
       typeName,
-      fragmentName
+      fragmentName,
     });
     const defaultVariables = {
-      'input': {
-        'terms': {
-          'limit': 10,
-          'itemsPerPage': 10
+      input: {
+        terms: {
+          limit: 10,
+          itemsPerPage: 10,
         },
-        'enableCache': false,
-        'enableTotal': true
-      }
+        enableCache: false,
+        enableTotal: true,
+      },
     };
     const defaultOptions = {
       collection: Foo,
       fragment,
       queryOptions: {
         pollInterval: 0,
-        notifyOnNetworkStatusChange: true // necessary for loadMoreInc
-      }
+        notifyOnNetworkStatusChange: true, // necessary for loadMoreInc
+      },
     };
     test('returns a graphql component', () => {
-      const wrapper = withMulti(defaultOptions);
+      const wrapper = withMultiOld(defaultOptions);
       expect(wrapper).toBeDefined();
       expect(wrapper).toBeInstanceOf(Function);
     });
     test('query multiple documents', async () => {
-
       const response = {
         request: {
           query: defaultQuery,
-          variables: defaultVariables
+          variables: defaultVariables,
         },
         result: {
           data: {
             foos: {
               results: [foo],
               totalCount: 10,
-              __typename: '[Foo]'
+              __typename: '[Foo]',
             },
-          }
-        }
+          },
+        },
       };
       const mocks = [response];
-      const MultiComponent = withMulti({
+      const MultiComponent = withMultiOld({
         collection: Foo,
         fragment,
         queryOptions: {
           pollInterval: 0,
-        }
+        },
       })(TestComponent);
 
       const wrapper = mount(
         <MockedProvider mocks={mocks}>
-          <MultiComponent
-            terms={{}}
-          />
+          <MultiComponent terms={{}} />
         </MockedProvider>
       );
       const loadingRes = wrapper.find(TestComponent);
@@ -328,20 +313,20 @@ describe('vulcan:core/queries2', function () {
                 ...defaultVariables.input,
                 terms: {
                   limit: 1,
-                  itemsPerPage: 1 // = first limit
-                }
-              }
-            }
+                  itemsPerPage: 1, // = first limit
+                },
+              },
+            },
           },
           result: {
             data: {
               foos: {
                 results: [foo],
                 totalCount: 10,
-                __typename: '[Foo]'
-              }
-            }
-          }
+                __typename: '[Foo]',
+              },
+            },
+          },
         },
         // calling loadMore / loadMoreInc will send new requests with updated terms
         // loadMore
@@ -353,24 +338,24 @@ describe('vulcan:core/queries2', function () {
                 ...defaultVariables.input,
                 terms: {
                   limit: 2, // limit is increased by load more
-                  itemsPerPage: 1
-                }
-              }
-            }
+                  itemsPerPage: 1,
+                },
+              },
+            },
           },
           result: {
             data: {
               foos: {
                 results: [foo, foo, foo],
                 totalCount: 10,
-                __typename: '[Foo]'
-              }
-            }
-          }
+                __typename: '[Foo]',
+              },
+            },
+          },
         },
       ];
 
-      const MultiComponent = withMulti(defaultOptions)(TestComponent);
+      const MultiComponent = withMultiOld(defaultOptions)(TestComponent);
 
       const wrapper = mount(
         <MockedProvider mocks={responses}>
@@ -404,20 +389,20 @@ describe('vulcan:core/queries2', function () {
                 ...defaultVariables.input,
                 terms: {
                   limit: 1,
-                  itemsPerPage: 1 // = first limit
-                }
-              }
-            }
+                  itemsPerPage: 1, // = first limit
+                },
+              },
+            },
           },
           result: {
             data: {
               foos: {
                 results: [foo],
                 totalCount: 10,
-                __typename: '[Foo]'
-              }
-            }
-          }
+                __typename: '[Foo]',
+              },
+            },
+          },
         },
         // loadmoreInc
         {
@@ -425,22 +410,22 @@ describe('vulcan:core/queries2', function () {
             query: defaultQuery,
             variables: {
               // get an offset to load only relevant data
-              input: { terms: { limit: 1, itemsPerPage: 1, offset: 1 } }
-            }
+              input: { terms: { limit: 1, itemsPerPage: 1, offset: 1 } },
+            },
           },
           result: {
             data: {
               foos: {
                 results: [foo],
                 totalCount: 10,
-                __typename: '[Foo]'
-              }
-            }
-          }
-        }
+                __typename: '[Foo]',
+              },
+            },
+          },
+        },
       ];
 
-      const MultiComponent = withMulti(defaultOptions)(TestComponent);
+      const MultiComponent = withMultiOld(defaultOptions)(TestComponent);
 
       const wrapper = mount(
         <MockedProvider mocks={responses}>
@@ -468,12 +453,11 @@ describe('vulcan:core/queries2', function () {
       expect(loadMoreIncRes.prop('loadingMore')).toEqual(false);
       expect(loadMoreIncRes.prop('error')).toBeFalsy();
       expect(loadMoreIncRes.prop('results')).toHaveLength(2);
-
     });
     test('work if fragment is not yet defined', () => {
-      const hoc = withMulti({
+      const hoc = withMultiOld({
         collection: Foo,
-        fragmentName: 'NotRegisteredYetFragment'
+        fragmentName: 'NotRegisteredYetFragment',
       });
       expect(hoc).toBeDefined();
       expect(hoc).toBeInstanceOf(Function);

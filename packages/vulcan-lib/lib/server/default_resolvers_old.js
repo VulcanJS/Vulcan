@@ -7,7 +7,7 @@ Default list, single, and total resolvers
 import { Utils } from '../modules/utils.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
-import { generateTypeNameFromCollectionName, getTypeNameByCollectionName, getCollectionByTypeName } from '../modules/collections.js';
+import { generateTypeNameFromCollectionName, getCollectionByTypeName } from '../modules/collections.js';
 import { throwError } from './errors.js';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
@@ -17,7 +17,7 @@ const defaultOptions = {
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
-export function getDefaultResolvers(options) {
+export function getOldDefaultResolvers(options) {
   let typeName, collectionName, resolverOptions;
   if (typeof arguments[0] === 'object') {
     // new single-argument API
@@ -49,7 +49,7 @@ export function getDefaultResolvers(options) {
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
         debug(`Input: ${JSON.stringify(input)}`);
 
-        if (cacheControl && enableCache ) {
+        if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
           cacheControl.setCacheHint({ maxAge });
         }
@@ -166,10 +166,9 @@ export function getDefaultResolvers(options) {
           // make an exception for slug
           doc = await Connectors.get(collection, { slug });
         } else {
-
           if (isEmpty(input)) {
             throwError({
-              id: 'app.empty_input'
+              id: 'app.empty_input',
             });
           }
 

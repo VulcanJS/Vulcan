@@ -1,10 +1,10 @@
 import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
-import { useDelete2 } from '../containers/delete2';
+import { useDelete } from '../containers/delete';
 
-const DeleteButton = (props) => {
+const DeleteButton = props => {
   const { label, collection, collectionName, fragment, fragmentName, documentId, mutationOptions, currentUser, ...rest } = props;
-  const [deleteFunction, { loading }] = useDelete2({
+  const [deleteFunction, { loading }] = useDelete({
     collection,
     collectionName,
     fragment,

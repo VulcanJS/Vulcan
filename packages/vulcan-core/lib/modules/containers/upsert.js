@@ -35,13 +35,13 @@ import { upsertClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 import { multiQueryUpdater } from './create';
+import { computeQueryVariables } from './variables';
 
-export const buildUpsertQuery = ({ typeName, fragment, fragmentName }) => (
+export const buildUpsertQuery = ({ typeName, fragment, fragmentName }) =>
   gql`
     ${upsertClientTemplate({ typeName, fragmentName })}
     ${fragment}
-  `
-);
+  `;
 export const useUpsert = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -49,16 +49,23 @@ export const useUpsert = options => {
   const { mutationOptions = {} } = options;
 
   const query = buildUpsertQuery({ typeName, fragmentName, fragment });
-
+  const resolverName = `upsert${typeName}`;
   const [upsertFunc, ...rest] = useMutation(query, {
     errorPolicy: 'all',
     // we reuse the update function create, which should actually support
     // upserting
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName: `upsert${typeName}` }),
-    ...mutationOptions
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
+    ...mutationOptions,
   });
 
-  const extendedUpsertFunc = ({ data, selector }) => upsertFunc({ variables: { data, selector } });
+  const extendedUpsertFunc = ({ data, ...args }) => {
+    return upsertFunc({
+      variables: {
+        data,
+        ...computeQueryVariables(options, args),
+      },
+    });
+  };
 
   return [extendedUpsertFunc, ...rest];
 };
@@ -74,11 +81,7 @@ export const withUpsert = options => C => {
 
   const Wrapper = props => {
     const [upsertFunc] = useUpsert(options);
-    return (
-      <C {...props} {...{ [funcName]: upsertFunc }} upsertMutation={legacyError} />
-
-    );
-
+    return <C {...props} {...{ [funcName]: upsertFunc }} upsertMutation={legacyError} />;
   };
 
   Wrapper.displayName = `withUpsert${typeName}`;

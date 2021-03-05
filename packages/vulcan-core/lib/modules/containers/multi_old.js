@@ -1,6 +1,6 @@
 /*
 
-### withMulti
+### withMultiOld
 
 Paginated items container
 
@@ -11,47 +11,48 @@ Options:
   - fragmentName: the name of the fragment, passed to getFragment
   - limit: the number of documents to show initially
   - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
-  - input: the initial query input
-    - filter
-    - sort
-    - search
-    - offset
-    - limit
-    
+  - terms: an object that defines which documents to fetch
+
+Props Received:
+
+  - terms: an object that defines which documents to fetch
+
+Terms object can have the following properties:
+
+  - view: String
+  - userId: String
+  - cat: String
+  - date: String
+  - after: String
+  - before: String
+  - enableTotal: Boolean
+  - enableCache: Boolean
+  - listId: String
+  - query: String # search query
+  - postId: String
+  - limit: String
+  
 */
 
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import gql from 'graphql-tag';
-import {
-  getSetting,
-  multiClientTemplate,
-  extractCollectionInfo,
-  extractFragmentInfo,
-} from 'meteor/vulcan:lib';
-import merge from 'lodash/merge';
-import get from 'lodash/get';
-
-// default query input object
-const defaultInput = {
-  limit: 20,
-  enableTotal: true,
-  enableCache: false,
-};
+import { getSetting, multiClientTemplate, extractCollectionInfo, extractFragmentInfo, deprecate } from 'meteor/vulcan:lib';
 
 export const buildMultiQuery = ({ typeName, fragmentName, extraQueries, fragment }) => gql`
   ${multiClientTemplate({ typeName, fragmentName, extraQueries })}
   ${fragment}
 `;
 
-const getInitialPaginationInput = (options, props) => {
-  // get initial limit from props, or else options, or else default value
-  const limit = (props.input && props.input.limit) || (options.input && options.input.limit) || options.limit || defaultInput.limit;
-  const paginationInput = {
-    limit,
+const defaultPaginationTerms = ({ limit = 10 }, props) => {
+  // get initial limit from props, or else options
+  const paginationLimit = (props.terms && props.terms.limit) || limit;
+  const paginationTerms = {
+    limit: paginationLimit,
+    itemsPerPage: paginationLimit,
   };
-  return paginationInput;
+  return paginationTerms;
 };
 
 /**
@@ -60,39 +61,57 @@ const getInitialPaginationInput = (options, props) => {
  * @param {*} state
  * @param {*} props
  */
-const buildQueryOptions = (options, paginationInput = {}, props) => {
-
+const buildQueryOptions = (options, { paginationTerms }, { terms }) => {
   let {
-    input: optionsInput,
     pollInterval = getSetting('pollInterval', 20000),
+    enableTotal = true,
+    enableCache = false,
     // generic graphQL options
     queryOptions = {},
   } = options;
-
-  // get dynamic input from props
-  const { input: propsInput = {} } = props;
-
-  // merge static and dynamic inputs
-  const input = merge({}, optionsInput, propsInput);
-
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
 
-  // get input from options, then props, then pagination
-  // TODO: should be done during the merge with lodash
-  const mergedInput = { ...defaultInput, ...options.input, ...input, ...paginationInput };
+  // get terms from options, then props, then pagination
+  const mergedTerms = { ...options.terms, ...terms, ...paginationTerms };
 
   const graphQLOptions = {
     variables: {
-      input: mergedInput,
+      input: {
+        terms: mergedTerms,
+        enableCache,
+        enableTotal,
+      },
     },
     // note: pollInterval can be set to 0 to disable polling (20s by default)
     pollInterval,
   };
 
+  if (options.fetchPolicy) {
+    deprecate(
+      '1.13.3',
+      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMultiOld, option: fetchPolicy)'
+    );
+    graphQLOptions.fetchPolicy = options.fetchPolicy;
+  }
+  if (typeof options.pollInterval !== 'undefined') {
+    deprecate(
+      '1.13.3',
+      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMultiOld, option: pollInterval)'
+    );
+  }
+  // set to true if running into https://github.com/apollographql/apollo-client/issues/1186
+  if (options.notifyOnNetworkStatusChange) {
+    deprecate(
+      '1.13.3',
+      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMultiOld, option: notifyOnNetworkStatusChange)'
+    );
+    graphQLOptions.notifyOnNetworkStatusChange = options.notifyOnNetworkStatusChange;
+  }
+
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
-  queryOptions.errorPolicy = 'all';
+  graphQLOptions.errorPolicy = 'all';
 
   return {
     ...graphQLOptions,
@@ -100,21 +119,16 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
   };
 };
 
-const buildResult = (
-  options,
-  { fragmentName, fragment, resolverName },
-  { setPaginationInput, paginationInput, initialPaginationInput },
-  returnedProps
-) => {
+const buildResult = (options, { fragmentName, fragment, resolverName }, { setPaginationTerms, paginationTerms }, returnedProps) => {
   //console.log('returnedProps', returnedProps);
-  const { refetch, networkStatus, error, fetchMore, data, graphQLErrors } = returnedProps;
-  // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
+  const { refetch, networkStatus, error, fetchMore, data } = returnedProps;
+  // results = Utils.convertDates(collection, props.data[listResolverName]),
   const results = data && data[resolverName] && data[resolverName].results;
   const totalCount = data && data[resolverName] && data[resolverName].totalCount;
   // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loadingInitial = networkStatus === 1;
   const loading = networkStatus === 1;
-  const loadingMore = networkStatus === 3 || networkStatus === 2;
+  const loadingMore = networkStatus === 3;
   const propertyName = options.propertyName || 'results';
 
   if (error) {
@@ -134,52 +148,47 @@ const buildResult = (
     refetch,
     networkStatus,
     error,
-    networkError: error && error.networkError,
-    graphQLErrors,
     count: results && results.length,
 
     // regular load more (reload everything)
-    loadMore(providedInput) {
+    loadMore(providedTerms) {
       // if new terms are provided by presentational component use them, else default to incrementing current limit once
-      const newInput = providedInput || {
-        ...paginationInput,
-        limit: results.length + initialPaginationInput.limit,
-      };
-      setPaginationInput(newInput);
+      const newTerms =
+        typeof providedTerms === 'undefined'
+          ? {
+              /*...props.ownProps.terms,*/
+              ...paginationTerms,
+              limit: results.length + paginationTerms.itemsPerPage,
+            }
+          : providedTerms;
+      setPaginationTerms(newTerms);
     },
 
     // incremental loading version (only load new content)
     // note: not compatible with polling
-    // TODO
-    loadMoreInc(providedInput) {
+    loadMoreInc(providedTerms) {
       // get terms passed as argument or else just default to incrementing the offset
 
-      const newInput = providedInput || {
-        ...paginationInput,
-        offset: results.length,
-      };
+      const newTerms =
+        typeof providedTerms === 'undefined'
+          ? {
+              ...paginationTerms,
+              offset: results.length,
+            }
+          : providedTerms;
 
       return fetchMore({
-        variables: { input: newInput },
+        variables: { input: { terms: newTerms } }, // ??? not sure about 'terms: newTerms'
         updateQuery(previousResults, { fetchMoreResult }) {
           // no more post to fetch
-          if (
-            !(
-              fetchMoreResult[resolverName] &&
-              fetchMoreResult[resolverName].results &&
-              fetchMoreResult[resolverName].results.length
-            )
-          ) {
+          if (!(fetchMoreResult[resolverName] && fetchMoreResult[resolverName].results && fetchMoreResult[resolverName].results.length)) {
             return previousResults;
           }
           const newResults = {
             ...previousResults,
             [resolverName]: { ...previousResults[resolverName] },
           }; // TODO: should we clone this object? => yes
-          newResults[resolverName].results = [
-            ...previousResults[resolverName].results,
-            ...fetchMoreResult[resolverName].results,
-          ];
+          newResults[resolverName].results = [...previousResults[resolverName].results, ...fetchMoreResult[resolverName].results];
           return newResults;
         },
       });
@@ -191,9 +200,8 @@ const buildResult = (
   };
 };
 
-export const useMulti = (options, props = {}) => {
-  const initialPaginationInput = getInitialPaginationInput(options, props);
-  const [paginationInput, setPaginationInput] = useState(initialPaginationInput);
+export const useMultiOld = (options, props) => {
+  const [paginationTerms, setPaginationTerms] = useState(defaultPaginationTerms(options, props));
 
   let { extraQueries } = options;
 
@@ -206,35 +214,24 @@ export const useMulti = (options, props = {}) => {
   // build graphql query from options
   const query = buildMultiQuery({ typeName, fragmentName, extraQueries, fragment });
 
-  const queryOptions = buildQueryOptions(options, paginationInput, props);
+  const queryOptions = buildQueryOptions(options, { paginationTerms }, props);
   const queryRes = useQuery(query, queryOptions);
 
-  // workaround for https://github.com/apollographql/apollo-client/issues/2810
-  queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
-  
-  const result = buildResult(
-    options,
-    { fragment, fragmentName, resolverName },
-    { setPaginationInput, paginationInput, initialPaginationInput },
-    queryRes
-  );
+  const result = buildResult(options, { fragment, fragmentName, resolverName }, { setPaginationTerms, paginationTerms }, queryRes);
 
   return result;
 };
 
-export const withMulti = options => C => {
+export const withMultiOld = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const Wrapped = props => {
-    const res = useMulti(options, props);
+    const res = useMultiOld(options, props);
     return <C {...props} {...res} />;
   };
   Wrapped.displayName = `with${typeName}`;
   return Wrapped;
 };
 
-export const useMulti2 = useMulti;
-export const withMulti2 = withMulti;
-
 // legacy
-export default withMulti;
+export default withMultiOld;

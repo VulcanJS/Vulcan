@@ -10,7 +10,7 @@ import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 import withCurrentUser from '../../containers/currentUser.js';
 import withComponents from '../../containers/withComponents';
-import withMulti from '../../containers/multi2.js';
+import withMulti from '../../containers/multi.js';
 import Users from 'meteor/vulcan:users';
 import _get from 'lodash/get';
 
@@ -358,12 +358,7 @@ DatatableAbove.propTypes = {
 registerComponent({ name: 'DatatableAbove', component: DatatableAbove, hocs: [memo] });
 
 const DatatableAboveLeft = (props, { intl }) => {
-  const {
-    showSearch,
-    searchValue,
-    updateSearch,
-    Components,
-  } = props;
+  const { showSearch, searchValue, updateSearch, Components } = props;
   return (
     <div className="datatable-above-left">
       {showSearch && (
@@ -391,7 +386,7 @@ DatatableAboveLeft.contextTypes = {
 
 registerComponent({ name: 'DatatableAboveLeft', component: DatatableAboveLeft, hocs: [memo] });
 
-const DatatableAboveRight = (props) => {
+const DatatableAboveRight = props => {
   const {
     collection,
     currentUser,

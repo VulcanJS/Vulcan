@@ -63,8 +63,7 @@ export const performMutationCheck = options => {
 Default Mutations
 
 */
-export function getNewDefaultMutations({ typeName, collectionName, options }) {
-  collectionName = collectionName || getCollectionByTypeName(typeName);
+export function getDefaultMutations({ typeName, collectionName, options }) {
   const mutationOptions = { ...defaultOptions, ...options };
 
   const mutations = {};
@@ -74,6 +73,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
       description: `Mutation for creating new ${typeName} documents`,
       name: getCreateMutationName(typeName),
       async mutation(root, { data }, context) {
+        collectionName = collectionName || getCollectionByTypeName(typeName);
         const collection = context[collectionName];
         const { currentUser } = context;
 
@@ -101,7 +101,8 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
   const getMutationDocument = async ({ input, _id, collection }) => {
     let document;
     let selector;
-    if (_id) { // _id bypass input
+    if (_id) {
+      // _id bypass input
       document = await collection.loader.load(_id);
     } else {
       const filterParameters = await Connectors.filter(collection, input, context);
@@ -157,11 +158,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
         const { document: existingDocument, selector } = await getMutationDocument({ input, _id, collection });
 
         if (existingDocument) {
-          return await collection.options.mutations.update.mutation(
-            root,
-            { input, _id, selector, data },
-            context
-          );
+          return await collection.options.mutations.update.mutation(root, { input, _id, selector, data }, context);
         } else {
           return await collection.options.mutations.create.mutation(root, { data }, context);
         }
@@ -177,7 +174,7 @@ export function getNewDefaultMutations({ typeName, collectionName, options }) {
         const { currentUser } = context;
         const collection = context[collectionName];
 
-        const { document, /*selector*/ } = await getMutationDocument({ input, _id, collection });
+        const { document /*selector*/ } = await getMutationDocument({ input, _id, collection });
 
         performMutationCheck({
           user: currentUser,

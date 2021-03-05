@@ -20,7 +20,7 @@ const getDeleteMutationName = typeName => `delete${typeName}`;
 const getUpsertMutationName = typeName => `upsert${typeName}`;
 //const getMultiQueryName = (typeName) => `multi${typeName}Query`;
 
-export function getDefaultMutations(options) {
+export function getOldDefaultMutations(options) {
   let typeName, collectionName, mutationOptions;
 
   if (typeof arguments[0] === 'object') {
@@ -51,7 +51,6 @@ export function getDefaultMutations(options) {
 
       // check function called on a user to see if they can perform the operation
       check(user, document, context) {
-
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
         const { Users } = context;
@@ -77,18 +76,14 @@ export function getDefaultMutations(options) {
 
         // check if they can perform "foo.new" operation (e.g. "movie.new")
         // OpenCRUD backwards compatibility
-        return Users.canDo(user, [
-          `${typeName.toLowerCase()}.create`,
-          `${collectionName.toLowerCase()}.new`,
-        ]);
+        return Users.canDo(user, [`${typeName.toLowerCase()}.create`, `${collectionName.toLowerCase()}.new`]);
       },
 
       async mutation(root, args, context) {
-
         const { input = {}, data: backwardsCompatibilityData } = args;
 
         const data = input.data || backwardsCompatibilityData;
-        
+
         if (isEmpty(data)) {
           throw new Error(`create${typeName} received empty data object`);
         }
@@ -98,15 +93,7 @@ export function getDefaultMutations(options) {
         const collection = context[collectionName];
 
         // check if current user can pass check function; else throw error
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          data,
-          context,
-          '',
-          `${typeName}.create`,
-          collectionName
-        );
+        Utils.performCheck(this.check, context.currentUser, data, context, '', `${typeName}.create`, collectionName);
 
         // pass document to boilerplate newMutator function
         return await createMutator({
@@ -135,7 +122,6 @@ export function getDefaultMutations(options) {
 
       // check function called on a user and document to see if they can perform the operation
       check(user, document, context) {
-
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
         const { Users } = context;
@@ -164,19 +150,14 @@ export function getDefaultMutations(options) {
         // if they do, check if they can perform "foo.edit.own" action
         // if they don't, check if they can perform "foo.edit.all" action
         // OpenCRUD backwards compatibility
-        return (Users.owns(user, document)
-          && Users.canDo(user, [
-              `${typeName.toLowerCase()}.update.own`,
-              `${collectionName.toLowerCase()}.edit.own`,
-            ]))
-          || Users.canDo(user, [
-              `${typeName.toLowerCase()}.update.all`,
-              `${collectionName.toLowerCase()}.edit.all`,
-            ]);
+        return (
+          (Users.owns(user, document) &&
+            Users.canDo(user, [`${typeName.toLowerCase()}.update.own`, `${collectionName.toLowerCase()}.edit.own`])) ||
+          Users.canDo(user, [`${typeName.toLowerCase()}.update.all`, `${collectionName.toLowerCase()}.edit.all`])
+        );
       },
 
       async mutation(root, args, context) {
-
         const { input = {}, selector: oldSelector, data: backwardsCompatibilityData } = args;
         const { filter, id } = input;
         const data = input.data || backwardsCompatibilityData;
@@ -204,21 +185,11 @@ export function getDefaultMutations(options) {
         const document = await Connectors.get(collection, selector);
 
         if (!document) {
-          throw new Error(
-            `Could not find document to update for selector: ${JSON.stringify(selector)}`
-          );
+          throw new Error(`Could not find document to update for selector: ${JSON.stringify(selector)}`);
         }
 
         // check if user can perform operation; if not throw error
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          document,
-          context,
-          document._id,
-          `${typeName}.update`,
-          collectionName
-        );
+        Utils.performCheck(this.check, context.currentUser, document, context, document._id, `${typeName}.update`, collectionName);
 
         // call editMutator boilerplate function
         return await updateMutator({
@@ -239,7 +210,6 @@ export function getDefaultMutations(options) {
     mutations.edit = updateMutation;
   }
   if (mutationOptions.upsert) {
-
     // mutation for upserting a specific document
     const mutationName = getUpsertMutationName(typeName);
     mutations.upsert = {
@@ -247,7 +217,6 @@ export function getDefaultMutations(options) {
       name: mutationName,
 
       async mutation(root, { filter, selector, data }, context) {
-
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
         const collection = context[collectionName];
@@ -258,11 +227,7 @@ export function getDefaultMutations(options) {
         });
 
         if (existingDocument) {
-          return await collection.options.mutations.update.mutation(
-            root,
-            { filter, selector, data },
-            context
-          );
+          return await collection.options.mutations.update.mutation(root, { filter, selector, data }, context);
         } else {
           return await collection.options.mutations.create.mutation(root, { data }, context);
         }
@@ -271,7 +236,6 @@ export function getDefaultMutations(options) {
   }
 
   if (mutationOptions.delete) {
-
     // mutation for removing a specific document (same checks as edit mutation)
 
     const mutationName = getDeleteMutationName(typeName);
@@ -281,7 +245,6 @@ export function getDefaultMutations(options) {
       name: mutationName,
 
       check(user, document, context) {
-
         collectionName = collectionName || getCollectionByTypeName(typeName).options.collectionName;
 
         const { Users } = context;
@@ -307,19 +270,14 @@ export function getDefaultMutations(options) {
 
         if (!user || !document) return false;
         // OpenCRUD backwards compatibility
-        return (Users.owns(user, document)
-          && Users.canDo(user, [
-              `${typeName.toLowerCase()}.delete.own`,
-              `${collectionName.toLowerCase()}.remove.own`,
-            ]))
-          || Users.canDo(user, [
-              `${typeName.toLowerCase()}.delete.all`,
-              `${collectionName.toLowerCase()}.remove.all`,
-            ]);
+        return (
+          (Users.owns(user, document) &&
+            Users.canDo(user, [`${typeName.toLowerCase()}.delete.own`, `${collectionName.toLowerCase()}.remove.own`])) ||
+          Users.canDo(user, [`${typeName.toLowerCase()}.delete.all`, `${collectionName.toLowerCase()}.remove.all`])
+        );
       },
 
       async mutation(root, args, context) {
-
         const { input = {}, selector: oldSelector } = args;
         const { filter, id } = input;
 
@@ -345,20 +303,10 @@ export function getDefaultMutations(options) {
         const document = await Connectors.get(collection, selector);
 
         if (!document) {
-          throw new Error(
-            `Could not find document to delete for selector: ${JSON.stringify(selector)}`
-          );
+          throw new Error(`Could not find document to delete for selector: ${JSON.stringify(selector)}`);
         }
 
-        Utils.performCheck(
-          this.check,
-          context.currentUser,
-          document,
-          context,
-          document._id,
-          `${typeName}.delete`,
-          collectionName
-        );
+        Utils.performCheck(this.check, context.currentUser, document, context, document._id, `${typeName}.delete`, collectionName);
 
         return await deleteMutator({
           collection,
