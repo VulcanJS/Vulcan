@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider, intlShape, IntlContext } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/currentUser.js';
-import withUpdate from '../containers/update.js';
+import withUpdateOld from '../containers/update.js';
 import withSiteData from '../containers/siteData.js';
 import withLocaleData from '../containers/localeData.js';
 import { withApollo } from '@apollo/client/react/hoc';
@@ -226,7 +226,7 @@ registerComponent(
   withCurrentUser,
   withSiteData,
   withLocaleData,
-  [withUpdate, updateOptions],
+  [withUpdateOld, updateOptions],
   withApollo,
   withCookies,
   withRouter

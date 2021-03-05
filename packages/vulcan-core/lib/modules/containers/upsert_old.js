@@ -35,45 +35,34 @@ import { upsertClientTemplate } from 'meteor/vulcan:core';
 import { extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 
 import { multiQueryUpdater } from './create';
-import { computeQueryVariables } from './variables';
 
-export const buildUpsertQuery = ({ typeName, fragment, fragmentName }) => (
+export const buildUpsertQuery = ({ typeName, fragment, fragmentName }) =>
   gql`
     ${upsertClientTemplate({ typeName, fragmentName })}
     ${fragment}
-  `
-);
-export const useUpsert2 = options => {
+  `;
+export const useUpsertOld = options => {
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
   const typeName = collection.options.typeName;
-  const {
-    mutationOptions = {}
-  } = options;
+  const { mutationOptions = {} } = options;
 
   const query = buildUpsertQuery({ typeName, fragmentName, fragment });
-  const resolverName = `upsert${typeName}`;
+
   const [upsertFunc, ...rest] = useMutation(query, {
     errorPolicy: 'all',
     // we reuse the update function create, which should actually support
     // upserting
-    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName }),
-    ...mutationOptions
+    update: multiQueryUpdater({ typeName, fragment, fragmentName, collection, resolverName: `upsert${typeName}` }),
+    ...mutationOptions,
   });
 
-  const extendedUpsertFunc = ({ data, ...args }) => {
-    return upsertFunc({
-      variables: {
-        data,
-        ...computeQueryVariables(options, args)
-      }
-    });
-  };
+  const extendedUpsertFunc = ({ data, selector }) => upsertFunc({ variables: { data, selector } });
 
   return [extendedUpsertFunc, ...rest];
 };
 
-export const withUpsert2 = options => C => {
+export const withUpsertOld = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
 
@@ -83,16 +72,12 @@ export const withUpsert2 = options => C => {
   };
 
   const Wrapper = props => {
-    const [upsertFunc] = useUpsert2(options);
-    return (
-      <C {...props} {...{ [funcName]: upsertFunc }} upsertMutation={legacyError} />
-
-    );
-
+    const [upsertFunc] = useUpsertOld(options);
+    return <C {...props} {...{ [funcName]: upsertFunc }} upsertMutation={legacyError} />;
   };
 
-  Wrapper.displayName = `withUpsert${typeName}`;
+  Wrapper.displayName = `withUpsertOld${typeName}`;
   return Wrapper;
 };
 
-export default withUpsert2;
+export default withUpsertOld;

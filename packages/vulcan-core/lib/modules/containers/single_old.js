@@ -1,24 +1,9 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import {
-  getSetting, singleClientTemplate, Utils, extractCollectionInfo,
-  extractFragmentInfo,
-} from 'meteor/vulcan:lib';
-import _merge from 'lodash/merge';
-import { computeQueryVariables } from './variables';
+import { getSetting, singleClientTemplate, Utils, extractCollectionInfo, extractFragmentInfo, deprecate } from 'meteor/vulcan:lib';
 
-const defaultInput = {
-  enableCache: false,
-  allowNull: false
-};
-
-export const singleQuery = ({
-  typeName,
-  fragmentName,
-  fragment,
-  extraQueries,
-}) => {
+export const singleQuery = ({ typeName, fragmentName, fragment, extraQueries }) => {
   const query = gql`
     ${singleClientTemplate({ typeName, fragmentName, extraQueries })}
     ${fragment}
@@ -34,17 +19,11 @@ export const singleQuery = ({
 
 /**
  * Create GraphQL useQuery options and variables based on props and provided options
- * @param {*} options 
+ * @param {*} options
  * @param {*} props
  */
-const buildQueryOptions = (options, props) => {
-  let {
-    pollInterval = getSetting('pollInterval', 20000),
-    // generic apollo graphQL options
-    queryOptions = {}
-  } = options;
-
-
+const buildQueryOptions = (options, { documentId, slug, selector = { documentId, slug } }) => {
+  let { pollInterval = getSetting('pollInterval', 20000), enableCache = false, fetchPolicy, queryOptions = {} } = options;
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
   pollInterval = typeof window === 'undefined' ? null : pollInterval;
@@ -52,47 +31,56 @@ const buildQueryOptions = (options, props) => {
   // OpenCrud backwards compatibility
   const graphQLOptions = {
     variables: {
-      ...computeQueryVariables(
-        { ...options, input: _merge({}, defaultInput, options.input || {}) }, // needed to merge in defaultInput, could be improved
-        props
-      )
+      input: {
+        selector,
+        enableCache,
+      },
     },
-    pollInterval // note: pollInterval can be set to 0 to disable polling (20s by default)
+    pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
   };
+
+  if (fetchPolicy) {
+    deprecate(
+      '1.13.3',
+      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useSingleOld, option: fetchPolicy)'
+    );
+    graphQLOptions.fetchPolicy = fetchPolicy;
+  }
+  if (typeof options.pollInterval !== 'undefined') {
+    deprecate(
+      '1.13.3',
+      'use the "queryOptions" object to pass options to the underlying Apollo hooks (hook: useMulti, option: pollInterval)'
+    );
+  }
 
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
   graphQLOptions.errorPolicy = 'all';
 
   return {
     ...graphQLOptions,
-    ...queryOptions
+    ...queryOptions,
   };
 };
 
-const buildResult = (
-  options,
-  { fragmentName, fragment, resolverName },
-  returnedProps,
-) => {
+const buildResult = (options, { fragmentName, fragment, resolverName }, returnedProps) => {
   const { /* ownProps, */ data, error } = returnedProps;
   const propertyName = options.propertyName || 'document';
   const props = {
     ...returnedProps,
-    // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
+    // document: Utils.convertDates(collection, data[singleResolverName]),
     [propertyName]: data && data[resolverName] && data[resolverName].result,
     fragmentName,
     fragment,
     data,
-    error
   };
   if (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // get graphQL error (see https://github.com/thebigredgeek/apollo-errors/issues/12)
+    props.error = error.graphQLErrors[0];
   }
   return props;
 };
 
-export const useSingle2 = (options, props = {}) => {
+export const useSingleOld = (options, props) => {
   const { extraQueries } = options;
   const { collectionName, collection } = extractCollectionInfo(options);
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
@@ -100,26 +88,22 @@ export const useSingle2 = (options, props = {}) => {
   const resolverName = Utils.camelCaseify(typeName);
 
   const query = singleQuery({
-    typeName, fragmentName, fragment, extraQueries
+    typeName,
+    fragmentName,
+    fragment,
+    extraQueries,
   });
 
-  const queryRes = useQuery(
-    query,
-    buildQueryOptions(options, props)
-  );
-  const result = buildResult(
-    options,
-    { fragment, fragmentName, resolverName },
-    queryRes,
-  );
+  const queryRes = useQuery(query, buildQueryOptions(options, props));
+  const result = buildResult(options, { fragment, fragmentName, resolverName }, queryRes);
   return result;
 };
 
-export const withSingle2 = (options) => C => {
+export const withSingleOld = options => C => {
   const { collection } = extractCollectionInfo(options);
   const typeName = collection.options.typeName;
   const Wrapped = props => {
-    const res = useSingle2(options, props);
+    const res = useSingleOld(options, props);
     return <C {...props} {...res} />;
   };
   Wrapped.displayName = `with${typeName}`;
@@ -127,4 +111,4 @@ export const withSingle2 = (options) => C => {
 };
 
 // legacy default export
-export default withSingle2;
+export default withSingleOld;

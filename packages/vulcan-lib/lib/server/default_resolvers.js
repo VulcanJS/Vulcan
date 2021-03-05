@@ -4,12 +4,10 @@ Default list, single, and total resolvers
 
 */
 
-import { Utils } from '../modules/utils.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
 import { Connectors } from './connectors.js';
-import { generateTypeNameFromCollectionName, getTypeNameByCollectionName, getCollectionByTypeName } from '../modules/collections.js';
+import { getCollectionByTypeName } from '../modules/collections.js';
 import { throwError } from './errors.js';
-import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 const defaultOptions = {
@@ -17,19 +15,8 @@ const defaultOptions = {
 };
 
 // note: for some reason changing resolverOptions to "options" throws error
-export function getDefaultResolvers(options) {
-  let typeName, collectionName, resolverOptions;
-  if (typeof arguments[0] === 'object') {
-    // new single-argument API
-    typeName = arguments[0].typeName;
-    // collectionName = arguments[0].collectionName || getCollectionByTypeName(typeName).options.collectionName;
-    resolverOptions = { ...defaultOptions, ...arguments[0].options };
-  } else {
-    // OpenCRUD backwards compatibility
-    collectionName = arguments[0];
-    typeName = generateTypeNameFromCollectionName(collectionName);
-    resolverOptions = { ...defaultOptions, ...arguments[1] };
-  }
+export function getDefaultResolvers({ typeName, collectionName, options }) {
+  const resolverOptions = { ...defaultOptions, ...options };
 
   return {
     // resolver for returning a list of documents based on a set of query terms
@@ -39,50 +26,51 @@ export function getDefaultResolvers(options) {
 
       async resolver(root, { input = {} }, context, { cacheControl }) {
         const { terms = {}, enableCache = false, enableTotal = true } = input;
-        // get currentUser and Users collection from context
-        const { currentUser, Users } = context;
-
-        collectionName = getCollectionByTypeName(typeName).options.collectionName;
+        const operationName = `${typeName}.read.multi`;
 
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} Multi Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`Input: ${JSON.stringify(input)}`);
+        debug(`Terms: ${JSON.stringify(terms)}`);
 
-        if (cacheControl && enableCache ) {
+        if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
           cacheControl.setCacheHint({ maxAge });
         }
+
+        // get currentUser and Users collection from context
+        const { currentUser, Users } = context;
+
+        collectionName = collectionName || getCollectionByTypeName(typeName);
 
         // get collection based on collectionName argument
         const collection = context[collectionName];
 
         // get selector and options from terms and perform Mongo query
 
-        let { selector = {}, options = {}, filteredFields = [] } = isEmpty(terms)
-          ? await Connectors.filter(collection, input, context)
-          : await collection.getParameters(terms, {}, context);
+        let { selector, options } = await Connectors.filter(collection, input, context);
+        const filteredFields = Object.keys(selector);
 
-        // make sure all filtered fields are allowed
+        // make sure all filtered fields are allowed, before fetching the document
+        // (ignore ambiguous field that will need the document to be checked)
         Users.checkFields(currentUser, collection, filteredFields);
 
-        if (!isEmpty(terms)) {
-          options.skip = terms.offset;
-        }
+        options.skip = terms.offset;
 
-        // debug({ selector, options });
+        debug({ selector, options });
 
         const docs = await Connectors.find(collection, selector, options);
+        // in restrictViewableFields, null value will return {} instead of [] (because it works both for array and single doc)
+        let viewableDocs = [];
 
-        // default to allowing access to all documents
-        let viewableDocs = docs;
+        // check again if all fields used for filtering were actually allowed, this time based on actually retrieved documents
 
         // new API (Oct 2019)
         const canRead = get(collection, 'options.permissions.canRead');
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to filter list of documents
-            viewableDocs = docs.filter(document => canRead({ user: currentUser, document, context, operationName: 'multi' }));
+            viewableDocs = docs.filter(doc => canRead({ user: currentUser, document: doc, collection, context, operationName }));
           } else if (Array.isArray(canRead)) {
             if (canRead.includes('owners')) {
               // if canReady array includes the owners group, test each document
@@ -91,13 +79,9 @@ export function getDefaultResolvers(options) {
             } else {
               // else, we don't need a per-document check and just allow or disallow
               // access to all documents at once
-              viewableDocs = Users.isMemberOf(currentUser, canRead) ? viewableDocs : [];
+              viewableDocs = Users.isMemberOf(currentUser, canRead) ? docs : [];
             }
           }
-        } else if (collection.checkAccess) {
-          // old API
-          // if collection has a checkAccess function defined, remove any documents that doesn't pass the check
-          viewableDocs = docs.filter(doc => collection.checkAccess(currentUser, doc));
         }
 
         // check again that the fields used for filtering were all valid, this time based on documents
@@ -136,11 +120,10 @@ export function getDefaultResolvers(options) {
     single: {
       description: `A single ${typeName} document fetched by ID or slug`,
 
-      async resolver(root, { input = {} }, context, { cacheControl }) {
+      async resolver(root, { input = {}, _id }, context, { cacheControl }) {
         const { selector: oldSelector = {}, enableCache = false, allowNull = false } = input;
-
-        collectionName = getCollectionByTypeName(typeName).options.collectionName;
-
+        const operationName = `${typeName}.read.single`;
+        //const { _id } = input; // _id is passed from the root
         let doc;
 
         debug('');
@@ -156,33 +139,20 @@ export function getDefaultResolvers(options) {
         const { currentUser, Users } = context;
         const collection = context[collectionName];
 
-        // use Dataloader if doc is selected by documentId/_id
-        const documentId = oldSelector.documentId || oldSelector._id;
-        const slug = oldSelector.slug;
-
-        if (documentId) {
-          doc = await collection.loader.load(documentId);
-        } else if (slug) {
-          // make an exception for slug
-          doc = await Connectors.get(collection, { slug });
+        // use Dataloader if doc is selected by _id
+        if (_id) {
+          doc = await collection.loader.load(_id);
         } else {
-
-          if (isEmpty(input)) {
-            throwError({
-              id: 'app.empty_input'
-            });
-          }
-
           let { selector, options, filteredFields } = await Connectors.filter(collection, input, context);
-
-          // make sure all filtered fields are allowed
+          // make sure all filtered fields are actually readable, for basic roles
           Users.checkFields(currentUser, collection, filteredFields);
-
           doc = await Connectors.get(collection, selector, options);
 
           // check again that the fields used for filtering were all valid, this time based on retrieved document
           // this second check is necessary for document based permissions like canRead:["owners", customFunctionThatNeedDoc]
-          Users.checkFields(currentUser, collection, filteredFields, doc);
+          if (filteredFields.length) {
+            doc = Users.canFilterDocument(currentUser, collection, filteredFields, doc) ? doc : null;
+          }
         }
 
         if (!doc) {
@@ -191,35 +161,34 @@ export function getDefaultResolvers(options) {
           } else {
             throwError({
               id: 'app.missing_document',
-              data: { documentId, oldSelector, collectionName },
+              data: { documentId: _id, input, collectionName },
             });
           }
         }
 
-        // if collection has a checkAccess function defined, use it to perform a check on the current document
-        // (will throw an error if check doesn't pass)
-        let canReadFunction;
-
         // new API (Oct 2019)
+        let canReadFunction;
         const canRead = get(collection, 'options.permissions.canRead');
         if (canRead) {
           if (typeof canRead === 'function') {
             // if canRead is a function, use it to check current document
-            canReadFunction = (user, document, context) => canRead({ user, document, context, operationName: 'single' });
+            canReadFunction = canRead;
           } else if (Array.isArray(canRead)) {
             // else if it's an array of groups, check if current user belongs to them
             // for the current document
-            canReadFunction = (currentUser, doc) => Users.isMemberOf(currentUser, canRead, doc);
+            canReadFunction = ({ user, document }) => Users.isMemberOf(user, canRead, document);
           }
-        } else if (collection.checkAccess) {
-          // old API
-          canReadFunction = collection.checkAccess;
         } else {
           // default to allowing access to all documents
           canReadFunction = () => true;
         }
 
-        Utils.performCheck(canReadFunction, currentUser, doc, collection, documentId, `${typeName}.read.single`, collectionName);
+        if (!canReadFunction({ user: currentUser, document, collection, context, operationName })) {
+          throwError({
+            id: 'app.operation_not_allowed',
+            data: { documentId: document._id, operationName },
+          });
+        }
 
         const restrictedDoc = Users.restrictViewableFields(currentUser, collection, doc);
 

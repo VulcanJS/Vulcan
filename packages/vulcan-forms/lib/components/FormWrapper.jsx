@@ -30,18 +30,9 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router';
 import { withApollo } from '@apollo/client/react/hoc';
 import compose from 'recompose/compose';
-import {
-  Components,
-  registerComponent,
-  withCurrentUser,
-  Utils,
-  withCreate2,
-  withUpdate2,
-  withDelete2,
-  getFragment,
-} from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, Utils, withCreate, withUpdate, withDelete, getFragment } from 'meteor/vulcan:core';
 import gql from 'graphql-tag';
-import { withSingle } from 'meteor/vulcan:core';
+import { withSingleOld } from 'meteor/vulcan:core';
 
 import withCollectionProps from './withCollectionProps';
 import { callbackProps } from './propTypes';
@@ -156,20 +147,16 @@ class FormWrapper extends PureComponent {
     // displays the loading state if needed, and passes on loading and document/data
     const Loader = props => {
       const { document, loading } = props;
-      return loading ? (
-        <Components.Loading />
-      ) : (
-          <Components.Form document={document} loading={loading} {...childProps} {...props} />
-        );
+      return loading ? <Components.Loading /> : <Components.Form document={document} loading={loading} {...childProps} {...props} />;
     };
     Loader.displayName = 'withLoader(Form)';
 
-    // if this is an edit from, load the necessary data using the withSingle HoC
+    // if this is an edit from, load the necessary data using the withSingleOld HoC
     if (this.getFormType() === 'edit') {
       WrappedComponent = compose(
-        withSingle(queryOptions),
-        withUpdate2(mutationOptions),
-        withDelete2(mutationOptions)
+        withSingleOld(queryOptions),
+        withUpdate(mutationOptions),
+        withDelete(mutationOptions)
       )(Loader);
 
       return (
@@ -181,8 +168,7 @@ class FormWrapper extends PureComponent {
         />
       );
     } else {
-
-      WrappedComponent = compose(withCreate2(mutationOptions))(Components.Form);
+      WrappedComponent = compose(withCreate(mutationOptions))(Components.Form);
 
       return <WrappedComponent {...childProps} />;
     }

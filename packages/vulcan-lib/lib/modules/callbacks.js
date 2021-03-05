@@ -20,13 +20,12 @@ export const CallbackHooks = [];
  */
 export const Callbacks = {};
 
-
 /**
  * @summary Register a callback
  * @param {String} hook - The name of the hook
  * @param {Function} callback - The callback function
  */
-export const registerCallback = function (callback) {
+export const registerCallback = function(callback) {
   CallbackHooks.push(callback);
 };
 
@@ -35,8 +34,7 @@ export const registerCallback = function (callback) {
  * @param {String} hook - The name of the hook
  * @param {Function} callback - The callback function
  */
-export const addCallback = function (hook, callback) {
-
+export const addCallback = function(hook, callback) {
   const formattedHook = formatHookName(hook);
 
   if (!callback.name) {
@@ -57,13 +55,12 @@ export const addCallback = function (hook, callback) {
  * @param {string} hookName - The name of the hook
  * @param {string} callbackName - The name of the function to remove
  */
-export const removeCallback = function (hookName, callbackName) {
+export const removeCallback = function(hookName, callbackName) {
   const formattedHook = formatHookName(hookName);
-  Callbacks[formattedHook] = _.reject(Callbacks[formattedHook], function (callback) {
+  Callbacks[formattedHook] = _.reject(Callbacks[formattedHook], function(callback) {
     return callback.name === callbackName;
   });
 };
-
 
 /**
  * @summary Remove all callbacks from a hook (mostly for testing purposes)
@@ -82,8 +79,7 @@ export const removeAllCallbacks = function(hookName) {
  * @param {Array} callbacks - Optionally, pass an array of callback functions instead of passing a hook name
  * @returns {Object} Returns the item after it's been through all the callbacks for this hook
  */
-export const runCallbacks = function () {
-
+export const runCallbacks = function() {
   let hook, item, args, callbacks, formattedHook;
   if (typeof arguments[0] === 'object' && arguments.length === 1) {
     const singleArgument = arguments[0];
@@ -108,8 +104,9 @@ export const runCallbacks = function () {
 
   // flag used to detect the callback that initiated the async context
   let asyncContext = false;
-  
-  if (typeof callbacks !== 'undefined' && callbacks.length > 0) { // if the hook exists, and contains callbacks to run
+
+  if (typeof callbacks !== 'undefined' && callbacks.length > 0) {
+    // if the hook exists, and contains callbacks to run
 
     const runCallback = (accumulator, callback) => {
       debug(`\x1b[32m>> Running callback [${callback.name}] on hook [${formattedHook}]\x1b[0m`);
@@ -130,13 +127,12 @@ export const runCallbacks = function () {
         } else {
           return result;
         }
-
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(`\x1b[31m// error at callback [${callback.name}] in hook [${formattedHook}]\x1b[0m`);
         // eslint-disable-next-line no-console
         console.log(error);
-        if (error.break || error.data && error.data.break) {
+        if (error.break || (error.data && error.data.break)) {
           throw error;
         }
         // pass the unchanged accumulator to the next iteration of the loop
@@ -144,10 +140,12 @@ export const runCallbacks = function () {
       }
     };
 
-    return callbacks.reduce(function (accumulator, callback, index) {
+    return callbacks.reduce(function(accumulator, callback, index) {
       if (Utils.isPromise(accumulator)) {
         if (!asyncContext) {
-          debug(`\x1b[32m>> Started async context in hook [${formattedHook}] by [${callbacks[index-1] && callbacks[index-1].name}]\x1b[0m`);
+          debug(
+            `\x1b[32m>> Started async context in hook [${formattedHook}] by [${callbacks[index - 1] && callbacks[index - 1].name}]\x1b[0m`
+          );
           asyncContext = true;
         }
         return new Promise((resolve, reject) => {
@@ -167,8 +165,8 @@ export const runCallbacks = function () {
         return runCallback(accumulator, callback);
       }
     }, item);
-
-  } else { // else, just return the item unchanged
+  } else {
+    // else, just return the item unchanged
     return item;
   }
 };
@@ -200,22 +198,24 @@ export const runCallbacksAsync = function() {
 
   if (typeof callbacks !== 'undefined' && !!callbacks.length) {
     const _runCallbacksAsync = () =>
-        Promise.all(
-            callbacks.map(callback => {
-                if (!callback) {
-                  throw new Error(`Found undefined callback on hook ${hook}`);
-                }
-                debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
-                return callback.apply(this, args);
-            }),
-        );
+      Promise.all(
+        callbacks.map(callback => {
+          if (!callback) {
+            throw new Error(`Found undefined callback on hook ${hook}`);
+          }
+          debug(`\x1b[32m>> Running async callback [${callback.name}] on hook [${hook}]\x1b[0m`);
+          return callback.apply(this, args);
+        })
+      );
 
     if (Meteor.isServer) {
       // TODO: find out if we can safely use promises on the server, too - https://github.com/VulcanJS/Vulcan/pull/2065
       return new Promise(async (resolve, reject) => {
-          Meteor.defer(function() {
-            _runCallbacksAsync().then(resolve).catch(reject);
-          });
+        Meteor.defer(function() {
+          _runCallbacksAsync()
+            .then(resolve)
+            .catch(reject);
+        });
       });
     }
     return _runCallbacksAsync();
@@ -223,8 +223,7 @@ export const runCallbacksAsync = function() {
   return [];
 };
 
-
-export let globalCallbacks =  {
+export let globalCallbacks = {
   create: {
     validate: [],
     before: [],
@@ -242,7 +241,7 @@ export let globalCallbacks =  {
     before: [],
     after: [],
     async: [],
-  }
+  },
 };
 
 export const addGlobalCallbacks = callbacks => {

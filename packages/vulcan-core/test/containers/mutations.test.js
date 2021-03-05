@@ -1,4 +1,3 @@
-import { OperationNameMockLink } from 'operation-name-mock-link';
 import React from 'react';
 import {
   withCreate,
@@ -11,27 +10,28 @@ import {
   useUpsert,
   useDelete,
 } from '../../lib/modules';
-import { multiQueryUpdater, buildCreateQuery } from '../../lib/modules/containers/create';
+import { /* multiQueryUpdater*/ buildCreateQuery } from '../../lib/modules/containers/create';
 import { buildUpdateQuery } from '../../lib/modules/containers/update';
 import { buildUpsertQuery } from '../../lib/modules/containers/upsert';
 import { buildDeleteQuery } from '../../lib/modules/containers/delete';
-import { MockedProvider } from 'meteor/vulcan:test';
+import { MockedProvider, createDummyCollection } from 'meteor/vulcan:test';
+import { OperationNameMockLink } from 'operation-name-mock-link';
 import { mount } from 'enzyme';
 import expect from 'expect';
-import gql from 'graphql-tag';
-import sinon from 'sinon';
-import { getVariablesListFromCache } from '../../lib/modules/containers/cacheUpdate';
+// import gql from 'graphql-tag';
+
 const test = it;
 
-describe('vulcan:core/container/mutations', () => {
+describe('vulcan:core/container/mutations2', () => {
   const typeName = 'Foo';
-  const Foo = {
+  const Foo = createDummyCollection({
     options: {
       collectionName: 'Foos',
       typeName,
       multiResolverName: 'foos',
     },
-  };
+    schema: { val: { type: Number, canRead: ['guests'] } },
+  });
   const fragmentName = 'FoosDefaultFragment';
   const fragment = {
     definitions: [
@@ -57,43 +57,6 @@ describe('vulcan:core/container/mutations', () => {
     fragmentName: fragmentName,
     fragment,
   };
-  describe('similar queries in cache', () => {
-    test('return from the cache only the variables which match exactly the query', async () => {
-      const queryName = 'myCustomQuery';
-      const cacheQueryName = queryName + '({"correct":"variables"})';
-      const cacheSimilarQueryName = queryName + 'Foo({"foo":"bar"})';
-      const cacheObject = {
-        data: {
-          data: {
-            ROOT_QUERY: {
-              [cacheQueryName]: { foo: 'bar' },
-              [cacheSimilarQueryName]: { foo: 'bar' },
-            },
-          },
-        },
-      };
-      const variables = await getVariablesListFromCache(cacheObject, queryName);
-      expect(variables).toHaveLength(1);
-      expect(variables[0].correct).toBe('variables');
-    });
-    test('ignore the queries from the cache not including variables', async () => {
-      const queryName = 'myCustomQuery';
-      const cacheQueryName = queryName + '({"correct":"variables"})';
-      const cacheObject = {
-        data: {
-          data: {
-            ROOT_QUERY: {
-              [queryName]: { foo: 'bar' },
-              [cacheQueryName]: { foo: 'bar' },
-            },
-          },
-        },
-      };
-      const variables = await getVariablesListFromCache(cacheObject, queryName);
-      expect(variables).toHaveLength(1);
-      expect(variables[0].correct).toBe('variables');
-    });
-  });
   describe('common', () => {
     test('export hooks and hocs', () => {
       expect(useCreate).toBeInstanceOf(Function);
@@ -123,9 +86,8 @@ describe('vulcan:core/container/mutations', () => {
       });
     });
   });
-  describe('withCreate', () => {
-    // NOT passing for no reason...
-    // @see https://github.com/apollographql/react-apollo/issues/3478
+
+  describe('create', () => {
     test('run a create mutation', async () => {
       const CreateComponent = withCreate(defaultOptions)(TestComponent);
       const responses = [
@@ -133,9 +95,10 @@ describe('vulcan:core/container/mutations', () => {
           request: {
             operationName: 'createFoo',
             query: buildCreateQuery({ fragmentName, fragment, typeName }),
-            // variables: {
-            //     data: rawFoo
-            // }
+            // For matching using MockedProvider, we need the exact variables
+            // Instead we use a more flexible mock link based on operation name
+            //   variables: {
+            //     data: rawFoo,
           },
           result: {
             data: {
@@ -157,167 +120,7 @@ describe('vulcan:core/container/mutations', () => {
       const res = await wrapper.find(TestComponent).prop('createFoo')({
         data: rawFoo,
       });
-      expect(res).toEqual({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
-    });
-
-    describe('multiQuery update after create mutation for optimistic UI', () => {
-      const defaultOptions = {
-        typeName,
-        fragment,
-        fragmentName,
-        collection: Foo,
-      };
-      const defaultCacheContent = {
-        foos: {
-          results: [],
-          totalCount: 0,
-        },
-      };
-      const defaultCacheData = {
-        data: {
-          ROOT_QUERY: {
-            // variables are contained in the query name
-            [`foos(${JSON.stringify({
-              input: {
-                terms: {},
-              },
-            })})`]: {},
-          },
-        },
-      };
-
-      beforeEach(() => {
-        Foo.getParameters = terms => ({
-          selector: {},
-          options: {},
-        });
-      });
-      // TODO: tests not passing but I am not sure why, the spy should have been called...
-      test('add document to multi query after a creation', async () => {
-        const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' });
-        const writeQuery = sinon.spy();
-        const cache = {
-          readQuery: () => defaultCacheContent,
-          writeQuery,
-          data: defaultCacheData,
-        };
-        await update(cache, {
-          data: {
-            createFoo: {
-              data: foo,
-            },
-          },
-        });
-        expect(writeQuery.calledOnce).toBe(true);
-      });
-      test('update document if already there', async () => {
-        const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' });
-        const writeQuery = sinon.spy();
-        const cache = {
-          readQuery: () => ({
-            ...defaultCacheContent,
-            foos: {
-              results: [foo],
-              totalCount: 1,
-            },
-          }),
-          writeQuery,
-          data: defaultCacheData,
-        };
-        const updateFoo = { ...foo, UPDATED: true };
-        await update(cache, {
-          data: {
-            createFoo: {
-              data: updateFoo,
-            },
-          },
-        });
-        expect(writeQuery.calledOnce).toBe(true);
-        expect(writeQuery.getCall(0).args[0]).toMatchObject({
-          data: { foos: { results: [updateFoo], totalCount: 1 } },
-        });
-      });
-      test('do not add document if it does not match the mongo selector', async () => {
-        const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' });
-        const writeQuery = sinon.spy();
-        const cache = {
-          readQuery: () => defaultCacheContent,
-          writeQuery,
-          data: defaultCacheData,
-        };
-        const newFoo = { ...foo, val: 41 };
-        Foo.getParameters = () => ({
-          selector: {
-            val: { $gt: 42 },
-          },
-          options: {},
-        });
-        await update(cache, {
-          data: {
-            createFoo: {
-              data: newFoo,
-            },
-          },
-        });
-        expect(writeQuery.notCalled).toBe(true);
-      });
-      test('add document if it does match the mongo selector', async () => {
-        const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' });
-        const writeQuery = sinon.spy();
-        const cache = {
-          readQuery: () => defaultCacheContent,
-          writeQuery,
-          data: defaultCacheData,
-        };
-        const newFoo = { ...foo, val: 46 };
-        Foo.getParameters = () => ({
-          selector: {
-            val: { $gt: 42 },
-          },
-          options: {},
-        });
-        await update(cache, {
-          data: {
-            createFoo: {
-              data: newFoo,
-            },
-          },
-        });
-        expect(writeQuery.calledOnce).toBe(true);
-      });
-      test('sort documents', async () => {
-        const update = multiQueryUpdater({ ...defaultOptions, resolverName: 'createFoo' });
-        const writeQuery = sinon.spy();
-        const cache = {
-          readQuery: () => ({
-            foos: {
-              results: [{ val: 40 }, { val: 43 }],
-              totalCount: 2,
-            },
-          }),
-          writeQuery,
-          data: defaultCacheData,
-        };
-        const newFoo = { ...foo, val: 42 };
-        Foo.getParameters = () => ({
-          selector: {},
-          options: {
-            sort: {
-              val: 1,
-            },
-          },
-        });
-        await update(cache, {
-          data: {
-            createFoo: {
-              data: newFoo,
-            },
-          },
-        });
-        const res = writeQuery.getCall(0).args[0].data.foos.results;
-        expect(res).toHaveLength(3);
-        expect(res[1]).toEqual(newFoo);
-      });
+      expect(res).toMatchObject({ data: { createFoo: { data: foo, __typename: 'Foo' } } });
     });
   });
 
@@ -332,6 +135,7 @@ describe('vulcan:core/container/mutations', () => {
             //variables: {
             //  //selector: { documentId: foo._id },
             //  data: fooUpdate,
+            //  input: {},
             //},
           },
           result: {
@@ -364,9 +168,10 @@ describe('vulcan:core/container/mutations', () => {
           request: {
             query: buildUpsertQuery({ typeName, fragmentName, fragment }),
             operationName: 'upsertFoo',
-            //variables: {
-            //  data: fooUpdate,
-            //},
+            // variables: {
+            //   data: fooUpdate,
+            //   input: {},
+            // },
           },
           result: {
             data: {
@@ -396,13 +201,13 @@ describe('vulcan:core/container/mutations', () => {
       const responses = [
         {
           request: {
-            query: buildDeleteQuery({ typeName, fragment, fragmentName }),
             operationName: 'deleteFoo',
-            //variables: {
-            //  selector: {
-            //    documentId: '42',
-            //  },
-            //},
+            query: buildDeleteQuery({ typeName, fragment, fragmentName }),
+            // variables: {
+            //   input: {
+            //     _id: '42',
+            //   },
+            // },
           },
           result: {
             data: {
@@ -421,7 +226,9 @@ describe('vulcan:core/container/mutations', () => {
       );
       expect(wrapper.find(TestComponent).prop('deleteFoo')).toBeInstanceOf(Function);
       const res = await wrapper.find(TestComponent).prop('deleteFoo')({
-        documentId: '42',
+        input: {
+          _id: '42',
+        },
       });
       expect(res).toEqual({ data: { deleteFoo: { data: foo, __typename: 'Foo' } } });
     });

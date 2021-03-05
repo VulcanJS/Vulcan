@@ -10,6 +10,12 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 - Check that you don't have hard dependency on core packages, like `accounts-password@1.16.0`. They could conflict with Meteor core package version.
 - Run `meteor update`. Note: when running the update on the Starter, remember to setup `METEOR_PACKAGES_DIRS=...` correctly, so it points to your local `devel` install of Vulcan.
 
+## From 1.16.1 to XXX
+
+- Old API is deprecated, new API (oct 2019) replaces it. You can rename hooks and imports like `create2`, `useCreate2` by `create` and `useCreate`. You can replace `getNewDefaultResolvers` by `getDefaultResolvers` etc.
+- If you never used the new API in the first place, you may experience some breaking change. You can update your app to the new API
+- Old components will be still available until next version, with the `Old` indication (`useCreateOld`, `getOldDefaultResolvers`...)
+
 ## From 1.16 to 1.16.1
 
 - `meteor update`

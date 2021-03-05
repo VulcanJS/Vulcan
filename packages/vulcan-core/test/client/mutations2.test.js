@@ -1,4 +1,4 @@
-import { multiQueryUpdater } from '../../lib/modules/containers/create2';
+import { multiQueryUpdater } from '../../lib/modules/containers/create';
 import { createDummyCollection } from 'meteor/vulcan:test';
 import expect from 'expect';
 import sinon from 'sinon';

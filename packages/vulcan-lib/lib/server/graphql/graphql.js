@@ -18,33 +18,31 @@ import {
   mainTypeTemplate,
   createDataInputTemplate,
   updateDataInputTemplate,
-  selectorUniqueInputTemplate,
-  deleteInputTemplate,
-  upsertInputTemplate,
-  singleInputTemplate,
-  multiInputTemplate,
-  multiOutputTemplate,
-  singleOutputTemplate,
-  mutationOutputTemplate,
-  singleQueryTemplate,
-  multiQueryTemplate,
-  createMutationTemplate,
-  updateMutationTemplate,
-  upsertMutationTemplate,
-  deleteMutationTemplate,
-  fieldFilterInputTemplate,
-  fieldSortInputTemplate,
+  // selectorUniqueInputTemplate,
+  // deleteInputTemplate,
+  // upsertInputTemplate,
+  // singleInputTemplate,
+  // multiInputTemplate,
+  // multiOutputTemplate,
+  // singleOutputTemplate,
+  // mutationOutputTemplate,
+  // singleQueryTemplate,
+  // multiQueryTemplate,
+  // createMutationTemplate,
+  // updateMutationTemplate,
+  // upsertMutationTemplate,
+  // deleteMutationTemplate,
+  // fieldFilterInputTemplate,
+  // fieldSortInputTemplate,
 } from '../../modules/graphql_templates/index.js';
 import getSchemaFields from './schemaFields';
 
 disableFragmentWarnings();
 
-
-import { getDefaultResolvers } from '../../server/default_resolvers.js';
-import { getDefaultMutations } from '../../server/default_mutations.js';
-import isEmpty from 'lodash/isEmpty';
+// import { getDefaultResolvers } from '../default_resolvers.js';
+// import { getDefaultMutations } from '../default_mutations.js';
+// import isEmpty from 'lodash/isEmpty';
 import { Collections } from '../../modules/collections.js';
-
 
 const defaultResolvers = {
   JSON: GraphQLJSON,
@@ -59,9 +57,7 @@ const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
   const typeName = collection.typeName;
   const schema = collection.simpleSchema();
-  const description = collection.options.description
-    ? collection.options.description
-    : `Type for ${collectionName}`;
+  const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`;
   return {
     ...collection.options,
     collectionName,
@@ -338,15 +334,7 @@ export const GraphQLSchema = {
   }*/
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
-    const {
-      collectionName,
-      typeName,
-      schema,
-      description,
-      interfaces = [],
-      resolvers,
-      mutations,
-    } = getCollectionInfos(collection);
+    const { /*collectionName,*/ typeName, schema, description, interfaces = [] /*resolvers, mutations*/ } = getCollectionInfos(collection);
 
     // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
 
@@ -380,14 +368,11 @@ export const GraphQLSchema = {
   },
   getExecutableSchema() {
     if (!this.executableSchema) {
-      throw new Error(
-        'Warning: trying to access executable schema before it has been created by the server.'
-      );
+      throw new Error('Warning: trying to access executable schema before it has been created by the server.');
     }
     return this.executableSchema;
   },
 };
-
 
 // Vulcan.getGraphQLSchema = () => {
 //   if (!GraphQLSchema.finalSchema) {

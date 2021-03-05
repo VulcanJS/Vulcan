@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { registerComponent, Components, withSingle, withAccess } from 'meteor/vulcan:core';
+import { registerComponent, Components, withSingleOld, withAccess } from 'meteor/vulcan:core';
 import { getItemComponentName } from '../namingHelpers';
 import { withRouteParam } from '../../hocs/withRouteParam';
 /**
@@ -32,11 +32,7 @@ const createItemComponent = (collection, options) => {
   registerComponent({
     name: componentName,
     component: component,
-    hocs: [
-      [withAccess, withAccessOptions],
-      withRouteParam('documentId'),
-      [withSingle, withDocumentOptions],
-    ],
+    hocs: [[withAccess, withAccessOptions], withRouteParam('documentId'), [withSingleOld, withDocumentOptions]],
   });
   return component; // return if the component is needed
 };
