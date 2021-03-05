@@ -1,5 +1,5 @@
 {
-  "name": "Vulcan",
+  "name": "vulcan-meteor",
   "version": "1.16.0",
   "engines": {
     "npm": "^3.0"

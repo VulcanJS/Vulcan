@@ -1,3 +1,5 @@
+# Migrations
+
 Doc to help updating downstream applications. Breaking changes and packages updates are listed here.
 
 Please open an issue or a pull request if you feel this doc is incomplete.
@@ -8,7 +10,7 @@ Please open an issue or a pull request if you feel this doc is incomplete.
 - Check that you don't have hard dependency on core packages, like `accounts-password@1.16.0`. They could conflict with Meteor core package version.
 - Run `meteor update`. Note: when running the update on the Starter, remember to setup `METEOR_PACKAGES_DIRS=...` correctly, so it points to your local `devel` install of Vulcan.
 
-## From 1.16 to 1.17
+## From 1.16 to 1.16.1
 
 - `meteor update`
 - `meteor npm i --save string-similarity @apollo/client`
