@@ -2,6 +2,7 @@ import _reject from 'lodash/reject';
 import _keys from 'lodash/keys';
 import { Collections } from './collections.js';
 import { getNestedSchema, getArrayChild, isBlackbox } from 'meteor/vulcan:lib/lib/modules/simpleSchema_utils';
+import MongoObject from 'mongo-object';
 import _isArray from 'lodash/isArray';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -23,11 +24,28 @@ export const formattedDateResolver = fieldName => {
   };
 };
 
-export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
-  let modifiedSchema = { ...schema };
+export const createSchema = (schema, apiSchema = {}, dbSchema = {}, defaultCanRead) => {
+  let modifiedSchema = schema._schema ? { ...schema._schema } : { ...schema };
 
   Object.keys(modifiedSchema).forEach(fieldName => {
-    const field = schema[fieldName];
+    // support SimpleSchema Shorthand Definitions
+    // https://github.com/aldeed/simpl-schema#shorthand-definitions
+    if (Array.isArray(modifiedSchema[fieldName])) {
+      modifiedSchema[fieldName] = { type: Array, arrayItem: { type: modifiedSchema[fieldName][0] } };
+      if (modifiedSchema[fieldName].arrayItem.type === Object) {
+        modifiedSchema[fieldName].arrayItem.blackbox = true;
+      }
+    } else if (!MongoObject.isBasicObject(modifiedSchema[fieldName])) {
+      modifiedSchema[fieldName] = { type: modifiedSchema[fieldName] };
+      if (modifiedSchema[fieldName].type === Object) {
+        modifiedSchema[fieldName].blackbox = true;
+      }
+    }
+    if (!modifiedSchema[fieldName].canRead && defaultCanRead) {
+      modifiedSchema[fieldName].canRead = defaultCanRead;
+    }
+
+    const field = modifiedSchema[fieldName];
     const { arrayItem, type, canRead } = field;
 
     if (field.resolveAs) {
@@ -57,7 +75,8 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
     // or as a resolveAs field, then add fieldFormatted to apiSchema
     const formattedFieldName = `${fieldName}Formatted`;
 
-    if (type === Date && !schema[formattedFieldName] && !(_get(field, 'resolveAs.fieldName', '') === formattedFieldName)) {
+    if (type === Date && !modifiedSchema[formattedFieldName] &&
+      !(_get(field, 'resolveAs.fieldName', '') === formattedFieldName)) {
       apiSchema[formattedFieldName] = {
         typeName: 'String',
         canRead,
@@ -71,7 +90,7 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
   if (!_isEmpty(apiSchema)) {
     Object.keys(apiSchema).forEach(fieldName => {
       const field = apiSchema[fieldName];
-      const { canRead = ['guests'], description, ...resolveAs } = field;
+      const { canRead = defaultCanRead, description, ...resolveAs } = field;
       modifiedSchema[fieldName] = {
         type: Object,
         optional: true,
@@ -85,7 +104,7 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
 
   // for added security, remove any API-related permission checks from db fields
   const filteredDbSchema = {};
-  const blacklistedFields = [ 'canRead', 'canCreate', 'canUpdate'];
+  const blacklistedFields = ['canRead', 'canCreate', 'canUpdate'];
   Object.keys(dbSchema).forEach(dbFieldName => {
     filteredDbSchema[dbFieldName] = _omit(dbSchema[dbFieldName], blacklistedFields);
   });
@@ -135,15 +154,16 @@ export const shouldAddOriginalField = (fieldName, field) => {
   const resolveAsArray = Array.isArray(field.resolveAs) ? field.resolveAs : [field.resolveAs];
 
   const removeOriginalField = resolveAsArray.some(
-    resolveAs => resolveAs.addOriginalField === false || resolveAs.fieldName === fieldName || typeof resolveAs.fieldName === 'undefined'
+    resolveAs => resolveAs.addOriginalField === false || resolveAs.fieldName === fieldName ||
+      typeof resolveAs.fieldName === 'undefined',
   );
   return !removeOriginalField;
 };
 // list fields that can be included in the default fragment for a schema
-export const getFragmentFieldNames = ({ schema, options }) =>
+export const getFragmentFieldNames = ({ schema, options = {} }) =>
   _reject(_keys(schema), fieldName => {
     /*
-   
+
     Exclude a field from the default fragment if
     1. it has a resolver and original field should not be added
     2. it has $ in its name
@@ -165,7 +185,7 @@ export const getFragmentFieldNames = ({ schema, options }) =>
 
 /*
 
-Check if a type corresponds to a collection or else 
+Check if a type corresponds to a collection or else
 is just a regular or custom scalar type.
 
 */
@@ -174,12 +194,13 @@ export const isCollectionType = typeName =>
 
 /**
  * Iterate over a document fields and run a callback with side effect
- * Works recursively for nested fields and arrays of objects (but excluding blackboxed objects, native JSON, and arrays of native values)
+ * Works recursively for nested fields and arrays of objects (but excluding blackboxed objects, native JSON, and
+ * arrays of native values)
  * @param {*} document Current document
  * @param {*} schema Document schema
- * @param {*} callback Called on each field with the corresponding field schema, including fields of nested objects and arrays of nested object
+ * @param {*} callback Called on each field with the corresponding field schema, including fields of nested objects
+ *   and arrays of nested object
  * @param {*} currentPath Global path of the document (to track recursive calls)
- * @param {*} isNested Differentiate nested fields
  */
 export const forEachDocumentField = (document, schema, callback, currentPath = '') => {
   if (!document) return;

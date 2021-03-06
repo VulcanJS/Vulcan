@@ -17,7 +17,7 @@ Options:
     - search
     - offset
     - limit
-    
+
 */
 
 import React from 'react';
@@ -29,6 +29,7 @@ import {
   multiClientTemplate,
   extractCollectionInfo,
   extractFragmentInfo,
+  multiQueryType,
 } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
@@ -195,13 +196,21 @@ export const useMulti = (options, props = {}) => {
   const initialPaginationInput = getInitialPaginationInput(options, props);
   const [paginationInput, setPaginationInput] = useState(initialPaginationInput);
 
-  let { extraQueries } = options;
+  let { extraQueries, typeName, resolverName, collectionName, collection } = options;
 
-  const { collectionName, collection } = extractCollectionInfo(options);
+  if (!typeName) {
+    const collectionInfo = extractCollectionInfo(options);
+    collectionName = collectionInfo.collectionName;
+    collection = collectionInfo.collection;
+    typeName = collection.options.typeName;
+    resolverName = collection.options.multiResolverName;
+  }
+
+  if (!resolverName) {
+    resolverName = multiQueryType(typeName);
+  }
+
   const { fragmentName, fragment } = extractFragmentInfo(options, collectionName);
-
-  const typeName = collection.options.typeName;
-  const resolverName = collection.options.multiResolverName;
 
   // build graphql query from options
   const query = buildMultiQuery({ typeName, fragmentName, extraQueries, fragment });
@@ -211,7 +220,7 @@ export const useMulti = (options, props = {}) => {
 
   // workaround for https://github.com/apollographql/apollo-client/issues/2810
   queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
-  
+
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
@@ -223,8 +232,11 @@ export const useMulti = (options, props = {}) => {
 };
 
 export const withMulti = options => C => {
-  const { collection } = extractCollectionInfo(options);
-  const typeName = collection.options.typeName;
+  let { typeName } = options;
+  if (!typeName) {
+    const { collection } = extractCollectionInfo(options);
+    typeName = collection.options.typeName;
+  }
   const Wrapped = props => {
     const res = useMulti(options, props);
     return <C {...props} {...res} />;
