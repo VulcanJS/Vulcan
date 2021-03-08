@@ -21,14 +21,8 @@ export const getArguments = args => {
 
 /* ------------------------------------- Generic Field Template ------------------------------------- */
 
-// export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-// `${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
-
-// version that does not make any fields required
 export const fieldTemplate = ({ name, type, args, directive, description, required }, indentation = '') =>
-  `${description ? `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type} ${
-    directive ? directive : ''
-  }`;
+  `${description ?  `${indentation}# ${description}\n` : ''}${indentation}${name}${getArguments(args)}: ${type}${required ? '!' : ''} ${directive ? directive : ''}`;
 
 /* ------------------------------------- Main Type ------------------------------------- */
 
