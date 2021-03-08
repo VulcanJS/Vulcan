@@ -38,6 +38,7 @@ Package.onUse(function(api) {
     'http',
     'email@2.0.0',
     'random',
+    'force-ssl',
     'apollo@4.0.0',
 
     // Third-party packages
