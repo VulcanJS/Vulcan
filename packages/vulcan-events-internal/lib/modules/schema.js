@@ -14,19 +14,28 @@ const schema = {
   },
   userId: {
     type: String,
+    canRead: ['admins'],
     optional: true,
+    resolveAs: {
+      fieldName: 'user',
+      typeName: 'User',
+      relation: 'hasOne',
+    },
   },
   description: {
     type: String,
+    canRead: ['admins'],
     optional: true,
   },
   unique: {
     type: Boolean,
+    canRead: ['admins'],
     optional: true,
   },
   important: {
     // marking an event as important means it should never be erased
     type: Boolean,
+    canRead: ['admins'],
     optional: true,
   },
   properties: {

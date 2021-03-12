@@ -5,5 +5,16 @@ registerFragment(/* GraphQL */`
     __typename
     name
     createdAt
+    userId
+    description
+    unique
+    important
+    properties
+    user {
+      _id
+      displayName
+      pagePath
+      pageUrl
+    }
   }  
 `);
