@@ -3,7 +3,7 @@ import { Components, replaceComponent } from 'meteor/vulcan:lib';
 
 const ErrorCatcherContents = ({ error, message }) => (
   <div className="error-catcher">
-    <Components.Flash message={{ id: 'errors.generic_report', message, properties: { error } }} />
+    <Components.Flash message={{ message, properties: { error } }} />
     <div className="error-catcher-help">
       <p>Here are some suggestions to help you fix this issue:</p>
       <ol>

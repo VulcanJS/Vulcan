@@ -57,7 +57,7 @@ registerComponent('ErrorCatcher', ErrorCatcher, withCurrentUser, withSiteData, w
 
 const ErrorCatcherContents = ({ error, message }) => (
   <div className="error-catcher">
-    <Components.Flash message={{ id: 'errors.generic_report', message, properties: error }} />
+    <Components.Flash message={{ message, properties: error }} />
   </div>
 );
 
