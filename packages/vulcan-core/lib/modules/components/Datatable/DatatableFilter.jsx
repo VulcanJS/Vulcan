@@ -1,8 +1,9 @@
-import { Components, registerComponent, Utils } from 'meteor/vulcan:lib';
+import { Components, registerComponent, Utils, expandQueryFragments } from 'meteor/vulcan:lib';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
+import isEmpty from 'lodash/isEmpty';
 
 const getCount = columnFilters => {
   if (!columnFilters) {
@@ -67,7 +68,7 @@ const DatatableFilterContentsWithData = props => {
 
   // if query is a function, execute it
   const queryText = typeof query === 'function' ? query({ mode: 'static' }) : query;
-  const filterQuery = gql(queryText);
+  const filterQuery = gql(expandQueryFragments(queryText));
 
   const { loading, error, data } = useQuery(filterQuery);
 
@@ -85,7 +86,7 @@ const DatatableFilterContentsWithData = props => {
 registerComponent('DatatableFilterContentsWithData', DatatableFilterContentsWithData);
 
 const DatatableFilterContents = props => {
-  const { name, field, options, columnFilters, submitFilters, filterComponent } = props;
+  const { Components, name, field, options, columnFilters, submitFilters, filterComponent } = props;
   const fieldType = Utils.getFieldType(field);
 
   const [filters, setFilters] = useState(columnFilters);
@@ -116,7 +117,10 @@ const DatatableFilterContents = props => {
       default:
         contents = (
           <p>
-            <Components.FormattedMessage id="datatable.specify_option" defaultMessage="Please specify an options property on your schema field." />
+            <Components.FormattedMessage
+              id="datatable.specify_option"
+              defaultMessage="Please specify an options property on your schema field."
+            />
           </p>
         );
     }
@@ -125,7 +129,7 @@ const DatatableFilterContents = props => {
   return (
     <form>
       {contents}
-      <Components.Button 
+      <Components.Button
         variant="link"
         style={{ display: 'inline-block', marginRight: 10 }}
         className="datatable_filter_clear"
@@ -165,14 +169,18 @@ Operator: _in
 
 */
 const checkboxOperator = '_in';
-const DatatableFilterCheckboxes = ({ options, filters = { [checkboxOperator]: [] }, setFilters }) => (
+const DatatableFilterCheckboxes = ({ Components, options, filters = { [checkboxOperator]: [] }, setFilters }) => (
   <Components.FormComponentCheckboxGroup
     path="filter"
     itemProperties={{ layout: 'inputOnly' }}
     inputProperties={{ options }}
     value={filters[checkboxOperator]}
     updateCurrentValues={({ filter: newValues }) => {
-      setFilters({ [checkboxOperator]: newValues });
+      if (isEmpty(newValues)) {
+        setFilters(undefined);
+      } else {
+        setFilters({ [checkboxOperator]: newValues });
+      }
     }}
   />
 );
@@ -191,8 +199,8 @@ const DatatableFilterBooleans = ({ filters = { _eq: [] }, setFilters }) => (
     itemProperties={{ layout: 'inputOnly' }}
     inputProperties={{
       options: booleanOptions,
-      value:filters['_eq'],
-      onChange: (e) => {
+      value: filters['_eq'],
+      onChange: e => {
         const value = e.target.value; // note: this will be a string
         setFilters({ _eq: value === 'true' ? true : false });
       },

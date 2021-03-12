@@ -358,12 +358,7 @@ DatatableAbove.propTypes = {
 registerComponent({ name: 'DatatableAbove', component: DatatableAbove, hocs: [memo] });
 
 const DatatableAboveLeft = (props, { intl }) => {
-  const {
-    showSearch,
-    searchValue,
-    updateSearch,
-    Components,
-  } = props;
+  const { showSearch, searchValue, updateSearch, Components } = props;
   return (
     <div className="datatable-above-left">
       {showSearch && (
@@ -391,7 +386,7 @@ DatatableAboveLeft.contextTypes = {
 
 registerComponent({ name: 'DatatableAboveLeft', component: DatatableAboveLeft, hocs: [memo] });
 
-const DatatableAboveRight = (props) => {
+const DatatableAboveRight = props => {
   const {
     collection,
     currentUser,
@@ -431,7 +426,11 @@ registerComponent({ name: 'DatatableAboveRight', component: DatatableAboveRight,
 
 const DatatableAboveSearchInput = props => {
   const { Components } = props;
-  return <Components.FormComponentText {...props} />;
+  return (
+    <div className="datatable-above-search-input">
+      <Components.FormComponentText {...props} />
+    </div>
+  );
 };
 registerComponent({ name: 'DatatableAboveSearchInput', component: DatatableAboveSearchInput, hocs: [memo] });
 

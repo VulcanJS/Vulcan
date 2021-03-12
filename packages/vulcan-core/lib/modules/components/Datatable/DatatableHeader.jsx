@@ -40,7 +40,7 @@ const DatatableHeader = ({ collection, column, toggleSort, currentSort, submitFi
 
     // for filter options, use either column.options or else the options property defined on the schema field
     const filterOptions = column.options ? column.options : fieldOptions;
-    const filterQuery = field && field.query;
+    const filterQuery = field && field.staticQuery;
 
     return (
       <Components.DatatableHeaderCellLayout className={`datatable-header-${column.name}`}>
