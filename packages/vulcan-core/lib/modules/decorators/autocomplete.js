@@ -35,8 +35,15 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   const queryProps = { queryResolverName, autocompletePropertyName, valuePropertyName, fragmentName };
 
   // define query to load extra data for input values
-  const query = () => {
+
+  // to load only some items based on a key
+  const dynamicQuery = () => {
     return fieldDynamicQueryTemplate(queryProps);
+  };
+
+  // to load all possible items
+  const staticQuery = () => {
+    return fieldStaticQueryTemplate(queryProps);
   };
 
   // query to load autocomplete suggestions
@@ -50,18 +57,21 @@ export const makeAutocomplete = (field = {}, options = {}) => {
     const queryResolverName = options.queryResolverName || getQueryResolverName(field);
 
     return get(props, `data.${queryResolverName}.results`, []).map(document => ({
+      ...document,
       value: document[valuePropertyName],
       label: document[autocompletePropertyName],
     }));
   };
 
   const acField = {
-    ...field,
-    query,
+    dynamicQuery,
+    staticQuery,
+    query: dynamicQuery, // backwards-compatibility
     autocompleteQuery,
     queryWaitsForValue: true,
     options: optionsFunction,
     input: isMultiple ? 'multiautocomplete' : 'autocomplete',
+    ...field, // add field last to allow manual override of properties in field definition
   };
 
   return acField;

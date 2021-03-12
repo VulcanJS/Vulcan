@@ -52,6 +52,8 @@ export const additionalFieldKeys = [
   'placeholder', // form field placeholder value
   'options', // form options
   'query', // field-specific data loading query
+  'dynamicQuery', // field-specific data loading query
+  'staticQuery', // field-specific data loading query
   'queryWaitsForValue', // whether the data loading query should wait for a field to have a value to run
   'autocompleteQuery', // query used to populate autocomplete
   'selectable', // field can be used as part of a selector when querying for data
