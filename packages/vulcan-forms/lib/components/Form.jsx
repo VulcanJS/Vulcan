@@ -375,7 +375,6 @@ class SmartForm extends Component {
     // intialize properties
     let field = {
       ..._.pick(fieldSchema, formProperties),
-      document: this.state.initialDocument,
       name: fieldName,
       datatype: fieldSchema.type,
       layout: this.props.layout,
@@ -401,6 +400,7 @@ class SmartForm extends Component {
     // }
 
     const document = this.getDocument();
+    field.document = document;
 
     // internationalize field options labels
     if (field.options && Array.isArray(field.options)) {
@@ -1022,7 +1022,7 @@ class SmartForm extends Component {
         const meta = this.props[`create${this.props.typeName}Meta`];
         // in new versions of Apollo Client errors are no longer thrown/caught
         // but can instead be provided as props by the useMutation hook
-        if (meta && meta.error) {
+        if (meta?.error) {
           this.mutationErrorCallback(document, meta.error);
         } else {
           this.newMutationSuccessCallback(result);

@@ -37,43 +37,9 @@ export const getString = ({ id, values, defaultMessage, messages, locale }) => {
     message = defaultMessage;
   }
 
-  if (values && typeof values === 'object') {
+  if (values && typeof values === 'object' && typeof message === 'string') {
     message = pluralizeString(message, values);
-
-    let messageArray = [message];
-    Object.keys(values).forEach(key => {
-      const value = values[key];
-
-      messageArray = messageArray.reduce((accumulator, message) => {
-        if (typeof message !== 'string') {
-          accumulator.push(message);
-        } else if (typeof value === 'string' || typeof value === 'number') {
-          accumulator.push(message.replaceAll(`{${key}}`, value));
-        } else {
-          const parts = message.split(new RegExp(`{${key}}`, 'g'));
-          parts.forEach((part, index, array) => {
-            accumulator.push(part);
-            if (index < array.length - 1) {
-              accumulator.push(value);
-            }
-          });
-        }
-        return accumulator;
-      }, []);
-    });
-
-    if (messageArray.length === 1) {
-      message = messageArray[0];
-    } else {
-      message = messageArray.reduce((accumulator, message, index) => {
-        if (typeof message === 'string' && message.length) {
-          accumulator.push(message);
-        } else if (!!message) {
-          accumulator.push(React.cloneElement(message, { key: index }));
-        }
-        return accumulator;
-      }, []);
-    }
+    message = substituteStringValues(message, values);
   }
 
   return message;
@@ -123,6 +89,61 @@ export const pluralizeString = (message, values) => {
   return pluralizedMessage;
 };
 
+/**
+ * Substitute values in a message using [react-intl Simple Argument syntax](https://formatjs.io/docs/core-concepts/icu-syntax/#simple-argument)
+ *
+ * @param {string} message
+ * @param {object} values Object with keys that may contain string, number, and React Node values
+ * @return {string|React.ReactNodeArray} If `values` only contains string and/or number values, a string is returned,
+ * otherwise an array of React Nodes is returned; both types of results can be used in the same way in a .jsx file
+ */
+export const substituteStringValues = (message, values) => {
+  let messageArray = [message];
+
+  Object.keys(values).forEach(key => {
+    const value = values[key];
+    messageArray = messageArray.reduce((accumulator, message) => {
+      if (typeof message !== 'string') {
+        // if this message array element is not a string, pass it on without substituting values
+        accumulator.push(message);
+      } else if (typeof value === 'string' || typeof value === 'number') {
+        // if this value is a string or a number, substitute it
+        accumulator.push(message.replaceAll(`{${key}}`, value));
+      } else {
+        // if this value is a node, break this message array element into three parts:
+        // 1) the text before the pattern; 2) the React Node; 3) the text after the pattern
+        const parts = message.split(new RegExp(`{${key}}`, 'g'));
+        parts.forEach((part, index, array) => {
+          accumulator.push(part);
+          if (index < array.length - 1) {
+            accumulator.push(value);
+          }
+        });
+      }
+      return accumulator;
+    }, []);
+  });
+
+  if (messageArray.length === 1) {
+    // if there is only one array element, it's just a simple string
+    messageArray = messageArray[0];
+  } else {
+    // filter out empty array elements
+    messageArray = messageArray.reduce((accumulator, message, index) => {
+      if (typeof message === 'string' && message.length) {
+        // pass on non-empty string elements
+        accumulator.push(message);
+      } else if (!!message) {
+        // pass on node elements augmented with a `key` prop (required for node arrays)
+        accumulator.push(React.cloneElement(message, { key: index }));
+      }
+      return accumulator;
+    }, []);
+  }
+
+  return messageArray;
+};
+
 export const registerDomain = (locale, domain) => {
   Domains[domain] = locale;
 };
@@ -143,7 +164,7 @@ Helper to detect current browser locale
 
 */
 export const detectLocale = () => {
-  var lang;
+  let lang;
 
   if (typeof navigator === 'undefined') {
     return null;

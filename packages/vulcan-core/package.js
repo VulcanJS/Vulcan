@@ -1,4 +1,4 @@
-const version = '1.16.0';
+const version = '1.16.1';
 
 Package.describe({
   name: 'vulcan:core',
@@ -8,8 +8,6 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  
-
   api.use([`vulcan:lib@=${version}`, `vulcan:i18n@=${version}`, `vulcan:users@=${version}`]);
 
   api.use([`vulcan:i18n@=${version}`], ['server', 'client'], { weak: true });

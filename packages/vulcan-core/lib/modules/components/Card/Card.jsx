@@ -90,6 +90,7 @@ const Card = ({ title, className, collection, document, currentUser, fields, sho
       user: currentUser,
       context: { Users },
       operationName: 'update',
+      document
     });
   } else if (check) {
     canUpdate = check && check(currentUser, document, { Users });
@@ -146,3 +147,5 @@ registerComponent({
   component: Card,
   hocs: [withComponents],
 });
+
+export default Card;

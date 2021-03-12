@@ -1,4 +1,4 @@
-import { getCollectionByTypeName, isEmptyOrUndefined, fieldDynamicQueryTemplate, fieldStaticQueryTemplate, autocompleteQueryTemplate } from 'meteor/vulcan:core';
+import { getCollectionByTypeName, fieldDynamicQueryTemplate, autocompleteQueryTemplate } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 
 const getQueryResolverName = field => {
@@ -27,7 +27,7 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   if (!autocompletePropertyName) {
     throw new Error('makeAutocomplete decorator is missing an autocompletePropertyName option.');
   }
-  
+
   // if field stores an array, use multi autocomplete
   const isMultiple = multi || field.type === Array;
 

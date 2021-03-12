@@ -17,6 +17,7 @@ import './core/Avatar';
 import './core/Card';
 import './core/Datatable';
 import './core/EditButton';
+import './core/Flash';
 import './core/Loading';
 import './core/NewButton';
 
@@ -55,6 +56,7 @@ import './forms/controls/TimeRdt';
 export * from './forms/controls/Url';
 
 import './theme/ThemeStyles';
+import './theme/ThemeProvider';
 
 import './ui/Alert';
 import './ui/Button';
