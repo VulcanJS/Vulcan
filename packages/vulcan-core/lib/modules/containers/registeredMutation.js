@@ -14,18 +14,21 @@ export default withMutation({
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
-import { getFragment } from 'meteor/vulcan:lib';
+import { expandQueryFragments } from 'meteor/vulcan:lib';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 
 export const useRegisteredMutation = (options) => {
-  const { name, args, fragmentName, mutationOptions = {} } = options;
-  let mutation, fragment, fragmentBlock = '';
+  const { name, args, fragmentText, fragmentName, mutationOptions = {} } = options;
+  let mutation, fragmentBlock = '';
 
   if (fragmentName) {
-    fragment = getFragment(fragmentName);
     fragmentBlock = `{
       ...${fragmentName}
+    }`;
+  } else if (fragmentText) {
+    fragmentBlock = `{
+      ${fragmentText}
     }`;
   }
 
@@ -44,7 +47,7 @@ export const useRegisteredMutation = (options) => {
       }
     `;
   }
-  const query = gql`${mutation}${fragmentName ? fragment : ''}`;
+  const query = gql(expandQueryFragments(mutation));
 
   const [mutateFunc] = useMutation(query, mutationOptions);
   const extendedMutateFunc = vars => mutateFunc({ variables: vars });
