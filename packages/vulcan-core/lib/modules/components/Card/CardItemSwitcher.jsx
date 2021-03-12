@@ -23,7 +23,7 @@ const CardItemSwitcher = props => {
   // if typeName is not provided, default to typeof value
   // note: contents provides additional clues about the contents (image, video, etc.)
 
-  let { value, typeName, contents, Components, fieldName, collection, document } = props;
+  let { nestingLevel = 0, value, typeName, contents, Components, fieldName, collection, document } = props;
 
   const fieldSchema = getFieldSchema(fieldName, collection);
 
@@ -35,7 +35,7 @@ const CardItemSwitcher = props => {
     }
   }
 
-  const itemProps = { value, Components, document, fieldName, collection, fieldSchema };
+  const itemProps = { nestingLevel: nestingLevel + 1, value, Components, document, fieldName, collection, fieldSchema };
 
   // no value; we return an empty string
   if (typeof value === 'undefined' || value === null) {

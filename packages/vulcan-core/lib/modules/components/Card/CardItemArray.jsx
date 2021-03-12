@@ -2,7 +2,7 @@ import { registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 
 // Array
-const CardItemArray = ({ value, Components }) => (
+const CardItemArray = ({ nestingLevel, value, Components }) => (
   <ol className="contents-array">
     {value.map((item, index) => (
       <li key={index}>
@@ -11,6 +11,7 @@ const CardItemArray = ({ value, Components }) => (
             value={item}
             typeName={typeof item}
             Components={Components}
+            nestingLevel={nestingLevel}
           />
         }
       </li>
