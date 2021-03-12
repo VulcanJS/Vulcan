@@ -146,7 +146,7 @@ export function getDefaultResolvers(options) {
         debug('');
         debugGroup(`--------------- start \x1b[35m${typeName} Single Resolver\x1b[0m ---------------`);
         debug(`Options: ${JSON.stringify(resolverOptions)}`);
-        debug(`Selector: ${JSON.stringify(oldSelector)}`);
+        debug(`Input: ${JSON.stringify(input)}`);
 
         if (cacheControl && enableCache) {
           const maxAge = resolverOptions.cacheMaxAge || defaultOptions.cacheMaxAge;
@@ -157,7 +157,7 @@ export function getDefaultResolvers(options) {
         const collection = context[collectionName];
 
         // use Dataloader if doc is selected by documentId/_id
-        const documentId = oldSelector.documentId || oldSelector._id;
+        const documentId = oldSelector.documentId || oldSelector._id || input.id;
         const slug = oldSelector.slug;
 
         if (documentId) {
