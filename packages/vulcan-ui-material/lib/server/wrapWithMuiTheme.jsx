@@ -1,6 +1,7 @@
 import React from 'react';
 import { addCallback, Components } from 'meteor/vulcan:core';
 import { ServerStyleSheets } from '@material-ui/core/styles';
+import { StylesProvider } from '@material-ui/core/styles';
 
 function wrapWithMuiTheme(app, { context, apolloClient }) {
   // will spawn a StylesProvider automatically during render
@@ -10,9 +11,12 @@ function wrapWithMuiTheme(app, { context, apolloClient }) {
   context.sheetsRegistry = sheets;
 
   return sheets.collect(
-    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-      {app}
-    </Components.ThemeProvider>
+    <StylesProvider injectFirst>
+      {/* StylesProvider so styled-components overrides material UI */}
+      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+        {app}
+      </Components.ThemeProvider>
+    </StylesProvider>
   );
 }
 
@@ -27,9 +31,12 @@ function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
   //const generateClassName = createGenerateClassName({ seed: '' });
 
   return sheets.collect(
-    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-      {app}
-    </Components.ThemeProvider>
+    <StylesProvider injectFirst>
+      {/* StylesProvider so styled-components overrides material UI */}
+      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+        {app}
+      </Components.ThemeProvider>
+    </StylesProvider>
   );
 }
 
