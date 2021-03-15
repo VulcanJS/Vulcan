@@ -33,9 +33,7 @@ Take an array of translations, a locale, and a default locale, and return a matc
 */
 const getLocaleString = (translations, locale, defaultLocale) => {
   const localeObject = translations.find(translation => translation.locale === locale);
-  const defaultLocaleObject = translations.find(
-    translation => translation.locale === defaultLocale
-  );
+  const defaultLocaleObject = translations.find(translation => translation.locale === defaultLocale);
   return (localeObject && localeObject.value) || (defaultLocaleObject && defaultLocaleObject.value);
 };
 
@@ -70,9 +68,7 @@ Migration function
 */
 const migrateIntlFields = async defaultLocale => {
   if (!defaultLocale) {
-    throw new Error(
-      "Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))"
-    );
+    throw new Error("Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))");
   }
 
   Collections.forEach(async collection => {
@@ -83,9 +79,9 @@ const migrateIntlFields = async defaultLocale => {
     if (intlFieldsNames.length) {
       // eslint-disable-next-line no-console
       console.log(
-        `### Found ${intlFieldsNames.length} field to migrate for collection ${
-          collection.options.collectionName
-        }: ${intlFieldsNames.join(', ')} ###\n`
+        `### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(
+          ', '
+        )} ###\n`
       );
 
       // const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);
@@ -142,7 +138,7 @@ export const getHeaderLocale = (headers, userLocale) => {
   let cookieLocale, acceptedLocale, locale, localeMethod;
 
   // get locale from cookies
-  if (headers['cookie']) {
+  if (headers?.['cookie']) {
     const cookies = {};
     headers['cookie'].split('; ').forEach(c => {
       const cookieArray = c.split('=');
@@ -152,12 +148,12 @@ export const getHeaderLocale = (headers, userLocale) => {
   }
 
   // get locale from accepted-language header
-  if (headers['accept-language']) {
+  if (headers?.['accept-language']) {
     const acceptedLanguages = headers['accept-language'].split(',').map(l => l.split(';')[0]);
     acceptedLocale = acceptedLanguages[0]; // for now only use the highest-priority accepted language
   }
 
-  if (headers.locale) {
+  if (headers?.locale) {
     locale = headers.locale;
     localeMethod = 'header';
   } else if (cookieLocale) {
