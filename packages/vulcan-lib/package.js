@@ -7,7 +7,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   // note: if used, accounts-base should be loaded before vulcan:lib
-  api.use('accounts-base', { weak: true });
+  api.use('accounts-base@1.8.0', { weak: true });
 
   var packages = [
     'buffer@0.0.0', // see https://github.com/meteor/meteor/issues/8645
@@ -27,17 +27,17 @@ Package.onUse(function(api) {
     // Other meteor-base package
     // see https://github.com/meteor/meteor/blob/master/packages/meteor-base/package.js
 
-    'underscore',
-    'hot-code-push',
+    'underscore@1.0.10',
+    'hot-code-push@1.0.4',
     // 'ddp',
 
     // Other packages
 
-    'mongo',
-    'check',
-    'http',
+    'mongo@1.10.1',
+    'check@1.3.1',
+    'http@1.4.3',
     'email@2.0.0',
-    'random',
+    'random@1.2.0',
     'apollo@4.0.0',
 
     // Third-party packages
