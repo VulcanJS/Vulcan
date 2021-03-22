@@ -142,7 +142,7 @@ export const getHeaderLocale = (headers, userLocale) => {
   let cookieLocale, acceptedLocale, locale, localeMethod;
 
   // get locale from cookies
-  if (headers['cookie']) {
+  if (headers?.['cookie']) {
     const cookies = {};
     headers['cookie'].split('; ').forEach(c => {
       const cookieArray = c.split('=');
@@ -152,12 +152,12 @@ export const getHeaderLocale = (headers, userLocale) => {
   }
 
   // get locale from accepted-language header
-  if (headers['accept-language']) {
+  if (headers?.['accept-language']) {
     const acceptedLanguages = headers['accept-language'].split(',').map(l => l.split(';')[0]);
     acceptedLocale = acceptedLanguages[0]; // for now only use the highest-priority accepted language
   }
 
-  if (headers.locale) {
+  if (headers?.locale) {
     locale = headers.locale;
     localeMethod = 'header';
   } else if (cookieLocale) {
