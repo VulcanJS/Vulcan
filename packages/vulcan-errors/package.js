@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.use(['ecmascript', 'vulcan:core@=1.16.1']);
+  api.use(['vulcan:core@=1.16.1']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
