@@ -9,20 +9,20 @@ Package.describe({
 Package.onUse(function(api) {
   api.use('vulcan:core@=1.16.1');
 
-  api.use('ecmascript');
-  api.use('tracker');
-  api.use('underscore');
-  api.use('accounts-base');
-  api.use('check');
-  api.use('random');
-  api.use('email@2.0.0');
-  api.use('session');
-  api.use('service-configuration');
+  // api.use('ecmascript');
+  // api.use('tracker');
+  // api.use('underscore');
+  // api.use('accounts-base@1.8.0');
+  // api.use('check');
+  // api.use('random');
+  // api.use('email@2.0.0');
+  // api.use('session');
+  // api.use('service-configuration');
 
-  api.imply('accounts-base');
+  api.imply('accounts-base@1.8.0');
 
-  api.use('accounts-oauth', { weak: true });
-  api.use('accounts-password', { weak: true });
+  api.use('accounts-oauth@1.2.0', { weak: true });
+  api.use('accounts-password@1.7.0', { weak: true });
 
   api.mainModule('main_client.js', 'client');
   api.mainModule('main_server.js', 'server');
