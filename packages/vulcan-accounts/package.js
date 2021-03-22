@@ -23,6 +23,7 @@ Package.onUse(function(api) {
 
   api.use('accounts-oauth@1.2.0', { weak: true });
   api.use('accounts-password@1.7.0', { weak: true });
+  api.use('service-configuration@1.0.11', { weak: true});
 
   api.mainModule('main_client.js', 'client');
   api.mainModule('main_server.js', 'server');
