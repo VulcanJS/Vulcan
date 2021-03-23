@@ -7,7 +7,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.use('vulcan:core@=1.16.1');
+  api.use('vulcan:core@=1.16.2');
 
   // api.use('ecmascript');
   // api.use('tracker');

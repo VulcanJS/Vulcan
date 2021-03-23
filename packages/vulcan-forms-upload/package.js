@@ -1,12 +1,12 @@
 Package.describe({
   name: 'vulcan:forms-upload',
   summary: 'Vulcan package extending vulcan:forms to upload images to Cloudinary from a drop zone.',
-  version: '1.16.1',
+  version: '1.16.2',
   git: 'https://github.com/xavcz/nova-forms-upload.git',
 });
 
 Package.onUse(function(api) {
-  api.use(['vulcan:core@=1.16.1', 'vulcan:forms@=1.16.1', 'fourseven:scss@4.12.0']);
+  api.use(['vulcan:core@=1.16.2', 'vulcan:forms@=1.16.2', 'fourseven:scss@4.12.0']);
 
   api.addFiles(['lib/Upload.scss'], 'client');
 
