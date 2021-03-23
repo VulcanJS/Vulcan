@@ -35,7 +35,7 @@ Users.avatar = {
    */
   hash: function (string) {
     var self = this;
-    // eslint-disable-next-line babel/new-cap
+    // eslint-disable-next-line new-cap
     return md5(self.cleanString(string)).toString();
   },
 

@@ -8,7 +8,7 @@ module.exports = {
   jsxBracketSameLine: true,
   trailingComma: 'es5',
   printWidth: 140,
-  parser: 'babylon',
+  parser: '@babel/parser',
 
   overrides: [
     {

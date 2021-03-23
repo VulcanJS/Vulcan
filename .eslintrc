@@ -4,7 +4,7 @@
     "plugin:meteor/recommended",
     "plugin:react/recommended"
   ],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "allowImportExportEverywhere": true,
     "ecmaVersion": 6,
@@ -12,7 +12,7 @@
   },
   "rules": {
     "babel/generator-star-spacing": 0,
-    "babel/new-cap": [
+    "new-cap": [
       1,
       {
         "capIsNewExceptions": [
@@ -27,7 +27,7 @@
         ]
       }
     ],
-    "babel/array-bracket-spacing": 1,
+    "array-bracket-spacing": 1,
     "babel/object-curly-spacing": 0,
     # "babel/object-curly-spacing": [1, "always", { "objectsInObjects": false, "arraysInObjects": false }],
     "babel/object-shorthand": 0,
@@ -67,7 +67,7 @@
     "mocha": true
   },
   "plugins": [
-    "babel",
+    "@babel",
     "meteor",
     "react",
     "prettier",
