@@ -1,4 +1,4 @@
-# vulcan:ui-material 1.16.0_3
+# vulcan:ui-material 1.16.2
 
 Package initially created by [Erik Dakoda](https://github.com/ErikDakoda) ([`erikdakoda:vulcan-material-ui`](https://github.com/ErikDakoda/vulcan-material-ui))
 
