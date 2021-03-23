@@ -24,9 +24,7 @@
     "generate-changelog": "auto-changelog -u"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "hooks": {}
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
@@ -129,16 +127,12 @@
   "private": true,
   "devDependencies": {
     "@apollo/react-testing": "3.1.4",
-    "@babel/core": "^7.13.10",
-    "@babel/eslint-parser": "^7.13.10",
-    "@babel/eslint-plugin": "^7.13.10",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
-    "@babel/plugin-proposal-optional-chaining": "^7.13.8",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/styles": "4.10.0",
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
     "@storybook/addon-actions": "5.0.8",
     "@storybook/addon-knobs": "5.0.8",
     "@storybook/addon-links": "5.0.1",
@@ -152,7 +146,6 @@
     "autosize-input": "^1.0.2",
     "autosuggest-highlight": "^3.1.1",
     "babel-loader": "^8.2.2",
-    "babylon": "^6.18.0",
     "chromedriver": "^2.46.0",
     "colors": "^1.3.2",
     "css-loader": "^2.1.1",
@@ -160,7 +153,6 @@
     "dompurify": "^2.2.6",
     "enzyme": "^3.11.0",
     "eslint": "^7.22.0",
-    "@meteorjs/eslint-config-meteor": "^1.0.5",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
@@ -195,7 +187,7 @@
     "supertest": "^4.0.2",
     "vulcan-loader": "0.0.1",
     "waait": "^1.0.5",
-    "webpack": "4.28.4"
+    "webpack": "5.27.2"
   },
   "postcss": {
     "plugins": {

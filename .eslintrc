@@ -5,8 +5,11 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "allowImportExportEverywhere": true,
-    "ecmaVersion": 2020,
-    "sourceType": "module"
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "generator-star-spacing": 0,
@@ -64,7 +67,6 @@
     "mocha": true
   },
   "plugins": [
-    "@babel",
     "meteor",
     "react",
     "prettier",
