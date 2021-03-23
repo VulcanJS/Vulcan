@@ -1,3 +1,5 @@
+import { Accounts } from 'meteor/accounts-base';
+
 let browserHistory;
 try {
   browserHistory = require('react-router').browserHistory;
