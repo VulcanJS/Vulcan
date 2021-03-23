@@ -24,3 +24,4 @@ vulcan:ui-bootstrap
 
 meteortesting:mocha
 apollo
+service-configuration
