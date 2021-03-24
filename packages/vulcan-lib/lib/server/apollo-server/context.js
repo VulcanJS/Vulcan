@@ -86,7 +86,7 @@ const getUser = async loginToken => {
 }
 
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
-const setupAuthToken = async (context, req) => {
+export const setupAuthToken = async (context, req) => {
   const authToken = getAuthToken(req);
   const user = await getUser(authToken);
   if (user) {
