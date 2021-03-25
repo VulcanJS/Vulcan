@@ -21,9 +21,9 @@ import { getHeaderLocale } from '../intl.js';
 import { getLocale } from '../../modules/intl.js';
 import { getSetting } from '../../modules/settings.js';
 import { WebApp } from 'meteor/webapp';
-import { Accounts } from 'meteor/accounts-base'
-import { Meteor } from 'meteor/meteor'
-import { check } from 'meteor/check'
+import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
 
 
 
