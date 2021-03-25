@@ -4,7 +4,6 @@
  */
 import Mingo from 'mingo';
 
-
 /**
  * Safe getter
  * Must returns null if the document is absent (eg in case of validation failure)
@@ -12,7 +11,7 @@ import Mingo from 'mingo';
  * @param {*} mutation 
  * @param {*} mutationName 
  */
-const getDocumentFromMutation = (mutation, mutationName) => {
+export const getDocumentFromMutation = (mutation, mutationName) => {
     const mutationData = (mutation.result.data[mutationName] || {});
     const document = mutationData.data;
     return document;

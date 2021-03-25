@@ -1,4 +1,4 @@
-const crypto = Npm.require('crypto');
+import crypto from 'crypto';
 
 export const _hashLoginToken = (loginToken) => {
   var hash = crypto.createHash('sha256');
