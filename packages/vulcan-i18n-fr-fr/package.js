@@ -1,12 +1,12 @@
 Package.describe({
   name: 'vulcan:i18n-fr-fr',
   summary: 'Vulcan i18n package (fr_FR)',
-  version: '1.16.2',
+  version: '1.16.3',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(function(api) {
-  api.use(['vulcan:core@=1.16.2']);
+  api.use(['vulcan:core@=1.16.3']);
 
   api.addFiles(['lib/fr_FR.js'], ['client', 'server']);
 });
