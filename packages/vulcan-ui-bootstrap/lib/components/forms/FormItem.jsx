@@ -23,9 +23,10 @@ const FormItem = props => {
     Components: propsComponents,
     ...rest
   } = props;
-  const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
 
   const Components = mergeWithComponents(propsComponents);
+
+  const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
 
   if (layout === 'inputOnly' || !label) {
     // input only layout
