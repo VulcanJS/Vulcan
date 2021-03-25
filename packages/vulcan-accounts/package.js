@@ -13,7 +13,7 @@ Package.onUse(function(api) {
   api.use('session@1.2.0');
   api.use('accounts-oauth@1.2.0', { weak: true });
   api.use('accounts-password@1.7.0', { weak: true });
-  api.use('service-configuration@1.0.11', { weak: true});
+  api.use('service-configuration@1.0.11');
 
   api.imply('accounts-base@1.8.0');
 
