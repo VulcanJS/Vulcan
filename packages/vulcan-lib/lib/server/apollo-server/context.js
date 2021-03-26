@@ -17,11 +17,15 @@ import { runCallbacks } from '../../modules/callbacks.js';
 import findByIds from '../../modules/findbyids.js';
 import { GraphQLSchema } from '../graphql/index.js';
 import _merge from 'lodash/merge';
-import { getUser } from 'meteor/apollo';
 import { getHeaderLocale } from '../intl.js';
 import { getLocale } from '../../modules/intl.js';
 import { getSetting } from '../../modules/settings.js';
 import { WebApp } from 'meteor/webapp';
+import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+
+
 
 /**
  * Called once on server creation
@@ -53,8 +57,36 @@ export const getAuthToken = req => {
   return req.headers.authorization || new Cookies(req.cookies).get('meteor_login_token');
 };
 
+const getUser = async loginToken => {
+  if (loginToken) {
+    check(loginToken, String)
+
+    const hashedToken = Accounts._hashLoginToken(loginToken)
+
+    const user = await Meteor.users.rawCollection().findOne({
+      'services.resume.loginTokens.hashedToken': hashedToken
+    })
+
+    if (user) {
+      // find the right login token corresponding, the current user may have
+      // several sessions logged on different browsers / computers
+      const tokenInformation = user.services.resume.loginTokens.find(
+        tokenInfo => tokenInfo.hashedToken === hashedToken
+      )
+
+      const expiresAt = Accounts._tokenExpiration(tokenInformation.when)
+
+      const isExpired = expiresAt < new Date()
+
+      if (!isExpired) {
+        return user
+      }
+    }
+  }
+}
+
 // @see https://www.apollographql.com/docs/react/recipes/meteor#Server
-const setupAuthToken = async (context, req) => {
+export const setupAuthToken = async (context, req) => {
   const authToken = getAuthToken(req);
   const user = await getUser(authToken);
   if (user) {
