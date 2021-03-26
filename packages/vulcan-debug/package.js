@@ -1,7 +1,7 @@
 Package.describe({
   name: 'vulcan:debug',
   summary: 'Vulcan debug package',
-  version: '1.16.2',
+  version: '1.16.3',
   git: 'https://github.com/VulcanJS/Vulcan.git',
   debugOnly: true,
 });
@@ -13,11 +13,11 @@ Package.onUse(function(api) {
 
     // Vulcan packages
 
-    'vulcan:lib@=1.16.2',
-    'vulcan:email@=1.16.2',
+    'vulcan:lib@=1.16.3',
+    'vulcan:email@=1.16.3',
   ]);
 
-  api.use(['vulcan:errors@=1.16.2']), ['server', 'client'], { weak: true };
+  api.use(['vulcan:errors@=1.16.3']), ['server', 'client'], { weak: true };
 
   api.addFiles(['lib/stylesheets/debug.scss'], ['client']);
 

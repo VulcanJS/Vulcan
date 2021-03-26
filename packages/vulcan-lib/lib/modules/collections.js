@@ -39,7 +39,7 @@ export const getCollectionByTypeName = typeName => {
   let parsedTypeName = typeName.replace('[', '').replace(']', '').replace(/!/g, '');
   const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
   if (!collection) {
-    throw new Error(`Could not find collection for type “${typeName}”`);
+    throw new Error(`Could not find collection for type “${parsedTypeName}”. Registered types: ${Collections.map(({ options: { typeName } }) => typeName).join(', ')}`);
   }
   return collection;
 };
