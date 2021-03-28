@@ -33,6 +33,6 @@ export * from './ui_utils.js';
 export * from './schema_utils.js';
 export * from './simpleSchema_utils.js';
 // export * from './resolvers.js';
-export * from './random.js';
+export * from './random_id.js';
 export * from './mongoParams';
 export * from './reactive-state.js';
