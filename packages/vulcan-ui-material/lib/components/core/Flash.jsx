@@ -22,7 +22,7 @@ const styles = theme => ({
     transition: theme.transitions.create(['opacity'], {
       duration: theme.transitions.duration.short,
     }),
-    opacity: theme.opacity.darker,
+    opacity: theme.opacity?.darker,
     '&:hover': {
       opacity: 1,
     },
@@ -56,7 +56,7 @@ const Flash = (props, context) => {
     if (reason === 'clickaway') return;
 
       setIsOpen(false);
-      setTimeout(() => { props.dismissFlash(props.message._id); }, 500);
+      setTimeout(() => { props?.dismissFlash(props.message._id); }, 500);
   };
 
   return (
