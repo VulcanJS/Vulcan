@@ -55,7 +55,7 @@ export const multiQueryUpdater = ({
   const multiResolverName = collection.options.multiResolverName;
   // update multi queries
   const multiQuery = buildMultiQuery({ typeName, fragmentName, fragment });
-  const newDoc = data[resolverName].data;
+  const newDoc = data?.[resolverName]?.data;
   // get all the resolvers that match
   const client = getApolloClient();
   const variablesList = getVariablesListFromCache(cache, multiResolverName);
