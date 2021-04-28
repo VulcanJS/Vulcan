@@ -829,6 +829,7 @@ class SmartForm extends Component {
   */
   handleRouteLeave = () => {
     if (this.isChanged()) {
+      this.submitForm()
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
@@ -845,6 +846,7 @@ class SmartForm extends Component {
    */
   handlePageLeave = event => {
     if (this.isChanged()) {
+      this.submitForm()
       const message = this.context.intl.formatMessage({
         id: 'forms.confirm_discard',
         defaultMessage: 'Are you sure you want to discard your changes?',
