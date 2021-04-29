@@ -56,7 +56,7 @@ const Flash = (props, context) => {
     if (reason === 'clickaway') return;
 
       setIsOpen(false);
-      setTimeout(() => { props?.dismissFlash(props.message._id); }, 500);
+      setTimeout(() => { props?.dismissFlash?.(props.message._id); }, 500);
   };
 
   return (

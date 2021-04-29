@@ -8,7 +8,7 @@ const Flash = (props) => {
 
   const dismissFlash = (e) => {
     e.preventDefault();
-    props.dismissFlash(props.message._id);
+    props.dismissFlash?.(props.message._id);
   };
 
   return (
