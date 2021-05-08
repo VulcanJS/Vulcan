@@ -80,7 +80,7 @@
     "intl": "^1.2.4",
     "intl-locales-supported": "1.4.6",
     "juice": "^5.1.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mailchimp": "^1.1.6",
     "marked": "^0.7.0",
     "meteor-node-stubs": "^0.4.1",
