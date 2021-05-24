@@ -104,7 +104,8 @@ const buildResult = (
   options,
   { fragmentName, fragment, resolverName },
   { setPaginationInput, paginationInput, initialPaginationInput },
-  returnedProps
+  returnedProps,
+  queryOptions,
 ) => {
   //console.log('returnedProps', returnedProps);
   const { refetch, networkStatus, error, fetchMore, data, graphQLErrors } = returnedProps;
@@ -121,6 +122,8 @@ const buildResult = (
     // eslint-disable-next-line no-console
     console.log(error);
   }
+
+  const initialInput = queryOptions?.variables?.input || {}
 
   return {
     // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
@@ -142,6 +145,8 @@ const buildResult = (
     loadMore(providedInput) {
       // if new terms are provided by presentational component use them, else default to incrementing current limit once
       const newInput = providedInput || {
+        // TODO : test if initialInput is necessary for loadMore function
+        // ...initialInput,
         ...paginationInput,
         limit: results.length + initialPaginationInput.limit,
       };
@@ -155,6 +160,7 @@ const buildResult = (
       // get terms passed as argument or else just default to incrementing the offset
 
       const newInput = providedInput || {
+        ...initialInput,
         ...paginationInput,
         offset: results.length,
       };
@@ -216,7 +222,8 @@ export const useMulti = (options, props = {}) => {
     options,
     { fragment, fragmentName, resolverName },
     { setPaginationInput, paginationInput, initialPaginationInput },
-    queryRes
+    queryRes,
+    queryOptions
   );
 
   return result;
