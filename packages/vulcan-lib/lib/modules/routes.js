@@ -14,21 +14,18 @@ export const RoutesTable = {}; // storage for infos about routes themselves
 
  if there there is value for parentRouteName it will look for the route and add the new route as a child of it
  */
-export const addRoute = (routeOrRouteArray, parentRouteName) => {
+export const addRoute = (routeOrRouteArray, options = {}) => {
+  const { parentRouteName, defaultLayoutComponent } = options;
 
   // be sure to have an array of routes to manipulate
   const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
 
   // if there is a value for parentRouteName you are adding this route as new child
   if (parentRouteName) {
-
-    addAsChildRoute(parentRouteName, addedRoutes);
-
+    addAsChildRoute(parentRouteName, addedRoutes, options);
   } else {
-
     // modify the routes table with the new routes
     addedRoutes.map(({ name, path, ...properties }) => {
-
       // check if there is already a route registered to this path
       const routeWithSamePath = _.findWhere(RoutesTable, { path });
 
@@ -37,13 +34,18 @@ export const addRoute = (routeOrRouteArray, parentRouteName) => {
         delete RoutesTable[routeWithSamePath.name];
       }
 
-      // register the new route
-      RoutesTable[name] = {
+      const routeObject = {
         name,
         path,
-        ...properties
+        ...properties,
       };
 
+      if (defaultLayoutComponent && !routeObject.layoutComponent) {
+        routeObject.layoutComponent = defaultLayoutComponent;
+      }
+
+      // register the new route
+      RoutesTable[name] = routeObject;
     });
   }
 };
