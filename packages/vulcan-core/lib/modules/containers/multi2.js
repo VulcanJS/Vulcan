@@ -17,21 +17,16 @@ Options:
     - search
     - offset
     - limit
-    
+
 */
 
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { useState } from 'react';
-import gql from 'graphql-tag';
-import {
-  getSetting,
-  multiClientTemplate,
-  extractCollectionInfo,
-  extractFragmentInfo,
-} from 'meteor/vulcan:lib';
-import merge from 'lodash/merge';
-import get from 'lodash/get';
+import React, { useState } from "react";
+import { useQuery } from "@apollo/client";
+import gql from "graphql-tag";
+import { extractCollectionInfo, extractFragmentInfo, getSetting, multiClientTemplate } from "meteor/vulcan:lib";
+import merge from "lodash/merge";
+import get from "lodash/get";
+import { uniqBy } from "lodash";
 
 // default query input object
 const defaultInput = {
@@ -64,7 +59,7 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
 
   let {
     input: optionsInput,
-    pollInterval = getSetting('pollInterval', 20000),
+    pollInterval = getSetting("pollInterval", 20000),
     // generic graphQL options
     queryOptions = {},
   } = options;
@@ -77,7 +72,7 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
 
   // if this is the SSR process, set pollInterval to null
   // see https://github.com/apollographql/apollo-client/issues/1704#issuecomment-322995855
-  pollInterval = typeof window === 'undefined' ? null : pollInterval;
+  pollInterval = typeof window === "undefined" ? null : pollInterval;
 
   // get input from options, then props, then pagination
   // TODO: should be done during the merge with lodash
@@ -92,7 +87,7 @@ const buildQueryOptions = (options, paginationInput = {}, props) => {
   };
 
   // see https://www.apollographql.com/docs/react/features/error-handling/#error-policies
-  queryOptions.errorPolicy = 'all';
+  queryOptions.errorPolicy = "all";
 
   return {
     ...graphQLOptions,
@@ -116,14 +111,14 @@ const buildResult = (
   const loadingInitial = networkStatus === 1;
   const loading = networkStatus === 1;
   const loadingMore = networkStatus === 3 || networkStatus === 2;
-  const propertyName = options.propertyName || 'results';
+  const propertyName = options.propertyName || "results";
 
   if (error) {
     // eslint-disable-next-line no-console
     console.log(error);
   }
 
-  const initialInput = queryOptions?.variables?.input || {}
+  const initialInput = queryOptions?.variables?.input || {};
 
   return {
     // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
@@ -182,10 +177,10 @@ const buildResult = (
             ...previousResults,
             [resolverName]: { ...previousResults[resolverName] },
           }; // TODO: should we clone this object? => yes
-          newResults[resolverName].results = [
+          newResults[resolverName].results = uniqBy([
             ...previousResults[resolverName].results,
             ...fetchMoreResult[resolverName].results,
-          ];
+          ], "_id");
           return newResults;
         },
       });
@@ -216,14 +211,14 @@ export const useMulti = (options, props = {}) => {
   const queryRes = useQuery(query, queryOptions);
 
   // workaround for https://github.com/apollographql/apollo-client/issues/2810
-  queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
-  
+  queryRes.graphQLErrors = get(queryRes, "error.networkError.result.errors");
+
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
     { setPaginationInput, paginationInput, initialPaginationInput },
     queryRes,
-    queryOptions
+    queryOptions,
   );
 
   return result;
