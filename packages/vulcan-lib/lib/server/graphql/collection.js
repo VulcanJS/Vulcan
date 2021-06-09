@@ -91,17 +91,15 @@ const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
     resolversToAdd,
   };
 };
-const createMutations = ({ mutations: providedMutations, typeName, collectionName, fields }) => {
+const createMutations = ({ mutations: providedMutations = {}, typeName, collectionName, fields }) => {
   const mutationResolvers = {};
   const mutationsToAdd = [];
   const mutationsResolversToAdd = [];
   if (providedMutations === null) { // user explicitely disabled mutations
     return { mutationsResolversToAdd, mutationsToAdd };
   }
-  // if mutations are undefined, use defaults
-  const mutations = _isEmpty(providedMutations)
-    ? getDefaultMutations({ typeName })
-    : providedMutations;
+  // extend defaults with provided mutations
+  const mutations = { ...getDefaultMutations({ typeName }), ...providedMutations };
 
   const { create, update } = fields;
 
