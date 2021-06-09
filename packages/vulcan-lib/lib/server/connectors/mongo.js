@@ -1,5 +1,6 @@
 import { DatabaseConnectors } from '../connectors.js';
 import merge from 'lodash/merge';
+import isEmpty from 'lodash/isEmpty';
 
 import { convertSelector, convertUniqueSelector, filterFunction } from '../../modules/mongoParams';
 import { runCallbacks } from '../../modules/index.js';
@@ -44,8 +45,8 @@ DatabaseConnectors.mongo = {
       delete defaultInputObject.options.sort;
     }
     const mergedInputObject = {
-      selector: { ...defaultInputObject.selector, ...currentInputObject.selector },
-      options: { ...defaultInputObject.options, ...currentInputObject.options },
+      selector: isEmpty(currentInputObject.selector) ? defaultInputObject.selector : currentInputObject.selector,
+      options: isEmpty(currentInputObject.options) ? defaultInputObject.options : currentInputObject.options,
       filteredFields: currentInputObject.filteredFields || [],
     };
 

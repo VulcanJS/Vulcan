@@ -404,6 +404,7 @@ Users.canUpdateField = function(user, field, document) {
  * @param {Object} user - The user performing the action
  * @param {Object} document - The document being edited or inserted
  */
+// TODO: functions should take priority over admins status?
 Users.permissionCheck = options => {
   const { check, user, document } = options;
   if (Users.isAdmin(user)) {
