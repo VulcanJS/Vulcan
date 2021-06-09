@@ -107,10 +107,11 @@ const buildResult = (
   returnedProps
 ) => {
   //console.log('returnedProps', returnedProps);
-  const { refetch, networkStatus, error, fetchMore, data, graphQLErrors } = returnedProps;
+  const { refetch, networkStatus, error, fetchMore, data, previousData, graphQLErrors } = returnedProps;
   // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
-  const results = data && data[resolverName] && data[resolverName].results;
-  const totalCount = data && data[resolverName] && data[resolverName].totalCount;
+  const bestAvailableData = data ?? previousData;
+  const results = bestAvailableData && bestAvailableData[resolverName] && bestAvailableData[resolverName].results;
+  const totalCount = bestAvailableData && bestAvailableData[resolverName] && bestAvailableData[resolverName].totalCount;
   // see https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loadingInitial = networkStatus === 1;
   const loading = networkStatus === 1;
