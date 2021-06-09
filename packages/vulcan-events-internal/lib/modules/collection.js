@@ -20,7 +20,7 @@ const Events = createCollection({
     canRead: ({ user: currentUser }) => {
       return Users.isAdmin(currentUser);
     },
-    canCreate: () => false,
+    canCreate: ['guests'],
     canUpdate: () => false,
     canDelete: () => false,
   },
