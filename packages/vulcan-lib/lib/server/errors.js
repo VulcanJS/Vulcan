@@ -13,7 +13,7 @@ export const throwError = error => {
   const { id, data } = error;
   if (data) {
     console.log('// throwError');
-    console.log(data);
+    console.log(JSON.stringify(data, '', 2));
   }
   throw new UserInputError(id, error);
 };
