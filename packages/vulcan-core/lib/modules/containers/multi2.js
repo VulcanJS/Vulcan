@@ -17,7 +17,7 @@ Options:
     - search
     - offset
     - limit
-    
+
 */
 
 import React from 'react';
@@ -32,6 +32,7 @@ import {
 } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
+import { uniq } from 'lodash/array';
 
 // default query input object
 const defaultInput = {
@@ -182,10 +183,10 @@ const buildResult = (
             ...previousResults,
             [resolverName]: { ...previousResults[resolverName] },
           }; // TODO: should we clone this object? => yes
-          newResults[resolverName].results = [
+          newResults[resolverName].results = uniq([
             ...previousResults[resolverName].results,
             ...fetchMoreResult[resolverName].results,
-          ];
+          ]);
           return newResults;
         },
       });
@@ -217,7 +218,7 @@ export const useMulti = (options, props = {}) => {
 
   // workaround for https://github.com/apollographql/apollo-client/issues/2810
   queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
-  
+
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
