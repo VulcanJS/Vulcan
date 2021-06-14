@@ -32,7 +32,7 @@ import {
 } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
-import { uniq } from 'lodash/array';
+import { uniqBy } from 'lodash/array';
 
 // default query input object
 const defaultInput = {
@@ -183,10 +183,10 @@ const buildResult = (
             ...previousResults,
             [resolverName]: { ...previousResults[resolverName] },
           }; // TODO: should we clone this object? => yes
-          newResults[resolverName].results = uniq([
+          newResults[resolverName].results = uniqBy([
             ...previousResults[resolverName].results,
             ...fetchMoreResult[resolverName].results,
-          ]);
+          ],"_id");
           return newResults;
         },
       });
