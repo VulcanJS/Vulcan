@@ -850,7 +850,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
       if (promise instanceof Promise) {
         promise.then(SignUp.bind(this, options));
       } else {
-        // eslint-disable-next-line babel/new-cap
+        // eslint-disable-next-line @babel/new-cap
         SignUp(options);
       }
     }
