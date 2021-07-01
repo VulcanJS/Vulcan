@@ -1,13 +1,13 @@
 import { Components, getComponent } from './components';
 
 export type Route = {
-  name: string;
+  name?: string;
   path: string;
   componentName?: string,
   layoutName?: string,
 }
 
-export const Routes = new Map(); // will be populated on startup 
+export const Routes = new Map(); // will be populated on startup
 export const RoutesTable = new Map(); // storage for infos about routes themselves
 
 /*
@@ -34,8 +34,9 @@ export const addRoute = (routeOrRouteArray: Route|Array<Route>, parentRouteName?
   } else {
 
     // modify the routes table with the new routes
-    addedRoutes.forEach(({ name, path, ...properties }) => {
-
+    addedRoutes.forEach(({ ...properties }) => {
+      var { name, path } = properties;
+      name = name ? name : path;
       // check if there is already a route registered to this path
       const routeWithSamePath = Object.values(RoutesTable).find(route => route.path === path);
 
@@ -89,7 +90,9 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
   }
 
   // modify the routes table with the new routes
-  addedRoutes.map(({ name, path, ...properties }) => {
+  addedRoutes.map(({...properties }) => {
+    var { name, path } = properties;
+    name = name ? name : path;
 
     // get the current child routes for this Route
     const childRoutes = RoutesTable[parentRouteName]['childRoutes'] || [];

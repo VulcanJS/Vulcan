@@ -1,6 +1,6 @@
 import { Components, getComponent } from './components';
 
-export const Routes = {}; // will be populated on startup 
+export const Routes = {}; // will be populated on startup
 export const RoutesTable = {}; // storage for infos about routes themselves
 
 /*
@@ -25,7 +25,10 @@ export const addRoute = (routeOrRouteArray, options = {}) => {
     addAsChildRoute(parentRouteName, addedRoutes, options);
   } else {
     // modify the routes table with the new routes
-    addedRoutes.map(({ name, path, ...properties }) => {
+    addedRoutes.map(({...properties }) => {
+      var { name, path } = properties;
+      name = name ? name : path;
+
       // check if there is already a route registered to this path
       const routeWithSamePath = _.findWhere(RoutesTable, { path });
 
@@ -84,7 +87,9 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
   }
 
   // modify the routes table with the new routes
-  addedRoutes.map(({ name, path, ...properties }) => {
+  addedRoutes.map(({ ...properties }) => {
+    var { name, path } = properties;
+    name = name ? name : path;
 
     // get the current child routes for this Route
     const childRoutes = RoutesTable[parentRouteName]['childRoutes'] || [];
