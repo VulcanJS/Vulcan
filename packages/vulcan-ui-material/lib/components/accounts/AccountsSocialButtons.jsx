@@ -1,7 +1,7 @@
 import React from 'react';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import CardActions from '@material-ui/core/CardActions';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 const styles = theme => ({

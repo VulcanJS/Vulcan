@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import ComponentMixin from './mixins/component';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';

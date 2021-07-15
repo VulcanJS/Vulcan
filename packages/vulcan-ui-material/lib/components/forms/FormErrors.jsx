@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 const styles = theme => ({

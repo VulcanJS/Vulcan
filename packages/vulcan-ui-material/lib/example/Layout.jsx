@@ -4,7 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Components, replaceComponent, Utils } from 'meteor/vulcan:core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 const drawerWidth = 240;
