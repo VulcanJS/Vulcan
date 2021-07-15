@@ -7,7 +7,7 @@ import {
   instantiateComponent,
   getHtmlInputProps,
 } from 'meteor/vulcan:core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
 

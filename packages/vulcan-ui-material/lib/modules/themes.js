@@ -1,6 +1,6 @@
 /** @module vulcan-material-ui */
 
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { registerSetting, getSetting } from 'meteor/vulcan:core';
 
 

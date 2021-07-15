@@ -5,7 +5,7 @@
  * @Last modified time: 10-01-19
  */
 import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import { registerComponent } from 'meteor/vulcan:core';
 
 import Card from '@material-ui/core/Card';
