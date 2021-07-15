@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 import moment from 'moment';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import EditIcon from 'mdi-material-ui/Pencil';

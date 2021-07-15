@@ -1,10 +1,10 @@
 import { registerTheme } from './themes';
-import primary from '@material-ui/core/colors/indigo';
-import secondary from '@material-ui/core/colors/deepPurple';
-import error from '@material-ui/core/colors/red';
-import info from '@material-ui/core/colors/blue';
-import success from '@material-ui/core/colors/green';
-import warning from '@material-ui/core/colors/orange';
+import { indigo as primary } from '@material-ui/core/colors';
+import { deepPurple as secondary } from '@material-ui/core/colors';
+import { red as error } from '@material-ui/core/colors';
+import { blue as info } from '@material-ui/core/colors';
+import { green as success } from '@material-ui/core/colors';
+import { orange as warning } from '@material-ui/core/colors';
 
 
 /** @ignore */

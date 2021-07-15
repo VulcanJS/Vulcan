@@ -1,7 +1,7 @@
 import React from 'react';
 import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 
 
 export const styles = theme => ({
