@@ -1,6 +1,6 @@
 /** @module vulcan-material-ui */
 
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { registerSetting, getSetting } from 'meteor/vulcan:core';
 
 
@@ -38,7 +38,7 @@ export const getTheme = (name) => {
   const themeInfo = ThemesTable[name];
   if (!themeInfo) return null;
   themeInfo.theme.typography = { ...themeInfo.theme.typography };
-  return createMuiTheme(themeInfo.theme);
+  return createTheme(themeInfo.theme);
 };
 
 /**
