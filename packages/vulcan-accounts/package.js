@@ -11,10 +11,10 @@ Package.onUse(function(api) {
 
   api.use('tracker@1.2.0');
   api.use('session@1.2.0');
-  api.use('accounts-oauth@1.2.0', { weak: true });
-  api.use('accounts-password@1.7.0', { weak: true });
+  api.use('accounts-oauth@1.3.0', { weak: true });
+  api.use('accounts-password@2.0.0', { weak: true });
   api.use('service-configuration@1.0.11');
-  api.use('accounts-base@1.8.0');
+  api.use('accounts-base@2.0.0');
 
   api.mainModule('main_client.js', 'client');
   api.mainModule('main_server.js', 'server');
