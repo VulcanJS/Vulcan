@@ -245,7 +245,10 @@ const generateSchemaFragments = ({
     schemaFragments.push(fieldFilterInputTemplate({ typeName, fields: filterable, customFilters }));
     if (customFilters) {
       customFilters.forEach(filter => {
-        schemaFragments.push(customFilterTemplate({ typeName, filter }));
+        // if filter has no argument we don't need to create a custom type for it
+        if (filter.arguments) {
+          schemaFragments.push(customFilterTemplate({ typeName, filter }));
+        }
       });
     }
     const customSorts = collection.options.customSorts;

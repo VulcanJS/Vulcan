@@ -58,6 +58,9 @@ const formatFilterName = s => Utils.capitalize(s.replace('_', ''));
 
 See https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#
  
+Note: if a filter doesn't take arguments just use a boolean (e.g. `_onlyPublic: true`)
+instead of defining a custom type. 
+
 */
 export const filterInputType = typeName => `${typeName}FilterInput`;
 export const fieldFilterInputTemplate = ({ typeName, fields, customFilters = [], customSorts = [] }) =>
@@ -65,7 +68,7 @@ export const fieldFilterInputTemplate = ({ typeName, fields, customFilters = [],
   _and: [${filterInputType(typeName)}]
   _not: ${filterInputType(typeName)}
   _or: [${filterInputType(typeName)}]
-${customFilters.map(filter => `  ${filter.name}: ${customFilterType(typeName, filter)}`)}
+${customFilters.map(filter => `  ${filter.name}: ${filter.arguments ? customFilterType(typeName, filter) : 'Boolean'}`)}
 ${customSorts.map(sort => `  ${sort.name}: ${customSortType(typeName, sort)}`)}
 ${fields
   .map(field => {
