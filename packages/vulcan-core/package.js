@@ -1,4 +1,4 @@
-const version = '1.16.3';
+const version = '1.16.4';
 
 Package.describe({
   name: 'vulcan:core',
