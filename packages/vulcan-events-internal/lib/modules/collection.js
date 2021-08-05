@@ -9,12 +9,11 @@ const Events = createCollection({
 
   schema,
 
-  mutations: getDefaultMutations('AnalyticsEvents', {
-    newCheck: () => true,
-    update: false,
-    upsert: false,
-    delete: false,
-  }),
+  mutations: {
+    update: null,
+    upsert: null,
+    delete: null
+  },
 
   permissions: {
     canRead: ({ user: currentUser }) => {
