@@ -1,4 +1,9 @@
-import { getCollectionByTypeName, fieldDynamicQueryTemplate, autocompleteQueryTemplate } from 'meteor/vulcan:core';
+import {
+  getCollectionByTypeName,
+  fieldDynamicQueryTemplate,
+  fieldStaticQueryTemplate,
+  autocompleteQueryTemplate,
+} from 'meteor/vulcan:core';
 import get from 'lodash/get';
 
 const getQueryResolverName = field => {
@@ -8,7 +13,7 @@ const getQueryResolverName = field => {
     const collection = getCollectionByTypeName(typeName);
     return get(collection, 'options.multiResolverName');
   } else {
-    throw new Error('Could not guess query resolver name, please specify a queryResolverName option for the makeAutocomplete decorator.')
+    throw new Error('Could not guess query resolver name, please specify a queryResolverName option for the makeAutocomplete decorator.');
   }
 };
 
@@ -31,24 +36,28 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   // if field stores an array, use multi autocomplete
   const isMultiple = multi || field.type === Array;
 
-  const queryResolverName = options.queryResolverName || getQueryResolverName(field);
-  const queryProps = { queryResolverName, autocompletePropertyName, valuePropertyName, fragmentName };
+  // define this as a function to run later as some variables may not yet be available
+  // at init time
+  const getQueryProps = () => {
+    const queryResolverName = options.queryResolverName || getQueryResolverName(field);
+    return { queryResolverName, autocompletePropertyName, valuePropertyName, fragmentName };
+  };
 
   // define query to load extra data for input values
 
   // to load only some items based on a key
   const dynamicQuery = () => {
-    return fieldDynamicQueryTemplate(queryProps);
+    return fieldDynamicQueryTemplate(getQueryProps());
   };
 
   // to load all possible items
   const staticQuery = () => {
-    return fieldStaticQueryTemplate(queryProps);
+    return fieldStaticQueryTemplate(getQueryProps());
   };
 
   // query to load autocomplete suggestions
   const autocompleteQuery = () => {
-    return autocompleteQueryTemplate(queryProps);
+    return autocompleteQueryTemplate(getQueryProps());
   };
 
   // define a function that takes the options returned by the queries
