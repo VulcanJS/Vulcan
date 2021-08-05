@@ -14,7 +14,7 @@ import LockIcon from 'mdi-material-ui/Lock';
 import UsersIcon from 'mdi-material-ui/AccountMultiple';
 import ThemeIcon from 'mdi-material-ui/Palette';
 import HomeIcon from 'mdi-material-ui/Home';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import Users from 'meteor/vulcan:users';
 
 const styles = theme => ({

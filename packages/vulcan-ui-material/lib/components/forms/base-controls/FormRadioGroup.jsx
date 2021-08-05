@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
