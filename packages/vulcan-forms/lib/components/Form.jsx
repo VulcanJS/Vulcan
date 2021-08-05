@@ -329,9 +329,14 @@ class SmartForm extends Component {
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields = this.getMutableFields(schema);
+    const allFields = Object.keys(schema);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== 'undefined' && fields.length > 0) {
+      const nonSchemaFields = _.difference(fields, allFields);
+      if (nonSchemaFields.length > 0) {
+        throw new Error(`Unknown field names in 'fields' prop: ${nonSchemaFields.join(', ')}`);
+      }
       relevantFields = _.intersection(relevantFields, fields);
     }
 
@@ -340,12 +345,20 @@ class SmartForm extends Component {
       // OpenCRUD backwards compatibility
       const removeFields = this.props.removeFields || this.props.hideFields;
       if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
+        const nonSchemaFields = _.difference(removeFields, allFields);
+        if (nonSchemaFields.length > 0) {
+          throw new Error(`Unknown field names in 'removeFields' prop: ${nonSchemaFields.join(', ')}`);
+        }
         relevantFields = _.difference(relevantFields, removeFields);
       }
     }
 
     // if "addFields" prop is specified, add its fields
     if (addExtraFields && typeof addFields !== 'undefined' && addFields.length > 0) {
+      const nonSchemaFields = _.difference(addFields, allFields);
+      if (nonSchemaFields.length > 0) {
+        throw new Error(`Unknown field names in 'addFields' prop: ${nonSchemaFields.join(', ')}`);
+      }
       relevantFields = relevantFields.concat(addFields);
     }
 
