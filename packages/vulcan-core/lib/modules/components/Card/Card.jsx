@@ -73,6 +73,15 @@ const CardEditForm = ({ collection, document, closeModal, ...editFormProps }) =>
 );
 
 const Card = ({ title, className, collection, document, currentUser, fields, showEdit = true, Components, ...editFormProps }, { intl }) => {
+  
+  if (!document) {
+    return (
+      <div>
+        <Components.FormattedMessage id="error.no_document" defaultMessage="No document" />
+      </div>
+    );
+  }
+
   const fieldNames = fields ? fields : without(Object.keys(document), '__typename');
 
   let canUpdate = false;
@@ -90,7 +99,7 @@ const Card = ({ title, className, collection, document, currentUser, fields, sho
       user: currentUser,
       context: { Users },
       operationName: 'update',
-      document
+      document,
     });
   } else if (check) {
     canUpdate = check && check(currentUser, document, { Users });
@@ -101,7 +110,8 @@ const Card = ({ title, className, collection, document, currentUser, fields, sho
     className,
     'datacard',
     typeName && `datacard-${typeName}`,
-    document && document._id && `datacard-${document._id}`);
+    document && document._id && `datacard-${document._id}`
+  );
 
   return (
     <div className={semantizedClassName}>
