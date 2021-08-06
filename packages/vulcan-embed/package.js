@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.use(['http', 'vulcan:core@=1.16.4', 'fourseven:scss@4.12.0']);
+  api.use(['http@2.0.0', 'vulcan:core@=1.16.4', 'fourseven:scss@4.12.0']);
 
   api.addFiles(['lib/stylesheets/embedly.scss'], ['client']);
 
