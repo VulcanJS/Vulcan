@@ -1,12 +1,12 @@
 Package.describe({
   name: 'vulcan:forms',
   summary: 'Form containers for React',
-  version: '1.16.4',
+  version: '1.16.5',
   git: 'https://github.com/meteor-utilities/react-form-containers.git',
 });
 
 Package.onUse(function(api) {
-  api.use(['vulcan:core@=1.16.4']);
+  api.use(['vulcan:core@=1.16.5']);
 
   api.mainModule('lib/client/main.js', ['client']);
   api.mainModule('lib/server/main.js', ['server']);
