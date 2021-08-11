@@ -1,12 +1,12 @@
 Package.describe({
   name: 'vulcan:backoffice',
   summary: 'Vulcan automated backoffice generator',
-  version: '1.16.5',
+  version: '1.16.6',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(api => {
-  api.use(['vulcan:core@=1.16.5', 'vulcan:i18n@=1.16.5', 'vulcan:accounts@1.16.5']);
+  api.use(['vulcan:core@=1.16.6', 'vulcan:i18n@=1.16.6', 'vulcan:accounts@1.16.6']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

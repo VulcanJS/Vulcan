@@ -3806,8 +3806,8 @@ attr-accept@^2.0.0:
   integrity sha512-GpefLMsbH5ojNgfTW+OBin2xKzuHfyeNA+qCktzZojBhbA/lPZdCFMWdwk5ajb989Ok7ZT+EADqvW3TAFNMjhA==
 
 auto-changelog@^1.16.1:
-  version "1.16.5"
-  resolved "https://registry.yarnpkg.com/auto-changelog/-/auto-changelog-1.16.5.tgz#5abcce4e92a4f81824000ab2550bc5d2315fc8fb"
+  version "1.16.6"
+  resolved "https://registry.yarnpkg.com/auto-changelog/-/auto-changelog-1.16.6.tgz#5abcce4e92a4f81824000ab2550bc5d2315fc8fb"
   integrity sha512-h7diyELoq692AA4oqO50ULoYKIomUdzuQ+NW+eFPwIX0xzVbXEu9cIcgzZ3TYNVbpkGtcNKh51aRfAQNef7HVA==
   dependencies:
     commander "^5.0.0"

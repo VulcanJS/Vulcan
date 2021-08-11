@@ -1,6 +1,6 @@
 Package.describe({
   name: 'vulcan:ui-material',
-  version: '1.16.5',
+  version: '1.16.6',
   summary: 'Replacement for Vulcan (http://vulcanjs.org/) components using material-ui',
   documentation: 'README.md',
 });
@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@1.6');
 
-  api.use(['vulcan:core@=1.16.5', 'vulcan:accounts@=1.16.5', 'vulcan:forms@=1.16.5']);
+  api.use(['vulcan:core@=1.16.6', 'vulcan:accounts@=1.16.6', 'vulcan:forms@=1.16.6']);
 
   api.addFiles(['accounts.css', 'forms.css', 'en_US.js', 'fr_FR.js'], ['client', 'server']);
 
