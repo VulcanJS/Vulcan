@@ -2,8 +2,9 @@
  * Init the graphQL schema
  */
 
-import { makeExecutableSchema } from 'apollo-server';
-import { mergeSchemas } from 'graphql-tools';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { mergeSchemas } from '@graphql-tools/merge';
+
 import { GraphQLSchema, generateTypeDefs } from '../graphql/index.js';
 import { runCallbacks } from '../../modules/callbacks.js';
 

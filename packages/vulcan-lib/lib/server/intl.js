@@ -1,7 +1,6 @@
 // see https://github.com/apollographql/graphql-tools/blob/master/docs/source/schema-directives.md#marking-strings-for-internationalization
 
 import { addGraphQLDirectiveTransformer, addGraphQLSchema } from './graphql/index.js';
-import { SchemaDirectiveVisitor } from 'graphql-tools';
 import { mapSchema, MapperKind } from '@graphql-tools/utils';
 
 import { defaultFieldResolver } from 'graphql';

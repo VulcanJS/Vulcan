@@ -39,7 +39,7 @@ import { getSetting } from '../../modules/settings.js';
 import { formatError } from 'apollo-errors';
 import { runCallbacks } from '../../modules/callbacks';
 
-export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlewareOptions) => {
+export const setupGraphQLMiddlewares = async (apolloServer, config, apolloApplyMiddlewareOptions) => {
   // IMPORTANT: order matters !
   // 1 - Add request parsing middleware
   // 2 - Add apollo specific middlewares
@@ -70,6 +70,8 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
     iterator: WebApp,
     properties: {},
   });
+
+  await apolloServer.start();
 
   // Provide the Meteor WebApp Connect server instance to Apollo
   // Apollo will use it instead of its own HTTP server when handling requests
