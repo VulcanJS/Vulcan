@@ -1,7 +1,9 @@
 // see https://github.com/apollographql/graphql-tools/blob/master/docs/source/schema-directives.md#marking-strings-for-internationalization
 
-import { addGraphQLDirective, addGraphQLSchema } from './graphql/index.js';
+import { addGraphQLDirectiveTransformer, addGraphQLSchema } from './graphql/index.js';
 import { SchemaDirectiveVisitor } from 'graphql-tools';
+import { mapSchema, MapperKind } from '@graphql-tools/utils';
+
 import { defaultFieldResolver } from 'graphql';
 import { Collections } from '../modules/collections';
 import { getSetting } from '../modules/settings';
@@ -33,9 +35,7 @@ Take an array of translations, a locale, and a default locale, and return a matc
 */
 const getLocaleString = (translations, locale, defaultLocale) => {
   const localeObject = translations.find(translation => translation.locale === locale);
-  const defaultLocaleObject = translations.find(
-    translation => translation.locale === defaultLocale
-  );
+  const defaultLocaleObject = translations.find(translation => translation.locale === defaultLocale);
   return (localeObject && localeObject.value) || (defaultLocaleObject && defaultLocaleObject.value);
 };
 
@@ -44,22 +44,25 @@ const getLocaleString = (translations, locale, defaultLocale) => {
 GraphQL @intl directive resolver
 
 */
-class IntlDirective extends SchemaDirectiveVisitor {
-  visitFieldDefinition(field, details) {
-    const { resolve = defaultFieldResolver, name } = field;
-    field.resolve = async function(...args) {
-      const [doc, graphQLArguments, context] = args;
-      const fieldValue = await resolve.apply(this, args);
-      const locale = graphQLArguments.locale || context.locale;
-      const defaultLocale = getSetting('locale');
-      const intlField = doc[`${name}_intl`];
-      // Return string in requested or default language, or else field's original value
-      return (intlField && getLocaleString(intlField, locale, defaultLocale)) || fieldValue;
-    };
-  }
-}
 
-addGraphQLDirective({ intl: IntlDirective });
+const intlDirectiveTransformer = schema =>
+  mapSchema(schema, {
+    [MapperKind.OBJECT_FIELD]: fieldConfig => {
+      const { resolve = defaultFieldResolver } = fieldConfig;
+      const name = fieldConfig?.astNode?.name?.value;
+      fieldConfig.resolve = async function(source = {}, args = {}, context, info) {
+        const doc = source;
+        const fieldValue = await resolve(source, args, context, info);
+        const locale = args.locale || context.locale;
+        const defaultLocale = getSetting('locale');
+        const intlField = doc[`${name}_intl`];
+        // Return string in requested or default language, or else field's original value
+        return (intlField && getLocaleString(intlField, locale, defaultLocale)) || fieldValue;
+      };
+    },
+  });
+
+addGraphQLDirectiveTransformer(intlDirectiveTransformer);
 
 addGraphQLSchema('directive @intl on FIELD_DEFINITION');
 
@@ -70,9 +73,7 @@ Migration function
 */
 const migrateIntlFields = async defaultLocale => {
   if (!defaultLocale) {
-    throw new Error(
-      "Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))"
-    );
+    throw new Error("Please pass the id of the locale to which to migrate your current content (e.g. migrateIntlFields('en'))");
   }
 
   Collections.forEach(async collection => {
@@ -83,9 +84,9 @@ const migrateIntlFields = async defaultLocale => {
     if (intlFieldsNames.length) {
       // eslint-disable-next-line no-console
       console.log(
-        `### Found ${intlFieldsNames.length} field to migrate for collection ${
-          collection.options.collectionName
-        }: ${intlFieldsNames.join(', ')} ###\n`
+        `### Found ${intlFieldsNames.length} field to migrate for collection ${collection.options.collectionName}: ${intlFieldsNames.join(
+          ', '
+        )} ###\n`
       );
 
       // const intlFieldsWithLocale = intlFieldsNames.map(f => `${f}_intl`);

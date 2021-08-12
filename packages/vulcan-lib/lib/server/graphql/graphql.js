@@ -80,7 +80,7 @@ export const GraphQLSchema = {
     this.mutations = [];
     this.resolvers = defaultResolvers;
     this.context = {};
-    this.directives = {};
+    this.directiveTransformers = [];
   },
 
   // used for schema stitching
@@ -144,9 +144,9 @@ export const GraphQLSchema = {
     this.context = deepmerge(this.context, object);
   },
 
-  directives: {},
-  addDirective(directive) {
-    this.directives = deepmerge(this.directives, directive);
+  directiveTransformers: [],
+  addDirectiveTransformer(directiveTransformer) {
+    this.directiveTransformers = [...this.directiveTransformers, directiveTransformer];
   },
 
   addTypeAndResolvers({ typeName, schema, description = '', interfaces = [] }) {
@@ -408,7 +408,7 @@ export const addGraphQLMutation = GraphQLSchema.addMutation.bind(GraphQLSchema);
 export const addGraphQLResolvers = GraphQLSchema.addResolvers.bind(GraphQLSchema);
 export const removeGraphQLResolver = GraphQLSchema.removeResolver.bind(GraphQLSchema);
 export const addToGraphQLContext = GraphQLSchema.addToContext.bind(GraphQLSchema);
-export const addGraphQLDirective = GraphQLSchema.addDirective.bind(GraphQLSchema);
+export const addGraphQLDirectiveTransformer = GraphQLSchema.addDirectiveTransformer.bind(GraphQLSchema);
 export const addStitchedSchema = GraphQLSchema.addStitchedSchema.bind(GraphQLSchema);
 export const addTypeAndResolvers = GraphQLSchema.addTypeAndResolvers.bind(GraphQLSchema);
 export const getType = GraphQLSchema.getType.bind(GraphQLSchema);

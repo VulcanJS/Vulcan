@@ -1,7 +1,7 @@
 // blatantly stolen from https://www.apollographql.com/docs/graphql-tools/generate-schema.html
 import find from 'lodash/find';
 import filter from 'lodash/filter';
-import { makeExecutableSchema } from 'graphql-tools';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 
 const typeDefs = `
   type Author {

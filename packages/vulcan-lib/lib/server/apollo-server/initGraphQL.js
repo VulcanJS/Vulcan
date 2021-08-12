@@ -15,10 +15,14 @@ const initGraphQL = () => {
   const executableSchema = makeExecutableSchema({
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
-    schemaDirectives: GraphQLSchema.directives,
   });
   // only call mergeSchemas if we actually have stitchedSchemas
-  const mergedSchema = GraphQLSchema.stitchedSchemas.length > 0 ? mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] }) : executableSchema;
+  let mergedSchema = GraphQLSchema.stitchedSchemas.length > 0 ? mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] }) : executableSchema;
+
+  // execute each directive transformer successively
+  for (const directiveTransformer of GraphQLSchema.directiveTransformers) {
+    mergedSchema = directiveTransformer(mergedSchema);
+  }
 
   GraphQLSchema.finalSchema = typeDefs;
   GraphQLSchema.executableSchema = mergedSchema;
