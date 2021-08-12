@@ -46,7 +46,7 @@ type Movie{
 */
 export const mainTypeTemplate = ({ typeName, description, interfaces, fields }) =>
   `${description ? `# ${description}` : ''}
-type ${typeName} ${interfaces.length ? `implements ${interfaces.join(', ')} ` : ''}{
+type ${typeName} ${interfaces.length ? `implements ${interfaces.join(' & ')} ` : ''}{
 ${convertToGraphQL(fields, '  ')}
 }
 `;
