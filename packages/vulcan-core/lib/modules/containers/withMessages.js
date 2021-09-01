@@ -4,10 +4,7 @@ Hook and HoC that provides access to flash messages stored in reactive state
 
 */
 import React from 'react';
-import {
-  createReactiveState,
-  Random,
-} from 'meteor/vulcan:lib';
+import { createReactiveState, Random } from 'meteor/vulcan:lib';
 import { intlShape, useIntl } from 'meteor/vulcan:i18n';
 
 const messagesSchema = {
@@ -21,7 +18,7 @@ const messagesSchema = {
   },
 };
 
-const messagesState = createReactiveState({stateKey: 'messagesState', schema: messagesSchema});
+const messagesState = createReactiveState({ stateKey: 'messagesState', schema: messagesSchema });
 
 const normalizeMessage = (messageObject, intl) => {
   if (typeof messageObject === 'string') {
@@ -33,14 +30,9 @@ const normalizeMessage = (messageObject, intl) => {
   } else {
     // else return full error object after internationalizing message
     const { id = 'error', type, message, properties } = messageObject;
-    const translatedMessage = intl.formatMessage(
-      { id, defaultMessage: message },
-      properties,
-    );
+    const translatedMessage = intl.formatMessage({ id, defaultMessage: message }, properties);
 
-    const transformedType = type === 'error' ? 'danger' :
-      !['danger', 'success', 'warning'].includes(type) ? 'info' :
-        type;
+    const transformedType = type === 'error' ? 'danger' : !['danger', 'success', 'warning'].includes(type) ? 'info' : type;
 
     return {
       ...messageObject,
@@ -51,16 +43,19 @@ const normalizeMessage = (messageObject, intl) => {
   }
 };
 
-export const useMessages = (intl) => {
-  intl = intl || useIntl();
+export const useMessages = legacyContextIntl => {
+  const intl = legacyContextIntl;
+
+  // doen't work properly yet, once it does the legacyContextIntl argument
+  // can be removed:
+  // const newContextIntl = useIntl();
 
   const messagesProps = {
-
     messagesState,
 
     messages: messagesState().messages,
 
-    flash: (message) => {
+    flash: message => {
       message = normalizeMessage(message, intl);
       messagesState(state => {
         state.messages.push(message);
@@ -68,7 +63,7 @@ export const useMessages = (intl) => {
       });
     },
 
-    dismissFlash: (_id) => {
+    dismissFlash: _id => {
       // mark message as dismissed
       const messages = messagesState().messages;
       const message = messages.find(message => message._id === _id);
@@ -86,26 +81,22 @@ export const useMessages = (intl) => {
     dismissAllFlash: () => {
       messagesState({ messages: [] });
     },
-
   };
 
   return messagesProps;
 };
 
 export const withMessages = WrappedComponent => {
-  class MessagesComponent extends React.Component {
-    render() {
-      const intl = this.context.intl;
-      const messagesProps = useMessages(intl);
-      return <WrappedComponent {...this.props} {...messagesProps} />;
-    }
-  }
+  const MessagesComponent = (props, { intl }) => {
+    const legacyContextIntl = intl;
 
-  MessagesComponent.contextTypes = {
-    intl: intlShape
+    const messagesProps = useMessages(legacyContextIntl);
+    return <WrappedComponent {...props} {...messagesProps} />;
   };
 
-  MessagesComponent.displayName = `withMessages(${WrappedComponent.displayName})`;
+  MessagesComponent.contextTypes = {
+    intl: intlShape,
+  };
 
   return MessagesComponent;
 };

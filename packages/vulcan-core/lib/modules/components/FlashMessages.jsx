@@ -5,8 +5,8 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import { useMessages } from '../containers/withMessages.js';
 import { useReactiveVar } from '@apollo/client';
 
-const FlashMessages = ({ className }, context) => {
-  const { messagesState, ...flashActions } = useMessages();
+const FlashMessages = ({ className }, { intl }) => {
+  const { messagesState, ...flashActions } = useMessages(intl);
   const messages = useReactiveVar(messagesState.reactiveVar).messages;
 
   return (
