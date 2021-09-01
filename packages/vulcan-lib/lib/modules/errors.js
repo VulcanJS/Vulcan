@@ -73,7 +73,7 @@ export const getErrors = error => {
   const graphQLErrors = error.graphQLErrors;
 
   // error thrown using new ApolloError
-  const apolloErrors = get(graphQLErrors, '0.extensions.exception.data.errors');
+  const apolloErrors = get(graphQLErrors, '0.extensions.data.errors');
 
   // regular server error (with schema stitching)
   const regularErrors = get(graphQLErrors, '0.extensions.exception.errors');
