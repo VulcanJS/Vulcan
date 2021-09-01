@@ -23,6 +23,17 @@ export const formattedDateResolver = fieldName => {
   };
 };
 
+// extract array items recursively
+// first level: foo.$; second level: foo.$.$; etc.
+export const extractArrayItems = (schema, fieldName, arrayItem, level = 1) => {
+  const delimiter = '.$';
+  const key = fieldName + delimiter.repeat(level);
+  schema[key] = arrayItem;
+  if (arrayItem.arrayItem) {
+    extractArrayItems(schema, fieldName, arrayItem.arrayItem, ++level);
+  }
+};
+
 export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
   let modifiedSchema = { ...schema };
 
@@ -50,9 +61,8 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
     // find any field with an `arrayItem` property defined and add corresponding
     // `foo.$` array item field to schema
     if (arrayItem) {
-      modifiedSchema[`${fieldName}.$`] = arrayItem;
+      extractArrayItems(modifiedSchema, fieldName, arrayItem);
     }
-
     // if this is a date field, and fieldFormatted doesn't already exist in the schema
     // or as a resolveAs field, then add fieldFormatted to apiSchema
     const formattedFieldName = `${fieldName}Formatted`;
@@ -85,7 +95,7 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
 
   // for added security, remove any API-related permission checks from db fields
   const filteredDbSchema = {};
-  const blacklistedFields = [ 'canRead', 'canCreate', 'canUpdate'];
+  const blacklistedFields = ['canRead', 'canCreate', 'canUpdate'];
   Object.keys(dbSchema).forEach(dbFieldName => {
     filteredDbSchema[dbFieldName] = _omit(dbSchema[dbFieldName], blacklistedFields);
   });
