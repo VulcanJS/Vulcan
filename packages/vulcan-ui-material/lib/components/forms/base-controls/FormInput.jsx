@@ -6,23 +6,21 @@ import ComponentMixin from './mixins/component';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
 import Input from '@material-ui/core/Input';
-import StartAdornment, {hideStartAdornment} from './StartAdornment';
+import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
 import _debounce from 'lodash/debounce';
 import classNames from 'classnames';
 
-
 export const styles = theme => ({
-
   root: {},
 
   inputRoot: {
-    '& .clear-button.has-value': {opacity: 0},
-    '&:hover .clear-button.has-value': {opacity: 0.54},
+    '& .clear-button.has-value': { opacity: 0 },
+    '&:hover .clear-button.has-value': { opacity: 0.54 },
   },
 
   inputFocused: {
-    '& .clear-button.has-value': {opacity: 0.54},
+    '& .clear-button.has-value': { opacity: 0.54 },
   },
 
   inputDisabled: {},
@@ -36,9 +34,7 @@ export const styles = theme => ({
   rootMultiline: {},
 
   inputMultiline: {},
-
 });
-
 
 //noinspection JSUnusedGlobalSymbols
 const FormInput = createReactClass({
@@ -76,19 +72,23 @@ const FormInput = createReactClass({
     hideClear: PropTypes.bool,
   },
 
-  getDefaultProps: function () {
+  getDefaultProps: function() {
     return {
       type: 'text',
     };
   },
 
-  getInitialState: function () {
-    this.handleChangeDebounced = _debounce((value) => {
-      if (!this.props.handleChange) return;
-      if (value !== this.props.value) {
-        this.props.handleChange(value);
-      }
-    }, 500, { leading: true });
+  getInitialState: function() {
+    this.handleChangeDebounced = _debounce(
+      value => {
+        if (!this.props.handleChange) return;
+        if (value !== this.props.value) {
+          this.props.handleChange(value);
+        }
+      },
+      500,
+      { leading: true }
+    );
 
     if (this.props.refFunction) {
       this.props.refFunction(this);
@@ -106,12 +106,12 @@ const FormInput = createReactClass({
     }
   },
 
-  handleInputChange: function (event) {
+  handleInputChange: function(event) {
     let value = event.target.value;
     this.changeValue(value);
   },
 
-  changeValue: function (value) {
+  changeValue: function(value) {
     value = String(value);
     if (this.props.scrubValue) {
       value = this.props.scrubValue(value, this.props);
@@ -121,19 +121,11 @@ const FormInput = createReactClass({
     this.handleChangeDebounced(value);
   },
 
-  render: function () {
-    const startAdornment = hideStartAdornment(this.props) ? null :
-        <StartAdornment {...this.props}
-                        classes={null}
-                        value={this.state.value}
-                        changeValue={this.changeValue}
-        />;
-    const endAdornment =
-        <EndAdornment {...this.props}
-                      classes={null}
-                      value={this.state.value}
-                      changeValue={this.changeValue}
-        />;
+  render: function() {
+    const startAdornment = hideStartAdornment(this.props) ? null : (
+      <StartAdornment {...this.props} classes={null} value={this.state.value} changeValue={this.changeValue} />
+    );
+    const endAdornment = <EndAdornment {...this.props} classes={null} value={this.state.value} changeValue={this.changeValue} />;
 
     let element = this.renderElement(startAdornment, endAdornment);
 
@@ -142,49 +134,45 @@ const FormInput = createReactClass({
     }
 
     return (
-        <FormControlLayout {...this.getFormControlProperties()}
-                        htmlFor={this.getId()}>
-          {element}
-          <FormHelper {...this.getFormHelperProperties()}/>
-        </FormControlLayout>
+      <FormControlLayout {...this.getFormControlProperties()} htmlFor={this.getId()}>
+        {element}
+        <FormHelper {...this.getFormHelperProperties()} />
+      </FormControlLayout>
     );
   },
 
-  renderElement: function (startAdornment, endAdornment) {
-    const {classes, disabled, autoFocus, formatValue, label, multiline, rows, rowsMax, inputProps} = this.props;
+  renderElement: function(startAdornment, endAdornment) {
+    const { classes, disabled, autoFocus, formatValue, label, multiline, rows, rowsMax, inputProps } = this.props;
     const value = formatValue ? formatValue(this.state.value) : this.state.value;
     const options = this.props.options || {};
 
     return (
-        <Input
-            ref={c => (this.element = c)}
-            id={this.getId()}
-            value={value || ''}
-            label={label}
-            onChange={this.handleInputChange}
-            disabled={disabled}
-            multiline={multiline}
-            rows={options.rows || rows}
-            rowsMax={options.rowsMax || rowsMax}
-            autoFocus={options.autoFocus || autoFocus}
-            startAdornment={startAdornment}
-            endAdornment={endAdornment}
-            placeholder={this.props.placeholder}
-            classes={{
-              root: classNames(classes.inputRoot, label === null && classes.inputNoLabel),
-              input: classes.inputInput,
-              focused: classes.inputFocused,
-              disabled: classes.inputDisabled,
-              multiline: classes.rootMultiline,
-              inputMultiline: classes.inputMultiline,
-            }}
-            {...inputProps}
-        />
+      <Input
+        ref={c => (this.element = c)}
+        id={this.getId()}
+        value={value || ''}
+        label={label}
+        onChange={this.handleInputChange}
+        disabled={disabled}
+        multiline={multiline}
+        rows={options.rows || rows}
+        maxRows={options.rowsMax || rowsMax}
+        autoFocus={options.autoFocus || autoFocus}
+        startAdornment={startAdornment}
+        endAdornment={endAdornment}
+        placeholder={this.props.placeholder}
+        classes={{
+          root: classNames(classes.inputRoot, label === null && classes.inputNoLabel),
+          input: classes.inputInput,
+          focused: classes.inputFocused,
+          disabled: classes.inputDisabled,
+          multiline: classes.rootMultiline,
+          inputMultiline: classes.inputMultiline,
+        }}
+        {...inputProps}
+      />
     );
   },
-
-
 });
-
 
 export default withStyles(styles)(FormInput);

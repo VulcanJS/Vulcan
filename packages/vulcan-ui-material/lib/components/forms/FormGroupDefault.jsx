@@ -43,7 +43,7 @@ const styles = theme => ({
     },
   },
 
-  container: {
+  root: {
     paddingLeft: 4,
     paddingRight: 4,
     marginLeft: -4,
@@ -64,28 +64,14 @@ const FormGroupHeader = ({ toggle, collapsed, hidden, label, group, classes }) =
 
   return (
     <div
-      className={classNames(
-        classes.headerRoot,
-        collapsible && classes.collapsible,
-        hidden && classes.hidden,
-        'form-group-header'
-      )}
+      className={classNames(classes.headerRoot, collapsible && classes.collapsible, hidden && classes.hidden, 'form-group-header')}
       onClick={collapsible ? toggle : null}>
       <Typography
-        className={classNames(
-          'form-group-header-title',
-          classes.subtitle1,
-          collapsible && classes.collapsible
-        )}
-        variant="subtitle1"
-      >
+        className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)}
+        variant="subtitle1">
         <div className={classes.label}>{label}</div>
 
-        {collapsible && (
-          <div className={classes.toggle}>
-            {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-          </div>
-        )}
+        {collapsible && <div className={classes.toggle}>{collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}</div>}
       </Typography>
     </div>
   );
@@ -102,17 +88,7 @@ FormGroupHeader.propTypes = {
 
 registerComponent('FormGroupHeader', FormGroupHeader, [withStyles, styles]);
 
-const FormGroupLayout = ({
-  label,
-  anchorName,
-  collapsed,
-  hidden,
-  hasErrors,
-  heading,
-  group,
-  children,
-  classes,
-}) => {
+const FormGroupLayout = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
   const collapsedIn = (!collapsed && !hidden) || hasErrors;
 
   return (
@@ -121,9 +97,7 @@ const FormGroupLayout = ({
 
       {heading}
 
-      <Collapse
-        classes={{ container: classes.container, entered: classes.entered }}
-        in={collapsedIn}>
+      <Collapse classes={{ root: classes.root, entered: classes.entered }} in={collapsedIn}>
         <Paper className={classes.paper}>{children}</Paper>
       </Collapse>
     </div>

@@ -42,10 +42,7 @@ export const styles = theme => {
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
   return {
-
-    root: {},
-
-    container: {
+    root: {
       flexGrow: 1,
       position: 'relative',
     },
@@ -234,7 +231,6 @@ export const styles = theme => {
     menuItemHighlight: {},
 
     menuItemIcon: {},
-
   };
 };
 
@@ -251,7 +247,7 @@ const FormSuggest = createReactClass({
         iconComponent: PropTypes.node,
         formatted: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
         onClick: PropTypes.func,
-      }),
+      })
     ),
     classes: PropTypes.object.isRequired,
     limitToList: PropTypes.bool,
@@ -274,15 +270,12 @@ const FormSuggest = createReactClass({
 
   getOptionFormatted: function(option, formattedProps) {
     if (!option) return;
-    const formatted =
-      option.formatted && typeof option.formatted === 'function'
-        ? option.formatted(formattedProps)
-        : option.formatted;
+    const formatted = option.formatted && typeof option.formatted === 'function' ? option.formatted(formattedProps) : option.formatted;
     return formatted;
   },
 
   getOptionLabel: function(option) {
-    return option && option.label || option && option.value || '';
+    return (option && option.label) || (option && option.value) || '';
   },
 
   getInitialState: function() {
@@ -297,9 +290,8 @@ const FormSuggest = createReactClass({
     };
   },
 
-  UNSAFE_componentWillReceiveProps: function (nextProps) {
-    if (nextProps.value !== this.props.value ||
-      nextProps.options !== this.props.options) {
+  UNSAFE_componentWillReceiveProps: function(nextProps) {
+    if (nextProps.value !== this.props.value || nextProps.options !== this.props.options) {
       const inputValue = this.getInputValue(nextProps);
       this.setState({
         inputValue,
@@ -307,8 +299,9 @@ const FormSuggest = createReactClass({
     }
   },
 
-  shouldComponentUpdate: function (nextProps, nextState) {
-    const shouldUpdate = !_isEqual(nextState, this.state) ||
+  shouldComponentUpdate: function(nextProps, nextState) {
+    const shouldUpdate =
+      !_isEqual(nextState, this.state) ||
       nextProps.disabled !== this.props.disabled ||
       nextProps.help !== this.props.help ||
       nextProps.charsCount !== this.props.charsCount ||
@@ -317,13 +310,9 @@ const FormSuggest = createReactClass({
     return shouldUpdate;
   },
 
-  getInputValue: function (props) {
+  getInputValue: function(props) {
     const selectedOption = this.getSelectedOption(props);
-    const inputValue = selectedOption ?
-      this.getOptionLabel(selectedOption) :
-      props.limitToList ?
-        '' :
-        props.value;
+    const inputValue = selectedOption ? this.getOptionLabel(selectedOption) : props.limitToList ? '' : props.value;
     return inputValue;
   },
 
@@ -367,9 +356,10 @@ const FormSuggest = createReactClass({
 
   changeValue: function(suggestion) {
     if (!suggestion) {
-      suggestion = this.props.limitToList || suggestion === null ?
-        { label: '', value: null } :
-        { label: this.state.inputValue, value: this.state.inputValue };
+      suggestion =
+        this.props.limitToList || suggestion === null
+          ? { label: '', value: null }
+          : { label: this.state.inputValue, value: this.state.inputValue };
     }
     if (suggestion.onClick) {
       return;
@@ -403,7 +393,7 @@ const FormSuggest = createReactClass({
     return true;
   },
 
-  render: function () {
+  render: function() {
     const { value, disabled, classes } = this.props;
     const { inputValue } = this.state;
     const selectedOption = this.getSelectedOption();
@@ -412,17 +402,10 @@ const FormSuggest = createReactClass({
       disabled,
     });
 
-    const startAdornment = hideStartAdornment(this.props) ? null :
-      <StartAdornment {...this.props}
-                      value={value}
-                      classes={null}
-      />;
-    const endAdornment =
-      <EndAdornment {...this.props}
-                    value={value}
-                    classes={{ inputAdornment: classes.inputAdornment }}
-                    changeValue={this.changeValue}
-      />;
+    const startAdornment = hideStartAdornment(this.props) ? null : <StartAdornment {...this.props} value={value} classes={null} />;
+    const endAdornment = (
+      <EndAdornment {...this.props} value={value} classes={{ inputAdornment: classes.inputAdornment }} changeValue={this.changeValue} />
+    );
 
     const element = this.renderElement(startAdornment, endAdornment);
 
@@ -452,7 +435,7 @@ const FormSuggest = createReactClass({
     return (
       <Autosuggest
         theme={{
-          container: classes.container,
+          container: classes.root,
           input: classNames(classes.input, disableText && classes.readOnly),
           suggestionsContainer: classes.suggestionsContainer,
           suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -493,19 +476,7 @@ const FormSuggest = createReactClass({
   },
 
   renderInputComponent: function(inputProps) {
-    const {
-      classes,
-      autoFocus,
-      autoComplete,
-      value,
-      formatted,
-      ref,
-      startAdornment,
-      endAdornment,
-      disabled,
-      errors,
-      ...rest
-    } = inputProps;
+    const { classes, autoFocus, autoComplete, value, formatted, ref, startAdornment, endAdornment, disabled, errors, ...rest } = inputProps;
     const { hideLabel, inputRef } = this.props;
 
     if (formatted && formatted !== value) {
@@ -520,7 +491,7 @@ const FormSuggest = createReactClass({
             disabled && classes.disabled,
             errors?.length && classes.error,
             classes.formatted,
-            hideLabel && classes.formattedNoLabel,
+            hideLabel && classes.formattedNoLabel
           )}>
           {startAdornment}
           {formatted}
@@ -558,7 +529,7 @@ const FormSuggest = createReactClass({
     );
   },
 
-  renderSuggestion: function (suggestion, { query, isHighlighted }) {
+  renderSuggestion: function(suggestion, { query, isHighlighted }) {
     const { classes } = this.props;
     const formatted = this.getOptionFormatted(suggestion, {
       disabled: this.props.disabled,
@@ -570,32 +541,22 @@ const FormSuggest = createReactClass({
     const matches = match(label, query);
     const parts = parse(label, matches);
     const primary = this.props.disableMatchParts
-      ?
-      label
-      :
-      parts.map((part, index) => {
-        return part.highlight
-          ?
-          <span key={index} className={classes.menuItemHighlight}>{part.text}</span>
-          :
-          <span key={index}>{part.text}</span>;
-      });
+      ? label
+      : parts.map((part, index) => {
+          return part.highlight ? (
+            <span key={index} className={classes.menuItemHighlight}>
+              {part.text}
+            </span>
+          ) : (
+            <span key={index}>{part.text}</span>
+          );
+        });
     const isCurrent = suggestion.value === this.props.value;
     const className = classNames(classes.menuItem, isCurrent && classes.current);
     return (
-      <MenuItem selected={isHighlighted}
-                component="div"
-                className={className}
-                onClick={suggestion.onClick}
-                data-value={suggestion.value}
-      >
-        {
-          suggestion.iconComponent &&
-          <ListItemIcon classes={{ root: classes.menuItemIcon }}>{suggestion.iconComponent}</ListItemIcon>
-        }
-        <div>
-          {primary}
-        </div>
+      <MenuItem selected={isHighlighted} component="div" className={className} onClick={suggestion.onClick} data-value={suggestion.value}>
+        {suggestion.iconComponent && <ListItemIcon classes={{ root: classes.menuItemIcon }}>{suggestion.iconComponent}</ListItemIcon>}
+        <div>{primary}</div>
       </MenuItem>
     );
   },
@@ -622,14 +583,14 @@ const FormSuggest = createReactClass({
 
     return (this.props.disableText || this.props.showAllOptions) && inputMatchesSelection
       ? this.props.options.filter(suggestion => {
-        return true;
-      })
+          return true;
+        })
       : inputLength === 0
-        ? this.props.options.filter(suggestion => {
+      ? this.props.options.filter(suggestion => {
           count++;
           return count <= maxSuggestions;
         })
-        : this.props.options.filter(suggestion => {
+      : this.props.options.filter(suggestion => {
           const label = this.getOptionLabel(suggestion);
           const keep = count < maxSuggestions && label.toLowerCase().includes(inputValue);
 
@@ -640,7 +601,6 @@ const FormSuggest = createReactClass({
           return keep;
         });
   },
-
 });
 
 export default withStyles(styles)(FormSuggest);
