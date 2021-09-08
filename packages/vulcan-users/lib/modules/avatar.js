@@ -1,44 +1,7 @@
 import { getSetting } from 'meteor/vulcan:lib';
 import Users from './collection.js';
-import md5 from 'crypto-js/md5';
 
 Users.avatar = {
-
-  /**
-   * `cleantString` remove starting and trailing whitespaces
-   * and lowercase the input
-   * @param  {String} string input string that may contain leading and trailing
-   * whitespaces and uppercase letters
-   * @return {String}        output cleaned string
-   */
-  cleanString: function (string) {
-    return string.trim().toLowerCase();
-  },
-
-  /**
-   * `isHash` check if a string match the MD5 form :
-   * 32 chars string containing letters from `a` to `f`
-   * and digits from `0` to `9`
-   * @param  {String}  string that might be a hash
-   * @return {Boolean}
-   */
-  isHash: function (string) {
-    var self = this;
-    return /^[a-f0-9]{32}$/i.test(self.cleanString(string));
-  },
-
-  /**
-   * `hash` takes an input and run it through `CryptoJS.MD5`
-   * @see https://atmospherejs.com/jparker/crypto-md5
-   * @param  {String} string input string
-   * @return {String}        md5 hash of the input
-   */
-  hash: function (string) {
-    var self = this;
-    // eslint-disable-next-line babel/new-cap
-    return md5(self.cleanString(string)).toString();
-  },
-
   /**
    * `imageUrl` will provide the url for the avatar, given an email or a hash
    * and a set of options to be passed to the gravatar API
@@ -49,36 +12,29 @@ Users.avatar = {
    * string. The `secure` will be used to determine which base url to use.
    * @return {String}             complete url to the avatar
    */
-  imageUrl: function (emailOrHash, options) {
+  imageUrl: function(emailOrHash, options) {
     var self = this;
     options = options || {};
 
     // Want HTTPS ?
-    var url = options.secure
-    ? 'https://secure.gravatar.com/avatar/'
-    : 'http://www.gravatar.com/avatar/';
+    var url = options.secure ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
     delete options.secure;
 
     // Is it an MD5 already ?
-    url += self.isHash(emailOrHash)
-    ? emailOrHash
-    : self.hash(emailOrHash);
+    url += self.isHash(emailOrHash) ? emailOrHash : self.hash(emailOrHash);
 
     // Have any options to pass ?
-    var params = _.map(options, function (val, key) {
+    var params = _.map(options, function(val, key) {
       return key + '=' + encodeURIComponent(val);
     }).join('&');
 
-    return (params.length > 0)
-    ? url + '?' + params
-    : url;
+    return params.length > 0 ? url + '?' + params : url;
   },
 
   // Default functionality. You can override these options by calling
   // Users.avatar.setOptions (do not set this.options directly)
 
   options: {
-
     // Determines the type of fallback to use when no image can be found via
     // linked services (Gravatar included):
     //   'default image' (the default option, which will show either the image
@@ -110,9 +66,9 @@ Users.avatar = {
 
     // This property defines the various image sizes available
     imageSizes: {
-      'large': 80,
-      'small': 30,
-      'extra-small': 20
+      large: 80,
+      small: 30,
+      'extra-small': 20,
     },
 
     // Default background color when displaying the initials.
@@ -126,7 +82,7 @@ Users.avatar = {
     // Generate the required CSS and include it in the head of your application.
     // Setting this to false will exclude the generated CSS and leave the
     // avatar unstyled by the package.
-    generateCSS: true
+    generateCSS: true,
   },
 
   // Sets the Avatar options. You must use this setter function rather than assigning directly to
@@ -137,29 +93,24 @@ Users.avatar = {
   },
 
   // Returns the cssClassPrefix property from options
-  getCssClassPrefix: function () {
+  getCssClassPrefix: function() {
     return this.options.cssClassPrefix ? this.options.cssClassPrefix : 'avatar';
   },
 
   // Returns a background color for initials
-  getBackgroundColor: function (user) {
-    if (_.isString(this.options.backgroundColor))
-      return this.options.backgroundColor;
-    else if (_.isFunction(this.options.backgroundColor))
-      return this.options.backgroundColor(user);
+  getBackgroundColor: function(user) {
+    if (_.isString(this.options.backgroundColor)) return this.options.backgroundColor;
+    else if (_.isFunction(this.options.backgroundColor)) return this.options.backgroundColor(user);
   },
 
   // Returns a text color for initials
-  getTextColor: function (user) {
-    if (_.isString(this.options.textColor))
-      return this.options.textColor;
-    else if (_.isFunction(this.options.textColor))
-      return this.options.textColor(user);
+  getTextColor: function(user) {
+    if (_.isString(this.options.textColor)) return this.options.textColor;
+    else if (_.isFunction(this.options.textColor)) return this.options.textColor(user);
   },
 
   // Get the initials of the user
-  getInitials: function (user) {
-
+  getInitials: function(user) {
     let initials = '';
     let name = '';
     let parts = [];
@@ -169,40 +120,39 @@ Users.avatar = {
 
       if (user.profile.lastName) {
         initials += user.profile.lastName.charAt(0).toUpperCase();
-      }
-      else if (user.profile.familyName) {
+      } else if (user.profile.familyName) {
         initials += user.profile.familyName.charAt(0).toUpperCase();
-      }
-      else if (user.profile.secondName) {
+      } else if (user.profile.secondName) {
         initials += user.profile.secondName.charAt(0).toUpperCase();
       }
-    }
-    else {
+    } else {
       if (user && user.profile && user.profile.name) {
         name = user.profile.name;
-      }
-      else if (user && user.displayName) {
+      } else if (user && user.displayName) {
         name = user.displayName;
-      }
-      else if (user && user.username) {
+      } else if (user && user.username) {
         name = user.username;
       }
 
       parts = name.split(' ');
       // Limit getInitials to first and last initial to avoid problems with
       // very long multi-part names (e.g. 'Jose Manuel Garcia Galvez')
-      initials = _.first(parts).charAt(0).toUpperCase();
+      initials = _.first(parts)
+        .charAt(0)
+        .toUpperCase();
       if (parts.length > 1) {
-        initials += _.last(parts).charAt(0).toUpperCase();
+        initials += _.last(parts)
+          .charAt(0)
+          .toUpperCase();
       }
     }
 
     return initials;
   },
-  
-  getUserStatus: function (user) {
+
+  getUserStatus: function(user) {
     const hostCompanyId = getSetting('hostCompany.companyId');
-  
+
     if (Users.isAdmin(user)) {
       return 'admin';
     } else if (!!user.companyId && !!hostCompanyId && user.companyId === hostCompanyId) {
@@ -212,8 +162,7 @@ Users.avatar = {
 
   // Get the url of the user's avatar
   // XXX: this.getUrl is a reactive function only when no user argument is specified.
-  getUrl: function (user) {
-
+  getUrl: function(user) {
     // Default to the currently logged in user, unless otherwise specified.
     if (!user) return null;
 
@@ -225,27 +174,20 @@ Users.avatar = {
       if (svc === 'twitter') {
         // use larger image (200x200 is smallest custom option)
         url = user.services.twitter.profile_image_url_https.replace('_normal.', '_200x200.');
-      }
-      else if (svc === 'facebook') {
+      } else if (svc === 'facebook') {
         // use larger image (~200x200)
         url = 'https://graph.facebook.com/' + user.services.facebook.id + '/picture/?type=large';
-      }
-      else if (svc === 'google') {
+      } else if (svc === 'google') {
         url = user.services.google.picture;
-      }
-      else if (svc === 'github') {
+      } else if (svc === 'github') {
         url = 'https://avatars.githubusercontent.com/' + user.services.github.username + '?s=200';
-      }
-      else if (svc === 'instagram') {
+      } else if (svc === 'instagram') {
         url = user.services.instagram.profile_picture;
-      }
-      else if (svc === 'linkedin') {
+      } else if (svc === 'linkedin') {
         url = user.services.linkedin.pictureUrl;
-      }
-      else if (svc === 'custom') {
+      } else if (svc === 'custom') {
         url = this.getCustomUrl(user);
-      }
-      else if (svc === 'none') {
+      } else if (svc === 'none') {
         defaultUrl = this.options.defaultImageUrl;
         // If it's a relative path (no '//' anywhere), complete the URL
         if (defaultUrl.indexOf('//') === -1) {
@@ -261,14 +203,26 @@ Users.avatar = {
     return url;
   },
 
-  getService: function (user) {
-    var services = user && user.services || {};
-    if (this.getCustomUrl(user)) { return 'custom'; }
-    var service = _.find([['twitter', 'profile_image_url_https'], ['facebook', 'id'], ['google', 'picture'], ['github', 'username'], ['instagram', 'profile_picture'], ['linkedin', 'pictureUrl']], function(s) { return !!services[s[0]] && s[1].length && !!services[s[0]][s[1]]; });
-    if(!service)
-      return 'none';
-    else
-      return service[0];
+  getService: function(user) {
+    var services = (user && user.services) || {};
+    if (this.getCustomUrl(user)) {
+      return 'custom';
+    }
+    var service = _.find(
+      [
+        ['twitter', 'profile_image_url_https'],
+        ['facebook', 'id'],
+        ['google', 'picture'],
+        ['github', 'username'],
+        ['instagram', 'profile_picture'],
+        ['linkedin', 'pictureUrl'],
+      ],
+      function(s) {
+        return !!services[s[0]] && s[1].length && !!services[s[0]][s[1]];
+      }
+    );
+    if (!service) return 'none';
+    else return service[0];
   },
 
   computeUrl: function(prop, user) {
@@ -280,14 +234,13 @@ Users.avatar = {
     }
   },
 
-  getDescendantProp: function (obj, desc) {
+  getDescendantProp: function(obj, desc) {
     var arr = desc.split('.');
-    while(arr.length && (obj = obj[arr.shift()]));
+    while (arr.length && (obj = obj[arr.shift()]));
     return obj;
   },
 
-  getCustomUrl: function (user) {
-
+  getCustomUrl: function(user) {
     var customProp = user && this.options.customImageProperty;
     if (typeof customProp === 'function') {
       return this.computeUrl(customProp, user);
@@ -296,7 +249,7 @@ Users.avatar = {
     }
   },
 
-  getGravatarUrl: function (user, defaultUrl) {
+  getGravatarUrl: function(user, defaultUrl) {
     var gravatarDefault;
     var validGravatars = ['404', 'mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
 
@@ -304,8 +257,7 @@ Users.avatar = {
     if (this.options.fallbackType !== 'initials') {
       var valid = _.contains(validGravatars, this.options.gravatarDefault);
       gravatarDefault = valid ? this.options.gravatarDefault : defaultUrl;
-    }
-    else {
+    } else {
       gravatarDefault = '404';
     }
 
@@ -318,14 +270,13 @@ Users.avatar = {
       // defaultImageUrl that is a relative path (e.g. 'images/defaultthis.png').
       size: 200, // use 200x200 like twitter and facebook above (might be useful later)
       default: gravatarDefault,
-      secure: true
+      secure: true,
     };
     return emailOrHash ? this.imageUrl(emailOrHash, options) : null;
-
   },
 
   // Get the user's email address
-  getUserEmail: function (user) {
+  getUserEmail: function(user) {
     var emails = _.pluck(user.emails, 'address');
     return emails[0] || null;
   },
@@ -337,21 +288,20 @@ Users.avatar = {
   },
 
   // Returns the shape class for an avatar
-  getShapeClass: function (context) {
+  getShapeClass: function(context) {
     var valid = ['rounded', 'circle'];
     return _.contains(valid, context.shape) ? this.getCssClassPrefix() + '-' + context.shape : '';
   },
 
   // Returns the custom class(es) for an avatar
-  getCustomClasses: function (context) {
+  getCustomClasses: function(context) {
     return context.class ? context.class : '';
   },
 
   // Returns the initials text for an avatar
   getInitialsText: function(user, context) {
     return context.initials || this.getInitials(user);
-  }
-
+  },
 };
 
 // This will be replaced if the user calls setOptions in their own code
