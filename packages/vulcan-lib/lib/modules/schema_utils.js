@@ -14,7 +14,7 @@ export const formattedDateResolver = fieldName => {
     const { format } = args;
     const { timezone = getSetting('timezone') } = context;
     if (!document[fieldName]) return;
-    const moment = import('moment-timezone');
+    const moment = (await import('moment-timezone')).default;
     let m = moment(document[fieldName]);
     if (timezone) {
       m = m.tz(timezone);
