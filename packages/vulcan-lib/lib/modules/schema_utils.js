@@ -7,14 +7,14 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _omit from 'lodash/omit';
 import SimpleSchema from 'simpl-schema';
-import moment from 'moment-timezone';
 import { getSetting } from './settings';
 
 export const formattedDateResolver = fieldName => {
-  return (document = {}, args = {}, context = {}) => {
+  return async (document = {}, args = {}, context = {}) => {
     const { format } = args;
     const { timezone = getSetting('timezone') } = context;
     if (!document[fieldName]) return;
+    const moment = import('moment-timezone');
     let m = moment(document[fieldName]);
     if (timezone) {
       m = m.tz(timezone);
@@ -85,7 +85,7 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
 
   // for added security, remove any API-related permission checks from db fields
   const filteredDbSchema = {};
-  const blacklistedFields = [ 'canRead', 'canCreate', 'canUpdate'];
+  const blacklistedFields = ['canRead', 'canCreate', 'canUpdate'];
   Object.keys(dbSchema).forEach(dbFieldName => {
     filteredDbSchema[dbFieldName] = _omit(dbSchema[dbFieldName], blacklistedFields);
   });
