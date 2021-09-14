@@ -27,7 +27,7 @@ export const Users = createCollection({
   permissions: {
     canRead: ['guests'],
     canCreate: ['admins'], // non-admins have to create new users by signing up
-    canUpdate: ["admins", "mods"],
+    canUpdate: ["admins", "mods", "owners"], // used to update onBoarding params
     canDelete: isCurrentUser
   }
 
