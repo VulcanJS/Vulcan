@@ -1,56 +1,40 @@
 import React from 'react';
 import { addCallback, Components } from 'meteor/vulcan:core';
 import { ServerStyleSheets as MuiServerStyleSheets } from '@mui/styles';
-import { ServerStyleSheet as SCServerStyleSheet } from 'styled-components';
 
 function wrapWithMuiTheme(app, { context, apolloClient }) {
+  // LEGACY: this supports the old, deprecated "makeStyles" syntax
+  // TODO: remove when all makeStyles are removed from the app
   // will spawn a StylesProvider automatically during render
   // replaces the manual setup of JSSProvider
   // @see https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/ServerStyleSheets/ServerStyleSheets.js
   const sheets = new MuiServerStyleSheets({ disableGeneration: true });
-  const scSheet = new SCServerStyleSheet();
   context.sheetsRegistry = sheets;
-  context.scSheetRegistry = scSheet;
 
-  return scSheet.collectStyles(
-    sheets.collect(
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
-    )
+  return sheets.collect(
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
   );
 }
 
 function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
-  // MUI legacy makeStyles
+  // MUI legacy makeStyles with JSS
+  // TODO: remove when getting rid of all makeStyles
   const sheets = new MuiServerStyleSheets();
   context.sheetsRegistry = sheets;
-  // Styled Components
-  const scSheet = new SCServerStyleSheet();
-  context.scSheet = scSheet;
 
-  // NOTE: The sheets.collect API does not allow to pass a seed
-  // do we still need to force a specific seed?
-  // if yes reenable this code and create the StylesProvider manually as we
-  // used to do for JSSProvider
-  //const generateClassName = createGenerateClassName({ seed: '' });
-
-  return scSheet.collectStyles(
-    sheets.collect(
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
-    )
+  return sheets.collect(
+    <Components.ThemeProvider apolloClient={apolloClient} context={context}>
+      {app}
+    </Components.ThemeProvider>
   );
 }
 
 function injectJss(sink, { context }) {
-  // add mui
+  // LEGACY add mui JSS based styles to the HTML header
   const sheets = context.sheetsRegistry.toString();
   sink.appendToHead(`<style id="jss-server-side">${sheets}</style>`);
-  // add styled components
-  const scStyleTags = context.scSheet.getStyleTags();
-  sink.appendToHead(scStyleTags);
   return sink;
 }
 
