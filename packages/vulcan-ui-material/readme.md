@@ -20,7 +20,6 @@ meteor npm install --save @material-ui/core@4.11.0
 meteor npm install --save @material-ui/icons@4.9.1
 meteor npm install --save @material-ui/styles@4.10.0
 meteor npm install --save react-jss@10.4.0
-meteor npm install --save mdi-material-ui@6.19.0
 meteor npm install --save react-autosuggest@10.0.2
 meteor npm install --save autosuggest-highlight@3.1.1
 meteor npm install --save react-isolated-scroll@0.1.1
