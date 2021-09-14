@@ -138,6 +138,7 @@
     "@mui/icons-material": "^5.0.0-rc.1",
     "@mui/lab": "^5.0.0-alpha.46",
     "@mui/material": "^5.0.0-rc.1",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@next",
     "@mui/styled-engine-sc": "^5.0.0-rc.1",
     "@mui/styles": "^5.0.0-rc.1",
     "@storybook/addon-actions": "5.0.8",
@@ -202,6 +203,9 @@
     "vulcan-loader": "0.0.1",
     "waait": "^1.0.5",
     "webpack": "4.28.4"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@next"
   },
   "postcss": {
     "plugins": {
