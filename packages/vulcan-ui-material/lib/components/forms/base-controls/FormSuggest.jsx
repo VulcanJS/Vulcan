@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
+import withStyles from '@mui/styles/withStyles';
+import Input from '@mui/material/Input';
 import Autosuggest from 'react-autosuggest';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Paper from '@mui/material/Paper';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { registerComponent } from 'meteor/vulcan:core';
@@ -38,7 +38,7 @@ const maxSuggestions = 100;
   sectionTitle:             'react-autosuggest__section-title'
 }*/
 export const styles = theme => {
-  const light = theme.palette.type === 'light';
+  const light = theme.palette.mode === 'light';
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
   return {
@@ -213,7 +213,7 @@ export const styles = theme => {
       paddingBottom: 4,
       paddingLeft: 9,
       fontFamily: theme.typography.fontFamily,
-      color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white,
+      color: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white,
       fontSize: theme.typography.pxToRem(16),
       lineHeight: '1.1875em',
     },

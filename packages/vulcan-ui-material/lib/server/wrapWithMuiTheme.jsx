@@ -1,7 +1,7 @@
 import React from 'react';
 import { addCallback, Components } from 'meteor/vulcan:core';
-import { ServerStyleSheets } from '@material-ui/core/styles';
-import { StylesProvider } from '@material-ui/core/styles';
+import ServerStyleSheets from '@mui/styles/ServerStyleSheets';
+import StylesProvider from '@mui/styles/StylesProvider';
 
 function wrapWithMuiTheme(app, { context, apolloClient }) {
   // will spawn a StylesProvider automatically during render

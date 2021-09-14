@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import { withStyles } from '@material-ui/core/styles';
-import MuiFab from '@material-ui/core/Fab';
-import MuiButton from '@material-ui/core/Button';
-import MuiIconButton from '@material-ui/core/IconButton';
-import { withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import MuiFab from '@mui/material/Fab';
+import MuiButton from '@mui/material/Button';
+import MuiIconButton from '@mui/material/IconButton';
+import withTheme from '@mui/styles/withTheme';
 
 const styles = theme => ({
   success: {

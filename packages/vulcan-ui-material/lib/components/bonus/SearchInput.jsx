@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import SearchIcon from 'mdi-material-ui/Magnify';
 import ClearIcon from 'mdi-material-ui/CloseCircle';
-import TextField from '@material-ui/core/TextField';
-import NoSsr from '@material-ui/core/NoSsr';
+import TextField from '@mui/material/TextField';
+import NoSsr from '@mui/material/NoSsr';
 import classNames from 'classnames';
 import _debounce from 'lodash/debounce';
 

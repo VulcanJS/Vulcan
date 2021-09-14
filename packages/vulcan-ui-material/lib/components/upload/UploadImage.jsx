@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@mui/styles/withStyles';
+import IconButton from '@mui/material/IconButton';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import classNames from 'classnames';
 
@@ -80,7 +80,7 @@ class UploadImage extends PureComponent {
           )}
         </div>
 
-        <IconButton className={classes.deleteButton} onClick={this.handleClear}>
+        <IconButton className={classes.deleteButton} onClick={this.handleClear} size="large">
           <DeleteIcon />
         </IconButton>
       </div>

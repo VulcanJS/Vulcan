@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import ArrowDownIcon from 'mdi-material-ui/ArrowDown';
 import ScrollTrigger from './ScrollTrigger';
 import classNames from 'classnames';
@@ -63,7 +63,7 @@ const LoadMore = (
       {title}
     </Button>
   ) : (
-    <IconButton className={classes.iconButton} onClick={() => loadMore()}>
+    <IconButton className={classes.iconButton} onClick={() => loadMore()} size="large">
       <ArrowDownIcon />
     </IconButton>
   );

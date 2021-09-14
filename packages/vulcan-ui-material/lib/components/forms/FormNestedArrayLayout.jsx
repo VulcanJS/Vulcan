@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
+import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
+import Grid from '@mui/material/Grid';
 import RemoveIcon from 'mdi-material-ui/Delete';
 import AddIcon from 'mdi-material-ui/Plus';
 

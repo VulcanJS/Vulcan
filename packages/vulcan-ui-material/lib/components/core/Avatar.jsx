@@ -4,10 +4,10 @@ import { registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router-dom';
 import Users, { getProfileUrl } from 'meteor/vulcan:users';
-import { withStyles } from '@material-ui/core/styles';
-import MuiAvatar from '@material-ui/core/Avatar';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Tooltip from '@material-ui/core/Tooltip';
+import withStyles from '@mui/styles/withStyles';
+import MuiAvatar from '@mui/material/Avatar';
+import ButtonBase from '@mui/material/ButtonBase';
+import Tooltip from '@mui/material/Tooltip';
 import AdminIcon from 'mdi-material-ui/Star';
 import classNames from 'classnames';
 

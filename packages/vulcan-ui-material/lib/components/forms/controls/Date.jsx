@@ -1,7 +1,7 @@
 import React from 'react';
 import FormPicker from '../base-controls/FormPicker';
 import { registerComponent } from 'meteor/vulcan:core';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
 
 export const styles = theme => ({

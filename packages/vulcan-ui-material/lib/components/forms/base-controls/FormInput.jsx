@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import ComponentMixin from './mixins/component';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
-import Input from '@material-ui/core/Input';
+import Input from '@mui/material/Input';
 import StartAdornment, { hideStartAdornment } from './StartAdornment';
 import EndAdornment from './EndAdornment';
 import _debounce from 'lodash/debounce';

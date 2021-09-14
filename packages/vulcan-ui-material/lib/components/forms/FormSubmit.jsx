@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import DeleteIcon from 'mdi-material-ui/Delete';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -52,7 +52,7 @@ const FormSubmit = (
           classes={{ tooltip: classNames('delete-button', classes.tooltip) }}
           title={intl.formatMessage({ id: 'forms.delete' })}
           placement="bottom">
-          <IconButton onClick={deleteDocument} className={classes.delete}>
+          <IconButton onClick={deleteDocument} className={classes.delete} size="large">
             <DeleteIcon />
           </IconButton>
         </Tooltip>

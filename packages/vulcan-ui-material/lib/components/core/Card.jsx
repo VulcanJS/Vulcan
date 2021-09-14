@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
+import withStyles from '@mui/styles/withStyles';
+import IconButton from '@mui/material/IconButton';
+import Checkbox from '@mui/material/Checkbox';
 import EditIcon from 'mdi-material-ui/Pencil';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import Users from 'meteor/vulcan:users';
@@ -129,7 +129,7 @@ const CardEdit = (props, context) => {
     <TableRow className={classes.tableRow}>
       <TableCell className={classes.tableCell} colSpan="2">
         <Components.ModalTrigger label={editTitle}
-                                 component={<IconButton aria-label={editTitle}>
+                                 component={<IconButton aria-label={editTitle} size="large">
                                    <EditIcon/>
                                  </IconButton>}
         >

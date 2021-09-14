@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import { withStyles } from '@material-ui/core/styles';
+import Snackbar from '@mui/material/Snackbar';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 
 const styles = theme => ({

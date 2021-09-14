@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import ComponentMixin from './mixins/component';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 
 export const styles = theme => ({
   inputRoot: {

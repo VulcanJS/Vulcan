@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { instantiateComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { withStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@mui/styles/withStyles';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 import CloseIcon from 'mdi-material-ui/CloseCircle';
 import MenuDownIcon from 'mdi-material-ui/MenuDown';
 import classNames from 'classnames';
@@ -77,18 +77,19 @@ const EndAdornment = (props, context) => {
   const hasValue = !!value || value === 0;
 
   const clearButton = changeValue && !hideClear && !disabled &&
-    <IconButton className={classNames('clear-button', classes.clearButton, hasValue && 'has-value')}
-                onClick={event => {
-                  event.preventDefault();
-                  changeValue(null);
-                }}
-                onMouseDown={event => {
-                  event.preventDefault();
-                }}
-                tabIndex={-1}
-                aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
-                disabled={!hasValue}
-    >
+    <IconButton
+      className={classNames('clear-button', classes.clearButton, hasValue && 'has-value')}
+      onClick={event => {
+        event.preventDefault();
+        changeValue(null);
+      }}
+      onMouseDown={event => {
+        event.preventDefault();
+      }}
+      tabIndex={-1}
+      aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
+      disabled={!hasValue}
+      size="large">
       <CloseIcon/>
     </IconButton>;
 
