@@ -1,6 +1,6 @@
 Package.describe({
-  name: 'vulcan:styled-components',
-  summary: 'Add Styled Components to Vulcan.',
+  name: 'vulcan:emotion',
+  summary: 'Add Emotion to Vulcan.',
   version: '1.16.1',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });

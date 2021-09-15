@@ -3,7 +3,7 @@ import React from 'react';
 import { addCallback } from 'meteor/vulcan:core';
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import createEmotionCache from './createEmotionCache';
+import createEmotionCache from '../modules/createEmotionCache';
 
 // @see https://next.material-ui.com/guides/server-rendering/#main-content
 const setupEmotion = () => {
