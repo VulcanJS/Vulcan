@@ -12,10 +12,8 @@ function wrapWithMuiTheme(app, { context, apolloClient }) {
   context.sheetsRegistry = sheets;
 
   return sheets.collect(
-    <Components.StylesManager>
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
+    <Components.StylesManager disableGeneration={true} context={context}>
+      <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
     </Components.StylesManager>
   );
 }
@@ -27,10 +25,8 @@ function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
   context.sheetsRegistry = sheets;
 
   return sheets.collect(
-    <Components.StylesManager>
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
+    <Components.StylesManager context={context}>
+      <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
     </Components.StylesManager>
   );
 }

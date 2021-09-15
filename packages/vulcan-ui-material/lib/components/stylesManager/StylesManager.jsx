@@ -8,17 +8,14 @@
  */
 import React from 'react';
 import { registerComponent } from 'meteor/vulcan:core';
-import { StyledEngineProvider } from '@mui/material/styles';
 import { StylesProvider } from '@mui/styles';
 import { JssCleanup } from './JssCleanup';
 
-const StylesManager = ({ children }) => {
+const StylesManager = ({ children, ...otherProps }) => {
   return (
-    <StyledEngineProvider>
-      <StylesProvider injectFirst>
-        <JssCleanup>{children}</JssCleanup>
-      </StylesProvider>
-    </StyledEngineProvider>
+    <StylesProvider injectFirst {...otherProps}>
+      <JssCleanup>{children}</JssCleanup>
+    </StylesProvider>
   );
 };
 
