@@ -10,11 +10,14 @@ import React from 'react';
 import { registerComponent } from 'meteor/vulcan:core';
 import { StylesProvider } from '@mui/styles';
 import { JssCleanup } from './JssCleanup';
+import { JssMover } from './JssMover';
 
 const StylesManager = ({ children, ...otherProps }) => {
   return (
     <StylesProvider injectFirst {...otherProps}>
-      <JssCleanup>{children}</JssCleanup>
+      <JssMover>
+        <JssCleanup>{children}</JssCleanup>
+      </JssMover>
     </StylesProvider>
   );
 };
