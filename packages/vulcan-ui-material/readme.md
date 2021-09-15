@@ -84,7 +84,7 @@ const AppThemeProvider = ({ children }) => {
   const theme = getCurrentTheme();
   return (
     <ThemeProvider theme={theme}>
-      <JssCleanup>{children}</JssCleanup>
+      {children}
     </ThemeProvider>
   );
 };
@@ -110,7 +110,7 @@ const CustomThemeProvider = ({ children, apolloClient }) => {
   const theme = getTheme(themeKey);
   return (
     <ThemeProvider theme={theme}>
-      <JssCleanup>{children}</JssCleanup>
+      {children}
     </ThemeProvider>
   );
 };
