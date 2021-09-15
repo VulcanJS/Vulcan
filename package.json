@@ -190,7 +190,7 @@
     "react-autosuggest": "^9.4.3",
     "react-dom": "^17.0.2",
     "react-isolated-scroll": "^0.1.1",
-    "react-jss": "^8.6.1",
+    "react-jss": "^10.7.1",
     "react-keyboard-event-handler": "1.5.4",
     "sass-loader": "^7.1.0",
     "scrap-meteor-loader": "0.0.1",
