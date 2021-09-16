@@ -23,8 +23,7 @@ const createDisplayName = user => {
   const linkedinFirstName = Utils.getNestedProperty(user, 'services.linkedin.firstName');
   if (profileName) return profileName;
   if (twitterName) return twitterName;
-  if (linkedinFirstName)
-    return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
+  if (linkedinFirstName) return `${linkedinFirstName} ${Utils.getNestedProperty(user, 'services.linkedin.lastName')}`;
   if (user.username) return user.username;
   if (user.email) return user.email.slice(0, user.email.indexOf('@'));
   return undefined;
@@ -44,12 +43,12 @@ const UserEmail = {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     optional: true,
-    canRead: ['admin']
+    canRead: ['admin'],
   },
   verified: {
     type: Boolean,
     optional: true,
-    canRead: ['admin']
+    canRead: ['admin'],
   },
 };
 // addTypeAndResolvers({ typeName: 'UserEmail', schema: new SimpleSchema(UserEmail), description: 'The known emails of the user' });
@@ -71,12 +70,7 @@ const schema = {
     canUpdate: ['admins'],
     canCreate: ['members'],
     onCreate: ({ document: user }) => {
-      if (
-        !user.username &&
-        user.services &&
-        user.services.twitter &&
-        user.services.twitter.screenName
-      ) {
+      if (!user.username && user.services && user.services.twitter && user.services.twitter.screenName) {
         return user.services.twitter.screenName;
       }
     },
@@ -89,7 +83,7 @@ const schema = {
     onCreate: ({ document }) => {
       // simulate Accounts behaviour
       if (!document.emails && document.email) return [{ address: document.email }];
-    }
+    },
   },
   'emails.$': {
     type: Object,
@@ -200,9 +194,10 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ document: user }) => {
+    onCreate: async ({ document: user }) => {
+      const hash = await import('../server/avatar').hash;
       if (user.email) {
-        return getCollection('Users').avatar.hash(user.email);
+        return hash(user.email);
       }
     },
   },
@@ -211,10 +206,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     onCreate: ({ document: user }) => {
-      const twitterAvatar = Utils.getNestedProperty(
-        user,
-        'services.twitter.profile_image_url_https'
-      );
+      const twitterAvatar = Utils.getNestedProperty(user, 'services.twitter.profile_image_url_https');
       const facebookId = Utils.getNestedProperty(user, 'services.facebook.id');
 
       if (twitterAvatar) return twitterAvatar;
@@ -289,14 +281,8 @@ const schema = {
     canRead: ['guests'],
     group: adminGroup,
     form: {
-      options: function () {
-        const groups = _.without(
-          _.keys(getCollection('Users').groups),
-          'guests',
-          'members',
-          'owners',
-          'admins'
-        );
+      options: function() {
+        const groups = _.without(_.keys(getCollection('Users').groups), 'guests', 'members', 'owners', 'admins');
         return groups.map(group => {
           return { value: group, label: group };
         });

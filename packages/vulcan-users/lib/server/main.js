@@ -5,6 +5,8 @@ import './callbacks.js';
 import './queries.js';
 import './mutations.js';
 
+export * from './avatar';
+
 export { default as createUser } from './create_user.js';
 export * from '../modules/index.js';
 export { default } from '../modules/index.js';

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import MenuIcon from 'mdi-material-ui/Menu';
 import ChevronLeftIcon from 'mdi-material-ui/ChevronLeft';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import { getSetting, registerComponent } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 
@@ -62,7 +62,8 @@ const Header = (props, context) => {
           aria-label="open drawer"
           onClick={e => toggleSideNav()}
           className={classNames(classes.menuButton)}
-          color="inherit">
+          color="inherit"
+          size="large">
           {isSideNavOpen ? <ChevronLeftIcon /> : <MenuIcon />}
         </IconButton>
 

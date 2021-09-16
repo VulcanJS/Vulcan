@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { replaceComponent } from 'meteor/vulcan:core';
-import { withStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
+import withStyles from '@mui/styles/withStyles';
+import Divider from '@mui/material/Divider';
 import classNames from 'classnames';
 
 const styles = theme => ({

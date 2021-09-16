@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import { withStyles } from '@material-ui/core/styles';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import withStyles from '@mui/styles/withStyles';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
-import Checkbox from '@material-ui/core/Checkbox';
-import Switch from '@material-ui/core/Switch';
+import Checkbox from '@mui/material/Checkbox';
+import Switch from '@mui/material/Switch';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { Components } from 'meteor/vulcan:core';
@@ -21,7 +21,7 @@ const styles = theme => ({
   },
   twoColumn: {
     display: 'block',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       '& > label': {
         marginRight: theme.spacing(5),
       },
@@ -34,7 +34,7 @@ const styles = theme => ({
   },
   threeColumn: {
     display: 'block',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& > label': {
         marginRight: theme.spacing(5),
       },

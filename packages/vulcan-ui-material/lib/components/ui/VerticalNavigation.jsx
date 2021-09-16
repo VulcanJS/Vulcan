@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 import { Link as RLink } from 'react-router-dom';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 import { registerComponent } from 'meteor/vulcan:lib';
 

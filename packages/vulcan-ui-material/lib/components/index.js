@@ -55,6 +55,7 @@ import './forms/controls/Time';
 import './forms/controls/TimeRdt';
 export * from './forms/controls/Url';
 
+import './stylesManager/StylesManager';
 import './theme/ThemeStyles';
 import './theme/ThemeProvider';
 

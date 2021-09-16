@@ -2,84 +2,53 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
+import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
+import Grid from '@mui/material/Grid';
 import RemoveIcon from 'mdi-material-ui/Delete';
 import AddIcon from 'mdi-material-ui/Plus';
 
-
-const IconRemove = () => <RemoveIcon/>;
+const IconRemove = () => <RemoveIcon />;
 replaceComponent('IconRemove', IconRemove);
 
-
-const IconAdd = () => <AddIcon/>;
+const IconAdd = () => <AddIcon />;
 replaceComponent('IconAdd', IconAdd);
 
-
 const FormNestedArrayLayout = (props, context) => {
-  const {
-    hasErrors,
-    nestedArrayErrors,
-    label,
-    hideLabel,
-    addItem,
-    beforeComponent,
-    afterComponent,
-    formComponents,
-    children,
-  } = props;
+  const { hasErrors, nestedArrayErrors, label, hideLabel, addItem, beforeComponent, afterComponent, formComponents, children } = props;
   const { intl } = context;
   const FormComponents = formComponents;
-  
+
   return (
     <div className="form-nested-array-layout">
-      
       {instantiateComponent(beforeComponent, props)}
-      
-      {
-        !hideLabel &&
-        
-        <Typography
-          component="label"
-          variant="subtitle1"
-          gutterBottom
-        >
+
+      {!hideLabel && (
+        <Typography component="label" variant="subtitle1" gutterBottom>
           {label}
         </Typography>
-      }
-      
+      )}
+
       {children}
-      
-      {
-        addItem &&
-        
+
+      {addItem && (
         <Grid container direction="column" alignItems="flex-end">
-          <Fab 
-            color="primary" 
-            onClick={addItem} 
-            className="form-nested-button" 
-            aria-label={intl.formatMessage({ id: 'forms.add_nested_field' }, { label: label })}
-          >
-            <AddIcon/>
+          <Fab
+            color="primary"
+            onClick={addItem}
+            className="form-nested-button"
+            aria-label={intl.formatMessage({ id: 'forms.add_nested_field' }, { label: label })}>
+            <AddIcon />
           </Fab>
         </Grid>
-      }
-      
-      {
-        hasErrors
-          ?
-          <FormComponents.FieldErrors errors={nestedArrayErrors}/>
-          :
-          null
-      }
-      
+      )}
+
+      {hasErrors ? <FormComponents.FieldErrors errors={nestedArrayErrors} /> : null}
+
       {instantiateComponent(afterComponent, props)}
-    
     </div>
   );
 };
-
 
 FormNestedArrayLayout.propTypes = {
   hasErrors: PropTypes.bool.isRequired,

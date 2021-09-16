@@ -1,46 +1,38 @@
 import React from 'react';
 import { addCallback, Components } from 'meteor/vulcan:core';
-import { ServerStyleSheets } from '@material-ui/core/styles';
-import { StylesProvider } from '@material-ui/core/styles';
+import { ServerStyleSheets as MuiServerStyleSheets } from '@mui/styles';
 
 function wrapWithMuiTheme(app, { context, apolloClient }) {
+  // LEGACY: this supports the old, deprecated "makeStyles" syntax
+  // TODO: remove when all makeStyles are removed from the app
   // will spawn a StylesProvider automatically during render
   // replaces the manual setup of JSSProvider
   // @see https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/ServerStyleSheets/ServerStyleSheets.js
-  const sheets = new ServerStyleSheets({ disableGeneration: true });
+  const sheets = new MuiServerStyleSheets({ disableGeneration: true });
   context.sheetsRegistry = sheets;
 
   return sheets.collect(
-    <StylesProvider injectFirst>
-      {/* StylesProvider so styled-components overrides material UI */}
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
-    </StylesProvider>
+    <Components.StylesManager disableGeneration={true} context={context}>
+      <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
+    </Components.StylesManager>
   );
 }
 
 function wrapWithMuiStyleGenerator(app, { context, apolloClient }) {
-  const sheets = new ServerStyleSheets();
+  // MUI legacy makeStyles with JSS
+  // TODO: remove when getting rid of all makeStyles
+  const sheets = new MuiServerStyleSheets();
   context.sheetsRegistry = sheets;
 
-  // NOTE: The sheets.collect API does not allow to pass a seed
-  // do we still need to force a specific seed?
-  // if yes reenable this code and create the StylesProvider manually as we
-  // used to do for JSSProvider
-  //const generateClassName = createGenerateClassName({ seed: '' });
-
   return sheets.collect(
-    <StylesProvider injectFirst>
-      {/* StylesProvider so styled-components overrides material UI */}
-      <Components.ThemeProvider apolloClient={apolloClient} context={context}>
-        {app}
-      </Components.ThemeProvider>
-    </StylesProvider>
+    <Components.StylesManager context={context}>
+      <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
+    </Components.StylesManager>
   );
 }
 
 function injectJss(sink, { context }) {
+  // LEGACY add mui JSS based styles to the HTML header
   const sheets = context.sheetsRegistry.toString();
   sink.appendToHead(`<style id="jss-server-side">${sheets}</style>`);
   return sink;

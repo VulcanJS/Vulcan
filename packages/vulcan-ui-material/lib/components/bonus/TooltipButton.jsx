@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, instantiateComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import { withStyles } from '@material-ui/core/styles';
-import { withTheme } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
+import CircularProgress from '@mui/material/CircularProgress';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import classNames from 'classnames';
 
 
@@ -231,7 +231,7 @@ const TooltipButton = (props, { intl }) => {
                         aria-label={title}
                         ref={buttonRef}
                         disabled={(loading && !(disabled === false)) || disabled}
-                      >
+                        size="large">
                         {iconWithClass}
                       </IconButton>
                       {loading && <CircularProgress size="auto" className={classes.progress}/>}

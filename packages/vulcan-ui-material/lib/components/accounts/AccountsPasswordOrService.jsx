@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Typography from '@material-ui/core/Typography';
-import CardActions from '@material-ui/core/CardActions';
-import { withStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 
 const styles = theme => ({

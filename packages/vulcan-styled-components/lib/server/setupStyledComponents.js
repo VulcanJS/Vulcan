@@ -13,6 +13,11 @@ const setupStyledComponents = () => {
   });
 
   addCallback('router.server.postRender', function appendStyleTags(sink, { context }) {
+    if (!context.stylesheet) {
+      console.warn(
+        'Styled Components stylesheet not defined during render. Server render probably failed while styles were being collected.'
+      );
+    }
     sink.appendToHead(context.stylesheet.getStyleTags());
     return sink;
   });

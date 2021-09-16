@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import classNames from 'classnames';
 import _isArray from 'lodash/isArray';
 import {
@@ -31,7 +31,7 @@ const styles = theme => ({
   twoColumn: {
     display: 'block',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       '& > label': {
         marginRight: theme.spacing(5),
       },
@@ -45,7 +45,7 @@ const styles = theme => ({
   threeColumn: {
     display: 'block',
 
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& > label': {
         marginRight: theme.spacing(5),
       },
@@ -64,7 +64,7 @@ const styles = theme => ({
   },
   fiveColumn: {
     display: 'block',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& > label': {
         marginRight: theme.spacing(5),
       },
@@ -88,7 +88,7 @@ const styles = theme => ({
   eightColumn: {
     display: 'block',
 
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& > label': {
         marginRight: theme.spacing(1),
       },
@@ -112,7 +112,7 @@ const styles = theme => ({
   tenColumn: {
     display: 'block',
 
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& > label': {
         marginRight: theme.spacing(1),
       },

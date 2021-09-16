@@ -15,6 +15,8 @@ import Head from './components/Head';
 import ApolloState from './components/ApolloState';
 import AppGenerator from './components/AppGenerator';
 import injectDefaultData from './injectDefaultData';
+import debug from 'debug';
+const debugApollo = debug('vulcan:apollo');
 
 const makePageRenderer = ({ computeContext }) => {
   // onPageLoad callback
@@ -45,7 +47,6 @@ const makePageRenderer = ({ computeContext }) => {
         properties: { req, context, apolloClient: client },
       });
 
-
       // run wrappers that must only me applied during the data collection step
       // eg Material UI theming WITHOUT style generation
       // The wrappers must NOT have any side effect during React tree traversal
@@ -56,9 +57,11 @@ const makePageRenderer = ({ computeContext }) => {
         properties: { req, context, apolloClient: client },
       });
       // fill apollo store
-      // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.), 
+      // NOTE: we CAN'T use renderToStringWithData on the wrapped app (so with Material UI, styled components etc.),
       //because react-apollo may trigger style generation while walking the React tree to find query
+      debugApollo('Start getDataFromTree');
       await getDataFromTree(DataWrappedApp);
+      debugApollo('End getDataFromTree');
 
       // run callback related to rendering
       // eg Material UI theming WITH style generation
@@ -77,7 +80,7 @@ const makePageRenderer = ({ computeContext }) => {
       console.error(err);
       // show error in client in dev
       if (Meteor.isDevelopment) {
-        htmlContent = `Error while server-rendering: ${err.message}`;
+        htmlContent = `Error while server-rendering: ${err.message}. Check server logs.`;
       }
     }
 
@@ -98,12 +101,9 @@ const makePageRenderer = ({ computeContext }) => {
       sink.appendToHead(dataToInject._injectHtml);
     }
 
-
     // add Apollo state, the client will then parse the string
     const initialState = client.extract();
-    const serializedApolloState = ReactDOM.renderToString(
-      <ApolloState initialState={initialState} />
-    );
+    const serializedApolloState = ReactDOM.renderToString(<ApolloState initialState={initialState} />);
     sink.appendToBody(serializedApolloState);
 
     // post render callback
