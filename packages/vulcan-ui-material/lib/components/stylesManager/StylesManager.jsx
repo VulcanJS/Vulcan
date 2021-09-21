@@ -13,7 +13,7 @@ import { JssMover } from './JssMover';
 
 const StylesManager = ({ children, ...otherProps }) => {
   return (
-    <StyledEngineProvider>
+    <StyledEngineProvider injectFirst>
       <JssMover>{children}</JssMover>
     </StyledEngineProvider>
   );
