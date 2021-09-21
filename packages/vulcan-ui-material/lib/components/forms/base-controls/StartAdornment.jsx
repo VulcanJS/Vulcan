@@ -4,8 +4,8 @@ import { Components as C, instantiateComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withStyles } from '../../../modules/makeStyles';
 import InputAdornment from '@mui/material/InputAdornment';
-import WebIcon from 'mdi-material-ui/Web';
-import EmailIcon from 'mdi-material-ui/EmailOutline';
+import WebIcon from '@mui/icons-material/Web';
+import EmailIcon from '@mui/icons-material/MailOutline';
 import { styles } from './EndAdornment';
 
 const linkTypes = ['url', 'email', 'social'];

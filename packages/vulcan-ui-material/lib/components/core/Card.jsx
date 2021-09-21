@@ -6,7 +6,7 @@ import moment from 'moment';
 import { withStyles } from '../../modules/makeStyles';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
-import EditIcon from 'mdi-material-ui/Pencil';
+import EditIcon from '@mui/icons-material/Create';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';

@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from 'mdi-material-ui/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 
 const BackofficeNavbar = ({ onClick, basePath }) => {
@@ -12,12 +12,7 @@ const BackofficeNavbar = ({ onClick, basePath }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={onClick}
-          size="large">
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={onClick} size="large">
           <MenuIcon />
         </IconButton>
 
@@ -26,6 +21,7 @@ const BackofficeNavbar = ({ onClick, basePath }) => {
         </Link>
       </Toolbar>
     </AppBar>
-  );};
+  );
+};
 
 registerComponent('VulcanBackofficeNavbar', BackofficeNavbar);

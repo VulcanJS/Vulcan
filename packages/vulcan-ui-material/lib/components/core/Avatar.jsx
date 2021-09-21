@@ -8,7 +8,7 @@ import { withStyles } from '../../modules/makeStyles';
 import MuiAvatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
-import AdminIcon from 'mdi-material-ui/Star';
+import AdminIcon from '@mui/icons-material/Star';
 import classNames from 'classnames';
 
 const styles = theme => ({

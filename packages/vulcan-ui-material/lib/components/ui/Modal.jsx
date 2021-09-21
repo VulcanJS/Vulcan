@@ -5,7 +5,7 @@ import { withStyles } from '../../modules/makeStyles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import Close from 'mdi-material-ui/Close';
+import Close from '@mui/icons-material/Close';
 import classNames from 'classnames';
 
 const styles = theme => ({

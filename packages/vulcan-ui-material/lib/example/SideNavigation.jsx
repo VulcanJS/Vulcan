@@ -8,12 +8,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Collapse from '@mui/material/Collapse';
-import ExpandLessIcon from 'mdi-material-ui/ChevronUp';
-import ExpandMoreIcon from 'mdi-material-ui/ChevronDown';
-import LockIcon from 'mdi-material-ui/Lock';
-import UsersIcon from 'mdi-material-ui/AccountMultiple';
-import ThemeIcon from 'mdi-material-ui/Palette';
-import HomeIcon from 'mdi-material-ui/Home';
+import ExpandLessIcon from '@mui/icons-material/KeyboardArrowUp';
+import ExpandMoreIcon from '@mui/icons-material/KeyboardArrowDown';
+import LockIcon from '@mui/icons-material/Lock';
+import UsersIcon from '@mui/icons-material/AccountMultiple';
+import ThemeIcon from '@mui/icons-material/Palette';
+import HomeIcon from '@mui/icons-material/Home';
 import { withStyles } from '../modules/makeStyles';
 import Users from 'meteor/vulcan:users';
 

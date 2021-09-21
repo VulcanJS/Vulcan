@@ -5,8 +5,8 @@ import { withStyles } from '../../modules/makeStyles';
 import Collapse from '@mui/material/Collapse';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import ExpandLessIcon from 'mdi-material-ui/ChevronUp';
-import ExpandMoreIcon from 'mdi-material-ui/ChevronDown';
+import ExpandLessIcon from '@mui/icons-material/KeyboardArrowUp';
+import ExpandMoreIcon from '@mui/icons-material/KeyboardArrowDown';
 import classNames from 'classnames';
 
 const styles = theme => ({

@@ -6,7 +6,7 @@ import { withStyles } from '../../modules/makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import ArrowDownIcon from 'mdi-material-ui/ArrowDown';
+import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
 import ScrollTrigger from './ScrollTrigger';
 import classNames from 'classnames';
 

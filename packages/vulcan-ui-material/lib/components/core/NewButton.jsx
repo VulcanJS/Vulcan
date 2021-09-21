@@ -2,28 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import AddIcon from 'mdi-material-ui/Plus';
+import AddIcon from '@mui/icons-material/Add';
 
-
-const NewButton = ({
-                     className,
-                     collection,
-                     color = 'default',
-                     variant,
-                   }, { intl }) => (
-  
+const NewButton = ({ className, collection, color = 'default', variant }, { intl }) => (
   <Components.ModalTrigger
     className={className}
-    component={<Components.TooltipButton titleId="datatable.new"
-                                         icon={<AddIcon/>}
-                                         color={color}
-                                         variant={variant}
-    />}
-  >
-    <Components.EditForm collection={collection}/>
+    component={<Components.TooltipButton titleId="datatable.new" icon={<AddIcon />} color={color} variant={variant} />}>
+    <Components.EditForm collection={collection} />
   </Components.ModalTrigger>
 );
-
 
 NewButton.propTypes = {
   className: PropTypes.string,
@@ -32,13 +19,10 @@ NewButton.propTypes = {
   variant: PropTypes.string,
 };
 
-
 NewButton.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
 };
 
-
 NewButton.displayName = 'NewButton';
-
 
 replaceComponent('NewButton', NewButton);

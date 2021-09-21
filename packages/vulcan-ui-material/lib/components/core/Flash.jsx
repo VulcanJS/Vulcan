@@ -6,7 +6,7 @@ import { makeStyles } from '../../modules/makeStyles';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from 'mdi-material-ui/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import DOMPurify from 'dompurify';
 

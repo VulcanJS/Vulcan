@@ -5,8 +5,8 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import { withStyles } from '../../../modules/makeStyles';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from 'mdi-material-ui/CloseCircle';
-import MenuDownIcon from 'mdi-material-ui/MenuDown';
+import CloseIcon from '@mui/icons-material/Cancel';
+import MenuDownIcon from '@mui/icons-material/ArrowDropDown';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
 
