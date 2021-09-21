@@ -12,11 +12,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { JssMover } from './JssMover';
 
 const StylesManager = ({ children, ...otherProps }) => {
-  return (
-    <StyledEngineProvider injectFirst>
-      <JssMover>{children}</JssMover>
-    </StyledEngineProvider>
-  );
+  return <StyledEngineProvider injectFirst>{children}</StyledEngineProvider>;
 };
 
 registerComponent('StylesManager', StylesManager);
