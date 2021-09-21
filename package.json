@@ -202,6 +202,7 @@
     "storybook-react-router": "^1.0.5",
     "styled-components": "^5.3.1",
     "supertest": "^4.0.2",
+    "tss-react": "^0.9.1",
     "vulcan-loader": "0.0.1",
     "waait": "^1.0.5",
     "webpack": "4.28.4"

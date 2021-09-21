@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { getContrastRatio } from '@mui/material/styles';
 import classNames from 'classnames';
+import { useTheme } from '@mui/material/styles';
 
 const describeTypography = (theme, className) => {
   const typography = className ? theme.typography[className] : theme.typography;
@@ -121,7 +122,8 @@ const latin =
   'efficitur lectus, ac lacinia risus nunc at diam. Nam gravida bibendum lectus. Donec ' +
   'scelerisque sem nec urna vestibulum vehicula.';
 
-const ThemeStyles = ({ theme, classes }) => {
+const ThemeStyles = ({ classes }) => {
+  const theme = useTheme();
   return (
     <Grid container className={classNames('theme-styles', classes.root)}>
       <Grid item xs={6}>
@@ -263,4 +265,4 @@ ThemeStyles.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-registerComponent('ThemeStyles', ThemeStyles, withTheme, [withStyles, styles]);
+registerComponent('ThemeStyles', ThemeStyles, [withStyles, styles]);

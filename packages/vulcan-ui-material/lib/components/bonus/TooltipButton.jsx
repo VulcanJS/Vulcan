@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import classNames from 'classnames';
+import { useTheme } from '@mui/material/styles';
 
 const styles = theme => ({
   root: {
@@ -110,7 +111,6 @@ const TooltipButton = (props, { intl }) => {
     danger,
     className,
     classes,
-    theme,
     enterDelay,
     leaveDelay,
     buttonRef,
@@ -120,6 +120,7 @@ const TooltipButton = (props, { intl }) => {
     TooltipProps,
     ...properties
   } = props;
+  const theme = useTheme();
 
   const iconWithClass = instantiateComponent(icon, { className: classNames('icon', classes.icon) });
   const popperClass = parent === 'popover' && classes.popoverPopper;
@@ -264,6 +265,6 @@ TooltipButton.contextTypes = {
 
 TooltipButton.displayName = 'TooltipButton';
 
-registerComponent('TooltipButton', TooltipButton, [withStyles, styles], withTheme);
+registerComponent('TooltipButton', TooltipButton, [withStyles, styles]);
 
 export default TooltipButton;

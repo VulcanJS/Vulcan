@@ -1,6 +1,5 @@
 export * from './components';
 export * from './themes';
-import JssCleanup from '../components/stylesManager/JssCleanup';
-export { JssCleanup };
+export * from './makeStyles';
 import './sampleTheme';
 import './routes';

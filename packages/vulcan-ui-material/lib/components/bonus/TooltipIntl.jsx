@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import classNames from 'classnames';
 import Fab from '@mui/material/Fab';
+import { useTheme } from '@mui/material/styles';
 
 const styles = theme => ({
   root: {
@@ -49,7 +50,6 @@ const TooltipIntl = (props, { intl }) => {
     icon,
     className,
     classes,
-    theme,
     enterDelay,
     leaveDelay,
     buttonRef,
@@ -58,6 +58,7 @@ const TooltipIntl = (props, { intl }) => {
     children,
     ...properties
   } = props;
+  const theme = useTheme();
 
   const iconWithClass = icon && React.cloneElement(icon, { className: classes.icon });
   const popperClass = parent === 'popover' && classes.popoverPopper;
@@ -129,4 +130,4 @@ TooltipIntl.contextTypes = {
 
 TooltipIntl.displayName = 'TooltipIntl';
 
-registerComponent('TooltipIntl', TooltipIntl, [withStyles, styles], withTheme);
+registerComponent('TooltipIntl', TooltipIntl, [withStyles, styles]);
