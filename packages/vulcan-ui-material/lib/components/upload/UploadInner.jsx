@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, getComponent } from 'meteor/vulcan:lib';
 import Dropzone from 'react-dropzone';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import ComponentMixin from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/mixins/component';
 import FormControlLayout from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormControlLayout';
 import FormHelper from 'meteor/vulcan:ui-material/lib/components/forms/base-controls/FormHelper';
@@ -69,20 +69,7 @@ const styles = theme => ({
 });
 
 const UploadInner = props => {
-  const {
-    uploading,
-    images,
-    disabled,
-    maxCount,
-    label,
-    help,
-    options,
-    enableMultiple,
-    onDrop,
-    isDeleted,
-    clearImage,
-    classes,
-  } = props;
+  const { uploading, images, disabled, maxCount, label, help, options, enableMultiple, onDrop, isDeleted, clearImage, classes } = props;
 
   const UploadImage = getComponent(options.uploadImageComponentName || 'UploadImage');
 
@@ -104,10 +91,7 @@ const UploadInner = props => {
             rejectClassName={classes.dropzoneReject}
             disabled={disabled}>
             <div>
-              <Components.FormattedMessage
-                id={`upload.${disabled ? 'maxReached' : 'prompt'}`}
-                values={{ maxCount }}
-              />
+              <Components.FormattedMessage id={`upload.${disabled ? 'maxReached' : 'prompt'}`} values={{ maxCount }} />
             </div>
             {uploading && (
               <div className="upload-uploading">

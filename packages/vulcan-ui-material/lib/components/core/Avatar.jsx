@@ -4,7 +4,7 @@ import { registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router-dom';
 import Users, { getProfileUrl } from 'meteor/vulcan:users';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import MuiAvatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';

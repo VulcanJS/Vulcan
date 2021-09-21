@@ -14,7 +14,7 @@ import LockIcon from 'mdi-material-ui/Lock';
 import UsersIcon from 'mdi-material-ui/AccountMultiple';
 import ThemeIcon from 'mdi-material-ui/Palette';
 import HomeIcon from 'mdi-material-ui/Home';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../modules/makeStyles';
 import Users from 'meteor/vulcan:users';
 
 const styles = theme => ({
@@ -104,10 +104,4 @@ SideNavigation.propTypes = {
 
 SideNavigation.displayName = 'SideNavigation';
 
-registerComponent(
-  'SideNavigation',
-  SideNavigation,
-  [withStyles, styles],
-  withCurrentUser,
-  withRouter
-);
+registerComponent('SideNavigation', SideNavigation, [withStyles, styles], withCurrentUser, withRouter);

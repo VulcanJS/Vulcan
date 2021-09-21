@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withTheme from '@mui/styles/withTheme';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -10,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { getContrastRatio } from '@mui/material/styles';
 import classNames from 'classnames';
-
 
 const describeTypography = (theme, className) => {
   const typography = className ? theme.typography[className] : theme.typography;
@@ -42,10 +40,7 @@ function getColorBlock(theme, classes, colorName, colorValue, colorTitle) {
 
   return (
     <div key={colorName + colorValue}>
-      {
-        colorValue.toString().match(/^(A100|light|contrastText)$/) &&
-        <div className={classes.blockSpace}/>
-      }
+      {colorValue.toString().match(/^(A100|light|contrastText)$/) && <div className={classes.blockSpace} />}
       <li style={rowStyle} key={colorValue}>
         {blockTitle}
         <div className={classes.colorContainer}>
@@ -63,13 +58,12 @@ function getColorGroup(options) {
 
   const cssColor = color.replace(' ', '').replace(color.charAt(0), color.charAt(0).toLowerCase());
   let colorsList = [];
-  colorsList =
-    Object.keys(theme.palette[cssColor]).map(mainValue => getColorBlock(theme, classes, cssColor, mainValue));
+  colorsList = Object.keys(theme.palette[cssColor]).map(mainValue => getColorBlock(theme, classes, cssColor, mainValue));
 
   return (
     <ul className={classes.colorGroup} key={cssColor}>
       {getColorBlock(theme, classes, cssColor, 500, true)}
-      <div className={classes.blockSpace}/>
+      <div className={classes.blockSpace} />
       {colorsList}
     </ul>
   );
@@ -79,7 +73,7 @@ const styles = theme => ({
   root: {
     '& button + button': {
       marginLeft: theme.spacing(2),
-    }
+    },
   },
   paper: {
     padding: theme.spacing(3),
@@ -130,7 +124,6 @@ const latin =
 const ThemeStyles = ({ theme, classes }) => {
   return (
     <Grid container className={classNames('theme-styles', classes.root)}>
-
       <Grid item xs={6}>
         <Typography variant="h1">h1: {describeTypography(theme, 'h1')}</Typography>
         <Typography variant="h2">h2: {describeTypography(theme, 'h2')}</Typography>
@@ -140,9 +133,7 @@ const ThemeStyles = ({ theme, classes }) => {
 
       <Grid item xs={12}>
         <Paper className={classes.paper}>
-
           <Grid container>
-
             <Grid item xs={12} lg={6}>
               <Typography variant="h5" gutterBottom>
                 h5: {describeTypography(theme, 'h5')}
@@ -161,9 +152,15 @@ const ThemeStyles = ({ theme, classes }) => {
             <Grid item xs={12} lg={6}>
               <p>
                 <Button variant="contained">Default</Button>
-                <Button variant="contained" color="primary">Primary</Button>
-                <Button variant="contained" color="secondary">Secondary</Button>
-                <Button variant="contained" disabled>Disabled</Button>
+                <Button variant="contained" color="primary">
+                  Primary
+                </Button>
+                <Button variant="contained" color="secondary">
+                  Secondary
+                </Button>
+                <Button variant="contained" disabled>
+                  Disabled
+                </Button>
               </p>
 
               <p>
@@ -175,15 +172,20 @@ const ThemeStyles = ({ theme, classes }) => {
 
               <p>
                 <Button variant="outlined">Default</Button>
-                <Button variant="outlined" color="primary">Primary</Button>
-                <Button variant="outlined" color="secondary">Secondary</Button>
-                <Button variant="outlined" disabled>Disabled</Button>
+                <Button variant="outlined" color="primary">
+                  Primary
+                </Button>
+                <Button variant="outlined" color="secondary">
+                  Secondary
+                </Button>
+                <Button variant="outlined" disabled>
+                  Disabled
+                </Button>
               </p>
             </Grid>
-
           </Grid>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography variant="body1" gutterBottom>
             Body 1: {describeTypography(theme, 'body1')} - {latin}
@@ -192,7 +194,7 @@ const ThemeStyles = ({ theme, classes }) => {
             {latin}
           </Typography>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography variant="body2" gutterBottom>
             Body 2: {describeTypography(theme, 'body2')} - {latin}
@@ -201,64 +203,57 @@ const ThemeStyles = ({ theme, classes }) => {
             {latin}
           </Typography>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography variant="button" gutterBottom>
             Button - {describeTypography(theme)}
           </Typography>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography variant="caption" gutterBottom>
             Caption: {describeTypography(theme, 'caption')}
           </Typography>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography variant="overline" gutterBottom>
             Overline: {describeTypography(theme, 'overline')}
           </Typography>
 
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
 
           <Typography gutterBottom>
             Base: {describeTypography(theme)} - {latin}
           </Typography>
-
         </Paper>
       </Grid>
 
+      {Object.keys(theme.palette).map(color => {
+        if (specialPalettes.includes(color)) return null;
 
-      {
-        Object.keys(theme.palette).map(color => {
-          if (specialPalettes.includes(color)) return null;
+        const colorGroup = getColorGroup({ theme, classes, color });
+        if (!colorGroup) return null;
 
-          const colorGroup = getColorGroup({ theme, classes, color });
-          if (!colorGroup) return null;
+        return (
+          <Grid item xs={12} sm={6} md={3} key={color}>
+            {colorGroup}
+          </Grid>
+        );
+      })}
 
-          return (
-            <Grid item xs={12} sm={6} md={3} key={color}>
-              {colorGroup}
-            </Grid>
-          );
-        })
-      }
+      {Object.keys(theme.palette).map(color => {
+        if (!specialPalettes.includes(color)) return null;
 
-      {
-        Object.keys(theme.palette).map(color => {
-          if (!specialPalettes.includes(color)) return null;
+        const colorGroup = getColorGroup({ theme, classes, color });
+        if (!colorGroup) return null;
 
-          const colorGroup = getColorGroup({ theme, classes, color });
-          if (!colorGroup) return null;
-
-          return (
-            <Grid item xs={12} sm={6} md={3} key={color}>
-              {colorGroup}
-            </Grid>
-          );
-        })
-      }
-
+        return (
+          <Grid item xs={12} sm={6} md={3} key={color}>
+            {colorGroup}
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

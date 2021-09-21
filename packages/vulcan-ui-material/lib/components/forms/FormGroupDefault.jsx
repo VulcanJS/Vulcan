@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Collapse from '@mui/material/Collapse';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';

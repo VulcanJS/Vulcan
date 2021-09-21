@@ -4,7 +4,7 @@ import { replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
 
 const styles = theme => ({

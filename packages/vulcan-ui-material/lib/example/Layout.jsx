@@ -4,7 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Components, replaceComponent, Utils } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../modules/makeStyles';
 import classNames from 'classnames';
 
 const drawerWidth = 240;
@@ -78,8 +78,7 @@ class Layout extends React.Component {
 
   toggle = (item, openOrClose) => {
     const newState = { isOpen: {} };
-    newState.isOpen[item] =
-      typeof openOrClose === 'string' ? openOrClose === 'open' : !this.state.isOpen[item];
+    newState.isOpen[item] = typeof openOrClose === 'string' ? openOrClose === 'open' : !this.state.isOpen[item];
     this.setState(newState);
   };
 
@@ -91,24 +90,16 @@ class Layout extends React.Component {
     return (
       <div className={classNames(classes.root, 'wrapper', `wrapper-${routeName}`)}>
         <div className={classes.appFrame}>
-          <Components.Header
-            isSideNavOpen={isOpen.sideNav}
-            toggleSideNav={openOrClose => this.toggle('sideNav', openOrClose)}
-          />
+          <Components.Header isSideNavOpen={isOpen.sideNav} toggleSideNav={openOrClose => this.toggle('sideNav', openOrClose)} />
 
-          <Drawer
-            variant="persistent"
-            classes={{ paper: classes.drawerPaper }}
-            open={isOpen.sideNav}>
+          <Drawer variant="persistent" classes={{ paper: classes.drawerPaper }} open={isOpen.sideNav}>
             <AppBar className={classes.drawerHeader} elevation={4} square={true}>
-              <Toolbar></Toolbar>
+              <Toolbar />
             </AppBar>
             <Components.SideNavigation />
           </Drawer>
 
-          <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>
-            {this.props.children}
-          </main>
+          <main className={classNames(classes.content, isOpen.sideNav && classes.mainShift)}>{this.props.children}</main>
 
           <Components.FlashMessages />
         </div>

@@ -143,7 +143,6 @@
     "@mui/material": "^5.0.0-rc.1",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@next",
     "@mui/styled-engine-sc": "^5.0.0-rc.1",
-    "@mui/styles": "^5.0.0-rc.1",
     "@storybook/addon-actions": "5.0.8",
     "@storybook/addon-knobs": "5.0.8",
     "@storybook/addon-links": "5.0.1",

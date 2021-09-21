@@ -1,7 +1,7 @@
 import React from 'react';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import CardActions from '@mui/material/CardActions';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
 
 const styles = theme => ({

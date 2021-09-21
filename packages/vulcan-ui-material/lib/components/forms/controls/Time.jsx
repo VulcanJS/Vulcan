@@ -1,11 +1,9 @@
 import React from 'react';
 import FormInput from '../base-controls/FormInput';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
-
+import { withStyles } from '../../../modules/makeStyles';
 
 export const styles = theme => ({
-
   '@global': {
     'input[type=time]::-ms-clear, input[type=time]::-ms-reveal': {
       display: 'none',
@@ -26,12 +24,8 @@ export const styles = theme => ({
       margin: 0,
     },
   },
-
 });
 
-
-const TimeComponent = ({ refFunction, classes, ...properties }) =>
-  <FormInput {...properties} ref={refFunction} type="time"/>;
-
+const TimeComponent = ({ refFunction, classes, ...properties }) => <FormInput {...properties} ref={refFunction} type="time" />;
 
 registerComponent('FormComponentTime', TimeComponent, [withStyles, styles]);

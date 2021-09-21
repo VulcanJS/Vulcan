@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
+import { withStyles } from '../../modules/makeStyles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
@@ -86,12 +85,7 @@ const TooltipIntl = (props, { intl }) => {
               {iconWithClass}
             </Fab>
           ) : !!icon ? (
-            <IconButton
-              className={classNames(classes.button, slug)}
-              aria-label={title}
-              ref={buttonRef}
-              {...properties}
-              size="large">
+            <IconButton className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties} size="large">
               {iconWithClass}
             </IconButton>
           ) : variant === 'button' ? (

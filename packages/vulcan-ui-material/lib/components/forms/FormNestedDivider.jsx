@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { replaceComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Divider from '@mui/material/Divider';
 import classNames from 'classnames';
 
@@ -12,9 +12,7 @@ const styles = theme => ({
   },
 });
 
-const FormNestedDivider = ({ classes, label, addItem }) => (
-  <Divider className={classNames('form-nested-divider', classes.divider)} />
-);
+const FormNestedDivider = ({ classes, label, addItem }) => <Divider className={classNames('form-nested-divider', classes.divider)} />;
 
 FormNestedDivider.propTypes = {
   classes: PropTypes.object.isRequired,

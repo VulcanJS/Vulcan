@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import MuiFab from '@mui/material/Fab';
 import MuiButton from '@mui/material/Button';
 import MuiIconButton from '@mui/material/IconButton';
-import withTheme from '@mui/styles/withTheme';
 
 const styles = theme => ({
   success: {
@@ -82,12 +81,7 @@ const styles = theme => ({
 const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }) => {
   const varParts = variant && variant.split('-');
   const outline = varParts && varParts.length > 1 ? varParts[0] : null;
-  variant =
-    varParts && varParts.length > 1
-      ? varParts[1]
-      : varParts && varParts.length > 0
-      ? varParts[0]
-      : null;
+  variant = varParts && varParts.length > 1 ? varParts[1] : varParts && varParts.length > 0 ? varParts[0] : null;
   let color;
 
   switch (variant) {
@@ -113,8 +107,7 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
     ? classes[outline ? outline + '_' + variant : variant]
     : null;
 
-  variant =
-    outline === 'outline' ? 'outlined' : variant && variant !== 'link' ? 'contained' : 'text';
+  variant = outline === 'outline' ? 'outlined' : variant && variant !== 'link' ? 'contained' : 'text';
 
   switch (size) {
     case 'sm':

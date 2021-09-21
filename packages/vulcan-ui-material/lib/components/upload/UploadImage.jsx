@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:lib';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import classNames from 'classnames';

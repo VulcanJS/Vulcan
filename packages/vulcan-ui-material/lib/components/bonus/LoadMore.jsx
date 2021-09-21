@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -30,18 +30,7 @@ const styles = theme => ({
 });
 
 const LoadMore = (
-  {
-    classes,
-    count,
-    totalCount,
-    loadMore,
-    networkStatus,
-    showCount,
-    useTextButton,
-    className,
-    infiniteScroll,
-    scroller,
-  },
+  { classes, count, totalCount, loadMore, networkStatus, showCount, useTextButton, className, infiniteScroll, scroller },
   { intl }
 ) => {
   const isLoadingMore = networkStatus < 7;
@@ -49,13 +38,7 @@ const LoadMore = (
   const title = `${loadMoreText} (${count}/${totalCount})`;
   const hasMore = totalCount > count;
   const countValues = { count, totalCount };
-  const loadMoreId = hasMore
-    ? 'loaded_count'
-    : !totalCount
-    ? 'no_items'
-    : totalCount === 1
-    ? 'one_item'
-    : 'total_items';
+  const loadMoreId = hasMore ? 'loaded_count' : !totalCount ? 'no_items' : totalCount === 1 ? 'one_item' : 'total_items';
   showCount = isNaN(totalCount) || isNaN(count) ? false : showCount;
 
   const loadMoreButton = useTextButton ? (

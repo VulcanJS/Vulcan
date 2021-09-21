@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../../modules/makeStyles';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,11 +10,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import classNames from 'classnames';
 import _isArray from 'lodash/isArray';
-import {
-  addOtherMarker,
-  isOtherValue,
-  removeOtherMarker,
-} from './FormCheckboxGroup';
+import { addOtherMarker, isOtherValue, removeOtherMarker } from './FormCheckboxGroup';
 import isEmpty from 'lodash/isEmpty';
 import { Components } from 'meteor/vulcan:core';
 
@@ -147,7 +143,7 @@ const styles = theme => ({
   inputDisabled: {},
 });
 
-const OtherComponent = ({value, path, updateCurrentValues, classes, key, disabled}) => {
+const OtherComponent = ({ value, path, updateCurrentValues, classes, key, disabled }) => {
   const otherValue = removeOtherMarker(value);
 
   // keep track of whether "other" field is shown or not
@@ -158,11 +154,14 @@ const OtherComponent = ({value, path, updateCurrentValues, classes, key, disable
 
   // whenever value changes (and is not empty), if it's not an "other" value
   // this means another option has been selected and we need to uncheck the "other" radio button
-  useEffect(() => {
-    if (value) {
-      setShowOther(isOtherValue(value));
-    }
-  }, [value]);
+  useEffect(
+    () => {
+      if (value) {
+        setShowOther(isOtherValue(value));
+      }
+    },
+    [value]
+  );
 
   // textfield properties
   const textFieldInputProperties = {
@@ -173,10 +172,10 @@ const OtherComponent = ({value, path, updateCurrentValues, classes, key, disable
       setTextFieldValue(fieldValue);
       // then update global form state
       const newValue = isEmpty(fieldValue) ? null : addOtherMarker(fieldValue);
-      updateCurrentValues({[path]: newValue});
+      updateCurrentValues({ [path]: newValue });
     },
   };
-  const textFieldItemProperties = {layout: 'elementOnly'};
+  const textFieldItemProperties = { layout: 'elementOnly' };
 
   return (
     <React.Fragment>
@@ -184,20 +183,19 @@ const OtherComponent = ({value, path, updateCurrentValues, classes, key, disable
         key={key}
         value={'[other]'}
         control={
-          <Radio
-            className={classes.radio}
-            inputRef={c => (this['element-' + 'other'] = c)}
-            checked={showOther}
-            disabled={disabled}
-          />
+          <Radio className={classes.radio} inputRef={c => (this['element-' + 'other'] = c)} checked={showOther} disabled={disabled} />
         }
         className={classes.line}
-        classes={{label: classes.label}}
+        classes={{ label: classes.label }}
         label={'Other'}
       />
-      {showOther && <Components.FormComponentText itemProperties={textFieldItemProperties}
-                                                  value={textFieldInputProperties.value}
-                                                  handleChange={textFieldInputProperties.onChange}/>}
+      {showOther && (
+        <Components.FormComponentText
+          itemProperties={textFieldItemProperties}
+          value={textFieldInputProperties.value}
+          handleChange={textFieldInputProperties.onChange}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -236,8 +234,8 @@ const FormRadioGroup = createReactClass({
   },
 
   renderElement: function() {
-    const {options, name, disabled: _disabled} = this.props.inputProperties;
-    const {itemProperties, updateCurrentValues, path} = this.props;
+    const { options, name, disabled: _disabled } = this.props.inputProperties;
+    const { itemProperties, updateCurrentValues, path } = this.props;
     let value = this.props.inputProperties.value;
     if (_isArray(value)) value = value[0];
     const controls = options.map((radio, key) => {
@@ -257,16 +255,13 @@ const FormRadioGroup = createReactClass({
             />
           }
           className={this.props.classes.line}
-          classes={{label: this.props.classes.label}}
+          classes={{ label: this.props.classes.label }}
           label={radio.label}
         />
       );
     });
 
-    const maxLength = options.reduce(
-      (max, option) => (option.label.length > max ? option.label.length : max),
-      0,
-    );
+    const maxLength = options.reduce((max, option) => (option.label.length > max ? option.label.length : max), 0);
 
     const getColumnClass = maxLength => {
       if (maxLength < 3) {
@@ -298,9 +293,16 @@ const FormRadioGroup = createReactClass({
         value={value}
         onChange={this.changeRadio}>
         {controls}
-        {itemProperties.showOther &&
-        <OtherComponent value={value} path={path} updateCurrentValues={updateCurrentValues}
-                        classes={this.props.classes} key={controls.length + 1} disabled={_disabled}/>}
+        {itemProperties.showOther && (
+          <OtherComponent
+            value={value}
+            path={path}
+            updateCurrentValues={updateCurrentValues}
+            classes={this.props.classes}
+            key={controls.length + 1}
+            disabled={_disabled}
+          />
+        )}
       </RadioGroup>
     );
   },

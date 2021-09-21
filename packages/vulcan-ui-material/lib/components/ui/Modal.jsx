@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, Components } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -28,7 +28,6 @@ const styles = theme => ({
   },
 
   closeButton: theme.utils.closeButton,
-
 });
 
 const Modal = props => {
@@ -58,33 +57,26 @@ const Modal = props => {
       }}
       fullWidth={true}
       classes={{ paper: classNames(classes.dialogPaper, overflowClass) }}
-      {...dialogProps}
-    >
+      {...dialogProps}>
       <DialogTitle className={title ? classes.dialogTitle : classes.dialogTitleEmpty}>
         {title}
 
-        {
-          showCloseButton &&
-
+        {showCloseButton && (
           <Components.TooltipButton
             className={classes.closeButton}
-            icon={<Close/>}
+            icon={<Close />}
             titleId="global.close"
             onClick={onHide}
             aria-label="Close"
           />
-        }
+        )}
       </DialogTitle>
 
-      {
-        dontWrapDialogContent
-          ?
-          children
-          :
-          <DialogContent className={classNames(classes.dialogContent, overflowClass)}>
-            {children}
-          </DialogContent>
-      }
+      {dontWrapDialogContent ? (
+        children
+      ) : (
+        <DialogContent className={classNames(classes.dialogContent, overflowClass)}>{children}</DialogContent>
+      )}
     </Dialog>
   );
 };

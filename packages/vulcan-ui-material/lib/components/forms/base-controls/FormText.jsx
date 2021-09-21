@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../../modules/makeStyles';
 import ComponentMixin from './mixins/component';
 import FormControlLayout from './FormControlLayout';
 import FormHelper from './FormHelper';
@@ -64,10 +64,7 @@ const FormText = createReactClass({
     }
 
     return (
-      <FormControlLayout
-        {...this.getFormControlProperties()}
-        shrinkLabel={true}
-        htmlFor={this.getId()}>
+      <FormControlLayout {...this.getFormControlProperties()} shrinkLabel={true} htmlFor={this.getId()}>
         {element}
         <FormHelper {...this.getFormHelperProperties()} />
       </FormControlLayout>
