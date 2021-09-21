@@ -9,9 +9,14 @@
 import React from 'react';
 import { registerComponent } from 'meteor/vulcan:core';
 import { StyledEngineProvider } from '@mui/material/styles';
+import { JssMover } from './JssMover';
 
 const StylesManager = ({ children, ...otherProps }) => {
-  return <StyledEngineProvider injectFirst>{children}</StyledEngineProvider>;
+  return (
+    <StyledEngineProvider>
+      <JssMover>{children}</JssMover>
+    </StyledEngineProvider>
+  );
 };
 
 registerComponent('StylesManager', StylesManager);
