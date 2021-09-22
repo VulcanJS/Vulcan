@@ -32,7 +32,7 @@ class FormComponent extends Component {
     }
     const path = getPath(props);
     const intlOrRegularValue = get(document, path);
-    const value = (intlOrRegularValue && typeof intlOrRegularValue === 'object') ? intlOrRegularValue.value : intlOrRegularValue;
+    const value = intlOrRegularValue && typeof intlOrRegularValue === 'object' ? intlOrRegularValue.value : intlOrRegularValue;
     return getCharacterCounts(value, max);
   }
 
@@ -104,9 +104,7 @@ class FormComponent extends Component {
     }
 
     if (value !== this.getValue()) {
-      const updateValue = this.props.locale ?
-          { locale: this.props.locale, value } :
-          value;
+      const updateValue = this.props.locale ? { locale: this.props.locale, value } : value;
       this.props.updateCurrentValues({ [getPath(this.props)]: updateValue });
       this.props.clearFieldErrors(getPath(this.props));
     }

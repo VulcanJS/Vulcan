@@ -8,7 +8,7 @@ const getQueryResolverName = field => {
     const collection = getCollectionByTypeName(typeName);
     return get(collection, 'options.multiResolverName');
   } else {
-    throw new Error('Could not guess query resolver name, please specify a queryResolverName option for the makeAutocomplete decorator.')
+    throw new Error('Could not guess query resolver name, please specify a queryResolverName option for the makeAutocomplete decorator.');
   }
 };
 
@@ -56,12 +56,13 @@ export const makeAutocomplete = (field = {}, options = {}) => {
   };
 
   const acField = {
-    ...field,
     query,
     autocompleteQuery,
     queryWaitsForValue: true,
     options: optionsFunction,
     input: isMultiple ? 'multiautocomplete' : 'autocomplete',
+    // put field last => allow for override of those props
+    ...field,
   };
 
   return acField;

@@ -32,7 +32,11 @@ import './forms/FormGroupNone';
 import './forms/FormNestedArrayLayout';
 import './forms/FormNestedDivider';
 import './forms/FormSubmit';
+import './forms/FormItem';
 
+import './forms/controls/Autocomplete';
+import './forms/controls/AutocompleteMultiple';
+import './forms/controls/Checkbox';
 import './forms/controls/Checkbox';
 import './forms/controls/CheckboxGroup';
 import './forms/controls/CountrySelect';
