@@ -2,17 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { instantiateComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../../modules/makeStyles';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from 'mdi-material-ui/CloseCircle';
-import MenuDownIcon from 'mdi-material-ui/MenuDown';
+import CloseIcon from '@mui/icons-material/Cancel';
+import MenuDownIcon from '@mui/icons-material/ArrowDropDown';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
 
-
 export const styles = theme => ({
-
   inputAdornment: {
     whiteSpace: 'nowrap',
     marginTop: '0 !important',
@@ -65,9 +63,7 @@ export const styles = theme => ({
     marginLeft: -4,
     marginRight: -4,
   },
-
 });
-
 
 const EndAdornment = (props, context) => {
   const { classes, value, addonAfter, changeValue, showMenuIndicator, hideClear, disabled } = props;
@@ -76,7 +72,7 @@ const EndAdornment = (props, context) => {
   if (!addonAfter && (!changeValue || hideClear || disabled)) return null;
   const hasValue = !!value || value === 0;
 
-  const clearButton = changeValue && !hideClear && !disabled &&
+  const clearButton = changeValue && !hideClear && !disabled && (
     <IconButton
       className={classNames('clear-button', classes.clearButton, hasValue && 'has-value')}
       onClick={event => {
@@ -90,13 +86,15 @@ const EndAdornment = (props, context) => {
       aria-label={intl.formatMessage({ id: 'forms.delete_field' })}
       disabled={!hasValue}
       size="large">
-      <CloseIcon/>
-    </IconButton>;
+      <CloseIcon />
+    </IconButton>
+  );
 
-  const menuIndicator = showMenuIndicator && !disabled &&
+  const menuIndicator = showMenuIndicator && !disabled && (
     <div className={classNames('menu-indicator', classes.menuIndicator, hasValue && 'has-value')}>
-      <MenuDownIcon/>
-    </div>;
+      <MenuDownIcon />
+    </div>
+  );
 
   return (
     <InputAdornment classes={{ root: classes.inputAdornment }} position="end">
@@ -106,7 +104,6 @@ const EndAdornment = (props, context) => {
     </InputAdornment>
   );
 };
-
 
 EndAdornment.propTypes = {
   classes: PropTypes.object.isRequired,

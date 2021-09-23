@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
 import MuiFab from '@mui/material/Fab';
 import MuiButton from '@mui/material/Button';
 import MuiIconButton from '@mui/material/IconButton';
-import withTheme from '@mui/styles/withTheme';
+import { makeStyles } from '../../modules/makeStyles';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   success: {
     '&:hover': {
       backgroundColor: theme.palette.success.main,
@@ -77,17 +76,13 @@ const styles = theme => ({
     borderColor: theme.palette.common.black,
     color: theme.palette.common.black,
   },
-});
+}));
 
-const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }) => {
+const Button = ({ children, variant, size, iconButton, ...rest }) => {
+  const classes = useStyles();
   const varParts = variant && variant.split('-');
   const outline = varParts && varParts.length > 1 ? varParts[0] : null;
-  variant =
-    varParts && varParts.length > 1
-      ? varParts[1]
-      : varParts && varParts.length > 0
-      ? varParts[0]
-      : null;
+  variant = varParts && varParts.length > 1 ? varParts[1] : varParts && varParts.length > 0 ? varParts[0] : null;
   let color;
 
   switch (variant) {
@@ -113,8 +108,7 @@ const Button = ({ children, variant, size, iconButton, classes, theme, ...rest }
     ? classes[outline ? outline + '_' + variant : variant]
     : null;
 
-  variant =
-    outline === 'outline' ? 'outlined' : variant && variant !== 'link' ? 'contained' : 'text';
+  variant = outline === 'outline' ? 'outlined' : variant && variant !== 'link' ? 'contained' : 'text';
 
   switch (size) {
     case 'sm':
@@ -175,8 +169,6 @@ Button.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   iconButton: PropTypes.bool,
   className: PropTypes.string,
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
-registerComponent('Button', Button, [withStyles, styles], withTheme);
+registerComponent('Button', Button);

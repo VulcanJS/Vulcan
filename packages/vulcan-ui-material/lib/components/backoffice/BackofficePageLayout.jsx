@@ -1,6 +1,6 @@
 import React from 'react';
 import { registerComponent } from 'meteor/vulcan:lib';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 
 const baseStyles = theme => ({
   pageLayout: {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../../modules/makeStyles';
 import Input from '@mui/material/Input';
 import Autosuggest from 'react-autosuggest';
 import Paper from '@mui/material/Paper';

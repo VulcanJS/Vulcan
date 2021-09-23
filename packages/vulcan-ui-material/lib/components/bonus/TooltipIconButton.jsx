@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
+import { withStyles } from '../../modules/makeStyles';
+import { useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
@@ -26,7 +26,8 @@ const TooltipIconButton = (props, { intl }) => {
     'WARNING! TooltipIconButton is deprecated in favor of TooltipButton as of vulcan:ui-material 1.13.0_1 and will be deleted in version 1.15.2'
   );
 
-  const { title, titleId, placement, icon, className, classes, theme, buttonRef, variant, ...properties } = props;
+  const { title, titleId, placement, icon, className, classes, buttonRef, variant, ...properties } = props;
+  const theme = useTheme();
 
   const titleText = props.title || intl.formatMessage({ id: titleId });
   const slug = Utils.slugify(titleId);
@@ -44,12 +45,7 @@ const TooltipIconButton = (props, { intl }) => {
             {icon}
           </Fab>
         ) : (
-          <IconButton
-            className={classNames(classes.button, slug)}
-            aria-label={titleText}
-            ref={buttonRef}
-            {...properties}
-            size="large">
+          <IconButton className={classNames(classes.button, slug)} aria-label={titleText} ref={buttonRef} {...properties} size="large">
             {icon}
           </IconButton>
         )}
@@ -66,8 +62,7 @@ TooltipIconButton.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object,
   buttonRef: PropTypes.func,
-  variant: PropTypes.string,
-  theme: PropTypes.object,
+  variant: PropTypes.object,
 };
 
 TooltipIconButton.defaultProps = {
@@ -80,4 +75,4 @@ TooltipIconButton.contextTypes = {
 
 TooltipIconButton.displayName = 'TooltipIconButton';
 
-registerComponent('TooltipIconButton', TooltipIconButton, [withStyles, styles], withTheme);
+registerComponent('TooltipIconButton', TooltipIconButton, [withStyles, styles]);

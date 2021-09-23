@@ -5,8 +5,8 @@ import { intlShape } from 'meteor/vulcan:i18n';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
-import RemoveIcon from 'mdi-material-ui/Delete';
-import AddIcon from 'mdi-material-ui/Plus';
+import RemoveIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const IconRemove = () => <RemoveIcon />;
 replaceComponent('IconRemove', IconRemove);

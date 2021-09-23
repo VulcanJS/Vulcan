@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 
 import Snackbar from '@mui/material/Snackbar';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -34,11 +34,7 @@ const FormErrors = ({ errors, classes }) => {
   return (
     <div>
       {!!errors.length && (
-        <Snackbar
-          open={true}
-          className={classNames('flash-message', classes.root, classes.danger)}
-          message={messageNode}
-        />
+        <Snackbar open={true} className={classNames('flash-message', classes.root, classes.danger)} message={messageNode} />
       )}
     </div>
   );

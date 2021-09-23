@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from 'mdi-material-ui/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import classNames from 'classnames';
 
@@ -27,17 +27,7 @@ const styles = theme => ({
 });
 
 const FormSubmit = (
-  {
-    submitLabel,
-    cancelLabel,
-    cancelCallback,
-    revertLabel,
-    revertCallback,
-    document,
-    deleteDocument,
-    collectionName,
-    classes,
-  },
+  { submitLabel, cancelLabel, cancelCallback, revertLabel, revertCallback, document, deleteDocument, collectionName, classes },
   { intl, isChanged, clearForm }
 ) => {
   if (typeof isChanged !== 'function') {

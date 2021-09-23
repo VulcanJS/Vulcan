@@ -1,43 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
 
-
 const styles = theme => ({
-  
   root: {
-    minWidth: '320px'
+    minWidth: '320px',
   },
-  
+
   hidden: {
     display: 'none',
-  }
-
+  },
 });
-
 
 const FormGroupHeaderNone = () => {
   return null;
 };
 
-
 registerComponent('FormGroupHeaderNone', FormGroupHeaderNone, [withStyles, styles]);
-
 
 const FormGroupLayoutNone = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
   return (
-    <div className={classNames(classes.root, hidden && classes.hidden,'form-section', `form-section-${anchorName}`)}>
-      
-      <a name={anchorName}/>
-  
+    <div className={classNames(classes.root, hidden && classes.hidden, 'form-section', `form-section-${anchorName}`)}>
+      <a name={anchorName} />
+
       {children}
-    
     </div>
   );
 };
-
 
 FormGroupLayoutNone.propTypes = {
   label: PropTypes.string.isRequired,
@@ -51,6 +42,4 @@ FormGroupLayoutNone.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
 registerComponent('FormGroupLayoutNone', FormGroupLayoutNone, [withStyles, styles]);
-

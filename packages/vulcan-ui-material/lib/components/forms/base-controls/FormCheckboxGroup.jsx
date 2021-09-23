@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import ComponentMixin from './mixins/component';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../../modules/makeStyles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControlLayout from './FormControlLayout';
@@ -92,7 +92,7 @@ const OtherComponent = ({ value: _values, path, updateCurrentValues }) => {
     },
   };
 
-  const textFieldItemProperties = {layout: 'elementOnly'};
+  const textFieldItemProperties = { layout: 'elementOnly' };
 
   return (
     <div className="form-option-other">
@@ -119,9 +119,13 @@ const OtherComponent = ({ value: _values, path, updateCurrentValues }) => {
         }
         label={'Other'}
       />
-      {showOther && <Components.FormComponentText itemProperties={textFieldItemProperties}
-                                                  value={textFieldInputProperties.value}
-                                                  handleChange={textFieldInputProperties.onChange}/>}
+      {showOther && (
+        <Components.FormComponentText
+          itemProperties={textFieldItemProperties}
+          value={textFieldInputProperties.value}
+          handleChange={textFieldInputProperties.onChange}
+        />
+      )}
     </div>
   );
 };
@@ -139,30 +143,30 @@ const FormCheckboxGroup = createReactClass({
     }).isRequired,
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     if (this.props.refFunction) {
       this.props.refFunction(this);
     }
   },
 
-  getDefaultProps: function () {
+  getDefaultProps: function() {
     return {
       label: '',
       help: null,
     };
   },
 
-  validate: function () {
+  validate: function() {
     if (this.props.onBlur) {
       this.props.onBlur();
     }
     return true;
   },
 
-  renderElement: function () {
-    const {name, options, disabled: _disabled} = this.props.inputProperties;
-    let {value: _values} = this.props.inputProperties;
-    const {itemProperties, updateCurrentValues, value, path} = this.props;
+  renderElement: function() {
+    const { name, options, disabled: _disabled } = this.props.inputProperties;
+    let { value: _values } = this.props.inputProperties;
+    const { itemProperties, updateCurrentValues, value, path } = this.props;
 
     // get rid of duplicate values; or any values that are not included in the options provided
     // (unless they have the "other" marker)
@@ -194,23 +198,19 @@ const FormCheckboxGroup = createReactClass({
       );
     });
 
-    const maxLength = options.reduce(
-      (max, option) => (option.label.length > max ? option.label.length : max),
-      0,
-    );
+    const maxLength = options.reduce((max, option) => (option.label.length > max ? option.label.length : max), 0);
 
-    const columnClass = this.props.inputProperties.columnClass ||
-      (maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '');
+    const columnClass = this.props.inputProperties.columnClass || (maxLength < 20 ? 'threeColumn' : maxLength < 30 ? 'twoColumn' : '');
 
     return (
       <FormGroup className={classNames(this.props.classes.group, this.props.classes[columnClass])}>
         {controls}
-        {itemProperties.showOther && <OtherComponent value={_values} path={path} updateCurrentValues={updateCurrentValues}/>}
+        {itemProperties.showOther && <OtherComponent value={_values} path={path} updateCurrentValues={updateCurrentValues} />}
       </FormGroup>
     );
   },
 
-  render: function () {
+  render: function() {
     if (this.props.layout === 'elementOnly') {
       return <div>{this.renderElement()}</div>;
     }

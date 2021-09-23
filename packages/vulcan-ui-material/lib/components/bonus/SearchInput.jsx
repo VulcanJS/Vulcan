@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
-import SearchIcon from 'mdi-material-ui/Magnify';
-import ClearIcon from 'mdi-material-ui/CloseCircle';
+import { withStyles } from '../../modules/makeStyles';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Cancel';
 import TextField from '@mui/material/TextField';
 import NoSsr from '@mui/material/NoSsr';
 import classNames from 'classnames';
@@ -189,16 +189,7 @@ class SearchInput extends PureComponent {
             endAdornment: clearButton,
           }}
         />
-        <NoSsr>
-          {
-            !noShortcuts &&
-
-            <Components.KeyEventHandler
-              handleKeys={['s', 'c', 'esc']}
-              onKeyEvent={this.handleShortcutKeys}
-            />
-          }
-        </NoSsr>
+        <NoSsr>{!noShortcuts && <Components.KeyEventHandler handleKeys={['s', 'c', 'esc']} onKeyEvent={this.handleShortcutKeys} />}</NoSsr>
       </React.Fragment>
     );
   }

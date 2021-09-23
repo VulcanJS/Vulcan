@@ -1,13 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import {
-  Components,
-  registerComponent,
-  instantiateComponent,
-  getHtmlInputProps,
-} from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { Components, registerComponent, instantiateComponent, getHtmlInputProps } from 'meteor/vulcan:core';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
 

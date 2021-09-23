@@ -2,11 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Components, registerComponent, deprecate, instantiateComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Button from '@mui/material/Button';
 import classNames from 'classnames';
 import _omit from 'lodash/omit';
-
 
 const styles = theme => ({
   root: {},
@@ -22,7 +21,6 @@ const styles = theme => ({
 });
 
 class ModalTrigger extends PureComponent {
-
   constructor(props) {
     super(props);
 
@@ -89,26 +87,23 @@ class ModalTrigger extends PureComponent {
     const title = titleId ? intl.formatMessage({ id: titleId }) : this.props.title;
 
     const triggerComponent =
-      (component || trigger)
-        ?
+      component || trigger ? (
         instantiateComponent(component || trigger, {
           onClick: this.openModal,
           className: classNames('modal-trigger', classes.root, className),
         })
-        :
-        type === 'button'
-          ?
-          <Button
-            className={classNames('modal-trigger', classes.root, classes.button, className)}
-            variant="contained"
-            onClick={this.openModal}>
-            {label}
-          </Button>
-          :
-          <a className={classNames('modal-trigger', classes.root, classes.anchor, className)} href="#"
-             onClick={this.openModal}>
-            {label}
-          </a>;
+      ) : type === 'button' ? (
+        <Button
+          className={classNames('modal-trigger', classes.root, classes.button, className)}
+          variant="contained"
+          onClick={this.openModal}>
+          {label}
+        </Button>
+      ) : (
+        <a className={classNames('modal-trigger', classes.root, classes.anchor, className)} href="#" onClick={this.openModal}>
+          {label}
+        </a>
+      );
 
     return (
       <>
@@ -122,24 +117,12 @@ class ModalTrigger extends PureComponent {
           showCloseButton={showCloseButton}
           dontWrapDialogContent={dontWrapDialogContent}
           classes={_omit(classes, ['root', 'button', 'anchor'])}
-          dialogProps={{ ...dialogProperties, ...dialogProps }}
-        >
-          {
-            !this.state.modalIsOpen
-              ?
-              null
-              :
-              contentComponent
-                ?
-                instantiateComponent(contentComponent, contentProps)
-                :
-                children
-          }
+          dialogProps={{ ...dialogProperties, ...dialogProps }}>
+          {!this.state.modalIsOpen ? null : contentComponent ? instantiateComponent(contentComponent, contentProps) : children}
         </Components.Modal>
       </>
     );
   }
-
 }
 
 ModalTrigger.propTypes = {

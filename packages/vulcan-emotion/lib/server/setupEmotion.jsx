@@ -5,6 +5,9 @@ import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../modules/createEmotionCache';
 
+// tss setup
+import { getTssDefaultEmotionCache } from 'tss-react/cache';
+
 // @see https://next.material-ui.com/guides/server-rendering/#main-content
 const setupEmotion = () => {
   // NOTE: this doesn't work with server.renderWrapper
@@ -23,6 +26,11 @@ const setupEmotion = () => {
     const emotionChunks = extractCriticalToChunks(html);
     const emotionCss = constructStyleTagsFromChunks(emotionChunks);
     sink.appendToHead(emotionCss);
+    // do the same for TSS react
+    const tssEmotionServer = createEmotionServer(getTssDefaultEmotionCache());
+    // @see https://github.com/garronej/tss-react
+    const tssCss = tssEmotionServer.constructStyleTagsFromChunks(tssEmotionServer.extractCriticalToChunks(html));
+    sink.appendToHead(tssCss);
     return sink;
   });
 };

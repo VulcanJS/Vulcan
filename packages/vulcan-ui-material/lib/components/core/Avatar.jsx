@@ -4,11 +4,11 @@ import { registerComponent } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { Link } from 'react-router-dom';
 import Users, { getProfileUrl } from 'meteor/vulcan:users';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import MuiAvatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
-import AdminIcon from 'mdi-material-ui/Star';
+import AdminIcon from '@mui/icons-material/Star';
 import classNames from 'classnames';
 
 const styles = theme => ({

@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Components, registerComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
+import { withStyles } from '../../modules/makeStyles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import classNames from 'classnames';
 import Fab from '@mui/material/Fab';
+import { useTheme } from '@mui/material/styles';
 
 const styles = theme => ({
   root: {
@@ -50,7 +50,6 @@ const TooltipIntl = (props, { intl }) => {
     icon,
     className,
     classes,
-    theme,
     enterDelay,
     leaveDelay,
     buttonRef,
@@ -59,6 +58,7 @@ const TooltipIntl = (props, { intl }) => {
     children,
     ...properties
   } = props;
+  const theme = useTheme();
 
   const iconWithClass = icon && React.cloneElement(icon, { className: classes.icon });
   const popperClass = parent === 'popover' && classes.popoverPopper;
@@ -86,12 +86,7 @@ const TooltipIntl = (props, { intl }) => {
               {iconWithClass}
             </Fab>
           ) : !!icon ? (
-            <IconButton
-              className={classNames(classes.button, slug)}
-              aria-label={title}
-              ref={buttonRef}
-              {...properties}
-              size="large">
+            <IconButton className={classNames(classes.button, slug)} aria-label={title} ref={buttonRef} {...properties} size="large">
               {iconWithClass}
             </IconButton>
           ) : variant === 'button' ? (
@@ -135,4 +130,4 @@ TooltipIntl.contextTypes = {
 
 TooltipIntl.displayName = 'TooltipIntl';
 
-registerComponent('TooltipIntl', TooltipIntl, [withStyles, styles], withTheme);
+registerComponent('TooltipIntl', TooltipIntl, [withStyles, styles]);

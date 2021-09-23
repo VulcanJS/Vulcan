@@ -143,7 +143,6 @@
     "@mui/material": "^5.0.0-rc.1",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@next",
     "@mui/styled-engine-sc": "^5.0.0-rc.1",
-    "@mui/styles": "^5.0.0-rc.1",
     "@storybook/addon-actions": "5.0.8",
     "@storybook/addon-knobs": "5.0.8",
     "@storybook/addon-links": "5.0.1",
@@ -184,7 +183,6 @@
     "husky": "^1.2.0",
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
-    "mdi-material-ui": "^6.16.0",
     "moment-timezone": "^0.5.25",
     "node-sass": "^4.14.0",
     "operation-name-mock-link": "0.0.4",
@@ -203,6 +201,7 @@
     "storybook-react-router": "^1.0.5",
     "styled-components": "^5.3.1",
     "supertest": "^4.0.2",
+    "tss-react": "^0.9.1",
     "vulcan-loader": "0.0.1",
     "waait": "^1.0.5",
     "webpack": "4.28.4"

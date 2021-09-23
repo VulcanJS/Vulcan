@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Components, replaceComponent } from 'meteor/vulcan:core';
 import CardActions from '@mui/material/CardActions';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import classNames from 'classnames';
-
 
 const styles = theme => ({
   root: {
@@ -14,26 +13,19 @@ const styles = theme => ({
   },
 });
 
-
 export class AccountsButtons extends Component {
   render() {
-
-    const {
-      classes,
-      buttons = {},
-      className = 'buttons',
-    } = this.props;
+    const { classes, buttons = {}, className = 'buttons' } = this.props;
 
     return (
       <CardActions className={classNames(classes.root, className)}>
-        {Object.keys(buttons).map((id, i) =>
+        {Object.keys(buttons).map((id, i) => (
           <Components.AccountsButton {...buttons[id]} key={i} />
-        )}
+        ))}
       </CardActions>
     );
   }
 }
-
 
 AccountsButtons.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -41,8 +33,6 @@ AccountsButtons.propTypes = {
   className: PropTypes.string,
 };
 
-
 AccountsButtons.displayName = 'AccountsButtons';
-
 
 replaceComponent('AccountsButtons', AccountsButtons, [withStyles, styles]);

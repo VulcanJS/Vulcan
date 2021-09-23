@@ -4,9 +4,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuIcon from 'mdi-material-ui/Menu';
-import ChevronLeftIcon from 'mdi-material-ui/ChevronLeft';
-import withStyles from '@mui/styles/withStyles';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { withStyles } from '../modules/makeStyles';
 import { getSetting, registerComponent } from 'meteor/vulcan:core';
 import classNames from 'classnames';
 

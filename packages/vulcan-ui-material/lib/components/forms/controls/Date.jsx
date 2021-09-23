@@ -1,11 +1,9 @@
 import React from 'react';
 import FormPicker from '../base-controls/FormPicker';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
-
+import { withStyles } from '../../../modules/makeStyles';
 
 export const styles = theme => ({
-
   '@global': {
     'input[type=date]::-ms-clear, input[type=date]::-ms-reveal': {
       display: 'none',
@@ -26,11 +24,9 @@ export const styles = theme => ({
       margin: 0,
     },
   },
-
 });
 
-const DateComponent = ({ refFunction, classes, ...properties }) =>
-  <FormPicker {...properties} {...classes} ref={refFunction}/>;
+const DateComponent = ({ refFunction, classes, ...properties }) => <FormPicker {...properties} {...classes} ref={refFunction} />;
 
 registerComponent('FormComponentDate', DateComponent, [withStyles, styles]);
 registerComponent('FormComponentDate2', DateComponent, [withStyles, styles]);

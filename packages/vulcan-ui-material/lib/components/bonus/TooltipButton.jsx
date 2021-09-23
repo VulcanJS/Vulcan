@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent, instantiateComponent, Utils } from 'meteor/vulcan:core';
 import { intlShape } from 'meteor/vulcan:i18n';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
+import { withStyles } from '../../modules/makeStyles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
@@ -13,10 +12,9 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import classNames from 'classnames';
-
+import { useTheme } from '@mui/material/styles';
 
 const styles = theme => ({
-
   root: {
     display: 'contents',
   },
@@ -95,7 +93,6 @@ const styles = theme => ({
     left: -4,
     //zIndex: 1,
   },
-
 });
 
 const TooltipButton = (props, { intl }) => {
@@ -114,7 +111,6 @@ const TooltipButton = (props, { intl }) => {
     danger,
     className,
     classes,
-    theme,
     enterDelay,
     leaveDelay,
     buttonRef,
@@ -124,6 +120,7 @@ const TooltipButton = (props, { intl }) => {
     TooltipProps,
     ...properties
   } = props;
+  const theme = useTheme();
 
   const iconWithClass = instantiateComponent(icon, { className: classNames('icon', classes.icon) });
   const popperClass = parent === 'popover' && classes.popoverPopper;
@@ -141,112 +138,79 @@ const TooltipButton = (props, { intl }) => {
 
   return (
     <span className={classNames('tooltip-button', classes.root, className)}>
-
-      <Tooltip id={`tooltip-${slug}`}
-               title={titleText}
-               placement={placement}
-               arrow
-               enterDelay={tooltipEnterDelay}
-               leaveDelay={tooltipLeaveDelay}
-               classes={{
-                 tooltip: classNames(classes.tooltip, tooltipClass),
-                 popper: popperClass,
-               }}
-               PopperProps={{
-                 ref: (popper) => { if (popper && popper.popper) popper.popper.scheduleUpdate(); },
-               }}
-               {...TooltipProps}
-      >
+      <Tooltip
+        id={`tooltip-${slug}`}
+        title={titleText}
+        placement={placement}
+        arrow
+        enterDelay={tooltipEnterDelay}
+        leaveDelay={tooltipLeaveDelay}
+        classes={{
+          tooltip: classNames(classes.tooltip, tooltipClass),
+          popper: popperClass,
+        }}
+        PopperProps={{
+          ref: popper => {
+            if (popper && popper.popper) popper.popper.scheduleUpdate();
+          },
+        }}
+        {...TooltipProps}>
         <span className={classes.buttonWrap} style={buttonWrapStyle}>
-          {
-            type === 'menu'
-
-              ?
-
-              <MenuItem className={classNames(classes.menu, slug)}
-                        {...properties}
-                        button={true}
-                        disabled={loading || disabled}
-              >
-                <ListItemIcon>
-                  {icon}
-                </ListItemIcon>
-                <ListItemText primary={labelText}/>
-              </MenuItem>
-
-              :
-
-              type === 'fab' && !!icon
-
-                ?
-
-                <>
-                  <Fab className={classNames(classes.button, classes.fab, danger && classes.dangerButton, slug)}
-                       {...properties}
-                       size={size}
-                       aria-label={title}
-                       ref={buttonRef}
-                       disabled={loading || disabled}
-                  >
-                    {iconWithClass}
-                  </Fab>
-                  {loading && <CircularProgress size="auto" className={classes.progress}/>}
-                </>
-
-                :
-
-                ['button', 'submit'].includes(type)
-
-                  ?
-
-                  <Button className={classNames(classes.button, danger && classes.dangerButton, slug)}
-                          {...properties}
-                          type={type}
-                          size={size}
-                          aria-label={title}
-                          ref={buttonRef}
-                          disabled={loading || disabled}
-                  >
-                    {
-                      iconWithClass &&
-
-                      <span className={classNames('icon-wrap', classes.iconWrap)}>
-                        {iconWithClass}
-                        {loading && <CircularProgress size="auto" className={classes.buttonProgress}/>}
-                      </span>
-                    }
-                    {labelText}
-                  </Button>
-
-                  :
-
-                  !!icon
-
-                    ?
-
-                    <>
-                      <IconButton
-                        className={classNames(classes.button, danger && classes.dangerButton, classes[size], slug)}
-                        {...properties}
-                        aria-label={title}
-                        ref={buttonRef}
-                        disabled={(loading && !(disabled === false)) || disabled}
-                        size="large">
-                        {iconWithClass}
-                      </IconButton>
-                      {loading && <CircularProgress size="auto" className={classes.progress}/>}
-                    </>
-
-                    :
-
-                    children
-          }
+          {type === 'menu' ? (
+            <MenuItem className={classNames(classes.menu, slug)} {...properties} button={true} disabled={loading || disabled}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={labelText} />
+            </MenuItem>
+          ) : type === 'fab' && !!icon ? (
+            <>
+              <Fab
+                className={classNames(classes.button, classes.fab, danger && classes.dangerButton, slug)}
+                {...properties}
+                size={size}
+                aria-label={title}
+                ref={buttonRef}
+                disabled={loading || disabled}>
+                {iconWithClass}
+              </Fab>
+              {loading && <CircularProgress size="auto" className={classes.progress} />}
+            </>
+          ) : ['button', 'submit'].includes(type) ? (
+            <Button
+              className={classNames(classes.button, danger && classes.dangerButton, slug)}
+              {...properties}
+              type={type}
+              size={size}
+              aria-label={title}
+              ref={buttonRef}
+              disabled={loading || disabled}>
+              {iconWithClass && (
+                <span className={classNames('icon-wrap', classes.iconWrap)}>
+                  {iconWithClass}
+                  {loading && <CircularProgress size="auto" className={classes.buttonProgress} />}
+                </span>
+              )}
+              {labelText}
+            </Button>
+          ) : !!icon ? (
+            <>
+              <IconButton
+                className={classNames(classes.button, danger && classes.dangerButton, classes[size], slug)}
+                {...properties}
+                aria-label={title}
+                ref={buttonRef}
+                disabled={(loading && !(disabled === false)) || disabled}
+                size="large">
+                {iconWithClass}
+              </IconButton>
+              {loading && <CircularProgress size="auto" className={classes.progress} />}
+            </>
+          ) : (
+            children
+          )}
         </span>
       </Tooltip>
-
     </span>
   );
-
 };
 
 TooltipButton.propTypes = {
@@ -258,8 +222,20 @@ TooltipButton.propTypes = {
   type: PropTypes.oneOf(['simple', 'fab', 'button', 'submit', 'icon', 'menu']),
   size: PropTypes.oneOf(['icon', 'xsmall', 'small', 'medium', 'large']),
   danger: PropTypes.bool,
-  placement: PropTypes.oneOf(['bottom-end', 'bottom-start', 'bottom',
-    'left-end', 'left-start', 'left', 'right-end', 'right-start', 'right', 'top-end', 'top-start', 'top']),
+  placement: PropTypes.oneOf([
+    'bottom-end',
+    'bottom-start',
+    'bottom',
+    'left-end',
+    'left-start',
+    'left',
+    'right-end',
+    'right-start',
+    'right',
+    'top-end',
+    'top-start',
+    'top',
+  ]),
   icon: PropTypes.node,
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -289,6 +265,6 @@ TooltipButton.contextTypes = {
 
 TooltipButton.displayName = 'TooltipButton';
 
-registerComponent('TooltipButton', TooltipButton, [withStyles, styles], withTheme);
+registerComponent('TooltipButton', TooltipButton, [withStyles, styles]);
 
 export default TooltipButton;

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { registerComponent } from 'meteor/vulcan:core';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '../../modules/makeStyles';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import ExpandLessIcon from 'mdi-material-ui/ChevronUp';
-import ExpandMoreIcon from 'mdi-material-ui/ChevronDown';
+import ExpandLessIcon from '@mui/icons-material/KeyboardArrowUp';
+import ExpandMoreIcon from '@mui/icons-material/KeyboardArrowDown';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -57,28 +57,16 @@ const FormGroupHeaderLine = ({ toggle, collapsed, label, group, classes }) => {
 
   return (
     <div
-      className={classNames(
-        classes.headerRoot,
-        collapsible && classes.collapsible,
-        'form-group-header'
-      )}
+      className={classNames(classes.headerRoot, collapsible && classes.collapsible, 'form-group-header')}
       onClick={collapsible ? toggle : null}>
       <Divider className={classes.divider} />
 
       <Typography
-        className={classNames(
-          'form-group-header-title',
-          classes.subtitle1,
-          collapsible && classes.collapsible
-        )}
+        className={classNames('form-group-header-title', classes.subtitle1, collapsible && classes.collapsible)}
         variant="subtitle1"
         gutterBottom>
         <div className={classes.label}>{label}</div>
-        {collapsible && (
-          <div className={classes.toggle}>
-            {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-          </div>
-        )}
+        {collapsible && <div className={classes.toggle}>{collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}</div>}
       </Typography>
     </div>
   );
@@ -96,17 +84,7 @@ FormGroupHeaderLine.displayName = 'FormGroupHeaderLine';
 
 registerComponent('FormGroupHeaderLine', FormGroupHeaderLine, [withStyles, styles]);
 
-const FormGroupLayoutLine = ({
-  label,
-  anchorName,
-  collapsed,
-  hidden,
-  hasErrors,
-  heading,
-  group,
-  children,
-  classes,
-}) => {
+const FormGroupLayoutLine = ({ label, anchorName, collapsed, hidden, hasErrors, heading, group, children, classes }) => {
   const collapsedIn = (!collapsed && !hidden) || hasErrors;
 
   return (
