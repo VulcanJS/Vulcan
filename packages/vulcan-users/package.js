@@ -1,12 +1,12 @@
 Package.describe({
   name: 'vulcan:users',
   summary: 'Vulcan permissions.',
-  version: '1.16.6',
+  version: '1.16.7',
   git: 'https://github.com/VulcanJS/Vulcan.git',
 });
 
 Package.onUse(function(api) {
-  api.use(['vulcan:lib@=1.16.6']);
+  api.use(['vulcan:lib@=1.16.7']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
