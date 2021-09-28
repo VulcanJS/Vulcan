@@ -5,23 +5,6 @@ import { Components, registerComponent, instantiateComponent, whitelistInputProp
 import classNames from 'classnames';
 
 class FormComponentInner extends PureComponent {
-  renderClear = () => {
-    if (['date', 'date2', 'datetime', 'time', 'select', 'radiogroup'].includes(this.props.inputType) && !this.props.disabled) {
-      return (
-        <Components.TooltipTrigger
-          trigger={
-            <button
-              className="form-component-clear"
-              title={this.context.intl.formatMessage({ id: 'forms.clear_field' })}
-              onClick={this.props.clearField}>
-              <span>✕</span>
-            </button>
-          }>
-          <Components.FormattedMessage id="forms.clear_field" />
-        </Components.TooltipTrigger>
-      );
-    }
-  };
 
   getProperties = () => {
     const { handleChange, inputType, itemProperties, help, description, loading, submitForm, formComponents, intlKeys } = this.props;
@@ -85,7 +68,7 @@ class FormComponentInner extends PureComponent {
         {instantiateComponent(beforeComponent, properties)}
         <FormInput {...properties} />
         {hasErrors ? <FormComponents.FieldErrors errors={errors} /> : null}
-        {this.renderClear()}
+        <Components.FormClear {...properties} />
         {showCharsRemaining && <div className={classNames('form-control-limit', { danger: charsRemaining < 10 })}>{charsRemaining}</div>}
         {instantiateComponent(afterComponent, properties)}
       </div>
