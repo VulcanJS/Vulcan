@@ -13,6 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
+import { SSRProvider } from '@react-aria/ssr';
 
 // see https://stackoverflow.com/questions/42862028/react-router-v4-with-multiple-layouts
 const RouteWithLayout = ({ layoutComponent, layoutName, component, currentRoute, ...rest }) => {
@@ -168,37 +169,39 @@ class App extends PureComponent {
 
     // keep IntlProvider for now for backwards compatibility with legacy Context API
     return (
-      <IntlProvider {...intlObject}>
-        <IntlContext.Provider value={intlObject}>
-          <Components.ScrollToTop />
-          <div className={`locale-${localeId}`}>
-            <Components.HeadTags />
-            {this.props.currentUserLoading ? (
-              <div className="app-initial-loading">
-                <Components.Loading />
-              </div>
-            ) : routeNames.length ? (
-              <Switch>
-                {routeNames.map(key => (
-                  // NOTE: if we want the exact props to be taken into account
-                  // we have to pass it to the RouteWithLayout, not the underlying Route,
-                  // because it is the direct child of Switch
-                  <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
-                ))}
-                <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404' }} component={Components.Error404} />
-                {/* <Route component={Components.Error404} />  */}
-              </Switch>
-            ) : (
-              <Components.Welcome />
-            )}
-            {this.state.locale.loading && (
-              <div className="app-secondary-loading">
-                <Components.Loading />
-              </div>
-            )}
-          </div>
-        </IntlContext.Provider>
-      </IntlProvider>
+      <SSRProvider>
+        <IntlProvider {...intlObject}>
+          <IntlContext.Provider value={intlObject}>
+            <Components.ScrollToTop />
+            <div className={`locale-${localeId}`}>
+              <Components.HeadTags />
+              {this.props.currentUserLoading ? (
+                <div className="app-initial-loading">
+                  <Components.Loading />
+                </div>
+              ) : routeNames.length ? (
+                <Switch>
+                  {routeNames.map(key => (
+                    // NOTE: if we want the exact props to be taken into account
+                    // we have to pass it to the RouteWithLayout, not the underlying Route,
+                    // because it is the direct child of Switch
+                    <RouteWithLayout exact currentRoute={Routes[key]} siteData={this.props.siteData} key={key} {...Routes[key]} />
+                  ))}
+                  <RouteWithLayout siteData={this.props.siteData} currentRoute={{ name: '404' }} component={Components.Error404} />
+                  {/* <Route component={Components.Error404} />  */}
+                </Switch>
+              ) : (
+                <Components.Welcome />
+              )}
+              {this.state.locale.loading && (
+                <div className="app-secondary-loading">
+                  <Components.Loading />
+                </div>
+              )}
+            </div>
+          </IntlContext.Provider>
+        </IntlProvider>
+      </SSRProvider>
     );
   }
 }
