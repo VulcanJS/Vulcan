@@ -8,7 +8,7 @@ Field-specific data loading query template for a dynamic array of item IDs
 
 */
 export const fieldDynamicQueryTemplate = ({ queryResolverName, autocompletePropertyName, valuePropertyName = '_id', fragmentName }) =>
-  `query FormComponent${capitalize(queryResolverName)}Query($value: [String!]) {
+  `query FormComponentDynamic${capitalize(queryResolverName)}Query($value: [String!]) {
     ${queryResolverName}(input: { 
       filter: {  ${valuePropertyName}: { _in: $value } },
       sort: { ${autocompletePropertyName}: asc }
@@ -28,7 +28,7 @@ Field-specific data loading query template for *all* items in a collection
 
 */
 export const fieldStaticQueryTemplate = ({ queryResolverName, autocompletePropertyName, valuePropertyName = '_id', fragmentName }) =>
-  `query FormComponent${capitalize(queryResolverName)}Query {
+  `query FormComponentStatic${capitalize(queryResolverName)}Query {
   ${queryResolverName}(input: { 
     sort: { ${autocompletePropertyName}: asc }
   }){

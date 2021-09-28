@@ -74,7 +74,7 @@ export const makeAutocomplete = (field = {}, options = {}) => {
 
   const acField = {
     dynamicQuery,
-    staticQuery,
+    staticQuery, // not currently used?
     query: dynamicQuery, // backwards-compatibility
     autocompleteQuery,
     queryWaitsForValue: true,
