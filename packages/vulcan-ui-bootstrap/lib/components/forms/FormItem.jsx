@@ -20,11 +20,11 @@ const FormItem = props => {
     description,
     layout = 'horizontal',
     loading,
-    Components: propsComponents,
+    Components: formComponents,
     ...rest
   } = props;
 
-  const Components = mergeWithComponents(propsComponents);
+  const Components = mergeWithComponents(formComponents);
 
   const innerComponent = loading ? <Components.FormInputLoading loading={loading}>{children}</Components.FormInputLoading> : children;
 

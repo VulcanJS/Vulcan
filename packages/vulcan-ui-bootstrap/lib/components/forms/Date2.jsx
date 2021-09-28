@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { mergeWithComponents, registerComponent } from 'meteor/vulcan:core';
 import moment from 'moment';
 
 const isEmptyValue = value =>
@@ -86,9 +86,12 @@ class DateComponent2 extends PureComponent {
   };
 
   render() {
-    const { path, value, inputProperties, itemProperties } = this.props;
+    const { path, value, inputProperties, itemProperties, formCopmonents } = this.props;
     const s = this.state;
     const p = this.getDateObject(value);
+
+    const Components = mergeWithComponents(formComponents);
+
     /*
 
     For values: if local *state* is defined we use that, else

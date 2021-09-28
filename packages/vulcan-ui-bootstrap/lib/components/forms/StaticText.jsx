@@ -1,5 +1,5 @@
 import React from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { mergeWithComponents, registerComponent } from 'meteor/vulcan:core';
 
 const parseUrl = value => {
   return value && value.toString().slice(0, 4) === 'http' ? (
@@ -11,10 +11,12 @@ const parseUrl = value => {
   );
 };
 
-const StaticComponent = ({ inputProperties, itemProperties }) => (
+const StaticComponent = ({ inputProperties, itemProperties, formComponents }) => {
+  const Components = mergeWithComponents(formComponents);
+  return (
   <Components.FormItem path={inputProperties.path} label={inputProperties.label} {...itemProperties}>
     <div style={{ paddingTop: 'calc(.375rem + 1px)', paddingBottom: 'calc(.375rem + 1px)' }}>{parseUrl(inputProperties.value)}</div>
   </Components.FormItem>
-);
+)};
 
 registerComponent('FormComponentStaticText', StaticComponent);

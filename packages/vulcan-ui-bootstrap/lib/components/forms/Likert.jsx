@@ -1,10 +1,11 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { mergeWithComponents, registerComponent } from 'meteor/vulcan:core';
 
 const getRange = (n = 10) => [...Array(n).keys()].map(i => i + 1).map(i => ({ value: i, label: i }));
 
-const Likert = ({ refFunction, path, updateCurrentValues, inputProperties, itemProperties = {} }) => {
+const Likert = ({ refFunction, path, updateCurrentValues, inputProperties, itemProperties = {}, formComponents }) => {
+  const Components = mergeWithComponents(formComponents);
   const { options = [], value } = inputProperties;
   const hasValue = value !== '';
   return (

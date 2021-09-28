@@ -1,12 +1,13 @@
 import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 import Form from 'react-bootstrap/Form';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { mergeWithComponents, registerComponent } from 'meteor/vulcan:core';
 
 // copied from vulcan:forms/utils.js to avoid extra dependency
 const getFieldType = datatype => datatype && datatype[0].type;
 
-const SelectComponent = ({ refFunction, inputProperties, itemProperties, datatype, options }, { intl }) => {
+const SelectComponent = ({ refFunction, inputProperties, itemProperties, datatype, options, formComponents }, { intl }) => {
+  const Components = mergeWithComponents(formComponents);
   const noneOption = {
     label: intl.formatMessage({ id: 'forms.select_option' }),
     value: getFieldType(datatype) === String || getFieldType(datatype) === Number ? '' : null, // depending on field type, empty value can be '' or null

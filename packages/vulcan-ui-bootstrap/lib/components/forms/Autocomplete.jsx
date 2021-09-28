@@ -1,6 +1,6 @@
 import { AsyncTypeahead } from 'react-bootstrap-typeahead'; // ES2015
 import React, { useState } from 'react';
-import { Components, registerComponent, expandQueryFragments } from 'meteor/vulcan:core';
+import { registerComponent, expandQueryFragments, mergeWithComponents } from 'meteor/vulcan:core';
 import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 
@@ -14,7 +14,10 @@ const Autocomplete = props => {
     itemProperties = {},
     autocompleteQuery,
     optionsFunction,
+    formComponents,
   } = props;
+
+  const Components = mergeWithComponents(formComponents);
 
   const { value, label } = inputProperties;
 

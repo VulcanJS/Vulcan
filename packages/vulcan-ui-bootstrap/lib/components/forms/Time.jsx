@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import DateTimePicker from 'react-datetime';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { mergeWithComponents, registerComponent } from 'meteor/vulcan:core';
 
 class Time extends PureComponent {
   constructor(props) {
@@ -18,7 +18,8 @@ class Time extends PureComponent {
 
   render() {
 
-    const { inputProperties } = this.props;
+    const { inputProperties, formComponents } = this.props;
+    const Components = mergeWithComponents(formComponents);
 
     const date = new Date();
 
