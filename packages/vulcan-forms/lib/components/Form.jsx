@@ -335,7 +335,8 @@ class SmartForm extends Component {
     if (typeof fields !== 'undefined' && fields.length > 0) {
       const nonSchemaFields = _.difference(fields, allFields);
       if (nonSchemaFields.length > 0) {
-        throw new Error(`Unknown field names in 'fields' prop: ${nonSchemaFields.join(', ')}`);
+        // eslint-disable-next-line no-console
+        console.warn(`Unknown field names in 'fields' prop: ${nonSchemaFields.join(', ')}`);
       }
       relevantFields = _.intersection(relevantFields, fields);
     }
@@ -347,7 +348,8 @@ class SmartForm extends Component {
       if (typeof removeFields !== 'undefined' && removeFields.length > 0) {
         const nonSchemaFields = _.difference(removeFields, allFields);
         if (nonSchemaFields.length > 0) {
-          throw new Error(`Unknown field names in 'removeFields' prop: ${nonSchemaFields.join(', ')}`);
+        // eslint-disable-next-line no-console
+          console.warn(`Unknown field names in 'removeFields' prop: ${nonSchemaFields.join(', ')}`);
         }
         relevantFields = _.difference(relevantFields, removeFields);
       }
@@ -357,7 +359,8 @@ class SmartForm extends Component {
     if (addExtraFields && typeof addFields !== 'undefined' && addFields.length > 0) {
       const nonSchemaFields = _.difference(addFields, allFields);
       if (nonSchemaFields.length > 0) {
-        throw new Error(`Unknown field names in 'addFields' prop: ${nonSchemaFields.join(', ')}`);
+        // eslint-disable-next-line no-console
+        console.warn(`Unknown field names in 'addFields' prop: ${nonSchemaFields.join(', ')}`);
       }
       relevantFields = relevantFields.concat(addFields);
     }
