@@ -7,11 +7,9 @@ const cache = createEmotionCache();
 
 function wrapWithMuiTheme(app, { apolloClient }) {
   return (
-    <CacheProvider value={cache}>
-      <Components.StylesManager>
-        <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
-      </Components.StylesManager>
-    </CacheProvider>
+    <Components.StylesManager>
+      <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
+    </Components.StylesManager>
   );
 }
 

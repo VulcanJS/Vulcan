@@ -18,7 +18,6 @@ function collectStyles(app, { context, apolloClient }) {
       <Components.StylesManager>
         <Components.ThemeProvider apolloClient={apolloClient}>{app}</Components.ThemeProvider>
       </Components.StylesManager>
-      {app}
     </CacheProvider>
   );
   return wrappedApp;
@@ -56,7 +55,6 @@ addCallback('router.server.wrapper', collectStyles);
 addCallback('router.server.postRender', function appendStyleTags(sink, { context }) {
   const html = sink.body;
   const { cache } = context;
-  console.log('cache', cache);
   const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
   // FIXME: chunks are empty, yet the cache is correctl filled
   const emotionChunks = extractCriticalToChunks(html);
