@@ -6,12 +6,12 @@
  */
 
 import { ApolloClient } from '@apollo/client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache } from '@apollo/client/cache';
 
 import { SchemaLink } from '@apollo/client/link/schema';
 import { GraphQLSchema } from '../graphql/index.js';
 
-import { createStateLink } from '../../modules/apollo-common';
+// import { createStateLink } from '../../modules/apollo-common';
 import { ApolloLink } from 'apollo-link';
 
 import { getFragmentMatcher } from '../../modules/fragment_matcher';
@@ -24,7 +24,7 @@ export const createClient = async ({ req, computeContext }) => {
   // init
   // stateLink will init the client internal state
   const cache = new InMemoryCache({ fragmentMatcher: getFragmentMatcher() });
-  const stateLink = createStateLink({ cache });
+  // const stateLink = createStateLink({ cache });
   // schemaLink will fetch data directly based on the executable schema
   const schema = GraphQLSchema.getExecutableSchema();
   // this is the resolver context
@@ -32,7 +32,7 @@ export const createClient = async ({ req, computeContext }) => {
   const schemaLink = new SchemaLink({ schema, context });
   const client = new ApolloClient({
     ssrMode: true,
-    link: ApolloLink.from([stateLink, schemaLink]),
+    link: ApolloLink.from([/*stateLink,*/ schemaLink]),
     // @see https://www.apollographql.com/docs/react/features/server-side-rendering.html#local-queries
     // Remember that this is the interface the SSR server will use to connect to the
     // API server, so we need to ensure it isn't firewalled, etc

@@ -15,6 +15,7 @@ import { withClientState } from 'apollo-link-state';
 
 /**
  * Create a state link
+ * TODO: Deprecated
  */
 export const createStateLink = ({ cache, resolvers, defaults, ...otherOptions }) => {
   const stateLink = withClientState({

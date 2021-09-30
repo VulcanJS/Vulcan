@@ -3,7 +3,7 @@ import { ApolloLink } from 'apollo-link';
 import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
-import { createStateLink } from '../../modules/apollo-common';
+// import { createStateLink } from '../../modules/apollo-common';
 import { resetReactiveState } from '../../modules/reactive-state.js';
 import createCache from './cache';
 import { getTerminatingLinks, getLinks } from './links/registerLinks';
@@ -19,10 +19,10 @@ export const createApolloClient = () => {
   const terminatingLinks = getTerminatingLinks();
   if (terminatingLinks.length > 1) console.warn('Warning: You registered more than one terminating Apollo link.');
 
-  const stateLink = createStateLink({ cache });
+  // const stateLink = createStateLink({ cache });
   const newClient = new ApolloClient({
     link: ApolloLink.from([
-      stateLink,
+      // stateLink,
       ...registeredLinks,
       ...staticLinks,
       // terminating

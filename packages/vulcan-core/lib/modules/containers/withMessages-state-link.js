@@ -75,7 +75,15 @@ registerStateLinkMutation({
     const data = {
       flashMessages: [...currentFlashMessages, flashMessage],
     };
-    cache.writeData({ data });
+
+    cache.writeQuery({
+      query: gql`
+        query GetFlashMessages {
+          flashMessages
+        }
+      `,
+      data,
+    });
     return null;
   },
 });
@@ -89,7 +97,14 @@ registerStateLinkMutation({
     const data = {
       flashMessages: currentFlashMessages,
     };
-    cache.writeData({ data });
+    cache.writeQuery({
+      query: gql`
+        query GetFlashMessages {
+          flashMessages
+        }
+      `,
+      data,
+    });
     return null;
   },
 });
@@ -103,7 +118,15 @@ registerStateLinkMutation({
     const data = {
       flashMessages: currentFlashMessages,
     };
-    cache.writeData({ data });
+
+    cache.writeQuery({
+      query: gql`
+        query GetFlashMessages {
+          flashMessages
+        }
+      `,
+      data,
+    });
     return null;
   },
 });
@@ -112,13 +135,19 @@ registerStateLinkMutation({
   mutation: (obj, args, context) => {
     const { cache } = context;
     const currentFlashMessages = cache.readQuery({ query: getMessagesQuery });
-    const newValue = currentFlashMessages.map(message =>
-      message.seen ? { ...message, show: false } : message
-    );
+    const newValue = currentFlashMessages.map(message => (message.seen ? { ...message, show: false } : message));
     const data = {
       flashMessages: newValue,
     };
-    cache.writeData({ data });
+
+    cache.writeQuery({
+      query: gql`
+        query GetFlashMessages {
+          flashMessages
+        }
+      `,
+      data,
+    });
     return null;
   },
 });
