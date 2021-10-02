@@ -6,7 +6,13 @@ const Newsletters = createCollection({
 
   typeName: 'Newsletter',
 
+  resolvers: null,
+
+  mutations: null,
+  
   schema,
+
+  generateGraphQLSchema: false
 });
 
 export default Newsletters;
