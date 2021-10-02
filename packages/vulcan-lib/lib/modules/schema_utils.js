@@ -63,11 +63,11 @@ export const createSchema = (schema, apiSchema = {}, dbSchema = {}) => {
     if (arrayItem) {
       extractArrayItems(modifiedSchema, fieldName, arrayItem);
     }
-    // if this is a date field, and fieldFormatted doesn't already exist in the schema
+    // if this is a date field, and field is readable, and fieldFormatted doesn't already exist in the schema
     // or as a resolveAs field, then add fieldFormatted to apiSchema
     const formattedFieldName = `${fieldName}Formatted`;
 
-    if (type === Date && !schema[formattedFieldName] && !(_get(field, 'resolveAs.fieldName', '') === formattedFieldName)) {
+    if (type === Date && canRead && !schema[formattedFieldName] && !(_get(field, 'resolveAs.fieldName', '') === formattedFieldName)) {
       apiSchema[formattedFieldName] = {
         typeName: 'String',
         canRead,
