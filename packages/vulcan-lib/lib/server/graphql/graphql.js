@@ -158,7 +158,8 @@ export const GraphQLSchema = {
     const mainType = fields.mainType;
 
     if (!mainType || mainType.length === 0) {
-      throw new Error(`GraphQL type ${typeName} has no fields. Please add readable fields or remove the type.`);
+      // do not create GraphQL types
+      return;
     }
 
     // generate a graphql type def from the simpleSchema
@@ -359,6 +360,7 @@ export const GraphQLSchema = {
       mutationsToAdd = [],
       mutationsResolversToAdd = [],
     } = collectionToGraphQL(collection);
+
     // register the generated resolvers
     // schemaResolvers.forEach(addGraphQLResolvers);
     queriesToAdd.forEach(([query, description]) => {

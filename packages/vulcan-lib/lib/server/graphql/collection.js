@@ -45,13 +45,9 @@ import _initial from 'lodash/initial';
  */
 const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
-  const typeName = collection.typeName
-    ? collection.typeName
-    : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
+  const typeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_initial(collectionName).join('')); // default to posts -> Post
   const schema = collection.simpleSchema()._schema;
-  const description = collection.options.description
-    ? collection.options.description
-    : `Type for ${collectionName}`;
+  const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`;
   return {
     ...collection.options,
     collectionName,
@@ -65,7 +61,8 @@ const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
   const queryResolvers = {};
   const queriesToAdd = [];
   const resolversToAdd = [];
-  if (providedResolvers === null) { // user explicitely disabled default resolvers
+  if (providedResolvers === null) {
+    // user explicitely disabled default resolvers
     return { queriesToAdd, resolversToAdd };
   }
   // if resolvers are empty, use defaults
@@ -80,9 +77,7 @@ const createResolvers = ({ resolvers: providedResolvers, typeName }) => {
   if (resolvers.multi) {
     queriesToAdd.push([multiQueryTemplate({ typeName }), resolvers.multi.description]);
     //addGraphQLQuery(multiQueryTemplate({ typeName }), resolvers.multi.description);
-    queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(
-      resolvers.multi
-    );
+    queryResolvers[Utils.camelCaseify(Utils.pluralize(typeName))] = resolvers.multi.resolver.bind(resolvers.multi);
   }
   //addGraphQLResolvers({ Query: { ...queryResolvers } });
   resolversToAdd.push({ Query: { ...queryResolvers } });
@@ -95,7 +90,8 @@ const createMutations = ({ mutations: providedMutations = {}, typeName, collecti
   const mutationResolvers = {};
   const mutationsToAdd = [];
   const mutationsResolversToAdd = [];
-  if (providedMutations === null) { // user explicitely disabled mutations
+  if (providedMutations === null) {
+    // user explicitely disabled mutations
     return { mutationsResolversToAdd, mutationsToAdd };
   }
   // extend defaults with provided mutations
@@ -158,23 +154,18 @@ const createMutations = ({ mutations: providedMutations = {}, typeName, collecti
 };
 
 // generate types, input and enums
-const generateSchemaFragments = ({
-  collection,
-  typeName,
-  description,
-  interfaces = [],
-  fields,
-  isNested = false,
-}) => {
+const generateSchemaFragments = ({ collection, typeName, description, interfaces = [], fields, isNested = false }) => {
   const schemaFragments = [];
   const {
     mainType,
-    create, update, selector,
+    create,
+    update,
+    selector,
     selectorUnique,
     //orderBy,
     readable,
     filterable,
-    enums
+    enums,
   } = fields;
 
   if (!mainType || mainType.length === 0) {
@@ -222,13 +213,17 @@ const generateSchemaFragments = ({
     //    schemaFragments.push(orderByInputTemplate({ typeName, fields: orderBy }));
     return schemaFragments; // return now
   }
-  schemaFragments.push(deleteInputTemplate({ typeName }));
-  schemaFragments.push(singleInputTemplate({ typeName }));
-  schemaFragments.push(multiInputTemplate({ typeName }));
-  schemaFragments.push(singleOutputTemplate({ typeName }));
-  schemaFragments.push(multiOutputTemplate({ typeName }));
-  schemaFragments.push(mutationOutputTemplate({ typeName }));
 
+  if (readable.length) {
+    schemaFragments.push(singleInputTemplate({ typeName }));
+    schemaFragments.push(multiInputTemplate({ typeName }));
+    schemaFragments.push(singleOutputTemplate({ typeName }));
+    schemaFragments.push(multiOutputTemplate({ typeName }));
+  }
+
+  if (create.length || update.length) {
+    schemaFragments.push(mutationOutputTemplate({ typeName }));
+  }
   if (create.length) {
     schemaFragments.push(createInputTemplate({ typeName }));
     schemaFragments.push(createDataInputTemplate({ typeName, fields: create }));
@@ -238,6 +233,7 @@ const generateSchemaFragments = ({
     schemaFragments.push(updateInputTemplate({ typeName }));
     schemaFragments.push(upsertInputTemplate({ typeName }));
     schemaFragments.push(updateDataInputTemplate({ typeName, fields: update }));
+    schemaFragments.push(deleteInputTemplate({ typeName }));
   }
 
   if (filterable.length) {
@@ -257,7 +253,7 @@ const generateSchemaFragments = ({
     // if (customSorts) {
     //   customSorts.forEach(sort => {
     //     schemaFragments.push(customSortTemplate({ typeName, sort }));
-    //   });    
+    //   });
     // }
   }
 
@@ -271,20 +267,9 @@ const collectionToGraphQL = collection => {
   let graphQLSchema = '';
   const schemaFragments = [];
 
-  const {
-    collectionName,
-    typeName,
-    schema,
-    description,
-    interfaces = [],
-    resolvers,
-    mutations,
-  } = getCollectionInfos(collection);
+  const { collectionName, typeName, schema, description, interfaces = [], resolvers, mutations } = getCollectionInfos(collection);
 
-  const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(
-    schema,
-    typeName
-  );
+  const { nestedFieldsList, fields, resolvers: schemaResolvers } = getSchemaFields(schema, typeName);
 
   const { mainType } = fields;
 
