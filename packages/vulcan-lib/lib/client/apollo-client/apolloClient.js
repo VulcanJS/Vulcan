@@ -3,7 +3,7 @@ import { ApolloLink } from 'apollo-link';
 import httpLink from './links/http';
 import meteorAccountsLink from './links/meteor';
 import errorLink from './links/error';
-// import { createStateLink } from '../../modules/apollo-common';
+// import { createStateLink } from '../../modules/apollo-common/links/state.js';
 import { resetReactiveState } from '../../modules/reactive-state.js';
 import createCache from './cache';
 import { getTerminatingLinks, getLinks } from './links/registerLinks';

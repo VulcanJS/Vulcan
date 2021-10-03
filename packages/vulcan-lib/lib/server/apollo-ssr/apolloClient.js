@@ -5,13 +5,12 @@
  * /!\ It must be recreated on every request
  */
 
-import { ApolloClient } from '@apollo/client';
-import { InMemoryCache } from '@apollo/client/cache';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 import { SchemaLink } from '@apollo/client/link/schema';
 import { GraphQLSchema } from '../graphql/index.js';
 
-// import { createStateLink } from '../../modules/apollo-common';
+// import { createStateLink } from '../../modules/apollo-common/links/state.js';
 import { ApolloLink } from 'apollo-link';
 
 import { getFragmentMatcher } from '../../modules/fragment_matcher';

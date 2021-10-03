@@ -1,4 +1,4 @@
-import { InMemoryCache } from '@apollo/client/cache';
+import { InMemoryCache } from '@apollo/client';
 import { getFragmentMatcher } from '../../modules/fragment_matcher';
 
 const createCache = () => new InMemoryCache({ fragmentMatcher: getFragmentMatcher() })
