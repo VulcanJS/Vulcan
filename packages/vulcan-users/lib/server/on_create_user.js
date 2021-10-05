@@ -1,20 +1,16 @@
 import Users from '../modules/index.js';
-import {
-  runCallbacks,
-  runCallbacksAsync,
-  Utils,
-  debug,
-  debugGroup,
-  debugGroupEnd,
-} from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import { runCallbacks, runCallbacksAsync, Utils, debug, debugGroup, debugGroupEnd, throwError } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 import clone from 'lodash/clone';
+import get from 'lodash/get';
 
 // TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
-function onCreateUserCallback(options, user) {
+async function onCreateUserCallback(options, user) {
   debug('');
   debugGroup('--------------- start \x1b[35m onCreateUser ---------------');
   debug(`Options: ${JSON.stringify(options)}`);
   debug(`User: ${JSON.stringify(user)}`);
+
+  const properties = { data: user, document: user, user, collection: Users };
 
   const schema = Users.simpleSchema()._schema;
 
@@ -27,20 +23,33 @@ function onCreateUserCallback(options, user) {
 
   // validate options since they can't be trusted
   // omit username since we deleted it above
-  Users.simpleSchema().omit('username').validate(options);
+  Users.simpleSchema()
+    .omit('username')
+    .validate(options);
 
   // check that the current user has permission to insert each option field
   _.keys(options).forEach(fieldName => {
     var field = schema[fieldName];
     if (!field || !Users.canCreateField(user, field)) {
-      throw new Error(
-        Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName })
-      );
+      throw new Error(Utils.encodeIntlError({ id: 'app.disallowed_property_detected', value: fieldName }));
     }
   });
 
   // extend user with options
   user = Object.assign(user, options);
+
+  let validationErrors = [];
+  // new callback API (Oct 2019)
+  validationErrors = await runCallbacks({
+    name: 'user.create.validate',
+    callbacks: get(Users, 'options.callbacks.create.validate', []),
+    iterator: validationErrors,
+    properties,
+  });
+  if (validationErrors.length) {
+    console.log(validationErrors); // eslint-disable-line no-console
+    throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
+  }
 
   // run validation callbacks
   user = runCallbacks({ name: 'user.create.validate', iterator: user, properties: {} });
@@ -63,10 +72,25 @@ function onCreateUserCallback(options, user) {
       user[fieldName] = autoValue;
     }
   }
+
+  // new callback API (Oct 2019)
+  user = await runCallbacks({
+    name: 'user.create.before',
+    callbacks: get(Users, 'options.callbacks.create.after', []),
+    iterator: user,
+    properties,
+  });
   user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {} });
   user = runCallbacks('users.new.sync', user);
 
-  runCallbacksAsync({ name: 'user.create.async', properties: { data: user, document: user, user, collection: Users } });
+  // new callback API (Oct 2019)
+  await runCallbacksAsync({
+    name: 'user.create.async',
+    callbacks: get(Users, 'options.callbacks.create.async', []),
+    properties,
+  });
+
+  runCallbacksAsync({ name: 'user.create.async', properties });
   // OpenCRUD backwards compatibility
   runCallbacksAsync('users.new.async', user);
 
