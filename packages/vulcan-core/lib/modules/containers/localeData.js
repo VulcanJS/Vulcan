@@ -28,7 +28,7 @@ Hook
 export const useLocaleData = props => {
   const [cookies] = useCookies(['locale']);
   const { currentUser } = useCurrentUser();
-  const init = initLocale({ currentUser, cookies, locale: props.locale });
+  const init = initLocale({ currentUser, cookies, locale: props.locale, dynamicLocales: props?.locales?.data?.locales });
   const queryResult = useQuery(localeDataQuery, { variables: { localeId: init.id } });
   return { ...queryResult, ...init };
 };
@@ -47,4 +47,42 @@ export const withLocaleData = C => {
   return Wrapped;
 };
 
-export default withLocaleData;
+
+/*
+
+Query to load all locales metadata from the server
+
+*/
+export const localesQuery = gql`
+  query LocalesQuery {
+    locales {
+      id
+      label
+    }
+  }
+`;
+
+
+/*
+
+Hook
+
+*/
+export const useLocales = props => {
+  const queryResult = useQuery(localesQuery);
+  return queryResult;
+};
+
+/*
+
+HoC
+
+*/
+export const withLocales = C => {
+  const Wrapped = props => {
+    const response = useLocales(props);
+    return <C {...props} locales={response} />;
+  };
+  Wrapped.displayName = 'withLocales';
+  return Wrapped;
+};

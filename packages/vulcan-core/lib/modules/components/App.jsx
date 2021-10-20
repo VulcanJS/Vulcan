@@ -5,7 +5,7 @@ import { IntlProvider, intlShape, IntlContext } from 'meteor/vulcan:i18n';
 import withCurrentUser from '../containers/currentUser.js';
 import withUpdate from '../containers/update.js';
 import withSiteData from '../containers/siteData.js';
-import withLocaleData from '../containers/localeData.js';
+import { withLocaleData, withLocales } from '../containers/localeData.js';
 import { withApollo } from '@apollo/client/react/hoc';
 import { withCookies } from 'react-cookie';
 import moment from 'moment';
@@ -228,6 +228,7 @@ registerComponent(
   App,
   withCurrentUser,
   withSiteData,
+  // withLocales,
   withLocaleData,
   [withUpdate, updateOptions],
   withApollo,

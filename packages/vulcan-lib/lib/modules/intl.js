@@ -73,11 +73,13 @@ export const pluralizeString = (message, values) => {
     let translation;
     for (const match of matches) {
       const category = match.split(' {')[0];
-      if ((category === 'zero' && value === 0) ||
+      if (
+        (category === 'zero' && value === 0) ||
         (category === 'one' && value === 1) ||
         (category === 'two' && value === 2) ||
         (category.startsWith('=') && parseInt(category.replace(/^=/, '')) === value) ||
-        (category === 'other')) {
+        category === 'other'
+      ) {
         const phrase = match.split(' {')[1];
         translation = phrase.replace('#', value);
         break;
@@ -154,8 +156,10 @@ export const registerLocale = locale => {
   Locales.push(locale);
 };
 
-export const getLocale = localeId => {
-  return Locales.find(locale => locale.id === localeId);
+// TODO: add support for dynamically loaded locales here
+export const getLocale = (localeId) => {
+  const locales = Locales;
+  return locales.find(locale => locale.id === localeId);
 };
 
 /*

@@ -5,7 +5,7 @@ import sortedUniq from 'lodash/sortedUniq';
 
 /**
  * Internationalization debugging page
- *
+ * Note: for non-dynamically-loaded locales only
  *
  **/
 function LocaleSwitcher(props, context) {
