@@ -12,14 +12,14 @@ export const getGraphQLType = ({ fieldSchema, schema, fieldName, typeName, isInp
   // NOTE: we DON't USE isInputField! we don't want to match "field.intl", only "field.intlData"
   /**
    * Expected GraphQL Schema:
-   * 
+   *
    *   # The room name
   * name(locale: String): String @intl
   * # The room name
   * name_intl(locale: String): [IntlValue] @intl
-  * 
+  *
   * JS schema:
-  * 
+  *
   * name: {
   *   type: String,
   *   optional: false,
@@ -68,10 +68,13 @@ export const getGraphQLType = ({ fieldSchema, schema, fieldName, typeName, isInp
       }
       return null;
 
+    case 'JSON':
+      return 'JSON'
+
     case 'Object':
-      // 4 cases: 
+      // 4 cases:
       // - it's the child of a blackboxed array  => will be blackbox JSON
-      // - a nested Schema, 
+      // - a nested Schema,
       // - a referenced schema, or an actual JSON
       if (isParentBlackbox) return 'JSON';
       if (!isBlackbox(field) && fieldType._schema) {
