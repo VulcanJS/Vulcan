@@ -1,2 +1,2 @@
 export * from '../modules/index';
-import './wrapWithMuiTheme';
+import './wrapWithMui';
