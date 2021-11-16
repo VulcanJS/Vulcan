@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { getDataFromTree } from '@apollo/client/react/ssr';
+import { getDataFromTree, renderToStringWithData } from '@apollo/client/react/ssr';
 
 import { runCallbacks } from '../../modules/callbacks';
 import { createClient } from './apolloClient';
@@ -51,6 +51,7 @@ const makePageRenderer = ({ computeContext }) => {
       // eg Material UI theming WITHOUT style generation
       // The wrappers must NOT have any side effect during React tree traversal
       // otherwise SSR may fail
+      /*
       const DataWrappedApp = runCallbacks({
         name: 'router.server.dataWrapper',
         iterator: WrappedApp,
@@ -62,17 +63,20 @@ const makePageRenderer = ({ computeContext }) => {
       debugApollo('Start getDataFromTree');
       await getDataFromTree(DataWrappedApp);
       debugApollo('End getDataFromTree');
+      */
 
       // run callback related to rendering
       // eg Material UI theming WITH style generation
       // those wrapper can tolerate side effects during React tree traversal (eg className/styles generation)
+      /*
       const StyledWrappedApp = runCallbacks({
         name: 'router.server.renderWrapper',
         iterator: WrappedApp,
         properties: { req, context, apolloClient: client },
       });
+      */
       // equivalent to calling getDataFromTree and then renderToStringWithData
-      htmlContent = await ReactDOM.renderToString(StyledWrappedApp);
+      htmlContent = await renderToStringWithData(WrappedApp); // await ReactDOM.renderToString(WrappedApp);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`Error while server-rendering. date: ${new Date().toString()} url: ${req.url}`); // eslint-disable-line no-console
