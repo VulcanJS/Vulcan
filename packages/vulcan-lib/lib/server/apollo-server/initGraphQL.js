@@ -2,11 +2,10 @@
  * Init the graphQL schema
  */
 
-import { makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { mergeSchemas } from 'graphql-tools';
 import { GraphQLSchema, generateTypeDefs } from '../graphql/index.js';
 import { runCallbacks } from '../../modules/callbacks.js';
-
 
 const initGraphQL = () => {
   runCallbacks('graphql.init.before');
@@ -18,7 +17,10 @@ const initGraphQL = () => {
     schemaDirectives: GraphQLSchema.directives,
   });
   // only call mergeSchemas if we actually have stitchedSchemas
-  const mergedSchema = GraphQLSchema.stitchedSchemas.length > 0 ? mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] }) : executableSchema;
+  const mergedSchema =
+    GraphQLSchema.stitchedSchemas.length > 0
+      ? mergeSchemas({ schemas: [executableSchema, ...GraphQLSchema.stitchedSchemas] })
+      : executableSchema;
 
   GraphQLSchema.finalSchema = typeDefs;
   GraphQLSchema.executableSchema = mergedSchema;
