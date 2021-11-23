@@ -2,51 +2,55 @@
  * Generate GraphQL typedefs
  */
 
-
 // schema generation
 const generateQueryType = (queries = []) =>
   queries.length === 0
-  ? ''
-  : `type Query {
+    ? ''
+    : `type Query {
 ${queries
-      .map(
-        q =>
-          `${
-          q.description
-            ? `  # ${q.description}
+  .map(
+    q =>
+      `${
+        q.description
+          ? `  # ${q.description}
 `
-            : ''
-          }  ${q.query}
+          : ''
+      }  ${q.query}
   `
-      )
-      .join('\n')}
+  )
+  .join('\n')}
 }
   `;
 
 const generateMutationType = (mutations = []) =>
   mutations.length === 0
-  ? ''
-  : `type Mutation {
+    ? ''
+    : `type Mutation {
 ${mutations
-              .map(
-                m =>
-                  `${
-                    m.description
-                      ? `  # ${m.description}
+  .map(
+    m =>
+      `${
+        m.description
+          ? `  # ${m.description}
 `
-                      : ''
-                  }  ${m.mutation}
+          : ''
+      }  ${m.mutation}
 `
-              )
-              .join('\n')}
+  )
+  .join('\n')}
 }
 `;
 
 // typeDefs
-export const generateTypeDefs = (GraphQLSchema) => [
+export const generateTypeDefs = GraphQLSchema => [
   `
 scalar JSON
 scalar Date
+# @see https://www.apollographql.com/docs/apollo-server/data/file-uploads/
+# The implementation for this scalar is provided by the
+# 'GraphQLUpload' export from the 'graphql-upload' package
+# in the resolver map below.
+scalar Upload
 
 # see https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html
 
