@@ -158,7 +158,7 @@ export const createApolloServer = ({
   return apolloServer;
 };
 
-export const onStart = () => {
+export const onStart = async () => {
   // Vulcan specific options
   const config = {
     path: '/graphql',
@@ -203,6 +203,7 @@ export const onStart = () => {
       ...getApolloServerOptions(),
     },
   });
+  await apolloServer.start();
   // NOTE: order matters here
   // /graphql middlewares (request parsing)
   setupGraphQLMiddlewares(apolloServer, config, apolloApplyMiddlewareOptions);
