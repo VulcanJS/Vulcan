@@ -9,6 +9,8 @@
 
 Vulcan is a React+GraphQL framework for Meteor. 
 
+[You might want to discover Vulcan Next](https://github.com/VulcanJS/vulcan-next), a port of Vulcan toward Next.js.
+
 ### Install
 
 - [Full video tutorial](https://www.youtube.com/watch?v=aCjR9UrNqVk)

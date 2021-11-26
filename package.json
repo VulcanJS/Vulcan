@@ -190,7 +190,7 @@
     "supertest": "^4.0.2",
     "vulcan-loader": "0.0.1",
     "waait": "^1.0.5",
-    "webpack": "4.28.4"
+    "webpack": "^4.31.0"
   },
   "postcss": {
     "plugins": {
