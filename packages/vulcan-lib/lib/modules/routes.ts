@@ -1,13 +1,14 @@
 import { Components, getComponent } from './components';
 
 export type Route = {
-  name: string;
-  path: string;
+  name: string,
+  path: string,
   componentName?: string,
+  component?: any,
   layoutName?: string,
-}
+};
 
-export const Routes = new Map(); // will be populated on startup 
+export const Routes = new Map(); // will be populated on startup
 export const RoutesTable = new Map(); // storage for infos about routes themselves
 
 /*
@@ -21,21 +22,16 @@ export const RoutesTable = new Map(); // storage for infos about routes themselv
 
  if there there is value for parentRouteName it will look for the route and add the new route as a child of it
  */
-export const addRoute = (routeOrRouteArray: Route|Array<Route>, parentRouteName?: string) => {
-
+export const addRoute = (routeOrRouteArray: Route | Array<Route>, parentRouteName?: string) => {
   // be sure to have an array of routes to manipulate
   const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
 
   // if there is a value for parentRouteName you are adding this route as new child
   if (parentRouteName) {
-
     addAsChildRoute(parentRouteName, addedRoutes);
-
   } else {
-
     // modify the routes table with the new routes
     addedRoutes.forEach(({ name, path, ...properties }) => {
-
       // check if there is already a route registered to this path
       const routeWithSamePath = Object.values(RoutesTable).find(route => route.path === path);
 
@@ -48,25 +44,22 @@ export const addRoute = (routeOrRouteArray: Route|Array<Route>, parentRouteName?
       RoutesTable[name] = {
         name,
         path,
-        ...properties
+        ...properties,
       };
-
     });
   }
 };
 
 export const extendRoute = (routeName, routeProps) => {
-
   const route = Object.values(RoutesTable).find(route => route.name === routeName);
 
   if (route) {
     RoutesTable[route.name] = {
       ...route,
-      ...routeProps
+      ...routeProps,
     };
   }
 };
-
 
 /**
  A route is defined in the list like: (same as above)
@@ -80,9 +73,7 @@ export const extendRoute = (routeName, routeProps) => {
  NOTE: This is implemented on single level deep ONLY for now
  **/
 
-
 export const addAsChildRoute = (parentRouteName, addedRoutes) => {
-
   // if the parentRouteName does not exist, error
   if (!RoutesTable[parentRouteName]) {
     throw new Error(`Route ${parentRouteName} doesn't exist`);
@@ -90,7 +81,6 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
 
   // modify the routes table with the new routes
   addedRoutes.map(({ name, path, ...properties }) => {
-
     // get the current child routes for this Route
     const childRoutes = RoutesTable[parentRouteName]['childRoutes'] || [];
 
@@ -106,15 +96,13 @@ export const addAsChildRoute = (parentRouteName, addedRoutes) => {
     childRoutes.push({
       name,
       path,
-      ...properties
+      ...properties,
     });
 
     // register the new child route (overwriting the current which is fine)
     RoutesTable[parentRouteName]['childRoutes'] = childRoutes;
-
   });
 };
-
 
 export const getRoute = name => {
   const routeDef = RoutesTable[name];
@@ -162,7 +150,7 @@ export const populateRoutesApp = () => {
 
 // Should be used only in tests
 export const emptyRoutes = () => {
-  Object.keys(Routes).map((key) => {
+  Object.keys(Routes).map(key => {
     delete Routes[key];
   });
 };
