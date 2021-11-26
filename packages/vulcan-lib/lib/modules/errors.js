@@ -29,7 +29,6 @@ In field "addresses": Expected "[JSON]!", found null."
 */
 
 export const parseErrorMessage = message => {
-
   if (!message) {
     return null;
   }
@@ -69,15 +68,18 @@ Errors can have the following properties stored on their `data` property:
   
 */
 export const getErrors = error => {
-
   const graphQLErrors = error.graphQLErrors;
 
   // error thrown using new ApolloError
-  const apolloErrors = get(graphQLErrors, '0.extensions.exception.data.errors');
+  const apolloErrors =
+    // Apollo 2
+    // get(graphQLErrors, '0.extensions.exception.data.errors');
+    // Apollo 3
+    // @see https://www.apollographql.com/docs/apollo-server/migration/#reading-error-extensions
+    get(graphQLErrors, '0.extensions.data.errors');
 
   // regular server error (with schema stitching)
   const regularErrors = get(graphQLErrors, '0.extensions.exception.errors');
 
   return apolloErrors || regularErrors || graphQLErrors || [];
-
 };

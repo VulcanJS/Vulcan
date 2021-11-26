@@ -2,51 +2,53 @@
  * Generate GraphQL typedefs
  */
 
+import { fileUploadTypeDefs } from './fileUpload';
 
 // schema generation
 const generateQueryType = (queries = []) =>
   queries.length === 0
-  ? ''
-  : `type Query {
+    ? ''
+    : `type Query {
 ${queries
-      .map(
-        q =>
-          `${
-          q.description
-            ? `  # ${q.description}
+  .map(
+    q =>
+      `${
+        q.description
+          ? `  # ${q.description}
 `
-            : ''
-          }  ${q.query}
+          : ''
+      }  ${q.query}
   `
-      )
-      .join('\n')}
+  )
+  .join('\n')}
 }
   `;
 
 const generateMutationType = (mutations = []) =>
   mutations.length === 0
-  ? ''
-  : `type Mutation {
+    ? ''
+    : `type Mutation {
 ${mutations
-              .map(
-                m =>
-                  `${
-                    m.description
-                      ? `  # ${m.description}
+  .map(
+    m =>
+      `${
+        m.description
+          ? `  # ${m.description}
 `
-                      : ''
-                  }  ${m.mutation}
+          : ''
+      }  ${m.mutation}
 `
-              )
-              .join('\n')}
+  )
+  .join('\n')}
 }
 `;
 
 // typeDefs
-export const generateTypeDefs = (GraphQLSchema) => [
+export const generateTypeDefs = GraphQLSchema => [
   `
 scalar JSON
 scalar Date
+${fileUploadTypeDefs}
 
 # see https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html
 

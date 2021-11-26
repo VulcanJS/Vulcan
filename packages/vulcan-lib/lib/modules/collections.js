@@ -36,7 +36,10 @@ export const getCollection = name => {
 
 export const getCollectionByTypeName = typeName => {
   // in case typeName is for an array ('[User!]'), get rid of brackets
-  let parsedTypeName = typeName.replace('[', '').replace(']', '').replace(/!/g, '');
+  let parsedTypeName = typeName
+    .replace('[', '')
+    .replace(']', '')
+    .replace(/!/g, '');
   const collection = Collections.find(({ options: { typeName } }) => parsedTypeName === typeName);
   if (!collection) {
     throw new Error(`Could not find collection for type “${typeName}”`);
@@ -61,7 +64,7 @@ export const generateTypeNameFromCollectionName = collectionName => Utils.singul
  * initialize or replace the schema, or some fields, to extend the current schema
  * @class Mongo.Collection
  */
-Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
+Mongo.Collection.prototype.attachSchema = function(schemaOrFields) {
   if (schemaOrFields instanceof SimpleSchema) {
     this.simpleSchema = () => schemaOrFields;
   } else {
@@ -73,14 +76,14 @@ Mongo.Collection.prototype.attachSchema = function (schemaOrFields) {
  * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} fieldOrFieldArray
  */
-Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
+Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
   const collection = this;
   const fieldSchema = {};
 
   const fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
 
   // loop over fields and add them to schema (or extend existing fields)
-  fieldArray.forEach(function (field) {
+  fieldArray.forEach(function(field) {
     fieldSchema[field.fieldName] = field.fieldSchema;
   });
 
@@ -92,7 +95,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
  * @summary Remove a field from a schema.
  * @param {String} fieldName
  */
-Mongo.Collection.prototype.removeField = function (fieldName) {
+Mongo.Collection.prototype.removeField = function(fieldName) {
   var collection = this;
   var schema = _omit(collection.simpleSchema()._schema, fieldName);
 
@@ -104,7 +107,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
  * @summary Add a default view function.
  * @param {Function} view
  */
-Mongo.Collection.prototype.addDefaultView = function (view) {
+Mongo.Collection.prototype.addDefaultView = function(view) {
   this.defaultView = view;
 };
 
@@ -113,7 +116,7 @@ Mongo.Collection.prototype.addDefaultView = function (view) {
  * @param {String} viewName
  * @param {Function} view
  */
-Mongo.Collection.prototype.addView = function (viewName, view) {
+Mongo.Collection.prototype.addView = function(viewName, view) {
   this.views[viewName] = view;
 };
 
@@ -122,30 +125,28 @@ Mongo.Collection.prototype.addView = function (viewName, view) {
  * @param {Array} pipelines mongodb pipeline
  * @param {Object} options mongodb option object
  */
-Mongo.Collection.prototype.aggregate = function (pipelines, options) {
+Mongo.Collection.prototype.aggregate = function(pipelines, options) {
   var coll = this.rawCollection();
   return wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
 };
 
 // see https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js
-Mongo.Collection.prototype.helpers = function (helpers) {
+Mongo.Collection.prototype.helpers = function(helpers) {
   var self = this;
 
   if (self._transform && !self._helpers)
-    throw new Meteor.Error(
-      "Can't apply helpers to '" + self._name + "' a transform function already exists!"
-    );
+    throw new Meteor.Error("Can't apply helpers to '" + self._name + "' a transform function already exists!");
 
   if (!self._helpers) {
     self._helpers = function Document(doc) {
       return Object.assign(this, doc);
     };
-    self._transform = function (doc) {
+    self._transform = function(doc) {
       return new self._helpers(doc);
     };
   }
 
-  Object.keys(helpers).forEach(function (key) {
+  Object.keys(helpers).forEach(function(key) {
     self._helpers.prototype[key] = helpers[key];
   });
 };
@@ -195,8 +196,9 @@ export const addAutoRelations = () => {
 Pass an existing collection to overwrite it instead of creating a new one
 
 */
-export const createCollection = (options) => {
+export const createCollection = options => {
   const { typeName, collectionName = generateCollectionNameFromTypeName(typeName), dbCollectionName } = options;
+  // NOTE: schema should be json and not a SimpleSchema
   let { schema, apiSchema, dbSchema } = options;
 
   const existingCollectionIndex = Collections.findIndex(c => c.collectionName === collectionName);
@@ -347,9 +349,7 @@ export const createCollection = (options) => {
       } else {
         // eslint-disable-next-line no-console
         console.warn(
-          `Warning: terms.query is set but schema ${
-            collection.options.typeName
-          } has no searchable field. Set "searchable: true" for at least one field to enable search.`
+          `Warning: terms.query is set but schema ${collection.options.typeName} has no searchable field. Set "searchable: true" for at least one field to enable search.`
         );
       }
     }
@@ -406,7 +406,6 @@ export function addIntlFields(schema) {
   Object.keys(schema).forEach(fieldName => {
     const fieldSchema = schema[fieldName];
     if (isIntlField(fieldSchema) && !schemaHasIntlField(schema, fieldName)) {
-
       // remove `intl` to avoid treating new _intl field as a field to internationalize
       // eslint-disable-next-line no-unused-vars
       const { intl, ...propertiesToCopy } = schema[fieldName];

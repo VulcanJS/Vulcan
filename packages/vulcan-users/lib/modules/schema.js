@@ -195,7 +195,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     onCreate: async ({ document: user }) => {
-      const hash = await import('../server/avatar').hash;
+      const hash = (await import('../server/avatar')).hash;
       if (user.email) {
         return hash(user.email);
       }

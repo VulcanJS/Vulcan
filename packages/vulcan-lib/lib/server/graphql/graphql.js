@@ -7,8 +7,6 @@ and register schema parts based on the application collections
 */
 
 import deepmerge from 'deepmerge';
-import GraphQLJSON from 'graphql-type-json';
-import GraphQLDate from 'graphql-date';
 //import Vulcan from '../config.js'; // used for global export
 import { disableFragmentWarnings } from 'graphql-tag';
 
@@ -39,17 +37,11 @@ import getSchemaFields from './schemaFields';
 
 disableFragmentWarnings();
 
-
 import { getDefaultResolvers } from '../../server/default_resolvers.js';
 import { getDefaultMutations } from '../../server/default_mutations.js';
 import isEmpty from 'lodash/isEmpty';
 import { Collections } from '../../modules/collections.js';
-
-
-const defaultResolvers = {
-  JSON: GraphQLJSON,
-  Date: GraphQLDate,
-};
+import { defaultResolvers } from './defaultResolvers';
 
 /**
  * Extract relevant collection information and set default values
@@ -59,9 +51,7 @@ const getCollectionInfos = collection => {
   const collectionName = collection.options.collectionName;
   const typeName = collection.typeName;
   const schema = collection.simpleSchema();
-  const description = collection.options.description
-    ? collection.options.description
-    : `Type for ${collectionName}`;
+  const description = collection.options.description ? collection.options.description : `Type for ${collectionName}`;
   return {
     ...collection.options,
     collectionName,
@@ -338,15 +328,7 @@ export const GraphQLSchema = {
   }*/
   // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
-    const {
-      collectionName,
-      typeName,
-      schema,
-      description,
-      interfaces = [],
-      resolvers,
-      mutations,
-    } = getCollectionInfos(collection);
+    const { collectionName, typeName, schema, description, interfaces = [], resolvers, mutations } = getCollectionInfos(collection);
 
     // const { nestedFieldsList, fields, resolvers: schemaResolvers = [] } = getSchemaFields(schema._schema, typeName);
 
@@ -380,14 +362,11 @@ export const GraphQLSchema = {
   },
   getExecutableSchema() {
     if (!this.executableSchema) {
-      throw new Error(
-        'Warning: trying to access executable schema before it has been created by the server.'
-      );
+      throw new Error('Warning: trying to access executable schema before it has been created by the server.');
     }
     return this.executableSchema;
   },
 };
-
 
 // Vulcan.getGraphQLSchema = () => {
 //   if (!GraphQLSchema.finalSchema) {
