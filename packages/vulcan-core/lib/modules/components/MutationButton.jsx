@@ -41,13 +41,17 @@ class MutationButtonInner extends PureComponent {
   handleClick = async e => {
     e.preventDefault();
     this.setState({ loading: true, error: null });
-    const { mutationOptions, mutationArguments, submitCallback, successCallback, errorCallback } = this.props;
+    const { mutationOptions, submitCallback, successCallback, errorCallback } = this.props;
+    let { mutationArguments } = this.props;
     const mutationName = mutationOptions.name;
     const mutation = this.props[mutationName];
 
     try {
       if (submitCallback) {
-        await submitCallback();
+        const callbackReturn = await submitCallback(mutationArguments);
+        if (callbackReturn?.mutationArguments) {
+          mutationArguments = callbackReturn.mutationArguments;
+        }
       }
       const result = await mutation(mutationArguments);
       this.setState({ loading: false });

@@ -30,7 +30,6 @@ if (settings) {
     // add a user to a MailChimp list.
     // called when a new user is created, or when an existing user fills in their email
     async subscribe(email, confirm = false) {
-      console.log('// subscribe')
 
       try {
         // subscribe user
