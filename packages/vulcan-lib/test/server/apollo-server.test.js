@@ -3,7 +3,6 @@ import { createApolloServer, onStart } from '../../lib/server/apollo-server/apol
 import { GraphQLSchema } from '../../lib/server/graphql';
 import expect from 'expect';
 import { executableSchema } from './fixtures/minimalSchema';
-import { createTestClient } from 'apollo-server-testing';
 // import { createTestClient } from 'apollo-server-testing'
 import { WebApp } from 'meteor/webapp';
 import request from 'supertest';
@@ -45,8 +44,7 @@ describe('apollo-server', function() {
   describe('body parser', () => {
     test.skip('application/graphql', async () => {
       const server = onStart();
-      const { query /*mutate*/ } = createTestClient(server);
-      const res = await query({
+      const res = await server.executeOperation({
         query: ``,
         variables: {},
       });
@@ -58,13 +56,12 @@ describe('apollo-server', function() {
     test.skip('cors', async () => {
       //const corsDisallowed
       const server = createApolloServer(options);
-      const { query, mutate } = createTestClient(server);
-      query({
+      await server.executeOperation({
         query: ``,
         variables: { id: 1 },
       });
       // mutate({mutation: ``, variables: {...}})
-      const res = await query({ query: GET_LAUNCH, variables: { id: 1 } });
+      const res = await server.executeOperation({ query: GET_LAUNCH, variables: { id: 1 } });
       expect(res).toEqual({});
     });
     test.skip('cors works with same origin', () => {});

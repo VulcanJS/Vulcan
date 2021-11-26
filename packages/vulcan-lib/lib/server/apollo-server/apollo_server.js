@@ -8,6 +8,9 @@
 // We also add Express to WebApp in order to use any kind of middlewares
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+const {
+  graphqlUploadExpress, // A Koa implementation is also exported.
+} = require('graphql-upload');
 
 import { Meteor } from 'meteor/meteor';
 
@@ -60,6 +63,8 @@ export const setupGraphQLMiddlewares = (apolloServer, config, apolloApplyMiddlew
     //bodyParser.json({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
     bodyParserGraphQL({ limit: getSetting('apolloServer.jsonParserOptions.limit') })
   );
+
+  app.use(graphqlUploadExpress());
 
   //WebApp.connectHandlers.use(config.path, bodyParser.text({ type: 'application/graphql' }));
   WebApp.connectHandlers.use(app);
@@ -153,7 +158,7 @@ export const createApolloServer = ({
   return apolloServer;
 };
 
-export const onStart = () => {
+export const onStart = async () => {
   // Vulcan specific options
   const config = {
     path: '/graphql',
@@ -198,6 +203,7 @@ export const onStart = () => {
       ...getApolloServerOptions(),
     },
   });
+  await apolloServer.start();
   // NOTE: order matters here
   // /graphql middlewares (request parsing)
   setupGraphQLMiddlewares(apolloServer, config, apolloApplyMiddlewareOptions);

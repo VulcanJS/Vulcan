@@ -73,11 +73,13 @@ export const pluralizeString = (message, values) => {
     let translation;
     for (const match of matches) {
       const category = match.split(' {')[0];
-      if ((category === 'zero' && value === 0) ||
+      if (
+        (category === 'zero' && value === 0) ||
         (category === 'one' && value === 1) ||
         (category === 'two' && value === 2) ||
         (category.startsWith('=') && parseInt(category.replace(/^=/, '')) === value) ||
-        (category === 'other')) {
+        category === 'other'
+      ) {
         const phrase = match.split(' {')[1];
         translation = phrase.replace('#', value);
         break;
@@ -304,7 +306,15 @@ export const getIntlString = () => {
 Check if a schema has at least one intl field
 
 */
-export const schemaHasIntlFields = schema => Object.keys(schema).some(fieldName => isIntlField(schema[fieldName]));
+export const schemaHasIntlFields = schema => {
+  if ('_schema' in schema) {
+    throw new Error('Expecting a raw JSON schema, NOT a SimpleSchema object. Schema keys: ' + Object.keys(schema._schema).join(', '));
+  }
+  return Object.keys(schema).some(fieldName => {
+    //console.log('schema', Object.keys(schema), fieldName, schema?.[fieldName]);
+    return isIntlField(schema[fieldName]);
+  });
+};
 
 /*
 

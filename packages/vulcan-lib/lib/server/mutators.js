@@ -32,12 +32,7 @@ to the client.
 */
 
 import { runCallbacks, runCallbacksAsync } from '../modules/index.js';
-import {
-  validateDocument,
-  validateData,
-  dataToModifier,
-  modifierToData,
-} from '../modules/validation.js';
+import { validateDocument, validateData, dataToModifier, modifierToData } from '../modules/validation.js';
 import { globalCallbacks } from '../modules/callbacks.js';
 import { registerSetting } from '../modules/settings.js';
 import { debug, debugGroup, debugGroupEnd } from '../modules/debug.js';
@@ -131,14 +126,9 @@ export const createMutator = async ({
       properties,
     });
     // OpenCRUD backwards compatibility
-    data = await runCallbacks(
-      `${collectionName.toLowerCase()}.new.validate`,
-      data,
-      currentUser,
-      validationErrors
-    );
+    data = await runCallbacks(`${collectionName.toLowerCase()}.new.validate`, data, currentUser, validationErrors);
     if (validationErrors.length) {
-      console.log(validationErrors); // eslint-disable-line no-console
+      console.log('validation errors', validationErrors); // eslint-disable-line no-console
       throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
     }
   }
@@ -176,7 +166,7 @@ export const createMutator = async ({
       if (typeof autoValue !== 'undefined') {
         data[fieldName] = autoValue;
       }
-    } catch(e) {
+    } catch (e) {
       console.log(`// Autovalue error on field ${fieldName}`);
       console.log(e);
     }
@@ -213,11 +203,7 @@ export const createMutator = async ({
   });
   data = await runCallbacks({ name: '*.create.before', iterator: data, properties });
   // OpenCRUD backwards compatibility
-  data = await runCallbacks(
-    `${collectionName.toLowerCase()}.new.before`,
-    data,
-    currentUser
-  );
+  data = await runCallbacks(`${collectionName.toLowerCase()}.new.before`, data, currentUser);
   data = await runCallbacks(`${collectionName.toLowerCase()}.new.sync`, data, currentUser);
 
   /*
@@ -283,12 +269,7 @@ export const createMutator = async ({
   });
   await runCallbacksAsync({ name: '*.create.async', properties });
   // OpenCRUD backwards compatibility
-  await runCallbacksAsync(
-    `${collectionName.toLowerCase()}.new.async`,
-    document,
-    currentUser,
-    collection
-  );
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.new.async`, document, currentUser, collection);
 
   if (context.Users) {
     document = context.Users.restrictViewableFields(currentUser, collection, document);
@@ -400,17 +381,11 @@ export const updateMutator = async ({
     });
     // OpenCRUD backwards compatibility
     data = modifierToData(
-      await runCallbacks(
-        `${collectionName.toLowerCase()}.edit.validate`,
-        dataToModifier(data),
-        document,
-        currentUser,
-        validationErrors
-      )
+      await runCallbacks(`${collectionName.toLowerCase()}.edit.validate`, dataToModifier(data), document, currentUser, validationErrors)
     );
 
     if (validationErrors.length) {
-      console.log(validationErrors); // eslint-disable-line no-console
+      console.log('validation errors', validationErrors); // eslint-disable-line no-console
       throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
     }
   }
@@ -427,12 +402,7 @@ export const updateMutator = async ({
     } else if (schema[fieldName].onEdit) {
       // OpenCRUD backwards compatibility
       // eslint-disable-next-line no-await-in-loop
-      autoValue = await schema[fieldName].onEdit(
-        dataToModifier(clone(data)),
-        oldDocument || document,
-        currentUser,
-        document
-      );
+      autoValue = await schema[fieldName].onEdit(dataToModifier(clone(data)), oldDocument || document, currentUser, document);
     }
     if (typeof autoValue !== 'undefined') {
       data[fieldName] = autoValue;
@@ -466,22 +436,10 @@ export const updateMutator = async ({
   data = await runCallbacks({ name: '*.update.before', iterator: data, properties });
   // OpenCRUD backwards compatibility
   data = modifierToData(
-    await runCallbacks(
-      `${collectionName.toLowerCase()}.edit.before`,
-      dataToModifier(data),
-      document,
-      currentUser,
-      document
-    )
+    await runCallbacks(`${collectionName.toLowerCase()}.edit.before`, dataToModifier(data), document, currentUser, document)
   );
   data = modifierToData(
-    await runCallbacks(
-      `${collectionName.toLowerCase()}.edit.sync`,
-      dataToModifier(data),
-      document,
-      currentUser,
-      document
-    )
+    await runCallbacks(`${collectionName.toLowerCase()}.edit.sync`, dataToModifier(data), document, currentUser, document)
   );
 
   // update connector requires a modifier, so get it from data
@@ -541,12 +499,7 @@ export const updateMutator = async ({
   });
   document = await runCallbacks({ name: '*.update.after', iterator: document, properties });
   // OpenCRUD backwards compatibility
-  document = await runCallbacks(
-    `${collectionName.toLowerCase()}.edit.after`,
-    document,
-    oldDocument,
-    currentUser
-  );
+  document = await runCallbacks(`${collectionName.toLowerCase()}.edit.after`, document, oldDocument, currentUser);
 
   /*
 
@@ -568,13 +521,7 @@ export const updateMutator = async ({
   await runCallbacksAsync({ name: `${typeName.toLowerCase()}.update.async`, properties });
   await runCallbacksAsync({ name: '*.update.async', properties });
   // OpenCRUD backwards compatibility
-  await runCallbacksAsync(
-    `${collectionName.toLowerCase()}.edit.async`,
-    document,
-    oldDocument,
-    currentUser,
-    collection
-  );
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.edit.async`, document, oldDocument, currentUser, collection);
 
   endDebugMutator(collectionName, 'Update', { modifier });
 
@@ -591,15 +538,7 @@ export const updateMutator = async ({
 Delete
 
 */
-export const deleteMutator = async ({
-  collection,
-  documentId,
-  selector,
-  currentUser,
-  validate,
-  context = {},
-  document,
-}) => {
+export const deleteMutator = async ({ collection, documentId, selector, currentUser, validate, context = {}, document }) => {
   const { collectionName, typeName } = collection.options;
   const schema = collection.simpleSchema()._schema;
 
@@ -661,14 +600,10 @@ export const deleteMutator = async ({
       properties,
     });
     // OpenCRUD backwards compatibility
-    document = await runCallbacks(
-      `${collectionName.toLowerCase()}.remove.validate`,
-      document,
-      currentUser
-    );
+    document = await runCallbacks(`${collectionName.toLowerCase()}.remove.validate`, document, currentUser);
 
     if (validationErrors.length) {
-      console.log(validationErrors); // eslint-disable-line no-console
+      console.log('validation errores', validationErrors); // eslint-disable-line no-console
       throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
     }
   }
@@ -713,16 +648,8 @@ export const deleteMutator = async ({
   });
   document = await runCallbacks({ name: '*.delete.before', iterator: document, properties });
   // OpenCRUD backwards compatibility
-  document = await runCallbacks(
-    `${collectionName.toLowerCase()}.remove.before`,
-    document,
-    currentUser
-  );
-  document = await runCallbacks(
-    `${collectionName.toLowerCase()}.remove.sync`,
-    document,
-    currentUser
-  );
+  document = await runCallbacks(`${collectionName.toLowerCase()}.remove.before`, document, currentUser);
+  document = await runCallbacks(`${collectionName.toLowerCase()}.remove.sync`, document, currentUser);
 
   /*
 
@@ -757,11 +684,7 @@ export const deleteMutator = async ({
   });
   document = await runCallbacks({ name: '*.delete.after', iterator: document, properties });
   // OpenCRUD backwards compatibility
-  document = await runCallbacks(
-    `${collectionName.toLowerCase()}.remove.after`,
-    document,
-    currentUser
-  );
+  document = await runCallbacks(`${collectionName.toLowerCase()}.remove.after`, document, currentUser);
 
   // TODO: add support for caching by other indexes to Dataloader
   // clear cache if needed
@@ -789,12 +712,7 @@ export const deleteMutator = async ({
   await runCallbacksAsync({ name: `${typeName.toLowerCase()}.delete.async`, properties });
   await runCallbacksAsync({ name: '*.delete.async', properties });
   // OpenCRUD backwards compatibility
-  await runCallbacksAsync(
-    `${collectionName.toLowerCase()}.remove.async`,
-    document,
-    currentUser,
-    collection
-  );
+  await runCallbacksAsync(`${collectionName.toLowerCase()}.remove.async`, document, currentUser, collection);
 
   endDebugMutator(collectionName, 'Delete');
 
