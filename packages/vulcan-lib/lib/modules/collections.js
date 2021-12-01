@@ -75,6 +75,7 @@ Mongo.Collection.prototype.attachSchema = function(schemaOrFields) {
 /**
  * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} fieldOrFieldArray
+ *
  */
 Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
   const collection = this;
@@ -87,8 +88,14 @@ Mongo.Collection.prototype.addField = function(fieldOrFieldArray) {
     fieldSchema[field.fieldName] = field.fieldSchema;
   });
 
+  // NOTE: attachSchema will update the schema but
+  // not collection.options, leading to discrepencies
+  // Instead extendCollection will recreate the collection
+  // from start with the right schema
+  // It's slightly slower but guaranteed to work
+  extendCollection(collection, { schema: fieldSchema });
   // add field schema to collection schema
-  collection.attachSchema(createSchema(merge(collection.simpleSchema()._schema, fieldSchema)));
+  //collection.attachSchema(createSchema(merge(collection.simpleSchema()._schema, fieldSchema)));
 };
 
 /**
