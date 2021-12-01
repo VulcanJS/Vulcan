@@ -59,7 +59,6 @@
     "crypto-js": "^3.1.9-1",
     "dataloader": "^1.4.0",
     "deepmerge": "^1.2.0",
-    "dot-object": "^1.7.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "escape-string-regexp": "^1.0.5",
     "express": "^4.17.1",
