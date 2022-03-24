@@ -12,8 +12,8 @@ An error should have:
 export const throwError = error => {
   const { id, data } = error;
   if (data) {
-    console.log(`// throwError: ${id}`);
-    console.log(JSON.stringify(data, '', 2));
+    // console.log(`// throwError: ${id}`);
+    // console.log(JSON.stringify(data, '', 2));
   }
   throw new UserInputError(id, error);
 };

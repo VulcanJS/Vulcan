@@ -94,9 +94,12 @@ class MutationButtonInner extends PureComponent {
 
     const loadingButton = <Components.LoadingButton loading={loading} onClick={this.handleClick} label={label} {...rest} />;
 
+    // note: the div wrapping trigger is needed so that the tooltip coordinates
+    // can be properly calculated
+
     if (error) {
       return (
-        <Components.TooltipTrigger trigger={loadingButton} defaultShow={true}>
+        <Components.TooltipTrigger trigger={<div style={{ display: 'inline-block' }}>{loadingButton}</div>} show={true} defaultShow={true}>
           {error.message.replace('GraphQL error: ', '')}
         </Components.TooltipTrigger>
       );

@@ -366,7 +366,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     if (this.showCreateAccountLink() && this.props.showSignUpLink) {
       loginButtons.push({
         id: 'switchToSignUp',
-        label: this.context.intl.formatMessage({ id: 'accounts.sign_up' }),
+        label: this.context.intl.formatMessage({ id: 'accounts.switch_to_sign_up' }) || this.context.intl.formatMessage({ id: 'accounts.sign_up' }),
         type: 'link',
         href: signUpPath,
         onClick: this.switchToSignUp.bind(this),
@@ -376,7 +376,7 @@ export class AccountsLoginFormInner extends TrackerComponent {
     if ((formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) && this.props.showSignInLink) {
       loginButtons.push({
         id: 'switchToSignIn',
-        label: this.context.intl.formatMessage({ id: 'accounts.sign_in' }),
+        label:  this.context.intl.formatMessage({ id: 'accounts.switch_to_sign_in' }) || this.context.intl.formatMessage({ id: 'accounts.sign_in' }),
         type: 'link',
         href: loginPath,
         onClick: this.switchToSignIn.bind(this),

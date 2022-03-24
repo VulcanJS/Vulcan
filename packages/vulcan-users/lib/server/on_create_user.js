@@ -4,7 +4,7 @@ import clone from 'lodash/clone';
 import get from 'lodash/get';
 
 // TODO: the following should use async/await, but async/await doesn't seem to work with Accounts.onCreateUser
-async function onCreateUserCallback(options, user) {
+function onCreateUserCallback(options, user) {
   debug('');
   debugGroup('--------------- start \x1b[35m onCreateUser ---------------');
   debug(`Options: ${JSON.stringify(options)}`);
@@ -40,16 +40,16 @@ async function onCreateUserCallback(options, user) {
 
   let validationErrors = [];
   // new callback API (Oct 2019)
-  validationErrors = await runCallbacks({
-    name: 'user.create.validate',
-    callbacks: get(Users, 'options.callbacks.create.validate', []),
-    iterator: validationErrors,
-    properties,
-  });
-  if (validationErrors.length) {
-    console.log(validationErrors); // eslint-disable-line no-console
-    throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
-  }
+  // validationErrors = await runCallbacks({
+  //   name: 'user.create.validate',
+  //   callbacks: get(Users, 'options.callbacks.create.validate', []),
+  //   iterator: validationErrors,
+  //   properties,
+  // });
+  // if (validationErrors.length) {
+  //   console.log(validationErrors); // eslint-disable-line no-console
+  //   throwError({ id: 'app.validation_error', data: { break: true, errors: validationErrors } });
+  // }
 
   // run validation callbacks
   user = runCallbacks({ name: 'user.create.validate', iterator: user, properties: {} });
@@ -74,21 +74,21 @@ async function onCreateUserCallback(options, user) {
   }
 
   // new callback API (Oct 2019)
-  user = await runCallbacks({
-    name: 'user.create.before',
-    callbacks: get(Users, 'options.callbacks.create.after', []),
-    iterator: user,
-    properties,
-  });
+  // user = await runCallbacks({
+  //   name: 'user.create.before',
+  //   callbacks: get(Users, 'options.callbacks.create.after', []),
+  //   iterator: user,
+  //   properties,
+  // });
   user = runCallbacks({ name: 'user.create.before', iterator: user, properties: {} });
   user = runCallbacks('users.new.sync', user);
 
   // new callback API (Oct 2019)
-  await runCallbacksAsync({
-    name: 'user.create.async',
-    callbacks: get(Users, 'options.callbacks.create.async', []),
-    properties,
-  });
+  // await runCallbacksAsync({
+  //   name: 'user.create.async',
+  //   callbacks: get(Users, 'options.callbacks.create.async', []),
+  //   properties,
+  // });
 
   runCallbacksAsync({ name: 'user.create.async', properties });
   // OpenCRUD backwards compatibility
@@ -109,7 +109,7 @@ async function onCreateUserCallback(options, user) {
   return user;
 }
 
-Meteor.startup(() => {
+Meteor.startup(async () => {
   if (typeof Accounts !== 'undefined') {
     Accounts.onCreateUser(onCreateUserCallback);
   }
