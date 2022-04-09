@@ -84,7 +84,7 @@
     "marked": "^0.7.0",
     "meteor-node-stubs": "^0.4.1",
     "mingo": "^2.2.0",
-    "moment": "^2.13.0",
+    "moment": "^2.29.2",
     "node-cache": "^5.1.2",
     "pluralize": "7.0.0",
     "prop-types": "^15.7.2",
