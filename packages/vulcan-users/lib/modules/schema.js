@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { Utils, getCollection, Connectors, Locales, getType, addTypeAndResolvers } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
+import isEmpty from 'lodash/isEmpty';
 
 ///////////////////////////////////////
 // Order for the Schema is as follows. Change as you see fit:
@@ -158,7 +159,7 @@ const schema = {
     canRead: ['guests'],
     order: 10,
     onCreate: ({ document: user }) => {
-      return createDisplayName(user);
+      return user.displayName && !isEmpty(user.displayName) ? user.displayName : createDisplayName(user);
     },
     searchable: true,
   },
