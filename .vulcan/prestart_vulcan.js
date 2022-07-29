@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 //Functions
-var fs         = require('fs');
+var fs = require('fs');
 function existsSync(filePath){
   try{
     fs.statSync(filePath);
