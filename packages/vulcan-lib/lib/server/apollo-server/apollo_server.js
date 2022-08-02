@@ -144,6 +144,7 @@ export const createApolloServer = ({
     playground: getPlaygroundConfig(config),
     // context optionbject or a function of the current request (+ maybe some other params)
     debug: Meteor.isDevelopment,
+    cache: 'bounded',
     ...apolloServerOptions,
   });
 

@@ -36,7 +36,7 @@ if (settings) {
         const body = {
           api_key: apiKey,
           email_address: email,
-          status: 'SUBSCRIBED'
+          // status: 'SUBSCRIBED'
         }
         const subscribe = await fetch(`https://emailoctopus.com/api/1.5/lists/${listId}/contacts`, {
           method: 'post',
