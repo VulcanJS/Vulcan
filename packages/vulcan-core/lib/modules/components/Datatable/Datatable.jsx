@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import qs from 'qs';
 import { withRouter } from 'react-router';
-import compose from 'recompose/compose';
+import { compose } from 'meteor/vulcan:lib';
 import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';

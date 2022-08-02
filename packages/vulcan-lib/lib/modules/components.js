@@ -1,9 +1,10 @@
-import { compose } from 'recompose';
+import { compose } from './compose';
 import React from 'react';
 import difference from 'lodash/difference';
 
 export const Components = {}; // will be populated on startup
 export const ComponentsTable = {}; // storage for infos about components
+
 
 export const coreComponents = [
   'Alert',
@@ -238,7 +239,7 @@ export const instantiateComponent = (component, props) => {
  *
  * @example Create a container for a registered component
  *  // SomeContainer.js
- *  import compose from 'recompose/compose';
+ *  import { compose } from 'meteor/vulcan:lib';
  *  import { delayedComponent } from 'meteor/vulcan:core';
  *
  *  export default compose(

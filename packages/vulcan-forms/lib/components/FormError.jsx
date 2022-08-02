@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import getContext from 'recompose/getContext';
+import { getContext } from 'meteor/vulcan:lib';
 import { Components, registerComponent } from 'meteor/vulcan:core';
 import get from 'lodash/get';
 

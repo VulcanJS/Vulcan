@@ -29,7 +29,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withRouter } from 'react-router';
 import { withApollo } from '@apollo/client/react/hoc';
-import compose from 'recompose/compose';
+import { compose } from 'meteor/vulcan:lib';
 import {
   Components,
   registerComponent,

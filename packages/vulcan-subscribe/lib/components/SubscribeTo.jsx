@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { graphql } from '@apollo/client/react/hoc';
-import compose from 'recompose/compose';
+import { compose } from 'meteor/vulcan:lib';
 import gql from 'graphql-tag';
 import Users from 'meteor/vulcan:users';
 import { Components, withCurrentUser, withMessages, registerComponent, Utils } from 'meteor/vulcan:core';

@@ -36,3 +36,4 @@ export * from './simpleSchema_utils.js';
 export * from './random_id.js';
 export * from './mongoParams';
 export * from './reactive-state.js';
+export * from './compose.js';

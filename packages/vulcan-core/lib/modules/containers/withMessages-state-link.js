@@ -10,7 +10,7 @@ import React from 'react';
 import { registerStateLinkMutation, registerStateLinkDefault } from 'meteor/vulcan:lib';
 import { graphql } from '@apollo/client/react/hoc';
 import gql from 'graphql-tag';
-import compose from 'recompose/compose';
+import { compose } from 'meteor/vulcan:lib';
 
 // 1. Define the queries
 // the @client tag tells graphQL that we fetch data from the cache

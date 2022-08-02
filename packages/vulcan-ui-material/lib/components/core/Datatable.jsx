@@ -9,7 +9,7 @@ import {
   getCollection,
   instantiateComponent,
 } from 'meteor/vulcan:core';
-import compose from 'recompose/compose';
+import { compose } from 'meteor/vulcan:lib';
 import { intlShape } from 'meteor/vulcan:i18n';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
