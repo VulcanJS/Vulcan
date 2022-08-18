@@ -2,7 +2,10 @@ import { Components, registerComponent } from 'meteor/vulcan:lib';
 import React from 'react';
 import { intlShape } from 'meteor/vulcan:i18n';
 
-const EditButton = ({ style = 'primary', variant, label, size, showId, modalProps, formProps, component, mutationFragmentName, ...props }, { intl }) => (
+const EditButton = (
+  { style = 'primary', variant, label, size, showId, modalProps, formProps, component, mutationFragmentName, ...props },
+  { intl }
+) => (
   <Components.ModalTrigger
     label={label || intl.formatMessage({ id: 'datatable.edit', defaultMessage: 'Edit' })}
     component={
@@ -15,7 +18,7 @@ const EditButton = ({ style = 'primary', variant, label, size, showId, modalProp
       )
     }
     modalProps={modalProps}>
-    <Components.EditForm {...props} formProps={formProps} />
+    <Components.EditForm {...props} formProps={{ mutationFragmentName, ...formProps }} />
   </Components.ModalTrigger>
 );
 
@@ -32,7 +35,7 @@ registerComponent('EditButton', EditButton);
 EditForm Component
 
 */
-const EditForm = (props) => {
+const EditForm = props => {
   const { closeModal, successCallback, removeSuccessCallback, formProps, ...rest } = props;
   const success = successCallback
     ? document => {
