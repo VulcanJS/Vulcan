@@ -1,6 +1,6 @@
 {
   "name": "vulcan-meteor",
-  "version": "1.16.7",
+  "version": "1.16.9",
   "engines": {
     "npm": "^3.0"
   },
