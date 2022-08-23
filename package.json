@@ -70,7 +70,7 @@
     "graphql-tools": "^4.0.4",
     "graphql-type-json": "^0.1.4",
     "graphql-voyager": "^1.0.0-rc.26",
-    "handlebars": "^4.4.3",
+    "handlebars": "^4.7.7",
     "he": "^1.1.1",
     "history": "^3.0.0",
     "html-to-text": "^2.1.0",
