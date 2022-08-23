@@ -115,7 +115,7 @@
     "recompose": "^0.26.0",
     "redux": "^3.6.0",
     "rss": "^1.2.1",
-    "sanitize-html": "^1.16.3",
+    "sanitize-html": "^2.3.2",
     "simpl-schema": "^1.4.2",
     "speakingurl": "^9.0.0",
     "string-similarity": "^4.0.2",
