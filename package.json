@@ -173,7 +173,7 @@
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
     "mdi-material-ui": "^6.16.0",
-    "moment-timezone": "^0.5.25",
+    "moment-timezone": "^0.5.35",
     "node-sass": "^4.14.0",
     "operation-name-mock-link": "0.0.4",
     "prettier": "^1.15.2",
