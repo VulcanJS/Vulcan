@@ -61,7 +61,7 @@
     "dot-object": "^1.7.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "escape-string-regexp": "^1.0.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "flat": "^4.0.0",
     "graphql": "14.4.2",
     "graphql-anywhere": "4.1.13",
