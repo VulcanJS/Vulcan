@@ -24,12 +24,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import gql from 'graphql-tag';
-import {
-  getSetting,
-  multiClientTemplate,
-  extractCollectionInfo,
-  extractFragmentInfo,
-} from 'meteor/vulcan:lib';
+import { getSetting, multiClientTemplate, extractCollectionInfo, extractFragmentInfo } from 'meteor/vulcan:lib';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 
@@ -61,7 +56,6 @@ const getInitialPaginationInput = (options, props) => {
  * @param {*} props
  */
 const buildQueryOptions = (options, paginationInput = {}, props) => {
-
   let {
     input: optionsInput,
     pollInterval = getSetting('pollInterval', 20000),
@@ -107,7 +101,7 @@ const buildResult = (
   returnedProps
 ) => {
   //console.log('returnedProps', returnedProps);
-  const { refetch, networkStatus, error, fetchMore, data, previousData, graphQLErrors } = returnedProps;
+  const { refetch, networkStatus, error, fetchMore, data, previousData, graphQLErrors, variables } = returnedProps;
   // Note: Scalar types like Dates are NOT converted. It should be done at the UI level.
   const bestAvailableData = data ?? previousData;
   const results = bestAvailableData && bestAvailableData[resolverName] && bestAvailableData[resolverName].results;
@@ -159,28 +153,20 @@ const buildResult = (
         ...paginationInput,
         offset: results.length,
       };
+      const newVariables = merge({}, variables, { input: newInput });
 
       return fetchMore({
-        variables: { input: newInput },
+        variables: newVariables,
         updateQuery(previousResults, { fetchMoreResult }) {
           // no more post to fetch
-          if (
-            !(
-              fetchMoreResult[resolverName] &&
-              fetchMoreResult[resolverName].results &&
-              fetchMoreResult[resolverName].results.length
-            )
-          ) {
+          if (!(fetchMoreResult[resolverName] && fetchMoreResult[resolverName].results && fetchMoreResult[resolverName].results.length)) {
             return previousResults;
           }
           const newResults = {
             ...previousResults,
             [resolverName]: { ...previousResults[resolverName] },
           }; // TODO: should we clone this object? => yes
-          newResults[resolverName].results = [
-            ...previousResults[resolverName].results,
-            ...fetchMoreResult[resolverName].results,
-          ];
+          newResults[resolverName].results = [...previousResults[resolverName].results, ...fetchMoreResult[resolverName].results];
           return newResults;
         },
       });
@@ -212,7 +198,7 @@ export const useMulti = (options, props = {}) => {
 
   // workaround for https://github.com/apollographql/apollo-client/issues/2810
   queryRes.graphQLErrors = get(queryRes, 'error.networkError.result.errors');
-  
+
   const result = buildResult(
     options,
     { fragment, fragmentName, resolverName },
