@@ -5,7 +5,7 @@ import {
   replaceComponent,
   withCurrentUser,
   Utils,
-  withMulti,
+  withMulti2,
   getCollection,
   instantiateComponent,
 } from 'meteor/vulcan:core';
@@ -48,8 +48,8 @@ const baseStyles = theme => ({
     alignItems: 'center',
   },
   scroller: {
-		overflowX: 'auto',
-		overflowY: 'hidden'
+    overflowX: 'auto',
+    overflowY: 'hidden'
   },
   searchWrapper: {},
   addButtonWrapper: {
@@ -144,20 +144,15 @@ class Datatable extends PureComponent {
       const collection = this.props.collection || getCollection(this.props.collectionName);
 
       const listOptions = {
-        collection: collection,
         ...options,
+        collection: collection,
+        input: {
+          ...options.input,
+          search: this.state.query,
+        }
       };
 
-      const DatatableWithMulti = compose(withMulti(listOptions))(Components.DatatableContents);
-
-      // add _id to orderBy when we want to sort a column, to avoid breaking the graphql() hoc;
-      // see https://github.com/VulcanJS/Vulcan/issues/2090#issuecomment-433860782
-      // this.state.currentSort !== {} is always false, even when console.log(this.state.currentSort) displays
-      // {}. So we test on the length of keys for this object.
-      const orderBy =
-        Object.keys(this.state.currentSort).length == 0
-          ? {}
-          : { ...this.state.currentSort, _id: -1 };
+      const DatatableWithMulti = compose(withMulti2(listOptions))(Components.DatatableContents);
 
       return (
         <div
@@ -198,7 +193,6 @@ class Datatable extends PureComponent {
             children: <DatatableWithMulti
               {...this.props}
               collection={collection}
-              terms={{ query: this.state.query, orderBy: orderBy }}
               currentUser={this.props.currentUser}
               toggleSort={this.toggleSort}
               currentSort={this.state.currentSort}
@@ -279,8 +273,8 @@ const getColumns = (columns, results, data) => {
   } else if (results && results.length > 0) {
     // if no columns are provided, default to using keys of first array item
     return Object.keys(results[0])
-      .filter(k => k !== '__typename')
-      .map(wrapColumns);
+    .filter(k => k !== '__typename')
+    .map(wrapColumns);
   } else if (data) {
     // note: withMulti HoC also passes a prop named data, but in this case
     // data should be the prop passed to the Datatable
