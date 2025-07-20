@@ -17,6 +17,7 @@ import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import 'cross-fetch/polyfill'; // patch for browser which don't have fetch implemented
 import set from 'lodash/set';
+import { useDropzone } from 'react-dropzone';
 
 registerSetting('cloudinary.cloudName', null, 'Cloudinary cloud name (for image uploads)');
 
@@ -60,6 +61,37 @@ const getImageUrl = imageOrImageArray => {
 Display a single image
 
 */
+function MyDropZone({ onDrop, disabled, uploading }) {
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+    },
+    multiple: true,
+    disabled,
+  });
+
+  let styles = { ...baseStyle };
+  if (isDragActive) styles = { ...styles, ...activeStyle };
+  if (isDragReject) styles = { ...styles, ...rejectStyle };
+
+  return (
+    <div {...getRootProps({ style: styles })}>
+      <input {...getInputProps()} />
+      <div>
+        <Components.FormattedMessage id="upload.prompt" />
+      </div>
+      {uploading && (
+        <div className="upload-uploading">
+          <span>
+            <Components.FormattedMessage id="upload.uploading" />
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 class Image extends PureComponent {
   constructor() {
     super();
@@ -285,36 +317,7 @@ class Upload extends PureComponent {
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
           <div className="upload-field">
-            <Dropzone
-              multiple={this.enableMultiple()}
-              onDrop={this.onDrop}
-              accept="image/*"
-              className="dropzone-base"
-              activeClassName="dropzone-active"
-              rejectClassName="dropzone-reject"
-              disabled={this.isDisabled()}>
-              {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-                let styles = { ...baseStyle };
-                styles = isDragActive ? { ...styles, ...activeStyle } : styles;
-                styles = isDragReject ? { ...styles, ...rejectStyle } : styles;
-                return (
-                  <div {...getRootProps()} style={styles}>
-                    <input {...getInputProps()} />
-                    <div>
-                      <Components.FormattedMessage id="upload.prompt" />
-                    </div>
-                    {uploading && (
-                      <div className="upload-uploading">
-                        <span>
-                          <Components.FormattedMessage id="upload.uploading" />
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              }}
-            </Dropzone>
-
+            <MyDropZone onDrop={this.onDrop} disabled={this.disabled} uploading={this.uploading} />
             {!!images.length && (
               <div className="upload-state">
                 <div className="upload-images">
